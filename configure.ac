@@ -1,0 +1,26 @@
+# Initialization
+AC_PREREQ([2.69])
+AC_INIT([pldm], [1.0],
+        [https://github.com/openbmc/pldm/issues])
+AC_LANG([C++])
+AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
+AM_SILENT_RULES([yes])
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CC
+AM_PROG_AR
+AC_PROG_INSTALL
+
+# Checks for typedefs, structures, and compiler characteristics.
+AX_CXX_COMPILE_STDCXX([17], [noext], [mandatory])
+AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
+
+# For linking
+LT_INIT
+
+# Create configured output
+AC_CONFIG_FILES([Makefile libpldm/Makefile libpldm_responder/Makefile])
+AC_CONFIG_FILES([libpldm/libpldm.pc])
+AC_OUTPUT
