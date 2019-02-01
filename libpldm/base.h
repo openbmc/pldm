@@ -1,0 +1,131 @@
+#ifndef BASE_H
+#define BASE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <stdint.h>
+
+/** @brief PLDM Types
+ */
+enum pldm_supported_types {
+	PLDM_BASE = 0x00,
+};
+
+/** @brief PLDM Commands
+ */
+enum pldm_supported_commands {
+	PLDM_GET_PLDM_TYPES = 0x4,
+	PLDM_GET_PLDM_COMMANDS = 0x5
+};
+
+/** @brief PLDM base codes
+ */
+enum pldm_completion_codes {
+	PLDM_SUCCESS = 0x00,
+	PLDM_ERROR = 0x01,
+	PLDM_ERROR_INVALID_DATA = 0x02,
+	PLDM_ERROR_INVALID_LENGTH = 0x03,
+	PLDM_ERROR_NOT_READY = 0x04,
+	PLDM_ERROR_UNSUPPORTED_PLDM_CMD = 0x05,
+	PLDM_ERROR_INVALID_PLDM_TYPE = 0x20
+};
+
+#define PLDM_REQUEST_HEADER_LEN_BYTES 3
+#define PLDM_RESPONSE_HEADER_LEN_BYTES 4
+
+#define PLDM_GET_TYPES_REQ_DATA_BYTES 0
+#define PLDM_GET_TYPES_RESP_DATA_BYTES 8
+#define PLDM_MAX_TYPES 64
+
+#define PLDM_GET_COMMANDS_REQ_DATA_BYTES 5
+#define PLDM_GET_COMMANDS_RESP_DATA_BYTES 32
+#define PLDM_MAX_CMDS_PER_TYPE 256
+
+/** @struct pldm_version_t
+ * 
+ * Structure representing PLDM ver32 type
+ */
+struct pldm_version_t {
+	uint8_t major;
+	uint8_t minor;
+	uint8_t update;
+	uint8_t alpha;
+} __attribute__((packed));
+
+/* Requester */
+
+/* GetPLDMTypes */
+
+/** @brief Create a PLDM request message for GetPLDMTypes
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] buffer - Message will be written to this buffer
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'buffer'
+ */
+int encode_get_types_req(uint8_t instance_id, uint8_t *buffer);
+
+/* GetPLDMCommands */
+
+/** @brief Create a PLDM request message for GetPLDMCommands
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] type - PLDM Type
+ *  @param[in] version - Version for PLDM Type
+ *  @param[in,out] buffer - Message will be written to this buffer
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'buffer'
+ */
+int encode_get_commands_req(uint8_t instance_id, uint8_t type,
+			    struct pldm_version_t version, uint8_t *buffer);
+
+/* Responder */
+
+/* GetPLDMTypes */
+
+/** @brief Create a PLDM response message for GetPLDMTypes
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] types - pointer to array uint8_t[8] containing supported
+ *             types (MAX_TYPES/8) = 8), as per DSP0240
+ *  @param[in,out] buffer - Message will be written to this buffer
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'buffer'
+ */
+int encode_get_types_resp(uint8_t instance_id, uint8_t completion_code,
+			  const uint8_t *types, uint8_t *buffer);
+
+/* GetPLDMCommands */
+
+/** @brief Decode GetPLDMCommands' request data
+ *
+ *  @param[in] request - Request data
+ *  @param[out] type - PLDM Type
+ *  @param[out] version - Version for PLDM Type
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'request'
+ */
+int decode_get_commands_req(const uint8_t *request, uint8_t *type,
+			    struct pldm_version_t *version);
+
+/** @brief Create a PLDM response message for GetPLDMCommands
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] commands - pointer to array uint8_t[32] containing supported
+ *             commands (PLDM_MAX_CMDS_PER_TYPE/8) = 32), as per DSP0240
+ *  @param[in,out] buffer - Message will be written to this buffer
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'buffer'
+ */
+int encode_get_commands_resp(uint8_t instance_id, uint8_t completion_code,
+			     const uint8_t *commands, uint8_t *buffer);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* BASE_H */
