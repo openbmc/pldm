@@ -1,0 +1,1 @@
+SUBDIRS = libpldm libresponder test
