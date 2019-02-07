@@ -34,6 +34,18 @@ enum pldm_completion_codes {
 	PLDM_ERROR_INVALID_PLDM_TYPE = 0x20
 };
 
+/** @enum MessageType
+ *
+ *  The different message types supported by the PLDM specification.
+ */
+typedef enum {
+	RESPONSE,	     //!< PLDM response
+	REQUEST,	      //!< PLDM request
+	RESERVED,	     //!< Reserved
+	ASYNC_REQUEST_NOTIFY, //!< Unacknowledged PLDM request messages
+} MessageType;
+
+#define PLDM_INSTANCE_MAX 31
 #define PLDM_MAX_TYPES 64
 #define PLDM_MAX_CMDS_PER_TYPE 256
 
@@ -75,6 +87,50 @@ struct pldm_version_t {
 	uint8_t update;
 	uint8_t alpha;
 } __attribute__((packed));
+
+/** @struct pldm_header_info
+ *
+ *  The information needed to prepare PLDM header and this is passed to the
+ *  pack_pldm_header and unpack_pldm_header API.
+ */
+struct pldm_header_info {
+	MessageType msg_type;    /* PLDM message type*/
+	uint8_t instance;	/* PLDM instance id */
+	uint8_t pldm_type;       /* PLDM type */
+	uint8_t command;	 /* PLDM command code */
+	uint8_t completion_code; /* PLDM completion code, applies only for
+			response */
+};
+
+/**
+ * @brief Populate the PLDM message with the PLDM header.The
+ *        PLDM header size is PLDM_REQUEST_HEADER_LEN_BYTES for request and
+ *        PLDM_RESPONSE_HEADER_LEN_BYTES response. The caller of this API
+ *        allocates buffer for the PLDM header when forming the PLDM message.
+ *        The buffer is passed to this API to pack the PLDM header.
+ *
+ * @param[in] hdr - Pointer to the PLDM header information
+ * @param[in,out] msg - Pointer to PLDM message
+ *
+ * @return 0 on success, otherwise PLDM error codes.
+ */
+int pack_pldm_header(const struct pldm_header_info *hdr,
+		     struct pldm_msg_t *msg);
+
+/**
+ * @brief Unpack the PLDM header and the PLDM message payload from the PLDM
+ *        message. The pointer to the PLDM message and the size is passed as
+ *        parameters. The header is unpacked, and the payload size is returned.
+ *
+ * @param[in] msg - Pointer to the PLDM message
+ * @param[in] size - Size of the PLDM message
+ * @param[out] hdr - Pointer to the PLDM header information
+ * @param[out] payload_size - Size of the PLDM message payload size
+ *
+ * @return 0 on success, otherwise PLDM error codes.
+ */
+int unpack_pldm_header(const struct pldm_msg_t *msg, const size_t size,
+		       struct pldm_header_info *hdr, size_t *payload_size);
 
 /* Requester */
 
