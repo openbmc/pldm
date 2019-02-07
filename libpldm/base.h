@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <asm/byteorder.h>
+#include <stddef.h>
 #include <stdint.h>
 
 /** @brief API return codes
@@ -23,6 +25,91 @@ enum pldm_completion_codes {
 	ERROR_INVALID_PLDM_TYPE = 0x20
 };
 
+/** @enum MessageType
+ *
+ *  The different message types supported by the PLDM specification.
+ */
+typedef enum {
+	RESPONSE,	     //!< PLDM response
+	REQUEST,	      //!< PLDM request
+	RESERVED,	     //!< Reserved
+	ASYNC_REQUEST_NOTIFY, //!< Unacknowledged PLDM request messages
+} MessageType;
+
+/** @struct pldm_header_req
+ *
+ *  Format of the header in a PLDM request message.
+ */
+struct pldm_header_req {
+#if defined(__LITTLE_ENDIAN_BITFIELD)
+	uint8_t instance_id : 5; //!< Instance ID
+	uint8_t reserved : 1;    //!< Reserved
+	uint8_t datagram : 1;    //!< Datagram bit
+	uint8_t request : 1;     //!< Request bit
+#elif defined(__BIG_ENDIAN_BITFIELD)
+	uint8_t request : 1;     //!< Request bit
+	uint8_t datagram : 1;    //!< Datagram bit
+	uint8_t reserved : 1;    //!< Reserved
+	uint8_t instance_id : 5; //!< Instance ID
+#endif
+
+#if defined(__LITTLE_ENDIAN_BITFIELD)
+	uint8_t type : 6;       //!< PLDM type
+	uint8_t header_ver : 2; //!< Header version
+#elif defined(__BIG_ENDIAN_BITFIELD)
+	uint8_t header_ver : 2;  //!< Header version
+	uint8_t type : 6;	//!< PLDM type
+#endif
+	uint8_t command; //!< PLDM command code
+} __attribute__((packed));
+
+/** @struct pldm_header_resp
+ *
+ *  Format of the header in a PLDM response message.
+ */
+struct pldm_header_resp {
+#if defined(__LITTLE_ENDIAN_BITFIELD)
+	uint8_t instance_id : 5; //!< Instance ID
+	uint8_t reserved : 1;    //!< Reserved
+	uint8_t datagram : 1;    //!< Datagram bit
+	uint8_t request : 1;     //!< Request bit
+#elif defined(__BIG_ENDIAN_BITFIELD)
+	uint8_t request : 1;     //!< Request bit
+	uint8_t datagram : 1;    //!< Datagram bit
+	uint8_t reserved : 1;    //!< Reserved
+	uint8_t instance_id : 5; //!< Instance ID
+#endif
+
+#if defined(__LITTLE_ENDIAN_BITFIELD)
+	uint8_t type : 6;       //!< PLDM type
+	uint8_t header_ver : 2; //!< Header version
+#elif defined(__BIG_ENDIAN_BITFIELD)
+	uint8_t header_ver : 2;  //!< Header version
+	uint8_t type : 6;	//!< PLDM type
+#endif
+	uint8_t command;	 //!< PLDM command code
+	uint8_t completion_code; //!< PLDM completion code
+} __attribute__((packed));
+
+/** @struct pldm_header_info
+ *
+ *  The information needed to prepare PLDM header and this is passed to the
+ *  pack_pldm_header and unpack_pldm_header API.
+ */
+struct pldm_header_info {
+	MessageType msg_type;    /* PLDM message type*/
+	uint8_t instance;	/* PLDM instance id */
+	uint8_t pldm_type;       /* PLDM type */
+	uint8_t command;	 /* PLDM command code */
+	uint8_t completion_code; /* PLDM completion code, applies only for
+			response */
+};
+
+#define PLDM_REQUEST_HEADER_SIZE sizeof(struct pldm_header_req)
+#define PLDM_RESPONSE_HEADER_SIZE sizeof(struct pldm_header_resp)
+#define PLDM_INSTANCE_MAX 31
+#define PLDM_TYPE_MAX 63
+
 typedef uint32_t ver32;
 
 #define PLDM_REQUEST_HEADER_LEN_BYTES 3
@@ -35,6 +122,33 @@ typedef uint32_t ver32;
 #define PLDM_GET_COMMANDS_REQ_DATA_BYTES 5
 #define PLDM_GET_COMMANDS_RESP_DATA_BYTES 32
 #define PLDM_MAX_CMDS_PER_TYPE 256
+
+/**
+ * @brief Populate the PLDM message with the PLDM header.The caller of this API
+ *        allocates space for the PLDM header when forming the PLDM message. The
+ *        PLDM header size is different for request and response.
+ *
+ * @param[out] ptr - Pointer to the PLDM message
+ * @param[in] hdr - Pointer to the PLDM header information
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int pack_pldm_header(uint8_t *ptr, struct pldm_header_info *hdr);
+
+/**
+ * @brief Unpack the PLDM header and the PLDM message payload from the PLDM
+ *        message. This function does not do memory allocation.
+ *
+ * @param[in] ptr - Pointer to the PLDM message
+ * @param[in] size - Size of the PLDM message
+ * @param[out] hdr - Pointer to the PLDM header information
+ * @param[out] offset - Offset to the PLDM message payload
+ * @param[out] payload_size - Size of the PLDM message payload size
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int unpack_pldm_header(uint8_t *ptr, size_t size, struct pldm_header_info *hdr,
+		       size_t *offset, size_t *payload_size);
 
 /* Requester */
 
