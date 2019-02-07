@@ -34,6 +34,18 @@ enum pldm_completion_codes {
 	PLDM_ERROR_INVALID_PLDM_TYPE = 0x20
 };
 
+/** @enum MessageType
+ *
+ *  The different message types supported by the PLDM specification.
+ */
+typedef enum {
+	PLDM_RESPONSE,		   //!< PLDM response
+	PLDM_REQUEST,		   //!< PLDM request
+	PLDM_RESERVED,		   //!< Reserved
+	PLDM_ASYNC_REQUEST_NOTIFY, //!< Unacknowledged PLDM request messages
+} MessageType;
+
+#define PLDM_INSTANCE_MAX 31
 #define PLDM_MAX_TYPES 64
 #define PLDM_MAX_CMDS_PER_TYPE 256
 
@@ -99,6 +111,43 @@ struct pldm_version_t {
 	uint8_t update;
 	uint8_t alpha;
 } __attribute__((packed));
+
+/** @struct pldm_header_info
+ *
+ *  The information needed to prepare PLDM header and this is passed to the
+ *  pack_pldm_header and unpack_pldm_header API.
+ */
+struct pldm_header_info {
+	MessageType msg_type;	 //!< PLDM message type
+	uint8_t instance;	 //!< PLDM instance id
+	uint8_t pldm_type;	 //!< PLDM type
+	uint8_t command;	 //!< PLDM command code
+	uint8_t completion_code; //!< PLDM completion code, applies for response
+};
+
+/**
+ * @brief Populate the PLDM message with the PLDM header.The caller of this API
+ *        allocates buffer for the PLDM header when forming the PLDM message.
+ *        The buffer is passed to this API to pack the PLDM header.
+ *
+ * @param[in] hdr - Pointer to the PLDM header information
+ * @param[out] msg - Pointer to PLDM message header
+ *
+ * @return 0 on success, otherwise PLDM error codes.
+ */
+int pack_pldm_header(const struct pldm_header_info *hdr,
+		     struct pldm_msg_hdr_t *msg);
+
+/**
+ * @brief Unpack the PLDM header from the PLDM message.
+ *
+ * @param[in] msg - Pointer to the PLDM message
+ * @param[out] hdr - Pointer to the PLDM header information
+ *
+ * @return 0 on success, otherwise PLDM error codes.
+ */
+int unpack_pldm_header(const struct pldm_msg_hdr_t *msg,
+		       struct pldm_header_info *hdr);
 
 /* Requester */
 
