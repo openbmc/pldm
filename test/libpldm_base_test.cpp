@@ -300,3 +300,116 @@ TEST(GetPLDMCommands, testDecodeResponse)
     ASSERT_EQ(response.payload[2], outTypes[1]);
     ASSERT_EQ(response.payload[3], outTypes[2]);
 }
+
+TEST(GetPLDMVersion, testEncodeRequest)
+{
+    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestMsg{};
+    pldm_msg request{};
+    request.body.payload = requestMsg.data();
+    request.body.payload_length = requestMsg.size();
+    uint8_t pldmType = 0x03;
+    uint32_t transferHandle = 0x0;
+    uint8_t opFlag = 0x01;
+
+    auto rc =
+        encode_get_version_req(0, transferHandle, opFlag, pldmType, &request);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(0, memcmp(request.body.payload, &transferHandle,
+                        sizeof(transferHandle)));
+    ASSERT_EQ(0, memcmp(request.body.payload + sizeof(transferHandle), &opFlag,
+                        sizeof(opFlag)));
+    ASSERT_EQ(0, memcmp(request.body.payload + sizeof(transferHandle) +
+                            sizeof(opFlag),
+                        &pldmType, sizeof(pldmType)));
+}
+
+TEST(GetPLDMVersion, testEncodeResponse)
+{
+    pldm_msg response{};
+    uint8_t completionCode = 0;
+    uint32_t transferHandle = 0;
+    uint8_t flag = PLDM_START_AND_END;
+    std::array<uint8_t, PLDM_GET_VERSION_RESP_BYTES> responseMsg{};
+    response.body.payload = responseMsg.data();
+    response.body.payload_length = responseMsg.size();
+    struct pldm_version version = {0xFF, 0xFF, 0xFF, 0xFF};
+
+    auto rc =
+        encode_get_version_resp(0, PLDM_SUCCESS, 0, PLDM_START_AND_END,
+                                &version, sizeof(pldm_version), &response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completionCode, response.body.payload[0]);
+    ASSERT_EQ(0,
+              memcmp(response.body.payload + sizeof(response.body.payload[0]),
+                     &transferHandle, sizeof(transferHandle)));
+    ASSERT_EQ(0,
+              memcmp(response.body.payload + sizeof(response.body.payload[0]) +
+                         sizeof(transferHandle),
+                     &flag, sizeof(flag)));
+    ASSERT_EQ(0,
+              memcmp(response.body.payload + sizeof(response.body.payload[0]) +
+                         sizeof(transferHandle) + sizeof(flag),
+                     &version, sizeof(version)));
+}
+
+TEST(GetPLDMVersion, testDecodeRequest)
+{
+    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestMsg{};
+    pldm_msg_payload request{};
+    request.payload = requestMsg.data();
+    request.payload_length = requestMsg.size();
+    uint32_t transferHandle = 0x0;
+    uint32_t retTransferHandle = 0x0;
+    uint8_t flag = PLDM_GET_FIRSTPART;
+    uint8_t retFlag = PLDM_GET_FIRSTPART;
+    uint8_t pldmType = PLDM_BASE;
+    uint8_t retType = PLDM_BASE;
+
+    memcpy(request.payload, &transferHandle, sizeof(transferHandle));
+    memcpy(request.payload + sizeof(transferHandle), &flag, sizeof(flag));
+    memcpy(request.payload + sizeof(transferHandle) + sizeof(flag), &pldmType,
+           sizeof(pldmType));
+
+    auto rc = decode_get_version_req(&request, &retTransferHandle, &retFlag,
+                                     &retType);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(transferHandle, retTransferHandle);
+    ASSERT_EQ(flag, retFlag);
+    ASSERT_EQ(pldmType, retType);
+}
+
+TEST(GetPLDMVersion, testDecodeResponse)
+{
+    std::array<uint8_t, PLDM_GET_VERSION_RESP_BYTES> responseMsg{};
+    pldm_msg_payload response{};
+    response.payload = responseMsg.data();
+    response.payload_length = responseMsg.size();
+    uint32_t transferHandle = 0x0;
+    uint32_t retTransferHandle = 0x0;
+    uint8_t flag = PLDM_START_AND_END;
+    uint8_t retFlag = PLDM_START_AND_END;
+    uint8_t completionCode = 0;
+    struct pldm_version version = {0xFF, 0xFF, 0xFF, 0xFF};
+    struct pldm_version versionOut;
+
+    memcpy(response.payload + sizeof(completionCode), &transferHandle,
+           sizeof(transferHandle));
+    memcpy(response.payload + sizeof(completionCode) + sizeof(transferHandle),
+           &flag, sizeof(flag));
+    memcpy(response.payload + sizeof(completionCode) + sizeof(transferHandle) +
+               sizeof(flag),
+           &version, sizeof(version));
+
+    auto rc = decode_get_version_resp(&response, &retTransferHandle, &retFlag,
+                                      &versionOut);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(transferHandle, retTransferHandle);
+    ASSERT_EQ(flag, retFlag);
+
+    ASSERT_EQ(versionOut.major, version.major);
+    ASSERT_EQ(versionOut.minor, version.minor);
+    ASSERT_EQ(versionOut.update, version.update);
+    ASSERT_EQ(versionOut.alpha, version.alpha);
+}
