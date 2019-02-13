@@ -110,3 +110,105 @@ int encode_get_commands_resp(uint8_t instance_id, const uint8_t *commands,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
+			   uint8_t transfer_opflag, uint8_t type,
+			   struct pldm_msg_t *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc;
+
+	if (NULL == msg) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.msg_type = REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_BASE;
+	header.command = PLDM_GET_PLDM_VERSION;
+
+	rc = pack_pldm_header(&header, msg);
+
+	if (rc == PLDM_ERROR_INVALID_DATA) {
+		return PLDM_ERROR;
+	}
+
+	uint8_t *dst = msg->payload;
+	transfer_handle = htole32(transfer_handle);
+	memcpy(dst, (uint8_t *)&transfer_handle, sizeof(transfer_handle));
+	dst += sizeof(transfer_handle);
+
+	memcpy(dst, &transfer_opflag, sizeof(transfer_opflag));
+	dst += sizeof(transfer_opflag);
+
+	memcpy(dst, (uint8_t *)&type, sizeof(type));
+
+	return PLDM_SUCCESS;
+}
+
+int encode_get_version_resp(uint8_t instance_id, uint32_t next_transfer_handle,
+			    uint8_t transfer_flag,
+			    const struct pldm_version_t *version_data,
+			    uint32_t version_size, struct pldm_msg_t *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc;
+
+	if (msg->payload[0] == PLDM_SUCCESS) {
+
+		header.msg_type = RESPONSE;
+		header.instance = instance_id;
+		header.pldm_type = PLDM_BASE;
+		header.command = PLDM_GET_PLDM_VERSION;
+
+		rc = pack_pldm_header(&header, msg);
+
+		if (rc == PLDM_ERROR_INVALID_DATA) {
+			return PLDM_ERROR;
+		}
+		uint8_t *dst = msg->payload + sizeof(msg->payload[0]);
+
+		memcpy(dst, &next_transfer_handle,
+		       sizeof(next_transfer_handle));
+		dst += sizeof(next_transfer_handle);
+		memcpy(dst, &transfer_flag, sizeof(transfer_flag));
+
+		dst += sizeof(transfer_flag);
+		memcpy((uint32_t *)dst, version_data, version_size);
+	}
+	return PLDM_SUCCESS;
+}
+
+int decode_get_version_req(const struct pldm_msg_t *msg,
+			   uint32_t *transfer_handle, uint8_t *transfer_opflag,
+			   uint8_t *type)
+{
+	const uint8_t *start = msg->payload;
+	*transfer_handle = *start;
+	*transfer_handle = le32toh(*transfer_handle);
+	*transfer_opflag = *(start + sizeof(*transfer_handle));
+	*type = *(start + sizeof(*transfer_handle) + sizeof(*transfer_opflag));
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_version_resp(const struct pldm_msg_t *msg, uint32_t bufsize,
+			    uint32_t *next_transfer_handle,
+			    uint8_t *transfer_flag,
+			    struct pldm_version_t *version)
+{
+	const uint8_t *start = msg->payload + sizeof(uint8_t);
+	*next_transfer_handle = *start;
+	*transfer_flag = *(start + sizeof(*next_transfer_handle));
+
+	struct pldm_version_t *temp =
+	    (struct pldm_version_t *)(start + sizeof(*next_transfer_handle) +
+				      sizeof(*transfer_flag));
+
+	*version = *temp;
+
+	//*version = (struct pldm_version_t )*(start +
+	// sizeof(*next_transfer_handle) + sizeof(*transfer_flag));
+
+	return PLDM_SUCCESS;
+}

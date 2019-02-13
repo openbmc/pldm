@@ -3,6 +3,7 @@
 #include "base.hpp"
 
 #include <array>
+#include <cstring>
 #include <map>
 #include <stdexcept>
 #include <vector>
@@ -16,6 +17,10 @@ using Cmd = std::vector<uint8_t>;
 
 static const std::map<Type, Cmd> capabilities{
     {PLDM_BASE, {PLDM_GET_PLDM_TYPES, PLDM_GET_PLDM_COMMANDS}}};
+
+static const std::map<Type, pldm_version_t> version_map{
+    {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
+};
 
 void getPLDMTypes(const pldm_msg_t* request, size_t payloadLen,
                   pldm_msg_t* response)
@@ -72,6 +77,45 @@ void getPLDMCommands(const pldm_msg_t* request, size_t payloadLen,
     }
 
     encode_get_commands_resp(0, cmds.data(), response);
+}
+
+void GetPLDMVersion(const pldm_msg_t* request, size_t payloadLen,
+                    pldm_msg_t* response)
+{
+    uint32_t transferHandle;
+    Type type;
+    uint8_t transferFlag;
+
+    // TODO multipart transfer
+    //   std::array<uint8_t, PLDM_GET_VERSION_RESP_DATA_BYTES>
+    //   responsePayload{};
+
+    // response->payload = responsePayload.data();
+
+    if (payloadLen !=
+        (sizeof(transferHandle) + sizeof(type) + sizeof(transferFlag)))
+    {
+        response->payload[0] = PLDM_ERROR_INVALID_LENGTH;
+        encode_get_version_resp(0, 0, 0, nullptr, 0, response);
+        return;
+    }
+
+    decode_get_version_req(request, &transferHandle, &transferFlag, &type);
+
+    pldm_version_t version;
+    auto search = version_map.find(type);
+
+    if (search == version_map.end())
+    {
+        response->payload[0] = PLDM_ERROR_INVALID_PLDM_TYPE;
+        encode_get_version_resp(0, 0, 0, nullptr, 0, response);
+        return;
+    }
+    response->payload[0] = PLDM_SUCCESS;
+    // version = {0xF1, 0xF0, 0xF0, 0x00};
+    memcpy(&version, &(search->second), sizeof(version));
+    encode_get_version_resp(0, 0x0, startAndEnd, &version,
+                            sizeof(pldm_version_t), response);
 }
 
 } // namespace responder

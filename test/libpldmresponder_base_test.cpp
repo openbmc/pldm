@@ -37,3 +37,36 @@ TEST(GetPLDMCommands, testGoodRequest)
     ASSERT_EQ(response.payload[1], 48); // 48 = 0b110000
     ASSERT_EQ(response.payload[2], 0);
 }
+
+TEST(GetPLDMVersion, testGoodRequest)
+{
+    pldm_msg_t request{};
+    pldm_msg_t response{};
+    std::array<uint8_t, PLDM_GET_VERSION_RESP_DATA_BYTES> responsePayload{};
+    response.payload = responsePayload.data();
+
+    std::array<uint8_t, 6> requestPayload{};
+    request.payload = requestPayload.data();
+
+    uint8_t pldmType = PLDM_BASE;
+    uint32_t transferHandle = 0x0;
+    uint8_t flag = getFirstPart;
+    uint8_t retFlag = startAndEnd;
+    struct pldm_version_t version = {0xF1, 0xF0, 0xF0, 0x00};
+
+    auto rc =
+        encode_get_version_req(0, transferHandle, flag, pldmType, &request);
+
+    ASSERT_EQ(rc, 0);
+
+    GetPLDMVersion(&request, requestPayload.size(), &response);
+
+    ASSERT_EQ(0, memcmp(response.payload + sizeof(response.payload[0]),
+                        &transferHandle, sizeof(transferHandle)));
+    ASSERT_EQ(0, memcmp(response.payload + sizeof(response.payload[0]) +
+                            sizeof(transferHandle),
+                        &retFlag, sizeof(flag)));
+    ASSERT_EQ(0, memcmp(response.payload + sizeof(response.payload[0]) +
+                            sizeof(transferHandle) + sizeof(flag),
+                        &version, sizeof(version)));
+}

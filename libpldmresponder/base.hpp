@@ -32,5 +32,14 @@ void getPLDMTypes(const pldm_msg_t* request, size_t payloadLen,
 void getPLDMCommands(const pldm_msg_t* request, size_t payloadLen,
                      pldm_msg_t* response);
 
+/** @brief Handler for getPLDMCommands
+ *
+ *  @param[in] request - Request message
+ *  @param[in] payloadLen - Request payload length
+ *  @param[out] response - Response messsage written here
+ */
+void GetPLDMVersion(const pldm_msg_t* request, size_t payloadLen,
+                    pldm_msg_t* response);
+
 } // namespace responder
 } // namespace pldm
