@@ -17,6 +17,10 @@ using Cmd = std::vector<uint8_t>;
 static const std::map<Type, Cmd> capabilities{
     {PLDM_BASE, {PLDM_GET_PLDM_TYPES, PLDM_GET_PLDM_COMMANDS}}};
 
+static const std::map<Type, uint32_t> version_map{
+    {PLDM_BASE, 0xF3F71061} // TODO need to put exact version
+};
+
 void getPLDMTypes(const pldm_msg_t* request, size_t payloadLen,
                   pldm_msg_t* response)
 {
@@ -72,6 +76,29 @@ void getPLDMCommands(const pldm_msg_t* request, size_t payloadLen,
     }
 
     encode_get_commands_resp(0, cmds.data(), response);
+}
+
+void GetPLDMVersion(uint32_t transferHandle, uint8_t transferFlag, uint8_t type)
+{
+#if 0
+    // TODO multipart transfer
+    std::array<uint8_t, PLDM_RESPONSE_HEADER_LEN_BYTES +
+                            PLDM_GET_VERSION_RESP_DATA_BYTES>
+        response{};
+
+    auto version = new uint32_t;
+    auto search = version_map.find(type);
+
+    if (search == version_map.end())
+    {
+        encode_get_version_resp(0, PLDM_ERROR_INVALID_PLDM_TYPE, 0, 0, nullptr,
+                                0, nullptr, 0);
+        return;
+    }
+    *version = search->second;
+    encode_get_version_resp(0, PLDM_SUCCESS, 0x0, 0x05, version,
+                            sizeof(uint32_t), response.data(), response.size());
+#endif
 }
 
 } // namespace responder
