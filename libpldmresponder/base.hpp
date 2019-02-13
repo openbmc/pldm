@@ -18,5 +18,7 @@ using Request = const uint8_t*;
 Response getPLDMTypes(Request payload, size_t payloadLen);
 Response getPLDMCommands(Request payload, size_t payloadLen);
 
+void GetPLDMVersion(uint32_t transferHandle, uint8_t transferFlag, Type type);
+
 } // namespace responder
 } // namespace pldm

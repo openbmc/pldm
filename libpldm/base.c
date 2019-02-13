@@ -133,3 +133,69 @@ int encode_get_commands_resp(uint8_t instance_id, uint8_t completion_code,
 
 	return OK;
 }
+
+int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
+			   uint8_t op_flag, uint8_t type, uint8_t *buffer)
+{
+	if (NULL == buffer)
+		return FAIL;
+
+	/* TODO Invoke API to add PLDM Request Header */
+	uint8_t *msg = buffer + PLDM_REQUEST_HEADER_LEN_BYTES;
+	transfer_handle = htole32(transfer_handle);
+	memcpy(msg, (uint8_t *)&transfer_handle, sizeof(transfer_handle));
+	msg += sizeof(transfer_handle);
+
+	memcpy(msg, (uint8_t *)&op_flag, sizeof(op_flag));
+	msg += sizeof(op_flag);
+
+	memcpy(msg, (uint8_t *)&type, sizeof(type));
+
+	return OK;
+}
+
+int encode_get_version_resp(uint8_t instance_id, uint8_t completion_code,
+			    uint32_t next_transfer_handle, uint8_t resp_flag,
+			    uint32_t *version_data, uint32_t version_size,
+			    uint8_t *buffer, uint32_t bufsize)
+{
+	if (completion_code == SUCCESS) {
+		/* TODO Invoke API to add PLDM Response Header */
+		uint8_t *resp_msg = buffer + PLDM_RESPONSE_HEADER_LEN_BYTES;
+
+		memcpy(resp_msg, (uint8_t *)&next_transfer_handle,
+		       sizeof(next_transfer_handle));
+		resp_msg += sizeof(next_transfer_handle);
+		memcpy(resp_msg, &resp_flag, sizeof(resp_flag));
+
+		resp_msg += sizeof(resp_flag);
+		memcpy((uint32_t *)resp_msg, version_data, version_size);
+	}
+	return OK;
+}
+
+int decode_get_version_req(uint8_t *request, uint32_t *transfer_handle,
+			   uint8_t *op_flag, uint8_t *type)
+{
+	*transfer_handle = *(request + PLDM_REQUEST_HEADER_LEN_BYTES);
+	*transfer_handle = le32toh(*transfer_handle);
+	*op_flag =
+	    *(request + PLDM_REQUEST_HEADER_LEN_BYTES + sizeof(uint32_t));
+	*type = *(request + PLDM_REQUEST_HEADER_LEN_BYTES + sizeof(uint32_t) +
+		  sizeof(uint8_t));
+
+	return OK;
+}
+
+int decode_get_version_resp(uint8_t *buffer, uint32_t bufsize, uint32_t *offset,
+			    uint8_t completion_code,
+			    uint32_t *next_transfer_handle, uint8_t *resp_flag)
+{
+	*next_transfer_handle = *(buffer + PLDM_RESPONSE_HEADER_LEN_BYTES);
+	*resp_flag =
+	    *(buffer + PLDM_RESPONSE_HEADER_LEN_BYTES + sizeof(uint32_t));
+	*offset =
+	    PLDM_RESPONSE_HEADER_LEN_BYTES + sizeof(uint32_t) + sizeof(uint8_t);
+
+	return OK;
+}
