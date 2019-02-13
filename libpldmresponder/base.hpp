@@ -32,5 +32,7 @@ void getPLDMTypes(const pldm_msg_t* request, size_t payloadLen,
 void getPLDMCommands(const pldm_msg_t* request, size_t payloadLen,
                      pldm_msg_t* response);
 
+void GetPLDMVersion(uint32_t transferHandle, uint8_t transferFlag, Type type);
+
 } // namespace responder
 } // namespace pldm
