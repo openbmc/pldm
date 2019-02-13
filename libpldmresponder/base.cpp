@@ -3,6 +3,7 @@
 #include "base.hpp"
 
 #include <array>
+#include <cstring>
 #include <map>
 #include <stdexcept>
 #include <vector>
@@ -16,6 +17,10 @@ using Cmd = std::vector<uint8_t>;
 
 static const std::map<Type, Cmd> capabilities{
     {PLDM_BASE, {PLDM_GET_PLDM_TYPES, PLDM_GET_PLDM_COMMANDS}}};
+
+static const std::map<Type, pldm_version> versions{
+    {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
+};
 
 void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
 {
@@ -64,6 +69,39 @@ void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
     }
 
     encode_get_commands_resp(0, PLDM_SUCCESS, cmds.data(), response);
+}
+
+void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response)
+{
+    uint32_t transferHandle;
+    Type type;
+    uint8_t transferFlag;
+
+    // TODO multipart transfer
+
+    if (request->payload_length !=
+        (sizeof(transferHandle) + sizeof(type) + sizeof(transferFlag)))
+    {
+        encode_get_version_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, 0, nullptr, 0,
+                                response);
+        return;
+    }
+
+    decode_get_version_req(request, &transferHandle, &transferFlag, &type);
+
+    pldm_version version{};
+    auto search = versions.find(type);
+
+    if (search == versions.end())
+    {
+        encode_get_version_resp(0, PLDM_ERROR_INVALID_PLDM_TYPE, 0, 0, nullptr,
+                                0, response);
+        return;
+    }
+
+    memcpy(&version, &(search->second), sizeof(version));
+    encode_get_version_resp(0, 0, PLDM_SUCCESS, PLDM_START_AND_END, &version,
+                            sizeof(pldm_version), response);
 }
 
 } // namespace responder
