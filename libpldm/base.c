@@ -111,3 +111,66 @@ int encode_get_commands_resp(uint8_t instance_id, const uint8_t *commands,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
+			   uint8_t op_flag, uint8_t type,
+			   struct pldm_msg_t *msg)
+{
+	if (NULL == msg)
+		return PLDM_ERROR_INVALID_DATA;
+
+	/* TODO Invoke API to add PLDM Request Header */
+	uint8_t *dst = msg->payload;
+	transfer_handle = htole32(transfer_handle);
+	memcpy(dst, (uint8_t *)&transfer_handle, sizeof(transfer_handle));
+	dst += sizeof(transfer_handle);
+
+	memcpy(dst, (uint8_t *)&op_flag, sizeof(op_flag));
+	dst += sizeof(op_flag);
+
+	memcpy(dst, (uint8_t *)&type, sizeof(type));
+
+	return PLDM_SUCCESS;
+}
+
+int encode_get_version_resp(uint8_t instance_id, uint32_t next_transfer_handle,
+			    uint8_t resp_flag, uint32_t *version_data,
+			    uint32_t version_size, struct pldm_msg_t *msg)
+{
+	if (msg->payload[0] == PLDM_SUCCESS) {
+		/* TODO Invoke API to add PLDM Response Header */
+		uint8_t *dst = msg->payload + sizeof(msg->payload[0]);
+
+		memcpy(dst, (uint8_t *)&next_transfer_handle,
+		       sizeof(next_transfer_handle));
+		dst += sizeof(next_transfer_handle);
+		memcpy(dst, &resp_flag, sizeof(resp_flag));
+
+		dst += sizeof(resp_flag);
+		memcpy((uint32_t *)dst, version_data, version_size);
+	}
+	return PLDM_SUCCESS;
+}
+
+int decode_get_version_req(const struct pldm_msg_t *msg,
+			   uint32_t *transfer_handle, uint8_t *op_flag,
+			   uint8_t *type)
+{
+	const uint8_t *start = msg->payload;
+	*transfer_handle = *start;
+	*transfer_handle = le32toh(*transfer_handle);
+	*op_flag = *(start + sizeof(*transfer_handle));
+	*type = *(start + sizeof(*transfer_handle) + sizeof(*op_flag));
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_version_resp(const struct pldm_msg_t *msg, uint32_t bufsize,
+			    uint32_t *next_transfer_handle, uint8_t *resp_flag)
+{
+	const uint8_t *start = msg->payload + sizeof(uint8_t);
+	*next_transfer_handle = *start;
+	*resp_flag = *(start + sizeof(*next_transfer_handle));
+
+	return PLDM_SUCCESS;
+}

@@ -272,3 +272,64 @@ TEST(GetPLDMTypes, testEncodeResponse)
     ASSERT_EQ(2, response.payload[2]);
     ASSERT_EQ(3, response.payload[3]);
 }
+
+TEST(get_version_reqTest, create_getVersionCommandPacket)
+{
+#if 0
+    int rc = -1;
+    uint8_t instance_id = 1;
+    uint8_t buffer[12] = {0};
+    uint32_t transfer_handle = 0x0;
+    uint32_t ret_transfer_handle = 0xFF;
+    uint8_t op_flag = 1; /*GetFirstPart*/
+    uint8_t ret_op_flag = -1;
+    uint8_t type = 3;
+    uint8_t ret_type = 0;
+
+    rc = encode_get_version_req(instance_id, transfer_handle, op_flag, type,
+                                buffer);
+    EXPECT_EQ(rc, 0);
+
+    rc = decode_get_version_req(buffer, &ret_transfer_handle, &ret_op_flag,
+                                &ret_type);
+    EXPECT_EQ(rc, 0);
+    EXPECT_EQ(transfer_handle, ret_transfer_handle);
+    EXPECT_EQ(op_flag, ret_op_flag);
+    EXPECT_EQ(type, ret_type);
+#endif
+}
+
+TEST(get_version_respTest, create_getversion_resp_packet)
+{
+#if 0
+    int rc = -1;
+    uint8_t instance_id = 1;
+    uint32_t offset = 0;
+    uint8_t resp_buffer[15] = {0};
+    uint32_t resp_buffer_size = 15;
+    uint32_t version_data[2] = {4, 0}; /*4+4 for version and checksum*/
+    uint32_t version_size = 8;
+    uint32_t transfer_handle = 0x0;
+    uint32_t ret_transfer_handle = 0xFF;
+    uint8_t ret_op_flag = -1;
+    uint8_t resp_flag = 0x05;
+    uint8_t completion_code = 0;
+
+    rc = encode_get_version_resp(instance_id, completion_code, transfer_handle,
+                                 resp_flag, version_data, version_size,
+                                 resp_buffer, resp_buffer_size);
+    EXPECT_EQ(rc, 0);
+
+    rc = decode_get_version_resp(resp_buffer, resp_buffer_size, &offset,
+                                 completion_code, &ret_transfer_handle,
+                                 &ret_op_flag);
+    EXPECT_EQ(rc, 0);
+    EXPECT_EQ(transfer_handle, ret_transfer_handle);
+    EXPECT_EQ(resp_flag, ret_op_flag);
+    EXPECT_EQ(offset, 9);
+
+    uint32_t version = *(resp_buffer + offset);
+    EXPECT_EQ(version, version_data[0]);
+    EXPECT_EQ(version, 4);
+#endif
+}
