@@ -46,6 +46,29 @@ This is the PLDM daemon application that deals with various aspects of the
 requester and responder functions, as explained at
 https://github.com/openbmc/docs/blob/master/designs/pldm-stack.md.
 
+### Responder handler registration
+
+The PLDM daemon provides a registration API for dynamically linked and
+dynamically loaded responder libraries so that they can register handlers for
+PLDM commands. The registration API is as follows:
+```
+void registerHandler(
+    uint8_t pldmType, uint8_t pldmCommand,
+    void(const pldm_msg* request, size_t reqPayloadLen, pldm_msg* response)
+```
+The handler has to prepare a PLDM response message and write the same to an
+output arg.
+
+The PLDM daemon will expect each of the responder libraries to implement a
+method that it can invoke to perform the registration. The implementation of
+this method would call `registerHandler` to register various handlers. The
+signature of this method is:
+```
+void registerHandlers()
+```
+For standard PLDM types, libpldmresponder must place this method in appropriate
+namespaces, for eg `pldm::base::registerHandlers`.
+
 ## TODO
 Consider hosting libpldm above in a repo of its own, probably even outside the
 OpenBMC project? A separate repo would enable something like git submodule.
