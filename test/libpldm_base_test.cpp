@@ -273,8 +273,10 @@ TEST(GetPLDMTypes, testDecodeResponse)
     response.payload[2] = 2;
     response.payload[3] = 3;
     std::array<bitfield8_t, PLDM_MAX_TYPES / 8> outTypes{};
+    uint8_t completion_code;
 
-    auto rc = decode_get_types_resp(&response, outTypes.data());
+    auto rc =
+        decode_get_types_resp(&response, &completion_code, outTypes.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(response.payload[1], outTypes[0].byte);
@@ -292,8 +294,10 @@ TEST(GetPLDMCommands, testDecodeResponse)
     response.payload[2] = 2;
     response.payload[3] = 3;
     std::array<bitfield8_t, PLDM_MAX_CMDS_PER_TYPE / 8> outTypes{};
+    uint8_t completion_code;
 
-    auto rc = decode_get_commands_resp(&response, outTypes.data());
+    auto rc =
+        decode_get_commands_resp(&response, &completion_code, outTypes.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(response.payload[1], outTypes[0].byte);
@@ -392,6 +396,7 @@ TEST(GetPLDMVersion, testDecodeResponse)
     uint8_t completionCode = 0;
     ver32_t version = {0xFF, 0xFF, 0xFF, 0xFF};
     ver32_t versionOut;
+    uint8_t completion_code;
 
     memcpy(response.payload + sizeof(completionCode), &transferHandle,
            sizeof(transferHandle));
@@ -401,8 +406,8 @@ TEST(GetPLDMVersion, testDecodeResponse)
                sizeof(flag),
            &version, sizeof(version));
 
-    auto rc = decode_get_version_resp(&response, &retTransferHandle, &retFlag,
-                                      &versionOut);
+    auto rc = decode_get_version_resp(
+        &response, &completion_code, &retTransferHandle, &retFlag, &versionOut);
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(transferHandle, retTransferHandle);
     ASSERT_EQ(flag, retFlag);
