@@ -18,14 +18,14 @@ using Cmd = std::vector<uint8_t>;
 static const std::map<Type, Cmd> capabilities{
     {PLDM_BASE, {PLDM_GET_PLDM_TYPES, PLDM_GET_PLDM_COMMANDS}}};
 
-static const std::map<Type, pldm_version> versions{
+static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
 };
 
 void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
 {
     // DSP0240 has this as a bitfield8[N], where N = 0 to 7
-    std::array<uint8_t, 8> types{};
+    std::array<bitfield8_t, 8> types{};
     for (const auto& type : capabilities)
     {
         auto index = type.first / 8;
@@ -39,7 +39,7 @@ void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
 
 void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
 {
-    pldm_version version{};
+    ver32_t version{};
     Type type;
 
     if (request->payload_length != (sizeof(version) + sizeof(type)))
@@ -52,7 +52,7 @@ void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
     decode_get_commands_req(request, &type, &version);
 
     // DSP0240 has this as a bitfield8[N], where N = 0 to 31
-    std::array<uint8_t, 32> cmds{};
+    std::array<bitfield8_t, 32> cmds{};
     if (capabilities.find(type) == capabilities.end())
     {
         encode_get_commands_resp(0, PLDM_ERROR_INVALID_PLDM_TYPE, nullptr,
@@ -89,7 +89,7 @@ void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response)
 
     decode_get_version_req(request, &transferHandle, &transferFlag, &type);
 
-    pldm_version version{};
+    ver32_t version{};
     auto search = versions.find(type);
 
     if (search == versions.end())
@@ -101,7 +101,7 @@ void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response)
 
     memcpy(&version, &(search->second), sizeof(version));
     encode_get_version_resp(0, 0, PLDM_SUCCESS, PLDM_START_AND_END, &version,
-                            sizeof(pldm_version), response);
+                            sizeof(ver32_t), response);
 }
 
 } // namespace responder
