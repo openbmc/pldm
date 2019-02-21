@@ -78,7 +78,7 @@ TEST(GetPLDMVersion, testGoodRequest)
     uint32_t transferHandle = 0x0;
     uint8_t flag = PLDM_GET_FIRSTPART;
     uint8_t retFlag = PLDM_START_AND_END;
-    struct pldm_version version = {0xF1, 0xF0, 0xF0, 0x00};
+    ver32_t version = {0xF1, 0xF0, 0xF0, 0x00};
 
     auto rc =
         encode_get_version_req(0, transferHandle, flag, pldmType, &request);
