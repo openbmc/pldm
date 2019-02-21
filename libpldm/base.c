@@ -165,11 +165,18 @@ int encode_get_commands_resp(uint8_t instance_id, uint8_t completion_code,
 }
 
 int decode_get_types_resp(const struct pldm_msg_payload *msg,
-			  bitfield8_t *types)
+			  bitfield8_t *types, uint8_t *completion_code)
 {
-	if (msg == NULL || types == NULL) {
+	if (msg == NULL || types == NULL || msg->payload == NULL ||
+	    NULL == completion_code) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	};
+
 	const uint8_t *src = msg->payload + sizeof(uint8_t);
 	memcpy(types, src, PLDM_MAX_TYPES / 8);
 
@@ -177,11 +184,18 @@ int decode_get_types_resp(const struct pldm_msg_payload *msg,
 }
 
 int decode_get_commands_resp(const struct pldm_msg_payload *msg,
-			     bitfield8_t *commands)
+			     bitfield8_t *commands, uint8_t *completion_code)
 {
-	if (msg == NULL || commands == NULL) {
+	if (msg == NULL || commands == NULL || msg->payload == NULL ||
+	    NULL == completion_code) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	};
+
 	const uint8_t *src = msg->payload + sizeof(uint8_t);
 	memcpy(commands, src, PLDM_MAX_CMDS_PER_TYPE / 8);
 
@@ -270,8 +284,20 @@ int decode_get_version_req(const struct pldm_msg_payload *msg,
 
 int decode_get_version_resp(const struct pldm_msg_payload *msg,
 			    uint32_t *next_transfer_handle,
-			    uint8_t *transfer_flag, ver32_t *version)
+			    uint8_t *transfer_flag, ver32_t *version,
+			    uint8_t *completion_code)
 {
+	if (msg == NULL || next_transfer_handle == NULL ||
+	    transfer_flag == NULL || msg->payload == NULL ||
+	    NULL == completion_code) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	};
+
 	const uint8_t *start = msg->payload + sizeof(uint8_t);
 	*next_transfer_handle = le32toh(*((uint32_t *)start));
 	*transfer_flag = *(start + sizeof(*next_transfer_handle));
