@@ -305,7 +305,7 @@ TEST(GetPLDMCommands, testDecodeResponse)
     ASSERT_EQ(response.payload[3], outTypes[2]);
 }
 
-TEST(GetPLDMVersion, testEncodeRequest)
+TEST(GetPLDMVersion, testGoodEncodeRequest)
 {
     std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestMsg{};
     pldm_msg request{};
@@ -325,6 +325,18 @@ TEST(GetPLDMVersion, testEncodeRequest)
     ASSERT_EQ(0, memcmp(request.body.payload + sizeof(transferHandle) +
                             sizeof(opFlag),
                         &pldmType, sizeof(pldmType)));
+}
+
+TEST(GetPLDMVersion, testBadEncodeRequest)
+{
+    uint8_t pldmType = 0x03;
+    uint32_t transferHandle = 0x0;
+    uint8_t opFlag = 0x01;
+
+    auto rc =
+        encode_get_version_req(0, transferHandle, opFlag, pldmType, nullptr);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(GetPLDMVersion, testEncodeResponse)

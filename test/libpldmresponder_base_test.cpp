@@ -95,3 +95,42 @@ TEST(GetPLDMVersion, testGoodRequest)
                          sizeof(transferHandle) + sizeof(flag),
                      &version, sizeof(version)));
 }
+
+TEST(GetPLDMVersion, testBadRequest)
+{
+    pldm_msg response{};
+    std::array<uint8_t, PLDM_GET_VERSION_RESP_BYTES> responseMsg{};
+    response.body.payload = responseMsg.data();
+    response.body.payload_length = responseMsg.size();
+    pldm_msg request{};
+
+    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestPayload{};
+
+    std::array<uint8_t, (PLDM_GET_VERSION_REQ_BYTES - 3)> requestPayloadSmall{};
+    request.body.payload = requestPayloadSmall.data();
+    request.body.payload_length = requestPayloadSmall.size();
+
+    uint8_t pldmType = 7;
+    uint32_t transferHandle = 0x0;
+    uint8_t flag = PLDM_GET_FIRSTPART;
+
+    auto rc =
+        encode_get_version_req(0, transferHandle, flag, pldmType, &request);
+
+    ASSERT_EQ(0, rc);
+
+    getPLDMVersion(&(request.body), &response);
+
+    ASSERT_EQ(response.body.payload[0], PLDM_ERROR_INVALID_LENGTH);
+
+    request.body.payload = requestPayload.data();
+    request.body.payload_length = requestPayload.size();
+
+    rc = encode_get_version_req(0, transferHandle, flag, pldmType, &request);
+
+    ASSERT_EQ(0, rc);
+
+    getPLDMVersion(&(request.body), &response);
+
+    ASSERT_EQ(response.body.payload[0], PLDM_ERROR_INVALID_PLDM_TYPE);
+}
