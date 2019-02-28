@@ -41,6 +41,9 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
+#subdirectory configure to be run
+AC_CONFIG_SUBDIRS([tool])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
