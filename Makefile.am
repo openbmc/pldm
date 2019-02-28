@@ -1,1 +1,1 @@
-SUBDIRS = libpldm libpldmresponder test
+SUBDIRS = libpldm libpldmresponder test tool
