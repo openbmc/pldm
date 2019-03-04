@@ -5,7 +5,11 @@ TESTS = $(check_PROGRAMS)
 check_PROGRAMS = \
 	libpldm_base_test \
 	libpldm_platform_test \
-	libpldmresponder_base_test
+	libpldmresponder_base_test \
+	libpldmresponder_base_test \
+	libpldmresponder_platform_test \
+	libpldmresponder_base_test \
+	registration_test
 
 test_cppflags = \
 	-Igtest \
@@ -39,5 +43,22 @@ libpldmresponder_base_test_CXXFLAGS = $(test_cxxflags)
 libpldmresponder_base_test_LDFLAGS = $(test_ldflags)
 libpldmresponder_base_test_LDADD = \
 	$(top_builddir)/libpldm/base.o \
-	$(top_builddir)/libpldmresponder/base.o
+	$(top_builddir)/libpldmresponder/base.o \
+	$(top_builddir)/registration.o
 libpldmresponder_base_test_SOURCES = libpldmresponder_base_test.cpp
+
+libpldmresponder_platform_test_CPPFLAGS = $(test_cppflags)
+libpldmresponder_platform_test_CXXFLAGS = $(test_cxxflags)
+libpldmresponder_platform_test_LDFLAGS = $(test_ldflags)
+libpldmresponder_platform_test_LDADD = \
+	$(top_builddir)/libpldm/base.o \
+	$(top_builddir)/libpldm/platform.o \
+	$(top_builddir)/libpldmresponder/platform.o
+libpldmresponder_platform_test_SOURCES = libpldmresponder_platform_test.cpp
+
+registration_test_CPPFLAGS = $(test_cppflags)
+registration_test_CXXFLAGS = $(test_cxxflags)
+registration_test_LDFLAGS = $(test_ldflags)
+registration_test_LDADD = \
+	$(top_builddir)/registration.o
+registration_test_SOURCES = registration_test.cpp
