@@ -1,6 +1,7 @@
 #include "libpldm/base.h"
 
 #include "base.hpp"
+#include "registration.hpp"
 
 #include <array>
 #include <cstring>
@@ -21,6 +22,18 @@ static const std::map<Type, Cmd> capabilities{
 static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
 };
+
+namespace base
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_TYPES, std::move(getPLDMTypes));
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_COMMANDS,
+                    std::move(getPLDMCommands));
+}
+
+} // namespace base
 
 void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
 {
