@@ -1,3 +1,6 @@
+#ifndef PLDM_TYPES_H
+#define PLDM_TYPES_H
+
 #include <stdint.h>
 
 typedef union {
@@ -23,3 +26,5 @@ typedef struct pldm_version {
 	uint8_t update;
 	uint8_t alpha;
 } __attribute__((packed)) ver32_t;
+
+#endif /* PLDM_TYPES_H */
