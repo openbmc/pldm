@@ -20,6 +20,11 @@ AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
 # For linking
 LT_INIT
 
+# sdbusplus is non-private because we have no library to link.
+# If we ever have a library, move this to private.
+AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
+AX_PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
+
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
 AC_SUBST(GTEST_CPPFLAGS)
