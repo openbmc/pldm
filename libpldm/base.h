@@ -15,6 +15,7 @@ extern "C" {
  */
 enum pldm_supported_types {
 	PLDM_BASE = 0x00,
+	PLDM_BIOS = 0x03,
 };
 
 /** @brief PLDM Commands
@@ -22,7 +23,8 @@ enum pldm_supported_types {
 enum pldm_supported_commands {
 	PLDM_GET_PLDM_VERSION = 0x3,
 	PLDM_GET_PLDM_TYPES = 0x4,
-	PLDM_GET_PLDM_COMMANDS = 0x5
+	PLDM_GET_PLDM_COMMANDS = 0x5,
+	PLDM_GET_DATE_TIME = 0x0c
 };
 
 /** @brief PLDM base codes
