@@ -14,5 +14,6 @@ pldmd_CXXFLAGS = \
 	$(SYSTEMD_CXXFLAGS)
 
 if PLDMTOOL
+SUBDIRS += tool
 pldmd_SOURCES += pldmtool-receiver.cpp
 endif
