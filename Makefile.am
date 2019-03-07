@@ -7,4 +7,11 @@ pldmd_SOURCES = \
 pldmd_LDADD = \
 	libpldmresponder/libpldmresponder.la \
 	libmctp/libmctp.la
+pldmd_LDFLAGS = \
+	$(SYSTEMD_LIBS)
+pldmd_CXXFLAGS = \
+	$(SYSTEMD_CXXFLAGS)
 
+if PLDMTOOL
+pldmd_SOURCES += pldmtool-receiver.cpp
+endif
