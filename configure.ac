@@ -58,6 +58,6 @@ AS_IF([test "x$pldmtool" == "xtrue"], [
 
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile \
-    libmctp/Makefile test/Makefile])
+    libmctp/Makefile tool/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
 AC_OUTPUT
