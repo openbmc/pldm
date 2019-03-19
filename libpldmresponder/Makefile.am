@@ -1,7 +1,8 @@
 libpldmresponder_LTLIBRARIES = libpldmresponder.la
 libpldmresponderdir = ${libdir}
 libpldmresponder_la_SOURCES = \
-	base.cpp
+	base.cpp \
+	platform.cpp
 libpldmresponder_la_LIBADD = \
 	../libpldm/libpldm.la
 libpldmresponder_la_LDFLAGS = \
