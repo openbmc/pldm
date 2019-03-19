@@ -5,7 +5,8 @@ TESTS = $(check_PROGRAMS)
 check_PROGRAMS = \
 	libpldm_base_test \
 	libpldm_platform_test \
-	libpldmresponder_base_test
+	libpldmresponder_base_test \
+	libpldmresponder_platform_test
 
 test_cppflags = \
 	-Igtest \
@@ -31,8 +32,8 @@ libpldm_base_test_SOURCES = libpldm_base_test.cpp
 libpldm_platform_test_CPPFLAGS = $(test_cppflags)
 libpldm_platform_test_CXXFLAGS = $(test_cxxflags)
 libpldm_platform_test_LDFLAGS = $(test_ldflags)
-libpldm_platform_test_LDADD = $(top_builddir)/libpldm/platform.o \
-                              $(top_builddir)/libpldm/base.o
+libpldm_platform_test_LDADD = $(top_builddir)/libpldm/libpldm_la-platform.o \
+                              $(top_builddir)/libpldm/libpldm_la-base.o
 libpldm_platform_test_SOURCES = libpldm_platform_test.cpp
 
 libpldmresponder_base_test_CPPFLAGS = $(test_cppflags)
@@ -43,3 +44,13 @@ libpldmresponder_base_test_LDADD = \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-base.o $(CODE_COVERAGE_LIBS)
 
 libpldmresponder_base_test_SOURCES = libpldmresponder_base_test.cpp
+
+libpldmresponder_platform_test_CPPFLAGS = $(test_cppflags)
+libpldmresponder_platform_test_CXXFLAGS = $(test_cxxflags)
+libpldmresponder_platform_test_LDFLAGS = $(test_ldflags)
+libpldmresponder_platform_test_LDADD = \
+	$(top_builddir)/libpldm/libpldm_la-base.o \
+	$(top_builddir)/libpldm/libpldm_la-platform.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-platform.o
+libpldmresponder_platform_test_SOURCES = libpldmresponder_platform_test.cpp
+
