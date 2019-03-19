@@ -14,13 +14,6 @@ using Type = uint8_t;
 namespace responder
 {
 
-namespace base
-{
-/** @brief Register handlers for command from the base spec
- */
-void registerHandlers();
-} // namespace base
-
 /** @brief Handler for getPLDMTypes
  *
  *  @param[in] request - Request message payload
