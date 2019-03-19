@@ -14,6 +14,9 @@ AC_PROG_CC
 AM_PROG_AR
 AC_PROG_INSTALL
 
+# Check for packages
+AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221])
+
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX([17], [noext], [mandatory])
 AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
@@ -21,6 +24,17 @@ AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
 # For linking
 LT_INIT
 
+AC_ARG_ENABLE([pldmtool],
+[  --enable-pldmtool    Turn on pldmtool support],
+[case "${enableval}" in
+yes) pldmtool=true ;;
+no)  pldmtool=false ;;
+*) AC_MSG_ERROR([bad value ${enableval} for --enable-pldmtool]) ;;
+esac],[pldmtool=false])
+AM_CONDITIONAL([PLDMTOOL], [test x$pldmtool = xtrue])
+AS_IF([test "x$pldmtool" == "xtrue"], [
+AX_APPEND_COMPILE_FLAGS([-DPLDMTOOL], [CXXFLAGS])
+])
 
 #checks for programs.
 #checks for libraries
