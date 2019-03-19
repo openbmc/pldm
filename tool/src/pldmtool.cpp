@@ -24,6 +24,7 @@ struct pldm_cmd pldmtool_cmd_list[] = {
 /* {"Interface Name", Supported ?, "Description"} */
 struct pldm_intf pldmtool_intf_list[] = {
     {"SELF", 1, "Loopback using pldm responder library "},
+    {"SERIAL", 1, "Send the Message to MCTP via serial"},
     {"DBUS", 0, "Send the Message on the DBUS "},
     {NULL},
 };
@@ -109,10 +110,12 @@ void pldmtool_option_usage(const char* progname)
 {
     lprintf(LOG_NOTICE, "\n %s version %s\n", progname, VERSION);
     lprintf(LOG_NOTICE, "usage: %s [options...] <command>\n", progname);
+    lprintf(LOG_NOTICE, "Options:");
     lprintf(LOG_NOTICE, "    -h             This help");
     lprintf(LOG_NOTICE, "    -V             Show PLDMTool version information");
     lprintf(LOG_NOTICE, "    -v             Verbose [debug information]	");
-    lprintf(LOG_NOTICE, "    -d             Display messages in detail ");
+    lprintf(LOG_NOTICE,
+            "    -t             4 byte hex Version of the PLDM version");
     lprintf(LOG_NOTICE, "    -I Interfaces  Interface to use");
     lprintf(LOG_NOTICE, "");
     pldmtool_intf_print(pldmtool_intf_list);
@@ -141,6 +144,7 @@ int pldmtool_main(int argc, char** argv)
     struct pldm_cmd* cmd;
     struct pldm_intf* intflist = pldmtool_intf_list;
     struct pldm_cmd* cmdlist = pldmtool_cmd_list;
+    int command_completed = 0;
 
     /* save program name */
     progname = strrchr(argv[0], '/');
@@ -187,30 +191,49 @@ int pldmtool_main(int argc, char** argv)
                 break;
             case 'h':
                 pldmtool_option_usage(progname);
-                rc = 0;
+                command_completed = 1;
                 break;
             case 'V':
                 lprintf(LOG_NOTICE, "%s version %s\n", progname, VERSION);
-                rc = 0;
+                command_completed = 1;
                 break;
             case 'v':
                 log_level_set(LOG_DEBUG);
                 break;
+            case 't':
+                /* used by command functions directly so no-op here*/
+                break;
+            case '?':
+                lprintf(LOG_NOTICE, "unknown option: %c\n", optopt);
+                pldmtool_option_usage(progname);
+                command_completed = 1;
+                break;
             default:
                 lprintf(LOG_NOTICE, "Reached default [%c]", argflag);
                 pldmtool_option_usage(progname);
-                rc = 0;
+                command_completed = 1;
                 break;
         }
+        if (1 == command_completed)
+        {
+            break;
+        }
     }
+
     do
     {
+        if (1 == command_completed)
+        {
+            rc = 0;
+            break;
+        }
         lprintf(LOG_DEBUG, "found [%d]\n", found);
         if (0 == found)
         {
             lprintf(LOG_NOTICE, "Interface option not passed/supported so "
                                 "defaulting to loopback");
             lprintf(LOG_DEBUG, "Setting -I as SELF ");
+            intfname = strdup("SELF");
         }
         /* check for command before doing anything */
         lprintf(LOG_DEBUG, "argc-optind [%d]\n", argc - optind);
@@ -251,6 +274,7 @@ int pldmtool_main(int argc, char** argv)
     if (failure)
     {
         lprintf(LOG_ERR, "failure encountered: [%d]", failure);
+        rc = -1;
     }
     if (intfname != NULL)
     {

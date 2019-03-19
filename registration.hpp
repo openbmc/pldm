@@ -32,5 +32,11 @@ void registerHandler(uint8_t pldmType, uint8_t pldmCommand, Handler&& handler);
 void invokeHandler(uint8_t pldmType, uint8_t pldmCommand,
                    const pldm_msg_payload* request, pldm_msg* response);
 
+namespace base
+{
+/** @brief Register handlers for command from the base spec
+ */
+void registerHandlers();
+} // namespace base
 } // namespace responder
 } // namespace pldm

@@ -1,5 +1,7 @@
 #include "registration.hpp"
 
+#include "libpldmresponder/base.hpp"
+
 #include <map>
 
 namespace pldm
@@ -28,5 +30,18 @@ void invokeHandler(uint8_t pldmType, uint8_t pldmCommand,
     typeHandlers.at(pldmType).at(pldmCommand)(request, response);
 }
 
+namespace base
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_TYPES, std::move(getPLDMTypes));
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_COMMANDS,
+                    std::move(getPLDMCommands));
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_VERSION,
+                    std::move(getPLDMVersion));
+}
+
+} // namespace base
 } // namespace responder
 } // namespace pldm

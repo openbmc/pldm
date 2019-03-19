@@ -3,6 +3,10 @@ AM_CPPFLAGS		+= -I../../
 
 pldmtool_SOURCES 	= pldmtool.cpp pt_log.cpp pt_base_cmd.cpp
 
-pldmtool_LDADD	= ../../libpldm/base.lo ../../libpldmresponder/base.lo
+
+pldmtool_LDADD = \
+	../../libmctp/libmctp.la \
+	../../libpldm/libpldm.la \
+ 	../../libpldmresponder/libpldmresponder.la
 
 bin_PROGRAMS		= pldmtool

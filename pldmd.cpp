@@ -1,5 +1,4 @@
-#include "libpldmresponder/base.hpp"
-
+#include "registration.hpp"
 #ifdef PLDMTOOL
 #include "pldmtool-receiver.hpp"
 #endif
