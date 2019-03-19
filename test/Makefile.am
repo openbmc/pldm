@@ -40,5 +40,6 @@ registration_test_CPPFLAGS = $(test_cppflags)
 registration_test_CXXFLAGS = $(test_cxxflags)
 registration_test_LDFLAGS = $(test_ldflags)
 registration_test_LDADD = \
+	$(top_builddir)/libpldmresponder/base.o \
 	$(top_builddir)/registration.o
 registration_test_SOURCES = registration_test.cpp

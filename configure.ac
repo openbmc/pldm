@@ -45,7 +45,7 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
 )
 
 AC_ARG_ENABLE([pldmtool],
-[  --enable-debug    Turn on pldmtool support],
+[  --enable-pldmtool    Turn on pldmtool support],
 [case "${enableval}" in
   yes) pldmtool=true ;;
   no)  pldmtool=false ;;

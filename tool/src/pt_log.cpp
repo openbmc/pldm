@@ -119,7 +119,7 @@ void log_init(const char* name, int loggingtype, int verbose)
         fprintf(stderr, "pldmtool: malloc failure\n");
 
     logpriv->type = loggingtype;
-    logpriv->level = verbose + LOG_NOTICE;
+    logpriv->level = verbose + LOG_INFO;
 
     if (logpriv->type == SYSLOG)
         openlog(logpriv->name, LOG_CONS, LOG_LOCAL0);

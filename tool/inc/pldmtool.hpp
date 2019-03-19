@@ -14,7 +14,7 @@
     })
 
 /* define for supported options for getopt() function*/
-#define OPTION_STRING "I:hVvdc"
+#define OPTION_STRING "I:hVvt:"
 
 /** @struct pldm_intf
  *
