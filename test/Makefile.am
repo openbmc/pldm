@@ -9,7 +9,8 @@ check_PROGRAMS = \
 	libpldmresponder_base_test \
 	libpldmresponder_platform_test \
 	libpldmresponder_base_test \
-	registration_test
+	registration_test \
+	libpldmresponder_platform_test
 
 test_cppflags = \
 	-Igtest \
@@ -53,6 +54,7 @@ libpldmresponder_platform_test_LDFLAGS = $(test_ldflags)
 libpldmresponder_platform_test_LDADD = \
 	$(top_builddir)/libpldm/base.o \
 	$(top_builddir)/libpldm/platform.o \
+	$(top_builddir)/registration.o \
 	$(top_builddir)/libpldmresponder/platform.o
 libpldmresponder_platform_test_SOURCES = libpldmresponder_platform_test.cpp
 
