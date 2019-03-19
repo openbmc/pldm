@@ -56,6 +56,9 @@ AS_IF([test "x$pldmtool" == "xtrue"], [
     AX_APPEND_COMPILE_FLAGS([-DPLDMTOOL], [CXXFLAGS])
 ])
 
+#subdirectory configure to be run
+AC_CONFIG_SUBDIRS([tool])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile \
     libmctp/Makefile tool/Makefile test/Makefile])

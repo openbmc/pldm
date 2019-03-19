@@ -1,4 +1,4 @@
-SUBDIRS = libpldm libpldmresponder libmctp test
+SUBDIRS = libpldm libpldmresponder libmctp test tool
 
 sbin_PROGRAMS = pldmd
 pldmd_SOURCES = \
