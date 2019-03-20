@@ -15,6 +15,7 @@ extern "C" {
  */
 enum pldm_supported_types {
 	PLDM_BASE = 0x00,
+	PLDM_FILE_IO = 0x3F,
 };
 
 /** @brief PLDM Commands
