@@ -61,5 +61,6 @@ Makefile
 /test/*.gcda
 /test/*.gcno
 /test/libpldm_base_test
+/test/libpldm_fileio_test
 /test/libpldmresponder_base_test
 
