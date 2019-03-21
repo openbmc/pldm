@@ -12,58 +12,58 @@
 
 #define pr_fmt(x) "serial: " x
 
+#include "libmctp.h"
 #include "libmctp-alloc.h"
 #include "libmctp-log.h"
 #include "libmctp-serial.h"
-#include "libmctp.h"
 
 struct mctp_binding_serial {
-	struct mctp_binding binding;
-	struct mctp *mctp;
-	int fd;
-	unsigned long bus_id;
+	struct mctp_binding	binding;
+	int			fd;
+	unsigned long		bus_id;
 
 	/* receive buffer and state */
-	uint8_t rxbuf[1024];
-	struct mctp_pktbuf *rx_pkt;
-	uint8_t rx_exp_len;
-	uint16_t rx_fcs;
-	enum { STATE_WAIT_SYNC_START,
-	       STATE_WAIT_REVISION,
-	       STATE_WAIT_LEN,
-	       STATE_DATA,
-	       STATE_DATA_ESCAPED,
-	       STATE_WAIT_FCS1,
-	       STATE_WAIT_FCS2,
-	       STATE_WAIT_SYNC_END,
+	uint8_t			rxbuf[1024];
+	struct mctp_pktbuf	*rx_pkt;
+	uint8_t			rx_exp_len;
+	uint16_t		rx_fcs;
+	enum {
+		STATE_WAIT_SYNC_START,
+		STATE_WAIT_REVISION,
+		STATE_WAIT_LEN,
+		STATE_DATA,
+		STATE_DATA_ESCAPED,
+		STATE_WAIT_FCS1,
+		STATE_WAIT_FCS2,
+		STATE_WAIT_SYNC_END,
 	} rx_state;
 
 	/* temporary transmit buffer */
-	uint8_t txbuf[256];
+	uint8_t			txbuf[256];
 };
 
 #ifndef container_of
-#define container_of(ptr, type, member)                                        \
-	(type *)((char *)(ptr) - (char *)&((type *)0)->member)
+#define container_of(ptr, type, member) \
+    (type *)((char *)(ptr) - (char *)&((type *)0)->member)
 #endif
 
-#define binding_to_serial(b)                                                   \
+#define binding_to_serial(b) \
 	container_of(b, struct mctp_binding_serial, binding)
 
-#define MCTP_SERIAL_REVISION 0x01
-#define MCTP_SERIAL_FRAMING_FLAG 0x7e
-#define MCTP_SERIAL_ESCAPE 0x7d
+#define MCTP_SERIAL_REVISION		0x01
+#define MCTP_SERIAL_FRAMING_FLAG	0x7e
+#define MCTP_SERIAL_ESCAPE		0x7d
 
 struct mctp_serial_header {
-	uint8_t flag;
+	uint8_t	flag;
 	uint8_t revision;
-	uint8_t len;
+	uint8_t	len;
 };
 
 struct mctp_serial_trailer {
-	uint8_t fcs_msb;
+	uint8_t	fcs_msb;
 	uint8_t fcs_lsb;
-	uint8_t flag;
+	uint8_t	flag;
 };
 
 static size_t mctp_serial_pkt_escape(struct mctp_pktbuf *pkt, uint8_t *buf)
@@ -92,7 +92,7 @@ static size_t mctp_serial_pkt_escape(struct mctp_pktbuf *pkt, uint8_t *buf)
 }
 
 static int mctp_binding_serial_tx(struct mctp_binding *b,
-				  struct mctp_pktbuf *pkt)
+		struct mctp_pktbuf *pkt)
 {
 	struct mctp_binding_serial *serial = binding_to_serial(b);
 	struct mctp_serial_header *hdr;
@@ -131,29 +131,30 @@ static int mctp_binding_serial_tx(struct mctp_binding *b,
 }
 
 static void mctp_serial_finish_packet(struct mctp_binding_serial *serial,
-				      bool valid)
+		bool valid)
 {
 	struct mctp_pktbuf *pkt = serial->rx_pkt;
 	assert(pkt);
 
 	if (valid)
-		mctp_bus_rx(serial->mctp, serial->bus_id, pkt);
+		mctp_bus_rx(&serial->binding, pkt);
 
 	mctp_pktbuf_free(pkt);
 	serial->rx_pkt = NULL;
 }
 
 static void mctp_serial_start_packet(struct mctp_binding_serial *serial,
-				     uint8_t len)
+		uint8_t len)
 {
 	serial->rx_pkt = mctp_pktbuf_alloc(len);
 }
 
-static void mctp_rx_consume_one(struct mctp_binding_serial *serial, uint8_t c)
+static void mctp_rx_consume_one(struct mctp_binding_serial *serial,
+		uint8_t c)
 {
 	struct mctp_pktbuf *pkt = serial->rx_pkt;
 
-	/*mctp_prdebug("state: %d, char 0x%02x", serial->rx_state, c);*/
+	mctp_prdebug("state: %d, char 0x%02x", serial->rx_state, c);
 
 	assert(!pkt == (serial->rx_state == STATE_WAIT_SYNC_START ||
 			serial->rx_state == STATE_WAIT_REVISION ||
@@ -179,19 +180,13 @@ static void mctp_rx_consume_one(struct mctp_binding_serial *serial, uint8_t c)
 		}
 		break;
 	case STATE_WAIT_LEN:
-		if (c > (MCTP_MTU + sizeof(struct mctp_hdr)) ||
-		    c < sizeof(struct mctp_hdr)) {
+		if (c > (MCTP_MTU + sizeof(struct mctp_hdr))
+				|| c < sizeof(struct mctp_hdr)) {
 			mctp_prdebug("invalid size %d", c);
 			serial->rx_state = STATE_WAIT_SYNC_START;
 		} else {
-			uint8_t *p;
-
 			mctp_serial_start_packet(serial, 0);
 			pkt = serial->rx_pkt;
-			p = mctp_pktbuf_alloc_start(pkt, 3);
-			p[0] = MCTP_SERIAL_FRAMING_FLAG;
-			p[1] = MCTP_SERIAL_REVISION;
-			p[2] = c;
 			serial->rx_exp_len = c;
 			serial->rx_state = STATE_DATA;
 		}
@@ -237,10 +232,10 @@ static void mctp_rx_consume_one(struct mctp_binding_serial *serial, uint8_t c)
 		break;
 	}
 
-	/*mctp_prdebug(" -> state: %d", serial->rx_state);*/
+	mctp_prdebug(" -> state: %d", serial->rx_state);
 }
-static void __attribute__((used))
-mctp_rx_consume(struct mctp_binding_serial *serial, void *buf, size_t len)
+static void __attribute__((used)) mctp_rx_consume(struct mctp_binding_serial *serial,
+		void *buf, size_t len)
 {
 	size_t i;
 
@@ -273,7 +268,7 @@ int mctp_serial_get_fd(struct mctp_binding_serial *serial)
 }
 
 int mctp_serial_open_path(struct mctp_binding_serial *serial,
-			  const char *device)
+		const char *device)
 {
 	serial->fd = open(device, O_RDWR);
 	if (serial->fd < 0)
@@ -289,11 +284,11 @@ void mctp_serial_open_fd(struct mctp_binding_serial *serial, int fd)
 #endif
 
 void mctp_serial_register_bus(struct mctp_binding_serial *serial,
-			      struct mctp *mctp, mctp_eid_t eid)
+		struct mctp *mctp, mctp_eid_t eid)
 {
 	assert(serial->fd >= 0);
-	serial->mctp = mctp;
-	serial->bus_id = mctp_register_bus(mctp, &serial->binding, eid);
+	mctp_register_bus(mctp, &serial->binding, eid);
+	mctp_binding_set_tx_enabled(&serial->binding, true);
 }
 
 struct mctp_binding_serial *mctp_serial_init(void)
@@ -311,3 +306,4 @@ struct mctp_binding_serial *mctp_serial_init(void)
 
 	return serial;
 }
+

@@ -1,4 +1,5 @@
 #include "libpldmresponder/base.hpp"
+#include "mctp-lpc-setup.hpp"
 
 #ifdef PLDMTOOL
 #include "pldmtool-receiver.hpp"
@@ -19,6 +20,7 @@ int main(int argc, char** argv)
     pldm::tool::receiver::setup(loop);
 #endif
 
+    mctp_lpc::setup();
     sd_event_loop(loop);
 
 #ifdef PLDMTOOL
