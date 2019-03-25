@@ -1,4 +1,5 @@
 #include "libpldmresponder/base.hpp"
+#include "libpldmresponder/platform.hpp"
 #include "mctp-lpc-setup.hpp"
 
 #ifdef PLDMTOOL
@@ -12,6 +13,7 @@
 int main(int argc, char** argv)
 {
     pldm::responder::base::registerHandlers();
+    pldm::responder::platform::registerHandlers();
 
     sd_event* loop = nullptr;
     sd_event_default(&loop);
