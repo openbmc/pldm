@@ -19,6 +19,7 @@ enum pldm_fileio_commands { PLDM_READ_FILE_MEMORY = 0x6 };
 enum pldm_fileio_completion_codes {
 	PLDM_INVALID_FILE_HANDLE = 0x80,
 	PLDM_DATA_OUT_OF_RANGE = 0x81,
+	PLDM_INVALID_READ_LENGTH = 0x82
 };
 
 #define PLDM_READ_FILE_MEM_REQ_BYTES 20
