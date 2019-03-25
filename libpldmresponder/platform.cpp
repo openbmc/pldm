@@ -4,9 +4,12 @@
 #include "registration.hpp"
 
 #include <array>
+#include <iostream>
 
 namespace pldm
 {
+
+using namespace std;
 
 namespace responder
 {
@@ -28,6 +31,8 @@ void setStateEffecterStates(const pldm_msg_payload* request, pldm_msg* response)
     uint8_t compEffecterCnt;
     std::array<state_field_set_state_effecter_state, 8> stateField{};
 
+    std::cerr << "Entered setStateEffecterStates \n";
+
     if (request->payload_length <
         (sizeof(effecterId) + sizeof(compEffecterCnt) +
          sizeof(state_field_set_state_effecter_state)))
@@ -39,6 +44,7 @@ void setStateEffecterStates(const pldm_msg_payload* request, pldm_msg* response)
 
     decode_set_state_effecter_states_req(request, &effecterId, &compEffecterCnt,
                                          stateField.data());
+    std::cerr << "\nGot the effecter id as " << effecterId;
 
     // TODO effecter router to be added
     encode_set_state_effecter_states_resp(0, PLDM_SUCCESS, response);
