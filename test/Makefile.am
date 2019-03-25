@@ -6,6 +6,7 @@ check_PROGRAMS = \
 	libpldm_base_test \
 	libpldmresponder_base_test \
 	registration_test \
+        libpldm_fileio_test \
 	libpldm_platform_test \
 	libpldmresponder_base_test \
 	libpldmresponder_platform_test
@@ -29,6 +30,13 @@ libpldm_base_test_CXXFLAGS = $(test_cxxflags)
 libpldm_base_test_LDFLAGS = $(test_ldflags)
 libpldm_base_test_LDADD = $(top_builddir)/libpldm/base.o
 libpldm_base_test_SOURCES = libpldm_base_test.cpp
+
+libpldm_fileio_test_CPPFLAGS = $(test_cppflags)
+libpldm_fileio_test_CXXFLAGS = $(test_cxxflags)
+libpldm_fileio_test_LDFLAGS = $(test_ldflags)
+libpldm_fileio_test_LDADD = $(top_builddir)/libpldm/base.o \
+                            $(top_builddir)/libpldm/file_io.o
+libpldm_fileio_test_SOURCES = libpldm_fileio_test.cpp
 
 libpldm_platform_test_CPPFLAGS = $(test_cppflags)
 libpldm_platform_test_CXXFLAGS = $(test_cxxflags)
