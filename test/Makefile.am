@@ -5,8 +5,8 @@ TESTS = $(check_PROGRAMS)
 check_PROGRAMS = \
 	libpldm_base_test \
 	libpldmresponder_base_test \
-	registration_test
-        libpldm_fileio_test \
+	registration_test \
+        libpldm_fileio_test
 
 test_cppflags = \
 	-Igtest \
