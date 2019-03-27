@@ -1,3 +1,4 @@
+AM_CPPFLAGS = -I$(top_srcdir)
 libpldmresponder_LTLIBRARIES = libpldmresponder.la
 libpldmresponderdir = ${libdir}
 libpldmresponder_la_SOURCES = \
