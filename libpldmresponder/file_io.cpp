@@ -157,9 +157,9 @@ void readFileIntoMemory(const pldm_msg_payload* request, pldm_msg* response)
         return;
     }
 
-    // There is a restriction on the maximum size to 16MB. This should be made
-    // into a configurable parameter 16MB - 16777216 bytes.
-    constexpr size_t maxDMASize = (16 * 1024 * 1024) -1496;
+    // There is a restriction on the maximum size to 16MB - 4096B. This should be made
+    // into a configurable parameter 16773120
+    constexpr size_t maxDMASize = (16 * 1024 * 1024) - 4096;
 
     while (length > 0)
     {
