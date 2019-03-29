@@ -51,6 +51,7 @@ int dmaTransferData(const fs::path& file, const uint32_t offset,
     uint32_t pageLength = numPages * pageSize;
     if (length > pageLength)
         pageLength += pageSize;
+    //fprintf(stderr, "dmaTransferData pageLength = %d\n", pageLength);
 
     int rc = 0;
     int fd = -1;
@@ -74,6 +75,12 @@ int dmaTransferData(const fs::path& file, const uint32_t offset,
 
     stream.seekg(offset);
     stream.read(static_cast<char*>(vgaMem), length);
+    //for (int i = 0; i<1488;i++)
+    //{
+    //     fprintf(stderr, "vgaMem[%d] = 0x%X ",i, *((char *)vgaMem + i));
+    //}
+    //fprintf(stderr, "\n");
+
 
     struct AspeedXdmaOp xdmaOp;
     xdmaOp.upstream = 1;
@@ -85,7 +92,8 @@ int dmaTransferData(const fs::path& file, const uint32_t offset,
     {
         rc = -errno;
     }
-
+    
+   //fprintf(stderr, "rc = %d", rc);
 done:
     if (vgaMem)
     {
@@ -119,7 +127,7 @@ void readFileIntoMemory(const pldm_msg_payload* request, pldm_msg* response)
 
     // Hardcoding the file name till the GetFileTable infrastructure is in
     // place.
-    constexpr auto readFilePath = "/tmp/readfile";
+    constexpr auto readFilePath = "/tmp/80a00001.lid";
     uint32_t origLength = length;
 
     fs::path path{readFilePath};
@@ -149,9 +157,9 @@ void readFileIntoMemory(const pldm_msg_payload* request, pldm_msg* response)
         return;
     }
 
-    // There is a restriction on the maximum size to 16MB. This should be made
-    // into a configurable parameter 16MB - 16777216 bytes.
-    constexpr size_t maxDMASize = 16 * 1024 * 1024;
+    // There is a restriction on the maximum size to 16MB - 4096B. This should be made
+    // into a configurable parameter 16773120
+    constexpr size_t maxDMASize = (16 * 1024 * 1024) - 4096;
 
     while (length > 0)
     {
@@ -173,12 +181,12 @@ void readFileIntoMemory(const pldm_msg_payload* request, pldm_msg* response)
         }
         else
         {
-            //            auto rc = dmaTransferData(path, offset, length,
-            //            address); if (rc < 0)
-            //            {
-            //                encode_read_file_memory_resp(0, PLDM_ERROR, 0,
-            //                response); return;
-            //            }
+                        auto rc = dmaTransferData(path, offset, length, address);
+                        if (rc < 0)
+                        {
+                            encode_read_file_memory_resp(0, PLDM_ERROR, 0, response);
+                            return;
+                        }
             std::cerr << "Last: offset = " << offset << "length = " << length
                       << "address = " << address << "\n";
             encode_read_file_memory_resp(0, PLDM_SUCCESS, origLength, response);
