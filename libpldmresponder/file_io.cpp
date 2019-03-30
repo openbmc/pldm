@@ -159,12 +159,12 @@ void readFileIntoMemory(const pldm_msg_payload* request, pldm_msg* response)
         {
             std::cerr << "offset = " << offset << "length = " << length
                       << "address = " << address << "\n";
-            //            auto rc = dmaTransferData(path, offset, maxDMASize,
-            //            address); if (rc < 0)
-            //            {
-            //                encode_read_file_memory_resp(0, PLDM_ERROR, 0,
-            //                response); return;
-            //            }
+                        auto rc = dmaTransferData(path, offset, maxDMASize,
+                        address); if (rc < 0)
+                        {
+                            encode_read_file_memory_resp(0, PLDM_ERROR, 0,
+                            response); return;
+                        }
             offset += maxDMASize;
             length -= maxDMASize;
             address += maxDMASize;
@@ -173,12 +173,12 @@ void readFileIntoMemory(const pldm_msg_payload* request, pldm_msg* response)
         }
         else
         {
-            //            auto rc = dmaTransferData(path, offset, length,
-            //            address); if (rc < 0)
-            //            {
-            //                encode_read_file_memory_resp(0, PLDM_ERROR, 0,
-            //                response); return;
-            //            }
+                        auto rc = dmaTransferData(path, offset, length,
+                        address); if (rc < 0)
+                        {
+                            encode_read_file_memory_resp(0, PLDM_ERROR, 0,
+                            response); return;
+                        }
             std::cerr << "Last: offset = " << offset << "length = " << length
                       << "address = " << address << "\n";
             encode_read_file_memory_resp(0, PLDM_SUCCESS, origLength, response);

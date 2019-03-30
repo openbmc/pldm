@@ -7,12 +7,20 @@
 #include <sys/socket.h>
 #include <array>
 #include <string.h>
+#include <map>
 
 #include "libmctp/libmctp.h"
 #include "libmctp/libmctp-astlpc.h"
 #include "mctp-lpc-setup.hpp"
 #include "libpldm/base.h"
+#include "libpldm/platform.h"
+#include "libpldm/file_io.h"
 #include "registration.hpp"
+
+std::map<uint8_t, size_t> commandToRespSize = {
+    {PLDM_SET_STATE_EFFECTER_STATE, 1},
+    {PLDM_READ_FILE_MEMORY, 5}
+};
 
 namespace mctp_lpc
 {
@@ -66,19 +74,21 @@ fprintf(stderr, "\n");
         body.payload = static_cast<uint8_t*>(msg) + sizeof(uint8_t) + sizeof(pldm_msg_hdr);
         body.payload_length = len - sizeof(pldm_msg_hdr) - sizeof(uint8_t);
 
-        std::array<uint8_t, PLDM_GET_COMMANDS_RESP_BYTES + sizeof(pldm_msg_hdr)>
-            responseMsg{};
+        std::vector<uint8_t> responseMsg{};
+        responseMsg.resize(1 + commandToRespSize[hdrFields.command] + sizeof(pldm_msg_hdr));
+        responseMsg[0] = 0x01;
         pldm_msg response{};
-        response.body.payload = responseMsg.data() + sizeof(pldm_msg_hdr);
-        response.body.payload_length = PLDM_GET_COMMANDS_RESP_BYTES;
+        response.body.payload = responseMsg.data() + 1 + sizeof(pldm_msg_hdr);
+        response.body.payload_length = commandToRespSize[hdrFields.command];
 
         pldm::responder::invokeHandler(hdrFields.pldm_type, hdrFields.command,
                                        &body, &response);
-        memcpy(responseMsg.data(), &response, sizeof(pldm_msg_hdr));
-for(size_t i = 0; i < PLDM_GET_COMMANDS_RESP_BYTES + sizeof(pldm_msg_hdr); ++i)
+        memcpy(responseMsg.data() + 1, &response, sizeof(pldm_msg_hdr));
+fprintf(stderr, "\n");
+for(size_t i = 0; i < 1 + commandToRespSize[hdrFields.command] + sizeof(pldm_msg_hdr); ++i)
     fprintf(stderr, "%.2x ", *(responseMsg.data() + i));
 fprintf(stderr, "\n");
-        tx_message(ctx, eid, responseMsg.data(), PLDM_GET_COMMANDS_RESP_BYTES + sizeof(pldm_msg_hdr));
+        tx_message(ctx, eid, responseMsg.data(), commandToRespSize[hdrFields.command] + sizeof(pldm_msg_hdr) + 1);
 }
 
 void setup()
