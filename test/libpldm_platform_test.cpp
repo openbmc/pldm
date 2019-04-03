@@ -9,57 +9,49 @@
 
 TEST(SetStateEffecterStates, testEncodeResponse)
 {
-    pldm_msg response{};
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
+        responseMsg{};
+    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
     uint8_t completionCode = 0;
 
-    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
-        responseMsg{};
-
-    response.body.payload = responseMsg.data();
-    response.body.payload_length = responseMsg.size();
-
-    auto rc = encode_set_state_effecter_states_resp(0, PLDM_SUCCESS, &response);
+    auto rc = encode_set_state_effecter_states_resp(0, PLDM_SUCCESS, response);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completionCode, response.body.payload[0]);
+    ASSERT_EQ(completionCode, response->payload[0]);
 }
 
 TEST(SetStateEffecterStates, testEncodeRequest)
 {
-    pldm_msg request{};
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES>
+        requestMsg{};
+    pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
     uint16_t effecterId = 0x0A;
     uint8_t compEffecterCnt = 0x2;
     std::array<set_effecter_state_field, 8> stateField{};
     stateField[0] = {PLDM_REQUEST_SET, 2};
     stateField[1] = {PLDM_REQUEST_SET, 3};
 
-    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES> requestMsg{};
-
-    request.body.payload = requestMsg.data();
-    request.body.payload_length = requestMsg.size();
-
     auto rc = encode_set_state_effecter_states_req(
-        0, effecterId, compEffecterCnt, stateField.data(), &request);
+        0, effecterId, compEffecterCnt, stateField.data(), request);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(effecterId, request.body.payload[0]);
-    ASSERT_EQ(compEffecterCnt, request.body.payload[sizeof(effecterId)]);
-    ASSERT_EQ(
-        stateField[0].set_request,
-        request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt)]);
-    ASSERT_EQ(
-        stateField[0].effecter_state,
-        request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
-                             sizeof(stateField[0].set_request)]);
-    ASSERT_EQ(
-        stateField[1].set_request,
-        request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
-                             sizeof(stateField[0])]);
-    ASSERT_EQ(
-        stateField[1].effecter_state,
-        request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
-                             sizeof(stateField[0]) +
-                             sizeof(stateField[1].set_request)]);
+    ASSERT_EQ(effecterId, request->payload[0]);
+    ASSERT_EQ(compEffecterCnt, request->payload[sizeof(effecterId)]);
+    ASSERT_EQ(stateField[0].set_request,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt)]);
+    ASSERT_EQ(stateField[0].effecter_state,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+                               sizeof(stateField[0].set_request)]);
+    ASSERT_EQ(stateField[1].set_request,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+                               sizeof(stateField[0])]);
+    ASSERT_EQ(stateField[1].effecter_state,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+                               sizeof(stateField[0]) +
+                               sizeof(stateField[1].set_request)]);
 }
 
 TEST(SetStateEffecterStates, testGoodDecodeResponse)
@@ -67,18 +59,14 @@ TEST(SetStateEffecterStates, testGoodDecodeResponse)
     std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
         responseMsg{};
 
-    pldm_msg_payload response{};
-    response.payload = responseMsg.data();
-    response.payload_length = responseMsg.size();
-
     uint8_t completion_code = 0xA0;
 
     uint8_t retcompletion_code = 0;
 
-    memcpy(response.payload, &completion_code, sizeof(completion_code));
+    memcpy(responseMsg.data(), &completion_code, sizeof(completion_code));
 
-    auto rc =
-        decode_set_state_effecter_states_resp(&response, &retcompletion_code);
+    auto rc = decode_set_state_effecter_states_resp(
+        responseMsg.data(), responseMsg.size(), &retcompletion_code);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(completion_code, retcompletion_code);
@@ -87,10 +75,6 @@ TEST(SetStateEffecterStates, testGoodDecodeResponse)
 TEST(SetStateEffecterStates, testGoodDecodeRequest)
 {
     std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES> requestMsg{};
-
-    pldm_msg_payload request{};
-    request.payload = requestMsg.data();
-    request.payload_length = requestMsg.size();
 
     uint16_t effecterId = 0x32;
     uint8_t compEffecterCnt = 0x2;
@@ -104,14 +88,15 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
 
     std::array<set_effecter_state_field, 8> retStateField{};
 
-    memcpy(request.payload, &effecterId, sizeof(effecterId));
-    memcpy(request.payload + sizeof(effecterId), &compEffecterCnt,
+    memcpy(requestMsg.data(), &effecterId, sizeof(effecterId));
+    memcpy(requestMsg.data() + sizeof(effecterId), &compEffecterCnt,
            sizeof(compEffecterCnt));
-    memcpy(request.payload + sizeof(effecterId) + sizeof(compEffecterCnt),
+    memcpy(requestMsg.data() + sizeof(effecterId) + sizeof(compEffecterCnt),
            &stateField, sizeof(stateField));
 
     auto rc = decode_set_state_effecter_states_req(
-        &request, &retEffecterId, &retCompEffecterCnt, retStateField.data());
+        requestMsg.data(), requestMsg.size(), &retEffecterId,
+        &retCompEffecterCnt, retStateField.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(effecterId, retEffecterId);
@@ -124,13 +109,10 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
 
 TEST(SetStateEffecterStates, testBadDecodeRequest)
 {
-    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES> requestMsg{};
+    const uint8_t* msg = NULL;
 
-    pldm_msg_payload request{};
-    request.payload = requestMsg.data();
-    request.payload_length = requestMsg.size();
-
-    auto rc = decode_set_state_effecter_states_req(&request, NULL, NULL, NULL);
+    auto rc = decode_set_state_effecter_states_req(msg, sizeof(*msg), NULL,
+                                                   NULL, NULL);
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
@@ -140,11 +122,8 @@ TEST(SetStateEffecterStates, testBadDecodeResponse)
     std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
         responseMsg{};
 
-    pldm_msg_payload response{};
-    response.payload = responseMsg.data();
-    response.payload_length = responseMsg.size();
-
-    auto rc = decode_set_state_effecter_states_resp(&response, NULL);
+    auto rc = decode_set_state_effecter_states_resp(responseMsg.data(),
+                                                    responseMsg.size(), NULL);
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }

@@ -15,7 +15,7 @@ namespace responder
  *  @param[in] request - Request message payload
  *  @param[out] response - Response message written here
  */
-void getDateTime(const pldm_msg_payload* request, pldm_msg* response);
+void getDateTime(const pldm_msg* request, pldm_msg* response);
 
 namespace utils
 {
