@@ -43,7 +43,7 @@ typedef struct state_field_for_state_effecter_set {
  *  @param[out] msg - Message will be written to this
  *  @return pldm_completion_codes
  *  @note  Caller is responsible for memory alloc and dealloc of param
- *         'msg.body.payload'
+ *         'msg->payload'
  */
 
 int encode_set_state_effecter_states_resp(uint8_t instance_id,
@@ -70,6 +70,40 @@ int decode_set_state_effecter_states_req(const struct pldm_msg_payload *msg,
 					 uint16_t *effecter_id,
 					 uint8_t *comp_effecter_count,
 					 set_effecter_state_field *field);
+
+/** @brief Create a PLDM request message for SetStateEffecterStates
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] effecter_id - used to identify and access the effecter
+ *  @param[in] comp_effecter_count - number of individual sets of effecter
+ *         information. Upto eight sets of state effecter info can be accessed
+ *         for a given effecter.
+ *  @param[in] field - each unit is an instance of the stateField structure
+ *         that is used to set the requested state for a particular effecter
+ *         within the state effecter. This field holds the starting address of
+ *         the stateField values. The user is responsible to allocate the
+ *         memory prior to calling this command. Since the state field count is
+ *         not known in advance, the user should allocate the maximum size
+ *         always, which is 8 in number.
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg->payload'
+ */
+
+int encode_set_state_effecter_states_req(uint8_t instance_id,
+					 uint16_t effecter_id,
+					 uint8_t comp_effecter_count,
+					 set_effecter_state_field *field,
+					 struct pldm_msg *msg);
+
+/** @brief Decode SetStateEffecterStates response data
+ *  @param[in] msg - Request message payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @return pldm_completion_codes
+ */
+int decode_set_state_effecter_states_resp(const struct pldm_msg_payload *msg,
+					  uint8_t *completion_code);
 
 #ifdef __cplusplus
 }
