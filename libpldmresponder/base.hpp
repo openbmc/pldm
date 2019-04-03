@@ -17,23 +17,26 @@ namespace responder
 /** @brief Handler for getPLDMTypes
  *
  *  @param[in] request - Request message payload
- *  @param[out] response - Response message written here
+ *  @param[in] payload_length - Request message payload length
  */
-void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response);
+std::vector<uint8_t> getPLDMTypes(const pldm_msg* request,
+                                  size_t payloadLength);
 
 /** @brief Handler for getPLDMCommands
  *
  *  @param[in] request - Request message payload
- *  @param[out] response - Response message written here
+ *  @param[in] payload_length - Request message payload length
  */
-void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response);
+std::vector<uint8_t> getPLDMCommands(const pldm_msg* request,
+                                     size_t payloadLength);
 
 /** @brief Handler for getPLDMCommands
  *
  *  @param[in] request - Request message payload
- *  @param[out] response - Response messsage written here
+ *  @param[in] payload_length - Request message payload length
  */
-void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response);
+std::vector<uint8_t> getPLDMVersion(const pldm_msg* request,
+                                    size_t payloadLength);
 
 } // namespace responder
 } // namespace pldm

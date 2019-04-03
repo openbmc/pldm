@@ -10,8 +10,6 @@
 TEST(GetDateTime, testEncodeRequest)
 {
     pldm_msg request{};
-    request.body.payload = nullptr;
-    request.body.payload_length = 0;
 
     auto rc = encode_get_date_time_req(0, &request);
     ASSERT_EQ(rc, PLDM_SUCCESS);
@@ -27,49 +25,41 @@ TEST(GetDateTime, testEncodeResponse)
     uint8_t month = 11;
     uint16_t year = 2019;
 
-    std::array<uint8_t, PLDM_GET_DATE_TIME_RESP_BYTES> responseMsg{};
-    pldm_msg response{};
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES>
+        responseMsg{};
 
-    response.body.payload = responseMsg.data();
-    response.body.payload_length = responseMsg.size();
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = encode_get_date_time_resp(0, PLDM_SUCCESS, seconds, minutes,
-                                        hours, day, month, year, &response);
+                                        hours, day, month, year, response);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completionCode, response.body.payload[0]);
+    ASSERT_EQ(completionCode, response->payload[0]);
 
-    ASSERT_EQ(0,
-              memcmp(response.body.payload + sizeof(response.body.payload[0]),
-                     &seconds, sizeof(seconds)));
-    ASSERT_EQ(0, memcmp(response.body.payload +
-                            sizeof(response.body.payload[0]) + sizeof(seconds),
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
+                        &seconds, sizeof(seconds)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(seconds),
                         &minutes, sizeof(minutes)));
-    ASSERT_EQ(0,
-              memcmp(response.body.payload + sizeof(response.body.payload[0]) +
-                         sizeof(seconds) + sizeof(minutes),
-                     &hours, sizeof(hours)));
-    ASSERT_EQ(0,
-              memcmp(response.body.payload + sizeof(response.body.payload[0]) +
-                         sizeof(seconds) + sizeof(minutes) + sizeof(hours),
-                     &day, sizeof(day)));
-    ASSERT_EQ(0, memcmp(response.body.payload +
-                            sizeof(response.body.payload[0]) + sizeof(seconds) +
-                            sizeof(minutes) + sizeof(hours) + sizeof(day),
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(seconds) + sizeof(minutes),
+                        &hours, sizeof(hours)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(seconds) + sizeof(minutes) + sizeof(hours),
+                        &day, sizeof(day)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
+                            sizeof(day),
                         &month, sizeof(month)));
-    ASSERT_EQ(0,
-              memcmp(response.body.payload + sizeof(response.body.payload[0]) +
-                         sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
-                         sizeof(day) + sizeof(month),
-                     &year, sizeof(year)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
+                            sizeof(day) + sizeof(month),
+                        &year, sizeof(year)));
 }
 
 TEST(GetDateTime, testDecodeResponse)
 {
     std::array<uint8_t, PLDM_GET_DATE_TIME_RESP_BYTES> responseMsg{};
-    pldm_msg_payload response{};
-    response.payload = responseMsg.data();
-    response.payload_length = responseMsg.size();
 
     uint8_t completionCode = 0;
 
@@ -87,26 +77,26 @@ TEST(GetDateTime, testDecodeResponse)
     uint8_t retMonth = 0;
     uint16_t retYear = 0;
 
-    memcpy(response.payload + sizeof(completionCode), &seconds,
+    memcpy(responseMsg.data() + sizeof(completionCode), &seconds,
            sizeof(seconds));
-    memcpy(response.payload + sizeof(completionCode) + sizeof(seconds),
+    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds),
            &minutes, sizeof(minutes));
-    memcpy(response.payload + sizeof(completionCode) + sizeof(seconds) +
+    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
                sizeof(minutes),
            &hours, sizeof(hours));
-    memcpy(response.payload + sizeof(completionCode) + sizeof(seconds) +
+    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
                sizeof(minutes) + sizeof(hours),
            &day, sizeof(day));
-    memcpy(response.payload + sizeof(completionCode) + sizeof(seconds) +
+    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
                sizeof(minutes) + sizeof(hours) + sizeof(day),
            &month, sizeof(month));
-    memcpy(response.payload + sizeof(completionCode) + sizeof(seconds) +
+    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
                sizeof(minutes) + sizeof(hours) + sizeof(day) + sizeof(month),
            &year, sizeof(year));
 
-    auto rc = decode_get_date_time_resp(&response, &completionCode, &retSeconds,
-                                        &retMinutes, &retHours, &retDay,
-                                        &retMonth, &retYear);
+    auto rc = decode_get_date_time_resp(
+        responseMsg.data(), responseMsg.size(), &completionCode, &retSeconds,
+        &retMinutes, &retHours, &retDay, &retMonth, &retYear);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(seconds, retSeconds);
