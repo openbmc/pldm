@@ -47,7 +47,7 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
 
 } // namespace utils
 
-void getDateTime(const pldm_msg_payload* request, pldm_msg* response)
+void getDateTime(const pldm_msg* request, pldm_msg* response)
 {
     uint8_t seconds = 0;
     uint8_t minutes = 0;

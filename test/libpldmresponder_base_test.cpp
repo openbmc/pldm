@@ -12,62 +12,50 @@ using namespace pldm::responder;
 
 TEST(GetPLDMTypes, testGoodRequest)
 {
-    pldm_msg_payload request{};
-    pldm_msg response{};
-    std::array<uint8_t, PLDM_GET_TYPES_RESP_BYTES> responseMsg{};
-    response.body.payload = responseMsg.data();
-    response.body.payload_length = responseMsg.size();
-    getPLDMTypes(&request, &response);
+    std::array<uint8_t, 5> requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    size_t request_payload_length = requestPayload.size();
+    auto responseVct = getPLDMTypes(request, request_payload_length);
     // Only base type supported at the moment
-    ASSERT_EQ(response.body.payload[0], 0);
-    ASSERT_EQ(response.body.payload[1], 1);
-    ASSERT_EQ(response.body.payload[2], 0);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
+    uint8_t* payload_ptr = response->payload;
+    ASSERT_EQ(payload_ptr[0], 0);
+    ASSERT_EQ(payload_ptr[1], 1);
+    ASSERT_EQ(payload_ptr[2], 0);
 }
 
 TEST(GetPLDMCommands, testGoodRequest)
 {
     // Only base type supported at the moment, and commands -
     // GetPLDMTypes, GetPLDMCommands
-    pldm_msg response{};
-    std::array<uint8_t, PLDM_GET_COMMANDS_RESP_BYTES> responseMsg{};
-    response.body.payload = responseMsg.data();
-    response.body.payload_length = responseMsg.size();
-    pldm_msg_payload request{};
     std::array<uint8_t, 5> requestPayload{};
-    request.payload = requestPayload.data();
-    request.payload_length = requestPayload.size();
-    getPLDMCommands(&request, &response);
-    ASSERT_EQ(response.body.payload[0], 0);
-    ASSERT_EQ(response.body.payload[1], 48); // 48 = 0b110000
-    ASSERT_EQ(response.body.payload[2], 0);
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    size_t request_payload_length = requestPayload.size();
+    auto responseVct = getPLDMCommands(request, request_payload_length);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
+    uint8_t* payload_ptr = response->payload;
+    ASSERT_EQ(payload_ptr[0], 0);
+    ASSERT_EQ(payload_ptr[1], 48); // 48 = 0b110000
+    ASSERT_EQ(payload_ptr[2], 0);
 }
 
 TEST(GetPLDMCommands, testBadRequest)
 {
-    pldm_msg response{};
-    std::array<uint8_t, PLDM_GET_COMMANDS_RESP_BYTES> responseMsg{};
-    response.body.payload = responseMsg.data();
-    response.body.payload_length = responseMsg.size();
-    pldm_msg_payload request{};
     std::array<uint8_t, 5> requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
 
-    request.payload = requestPayload.data();
-    request.payload[0] = 0xFF;
-    request.payload_length = requestPayload.size();
-    getPLDMCommands(&request, &response);
-    ASSERT_EQ(response.body.payload[0], PLDM_ERROR_INVALID_PLDM_TYPE);
+    request->payload[0] = 0xFF;
+    size_t request_payload_length = requestPayload.size();
+    auto responseVct = getPLDMCommands(request, request_payload_length);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
+    uint8_t* payload_ptr = response->payload;
+    ASSERT_EQ(payload_ptr[0], PLDM_ERROR_INVALID_PLDM_TYPE);
 }
-
 TEST(GetPLDMVersion, testGoodRequest)
 {
-    pldm_msg response{};
-    std::array<uint8_t, PLDM_GET_VERSION_RESP_BYTES> responseMsg{};
-    response.body.payload = responseMsg.data();
-    response.body.payload_length = responseMsg.size();
-    pldm_msg request{};
-    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestPayload{};
-    request.body.payload = requestPayload.data();
-    request.body.payload_length = requestPayload.size();
+    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestPayload = {0};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    size_t request_payload_length = requestPayload.size();
 
     uint8_t pldmType = PLDM_BASE;
     uint32_t transferHandle = 0x0;
@@ -76,61 +64,54 @@ TEST(GetPLDMVersion, testGoodRequest)
     ver32_t version = {0xF1, 0xF0, 0xF0, 0x00};
 
     auto rc =
-        encode_get_version_req(0, transferHandle, flag, pldmType, &request);
+        encode_get_version_req(0, transferHandle, flag, pldmType, request);
 
     ASSERT_EQ(0, rc);
 
-    getPLDMVersion(&(request.body), &response);
+    auto responseVct = getPLDMVersion(request, request_payload_length);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
 
-    ASSERT_EQ(response.body.payload[0], 0);
-    ASSERT_EQ(0,
-              memcmp(response.body.payload + sizeof(response.body.payload[0]),
-                     &transferHandle, sizeof(transferHandle)));
-    ASSERT_EQ(0,
-              memcmp(response.body.payload + sizeof(response.body.payload[0]) +
-                         sizeof(transferHandle),
-                     &retFlag, sizeof(flag)));
-    ASSERT_EQ(0,
-              memcmp(response.body.payload + sizeof(response.body.payload[0]) +
-                         sizeof(transferHandle) + sizeof(flag),
-                     &version, sizeof(version)));
+    ASSERT_EQ(response->payload[0], 0);
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
+                        &transferHandle, sizeof(transferHandle)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(transferHandle),
+                        &retFlag, sizeof(flag)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(transferHandle) + sizeof(flag),
+                        &version, sizeof(version)));
 }
-
 TEST(GetPLDMVersion, testBadRequest)
 {
-    pldm_msg response{};
-    std::array<uint8_t, PLDM_GET_VERSION_RESP_BYTES> responseMsg{};
-    response.body.payload = responseMsg.data();
-    response.body.payload_length = responseMsg.size();
-    pldm_msg request{};
-
-    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestPayload{};
+    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestPayload = {0};
 
     std::array<uint8_t, (PLDM_GET_VERSION_REQ_BYTES - 3)> requestPayloadSmall{};
-    request.body.payload = requestPayloadSmall.data();
-    request.body.payload_length = requestPayloadSmall.size();
+    auto request = reinterpret_cast<pldm_msg*>(requestPayloadSmall.data());
+    size_t request_payload_length = requestPayloadSmall.size();
 
     uint8_t pldmType = 7;
     uint32_t transferHandle = 0x0;
     uint8_t flag = PLDM_GET_FIRSTPART;
 
     auto rc =
-        encode_get_version_req(0, transferHandle, flag, pldmType, &request);
+        encode_get_version_req(0, transferHandle, flag, pldmType, request);
 
     ASSERT_EQ(0, rc);
 
-    getPLDMVersion(&(request.body), &response);
+    auto responseVct = getPLDMVersion(request, request_payload_length);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
 
-    ASSERT_EQ(response.body.payload[0], PLDM_ERROR_INVALID_LENGTH);
+    ASSERT_EQ(response->payload[0], PLDM_ERROR_INVALID_LENGTH);
 
-    request.body.payload = requestPayload.data();
-    request.body.payload_length = requestPayload.size();
+    request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    request_payload_length = requestPayload.size();
 
-    rc = encode_get_version_req(0, transferHandle, flag, pldmType, &request);
+    rc = encode_get_version_req(0, transferHandle, flag, pldmType, request);
 
     ASSERT_EQ(0, rc);
 
-    getPLDMVersion(&(request.body), &response);
+    responseVct = getPLDMVersion(request, request_payload_length);
+    response = reinterpret_cast<pldm_msg*>(responseVct.data());
 
-    ASSERT_EQ(response.body.payload[0], PLDM_ERROR_INVALID_PLDM_TYPE);
+    ASSERT_EQ(response->payload[0], PLDM_ERROR_INVALID_PLDM_TYPE);
 }
