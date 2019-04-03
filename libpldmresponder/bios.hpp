@@ -2,10 +2,14 @@
 
 #include <stdint.h>
 
+#include <vector>
+
 #include "libpldm/bios.h"
 
 namespace pldm
 {
+
+using Response = std::vector<uint8_t>;
 
 namespace responder
 {
@@ -13,9 +17,9 @@ namespace responder
 /** @brief Handler for GetDateTime
  *
  *  @param[in] request - Request message payload
- *  @param[out] response - Response message written here
+ *  @param[return] Response - Response message payload
  */
-void getDateTime(const pldm_msg_payload* request, pldm_msg* response);
+Response getDateTime(const pldm_msg* request);
 
 namespace utils
 {

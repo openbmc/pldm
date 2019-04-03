@@ -11,29 +11,33 @@ namespace pldm
 
 using Type = uint8_t;
 
+using Response = std::vector<uint8_t>;
+
 namespace responder
 {
 
 /** @brief Handler for getPLDMTypes
  *
  *  @param[in] request - Request message payload
- *  @param[out] response - Response message written here
+ *  @param[in] payload_length - Request message payload length
+ *  @param[return] Response - Response message payload
  */
-void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response);
+Response getPLDMTypes(const pldm_msg* request, size_t payloadLength);
 
 /** @brief Handler for getPLDMCommands
  *
  *  @param[in] request - Request message payload
- *  @param[out] response - Response message written here
+ *  @param[in] payload_length - Request message payload length
+ *  @param[return] Response - Response message payload
  */
-void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response);
+Response getPLDMCommands(const pldm_msg* request, size_t payloadLength);
 
 /** @brief Handler for getPLDMCommands
  *
  *  @param[in] request - Request message payload
- *  @param[out] response - Response messsage written here
+ *  @param[in] payload_length - Request message payload length
+ *  @param[return] Response - Response message payload
  */
-void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response);
-
+Response getPLDMVersion(const pldm_msg* request, size_t payloadLength);
 } // namespace responder
 } // namespace pldm

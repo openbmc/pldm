@@ -47,7 +47,7 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
 
 } // namespace utils
 
-void getDateTime(const pldm_msg_payload* request, pldm_msg* response)
+Response getDateTime(const pldm_msg* request)
 {
     uint8_t seconds = 0;
     uint8_t minutes = 0;
@@ -58,6 +58,8 @@ void getDateTime(const pldm_msg_payload* request, pldm_msg* response)
 
     constexpr auto timeInterface = "xyz.openbmc_project.Time.EpochTime";
     constexpr auto bmcTimePath = "/xyz/openbmc_project/time/bmc";
+    Response response(sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     std::variant<EpochTimeUS> value;
 
     auto bus = sdbusplus::bus::new_default();
@@ -79,8 +81,8 @@ void getDateTime(const pldm_msg_payload* request, pldm_msg* response)
                         entry("TIME INTERACE=%s", timeInterface));
 
         encode_get_date_time_resp(0, PLDM_ERROR, seconds, minutes, hours, day,
-                                  month, year, response);
-        return;
+                                  month, year, responsePtr);
+        return response;
     }
 
     uint64_t timeUsec = std::get<EpochTimeUS>(value);
@@ -92,7 +94,8 @@ void getDateTime(const pldm_msg_payload* request, pldm_msg* response)
     utils::epochToBCDTime(timeSec, seconds, minutes, hours, day, month, year);
 
     encode_get_date_time_resp(0, PLDM_SUCCESS, seconds, minutes, hours, day,
-                              month, year, response);
+                              month, year, responsePtr);
+    return response;
 }
 
 } // namespace responder
