@@ -22,7 +22,8 @@ static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
 };
 
-void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
+std::vector<uint8_t> getPLDMTypes(const pldm_msg* request,
+                                  const size_t payload_length)
 {
     // DSP0240 has this as a bitfield8[N], where N = 0 to 7
     std::array<bitfield8_t, 8> types{};
@@ -34,22 +35,32 @@ void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
         types[index].byte |= 1 << bit;
     }
 
+    std::vector<uint8_t> responseVct(
+        sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_RESP_BYTES, 0);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
     encode_get_types_resp(0, PLDM_SUCCESS, types.data(), response);
+
+    return responseVct;
 }
 
-void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
+std::vector<uint8_t> getPLDMCommands(const pldm_msg* request,
+                                     const size_t payload_length)
 {
     ver32_t version{};
     Type type;
 
-    if (request->payload_length != (sizeof(version) + sizeof(type)))
-    {
-        encode_get_commands_resp(0, PLDM_ERROR_INVALID_LENGTH, nullptr,
-                                 response);
-        return;
-    }
+    std::vector<uint8_t> responseVct(
+        sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_RESP_BYTES, 0);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
 
-    decode_get_commands_req(request, &type, &version);
+    uint8_t rc = decode_get_commands_req(request->payload, payload_length,
+                                         &type, &version);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_get_commands_resp(0, rc, nullptr, response);
+        return responseVct;
+    }
 
     // DSP0240 has this as a bitfield8[N], where N = 0 to 31
     std::array<bitfield8_t, 32> cmds{};
@@ -57,7 +68,7 @@ void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
     {
         encode_get_commands_resp(0, PLDM_ERROR_INVALID_PLDM_TYPE, nullptr,
                                  response);
-        return;
+        return responseVct;
     }
 
     for (const auto& cmd : capabilities.at(type))
@@ -69,23 +80,29 @@ void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
     }
 
     encode_get_commands_resp(0, PLDM_SUCCESS, cmds.data(), response);
+
+    return responseVct;
 }
 
-void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response)
+std::vector<uint8_t> getPLDMVersion(const pldm_msg* request,
+                                    const size_t payload_length)
 {
     uint32_t transferHandle;
     Type type;
     uint8_t transferFlag;
 
-    if (request->payload_length !=
-        (sizeof(transferHandle) + sizeof(type) + sizeof(transferFlag)))
-    {
-        encode_get_version_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, 0, nullptr, 0,
-                                response);
-        return;
-    }
+    std::vector<uint8_t> responseVct(
+        sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_RESP_BYTES, 0);
+    auto response = reinterpret_cast<pldm_msg*>(responseVct.data());
 
-    decode_get_version_req(request, &transferHandle, &transferFlag, &type);
+    uint8_t rc = decode_get_version_req(request->payload, payload_length,
+                                        &transferHandle, &transferFlag, &type);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_get_version_resp(0, rc, 0, 0, nullptr, 4, response);
+        return responseVct;
+    }
 
     ver32_t version{};
     auto search = versions.find(type);
@@ -93,13 +110,15 @@ void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response)
     if (search == versions.end())
     {
         encode_get_version_resp(0, PLDM_ERROR_INVALID_PLDM_TYPE, 0, 0, nullptr,
-                                0, response);
-        return;
+                                4, response);
+        return responseVct;
     }
 
     memcpy(&version, &(search->second), sizeof(version));
     encode_get_version_resp(0, PLDM_SUCCESS, 0, PLDM_START_AND_END, &version,
                             sizeof(pldm_version), response);
+
+    return responseVct;
 }
 
 } // namespace responder
