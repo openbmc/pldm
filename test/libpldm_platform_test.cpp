@@ -24,6 +24,62 @@ TEST(SetStateEffecterStates, testEncodeResponse)
     ASSERT_EQ(completionCode, response.body.payload[0]);
 }
 
+TEST(SetStateEffecterStates, testEncodeRequest)
+{
+    pldm_msg request{};
+    uint16_t effecterId = 0x0A;
+    uint8_t compEffecterCnt = 0x2;
+    std::array<set_effecter_state_field, 8> stateField{};
+    stateField[0] = {PLDM_REQUEST_SET, 2};
+    stateField[1] = {PLDM_REQUEST_SET, 3};
+
+    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES> requestMsg{};
+
+    request.body.payload = requestMsg.data();
+    request.body.payload_length = requestMsg.size();
+
+    auto rc = encode_set_state_effecter_states_req(
+        0, effecterId, compEffecterCnt, stateField.data(), &request);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(effecterId, request.body.payload[0]);
+    ASSERT_EQ(compEffecterCnt, request.body.payload[sizeof(effecterId)]);
+    ASSERT_EQ(stateField[0].set_request,
+              request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt)]);
+    ASSERT_EQ(stateField[0].effecter_state,
+              request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+              sizeof(stateField[0].set_request)]);
+    ASSERT_EQ(stateField[1].set_request,
+              request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+              sizeof(stateField[0].set_request) + sizeof(stateField[0].effecter_state)]);
+    ASSERT_EQ(stateField[1].effecter_state,
+              request.body.payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+              sizeof(stateField[0].set_request) + sizeof(stateField[0].effecter_state) +
+              sizeof(stateField[1].set_request)]);
+}
+
+TEST(SetStateEffecterStates, testGoodDecodeResponse)
+{
+    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
+        responseMsg{};
+
+    pldm_msg_payload response{};
+    response.payload = responseMsg.data();
+    response.payload_length = responseMsg.size();
+
+    uint8_t completion_code = 0xA0;
+
+    uint8_t retcompletion_code = 0;
+
+    memcpy(response.payload, &completion_code, sizeof(completion_code));
+
+    auto rc =
+        decode_set_state_effecter_states_resp(&response, &retcompletion_code);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completion_code, retcompletion_code);
+}
+
 TEST(SetStateEffecterStates, testGoodDecodeRequest)
 {
     std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES> requestMsg{};
@@ -71,6 +127,20 @@ TEST(SetStateEffecterStates, testBadDecodeRequest)
     request.payload_length = requestMsg.size();
 
     auto rc = decode_set_state_effecter_states_req(&request, NULL, NULL, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(SetStateEffecterStates, testBadDecodeResponse)
+{
+    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
+        responseMsg{};
+
+    pldm_msg_payload response{};
+    response.payload = responseMsg.data();
+    response.payload_length = responseMsg.size();
+
+    auto rc = decode_set_state_effecter_states_resp(&response, NULL);
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
