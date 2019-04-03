@@ -30,7 +30,7 @@ int encode_get_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	msg->body.payload[0] = completion_code;
+	msg->payload[0] = completion_code;
 
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
@@ -40,7 +40,7 @@ int encode_get_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 		return rc;
 	}
 
-	uint8_t *dst = msg->body.payload + sizeof(msg->body.payload[0]);
+	uint8_t *dst = msg->payload + sizeof(msg->payload[0]);
 
 	memcpy(dst, &seconds, sizeof(seconds));
 	dst += sizeof(seconds);
@@ -58,7 +58,7 @@ int encode_get_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_date_time_resp(const struct pldm_msg_payload *msg,
+int decode_get_date_time_resp(const uint8_t *msg, size_t payload_length,
 			      uint8_t *completion_code, uint8_t *seconds,
 			      uint8_t *minutes, uint8_t *hours, uint8_t *day,
 			      uint8_t *month, uint16_t *year)
@@ -69,20 +69,26 @@ int decode_get_date_time_resp(const struct pldm_msg_payload *msg,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	*completion_code = msg->payload[0];
+	if (payload_length != PLDM_GET_DATE_TIME_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*completion_code = msg[0];
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
 	}
-	const uint8_t *start = msg->payload + sizeof(uint8_t);
-	*seconds = *start;
-	*minutes = *(start + sizeof(*seconds));
-	*hours = *(start + sizeof(*seconds) + sizeof(*minutes));
-	*day = *(start + sizeof(*seconds) + sizeof(*minutes) + sizeof(*hours));
-	*month = *(start + sizeof(*seconds) + sizeof(*minutes) +
-		   sizeof(*hours) + sizeof(*day));
+	*seconds = *(msg + sizeof(*completion_code));
+	*minutes = *(msg + sizeof(*completion_code) + sizeof(*seconds));
+	*hours = *(msg + sizeof(*completion_code) + sizeof(*seconds) +
+		   sizeof(*minutes));
+	*day = *(msg + sizeof(*completion_code) + sizeof(*seconds) +
+		 sizeof(*minutes) + sizeof(*hours));
+	*month = *(msg + sizeof(*completion_code) + sizeof(*seconds) +
+		   sizeof(*minutes) + sizeof(*hours) + sizeof(*day));
 	*year = le16toh(
-	    *((uint16_t *)(start + sizeof(*seconds) + sizeof(*minutes) +
-			   sizeof(*hours) + sizeof(*day) + sizeof(*month))));
+	    *((uint16_t *)(msg + sizeof(*completion_code) + sizeof(*seconds) +
+			   sizeof(*minutes) + sizeof(*hours) + sizeof(*day) +
+			   sizeof(*month))));
 
 	return PLDM_SUCCESS;
 }

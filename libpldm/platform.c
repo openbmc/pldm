@@ -10,7 +10,7 @@ int encode_set_state_effecter_states_resp(uint8_t instance_id,
 	struct pldm_header_info header = {0};
 	int rc = PLDM_SUCCESS;
 
-	msg->body.payload[0] = completion_code;
+	msg->payload[0] = completion_code;
 
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
@@ -44,7 +44,7 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	uint8_t *encoded_msg = msg->body.payload;
+	uint8_t *encoded_msg = msg->payload;
 	effecter_id = htole16(effecter_id);
 	memcpy(encoded_msg, &effecter_id, sizeof(effecter_id));
 	encoded_msg += sizeof(effecter_id);
@@ -56,19 +56,25 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 	return PLDM_SUCCESS;
 }
 
-int decode_set_state_effecter_states_resp(const struct pldm_msg_payload *msg,
+int decode_set_state_effecter_states_resp(const uint8_t *msg,
+					  size_t payload_length,
 					  uint8_t *completion_code)
 {
 	if (msg == NULL || completion_code == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	*completion_code = *(uint8_t *)msg->payload;
+	if (payload_length > PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*completion_code = msg[0];
 
 	return PLDM_SUCCESS;
 }
 
-int decode_set_state_effecter_states_req(const struct pldm_msg_payload *msg,
+int decode_set_state_effecter_states_req(const uint8_t *msg,
+					 size_t payload_length,
 					 uint16_t *effecter_id,
 					 uint8_t *comp_effecter_count,
 					 set_effecter_state_field *field)
@@ -77,11 +83,15 @@ int decode_set_state_effecter_states_req(const struct pldm_msg_payload *msg,
 	    field == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-	const uint8_t *start = msg->payload;
-	*effecter_id = le16toh(*((uint16_t *)start));
-	*comp_effecter_count = *(start + sizeof(*effecter_id));
+
+	if (payload_length > PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*effecter_id = le16toh(*((uint16_t *)msg));
+	*comp_effecter_count = *(msg + sizeof(*effecter_id));
 	memcpy(field,
-	       (start + sizeof(*effecter_id) + sizeof(*comp_effecter_count)),
+	       (msg + sizeof(*effecter_id) + sizeof(*comp_effecter_count)),
 	       (sizeof(set_effecter_state_field) * (*comp_effecter_count)));
 
 	return PLDM_SUCCESS;
