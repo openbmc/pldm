@@ -1,5 +1,6 @@
 nobase_include_HEADERS = \
-	base.h
+	base.h \
+        pldm_types.h
 
 libpldm_LTLIBRARIES = libpldm.la
 libpldmdir = ${libdir}
