@@ -24,7 +24,7 @@ TEST(setStateEffecterStates, testGoodRequest)
 
     uint16_t effecterId = 0x32;
     uint8_t compEffecterCnt = 0x1;
-    state_field_set_state_effecter_state stateField = {REQUEST_SET, 3};
+    set_effecter_state_field stateField = {PLDM_REQUEST_SET, 3};
 
     memcpy(request.payload, &effecterId, sizeof(effecterId));
     memcpy(request.payload + sizeof(effecterId), &compEffecterCnt,

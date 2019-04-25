@@ -19,7 +19,7 @@ namespace platform
 
 void registerHandlers()
 {
-    registerHandler(PLDM_PLATFORM, PLDM_SET_STATE_EFFECTER_STATE,
+    registerHandler(PLDM_PLATFORM, PLDM_SET_STATE_EFFECTER_STATES,
                     std::move(setStateEffecterStates));
 }
 
@@ -29,13 +29,13 @@ void setStateEffecterStates(const pldm_msg_payload* request, pldm_msg* response)
 {
     uint16_t effecterId;
     uint8_t compEffecterCnt;
-    std::array<state_field_set_state_effecter_state, 8> stateField{};
+    std::array<set_effecter_state_field, 8> stateField{};
 
     std::cerr << "Entered setStateEffecterStates \n";
 
     if (request->payload_length <
         (sizeof(effecterId) + sizeof(compEffecterCnt) +
-         sizeof(state_field_set_state_effecter_state)))
+         sizeof(set_effecter_state_field)))
     {
         encode_set_state_effecter_states_resp(0, PLDM_ERROR_INVALID_LENGTH,
                                               response);

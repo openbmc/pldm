@@ -18,7 +18,7 @@
 #include "registration.hpp"
 
 std::map<uint8_t, size_t> commandToRespSize = {
-    {PLDM_SET_STATE_EFFECTER_STATE, 1},
+    {PLDM_SET_STATE_EFFECTER_STATES, 1},
     {PLDM_READ_FILE_MEMORY, 5}
 };
 
