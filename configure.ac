@@ -30,6 +30,9 @@ AC_PROG_INSTALL
 AX_CXX_COMPILE_STDCXX([17], [noext], [mandatory])
 AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
 
+# Check for packages
+AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221])
+
 # For linking
 LT_INIT
 
@@ -64,7 +67,20 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
+AC_ARG_ENABLE([pldmtool],
+[  --enable-debug    Turn on pldmtool support],
+[case "${enableval}" in
+  yes) pldmtool=true ;;
+  no)  pldmtool=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-pldmtool]) ;;
+esac],[pldmtool=false])
+AM_CONDITIONAL([PLDMTOOL], [test x$pldmtool = xtrue])
+AS_IF([test "x$pldmtool" == "xtrue"], [
+    AX_APPEND_COMPILE_FLAGS([-DPLDMTOOL], [CXXFLAGS])
+])
+
 # Create configured output
-AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
+AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile \
+    libmctp/Makefile tool/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
 AC_OUTPUT

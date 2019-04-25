@@ -60,6 +60,7 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
     ASSERT_EQ(retStateField[0].effecter_state, stateField[0].effecter_state);
     ASSERT_EQ(retStateField[1].set_request, stateField[1].set_request);
     ASSERT_EQ(retStateField[1].effecter_state, stateField[1].effecter_state);
+
 }
 
 TEST(SetStateEffecterStates, testBadDecodeRequest)

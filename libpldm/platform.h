@@ -70,8 +70,6 @@ int decode_set_state_effecter_states_req(const struct pldm_msg_payload *msg,
 					 uint16_t *effecter_id,
 					 uint8_t *comp_effecter_count,
 					 set_effecter_state_field *field);
-
-#ifdef __cplusplus
 }
 #endif
 
