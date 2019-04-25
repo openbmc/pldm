@@ -59,6 +59,7 @@ libpldmresponder_bios_test_LDADD = \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
 	$(top_builddir)/libpldm/libpldm_la-base.o  \
 	$(top_builddir)/libpldm/libpldm_la-bios.o \
+	$(top_builddir)/registration.o \
 	$(CODE_COVERAGE_LIBS) $(SDBUSPLUS_LIBS)
 libpldmresponder_bios_test_SOURCES = \
 	libpldmresponder_bios_test.cpp

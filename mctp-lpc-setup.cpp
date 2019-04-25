@@ -15,11 +15,13 @@
 #include "libpldm/base.h"
 #include "libpldm/platform.h"
 #include "libpldm/file_io.h"
+#include "libpldm/bios.h"
 #include "registration.hpp"
 
 std::map<uint8_t, size_t> commandToRespSize = {
     {PLDM_SET_STATE_EFFECTER_STATES, 1},
-    {PLDM_READ_FILE_MEMORY, 5}
+    {PLDM_READ_FILE_MEMORY, 5},
+    {PLDM_GET_DATE_TIME, 8}
 };
 
 namespace mctp_lpc
