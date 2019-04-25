@@ -63,4 +63,5 @@ Makefile
 /test/libpldm_base_test
 /test/libpldm_fileio_test
 /test/libpldmresponder_base_test
-
+/test/libpldm_bios_test
+/test/libpldmresponder_bios_formatTime_test

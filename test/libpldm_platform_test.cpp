@@ -33,14 +33,16 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
     request.payload_length = requestMsg.size();
 
     uint16_t effecterId = 0x32;
-    uint8_t compEffecterCnt = 0x1;
+    uint8_t compEffecterCnt = 0x2;
 
-    state_field_set_state_effecter_state stateField = {REQUEST_SET, 3};
+    std::array<set_effecter_state_field, 8> stateField{};
+    stateField[0] = {PLDM_REQUEST_SET, 3};
+    stateField[1] = {PLDM_REQUEST_SET, 4};
 
     uint16_t retEffecterId = 0;
     uint8_t retCompEffecterCnt = 0;
 
-    state_field_set_state_effecter_state retStateField = {0, 0};
+    std::array<set_effecter_state_field, 8> retStateField{};
 
     memcpy(request.payload, &effecterId, sizeof(effecterId));
     memcpy(request.payload + sizeof(effecterId), &compEffecterCnt,
@@ -49,13 +51,16 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
            &stateField, sizeof(stateField));
 
     auto rc = decode_set_state_effecter_states_req(
-        &request, &retEffecterId, &retCompEffecterCnt, &retStateField);
+        &request, &retEffecterId, &retCompEffecterCnt, retStateField.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(effecterId, retEffecterId);
     ASSERT_EQ(retCompEffecterCnt, compEffecterCnt);
-    ASSERT_EQ(retStateField.set_request, stateField.set_request);
-    ASSERT_EQ(retStateField.effecter_state, stateField.effecter_state);
+    ASSERT_EQ(retStateField[0].set_request, stateField[0].set_request);
+    ASSERT_EQ(retStateField[0].effecter_state, stateField[0].effecter_state);
+    ASSERT_EQ(retStateField[1].set_request, stateField[1].set_request);
+    ASSERT_EQ(retStateField[1].effecter_state, stateField[1].effecter_state);
+
 }
 
 TEST(SetStateEffecterStates, testBadDecodeRequest)
