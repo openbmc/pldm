@@ -1,4 +1,3 @@
-AM_CPPFLAGS = -I${top_srcdir}
 libpldmresponder_LTLIBRARIES = libpldmresponder.la
 libpldmresponderdir = ${libdir}
 libpldmresponder_la_SOURCES = \
@@ -18,4 +17,4 @@ libpldmresponder_la_LDFLAGS = \
 libpldmresponder_la_CXXFLAGS = $(CODE_COVERAGE_CXXFLAGS) \
 	$(SDBUSPLUS_CFLAGS)
  
-libpldmresponder_la_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS)
+libpldmresponder_la_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS) -I${top_srcdir}
