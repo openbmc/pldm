@@ -1,4 +1,5 @@
-nobase_include_HEADERS = \
+libpldm_includedir = $(includedir)/libpldm
+libpldm_include_HEADERS = \
 	base.h \
 	pldm_types.h \
 	platform.h \
