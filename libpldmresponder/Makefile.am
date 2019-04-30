@@ -14,6 +14,8 @@ libpldmresponder_la_CXXFLAGS = \
 	$(CODE_COVERAGE_CXXFLAGS) \
 	$(SDBUSPLUS_CFLAGS)
 
-libpldmresponder_la_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS)
+libpldmresponder_la_CPPFLAGS = \
+	$(CODE_COVERAGE_CPPFLAGS) \
+	-I$(top_srcdir)
 
 
