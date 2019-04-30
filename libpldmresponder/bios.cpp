@@ -7,7 +7,6 @@
 #include <chrono>
 #include <ctime>
 #include <iostream>
-#include <phosphor-logging/elog-errors.hpp>
 #include <stdexcept>
 #include <string>
 #include <variant>

@@ -6,7 +6,6 @@
 #include <ctime>
 #include <iostream>
 #include <map>
-#include <phosphor-logging/elog-errors.hpp>
 #include <stdexcept>
 #include <string>
 #include <vector>
