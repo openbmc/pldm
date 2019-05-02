@@ -125,9 +125,22 @@ void readFileIntoMemory(const pldm_msg_payload* request, pldm_msg* response)
     decode_read_file_memory_req(request, &fileHandle, &offset, &length,
                                 &address);
 
-    // Hardcoding the file name till the GetFileTable infrastructure is in
-    // place.
-    constexpr auto readFilePath = "/tmp/80a00001.lid";
+    std::string readFilePath;
+
+    if (fileHandle == 0)
+    {
+        readFilePath = "/var/lib/pldm/PHYP-NVRAM";
+    }
+    else if (fileHandle == 1)
+    {
+        readFilePath = "/var/lib/pldm/PHYP-NVRAM-CKSUM";
+    }
+    else
+    {
+        std::cerr << "Invalid file handle" << "\n";
+        encode_read_file_memory_resp(0, PLDM_INVALID_FILE_HANDLE, 0, response);
+    }
+
     uint32_t origLength = length;
 
     fs::path path{readFilePath};
