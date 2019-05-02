@@ -36,16 +36,13 @@ int encode_read_file_memory_resp(uint8_t instance_id, uint8_t completion_code,
 	header.instance = instance_id;
 	header.pldm_type = PLDM_FILE_IO;
 	header.command = PLDM_READ_FILE_MEMORY;
+    if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+        return rc;
+    }
 
 	msg->body.payload[0] = completion_code;
 	if (msg->body.payload[0] == PLDM_SUCCESS) {
-		if ((rc = pack_pldm_header(&header, &(msg->hdr))) >
-		    PLDM_SUCCESS) {
-			return rc;
-		}
-
 		uint8_t *dst = msg->body.payload + sizeof(msg->body.payload[0]);
-
 		length = htole32(length);
 		memcpy(dst, &length, sizeof(length));
 	}
