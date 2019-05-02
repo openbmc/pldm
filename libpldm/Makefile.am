@@ -3,7 +3,8 @@ libpldm_include_HEADERS = \
 	base.h \
 	pldm_types.h \
 	platform.h \
-	bios.h
+	bios.h \
+	states.h
 
 libpldm_LTLIBRARIES = libpldm.la
 libpldmdir = ${libdir}
