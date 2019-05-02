@@ -28,4 +28,6 @@ typedef struct pldm_version {
 	uint8_t alpha;
 } __attribute__((packed)) ver32_t;
 
+typedef uint8_t bool_t;
+
 #endif /* PLDM_TYPES_H */
