@@ -43,10 +43,10 @@ int encode_get_date_time_req(uint8_t instance_id, struct pldm_msg *msg);
  *  @param[out] year - year in BCD format
  *  @return pldm_completion_codes
  */
-int decode_get_date_time_resp(const struct pldm_msg_payload *msg,
-			      uint8_t *completion_code, uint8_t *seconds,
-			      uint8_t *minutes, uint8_t *hours, uint8_t *day,
-			      uint8_t *month, uint16_t *year);
+int decode_get_date_time_resp(const uint8_t *msg, uint8_t *completion_code,
+			      uint8_t *seconds, uint8_t *minutes,
+			      uint8_t *hours, uint8_t *day, uint8_t *month,
+			      uint16_t *year);
 
 /* Responder */
 

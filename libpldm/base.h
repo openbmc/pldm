@@ -103,23 +103,14 @@ struct pldm_msg_hdr {
 	uint8_t command; //!< PLDM command code
 } __attribute__((packed));
 
-/** @struct pldm_msg_payload
- *
- * Structure representing PLDM message payload
- */
-struct pldm_msg_payload {
-	uint8_t *payload;      //!< Pointer to PLDM message payload
-	size_t payload_length; //!< PLDM message payload's length in bytes
-} __attribute__((packed));
-
 /** @struct pldm_msg
  *
  * Structure representing PLDM message
  */
 struct pldm_msg {
-	struct pldm_msg_hdr hdr;      //!< PLDM message header
-	struct pldm_msg_payload body; //!< PLDM message payload
-} __attribute__((packed));
+	struct pldm_msg_hdr hdr; //!< PLDM message header
+	uint8_t payload[1];      //!< Address of this will be starting
+} __attribute__((packed));       //!< address of pldm payload
 
 /** @struct pldm_header_info
  *
@@ -180,8 +171,8 @@ int encode_get_types_req(uint8_t instance_id, struct pldm_msg *msg);
  *              types (MAX_TYPES/8) = 8), as per DSP0240
  *  @return pldm_completion_codes
  */
-int decode_get_types_resp(const struct pldm_msg_payload *msg,
-			  uint8_t *completion_code, bitfield8_t *types);
+int decode_get_types_resp(const uint8_t *msg, uint8_t *completion_code,
+			  bitfield8_t *types);
 
 /* GetPLDMCommands */
 
@@ -206,8 +197,8 @@ int encode_get_commands_req(uint8_t instance_id, uint8_t type, ver32_t version,
  *             commands (PLDM_MAX_CMDS_PER_TYPE/8) = 32), as per DSP0240
  *  @return pldm_completion_codes
  */
-int decode_get_commands_resp(const struct pldm_msg_payload *msg,
-			     uint8_t *completion_code, bitfield8_t *commands);
+int decode_get_commands_resp(const uint8_t *msg, uint8_t *completion_code,
+			     bitfield8_t *commands);
 
 /* GetPLDMVersion */
 
@@ -237,8 +228,7 @@ int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
  *  @param[out] transfer_flag - flag to indicate the part of data
  *  @return pldm_completion_codes
  */
-int decode_get_version_resp(const struct pldm_msg_payload *msg,
-			    uint8_t *completion_code,
+int decode_get_version_resp(const uint8_t *msg, uint8_t *completion_code,
 			    uint32_t *next_transfer_handle,
 			    uint8_t *transfer_flag, ver32_t *version);
 
@@ -264,12 +254,12 @@ int encode_get_types_resp(uint8_t instance_id, uint8_t completion_code,
 
 /** @brief Decode GetPLDMCommands' request data
  *
- *  @param[in] msg - Request message payload
+ *  @param[in] msg - Request message
  *  @param[out] type - PLDM Type
  *  @param[out] version - Version for PLDM Type
  *  @return pldm_completion_codes
  */
-int decode_get_commands_req(const struct pldm_msg_payload *msg, uint8_t *type,
+int decode_get_commands_req(const uint8_t *msg, uint8_t *type,
 			    ver32_t *version);
 
 /** @brief Create a PLDM response message for GetPLDMCommands
@@ -309,15 +299,14 @@ int encode_get_version_resp(uint8_t instance_id, uint8_t completion_code,
 
 /** @brief Decode a GetPLDMVersion request message
  *
- *  @param[in] msg - Request message payload
+ *  @param[in] msg - Request message
  *  @param[out] transfer_handle - the handle of data
  *  @param[out] transfer_opflag - Transfer Flag
  *  @param[out] type - PLDM type for which version is requested
  *  @return pldm_completion_codes
  */
-int decode_get_version_req(const struct pldm_msg_payload *msg,
-			   uint32_t *transfer_handle, uint8_t *transfer_opflag,
-			   uint8_t *type);
+int decode_get_version_req(const uint8_t *msg, uint32_t *transfer_handle,
+			   uint8_t *transfer_opflag, uint8_t *type);
 
 #ifdef __cplusplus
 }
