@@ -220,6 +220,8 @@ void generate(const std::string& dir, T& repo)
                   pdr->has_description_pdr = false;
                   pdr->composite_effecter_count = effecters.size();
 
+                  using namespace effecter::dbus_mapping;
+                  Paths paths{};
                   uint8_t* start = pdrEntry.data() +
                                    sizeof(pldm_state_effecter_pdr) -
                                    sizeof(uint8_t);
@@ -246,7 +248,11 @@ void generate(const std::string& dir, T& repo)
                           bf->byte |= 1 << bit;
                       }
                       start += possibleStates->possible_states_size;
+
+                      auto dbus = effecter.value("dbus", empty);
+                      paths.emplace_back(std::move(dbus));
                   }
+                  add(pdr->effecter_id, std::move(paths));
                   repo.add(std::move(pdrEntry));
               }
           }}};
