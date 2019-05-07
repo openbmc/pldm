@@ -1,3 +1,4 @@
+#include "libpldmresponder/effecters.hpp"
 #include "libpldmresponder/pdr.hpp"
 
 #include "libpldm/platform.h"
@@ -9,6 +10,7 @@ using namespace pldm::responder;
 TEST(GeneratePDR, testGoodJson)
 {
     using namespace pdr;
+    using namespace effecter::dbus_mapping;
     Repo& pdrRepo = get("./pdr_jsons/good");
 
     // 2 entries
@@ -41,6 +43,9 @@ TEST(GeneratePDR, testGoodJson)
     bitfield8_t bf1{};
     bf1.byte = 2;
     ASSERT_EQ(states->states[0].byte, bf1.byte);
+
+    auto paths = get(pdr->effecter_id);
+    ASSERT_EQ(paths[0], "/foo/bar");
 
     // Check second PDR
     e = pdrRepo.at(2);
@@ -76,6 +81,12 @@ TEST(GeneratePDR, testGoodJson)
     bf2[1].byte = 128;
     ASSERT_EQ(states->states[0].byte, bf2[0].byte);
     ASSERT_EQ(states->states[1].byte, bf2[1].byte);
+
+    paths = get(pdr->effecter_id);
+    ASSERT_EQ(paths[0], "/foo/bar");
+    ASSERT_EQ(paths[1], "/foo/bar/baz");
+
+    ASSERT_THROW(get(0xDEAD), std::exception);
 }
 
 TEST(GeneratePDR, testNoJson)
