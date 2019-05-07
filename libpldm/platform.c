@@ -10,11 +10,13 @@ int encode_set_state_effecter_states_resp(uint8_t instance_id,
 	struct pldm_header_info header = {0};
 	int rc = PLDM_SUCCESS;
 
-	msg->body.payload[0] = completion_code;
+	uint8_t *payload_ptr = msg->payload;
+	payload_ptr[0] = completion_code;
 
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
 	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_SET_STATE_EFFECTER_STATES;
 	header.command = PLDM_SET_STATE_EFFECTER_STATES;
 
 	rc = pack_pldm_header(&header, &(msg->hdr));
@@ -22,7 +24,49 @@ int encode_set_state_effecter_states_resp(uint8_t instance_id,
 	return rc;
 }
 
-int decode_set_state_effecter_states_req(const struct pldm_msg_payload *msg,
+int encode_set_state_effecter_states_req(uint8_t instance_id,
+					 uint16_t effecter_id,
+					 uint8_t comp_effecter_count,
+					 set_effecter_state_field *field,
+					 struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_SET_STATE_EFFECTER_STATES;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	uint8_t *start = msg->payload;
+	effecter_id = htole16(effecter_id);
+	memcpy(start, &effecter_id, sizeof(effecter_id));
+	start += sizeof(effecter_id);
+	memcpy(start, &comp_effecter_count, sizeof(comp_effecter_count));
+	start += sizeof(comp_effecter_count);
+	memcpy(start, field, sizeof(*field));
+	start += sizeof(*field);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_state_effecter_states_resp(const uint8_t *msg,
+					  uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	const uint8_t *payload_ptr = msg;
+	*completion_code = payload_ptr[0];
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_state_effecter_states_req(const uint8_t *msg,
 					 uint16_t *effecter_id,
 					 uint8_t *comp_effecter_count,
 					 set_effecter_state_field *field)
@@ -31,7 +75,7 @@ int decode_set_state_effecter_states_req(const struct pldm_msg_payload *msg,
 	    field == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-	const uint8_t *start = msg->payload;
+	const uint8_t *start = msg;
 	*effecter_id = le16toh(*((uint16_t *)start));
 	*comp_effecter_count = *(start + sizeof(*effecter_id));
 	memcpy(field,

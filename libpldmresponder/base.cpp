@@ -22,7 +22,7 @@ static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
 };
 
-void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
+void getPLDMTypes(const pldm_msg* request, pldm_msg* response)
 {
     // DSP0240 has this as a bitfield8[N], where N = 0 to 7
     std::array<bitfield8_t, 8> types{};
@@ -37,19 +37,19 @@ void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response)
     encode_get_types_resp(0, PLDM_SUCCESS, types.data(), response);
 }
 
-void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
+void getPLDMCommands(const pldm_msg* request, pldm_msg* response,
+                     uint8_t payload_length)
 {
     ver32_t version{};
     Type type;
 
-    if (request->payload_length != (sizeof(version) + sizeof(type)))
+    if (payload_length != (sizeof(version) + sizeof(type)))
     {
-        encode_get_commands_resp(0, PLDM_ERROR_INVALID_LENGTH, nullptr,
-                                 response);
+        encode_get_commands_resp(0, PLDM_ERROR_INVALID_DATA, nullptr, response);
         return;
     }
 
-    decode_get_commands_req(request, &type, &version);
+    decode_get_commands_req(request->payload, &type, &version);
 
     // DSP0240 has this as a bitfield8[N], where N = 0 to 31
     std::array<bitfield8_t, 32> cmds{};
@@ -71,13 +71,14 @@ void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response)
     encode_get_commands_resp(0, PLDM_SUCCESS, cmds.data(), response);
 }
 
-void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response)
+void getPLDMVersion(const pldm_msg* request, pldm_msg* response,
+                    uint8_t payload_length)
 {
     uint32_t transferHandle;
     Type type;
     uint8_t transferFlag;
 
-    if (request->payload_length !=
+    if (payload_length !=
         (sizeof(transferHandle) + sizeof(type) + sizeof(transferFlag)))
     {
         encode_get_version_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, 0, nullptr, 0,
@@ -85,7 +86,8 @@ void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response)
         return;
     }
 
-    decode_get_version_req(request, &transferHandle, &transferFlag, &type);
+    decode_get_version_req(request->payload, &transferHandle, &transferFlag,
+                           &type);
 
     ver32_t version{};
     auto search = versions.find(type);
