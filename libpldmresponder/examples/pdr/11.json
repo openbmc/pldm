@@ -8,7 +8,8 @@
                 "id" : 196,
                 "size" : 1,
                 "states" : [1]
-            }
+            },
+            "dbus" : "/foo/bar"
         }]
     },
     {
@@ -20,14 +21,16 @@
                 "id" : 197,
                 "size" : 1,
                 "states" : [1]
-            }
+            },
+            "dbus" : "/foo/bar"
         },
         {
             "set" : {
                 "id" : 198,
                 "size" : 2,
                 "states" : [1,2,5,15]
-            }
+            },
+            "dbus" : "/foo/bar/baz"
         }]
     }]
 }
