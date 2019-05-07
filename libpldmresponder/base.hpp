@@ -19,21 +19,23 @@ namespace responder
  *  @param[in] request - Request message payload
  *  @param[out] response - Response message written here
  */
-void getPLDMTypes(const pldm_msg_payload* request, pldm_msg* response);
+void getPLDMTypes(const pldm_msg* request, pldm_msg* response);
 
 /** @brief Handler for getPLDMCommands
  *
  *  @param[in] request - Request message payload
  *  @param[out] response - Response message written here
  */
-void getPLDMCommands(const pldm_msg_payload* request, pldm_msg* response);
+void getPLDMCommands(const pldm_msg* request, pldm_msg* response,
+                     uint8_t payload_length);
 
 /** @brief Handler for getPLDMCommands
  *
  *  @param[in] request - Request message payload
  *  @param[out] response - Response messsage written here
  */
-void getPLDMVersion(const pldm_msg_payload* request, pldm_msg* response);
+void getPLDMVersion(const pldm_msg* request, pldm_msg* response,
+                    uint8_t payload_length);
 
 } // namespace responder
 } // namespace pldm
