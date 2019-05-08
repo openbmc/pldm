@@ -15,12 +15,17 @@ extern "C" {
 /* Response lengths are inclusive of completion code */
 #define PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES 1
 
+#define PLDM_GET_PDR_REQ_BYTES 13
+/* Minimum response length */
+#define PLDM_GET_PDR_MIN_RESP_BYTES 12
+
 enum set_request { PLDM_NO_CHANGE = 0x00, PLDM_REQUEST_SET = 0x01 };
 
 enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
 
 enum pldm_platform_commands {
 	PLDM_SET_STATE_EFFECTER_STATES = 0x39,
+	PLDM_GET_PDR = 0x51,
 };
 
 /** @brief PLDM PDR types
@@ -159,6 +164,53 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
  */
 int decode_set_state_effecter_states_resp(const struct pldm_msg_payload *msg,
 					  uint8_t *completion_code);
+
+/* GetPDR */
+
+/** @brief Create a PLDM response message for GetPDR
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_record_hndl - The recordHandle for the PDR that is next in
+ *        the PDR Repository
+ *  @param[in] next_data_transfer_hndl - A handle that identifies the next
+ *        portion of the PDR data to be transferred, if any
+ *  @param[in] transfer_flag - Indicates the portion of PDR data being
+ *        transferred
+ *  @param[in] resp_cnt - The number of recordData bytes returned in this
+ *        response
+ *  @param[in] record_data - PDR data bytes of length resp_cnt
+ *  @param[in] transfer_crc - A CRC-8 for the overall PDR. This is present only
+ *        in the last part of a PDR being transferred
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.body.payload'
+ */
+int encode_get_pdr_resp(uint8_t instance_id, uint8_t completion_code,
+			uint32_t next_record_hndl,
+			uint32_t next_data_transfer_hndl, uint8_t transfer_flag,
+			uint16_t resp_cnt, const uint8_t *record_data,
+			uint8_t transfer_crc, struct pldm_msg *msg);
+
+/** @brief Decode GetPDR request data
+ *
+ *  @param[in] msg - Request message payload
+ *  @param[out] record_hndl - The recordHandle value for the PDR to be retrieved
+ *  @param[out] data_transfer_hndl - Handle used to identify a particular
+ *         multipart PDR data transfer operation
+ *  @param[out] transfer_op_flag - Flag to indicate the first or subsequent
+ *         portion of transfer
+ *  @param[out] request_cnt - The maximum number of record bytes requested
+ *  @param[out] record_chg_num - Used to determine whether the PDR has changed
+ *        while PDR transfer is going on
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_pdr_req(const struct pldm_msg_payload *msg,
+		       uint32_t *record_hndl, uint32_t *data_transfer_hndl,
+		       uint8_t *transfer_op_flag, uint16_t *request_cnt,
+		       uint16_t *record_chg_num);
 
 #ifdef __cplusplus
 }
