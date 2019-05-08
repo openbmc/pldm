@@ -97,3 +97,70 @@ int decode_set_state_effecter_states_req(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_get_pdr_req(const struct pldm_msg *msg, size_t payload_length,
+		       uint32_t *record_hndl, uint32_t *data_transfer_hndl,
+		       uint8_t *transfer_op_flag, uint16_t *request_cnt,
+		       uint16_t *record_chg_num)
+{
+	if (msg == NULL || record_hndl == NULL || data_transfer_hndl == NULL ||
+	    transfer_op_flag == NULL || request_cnt == NULL ||
+	    record_chg_num == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != PLDM_GET_PDR_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_pdr_req *request =
+	    (struct pldm_get_pdr_req *)msg->payload;
+	*record_hndl = le32toh(request->record_handle);
+	*data_transfer_hndl = le32toh(request->data_transfer_handle);
+	*transfer_op_flag = request->transfer_op_flag;
+	*request_cnt = le16toh(request->request_count);
+	*record_chg_num = le16toh(request->record_change_number);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_get_pdr_resp(uint8_t instance_id, uint8_t completion_code,
+			uint32_t next_record_hndl,
+			uint32_t next_data_transfer_hndl, uint8_t transfer_flag,
+			uint16_t resp_cnt, const uint8_t *record_data,
+			uint8_t transfer_crc, struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	struct pldm_get_pdr_resp *response =
+	    (struct pldm_get_pdr_resp *)msg->payload;
+
+	response->completion_code = completion_code;
+
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_GET_PDR;
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	if (response->completion_code == PLDM_SUCCESS) {
+		response->next_record_handle = htole32(next_record_hndl);
+		response->next_data_transfer_handle =
+		    htole32(next_data_transfer_hndl);
+		response->transfer_flag = transfer_flag;
+		response->response_count = htole16(resp_cnt);
+		if (record_data != NULL && resp_cnt > 0) {
+			memcpy(response->record_data, record_data, resp_cnt);
+		}
+		uint8_t *dst = msg->payload;
+		dst += (sizeof(struct pldm_get_pdr_resp) - 1) + resp_cnt;
+		*dst = transfer_crc;
+	}
+
+	return PLDM_SUCCESS;
+}
