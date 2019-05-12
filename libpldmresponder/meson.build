@@ -13,6 +13,7 @@ sources = [
   'pdr.cpp',
   'effecters.cpp',
   'utils.cpp',
+  'platform.cpp',
   '../registration.cpp'
 ]
 
