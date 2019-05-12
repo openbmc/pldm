@@ -11,7 +11,7 @@ TEST(GeneratePDR, testGoodJson)
 {
     using namespace pdr;
     using namespace effecter::dbus_mapping;
-    Repo& pdrRepo = get("./pdr_jsons/good");
+    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
 
     // 2 entries
     ASSERT_EQ(pdrRepo.numEntries(), 2);
@@ -100,8 +100,8 @@ TEST(GeneratePDR, testNoJson)
 TEST(GeneratePDR, testMalformedJson)
 {
     using namespace pdr;
-    Repo& pdrRepo = get("./pdr_jsons/good");
+    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
     ASSERT_EQ(pdrRepo.numEntries(), 2);
     pdrRepo.makeEmpty();
-    ASSERT_THROW(get("./pdr_jsons/malformed"), std::exception);
+    ASSERT_THROW(get("./pdr_jsons/state_effecter/malformed"), std::exception);
 }
