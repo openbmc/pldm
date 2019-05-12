@@ -66,6 +66,8 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
+AC_DEFINE(PDR_JSONS_DIR, "/var/lib/pldm/pdr", [Directory housing platform specific PDR config])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
