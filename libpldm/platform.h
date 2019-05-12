@@ -43,6 +43,12 @@ enum pldm_effecter_init {
 	PLDM_DISABLE_EFECTER
 };
 
+/** @brief PLDM Platform M&C completion codes
+ */
+enum pldm_platform_completion_codes {
+	PLDM_PLATFORM_INVALID_RECORD_HANDLE = 0x82,
+};
+
 /** @struct pldm_pdr_hdr
  *
  *  Structure representing PLDM common PDR header
