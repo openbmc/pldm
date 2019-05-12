@@ -97,6 +97,9 @@ int decode_get_pdr_req(const struct pldm_msg_payload *msg,
 	    record_chg_num == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
+	if (msg->payload_length != PLDM_GET_PDR_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
 	const uint8_t *start = msg->payload;
 	*record_hndl = le32toh(*((uint32_t *)start));
 	*data_transfer_hndl =
