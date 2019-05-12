@@ -8,7 +8,8 @@ check_PROGRAMS = \
 	libpldmresponder_base_test \
 	libpldm_bios_test \
 	libpldmresponder_bios_test \
-	libpldmresponder_pdr_state_effecter_test
+	libpldmresponder_pdr_state_effecter_test \
+	libpldmresponder_platform_test
 
 if OEM_IBM
 check_PROGRAMS += \
@@ -123,3 +124,19 @@ libpldmresponder_pdr_state_effecter_test_LDADD = \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	-lstdc++fs
 libpldmresponder_pdr_state_effecter_test_SOURCES = libpldmresponder_pdr_state_effecter_test.cpp
+
+libpldmresponder_platform_test_CPPFLAGS = $(test_cppflags)
+libpldmresponder_platform_test_CXXFLAGS = $(test_cxxflags)
+libpldmresponder_platform_test_LDFLAGS = $(test_ldflags)
+libpldmresponder_platform_test_LDADD = \
+        $(top_builddir)/libpldm/libpldm_la-base.o \
+        $(top_builddir)/libpldm/libpldm_la-platform.o \
+        $(top_builddir)/libpldmresponder/libpldmresponder_la-pdr.o \
+        $(top_builddir)/libpldmresponder/libpldmresponder_la-effecters.o \
+        $(top_builddir)/libpldmresponder/libpldmresponder_la-platform.o \
+	$(PHOSPHOR_LOGGING_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+	$(SDBUSPLUS_LIBS) \
+	$(CODE_COVERAGE_LIBS) \
+	-lstdc++fs
+libpldmresponder_platform_test_SOURCES = libpldmresponder_platform_test.cpp
