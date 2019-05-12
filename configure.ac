@@ -1,4 +1,4 @@
-# Initialization
+#Initialization
 AC_PREREQ([2.69])
 AC_INIT([pldm], [1.0],
         [https://github.com/openbmc/pldm/issues])
@@ -8,10 +8,10 @@ AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
 AM_SILENT_RULES([yes])
 AC_CONFIG_MACRO_DIRS([m4])
 
-# Make sure the default CFLAGS of `-O2 -g` don't override CODE_COVERAGE_CFLAGS
-# It is important that this comes before AC_PROG_C{C,XX}, as we are attempting
-# to stop them from populating default CFLAGS and CXXFLAGS.
-#AS_IF([test "x$enable_tests" = "xno"], [enable_code_coverage=no])
+#Make sure the default CFLAGS of `- O2 - g` don't override CODE_COVERAGE_CFLAGS
+#It is important that this comes before AC_PROG_C{C, XX }, as we are attempting
+#to stop them from populating default CFLAGS and CXXFLAGS.
+#AS_IF([test "x$enable_tests" = "xno"], [enable_code_coverage = no])
 AS_IF([test "x$enable_code_coverage" != "xno"], [
     AS_IF([test "x${CXXFLAGS+set}" != "xset"], [
         AC_SUBST(CXXFLAGS, [""])
@@ -21,20 +21,20 @@ AS_IF([test "x$enable_code_coverage" != "xno"], [
     ])
 ])
 
-# Checks for programs.
+#Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
 AM_PROG_AR
 AC_PROG_INSTALL
 
-# Checks for typedefs, structures, and compiler characteristics.
+#Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX([17], [noext], [mandatory])
 AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
 
-# For linking
+#For linking
 LT_INIT
 
-# Code coverage
+#Code coverage
 AX_CODE_COVERAGE
 AM_EXTRA_RECURSIVE_TARGETS([check-code-coverage])
 m4_ifdef([_AX_CODE_COVERAGE_RULES],
@@ -46,7 +46,7 @@ AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
 AX_PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging])
 PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
 
-# Check/set gtest specific functions.
+#Check / set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
 AC_SUBST(GTEST_CPPFLAGS)
 AC_ARG_ENABLE([oe-sdk],
@@ -67,7 +67,7 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
-# Setup IBM OEM commands support for PLDM
+#Setup IBM OEM commands support for PLDM
 AC_ARG_ENABLE([oem-ibm], AS_HELP_STRING([
 	--enable-oem-ibm
 	], [
@@ -80,7 +80,7 @@ AS_IF([test "x$enable_oem_ibm" == "xyes"], [
     AC_DEFINE(FILE_TABLE_JSON, "/var/lib/pldm/fileTable.json", [JSON file containing file info for File I/O])
 ])
 
-# Setup verbose option
+#Setup verbose option
 AC_ARG_ENABLE([verbose], AS_HELP_STRING([
 	--enable-verbose
 	], [
@@ -91,10 +91,9 @@ AS_IF([test "x$enable_verbose" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CFLAGS])
 ])
 
-AC_DEFINE(BIOS_JSONS_DIR, "/etc/pldm/bios", [Directory housing the json files for BIOS tables])
-AC_DEFINE(BIOS_TABLES_DIR, "/var/lib/pldm/bios", [Directory housing actual BIOS tables])
+AC_DEFINE(PDR_JSONS_DIR, "/var/lib/pldm/pdr", [Directory housing platform specific PDR config])
 
-# Create configured output
+#Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
 AC_OUTPUT
