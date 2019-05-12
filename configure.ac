@@ -82,6 +82,7 @@ AS_IF([test "x$enable_oem_ibm" == "xyes"], [
 
 AC_DEFINE(BIOS_JSONS_DIR, "/etc/default/obmc/pldm/bios", [Directory housing the json files for BIOS tables])
 AC_DEFINE(BIOS_TABLES_DIR, "/var/lib/pldm/bios", [Directory housing actual BIOS tables])
+AC_DEFINE(PDR_JSONS_DIR, "/var/lib/pldm/pdr", [Directory housing platform specific PDR config])
 
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile tool/Makefile])
