@@ -2,16 +2,16 @@
 #include <endian.h>
 #include <string.h>
 
-int decode_read_file_memory_req(const struct pldm_msg_payload *msg,
-				uint32_t *fileHandle, uint32_t *offset,
-				uint32_t *length, uint64_t *address)
+int decode_rw_file_memory_req(const struct pldm_msg_payload *msg,
+			      uint32_t *fileHandle, uint32_t *offset,
+			      uint32_t *length, uint64_t *address)
 {
 	if (msg == NULL || fileHandle == NULL || offset == NULL ||
 	    length == NULL || address == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	if (msg->payload_length != PLDM_READ_FILE_MEM_REQ_BYTES) {
+	if (msg->payload_length != PLDM_RW_FILE_MEM_REQ_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
@@ -26,8 +26,9 @@ int decode_read_file_memory_req(const struct pldm_msg_payload *msg,
 	return PLDM_SUCCESS;
 }
 
-int encode_read_file_memory_resp(uint8_t instance_id, uint8_t completion_code,
-				 uint32_t length, struct pldm_msg *msg)
+int encode_rw_file_memory_resp(uint8_t instance_id, uint8_t command,
+			       uint8_t completion_code, uint32_t length,
+			       struct pldm_msg *msg)
 {
 	struct pldm_header_info header = {0};
 	int rc = PLDM_SUCCESS;
@@ -35,10 +36,10 @@ int encode_read_file_memory_resp(uint8_t instance_id, uint8_t completion_code,
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
 	header.pldm_type = PLDM_FILE_IO;
-	header.command = PLDM_READ_FILE_MEMORY;
-    if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
-        return rc;
-    }
+	header.command = command;
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
 
 	msg->body.payload[0] = completion_code;
 	if (msg->body.payload[0] == PLDM_SUCCESS) {
