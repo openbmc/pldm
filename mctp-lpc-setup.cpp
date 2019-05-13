@@ -77,6 +77,21 @@ fprintf(stderr, "\n");
         body.payload = static_cast<uint8_t*>(msg) + sizeof(uint8_t) + sizeof(pldm_msg_hdr);
         body.payload_length = len - sizeof(pldm_msg_hdr) - sizeof(uint8_t);
 
+if(commandToRespSize.end() == commandToRespSize.find(hdrFields.command))
+{
+        std::vector<uint8_t> responseMsg{};
+        responseMsg.resize(1 + sizeof(pldm_msg_hdr) + 1);
+        responseMsg[0] = 0x01;
+        responseMsg[responseMsg.size() - 1] = 0x05;
+        pldm_msg_hdr* hdr = reinterpret_cast<pldm_msg_hdr*>(responseMsg.data() + 1);
+        pldm_header_info header{};
+        header.instance = 0;
+        header.msg_type = PLDM_RESPONSE;
+        header.command = hdrFields.command;
+        pack_pldm_header(&header, hdr);
+        tx_message(ctx, eid, responseMsg.data(), responseMsg.size());
+        return;
+}
         std::vector<uint8_t> responseMsg{};
         responseMsg.resize(1 + commandToRespSize[hdrFields.command] + sizeof(pldm_msg_hdr));
         responseMsg[0] = 0x01;
