@@ -182,6 +182,49 @@ int decode_get_pdr_req(const uint8_t *msg, size_t payload_length,
 		       uint8_t *transfer_op_flag, uint16_t *request_cnt,
 		       uint16_t *record_chg_num);
 
+/** @brief Encode GetPDR request data
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] record_handle -  The recordHandle value for the PDR to be encoded
+ *  @param[in] data_transfer_handle -  Handle used to identify a particular
+ * multipart PDR data transfer operation
+ *  @param[in] transfer_operation_flag - Flag to indicate the first or
+ * subsequent portion of transfer
+ *  @param[in] request_count - The maximum number of record bytes requested
+ *  @param[in] record_change_number - Used to determine whether the PDR has
+ * changed while PDR transfer is going on
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+
+int encode_get_pdr_req(uint8_t instance_id, uint32_t record_handle,
+		       uint32_t data_transfer_handle,
+		       uint8_t transfer_operation_flag, uint16_t request_count,
+		       uint16_t record_change_number, struct pldm_msg *msg);
+
+/** @brief Decode GetPDR response data
+ *  @param[in] msg - Response message payload
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code -  PLDM completion code
+ *  @param[out] next_record_handle - The recordHandle for the PDR that is next
+ * in the PDR Repository
+ *  @param[out] next data_transfer_handle - A handle that identifies the next
+ * portion of the PDR data to be transferred, if any
+ *  @param[out] transfer_flag - Indicates the portion of PDR data being
+ * transferred
+ *  @param[out] response_count - The number of recordData bytes to be returned
+ * in this response
+ *  @param[out] record_data - PDR data bytes of length response_count
+ *  @param[out] transfer_crc -  A CRC-8 for the overall PDR. This is present
+ * only in the last part of a PDR being transferred
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_pdr_resp(const uint8_t *msg, size_t payload_length,
+			uint8_t *completion_code, uint32_t *next_record_handle,
+			uint32_t *next_data_transfer_handle,
+			uint8_t *transfer_flag, uint16_t *response_count,
+			uint8_t *record_data, uint8_t *transfer_crc);
+
 /* Requester */
 
 /* SetStateEffecterStates */
