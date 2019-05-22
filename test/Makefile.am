@@ -100,5 +100,7 @@ libpldmresponder_platform_test_LDADD = \
         $(top_builddir)/libpldmresponder/libpldmresponder_la-effecters.o \
         $(top_builddir)/libpldmresponder/libpldmresponder_la-platform.o \
 	$(PHOSPHOR_LOGGING_LIBS) \
+	$(SDBUSPLUS_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
         $(CODE_COVERAGE_LIBS)
 libpldmresponder_platform_test_SOURCES = libpldmresponder_platform_test.cpp
