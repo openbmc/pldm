@@ -1,6 +1,7 @@
 #include "bios.hpp"
 
 #include "libpldmresponder/utils.hpp"
+#include "registration.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <array>
@@ -25,6 +26,16 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 namespace responder
 {
 
+namespace bios
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_BIOS, PLDM_GET_DATE_TIME, std::move(getDateTime));
+}
+
+} // namespace bios
+
 namespace utils
 {
 
@@ -47,7 +58,7 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
 
 } // namespace utils
 
-Response getDateTime(const pldm_msg* request)
+Response getDateTime(const pldm_msg* request, size_t payloadLength)
 {
     uint8_t seconds = 0;
     uint8_t minutes = 0;

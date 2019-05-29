@@ -70,6 +70,7 @@ libpldmresponder_bios_test_LDFLAGS = \
 	$(test_ldflags) \
 	$(SDBUSPLUS_LIBS)
 libpldmresponder_bios_test_LDADD = \
+	$(top_builddir)/pldmd-registration.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
 	$(top_builddir)/libpldm/libpldm_la-base.o  \
@@ -83,6 +84,7 @@ libpldmresponder_base_test_CPPFLAGS = $(test_cppflags)
 libpldmresponder_base_test_CXXFLAGS = $(test_cxxflags)
 libpldmresponder_base_test_LDFLAGS = $(test_ldflags)
 libpldmresponder_base_test_LDADD = \
+	$(top_builddir)/pldmd-registration.o \
 	$(top_builddir)/libpldm/libpldm_la-base.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-base.o \
 	$(CODE_COVERAGE_LIBS)
@@ -105,6 +107,7 @@ libpldmoemresponder_fileio_test_CPPFLAGS = $(test_cppflags) \
 libpldmoemresponder_fileio_test_CXXFLAGS = $(test_cxxflags)
 libpldmoemresponder_fileio_test_LDFLAGS = $(test_ldflags)
 libpldmoemresponder_fileio_test_LDADD = \
+        $(top_builddir)/pldmd-registration.o \
 	$(top_builddir)/libpldm/libpldm_la-base.o \
 	$(top_builddir)/oem/ibm/libpldm/libpldm_la-file_io.o \
 	$(top_builddir)/oem/ibm/libpldmresponder/libpldmresponder_la-file_io.o
