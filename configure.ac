@@ -6,6 +6,7 @@ AC_LANG([C++])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
 AM_SILENT_RULES([yes])
+AC_CONFIG_MACRO_DIRS([m4])
 
 # Make sure the default CFLAGS of `-O2 -g` don't override CODE_COVERAGE_CFLAGS
 # It is important that this comes before AC_PROG_C{C,XX}, as we are attempting
@@ -73,8 +74,20 @@ AC_ARG_ENABLE([oem-ibm], AS_HELP_STRING([
 	Enable PLDM OEM command support For IBM.
 ]))
 AM_CONDITIONAL([OEM_IBM], [test "x$enable_oem_ibm" = "xyes"])
-AS_IF([test "x$oem-ibm" == "xtrue"], [
+AS_IF([test "x$enable_oem_ibm" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CXXFLAGS])
+    AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CFLAGS])
+])
+
+# Setup verbose option
+AC_ARG_ENABLE([verbose], AS_HELP_STRING([
+	--enable-verbose
+	], [
+	Enable verbosity for PLDM Daemon.
+]))
+AS_IF([test "x$enable_verbose" == "xyes"], [
+    AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CXXFLAGS])
+    AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CFLAGS])
 ])
 
 # Create configured output
