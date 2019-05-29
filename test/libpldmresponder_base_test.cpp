@@ -1,4 +1,5 @@
 #include "libpldmresponder/base.hpp"
+#include "registration.hpp"
 
 #include <string.h>
 

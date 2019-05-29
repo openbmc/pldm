@@ -1,5 +1,6 @@
 
 #include "libpldmresponder/bios.hpp"
+#include "registration.hpp"
 
 #include <string.h>
 
