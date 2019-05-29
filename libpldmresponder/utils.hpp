@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <systemd/sd-bus.h>
+#include <unistd.h>
 
 #include <sdbusplus/server.hpp>
 #include <string>
@@ -10,6 +11,42 @@ namespace pldm
 {
 namespace responder
 {
+namespace utils
+{
+
+/** @struct CustomFD
+ *
+ *  RAII wrapper for file descriptor.
+ */
+struct CustomFD
+{
+    CustomFD(const CustomFD&) = delete;
+    CustomFD& operator=(const CustomFD&) = delete;
+    CustomFD(CustomFD&&) = delete;
+    CustomFD& operator=(CustomFD&&) = delete;
+
+    CustomFD(int fd) : fd(fd)
+    {
+    }
+
+    ~CustomFD()
+    {
+        if (fd >= 0)
+        {
+            close(fd);
+        }
+    }
+
+    int operator()() const
+    {
+        return fd;
+    }
+
+  private:
+    int fd = -1;
+};
+
+} // namespace utils
 
 /**
  *  @brief Get the DBUS Service name for the input dbus path
