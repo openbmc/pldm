@@ -81,7 +81,7 @@ TEST(ReadWriteFileMemory, testGoodEncodeResponse)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
     ASSERT_EQ(response->hdr.instance_id, 0);
-    ASSERT_EQ(response->hdr.type, PLDM_IBM_OEM_TYPE);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
     ASSERT_EQ(response->hdr.command, PLDM_READ_FILE_INTO_MEMORY);
     ASSERT_EQ(response->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
@@ -94,7 +94,7 @@ TEST(ReadWriteFileMemory, testGoodEncodeResponse)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
     ASSERT_EQ(response->hdr.instance_id, 0);
-    ASSERT_EQ(response->hdr.type, PLDM_IBM_OEM_TYPE);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
     ASSERT_EQ(response->hdr.command, PLDM_WRITE_FILE_FROM_MEMORY);
     ASSERT_EQ(response->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
@@ -115,7 +115,7 @@ TEST(ReadWriteFileMemory, testBadEncodeResponse)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
     ASSERT_EQ(response->hdr.instance_id, 0);
-    ASSERT_EQ(response->hdr.type, PLDM_IBM_OEM_TYPE);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
     ASSERT_EQ(response->hdr.command, PLDM_READ_FILE_INTO_MEMORY);
     ASSERT_EQ(response->payload[0], PLDM_ERROR);
 
@@ -126,7 +126,7 @@ TEST(ReadWriteFileMemory, testBadEncodeResponse)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
     ASSERT_EQ(response->hdr.instance_id, 0);
-    ASSERT_EQ(response->hdr.type, PLDM_IBM_OEM_TYPE);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
     ASSERT_EQ(response->hdr.command, PLDM_WRITE_FILE_FROM_MEMORY);
     ASSERT_EQ(response->payload[0], PLDM_ERROR);
 }
