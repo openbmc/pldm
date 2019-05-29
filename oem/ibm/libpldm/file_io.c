@@ -1,4 +1,4 @@
-#include "file_io.h"
+decode_rw_file_memory_req#include "file_io.h"
 #include <endian.h>
 #include <string.h>
 
@@ -37,7 +37,7 @@ int encode_rw_file_memory_resp(uint8_t instance_id, uint8_t command,
 
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
-	header.pldm_type = PLDM_IBM_OEM_TYPE;
+	header.pldm_type = PLDM_OEM;
 	header.command = command;
 
 	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
