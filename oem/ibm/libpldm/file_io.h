@@ -10,8 +10,6 @@ extern "C" {
 
 #include "base.h"
 
-#define PLDM_IBM_OEM_TYPE 0x3F
-
 /** @brief PLDM Commands in IBM OEM type
  */
 enum pldm_fileio_commands {
