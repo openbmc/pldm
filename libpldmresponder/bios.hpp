@@ -14,12 +14,19 @@ using Response = std::vector<uint8_t>;
 namespace responder
 {
 
+namespace bios
+{
+/** @brief Register handlers for command from the platform spec
+ */
+void registerHandlers();
+} // namespace bios
+
 /** @brief Handler for GetDateTime
  *
  *  @param[in] request - Request message payload
  *  @param[return] Response - PLDM Response message
  */
-Response getDateTime(const pldm_msg* request);
+Response getDateTime(const pldm_msg* request, size_t payloadLength);
 
 namespace utils
 {
