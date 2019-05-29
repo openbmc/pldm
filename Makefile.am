@@ -28,3 +28,20 @@ else
 endif
 
 SUBDIRS = libpldm libpldmresponder test
+
+sbin_PROGRAMS = pldmd
+pldmd_SOURCES = \
+    pldmd.cpp \
+    registration.cpp
+pldmd_LDADD = \
+        libpldmresponder/libpldmresponder.la \
+        libpldm/libpldm.la
+pldmd_CXXFLAGS = -I$(top_builddir)/libpldm
+
+if OEM_IBM
+pldmd_CXXFLAGS += \
+        -I$(top_builddir)/oem/ibm/
+endif
+
+ACLOCAL_AMFLAGS = -I m4
+

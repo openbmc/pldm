@@ -1,6 +1,7 @@
 #include "libpldm/base.h"
 
 #include "base.hpp"
+#include "registration.hpp"
 
 #include <array>
 #include <cstring>
@@ -23,6 +24,20 @@ static const std::map<Type, ver32_t> versions{
     {PLDM_PLATFORM, {0xF1, 0xF1, 0xF1, 0x00}},
     {PLDM_BIOS, {0xF1, 0xF0, 0xF0, 0x00}},
 };
+
+namespace base
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_TYPES, std::move(getPLDMTypes));
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_COMMANDS,
+                    std::move(getPLDMCommands));
+    registerHandler(PLDM_BASE, PLDM_GET_PLDM_VERSION,
+                    std::move(getPLDMVersion));
+}
+
+} // namespace base
 
 Response getPLDMTypes(const pldm_msg* request, size_t payloadLength)
 {
