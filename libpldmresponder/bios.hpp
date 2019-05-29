@@ -10,6 +10,13 @@ namespace pldm
 namespace responder
 {
 
+namespace bios
+{
+/** @brief Register handlers for command from the platform spec
+ */
+void registerHandlers();
+} // namespace bios
+
 /** @brief Handler for GetDateTime
  *
  *  @param[in] request - Request message payload
