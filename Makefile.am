@@ -28,3 +28,20 @@ else
 endif
 
 SUBDIRS = libpldm libpldmresponder test
+
+sbin_PROGRAMS = pldmd
+pldmd_SOURCES = \
+    pldmd.cpp \
+    registration.cpp
+pldmd_LDADD = \
+        libpldmresponder.la \
+        libpldm.la
+pldmd_LDFLAGS = \
+        $(SYSTEMD_LIBS) \
+        $(SDBUSPLUS_LIBS)
+pldmd_CXXFLAGS =  \
+        $(SYSTEMD_CXXFLAGS) \
+        $(SDBUSPLUS_CFLAGS)
+
+ACLOCAL_AMFLAGS = -I m4
+

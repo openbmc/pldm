@@ -1,6 +1,7 @@
 #include "bios.hpp"
 
 #include "libpldmresponder/utils.hpp"
+#include "registration.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <array>
@@ -24,6 +25,16 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 
 namespace responder
 {
+
+namespace bios
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_BIOS, PLDM_GET_DATE_TIME, std::move(getDateTime));
+}
+
+} // namespace bios
 
 namespace utils
 {
