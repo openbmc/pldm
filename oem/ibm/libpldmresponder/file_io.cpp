@@ -1,5 +1,8 @@
 #include "file_io.hpp"
 
+#include "libpldmresponder/utils.hpp"
+#include "registration.hpp"
+
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -17,6 +20,19 @@ namespace pldm
 
 namespace responder
 {
+
+namespace oem_ibm
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_OEM, PLDM_READ_FILE_INTO_MEMORY,
+                    std::move(readFileIntoMemory));
+    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_FROM_MEMORY,
+                    std::move(writeFileFromMemory));
+}
+
+} // namespace oem_ibm
 
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
@@ -126,7 +142,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
 } // namespace dma
 
-Response readFileIntoMemory(const uint8_t* request, size_t payloadLength)
+Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
 {
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
@@ -144,8 +160,8 @@ Response readFileIntoMemory(const uint8_t* request, size_t payloadLength)
         return response;
     }
 
-    decode_rw_file_memory_req(request, payloadLength, &fileHandle, &offset,
-                              &length, &address);
+    decode_rw_file_memory_req(request->payload, payloadLength, &fileHandle,
+                              &offset, &length, &address);
 
     if (!fs::exists(path))
     {
@@ -185,7 +201,7 @@ Response readFileIntoMemory(const uint8_t* request, size_t payloadLength)
                             length, address, true);
 }
 
-Response writeFileFromMemory(const uint8_t* request, size_t payloadLength)
+Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
 {
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
@@ -203,8 +219,8 @@ Response writeFileFromMemory(const uint8_t* request, size_t payloadLength)
         return response;
     }
 
-    decode_rw_file_memory_req(request, payloadLength, &fileHandle, &offset,
-                              &length, &address);
+    decode_rw_file_memory_req(request->payload, payloadLength, &fileHandle,
+                              &offset, &length, &address);
 
     if (length % dma::minSize)
     {
