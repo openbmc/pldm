@@ -14,44 +14,14 @@ namespace pldm
 namespace responder
 {
 
-using Response = std::vector<uint8_t>;
-
-namespace utils
+namespace oem_ibm
 {
-
-/** @struct CustomFD
- *
- *  RAII wrapper for file descriptor.
+/** @brief Register handlers for command from the platform spec
  */
-struct CustomFD
-{
-    CustomFD(const CustomFD&) = delete;
-    CustomFD& operator=(const CustomFD&) = delete;
-    CustomFD(CustomFD&&) = delete;
-    CustomFD& operator=(CustomFD&&) = delete;
+void registerHandlers();
+} // namespace oem_ibm
 
-    CustomFD(int fd) : fd(fd)
-    {
-    }
-
-    ~CustomFD()
-    {
-        if (fd >= 0)
-        {
-            close(fd);
-        }
-    }
-
-    int operator()() const
-    {
-        return fd;
-    }
-
-  private:
-    int fd = -1;
-};
-
-} // namespace utils
+using Response = std::vector<uint8_t>;
 
 namespace dma
 {
@@ -154,7 +124,7 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
  *
  *  @return PLDM response message
  */
-Response readFileIntoMemory(const uint8_t* request, size_t payloadLength);
+Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength);
 
 /** @brief Handler for writeFileIntoMemory command
  *
@@ -163,6 +133,6 @@ Response readFileIntoMemory(const uint8_t* request, size_t payloadLength);
  *
  *  @return PLDM response message
  */
-Response writeFileFromMemory(const uint8_t* request, size_t payloadLength);
+Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
 } // namespace responder
 } // namespace pldm

@@ -146,17 +146,19 @@ TEST(ReadFileIntoMemory, BadPath)
     uint32_t length = 10;
     uint64_t address = 0;
 
-    std::array<uint8_t, PLDM_RW_FILE_MEM_REQ_BYTES> requestMsg{};
-    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
-    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
-    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
+        requestMsg{};
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    memcpy(request->payload, &fileHandle, sizeof(fileHandle));
+    memcpy(request->payload + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(request->payload + sizeof(fileHandle) + sizeof(offset), &length,
            sizeof(length));
-    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset) +
+    memcpy(request->payload + sizeof(fileHandle) + sizeof(offset) +
                sizeof(length),
            &address, sizeof(address));
 
     // Pass invalid payload length
-    auto response = readFileIntoMemory(requestMsg.data(), 0);
+    auto response = readFileIntoMemory(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 }
@@ -168,22 +170,25 @@ TEST(WriteFileFromMemory, BadPath)
     uint32_t length = 10;
     uint64_t address = 0;
 
-    std::array<uint8_t, PLDM_RW_FILE_MEM_REQ_BYTES> requestMsg{};
-    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
-    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
-    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
+        requestMsg{};
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    size_t requestPayloadLength = requestMsg.size() - sizeof(pldm_msg_hdr);
+    memcpy(request->payload, &fileHandle, sizeof(fileHandle));
+    memcpy(request->payload + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(request->payload + sizeof(fileHandle) + sizeof(offset), &length,
            sizeof(length));
-    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset) +
+    memcpy(request->payload + sizeof(fileHandle) + sizeof(offset) +
                sizeof(length),
            &address, sizeof(address));
 
     // Pass invalid payload length
-    auto response = writeFileFromMemory(requestMsg.data(), 0);
+    auto response = writeFileFromMemory(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 
     // The length field is not a multiple of DMA minsize
-    response = writeFileFromMemory(requestMsg.data(), requestMsg.size());
+    response = writeFileFromMemory(request, requestPayloadLength);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_WRITE_LENGTH);
 }
