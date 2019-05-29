@@ -30,6 +30,12 @@ AC_PROG_INSTALL
 AX_CXX_COMPILE_STDCXX([17], [noext], [mandatory])
 AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
 
+# Check for packages
+AX_PKG_CHECK_MODULES([SYSTEMD], [], [libsystemd >= 221])
+PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
+PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
+PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging])
+
 # For linking
 LT_INIT
 
@@ -63,6 +69,18 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     ]
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
+
+AC_ARG_ENABLE([pldmdverbose],
+[  --enable-pldmdverbose    Turn on verbose for pldm daemon],
+[case "${enableval}" in
+  yes) pldmdverbose=true ;;
+  no)  pldmdverbose=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-pldmdverbose]) ;;
+esac],[pldmdverbose=false])
+AM_CONDITIONAL([PLDMDVERBOSE], [test x$pldmdverbose = xtrue])
+AS_IF([test "x$pldmdverbose" == "xtrue"], [
+    AX_APPEND_COMPILE_FLAGS([-DPLDMDVERBOSE], [CXXFLAGS])
+])
 
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
