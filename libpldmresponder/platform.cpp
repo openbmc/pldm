@@ -1,11 +1,7 @@
-#include "config.h"
 
 #include "platform.hpp"
 
-#include "pdr.hpp"
-
-#include <exception>
-#include <phosphor-logging/log.hpp>
+#include "registration.hpp"
 
 namespace pldm
 {
@@ -13,7 +9,20 @@ namespace pldm
 namespace responder
 {
 
+namespace platform
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_PLATFORM, PLDM_GET_PDR, std::move(getPDR));
+    registerHandler(PLDM_PLATFORM, PLDM_SET_STATE_EFFECTER_STATES,
+                    std::move(setStateEffecterStates));
+}
+
+} // namespace platform
+
 using namespace phosphor::logging;
+using namespace pldm::responder::effecter::dbus_mapping;
 
 Response getPDR(const pldm_msg* request, size_t payloadLength)
 {
@@ -80,6 +89,41 @@ Response getPDR(const pldm_msg* request, size_t payloadLength)
                             recordData, 0, responsePtr);
         return response;
     }
+    return response;
+}
+
+Response setStateEffecterStates(const pldm_msg* request, size_t payloadLength)
+{
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    uint16_t effecterId;
+    uint8_t compEffecterCnt;
+    std::vector<set_effecter_state_field> stateField(8, {0, 0});
+
+    if ((payloadLength > PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES) ||
+        (payloadLength < sizeof(effecterId) + sizeof(compEffecterCnt) +
+                             sizeof(set_effecter_state_field)))
+    {
+        encode_set_state_effecter_states_resp(
+            request->hdr.instance_id, PLDM_ERROR_INVALID_LENGTH, responsePtr);
+        return response;
+    }
+
+    int rc = decode_set_state_effecter_states_req(request, payloadLength,
+                                                  &effecterId, &compEffecterCnt,
+                                                  stateField.data());
+
+    if (rc == PLDM_SUCCESS)
+    {
+        stateField.resize(compEffecterCnt);
+        const DBusHandler dBusIntf;
+        rc = setStateEffecterStatesHandler<DBusHandler>(&dBusIntf, effecterId,
+                                                        stateField);
+    }
+
+    encode_set_state_effecter_states_resp(request->hdr.instance_id, rc,
+                                          responsePtr);
     return response;
 }
 

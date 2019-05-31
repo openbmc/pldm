@@ -1,5 +1,6 @@
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
+#include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/utils.hpp"
 #include "registration.hpp"
 
@@ -24,6 +25,7 @@
 
 #include "libpldm/base.h"
 #include "libpldm/bios.h"
+#include "libpldm/platform.h"
 
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
@@ -130,6 +132,7 @@ int main(int argc, char** argv)
 
     pldm::responder::base::registerHandlers();
     pldm::responder::bios::registerHandlers();
+    pldm::responder::platform::registerHandlers();
 
     // Outgoing message.
     struct iovec iov[2]{};
