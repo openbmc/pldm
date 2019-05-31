@@ -2,18 +2,34 @@
 
 #include "platform.hpp"
 
+#include "effecters.hpp"
+#include "libpldmresponder/utils.hpp"
 #include "pdr.hpp"
+#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <exception>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
+#include <variant>
 
 namespace pldm
 {
 
+constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
+
 namespace responder
 {
 
+std::map<uint16_t, std::map<uint8_t, std::string>> stateToDbusProp = {
+    {PLDM_BOOT_PROGRESS_STATE,
+     {{1, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus.Standby"},
+      {2, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
+          "BootComplete"}}},
+};
+
 using namespace phosphor::logging;
+using namespace pldm::responder::pdr;
+using namespace pldm::responder::effecter::dbus_mapping;
 
 Response getPDR(const pldm_msg* request, size_t payloadLength)
 {
@@ -81,6 +97,182 @@ Response getPDR(const pldm_msg* request, size_t payloadLength)
         return response;
     }
     return response;
+}
+
+Response setStateEffecterStates(const pldm_msg* request, size_t payloadLength)
+{
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    uint16_t effecterId;
+    uint8_t compEffecterCnt;
+    std::vector<set_effecter_state_field> stateField(8);
+
+    if ((payloadLength > PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES) ||
+        (payloadLength < sizeof(effecterId) + sizeof(compEffecterCnt) +
+                             sizeof(set_effecter_state_field)))
+    {
+        encode_set_state_effecter_states_resp(
+            request->hdr.instance_id, PLDM_ERROR_INVALID_LENGTH, responsePtr);
+        return response;
+    }
+
+    int rc = decode_set_state_effecter_states_req(request, payloadLength,
+                                                  &effecterId, &compEffecterCnt,
+                                                  stateField.data());
+
+    if (rc == PLDM_SUCCESS)
+    {
+        stateField.resize(compEffecterCnt);
+        rc = setStateEffecterStatesHandler(effecterId, stateField);
+    }
+
+    encode_set_state_effecter_states_resp(request->hdr.instance_id, rc,
+                                          responsePtr);
+    return response;
+}
+
+int setStateEffecterStatesHandler(
+    uint16_t effecterId,
+    const std::vector<set_effecter_state_field>& stateField)
+{
+    int rc = PLDM_SUCCESS;
+
+    Repo& pdrRepo = get(PDR_JSONS_DIR);
+
+    auto totalPdrEntries = pdrRepo.numEntries();
+    size_t i = 1;
+    auto foundPdr = false;
+    pdr::Entry e;
+    auto recordHndl = 1;
+    state_effecter_possible_states* states;
+    std::string objPath;
+    std::string dbusProp;
+    std::string dbusPropVal;
+    std::string dbusInterface;
+    uint8_t pdrCompEffCnt = 0;
+    uint8_t currState = 1;
+    Paths paths;
+    pldm_state_effecter_pdr* pdr;
+    uint8_t compEffecterCnt = stateField.size();
+
+    do
+    {
+        e = pdrRepo.at(recordHndl);
+        pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+        recordHndl = pdr->hdr.record_handle;
+        if (recordHndl == 0)
+        {
+            foundPdr = false;
+            break;
+        }
+
+        if (pdr->effecter_id == effecterId)
+        {
+            foundPdr = true;
+            states = reinterpret_cast<state_effecter_possible_states*>(
+                pdr->possible_states);
+            pdrCompEffCnt = pdr->composite_effecter_count;
+            if (compEffecterCnt > pdrCompEffCnt)
+            {
+                foundPdr = false;
+                break;
+            }
+            break;
+        }
+        i++;
+    } while (i <= totalPdrEntries);
+
+    std::map<uint16_t, std::function<void()>> effecterToDbusEntries = {
+        {PLDM_BOOT_PROGRESS_STATE, [&]() {
+             for (auto const& stateSet : stateToDbusProp)
+             {
+                 if (stateSet.first == PLDM_BOOT_PROGRESS_STATE)
+                 {
+                     auto search = stateSet.second.find(
+                         stateField[currState - 1].effecter_state);
+                     if (search == stateSet.second.end())
+                     {
+                         log<level::ERR>(
+                             "Invalid state field passed or field not "
+                             "found",
+                             entry("FIELD=%d", states->states[0].byte));
+                         rc = PLDM_ERROR;
+                         break;
+                     }
+                     if (stateField[currState - 1].set_request ==
+                         PLDM_NO_CHANGE)
+                     {
+                         break;
+                     }
+                     dbusProp = "OperatingSystemState";
+                     std::variant<std::string> value{search->second};
+                     dbusInterface =
+                         "xyz.openbmc_project.State.OperatingSystem.Status";
+                     auto bus = sdbusplus::bus::new_default();
+                     try
+                     {
+                         auto service =
+                             getService(bus, objPath.c_str(), dbusInterface);
+                         auto method = bus.new_method_call(
+                             service.c_str(), objPath.c_str(), dbusProperties,
+                             "Set");
+                         method.append(dbusInterface, dbusProp, value);
+                         auto reply = bus.call(method);
+                     }
+                     catch (std::exception& e)
+                     {
+                         log<level::ERR>(
+                             "Error setting property",
+                             entry("PROPERTY=%s", dbusProp.c_str()),
+                             entry("INTERFACE=%s", dbusInterface.c_str()));
+                         rc = PLDM_ERROR;
+                         break;
+                     }
+                     break;
+                 }
+             }
+         }}};
+
+    if (foundPdr)
+    {
+        for (currState = 1; currState <= compEffecterCnt; currState++)
+        {
+
+            for (const auto& effecterToDbus : effecterToDbusEntries)
+            {
+                try
+                {
+                    if (effecterToDbus.first == states->state_set_id)
+                    {
+                        auto paths = get(effecterId);
+                        objPath = paths[currState - 1];
+                        effecterToDbus.second();
+                    }
+                }
+                catch (const std::exception& e)
+                {
+                    log<level::ERR>("Failed executing dbus call",
+                                    entry("STATE=%d", effecterToDbus.first),
+                                    entry("PATH=%s", objPath.c_str()),
+                                    entry("ERROR=%s", e.what()));
+                    rc = PLDM_ERROR;
+                    break;
+                }
+            }
+            states = reinterpret_cast<state_effecter_possible_states*>(
+                pdr->possible_states +
+                currState * sizeof(state_effecter_possible_states));
+        }
+    }
+
+    else
+    {
+        log<level::ERR>("PDR not found", entry("EFFECTER_ID=%d", effecterId));
+        rc = PLDM_ERROR_INVALID_DATA;
+    }
+
+    return rc;
 }
 
 } // namespace responder
