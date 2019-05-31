@@ -1,11 +1,15 @@
+#include "libpldmresponder/effecters.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/platform.hpp"
 
 #include <iostream>
 
+#include <gmock/gmock-matchers.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 using namespace pldm::responder;
+using namespace pldm::responder::pdr;
 
 TEST(getPDR, testGoodPath)
 {
@@ -170,4 +174,66 @@ TEST(getPDR, testFindPDR)
         }
     }
     ASSERT_EQ(found, true);
+}
+
+namespace pldm
+{
+
+namespace responder
+{
+
+class MockdBusHandler
+{
+  public:
+    MOCK_METHOD4(setDbusProperty,
+                 int(const std::string&, const std::string&, const std::string&,
+                     const std::variant<std::string>&));
+};
+} // namespace responder
+} // namespace pldm
+
+using ::testing::_;
+using ::testing::Return;
+
+TEST(setStateEffecterStatesHandler, testGoodRequest)
+{
+    Repo& pdrRepo = get("./pdr_jsons/good");
+    pdr::Entry e = pdrRepo.at(1);
+    pldm_state_effecter_pdr* pdr =
+        reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+    EXPECT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+
+    std::vector<set_effecter_state_field> stateField;
+    stateField.push_back({PLDM_REQUEST_SET, 2});
+
+    auto bootProgressInf = "xyz.openbmc_project.State.OperatingSystem.Status";
+    auto bootProgressProp = "OperatingSystemState";
+    std::string objPath = "/foo/bar";
+    std::variant<std::string> value{"xyz.openbmc_project.State.OperatingSystem."
+                                    "Status.OSStatus.BootComplete"};
+
+    MockdBusHandler handlerObj;
+    EXPECT_CALL(handlerObj, setDbusProperty(objPath, bootProgressProp,
+                                            bootProgressInf, value))
+        .Times(1);
+    auto rc = setStateEffecterStatesHandler<MockdBusHandler>(&handlerObj, 0x1,
+                                                             stateField);
+    ASSERT_EQ(rc, 0);
+}
+
+TEST(setStateEffecterStatesHandler, testBadRequest)
+{
+    Repo& pdrRepo = get("./pdr_jsons/good");
+    pdr::Entry e = pdrRepo.at(1);
+    pldm_state_effecter_pdr* pdr =
+        reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+    EXPECT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+
+    std::vector<set_effecter_state_field> stateField;
+    stateField.push_back({PLDM_REQUEST_SET, 3});
+
+    MockdBusHandler handlerObj;
+    auto rc = setStateEffecterStatesHandler<MockdBusHandler>(&handlerObj, 0x1,
+                                                             stateField);
+    ASSERT_EQ(rc, PLDM_ERROR);
 }

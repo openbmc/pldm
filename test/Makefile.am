@@ -27,14 +27,18 @@ test_cxxflags = \
 	$(PTHREAD_CFLAGS) \
 	$(PHOSPHOR_LOGGING_CFLAGS) \
 	$(SDBUSPLUS_CFLAGS) \
-	$(CODE_COVERAGE_CXXFLAGS)
+	$(CODE_COVERAGE_CXXFLAGS) \
+	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS)
 
 test_ldflags = \
 	-lgtest_main \
 	-lgtest \
+	-lgmock \
+	-lstdc++fs \
 	$(PTHREAD_LIBS) \
 	$(SDBUSPLUS_LIBS) \
 	$(PHOSPHOR_LOGGING_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(OESDK_TESTCASE_FLAGS)
 
 if OEM_IBM
@@ -162,13 +166,14 @@ libpldmresponder_bios_table_test_SOURCES = \
 
 libpldmresponder_platform_test_CPPFLAGS = $(test_cppflags)
 libpldmresponder_platform_test_CXXFLAGS = $(test_cxxflags)
-libpldmresponder_platform_test_LDFLAGS = $(test_ldflags)
+libpldmresponder_platform_test_LDFLAGS = $(test_ldflags) $(SDBUSPLUS_LIBS)
 libpldmresponder_platform_test_LDADD = \
 	$(top_builddir)/libpldm/libpldm_la-base.o \
 	$(top_builddir)/libpldm/libpldm_la-platform.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-pdr.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-effecters.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-platform.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o 
 	$(PHOSPHOR_LOGGING_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(SDBUSPLUS_LIBS) \
