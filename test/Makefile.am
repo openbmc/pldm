@@ -162,10 +162,11 @@ libpldmresponder_bios_table_test_SOURCES = \
 
 libpldmresponder_platform_test_CPPFLAGS = $(test_cppflags)
 libpldmresponder_platform_test_CXXFLAGS = $(test_cxxflags)
-libpldmresponder_platform_test_LDFLAGS = $(test_ldflags)
+libpldmresponder_platform_test_LDFLAGS = $(test_ldflags) $(SDBUSPLUS_LIBS)
 libpldmresponder_platform_test_LDADD = \
         $(top_builddir)/libpldm/libpldm_la-base.o \
         $(top_builddir)/libpldm/libpldm_la-platform.o \
+		$(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
         $(top_builddir)/libpldmresponder/libpldmresponder_la-pdr.o \
         $(top_builddir)/libpldmresponder/libpldmresponder_la-effecters.o \
         $(top_builddir)/libpldmresponder/libpldmresponder_la-platform.o \
