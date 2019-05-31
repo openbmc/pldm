@@ -10,6 +10,14 @@
                 "states" : [1]
             },
             "dbus" : "/foo/bar"
+        },
+        {
+            "set" : {
+                "id" : 196,
+                "size" : 1,
+                "states" : [1, 2]
+            },
+            "dbus" : "/foo/bar"
         }]
     },
     {

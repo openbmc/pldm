@@ -4,8 +4,13 @@
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
+#include <exception>
 #include <sdbusplus/server.hpp>
 #include <string>
+#include <variant>
+#include <vector>
+
+#include "libpldm/base.h"
 
 namespace pldm
 {
@@ -87,6 +92,42 @@ T decimalToBcd(T decimal)
 
     return bcd;
 }
+
+constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
+
+/**
+ *  @class DBusHandler
+ *
+ *  Wrapper class to handle the D-Bus calls
+ *
+ *  This class contains the APIs to handle the D-Bus calls
+ *  to cater the request from pldm requester.
+ *  A class is created to mock the apis in the test cases
+ */
+class DBusHandler
+{
+  public:
+    /** @brief API to set a D-Bus property
+     *
+     *  @param[in] objPath - Object path for the D-Bus object
+     *  @param[in] dbusProp - The D-Bus property
+     *  @param[in] dbusInterface - The D-Bus interface
+     *  @param[in] value - The value to be set
+     * failure
+     */
+    template <typename T>
+    void setDbusProperty(const char* objPath, const char* dbusProp,
+                         const char* dbusInterface,
+                         const std::variant<T>& value) const
+    {
+        auto bus = sdbusplus::bus::new_default();
+        auto service = getService(bus, objPath, dbusInterface);
+        auto method = bus.new_method_call(service.c_str(), objPath,
+                                          dbusProperties, "Set");
+        method.append(dbusInterface, dbusProp, value);
+        bus.call_noreply(method);
+    }
+};
 
 } // namespace responder
 } // namespace pldm

@@ -25,7 +25,7 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
-    ASSERT_EQ(pdr->hdr.length, 19);
+    ASSERT_EQ(pdr->hdr.length, 23);
 
     ASSERT_EQ(pdr->terminus_handle, 0);
     ASSERT_EQ(pdr->effecter_id, 1);
@@ -35,7 +35,7 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(pdr->effecter_semantic_id, 0);
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
-    ASSERT_EQ(pdr->composite_effecter_count, 1);
+    ASSERT_EQ(pdr->composite_effecter_count, 2);
     state_effecter_possible_states* states =
         reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states);
     ASSERT_EQ(states->state_set_id, 196);
