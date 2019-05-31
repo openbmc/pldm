@@ -1,11 +1,20 @@
 #pragma once
 
+#include "xyz/openbmc_project/Common/error.hpp"
+
 #include <stdint.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
+#include <exception>
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/server.hpp>
 #include <string>
+#include <variant>
+#include <vector>
+
+#include "libpldm/base.h"
 
 namespace pldm
 {
@@ -87,6 +96,44 @@ T decimalToBcd(T decimal)
 
     return bcd;
 }
+
+constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
+
+/**
+ *  @class DBusHandler
+ *
+ *  Expose API to handle the D-Bus calls
+ *
+ *  This class contains the APIs to handle the D-Bus calls
+ *  to cater the request from pldm requester.
+ *  A class is created to mock the apis in the test cases
+ */
+class DBusHandler
+{
+  public:
+    /** @brief API to set a D-Bus property
+     *
+     *  @param[in] objPath - Object path for the D-Bus object
+     *  @param[in] dbusProp - The D-Bus property
+     *  @param[in] dbusInterface - The D-Bus interface
+     *  @param[in] value - The value to be set
+     *  @return - int - success when the property is set. Throws exception on
+     * failure
+     *  */
+    int setDbusProperty(const char* objPath, const char* dbusProp,
+                        const std::string& dbusInterface,
+                        const std::variant<std::string>& value) const
+    {
+        using namespace phosphor::logging;
+        auto bus = sdbusplus::bus::new_default();
+        auto service = getService(bus, objPath, dbusInterface);
+        auto method = bus.new_method_call(service.c_str(), objPath,
+                                          dbusProperties, "Set");
+        method.append(dbusInterface, dbusProp, value);
+        bus.call_noreply(method);
+        return PLDM_SUCCESS;
+    }
+};
 
 } // namespace responder
 } // namespace pldm
