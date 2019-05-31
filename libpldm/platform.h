@@ -46,7 +46,15 @@ enum pldm_effecter_init {
 /** @brief PLDM Platform M&C completion codes
  */
 enum pldm_platform_completion_codes {
+	PLDM_PLATFORM_INVALID_EFFECTER_ID = 0x80,
+};
+
+enum pldm_platform_get_pdr_completion_codes {
 	PLDM_PLATFORM_INVALID_RECORD_HANDLE = 0x82,
+};
+
+enum pldm_platform_set_state_effecter_completion_codes {
+	PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE = 0x82,
 };
 
 /** @struct pldm_pdr_hdr
