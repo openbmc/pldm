@@ -339,3 +339,105 @@ TEST(GetPDR, testBadDecodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(GetStateSensorReadings, testEncodeResponse)
+{
+
+    uint8_t completionCode = 0;
+    uint8_t compSensorCnt = 2;
+    std::array<get_sensor_state_field, 8> stateField{};
+    stateField[0] = {1, 2, 3, 4};
+    stateField[1] = {5, 6, 7, 8};
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_GET_STATE_SENSOR_READINGS_RESP_MAX_BYTES>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = encode_get_state_sensor_readings_resp(
+        0, PLDM_SUCCESS, compSensorCnt, stateField.data(), response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completionCode, response->payload[0]);
+
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
+                        &compSensorCnt, sizeof(compSensorCnt)));
+
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt),
+                        &(stateField[0].sensor_op_state),
+                        sizeof(stateField[0].sensor_op_state)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt) +
+                            sizeof(stateField[0].sensor_op_state),
+                        &(stateField[0].present_state),
+                        sizeof(stateField[0].present_state)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt) +
+                            2 * sizeof(stateField[0].sensor_op_state),
+                        &(stateField[0].previous_state),
+                        sizeof(stateField[0].previous_state)));
+
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt) +
+                            3 * sizeof(stateField[0].sensor_op_state),
+                        &(stateField[0].event_state),
+                        sizeof(stateField[0].event_state)));
+
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt) +
+                            4 * sizeof(stateField[0].sensor_op_state),
+                        &(stateField[1].sensor_op_state),
+                        sizeof(stateField[1].sensor_op_state)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt) +
+                            5 * sizeof(stateField[0].sensor_op_state),
+                        &(stateField[1].present_state),
+                        sizeof(stateField[1].present_state)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt) +
+                            6 * sizeof(stateField[0].sensor_op_state),
+                        &(stateField[1].previous_state),
+                        sizeof(stateField[1].previous_state)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(compSensorCnt) +
+                            7 * sizeof(stateField[0].sensor_op_state),
+                        &(stateField[1].event_state),
+                        sizeof(stateField[1].event_state)));
+}
+
+TEST(GetStateSensorReadings, testGoodDecodeRequest)
+{
+    std::array<uint8_t, PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES> requestMsg{};
+
+    uint16_t sensorId = 3;
+    bitfield8_t sensorReArm;
+    sensorReArm.byte = 1;
+    uint8_t reserved = 0;
+
+    uint16_t retSensorId = 0;
+    bitfield8_t retsensorReArm;
+    retsensorReArm.byte = 0;
+
+    memcpy(requestMsg.data(), &sensorId, sizeof(sensorId));
+    memcpy(requestMsg.data() + sizeof(sensorId), &(sensorReArm.byte),
+           sizeof(sensorReArm));
+
+    auto rc = decode_get_state_sensor_readings_req(
+        requestMsg.data(), requestMsg.size(), &retSensorId, &retsensorReArm,
+        &reserved);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(sensorId, retSensorId);
+    ASSERT_EQ(sensorReArm.byte, retsensorReArm.byte);
+}
+
+TEST(GetStateSensorReadings, testBadDecodeRequest)
+{
+    std::array<uint8_t, PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES> requestMsg{};
+
+    auto rc = decode_get_state_sensor_readings_req(
+        requestMsg.data(), requestMsg.size(), NULL, NULL, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
