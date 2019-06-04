@@ -238,3 +238,61 @@ int decode_get_pdr_resp(const struct pldm_msg_payload *msg,
 	}
 	return PLDM_SUCCESS;
 }
+
+int encode_get_state_sensor_readings_resp(uint8_t instance_id,
+					  uint8_t completion_code,
+					  uint8_t comp_sensor_cnt,
+					  get_sensor_state_field *field,
+					  struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL || comp_sensor_cnt > 8 || comp_sensor_cnt < 1) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	msg->body.payload[0] = completion_code;
+
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_GET_STATE_SENSOR;
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+	if (msg->body.payload_length >
+		PLDM_GET_STATE_SENSOR_READINGS_RESP_MAX_BYTES ||
+	    msg->body.payload_length <
+		PLDM_GET_STATE_SENSOR_READINGS_RESP_MIN_BYTES) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (msg->body.payload[0] == PLDM_SUCCESS) {
+		uint8_t *dst = msg->body.payload + sizeof(msg->body.payload[0]);
+		memcpy(dst, &comp_sensor_cnt, sizeof(comp_sensor_cnt));
+		dst += sizeof(comp_sensor_cnt);
+		memcpy(dst, field,
+		       (sizeof(get_sensor_state_field) * comp_sensor_cnt));
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_state_sensor_readings_req(const struct pldm_msg_payload *msg,
+					 uint16_t *sensor_id,
+					 bitfield8_t *sensor_re_arm,
+					 uint8_t *reserved)
+{
+	if (msg == NULL || sensor_id == NULL || sensor_re_arm == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (msg->payload_length != PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	const uint8_t *start = msg->payload;
+	*sensor_id = le16toh(*((uint16_t *)start));
+	memcpy(&(sensor_re_arm->byte), (start + sizeof(*sensor_id)),
+	       sizeof(*sensor_re_arm));
+	*reserved = 0;
+	return PLDM_SUCCESS;
+}

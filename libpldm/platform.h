@@ -19,6 +19,12 @@ extern "C" {
 /* Minimum response length */
 #define PLDM_GET_PDR_MIN_RESP_BYTES 12
 
+#define PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES 4
+/* Maximum response length */
+#define PLDM_GET_STATE_SENSOR_READINGS_RESP_MAX_BYTES 34
+/* Minimum response length */
+#define PLDM_GET_STATE_SENSOR_READINGS_RESP_MIN_BYTES 6
+
 enum set_request { PLDM_NO_CHANGE = 0x00, PLDM_REQUEST_SET = 0x01 };
 
 enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
@@ -26,6 +32,7 @@ enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
 enum pldm_platform_commands {
 	PLDM_SET_STATE_EFFECTER_STATES = 0x39,
 	PLDM_GET_PDR = 0x51,
+	PLDM_GET_STATE_SENSOR = 0x21,
 };
 
 /** @brief PLDM PDR types
@@ -97,6 +104,16 @@ typedef struct state_field_for_state_effecter_set {
 	uint8_t set_request;    //!< Whether to change the state
 	uint8_t effecter_state; //!< Expected state of the effecter
 } __attribute__((packed)) set_effecter_state_field;
+
+/** @struct get_sensor_state_field
+ *
+ *  Structure representing a stateField in GetStateSensorReadings command */
+typedef struct state_field_for_get_state_sensor {
+	uint8_t sensor_op_state; //!< State of the sensor
+	uint8_t present_state;   //!< Most recently assessed state
+	uint8_t previous_state;  //!< State prior to present_state
+	uint8_t event_state;     //!< Most recent state that caused an event
+} __attribute__((packed)) get_sensor_state_field;
 
 /* Responder */
 
@@ -183,6 +200,39 @@ int decode_get_pdr_req(const struct pldm_msg_payload *msg,
 		       uint32_t *record_hndl, uint32_t *data_transfer_hndl,
 		       uint8_t *transfer_op_flag, uint16_t *request_cnt,
 		       uint16_t *record_chg_num);
+
+/* GetStateSensorReadings */
+
+/** @brief Create a PLDM response message for GetStateSensorReadings
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] comp_sensor_cnt - The number of individual sets of sensor data
+ *  @param[in] field - Each stateField is an instance of a stateField structure
+ *      equal to comp_sensor_cnt in number
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *      'msg.body.payload'
+ */
+int encode_get_state_sensor_readings_resp(uint8_t instance_id,
+					  uint8_t completion_code,
+					  uint8_t comp_sensor_cnt,
+					  get_sensor_state_field *field,
+					  struct pldm_msg *msg);
+
+/** @brief Decode GetStateSensorReadings request packet
+ *
+ *  @param[in] msg - Request message payload
+ *  @param[out] sensor_id - Unique identifier for the sensor
+ *  @param[out] sensor_re_arm - Each bit location in this bit
+ *      field corresponds to a particular sensor within the state sensor
+ *  @param[out] reserved - Reserved
+ */
+int decode_get_state_sensor_readings_req(const struct pldm_msg_payload *msg,
+					 uint16_t *sensor_id,
+					 bitfield8_t *sensor_re_arm,
+					 uint8_t *reserved);
 
 /** @brief Encode GetPDR request data
  *  @param[in] instance_id - Message's instance id
