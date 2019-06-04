@@ -31,29 +31,30 @@ int encode_get_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 	}
 
 	msg->body.payload[0] = completion_code;
-
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
 	header.pldm_type = PLDM_BIOS;
 	header.command = PLDM_GET_DATE_TIME;
+
 	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
 		return rc;
 	}
 
-	uint8_t *dst = msg->body.payload + sizeof(msg->body.payload[0]);
-
-	memcpy(dst, &seconds, sizeof(seconds));
-	dst += sizeof(seconds);
-	memcpy(dst, &minutes, sizeof(minutes));
-	dst += sizeof(minutes);
-	memcpy(dst, &hours, sizeof(hours));
-	dst += sizeof(hours);
-	memcpy(dst, &day, sizeof(day));
-	dst += sizeof(day);
-	memcpy(dst, &month, sizeof(month));
-	dst += sizeof(month);
-	uint16_t local_year = htole16(year);
-	memcpy(dst, &local_year, sizeof(local_year));
+	if (msg->body.payload[0] == PLDM_SUCCESS) {
+		uint8_t *dst = msg->body.payload + sizeof(msg->body.payload[0]);
+		memcpy(dst, &seconds, sizeof(seconds));
+		dst += sizeof(seconds);
+		memcpy(dst, &minutes, sizeof(minutes));
+		dst += sizeof(minutes);
+		memcpy(dst, &hours, sizeof(hours));
+		dst += sizeof(hours);
+		memcpy(dst, &day, sizeof(day));
+		dst += sizeof(day);
+		memcpy(dst, &month, sizeof(month));
+		dst += sizeof(month);
+		uint16_t local_year = htole16(year);
+		memcpy(dst, &local_year, sizeof(local_year));
+	}
 
 	return PLDM_SUCCESS;
 }
