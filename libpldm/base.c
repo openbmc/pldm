@@ -90,8 +90,11 @@ int encode_get_commands_req(uint8_t instance_id, uint8_t type, ver32_t version,
 	header.command = PLDM_GET_PLDM_COMMANDS;
 	pack_pldm_header(&header, &(msg->hdr));
 
-	memcpy(msg->payload, &type, sizeof(type));
-	memcpy(msg->payload + sizeof(type), &version, sizeof(version));
+	struct pldm_get_commands_req *request =
+	    (struct pldm_get_commands_req *)msg->payload;
+
+	request->type = type;
+	request->version = version;
 
 	return PLDM_SUCCESS;
 }
@@ -103,20 +106,21 @@ int encode_get_types_resp(uint8_t instance_id, uint8_t completion_code,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	msg->payload[0] = completion_code;
+	struct pldm_get_types_resp *response =
+	    (struct pldm_get_types_resp *)msg->payload;
 
+	response->completion_code = completion_code;
 	struct pldm_header_info header = {0};
 	header.instance = instance_id;
 	header.msg_type = PLDM_RESPONSE;
 	header.command = PLDM_GET_PLDM_TYPES;
 	pack_pldm_header(&header, &(msg->hdr));
 
-	if (msg->payload[0] == PLDM_SUCCESS) {
+	if (response->completion_code == PLDM_SUCCESS) {
 		if (types == NULL) {
 			return PLDM_ERROR_INVALID_DATA;
 		}
-		memcpy(msg->payload + sizeof(completion_code), &(types->byte),
-		       PLDM_MAX_TYPES / 8);
+		memcpy(response->types, &(types->byte), PLDM_MAX_TYPES / 8);
 	}
 
 	return PLDM_SUCCESS;
@@ -133,9 +137,10 @@ int decode_get_commands_req(const uint8_t *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	*type = *msg;
-	memcpy(version, (ver32_t *)(msg + sizeof(*type)), sizeof(*version));
-
+	struct pldm_get_commands_req *request =
+	    (struct pldm_get_commands_req *)msg;
+	*type = request->type;
+	*version = request->version;
 	return PLDM_SUCCESS;
 }
 
@@ -146,7 +151,9 @@ int encode_get_commands_resp(uint8_t instance_id, uint8_t completion_code,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	msg->payload[0] = completion_code;
+	struct pldm_get_commands_resp *response =
+	    (struct pldm_get_commands_resp *)msg->payload;
+	response->completion_code = completion_code;
 
 	struct pldm_header_info header = {0};
 	header.instance = instance_id;
@@ -154,12 +161,12 @@ int encode_get_commands_resp(uint8_t instance_id, uint8_t completion_code,
 	header.command = PLDM_GET_PLDM_COMMANDS;
 	pack_pldm_header(&header, &(msg->hdr));
 
-	if (msg->payload[0] == PLDM_SUCCESS) {
+	if (response->completion_code == PLDM_SUCCESS) {
 		if (commands == NULL) {
 			return PLDM_ERROR_INVALID_DATA;
 		}
-		memcpy(msg->payload + sizeof(completion_code),
-		       &(commands->byte), PLDM_MAX_CMDS_PER_TYPE / 8);
+		memcpy(response->commands, &(commands->byte),
+		       PLDM_MAX_CMDS_PER_TYPE / 8);
 	}
 
 	return PLDM_SUCCESS;
@@ -176,13 +183,14 @@ int decode_get_types_resp(const uint8_t *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	*completion_code = msg[0];
+	struct pldm_get_types_resp *response =
+	    (struct pldm_get_types_resp *)msg;
+	*completion_code = response->completion_code;
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
 	};
 
-	memcpy(&(types->byte), msg + sizeof(*completion_code),
-	       PLDM_MAX_TYPES / 8);
+	memcpy(&(types->byte), response->types, PLDM_MAX_TYPES / 8);
 
 	return PLDM_SUCCESS;
 }
@@ -198,12 +206,14 @@ int decode_get_commands_resp(const uint8_t *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	*completion_code = msg[0];
+	struct pldm_get_commands_resp *response =
+	    (struct pldm_get_commands_resp *)msg;
+	*completion_code = response->completion_code;
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
 	};
 
-	memcpy(&(commands->byte), msg + sizeof(*completion_code),
+	memcpy(&(commands->byte), response->commands,
 	       PLDM_MAX_CMDS_PER_TYPE / 8);
 
 	return PLDM_SUCCESS;
@@ -229,14 +239,12 @@ int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
 		return rc;
 	}
 
+	struct pldm_get_version_req *request =
+	    (struct pldm_get_version_req *)msg->payload;
 	transfer_handle = htole32(transfer_handle);
-	memcpy(msg->payload, &transfer_handle, sizeof(transfer_handle));
-
-	memcpy(msg->payload + sizeof(transfer_handle), &transfer_opflag,
-	       sizeof(transfer_opflag));
-
-	memcpy(msg->payload + sizeof(transfer_handle) + sizeof(transfer_opflag),
-	       &type, sizeof(type));
+	request->transfer_handle = transfer_handle;
+	request->transfer_opflag = transfer_opflag;
+	request->type = type;
 
 	return PLDM_SUCCESS;
 }
@@ -248,9 +256,10 @@ int encode_get_version_resp(uint8_t instance_id, uint8_t completion_code,
 {
 	struct pldm_header_info header = {0};
 	int rc = PLDM_SUCCESS;
-
-	msg->payload[0] = completion_code;
-	if (msg->payload[0] == PLDM_SUCCESS) {
+	struct pldm_get_version_resp *response =
+	    (struct pldm_get_version_resp *)msg->payload;
+	response->completion_code = completion_code;
+	if (response->completion_code == PLDM_SUCCESS) {
 
 		header.msg_type = PLDM_RESPONSE;
 		header.instance = instance_id;
@@ -261,18 +270,10 @@ int encode_get_version_resp(uint8_t instance_id, uint8_t completion_code,
 		    PLDM_SUCCESS) {
 			return rc;
 		}
-		next_transfer_handle = htole32(next_transfer_handle);
-
-		memcpy(msg->payload + sizeof(msg->payload[0]),
-		       &next_transfer_handle, sizeof(next_transfer_handle));
-
-		memcpy(msg->payload + sizeof(msg->payload[0]) +
-			   sizeof(next_transfer_handle),
-		       &transfer_flag, sizeof(transfer_flag));
-
-		memcpy(msg->payload + sizeof(msg->payload[0]) +
-			   sizeof(next_transfer_handle) + sizeof(transfer_flag),
-		       version_data, version_size);
+		response->next_transfer_handle = htole32(next_transfer_handle);
+		response->transfer_flag = transfer_flag;
+		memcpy(response->version_data, (uint8_t *)version_data,
+		       version_size);
 	}
 	return PLDM_SUCCESS;
 }
@@ -286,10 +287,11 @@ int decode_get_version_req(const uint8_t *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	*transfer_handle = le32toh(*((uint32_t *)msg));
-	*transfer_opflag = *(msg + sizeof(*transfer_handle));
-	*type = *(msg + sizeof(*transfer_handle) + sizeof(*transfer_opflag));
-
+	struct pldm_get_version_req *request =
+	    (struct pldm_get_version_req *)msg;
+	*transfer_handle = le32toh(request->transfer_handle);
+	*transfer_opflag = request->transfer_opflag;
+	*type = request->type;
 	return PLDM_SUCCESS;
 }
 
@@ -307,19 +309,16 @@ int decode_get_version_resp(const uint8_t *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	*completion_code = msg[0];
+	struct pldm_get_version_resp *response =
+	    (struct pldm_get_version_resp *)msg;
+	*completion_code = response->completion_code;
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
 	};
 
-	*next_transfer_handle =
-	    le32toh(*((uint32_t *)(msg + sizeof(*completion_code))));
-	*transfer_flag =
-	    *(msg + sizeof(*completion_code) + sizeof(*next_transfer_handle));
-
-	*version = *((ver32_t *)(msg + sizeof(*completion_code) +
-				 sizeof(*next_transfer_handle) +
-				 sizeof(*transfer_flag)));
+	*next_transfer_handle = le32toh(response->next_transfer_handle);
+	*transfer_flag = response->transfer_flag;
+	memcpy(version, (uint8_t *)response->version_data, sizeof(ver32_t));
 
 	return PLDM_SUCCESS;
 }
