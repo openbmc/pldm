@@ -44,13 +44,12 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	uint8_t *encoded_msg = msg->payload;
+	struct pldm_set_state_effecter_states_req *request =
+	    (struct pldm_set_state_effecter_states_req *)msg->payload;
 	effecter_id = htole16(effecter_id);
-	memcpy(encoded_msg, &effecter_id, sizeof(effecter_id));
-	encoded_msg += sizeof(effecter_id);
-	memcpy(encoded_msg, &comp_effecter_count, sizeof(comp_effecter_count));
-	encoded_msg += sizeof(comp_effecter_count);
-	memcpy(encoded_msg, field,
+	request->effecter_id = effecter_id;
+	request->comp_effecter_count = comp_effecter_count;
+	memcpy(request->field, field,
 	       (sizeof(set_effecter_state_field) * comp_effecter_count));
 
 	return PLDM_SUCCESS;
@@ -88,10 +87,12 @@ int decode_set_state_effecter_states_req(const uint8_t *msg,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	*effecter_id = le16toh(*((uint16_t *)msg));
-	*comp_effecter_count = *(msg + sizeof(*effecter_id));
-	memcpy(field,
-	       (msg + sizeof(*effecter_id) + sizeof(*comp_effecter_count)),
+	struct pldm_set_state_effecter_states_req *request =
+	    (struct pldm_set_state_effecter_states_req *)msg;
+
+	*effecter_id = le16toh(request->effecter_id);
+	*comp_effecter_count = request->comp_effecter_count;
+	memcpy(field, request->field,
 	       (sizeof(set_effecter_state_field) * (*comp_effecter_count)));
 
 	return PLDM_SUCCESS;
