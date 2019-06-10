@@ -125,6 +125,72 @@ struct pldm_header_info {
 	uint8_t completion_code; //!< PLDM completion code, applies for response
 };
 
+/** @struct PLDM_GetTypes_Response
+ *
+ *  Structure representing PLDM get types response.
+ *  The GetPLDMTypes command enables management controllers
+ *  to discover the PLDM type capabilities supported by the
+ *  PLDM terminus and get a list of the PLDM types that are supported.
+ */
+struct PLDM_GetTypes_Response {
+	uint8_t completion_code;
+	bitfield8_t types[8];
+} __attribute__((packed));
+
+/** @struct PLDM_GetCommands_Request
+ *
+ *  Structure representing PLDM get commands request.
+ *  The GetPLDMCommands command enables management controllers
+ *  to discover the PLDM command capabilities supported by the
+ *  PLDM terminus for a specific PLDM Type and version as a responder.
+ */
+struct PLDM_GetCommands_Request {
+	uint8_t type;
+	ver32_t version;
+} __attribute__((packed));
+
+/** @struct PLDM_GetCommands_Response
+ *
+ *  Structure representing PLDM get commands response.
+ *  The GetPLDMCommands command enables management controllers
+ *  to discover the PLDM command capabilities supported by the
+ *  PLDM terminus for a specific PLDM Type and version as a responder.
+ */
+struct PLDM_GetCommands_Response {
+	uint8_t completion_code;
+	bitfield8_t commands[32];
+} __attribute__((packed));
+
+/** @struct PLDM_GetVersion_Request
+ *
+ *  Structure representing PLDM get version request.
+ *  The GetPLDMVersion command can be used to retrieve the
+ *  PLDM base specification versions that the PLDM terminus
+ *  supports, as well as the PLDM Type specification versions
+ *  supported for each PLDM Type.
+ */
+struct PLDM_GetVersion_Request {
+	uint32_t transfer_handle;
+	uint8_t transfer_opflag;
+	uint8_t type;
+} __attribute__((packed));
+
+/** @struct PLDM_GetVersion_Response
+ *
+ *  Structure representing PLDM get version response.
+ *  The GetPLDMVersion command can be used to retrieve the
+ *  PLDM base specification versions that the PLDM terminus
+ *  supports, as well as the PLDM Type specification versions
+ *  supported for each PLDM Type.
+ */
+
+struct PLDM_GetVersion_Response {
+	uint8_t completion_code;
+	uint32_t next_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t version_data[1];
+} __attribute__((packed));
+
 /**
  * @brief Populate the PLDM message with the PLDM header.The caller of this API
  *        allocates buffer for the PLDM header when forming the PLDM message.
