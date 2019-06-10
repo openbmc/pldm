@@ -16,6 +16,20 @@ extern "C" {
 
 enum pldm_bios_commands { PLDM_GET_DATE_TIME = 0x0c };
 
+/** @struct pldm_get_date_time_resp
+ *
+ *  Structure representing PLDM get date time response
+ */
+struct pldm_get_date_time_resp {
+	uint8_t completion_code; //!< completion code
+	uint8_t seconds;	 //!< Seconds in BCD format
+	uint8_t minutes;	 //!< Minutes in BCD format
+	uint8_t hours;		 //!< Hours in BCD format
+	uint8_t day;		 //!< Day of the month in BCD format
+	uint8_t month;		 //!< Month in BCD format
+	uint16_t year;		 //!< Year in BCD format
+} __attribute__((packed));
+
 /* Requester */
 
 /* GetDateTime */
