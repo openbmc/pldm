@@ -125,6 +125,61 @@ struct pldm_header_info {
 	uint8_t completion_code; //!< PLDM completion code, applies for response
 };
 
+/** @struct pldm_get_types_resp
+ *
+ *  Structure representing PLDM get types response.
+ */
+struct pldm_get_types_resp {
+	uint8_t completion_code; //!< completion code
+	bitfield8_t types[8]; //!< each bit represents whether a given PLDM Type
+			      //!< is supported
+} __attribute__((packed));
+
+/** @struct pldm_get_commands_req
+ *
+ *  Structure representing PLDM get commands request.
+ */
+struct pldm_get_commands_req {
+	uint8_t type;    //!< PLDM Type for which command support information is
+			 //!< being requested
+	ver32_t version; //!< version for the specified PLDM Type
+} __attribute__((packed));
+
+/** @struct pldm_get_commands_resp
+ *
+ *  Structure representing PLDM get commands response.
+ */
+struct pldm_get_commands_resp {
+	uint8_t completion_code;  //!< completion code
+	bitfield8_t commands[32]; //!< each bit represents whether a given PLDM
+				  //!< command is supported
+} __attribute__((packed));
+
+/** @struct pldm_get_version_req
+ *
+ *  Structure representing PLDM get version request.
+ */
+struct pldm_get_version_req {
+	uint32_t
+	    transfer_handle; //!< handle to identify PLDM version data transfer
+	uint8_t transfer_opflag; //!< PLDM GetVersion operation flag
+	uint8_t type; //!< PLDM Type for which version information is being
+		      //!< requested
+} __attribute__((packed));
+
+/** @struct pldm_get_version_resp
+ *
+ *  Structure representing PLDM get version response.
+ */
+
+struct pldm_get_version_resp {
+	uint8_t completion_code;       //!< completion code
+	uint32_t next_transfer_handle; //!< next portion of PLDM version data
+				       //!< transfer
+	uint8_t transfer_flag;	 //!< PLDM GetVersion transfer flag
+	uint8_t version_data[1];       //!< PLDM GetVersion version field
+} __attribute__((packed));
+
 /**
  * @brief Populate the PLDM message with the PLDM header.The caller of this API
  *        allocates buffer for the PLDM header when forming the PLDM message.
