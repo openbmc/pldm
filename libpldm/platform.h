@@ -32,12 +32,22 @@ typedef struct state_field_for_state_effecter_set {
 	uint8_t effecter_state; //!< Expected state of the effecter
 } __attribute__((packed)) set_effecter_state_field;
 
+/** @struct PLDM_SetStateEffecterStates_Request
+ *
+ *  Structure representing PLDM set state effecter states request.
+ */
+struct pldm_set_state_effecter_states_req {
+	uint16_t effecter_id;
+	uint8_t comp_effecter_count;
+	set_effecter_state_field field[8];
+} __attribute__((packed));
+
 /* Responder */
 
 /* SetStateEffecterStates */
 
 /** @brief Create a PLDM response message for SetStateEffecterStates
- *
+
  *  @param[in] instance_id - Message's instance id
  *  @param[in] completion_code - PLDM completion code
  *  @param[out] msg - Message will be written to this
