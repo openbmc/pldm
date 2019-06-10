@@ -32,6 +32,24 @@ typedef struct state_field_for_state_effecter_set {
 	uint8_t effecter_state; //!< Expected state of the effecter
 } __attribute__((packed)) set_effecter_state_field;
 
+/** @struct PLDM_SetStateEffecterStates_Response
+ *
+ *  Structure representing PLDM set state effecter states response.
+ */
+struct PLDM_SetStateEffecterStates_Response {
+	uint8_t completion_code;
+} __attribute__((packed));
+
+/** @struct PLDM_SetStateEffecterStates_Request
+ *
+ *  Structure representing PLDM set state effecter states request
+ */
+struct PLDM_SetStateEffecterStates_Request {
+	uint16_t effecter_id;
+	uint8_t comp_effecter_count;
+	set_effecter_state_field field[8];
+} __attribute__((packed));
+
 /* Responder */
 
 /* SetStateEffecterStates */

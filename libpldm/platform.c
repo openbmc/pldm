@@ -9,8 +9,10 @@ int encode_set_state_effecter_states_resp(uint8_t instance_id,
 {
 	struct pldm_header_info header = {0};
 	int rc = PLDM_SUCCESS;
+	struct PLDM_SetStateEffecterStates_Response *dst =
+	    (struct PLDM_SetStateEffecterStates_Response *)msg->body.payload;
 
-	msg->body.payload[0] = completion_code;
+	dst->completion_code = completion_code;
 
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
@@ -44,13 +46,12 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	uint8_t *encoded_msg = msg->body.payload;
+	struct PLDM_SetStateEffecterStates_Request *encoded_msg =
+	    (struct PLDM_SetStateEffecterStates_Request *)msg->body.payload;
 	effecter_id = htole16(effecter_id);
-	memcpy(encoded_msg, &effecter_id, sizeof(effecter_id));
-	encoded_msg += sizeof(effecter_id);
-	memcpy(encoded_msg, &comp_effecter_count, sizeof(comp_effecter_count));
-	encoded_msg += sizeof(comp_effecter_count);
-	memcpy(encoded_msg, field,
+	encoded_msg->effecter_id = effecter_id;
+	encoded_msg->comp_effecter_count = comp_effecter_count;
+	memcpy(encoded_msg->field, field,
 	       (sizeof(set_effecter_state_field) * comp_effecter_count));
 
 	return PLDM_SUCCESS;
@@ -62,8 +63,10 @@ int decode_set_state_effecter_states_resp(const struct pldm_msg_payload *msg,
 	if (msg == NULL || completion_code == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
+	struct PLDM_SetStateEffecterStates_Response *dst =
+	    (struct PLDM_SetStateEffecterStates_Response *)msg->payload;
 
-	*completion_code = *(uint8_t *)msg->payload;
+	*completion_code = dst->completion_code;
 
 	return PLDM_SUCCESS;
 }
@@ -77,11 +80,12 @@ int decode_set_state_effecter_states_req(const struct pldm_msg_payload *msg,
 	    field == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-	const uint8_t *start = msg->payload;
-	*effecter_id = le16toh(*((uint16_t *)start));
-	*comp_effecter_count = *(start + sizeof(*effecter_id));
-	memcpy(field,
-	       (start + sizeof(*effecter_id) + sizeof(*comp_effecter_count)),
+	struct PLDM_SetStateEffecterStates_Request *start =
+	    (struct PLDM_SetStateEffecterStates_Request *)msg->payload;
+
+	*effecter_id = le16toh(start->effecter_id);
+	*comp_effecter_count = start->comp_effecter_count;
+	memcpy(field, start->field,
 	       (sizeof(set_effecter_state_field) * (*comp_effecter_count)));
 
 	return PLDM_SUCCESS;
