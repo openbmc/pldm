@@ -16,6 +16,22 @@ extern "C" {
 
 enum pldm_bios_commands { PLDM_GET_DATE_TIME = 0x0c };
 
+/** @struct PLDM_GetDateTime_Response
+ *
+ *  Structure representing PLDM get date time response
+ *  The GetDateTime command is used to the get the date
+ *  and time information.
+ */
+struct PLDM_GetDateTime_Response {
+	uint8_t completion_code;
+	uint8_t seconds;
+	uint8_t minutes;
+	uint8_t hours;
+	uint8_t day;
+	uint8_t month;
+	uint16_t year;
+} __attribute__((packed));
+
 /* Requester */
 
 /* GetDateTime */
