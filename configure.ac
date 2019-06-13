@@ -64,6 +64,17 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
+# Setup IBM OEM commands support for PLDM
+AC_ARG_ENABLE([oem-ibm], AS_HELP_STRING([
+	--enable-oem-ibm
+	], [
+	Enable PLDM OEM command support For IBM.
+]))
+AM_CONDITIONAL([OEM_IBM], [test "x$enable_oem_ibm" = "xyes"])
+AS_IF([test "x$oem-ibm" == "xtrue"], [
+    AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CXXFLAGS])
+])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
