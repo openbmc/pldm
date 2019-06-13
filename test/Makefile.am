@@ -9,6 +9,12 @@ check_PROGRAMS = \
 	libpldm_bios_test \
 	libpldmresponder_bios_test
 
+if ENABLE_IBM_OEM_CODE_SET
+check_PROGRAMS += \
+	libpldmoem_fileio_test \
+	libpldmoemresponder_fileio_test
+endif
+
 test_cppflags = \
 	-Igtest \
 	$(GTEST_CPPFLAGS) \
@@ -22,7 +28,10 @@ test_ldflags = \
 	-lgtest_main \
 	-lgtest \
 	$(PTHREAD_LIBS) \
-	$(OESDK_TESTCASE_FLAGS)
+	$(OESDK_TESTCASE_FLAGS) \
+	$(SDBUSPLUS_LIBS) \
+	-lgmock \
+	-lstdc++fs 
 
 libpldm_base_test_CPPFLAGS = $(test_cppflags)
 libpldm_base_test_CXXFLAGS = $(test_cxxflags)
@@ -65,7 +74,6 @@ libpldmresponder_bios_test_LDADD = \
 libpldmresponder_bios_test_SOURCES = \
 	libpldmresponder_bios_test.cpp
 
-
 libpldmresponder_base_test_CPPFLAGS = $(test_cppflags)
 libpldmresponder_base_test_CXXFLAGS = $(test_cxxflags)
 libpldmresponder_base_test_LDFLAGS = $(test_ldflags)
@@ -73,5 +81,30 @@ libpldmresponder_base_test_LDADD = \
 	$(top_builddir)/libpldm/libpldm_la-base.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-base.o \
 	$(CODE_COVERAGE_LIBS)
-
 libpldmresponder_base_test_SOURCES = libpldmresponder_base_test.cpp
+
+if ENABLE_IBM_OEM_CODE_SET
+
+libpldmoem_fileio_test_CPPFLAGS = $(test_cppflags) \
+	-I$(top_builddir)/oem/ibm/ \
+	-I$(top_builddir)/libpldm/
+libpldmoem_fileio_test_CXXFLAGS = $(test_cxxflags)
+libpldmoem_fileio_test_LDFLAGS = $(test_ldflags)
+libpldmoem_fileio_test_LDADD = \
+	$(top_builddir)/libpldm/libpldm_la-base.o \
+	$(top_builddir)/oem/ibm/libpldm/libpldm_la-file_io.o
+libpldmoem_fileio_test_SOURCES = $(top_builddir)/oem/ibm/test/libpldm_fileio_test.cpp
+
+libpldmoemresponder_fileio_test_CPPFLAGS = $(test_cppflags) \
+	-I$(top_builddir)/oem/ibm/ \
+	-I$(top_builddir)/libpldm/
+libpldmoemresponder_fileio_test_CXXFLAGS = $(test_cxxflags)
+libpldmoemresponder_fileio_test_LDFLAGS = $(test_ldflags)
+libpldmoemresponder_fileio_test_LDADD = \
+	$(top_builddir)/libpldm/libpldm_la-base.o \
+	$(top_builddir)/oem/ibm/libpldm/libpldm_la-file_io.o \
+	$(top_builddir)/oem/ibm/libpldmresponder/libpldmresponder_la-file_io.o
+libpldmoemresponder_fileio_test_SOURCES = $(top_builddir)/oem/ibm/test/libpldmresponder_fileio_test.cpp
+
+endif
+

@@ -1,16 +1,28 @@
-libpldm_includedir = $(includedir)/libpldm
+libpldm_includedir = $(includedir)/pldm
+libpldm_LTLIBRARIES = libpldm.la
+libpldmdir = ${libdir}
+
 libpldm_include_HEADERS = \
 	base.h \
 	pldm_types.h \
 	platform.h \
 	bios.h
 
-libpldm_LTLIBRARIES = libpldm.la
-libpldmdir = ${libdir}
 libpldm_la_SOURCES = \
 	base.c \
 	platform.c \
 	bios.c
+
+if ENABLE_IBM_OEM_CODE_SET
+
+libpldm_include_HEADERS += \
+        $(top_builddir)/oem/ibm/libpldm/file_io.h
+
+libpldm_la_SOURCES += \
+        $(top_builddir)/oem/ibm/libpldm/file_io.c
+
+endif
+
 libpldm_la_LDFLAGS = -version-info 1:0:0 -shared
 libpldm_la_CFLAGS = $(CODE_COVERAGE_CFLAGS)
 libpldm_la_LIBADD = $(CODE_COVERAGE_LIBS)
