@@ -41,6 +41,40 @@ Response handler(Request payload, size_t payloadLen)
 Source files are named according to the PLDM Type, for eg base.[hpp/cpp],
 fru.[hpp/cpp], etc.
 
+
+## OEM/vendor-specific functions
+This will support OEM or vendor-specific functions and semantic information.
+Following directory structure has to be used:
+```
+    pldm repo
+     |---- oem
+            |----<oem_name>
+                      |----libpldm
+                            |----<oem based encoding and decoding files>
+                      |----libpldmresponder
+                            |---<oem based handler files>
+       
+```
+<oem_name> - This folder must be created with the name of the OEM/vendor
+in lower case. Folders named libpldm and libpldmresponder must be created under
+the folder <oem_name>
+
+Files having the oem functionality for the libpldm library should be placed
+under the folder oem/<oem_name>/libpldm. They must be adhering to the rules
+mentioned under the libpldm section above.
+
+Files having the oem functionality for the libpldmresponder library should be
+placed under the folder oem/<oem_name>/libpldmresponder. They must be adherin 
+to the rules mentioned under the libpldmresponder section above.
+
+Once the above is done a conditional flag has to be created in the configure.ac
+to enable conditional compilation.
+
+For consistency would recommend using "--enable-oem-<oem_name>".
+
+The Makefile.am files in libpldm and libpldmresponder will need to be changed
+to allow conditional compilation of the code.
+
 ## TODO
 Consider hosting libpldm above in a repo of its own, probably even outside the
 OpenBMC project? A separate repo would enable something like git submodule.
