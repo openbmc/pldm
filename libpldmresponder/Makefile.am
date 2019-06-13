@@ -13,9 +13,15 @@ libpldmresponder_la_LDFLAGS = \
 libpldmresponder_la_CXXFLAGS = \
 	$(CODE_COVERAGE_CXXFLAGS) \
 	$(SDBUSPLUS_CFLAGS)
-
 libpldmresponder_la_CPPFLAGS = \
 	$(CODE_COVERAGE_CPPFLAGS) \
+   	-I$(top_builddir)/libpldm/ \
 	-I$(top_srcdir)
 
+if OEM_IBM
+libpldmresponder_la_SOURCES += \
+    $(top_builddir)/oem/ibm/libpldmresponder/file_io.cpp
+libpldmresponder_la_CPPFLAGS += \
+        -I$(top_builddir)/oem/ibm/
+endif
 
