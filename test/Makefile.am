@@ -9,7 +9,8 @@ check_PROGRAMS = \
 	libpldm_bios_test \
 	libpldmresponder_bios_test \
 	libpldmresponder_pdr_state_effecter_test \
-	libpldmresponder_platform_test
+	libpldmresponder_platform_test \
+	libpldmresponder_pdr_state_sensor_test
 
 test_cppflags = \
 	-Igtest \
@@ -105,3 +106,15 @@ libpldmresponder_platform_test_LDADD = \
 		$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
         $(CODE_COVERAGE_LIBS)
 libpldmresponder_platform_test_SOURCES = libpldmresponder_platform_test.cpp
+
+libpldmresponder_pdr_state_sensor_test_CPPFLAGS = $(test_cppflags)
+libpldmresponder_pdr_state_sensor_test_CXXFLAGS = $(test_cxxflags)
+libpldmresponder_pdr_state_sensor_test_LDFLAGS = $(test_ldflags)
+libpldmresponder_pdr_state_sensor_test_LDADD = \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-pdr.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-effecters.o \
+	$(CODE_COVERAGE_LIBS) \
+	$(SDBUSPLUS_LIBS) \
+	$(PHOSPHOR_LOGGING_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS)
+libpldmresponder_pdr_state_sensor_test_SOURCES = libpldmresponder_pdr_state_sensor_test.cpp

@@ -137,7 +137,7 @@ int setBmcEffecter(uint16_t& effecterId, uint8_t& compEffecterCnt,
     auto foundPdr = false;
     pdr::Entry e;
     auto recordHndl = 1;
-    state_effecter_possible_states* states;
+    state_effecter_or_sensor_possible_states* states;
     std::string objPath;
     std::string dbusProp;
     std::string dbusPropVal;
@@ -162,8 +162,9 @@ int setBmcEffecter(uint16_t& effecterId, uint8_t& compEffecterCnt,
             pdr->effecter_id == effecterId)
         {
             foundPdr = true;
-            states = reinterpret_cast<state_effecter_possible_states*>(
-                pdr->possible_states);
+            states =
+                reinterpret_cast<state_effecter_or_sensor_possible_states*>(
+                    pdr->possible_states);
             pdrCompEffCnt = pdr->composite_effecter_count;
             if (compEffecterCnt > pdrCompEffCnt)
             {
@@ -252,8 +253,10 @@ int setBmcEffecter(uint16_t& effecterId, uint8_t& compEffecterCnt,
                     break;
                 }
             } // end inner for
-            states = reinterpret_cast<state_effecter_possible_states*>(
-                pdr->possible_states + sizeof(state_effecter_possible_states));
+            states =
+                reinterpret_cast<state_effecter_or_sensor_possible_states*>(
+                    pdr->possible_states +
+                    sizeof(state_effecter_or_sensor_possible_states));
         } // end outer for
     }     // end if foundPdr
 
