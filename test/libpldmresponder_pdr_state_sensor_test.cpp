@@ -11,31 +11,30 @@ TEST(GeneratePDR, testGoodJson)
 {
     using namespace pdr;
     using namespace effecter::dbus_mapping;
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
+    Repo& pdrRepo = get("./pdr_jsons/state_sensor/good");
 
     // 2 entries
     ASSERT_EQ(pdrRepo.numEntries(), 2);
 
     // Check first PDR
     pdr::Entry e = pdrRepo.at(1);
-    pldm_state_effecter_pdr* pdr =
-        reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+    pldm_state_sensor_pdr* pdr =
+        reinterpret_cast<pldm_state_sensor_pdr*>(e.data());
 
     ASSERT_EQ(pdr->hdr.record_handle, 1);
     ASSERT_EQ(pdr->hdr.version, 1);
-    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
-    ASSERT_EQ(pdr->hdr.length, 19);
+    ASSERT_EQ(pdr->hdr.length, 17);
 
     ASSERT_EQ(pdr->terminus_handle, 0);
-    ASSERT_EQ(pdr->effecter_id, 1);
+    ASSERT_EQ(pdr->sensor_id, 1);
     ASSERT_EQ(pdr->entity_type, 33);
     ASSERT_EQ(pdr->entity_instance, 0);
     ASSERT_EQ(pdr->container_id, 0);
-    ASSERT_EQ(pdr->effecter_semantic_id, 0);
-    ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
-    ASSERT_EQ(pdr->has_description_pdr, false);
-    ASSERT_EQ(pdr->composite_effecter_count, 1);
+    ASSERT_EQ(pdr->sensor_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr->sensor_aux_names_pdr, false);
+    ASSERT_EQ(pdr->composite_sensor_count, 1);
     state_effecter_or_sensor_possible_states* states =
         reinterpret_cast<state_effecter_or_sensor_possible_states*>(
             pdr->possible_states);
@@ -45,28 +44,27 @@ TEST(GeneratePDR, testGoodJson)
     bf1.byte = 2;
     ASSERT_EQ(states->states[0].byte, bf1.byte);
 
-    auto paths = get(pdr->effecter_id);
+    auto paths = get(pdr->sensor_id);
     ASSERT_EQ(paths[0], "/foo/bar");
 
     // Check second PDR
     e = pdrRepo.at(2);
-    pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+    pdr = reinterpret_cast<pldm_state_sensor_pdr*>(e.data());
 
     ASSERT_EQ(pdr->hdr.record_handle, 2);
     ASSERT_EQ(pdr->hdr.version, 1);
-    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
-    ASSERT_EQ(pdr->hdr.length, 24);
+    ASSERT_EQ(pdr->hdr.length, 22);
 
     ASSERT_EQ(pdr->terminus_handle, 0);
-    ASSERT_EQ(pdr->effecter_id, 2);
+    ASSERT_EQ(pdr->sensor_id, 2);
     ASSERT_EQ(pdr->entity_type, 100);
     ASSERT_EQ(pdr->entity_instance, 0);
     ASSERT_EQ(pdr->container_id, 0);
-    ASSERT_EQ(pdr->effecter_semantic_id, 0);
-    ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
-    ASSERT_EQ(pdr->has_description_pdr, false);
-    ASSERT_EQ(pdr->composite_effecter_count, 2);
+    ASSERT_EQ(pdr->sensor_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr->sensor_aux_names_pdr, false);
+    ASSERT_EQ(pdr->composite_sensor_count, 2);
     states = reinterpret_cast<state_effecter_or_sensor_possible_states*>(
         pdr->possible_states);
     ASSERT_EQ(states->state_set_id, 197);
@@ -84,11 +82,9 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(states->states[0].byte, bf2[0].byte);
     ASSERT_EQ(states->states[1].byte, bf2[1].byte);
 
-    paths = get(pdr->effecter_id);
+    paths = get(pdr->sensor_id);
     ASSERT_EQ(paths[0], "/foo/bar");
     ASSERT_EQ(paths[1], "/foo/bar/baz");
-
-    ASSERT_THROW(get(0xDEAD), std::exception);
 }
 
 TEST(GeneratePDR, testNoJson)
@@ -102,8 +98,8 @@ TEST(GeneratePDR, testNoJson)
 TEST(GeneratePDR, testMalformedJson)
 {
     using namespace pdr;
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
+    Repo& pdrRepo = get("./pdr_jsons/state_sensor/good");
     ASSERT_EQ(pdrRepo.numEntries(), 2);
     pdrRepo.makeEmpty();
-    ASSERT_THROW(get("./pdr_jsons/state_effecter/malformed"), std::exception);
+    ASSERT_THROW(get("./pdr_jsons/state_sensor/malformed"), std::exception);
 }
