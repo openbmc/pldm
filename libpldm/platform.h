@@ -38,6 +38,7 @@ enum pldm_platform_commands {
 /** @brief PLDM PDR types
  */
 enum pldm_pdr_types {
+	PLDM_STATE_SENSOR_PDR = 4,
 	PLDM_STATE_EFFECTER_PDR = 11,
 };
 
@@ -86,11 +87,28 @@ struct pldm_state_effecter_pdr {
 	uint8_t possible_states[1];
 } __attribute__((packed));
 
-/** @struct state_effecter_possible_states
+/** @struct pldm_state_sensor_pdr
  *
- *  Structure representing state enums for state effecter
+ *  Structure representing PLDM state sensor PDR
  */
-struct state_effecter_possible_states {
+struct pldm_state_sensor_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t sensor_id;
+	uint16_t entity_type;
+	uint16_t entity_instance;
+	uint16_t container_id;
+	uint8_t sensor_init;
+	bool8_t sensor_aux_names_pdr;
+	uint8_t composite_sensor_count;
+	uint8_t possible_states[1];
+} __attribute__((packed));
+
+/** @struct state_effecter_or_sensor_possible_states
+ *
+ *  Structure representing state enums for state effecter or sensor
+ */
+struct state_effecter_or_sensor_possible_states {
 	uint16_t state_set_id;
 	uint8_t possible_states_size;
 	bitfield8_t states[1];
@@ -101,8 +119,8 @@ struct state_effecter_possible_states {
  *  Structure representing a stateField in SetStateEffecterStates command */
 
 typedef struct state_field_for_state_effecter_set {
-	uint8_t set_request;    //!< Whether to change the state
-	uint8_t effecter_state; //!< Expected state of the effecter
+	uint8_t set_request;
+	uint8_t effecter_state;
 } __attribute__((packed)) set_effecter_state_field;
 
 /** @struct get_sensor_state_field
