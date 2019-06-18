@@ -20,6 +20,8 @@ static const std::map<Type, Cmd> capabilities{
 
 static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
+    {PLDM_PLATFORM, {0xF1, 0xF1, 0xF1, 0x00}},
+    {PLDM_BIOS, {0xF1, 0xF0, 0xF0, 0x00}},
 };
 
 Response getPLDMTypes(const pldm_msg* request, size_t payloadLength)
