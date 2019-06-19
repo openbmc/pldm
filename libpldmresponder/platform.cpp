@@ -25,6 +25,9 @@ std::map<uint16_t, std::map<uint8_t, std::string>> stateToDbusProp = {
      {{1, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus.Standby"},
       {2, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
           "BootComplete"}}},
+    {PLDM_SYSTEM_POWER_STATE,
+     {{9, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
+          "SoftPowerOff"}}},
 };
 
 using namespace phosphor::logging;
@@ -183,6 +186,50 @@ int setBmcEffecter(uint16_t& effecterId, uint8_t& compEffecterCnt,
                  for (auto const& stateSet : stateToDbusProp)
                  {
                      if (stateSet.first == PLDM_BOOT_PROGRESS_STATE)
+                     {
+                         auto search = stateSet.second.find(
+                             stateField[currState - 1].effecter_state);
+                         if (search == stateSet.second.end())
+                         {
+                             log<level::ERR>(
+                                 "Invalid state field passed or field not "
+                                 "found",
+                                 entry("FIELD=%d", states->states[0].byte));
+                             rc = PLDM_ERROR;
+                             break;
+                         }
+                         if (stateField[currState - 1].set_request ==
+                             PLDM_NO_CHANGE)
+                         {
+                             break;
+                         }
+                         dbusProp = "OperatingSystemState";
+                         std::variant<std::string> value{search->second};
+                         dbusInterface =
+                             "xyz.openbmc_project.State.OperatingSystem.Status";
+                         auto bus = sdbusplus::bus::new_default();
+                         try
+                         {
+                             auto service = getService(bus, objPath.c_str(),
+                                                       dbusInterface);
+                             auto method = bus.new_method_call(
+                                 service.c_str(), objPath.c_str(),
+                                 dbusProperties, "Set");
+                             method.append(dbusInterface, dbusProp, value);
+                             auto reply = bus.call(method);
+                         }
+                         catch (std::exception& e)
+                         {
+                             log<level::ERR>(
+                                 "Error setting property",
+                                 entry("PROPERTY=%s", dbusProp.c_str()),
+                                 entry("INTERFACE=%s", dbusInterface.c_str()));
+                             rc = PLDM_ERROR;
+                             break;
+                         }
+                         break;
+                     }
+                     else if (stateSet.first == PLDM_SYSTEM_POWER_STATE)
                      {
                          auto search = stateSet.second.find(
                              stateField[currState - 1].effecter_state);
