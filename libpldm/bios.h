@@ -16,6 +16,41 @@ extern "C" {
 
 enum pldm_bios_commands { PLDM_GET_DATE_TIME = 0x0c };
 
+enum pldm_bios_table_types {
+	PLDM_BIOS_STRING_TABLE,
+	PLDM_BIOS_ATTR_TABLE,
+	PLDM_BIOS_ATTR_VAL_TABLE,
+};
+
+struct pldm_bios_string_table_entry {
+	uint16_t string_handle;
+	uint16_t string_length;
+	char name[1];
+} __attribute__((packed));
+
+struct pldm_bios_attr_table_entry {
+	uint16_t attr_handle;
+	uint8_t attr_type;
+	uint16_t string_handle;
+	uint8_t metadata[1];
+} __attribute__((packed));
+
+struct pldm_bios_enum_attr {
+	uint8_t num_possible_values;
+	uint16_t indices[1];
+} __attribute__((packed));
+
+struct pldm_bios_attr_val_table_entry {
+	uint16_t attr_handle;
+	uint8_t attr_type;
+	uint8_t value[1];
+} __attribute__((packed));
+
+struct pldm_bios_enum_attr_val {
+	uint8_t num_curr_values;
+	uint8_t indices[1];
+} __attribute__((packed));
+
 /** @struct pldm_get_date_time_resp
  *
  *  Structure representing PLDM get date time response
