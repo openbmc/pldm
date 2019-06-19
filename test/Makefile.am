@@ -7,7 +7,8 @@ check_PROGRAMS = \
 	libpldm_platform_test \
 	libpldmresponder_base_test \
 	libpldm_bios_test \
-	libpldmresponder_bios_test
+	libpldmresponder_bios_test \
+	libpldmresponder_bios_table_test
 
 if OEM_IBM
 check_PROGRAMS += \
@@ -110,3 +111,19 @@ libpldmoemresponder_fileio_test_LDADD = \
 libpldmoemresponder_fileio_test_SOURCES = $(top_builddir)/oem/ibm/test/libpldmresponder_fileio_test.cpp
 endif
 
+libpldmresponder_bios_table_test_CPPFLAGS = $(test_cppflags)
+libpldmresponder_bios_table_test_CXXFLAGS = $(test_cxxflags)
+libpldmresponder_bios_table_test_LDFLAGS = \
+        $(test_ldflags) \
+        $(SDBUSPLUS_LIBS)
+libpldmresponder_bios_table_test_LDADD = \
+        $(top_builddir)/libpldmresponder/libpldmresponder_la-bios.o \
+        $(top_builddir)/libpldmresponder/libpldmresponder_la-bios_table.o \
+        $(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
+        $(top_builddir)/libpldm/libpldm_la-base.o  \
+        $(top_builddir)/libpldm/libpldm_la-bios.o \
+        $(CODE_COVERAGE_LIBS) \
+        $(SDBUSPLUS_LIBS) \
+	-lstdc++fs
+libpldmresponder_bios_table_test_SOURCES = \
+        libpldmresponder_bios_table_test.cpp
