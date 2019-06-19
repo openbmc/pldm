@@ -29,5 +29,16 @@
                 "states" : [1,2,5,15]
             }
         }]
+    },
+    {
+        "type" : 120,
+        "instance" : 0,
+        "container" : 0,
+        "effecters" : [{
+        "set":
+        {
+            "id" : 260, "size" : 1, "states" : [9]
+        }
+        }
     }]
 }

@@ -13,8 +13,8 @@ TEST(GeneratePDR, testGoodJson)
     using namespace effecter::dbus_mapping;
     Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
 
-    // 2 entries
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    // 3 entries
+    ASSERT_EQ(pdrRepo.numEntries(), 3);
 
     // Check first PDR
     pdr::Entry e = pdrRepo.at(1);
@@ -82,6 +82,31 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(states->states[0].byte, bf2[0].byte);
     ASSERT_EQ(states->states[1].byte, bf2[1].byte);
 
+    // Check third PDR
+    e = pdrRepo.at(3);
+    pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+
+    ASSERT_EQ(pdr->hdr.record_handle, 3);
+    ASSERT_EQ(pdr->hdr.version, 1);
+    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdr->hdr.record_change_num, 0);
+    ASSERT_EQ(pdr->hdr.length, 19);
+
+    ASSERT_EQ(pdr->terminus_handle, 0);
+    ASSERT_EQ(pdr->effecter_id, 1);
+    ASSERT_EQ(pdr->entity_type, 120);
+    ASSERT_EQ(pdr->entity_instance, 0);
+    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->effecter_semantic_id, 0);
+    ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr->has_description_pdr, false);
+    ASSERT_EQ(pdr->composite_effecter_count, 1);
+    ASSERT_EQ(states->state_set_id, 260);
+    ASSERT_EQ(states->possible_states_size, 1);
+    // bitfield8_t bf1{};
+    // bf1.byte = 9;
+    // ASSERT_EQ(states->states[0].byte, bf1.byte);
+
     paths = get(pdr->effecter_id);
     ASSERT_EQ(paths[0], "/foo/bar");
     ASSERT_EQ(paths[1], "/foo/bar/baz");
@@ -94,14 +119,14 @@ TEST(GeneratePDR, testNoJson)
     using namespace pdr;
     Repo& pdrRepo = get("./pdr_jsons/not_there");
 
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    ASSERT_EQ(pdrRepo.numEntries(), 3);
 }
 
 TEST(GeneratePDR, testMalformedJson)
 {
     using namespace pdr;
     Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    ASSERT_EQ(pdrRepo.numEntries(), 3);
     pdrRepo.makeEmpty();
     ASSERT_THROW(get("./pdr_jsons/state_effecter/malformed"), std::exception);
 }
