@@ -71,7 +71,8 @@ int setStateEffecterStatesHandler(
           {PLDM_BOOT_COMPLETED,
            "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
            "BootComplete"}}},
-    };
+        {PLDM_SYSTEM_POWER_STATE,
+         {{9, "xyz.openbmc_project.State.Chassis.Transition.Off"}}}};
     using namespace phosphor::logging;
     using namespace pldm::responder::pdr;
     using namespace pldm::responder::effecter::dbus_mapping;
@@ -150,6 +151,47 @@ int setStateEffecterStatesHandler(
                  std::variant<std::string> value{iter->second};
                  std::string dbusInterface =
                      "xyz.openbmc_project.State.OperatingSystem.Status";
+                 int rc = PLDM_SUCCESS;
+                 try
+                 {
+                     rc = dBusIntf->setDbusProperty(objPath.c_str(),
+                                                    dbusProp.c_str(),
+                                                    dbusInterface, value);
+                 }
+                 catch (const std::exception& e)
+                 {
+                     log<level::ERR>(
+                         "Error setting property",
+                         entry("PROPERTY=%s", dbusProp.c_str()),
+                         entry("INTERFACE=%s", dbusInterface.c_str()),
+                         entry("PATH=%s", objPath.c_str()));
+                     return (int)PLDM_ERROR;
+                 }
+                 return rc;
+             }},
+            {PLDM_SYSTEM_POWER_STATE,
+             [](const PropertyMap& stateNumToDbusProp,
+                const std::string& objPath, const uint8_t currState,
+                const std::vector<set_effecter_state_field>& stateField,
+                const DBusInterface* dBusIntf) {
+                 auto stateSet =
+                     stateNumToDbusProp.find(PLDM_SYSTEM_POWER_STATE);
+                 auto iter = stateSet->second.find(
+                     stateField[currState - 1].effecter_state);
+                 if (iter == stateSet->second.end())
+                 {
+                     log<level::ERR>(
+                         "Invalid state field passed or field not "
+                         "found for PLDM_SYSTEM_POWER_STATE",
+                         entry("FIELD=%d",
+                               stateField[currState - 1].effecter_state),
+                         entry("OBJECT_PATH=%s", objPath.c_str()));
+                     return (int)PLDM_ERROR_INVALID_DATA;
+                 }
+                 std::string dbusProp = "RequestedPowerTransition";
+                 std::variant<std::string> value{iter->second};
+                 std::string dbusInterface =
+                     "xyz.openbmc_project.State.Chassis";
                  int rc = PLDM_SUCCESS;
                  try
                  {

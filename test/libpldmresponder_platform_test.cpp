@@ -220,6 +220,19 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     auto rc = setStateEffecterStatesHandler<MockdBusHandler>(&handlerObj, 0x1,
                                                              stateField);
     ASSERT_EQ(rc, 0);
+
+    std::vector<set_effecter_state_field> stateFieldPwDn;
+    stateFieldPwDn.push_back({PLDM_REQUEST_SET, 9});
+    auto powerDownInf = "xyz.openbmc_project.State.Chassis";
+    auto powerDownProp = "RequestedPowerTransition";
+    std::variant<std::string> pwdnValue{"xyz.openbmc_project.State.Chassis."
+                                        "Transition.Off"};
+    EXPECT_CALL(handlerObj, setDbusProperty(objPath, powerDownProp,
+                                            powerDownInf, pwdnValue))
+        .Times(1);
+    rc = setStateEffecterStatesHandler<MockdBusHandler>(&handlerObj, 0x3,
+                                                        stateFieldPwDn);
+    ASSERT_EQ(rc, 0);
 }
 
 TEST(setStateEffecterStatesHandler, testBadRequest)
