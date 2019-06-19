@@ -32,5 +32,18 @@
             },
             "dbus" : "/foo/bar/baz"
         }]
+    },
+    {
+        "type" : 120,
+        "instance" : 0,
+        "container" : 0,
+        "effecters" : [{
+            "set" : {
+                "id" : 260,
+                "size" : 2,
+                "states" : [9]
+            },
+            "dbus" : "/foo/bar"
+        }]
     }]
 }
