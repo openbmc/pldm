@@ -102,6 +102,9 @@ int setStateEffecterStatesHandler(
                   "Standby"},
               {2, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
                   "BootComplete"}}},
+            {PLDM_SYSTEM_POWER_STATE,
+             {{9, "xyz.openbmc_project.State.Chassis.Transition."
+                  "Off"}}},
         };
     using namespace phosphor::logging;
     using namespace pldm::responder::pdr;
@@ -191,8 +194,45 @@ int setStateEffecterStatesHandler(
                          break;
                      }
                  }
-             }}};
+             }},
+            {PLDM_SYSTEM_POWER_STATE,
+             [&](const std::string& objPath, const uint8_t& currState,
+                 const state_effecter_possible_states* states) {
+                 for (const auto& stateSet : stateToDbusProp)
+                 {
+                     if (stateSet.first == PLDM_SYSTEM_POWER_STATE)
+                     {
+                         auto iter = stateSet.second.find(
+                             stateField[currState - 1].effecter_state);
+                         if (iter == stateSet.second.end())
+                         {
+                             log<level::ERR>(
+                                 "Invalid state field passed or field not "
+                                 "found",
+                                 entry("FIELD=%d", states->states[0].byte));
+                             rc = PLDM_ERROR;
+                             break;
+                         }
+                         if (stateField[currState - 1].set_request ==
+                             PLDM_NO_CHANGE)
+                         {
+                             break;
+                         }
+                         std::string dbusProp = "RequestedPowerTransition";
+                         std::variant<std::string> value{iter->second};
+                         std::string dbusInterface =
+                             "xyz.openbmc_project.State.Chassis.Transition";
+                         rc = dBusIntf->setDbusProperty(objPath, dbusProp,
+                                                        dbusInterface, value);
+                         if (rc != PLDM_SUCCESS)
+                         {
+                             break;
+                         }
 
+                         break;
+                     }
+                 }
+             }}};
     std::string objPath;
     uint8_t currState = 1;
     if (foundPdr)
