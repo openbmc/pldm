@@ -89,6 +89,9 @@ int setStateEffecterStatesHandler(
            "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus.Standby"},
           {2, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
               "BootComplete"}}},
+        {PLDM_BOOT_PROGRESS_STATE,
+         {{9, "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
+              "SoftPowerOff"}}},
     };
     using namespace phosphor::logging;
     using namespace pldm::responder::pdr;
@@ -142,10 +145,47 @@ int setStateEffecterStatesHandler(
     } while (i <= totalPdrEntries);
 
     std::map<uint16_t, std::function<void()>> effecterToDbusEntries = {
-        {PLDM_BOOT_PROGRESS_STATE, [&]() {
+        {PLDM_BOOT_PROGRESS_STATE,
+         [&]() {
              for (auto const& stateSet : stateToDbusProp)
              {
                  if (stateSet.first == PLDM_BOOT_PROGRESS_STATE)
+                 {
+                     auto search = stateSet.second.find(
+                         stateField[currState - 1].effecter_state);
+                     if (search == stateSet.second.end())
+                     {
+                         log<level::ERR>(
+                             "Invalid state field passed or field not "
+                             "found",
+                             entry("FIELD=%d", states->states[0].byte));
+                         rc = PLDM_ERROR;
+                         break;
+                     }
+                     if (stateField[currState - 1].set_request ==
+                         PLDM_NO_CHANGE)
+                     {
+                         break;
+                     }
+                     dbusProp = "OperatingSystemState";
+                     std::variant<std::string> value{search->second};
+                     dbusInterface =
+                         "xyz.openbmc_project.State.OperatingSystem.Status";
+                     rc = dBusIntf->setDbusProperty(objPath, dbusProp,
+                                                    dbusInterface, value);
+                     if (rc != PLDM_SUCCESS)
+                     {
+                         break;
+                     }
+
+                     break;
+                 }
+             }
+         }},
+        {PLDM_SYSTEM_POWER_STATE, [&]() {
+             for (auto const& stateSet : stateToDbusProp)
+             {
+                 if (stateSet.first == PLDM_SYSTEM_POWER_STATE)
                  {
                      auto search = stateSet.second.find(
                          stateField[currState - 1].effecter_state);
