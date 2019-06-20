@@ -76,6 +76,7 @@ libpldmresponder_bios_test_LDFLAGS = \
 libpldmresponder_bios_test_LDADD = \
 	$(top_builddir)/pldmd-registration.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios_parser.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
 	$(top_builddir)/libpldm/libpldm_la-base.o  \
 	$(top_builddir)/libpldm/libpldm_la-bios.o \
