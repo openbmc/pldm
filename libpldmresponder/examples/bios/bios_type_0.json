@@ -1,0 +1,27 @@
+{
+   "entries":[
+      {
+         "attribute_name" : "HMCManagedState",
+         "possible_values" : [ "On", "Off" ],
+         "default_values" : [ "On" ],
+         "object_path" : "/xyz/abc/def",
+         "interface" : "xyz.openbmc_project.HMCManaged",
+         "property_name" : "State",
+         "property_values" : ["xyz.openbmc_project.State.On", "xyz.openbmc_project.State.Off"]
+      },
+      {
+         "attribute_name" : "FirmwareIPLSide",
+         "possible_values" : [ "P", "T" ],
+         "default_values" : [ "P" ],
+         "object_path" : "/xyz/abc/def",
+         "interface" : "xyz.openbmc.FirmwareIPL",
+         "property_name" : "Side",
+         "property_values" : ["xyz.openbmc_project.Side.P", "xyz.openbmc_project.Side.T"]
+      },
+      {
+         "attribute_name" : "CodeUpdatePolicy",
+         "possible_values" : [ "Concurrent", "Disruptive" ],
+         "default_values" : [ "Concurrent" ]
+      }
+    ]
+}
