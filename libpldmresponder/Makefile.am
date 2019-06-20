@@ -6,7 +6,9 @@ libpldmresponder_la_SOURCES = \
 	bios.cpp \
 	effecters.cpp \
 	pdr.cpp \
-	bios_table.cpp
+	bios_table.cpp \
+	bios_parser.cpp
+
 libpldmresponder_la_LIBADD = \
 	../libpldm/libpldm.la \
 	$(CODE_COVERAGE_LIBS)
