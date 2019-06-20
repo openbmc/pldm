@@ -1,5 +1,5 @@
-
 #include "libpldmresponder/bios.hpp"
+#include "libpldmresponder/bios_parser.hpp"
 
 #include <string.h>
 
@@ -43,4 +43,48 @@ TEST(epochToBCDTime, testTime)
     ASSERT_EQ(0x13, day);
     ASSERT_EQ(0x4, month);
     ASSERT_EQ(0x2019, year);
+}
+
+TEST(GetBIOSStrings, allScenarios)
+{
+    using namespace bios_parser;
+    // All the BIOS Strings in the BIOS JSON config files.
+    Strings vec{"HMCManagedState",  "On",         "Off",
+                "FWBootSide",       "Perm",       "Temp",
+                "InbandCodeUpdate", "Allowed",    "NotAllowed",
+                "CodeUpdatePolicy", "Concurrent", "Disruptive"};
+
+    Strings nullVec{};
+
+    // Invalid directory
+    auto strings = bios_parser::getStrings("./bios_json");
+    ASSERT_EQ(strings == nullVec, true);
+
+    strings = bios_parser::getStrings("./bios_jsons");
+    ASSERT_EQ(strings == vec, true);
+}
+
+TEST(getAttrValue, allScenarios)
+{
+    using namespace bios_parser::bios_enum;
+    // All the BIOS Strings in the BIOS JSON config files.
+    AttrValuesMap valueMap{
+        {"HMCManagedState", {false, {"On", "Off"}, {"On"}}},
+        {"FWBootSide", {false, {"Perm", "Temp"}, {"Perm"}}},
+        {"InbandCodeUpdate", {false, {"Allowed", "NotAllowed"}, {"Allowed"}}},
+        {"CodeUpdatePolicy",
+         {false, {"Concurrent", "Disruptive"}, {"Concurrent"}}}};
+
+    auto rc = setupValueLookup("./bios_jsons");
+    ASSERT_EQ(rc, 0);
+
+    auto values = getValues();
+    ASSERT_EQ(valueMap == values, true);
+
+    CurrentValues cv{"Concurrent"};
+    auto value = getAttrValue("CodeUpdatePolicy");
+    ASSERT_EQ(value == cv, true);
+
+    // Invalid attribute name
+    ASSERT_THROW(getAttrValue("CodeUpdatePolic"), std::out_of_range);
 }
