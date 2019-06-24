@@ -27,4 +27,10 @@ else
 @CODE_COVERAGE_RULES@
 endif
 
-SUBDIRS = libpldm libpldmresponder test
+SUBDIRS = libpldm libpldmresponder test tool
+
+if PLDMTOOL
+SUBDIRS += tool
+endif
+     
+
