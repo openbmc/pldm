@@ -48,3 +48,7 @@ endif
 
 ACLOCAL_AMFLAGS = -I m4
 
+if PLDMTOOL
+SUBDIRS += tool
+endif
+
