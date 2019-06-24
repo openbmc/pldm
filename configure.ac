@@ -42,8 +42,6 @@ m4_ifdef([_AX_CODE_COVERAGE_RULES],
 AX_ADD_AM_MACRO_STATIC([])
 
 AX_PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
-AX_PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging])
-PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
 
 # Check/set gtest specific functions.
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
@@ -77,7 +75,22 @@ AS_IF([test "x$oem-ibm" == "xtrue"], [
     AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CXXFLAGS])
 ])
 
+AC_ARG_ENABLE([pldmtool],
+[  --enable-pldmtool    Turn on pldmtool support],
+[case "${enableval}" in
+  yes) pldmtool=true ;;
+  no)  pldmtool=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-pldmtool]) ;;
+esac],[pldmtool=false])
+AM_CONDITIONAL([PLDMTOOL], [test x$pldmtool = xtrue])
+AS_IF([test "x$pldmtool" == "xtrue"], [
+    AX_APPEND_COMPILE_FLAGS([-DPLDMTOOL], [CXXFLAGS])
+])
+
+#subdirectory configure to be run
+AC_CONFIG_SUBDIRS([tool])
+
 # Create configured output
-AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
+AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile tool/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
 AC_OUTPUT
