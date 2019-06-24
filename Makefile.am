@@ -29,6 +29,10 @@ endif
 
 SUBDIRS = libpldm libpldmresponder test
 
+if PLDMTOOL
+SUBDIRS += tool
+endif
+
 sbin_PROGRAMS = pldmd
 pldmd_SOURCES = \
     pldmd.cpp \
