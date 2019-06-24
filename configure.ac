@@ -91,6 +91,19 @@ AS_IF([test "x$enable_verbose" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CFLAGS])
 ])
 
+AC_ARG_ENABLE([pldmtool], AS_HELP_STRING([
+	--enable-pldmtool
+	], [
+	Enable pldm tool.
+]))
+
+AM_CONDITIONAL([PLDMTOOL], [test "x$enable_pldmtool" = "xyes"])
+AS_IF([test "x$enable_pldmtool" == "xyes"], [
+    AX_APPEND_COMPILE_FLAGS([-DPLDMTOOL], [CXXFLAGS])
+    AX_APPEND_COMPILE_FLAGS([-DPLDMTOOL], [CFLAGS])
+    AC_CONFIG_FILES([tool/Makefile tool/src/Makefile])
+])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
