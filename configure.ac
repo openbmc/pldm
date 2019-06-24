@@ -84,6 +84,6 @@ AC_DEFINE(BIOS_JSONS_DIR, "/etc/default/obmc/pldm/bios", [Directory housing the 
 AC_DEFINE(BIOS_TABLES_DIR, "/var/lib/pldm/bios", [Directory housing actual BIOS tables])
 
 # Create configured output
-AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
+AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile tool/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
 AC_OUTPUT

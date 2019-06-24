@@ -27,7 +27,7 @@ else
 @CODE_COVERAGE_RULES@
 endif
 
-SUBDIRS = libpldm libpldmresponder test
+SUBDIRS = libpldm libpldmresponder test tool
 
 sbin_PROGRAMS = pldmd
 pldmd_SOURCES = \
