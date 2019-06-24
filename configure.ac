@@ -92,6 +92,6 @@ AS_IF([test "x$enable_verbose" == "xyes"], [
 ])
 
 # Create configured output
-AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
+AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile tool/Makefile tool/src/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
 AC_OUTPUT
