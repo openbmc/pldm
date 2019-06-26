@@ -23,12 +23,13 @@ libpldmresponder_la_CXXFLAGS = \
 
 libpldmresponder_la_CPPFLAGS = \
 	$(CODE_COVERAGE_CPPFLAGS) \
-   	-I$(top_builddir)/libpldm/ \
+	-I$(top_builddir)/libpldm/ \
 	-I$(top_srcdir)
 
 if OEM_IBM
 libpldmresponder_la_SOURCES += \
-    $(top_builddir)/oem/ibm/libpldmresponder/file_io.cpp
+    $(top_builddir)/oem/ibm/libpldmresponder/file_io.cpp \
+    $(top_builddir)/oem/ibm/libpldmresponder/file_table.cpp
 libpldmresponder_la_CPPFLAGS += \
         -I$(top_builddir)/oem/ibm/
 endif
