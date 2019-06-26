@@ -1,5 +1,8 @@
+#include "config.h"
+
 #include "file_io.hpp"
 
+#include "file_table.hpp"
 #include "libpldmresponder/utils.hpp"
 #include "registration.hpp"
 
@@ -26,6 +29,7 @@ namespace oem_ibm
 
 void registerHandlers()
 {
+    registerHandler(PLDM_OEM, PLDM_GET_FILE_TABLE, std::move(getFileTable));
     registerHandler(PLDM_OEM, PLDM_READ_FILE_INTO_MEMORY,
                     std::move(readFileIntoMemory));
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE_FROM_MEMORY,
@@ -98,10 +102,17 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
     if (upstream)
     {
-        std::ifstream stream(path.string());
-
+        std::ifstream stream(path.string(), std::ios::in | std::ios::binary);
         stream.seekg(offset);
-        stream.read(static_cast<char*>(vgaMemPtr.get()), length);
+
+        // Writing to the VGA memory should be aligned at page boundary,
+        // otherwise write data into a buffer aligned at page boundary and
+        // then write to the VGA memory.
+        std::vector<char> buffer{};
+        buffer.resize(pageAlignedLength);
+        stream.read(buffer.data(), length);
+        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
+               pageAlignedLength);
 
         if (static_cast<uint32_t>(stream.gcount()) != length)
         {
@@ -131,7 +142,8 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
     if (!upstream)
     {
-        std::ofstream stream(path.string());
+        std::ofstream stream(path.string(),
+                             std::ios::in | std::ios::out | std::ios::binary);
 
         stream.seekp(offset);
         stream.write(static_cast<const char*>(vgaMemPtr.get()), length);
@@ -148,7 +160,6 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
     uint32_t offset = 0;
     uint32_t length = 0;
     uint64_t address = 0;
-    fs::path path("");
 
     Response response((sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_RESP_BYTES), 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -163,7 +174,24 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
     decode_rw_file_memory_req(request->payload, payloadLength, &fileHandle,
                               &offset, &length, &address);
 
-    if (!fs::exists(path))
+    using namespace pldm::filetable;
+    auto& table = buildFileTable(FILE_TABLE_JSON);
+    FileEntry value{};
+
+    try
+    {
+        value = table.at(fileHandle);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("File handle does not exist in the file table",
+                        entry("HANDLE=%d", fileHandle));
+        encode_rw_file_memory_resp(0, PLDM_READ_FILE_INTO_MEMORY,
+                                   PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+        return response;
+    }
+
+    if (!fs::exists(value.fsPath))
     {
         log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
         encode_rw_file_memory_resp(0, PLDM_READ_FILE_INTO_MEMORY,
@@ -171,7 +199,7 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    auto fileSize = fs::file_size(path);
+    auto fileSize = fs::file_size(value.fsPath);
     if (offset >= fileSize)
     {
         log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
@@ -197,8 +225,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
 
     using namespace dma;
     DMA intf;
-    return transferAll<DMA>(&intf, PLDM_READ_FILE_INTO_MEMORY, path, offset,
-                            length, address, true);
+    return transferAll<DMA>(&intf, PLDM_READ_FILE_INTO_MEMORY, value.fsPath,
+                            offset, length, address, true);
 }
 
 Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
@@ -207,7 +235,6 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
     uint32_t offset = 0;
     uint32_t length = 0;
     uint64_t address = 0;
-    fs::path path("");
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -231,7 +258,24 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    if (!fs::exists(path))
+    using namespace pldm::filetable;
+    auto& table = buildFileTable(FILE_TABLE_JSON);
+    FileEntry value{};
+
+    try
+    {
+        value = table.at(fileHandle);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("File handle does not exist in the file table",
+                        entry("HANDLE=%d", fileHandle));
+        encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
+                                   PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+        return response;
+    }
+
+    if (!fs::exists(value.fsPath))
     {
         log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
         encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
@@ -239,7 +283,7 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    auto fileSize = fs::file_size(path);
+    auto fileSize = fs::file_size(value.fsPath);
     if (offset >= fileSize)
     {
         log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
@@ -251,8 +295,59 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
 
     using namespace dma;
     DMA intf;
-    return transferAll<DMA>(&intf, PLDM_WRITE_FILE_FROM_MEMORY, path, offset,
-                            length, address, false);
+    return transferAll<DMA>(&intf, PLDM_WRITE_FILE_FROM_MEMORY, value.fsPath,
+                            offset, length, address, false);
+}
+
+Response getFileTable(const pldm_msg* request, size_t payloadLength)
+{
+    uint32_t transferHandle = 0;
+    uint8_t transferFlag = 0;
+    uint8_t tableType = 0;
+
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_GET_FILE_TABLE_MIN_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_GET_FILE_TABLE_REQ_BYTES)
+    {
+        encode_get_file_table_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, 0, nullptr,
+                                   0, responsePtr);
+        return response;
+    }
+
+    auto rc =
+        decode_get_file_table_req(request->payload, payloadLength,
+                                  &transferHandle, &transferFlag, &tableType);
+    if (rc)
+    {
+        encode_get_file_table_resp(0, rc, 0, 0, nullptr, 0, responsePtr);
+        return response;
+    }
+
+    if (tableType != PLDM_FILE_ATTRIBUTE_TABLE)
+    {
+        encode_get_file_table_resp(0, PLDM_INVALID_FILE_TABLE_TYPE, 0, 0,
+                                   nullptr, 0, responsePtr);
+        return response;
+    }
+
+    using namespace pldm::filetable;
+    auto table = buildFileTable(FILE_TABLE_JSON);
+    auto attrTable = table();
+    response.resize(response.size() + attrTable.size());
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (attrTable.empty())
+    {
+        encode_get_file_table_resp(0, PLDM_FILE_TABLE_UNAVAILABLE, 0, 0,
+                                   nullptr, 0, responsePtr);
+        return response;
+    }
+
+    encode_get_file_table_resp(0, PLDM_SUCCESS, 0, PLDM_START_AND_END,
+                               attrTable.data(), attrTable.size(), responsePtr);
+    return response;
 }
 
 } // namespace responder

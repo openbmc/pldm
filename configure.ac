@@ -90,6 +90,8 @@ AS_IF([test "x$enable_verbose" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CFLAGS])
 ])
 
+AC_DEFINE(FILE_TABLE_JSON, "/var/lib/pldm/fileTable.json", [JSON file containing file info for File I/O])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])

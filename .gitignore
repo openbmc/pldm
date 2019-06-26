@@ -64,3 +64,10 @@ Makefile
 /test/libpldmresponder_base_test
 /test/libpldm_bios_test
 /test/libpldmresponder_bios_formatTime_test
+/test/libpldm_platform_test
+/test/libpldmoem_fileio_test
+/test/libpldmoemresponder_fileio_test
+/test/libpldmresponder_bios_test
+/test/libpldmresponder_file_io_test
+/test/libpldmresponder_pdr_state_effecter_test
+
