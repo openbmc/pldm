@@ -130,3 +130,120 @@ TEST(ReadWriteFileMemory, testBadEncodeResponse)
     ASSERT_EQ(response->hdr.command, PLDM_WRITE_FILE_FROM_MEMORY);
     ASSERT_EQ(response->payload[0], PLDM_ERROR);
 }
+
+TEST(GetFileTable, GoodDecodeRequest)
+{
+    std::array<uint8_t, PLDM_GET_FILE_TABLE_REQ_BYTES> requestMsg{};
+
+    // Random value for DataTransferHandle, TransferOperationFlag, TableType
+    uint32_t transferHandle = 0x12345678;
+    uint8_t transferOpFlag = 1;
+    uint8_t tableType = 1;
+
+    memcpy(requestMsg.data(), &transferHandle, sizeof(transferHandle));
+    memcpy(requestMsg.data() + sizeof(transferHandle), &transferOpFlag,
+           sizeof(transferOpFlag));
+    memcpy(requestMsg.data() + sizeof(transferHandle) + sizeof(transferOpFlag),
+           &tableType, sizeof(tableType));
+
+    uint32_t retTransferHandle = 0;
+    uint8_t retTransferOpFlag = 0;
+    uint8_t retTableType = 0;
+
+    // Invoke decode get file table request
+    auto rc = decode_get_file_table_req(requestMsg.data(), requestMsg.size(),
+                                        &retTransferHandle, &retTransferOpFlag,
+                                        &retTableType);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(transferHandle, retTransferHandle);
+    ASSERT_EQ(transferOpFlag, retTransferOpFlag);
+    ASSERT_EQ(tableType, retTableType);
+}
+
+TEST(GetFileTable, BadDecodeRequest)
+{
+    uint32_t transferHandle = 0;
+    uint8_t transferOpFlag = 0;
+    uint8_t tableType = 0;
+
+    // Request payload message is missing
+    auto rc = decode_get_file_table_req(nullptr, 0, &transferHandle,
+                                        &transferOpFlag, &tableType);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t, PLDM_GET_FILE_TABLE_REQ_BYTES> requestMsg{};
+
+    // TableType is NULL
+    rc = decode_get_file_table_req(requestMsg.data(), requestMsg.size(),
+                                   &transferHandle, &transferOpFlag, nullptr);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Payload length is invalid
+    rc = decode_get_file_table_req(requestMsg.data(), 0, &transferHandle,
+                                   &transferOpFlag, &tableType);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(GetFileTable, GoodEncodeResponse)
+{
+    // Random value for NextDataTransferHandle and TransferFlag
+    uint8_t completionCode = 0;
+    uint32_t nextTransferHandle = 0x87654321;
+    uint8_t transferFlag = 5;
+    // Mock file table contents of size 5
+    std::array<uint8_t, 5> fileTable = {1, 2, 3, 4, 5};
+    constexpr size_t responseSize = sizeof(completionCode) +
+                                    sizeof(nextTransferHandle) +
+                                    sizeof(transferFlag) + fileTable.size();
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + responseSize> responseMsg{};
+    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    // GetFileTable
+    auto rc = encode_get_file_table_resp(0, PLDM_SUCCESS, nextTransferHandle,
+                                         transferFlag, fileTable.data(),
+                                         fileTable.size(), response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(response->hdr.instance_id, 0);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
+    ASSERT_EQ(response->hdr.command, PLDM_GET_FILE_TABLE);
+    ASSERT_EQ(response->payload[0], PLDM_SUCCESS);
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
+                        &nextTransferHandle, sizeof(nextTransferHandle)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(nextTransferHandle),
+                        &transferFlag, sizeof(transferFlag)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(nextTransferHandle),
+                        &transferFlag, sizeof(transferFlag)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+                            sizeof(nextTransferHandle) + sizeof(transferFlag),
+                        fileTable.data(), fileTable.size()));
+}
+
+TEST(GetFileTable, BadEncodeResponse)
+{
+    uint8_t completionCode = 0;
+    uint32_t nextTransferHandle = 0;
+    uint8_t transferFlag = 0;
+    constexpr size_t responseSize = sizeof(completionCode) +
+                                    sizeof(nextTransferHandle) +
+                                    sizeof(transferFlag);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + responseSize> responseMsg{};
+    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    // GetFileTable
+    auto rc = encode_get_file_table_resp(0, PLDM_ERROR, nextTransferHandle,
+                                         transferFlag, nullptr, 0, response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(response->hdr.instance_id, 0);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
+    ASSERT_EQ(response->hdr.command, PLDM_GET_FILE_TABLE);
+    ASSERT_EQ(response->payload[0], PLDM_ERROR);
+}

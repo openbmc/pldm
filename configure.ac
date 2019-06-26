@@ -77,6 +77,7 @@ AM_CONDITIONAL([OEM_IBM], [test "x$enable_oem_ibm" = "xyes"])
 AS_IF([test "x$enable_oem_ibm" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CXXFLAGS])
     AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CFLAGS])
+    AC_DEFINE(FILE_TABLE_JSON, "/var/lib/pldm/fileTable.json", [JSON file containing file info for File I/O])
 ])
 
 # Setup verbose option
