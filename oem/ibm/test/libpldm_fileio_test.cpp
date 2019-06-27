@@ -131,6 +131,92 @@ TEST(ReadWriteFileMemory, testBadEncodeResponse)
     ASSERT_EQ(response->payload[0], PLDM_ERROR);
 }
 
+TEST(ReadWriteFileIntoMemory, testGoodDecodeResponse)
+{
+    std::array<uint8_t, PLDM_RW_FILE_MEM_RESP_BYTES> responseMsg{};
+    // Random value for length
+    uint32_t length = 0xFF00EE12;
+    uint8_t completionCode = 0;
+
+    memcpy(responseMsg.data(), &completionCode, sizeof(completionCode));
+    memcpy(responseMsg.data() + sizeof(completionCode), &length,
+           sizeof(length));
+
+    uint8_t retCompletionCode = 0;
+    uint32_t retLength = 0;
+
+    // Invoke decode the read file memory response
+    auto rc = decode_rw_file_memory_resp(responseMsg.data(), responseMsg.size(),
+                                         &retCompletionCode, &retLength);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completionCode, retCompletionCode);
+    ASSERT_EQ(length, retLength);
+}
+
+TEST(ReadWriteFileIntoMemory, testBadDecodeResponse)
+{
+    uint32_t length = 0;
+    uint8_t completionCode = 0;
+
+    // Request payload message is missing
+    auto rc = decode_rw_file_memory_resp(NULL, 0, &completionCode, &length);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t, PLDM_RW_FILE_MEM_RESP_BYTES> responseMsg{};
+
+    // Payload length is invalid
+    rc = decode_rw_file_memory_resp(responseMsg.data(), 0, &completionCode,
+                                    &length);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(ReadWriteFileIntoMemory, testGoodEncodeRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
+        requestMsg{};
+
+    uint32_t fileHandle = 0x12345678;
+    uint32_t offset = 0x87654321;
+    uint32_t length = 0x13245768;
+    uint64_t address = 0x124356879ACBDE0F;
+
+    pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc =
+        encode_rw_file_memory_req(0, PLDM_READ_FILE_INTO_MEMORY, fileHandle,
+                                  offset, length, address, request);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(request->hdr.request, PLDM_REQUEST);
+    ASSERT_EQ(request->hdr.instance_id, 0);
+    ASSERT_EQ(request->hdr.type, PLDM_OEM);
+    ASSERT_EQ(request->hdr.command, PLDM_READ_FILE_INTO_MEMORY);
+
+    ASSERT_EQ(0, memcmp(request->payload, &fileHandle, sizeof(fileHandle)));
+
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandle), &offset,
+                        sizeof(offset)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandle) + sizeof(offset),
+                        &length, sizeof(length)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandle) + sizeof(offset) +
+                            sizeof(length),
+                        &address, sizeof(address)));
+}
+
+TEST(ReadWriteFileIntoMemory, testBadEncodeRequest)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 0;
+    uint64_t address = 0;
+
+    auto rc =
+        encode_rw_file_memory_req(0, PLDM_READ_FILE_INTO_MEMORY, fileHandle,
+                                  offset, length, address, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
 TEST(GetFileTable, GoodDecodeRequest)
 {
     std::array<uint8_t, PLDM_GET_FILE_TABLE_REQ_BYTES> requestMsg{};

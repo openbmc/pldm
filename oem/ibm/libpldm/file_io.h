@@ -41,6 +41,28 @@ enum pldm_fileio_table_type {
 #define PLDM_GET_FILE_TABLE_REQ_BYTES 6
 #define PLDM_GET_FILE_TABLE_MIN_RESP_BYTES 6
 
+/** @struct pldm_read_write_file_memory_req
+ *
+ *  Structure representing ReadFileIntoMemory request and WriteFileFromMemory
+ *  request
+ */
+struct pldm_read_write_file_memory_req {
+	uint32_t file_handle; //!< A Handle to the file
+	uint32_t offset;      //!< Offset to the file
+	uint32_t length;      //!< Number of bytes to be read/write
+	uint64_t address;     //!< Memory address of the file
+} __attribute__((packed));
+
+/** @struct pldm_read_write_file_memory_resp
+ *
+ *  Structure representing ReadFileIntoMemory response and WriteFileFromMemory
+ *  response
+ */
+struct pldm_read_write_file_memory_resp {
+	uint8_t completion_code; //!< completion code
+	uint32_t length;	 //!< Number of bytes read/written
+} __attribute__((packed));
+
 /** @brief Decode ReadFileIntoMemory and WriteFileFromMemory commands request
  *         data
  *
@@ -72,6 +94,36 @@ int decode_rw_file_memory_req(const uint8_t *msg, size_t payload_length,
 int encode_rw_file_memory_resp(uint8_t instance_id, uint8_t command,
 			       uint8_t completion_code, uint32_t length,
 			       struct pldm_msg *msg);
+
+/** @brief Encode ReadFileIntoMemory and WriteFileFromMemory
+ *         commands request data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] command - PLDM command
+ *  @param[in] file_handle - A handle to the file
+ *  @param[in] offset -  Offset to the file at which the read should begin
+ *  @param[in] length -  Number of bytes to be read/written
+ *  @param[in] address - Memory address where the file content has to be
+ *                       written to
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_rw_file_memory_req(uint8_t instance_id, uint8_t command,
+			      uint32_t file_handle, uint32_t offset,
+			      uint32_t length, uint64_t address,
+			      struct pldm_msg *msg);
+
+/** @brief Decode ReadFileIntoMemory and WriteFileFromMemory
+ *         commands response data
+ *
+ *  @param[in] msg - pointer to PLDM response message payload
+ *  @param[in] payload_length - Length of response payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] length - Number of bytes to be read/written
+ *  @return pldm_completion_codes
+ */
+int decode_rw_file_memory_resp(const uint8_t *msg, size_t payload_length,
+			       uint8_t *completion_code, uint32_t *length);
 
 /** @struct pldm_get_file_table_req
  *
