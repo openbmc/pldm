@@ -560,3 +560,56 @@ TEST_F(TestFileTable, GetFileTableCommandOEMAttrTable)
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_TABLE_TYPE);
 }
+
+TEST(ReadFile, BadPath)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 20;
+    uint32_t length = 10;
+
+    std::array<uint8_t, PLDM_READ_FILE_REQ_BYTES> requestMsg{};
+    size_t payload_length = requestMsg.size();
+    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
+    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+           sizeof(length));
+
+    // Invalid payload length
+    auto response = readFile(requestMsg.data(), 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
+
+    // Data out of range
+    response = readFile(requestMsg.data(), payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
+}
+
+TEST(WriteFile, BadPath)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 2048;
+    uint32_t length = 10;
+    std::vector<uint8_t> fileData = {0};
+
+    std::array<uint8_t, PLDM_CONST_WRITE_FILE_REQ_BYTES + PLDM_MAX_FILE_SIZE>
+        requestMsg{};
+    size_t payload_length = requestMsg.size();
+    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
+    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+           sizeof(length));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset) +
+               sizeof(length),
+           fileData.data(), fileData.size());
+
+    // Invalid payload length
+    auto response = writeFile(requestMsg.data(), 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
+
+    // Data out of range
+    response = writeFile(requestMsg.data(), payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
+}

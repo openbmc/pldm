@@ -350,5 +350,89 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
+Response readFile(const uint8_t* request, size_t payloadLength)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 0;
+    fs::path path("");
+    std::vector<uint8_t> fileData = {0};
+
+    Response response((sizeof(pldm_msg_hdr) + PLDM_CONST_READ_FILE_RESP_BYTES +
+                       PLDM_MAX_FILE_SIZE),
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_READ_FILE_REQ_BYTES)
+    {
+        encode_read_file_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, fileData.data(),
+                              responsePtr);
+        return response;
+    }
+
+    decode_read_file_req(request, payloadLength, &fileHandle, &offset, &length);
+
+    auto fileSize = fileData.size();
+    if (offset + length >= fileSize)
+    {
+        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
+                        entry("FILE_SIZE=%d", fileSize));
+        encode_read_file_resp(0, PLDM_DATA_OUT_OF_RANGE, 0, fileData.data(),
+                              responsePtr);
+        return response;
+    }
+
+    if (!fs::exists(path))
+    {
+        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        encode_read_file_resp(0, PLDM_INVALID_FILE_HANDLE, 0, fileData.data(),
+                              responsePtr);
+        return response;
+    }
+
+    encode_read_file_resp(0, PLDM_SUCCESS, length, fileData.data(),
+                          responsePtr);
+    return response;
+}
+
+Response writeFile(const uint8_t* request, size_t payloadLength)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 0;
+    std::vector<uint8_t> fileData = {0};
+    fs::path path("");
+
+    Response response(sizeof(pldm_msg_hdr) + PLDM_WRITE_FILE_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_CONST_WRITE_FILE_REQ_BYTES + PLDM_MAX_FILE_SIZE)
+    {
+        encode_write_file_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+
+    decode_write_file_req(request, payloadLength, &fileHandle, &offset, &length,
+                          fileData.data());
+
+    auto fileSize = fileData.size();
+    if (offset + length >= fileSize)
+    {
+        log<level::ERR>("offset exceeds file size ", entry("OFFSET=%d", offset),
+                        entry("FILE_SIZE=%d", fileSize));
+        encode_write_file_resp(0, PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
+        return response;
+    }
+
+    if (!fs::exists(path))
+    {
+        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        encode_write_file_resp(0, PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+        return response;
+    }
+
+    return response;
+}
+
 } // namespace responder
 } // namespace pldm
