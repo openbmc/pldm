@@ -20,6 +20,7 @@
 
 namespace pldm
 {
+using namespace std;
 
 namespace responder
 {
@@ -364,6 +365,144 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength)
     encode_get_file_table_resp(request->hdr.instance_id, PLDM_SUCCESS, 0,
                                PLDM_START_AND_END, attrTable.data(),
                                attrTable.size(), responsePtr);
+    return response;
+}
+
+Response readFile(const uint8_t* request, size_t payloadLength)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 0;
+    fs::path path("");
+    std::vector<uint8_t> fileData = {0};
+
+    Response response((sizeof(pldm_msg_hdr) + PLDM_READ_FILE_RESP_BYTES), 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_READ_FILE_REQ_BYTES)
+    {
+        encode_read_file_resp(0, PLDM_ERROR_INVALID_LENGTH, length,
+                              fileData.data(), responsePtr);
+        return response;
+    }
+
+    decode_read_file_req(request, payloadLength, &fileHandle, &offset, &length);
+
+    using namespace pldm::filetable;
+    auto& table = buildFileTable(FILE_TABLE_JSON);
+    FileEntry value{};
+
+    try
+    {
+        value = table.at(fileHandle);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("File handle does not exist in the file table",
+                        entry("HANDLE=%d", fileHandle));
+        encode_read_file_resp(0, PLDM_INVALID_FILE_HANDLE, length,
+                              fileData.data(), responsePtr);
+        return response;
+    }
+
+    if (!fs::exists(value.fsPath))
+    {
+        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        encode_read_file_resp(0, PLDM_INVALID_FILE_HANDLE, length,
+                              fileData.data(), responsePtr);
+        return response;
+    }
+
+    auto fileSize = fs::file_size(value.fsPath);
+    if (offset > fileSize)
+    {
+        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
+                        entry("FILE_SIZE=%d", fileSize));
+        encode_read_file_resp(0, PLDM_DATA_OUT_OF_RANGE, length,
+                              fileData.data(), responsePtr);
+        return response;
+    }
+
+    if (offset + length > fileSize)
+    {
+        length = fileSize - offset;
+    }
+
+    std::ifstream stream(path.string(), std::ios::in | std::ios::binary);
+    stream.seekg(offset);
+    stream.read((char*)fileData.data(), length);
+    response.resize(PLDM_READ_FILE_RESP_BYTES + fileData.size());
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    encode_read_file_resp(0, PLDM_SUCCESS, length, fileData.data(),
+                          responsePtr);
+
+    return response;
+}
+
+Response writeFile(const uint8_t* request, size_t payloadLength)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 0;
+    std::vector<uint8_t> fileData = {0};
+    fs::path path("");
+
+    Response response(sizeof(pldm_msg_hdr) + PLDM_WRITE_FILE_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_WRITE_FILE_REQ_BYTES)
+    {
+        encode_write_file_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+
+    decode_write_file_req(request, payloadLength, &fileHandle, &offset, &length,
+                          fileData.data());
+
+    using namespace pldm::filetable;
+    auto& table = buildFileTable(FILE_TABLE_JSON);
+    FileEntry value{};
+
+    try
+    {
+        value = table.at(fileHandle);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("File handle does not exist in the file table",
+                        entry("HANDLE=%d", fileHandle));
+        encode_write_file_resp(0, PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+        return response;
+    }
+
+    if (!fs::exists(value.fsPath))
+    {
+        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        encode_write_file_resp(0, PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+        return response;
+    }
+
+    auto fileSize = fs::file_size(value.fsPath);
+    if (offset > fileSize)
+    {
+        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
+                        entry("FILE_SIZE=%d", fileSize));
+        encode_write_file_resp(0, PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
+        return response;
+    }
+
+    if (offset + length > fileSize)
+    {
+        length = fileSize - offset;
+    }
+
+    std::ofstream stream(path.string(),
+                         std::ios::in | std::ios::out | std::ios::binary);
+    stream.seekp(offset);
+    stream.write((char*)fileData.data(), length);
+
+    encode_write_file_resp(0, PLDM_SUCCESS, length, responsePtr);
     return response;
 }
 

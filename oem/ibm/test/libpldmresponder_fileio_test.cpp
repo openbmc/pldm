@@ -560,3 +560,101 @@ TEST_F(TestFileTable, GetFileTableCommandOEMAttrTable)
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_TABLE_TYPE);
 }
+
+TEST_F(TestFileTable, ReadFileGoodBadPath)
+{
+    std::array<uint8_t, PLDM_READ_FILE_REQ_BYTES> requestMsg{};
+    size_t payload_length = requestMsg.size();
+
+    // Bad path test
+    uint32_t fileHandle = 0;
+    uint32_t offset = 20;
+    uint32_t length = 10;
+
+    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
+    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+           sizeof(length));
+
+    using namespace pldm::filetable;
+    // Initialise the file table with 2 valid file handles 0 & 1.
+    auto& table = buildFileTable(fileTableConfig.c_str());
+
+    // Invalid payload length
+    auto response = readFile(requestMsg.data(), 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
+
+    // Good path test
+    offset = 0;
+    length = 10;
+    std::vector<uint8_t> fileData = {0};
+
+    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
+    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+           sizeof(length));
+
+    response = readFile(requestMsg.data(), payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
+    ASSERT_EQ(0, memcmp(responsePtr->payload + sizeof(responsePtr->payload[0]),
+                        &length, sizeof(length)));
+    ASSERT_EQ(0, memcmp((responsePtr->payload +
+                         sizeof(responsePtr->payload[0]) + sizeof(length)),
+                        fileData.data(), fileData.size()));
+    table.clear();
+}
+
+TEST_F(TestFileTable, WriteFileGoodBadPath)
+{
+    std::vector<uint8_t> requestMsg{};
+
+    // Bad path test
+    uint32_t fileHandle = 0;
+    uint32_t offset = 20;
+    uint32_t length = 10;
+    requestMsg.resize(PLDM_WRITE_FILE_REQ_BYTES + length);
+    size_t payload_length = requestMsg.size();
+    std::vector<uint8_t> fileData = {0};
+
+    using namespace pldm::filetable;
+    // Initialise the file table with 2 valid file handles 0 & 1.
+    auto& table = buildFileTable(fileTableConfig.c_str());
+
+    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
+    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+           sizeof(length));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset) +
+               sizeof(length),
+           fileData.data(), fileData.size());
+
+    // Invalid payload length
+    auto response = writeFile(requestMsg.data(), 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
+
+    // Good path test
+    offset = 0;
+    length = 0;
+    requestMsg.resize(PLDM_WRITE_FILE_REQ_BYTES + length);
+    payload_length = requestMsg.size();
+
+    memcpy(requestMsg.data(), &fileHandle, sizeof(fileHandle));
+    memcpy(requestMsg.data() + sizeof(fileHandle), &offset, sizeof(offset));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset), &length,
+           sizeof(length));
+    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset) +
+               sizeof(length),
+           fileData.data(), fileData.size());
+
+    response = writeFile(requestMsg.data(), payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
+    ASSERT_EQ(0, memcmp(responsePtr->payload + sizeof(responsePtr->payload[0]),
+                        &length, sizeof(length)));
+    table.clear();
+}
