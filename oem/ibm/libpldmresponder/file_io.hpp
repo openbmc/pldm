@@ -144,5 +144,23 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
  *  @return PLDM response message
  */
 Response getFileTable(const pldm_msg* request, size_t payloadLength);
+
+/** @brief Handler for readFile command
+ *
+ *  @param[in] request - pointer to PLDM request payload
+ *  @param[in] payloadLength - length of the message payload
+ *
+ *  @return PLDM response message
+ */
+Response readFile(const uint8_t* request, size_t payloadLength);
+
+/** @brief Handler for writeFile command
+ *
+ *  @param[in] request - pointer to PLDM request payload
+ *  @param[in] payloadLength - length of the message payload
+ *
+ *  @return PLDM response message
+ */
+Response writeFile(const uint8_t* request, size_t payloadLength);
 } // namespace responder
 } // namespace pldm
