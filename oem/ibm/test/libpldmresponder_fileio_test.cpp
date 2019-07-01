@@ -560,3 +560,165 @@ TEST_F(TestFileTable, GetFileTableCommandOEMAttrTable)
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_TABLE_TYPE);
 }
+
+TEST_F(TestFileTable, ReadFileBadPath)
+{
+    uint32_t fileHandle = 1;
+    uint32_t offset = 0;
+    uint32_t length = 0x4;
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_READ_FILE_REQ_BYTES>
+        requestMsg{};
+    auto requestMsgPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+    auto request = reinterpret_cast<pldm_read_file_req*>(requestMsg.data() +
+                                                         sizeof(pldm_msg_hdr));
+
+    request->file_handle = fileHandle;
+    request->offset = offset;
+    request->length = length;
+
+    using namespace pldm::filetable;
+    // Initialise the file table with 2 valid file handles 0 & 1.
+    auto& table = buildFileTable(fileTableConfig.c_str());
+
+    // Invalid payload length
+    auto response = readFile(requestMsgPtr, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
+
+    // Data out of range. File size is 1024, offset = 1024 is invalid.
+    request->offset = 1024;
+
+    response = readFile(requestMsgPtr, payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
+
+    // Invalid file handle
+    request->file_handle = 2;
+
+    response = readFile(requestMsgPtr, payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
+
+    table.clear();
+}
+
+TEST_F(TestFileTable, ReadFileGoodPath)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 0x4;
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_READ_FILE_REQ_BYTES>
+        requestMsg{};
+    auto requestMsgPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+    auto request = reinterpret_cast<pldm_read_file_req*>(requestMsg.data() +
+                                                         sizeof(pldm_msg_hdr));
+
+    request->file_handle = fileHandle;
+    request->offset = offset;
+    request->length = length;
+
+    using namespace pldm::filetable;
+    // Initialise the file table with 2 valid file handles 0 & 1.
+    auto& table = buildFileTable(fileTableConfig.c_str());
+
+    auto responseMsg = readFile(requestMsgPtr, payload_length);
+    auto response = reinterpret_cast<pldm_read_file_resp*>(
+        responseMsg.data() + sizeof(pldm_msg_hdr));
+    ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(response->length, length);
+
+    table.clear();
+
+    // Test condition offset + length > fileSize;
+    uint32_t fileSize = 1024;
+    table = buildFileTable(fileTableConfig.c_str());
+
+    request->offset = 1023;
+    request->length = 10;
+
+    responseMsg = readFile(requestMsgPtr, payload_length);
+    response = reinterpret_cast<pldm_read_file_resp*>(responseMsg.data() +
+                                                      sizeof(pldm_msg_hdr));
+    ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(response->length, (fileSize - request->offset));
+
+    table.clear();
+}
+
+TEST_F(TestFileTable, WriteFileBadPath)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 0x10;
+
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_WRITE_FILE_REQ_BYTES + length);
+    auto requestMsgPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+    auto request = reinterpret_cast<pldm_write_file_req*>(requestMsg.data() +
+                                                          sizeof(pldm_msg_hdr));
+
+    using namespace pldm::filetable;
+    // Initialise the file table with 2 valid file handles 0 & 1.
+    auto& table = buildFileTable(fileTableConfig.c_str());
+
+    request->file_handle = fileHandle;
+    request->offset = offset;
+    request->length = length;
+
+    // Invalid payload length
+    auto response = writeFile(requestMsgPtr, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
+
+    // Data out of range. File size is 1024, offset = 1024 is invalid.
+    request->offset = 1024;
+
+    response = writeFile(requestMsgPtr, payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
+
+    // Invalid file handle
+    request->file_handle = 2;
+
+    response = writeFile(requestMsgPtr, payload_length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
+
+    table.clear();
+}
+
+TEST_F(TestFileTable, WriteFileGoodPath)
+{
+    uint32_t fileHandle = 0;
+    uint32_t offset = 0;
+    uint32_t length = 10;
+
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_WRITE_FILE_REQ_BYTES + length);
+    auto requestMsgPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+    auto request = reinterpret_cast<pldm_write_file_req*>(requestMsg.data() +
+                                                          sizeof(pldm_msg_hdr));
+
+    using namespace pldm::filetable;
+    // Initialise the file table with 2 valid file handles 0 & 1.
+    auto& table = buildFileTable(fileTableConfig.c_str());
+
+    request->file_handle = fileHandle;
+    request->offset = offset;
+    request->length = length;
+
+    auto responseMsg = writeFile(requestMsgPtr, payload_length);
+    auto response = reinterpret_cast<pldm_read_file_resp*>(
+        responseMsg.data() + sizeof(pldm_msg_hdr));
+
+    ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(response->length, length);
+
+    table.clear();
+}
