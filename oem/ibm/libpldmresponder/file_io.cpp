@@ -166,7 +166,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
 
     if (payloadLength != PLDM_RW_FILE_MEM_REQ_BYTES)
     {
-        encode_rw_file_memory_resp(0, PLDM_READ_FILE_INTO_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
         return response;
     }
@@ -186,7 +187,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
     {
         log<level::ERR>("File handle does not exist in the file table",
                         entry("HANDLE=%d", fileHandle));
-        encode_rw_file_memory_resp(0, PLDM_READ_FILE_INTO_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
         return response;
     }
@@ -194,7 +196,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
     if (!fs::exists(value.fsPath))
     {
         log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
-        encode_rw_file_memory_resp(0, PLDM_READ_FILE_INTO_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
         return response;
     }
@@ -204,7 +207,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
     {
         log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
                         entry("FILE_SIZE=%d", fileSize));
-        encode_rw_file_memory_resp(0, PLDM_READ_FILE_INTO_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
         return response;
     }
@@ -218,7 +222,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
     {
         log<level::ERR>("Read length is not a multiple of DMA minSize",
                         entry("LENGTH=%d", length));
-        encode_rw_file_memory_resp(0, PLDM_READ_FILE_INTO_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_INVALID_READ_LENGTH, 0, responsePtr);
         return response;
     }
@@ -241,7 +246,8 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
 
     if (payloadLength != PLDM_RW_FILE_MEM_REQ_BYTES)
     {
-        encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
         return response;
     }
@@ -253,7 +259,8 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
     {
         log<level::ERR>("Write length is not a multiple of DMA minSize",
                         entry("LENGTH=%d", length));
-        encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
         return response;
     }
@@ -270,7 +277,8 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
     {
         log<level::ERR>("File handle does not exist in the file table",
                         entry("HANDLE=%d", fileHandle));
-        encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
         return response;
     }
@@ -278,7 +286,8 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
     if (!fs::exists(value.fsPath))
     {
         log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
-        encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
         return response;
     }
@@ -288,7 +297,8 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
     {
         log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
                         entry("FILE_SIZE=%d", fileSize));
-        encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
+        encode_rw_file_memory_resp(responsePtr->hdr.instance_id,
+                                   PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
         return response;
     }
@@ -311,8 +321,9 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength)
 
     if (payloadLength != PLDM_GET_FILE_TABLE_REQ_BYTES)
     {
-        encode_get_file_table_resp(0, PLDM_ERROR_INVALID_LENGTH, 0, 0, nullptr,
-                                   0, responsePtr);
+        encode_get_file_table_resp(responsePtr->hdr.instance_id,
+                                   PLDM_ERROR_INVALID_LENGTH, 0, 0, nullptr, 0,
+                                   responsePtr);
         return response;
     }
 
@@ -321,14 +332,16 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength)
                                   &transferHandle, &transferFlag, &tableType);
     if (rc)
     {
-        encode_get_file_table_resp(0, rc, 0, 0, nullptr, 0, responsePtr);
+        encode_get_file_table_resp(responsePtr->hdr.instance_id, rc, 0, 0,
+                                   nullptr, 0, responsePtr);
         return response;
     }
 
     if (tableType != PLDM_FILE_ATTRIBUTE_TABLE)
     {
-        encode_get_file_table_resp(0, PLDM_INVALID_FILE_TABLE_TYPE, 0, 0,
-                                   nullptr, 0, responsePtr);
+        encode_get_file_table_resp(responsePtr->hdr.instance_id,
+                                   PLDM_INVALID_FILE_TABLE_TYPE, 0, 0, nullptr,
+                                   0, responsePtr);
         return response;
     }
 
@@ -340,13 +353,15 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength)
 
     if (attrTable.empty())
     {
-        encode_get_file_table_resp(0, PLDM_FILE_TABLE_UNAVAILABLE, 0, 0,
-                                   nullptr, 0, responsePtr);
+        encode_get_file_table_resp(responsePtr->hdr.instance_id,
+                                   PLDM_FILE_TABLE_UNAVAILABLE, 0, 0, nullptr,
+                                   0, responsePtr);
         return response;
     }
 
-    encode_get_file_table_resp(0, PLDM_SUCCESS, 0, PLDM_START_AND_END,
-                               attrTable.data(), attrTable.size(), responsePtr);
+    encode_get_file_table_resp(responsePtr->hdr.instance_id, PLDM_SUCCESS, 0,
+                               PLDM_START_AND_END, attrTable.data(),
+                               attrTable.size(), responsePtr);
     return response;
 }
 

@@ -91,8 +91,9 @@ Response getDateTime(const pldm_msg* request, size_t payloadLength)
         log<level::ERR>("Error getting time", entry("PATH=%s", bmcTimePath),
                         entry("TIME INTERACE=%s", timeInterface));
 
-        encode_get_date_time_resp(0, PLDM_ERROR, seconds, minutes, hours, day,
-                                  month, year, responsePtr);
+        encode_get_date_time_resp(responsePtr->hdr.instance_id, PLDM_ERROR,
+                                  seconds, minutes, hours, day, month, year,
+                                  responsePtr);
         return response;
     }
 
@@ -104,8 +105,9 @@ Response getDateTime(const pldm_msg* request, size_t payloadLength)
 
     utils::epochToBCDTime(timeSec, seconds, minutes, hours, day, month, year);
 
-    encode_get_date_time_resp(0, PLDM_SUCCESS, seconds, minutes, hours, day,
-                              month, year, responsePtr);
+    encode_get_date_time_resp(responsePtr->hdr.instance_id, PLDM_SUCCESS,
+                              seconds, minutes, hours, day, month, year,
+                              responsePtr);
     return response;
 }
 
