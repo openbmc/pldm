@@ -137,7 +137,7 @@ TEST(TransferDataHost, GoodPath)
     uint32_t length = minSize;
     EXPECT_CALL(dmaObj, transferDataHost(path, 0, length, 0, true)).Times(1);
     auto response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY,
-                                         path, 0, length, 0, true);
+                                         path, 0, length, 0, true, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(responsePtr->payload + sizeof(responsePtr->payload[0]),
@@ -147,7 +147,7 @@ TEST(TransferDataHost, GoodPath)
     length = maxSize;
     EXPECT_CALL(dmaObj, transferDataHost(path, 0, length, 0, true)).Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
-                                    0, length, 0, true);
+                                    0, length, 0, true, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(responsePtr->payload + sizeof(responsePtr->payload[0]),
@@ -159,7 +159,7 @@ TEST(TransferDataHost, GoodPath)
     EXPECT_CALL(dmaObj, transferDataHost(path, maxSize, minSize, maxSize, true))
         .Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
-                                    0, length, 0, true);
+                                    0, length, 0, true, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(responsePtr->payload + sizeof(responsePtr->payload[0]),
@@ -169,7 +169,7 @@ TEST(TransferDataHost, GoodPath)
     length = 3 * maxSize;
     EXPECT_CALL(dmaObj, transferDataHost(_, _, _, _, true)).Times(3);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
-                                    0, length, 0, true);
+                                    0, length, 0, true, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(responsePtr->payload + sizeof(responsePtr->payload[0]),
@@ -179,7 +179,7 @@ TEST(TransferDataHost, GoodPath)
     length = minSize;
     EXPECT_CALL(dmaObj, transferDataHost(path, 0, length, 0, false)).Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
-                                    0, length, 0, false);
+                                    0, length, 0, false, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(responsePtr->payload + sizeof(responsePtr->payload[0]),
@@ -197,7 +197,7 @@ TEST(TransferDataHost, BadPath)
     uint32_t length = minSize;
     EXPECT_CALL(dmaObj, transferDataHost(_, _, _, _, _)).WillOnce(Return(-1));
     auto response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY,
-                                         path, 0, length, 0, true);
+                                         path, 0, length, 0, true, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
 
@@ -206,7 +206,7 @@ TEST(TransferDataHost, BadPath)
     length = maxSize + minSize;
     EXPECT_CALL(dmaObj, transferDataHost(_, _, _, _, _)).WillOnce(Return(-1));
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
-                                    0, length, 0, true);
+                                    0, length, 0, true, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
 }

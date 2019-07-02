@@ -77,13 +77,14 @@ class DMA
  * @param[in] address  - DMA address on the host
  * @param[in] upstream - indicates direction of the transfer; true indicates
  *                       transfer to the host
+ * @param[in] instanceId - Message's instance id
  * @return PLDM response message
  */
 
 template <class DMAInterface>
 Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
                      uint32_t offset, uint32_t length, uint64_t address,
-                     bool upstream)
+                     bool upstream, uint8_t instanceId)
 {
     uint32_t origLength = length;
     Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_RESP_BYTES, 0);
@@ -95,7 +96,8 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
                                          upstream);
         if (rc < 0)
         {
-            encode_rw_file_memory_resp(0, command, PLDM_ERROR, 0, responsePtr);
+            encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
+                                       responsePtr);
             return response;
         }
 
@@ -107,11 +109,12 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
     auto rc = intf->transferDataHost(path, offset, length, address, upstream);
     if (rc < 0)
     {
-        encode_rw_file_memory_resp(0, command, PLDM_ERROR, 0, responsePtr);
+        encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
+                                   responsePtr);
         return response;
     }
 
-    encode_rw_file_memory_resp(0, command, PLDM_SUCCESS, origLength,
+    encode_rw_file_memory_resp(instanceId, command, PLDM_SUCCESS, origLength,
                                responsePtr);
     return response;
 }
