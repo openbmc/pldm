@@ -43,7 +43,8 @@ pldmd_CXXFLAGS = -I$(top_builddir)/libpldm \
 
 if OEM_IBM
 pldmd_CXXFLAGS += \
-        -I$(top_builddir)/oem/ibm/
+	-I$(top_srcdir)/oem/ibm/ \
+	-I$(top_srcdir)/libpldm
 endif
 
 ACLOCAL_AMFLAGS = -I m4

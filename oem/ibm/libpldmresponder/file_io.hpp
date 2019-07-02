@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "libpldm/base.h"
-#include "libpldm/file_io.h"
+#include "oem/ibm/libpldm/file_io.h"
 
 namespace pldm
 {
