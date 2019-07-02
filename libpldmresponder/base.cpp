@@ -53,7 +53,8 @@ Response getPLDMTypes(const pldm_msg* request, size_t payloadLength)
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-    encode_get_types_resp(0, PLDM_SUCCESS, types.data(), responsePtr);
+    encode_get_types_resp(request->hdr.instance_id, PLDM_SUCCESS, types.data(),
+                          responsePtr);
 
     return response;
 }
@@ -71,7 +72,8 @@ Response getPLDMCommands(const pldm_msg* request, size_t payloadLength)
 
     if (rc != PLDM_SUCCESS)
     {
-        encode_get_commands_resp(0, rc, nullptr, responsePtr);
+        encode_get_commands_resp(request->hdr.instance_id, rc, nullptr,
+                                 responsePtr);
         return response;
     }
 
@@ -79,7 +81,8 @@ Response getPLDMCommands(const pldm_msg* request, size_t payloadLength)
     std::array<bitfield8_t, 32> cmds{};
     if (capabilities.find(type) == capabilities.end())
     {
-        encode_get_commands_resp(0, PLDM_ERROR_INVALID_PLDM_TYPE, nullptr,
+        encode_get_commands_resp(request->hdr.instance_id,
+                                 PLDM_ERROR_INVALID_PLDM_TYPE, nullptr,
                                  responsePtr);
         return response;
     }
@@ -92,7 +95,8 @@ Response getPLDMCommands(const pldm_msg* request, size_t payloadLength)
         cmds[index].byte |= 1 << bit;
     }
 
-    encode_get_commands_resp(0, PLDM_SUCCESS, cmds.data(), responsePtr);
+    encode_get_commands_resp(request->hdr.instance_id, PLDM_SUCCESS,
+                             cmds.data(), responsePtr);
 
     return response;
 }
@@ -111,7 +115,8 @@ Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
 
     if (rc != PLDM_SUCCESS)
     {
-        encode_get_version_resp(0, rc, 0, 0, nullptr, 4, responsePtr);
+        encode_get_version_resp(request->hdr.instance_id, rc, 0, 0, nullptr, 4,
+                                responsePtr);
         return response;
     }
 
@@ -120,14 +125,16 @@ Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
 
     if (search == versions.end())
     {
-        encode_get_version_resp(0, PLDM_ERROR_INVALID_PLDM_TYPE, 0, 0, nullptr,
-                                4, responsePtr);
+        encode_get_version_resp(request->hdr.instance_id,
+                                PLDM_ERROR_INVALID_PLDM_TYPE, 0, 0, nullptr, 4,
+                                responsePtr);
         return response;
     }
 
     memcpy(&version, &(search->second), sizeof(version));
-    encode_get_version_resp(0, PLDM_SUCCESS, 0, PLDM_START_AND_END, &version,
-                            sizeof(pldm_version), responsePtr);
+    encode_get_version_resp(request->hdr.instance_id, PLDM_SUCCESS, 0,
+                            PLDM_START_AND_END, &version, sizeof(pldm_version),
+                            responsePtr);
 
     return response;
 }
