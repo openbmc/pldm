@@ -14,7 +14,18 @@ extern "C" {
 /* Response lengths are inclusive of completion code */
 #define PLDM_GET_DATE_TIME_RESP_BYTES 8
 
-enum pldm_bios_commands { PLDM_GET_DATE_TIME = 0x0c };
+#define PLDM_GET_BIOS_TABLE_REQ_BYTES 6
+#define PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES 6
+
+enum pldm_bios_completion_codes {
+	PLDM_BIOS_TABLE_UNAVAILABLE = 0x83,
+	PLDM_INVALID_BIOS_TABLE_DATA_INTEGRITY_CHECK = 0x84,
+	PLDM_INVALID_BIOS_TABLE_TYPE = 0x85,
+};
+enum pldm_bios_commands {
+	PLDM_GET_BIOS_TABLE = 0x01,
+	PLDM_GET_DATE_TIME = 0x0c
+};
 
 enum pldm_bios_table_types {
 	PLDM_BIOS_STRING_TABLE,
@@ -46,6 +57,39 @@ struct pldm_bios_attr_val_table_entry {
 	uint8_t value[1];
 } __attribute__((packed));
 
+enum pldm_bios_attribute_type {
+	PLDM_BIOS_ENUMERATION = 0x0,
+	PLDM_BIOS_STRING = 0x1,
+	PLDM_BIOS_PASSWORD = 0x2,
+	PLDM_BIOS_INTEGER = 0x3,
+	PLDM_BIOS_ENUMERATION_READ_ONLY = 0x80,
+	PLDM_BIOS_STRING_READ_ONLY = 0x81,
+	PLDM_BIOS_PASSWORD_READ_ONLY = 0x82,
+	PLDM_BIOS_INTEGER_READ_ONLY = 0x83,
+};
+
+/** @struct pldm_get_bios_table_req
+ *
+ *  structure representing GetBIOSTable request packet
+ */
+struct pldm_get_bios_table_req {
+	uint32_t transfer_handle;
+	uint8_t transfer_op_flag;
+	uint8_t table_type;
+} __attribute__((packed));
+
+/** @struct pldm_get_bios_table_resp
+ *
+ *  structure representing GetBIOSTable response packet
+ */
+struct pldm_get_bios_table_resp {
+	uint8_t completion_code;
+	uint32_t next_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t table_data[1];
+} __attribute__((packed));
+
+>>>>>>> 65861f5... GetBIOSTable responder implementation
 /** @struct pldm_get_date_time_resp
  *
  *  Structure representing PLDM get date time response
@@ -117,6 +161,40 @@ int encode_get_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 			      uint8_t seconds, uint8_t minutes, uint8_t hours,
 			      uint8_t day, uint8_t month, uint16_t year,
 			      struct pldm_msg *msg);
+
+/* GetBIOSTable */
+
+/** @brief Create a PLDM response message for GetBIOSTable
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_transfer_handle - handle to identify the next portion of the
+ * transfer
+ *  @param[in] transfer_flag - To indicate what part of the transfer this
+ * response represents
+ *  @param[in] table_data - BIOS Table type specific data
+ *  @param[in] payload_length - Length of payload message
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
+			       uint32_t next_transfer_handle,
+			       uint8_t transfer_flag, uint8_t *table_data,
+			       size_t payload_length, struct pldm_msg *msg);
+
+/** @brief Decode GetBIOSTable request packet
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] transfer_handle - Handle to identify a BIOS table transfer
+ *  @param[out] transfer_op_flag - Flag to indicate the start of a multipart
+ * transfer
+ *  @param[out] table_type - BIOS table type
+ *  @return pldm_completion_codes
+ */
+int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
+			      uint32_t *transfer_handle,
+			      uint8_t *transfer_op_flag, uint8_t *table_type);
 
 #ifdef __cplusplus
 }
