@@ -72,16 +72,21 @@ libpldmresponder_bios_test_CPPFLAGS = $(test_cppflags)
 libpldmresponder_bios_test_CXXFLAGS = $(test_cxxflags)
 libpldmresponder_bios_test_LDFLAGS = \
 	$(test_ldflags) \
-	$(SDBUSPLUS_LIBS)
+	$(SDBUSPLUS_LIBS) \
+	-lstdc++fs
 libpldmresponder_bios_test_LDADD = \
 	$(top_builddir)/pldmd-registration.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios.o \
-	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios_parser.o \
 	$(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios_table.o \
 	$(top_builddir)/libpldm/libpldm_la-base.o  \
 	$(top_builddir)/libpldm/libpldm_la-bios.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios_parser.o \
 	$(CODE_COVERAGE_LIBS) \
-	$(SDBUSPLUS_LIBS)
+	$(PHOSPHOR_LOGGING_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+	$(SDBUSPLUS_LIBS) \
+	-lstdc++fs
 libpldmresponder_bios_test_SOURCES = \
 	libpldmresponder_bios_test.cpp
 
@@ -112,7 +117,7 @@ libpldmoemresponder_fileio_test_CPPFLAGS = $(test_cppflags) \
 libpldmoemresponder_fileio_test_CXXFLAGS = $(test_cxxflags)
 libpldmoemresponder_fileio_test_LDFLAGS = $(test_ldflags)
 libpldmoemresponder_fileio_test_LDADD = \
-        $(top_builddir)/pldmd-registration.o \
+	$(top_builddir)/pldmd-registration.o \
 	$(top_builddir)/libpldm/libpldm_la-base.o \
 	$(top_builddir)/oem/ibm/libpldm/libpldm_la-file_io.o \
 	$(top_builddir)/oem/ibm/libpldmresponder/libpldmresponder_la-file_io.o\
@@ -136,17 +141,20 @@ libpldmresponder_pdr_state_effecter_test_SOURCES = libpldmresponder_pdr_state_ef
 libpldmresponder_bios_table_test_CPPFLAGS = $(test_cppflags)
 libpldmresponder_bios_table_test_CXXFLAGS = $(test_cxxflags)
 libpldmresponder_bios_table_test_LDFLAGS = \
-        $(test_ldflags) \
-        $(SDBUSPLUS_LIBS)
+	$(test_ldflags) \
+	$(SDBUSPLUS_LIBS)
 libpldmresponder_bios_table_test_LDADD = \
-        $(top_builddir)/libpldmresponder/libpldmresponder_la-bios.o \
-        $(top_builddir)/libpldmresponder/libpldmresponder_la-bios_table.o \
-        $(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
-        $(top_builddir)/libpldm/libpldm_la-base.o  \
-        $(top_builddir)/libpldm/libpldm_la-bios.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios_table.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-utils.o \
+	$(top_builddir)/libpldm/libpldm_la-base.o  \
+	$(top_builddir)/libpldm/libpldm_la-bios.o \
+	$(top_builddir)/libpldmresponder/libpldmresponder_la-bios_parser.o \
 	$(top_builddir)/pldmd-registration.o \
-        $(CODE_COVERAGE_LIBS) \
-        $(SDBUSPLUS_LIBS) \
+	$(CODE_COVERAGE_LIBS) \
+	$(SDBUSPLUS_LIBS) \
+	$(PHOSPHOR_LOGGING_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	-lstdc++fs
 libpldmresponder_bios_table_test_SOURCES = \
         libpldmresponder_bios_table_test.cpp
