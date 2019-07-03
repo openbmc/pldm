@@ -1,5 +1,6 @@
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/bios_parser.hpp"
+#include "libpldmresponder/bios_table.hpp"
 
 #include <string.h>
 
@@ -13,6 +14,8 @@
 
 using namespace pldm::responder;
 using namespace pldm::responder::utils;
+using namespace bios_parser;
+using namespace bios_parser::bios_enum;
 
 TEST(epochToBCDTime, testTime)
 {
@@ -83,3 +86,238 @@ TEST(getAttrValue, allScenarios)
     // Invalid attribute name
     ASSERT_THROW(getAttrValue("CodeUpdatePolic"), std::out_of_range);
 }
+
+TEST(GetBIOSStringTable, testGoodRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
+        requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    struct pldm_get_bios_table_req* req =
+        (struct pldm_get_bios_table_req*)request->payload;
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_STRING_TABLE;
+
+    Strings biosStrings = getStrings("./bios_jsons");
+    std::sort(biosStrings.begin(), biosStrings.end());
+    biosStrings.erase(std::unique(biosStrings.begin(), biosStrings.end()),
+                      biosStrings.end());
+
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+    std::string jsonFilePath("./bios_jsons");
+    std::string biosFilePath("./bios");
+    auto response = buildBIOSTables(request, requestPayloadLength,
+                                    jsonFilePath.c_str(), biosFilePath.c_str());
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_get_bios_table_resp* resp =
+        reinterpret_cast<struct pldm_get_bios_table_resp*>(
+            responsePtr->payload);
+
+    ASSERT_EQ(0, resp->completion_code);
+    ASSERT_EQ(0, resp->next_transfer_handle);
+    ASSERT_EQ(PLDM_START_AND_END, resp->transfer_flag);
+
+    uint16_t strLen = 0;
+    uint8_t* tableData = reinterpret_cast<uint8_t*>(resp->table_data);
+
+    for (auto elem : biosStrings)
+    {
+        struct pldm_bios_string_table_entry* ptr =
+            reinterpret_cast<struct pldm_bios_string_table_entry*>(tableData);
+        strLen = ptr->string_length;
+        ASSERT_EQ(strLen, elem.size());
+        ASSERT_EQ(0, memcmp(elem.c_str(), ptr->name, strLen));
+        tableData += (sizeof(struct pldm_bios_string_table_entry) - 1) + strLen;
+
+    } // end for
+}
+
+TEST(GetBIOSTable, testBadRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
+        requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    struct pldm_get_bios_table_req* req =
+        (struct pldm_get_bios_table_req*)request->payload;
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = 0xFF;
+
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+
+    std::string jsonFilePath("./bios_jsons");
+    std::string biosFilePath("./bios");
+    auto response = buildBIOSTables(request, requestPayloadLength,
+                                    jsonFilePath.c_str(), biosFilePath.c_str());
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_get_bios_table_resp* resp =
+        reinterpret_cast<struct pldm_get_bios_table_resp*>(
+            responsePtr->payload);
+
+    ASSERT_EQ(PLDM_INVALID_BIOS_TABLE_TYPE, resp->completion_code);
+}
+
+/*TEST(getBIOSAttributeTable, testGoodRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
+        requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    struct pldm_get_bios_table_req* req =
+        (struct pldm_get_bios_table_req*)request->payload;
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_ATTR_TABLE;
+
+    //   AttrValuesMap attrMap = getValues("./bios_jsons");
+
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+
+    std::string filePath("./bios_jsons");
+    auto response =
+        buildBIOSTables(request, requestPayloadLength, filePath.c_str());
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_get_bios_table_resp* resp =
+        reinterpret_cast<struct pldm_get_bios_table_resp*>(
+            responsePtr->payload);
+
+    ASSERT_EQ(0, resp->completion_code);
+    ASSERT_EQ(0, resp->next_transfer_handle);
+    ASSERT_EQ(PLDM_START_AND_END, resp->transfer_flag);
+
+    uint32_t attrTableLen =
+        response.size() - sizeof(pldm_msg_hdr) -
+        (sizeof(resp->completion_code) + sizeof(resp->next_transfer_handle) +
+         sizeof(resp->transfer_flag));
+    uint32_t traversed = 0;
+    uint16_t attrHdl = 0;
+    uint16_t stringHdl = 0;
+    uint8_t attrType = 0;
+    uint8_t numPosVals = 0;
+    uint8_t numDefVals = 0;
+    uint8_t defIndex = 0;
+
+    uint8_t* tableData = reinterpret_cast<uint8_t*>(resp->table_data);
+    while (1)
+    {
+        struct pldm_bios_attr_table_entry* ptr =
+            reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
+        attrHdl = ptr->attr_handle;
+        attrType = ptr->attr_type;
+        EXPECT_EQ(0, attrHdl);
+        EXPECT_EQ(PLDM_BIOS_ENUMERATION, attrType);
+        stringHdl = ptr->string_handle;
+        EXPECT_EQ(stringHdl, 6);
+        tableData += sizeof(attrHdl) + sizeof(attrType) + sizeof(stringHdl);
+        numPosVals = *tableData;
+        EXPECT_EQ(numPosVals, 2);
+        traversed += sizeof(attrHdl) + sizeof(attrType) + sizeof(stringHdl);
+        traversed += sizeof(numPosVals);
+        PossibleValuesByHandle possiVals;
+        tableData++;
+        uint16_t* temp = reinterpret_cast<uint16_t*>(tableData);
+        uint32_t i = 0;
+        while (i < numPosVals)
+        {
+            uint16_t val = *temp;
+            possiVals.push_back(val);
+            temp++;
+            i++;
+        }
+        EXPECT_EQ(possiVals.size(), 2);
+        tableData += numPosVals * sizeof(stringHdl);
+        traversed += numPosVals * sizeof(stringHdl);
+        numDefVals = *tableData;
+        EXPECT_EQ(numDefVals, 1);
+        tableData += numDefVals * sizeof(defIndex);
+        traversed += numDefVals + sizeof(numDefVals);
+
+        break; // test for first row only
+
+        if (traversed > attrTableLen)
+        {
+            break;
+        }
+        else if ((attrTableLen - traversed) < 8)
+        {
+            // reached pad
+            break;
+        }
+
+    } // end while
+
+} // end TEST
+
+TEST(getBIOSAttributeValueTable, testGoodRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
+        requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    struct pldm_get_bios_table_req* req =
+        (struct pldm_get_bios_table_req*)request->payload;
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_ATTR_VAL_TABLE;
+
+    std::string attrName("CodeUpdatePolicy");
+    CurrentValues currVals = getAttrValue(attrName);
+
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+
+    std::string filePath("./bios_jsons");
+    auto response =
+        buildBIOSTables(request, requestPayloadLength, filePath.c_str());
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_get_bios_table_resp* resp =
+        reinterpret_cast<struct pldm_get_bios_table_resp*>(
+            responsePtr->payload);
+
+    ASSERT_EQ(0, resp->completion_code);
+    ASSERT_EQ(0, resp->next_transfer_handle);
+    ASSERT_EQ(PLDM_START_AND_END, resp->transfer_flag);
+
+    uint32_t attrValTableLen =
+        response.size() - sizeof(pldm_msg_hdr) -
+        (sizeof(resp->completion_code) + sizeof(resp->next_transfer_handle) +
+         sizeof(resp->transfer_flag));
+    uint32_t traversed = 0;
+    uint8_t* tableData = reinterpret_cast<uint8_t*>(resp->table_data);
+
+    uint16_t attrHdl;
+    uint8_t attrType;
+    uint8_t numCurrVals;
+    uint8_t currValStrIndex;
+
+    while (1)
+    {
+        struct pldm_bios_attr_val_table_entry* ptr =
+            reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(tableData);
+        attrHdl = ptr->attr_handle;
+        attrType = ptr->attr_type;
+        EXPECT_EQ(0, attrHdl);
+        EXPECT_EQ(PLDM_BIOS_ENUMERATION, attrType);
+        tableData += sizeof(attrHdl) + sizeof(attrType);
+        traversed += sizeof(attrHdl) + sizeof(attrType);
+        numCurrVals = *tableData;
+        EXPECT_EQ(1, numCurrVals);
+        tableData += sizeof(numCurrVals);
+        traversed += sizeof(numCurrVals);
+        currValStrIndex = *tableData;
+        EXPECT_EQ(0, currValStrIndex);
+        tableData += numCurrVals;
+        traversed += numCurrVals;
+        break; // testing for first row
+        if (traversed > attrValTableLen)
+        {
+            break;
+        }
+        else if ((attrValTableLen - traversed) < 8)
+        {
+            break;
+        }
+    }
+} // end TEST
+*/
