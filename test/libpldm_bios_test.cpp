@@ -135,7 +135,8 @@ TEST(GetBIOSTable, testEncodeResponse)
 
 TEST(GetBIOSTable, testDecodeRequest)
 {
-    std::array<uint8_t, PLDM_GET_BIOS_TABLE_REQ_BYTES> requestMsg{};
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_GET_BIOS_TABLE_REQ_BYTES> requestMsg{};
     uint32_t transferHandle = 31;
     uint8_t transferOpFlag = PLDM_GET_FIRSTPART;
     uint8_t tableType = PLDM_BIOS_ATTR_TABLE;
@@ -143,14 +144,15 @@ TEST(GetBIOSTable, testDecodeRequest)
     uint8_t retTransferOpFlag = 0;
     uint8_t retTableType = 0;
 
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
     struct pldm_get_bios_table_req* request =
-        reinterpret_cast<struct pldm_get_bios_table_req*>(requestMsg.data());
+        reinterpret_cast<struct pldm_get_bios_table_req*>(req->payload);
 
     request->transfer_handle = transferHandle;
     request->transfer_op_flag = transferOpFlag;
     request->table_type = tableType;
 
-    auto rc = decode_get_bios_table_req(requestMsg.data(), requestMsg.size(),
+    auto rc = decode_get_bios_table_req(req, requestMsg.size() - hdr_size,
                                         &retTransferHandle, &retTransferOpFlag,
                                         &retTableType);
 

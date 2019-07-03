@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#include <iostream>
+
 #include <vector>
 #include <filesystem>
 #include <fstream>
@@ -10,6 +12,7 @@
 
 namespace pldm
 {
+using namespace std;
 
 namespace responder
 {
@@ -78,9 +81,10 @@ class BIOSTable
          *
          *  @param[in] response - PLDM response to GetBIOSTable
          */
-        void setResponse(Response&& response)
+        void setResponse(Response&& response1)
         {
-            response = std::move(response);
+            response = std::move(response1);
+            std::cout << "inside setResponse response.size()=" << response.size() <<endl;
         }
 
         /** @brief Retrieve cached PLDM response to GetBIOSTable
@@ -89,6 +93,7 @@ class BIOSTable
          */
         Response getResponse() const
         {
+            //std::cout<<"inside getResponse response.size()=" << response.size()<< endl;
             return response;
         }
 

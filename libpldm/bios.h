@@ -18,6 +18,11 @@ extern "C" {
 
 #define PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES 6
 
+enum pldm_bios_completion_codes {
+	PLDM_BIOS_TABLE_UNAVAILABLE = 0x83,
+	PLDM_INVALID_BIOS_TABLE_DATA_INTEGRITY_CHECK = 0x84,
+	PLDM_INVALID_BIOS_TABLE_TYPE = 0x85,
+};
 enum pldm_bios_commands {
 	PLDM_GET_BIOS_TABLE = 0x01,
 	PLDM_GET_DATE_TIME = 0x0c
@@ -57,6 +62,24 @@ struct pldm_bios_enum_attr_val {
 	uint8_t num_curr_values;
 	uint8_t indices[1];
 } __attribute__((packed));
+
+enum pldm_bios_attribute_type {
+	PLDM_BIOS_ENUMERATION = 0x0,
+	PLDM_BIOS_STRING = 0x1,
+	PLDM_BIOS_PASSWORD = 0x2,
+	PLDM_BIOS_INTEGER = 0x3,
+	PLDM_BIOS_BOOT_CONFIG_SETTING = 0x4,
+	PLDM_BIOS_COLLECTION = 0x5,
+	PLDM_BIOS_CONFIG_SET = 0x6,
+	PLDM_BIOS_ENUMERATION_READ_ONLY = 0x80,
+	PLDM_BIOS_STRING_READ_ONLY = 0x81,
+	PLDM_BIOS_PASSWORD_READ_ONLY = 0x82,
+	PLDM_BIOS_INTEGER_READ_ONLY = 0x83,
+	PLDM_BIOS_BOOT_CONFIG_SETTING_READ_ONLY = 0x84,
+	PLDM_BIOS_COLLECTION_READ_ONLY = 0x85,
+	PLDM_BIOS_CONFIG_SET_READ_ONLY = 0x86,
+
+};
 
 /** @struct pldm_get_bios_table_req
  *
@@ -173,7 +196,7 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 
 /** @brief Decode GetBIOSTable request packet
  *
- *  @param[in] msg - Request message payload
+ *  @param[in] msg - Request message
  *  @param[in] payload_length - Length of request message payload
  *  @param[out] transfer_handle - Handle to identify a BIOS table transfer
  *  @param[out] transfer_op_flag - Flag to indicate the start of a multipart
@@ -181,7 +204,7 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
  *  @param[out] table_type - BIOS table type
  *  @return pldm_completion_codes
  */
-int decode_get_bios_table_req(const uint8_t *msg, size_t payload_length,
+int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_op_flag, uint8_t *table_type);
 
