@@ -47,5 +47,16 @@ std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
     return mapperResponse.begin()->first;
 }
 
+namespace utils
+{
+uint8_t getNumPadBytes(uint32_t tableLen)
+{
+    uint8_t pad;
+    pad = ((tableLen % 4) ? (4 - tableLen % 4) : 0);
+    return pad;
+} // end getNumPadBytes
+} // end namespace utils
+
 } // namespace responder
+
 } // namespace pldm
