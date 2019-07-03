@@ -86,3 +86,63 @@ int decode_get_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
+			       uint32_t next_transfer_handle,
+			       uint8_t transfer_flag, uint8_t *table_data,
+			       size_t payload_length, struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_get_bios_table_resp *response =
+	    (struct pldm_get_bios_table_resp *)msg->payload;
+
+	response->completion_code = completion_code;
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_GET_BIOS_TABLE;
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	if (response->completion_code == PLDM_SUCCESS) {
+
+		response->next_transfer_handle = htole32(next_transfer_handle);
+		response->transfer_flag = transfer_flag;
+		if (table_data != NULL && payload_length > 0) {
+			memcpy(response->table_data, table_data,
+			       payload_length -
+				   (sizeof(struct pldm_msg_hdr) +
+				    (sizeof(*response) -
+				     sizeof(response->table_data))));
+		}
+	}
+	return PLDM_SUCCESS;
+}
+
+int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
+			      uint32_t *transfer_handle,
+			      uint8_t *transfer_op_flag, uint8_t *table_type)
+{
+	if (msg == NULL || transfer_op_flag == NULL || table_type == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_BIOS_TABLE_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_bios_table_req *request =
+	    (struct pldm_get_bios_table_req *)msg->payload;
+	*transfer_handle = le32toh(request->transfer_handle);
+	*transfer_op_flag = request->transfer_op_flag;
+	*table_type = request->table_type;
+
+	return PLDM_SUCCESS;
+}
