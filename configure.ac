@@ -91,6 +91,8 @@ AS_IF([test "x$enable_verbose" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CFLAGS])
 ])
 
+AC_DEFINE(ALL_BIOS_DIR, "/var/lib/pldm/bios", [Directory housing the json files for bios tables])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
