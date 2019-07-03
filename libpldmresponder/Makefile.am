@@ -3,13 +3,15 @@ libpldmresponderdir = ${libdir}
 libpldmresponder_la_SOURCES = \
 	base.cpp \
 	utils.cpp \
-	bios.cpp
+	bios_table.cpp \
+	bios.cpp 
 libpldmresponder_la_LIBADD = \
 	../libpldm/libpldm.la \
 	$(CODE_COVERAGE_LIBS)
 libpldmresponder_la_LDFLAGS = \
 	$(SDBUSPLUS_LIBS) \
-	-version-info 1:0:0 -shared
+	-version-info 1:0:0 -shared \
+	-lstdc++fs
 libpldmresponder_la_CXXFLAGS = \
 	$(CODE_COVERAGE_CXXFLAGS) \
 	$(SDBUSPLUS_CFLAGS)

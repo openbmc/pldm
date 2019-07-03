@@ -110,10 +110,12 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 		}
 		response->next_transfer_handle = htole32(next_transfer_handle);
 		response->transfer_flag = transfer_flag;
+        if( table_data != NULL && payload_length > 0) {
 		memcpy(response->table_data, table_data,
 		       payload_length - (sizeof(completion_code) +
 					 sizeof(next_transfer_handle) +
 					 sizeof(transfer_flag)));
+        }
 	}
 	return PLDM_SUCCESS;
 }
