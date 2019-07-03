@@ -110,15 +110,17 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 		}
 		response->next_transfer_handle = htole32(next_transfer_handle);
 		response->transfer_flag = transfer_flag;
-		memcpy(response->table_data, table_data,
-		       payload_length - (sizeof(completion_code) +
-					 sizeof(next_transfer_handle) +
-					 sizeof(transfer_flag)));
+		if (table_data != NULL && payload_length > 0) {
+			memcpy(response->table_data, table_data,
+			       payload_length - (sizeof(completion_code) +
+						 sizeof(next_transfer_handle) +
+						 sizeof(transfer_flag)));
+		}
 	}
 	return PLDM_SUCCESS;
 }
 
-int decode_get_bios_table_req(const uint8_t *msg, size_t payload_length,
+int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_op_flag, uint8_t *table_type)
 {
@@ -131,7 +133,7 @@ int decode_get_bios_table_req(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_bios_table_req *request =
-	    (struct pldm_get_bios_table_req *)msg;
+	    (struct pldm_get_bios_table_req *)msg->payload;
 	*transfer_handle = le32toh(request->transfer_handle);
 	*transfer_op_flag = request->transfer_op_flag;
 	*table_type = request->table_type;

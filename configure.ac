@@ -75,6 +75,8 @@ AS_IF([test "x$oem-ibm" == "xtrue"], [
     AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CXXFLAGS])
 ])
 
+AC_DEFINE(ALL_BIOS_DIR, "/var/lib/pldm/bios", [Directory housing the json files for bios tables])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile])
 AC_CONFIG_FILES([libpldm/libpldm.pc])
