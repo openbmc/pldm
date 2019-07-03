@@ -46,6 +46,13 @@ struct CustomFD
     int fd = -1;
 };
 
+/** @brief Calculate the pad for PLDM data tables
+ *
+ *  @param[in] tableLen - Length of the table
+ *  @return - uint8_t - number of pad bytes
+ */
+uint8_t getNumPadBytes(uint32_t tableLen);
+
 } // namespace utils
 
 /**

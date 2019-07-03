@@ -3,12 +3,11 @@ libpldmresponderdir = ${libdir}
 libpldmresponder_la_SOURCES = \
 	base.cpp \
 	utils.cpp \
-	bios.cpp \
+	bios_table.cpp \
 	effecters.cpp \
 	pdr.cpp \
-	bios_table.cpp \
-    bios_parser.cpp
-
+	 bios_parser.cpp \
+	 bios.cpp
 libpldmresponder_la_LIBADD = \
 	../libpldm/libpldm.la \
 	$(CODE_COVERAGE_LIBS)
