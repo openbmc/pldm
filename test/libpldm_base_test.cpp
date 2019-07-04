@@ -6,6 +6,8 @@
 
 #include <gtest/gtest.h>
 
+constexpr auto hdrSize = sizeof(pldm_msg_hdr);
+
 TEST(PackPLDMMessage, BadPathTest)
 {
     struct pldm_header_info hdr;
@@ -208,12 +210,16 @@ TEST(GetPLDMCommands, testDecodeRequest)
     ver32_t version{0xFF, 0xFF, 0xFF, 0xFF};
     uint8_t pldmTypeOut{};
     ver32_t versionOut{0xFF, 0xFF, 0xFF, 0xFF};
-    std::array<uint8_t, PLDM_GET_COMMANDS_REQ_BYTES> requestMsg{};
+    std::array<uint8_t, hdrSize + PLDM_GET_COMMANDS_REQ_BYTES> requestMsg{};
 
-    memcpy(requestMsg.data(), &pldmType, sizeof(pldmType));
-    memcpy(requestMsg.data() + sizeof(pldmType), &version, sizeof(version));
-    auto rc = decode_get_commands_req(requestMsg.data(), requestMsg.size(),
+    memcpy(requestMsg.data() + hdrSize, &pldmType, sizeof(pldmType));
+    memcpy(requestMsg.data() + sizeof(pldmType) + hdrSize, &version,
+           sizeof(version));
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = decode_get_commands_req(request, requestMsg.size() - hdrSize,
                                       &pldmTypeOut, &versionOut);
+
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(pldmTypeOut, pldmType);
     ASSERT_EQ(0, memcmp(&versionOut, &version, sizeof(version)));
@@ -265,40 +271,44 @@ TEST(GetPLDMTypes, testEncodeResponse)
 
 TEST(GetPLDMTypes, testDecodeResponse)
 {
-    std::array<uint8_t, PLDM_GET_TYPES_RESP_BYTES> responseMsg{};
-    responseMsg[1] = 1;
-    responseMsg[2] = 2;
-    responseMsg[3] = 3;
+    std::array<uint8_t, hdrSize + PLDM_GET_TYPES_RESP_BYTES> responseMsg{};
+    responseMsg[1 + hdrSize] = 1;
+    responseMsg[2 + hdrSize] = 2;
+    responseMsg[3 + hdrSize] = 3;
     std::array<bitfield8_t, PLDM_MAX_TYPES / 8> outTypes{};
     uint8_t completion_code;
 
-    auto rc = decode_get_types_resp(responseMsg.data(), responseMsg.size(),
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_get_types_resp(response, responseMsg.size() - hdrSize,
                                     &completion_code, outTypes.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(responseMsg[1], outTypes[0].byte);
-    ASSERT_EQ(responseMsg[2], outTypes[1].byte);
-    ASSERT_EQ(responseMsg[3], outTypes[2].byte);
+    ASSERT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
+    ASSERT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
+    ASSERT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
 }
 
 TEST(GetPLDMCommands, testDecodeResponse)
 {
-    std::array<uint8_t, PLDM_GET_COMMANDS_RESP_BYTES> responseMsg{};
-    responseMsg[1] = 1;
-    responseMsg[2] = 2;
-    responseMsg[3] = 3;
+    std::array<uint8_t, hdrSize + PLDM_GET_COMMANDS_RESP_BYTES> responseMsg{};
+    responseMsg[1 + hdrSize] = 1;
+    responseMsg[2 + hdrSize] = 2;
+    responseMsg[3 + hdrSize] = 3;
     std::array<bitfield8_t, PLDM_MAX_CMDS_PER_TYPE / 8> outTypes{};
     uint8_t completion_code;
 
-    auto rc = decode_get_commands_resp(responseMsg.data(), responseMsg.size(),
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_get_commands_resp(response, responseMsg.size() - hdrSize,
                                        &completion_code, outTypes.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(responseMsg[1], outTypes[0].byte);
-    ASSERT_EQ(responseMsg[2], outTypes[1].byte);
-    ASSERT_EQ(responseMsg[3], outTypes[2].byte);
+    ASSERT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
+    ASSERT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
+    ASSERT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
 }
 
 TEST(GetPLDMVersion, testGoodEncodeRequest)
@@ -361,7 +371,7 @@ TEST(GetPLDMVersion, testEncodeResponse)
 
 TEST(GetPLDMVersion, testDecodeRequest)
 {
-    std::array<uint8_t, PLDM_GET_VERSION_REQ_BYTES> requestMsg{};
+    std::array<uint8_t, hdrSize + PLDM_GET_VERSION_REQ_BYTES> requestMsg{};
     uint32_t transferHandle = 0x0;
     uint32_t retTransferHandle = 0x0;
     uint8_t flag = PLDM_GET_FIRSTPART;
@@ -369,12 +379,16 @@ TEST(GetPLDMVersion, testDecodeRequest)
     uint8_t pldmType = PLDM_BASE;
     uint8_t retType = PLDM_BASE;
 
-    memcpy(requestMsg.data(), &transferHandle, sizeof(transferHandle));
-    memcpy(requestMsg.data() + sizeof(transferHandle), &flag, sizeof(flag));
-    memcpy(requestMsg.data() + sizeof(transferHandle) + sizeof(flag), &pldmType,
-           sizeof(pldmType));
+    memcpy(requestMsg.data() + hdrSize, &transferHandle,
+           sizeof(transferHandle));
+    memcpy(requestMsg.data() + sizeof(transferHandle) + hdrSize, &flag,
+           sizeof(flag));
+    memcpy(requestMsg.data() + sizeof(transferHandle) + sizeof(flag) + hdrSize,
+           &pldmType, sizeof(pldmType));
 
-    auto rc = decode_get_version_req(requestMsg.data(), requestMsg.size(),
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = decode_get_version_req(request, requestMsg.size() - hdrSize,
                                      &retTransferHandle, &retFlag, &retType);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
@@ -385,7 +399,8 @@ TEST(GetPLDMVersion, testDecodeRequest)
 
 TEST(GetPLDMVersion, testDecodeResponse)
 {
-    std::array<uint8_t, PLDM_GET_VERSION_RESP_BYTES> responseMsg{};
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_RESP_BYTES>
+        responseMsg{};
     uint32_t transferHandle = 0x0;
     uint32_t retTransferHandle = 0x0;
     uint8_t flag = PLDM_START_AND_END;
@@ -395,15 +410,18 @@ TEST(GetPLDMVersion, testDecodeResponse)
     ver32_t versionOut;
     uint8_t completion_code;
 
-    memcpy(responseMsg.data() + sizeof(completionCode), &transferHandle,
-           sizeof(transferHandle));
-    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(transferHandle),
+    memcpy(responseMsg.data() + sizeof(completionCode) + hdrSize,
+           &transferHandle, sizeof(transferHandle));
+    memcpy(responseMsg.data() + sizeof(completionCode) +
+               sizeof(transferHandle) + hdrSize,
            &flag, sizeof(flag));
     memcpy(responseMsg.data() + sizeof(completionCode) +
-               sizeof(transferHandle) + sizeof(flag),
+               sizeof(transferHandle) + sizeof(flag) + hdrSize,
            &version, sizeof(version));
 
-    auto rc = decode_get_version_resp(responseMsg.data(), responseMsg.size(),
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_get_version_resp(response, responseMsg.size() - hdrSize,
                                       &completion_code, &retTransferHandle,
                                       &retFlag, &versionOut);
     ASSERT_EQ(rc, PLDM_SUCCESS);
