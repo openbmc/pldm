@@ -56,17 +56,21 @@ TEST(SetStateEffecterStates, testEncodeRequest)
 
 TEST(SetStateEffecterStates, testGoodDecodeResponse)
 {
-    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
         responseMsg{};
 
     uint8_t completion_code = 0xA0;
 
     uint8_t retcompletion_code = 0;
 
-    memcpy(responseMsg.data(), &completion_code, sizeof(completion_code));
+    memcpy(responseMsg.data() + hdr_size, &completion_code,
+           sizeof(completion_code));
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_set_state_effecter_states_resp(
-        responseMsg.data(), responseMsg.size(), &retcompletion_code);
+        response, responseMsg.size() - hdr_size, &retcompletion_code);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(completion_code, retcompletion_code);
@@ -74,7 +78,9 @@ TEST(SetStateEffecterStates, testGoodDecodeResponse)
 
 TEST(SetStateEffecterStates, testGoodDecodeRequest)
 {
-    std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES> requestMsg{};
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES>
+        requestMsg{};
 
     uint16_t effecterId = 0x32;
     uint8_t compEffecterCnt = 0x2;
@@ -88,14 +94,17 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
 
     std::array<set_effecter_state_field, 8> retStateField{};
 
-    memcpy(requestMsg.data(), &effecterId, sizeof(effecterId));
-    memcpy(requestMsg.data() + sizeof(effecterId), &compEffecterCnt,
+    memcpy(requestMsg.data() + hdr_size, &effecterId, sizeof(effecterId));
+    memcpy(requestMsg.data() + sizeof(effecterId) + hdr_size, &compEffecterCnt,
            sizeof(compEffecterCnt));
-    memcpy(requestMsg.data() + sizeof(effecterId) + sizeof(compEffecterCnt),
+    memcpy(requestMsg.data() + sizeof(effecterId) + sizeof(compEffecterCnt) +
+               hdr_size,
            &stateField, sizeof(stateField));
 
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
     auto rc = decode_set_state_effecter_states_req(
-        requestMsg.data(), requestMsg.size(), &retEffecterId,
+        request, requestMsg.size() - hdr_size, &retEffecterId,
         &retCompEffecterCnt, retStateField.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
@@ -109,7 +118,7 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
 
 TEST(SetStateEffecterStates, testBadDecodeRequest)
 {
-    const uint8_t* msg = NULL;
+    const struct pldm_msg* msg = NULL;
 
     auto rc = decode_set_state_effecter_states_req(msg, sizeof(*msg), NULL,
                                                    NULL, NULL);
@@ -122,7 +131,9 @@ TEST(SetStateEffecterStates, testBadDecodeResponse)
     std::array<uint8_t, PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
         responseMsg{};
 
-    auto rc = decode_set_state_effecter_states_resp(responseMsg.data(),
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_set_state_effecter_states_resp(response,
                                                     responseMsg.size(), NULL);
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
