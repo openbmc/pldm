@@ -66,8 +66,7 @@ Response getPLDMCommands(const pldm_msg* request, size_t payloadLength)
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
-    auto rc = decode_get_commands_req(request->payload, payloadLength, &type,
-                                      &version);
+    auto rc = decode_get_commands_req(request, payloadLength, &type, &version);
 
     if (rc != PLDM_SUCCESS)
     {
@@ -106,8 +105,8 @@ Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
-    uint8_t rc = decode_get_version_req(request->payload, payloadLength,
-                                        &transferHandle, &transferFlag, &type);
+    uint8_t rc = decode_get_version_req(request, payloadLength, &transferHandle,
+                                        &transferFlag, &type);
 
     if (rc != PLDM_SUCCESS)
     {
