@@ -2,7 +2,7 @@
 #include <endian.h>
 #include <string.h>
 
-int decode_rw_file_memory_req(const uint8_t *msg, size_t payload_length,
+int decode_rw_file_memory_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *file_handle, uint32_t *offset,
 			      uint32_t *length, uint64_t *address)
 {
@@ -16,7 +16,7 @@ int decode_rw_file_memory_req(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_read_write_file_memory_req *request =
-	    (struct pldm_read_write_file_memory_req *)msg;
+	    (struct pldm_read_write_file_memory_req *)msg->payload;
 
 	*file_handle = le32toh(request->file_handle);
 	*offset = le32toh(request->offset);
@@ -81,8 +81,9 @@ int encode_rw_file_memory_req(uint8_t instance_id, uint8_t command,
 	return PLDM_SUCCESS;
 }
 
-int decode_rw_file_memory_resp(const uint8_t *msg, size_t payload_length,
-			       uint8_t *completion_code, uint32_t *length)
+int decode_rw_file_memory_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint32_t *length)
 {
 	if (msg == NULL || length == NULL || completion_code == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
@@ -93,7 +94,7 @@ int decode_rw_file_memory_resp(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_read_write_file_memory_resp *response =
-	    (struct pldm_read_write_file_memory_resp *)msg;
+	    (struct pldm_read_write_file_memory_resp *)msg->payload;
 	*completion_code = response->completion_code;
 	if (*completion_code == PLDM_SUCCESS) {
 		*length = le32toh(response->length);
@@ -102,7 +103,7 @@ int decode_rw_file_memory_resp(const uint8_t *msg, size_t payload_length,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_file_table_req(const uint8_t *msg, size_t payload_length,
+int decode_get_file_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_opflag, uint8_t *table_type)
 {
@@ -116,7 +117,7 @@ int decode_get_file_table_req(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_file_table_req *request =
-	    (struct pldm_get_file_table_req *)msg;
+	    (struct pldm_get_file_table_req *)msg->payload;
 
 	*transfer_handle = le32toh(request->transfer_handle);
 	*transfer_opflag = request->operation_flag;
