@@ -66,7 +66,7 @@ struct pldm_read_write_file_memory_resp {
 /** @brief Decode ReadFileIntoMemory and WriteFileFromMemory commands request
  *         data
  *
- *  @param[in] msg - Pointer to PLDM request message payload
+ *  @param[in] msg - Pointer to PLDM request message
  *  @param[in] payload_length - Length of request payload
  *  @param[out] file_handle - A handle to the file
  *  @param[out] offset - Offset to the file at which the read should begin
@@ -75,7 +75,7 @@ struct pldm_read_write_file_memory_resp {
  *                        written to
  *  @return pldm_completion_codes
  */
-int decode_rw_file_memory_req(const uint8_t *msg, size_t payload_length,
+int decode_rw_file_memory_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *file_handle, uint32_t *offset,
 			      uint32_t *length, uint64_t *address);
 
@@ -116,14 +116,15 @@ int encode_rw_file_memory_req(uint8_t instance_id, uint8_t command,
 /** @brief Decode ReadFileIntoMemory and WriteFileFromMemory
  *         commands response data
  *
- *  @param[in] msg - pointer to PLDM response message payload
+ *  @param[in] msg - pointer to PLDM response message
  *  @param[in] payload_length - Length of response payload
  *  @param[out] completion_code - PLDM completion code
  *  @param[out] length - Number of bytes to be read/written
  *  @return pldm_completion_codes
  */
-int decode_rw_file_memory_resp(const uint8_t *msg, size_t payload_length,
-			       uint8_t *completion_code, uint32_t *length);
+int decode_rw_file_memory_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint32_t *length);
 
 /** @struct pldm_get_file_table_req
  *
@@ -148,14 +149,14 @@ struct pldm_get_file_table_resp {
 
 /** @brief Decode GetFileTable command request data
  *
- *  @param[in] msg - Pointer to PLDM request message payload
+ *  @param[in] msg - Pointer to PLDM request message
  *  @param[in] payload_length - Length of request payload
  *  @param[out] trasnfer_handle - the handle of data
  *  @param[out] transfer_opflag - Transfer operation flag
  *  @param[out] table_type - the type of file table
  *  @return pldm_completion_codes
  */
-int decode_get_file_table_req(const uint8_t *msg, size_t payload_length,
+int decode_get_file_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_opflag, uint8_t *table_type);
 

@@ -55,7 +55,7 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 	return PLDM_SUCCESS;
 }
 
-int decode_set_state_effecter_states_resp(const uint8_t *msg,
+int decode_set_state_effecter_states_resp(const struct pldm_msg *msg,
 					  size_t payload_length,
 					  uint8_t *completion_code)
 {
@@ -67,12 +67,12 @@ int decode_set_state_effecter_states_resp(const uint8_t *msg,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	*completion_code = msg[0];
+	*completion_code = msg->payload[0];
 
 	return PLDM_SUCCESS;
 }
 
-int decode_set_state_effecter_states_req(const uint8_t *msg,
+int decode_set_state_effecter_states_req(const struct pldm_msg *msg,
 					 size_t payload_length,
 					 uint16_t *effecter_id,
 					 uint8_t *comp_effecter_count,
@@ -88,7 +88,7 @@ int decode_set_state_effecter_states_req(const uint8_t *msg,
 	}
 
 	struct pldm_set_state_effecter_states_req *request =
-	    (struct pldm_set_state_effecter_states_req *)msg;
+	    (struct pldm_set_state_effecter_states_req *)msg->payload;
 
 	*effecter_id = le16toh(request->effecter_id);
 	*comp_effecter_count = request->comp_effecter_count;

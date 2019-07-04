@@ -172,8 +172,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    decode_rw_file_memory_req(request->payload, payloadLength, &fileHandle,
-                              &offset, &length, &address);
+    decode_rw_file_memory_req(request, payloadLength, &fileHandle, &offset,
+                              &length, &address);
 
     using namespace pldm::filetable;
     auto& table = buildFileTable(FILE_TABLE_JSON);
@@ -253,8 +253,8 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    decode_rw_file_memory_req(request->payload, payloadLength, &fileHandle,
-                              &offset, &length, &address);
+    decode_rw_file_memory_req(request, payloadLength, &fileHandle, &offset,
+                              &length, &address);
 
     if (length % dma::minSize)
     {
@@ -329,9 +329,8 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    auto rc =
-        decode_get_file_table_req(request->payload, payloadLength,
-                                  &transferHandle, &transferFlag, &tableType);
+    auto rc = decode_get_file_table_req(request, payloadLength, &transferHandle,
+                                        &transferFlag, &tableType);
     if (rc)
     {
         encode_get_file_table_resp(request->hdr.instance_id, rc, 0, 0, nullptr,
