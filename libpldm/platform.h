@@ -133,7 +133,7 @@ int encode_set_state_effecter_states_resp(uint8_t instance_id,
  *  @return pldm_completion_codes
  */
 
-int decode_set_state_effecter_states_req(const uint8_t *msg,
+int decode_set_state_effecter_states_req(const struct pldm_msg *msg,
 					 size_t payload_length,
 					 uint16_t *effecter_id,
 					 uint8_t *comp_effecter_count,
@@ -171,7 +171,7 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
  *  @param[out] completion_code - PLDM completion code
  *  @return pldm_completion_codes
  */
-int decode_set_state_effecter_states_resp(const uint8_t *msg,
+int decode_set_state_effecter_states_resp(const struct pldm_msg *msg,
 					  size_t payload_length,
 					  uint8_t *completion_code);
 #ifdef __cplusplus

@@ -55,7 +55,7 @@ int encode_get_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_date_time_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
 			      uint8_t *completion_code, uint8_t *seconds,
 			      uint8_t *minutes, uint8_t *hours, uint8_t *day,
 			      uint8_t *month, uint16_t *year)
@@ -71,7 +71,7 @@ int decode_get_date_time_resp(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_date_time_resp *response =
-	    (struct pldm_get_date_time_resp *)msg;
+	    (struct pldm_get_date_time_resp *)msg->payload;
 	*completion_code = response->completion_code;
 
 	if (PLDM_SUCCESS != *completion_code) {
