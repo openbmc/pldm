@@ -75,7 +75,7 @@ struct pldm_read_write_file_memory_resp {
  *                        written to
  *  @return pldm_completion_codes
  */
-int decode_rw_file_memory_req(const uint8_t *msg, size_t payload_length,
+int decode_rw_file_memory_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *file_handle, uint32_t *offset,
 			      uint32_t *length, uint64_t *address);
 
@@ -122,8 +122,9 @@ int encode_rw_file_memory_req(uint8_t instance_id, uint8_t command,
  *  @param[out] length - Number of bytes to be read/written
  *  @return pldm_completion_codes
  */
-int decode_rw_file_memory_resp(const uint8_t *msg, size_t payload_length,
-			       uint8_t *completion_code, uint32_t *length);
+int decode_rw_file_memory_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint32_t *length);
 
 /** @struct pldm_get_file_table_req
  *
@@ -155,7 +156,7 @@ struct pldm_get_file_table_resp {
  *  @param[out] table_type - the type of file table
  *  @return pldm_completion_codes
  */
-int decode_get_file_table_req(const uint8_t *msg, size_t payload_length,
+int decode_get_file_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_opflag, uint8_t *table_type);
 

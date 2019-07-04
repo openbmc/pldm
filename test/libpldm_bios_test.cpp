@@ -7,6 +7,8 @@
 
 #include <gtest/gtest.h>
 
+constexpr auto hdr_size = sizeof(pldm_msg_hdr);
+
 TEST(GetDateTime, testEncodeRequest)
 {
     pldm_msg request{};
@@ -59,7 +61,7 @@ TEST(GetDateTime, testEncodeResponse)
 
 TEST(GetDateTime, testDecodeResponse)
 {
-    std::array<uint8_t, PLDM_GET_DATE_TIME_RESP_BYTES> responseMsg{};
+    std::array<uint8_t, hdr_size + PLDM_GET_DATE_TIME_RESP_BYTES> responseMsg{};
 
     uint8_t completionCode = 0;
 
@@ -77,25 +79,29 @@ TEST(GetDateTime, testDecodeResponse)
     uint8_t retMonth = 0;
     uint16_t retYear = 0;
 
-    memcpy(responseMsg.data() + sizeof(completionCode), &seconds,
+    memcpy(responseMsg.data() + sizeof(completionCode) + hdr_size, &seconds,
            sizeof(seconds));
-    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds),
+    memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
+               hdr_size,
            &minutes, sizeof(minutes));
     memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
-               sizeof(minutes),
+               sizeof(minutes) + hdr_size,
            &hours, sizeof(hours));
     memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
-               sizeof(minutes) + sizeof(hours),
+               sizeof(minutes) + sizeof(hours) + hdr_size,
            &day, sizeof(day));
     memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
-               sizeof(minutes) + sizeof(hours) + sizeof(day),
+               sizeof(minutes) + sizeof(hours) + sizeof(day) + hdr_size,
            &month, sizeof(month));
     memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
-               sizeof(minutes) + sizeof(hours) + sizeof(day) + sizeof(month),
+               sizeof(minutes) + sizeof(hours) + sizeof(day) + sizeof(month) +
+               hdr_size,
            &year, sizeof(year));
 
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
     auto rc = decode_get_date_time_resp(
-        responseMsg.data(), responseMsg.size(), &completionCode, &retSeconds,
+        response, responseMsg.size() - hdr_size, &completionCode, &retSeconds,
         &retMinutes, &retHours, &retDay, &retMonth, &retYear);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);

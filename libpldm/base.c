@@ -126,7 +126,7 @@ int encode_get_types_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_commands_req(const uint8_t *msg, size_t payload_length,
+int decode_get_commands_req(const struct pldm_msg *msg, size_t payload_length,
 			    uint8_t *type, ver32_t *version)
 {
 	if (msg == NULL || type == NULL || version == NULL) {
@@ -138,7 +138,7 @@ int decode_get_commands_req(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_commands_req *request =
-	    (struct pldm_get_commands_req *)msg;
+	    (struct pldm_get_commands_req *)msg->payload;
 	*type = request->type;
 	*version = request->version;
 	return PLDM_SUCCESS;
@@ -172,7 +172,7 @@ int encode_get_commands_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_types_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_types_resp(const struct pldm_msg *msg, size_t payload_length,
 			  uint8_t *completion_code, bitfield8_t *types)
 {
 	if (msg == NULL || types == NULL || completion_code == NULL) {
@@ -184,7 +184,7 @@ int decode_get_types_resp(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_types_resp *response =
-	    (struct pldm_get_types_resp *)msg;
+	    (struct pldm_get_types_resp *)msg->payload;
 	*completion_code = response->completion_code;
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
@@ -195,7 +195,7 @@ int decode_get_types_resp(const uint8_t *msg, size_t payload_length,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_commands_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_commands_resp(const struct pldm_msg *msg, size_t payload_length,
 			     uint8_t *completion_code, bitfield8_t *commands)
 {
 	if (msg == NULL || commands == NULL || completion_code == NULL) {
@@ -207,7 +207,7 @@ int decode_get_commands_resp(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_commands_resp *response =
-	    (struct pldm_get_commands_resp *)msg;
+	    (struct pldm_get_commands_resp *)msg->payload;
 	*completion_code = response->completion_code;
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
@@ -278,7 +278,7 @@ int encode_get_version_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_version_req(const uint8_t *msg, size_t payload_length,
+int decode_get_version_req(const struct pldm_msg *msg, size_t payload_length,
 			   uint32_t *transfer_handle, uint8_t *transfer_opflag,
 			   uint8_t *type)
 {
@@ -288,14 +288,14 @@ int decode_get_version_req(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_version_req *request =
-	    (struct pldm_get_version_req *)msg;
+	    (struct pldm_get_version_req *)msg->payload;
 	*transfer_handle = le32toh(request->transfer_handle);
 	*transfer_opflag = request->transfer_opflag;
 	*type = request->type;
 	return PLDM_SUCCESS;
 }
 
-int decode_get_version_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_version_resp(const struct pldm_msg *msg, size_t payload_length,
 			    uint8_t *completion_code,
 			    uint32_t *next_transfer_handle,
 			    uint8_t *transfer_flag, ver32_t *version)
@@ -310,7 +310,7 @@ int decode_get_version_resp(const uint8_t *msg, size_t payload_length,
 	}
 
 	struct pldm_get_version_resp *response =
-	    (struct pldm_get_version_resp *)msg;
+	    (struct pldm_get_version_resp *)msg->payload;
 	*completion_code = response->completion_code;
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
