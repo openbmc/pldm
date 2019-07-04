@@ -221,14 +221,14 @@ int encode_get_types_req(uint8_t instance_id, struct pldm_msg *msg);
 
 /** @brief Decode a GetPLDMTypes response message
  *
- *  @param[in] msg - Response message payload
+ *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code
  *  @param[out] types - pointer to array bitfield8_t[8] containing supported
  *              types (MAX_TYPES/8) = 8), as per DSP0240
  *  @return pldm_completion_codes
  */
-int decode_get_types_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_types_resp(const struct pldm_msg *msg, size_t payload_length,
 			  uint8_t *completion_code, bitfield8_t *types);
 
 /* GetPLDMCommands */
@@ -248,14 +248,14 @@ int encode_get_commands_req(uint8_t instance_id, uint8_t type, ver32_t version,
 
 /** @brief Decode a GetPLDMCommands response message
  *
- *  @param[in] msg - Response message payload
+ *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of reponse message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code
  *  @param[in] commands - pointer to array bitfield8_t[32] containing supported
  *             commands (PLDM_MAX_CMDS_PER_TYPE/8) = 32), as per DSP0240
  *  @return pldm_completion_codes
  */
-int decode_get_commands_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_commands_resp(const struct pldm_msg *msg, size_t payload_length,
 			     uint8_t *completion_code, bitfield8_t *commands);
 
 /* GetPLDMVersion */
@@ -280,14 +280,14 @@ int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
 
 /** @brief Decode a GetPLDMVersion response message
  *
- *  @param[in] msg - Response message payload
+ *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of reponse message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code
  *  @param[out] next_transfer_handle - the next handle for the next part of data
  *  @param[out] transfer_flag - flag to indicate the part of data
  *  @return pldm_completion_codes
  */
-int decode_get_version_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_version_resp(const struct pldm_msg *msg, size_t payload_length,
 			    uint8_t *completion_code,
 			    uint32_t *next_transfer_handle,
 			    uint8_t *transfer_flag, ver32_t *version);
@@ -320,7 +320,7 @@ int encode_get_types_resp(uint8_t instance_id, uint8_t completion_code,
  *  @param[out] version - Version for PLDM Type
  *  @return pldm_completion_codes
  */
-int decode_get_commands_req(const uint8_t *msg, size_t payload_length,
+int decode_get_commands_req(const struct pldm_msg *msg, size_t payload_length,
 			    uint8_t *type, ver32_t *version);
 
 /** @brief Create a PLDM response message for GetPLDMCommands
@@ -367,7 +367,7 @@ int encode_get_version_resp(uint8_t instance_id, uint8_t completion_code,
  *  @param[out] type - PLDM type for which version is requested
  *  @return pldm_completion_codes
  */
-int decode_get_version_req(const uint8_t *msg, size_t payload_length,
+int decode_get_version_req(const struct pldm_msg *msg, size_t payload_length,
 			   uint32_t *transfer_handle, uint8_t *transfer_opflag,
 			   uint8_t *type);
 
