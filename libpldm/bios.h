@@ -47,7 +47,7 @@ int encode_get_date_time_req(uint8_t instance_id, struct pldm_msg *msg);
 
 /** @brief Decode a GetDateTime response message
  *
- *  @param[in] msg - Response message payload
+ *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code
  *  @param[out] seconds - Seconds in BCD format
@@ -58,7 +58,7 @@ int encode_get_date_time_req(uint8_t instance_id, struct pldm_msg *msg);
  *  @param[out] year - year in BCD format
  *  @return pldm_completion_codes
  */
-int decode_get_date_time_resp(const uint8_t *msg, size_t payload_length,
+int decode_get_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
 			      uint8_t *completion_code, uint8_t *seconds,
 			      uint8_t *minutes, uint8_t *hours, uint8_t *day,
 			      uint8_t *month, uint16_t *year);
