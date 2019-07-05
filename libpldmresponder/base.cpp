@@ -17,7 +17,10 @@ namespace responder
 using Cmd = std::vector<uint8_t>;
 
 static const std::map<Type, Cmd> capabilities{
-    {PLDM_BASE, {PLDM_GET_PLDM_TYPES, PLDM_GET_PLDM_COMMANDS}}};
+    {PLDM_BASE,
+     {PLDM_GET_PLDM_VERSION, PLDM_GET_PLDM_TYPES, PLDM_GET_PLDM_COMMANDS}},
+    {PLDM_PLATFORM, {PLDM_SET_STATE_EFFECTER_STATES}},
+    {PLDM_BIOS, {PLDM_GET_DATE_TIME}}};
 
 static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
