@@ -21,7 +21,7 @@ TEST(GetPLDMTypes, testGoodRequest)
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
     ASSERT_EQ(payload_ptr[0], 0);
-    ASSERT_EQ(payload_ptr[1], 1);
+    ASSERT_EQ(payload_ptr[1], 13);
     ASSERT_EQ(payload_ptr[2], 0);
 }
 
@@ -37,7 +37,7 @@ TEST(GetPLDMCommands, testGoodRequest)
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
     ASSERT_EQ(payload_ptr[0], 0);
-    ASSERT_EQ(payload_ptr[1], 48); // 48 = 0b110000
+    ASSERT_EQ(payload_ptr[1], 56); // 56 = 0b111000
     ASSERT_EQ(payload_ptr[2], 0);
 }
 
