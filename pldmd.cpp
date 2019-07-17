@@ -68,8 +68,6 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg)
             }
             response.insert(response.end(), completion_code);
         }
-        response.insert(response.begin(), type);
-        response.insert(response.begin(), eid);
     }
     return response;
 }
@@ -94,6 +92,13 @@ int main(int argc, char** argv)
 
     pldm::responder::base::registerHandlers();
     pldm::responder::bios::registerHandlers();
+
+    /* Outgoing message. */
+    struct iovec iov[3];
+
+    /* This structure contains the parameter information for the response
+     * message. */
+    struct msghdr sg_response;
 
 #ifdef OEM_IBM
     pldm::responder::oem_ibm::registerHandlers();
@@ -183,8 +188,22 @@ int main(int argc, char** argv)
                         log<level::INFO>("Sending Msg ");
                         printBuffer(response);
 #endif
-                        result = sendto(socketFd(), response.data(),
-                                        response.size(), 0, nullptr, 0);
+                        iov[0].iov_base = &requestMsg[0];
+                        iov[0].iov_len = sizeof(requestMsg[0]);
+                        iov[1].iov_base = &requestMsg[1];
+                        iov[1].iov_len = sizeof(requestMsg[1]);
+                        iov[2].iov_base = response.data();
+                        iov[2].iov_len = response.size();
+
+                        sg_response.msg_control = nullptr;
+                        sg_response.msg_controllen = 0;
+                        sg_response.msg_flags = 0;
+                        sg_response.msg_iov = iov;
+                        sg_response.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
+                        sg_response.msg_name = nullptr;
+                        sg_response.msg_namelen = 0;
+
+                        result = sendmsg(socketFd(), &sg_response, 0);
                         if (-1 == result)
                         {
                             returnCode = -errno;
