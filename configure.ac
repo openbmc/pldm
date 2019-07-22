@@ -80,17 +80,6 @@ AS_IF([test "x$enable_oem_ibm" == "xyes"], [
     AC_DEFINE(FILE_TABLE_JSON, "/var/lib/pldm/fileTable.json", [JSON file containing file info for File I/O])
 ])
 
-# Setup verbose option
-AC_ARG_ENABLE([verbose], AS_HELP_STRING([
-	--enable-verbose
-	], [
-	Enable verbosity for PLDM Daemon.
-]))
-AS_IF([test "x$enable_verbose" == "xyes"], [
-    AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CXXFLAGS])
-    AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CFLAGS])
-])
-
 AC_DEFINE(BIOS_JSONS_DIR, "/etc/pldm/bios", [Directory housing the json files for BIOS tables])
 AC_DEFINE(BIOS_TABLES_DIR, "/var/lib/pldm/bios", [Directory housing actual BIOS tables])
 
