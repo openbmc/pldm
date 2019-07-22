@@ -4,6 +4,7 @@
 #include "registration.hpp"
 
 #include <err.h>
+#include <getopt.h>
 #include <poll.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -14,9 +15,11 @@
 #include <cstdio>
 #include <cstring>
 #include <iomanip>
+#include <iostream>
 #include <iterator>
 #include <phosphor-logging/log.hpp>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include "libpldm/base.h"
@@ -27,6 +30,8 @@
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
+
+bool verbose = false;
 
 using namespace phosphor::logging;
 using namespace pldm;
@@ -87,8 +92,41 @@ void printBuffer(const std::vector<uint8_t>& buffer)
     log<level::INFO>(tempStream.str().c_str());
 }
 
+void optionUsage(void)
+{
+    std::cerr << "Usage: pldmd [options]\n";
+    std::cerr << "Options:\n";
+    std::cerr
+        << "  --verbose=<0/1>  0 - Disable verbosity, 1 - Enable verbosity\n";
+}
+
 int main(int argc, char** argv)
 {
+
+    static struct option long_options[] = {
+        {"verbose", required_argument, 0, 'v'}, {0, 0, 0, 0}};
+
+    auto argflag = getopt_long(argc, argv, "v:", long_options, nullptr);
+    switch (argflag)
+    {
+        case 'v':
+            switch (std::stoi(optarg))
+            {
+                case 0:
+                    verbose = false;
+                    break;
+                case 1:
+                    verbose = true;
+                    break;
+                default:
+                    optionUsage();
+                    break;
+            }
+            break;
+        default:
+            optionUsage();
+            break;
+    }
 
     pldm::responder::base::registerHandlers();
     pldm::responder::bios::registerHandlers();
@@ -167,13 +205,14 @@ int main(int argc, char** argv)
                 sockfd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
             if (recvDataLength == peekedLength)
             {
-#ifdef VERBOSE
-                log<level::INFO>("Received Msg ",
-                                 entry("LENGTH=%zu", recvDataLength),
-                                 entry("EID=0x%02x", requestMsg[0]),
-                                 entry("TYPE=0x%02x", requestMsg[1]));
-                printBuffer(requestMsg);
-#endif
+                if (verbose)
+                {
+                    log<level::INFO>("Received Msg ",
+                                     entry("LENGTH=%zu", recvDataLength),
+                                     entry("EID=0x%02x", requestMsg[0]),
+                                     entry("TYPE=0x%02x", requestMsg[1]));
+                    printBuffer(requestMsg);
+                }
                 if (MCTP_MSG_TYPE_PLDM != requestMsg[1])
                 {
                     // Skip this message and continue.
@@ -186,10 +225,11 @@ int main(int argc, char** argv)
                     auto response = processRxMsg(requestMsg);
                     if (!response.empty())
                     {
-#ifdef VERBOSE
-                        log<level::INFO>("Sending Msg ");
-                        printBuffer(response);
-#endif
+                        if (verbose)
+                        {
+                            log<level::INFO>("Sending Msg ");
+                            printBuffer(response);
+                        }
                         iov[0].iov_base = &requestMsg;
                         iov[0].iov_len =
                             sizeof(requestMsg[0]) + sizeof(requestMsg[1]);
