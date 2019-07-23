@@ -344,6 +344,7 @@ int encode_set_bios_attribute_current_value_resp(uint8_t instance_id,
 						 uint32_t next_transfer_handle,
 						 struct pldm_msg *msg);
 
+
 #ifdef __cplusplus
 }
 #endif
