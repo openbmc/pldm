@@ -128,11 +128,16 @@ int encode_get_fru_record_table_resp(uint8_t instance_id,
 				     uint32_t next_data_transfer_handle,
 				     uint8_t transfer_flag,
 				     struct pldm_msg *msg)
+int encode_get_fru_record_table_req(uint8_t instance_id,
+				    uint32_t data_transfer_handle,
+				    uint8_t transfer_operation_flag,
+				    struct pldm_msg *msg)
 {
 	struct pldm_header_info header = {0};
 	int rc = PLDM_ERROR_INVALID_DATA;
 
 	header.msg_type = PLDM_RESPONSE;
+	header.msg_type = PLDM_REQUEST;
 	header.instance = instance_id;
 	header.pldm_type = PLDM_FRU;
 	header.command = PLDM_GET_FRU_RECORD_TABLE;
@@ -156,6 +161,11 @@ int encode_get_fru_record_table_resp(uint8_t instance_id,
 		    htole32(next_data_transfer_handle);
 		resp->transfer_flag = transfer_flag;
 	}
+	struct pldm_get_fru_record_table_req *req =
+	    (struct pldm_get_fru_record_table_req *)msg->payload;
+
+	req->data_transfer_handle = htole32(data_transfer_handle);
+	req->transfer_operation_flag = transfer_operation_flag;
 
 	return PLDM_SUCCESS;
 }
