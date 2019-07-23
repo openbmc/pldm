@@ -20,6 +20,8 @@ extern "C" {
 enum pldm_fru_commands {
 	PLDM_GET_FRU_RECORD_TABLE_METADATA = 0X01,
 	PLDM_GET_FRU_RECORD_TABLE = 0X02,
+	PLDM_SET_FRU_RECORD_TABLE = 0X03,
+	PLDM_GET_FRU_RECORD_BY_OPTION = 0X04
 };
 
 /** @brief FRU record types
@@ -228,6 +230,49 @@ int encode_get_fru_record_table_resp(uint8_t instance_id,
 				     uint32_t next_data_transfer_handle,
 				     uint8_t transfer_flag,
 				     struct pldm_msg *msg);
+/* Requester */
+
+/* GetFruRecordTable */
+
+/** @brief Create a PLDM request message for GetFruRecordTable
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] data_transfer_handle - A handle, used to identify a FRU Record
+ *  Table data transfer
+ *  @param[in] transfer_operation_flag - A flag that indicates whether this is
+ *  the start of the transfer
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+
+int encode_get_fru_record_table_req(uint8_t instance_id,
+				    uint32_t data_transfer_handle,
+				    uint8_t transfer_operation_flag,
+				    struct pldm_msg *msg,
+				    size_t payload_length);
+
+/** @brief Decode GetFruRecordTable response data
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] next_data_transfer_handle - A handle used to identify the next
+ *  portion of the transfer
+ *  @param[out] transfer_flag - The transfer flag that indicates what part of
+ * the transfer this response represents
+ *  @param[out] fru_record_table_data - This data is a portion of the overall
+ * FRU Record Table
+ *  @param[out] fru_record_table_length - Length of the FRU record table data
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_fru_record_table_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint32_t *next_data_transfer_handle, uint8_t *transfer_flag,
+    uint8_t *fru_record_table_data, size_t *fru_record_table_length);
 
 /** @brief Encode the FRU record in the FRU table
  *
