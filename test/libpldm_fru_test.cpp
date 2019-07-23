@@ -1,0 +1,207 @@
+#include <string.h>
+
+#include <array>
+
+#include "libpldm/base.h"
+#include "libpldm/fru.h"
+
+#include <gtest/gtest.h>
+
+constexpr auto hdrSize = sizeof(pldm_msg_hdr);
+
+TEST(GetFruRecordTable, testGoodEncodeRequest)
+{
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES>
+        requestMsg{};
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = reinterpret_cast<pldm_get_fru_record_table_req*>(requestPtr->payload);
+     uint32_t data_transfer_handle = 0x0;
+     uint8_t transfer_operation_flag = 0x01;
+
+      auto rc = encode_get_fru_record_table_req(0, data_transfer_handle, transfer_operation_flag, requestPtr);
+	
+      ASSERT_EQ(rc, PLDM_SUCCESS);
+      ASSERT_EQ(requestPtr->hdr.request, PLDM_REQUEST);
+      ASSERT_EQ(requestPtr->hdr.instance_id, 0);
+      ASSERT_EQ(requestPtr->hdr.type, PLDM_FRU);
+      ASSERT_EQ(requestPtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
+      ASSERT_EQ(data_transfer_handle, request->data_transfer_handle);
+      ASSERT_EQ(transfer_operation_flag, request->transfer_operation_flag);
+
+}
+
+TEST(GetFruRecordTable, testBadEncodeRequest)
+{
+     uint32_t data_transfer_handle = 0x0;
+     uint8_t transfer_operation_flag = 0x01;
+     
+//     std::array<uint8_t,
+  //             sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES>
+    //    requestMsg{};
+    //auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_get_fru_record_table_req(0, data_transfer_handle, transfer_operation_flag, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(GetFruRecordTable, testGoodDecodeResponse)
+{
+     std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_RESP_BYTES>
+        responseMsg{};
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    size_t payload_length = responseMsg.size() - sizeof(pldm_msg_hdr);
+    auto response = reinterpret_cast<pldm_get_fru_record_table_resp*>(responsePtr->payload);
+
+    uint8_t completion_code = PLDM_SUCCESS;
+    uint32_t next_data_transfer_handle = 0x32323232;
+    uint8_t transfer_flag = 5;
+
+    response->completion_code = completion_code;
+    response->next_data_transfer_handle = next_data_transfer_handle;
+    response->transfer_flag = transfer_flag;
+
+    size_t fru_record_offset = 
+	    sizeof(pldm_msg_hdr) + sizeof(completion_code) + sizeof(next_data_transfer_handle) + sizeof(transfer_flag);
+
+    uint8_t ret_completion_code = 0;
+    uint32_t ret_next_data_transfer_handle = 0;
+    uint8_t ret_transfer_flag = 0;
+    size_t ret_fru_record_offset = 0;
+
+    auto rc = decode_get_fru_record_table_resp(responsePtr, payload_length, &ret_completion_code, &ret_next_data_transfer_handle, &ret_transfer_flag, &ret_fru_record_offset);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completion_code, ret_completion_code);
+    ASSERT_EQ(next_data_transfer_handle, ret_next_data_transfer_handle);
+    ASSERT_EQ(transfer_flag, ret_transfer_flag);
+    ASSERT_EQ(fru_record_offset, ret_fru_record_offset);
+
+}
+
+TEST(GetFruRecordTable, testBadDecodeResponse)
+{
+     std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_RESP_BYTES>
+        responseMsg{};
+     
+     auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+     
+     uint8_t completion_code = 0;
+     uint32_t next_data_transfer_handle = 0;
+     uint8_t transfer_flag = 0;
+     size_t fru_record_offset = 0;
+
+     auto rc = decode_get_fru_record_table_resp(NULL, 0, &completion_code, &next_data_transfer_handle, &transfer_flag, &fru_record_offset);
+
+     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+     rc = decode_get_fru_record_table_resp(responsePtr, 0, &completion_code, &next_data_transfer_handle, &transfer_flag, &fru_record_offset);
+
+     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+}
+
+TEST(GetFruRecordTable, testGoodEncodeResponse)
+{
+     uint8_t completion_code = 0;
+     uint32_t next_data_transfer_handle = 0;
+     uint8_t transfer_flag = 0;
+
+     std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_RESP_BYTES>
+        responseMsg{};
+     auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+     auto response = reinterpret_cast<pldm_get_fru_record_table_resp*>(responsePtr->payload);
+
+     auto rc = encode_get_fru_record_table_resp(0, PLDM_SUCCESS, next_Data_transfer_handle, transfer_flag, responsePtr);
+
+     ASSERT_EQ(rc, PLDM_SUCCESS);
+     ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+     ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
+     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+     ASSERT_EQ(response->next_data_transfer_handle, next_data_transfer_handle);
+     ASSERT_EQ(response->transfer_flag, transfer_flag);
+
+}
+
+TEST(GetFruRecordTable, testBadEncodeResponse)
+{
+     uint8_t completion_code = 0;
+     uint32_t next_data_transfer_handle = 0;
+     uint8_t transfer_flag = 0;
+
+     std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_RESP_BYTES>
+        responseMsg{};
+     auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+     auto rc = encode_get_fru_record_table_resp(0, PLDM_ERROR, next_data_transfer_handle, transfer_flag, responsePtr);
+
+     ASSERT_EQ(rc, PLDM_SUCCESS);
+     ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+     ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
+     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
+
+}
+
+TEST(GetFruRecordTable, testGoodDecodeRequest)
+{
+	 uint32_t data_transfer_handle = 0x0;
+         uint8_t transfer_operation_flag = 0x01;
+         std::array<uint8_t, PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES +
+	                                    sizeof(pldm_msg_hdr)>requestMsg{};
+         auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+         size_t payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+         auto request = reinterpret_cast<pldm_get_fru__record_table_req*>(requestPtr->payload);
+
+	 request->data_transfer_handle = data_transfer_handle;
+	 request->transfer_operation_flag = transfer_operation_flag;
+
+	 uint32_t ret_data_transfer_handle = 0;
+         uint8_t ret_transfer_operation_flag = 0;
+
+	 auto rc = decode_get_fru_record_table_req(requestPtr, payload_length, &ret_data_transfer_handle, &ret_transfer_operation_flag);
+
+	 ASSERT_EQ(rc, PLDM_SUCCESS);
+	 ASSERT_EQ(data_transfer_handle, ret_data_transfer_handle);
+	 ASSERT_EQ(transfer_operation_flag, ret_transfer_operation_flag);
+
+}
+
+	 
+TEST(GetFruRecordTable, testBadDecodeRequest)
+{
+	uint32_t data_transfer_handle = 0x0;
+       	uint8_t transfer_operation_flag = 0x01;
+
+	std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES>
+        requestMsg{};
+     auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+     auto rc = decode_get_fru_record_table_req(NULL, 0, &data_transfer_handle, &transfer_flag);
+     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+     rc = decode_get_fru_record_table_req(requestPtr, 0, &data_transfer_handle, &transfer_flag);
+     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+}
+	
+
+
+
+
+
+
+
+
+
+
+
