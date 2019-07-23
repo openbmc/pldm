@@ -7,6 +7,7 @@ check_PROGRAMS = \
 	libpldm_platform_test \
 	libpldmresponder_base_test \
 	libpldm_bios_test \
+	libpldm_fru_test\
 	libpldmresponder_bios_test \
 	libpldmresponder_pdr_state_effecter_test \
 	libpldmresponder_bios_table_test
@@ -67,6 +68,15 @@ libpldm_bios_test_LDADD = \
 	$(top_builddir)/libpldm/libpldm_la-bios.o \
 	$(CODE_COVERAGE_LIBS)
 libpldm_bios_test_SOURCES = libpldm_bios_test.cpp
+
+libpldm_fru_test_CPPFLAGS = $(test_cppflags)
+libpldm_fru_test_CXXFLAGS = $(test_cxxflags)
+libpldm_fru_test_LDFLAGS = $(test_ldflags)
+libpldm_fru_test_LDADD = \
+        $(top_builddir)/libpldm/libpldm_la-base.o  \
+        $(top_builddir)/libpldm/libpldm_la-fru.o \
+        $(CODE_COVERAGE_LIBS)
+libpldm_fru_test_SOURCES = libpldm_fru_test.cpp
 
 libpldmresponder_bios_test_CPPFLAGS = $(test_cppflags)
 libpldmresponder_bios_test_CXXFLAGS = $(test_cxxflags)

@@ -4,14 +4,16 @@ libpldm_include_HEADERS = \
 	pldm_types.h \
 	platform.h \
 	bios.h \
-	states.h
+	states.h\
+	fru.h
 
 libpldm_LTLIBRARIES = libpldm.la
 libpldmdir = ${libdir}
 libpldm_la_SOURCES = \
 	base.c \
 	platform.c \
-	bios.c
+	bios.c\
+	fru.c
 
 libpldm_la_LDFLAGS = -version-info 1:0:0 -shared
 libpldm_la_CFLAGS = $(CODE_COVERAGE_CFLAGS)
