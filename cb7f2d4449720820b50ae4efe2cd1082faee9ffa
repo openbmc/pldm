@@ -1,0 +1,8 @@
+Code-Review+2: Deepak Kodihalli <dkodihal@in.ibm.com>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Submitted-by: Deepak Kodihalli <dkodihal@in.ibm.com>
+Submitted-at: Wed, 24 Jul 2019 10:20:23 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/22756
+Project: openbmc/pldm
+Branch: refs/heads/master
