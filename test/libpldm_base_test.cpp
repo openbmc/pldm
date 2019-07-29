@@ -433,3 +433,35 @@ TEST(GetPLDMVersion, testDecodeResponse)
     ASSERT_EQ(versionOut.update, version.update);
     ASSERT_EQ(versionOut.alpha, version.alpha);
 }
+
+TEST(GetTID, testEncodeResponse)
+{
+    uint8_t completionCode = 0;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    uint8_t tid = 1;
+
+    auto rc = encode_get_types_resp(0, PLDM_SUCCESS, tid, response);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    uint8_t* payload_ptr = response->payload;
+    ASSERT_EQ(completionCode, payload_ptr[0]);
+    ASSERT_EQ(1, payload_ptr[sizeof(completionCode)]);
+}
+
+TEST(GetTID, testDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_TID_RESP_BYTES> responseMsg{};
+    responseMsg[1 + hdrSize] = 1;
+
+    uint8_t tid, completion_code;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_get_types_resp(response, responseMsg.size() - hdrSize,
+                                    &completion_code, &tid);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(tid, 1);
+}

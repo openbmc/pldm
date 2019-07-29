@@ -21,7 +21,8 @@ using Cmd = std::vector<uint8_t>;
 
 static const std::map<Type, Cmd> capabilities{
     {PLDM_BASE,
-     {PLDM_GET_PLDM_VERSION, PLDM_GET_PLDM_TYPES, PLDM_GET_PLDM_COMMANDS}},
+     {PLDM_GET_TID, PLDM_GET_PLDM_VERSION, PLDM_GET_PLDM_TYPES,
+      PLDM_GET_PLDM_COMMANDS}},
     {PLDM_PLATFORM, {PLDM_SET_STATE_EFFECTER_STATES}},
     {PLDM_BIOS, {PLDM_GET_DATE_TIME}}};
 
@@ -41,6 +42,7 @@ void registerHandlers()
                     std::move(getPLDMCommands));
     registerHandler(PLDM_BASE, PLDM_GET_PLDM_VERSION,
                     std::move(getPLDMVersion));
+    registerHandler(PLDM_BASE, PLDM_GET_TID, std::move(getTID));
 }
 
 } // namespace base
@@ -140,6 +142,19 @@ Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
     encode_get_version_resp(request->hdr.instance_id, PLDM_SUCCESS, 0,
                             PLDM_START_AND_END, &version, sizeof(pldm_version),
                             responsePtr);
+
+    return response;
+}
+
+Response getTID(const pldm_msg* request, size_t payloadLength)
+{
+    // assigned 1 to the bmc as the PLDM terminus
+    uint8_t tid = 1;
+
+    Response response(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    encode_get_tid_resp(request->hdr.instance_id, PLDM_SUCCESS, tid,
+                        responsePtr);
 
     return response;
 }
