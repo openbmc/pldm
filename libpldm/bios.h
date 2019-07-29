@@ -16,14 +16,19 @@ extern "C" {
 
 #define PLDM_GET_BIOS_TABLE_REQ_BYTES 6
 #define PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES 6
+#define PLDM_GET_ATTR_VAL_BY_HANDLE_MIN_VAL 6
 
 enum pldm_bios_completion_codes {
+	PLDM_INVALID_DATA_TRANSFER_HANDLE = 0x80,
+	PLDM_INVALID_TRANSFER_OPERATION_FLAG = 0x81,
 	PLDM_BIOS_TABLE_UNAVAILABLE = 0x83,
 	PLDM_INVALID_BIOS_TABLE_DATA_INTEGRITY_CHECK = 0x84,
 	PLDM_INVALID_BIOS_TABLE_TYPE = 0x85,
+	PLDM_INVALID_BIOS_ATTR_HANDLE = 0x88
 };
 enum pldm_bios_commands {
 	PLDM_GET_BIOS_TABLE = 0x01,
+	PLDM_GET_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE = 0x08,
 	PLDM_GET_DATE_TIME = 0x0c
 };
 
@@ -92,6 +97,16 @@ struct pldm_get_bios_table_resp {
 	uint32_t next_transfer_handle;
 	uint8_t transfer_flag;
 	uint8_t table_data[1];
+} __attribute__((packed));
+
+/** @struct pldm_get_bios_attribute_current_value_by_handle_req
+ *
+ *  structure representing GetBIOSAttributeCurrentValueByHandle request packet
+ */
+struct pldm_attribute_current_value_by_handle_req {
+	uint32_t transfer_handle;
+	uint8_t transfer_op_flag;
+	uint16_t attribute_handle;
 } __attribute__((packed));
 
 /** @struct pldm_get_date_time_resp
@@ -199,6 +214,22 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_op_flag, uint8_t *table_type);
+
+/** @brief Decode GetBIOSAttributeCurrentValueByHandle request packet
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] transfer_handle - Handle to identify a BIOS table transfer
+ *  @param[out] transfer_op_flag - Flag to indicate the start of a multipart
+ * transfer
+ *  @param[out] attribute_handle - Handle to identify the BIOS attribute
+ *  @return pldm_completion_codes
+ */
+int decode_get_bios_attribute_value_by_handle_req(const struct pldm_msg *msg,
+						  size_t payload_length,
+						  uint32_t *transfer_handle,
+						  uint8_t *transfer_op_flag,
+						  uint16_t *attribute_handle);
 
 #ifdef __cplusplus
 }
