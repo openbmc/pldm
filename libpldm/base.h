@@ -23,6 +23,7 @@ enum pldm_supported_types {
 /** @brief PLDM Commands
  */
 enum pldm_supported_commands {
+	PLDM_GET_TID = 0x2,
 	PLDM_GET_PLDM_VERSION = 0x3,
 	PLDM_GET_PLDM_TYPES = 0x4,
 	PLDM_GET_PLDM_COMMANDS = 0x5
@@ -73,6 +74,7 @@ typedef enum {
 
 /* Response lengths are inclusive of completion code */
 #define PLDM_GET_TYPES_RESP_BYTES 9
+#define PLDM_GET_TID_RESP_BYTES 2
 #define PLDM_GET_COMMANDS_RESP_BYTES 33
 /* Response data has only one version and does not contain the checksum */
 #define PLDM_GET_VERSION_RESP_BYTES 10
@@ -179,6 +181,16 @@ struct pldm_get_version_resp {
 				       //!< transfer
 	uint8_t transfer_flag;	 //!< PLDM GetVersion transfer flag
 	uint8_t version_data[1];       //!< PLDM GetVersion version field
+} __attribute__((packed));
+
+/** @struct pldm_get_tid_resp
+ *
+ *  Structure representing PLDM get tid response.
+ */
+
+struct pldm_get_tid_resp {
+	uint8_t completion_code; //!< completion code
+	uint8_t tid;		 //!< PLDM GetTID TID field
 } __attribute__((packed));
 
 /**
