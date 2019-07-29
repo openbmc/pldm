@@ -46,5 +46,13 @@ Response getPLDMCommands(const pldm_msg* request, size_t payloadLength);
  *  @param[return] Response - PLDM Response message
  */
 Response getPLDMVersion(const pldm_msg* request, size_t payloadLength);
+
+/** @brief Handler for getTID
+ *
+ *  @param[in] request - Request message payload
+ *  @param[in] payload_length - Request message payload length
+ *  @param[return] Response - PLDM Response message
+ */
+Response getTID(const pldm_msg* request, size_t payloadLength);
 } // namespace responder
 } // namespace pldm
