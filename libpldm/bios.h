@@ -109,6 +109,17 @@ struct pldm_attribute_current_value_by_handle_req {
 	uint16_t attribute_handle;
 } __attribute__((packed));
 
+/** @struct pldm_get_bios_attribute_current_value_by_handle_resp
+ *
+ *  structure representing GetBIOSAttributeCurrentValueByHandle response packet
+ */
+struct pldm_attribute_current_value_by_handle_resp {
+	uint8_t completion_code;
+	uint32_t next_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t attribute_data[1];
+} __attribute__((packed));
+
 /** @struct pldm_get_date_time_resp
  *
  *  Structure representing PLDM get date time response
@@ -214,6 +225,27 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_op_flag, uint8_t *table_type);
+
+/* GetBIOSAttributeCurrentValueByHandle */
+
+/** @brief Create a PLDM response message for
+ * GetBIOSAttributeCurrentValueByHandle
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_transfer_handle - handle to identify the next portion of the
+ * transfer
+ *  @param[in] transfer_flag - To indicate what part of the transfer this
+ * response represents
+ *  @param[in] attribute_data - contains current value is being provided
+ *  @param[in] payload_length - Length of payload message
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_get_bios_current_value_by_handle_resp(
+    uint8_t instance_id, uint8_t completion_code, uint32_t next_transfer_handle,
+    uint8_t transfer_flag, uint8_t *attribute_data, size_t payload_length,
+    struct pldm_msg *msg);
 
 /** @brief Decode GetBIOSAttributeCurrentValueByHandle request packet
  *
