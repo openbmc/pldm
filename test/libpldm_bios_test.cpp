@@ -206,3 +206,126 @@ TEST(GetBIOSTable, testBadDecodeRequest)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testGoodDecodeRequest)
+{
+    uint32_t transferHandle = 45;
+    uint8_t transferOpFlag = PLDM_GET_FIRSTPART;
+    uint16_t attributehandle = 10;
+    uint32_t retTransferHandle = 0;
+    uint8_t retTransferOpFlag = 0;
+    uint16_t retattributehandle = 0;
+    std::array<uint8_t, hdrSize + sizeof(transferHandle) +
+                            sizeof(transferOpFlag) + sizeof(attributehandle)>
+        requestMsg{};
+
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_get_bios_attribute_current_value_by_handle_req* request =
+        reinterpret_cast<
+            struct pldm_get_bios_attribute_current_value_by_handle_req*>(
+            req->payload);
+
+    request->transfer_handle = transferHandle;
+    request->transfer_op_flag = transferOpFlag;
+    request->attribute_handle = attributehandle;
+
+    auto rc = decode_get_bios_attribute_current_value_by_handle_req(
+        req, requestMsg.size() - hdrSize, &retTransferHandle,
+        &retTransferOpFlag, &retattributehandle);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(transferHandle, retTransferHandle);
+    ASSERT_EQ(transferOpFlag, retTransferOpFlag);
+    ASSERT_EQ(attributehandle, retattributehandle);
+}
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
+{
+
+    uint32_t transferHandle = 0;
+    uint8_t transferOpFlag = PLDM_GET_FIRSTPART;
+    uint16_t attribute_handle = 0;
+    uint32_t retTransferHandle = 0;
+    uint8_t retTransferOpFlag = 0;
+    uint16_t retattribute_handle = 0;
+    std::array<uint8_t, hdrSize + sizeof(transferHandle) +
+                            sizeof(transferOpFlag) + sizeof(attribute_handle)>
+        requestMsg{};
+
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_get_bios_attribute_current_value_by_handle_req* request =
+        reinterpret_cast<
+            struct pldm_get_bios_attribute_current_value_by_handle_req*>(
+            req->payload);
+
+    request->transfer_handle = transferHandle;
+    request->transfer_op_flag = transferOpFlag;
+    request->attribute_handle = attribute_handle;
+
+    auto rc = decode_get_bios_attribute_current_value_by_handle_req(
+        NULL, requestMsg.size() - hdrSize, &retTransferHandle,
+        &retTransferOpFlag, &retattribute_handle);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    transferHandle = 31;
+    request->transfer_handle = transferHandle;
+
+    rc = decode_get_bios_attribute_current_value_by_handle_req(
+        req, 0, &retTransferHandle, &retTransferOpFlag, &retattribute_handle);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testGoodEncodeResponse)
+{
+
+    uint8_t instanceId = 10;
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint32_t nextTransferHandle = 32;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t attributeData = 44;
+    std::array<uint8_t,
+               hdrSize +
+                   sizeof(pldm_get_bios_attribute_current_value_by_handle_resp)>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = encode_get_bios_current_value_by_handle_resp(
+        instanceId, completionCode, nextTransferHandle, transferFlag,
+        &attributeData, sizeof(attributeData), response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_get_bios_attribute_current_value_by_handle_resp* resp =
+        reinterpret_cast<
+            struct pldm_get_bios_attribute_current_value_by_handle_resp*>(
+            response->payload);
+
+    ASSERT_EQ(completionCode, resp->completion_code);
+    ASSERT_EQ(nextTransferHandle, resp->next_transfer_handle);
+    ASSERT_EQ(transferFlag, resp->transfer_flag);
+    ASSERT_EQ(
+        0, memcmp(&attributeData, resp->attribute_data, sizeof(attributeData)));
+}
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testBadEncodeResponse)
+{
+    uint32_t nextTransferHandle = 32;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t attributeData = 44;
+
+    auto rc = encode_get_bios_current_value_by_handle_resp(
+        0, PLDM_SUCCESS, nextTransferHandle, transferFlag, &attributeData,
+        sizeof(attributeData), nullptr);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t,
+               hdrSize +
+                   sizeof(pldm_get_bios_attribute_current_value_by_handle_resp)>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    rc = encode_get_bios_current_value_by_handle_resp(
+        0, PLDM_SUCCESS, nextTransferHandle, transferFlag, nullptr,
+        sizeof(attributeData), response);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
