@@ -28,3 +28,40 @@ int encode_get_fru_record_table_req(uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_get_fru_record_table_resp(const struct pldm_msg *msg,
+				     size_t payload_length,
+				     uint8_t *completion_code,
+				     uint32_t *next_data_transfer_handle,
+				     uint8_t *transfer_flag,
+				     size_t *fru_record_offset)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    next_data_transfer_handle == NULL || transfer_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length < PLDM_GET_FRU_RECORD_TABLE_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_fru_record_table_resp *resp =
+	    (struct pldm_get_fru_record_table_resp *)msg->payload;
+
+	*completion_code = resp->completion_code;
+	if (*completion_code == PLDM_SUCCESS) {
+		*next_data_transfer_handle =
+		    le32toh(resp->next_data_transfer_handle);
+		*transfer_flag = resp->transfer_flag;
+		if (payload_length != PLDM_GET_FRU_RECORD_TABLE_RESP_BYTES +
+					  *next_data_transfer_handle +
+					  *transfer_flag) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+
+		*fru_record_offset = sizeof(*completion_code) +
+				     sizeof(*next_data_transfer_handle) +
+				     sizeof(*transfer_flag);
+	}
+
+	return PLDM_SUCCESS;
+}
