@@ -12,11 +12,14 @@ extern "C" {
 #include "base.h"
 
 #define PLDM_GET_FRU_RECORD_TABLE_METADATA_RESP_BYTES 19
+#define PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES 5
+#define PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES 6
 
 /** @brief PLDM FRU commands
  */
 enum pldm_fru_commands {
 	PLDM_GET_FRU_RECORD_TABLE_METADATA = 0X01,
+	PLDM_GET_FRU_RECORD_TABLE = 0X02,
 };
 
 /** @struct pldm_get_fru_record_table_metadata_resp
@@ -36,6 +39,26 @@ struct pldm_get_fru_record_table_metadata_resp {
 	    total_table_records; //!< The total number of records in the table
 	uint32_t
 	    checksum; //!< The integrity checksum on the FRU Record Table data
+} __attribute__((packed));
+
+/** @struct pldm_get_fru_record_table_req
+ *
+ *  Structure representing PLDM get FRU record table request.
+ */
+struct pldm_get_fru_record_table_req {
+	uint32_t data_transfer_handle;
+	uint8_t transfer_operation_flag;
+} __attribute__((packed));
+
+/** @struct pldm_get_fru_record_table_resp
+ *
+ *  Structure representing PLDM get FRU record table response.
+ */
+struct pldm_get_fru_record_table_resp {
+	uint8_t completion_code;
+	uint32_t next_data_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t fru_record_table_data[1];
 } __attribute__((packed));
 
 /* Requester */
@@ -103,6 +126,42 @@ int encode_get_fru_record_table_metadata_resp(
     uint32_t fru_table_maximum_size, uint32_t fru_table_length,
     uint16_t total_record_set_identifiers, uint16_t total_table_records,
     uint32_t checksum, struct pldm_msg *msg);
+
+/* GetFruRecordTable */
+
+/** @brief Decode GetFruRecordTable request data
+ *
+ *  @param[in] msg - PLDM request message payload
+ *  @param[in] payload_length - Length of request payload
+ *  @param[out] data_transfer_handle - A handle, used to identify a FRU Record
+ *  Table data transfer
+ *  @param[out] transfer_operation_flag - A flag that indicates whether this is
+ *  the start of the transfer
+ *  @return pldm_completion_codes
+ */
+int decode_get_fru_record_table_req(const struct pldm_msg *msg,
+				    size_t payload_length,
+				    uint32_t *data_transfer_handle,
+				    uint8_t *transfer_operation_flag);
+
+/** @brief Create a PLDM response message for GetFruRecordTable
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_data_transfer_handle - A handle that is used to identify the
+ *  next portion of the transfer
+ *  @param[in] transfer_flag - The transfer flag that indicates what part of the
+ *  transfer this response represents
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'msg',
+ *         and for appending the FRU table to the msg.
+ */
+int encode_get_fru_record_table_resp(uint8_t instance_id,
+				     uint8_t completion_code,
+				     uint32_t next_data_transfer_handle,
+				     uint8_t transfer_flag,
+				     struct pldm_msg *msg);
 
 #ifdef __cplusplus
 }
