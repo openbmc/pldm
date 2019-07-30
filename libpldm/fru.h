@@ -109,6 +109,22 @@ int encode_get_fru_record_table_resp(uint8_t instance_id,
 				     uint8_t transfer_flag,
 				     struct pldm_msg *msg);
 
+/** @brief Decode GetFruRecordTable request data
+ *
+ *  @param[in] msg - PLDM request message payload
+ *  @param[in] payload_length - Length of request payload
+ *  @param[out] data_transfer_handle - A handle, used to identify a FRU Record
+ *  Table data transfer
+ *  @param[out] transfer_operation_flag - A flag that indicates whether this is
+ *  the start of the transfer
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_fru_record_table_req(const struct pldm_msg *msg,
+				    size_t payload_length,
+				    uint32_t *data_transfer_handle,
+				    uint8_t *transfer_operation_flag);
+
 #ifdef __cplusplus
 }
 #endif
