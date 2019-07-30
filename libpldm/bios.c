@@ -172,3 +172,38 @@ int decode_get_bios_attribute_value_by_handle_req(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_bios_current_value_by_handle_resp(
+    uint8_t instance_id, uint8_t completion_code, uint32_t next_transfer_handle,
+    uint8_t transfer_flag, uint8_t *attribute_data, size_t attribute_length,
+    struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == 0) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_attribute_current_value_by_handle_resp *response =
+	    (struct pldm_attribute_current_value_by_handle_resp *)msg->payload;
+
+	response->completion_code = completion_code;
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_GET_BIOS_TABLE;
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+	if (response->completion_code == PLDM_SUCCESS) {
+
+		response->next_transfer_handle = htole32(next_transfer_handle);
+		response->transfer_flag = transfer_flag;
+		if (attribute_data != NULL) {
+			memcpy(response->attribute_data, attribute_data,
+			       attribute_length);
+		}
+	}
+	return PLDM_SUCCESS;
+}
