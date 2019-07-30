@@ -113,3 +113,26 @@ int encode_get_fru_record_table_resp(
 
 	return PLDM_SUCCESS;
 }
+
+int decode_get_fru_record_table_req(const struct pldm_msg *msg,
+				    size_t payload_length,
+				    uint32_t *data_transfer_handle,
+				    uint8_t *transfer_operation_flag)
+{
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    transfer_operation_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_fru_record_table_req *req =
+	    (struct pldm_get_fru_record_table_req *)msg->payload;
+
+	*data_transfer_handle = le32toh(req->data_transfer_handle);
+	*transfer_operation_flag = req->transfer_operation_flag;
+
+	return PLDM_SUCCESS;
+}
