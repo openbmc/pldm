@@ -25,7 +25,8 @@ enum pldm_bios_completion_codes {
 };
 enum pldm_bios_commands {
 	PLDM_GET_BIOS_TABLE = 0x01,
-	PLDM_GET_DATE_TIME = 0x0c
+	PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE = 0x08,
+	PLDM_GET_DATE_TIME = 0x0c,
 };
 
 enum pldm_bios_table_types {
@@ -112,6 +113,17 @@ struct pldm_get_bios_attribute_current_value_by_handle_req {
 	uint32_t transfer_handle;
 	uint8_t transfer_op_flag;
 	uint16_t attribute_handle;
+} __attribute__((packed));
+
+/** @struct pldm_get_bios_attribute_current_value_by_handle_resp
+ *
+ *  structure representing GetBIOSAttributeCurrentValueByHandle response
+ */
+struct pldm_get_bios_attribute_current_value_by_handle_resp {
+	uint8_t completion_code;
+	uint32_t next_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t attribute_data[1];
 } __attribute__((packed));
 
 /* Requester */
@@ -222,6 +234,25 @@ int decode_get_bios_attribute_current_value_by_handle_req(
     const struct pldm_msg *msg, size_t payload_length,
     uint32_t *transfer_handle, uint8_t *transfer_op_flag,
     uint16_t *attribute_handle);
+
+/** @brief Create a PLDM response message for
+ * GetBIOSAttributeCurrentValueByHandle
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_transfer_handle - handle to identify the next portion of the
+ * transfer
+ *  @param[in] transfer_flag - To indicate what part of the transfer this
+ * response represents
+ *  @param[in] attribute_data - contains current value of attribute
+ *  @param[in] attribute_length - Length of attribute
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_get_bios_current_value_by_handle_resp(
+    uint8_t instance_id, uint8_t completion_code, uint32_t next_transfer_handle,
+    uint8_t transfer_flag, uint8_t *attribute_data, size_t attribute_length,
+    struct pldm_msg *msg);
 
 #ifdef __cplusplus
 }

@@ -275,3 +275,57 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testGoodEncodeResponse)
+{
+
+    uint8_t instanceId = 10;
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint32_t nextTransferHandle = 32;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t attributeData = 44;
+    std::array<uint8_t,
+               hdrSize +
+                   sizeof(pldm_get_bios_attribute_current_value_by_handle_resp)>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = encode_get_bios_current_value_by_handle_resp(
+        instanceId, completionCode, nextTransferHandle, transferFlag,
+        &attributeData, sizeof(attributeData), response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_get_bios_attribute_current_value_by_handle_resp* resp =
+        reinterpret_cast<
+            struct pldm_get_bios_attribute_current_value_by_handle_resp*>(
+            response->payload);
+
+    ASSERT_EQ(completionCode, resp->completion_code);
+    ASSERT_EQ(nextTransferHandle, resp->next_transfer_handle);
+    ASSERT_EQ(transferFlag, resp->transfer_flag);
+    ASSERT_EQ(
+        0, memcmp(&attributeData, resp->attribute_data, sizeof(attributeData)));
+}
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testBadEncodeResponse)
+{
+    uint32_t nextTransferHandle = 32;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t attributeData = 44;
+
+    auto rc = encode_get_bios_current_value_by_handle_resp(
+        0, PLDM_SUCCESS, nextTransferHandle, transferFlag, &attributeData,
+        sizeof(attributeData), nullptr);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t,
+               hdrSize +
+                   sizeof(pldm_get_bios_attribute_current_value_by_handle_resp)>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    rc = encode_get_bios_current_value_by_handle_resp(
+        0, PLDM_SUCCESS, nextTransferHandle, transferFlag, nullptr,
+        sizeof(attributeData), response);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
