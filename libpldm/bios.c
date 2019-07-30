@@ -148,3 +148,27 @@ int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_get_bios_attribute_current_value_by_handle_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *transfer_handle, uint8_t *transfer_op_flag,
+    uint16_t *attribute_handle)
+{
+	if (msg == NULL || transfer_handle == NULL ||
+	    transfer_op_flag == NULL || attribute_handle == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_bios_attribute_current_value_by_handle_req *request =
+	    (struct pldm_get_bios_attribute_current_value_by_handle_req *)
+		msg->payload;
+	*transfer_handle = le32toh(request->transfer_handle);
+	*transfer_op_flag = request->transfer_op_flag;
+	*attribute_handle = le16toh(request->attribute_handle);
+
+	return PLDM_SUCCESS;
+}

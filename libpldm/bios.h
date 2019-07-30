@@ -16,6 +16,7 @@ extern "C" {
 
 #define PLDM_GET_BIOS_TABLE_REQ_BYTES 6
 #define PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES 6
+#define PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_REQ_BYTES 7
 
 enum pldm_bios_completion_codes {
 	PLDM_BIOS_TABLE_UNAVAILABLE = 0x83,
@@ -101,6 +102,16 @@ struct pldm_get_date_time_resp {
 	uint8_t day;		 //!< Day of the month in BCD format
 	uint8_t month;		 //!< Month in BCD format
 	uint16_t year;		 //!< Year in BCD format
+} __attribute__((packed));
+
+/** @struct pldm_get_bios_attribute_current_value_by_handle_req
+ *
+ *  structure representing GetBIOSAttributeCurrentValueByHandle request packet
+ */
+struct pldm_get_bios_attribute_current_value_by_handle_req {
+	uint32_t transfer_handle;
+	uint8_t transfer_op_flag;
+	uint16_t attribute_handle;
 } __attribute__((packed));
 
 /* Requester */
@@ -194,6 +205,23 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_op_flag, uint8_t *table_type);
+
+/* GetBIOSAttributeCurrentValueByHandle */
+
+/** @brief Decode GetBIOSAttributeCurrentValueByHandle request packet
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] transfer_handle - Handle to identify a BIOS table transfer
+ *  @param[out] transfer_op_flag - Flag to indicate the start of a multipart
+ * transfer
+ *  @param[out] attribute_handle - Handle to identify the BIOS attribute
+ *  @return pldm_completion_codes
+ */
+int decode_get_bios_attribute_current_value_by_handle_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *transfer_handle, uint8_t *transfer_op_flag,
+    uint16_t *attribute_handle);
 
 #ifdef __cplusplus
 }
