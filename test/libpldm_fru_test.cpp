@@ -116,3 +116,74 @@ TEST(GetFruRecordTable, testBadDecodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetFruRecordTable, testGoodEncodeResponse)
+{
+    uint8_t completion_code = 0;
+    uint32_t next_data_transfer_handle = 32;
+    uint8_t transfer_flag = PLDM_START_AND_END;
+    std::vector<uint8_t> fru_record_table_data = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    std::vector<uint8_t> responseMsg(sizeof(pldm_msg_hdr) +
+                                     PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES +
+                                     fru_record_table_data.size());
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto response =
+        reinterpret_cast<pldm_get_fru_record_table_resp*>(responsePtr->payload);
+
+    // Invoke encode get FRU record table response api
+    auto rc = encode_get_fru_record_table_resp(
+        0, completion_code, next_data_transfer_handle, transfer_flag,
+        fru_record_table_data.data(),
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES +
+            fru_record_table_data.size(),
+        responsePtr);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+    ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
+    ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(response->next_data_transfer_handle, next_data_transfer_handle);
+    ASSERT_EQ(response->transfer_flag, transfer_flag);
+    ASSERT_EQ(0, memcmp(fru_record_table_data.data(),
+                        response->fru_record_table_data,
+                        fru_record_table_data.size()));
+}
+
+TEST(GetFruRecordTable, testBadEncodeResponse)
+{
+    uint32_t next_data_transfer_handle = 32;
+    uint8_t transfer_flag = PLDM_START_AND_END;
+    std::vector<uint8_t> fru_record_table_data(9, 0);
+
+    std::vector<uint8_t> responseMsg(sizeof(pldm_msg_hdr) +
+                                     PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES +
+                                     fru_record_table_data.size());
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto rc = encode_get_fru_record_table_resp(
+        0, PLDM_ERROR, next_data_transfer_handle, transfer_flag,
+        fru_record_table_data.data(),
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES +
+            fru_record_table_data.size(),
+        responsePtr);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+    ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
+
+    rc = encode_get_fru_record_table_resp(
+        0, PLDM_SUCCESS, next_data_transfer_handle, transfer_flag,
+        fru_record_table_data.data(),
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES +
+            fru_record_table_data.size(),
+        NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
