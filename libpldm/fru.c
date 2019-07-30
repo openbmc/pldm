@@ -69,3 +69,38 @@ int decode_get_fru_record_table_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_fru_record_table_resp(uint8_t instance_id,
+				     uint8_t completion_code,
+				     uint32_t next_data_transfer_handle,
+				     uint8_t transfer_flag,
+				     struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_FRU;
+	header.command = PLDM_GET_FRU_RECORD_TABLE;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_get_fru_record_table_resp *resp =
+	    (struct pldm_get_fru_record_table_resp *)msg->payload;
+	resp->completion_code = completion_code;
+
+	if (resp->completion_code == PLDM_SUCCESS) {
+		resp->next_data_transfer_handle =
+		    htole32(next_data_transfer_handle);
+		resp->transfer_flag = transfer_flag;
+	}
+
+	return PLDM_SUCCESS;
+}
