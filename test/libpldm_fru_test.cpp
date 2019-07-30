@@ -111,3 +111,56 @@ TEST(GetFruRecordTable, testBadDecodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetFruRecordTable, testGoodEncodeResponse)
+{
+    uint8_t completion_code = 0;
+    uint32_t next_data_transfer_handle = 32;
+    uint8_t transfer_flag = PLDM_START_AND_END;
+
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES>
+        responseMsg{};
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto response =
+        reinterpret_cast<pldm_get_fru_record_table_resp*>(responsePtr->payload);
+
+    // Invoke encode get FRU record table response api
+    auto rc = encode_get_fru_record_table_resp(0, completion_code,
+                                               next_data_transfer_handle,
+                                               transfer_flag, responsePtr);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+    ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
+    ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(response->next_data_transfer_handle, next_data_transfer_handle);
+    ASSERT_EQ(response->transfer_flag, transfer_flag);
+}
+
+TEST(GetFruRecordTable, testBadEncodeResponse)
+{
+    uint32_t next_data_transfer_handle = 32;
+    uint8_t transfer_flag = PLDM_START_AND_END;
+
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES>
+        responseMsg{};
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto rc = encode_get_fru_record_table_resp(
+        0, PLDM_ERROR, next_data_transfer_handle, transfer_flag, responsePtr);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+    ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
+
+    rc = encode_get_fru_record_table_resp(
+        0, PLDM_SUCCESS, next_data_transfer_handle, transfer_flag, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
