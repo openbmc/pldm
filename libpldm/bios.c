@@ -148,3 +148,63 @@ int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_get_bios_attribute_current_value_by_handle_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *transfer_handle, uint8_t *transfer_op_flag,
+    uint16_t *attribute_handle)
+{
+	if (msg == NULL || transfer_handle == NULL ||
+	    transfer_op_flag == NULL || attribute_handle == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_bios_attribute_current_value_by_handle_req *request =
+	    (struct pldm_get_bios_attribute_current_value_by_handle_req *)
+		msg->payload;
+	*transfer_handle = le32toh(request->transfer_handle);
+	*transfer_op_flag = request->transfer_op_flag;
+	*attribute_handle = le16toh(request->attribute_handle);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_get_bios_current_value_by_handle_resp(
+    uint8_t instance_id, uint8_t completion_code, uint32_t next_transfer_handle,
+    uint8_t transfer_flag, const uint8_t *attribute_data,
+    size_t attribute_length, struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL || attribute_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_get_bios_attribute_current_value_by_handle_resp *response =
+	    (struct pldm_get_bios_attribute_current_value_by_handle_resp *)
+		msg->payload;
+
+	response->completion_code = completion_code;
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE;
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+	if (response->completion_code == PLDM_SUCCESS) {
+
+		response->next_transfer_handle = htole32(next_transfer_handle);
+		response->transfer_flag = transfer_flag;
+		if (attribute_data != NULL) {
+			memcpy(response->attribute_data, attribute_data,
+			       attribute_length);
+		}
+	}
+	return PLDM_SUCCESS;
+}
