@@ -12,6 +12,7 @@ extern "C" {
 #include "base.h"
 
 #define PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES 5
+#define PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES 6
 
 /** @brief PLDM FRU commands
  */
@@ -29,6 +30,17 @@ enum pldm_fru_commands {
 struct pldm_get_fru_record_table_req {
 	uint32_t data_transfer_handle;
 	uint8_t transfer_operation_flag;
+} __attribute__((packed));
+
+/** @struct pldm_get_fru_record_table_resp
+ *
+ *  Structure representing PLDM get FRU record table response.
+ */
+struct pldm_get_fru_record_table_resp {
+	uint8_t completion_code;
+	uint32_t next_data_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t fru_record[1];
 } __attribute__((packed));
 
 /* Requester */
@@ -52,6 +64,27 @@ int encode_get_fru_record_table_req(uint8_t instance_id,
 				    uint32_t data_transfer_handle,
 				    uint8_t transfer_operation_flag,
 				    struct pldm_msg *msg);
+
+/** @brief Decode GetFruRecordTable response data
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] next_data_transfer_handle - A handle used to identify the next
+ *  portion of the transfer
+ *  @param[out] transfer_flag - The transfer flag that indicates what part of
+ * the transfer this response represents
+ *  @param[out] fru_record_offset - Offset indicating the portion of overall FRU
+ *  record table
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_fru_record_table_resp(const struct pldm_msg *msg,
+				     size_t payload_length,
+				     uint8_t *completion_code,
+				     uint32_t *next_data_transfer_handle,
+				     uint8_t *transfer_flag,
+				     size_t *fru_record_offset);
 
 #ifdef __cplusplus
 }
