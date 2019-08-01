@@ -77,7 +77,7 @@ AM_CONDITIONAL([OEM_IBM], [test "x$enable_oem_ibm" = "xyes"])
 AS_IF([test "x$enable_oem_ibm" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CXXFLAGS])
     AX_APPEND_COMPILE_FLAGS([-DOEM_IBM], [CFLAGS])
-    AC_DEFINE(FILE_TABLE_JSON, "/var/lib/pldm/fileTable.json", [JSON file containing file info for File I/O])
+    AC_DEFINE(FILE_TABLE_JSON, "/etc/default/obmc/pldm/fileTable.json", [JSON file containing file info for File I/O])
 ])
 
 # Setup verbose option
@@ -91,7 +91,7 @@ AS_IF([test "x$enable_verbose" == "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DVERBOSE], [CFLAGS])
 ])
 
-AC_DEFINE(BIOS_JSONS_DIR, "/etc/pldm/bios", [Directory housing the json files for BIOS tables])
+AC_DEFINE(BIOS_JSONS_DIR, "/etc/default/obmc/pldm/bios", [Directory housing the json files for BIOS tables])
 AC_DEFINE(BIOS_TABLES_DIR, "/var/lib/pldm/bios", [Directory housing actual BIOS tables])
 
 # Create configured output
