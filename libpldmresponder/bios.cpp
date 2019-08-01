@@ -732,6 +732,7 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
 
 Response getBIOSTable(const pldm_msg* request, size_t payloadLength)
 {
+    fs::create_directory(BIOS_TABLES_DIR);
     auto response = internal::buildBIOSTables(request, payloadLength,
                                               BIOS_JSONS_DIR, BIOS_TABLES_DIR);
 
