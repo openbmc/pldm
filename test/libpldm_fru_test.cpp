@@ -234,3 +234,52 @@ TEST(GetFruRecordTable, testBadDecodeRequest)
                                          &transfer_operation_flag);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetFruRecordByOption, testGoodEncodeRequest)
+{
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_BY_OPTION_REQ_BYTES>
+        requestMsg{};
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = reinterpret_cast<pldm_get_fru_record_by_option_req*>(
+        requestPtr->payload);
+
+    uint32_t data_transfer_handle = 0x0;
+    uint16_t fru_table_handle = 0x1;
+    uint16_t record_set_identifier = 0x0;
+    uint8_t record_type = 0x01;
+    uint8_t field_type = 0x01;
+    uint8_t transfer_operation_flag = PLDM_GET_NEXTPART;
+
+    auto rc = encode_get_fru_record_by_option_req(
+        0, data_transfer_handle, fru_table_handle, record_set_identifier,
+        record_type, field_type, transfer_operation_flag, requestPtr);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(requestPtr->hdr.request, PLDM_REQUEST);
+    ASSERT_EQ(requestPtr->hdr.instance_id, 0);
+    ASSERT_EQ(requestPtr->hdr.type, PLDM_FRU);
+    ASSERT_EQ(requestPtr->hdr.command, PLDM_GET_FRU_RECORD_BY_OPTION);
+    ASSERT_EQ(data_transfer_handle, request->data_transfer_handle);
+    ASSERT_EQ(fru_table_handle, request->fru_table_handle);
+    ASSERT_EQ(record_set_identifier, request->record_set_identifier);
+    ASSERT_EQ(record_type, request->record_type);
+    ASSERT_EQ(field_type, request->field_type);
+    ASSERT_EQ(transfer_operation_flag, request->transfer_operation_flag);
+}
+
+TEST(GetFruRecordByOption, testBadEncodeRequest)
+{
+    uint32_t data_transfer_handle = 0x0;
+    uint16_t fru_table_handle = 0x1;
+    uint16_t record_set_identifier = 0x0;
+    uint8_t record_type = 0x01;
+    uint8_t field_type = 0x01;
+    uint8_t transfer_operation_flag = PLDM_GET_NEXTPART;
+
+    auto rc = encode_get_fru_record_by_option_req(
+        0, data_transfer_handle, fru_table_handle, record_set_identifier,
+        record_type, field_type, transfer_operation_flag, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
