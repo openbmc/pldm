@@ -136,3 +136,36 @@ int decode_get_fru_record_table_req(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_fru_record_by_option_req(uint8_t instance_id,
+					uint32_t data_transfer_handle,
+					uint16_t fru_table_handle,
+					uint16_t record_set_identifier,
+					uint8_t record_type, uint8_t field_type,
+					uint8_t transfer_operation_flag,
+					struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_FRU;
+	header.command = PLDM_GET_FRU_RECORD_BY_OPTION;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_get_fru_record_by_option_req *req =
+	    (struct pldm_get_fru_record_by_option_req *)msg->payload;
+
+	req->data_transfer_handle = htole32(data_transfer_handle);
+	req->fru_table_handle = htole16(fru_table_handle);
+	req->record_set_identifier = htole16(record_set_identifier);
+	req->record_type = record_type;
+	req->field_type = field_type;
+	req->transfer_operation_flag = transfer_operation_flag;
+
+	return PLDM_SUCCESS;
+}

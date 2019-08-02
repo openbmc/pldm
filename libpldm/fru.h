@@ -13,6 +13,7 @@ extern "C" {
 
 #define PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES 5
 #define PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES 6
+#define PLDM_GET_FRU_RECORD_BY_OPTION_REQ_BYTES 11
 
 /** @brief PLDM FRU commands
  */
@@ -41,6 +42,19 @@ struct pldm_get_fru_record_table_resp {
 	uint32_t next_data_transfer_handle;
 	uint8_t transfer_flag;
 	uint8_t fru_record_table_data[1];
+} __attribute__((packed));
+
+/** @struct pldm_get_fru_record_by_option_req
+ *
+ *  Structure representing PLDM get FRU record by option request.
+ */
+struct pldm_get_fru_record_by_option_req {
+	uint32_t data_transfer_handle;
+	uint16_t fru_table_handle;
+	uint16_t record_set_identifier;
+	uint8_t record_type;
+	uint8_t field_type;
+	uint8_t transfer_operation_flag;
 } __attribute__((packed));
 
 /* Requester */
@@ -84,6 +98,33 @@ int decode_get_fru_record_table_resp(
     const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
     uint32_t *next_data_transfer_handle, uint8_t *transfer_flag,
     uint8_t *fru_record_table_data, size_t *fru_record_table_length);
+
+/* GetFruRecordByOption */
+
+/** @brief Create a PLDM request message for GetFruRecordByOption
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] data_transfer_handle - A handle that is used to identify FRU
+ *  Record Data transfer
+ *  @param[in] fru_table_handle - A handle that is used to identify FRU DATA
+ *  records
+ *  @param[in] record_set_identifier - Identifier for each record set
+ *  @param[in] record_type - Specifies the record type
+ *  @param[in] field_type - Specifies record field type
+ *  @param[in] transfer_operation_flag - The operation flag that indicates
+ *  whether this is the start of the transfer
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'msg'.
+ */
+
+int encode_get_fru_record_by_option_req(uint8_t instance_id,
+					uint32_t data_transfer_handle,
+					uint16_t fru_table_handle,
+					uint16_t record_set_identifier,
+					uint8_t record_type, uint8_t field_type,
+					uint8_t transfer_operation_flag,
+					struct pldm_msg *msg);
 
 /* Responder */
 
