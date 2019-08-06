@@ -18,6 +18,8 @@ enum pldm_fileio_commands {
 	PLDM_WRITE_FILE = 0x5,
 	PLDM_READ_FILE_INTO_MEMORY = 0x6,
 	PLDM_WRITE_FILE_FROM_MEMORY = 0x7,
+	PLDM_READ_FILE_TYPE_INTO_MEMORY = 0x8,
+	PLDM_WRITE_FILE_TYPE_FROM_MEMORY = 0x9,
 };
 
 /** @brief PLDM Command specific codes
@@ -29,6 +31,7 @@ enum pldm_fileio_completion_codes {
 	PLDM_INVALID_WRITE_LENGTH = 0x83,
 	PLDM_FILE_TABLE_UNAVAILABLE = 0x84,
 	PLDM_INVALID_FILE_TABLE_TYPE = 0x85,
+	PLDM_INVALID_FILE_TYPE = 0x86,
 };
 
 /** @brief PLDM File I/O table types
@@ -36,6 +39,12 @@ enum pldm_fileio_completion_codes {
 enum pldm_fileio_table_type {
 	PLDM_FILE_ATTRIBUTE_TABLE = 0,
 	PLDM_OEM_FILE_ATTRIBUTE_TABLE = 1,
+};
+
+/** @brief PLDM File I/O table types
+ *  */
+enum pldm_fileio_file_type {
+	PLDM_FILE_ERROR_LOG = 0,
 };
 
 #define PLDM_RW_FILE_MEM_REQ_BYTES 20
@@ -46,6 +55,8 @@ enum pldm_fileio_table_type {
 #define PLDM_READ_FILE_RESP_BYTES 5
 #define PLDM_WRITE_FILE_REQ_BYTES 12
 #define PLDM_WRITE_FILE_RESP_BYTES 5
+#define PLDM_RW_FILE_TYPE_MEM_REQ_BYTES 22
+#define PLDM_RW_FILE_TYPE_MEM_RESP_BYTES 5
 
 /** @struct pldm_read_write_file_memory_req
  *
@@ -340,6 +351,94 @@ int decode_write_file_resp(const struct pldm_msg *msg, size_t payload_length,
  */
 int encode_write_file_resp(uint8_t instance_id, uint8_t completion_code,
 			   uint32_t length, struct pldm_msg *msg);
+
+/** @struct pldm_read_write_file_type_memory_req
+ *
+ *  Structure representing ReadFileByTypeIntoMemory and
+ * WriteFileByTypeFromMemory request
+ */
+struct pldm_read_write_file_type_memory_req {
+	uint16_t file_type;   //!< Type of file
+	uint32_t file_handle; //!< Handle to file
+	uint32_t offset;      //!< Offset to file where read starts
+	uint32_t length;      //!< Bytes to be read
+	uint64_t address;     //!< Memory address of the file
+} __attribute__((packed));
+
+/** @struct pldm_read_write_file_type_memory_resp
+ *
+ *  Structure representing ReadFileByTypeIntoMemory and
+ * WriteFileByTypeFromMemory response
+ */
+struct pldm_read_write_file_type_memory_resp {
+	uint8_t completion_code; //!< Completion code
+	uint32_t length;	 //!< Number of bytes read
+} __attribute__((packed));
+
+/** @brief Decode ReadFileByTypeIntoMemory and WriteFileByTypeFromMemory
+ * commands request data
+ *
+ *  @param[in] msg - Pointer to PLDM request message
+ *  @param[in] payload_length - Length of request payload
+ *  @param[in] file_type - Type of the file
+ *  @param[out] file_handle - A handle to the file
+ *  @param[out] offset - Offset to the file at which the read should begin
+ *  @param[out] length - Number of bytes to be read
+ *  @param[out] address - Memory address of the file content
+ *  @return pldm_completion_codes
+ */
+int decode_rw_file_type_memory_req(const struct pldm_msg *msg,
+				   size_t payload_length, uint16_t *file_type,
+				   uint32_t *file_handle, uint32_t *offset,
+				   uint32_t *length, uint64_t *address);
+
+/** @brief Create a PLDM response for ReadFileByTypeIntoMemory and
+ * WriteFileByTypeFromMemory
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] command - PLDM command
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] length - Number of bytes read. This could be less than what the
+ *                      requester asked for.
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'msg'
+ */
+int encode_rw_file_type_memory_resp(uint8_t instance_id, uint8_t command,
+				    uint8_t completion_code, uint32_t length,
+				    struct pldm_msg *msg);
+
+/** @brief Encode ReadFileByTypeIntoMemory and WriteFileByTypeFromMemory
+ *         commands request data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] command - PLDM command
+ *  @param[in] file_type - Type of the file
+ *  @param[in] file_handle - A handle to the file
+ *  @param[in] offset -  Offset to the file at which the read should begin
+ *  @param[in] length -  Number of bytes to be read/written
+ *  @param[in] address - Memory address where the file content has to be
+ *                       written to
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_rw_file_type_memory_req(uint8_t instance_id, uint8_t command,
+				   uint16_t file_type, uint32_t file_handle,
+				   uint32_t offset, uint32_t length,
+				   uint64_t address, struct pldm_msg *msg);
+
+/** @brief Decode ReadFileTypeIntoMemory and WriteFileTypeFromMemory
+ *         commands response data
+ *
+ *  @param[in] msg - pointer to PLDM response message
+ *  @param[in] payload_length - Length of response payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] length - Number of bytes to be read/written
+ *  @return pldm_completion_codes
+ */
+int decode_rw_file_type_memory_resp(const struct pldm_msg *msg,
+				    size_t payload_length,
+				    uint8_t *completion_code, uint32_t *length);
 
 #ifdef __cplusplus
 }
