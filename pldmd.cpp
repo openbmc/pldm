@@ -19,6 +19,8 @@
 #include <iostream>
 #include <iterator>
 #include <phosphor-logging/log.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/source/io.hpp>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -33,6 +35,8 @@
 using namespace phosphor::logging;
 using namespace pldm;
 using namespace pldm::daemon_api;
+using namespace sdeventplus;
+using namespace sdeventplus::source;
 
 static Response processRxMsg(const Interfaces& intfs,
                              const std::vector<uint8_t>& requestMsg)
@@ -184,27 +188,29 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    do
-    {
-        ssize_t peekedLength =
-            recv(socketFd(), nullptr, 0, MSG_PEEK | MSG_TRUNC);
+    auto callback = [verbose, &intfs](IO& io, int fd, uint32_t revents) {
+        if (!(revents & EPOLLIN))
+        {
+            return;
+        }
+
+        int returnCode = 0;
+        ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);
         if (0 == peekedLength)
         {
             log<level::ERR>("Socket has been closed");
-            exit(EXIT_FAILURE);
         }
         else if (peekedLength <= -1)
         {
             returnCode = -errno;
             log<level::ERR>("recv system call failed",
                             entry("RC=%d", returnCode));
-            exit(EXIT_FAILURE);
         }
         else
         {
             std::vector<uint8_t> requestMsg(peekedLength);
             auto recvDataLength = recv(
-                sockfd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
+                fd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
             if (recvDataLength == peekedLength)
             {
                 if (verbose)
@@ -239,7 +245,6 @@ int main(int argc, char** argv)
                             returnCode = -errno;
                             log<level::ERR>("sendto system call failed",
                                             entry("RC=%d", returnCode));
-                            exit(EXIT_FAILURE);
                         }
                     }
                 }
@@ -249,10 +254,13 @@ int main(int argc, char** argv)
                 log<level::ERR>("Failure to read peeked length packet",
                                 entry("PEEKED_LENGTH=%zu", peekedLength),
                                 entry("READ_LENGTH=%zu", recvDataLength));
-                exit(EXIT_FAILURE);
             }
         }
-    } while (true);
+    };
+
+    auto event = Event::get_default();
+    IO io(event, socketFd(), EPOLLIN, std::move(callback));
+    event.loop();
 
     result = shutdown(sockfd, SHUT_RDWR);
     if (-1 == result)
