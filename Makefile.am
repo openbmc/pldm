@@ -37,10 +37,12 @@ pldmd_SOURCES = \
 pldmd_LDADD = \
         libpldmresponder/libpldmresponder.la \
         libpldm/libpldm.la \
-	$(SDBUSPLUS_LIBS)
+	$(SDBUSPLUS_LIBS) \
+	$(SDEVENTPLUS_LIBS)
 pldmd_CXXFLAGS = -I$(top_builddir)/libpldm \
 	$(PHOSPHOR_LOGGING_CFLAGS) \
-	$(SDBUSPLUS_CFLAGS)
+	$(SDBUSPLUS_CFLAGS) \
+	$(SDEVENTPLUS_CFLAGS)
 
 if OEM_IBM
 pldmd_CXXFLAGS += \
