@@ -258,9 +258,9 @@ int main(int argc, char** argv)
         }
     };
 
-    auto event = Event::get_default();
-    IO io(event, socketFd(), EPOLLIN, std::move(callback));
-    event.loop();
+    intfs.eventLoop = std::make_unique<Event>(Event::get_default());
+    IO io(*intfs.eventLoop, socketFd(), EPOLLIN, std::move(callback));
+    intfs.eventLoop->loop();
 
     result = shutdown(sockfd, SHUT_RDWR);
     if (-1 == result)

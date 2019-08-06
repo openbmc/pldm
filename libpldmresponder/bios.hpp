@@ -29,7 +29,7 @@ namespace bios
  */
 void registerHandlers();
 
-namespace internal
+namespace detail
 {
 
 /** @brief Constructs all the BIOS Tables
@@ -42,7 +42,7 @@ namespace internal
 Response buildBIOSTables(const Interfaces& intfs, const Request& request,
                          size_t payloadLength, const char* biosJsonDir,
                          const char* biosTablePath);
-} // end namespace internal
+} // namespace detail
 
 } // namespace bios
 

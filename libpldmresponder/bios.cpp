@@ -735,8 +735,8 @@ Response getBIOSTable(const Interfaces& intfs, const Request& request,
                       size_t payloadLength)
 {
     fs::create_directory(BIOS_TABLES_DIR);
-    auto response = internal::buildBIOSTables(intfs, request, payloadLength,
-                                              BIOS_JSONS_DIR, BIOS_TABLES_DIR);
+    auto response = detail::buildBIOSTables(intfs, request, payloadLength,
+                                            BIOS_JSONS_DIR, BIOS_TABLES_DIR);
 
     return response;
 }
@@ -750,7 +750,7 @@ void registerHandlers()
     registerHandler(PLDM_BIOS, PLDM_GET_BIOS_TABLE, std::move(getBIOSTable));
 }
 
-namespace internal
+namespace detail
 {
 
 Response buildBIOSTables(const Interfaces& intfs, const Request& request,
@@ -831,7 +831,7 @@ Response buildBIOSTables(const Interfaces& intfs, const Request& request,
     return response;
 }
 
-} // end namespace internal
+} // namespace detail
 } // namespace bios
 
 } // namespace responder
