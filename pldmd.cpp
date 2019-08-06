@@ -229,7 +229,7 @@ int main(int argc, char** argv)
                         log<level::INFO>("Sending Msg ");
                         printBuffer(response);
 #endif
-                        iov[0].iov_base = &requestMsg;
+                        iov[0].iov_base = &requestMsg[0];
                         iov[0].iov_len =
                             sizeof(requestMsg[0]) + sizeof(requestMsg[1]);
                         iov[1].iov_base = response.data();
