@@ -6,12 +6,6 @@
 #include "libpldmresponder/utils.hpp"
 #include "registration.hpp"
 
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-
 #include <cstring>
 #include <fstream>
 #include <phosphor-logging/log.hpp>
@@ -46,6 +40,17 @@ using namespace phosphor::logging;
 namespace dma
 {
 
+namespace internal
+{
+
+DMA& intf()
+{
+    static DMA dmaIntf;
+    return dmaIntf;
+}
+
+} // namespace internal
+
 /** @struct AspeedXdmaOp
  *
  * Structure representing XDMA operation
@@ -60,8 +65,6 @@ struct AspeedXdmaOp
                        //!< operation, true means a transfer from BMC to host.
 };
 
-constexpr auto xdmaDev = "/dev/xdma";
-
 int DMA::transferDataHost(const fs::path& path, uint32_t offset,
                           uint32_t length, uint64_t address, bool upstream)
 {
@@ -74,33 +77,22 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
         pageAlignedLength += pageSize;
     }
 
-    auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
-        munmap(vgaMem, pageAlignedLength);
-    };
-
-    int fd = -1;
     int rc = 0;
-    fd = open(xdmaDev, O_RDWR);
-    if (fd < 0)
+    int xdmaFd = dmaFd();
+    if (xdmaFd < 0)
     {
-        rc = -errno;
-        log<level::ERR>("Failed to open the XDMA device", entry("RC=%d", rc));
-        return rc;
+        log<level::ERR>("Failed to open the XDMA device",
+                        entry("RC=%d", error()));
+        return error();
     }
 
-    utils::CustomFD xdmaFd(fd);
-
-    void* vgaMem;
-    vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
-                  MAP_SHARED, xdmaFd(), 0);
-    if (MAP_FAILED == vgaMem)
+    void* mem = dmaAddr();
+    if (mem == MAP_FAILED)
     {
-        rc = -errno;
-        log<level::ERR>("Failed to mmap the XDMA device", entry("RC=%d", rc));
-        return rc;
+        log<level::ERR>("Failed to mmap the XDMA device",
+                        entry("RC=%d", error()));
+        return error();
     }
-
-    std::unique_ptr<void, decltype(mmapCleanup)> vgaMemPtr(vgaMem, mmapCleanup);
 
     if (upstream)
     {
@@ -113,8 +105,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
         std::vector<char> buffer{};
         buffer.resize(pageAlignedLength);
         stream.read(buffer.data(), length);
-        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
-               pageAlignedLength);
+        memcpy(static_cast<char*>(mem), buffer.data(), pageAlignedLength);
 
         if (static_cast<uint32_t>(stream.gcount()) != length)
         {
@@ -131,7 +122,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
     xdmaOp.hostAddr = address;
     xdmaOp.len = length;
 
-    rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    rc = write(xdmaFd, &xdmaOp, sizeof(xdmaOp));
     if (rc < 0)
     {
         rc = -errno;
@@ -148,7 +139,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
                              std::ios::in | std::ios::out | std::ios::binary);
 
         stream.seekp(offset);
-        stream.write(static_cast<const char*>(vgaMemPtr.get()), length);
+        stream.write(static_cast<const char*>(mem), length);
     }
 
     return 0;
@@ -232,9 +223,8 @@ Response readFileIntoMemory(const Interfaces& intfs, const Request& request,
     }
 
     using namespace dma;
-    DMA intf;
-    return transferAll<DMA>(&intf, PLDM_READ_FILE_INTO_MEMORY, value.fsPath,
-                            offset, length, address, true,
+    return transferAll<DMA>(&internal::intf(), PLDM_READ_FILE_INTO_MEMORY,
+                            value.fsPath, offset, length, address, true,
                             request.msg->hdr.instance_id);
 }
 
@@ -309,9 +299,8 @@ Response writeFileFromMemory(const Interfaces& intfs, const Request& request,
     }
 
     using namespace dma;
-    DMA intf;
-    return transferAll<DMA>(&intf, PLDM_WRITE_FILE_FROM_MEMORY, value.fsPath,
-                            offset, length, address, false,
+    return transferAll<DMA>(&internal::intf(), PLDM_WRITE_FILE_FROM_MEMORY,
+                            value.fsPath, offset, length, address, false,
                             request.msg->hdr.instance_id);
 }
 

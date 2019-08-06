@@ -2,7 +2,11 @@
 
 #include "registration.hpp"
 
+#include <fcntl.h>
 #include <stdint.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include <filesystem>
@@ -47,6 +51,51 @@ namespace fs = std::filesystem;
 class DMA
 {
   public:
+    DMA()
+    {
+        xdmaFd = open("/dev/xdma", O_RDWR);
+        if (xdmaFd < 0)
+        {
+            rc = -errno;
+        }
+        else
+        {
+            addr = mmap(nullptr, maxSize, PROT_WRITE | PROT_READ, MAP_SHARED,
+                        xdmaFd, 0);
+            if (MAP_FAILED == addr)
+            {
+                rc = -errno;
+            }
+        }
+    }
+
+    ~DMA()
+    {
+        if (addr && addr != MAP_FAILED)
+        {
+            munmap(addr, maxSize);
+        }
+        if (xdmaFd != -1)
+        {
+            close(xdmaFd);
+        }
+    }
+
+    int dmaFd() const
+    {
+        return xdmaFd;
+    }
+
+    void* dmaAddr() const
+    {
+        return addr;
+    }
+
+    int error() const
+    {
+        return rc;
+    }
+
     /** @brief API to transfer data between BMC and host using DMA
      *
      * @param[in] path     - pathname of the file to transfer data from or to
@@ -60,6 +109,11 @@ class DMA
      */
     int transferDataHost(const fs::path& path, uint32_t offset, uint32_t length,
                          uint64_t address, bool upstream);
+
+  private:
+    int xdmaFd = -1;
+    void* addr = nullptr;
+    int rc = 0;
 };
 
 /** @brief Transfer the data between BMC and host using DMA.
