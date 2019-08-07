@@ -14,6 +14,7 @@ extern "C" {
 #define PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES 5
 #define PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES 6
 #define PLDM_GET_FRU_RECORD_BY_OPTION_REQ_BYTES 11
+#define PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES 6
 
 /** @brief PLDM FRU commands
  */
@@ -55,6 +56,17 @@ struct pldm_get_fru_record_by_option_req {
 	uint8_t record_type;
 	uint8_t field_type;
 	uint8_t transfer_operation_flag;
+} __attribute__((packed));
+
+/** @struct pldm_get_fru_record_by_option_resp
+ *
+ *  Structure representing PLDM get FRU record by option response.
+ */
+struct pldm_get_fru_record_by_option_resp {
+	uint8_t completion_code;
+	uint32_t next_data_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t fru_data_structure_data[1];
 } __attribute__((packed));
 
 /* Requester */
@@ -169,6 +181,27 @@ int decode_get_fru_record_table_req(const struct pldm_msg *msg,
 				    size_t payload_length,
 				    uint32_t *data_transfer_handle,
 				    uint8_t *transfer_operation_flag);
+
+/* GetFruRecordByOption */
+
+/** @brief Decode GetFruRecordByOption response data
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] next_data_transfer_handle - A handle that is used to identify
+ * the next portion of the transfer
+ *  @param[out] transfer_flag - The transfer flag that indicates what part of
+ * the transfer this response represents
+ *  @param[out] fru_data_structure_data_offset - Offset representing the fru
+ *  record data
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_fru_record_by_option_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint32_t *next_data_transfer_handle, uint8_t *transfer_flag,
+    uint8_t *fru_data_structure_data, size_t *fru_data_structure_data_length);
 
 #ifdef __cplusplus
 }
