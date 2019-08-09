@@ -24,4 +24,14 @@ void getPLDMTypes(std::vector<std::string>&& args);
  */
 void getPLDMVersion(std::vector<std::string>&& args);
 
+/** @brief Handler for Raw PLDM commands
+ *
+ *
+ *  @param[in]  args - Argument to be passed to the handler
+ *              e.g :  PLDM raw commands.
+ *
+ *  @return - None
+ */
+void handleRawOp(std::vector<std::string>&& args);
+
 #endif /* PLDM_BASE_CMD_H */
