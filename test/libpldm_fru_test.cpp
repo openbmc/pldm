@@ -427,3 +427,78 @@ TEST(GetFruRecordByOption, testBadEncodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(GetFruRecordByOption, testGoodDecodeRequest)
+{
+    uint32_t data_transfer_handle = 31;
+    uint16_t fru_table_handle = 0x0;
+    uint16_t record_set_identifier = 0x1;
+    uint8_t record_type = 0x0;
+    uint8_t field_type = 0x0;
+    uint8_t transfer_operation_flag = PLDM_GET_FIRSTPART;
+
+    std::array<uint8_t,
+               PLDM_GET_FRU_RECORD_BY_OPTION_REQ_BYTES + sizeof(pldm_msg_hdr)>
+        requestMsg{};
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    size_t payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+    auto request = reinterpret_cast<pldm_get_fru_record_by_option_req*>(
+        requestPtr->payload);
+
+    request->data_transfer_handle = data_transfer_handle;
+    request->fru_table_handle = fru_table_handle;
+    request->record_set_identifier = record_set_identifier;
+    request->record_type = record_type;
+    request->field_type = field_type;
+    request->transfer_operation_flag = transfer_operation_flag;
+
+    uint32_t ret_data_transfer_handle = 0;
+    uint16_t ret_fru_table_handle = 0x0;
+    uint16_t ret_record_set_identifier = 0x0;
+    uint8_t ret_record_type = 0x0;
+    uint8_t ret_field_type = 0x0;
+    uint8_t ret_transfer_operation_flag = 0;
+
+    // Invoke decode get FRU record by option request api
+    auto rc = decode_get_fru_record_by_option_req(
+        requestPtr, payload_length, &ret_data_transfer_handle,
+        &ret_fru_table_handle, &ret_record_set_identifier, &ret_record_type,
+        &ret_field_type, &ret_transfer_operation_flag);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(data_transfer_handle, ret_data_transfer_handle);
+    ASSERT_EQ(fru_table_handle, ret_fru_table_handle);
+    ASSERT_EQ(record_set_identifier, ret_record_set_identifier);
+    ASSERT_EQ(record_type, ret_record_type);
+    ASSERT_EQ(field_type, ret_field_type);
+    ASSERT_EQ(transfer_operation_flag, ret_transfer_operation_flag);
+}
+
+TEST(GetFruRecordByOption, testBadDecodeRequest)
+{
+    uint32_t data_transfer_handle = 0x0;
+    uint16_t fru_table_handle = 0x0;
+    uint16_t record_set_identifier = 0x1;
+    uint8_t record_type = 0x0;
+    uint8_t field_type = 0x0;
+    uint8_t transfer_operation_flag = PLDM_GET_FIRSTPART;
+
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_BY_OPTION_REQ_BYTES>
+        requestMsg{};
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    // Payload message is missing
+    auto rc = decode_get_fru_record_by_option_req(
+        NULL, 0, &data_transfer_handle, &fru_table_handle,
+        &record_set_identifier, &record_type, &field_type,
+        &transfer_operation_flag);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Payload length is invalid
+    rc = decode_get_fru_record_by_option_req(
+        requestPtr, 0, &data_transfer_handle, &fru_table_handle,
+        &record_set_identifier, &record_type, &field_type,
+        &transfer_operation_flag);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
