@@ -201,6 +201,32 @@ int decode_get_fru_record_table_req(const struct pldm_msg *msg,
 				    uint32_t *data_transfer_handle,
 				    uint8_t *transfer_operation_flag);
 
+/* GetFruRecordByOption */
+
+/** @brief Create a PLDM response message for GetFruRecordByOption
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_data_transfer_handle - A handle that is used to identify the
+ *  next portion of the transfer
+ *  @param[in] transfer_flag - The transfer flag that indicates what part of the
+ *  transfer this response represents
+ *  @param[in] fru_data_structure_data - This data is a portion of the overall
+ * FRU Record data
+ *  @param[in] payload_length - Length of the payload message
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'msg'.
+ */
+
+int encode_get_fru_record_by_option_resp(uint8_t instance_id,
+					 uint8_t completion_code,
+					 uint32_t next_data_transfer_handle,
+					 uint8_t transfer_flag,
+					 uint8_t *fru_data_structure_data,
+					 size_t payload_length,
+					 struct pldm_msg *msg);
+
 #ifdef __cplusplus
 }
 #endif

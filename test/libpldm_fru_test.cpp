@@ -356,3 +356,74 @@ TEST(GetFruRecordByOption, testBadDecodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetFruRecordByOption, testGoodEncodeResponse)
+{
+    uint8_t completion_code = 0;
+    uint32_t next_data_transfer_handle = 32;
+    uint8_t transfer_flag = PLDM_START_AND_END;
+    std::vector<uint8_t> fru_data_structure_data = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    std::vector<uint8_t> responseMsg(
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES +
+        fru_data_structure_data.size());
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto response = reinterpret_cast<pldm_get_fru_record_by_option_resp*>(
+        responsePtr->payload);
+
+    // Invoke encode get FRU record by option response api
+    auto rc = encode_get_fru_record_by_option_resp(
+        0, completion_code, next_data_transfer_handle, transfer_flag,
+        fru_data_structure_data.data(),
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES +
+            fru_data_structure_data.size(),
+        responsePtr);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+    ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_BY_OPTION);
+    ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(response->next_data_transfer_handle, next_data_transfer_handle);
+    ASSERT_EQ(response->transfer_flag, transfer_flag);
+    ASSERT_EQ(0, memcmp(fru_data_structure_data.data(),
+                        response->fru_data_structure_data,
+                        fru_data_structure_data.size()));
+}
+
+TEST(GetFruRecordByOption, testBadEncodeResponse)
+{
+    uint32_t next_data_transfer_handle = 32;
+    uint8_t transfer_flag = PLDM_START_AND_END;
+    std::vector<uint8_t> fru_data_structure_data(9, 0);
+
+    std::vector<uint8_t> responseMsg(
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES +
+        fru_data_structure_data.size());
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto rc = encode_get_fru_record_by_option_resp(
+        0, PLDM_ERROR, next_data_transfer_handle, transfer_flag,
+        fru_data_structure_data.data(),
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES +
+            fru_data_structure_data.size(),
+        responsePtr);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
+    ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_BY_OPTION);
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
+
+    rc = encode_get_fru_record_table_resp(
+        0, PLDM_SUCCESS, next_data_transfer_handle, transfer_flag,
+        fru_data_structure_data.data(),
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES +
+            fru_data_structure_data.size(),
+        NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
