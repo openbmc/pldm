@@ -16,5 +16,7 @@ class Handler
         {"GetPLDMTypes",
          [](Args&& args) { return getPLDMTypes(std::move(args)); }},
         {"GetPLDMVersion",
-         [](Args&& args) { return getPLDMVersion(std::move(args)); }}};
+         [](Args&& args) { return getPLDMVersion(std::move(args)); }},
+        {"HandleRawOp",
+         [](Args&& args) { return handleRawOp(std::move(args)); }}};
 };
