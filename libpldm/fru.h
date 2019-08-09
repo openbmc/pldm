@@ -227,6 +227,28 @@ int encode_get_fru_record_by_option_resp(uint8_t instance_id,
 					 size_t payload_length,
 					 struct pldm_msg *msg);
 
+/** @brief Decode GetFruRecordByOption request data
+ *
+ *  @param[in] msg - PLDM request message payload
+ *  @param[in] payload_length - Length of request payload
+ *  @param[out] data_transfer_handle - A handle, used to identify a FRU Record
+ *  data transfer
+ *  @param[out] fru_table_handle - A handle that is used to identify FRU DATA
+ * records
+ *  @prama[out] record_set_identifer - Used to identify record sets
+ *  @param[out] record_type - Used to identify the type of the records
+ *  @param[out] field_type - Used to identify the field type of the records
+ *  @param[out] transfer_operation_flag - A flag that indicates whether this is
+ *  the start of the transfer
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_fru_record_by_option_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *data_transfer_handle, uint16_t *fru_table_handle,
+    uint16_t *record_set_identifier, uint8_t *record_type, uint8_t *field_type,
+    uint8_t *transfer_operation_flag);
+
 #ifdef __cplusplus
 }
 #endif
