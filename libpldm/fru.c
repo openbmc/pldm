@@ -256,3 +256,33 @@ int encode_get_fru_record_by_option_resp(uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_get_fru_record_by_option_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *data_transfer_handle, uint16_t *fru_table_handle,
+    uint16_t *record_set_identifier, uint8_t *record_type, uint8_t *field_type,
+    uint8_t *transfer_operation_flag)
+{
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    fru_table_handle == NULL || record_set_identifier == NULL ||
+	    record_type == NULL || field_type == NULL ||
+	    transfer_operation_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_FRU_RECORD_BY_OPTION_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_fru_record_by_option_req *req =
+	    (struct pldm_get_fru_record_by_option_req *)msg->payload;
+
+	*data_transfer_handle = le32toh(req->data_transfer_handle);
+	*fru_table_handle = le16toh(req->fru_table_handle);
+	*record_set_identifier = le16toh(req->record_set_identifier);
+	*record_type = req->record_type;
+	*field_type = req->field_type;
+	*transfer_operation_flag = req->transfer_operation_flag;
+
+	return PLDM_SUCCESS;
+}
