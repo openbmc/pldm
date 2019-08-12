@@ -1,5 +1,7 @@
 #pragma once
 
+#include "registration.hpp"
+
 #include <stdint.h>
 
 #include <vector>
@@ -10,8 +12,6 @@ namespace pldm
 {
 
 using Type = uint8_t;
-
-using Response = std::vector<uint8_t>;
 
 namespace responder
 {
@@ -25,34 +25,38 @@ void registerHandlers();
 
 /** @brief Handler for getPLDMTypes
  *
- *  @param[in] request - Request message payload
+ *  @param[in] request - Request message
  *  @param[in] payload_length - Request message payload length
  *  @param[return] Response - PLDM Response message
  */
-Response getPLDMTypes(const pldm_msg* request, size_t payloadLength);
+Response getPLDMTypes(const Interfaces& intfs, const Request& request,
+                      size_t payloadLength);
 
 /** @brief Handler for getPLDMCommands
  *
- *  @param[in] request - Request message payload
+ *  @param[in] request - Request message
  *  @param[in] payload_length - Request message payload length
  *  @param[return] Response - PLDM Response message
  */
-Response getPLDMCommands(const pldm_msg* request, size_t payloadLength);
+Response getPLDMCommands(const Interfaces& intfs, const Request& request,
+                         size_t payloadLength);
 
 /** @brief Handler for getPLDMCommands
  *
- *  @param[in] request - Request message payload
+ *  @param[in] request - Request message
  *  @param[in] payload_length - Request message payload length
  *  @param[return] Response - PLDM Response message
  */
-Response getPLDMVersion(const pldm_msg* request, size_t payloadLength);
+Response getPLDMVersion(const Interfaces& intfs, const Request& request,
+                        size_t payloadLength);
 
 /** @brief Handler for getTID
  *
- *  @param[in] request - Request message payload
+ *  @param[in] request - Request message
  *  @param[in] payload_length - Request message payload length
  *  @param[return] Response - PLDM Response message
  */
-Response getTID(const pldm_msg* request, size_t payloadLength);
+Response getTID(const Interfaces& intfs, const Request& request,
+                size_t payloadLength);
 } // namespace responder
 } // namespace pldm

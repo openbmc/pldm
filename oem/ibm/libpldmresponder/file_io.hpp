@@ -1,5 +1,7 @@
 #pragma once
 
+#include "registration.hpp"
+
 #include <stdint.h>
 #include <unistd.h>
 
@@ -21,8 +23,6 @@ namespace oem_ibm
  */
 void registerHandlers();
 } // namespace oem_ibm
-
-using Response = std::vector<uint8_t>;
 
 namespace dma
 {
@@ -128,7 +128,8 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
  *
  *  @return PLDM response message
  */
-Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength);
+Response readFileIntoMemory(const Interfaces& intfs, const Request& request,
+                            size_t payloadLength);
 
 /** @brief Handler for writeFileIntoMemory command
  *
@@ -137,7 +138,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength);
  *
  *  @return PLDM response message
  */
-Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
+Response writeFileFromMemory(const Interfaces& intfs, const Request& request,
+                             size_t payloadLength);
 
 /** @brief Handler for GetFileTable command
  *
@@ -146,7 +148,8 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
  *
  *  @return PLDM response message
  */
-Response getFileTable(const pldm_msg* request, size_t payloadLength);
+Response getFileTable(const Interfaces& intfs, const Request& request,
+                      size_t payloadLength);
 
 /** @brief Handler for readFile command
  *
@@ -155,7 +158,8 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength);
  *
  *  @return PLDM response message
  */
-Response readFile(const pldm_msg* request, size_t payloadLength);
+Response readFile(const Interfaces& intfs, const Request& request,
+                  size_t payloadLength);
 
 /** @brief Handler for writeFile command
  *
@@ -164,6 +168,7 @@ Response readFile(const pldm_msg* request, size_t payloadLength);
  *
  *  @return PLDM response message
  */
-Response writeFile(const pldm_msg* request, size_t payloadLength);
+Response writeFile(const Interfaces& intfs, const Request& request,
+                   size_t payloadLength);
 } // namespace responder
 } // namespace pldm

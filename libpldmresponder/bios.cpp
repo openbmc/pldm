@@ -1,7 +1,6 @@
 #include "bios.hpp"
 
 #include "libpldmresponder/utils.hpp"
-#include "registration.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <array>
@@ -57,7 +56,8 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
 
 } // namespace utils
 
-Response getDateTime(const pldm_msg* request, size_t payloadLength)
+Response getDateTime(const Interfaces& intfs, const Request& request,
+                     size_t payloadLength)
 {
     uint8_t seconds = 0;
     uint8_t minutes = 0;
@@ -90,8 +90,8 @@ Response getDateTime(const pldm_msg* request, size_t payloadLength)
         log<level::ERR>("Error getting time", entry("PATH=%s", bmcTimePath),
                         entry("TIME INTERACE=%s", timeInterface));
 
-        encode_get_date_time_resp(request->hdr.instance_id, PLDM_ERROR, seconds,
-                                  minutes, hours, day, month, year,
+        encode_get_date_time_resp(request.msg->hdr.instance_id, PLDM_ERROR,
+                                  seconds, minutes, hours, day, month, year,
                                   responsePtr);
         return response;
     }
@@ -104,8 +104,9 @@ Response getDateTime(const pldm_msg* request, size_t payloadLength)
 
     utils::epochToBCDTime(timeSec, seconds, minutes, hours, day, month, year);
 
-    encode_get_date_time_resp(request->hdr.instance_id, PLDM_SUCCESS, seconds,
-                              minutes, hours, day, month, year, responsePtr);
+    encode_get_date_time_resp(request.msg->hdr.instance_id, PLDM_SUCCESS,
+                              seconds, minutes, hours, day, month, year,
+                              responsePtr);
     return response;
 }
 
@@ -730,10 +731,11 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
     return response;
 }
 
-Response getBIOSTable(const pldm_msg* request, size_t payloadLength)
+Response getBIOSTable(const Interfaces& intfs, const Request& request,
+                      size_t payloadLength)
 {
     fs::create_directory(BIOS_TABLES_DIR);
-    auto response = internal::buildBIOSTables(request, payloadLength,
+    auto response = internal::buildBIOSTables(intfs, request, payloadLength,
                                               BIOS_JSONS_DIR, BIOS_TABLES_DIR);
 
     return response;
@@ -751,8 +753,9 @@ void registerHandlers()
 namespace internal
 {
 
-Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
-                         const char* biosJsonDir, const char* biosTablePath)
+Response buildBIOSTables(const Interfaces& intfs, const Request& request,
+                         size_t payloadLength, const char* biosJsonDir,
+                         const char* biosTablePath)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
@@ -762,8 +765,9 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
     uint8_t transferOpFlag{};
     uint8_t tableType{};
 
-    auto rc = decode_get_bios_table_req(request, payloadLength, &transferHandle,
-                                        &transferOpFlag, &tableType);
+    auto rc =
+        decode_get_bios_table_req(request.msg, payloadLength, &transferHandle,
+                                  &transferOpFlag, &tableType);
     if (rc == PLDM_SUCCESS)
     {
         BIOSTable BIOSStringTable(
@@ -778,7 +782,7 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
 
                 response = getBIOSStringTable(
                     BIOSStringTable, transferHandle, transferOpFlag,
-                    request->hdr.instance_id, biosJsonDir);
+                    request.msg->hdr.instance_id, biosJsonDir);
                 break;
             case PLDM_BIOS_ATTR_TABLE:
 
@@ -790,7 +794,8 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                 {
                     response = getBIOSAttributeTable(
                         BIOSAttributeTable, BIOSStringTable, transferHandle,
-                        transferOpFlag, request->hdr.instance_id, biosJsonDir);
+                        transferOpFlag, request.msg->hdr.instance_id,
+                        biosJsonDir);
                 }
                 break;
             case PLDM_BIOS_ATTR_VAL_TABLE:
@@ -803,7 +808,7 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                     response = getBIOSAttributeValueTable(
                         BIOSAttributeValueTable, BIOSAttributeTable,
                         BIOSStringTable, transferHandle, transferOpFlag,
-                        request->hdr.instance_id, biosJsonDir);
+                        request.msg->hdr.instance_id, biosJsonDir);
                 }
                 break;
             default:
@@ -818,7 +823,7 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
         uint8_t transferFlag{};
         size_t respPayloadLength{};
 
-        encode_get_bios_table_resp(request->hdr.instance_id, rc,
+        encode_get_bios_table_resp(request.msg->hdr.instance_id, rc,
                                    nxtTransferHandle, transferFlag, nullptr,
                                    respPayloadLength, responsePtr);
     }

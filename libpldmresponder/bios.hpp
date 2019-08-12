@@ -4,6 +4,7 @@
 
 #include "bios_parser.hpp"
 #include "bios_table.hpp"
+#include "registration.hpp"
 
 #include <stdint.h>
 
@@ -15,7 +16,6 @@
 namespace pldm
 {
 
-using Response = std::vector<uint8_t>;
 using AttributeHandle = uint16_t;
 using StringHandle = uint16_t;
 using PossibleValuesByHandle = std::vector<StringHandle>;
@@ -39,8 +39,9 @@ namespace internal
  *  @param[in] biosJsonDir - path to fetch the BIOS json files
  *  @param[in] biosTablePath - path where the BIOS tables will be persisted
  */
-Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
-                         const char* biosJsonDir, const char* biosTablePath);
+Response buildBIOSTables(const Interfaces& intfs, const Request& request,
+                         size_t payloadLength, const char* biosJsonDir,
+                         const char* biosTablePath);
 } // end namespace internal
 
 } // namespace bios
@@ -50,7 +51,8 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
  *  @param[in] request - Request message payload
  *  @param[return] Response - PLDM Response message
  */
-Response getDateTime(const pldm_msg* request, size_t payloadLength);
+Response getDateTime(const Interfaces& intfs, const Request& request,
+                     size_t payloadLength);
 
 /** @brief Handler for GetBIOSTable
  *
@@ -58,7 +60,8 @@ Response getDateTime(const pldm_msg* request, size_t payloadLength);
  *  @param[in] payload_length - Request message payload length
  *  @param[return] Response - PLDM Response message
  */
-Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
+Response getBIOSTable(const Interfaces& intfs, const Request& request,
+                      size_t payloadLength);
 
 namespace utils
 {

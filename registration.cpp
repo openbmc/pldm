@@ -26,36 +26,14 @@ void registerHandler(uint8_t pldmType, uint8_t pldmCommand, Handler&& handler)
     ch.emplace(pldmCommand, std::move(handler));
 }
 
-Response invokeHandler(uint8_t pldmType, uint8_t pldmCommand,
-                       const pldm_msg* request, size_t payloadLength)
+Response invokeHandler(const Interfaces& intfs, uint8_t pldmType,
+                       uint8_t pldmCommand, const Request& request,
+                       size_t payloadLength)
 {
     using namespace internal;
-    Response response;
-    if (!(typeHandlers.end() == typeHandlers.find(pldmType)))
-    {
-        if (!((typeHandlers.at(pldmType)).end() ==
-              (typeHandlers.at(pldmType)).find(pldmCommand)))
-        {
-            response = typeHandlers.at(pldmType).at(pldmCommand)(request,
-                                                                 payloadLength);
-            if (response.empty())
-            {
-                log<level::ERR>("Encountered invalid response");
-            }
-        }
-        else
-        {
-            log<level::ERR>("Unsupported PLDM command",
-                            entry("TYPE=0x%02x", pldmType),
-                            entry("COMMAND=0x%02x", pldmCommand));
-        }
-    }
-    else
-    {
-        log<level::ERR>("Unsupported PLDM TYPE",
-                        entry("TYPE=0x%02x", pldmType));
-    }
-
+    auto response = typeHandlers.at(pldmType).at(pldmCommand)(intfs, request,
+                                                              payloadLength);
+    ;
     return response;
 }
 
