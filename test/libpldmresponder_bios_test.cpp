@@ -1,6 +1,7 @@
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/bios_parser.hpp"
 #include "libpldmresponder/bios_table.hpp"
+#include "registration.hpp"
 
 #include <string.h>
 
@@ -130,7 +131,9 @@ TEST_F(TestAllBIOSTables, GetBIOSTableTestBadRequest)
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
-    auto response = internal::buildBIOSTables(request, requestPayloadLength,
+    Interfaces intfs{};
+    Request r{0, request};
+    auto response = internal::buildBIOSTables(intfs, r, requestPayloadLength,
                                               "./bios_jsons", biosPath.c_str());
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -154,7 +157,9 @@ TEST_F(TestAllBIOSTables, buildBIOSTablesTestBadRequest)
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
-    auto response = internal::buildBIOSTables(request, requestPayloadLength,
+    Interfaces intfs{};
+    Request r{0, request};
+    auto response = internal::buildBIOSTables(intfs, r, requestPayloadLength,
                                               "./bios_jsons", biosPath.c_str());
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     struct pldm_get_bios_table_resp* resp =
@@ -163,7 +168,7 @@ TEST_F(TestAllBIOSTables, buildBIOSTablesTestBadRequest)
     ASSERT_EQ(PLDM_BIOS_TABLE_UNAVAILABLE, resp->completion_code);
 
     req->table_type = PLDM_BIOS_ATTR_TABLE;
-    response = internal::buildBIOSTables(request, requestPayloadLength,
+    response = internal::buildBIOSTables(intfs, r, requestPayloadLength,
                                          "./bios_jsons", biosPath.c_str());
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     resp = reinterpret_cast<struct pldm_get_bios_table_resp*>(
@@ -191,8 +196,10 @@ TEST_F(TestAllBIOSTables, GetBIOSStringTableTestGoodRequest)
     uint8_t times = 0;
     while (times < 2)
     { // first time fresh table second time existing table
+        Interfaces intfs{};
+        Request req{0, request};
         auto response = internal::buildBIOSTables(
-            request, requestPayloadLength, "./bios_jsons", biosPath.c_str());
+            intfs, req, requestPayloadLength, "./bios_jsons", biosPath.c_str());
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
         struct pldm_get_bios_table_resp* resp =
@@ -237,8 +244,10 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeTableTestGoodRequest)
     uint8_t times = 0;
     while (times < 2)
     { // first time fresh table second time existing table
+        Interfaces intfs{};
+        Request req{0, request};
         auto response = internal::buildBIOSTables(
-            request, requestPayloadLength, "./bios_jsons", biosPath.c_str());
+            intfs, req, requestPayloadLength, "./bios_jsons", biosPath.c_str());
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
         struct pldm_get_bios_table_resp* resp =
@@ -329,8 +338,10 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeValueTableTestGoodRequest)
     uint8_t times = 0;
     while (times < 2)
     { // first time frest table second time existing table
+        Interfaces intfs{};
+        Request req{0, request};
         auto response = internal::buildBIOSTables(
-            request, requestPayloadLength, "./bios_jsons", biosPath.c_str());
+            intfs, req, requestPayloadLength, "./bios_jsons", biosPath.c_str());
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
         struct pldm_get_bios_table_resp* resp =

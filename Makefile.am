@@ -32,7 +32,8 @@ SUBDIRS = libpldm libpldmresponder test tool
 sbin_PROGRAMS = pldmd
 pldmd_SOURCES = \
     pldmd.cpp \
-    registration.cpp
+    registration.cpp \
+    transport.cpp
 pldmd_LDADD = \
         libpldmresponder/libpldmresponder.la \
         libpldm/libpldm.la \

@@ -1,6 +1,7 @@
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/utils.hpp"
+#include "pldmd_api.hpp"
 #include "registration.hpp"
 
 #include <err.h>
@@ -29,12 +30,12 @@
 #include "libpldmresponder/file_io.hpp"
 #endif
 
-constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
-
 using namespace phosphor::logging;
 using namespace pldm;
+using namespace pldm::daemon_api;
 
-static Response processRxMsg(const std::vector<uint8_t>& requestMsg)
+static Response processRxMsg(const Interfaces& intfs,
+                             const std::vector<uint8_t>& requestMsg)
 {
 
     Response response;
@@ -52,10 +53,17 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg)
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
                             sizeof(eid) - sizeof(type);
-        response = pldm::responder::invokeHandler(
-            hdrFields.pldm_type, hdrFields.command, request, requestLen);
-        if (response.empty())
+        Request req{eid, request};
+        try
         {
+            response = pldm::responder::invokeHandler(
+                intfs, hdrFields.pldm_type, hdrFields.command, req, requestLen);
+        }
+        catch (const std::out_of_range& e)
+        {
+            log<level::ERR>("Unsupported PLDM type or command",
+                            entry("TYPE=0x%.2x", hdrFields.pldm_type),
+                            entry("CMD=0x%.2x", hdrFields.command));
             uint8_t completion_code = PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
             response.resize(sizeof(pldm_msg_hdr));
             auto responseHdr = reinterpret_cast<pldm_msg_hdr*>(response.data());
@@ -71,8 +79,6 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg)
             }
             response.insert(response.end(), completion_code);
         }
-        response.insert(response.begin(), type);
-        response.insert(response.begin(), eid);
     }
     return response;
 }
@@ -166,7 +172,10 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    result = write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
+    Interfaces intfs{};
+    intfs.transport = std::make_unique<Transport>(sockfd);
+    result =
+        intfs.transport->send(&MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
     if (-1 == result)
     {
         returnCode = -errno;
@@ -215,7 +224,7 @@ int main(int argc, char** argv)
                 else
                 {
                     // process message and send response
-                    auto response = processRxMsg(requestMsg);
+                    auto response = processRxMsg(intfs, requestMsg);
                     if (!response.empty())
                     {
                         if (verbose)
@@ -223,8 +232,8 @@ int main(int argc, char** argv)
                             log<level::INFO>("Sending Msg ");
                             printBuffer(response);
                         }
-                        result = sendto(socketFd(), response.data(),
-                                        response.size(), 0, nullptr, 0);
+                        int result = intfs.transport->sendPLDMMsg(requestMsg[0],
+                                                                  response);
                         if (-1 == result)
                         {
                             returnCode = -errno;
