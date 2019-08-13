@@ -117,6 +117,8 @@ class MockDMA
     MOCK_METHOD5(transferDataHost,
                  int(const fs::path& file, uint32_t offset, uint32_t length,
                      uint64_t address, bool upstream));
+    MOCK_METHOD0(dmaAddr, void*());
+    MOCK_METHOD0(dmaFd, int());
 };
 
 } // namespace dma

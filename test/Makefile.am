@@ -123,7 +123,9 @@ libpldmoemresponder_fileio_test_LDADD = \
 	$(top_builddir)/libpldm/libpldm_la-base.o \
 	$(top_builddir)/oem/ibm/libpldm/libpldm_la-file_io.o \
 	$(top_builddir)/oem/ibm/libpldmresponder/libpldmresponder_la-file_io.o\
-	$(top_builddir)/oem/ibm/libpldmresponder/libpldmresponder_la-file_table.o
+	$(top_builddir)/oem/ibm/libpldmresponder/libpldmresponder_la-file_table.o \
+	$(top_builddir)/pldmd-transport.o \
+	$(SDEVENTPLUS_LIBS)
 libpldmoemresponder_fileio_test_SOURCES = $(top_builddir)/oem/ibm/test/libpldmresponder_fileio_test.cpp
 endif
 
