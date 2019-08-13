@@ -7,7 +7,6 @@
 #include "registration.hpp"
 
 #include <cstring>
-#include <fstream>
 #include <phosphor-logging/log.hpp>
 
 #include "libpldm/base.h"
@@ -45,7 +44,8 @@ namespace internal
 
 DMA& intf()
 {
-    static DMA dmaIntf;
+    constexpr bool nonBlock = true;
+    static DMA dmaIntf(nonBlock);
     return dmaIntf;
 }
 
@@ -133,15 +133,6 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
         return rc;
     }
 
-    if (!upstream)
-    {
-        std::ofstream stream(path.string(),
-                             std::ios::in | std::ios::out | std::ios::binary);
-
-        stream.seekp(offset);
-        stream.write(static_cast<const char*>(mem), length);
-    }
-
     return 0;
 }
 
@@ -223,9 +214,10 @@ Response readFileIntoMemory(const Interfaces& intfs, const Request& request,
     }
 
     using namespace dma;
-    return transferAll<DMA>(&internal::intf(), PLDM_READ_FILE_INTO_MEMORY,
-                            value.fsPath, offset, length, address, true,
-                            request.msg->hdr.instance_id);
+    transferAllAsync<DMA>(intfs, &internal::intf(), PLDM_READ_FILE_INTO_MEMORY,
+                          value.fsPath, offset, length, address, true,
+                          request.msg->hdr.instance_id, request.destinationId);
+    return {};
 }
 
 Response writeFileFromMemory(const Interfaces& intfs, const Request& request,
@@ -299,9 +291,10 @@ Response writeFileFromMemory(const Interfaces& intfs, const Request& request,
     }
 
     using namespace dma;
-    return transferAll<DMA>(&internal::intf(), PLDM_WRITE_FILE_FROM_MEMORY,
-                            value.fsPath, offset, length, address, false,
-                            request.msg->hdr.instance_id);
+    transferAllAsync<DMA>(intfs, &internal::intf(), PLDM_WRITE_FILE_FROM_MEMORY,
+                          value.fsPath, offset, length, address, false,
+                          request.msg->hdr.instance_id, request.destinationId);
+    return {};
 }
 
 Response getFileTable(const Interfaces& intfs, const Request& request,
