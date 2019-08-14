@@ -157,9 +157,12 @@ int encode_get_pdr_resp(uint8_t instance_id, uint8_t completion_code,
 		if (record_data != NULL && resp_cnt > 0) {
 			memcpy(response->record_data, record_data, resp_cnt);
 		}
-		uint8_t *dst = msg->payload;
-		dst += (sizeof(struct pldm_get_pdr_resp) - 1) + resp_cnt;
-		*dst = transfer_crc;
+		if (transfer_flag == PLDM_END) {
+			uint8_t *dst = msg->payload;
+			dst +=
+			    (sizeof(struct pldm_get_pdr_resp) - 1) + resp_cnt;
+			*dst = transfer_crc;
+		}
 	}
 
 	return PLDM_SUCCESS;
