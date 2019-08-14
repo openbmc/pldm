@@ -225,10 +225,12 @@ int main(int argc, char** argv)
                     auto response = processRxMsg(requestMsg);
                     if (!response.empty())
                     {
-#ifdef VERBOSE
-                        log<level::INFO>("Sending Msg ");
-                        printBuffer(response);
-#endif
+                        if (verbose)
+                        {
+                            log<level::INFO>("Sending Msg ");
+                            printBuffer(response);
+                        }
+
                         iov[0].iov_base = &requestMsg[0];
                         iov[0].iov_len =
                             sizeof(requestMsg[0]) + sizeof(requestMsg[1]);
