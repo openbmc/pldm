@@ -144,10 +144,10 @@ TEST(GetPDR, testGoodEncodeResponse)
     uint8_t completionCode = 0;
     uint32_t nextRecordHndl = 0x12;
     uint32_t nextDataTransferHndl = 0x13;
-    uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t transferFlag = PLDM_END;
     uint16_t respCnt = 0x5;
     std::vector<uint8_t> recordData{1, 2, 3, 4, 5};
-    uint8_t transferCRC = 0;
+    uint8_t transferCRC = 6;
 
     // + size of record data and transfer CRC
     std::vector<uint8_t> responseMsg(hdrSize + PLDM_GET_PDR_MIN_RESP_BYTES +
@@ -169,6 +169,16 @@ TEST(GetPDR, testGoodEncodeResponse)
     ASSERT_EQ(respCnt, resp->response_count);
     ASSERT_EQ(0,
               memcmp(recordData.data(), resp->record_data, recordData.size()));
+    ASSERT_EQ(*(response->payload + sizeof(pldm_get_pdr_resp) - 1 +
+                recordData.size()),
+              transferCRC);
+
+    transferFlag = PLDM_START_AND_END; // No CRC in this case
+    responseMsg.resize(responseMsg.size() - sizeof(transferCRC));
+    rc = encode_get_pdr_resp(0, PLDM_SUCCESS, nextRecordHndl,
+                             nextDataTransferHndl, transferFlag, respCnt,
+                             recordData.data(), transferCRC, response);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
 }
 
 TEST(GetPDR, testBadEncodeResponse)
