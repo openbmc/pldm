@@ -329,3 +329,183 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadEncodeResponse)
         sizeof(attributeData), response);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(SetBiosAttributeCurrentValue, testGoodEncodeRequest)
+{
+    uint8_t instanceId = 10;
+    uint32_t transferHandle = 32;
+    uint8_t transferFlag = 8;
+    uint32_t attributeData;
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES +
+                            sizeof(attributeData)>
+        requestMsg{};
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_set_bios_attribute_current_value_req(
+        instanceId, transferHandle, transferFlag,
+        reinterpret_cast<uint8_t*>(&attributeData), sizeof(attributeData),
+        request, requestMsg.size() - hdrSize);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_set_bios_attribute_current_value_req* req =
+        reinterpret_cast<struct pldm_set_bios_attribute_current_value_req*>(
+            request->payload);
+    ASSERT_EQ(htole32(transferHandle), req->transfer_handle);
+    ASSERT_EQ(transferFlag, req->transfer_flag);
+    ASSERT_EQ(
+        0, memcmp(&attributeData, req->attribute_data, sizeof(attributeData)));
+}
+
+TEST(SetBiosAttributeCurrentValue, testBadEncodeRequest)
+{
+    uint8_t instanceId = 10;
+    uint32_t transferHandle = 32;
+    uint8_t transferFlag = 8;
+    uint32_t attributeData;
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES>
+        requestMsg{};
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_set_bios_attribute_current_value_req(
+        instanceId, transferHandle, transferFlag, nullptr, 0, nullptr, 0);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = encode_set_bios_attribute_current_value_req(
+        instanceId, transferHandle, transferFlag,
+        reinterpret_cast<uint8_t*>(&attributeData), sizeof(attributeData),
+        request, requestMsg.size() - hdrSize);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(SetBiosAttributeCurrentValue, testGoodDecodeRequest)
+{
+    uint32_t transferHandle = 32;
+    uint8_t transferFlag;
+    uint32_t attributeData;
+
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES +
+                            sizeof(attributeData)>
+        requestMsg{};
+    auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
+    struct pldm_set_bios_attribute_current_value_req* req =
+        reinterpret_cast<struct pldm_set_bios_attribute_current_value_req*>(
+            request->payload);
+    req->transfer_handle = htole32(transferHandle);
+    req->transfer_flag = transferFlag;
+    memcpy(req->attribute_data, &attributeData, sizeof(attributeData));
+
+    uint32_t retTransferHandle;
+    uint8_t retTransferFlag;
+    uint32_t retAttributeData;
+    size_t retAttributeDataLength;
+    auto rc = decode_set_bios_attribute_current_value_req(
+        request, requestMsg.size() - hdrSize, &retTransferHandle,
+        &retTransferFlag, reinterpret_cast<uint8_t*>(&retAttributeData),
+        &retAttributeDataLength);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(retTransferHandle, transferHandle);
+    ASSERT_EQ(retTransferFlag, transferFlag);
+    ASSERT_EQ(retAttributeDataLength, sizeof(attributeData));
+    ASSERT_EQ(0,
+              memcmp(&retAttributeData, &attributeData, sizeof(attributeData)));
+}
+
+TEST(SetBiosAttributeCurrentValue, testBadDecodeRequest)
+{
+    uint32_t transferHandle = 32;
+    uint8_t transferFlag;
+    uint32_t attributeData;
+    size_t attributeDataLength;
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES - 1>
+        requestMsg{};
+    auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
+
+    auto rc = decode_set_bios_attribute_current_value_req(
+        nullptr, 0, &transferHandle, &transferFlag,
+        reinterpret_cast<uint8_t*>(&attributeData), &attributeDataLength);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_set_bios_attribute_current_value_req(
+        request, requestMsg.size() - hdrSize, &transferHandle, &transferFlag,
+        reinterpret_cast<uint8_t*>(&attributeData), &attributeDataLength);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(SetBiosAttributeCurrentValue, testGoodEncodeResponse)
+{
+    uint8_t instanceId = 10;
+    uint32_t nextTransferHandle = 32;
+    uint8_t completionCode = PLDM_SUCCESS;
+
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    auto rc = encode_set_bios_attribute_current_value_resp(
+        instanceId, completionCode, nextTransferHandle, response);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_set_bios_attribute_current_value_resp* resp =
+        reinterpret_cast<struct pldm_set_bios_attribute_current_value_resp*>(
+            response->payload);
+    ASSERT_EQ(completionCode, resp->completion_code);
+    ASSERT_EQ(htole32(nextTransferHandle), resp->next_transfer_handle);
+    ASSERT_EQ(0, PLDM_SUCCESS);
+}
+
+TEST(SetBiosAttributeCurrentValue, testBadEncodeResponse)
+{
+    uint8_t instanceId = 10;
+    uint32_t nextTransferHandle = 32;
+    uint8_t completionCode = PLDM_SUCCESS;
+    auto rc = encode_set_bios_attribute_current_value_resp(
+        instanceId, completionCode, nextTransferHandle, nullptr);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+TEST(SetBiosAttributeCurrentValue, testGoodDecodeResponse)
+{
+    uint32_t nextTransferHandle = 32;
+    uint8_t completionCode = PLDM_SUCCESS;
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    struct pldm_set_bios_attribute_current_value_resp* resp =
+        reinterpret_cast<struct pldm_set_bios_attribute_current_value_resp*>(
+            response->payload);
+
+    resp->completion_code = completionCode;
+    resp->next_transfer_handle = htole32(nextTransferHandle);
+
+    uint8_t retCompletionCode;
+    uint32_t retNextTransferHandle;
+    auto rc = decode_set_bios_attribute_current_value_resp(
+        response, responseMsg.size() - hdrSize, &retCompletionCode,
+        &retNextTransferHandle);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completionCode, retCompletionCode);
+    ASSERT_EQ(nextTransferHandle, retNextTransferHandle);
+    ASSERT_EQ(0, PLDM_SUCCESS);
+}
+
+TEST(SetBiosAttributeCurrentValue, testBadDecodeResponse)
+{
+    uint32_t nextTransferHandle = 32;
+    uint8_t completionCode = PLDM_SUCCESS;
+
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES - 1>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    auto rc = decode_set_bios_attribute_current_value_resp(
+        nullptr, 0, &completionCode, &nextTransferHandle);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_set_bios_attribute_current_value_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &nextTransferHandle);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
