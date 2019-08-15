@@ -18,6 +18,7 @@ check_PROGRAMS += \
 endif
 
 test_cppflags = \
+    -fsanitize = address \
 	-Igtest \
 	$(GTEST_CPPFLAGS) \
 	$(AM_CPPFLAGS)
