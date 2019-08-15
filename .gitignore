@@ -53,6 +53,16 @@ Makefile
 /libtool
 /*-libtool
 .project
+/aminclude_static.am
+/m4
+/tool/pldmtool
+pldmd
+
+# Code Coverage
+*.gcda
+*.gcno
+*.trs
+*-coverage*
 
 # test related
 /test/*.log
@@ -70,4 +80,4 @@ Makefile
 /test/libpldmresponder_bios_test
 /test/libpldmresponder_file_io_test
 /test/libpldmresponder_pdr_state_effecter_test
-
+/test/libpldmresponder_bios_table_test
