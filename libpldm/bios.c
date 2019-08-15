@@ -208,3 +208,103 @@ int encode_get_bios_current_value_by_handle_resp(
 	}
 	return PLDM_SUCCESS;
 }
+int encode_set_bios_attribute_current_value_req(
+    uint8_t instance_id, uint32_t transfer_handle, uint8_t transfer_flag,
+    const uint8_t *attribute_data, size_t attribute_length,
+    struct pldm_msg *msg, size_t payload_lenth)
+{
+	if (msg == NULL || attribute_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES + attribute_length >
+	    payload_lenth) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE;
+	pack_pldm_header(&header, &msg->hdr);
+
+	struct pldm_set_bios_attribute_current_value_req *request =
+	    (struct pldm_set_bios_attribute_current_value_req *)msg->payload;
+	request->transfer_handle = htole32(transfer_handle);
+	request->transfer_flag = transfer_flag;
+	memcpy(request->attribute_data, attribute_data, attribute_length);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_bios_attribute_current_value_resp(const struct pldm_msg *msg,
+						 size_t payload_length,
+						 uint8_t *completion_code,
+						 uint32_t *next_transfer_handle)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    next_transfer_handle == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_set_bios_attribute_current_value_resp *responder =
+	    (struct pldm_set_bios_attribute_current_value_resp *)msg->payload;
+	*completion_code = responder->completion_code;
+	*next_transfer_handle = le32toh(responder->next_transfer_handle);
+	return PLDM_SUCCESS;
+}
+
+int decode_set_bios_attribute_current_value_req(const struct pldm_msg *msg,
+						size_t payload_length,
+						uint32_t *transfer_handle,
+						uint8_t *transfer_flag,
+						uint8_t *attribute_data,
+						size_t *attribute_length)
+{
+	if (msg == NULL || transfer_handle == NULL || transfer_flag == NULL ||
+	    attribute_data == NULL || attribute_length == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length < PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_set_bios_attribute_current_value_req *request =
+	    (struct pldm_set_bios_attribute_current_value_req *)msg->payload;
+	*transfer_handle = le32toh(request->transfer_handle);
+	*transfer_flag = request->transfer_flag;
+	*attribute_length =
+	    payload_length - PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES;
+	memcpy(attribute_data, request->attribute_data, *attribute_length);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_bios_attribute_current_value_resp(uint8_t instance_id,
+						 uint8_t completion_code,
+						 uint32_t next_transfer_handle,
+						 struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE;
+
+	int rc = pack_pldm_header(&header, &msg->hdr);
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_set_bios_attribute_current_value_resp *respond =
+	    (struct pldm_set_bios_attribute_current_value_resp *)msg->payload;
+	respond->completion_code = completion_code;
+	respond->next_transfer_handle = htole32(next_transfer_handle);
+
+	return PLDM_SUCCESS;
+}
