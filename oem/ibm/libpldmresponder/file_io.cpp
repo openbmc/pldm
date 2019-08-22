@@ -2,6 +2,7 @@
 
 #include "file_io.hpp"
 
+#include "file_io_by_type.hpp"
 #include "file_table.hpp"
 #include "libpldmresponder/utils.hpp"
 #include "registration.hpp"
@@ -14,6 +15,7 @@
 
 #include <cstring>
 #include <fstream>
+#include <memory>
 #include <phosphor-logging/log.hpp>
 
 #include "libpldm/base.h"
@@ -522,6 +524,86 @@ Response writeFile(const pldm_msg* request, size_t payloadLength)
 
     return response;
 }
+
+constexpr auto invalidFileHandle = 0xFFFFFFFF;
+
+Response writeFileByTypeFromMemory(const pldm_msg* request,
+                                   size_t payloadLength)
+{
+    using namespace pldm::responder::oem_file_type;
+
+    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_TYPE_MEM_RESP_BYTES,
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_RW_FILE_TYPE_MEM_REQ_BYTES)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length{};
+    uint64_t address{};
+    auto rc =
+        decode_rw_file_type_memory_req(request, payloadLength, &fileType,
+                                       &fileHandle, &offset, &length, &address);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    if (length % dma::minSize)
+    {
+        log<level::ERR>("Write length is not a multiple of DMA minSize",
+                        entry("LENGTH=%d", length));
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
+        return response;
+    }
+    if (fileHandle != invalidFileHandle)
+    {
+        // build the file table
+        // not applicable for pels
+        // need to add the file path from here to FileHandler
+        // add a default param. not reqd for pels
+    }
+
+    std::unique_ptr<FileHandler> handler;
+    switch (fileType)
+    {
+        case PLDM_FILE_ERROR_LOG:
+            handler = std::make_unique<PelHandler>();
+            break;
+
+        default:
+            break;
+    }
+
+    handler->setHandler(fileHandle, offset, length, address);
+    using namespace dma;
+    DMA intf;
+    rc = handler->handle(&intf, PLDM_WRITE_FILE_TYPE_FROM_MEMORY, false);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    encode_rw_file_type_memory_resp(request->hdr.instance_id,
+                                    PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                                    PLDM_SUCCESS, length, responsePtr);
+    return response;
+
+} // end writeFileByTypeFromMemory
 
 } // namespace responder
 } // namespace pldm
