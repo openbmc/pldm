@@ -20,7 +20,9 @@ sources = [
 if get_option('oem-ibm').enabled()
   sources += [
     '../oem/ibm/libpldmresponder/file_io.cpp',
-    '../oem/ibm/libpldmresponder/file_table.cpp'
+    '../oem/ibm/libpldmresponder/file_table.cpp',
+    '../oem/ibm/libpldmresponder/file_io_by_type.cpp',
+    '../oem/ibm/libpldmresponder/pel_file_io.cpp'
   ]
 endif
 
