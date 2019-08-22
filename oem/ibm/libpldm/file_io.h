@@ -31,6 +31,7 @@ enum pldm_fileio_completion_codes {
 	PLDM_INVALID_WRITE_LENGTH = 0x83,
 	PLDM_FILE_TABLE_UNAVAILABLE = 0x84,
 	PLDM_INVALID_FILE_TABLE_TYPE = 0x85,
+	PLDM_INVALID_FILE_TYPE = 0x86,
 };
 
 /** @brief PLDM File I/O table types
@@ -38,6 +39,12 @@ enum pldm_fileio_completion_codes {
 enum pldm_fileio_table_type {
 	PLDM_FILE_ATTRIBUTE_TABLE = 0,
 	PLDM_OEM_FILE_ATTRIBUTE_TABLE = 1,
+};
+
+/** @brief PLDM File I/O table types
+ */
+enum pldm_fileio_file_type {
+	PLDM_FILE_TYPE_PEL = 0,
 };
 
 #define PLDM_RW_FILE_MEM_REQ_BYTES 20
