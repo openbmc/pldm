@@ -1,9 +1,13 @@
 #include "libpldmresponder/file_io.hpp"
+#include "libpldmresponder/file_io_by_type.hpp"
+#include "libpldmresponder/file_io_type_pel.hpp"
 #include "libpldmresponder/file_table.hpp"
+#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <filesystem>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/elog-errors.hpp>
 
 #include "libpldm/base.h"
 #include "libpldm/file_io.h"
@@ -718,4 +722,47 @@ TEST_F(TestFileTable, WriteFileGoodPath)
     ASSERT_EQ(0, memcmp(fileData.data(), buffer.data(), length));
 
     table.clear();
+}
+
+TEST(writeFileByTypeFromMemory, testBadPath)
+{
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES>
+        requestMsg{};
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    size_t requestPayloadLength = requestMsg.size() - hdr_size;
+    struct pldm_read_write_file_by_type_memory_req* request =
+        reinterpret_cast<struct pldm_read_write_file_by_type_memory_req*>(
+            req->payload);
+    request->file_type = PLDM_FILE_TYPE_PEL;
+    request->file_handle = 0xFFFFFFFF;
+    request->offset = 0;
+    request->length = 17;
+    request->address = 0;
+
+    auto response = writeFileByTypeFromMemory(req, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_read_write_file_by_type_memory_resp* resp =
+        reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
+
+    response = writeFileByTypeFromMemory(req, requestPayloadLength);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_INVALID_WRITE_LENGTH, resp->completion_code);
+}
+
+TEST(getHandlerByType, allPaths)
+{
+    uint32_t fileHandle{};
+    auto handler = getHandlerByType(PLDM_FILE_TYPE_PEL, fileHandle);
+    auto pelType = dynamic_cast<PelHandler*>(handler.get());
+    ASSERT_TRUE(pelType != nullptr);
+
+    using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+    ASSERT_THROW(getHandlerByType(0xFFFF, fileHandle), InternalFailure);
 }

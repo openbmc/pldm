@@ -139,6 +139,17 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength);
  */
 Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
 
+/** @brief Handler for writeFileByTypeFromMemory command
+ *
+ *  @param[in] request - pointer to PLDM request payload
+ *  @param[in] payloadLength - length of the message
+ *
+ *  @return PLDM response message
+ */
+
+Response writeFileByTypeFromMemory(const pldm_msg* request,
+                                   size_t payloadLength);
+
 /** @brief Handler for GetFileTable command
  *
  *  @param[in] request - pointer to PLDM request payload
