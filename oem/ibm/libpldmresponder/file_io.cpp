@@ -2,9 +2,11 @@
 
 #include "file_io.hpp"
 
+#include "file_io_by_type.hpp"
 #include "file_table.hpp"
 #include "libpldmresponder/utils.hpp"
 #include "registration.hpp"
+#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <fcntl.h>
 #include <sys/mman.h>
@@ -14,12 +16,17 @@
 
 #include <cstring>
 #include <fstream>
+#include <memory>
+#include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
 
 #include "libpldm/base.h"
 
 namespace pldm
 {
+
+using namespace phosphor::logging;
+using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 namespace responder
 {
@@ -36,6 +43,8 @@ void registerHandlers()
                     std::move(writeFileFromMemory));
     registerHandler(PLDM_OEM, PLDM_READ_FILE, std::move(readFile));
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
+    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                    std::move(writeFileByTypeFromMemory));
 }
 
 } // namespace oem_ibm
@@ -144,8 +153,12 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
     if (!upstream)
     {
-        std::ofstream stream(path.string(),
-                             std::ios::in | std::ios::out | std::ios::binary);
+        std::ios_base::openmode mode = std::ios::out | std::ios::binary;
+        if (fs::exists(path))
+        {
+            mode |= std::ios::in;
+        }
+        std::ofstream stream(path.string(), mode);
 
         stream.seekp(offset);
         stream.write(static_cast<const char*>(vgaMemPtr.get()), length);
@@ -520,6 +533,73 @@ Response writeFile(const pldm_msg* request, size_t payloadLength)
     encode_write_file_resp(request->hdr.instance_id, PLDM_SUCCESS, length,
                            responsePtr);
 
+    return response;
+}
+
+constexpr auto invalidFileHandle = 0xFFFFFFFF;
+
+Response writeFileByTypeFromMemory(const pldm_msg* request,
+                                   size_t payloadLength)
+{
+    using namespace pldm::responder::oem_file_type;
+
+    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_TYPE_MEM_RESP_BYTES,
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_RW_FILE_TYPE_MEM_REQ_BYTES)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length{};
+    uint64_t address{};
+    auto rc =
+        decode_rw_file_type_memory_req(request, payloadLength, &fileType,
+                                       &fileHandle, &offset, &length, &address);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    if (length % dma::minSize)
+    {
+        log<level::ERR>("Write length is not a multiple of DMA minSize",
+                        entry("LENGTH=%d", length));
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
+        return response;
+    }
+
+    std::unique_ptr<FileHandler> handler = nullptr;
+    try
+    {
+        handler =
+            getHandlerByType(fileType, fileHandle, offset, length, address);
+    }
+    catch (InternalFailure& e)
+    {
+        log<level::ERR>("Exception, handling unknown file type ",
+                        entry("TYPE=%d", fileType));
+        encode_rw_file_type_memory_resp(request->hdr.instance_id,
+                                        PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                                        PLDM_INVALID_FILE_TYPE, 0, responsePtr);
+        return response;
+    }
+
+    rc = handler->writeFromMemory();
+
+    encode_rw_file_type_memory_resp(request->hdr.instance_id,
+                                    PLDM_WRITE_FILE_TYPE_FROM_MEMORY, rc,
+                                    length, responsePtr);
     return response;
 }
 
