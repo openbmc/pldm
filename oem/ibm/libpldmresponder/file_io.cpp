@@ -2,6 +2,7 @@
 
 #include "file_io.hpp"
 
+#include "file_io_by_type.hpp"
 #include "file_table.hpp"
 #include "libpldmresponder/utils.hpp"
 #include "registration.hpp"
@@ -14,6 +15,8 @@
 
 #include <cstring>
 #include <fstream>
+#include <iostream>
+#include <memory>
 #include <phosphor-logging/log.hpp>
 
 #include "libpldm/base.h"
@@ -36,6 +39,8 @@ void registerHandlers()
                     std::move(writeFileFromMemory));
     registerHandler(PLDM_OEM, PLDM_READ_FILE, std::move(readFile));
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
+    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                    std::move(writeFileByTypeFromMemory));
 }
 
 } // namespace oem_ibm
@@ -144,8 +149,12 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
     if (!upstream)
     {
-        std::ofstream stream(path.string(),
-                             std::ios::in | std::ios::out | std::ios::binary);
+        std::ios_base::openmode mode = std::ios::out | std::ios::binary;
+        if (fs::exists(path))
+        {
+            mode |= std::ios::in;
+        }
+        std::ofstream stream(path.string(), mode);
 
         stream.seekp(offset);
         stream.write(static_cast<const char*>(vgaMemPtr.get()), length);
@@ -520,6 +529,127 @@ Response writeFile(const pldm_msg* request, size_t payloadLength)
     encode_write_file_resp(request->hdr.instance_id, PLDM_SUCCESS, length,
                            responsePtr);
 
+    return response;
+}
+
+constexpr auto invalidFileHandle = 0xFFFFFFFF;
+
+Response writeFileByTypeFromMemory(const pldm_msg* request,
+                                   size_t payloadLength)
+{
+    using namespace pldm::responder::oem_file_type;
+
+    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_TYPE_MEM_RESP_BYTES,
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_RW_FILE_TYPE_MEM_REQ_BYTES)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length{};
+    uint64_t address{};
+    auto rc =
+        decode_rw_file_type_memory_req(request, payloadLength, &fileType,
+                                       &fileHandle, &offset, &length, &address);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    if (length % dma::minSize)
+    {
+        log<level::ERR>("Write length is not a multiple of DMA minSize",
+                        entry("LENGTH=%d", length));
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
+        return response;
+    }
+
+    fs::path path{};
+    if (fileHandle != invalidFileHandle)
+    {
+        using namespace pldm::filetable;
+        auto& table = buildFileTable(FILE_TABLE_JSON);
+        FileEntry value{};
+        try
+        {
+            value = table.at(fileHandle);
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("File handle does not exist in the file table",
+                            entry("HANDLE=%d", fileHandle));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+            return response;
+        }
+
+        if (!fs::exists(value.fsPath))
+        {
+            log<level::ERR>("File does not exist",
+                            entry("HANDLE=%d", fileHandle));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+            return response;
+        }
+        auto fileSize = fs::file_size(value.fsPath);
+
+        if (offset >= fileSize)
+        {
+            log<level::ERR>("Offset exceeds file size",
+                            entry("OFFSET=%d", offset),
+                            entry("FILE_SIZE=%d", fileSize));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
+            return response;
+        }
+        path = value.fsPath;
+    }
+
+    std::unique_ptr<FileHandler> handler;
+    switch (fileType)
+    {
+        case PLDM_FILE_ERROR_LOG:
+            handler = std::make_unique<PelHandler>();
+            break;
+
+        default:
+        {
+            encode_rw_file_type_memory_resp(request->hdr.instance_id,
+                                            PLDM_INVALID_FILE_TYPE, rc, 0,
+                                            responsePtr);
+            return response;
+        }
+    }
+
+    handler->setHandler(fileHandle, offset, length, address, path);
+    using namespace dma;
+    DMA intf;
+    rc = handler->handle(&intf, PLDM_WRITE_FILE_TYPE_FROM_MEMORY, false);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_type_memory_resp(request->hdr.instance_id,
+                                        PLDM_WRITE_FILE_TYPE_FROM_MEMORY, rc, 0,
+                                        responsePtr);
+        return response;
+    }
+    encode_rw_file_type_memory_resp(request->hdr.instance_id,
+                                    PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+                                    PLDM_SUCCESS, length, responsePtr);
     return response;
 }
 

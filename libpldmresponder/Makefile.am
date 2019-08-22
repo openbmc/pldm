@@ -31,7 +31,8 @@ libpldmresponder_la_CPPFLAGS = \
 if OEM_IBM
 libpldmresponder_la_SOURCES += \
     $(top_builddir)/oem/ibm/libpldmresponder/file_io.cpp \
-    $(top_builddir)/oem/ibm/libpldmresponder/file_table.cpp
+    $(top_builddir)/oem/ibm/libpldmresponder/file_table.cpp \
+	$(top_builddir)/oem/ibm/libpldmresponder/file_io_by_type.cpp
 libpldmresponder_la_CPPFLAGS += -I$(top_srcdir)/libpldm
 endif
 

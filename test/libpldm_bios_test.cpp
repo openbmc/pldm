@@ -380,8 +380,8 @@ TEST(SetBiosAttributeCurrentValue, testBadEncodeRequest)
 TEST(SetBiosAttributeCurrentValue, testGoodDecodeRequest)
 {
     uint32_t transferHandle = 32;
-    uint8_t transferFlag;
-    uint32_t attributeData;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint32_t attributeData{};
 
     std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES +
                             sizeof(attributeData)>
