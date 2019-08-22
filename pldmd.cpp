@@ -29,6 +29,7 @@
 
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
+#include "libpldmresponder/file_io_by_type.hpp"
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
