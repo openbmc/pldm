@@ -1164,3 +1164,178 @@ TEST(ReadWriteFileByType, testBadEncodeRequest)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(NewFile, testGoodDecodeRequest)
+{
+    std::array<uint8_t, PLDM_NEW_FILE_REQ_BYTES + sizeof(pldm_msg_hdr)>
+        requestMsg{};
+
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    size_t payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+    auto request = reinterpret_cast<pldm_new_file_req*>(requestPtr->payload);
+
+    // Random value for fileHandle and length
+    uint16_t fileType = PLDM_FILE_ERROR_LOG;
+    uint32_t fileHandle = 0x12345678;
+    uint32_t length = 0x13245768;
+
+    request->file_type = fileType;
+    request->file_handle = fileHandle;
+    request->length = length;
+
+    uint16_t retFileType = PLDM_FILE_ERROR_LOG;
+    uint32_t retFileHandle = 0;
+    uint32_t retLength = 0;
+
+    // Invoke decode the read file request
+    auto rc = decode_new_file_req(requestPtr, payload_length, &retFileType,
+                                  &retFileHandle, &retLength);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(fileType, retFileType);
+    ASSERT_EQ(fileHandle, retFileHandle);
+    ASSERT_EQ(length, retLength);
+}
+
+TEST(NewFile, testGoodDecodeResponse)
+{
+    std::array<uint8_t, PLDM_NEW_FILE_RESP_BYTES + sizeof(pldm_msg_hdr)>
+        responseMsg{};
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    size_t payload_length = responseMsg.size() - sizeof(pldm_msg_hdr);
+    auto response = reinterpret_cast<pldm_new_file_resp*>(responsePtr->payload);
+
+    // Random value for completion code
+    uint8_t completionCode = 0x0;
+
+    response->completion_code = completionCode;
+
+    uint8_t retCompletionCode = PLDM_SUCCESS;
+
+    // Invoke decode the read/write file response
+    auto rc =
+        decode_new_file_resp(responsePtr, payload_length, &retCompletionCode);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completionCode, retCompletionCode);
+}
+
+TEST(NewFile, testBadDecodeRequest)
+{
+    uint16_t fileType = 0;
+    uint32_t fileHandle = 0;
+    uint32_t length = 0;
+
+    // Request payload message is missing
+    auto rc = decode_new_file_req(NULL, 0, &fileType, &fileHandle, &length);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t, PLDM_NEW_FILE_REQ_BYTES + sizeof(pldm_msg_hdr)>
+        requestMsg{};
+
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    // Payload length is invalid
+    rc = decode_new_file_req(requestPtr, 0, &fileType, &fileHandle, &length);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(NewFile, testBadDecodeResponse)
+{
+    uint8_t completionCode = 0;
+
+    // Request payload message is missing
+    auto rc = decode_new_file_resp(NULL, 0, &completionCode);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t, PLDM_NEW_FILE_RESP_BYTES + sizeof(pldm_msg_hdr)>
+        responseMsg{};
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    // Payload length is invalid
+    rc = decode_new_file_resp(responsePtr, 0, &completionCode);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(NewFile, testGoodEncodeRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_REQ_BYTES>
+        requestMsg{};
+
+    uint16_t fileType = PLDM_FILE_ERROR_LOG;
+    uint32_t fileHandle = 0x12345678;
+    uint32_t length = 0x13245768;
+
+    pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_new_file_req(0, fileType, fileHandle, length, request);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(request->hdr.request, PLDM_REQUEST);
+    ASSERT_EQ(request->hdr.instance_id, 0);
+    ASSERT_EQ(request->hdr.type, PLDM_OEM);
+    ASSERT_EQ(request->hdr.command, PLDM_NEW_FILE_AVAILABLE);
+    ASSERT_EQ(0, memcmp(request->payload, &fileType, sizeof(fileType)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileType), &fileHandle,
+                        sizeof(fileHandle)));
+    ASSERT_EQ(0,
+              memcmp(request->payload + sizeof(fileType) + sizeof(fileHandle),
+                     &length, sizeof(length)));
+}
+
+TEST(NewFile, testGoodEncodeResponse)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_RESP_BYTES>
+        responseMsg{};
+
+    uint8_t completionCode = 0x0;
+
+    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = encode_new_file_resp(0, completionCode, response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(response->hdr.instance_id, 0);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
+    ASSERT_EQ(response->hdr.command, PLDM_NEW_FILE_AVAILABLE);
+    ASSERT_EQ(
+        0, memcmp(response->payload, &completionCode, sizeof(completionCode)));
+}
+
+TEST(NewFile, testBadEncodeResponse)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_RESP_BYTES>
+        responseMsg{};
+    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    // completion code is PLDM_ERROR
+    auto rc = encode_new_file_resp(0, PLDM_ERROR, response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(response->hdr.instance_id, 0);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
+    ASSERT_EQ(response->hdr.command, PLDM_NEW_FILE_AVAILABLE);
+    ASSERT_EQ(response->payload[0], PLDM_ERROR);
+
+    // response is NULL pointer
+    rc = encode_new_file_resp(0, PLDM_SUCCESS, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(NewFile, testBadEncodeRequest)
+{
+    uint8_t fileType = PLDM_FILE_ERROR_LOG;
+    uint32_t fileHandle = 0;
+    uint32_t length = 0;
+
+    // request is NULL pointer
+    auto rc = encode_new_file_req(0, fileType, fileHandle, length, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
