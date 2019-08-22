@@ -5,10 +5,10 @@
          "attribute_name" : "HMCManagedState",
          "possible_values" : [ "On", "Off" ],
          "default_values" : [ "On" ],
-         "object_path" : "/xyz/abc/def",
-         // This BIOS attribute has a D-Bus property as backend. 
+         # This BIOS attribute has a D-Bus property as backend. 
          "dbus":
             {
+               "object_path" : "/xyz/abc/def",
                "interface" : "xyz.openbmc_project.HMCManaged.State",
                "property_name" : "State",
                "property_type" : "string",
