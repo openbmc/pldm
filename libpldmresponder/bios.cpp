@@ -390,16 +390,15 @@ std::vector<uint8_t> findDefaultValHandle(const PossibleValues& possiVals,
 /** @brief Construct the attibute table for BIOS type Enumeration and
  *         Enumeration ReadOnly
  *  @param[in] BIOSStringTable - the string table
- *  @param[in] biosJsonDir - path where the BIOS json files are present
+ *  @param[in] biosJsonPath - the BIOS json file path
+ *  @param[in] attributeTable - the attribute table
  *
- *  @return - Table - the attribute eenumeration table
  */
-Table constructAttrTable(const BIOSTable& BIOSStringTable,
-                         const char* biosJsonDir)
+void constructAttrTable(const BIOSTable& BIOSStringTable,
+                        const char* biosJsonPath, Table& attributeTable)
 {
-    setupValueLookup(biosJsonDir);
+    setupValueLookup(biosJsonPath);
     const auto& attributeMap = getValues();
-    Table attributeTable;
     StringHandle strHandle;
 
     for (const auto& [key, value] : attributeMap)
@@ -470,8 +469,6 @@ Table constructAttrTable(const BIOSTable& BIOSStringTable,
         std::move(enumAttrTable.begin(), enumAttrTable.end(),
                   std::back_inserter(attributeTable));
     }
-
-    return attributeTable;
 }
 
 /** @brief Construct the attibute value table for BIOS type Enumeration and
@@ -589,6 +586,22 @@ Table constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
 
 } // end namespace bios_type_enum
 
+namespace bios_type_string
+{
+/** @brief Construct the attibute table for BIOS type String and
+ *         String ReadOnly
+ *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosJsonPath - the BIOS json file path
+ *  @param[in] attributeTable - the attribute table
+ *
+ */
+void constructAttrTable(const BIOSTable& BIOSStringTable,
+                        const char* biosJsonPath, Table& attributeTable)
+{
+    ;
+}
+} // end namespace bios_type_string
+
 /** @brief Construct the BIOS attribute table
  *
  *  @param[in] BIOSAttributeTable - the attribute table
@@ -611,10 +624,38 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
     uint8_t transferFlag = PLDM_START_AND_END;
     size_t respPayloadLength{};
 
+    bool found = false;
+
+    fs::path dir(biosJsonDir);
+    if (!fs::exists(dir) || fs::is_empty(dir))
+    {
+        return response;
+    }
+
     if (BIOSAttributeTable.isEmpty())
     { // no persisted table, constructing fresh table and response
-        auto attributeTable =
-            bios_type_enum::constructAttrTable(BIOSStringTable, biosJsonDir);
+        Table attributeTable;
+        for (const auto& file : fs::directory_iterator(dir))
+        {
+            auto filename = file.path().filename().string();
+            if (filename == bios_parser::bIOSEnumJson)
+            {
+                bios_type_enum::constructAttrTable(BIOSStringTable, filename.c_str(),
+                                                   attributeTable);
+                found = true;
+            }
+            else if (filename == bios_parser::bIOSStrJson)
+            {
+                bios_type_string::constructAttrTable(BIOSStringTable, filename.c_str(),
+                                                     attributeTable);
+                found = true;
+            }
+        }
+
+        if (found == false)
+        { // No available json file is found
+            return response;
+        }
 
         // calculate pad
         uint8_t padSize = utils::getNumPadBytes(attributeTable.size());
