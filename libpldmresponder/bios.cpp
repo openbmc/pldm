@@ -598,7 +598,8 @@ namespace bios_type_string
 void constructAttrTable(const BIOSTable& BIOSStringTable,
                         const char* biosJsonPath, Table& attributeTable)
 {
-    ;
+    setupValueLookup(biosJsonPath);
+    // const auto& attributeMap = getValues();
 }
 } // end namespace bios_type_string
 
