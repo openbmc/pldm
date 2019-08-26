@@ -81,7 +81,7 @@ TEST(getAttrValue, allScenarios)
         {"CodeUpdatePolicy",
          {false, {"Concurrent", "Disruptive"}, {"Concurrent"}}}};
 
-    auto rc = setupValueLookup("./bios_jsons");
+    auto rc = setupValueLookup("./bios_jsons/enum_attrs.json");
     ASSERT_EQ(rc, 0);
 
     auto values = getValues();
