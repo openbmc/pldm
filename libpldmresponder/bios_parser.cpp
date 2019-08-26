@@ -14,7 +14,6 @@ namespace bios_parser
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
-constexpr auto bIOSEnumJson = "enum_attrs.json";
 
 namespace bios_enum
 {
