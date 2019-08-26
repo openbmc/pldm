@@ -55,10 +55,11 @@ TEST(GetBIOSStrings, allScenarios)
 {
     using namespace bios_parser;
     // All the BIOS Strings in the BIOS JSON config files.
-    Strings vec{"HMCManagedState",  "On",         "Off",
-                "FWBootSide",       "Perm",       "Temp",
-                "InbandCodeUpdate", "Allowed",    "NotAllowed",
-                "CodeUpdatePolicy", "Concurrent", "Disruptive"};
+    Strings vec{"HMCManagedState",  "On",           "Off",
+                "FWBootSide",       "Perm",         "Temp",
+                "InbandCodeUpdate", "Allowed",      "NotAllowed",
+                "CodeUpdatePolicy", "Concurrent",   "Disruptive",
+                "str_example1",     "str_example2", "str_example3"};
 
     Strings nullVec{};
 
@@ -67,6 +68,8 @@ TEST(GetBIOSStrings, allScenarios)
     ASSERT_EQ(strings == nullVec, true);
 
     strings = bios_parser::getStrings("./bios_jsons");
+    std::sort(strings.begin(), strings.end());
+    std::sort(vec.begin(), vec.end());
     ASSERT_EQ(strings == vec, true);
 }
 
@@ -109,7 +112,7 @@ class TestAllBIOSTables : public ::testing::Test
     static void TearDownTestCase() // will be executed once at th eend of all
                                    // TestAllBIOSTables objects
     {
-        fs::remove_all(biosPath);
+        // fs::remove_all(biosPath);  // for test
     }
 
     static fs::path biosPath;
@@ -221,6 +224,7 @@ TEST_F(TestAllBIOSTables, GetBIOSStringTableTestGoodRequest)
     }
 }
 
+// need to change
 TEST_F(TestAllBIOSTables, getBIOSAttributeTableTestGoodRequest)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
