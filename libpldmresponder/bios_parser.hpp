@@ -32,6 +32,8 @@ namespace bios_parser
 {
 
 using Strings = std::vector<std::string>;
+inline constexpr auto bIOSEnumJson = "enum_attrs.json";
+inline constexpr auto bIOSStrJson = "string_attrs.json";
 
 /** @brief Parse every BIOS configuration JSON files in the directory path
  *         and populate all the attribute names and all the preconfigured
