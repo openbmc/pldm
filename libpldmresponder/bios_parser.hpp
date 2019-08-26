@@ -32,6 +32,8 @@ namespace bios_parser
 {
 
 using Strings = std::vector<std::string>;
+constexpr auto bIOSEnumJson = "enum_attrs.json";
+constexpr auto bIOSStrJson = "string_attrs.json";
 
 /** @brief Parse every BIOS configuration JSON files in the directory path
  *         and populate all the attribute names and all the preconfigured
@@ -53,12 +55,11 @@ namespace bios_enum
  *         data structure to lookup the current value of the BIOS enumeration
  *         attribute. JSON is parsed once and the information is cached.
  *
- *  @param[in] dirPath - directory path where all the BIOS configuration JSON
- *                      exist
+ *  @param[in] filePath - the BIOS configuration JSON file path
  *
  *  @return 0 for success and negative return code for failure
  */
-int setupValueLookup(const char* dirPath);
+int setupValueLookup(const char* filePath);
 
 using AttrName = std::string;
 using IsReadOnly = bool;
