@@ -251,6 +251,118 @@ CurrentValues getAttrValue(const AttrName& attrName)
 
 } // namespace bios_enum
 
+namespace bios_string
+{
+namespace internal
+{
+
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+using Value = std::string;
+
+/** @struct DBusMapping
+ *
+ *  Data structure for storing information regarding BIOS enumeration attribute
+ *  and the D-Bus object for the attribute.
+ */
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::map<PropertyValue, Value>
+        dBusValToValMap; //!< Map of D-Bus property
+                         //!< value to attribute value
+};
+
+/** @brief Map containing the possible and the default values for the BIOS
+ *         enumeration type attributes.
+ */
+AttrValuesMap valueMap;
+
+/** @brief Map containing the optional D-Bus property information about the
+ *         BIOS enumeration type attributes.
+ */
+std::map<AttrName, std::optional<DBusMapping>> attrLookup;
+
+} // namespace internal
+
+int setupValueLookup(const char* dirPath)
+{
+    int rc = 0;
+
+    if (!internal::valueMap.empty() && !internal::attrLookup.empty())
+    {
+        return rc;
+    }
+
+    // Parse the BIOS string config file
+    fs::path filePath(dirPath);
+    filePath /= bIOSStrJson;
+
+    std::ifstream jsonFile(filePath);
+    if (!jsonFile.is_open())
+    {
+        log<level::ERR>("BIOS string config file does not exist",
+                        entry("FILE=%s", filePath.c_str()));
+        rc = -1;
+        return rc;
+    }
+
+    auto fileData = Json::parse(jsonFile, nullptr, false);
+    if (fileData.is_discarded())
+    {
+        log<level::ERR>("Parsing config file failed");
+        rc = -1;
+        return rc;
+    }
+
+    static const std::vector<Json> emptyList{};
+    auto entries = fileData.value("entries", emptyList);
+    // Iterate through each JSON object in the config file
+    for (const auto& entry : entries)
+    {
+        std::string attr = entry.value("attribute_name", "");
+        uint8_t strType = entry.value("string_type", 0x00); //?
+        uint16_t minStrLen = entry.value("minimum_string_length", 0);
+        uint16_t maxStrLen = entry.value("maximum_string_length", 0);
+        uint16_t defaultStrLen = entry.value("default_string_length", 0);
+        std::string defaultStr = entry.value("default_string", "");
+
+        // dbus handling ?
+        std::optional<internal::DBusMapping> dBusMap = std::nullopt;
+        static const Json empty{};
+        if (entry.count("dbus") != 0)
+        {
+            auto dBusEntry = entry.value("dbus", empty);
+            dBusMap = std::make_optional<internal::DBusMapping>();
+            dBusMap.value().objectPath = dBusEntry.value("object_path", "");
+            dBusMap.value().interface = dBusEntry.value("interface", "");
+            dBusMap.value().propertyName = dBusEntry.value("property_name", "");
+            std::string propType = dBusEntry.value("property_type", "");
+            // Json propValues = dBusEntry["property_values"];
+            // internal::populateMapping(propType, propValues, possibleValues,
+            //						  dBusMap.value());
+        }
+
+        // Defaulting all the types of attributes to BIOSEnumeration
+        internal::valueMap.emplace(
+            std::move(attr),
+            std::make_tuple(false, std::move(strType), std::move(minStrLen),
+                            std::move(maxStrLen), std::move(defaultStrLen),
+                            std::move(defaultStr)));
+    }
+
+    return rc;
+}
+
+const AttrValuesMap& getValues()
+{
+    return internal::valueMap;
+}
+} // namespace bios_string
+
 Strings getStrings(const char* dirPath)
 {
     Strings biosStrings{};
