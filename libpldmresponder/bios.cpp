@@ -241,6 +241,7 @@ StringHandle findStringHandle(const std::string& name,
     size_t tableLen = response.size();
     auto tableEntry =
         reinterpret_cast<struct pldm_bios_string_table_entry*>(response.data());
+
     while (1)
     {
         hdl = tableEntry->string_handle;
@@ -590,6 +591,9 @@ Table constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
 
 namespace bios_type_string
 {
+
+using namespace bios_parser::bios_string;
+
 /** @brief Construct the attibute table for BIOS type String and
  *         String ReadOnly
  *  @param[in] BIOSStringTable - the string table
@@ -600,7 +604,60 @@ namespace bios_type_string
 void constructAttrTable(const BIOSTable& BIOSStringTable,
                         const char* biosJsonDir, Table& attributeTable)
 {
-    ; // TODO
+    auto rc = setupValueLookup(biosJsonDir);
+    if (rc == -1)
+    {
+        log<level::ERR>("Failed to parse entries in Json file");
+        return;
+    }
+    const auto& attributeMap = getValues();
+    StringHandle strHandle;
+
+    for (const auto& [key, value] : attributeMap)
+    {
+        try
+        {
+            strHandle = findStringHandle(key, BIOSStringTable);
+        }
+        catch (InternalFailure& e)
+        {
+            log<level::ERR>("Could not find handle for BIOS string",
+                            entry("ATTRIBUTE=%s", key.c_str()));
+            continue;
+        }
+
+        const auto& [type, strType, minStrLen, maxStrLen, defaultStrLen,
+                     defaultStr] = value;
+        uint8_t typeOfAttr =
+            type ? PLDM_BIOS_STRING_READ_ONLY : PLDM_BIOS_STRING;
+
+        BIOSTableRow stringAttrTable(bios_parser::bios_string::attrTableSize +
+                                     defaultStr.size());
+        BIOSTableRow::iterator it = stringAttrTable.begin();
+        auto attrPtr = reinterpret_cast<struct pldm_bios_attr_table_entry*>(
+            stringAttrTable.data());
+        attrPtr->attr_handle = nextAttributeHandle();
+        attrPtr->attr_type = typeOfAttr;
+        attrPtr->string_handle = strHandle;
+
+        std::advance(it, (sizeof(struct pldm_bios_attr_table_entry) - 1));
+        std::copy_n(&strType, sizeof(uint8_t), it);
+        std::advance(it, sizeof(uint8_t));
+        std::copy_n(reinterpret_cast<const uint8_t*>(&minStrLen),
+                    sizeof(uint16_t), it);
+        std::advance(it, sizeof(uint16_t));
+        std::copy_n(reinterpret_cast<const uint8_t*>(&maxStrLen),
+                    sizeof(uint16_t), it);
+        std::advance(it, sizeof(uint16_t));
+        std::copy_n(reinterpret_cast<const uint8_t*>(&defaultStrLen),
+                    sizeof(uint16_t), it);
+        std::advance(it, sizeof(uint16_t));
+        std::copy_n(defaultStr.data(), defaultStr.size(), it);
+        std::advance(it, defaultStr.size());
+
+        attributeTable.insert(attributeTable.end(), stringAttrTable.begin(),
+                              stringAttrTable.end());
+    }
 }
 } // end namespace bios_type_string
 
