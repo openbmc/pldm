@@ -20,7 +20,7 @@ class TestBIOSTable : public testing::Test
 
     void TearDown() override
     {
-        fs::remove_all(dir);
+        // fs::remove_all(dir);  // for test
     }
 
     fs::path dir;
