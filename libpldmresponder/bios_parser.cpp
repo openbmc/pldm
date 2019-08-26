@@ -14,7 +14,6 @@ namespace bios_parser
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
-constexpr auto bIOSEnumJson = "enum_attrs.json";
 
 namespace bios_enum
 {
@@ -136,7 +135,7 @@ PossibleValues readPossibleValues(Json& possibleValues)
 
 } // namespace internal
 
-int setupValueLookup(const char* dirPath)
+int setupValueLookup(const char* filePath)
 {
     int rc = 0;
 
@@ -145,15 +144,11 @@ int setupValueLookup(const char* dirPath)
         return rc;
     }
 
-    // Parse the BIOS enumeration config file
-    fs::path filePath(dirPath);
-    filePath /= bIOSEnumJson;
-
     std::ifstream jsonFile(filePath);
     if (!jsonFile.is_open())
     {
         log<level::ERR>("BIOS enum config file does not exist",
-                        entry("FILE=%s", filePath.c_str()));
+                        entry("FILE=%s", filePath));
         rc = -1;
         return rc;
     }
