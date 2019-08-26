@@ -39,6 +39,7 @@ void BIOSTable::load(Response& response) const
 {
     auto currSize = response.size();
     auto fileSize = fs::file_size(filePath);
+    // printf("wkr: filePath=%s\n", filePath.c_str());
     response.resize(currSize + fileSize);
     std::ifstream stream(filePath.string(), std::ios::in | std::ios::binary);
     stream.read(reinterpret_cast<char*>(response.data() + currSize), fileSize);
