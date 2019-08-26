@@ -88,4 +88,50 @@ CurrentValues getAttrValue(const AttrName& attrName);
 
 } // namespace bios_enum
 
+namespace bios_string
+{
+
+/** @brief Parse the JSON file specific to BIOSString and
+ *         BIOSStringReadOnly types and populate the data structure for
+ *         the corresponding values and the default value. Setup the
+ *         data structure to lookup the current value of the BIOS string
+ *         attribute. JSON is parsed once and the information is cached.
+ *
+ *  @param[in] filePath - the BIOS configuration JSON file path
+ *
+ *  @return 0 for success and negative return code for failure
+ */
+int setupValueLookup(const char* filePath);
+
+using AttrName = std::string;
+using IsReadOnly = bool;
+using StrType = uint8_t;
+using MinStrLen = uint16_t;
+using MaxStrLen = uint16_t;
+using DefaultStrLen = uint16_t;
+using DefaultStr = std::string;
+using AttrValuesMap =
+    std::map<AttrName, std::tuple<IsReadOnly, StrType, MinStrLen, MaxStrLen,
+                                  DefaultStrLen, DefaultStr>>;
+
+/** @brief Get the possible values and the default values for the
+ *         BIOSString and BIOSStringReadOnly types
+ *
+ *  @return information needed to build the BIOS attribute table specific to
+ *         BIOSString and BIOSStringReadOnly types
+ */
+const AttrValuesMap& getValues();
+
+// using CurrentValues = std::vector<std::string>;
+
+/** @brief Get the current values for the BIOS Attribute
+ *
+ *  @param[in] attrName - BIOS attribute name
+ *
+ *  @return BIOS attribute value
+ */
+// CurrentValues getAttrValue(const AttrName& attrName);
+
+} // namespace bios_string
+
 } // namespace bios_parser
