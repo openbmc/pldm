@@ -246,7 +246,8 @@ StringHandle findStringHandle(const std::string& name,
     {
         hdl = tableEntry->string_handle;
         uint16_t len = tableEntry->string_length;
-        if (memcmp(name.c_str(), tableEntry->name, len) == 0)
+        if (len == name.length() &&
+            memcmp(name.c_str(), tableEntry->name, len) == 0)
         {
             break;
         }
