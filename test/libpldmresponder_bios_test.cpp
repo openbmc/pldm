@@ -55,11 +55,24 @@ TEST(GetBIOSStrings, allScenarios)
 {
     using namespace bios_parser;
     // All the BIOS Strings in the BIOS JSON config files.
-    Strings vec{"HMCManagedState",  "On",           "Off",
-                "FWBootSide",       "Perm",         "Temp",
-                "InbandCodeUpdate", "Allowed",      "NotAllowed",
-                "CodeUpdatePolicy", "Concurrent",   "Disruptive",
-                "str_example1",     "str_example2", "str_example3"};
+    Strings vec{"HMCManagedState",
+                "On",
+                "Off",
+                "FWBootSide",
+                "Perm",
+                "Temp",
+                "InbandCodeUpdate",
+                "Allowed",
+                "NotAllowed",
+                "CodeUpdatePolicy",
+                "Concurrent",
+                "Disruptive",
+                "SYSTEM_VDM_DISABLE",
+                "VDD_AVSBUS_RAIL",
+                "SBE_IMAGE_MINIMUM_VALID_ECS",
+                "str_example1",
+                "str_example2",
+                "str_example3"};
 
     Strings nullVec{};
 
