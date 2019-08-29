@@ -18,7 +18,6 @@ using namespace pldm::responder;
 using namespace pldm::responder::bios;
 using namespace pldm::responder::utils;
 using namespace bios_parser;
-using namespace bios_parser::bios_enum;
 
 TEST(epochToBCDTime, testTime)
 {
@@ -87,6 +86,7 @@ TEST(GetBIOSStrings, allScenarios)
 
 TEST(getAttrValue, enumScenarios)
 {
+    using namespace bios_parser::bios_enum;
     // All the BIOS Strings in the BIOS JSON config files.
     AttrValuesMap valueMap{
         {"HMCManagedState", {false, {"On", "Off"}, {"On"}}},
@@ -133,6 +133,19 @@ TEST(getAttrValue, stringScenarios)
     ASSERT_THROW(bios_parser::bios_string::getAttrValue("str_example"),
                  std::out_of_range);
 }
+TEST(getAttrValue, integerScenarios)
+{
+    using namespace bios_parser::bios_integer;
+    AttrValuesMap valueMap{
+        {"VDD_AVSBUS_RAIL", {false, 0, 15, 1, 0}},
+        {"SBE_IMAGE_MINIMUM_VALID_ECS", {true, 1, 15, 1, 2}}};
+
+    auto rc = setupValueLookup("./bios_jsons");
+    ASSERT_EQ(rc, 0);
+
+    auto values = getValues();
+    ASSERT_EQ(valueMap == values, true);
+}
 
 namespace fs = std::filesystem;
 class TestAllBIOSTables : public ::testing::Test
@@ -145,8 +158,8 @@ class TestAllBIOSTables : public ::testing::Test
         biosPath = fs::path(mkdtemp(tmpdir));
     }
 
-    static void TearDownTestCase() // will be executed once at th eend of all
-                                   // TestAllBIOSTables objects
+    static void TearDownTestCase() // will be executed once at th eend of
+                                   // all TestAllBIOSTables objects
     {
         fs::remove_all(biosPath);
     }
@@ -361,7 +374,7 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeValueTableTestGoodRequest)
     req->table_type = PLDM_BIOS_ATTR_VAL_TABLE;
 
     std::string attrName("CodeUpdatePolicy");
-    CurrentValues currVals = getAttrValue(attrName);
+    bios_enum::CurrentValues currVals = bios_enum::getAttrValue(attrName);
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
