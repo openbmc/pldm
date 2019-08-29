@@ -400,6 +400,36 @@ const AttrValuesMap& getValues()
     return internal::valueMap;
 }
 
+CurrentValue getAttrValue(const AttrName& attrName)
+{
+    const auto& dBusMap = internal::attrLookup.at(attrName);
+
+    if (dBusMap == std::nullopt)
+    {
+        const auto& valueEntry = internal::valueMap.at(attrName);
+        return std::get<AttrDefaultValue>(valueEntry);
+    }
+
+    auto bus = sdbusplus::bus::new_default();
+    auto service = pldm::responder::getService(bus, dBusMap.value().objectPath,
+                                               dBusMap.value().interface);
+    auto method =
+        bus.new_method_call(service.c_str(), dBusMap.value().objectPath.c_str(),
+                            "org.freedesktop.DBus.Properties", "Get");
+    method.append(dBusMap.value().interface, dBusMap.value().propertyName);
+    auto reply = bus.call(method);
+    if (dBusMap.value().dBusValToMap == std::nullopt)
+    {
+        std::variant<CurrentValue> propValue;
+        reply.read(propValue);
+        return std::get<CurrentValue>(propValue);
+    }
+    internal::PropertyValue propValue;
+    reply.read(propValue);
+
+    return dBusMap.value().dBusValToMap.value().at(propValue);
+}
+
 } // namespace bios_integer
 
 Strings getStrings(const char* dirPath)
