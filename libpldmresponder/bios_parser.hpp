@@ -166,6 +166,7 @@ constexpr auto AttrScalarIncrement = 3;
 constexpr auto AttrDefaultValue = 4;
 
 using AttrValuesMap = std::map<AttrName, AttrValues>;
+using CurrentValue = DefaultValue;
 
 /** @brief Get the values of all fields for the
  *         BIOSInteger and BIOSIntegerReadOnly types
@@ -174,6 +175,14 @@ using AttrValuesMap = std::map<AttrName, AttrValues>;
  *         BIOSInteger and BIOSIntegerReadOnly types
  */
 const AttrValuesMap& getValues();
+
+/** @brief Get the current values for the BIOS Attribute
+ *
+ *  @param[in] attrName - BIOS attribute name
+ *
+ *  @return BIOS attribute value
+ */
+CurrentValue getAttrValue(const AttrName& attrName);
 
 } // namespace bios_integer
 

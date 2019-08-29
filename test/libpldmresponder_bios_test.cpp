@@ -148,6 +148,13 @@ TEST(getAttrValue, integerScenarios)
 
     auto values = getValues();
     ASSERT_EQ(valueMap == values, true);
+
+    CurrentValue cv = 2;
+    auto value = getAttrValue("SBE_IMAGE_MINIMUM_VALID_ECS");
+    ASSERT_EQ(value == cv, true);
+
+    // Invalid attribute name
+    ASSERT_THROW(getAttrValue("SYSTEM_VDM_ENABLE"), std::out_of_range);
 }
 
 namespace fs = std::filesystem;
