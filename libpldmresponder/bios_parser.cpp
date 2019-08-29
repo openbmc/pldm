@@ -16,6 +16,7 @@ namespace fs = std::filesystem;
 using namespace phosphor::logging;
 constexpr auto bIOSEnumJson = "enum_attrs.json";
 constexpr auto bIOSStrJson = "string_attrs.json";
+constexpr auto bIOSIntegerJson = "integer_attrs.json";
 
 namespace bios_enum
 {
@@ -428,6 +429,179 @@ CurrentValue getAttrValue(const AttrName& attrName)
 }
 
 } // namespace bios_string
+
+namespace bios_integer
+{
+
+namespace internal
+{
+
+using PropertyValue = std::variant<bool, std::string>;
+using Value = std::string;
+using DbusValToValMap = std::map<PropertyValue, DefaultValue>;
+
+/** @struct DBusMapping
+ *
+ *  Data structure for storing information regarding BIOS enumeration attribute
+ *  and the D-Bus object for the attribute.
+ */
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::optional<DbusValToValMap>
+        dBusValToValMap; //!< Map of D-Bus property
+                         //!< value to attribute value
+};
+
+/** @brief Map containing all fields for the BIOS integer type attributes.
+ */
+AttrValuesMap valueMap;
+
+/** @brief Map containing the optional D-Bus property information about the
+ *         BIOS integer type attributes.
+ */
+std::map<AttrName, std::optional<DBusMapping>> attrLookup;
+
+/** @brief Populate the mapping between D-Bus property value and attribute value
+ *         for the BIOS integer attribute.
+ *
+ *  @param[in] propertyType - type of the D-Bus property
+ *  @param[in] dBusValues - json array of D-Bus property values
+ *  @param[in] possibleValues - Possible values for the BIOS integer attribute
+ *  @param[out] mapping - D-Bus mapping object for the attribute
+ *
+ */
+int populateMapping(const std::string& propertyType, const Json& dBusValues,
+                    const Json& possibleValues, DbusValToValMap& mapping)
+{
+    if (!dBusValues.is_array() || !possibleValues.is_array())
+    {
+        log<level::ERR>("possible_value or property_values should be array");
+        return -1;
+    }
+    if (dBusValues.size() != possibleValues.size())
+    {
+        log<level::ERR>("Number of property_values should match to the number "
+                        "of possible values");
+        return -1;
+    }
+
+    PossibleValues pv;
+    for (auto& val : possibleValues)
+    {
+        pv.emplace_back(val);
+    }
+
+    auto pos = 0;
+    PropertyValue value;
+    for (auto& val : dBusValues)
+    {
+        if (propertyType == "bool")
+        {
+            value = static_cast<bool>(val);
+        }
+        else
+        {
+            log<level::ERR>("Unknown D-Bus property type",
+                            entry("TYPE=%s", propertyType.c_str()));
+            return -1;
+        }
+
+        mapping.emplace(value, pv[pos]);
+        pos++;
+    }
+
+    return 0;
+}
+
+} // namespace internal
+
+int setupValueLookup(const char* dirPath)
+{
+    if (!internal::valueMap.empty() && !internal::attrLookup.empty())
+    {
+        return 0;
+    }
+
+    fs::path filePath(dirPath);
+    filePath /= bIOSIntegerJson;
+
+    std::ifstream jsonFile(filePath);
+    if (!jsonFile.is_open())
+    {
+        log<level::ERR>("BIOS integer config file does not exit",
+                        entry("FILE=%s", filePath.c_str()));
+        return -1;
+    }
+
+    auto fileData = Json::parse(jsonFile, nullptr, false);
+    if (fileData.is_discarded())
+    {
+        log<level::ERR>("Parsing config file failed",
+                        entry("FILE=%s", filePath.c_str()));
+        return -1;
+    }
+
+    static const std::vector<Json> emptyList{};
+    auto entries = fileData.value("entries", emptyList);
+
+    for (const auto& entry : entries)
+    {
+        AttrName attrName = entry.value("attribute_name", "");
+        LowerBound lowerBound = entry.value("lower_bound", 0);
+        UpperBound upperBound = entry.value("upper_bound", UINT64_MAX);
+        ScalarIncrement scalarIncrement = entry.value("scalar_increment", 1);
+        DefaultValue defaultValue = entry.value("default_value", 0);
+
+        std::optional<internal::DBusMapping> dBusMap = std::nullopt;
+        static const Json empty{};
+        if (entry.count("dbus") != 0)
+        {
+            auto dBusEntry = entry.value("dbus", empty);
+            dBusMap = std::make_optional<internal::DBusMapping>();
+            dBusMap.value().objectPath = dBusEntry.value("object_path", "");
+            dBusMap.value().interface = dBusEntry.value("interface", "");
+            dBusMap.value().propertyName = dBusEntry.value("property_name", "");
+            dBusMap.value().dBusValToValMap = std::nullopt;
+
+            if (entry.count("possible_values") != 0)
+            {
+                dBusMap.value().dBusValToValMap =
+                    std::make_optional<internal::DbusValToValMap>();
+                std::string propertyType = dBusEntry.value("property_type", "");
+                if (internal::populateMapping(
+                        propertyType, dBusEntry["property_values"],
+                        entry["possible_values"],
+                        dBusMap.value().dBusValToValMap.value()) < 0)
+                {
+                    log<level::ERR>(
+                        "Parsing entris error",
+                        phosphor::logging::entry("attribute_name=%s",
+                                                 attrName.c_str()),
+                        phosphor::logging::entry("FILE=%s", filePath.c_str()));
+                    continue;
+                }
+            }
+        }
+
+        internal::attrLookup.emplace(attrName, std::move(dBusMap));
+        internal::valueMap.emplace(std::move(attrName),
+                                   std::make_tuple(false, lowerBound,
+                                                   upperBound, scalarIncrement,
+                                                   defaultValue));
+    }
+
+    return 0;
+}
+
+const AttrValuesMap& getValues()
+{
+    return internal::valueMap;
+}
+
+} // namespace bios_integer
 
 Strings getStrings(const char* dirPath)
 {
