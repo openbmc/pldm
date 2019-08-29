@@ -90,8 +90,6 @@ CurrentValues getAttrValue(const AttrName& attrName);
 namespace bios_integer
 {
 
-int setupValueLookup(const char* dirPath);
-
 using AttrName = std::string;
 using LowerBound = uint64_t;
 using UpperBound = uint64_t;
@@ -106,8 +104,11 @@ constexpr auto AttrScalarIncrement = 2;
 constexpr auto AttrDefaultValue = 3;
 
 using AttrValuesMap = std::map<AttrName, AttrValues>;
+using CurrentValue = DefaultValue;
 
 const AttrValuesMap& getValues();
+CurrentValue getAttrValue(const AttrName& attrName);
+int setupValueLookup(const char* dirPath);
 
 } // namespace bios_integer
 
