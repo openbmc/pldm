@@ -460,6 +460,102 @@ std::string getAttrValue(const AttrName& attrName)
 
 } // namespace bios_string
 
+namespace bios_integer
+{
+
+namespace internal
+{
+
+/** @struct DBusMapping
+ *
+ *  Data structure for storing information regarding BIOS enumeration attribute
+ *  and the D-Bus object for the attribute.
+ */
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+};
+
+/** @brief Map containing all fields for the BIOS integer type attributes.
+ */
+AttrValuesMap valueMap;
+
+/** @brief Map containing the optional D-Bus property information about the
+ *         BIOS integer type attributes.
+ */
+std::map<AttrName, std::optional<DBusMapping>> attrLookup;
+
+} // namespace internal
+
+int setupValueLookup(const char* dirPath)
+{
+    if (!internal::valueMap.empty() && !internal::attrLookup.empty())
+    {
+        return 0;
+    }
+
+    Json fileData;
+    auto rc = parseBiosJsonFile(dirPath, bIOSIntegerJson, fileData);
+    if (rc != 0)
+    {
+        return rc;
+    }
+
+    auto entries = fileData.value("entries", emptyJsonList);
+
+    for (const auto& entry : entries)
+    {
+        AttrName attrName = entry.value("attribute_name", "");
+        IsReadOnly IsReadOnly = true;
+        LowerBound lowerBound = entry.value("lower_bound", 0);
+        UpperBound upperBound = entry.value("upper_bound", UINT64_MAX);
+        ScalarIncrement scalarIncrement = entry.value("scalar_increment", 1);
+        DefaultValue defaultValue = entry.value("default_value", 0);
+
+        std::optional<internal::DBusMapping> dBusMap;
+        static const Json empty{};
+        if (entry.count("dbus") != 0)
+        {
+            IsReadOnly = false;
+            auto dBusEntry = entry.value("dbus", empty);
+            dBusMap = std::make_optional<internal::DBusMapping>();
+            dBusMap->objectPath = dBusEntry.value("object_path", "");
+            dBusMap->interface = dBusEntry.value("interface", "");
+            dBusMap->propertyName = dBusEntry.value("property_name", "");
+            if (dBusMap->objectPath.empty() || dBusMap->interface.empty() ||
+                dBusMap->propertyName.empty())
+            {
+                log<level::ERR>(
+                    "Invalid dbus config",
+                    phosphor::logging::entry("OBJPATH=%s",
+                                             dBusMap->objectPath.c_str()),
+                    phosphor::logging::entry("INTERFACE=%s",
+                                             dBusMap->interface.c_str()),
+                    phosphor::logging::entry("PROPERTY_NAME=%s",
+                                             dBusMap->propertyName.c_str()));
+                return -1;
+            }
+        }
+
+        internal::attrLookup.emplace(attrName, std::move(dBusMap));
+        internal::valueMap.emplace(std::move(attrName),
+                                   std::make_tuple(IsReadOnly, lowerBound,
+                                                   upperBound, scalarIncrement,
+                                                   defaultValue));
+    }
+
+    return 0;
+}
+
+const AttrValuesMap& getValues()
+{
+    return internal::valueMap;
+}
+
+} // namespace bios_integer
+
 Strings getStrings(const char* dirPath)
 {
     Strings biosStrings{};
