@@ -133,4 +133,48 @@ CurrentValue getAttrValue(const AttrName& attrName);
 
 } // namespace bios_string
 
+namespace bios_integer
+{
+
+/** @brief Parse the JSON file specific to BIOSInteger and
+ *         BIOSIntegerOnly types and populate the data structure for
+ *         the corresponding possible values and the default value. Setup the
+ *         data structure to lookup the current value of the BIOS integer
+ *         attribute. JSON is parsed once and the information is cached.
+ *
+ *  @param[in] dirPath - directory path where all the BIOS configuration JSON
+ *                      exist
+ *
+ *  @return 0 for success and negative return code for failure
+ */
+int setupValueLookup(const char* dirPath);
+
+using AttrName = std::string;
+using IsReadOnly = bool;
+using LowerBound = uint64_t;
+using UpperBound = uint64_t;
+using ScalarIncrement = uint32_t;
+using DefaultValue = uint64_t;
+using AttrValues = std::tuple<IsReadOnly, LowerBound, UpperBound,
+                              ScalarIncrement, DefaultValue>;
+
+using PossibleValues = std::vector<DefaultValue>;
+constexpr auto AttrIsReadOnly = 0;
+constexpr auto AttrLowerBound = 1;
+constexpr auto AttrUpperBound = 2;
+constexpr auto AttrScalarIncrement = 3;
+constexpr auto AttrDefaultValue = 4;
+
+using AttrValuesMap = std::map<AttrName, AttrValues>;
+
+/** @brief Get the values of all fields for the
+ *         BIOSInteger and BIOSIntegerReadOnly types
+ *
+ *  @return information needed to build the BIOS attribute table specific to
+ *         BIOSInteger and BIOSIntegerReadOnly types
+ */
+const AttrValuesMap& getValues();
+
+} // namespace bios_integer
+
 } // namespace bios_parser
