@@ -127,6 +127,27 @@ class DBusHandler
         method.append(dbusInterface, dbusProp, value);
         bus.call_noreply(method);
     }
+
+    /** @brief API to set a D-Bus property
+     *
+     *  @param[in] objPath - Object path for the D-Bus object
+     *  @param[in] dbusProp - The D-Bus property
+     *  @param[in] dbusInterface - The D-Bus interface
+     *  @param[return] value - The D-Bus property value
+     */
+    template <typename T>
+    auto getDbusProperty(const char* objPath, const char* dbusProp,
+                         const char* dbusInterface) const
+    {
+        auto bus = sdbusplus::bus::new_default();
+        auto service = getService(bus, objPath, dbusInterface);
+        auto method = bus.new_method_call(service.c_str(), objPath,
+                                          dbusProperties, "Get");
+        method.append(dbusInterface, dbusProp);
+        auto reply = bus.call(method);
+        std::variant<T> propValue;
+        return std::get<T>(propValue);
+    }
 };
 
 } // namespace responder

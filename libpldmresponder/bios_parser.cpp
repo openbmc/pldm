@@ -20,6 +20,7 @@ namespace
 
 const std::vector<Json> emptyJsonList{};
 const Json emptyJson{};
+const pldm::responder::DBusHandler dBusHandler;
 
 } // namespace
 
@@ -551,6 +552,20 @@ int setupValueLookup(const char* dirPath)
 const AttrValuesMap& getValues()
 {
     return internal::valueMap;
+}
+
+uint64_t getAttrValue(const AttrName& attrName)
+{
+    const auto& dBusMap = internal::attrLookup.at(attrName);
+
+    if (dBusMap == std::nullopt)
+    {
+        const auto& valueEntry = internal::valueMap.at(attrName);
+        return std::get<AttrDefaultValue>(valueEntry);
+    }
+    return dBusHandler.getDbusProperty<uint64_t>(dBusMap->objectPath.c_str(),
+                                                 dBusMap->propertyName.c_str(),
+                                                 dBusMap->interface.c_str());
 }
 
 } // namespace bios_integer

@@ -145,6 +145,11 @@ TEST(getAttrValue, integerScenarios)
 
     auto values = getValues();
     EXPECT_EQ(valueMap, values);
+
+    auto value = getAttrValue("SBE_IMAGE_MINIMUM_VALID_ECS");
+    EXPECT_EQ(value, 2);
+
+    EXPECT_THROW(getAttrValue("VDM"), std::out_of_range);
 }
 
 namespace fs = std::filesystem;

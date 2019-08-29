@@ -191,6 +191,14 @@ using AttrValuesMap = std::map<AttrName, AttrValues>;
  */
 const AttrValuesMap& getValues();
 
+/** @brief Get the current values for the BIOS Attribute
+ *
+ *  @param[in] attrName - BIOS attribute name
+ *
+ *  @return BIOS attribute value
+ */
+uint64_t getAttrValue(const AttrName& attrName);
+
 } // namespace bios_integer
 
 } // namespace bios_parser
