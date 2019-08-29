@@ -15,6 +15,7 @@ using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
 constexpr auto bIOSEnumJson = "enum_attrs.json";
+constexpr auto bIOSIntegerJson = "integer_attrs.json";
 
 namespace bios_enum
 {
@@ -251,6 +252,125 @@ CurrentValues getAttrValue(const AttrName& attrName)
 }
 
 } // namespace bios_enum
+
+namespace bios_integer
+{
+
+namespace internal
+{
+
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+using Value = std::string;
+using DbusValToValMap = std::map<PropertyValue, DefaultValue>;
+
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::optional<DbusValToValMap> dBusValToMap;
+};
+
+AttrValuesMap valueMap;
+
+std::map<AttrName, std::optional<DBusMapping>> attrLookup;
+
+int populateMapping(const Json& dBusValues, const Json& possibleValues,
+                    DBusMapping& mapping)
+{
+    if (!dBusValues.is_array() || !possibleValues.is_array())
+    {
+        log<Level::ERR>("possible_value or property_values should be array");
+        return -1;
+    }
+    if (dBusValues.size() != possibleValues.size())
+    {
+        log<Level::ERR>("Number of property_values should match to the number "
+                        "of possible values");
+        return -1;
+    }
+
+    for (auto dv_it = dBusValues.begin(), auto pv_it = dBusValues.begin();
+         dv_it != dBusValues.end(); ++dv_it, ++pv_it)
+    {
+        mapping.dBusValToMap.emplace(dv_it.value(), pv_it.value());
+    }
+
+    return 0;
+}
+
+int setupValueLookup(const char* filePath)
+{
+    if (!internal::valueMap.empty() && !internal::attrLookup.empty())
+    {
+        return 0;
+    }
+
+    std::ifstream jsonFile(filePath);
+    if (!jsonFile.is_open())
+    {
+        log<Level::ERR>("BIOS integer config file does not exit",
+                        entry("FILE=%s", filePath));
+        return -1;
+    }
+
+    auto fileData = Json::parse(jsonFile, nullptr, false);
+    if (fileData.is_dscarded())
+    {
+        log<Level::ERR>("Parsing config file failed",
+                        entry("FILE=%s", filePath));
+        return -1;
+    }
+
+    static const std::vector<Json> emptyList{};
+    auto entries = fileData.value("entries", emptyList);
+
+    for (const auto& entry : entries)
+    {
+        AttrName attrName = entry.value("attribute_name", "");
+        LowerBound lowerBound = entry.value("lower_bound", 0);
+        UpperBound upperBound = entry.value("upper_bound", UINT64_MAX);
+        ScalarIncrement scalarIncrement = entry.value("scalar_increment", 1);
+        DefaultValue defaultValue = entry.value("default_value", 0);
+
+        std::optional<internal::DBusMapping> dBusMap = std::nullopt;
+        static const Json emtpy{};
+        if (entry.count("dbus") != 0)
+        {
+            auto dBusEntry = entry.value("dbus", empty);
+            dBusMap = std::make_optional<internal::DBusMapping>();
+            dBusMap.value().objectPath = dBusEntry.value("object_path", "");
+            dBusMap.value().interface = dBusEntry.value("interface", "");
+            dBusMap.value().propertyName = dBusEntry.value("property_name", "");
+
+            if (entry.count("possible_values") != 0)
+            {
+                if (populateMapping(dBusEntry["property_values"],
+                                    entry["possible_values"],
+                                    dBusMap.value()) < 0)
+                {
+                    log<Level::ERR>("Parsing entris error",
+                                    entry("attribute_name=%s", attrName),
+                                    entry("FILE=%s", filePath));
+                    continue;
+                }
+            }
+        }
+
+        internal::attrLookup.emplace(attrName, std::move(dBusMap));
+        internal::valueMap.emplace(
+            std::move(attr), std::make_tuple(lowerBound, upperBound,
+                                             scalarIncrement, defaultValue));
+    }
+
+    return 0;
+}
+
+} // namespace internal
+
+} // namespace bios_integer
 
 Strings getStrings(const char* dirPath)
 {
