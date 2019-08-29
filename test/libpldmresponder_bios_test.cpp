@@ -18,7 +18,6 @@ using namespace pldm::responder;
 using namespace pldm::responder::bios;
 using namespace pldm::responder::utils;
 using namespace bios_parser;
-using namespace bios_parser::bios_enum;
 
 TEST(epochToBCDTime, testTime)
 {
@@ -83,7 +82,7 @@ TEST(GetBIOSStrings, allScenarios)
     ASSERT_EQ(strings == vec, true);
 }
 
-TEST(getAttrValue, allScenarios)
+TEST(getAttrValue, enumScenario)
 {
     using namespace bios_parser::bios_enum;
     // All the BIOS Strings in the BIOS JSON config files.
@@ -108,6 +107,21 @@ TEST(getAttrValue, allScenarios)
     ASSERT_THROW(getAttrValue("CodeUpdatePolic"), std::out_of_range);
 }
 
+TEST(getAttrValue, integerScenario)
+{
+    using namespace bios_parser::bios_integer;
+
+    AttrValuesMap valueMap{{"SYSTEM_VDM_DISABLE", {0, 1, 1, 0}},
+                           {"VDD_AVSBUS_RAIL", {0, 15, 1, 0}},
+                           {"SBE_IMAGE_MINIMUM_VALID_ECS", {1, 15, 1, 2}}};
+
+    auto rc = setupValueLookup("./bios_jsons/integer_attrs.json");
+    ASSERT_EQ(rc, 0);
+
+    auto values = getValues();
+    ASSERT_EQ(valueMap == values, true);
+}
+
 namespace fs = std::filesystem;
 class TestAllBIOSTables : public ::testing::Test
 {
@@ -119,8 +133,8 @@ class TestAllBIOSTables : public ::testing::Test
         biosPath = fs::path(mkdtemp(tmpdir));
     }
 
-    static void TearDownTestCase() // will be executed once at th eend of all
-                                   // TestAllBIOSTables objects
+    static void TearDownTestCase() // will be executed once at th eend of
+                                   // all TestAllBIOSTables objects
     {
         fs::remove_all(biosPath);
     }
@@ -335,7 +349,7 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeValueTableTestGoodRequest)
     req->table_type = PLDM_BIOS_ATTR_VAL_TABLE;
 
     std::string attrName("CodeUpdatePolicy");
-    CurrentValues currVals = getAttrValue(attrName);
+    bios_enum::CurrentValues currVals = bios_enum::getAttrValue(attrName);
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
