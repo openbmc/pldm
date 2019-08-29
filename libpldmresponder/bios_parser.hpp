@@ -133,4 +133,31 @@ CurrentValue getAttrValue(const AttrName& attrName);
 
 } // namespace bios_string
 
+namespace bios_integer
+{
+
+int setupValueLookup(const char* dirPath);
+
+using AttrName = std::string;
+using IsReadOnly = bool;
+using LowerBound = uint64_t;
+using UpperBound = uint64_t;
+using ScalarIncrement = uint32_t;
+using DefaultValue = uint64_t;
+using AttrValues = std::tuple<IsReadOnly, LowerBound, UpperBound,
+                              ScalarIncrement, DefaultValue>;
+
+using PossibleValues = std::vector<DefaultValue>;
+constexpr auto AttrIsReadOnly = 0;
+constexpr auto AttrLowerBound = 1;
+constexpr auto AttrUpperBound = 2;
+constexpr auto AttrScalarIncrement = 3;
+constexpr auto AttrDefaultValue = 4;
+
+using AttrValuesMap = std::map<AttrName, AttrValues>;
+
+const AttrValuesMap& getValues();
+
+} // namespace bios_integer
+
 } // namespace bios_parser
