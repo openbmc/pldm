@@ -122,7 +122,7 @@ using AttrValuesMap =
  */
 const AttrValuesMap& getValues();
 
-// using CurrentValues = std::vector<std::string>;
+using CurrentValues = std::tuple<uint16_t, std::string>;
 
 /** @brief Get the current values for the BIOS Attribute
  *
@@ -130,7 +130,7 @@ const AttrValuesMap& getValues();
  *
  *  @return BIOS attribute value
  */
-// CurrentValues getAttrValue(const AttrName& attrName);
+CurrentValues getAttrValue(const AttrName& attrName);
 
 } // namespace bios_string
 
