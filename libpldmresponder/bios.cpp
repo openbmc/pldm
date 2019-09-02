@@ -478,13 +478,13 @@ void constructAttrTable(const BIOSTable& BIOSStringTable,
  *
  *  @param[in] BIOSAttributeTable - the attribute table
  *  @param[in] BIOSStringTable - the string table
+ *  @param[in, out] attributeValueTable - the attribute value table
  *
- *  @return - Table - the attribute value table
  */
-Table constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
-                              const BIOSTable& BIOSStringTable)
+void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
+                             const BIOSTable& BIOSStringTable,
+                             Table& attributeValueTable)
 {
-    Table attributeValueTable;
     Response response;
     BIOSAttributeTable.load(response);
 
@@ -517,7 +517,7 @@ Table constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
             {
                 log<level::ERR>("Did not find string name for handle",
                                 entry("STRING_HANDLE=%d", stringHdl));
-                return attributeValueTable;
+                return;
             }
             attrPtr =
                 reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
@@ -537,7 +537,7 @@ Table constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
             if (std::distance(tableData, response.data() + tableLen) <=
                 padChksumMax)
             {
-                return attributeValueTable;
+                return;
             }
 
             attrPtr =
@@ -582,8 +582,6 @@ Table constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
         attrPtr =
             reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
     }
-
-    return attributeValueTable;
 }
 
 } // end namespace bios_type_enum
@@ -638,7 +636,7 @@ void constructAttrTable(const BIOSTable& BIOSStringTable,
         attrPtr->attr_handle = nextAttributeHandle();
         attrPtr->attr_type = typeOfAttr;
         attrPtr->string_handle = std::move(strHandle);
-        // The following code can be enhanced
+
         std::advance(it, (sizeof(struct pldm_bios_attr_table_entry) - 1));
         std::copy_n(&strType, sizeof(uint8_t), it);
         std::advance(it, sizeof(uint8_t));
@@ -658,6 +656,111 @@ void constructAttrTable(const BIOSTable& BIOSStringTable,
                   std::back_inserter(attributeTable));
     }
 }
+
+/** @brief Construct the attibute value table for BIOS type String and
+ *  String ReadOnly
+ *
+ *  @param[in] BIOSAttributeTable - the attribute table
+ *  @param[in] BIOSStringTable - the string table
+ *  @param[in, out] attributeValueTable - the attribute value table
+ *
+ */
+void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
+                             const BIOSTable& BIOSStringTable,
+                             Table& attributeValueTable)
+{
+    Response response;
+    BIOSAttributeTable.load(response);
+
+    auto tableData = response.data();
+    size_t tableLen = response.size();
+    auto attrPtr =
+        reinterpret_cast<struct pldm_bios_attr_table_entry*>(response.data());
+
+    while (1)
+    {
+        uint16_t attrHdl = attrPtr->attr_handle;
+        uint8_t attrType = attrPtr->attr_type;
+        uint16_t stringHdl = attrPtr->string_handle;
+        tableData += (sizeof(struct pldm_bios_attr_table_entry) - 1);
+        // pass number of StringType, MinimumStringLength, MaximumStringLength
+        tableData += sizeof(uint8_t) + 2 * sizeof(uint16_t);
+        auto sizeDefaultStr = *((uint16_t*)tableData);
+        // pass number of DefaultStringLength, DefaultString
+        tableData += sizeof(uint16_t) + sizeDefaultStr;
+
+        auto attrName = findStringName(stringHdl, BIOSStringTable);
+        if (attrName.empty())
+        {
+            if (std::distance(tableData, response.data() + tableLen) <=
+                padChksumMax)
+            {
+                log<level::ERR>("Did not find string name for handle",
+                                entry("STRING_HANDLE=%d", stringHdl));
+                return;
+            }
+            attrPtr =
+                reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
+            continue;
+        }
+
+        uint16_t currStrLen;
+        std::string currStr;
+        try
+        {
+            currStr = getAttrValue(attrName);
+            currStrLen = currStr.size();
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>(
+                "constructAttrValueTable returned error for attribute",
+                entry("NAME=%s", attrName.c_str()),
+                entry("ERROR=%s", e.what()));
+            if (std::distance(tableData, response.data() + tableLen) <=
+                padChksumMax)
+            {
+                return;
+            }
+
+            attrPtr =
+                reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
+            continue;
+        }
+
+        BIOSTableRow strAttrValTable(
+            (sizeof(struct pldm_bios_attr_val_table_entry) - 1) +
+                sizeof(uint16_t) + currStr.size(),
+            0);
+        BIOSTableRow::iterator it = strAttrValTable.begin();
+        auto attrValPtr =
+            reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(
+                strAttrValTable.data());
+        attrValPtr->attr_handle = attrHdl;
+        attrValPtr->attr_type = attrType;
+        std::advance(it, (sizeof(pldm_bios_attr_val_table_entry) - 1));
+        std::copy_n(reinterpret_cast<uint8_t*>(&currStrLen), sizeof(uint16_t),
+                    it);
+        std::advance(it, sizeof(uint16_t));
+        if (currStrLen)
+        {
+            std::copy_n(currStr.cbegin(), currStrLen, it);
+            std::advance(it, currStrLen);
+        }
+        std::move(strAttrValTable.begin(), strAttrValTable.end(),
+                  std::back_inserter(attributeValueTable));
+
+        if (std::distance(tableData, response.data() + tableLen) <=
+            padChksumMax)
+        {
+            break;
+        }
+
+        attrPtr =
+            reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
+    }
+}
+
 } // end namespace bios_type_string
 
 using typeHandler = void (*)(const BIOSTable& BIOSStringTable,
@@ -665,6 +768,18 @@ using typeHandler = void (*)(const BIOSTable& BIOSStringTable,
 std::map<std::string, typeHandler> attrTypeHandlers{
     {"enum_attrs.json", bios_type_enum::constructAttrTable},
     {"string_attrs.json", bios_type_string::constructAttrTable}};
+
+using valueHandler = void (*)(const BIOSTable& BIOSAttributeTable,
+
+                              const BIOSTable& BIOSStringTable,
+
+                              Table& attributeTable);
+
+std::map<std::string, valueHandler> attrValueHandlers{
+
+    {"enum_attrs.json", bios_type_enum::constructAttrValueTable},
+
+    {"string_attrs.json", bios_type_string::constructAttrValueTable}};
 
 /** @brief Construct the BIOS attribute table
  *
@@ -777,8 +892,27 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
 
     if (BIOSAttributeValueTable.isEmpty())
     { // no persisted table, constructing fresh table and data
-        Table attributeValueTable = bios_type_enum::constructAttrValueTable(
-            BIOSAttributeTable, BIOSStringTable);
+        Table attributeValueTable;
+        fs::path dir(biosJsonDir);
+
+        for (auto it = attrValueHandlers.begin(); it != attrValueHandlers.end();
+             it++)
+        {
+            fs::path file = dir / it->first;
+            if (fs::exists(file))
+            {
+                it->second(BIOSAttributeTable, BIOSStringTable,
+                           attributeValueTable);
+            }
+        }
+
+        if (attributeValueTable.empty())
+        { // no available json file is found
+            encode_get_bios_table_resp(instanceID, PLDM_BIOS_TABLE_UNAVAILABLE,
+                                       nxtTransferHandle, transferFlag, nullptr,
+                                       response.size(), responsePtr);
+            return response;
+        }
         // calculate pad
         uint8_t padSize = utils::getNumPadBytes(attributeValueTable.size());
         std::vector<uint8_t> pad(padSize, 0);
