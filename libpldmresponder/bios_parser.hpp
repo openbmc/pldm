@@ -115,6 +115,7 @@ using DefaultStr = std::string;
 using AttrValuesMap =
     std::map<AttrName, std::tuple<IsReadOnly, StrType, MinStrLen, MaxStrLen,
                                   DefaultStrLen, DefaultStr>>;
+using CurrentValue = DefaultStr;
 
 /** @brief Get the possible values and the default values for the
  *         BIOSString and BIOSStringReadOnly types
@@ -124,15 +125,13 @@ using AttrValuesMap =
  */
 const AttrValuesMap& getValues();
 
-// using CurrentValues = std::vector<std::string>;
-
 /** @brief Get the current values for the BIOS Attribute
  *
  *  @param[in] attrName - BIOS attribute name
  *
  *  @return BIOS attribute value
  */
-// CurrentValues getAttrValue(const AttrName& attrName);
+CurrentValue getAttrValue(const AttrName& attrName);
 
 } // namespace bios_string
 

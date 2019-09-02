@@ -278,9 +278,6 @@ std::map<std::string, uint8_t> strTypeMap{{"Unknown", UNKNOWN},
 namespace internal
 {
 
-using PropertyValue =
-    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string>;
 using Value = std::string;
 
 /** @struct DBusMapping
@@ -293,9 +290,6 @@ struct DBusMapping
     std::string objectPath;   //!< D-Bus object path
     std::string interface;    //!< D-Bus interface
     std::string propertyName; //!< D-Bus property name
-    std::map<PropertyValue, Value>
-        dBusValToValMap; //!< Map of D-Bus property
-                         //!< value to attribute value
 };
 
 /** @brief Map containing the possible and the default values for the BIOS
@@ -406,6 +400,31 @@ const AttrValuesMap& getValues()
 {
     return internal::valueMap;
 }
+
+CurrentValue getAttrValue(const AttrName& attrName)
+{
+    const auto& dBusMap = internal::attrLookup.at(attrName);
+    std::variant<CurrentValue> propValue;
+
+    if (dBusMap == std::nullopt)
+    { // return default string
+        const auto& valueEntry = internal::valueMap.at(attrName);
+        return std::get<DefaultStr>(valueEntry);
+    }
+
+    auto bus = sdbusplus::bus::new_default();
+    auto service = pldm::responder::getService(bus, dBusMap.value().objectPath,
+                                               dBusMap.value().interface);
+    auto method =
+        bus.new_method_call(service.c_str(), dBusMap.value().objectPath.c_str(),
+                            "org.freedesktop.DBus.Properties", "Get");
+    method.append(dBusMap.value().interface, dBusMap.value().propertyName);
+    auto reply = bus.call(method);
+    reply.read(propValue);
+
+    return std::get<CurrentValue>(propValue);
+}
+
 } // namespace bios_string
 
 Strings getStrings(const char* dirPath)
