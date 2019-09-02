@@ -112,7 +112,7 @@ class TestAllBIOSTables : public ::testing::Test
     static void TearDownTestCase() // will be executed once at th eend of all
                                    // TestAllBIOSTables objects
     {
-        // fs::remove_all(biosPath);  // for test
+        // fs::remove_all(biosPath);  // wkr, for test
     }
 
     static fs::path biosPath;
@@ -224,7 +224,6 @@ TEST_F(TestAllBIOSTables, GetBIOSStringTableTestGoodRequest)
     }
 }
 
-// need to change
 TEST_F(TestAllBIOSTables, getBIOSAttributeTableTestGoodRequest)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
