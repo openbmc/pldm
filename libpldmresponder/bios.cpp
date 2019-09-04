@@ -763,11 +763,184 @@ void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
 
 } // end namespace bios_type_string
 
+namespace bios_type_integer
+{
+
+using namespace bios_parser::bios_integer;
+
+/** @brief Construct the attibute table for BIOS type Integer and
+ *         Integer ReadOnly
+ *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosJsonDir - path where the BIOS json files are present
+ *  @param[in,out] attributeTable - the attribute table
+ *
+ */
+void constructAttrTable(const BIOSTable& BIOSStringTable,
+                        const char* biosJsonDir, Table& attributeTable)
+{
+    setupValueLookup(biosJsonDir);
+    const auto& attributeMap = getValues();
+    StringHandle strHandle;
+
+    for (const auto& [key, value] : attributeMap)
+    {
+        try
+        {
+            strHandle = findStringHandle(key, BIOSStringTable);
+        }
+        catch (InternalFailure& e)
+        {
+            log<level::ERR>("Could not find handle for BIOS integer",
+                            entry("ATTRIBUTE=%s", key.c_str()));
+            continue;
+        }
+        uint8_t typeOfAttr = (std::get<AttrIsReadOnly>(value))
+                                 ? PLDM_BIOS_INTEGER_READ_ONLY
+                                 : PLDM_BIOS_INTEGER;
+        LowerBound lowerBound = std::get<AttrLowerBound>(value);
+        UpperBound upperBound = std::get<AttrUpperBound>(value);
+        ScalarIncrement scalarIncrement = std::get<AttrScalarIncrement>(value);
+        DefaultValue defaultValue = std::get<AttrDefaultValue>(value);
+
+        auto fieldsLength = sizeof(LowerBound) + sizeof(UpperBound) +
+                            sizeof(ScalarIncrement) + sizeof(DefaultValue);
+
+        BIOSTableRow integerAttrTable(
+            (sizeof(pldm_bios_attr_table_entry) - 1) + fieldsLength, 0);
+
+        auto it = integerAttrTable.begin();
+        auto attrPtr = reinterpret_cast<pldm_bios_attr_table_entry*>(
+            integerAttrTable.data());
+        attrPtr->attr_handle = nextAttributeHandle();
+        attrPtr->attr_type = typeOfAttr;
+        attrPtr->string_handle = std::move(strHandle);
+        std::advance(it, (sizeof(pldm_bios_attr_table_entry) - 1));
+        lowerBound = htole64(lowerBound);
+        std::copy_n(reinterpret_cast<uint8_t*>(&lowerBound), sizeof(LowerBound),
+                    it);
+        std::advance(it, sizeof(lowerBound));
+        upperBound = htole64(upperBound);
+        std::copy_n(reinterpret_cast<uint8_t*>(&upperBound), sizeof(upperBound),
+                    it);
+        std::advance(it, sizeof(upperBound));
+        scalarIncrement = htole32(scalarIncrement);
+        std::copy_n(reinterpret_cast<uint8_t*>(&scalarIncrement),
+                    sizeof(scalarIncrement), it);
+        std::advance(it, sizeof(scalarIncrement));
+        defaultValue = htole64(defaultValue);
+        std::copy_n(reinterpret_cast<uint8_t*>(&defaultValue),
+                    sizeof(defaultValue), it);
+        std::advance(it, sizeof(defaultValue));
+
+        std::move(integerAttrTable.begin(), integerAttrTable.end(),
+                  std::back_inserter(attributeTable));
+    }
+}
+
+/** @brief Construct the attibute value table for BIOS type Integer and
+ *  Integer ReadOnly
+ *
+ *  @param[in] BIOSAttributeTable - the attribute table
+ *  @param[in] BIOSStringTable - the string table
+ *  @param[in, out] attributeValueTable - the attribute value table
+ *
+ */
+void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
+                             const BIOSTable& BIOSStringTable,
+                             Table& attributeValueTable)
+
+{
+    Response response;
+    BIOSAttributeTable.load(response);
+
+    auto tableData = response.data();
+    size_t tableLen = response.size();
+    auto attrPtr =
+        reinterpret_cast<struct pldm_bios_attr_table_entry*>(response.data());
+
+    while (1)
+    {
+        uint16_t attrHdl = attrPtr->attr_handle;
+        uint8_t attrType = attrPtr->attr_type;
+        uint16_t stringHdl = attrPtr->string_handle;
+        tableData += (sizeof(struct pldm_bios_attr_table_entry) - 1);
+        auto fieldsLength = sizeof(LowerBound) + sizeof(UpperBound) +
+                            sizeof(ScalarIncrement) + sizeof(DefaultValue);
+        tableData += fieldsLength;
+
+        auto attrName = findStringName(stringHdl, BIOSStringTable);
+        if (attrName.empty())
+        {
+            if (std::distance(tableData, response.data() + tableLen) <=
+                padChksumMax)
+            {
+                log<level::ERR>("Did not find string name for handle",
+                                entry("STRING_HANDLE=%d", stringHdl));
+                return;
+            }
+            attrPtr =
+                reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
+            continue;
+        }
+
+        CurrentValue currValue;
+        try
+        {
+            currValue = getAttrValue(attrName);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>(
+                "constructAttrValueTable returned error for attribute",
+                entry("NAME=%s", attrName.c_str()),
+                entry("ERROR=%s", e.what()));
+            if (std::distance(tableData, response.data() + tableLen) <=
+                padChksumMax)
+            {
+                return;
+            }
+
+            attrPtr =
+                reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
+            continue;
+        }
+
+        BIOSTableRow integerAttrValTable(
+            (sizeof(struct pldm_bios_attr_val_table_entry) - 1) +
+                sizeof(CurrentValue),
+            0);
+        BIOSTableRow::iterator it = integerAttrValTable.begin();
+        auto attrValPtr =
+            reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(
+                integerAttrValTable.data());
+        attrValPtr->attr_handle = attrHdl;
+        attrValPtr->attr_type = attrType;
+        std::advance(it, (sizeof(pldm_bios_attr_val_table_entry) - 1));
+        currValue = htole64(currValue);
+        std::copy_n(reinterpret_cast<uint8_t*>(&currValue),
+                    sizeof(CurrentValue), it);
+        std::move(integerAttrValTable.begin(), integerAttrValTable.end(),
+                  std::back_inserter(attributeValueTable));
+
+        if (std::distance(tableData, response.data() + tableLen) <=
+            padChksumMax)
+        {
+            break;
+        }
+
+        attrPtr =
+            reinterpret_cast<struct pldm_bios_attr_table_entry*>(tableData);
+    }
+}
+
+} // namespace bios_type_integer
+
 using typeHandler = void (*)(const BIOSTable& BIOSStringTable,
                              const char* biosJsonDir, Table& attributeTable);
 std::map<std::string, typeHandler> attrTypeHandlers{
     {"enum_attrs.json", bios_type_enum::constructAttrTable},
-    {"string_attrs.json", bios_type_string::constructAttrTable}};
+    {"string_attrs.json", bios_type_string::constructAttrTable},
+    {"integer_attrs.json", bios_type_integer::constructAttrTable}};
 
 using valueHandler = void (*)(const BIOSTable& BIOSAttributeTable,
 
@@ -779,7 +952,8 @@ std::map<std::string, valueHandler> attrValueHandlers{
 
     {"enum_attrs.json", bios_type_enum::constructAttrValueTable},
 
-    {"string_attrs.json", bios_type_string::constructAttrValueTable}};
+    {"string_attrs.json", bios_type_string::constructAttrValueTable},
+    {"integer_attrs.json", bios_type_integer::constructAttrValueTable}};
 
 /** @brief Construct the BIOS attribute table
  *
