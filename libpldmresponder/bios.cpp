@@ -761,13 +761,13 @@ std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
     {bios_parser::bIOSEnumJson, bios_type_enum::constructAttrTable},
     {bios_parser::bIOSStrJson, bios_type_string::constructAttrTable}};
 
-using valueHandler = void (*)(const BIOSTable& BIOSAttributeTable,
+using valueHandler = std::function<void(const BIOSTable& BIOSAttributeTable,
 
-                              const BIOSTable& BIOSStringTable,
+                                        const BIOSTable& BIOSStringTable,
 
-                              Table& attributeTable);
+                                        Table& attributeTable)>;
 
-std::map<std::string, valueHandler> attrValueHandlers{
+std::map<BIOSJsonName, valueHandler> attrValueHandlers{
     {bios_parser::bIOSEnumJson, bios_type_enum::constructAttrValueTable},
     {bios_parser::bIOSStrJson, bios_type_string::constructAttrValueTable}};
 
