@@ -54,18 +54,30 @@ void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
                              Table& attributeTable);
 } // namespace bios_type_string
 
+namespace bios_type_integer
+{
+
+void constructAttrTable(const BIOSTable& BIOSStringTable,
+                        const char* biosJsonDir, Table& attributeTable);
+void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
+                             const BIOSTable& BIOSStringTable,
+                             Table& attributeTable);
+} // namespace bios_type_integer
+
 using typeHandler = void (*)(const BIOSTable& BIOSStringTable,
                              const char* biosJsonDir, Table& attributeTable);
 std::map<std::string, typeHandler> attrTypeHandlers{
     {"enum_attrs.json", bios_type_enum::constructAttrTable},
-    {"string_attrs.json", bios_type_string::constructAttrTable}};
+    {"string_attrs.json", bios_type_string::constructAttrTable},
+    {"integer_attrs.json", bios_type_integer::constructAttrTable}};
 
 using valueHandler = void (*)(const BIOSTable& BIOSAttributeTable,
                               const BIOSTable& BIOSStringTable,
                               Table& attributeTable);
 std::map<std::string, valueHandler> attrValueHandlers{
     {"enum_attrs.json", bios_type_enum::constructAttrValueTable},
-    {"string_attrs.json", bios_type_string::constructAttrValueTable}};
+    {"string_attrs.json", bios_type_string::constructAttrValueTable},
+    {"integer_attrs.json", bios_type_integer::constructAttrValueTable}};
 
 namespace utils
 {
@@ -797,6 +809,63 @@ void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
 }
 
 } // end namespace bios_type_string
+
+namespace bios_type_integer
+{
+
+using namespace bios_parser::bios_integer;
+
+void constructAttrTable(const BIOSTable& BIOSStringTable,
+                        const char* biosJsonDir, Table& attributeTable)
+{
+    setupValueLookup(biosJsonDir);
+    const auto& attributeMap = getValues();
+    StringHandle strHandle;
+
+    for (const auto& [key, value] : attributeMap)
+    {
+        try
+        {
+            strHandle = findStringHandle(key, BIOSStringTable);
+        }
+        catch (InternalFailure& e)
+        {
+            log<level::ERR>("Could not find handle for BIOS integer",
+                            entry("ATTRIBUTE=%s", key.c_str()));
+            continue;
+        }
+        uint8_t typeOfAttr = (std::get<AttrIsReadOnly>(value))
+                                 ? PLDM_BIOS_INTEGER_READ_ONLY
+                                 : PLDM_BIOS_INTEGER;
+        uint64_t lowerBound = std::get<AttrLowerBound>(value);
+        uint64_t upperBound = std::get<AttrUpperBound>(value);
+        uint32_t scalarIncrement = std::get<AttrScalarIncrement>(value);
+        uint64_t defaultValue = std::get<AttrDefaultValue>(value);
+
+        pldm_bios_attr_table_integer integer{lowerBound, upperBound,
+                                             scalarIncrement, defaultValue};
+        BIOSTableRow integerAttrTable(
+            (sizeof(pldm_bios_attr_table_entry) - 1) + sizeof(integer), 0);
+
+        auto attrPtr = reinterpret_cast<pldm_bios_attr_table_entry*>(
+            integerAttrTable.data());
+        attrPtr->attr_handle = nextAttributeHandle();
+        attrPtr->attr_type = typeOfAttr;
+        attrPtr->string_handle = std::move(strHandle);
+
+        auto filedsPtr = (integerAttrTable.data() +
+                          (sizeof(pldm_bios_attr_table_entry) - 1));
+        encode_bios_attribute_table_integer_row(&integer, filedsPtr,
+                                                sizeof(integer));
+    }
+}
+void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
+                             const BIOSTable& BIOSStringTable,
+                             Table& attributeValueTable)
+{
+}
+
+} // namespace bios_type_integer
 
 /** @brief Construct the BIOS attribute table
  *
