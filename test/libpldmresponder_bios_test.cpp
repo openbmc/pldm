@@ -73,9 +73,8 @@ TEST(GetBIOSStrings, allScenarios)
     ASSERT_EQ(strings == vec, true);
 }
 
-TEST(getAttrValue, allScenarios)
+TEST(getAttrValue, enumScenarios)
 {
-    using namespace bios_parser::bios_enum;
     // All the BIOS Strings in the BIOS JSON config files.
     AttrValuesMap valueMap{
         {"HMCManagedState", {false, {"On", "Off"}, {"On"}}},
@@ -84,18 +83,43 @@ TEST(getAttrValue, allScenarios)
         {"CodeUpdatePolicy",
          {false, {"Concurrent", "Disruptive"}, {"Concurrent"}}}};
 
-    auto rc = setupValueLookup("./bios_jsons");
+    auto rc = bios_parser::bios_enum::setupValueLookup("./bios_jsons");
     ASSERT_EQ(rc, 0);
 
-    auto values = getValues();
+    auto values = bios_parser::bios_enum::getValues();
     ASSERT_EQ(valueMap == values, true);
 
-    CurrentValues cv{"Concurrent"};
-    auto value = getAttrValue("CodeUpdatePolicy");
+    bios_parser::bios_enum::CurrentValues cv{"Concurrent"};
+    auto value = bios_parser::bios_enum::getAttrValue("CodeUpdatePolicy");
     ASSERT_EQ(value == cv, true);
 
     // Invalid attribute name
-    ASSERT_THROW(getAttrValue("CodeUpdatePolic"), std::out_of_range);
+    ASSERT_THROW(bios_parser::bios_enum::getAttrValue("CodeUpdatePolic"),
+                 std::out_of_range);
+}
+
+TEST(getAttrValue, stringScenarios)
+{
+    // All the BIOS Strings in the BIOS JSON config files.
+    bios_parser::bios_string::AttrValuesMap valueMap{
+        {"str_example1", {false, 1, 1, 100, 3, "abc"}},
+        {"str_example2", {false, 2, 0, 100, 0, ""}},
+        {"str_example3", {false, 0, 1, 100, 2, "ef"}}};
+
+    auto rc = bios_parser::bios_string::setupValueLookup("./bios_jsons");
+    EXPECT_EQ(rc, 0);
+
+    auto values = bios_parser::bios_string::getValues();
+    ASSERT_EQ(valueMap == values, true);
+
+    // Test the attribute without dbus
+    std::string cv = "ef";
+    auto value = bios_parser::bios_string::getAttrValue("str_example3");
+    EXPECT_EQ(value, cv);
+
+    // Invalid attribute name
+    ASSERT_THROW(bios_parser::bios_string::getAttrValue("str_example"),
+                 std::out_of_range);
 }
 
 namespace fs = std::filesystem;
@@ -382,6 +406,115 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeValueTableTestGoodRequest)
             }
         }
         times++;
+    }
+
+} // end TEST
+
+class TestSingleTypeBIOSTable : public ::testing::Test
+{
+  public:
+    void SetUp() // will be executed before each individual test defined in
+                 // TestSingleTypeBIOSTable
+    {
+        char tmpdir[] = "/tmp/singleTypeBIOSTable.XXXXXX";
+        destBiosPath = fs::path(mkdtemp(tmpdir));
+    }
+
+    void TearDown() // will be executed after each individual test defined in
+                    // TestSingleTypeBIOSTable
+    {
+        fs::remove_all(destBiosPath);
+    }
+
+    void CopySingleJsonFile(std::string file)
+    {
+        fs::path srcDir("./bios_jsons");
+        fs::path srcBiosPath = srcDir / file;
+        std::filesystem::copy(srcBiosPath, destBiosPath);
+    }
+
+    fs::path destBiosPath;
+};
+
+TEST_F(TestSingleTypeBIOSTable, getBIOSAttributeValueTableBasedOnStringTypeTest)
+{
+    // Copy string json file to the destination
+    TestSingleTypeBIOSTable::CopySingleJsonFile(bios_parser::bIOSStrJson);
+    auto fpath = TestSingleTypeBIOSTable::destBiosPath.c_str();
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
+        requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    struct pldm_get_bios_table_req* req =
+        (struct pldm_get_bios_table_req*)request->payload;
+
+    // Get string table with string json file only
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_STRING_TABLE;
+
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+    auto str_response =
+        internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+
+    // Get attribute table with string json file only
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_ATTR_TABLE;
+
+    auto attr_response =
+        internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+
+    // Get attribute value table with string type
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_ATTR_VAL_TABLE;
+
+    // Test attribute str_example3 here, which has no dbus
+    for (uint8_t times = 0; times < 2; times++)
+    { // first time first table second time existing table
+        auto response = internal::buildBIOSTables(request, requestPayloadLength,
+                                                  fpath, fpath);
+        auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+        struct pldm_get_bios_table_resp* resp =
+            reinterpret_cast<struct pldm_get_bios_table_resp*>(
+                responsePtr->payload);
+
+        ASSERT_EQ(0, resp->completion_code);
+        ASSERT_EQ(0, resp->next_transfer_handle);
+        ASSERT_EQ(PLDM_START_AND_END, resp->transfer_flag);
+
+        uint32_t attrValTableLen =
+            response.size() - sizeof(pldm_msg_hdr) -
+            (sizeof(struct pldm_get_bios_table_resp) - 1);
+        uint32_t traversed = 0;
+        uint8_t* tableData = reinterpret_cast<uint8_t*>(resp->table_data);
+
+        while (true)
+        {
+            struct pldm_bios_attr_val_table_entry* ptr =
+                reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(
+                    tableData);
+            uint16_t attrHdl = ptr->attr_handle;
+            uint8_t attrType = ptr->attr_type;
+            EXPECT_EQ(PLDM_BIOS_STRING, attrType);
+            tableData += sizeof(attrHdl) + sizeof(attrType);
+            traversed += sizeof(attrHdl) + sizeof(attrType);
+            auto sizeDefaultStr = *(reinterpret_cast<uint16_t*>(tableData));
+            EXPECT_EQ(2, sizeDefaultStr);
+            tableData += sizeof(uint16_t);
+            traversed += sizeof(uint16_t);
+            EXPECT_EQ('e', *tableData);
+            EXPECT_EQ('f', *(tableData + 1));
+            tableData += sizeDefaultStr;
+            traversed += sizeDefaultStr;
+            break; // testing for first row
+            if ((attrValTableLen - traversed) < 8)
+            {
+                break;
+            }
+        }
     }
 
 } // end TEST
