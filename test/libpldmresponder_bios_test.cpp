@@ -73,9 +73,8 @@ TEST(GetBIOSStrings, allScenarios)
     ASSERT_EQ(strings == vec, true);
 }
 
-TEST(getAttrValue, allScenarios)
+TEST(getAttrValue, enumScenarios)
 {
-    using namespace bios_parser::bios_enum;
     // All the BIOS Strings in the BIOS JSON config files.
     AttrValuesMap valueMap{
         {"HMCManagedState", {false, {"On", "Off"}, {"On"}}},
@@ -84,18 +83,43 @@ TEST(getAttrValue, allScenarios)
         {"CodeUpdatePolicy",
          {false, {"Concurrent", "Disruptive"}, {"Concurrent"}}}};
 
-    auto rc = setupValueLookup("./bios_jsons");
+    auto rc = bios_parser::bios_enum::setupValueLookup("./bios_jsons");
     ASSERT_EQ(rc, 0);
 
-    auto values = getValues();
+    auto values = bios_parser::bios_enum::getValues();
     ASSERT_EQ(valueMap == values, true);
 
-    CurrentValues cv{"Concurrent"};
-    auto value = getAttrValue("CodeUpdatePolicy");
+    bios_parser::bios_enum::CurrentValues cv{"Concurrent"};
+    auto value = bios_parser::bios_enum::getAttrValue("CodeUpdatePolicy");
     ASSERT_EQ(value == cv, true);
 
     // Invalid attribute name
-    ASSERT_THROW(getAttrValue("CodeUpdatePolic"), std::out_of_range);
+    ASSERT_THROW(bios_parser::bios_enum::getAttrValue("CodeUpdatePolic"),
+                 std::out_of_range);
+}
+
+TEST(getAttrValue, stringScenarios)
+{
+    // All the BIOS Strings in the BIOS JSON config files.
+    bios_parser::bios_string::AttrValuesMap valueMap{
+        {"str_example1", {false, 1, 1, 100, 3, "abc"}},
+        {"str_example2", {false, 2, 0, 100, 0, ""}},
+        {"str_example3", {false, 0, 1, 100, 2, "ef"}}};
+
+    auto rc = bios_parser::bios_string::setupValueLookup("./bios_jsons");
+    ASSERT_EQ(rc, 0);
+
+    auto values = bios_parser::bios_string::getValues();
+    ASSERT_EQ(valueMap == values, true);
+
+    // Test the attribute without dbus
+    bios_parser::bios_string::CurrentValue cv = "ef";
+    auto value = bios_parser::bios_string::getAttrValue("str_example3");
+    ASSERT_EQ(value == cv, true);
+
+    // Invalid attribute name
+    ASSERT_THROW(bios_parser::bios_string::getAttrValue("str_example"),
+                 std::out_of_range);
 }
 
 namespace fs = std::filesystem;
@@ -112,7 +136,7 @@ class TestAllBIOSTables : public ::testing::Test
     static void TearDownTestCase() // will be executed once at th eend of all
                                    // TestAllBIOSTables objects
     {
-        // fs::remove_all(biosPath);  // wkr, for test
+        fs::remove_all(biosPath);
     }
 
     static fs::path biosPath;
