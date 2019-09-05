@@ -329,3 +329,19 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadEncodeResponse)
         sizeof(attributeData), response);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(BIOSAttributeTableIntegerRow, testGoodEncode)
+{
+    struct pldm_bios_attr_table_integer integer = {65523, 123, 33045, 1234567};
+
+    std::array<uint8_t, sizeof(integer)> row{};
+
+    auto rc = encode_bios_attribute_table_integer_row(&integer, row.data(),
+                                                      row.size());
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    auto res = reinterpret_cast<pldm_bios_attr_table_integer*>(row.data());
+
+    ASSERT_EQ(33045, htole32(res->scalar_increment));
+}

@@ -208,3 +208,22 @@ int encode_get_bios_current_value_by_handle_resp(
 	}
 	return PLDM_SUCCESS;
 }
+
+int encode_bios_attribute_table_integer_row(
+    const struct pldm_bios_attr_table_integer *integer, void *row,
+    size_t length)
+{
+	if (integer == NULL || row == NULL)
+		return PLDM_ERROR_INVALID_DATA;
+
+	if (length != sizeof(struct pldm_bios_attr_table_integer))
+		return PLDM_ERROR_INVALID_LENGTH;
+
+	struct pldm_bios_attr_table_integer *res = row;
+	res->lower_bound = htole64(integer->lower_bound);
+	res->upper_bound = htole64(integer->upper_bound);
+	res->scalar_increment = htole32(integer->scalar_increment);
+	res->default_value = htole64(integer->default_value);
+
+	return PLDM_SUCCESS;
+}

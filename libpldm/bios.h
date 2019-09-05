@@ -91,6 +91,18 @@ struct pldm_get_bios_table_resp {
 	uint8_t table_data[1];
 } __attribute__((packed));
 
+/** @struct pldm_bios_attr_table_integer
+ *
+ *  Specific BIOS Attribute Table Fields For BIOSInteger
+ * and BIOSIntegerReadOnly Types
+ */
+struct pldm_bios_attr_table_integer {
+	uint64_t lower_bound;
+	uint64_t upper_bound;
+	uint32_t scalar_increment;
+	uint64_t default_value;
+} __attribute__((packed));
+
 /** @struct pldm_get_date_time_resp
  *
  *  Structure representing PLDM get date time response
@@ -253,6 +265,19 @@ int encode_get_bios_current_value_by_handle_resp(
     uint8_t instance_id, uint8_t completion_code, uint32_t next_transfer_handle,
     uint8_t transfer_flag, const uint8_t *attribute_data,
     size_t attribute_length, struct pldm_msg *msg);
+
+/** @brief Create a PLDM BIOS Attribute Table Fields row for BIOSInteger
+ * and BIOSIntegerReadOnly types
+ *
+ *  @param[in] integer - BIOS Attribute Table Fiels For BIOSInteger and
+ * BIOSIntegerOnly
+ *  @param[out] row - Message will be written to this
+ *  @param[in] length - Length of row
+ *  @return pldm_completion_codes
+ */
+int encode_bios_attribute_table_integer_row(
+    const struct pldm_bios_attr_table_integer *integer, void *row,
+    size_t length);
 
 #ifdef __cplusplus
 }
