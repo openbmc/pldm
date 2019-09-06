@@ -334,8 +334,8 @@ TEST(SetBiosAttributeCurrentValue, testGoodEncodeRequest)
 {
     uint8_t instanceId = 10;
     uint32_t transferHandle = 32;
-    uint8_t transferFlag = 8;
-    uint32_t attributeData;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint32_t attributeData = 44;
     std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES +
                             sizeof(attributeData)>
         requestMsg{};
@@ -360,8 +360,8 @@ TEST(SetBiosAttributeCurrentValue, testBadEncodeRequest)
 {
     uint8_t instanceId = 10;
     uint32_t transferHandle = 32;
-    uint8_t transferFlag = 8;
-    uint32_t attributeData;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint32_t attributeData = 44;
     std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES>
         requestMsg{};
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
@@ -380,8 +380,8 @@ TEST(SetBiosAttributeCurrentValue, testBadEncodeRequest)
 TEST(SetBiosAttributeCurrentValue, testGoodDecodeRequest)
 {
     uint32_t transferHandle = 32;
-    uint8_t transferFlag;
-    uint32_t attributeData;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint32_t attributeData = 44;
 
     std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES +
                             sizeof(attributeData)>
@@ -414,9 +414,9 @@ TEST(SetBiosAttributeCurrentValue, testGoodDecodeRequest)
 TEST(SetBiosAttributeCurrentValue, testBadDecodeRequest)
 {
     uint32_t transferHandle = 32;
-    uint8_t transferFlag;
-    uint32_t attributeData;
-    size_t attributeDataLength;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint32_t attributeData = 44;
+    size_t attributeDataLength = sizeof(attributeData);
     std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES - 1>
         requestMsg{};
     auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
