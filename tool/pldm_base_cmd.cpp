@@ -3,6 +3,7 @@
 #include "pldm_cmd_helper.hpp"
 
 #include <string>
+#include <tuple>
 
 constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
@@ -16,6 +17,7 @@ using namespace std;
  */
 void getPLDMTypes(vector<std::string>&& args)
 {
+    std::ignore = args;
     // Create and encode the request message
     vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                sizeof(MCTP_MSG_TYPE_PLDM) +
