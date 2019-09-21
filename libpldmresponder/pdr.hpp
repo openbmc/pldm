@@ -47,6 +47,8 @@ using Pdr = std::vector<Entry>;
 class Repo
 {
   public:
+    virtual ~Repo() = default;
+
     /** @brief Add a new entry to the PDR
      *
      *  @param[in] entry - new PDR entry

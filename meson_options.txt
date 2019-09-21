@@ -1,0 +1,3 @@
+option('tests', type: 'feature', description: 'Build tests')
+option('oe-sdk', type: 'feature', description: 'Enable OE SDK')
+option('oem-ibm', type: 'feature', description: 'Enable IBM OEM PLDM')
