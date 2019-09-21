@@ -57,7 +57,7 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
 
 } // namespace utils
 
-Response getDateTime(const pldm_msg* request, size_t payloadLength)
+Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
 {
     uint8_t seconds = 0;
     uint8_t minutes = 0;
@@ -138,8 +138,9 @@ StringHandle nextStringHandle()
  *  @param[in] instanceID - instance ID to identify the command
  *  @param[in] biosJsonDir - path where the BIOS json files are present
  */
-Response getBIOSStringTable(BIOSTable& BIOSStringTable, uint32_t transferHandle,
-                            uint8_t transferOpFlag, uint8_t instanceID,
+Response getBIOSStringTable(BIOSTable& BIOSStringTable,
+                            uint32_t /*transferHandle*/,
+                            uint8_t /*transferOpFlag*/, uint8_t instanceID,
                             const char* biosJsonDir)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
@@ -601,8 +602,9 @@ Table constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
  */
 Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
                                const BIOSTable& BIOSStringTable,
-                               uint32_t transferHandle, uint8_t transferOpFlag,
-                               uint8_t instanceID, const char* biosJsonDir)
+                               uint32_t /*transferHandle*/,
+                               uint8_t /*transferOpFlag*/, uint8_t instanceID,
+                               const char* biosJsonDir)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
@@ -667,14 +669,14 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
  *  @param[in] transferOpFlag - flag to indicate which part of data being
  * transferred
  *  @param[in] instanceID - instance ID to identify the command
- *  @param[in] biosJsonDir -  path where the BIOS json files are present
  */
 Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
                                     const BIOSTable& BIOSAttributeTable,
                                     const BIOSTable& BIOSStringTable,
-                                    uint32_t& transferHandle,
-                                    uint8_t& transferOpFlag, uint8_t instanceID,
-                                    const char* biosJsonDir)
+                                    uint32_t& /*transferHandle*/,
+                                    uint8_t& /*transferOpFlag*/,
+                                    uint8_t instanceID,
+                                    const char* /*biosJsonDir*/)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);

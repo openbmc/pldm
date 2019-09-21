@@ -26,8 +26,8 @@ int sd_journal_send(const char* format, ...)
     return 0;
 }
 
-int sd_journal_send_with_location(const char* file, const char* line,
-                                  const char* func, const char* format, ...)
+int sd_journal_send_with_location(const char* /*file*/, const char* /*line*/,
+                                  const char* /*func*/, const char* format, ...)
 {
     logs.push_back(format);
     return 0;
