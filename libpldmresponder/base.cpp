@@ -47,7 +47,7 @@ void registerHandlers()
 
 } // namespace base
 
-Response getPLDMTypes(const pldm_msg* request, size_t payloadLength)
+Response getPLDMTypes(const pldm_msg* request, size_t /*payloadLength*/)
 {
     // DSP0240 has this as a bitfield8[N], where N = 0 to 7
     std::array<bitfield8_t, 8> types{};
@@ -146,7 +146,7 @@ Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
-Response getTID(const pldm_msg* request, size_t payloadLength)
+Response getTID(const pldm_msg* request, size_t /*payloadLength*/)
 {
     // assigned 1 to the bmc as the PLDM terminus
     uint8_t tid = 1;
