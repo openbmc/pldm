@@ -81,3 +81,7 @@ pldmd
 /test/libpldmresponder_file_io_test
 /test/libpldmresponder_pdr_state_effecter_test
 /test/libpldmresponder_bios_table_test
+
+# meson
+/build
+/builddir

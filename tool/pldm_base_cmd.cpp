@@ -14,7 +14,7 @@ using namespace std;
  * Main function that handles the GetPLDMTypes response callback via mctp
  *
  */
-void getPLDMTypes(vector<std::string>&& args)
+void getPLDMTypes(vector<std::string>&& /*args*/)
 {
     // Create and encode the request message
     vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
