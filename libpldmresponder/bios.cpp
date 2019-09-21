@@ -16,6 +16,7 @@
 #include <string>
 #include <variant>
 #include <vector>
+#include <tuple>
 
 using namespace pldm::responder::bios;
 using namespace bios_parser;
@@ -59,6 +60,7 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
 
 Response getDateTime(const pldm_msg* request, size_t payloadLength)
 {
+    std::ignore = payloadLength;
     uint8_t seconds = 0;
     uint8_t minutes = 0;
     uint8_t hours = 0;
@@ -142,6 +144,8 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable, uint32_t transferHandle,
                             uint8_t transferOpFlag, uint8_t instanceID,
                             const char* biosJsonDir)
 {
+    std::ignore = transferHandle;
+    std::ignore = transferOpFlag;
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -604,6 +608,8 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
                                uint32_t transferHandle, uint8_t transferOpFlag,
                                uint8_t instanceID, const char* biosJsonDir)
 {
+    std::ignore = transferHandle;
+    std::ignore = transferOpFlag;
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -667,15 +673,15 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
  *  @param[in] transferOpFlag - flag to indicate which part of data being
  * transferred
  *  @param[in] instanceID - instance ID to identify the command
- *  @param[in] biosJsonDir -  path where the BIOS json files are present
  */
 Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
                                     const BIOSTable& BIOSAttributeTable,
                                     const BIOSTable& BIOSStringTable,
                                     uint32_t& transferHandle,
-                                    uint8_t& transferOpFlag, uint8_t instanceID,
-                                    const char* biosJsonDir)
+                                    uint8_t& transferOpFlag, uint8_t instanceID)
 {
+    std::ignore = transferHandle;
+    std::ignore = transferOpFlag;
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -803,7 +809,7 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                     response = getBIOSAttributeValueTable(
                         BIOSAttributeValueTable, BIOSAttributeTable,
                         BIOSStringTable, transferHandle, transferOpFlag,
-                        request->hdr.instance_id, biosJsonDir);
+                        request->hdr.instance_id);
                 }
                 break;
             default:

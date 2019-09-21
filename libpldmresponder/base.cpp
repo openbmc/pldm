@@ -8,6 +8,7 @@
 #include <map>
 #include <stdexcept>
 #include <vector>
+#include <tuple>
 
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
@@ -49,6 +50,7 @@ void registerHandlers()
 
 Response getPLDMTypes(const pldm_msg* request, size_t payloadLength)
 {
+    std::ignore = payloadLength;
     // DSP0240 has this as a bitfield8[N], where N = 0 to 7
     std::array<bitfield8_t, 8> types{};
     for (const auto& type : capabilities)
@@ -148,6 +150,7 @@ Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
 
 Response getTID(const pldm_msg* request, size_t payloadLength)
 {
+    std::ignore = payloadLength;
     // assigned 1 to the bmc as the PLDM terminus
     uint8_t tid = 1;
 

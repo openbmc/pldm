@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <tuple>
 
 #include "libpldm/base.h"
 #include "libpldm/file_io.h"
@@ -29,6 +30,9 @@ int sd_journal_send(const char* format, ...)
 int sd_journal_send_with_location(const char* file, const char* line,
                                   const char* func, const char* format, ...)
 {
+    std::ignore = file;
+    std::ignore = line;
+    std::ignore = func;
     logs.push_back(format);
     return 0;
 }
