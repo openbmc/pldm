@@ -7,6 +7,7 @@
 #include <array>
 #include <boost/crc.hpp>
 #include <chrono>
+#include <cstring>
 #include <ctime>
 #include <iostream>
 #include <numeric>
@@ -246,7 +247,7 @@ StringHandle findStringHandle(const std::string& name,
     {
         hdl = tableEntry->string_handle;
         uint16_t len = tableEntry->string_length;
-        if (memcmp(name.c_str(), tableEntry->name, len) == 0)
+	if ( name.compare(0, name.length(), tableEntry->name, len) == 0 )
         {
             break;
         }
