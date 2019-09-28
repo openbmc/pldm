@@ -14,6 +14,7 @@
 
 #include <cstring>
 #include <fstream>
+#include <iostream>
 #include <phosphor-logging/log.hpp>
 
 #include "libpldm/base.h"
@@ -23,6 +24,26 @@ namespace pldm
 
 namespace responder
 {
+
+using namespace phosphor::logging;
+
+/** @struct AspeedXdmaOp
+ *
+ * Structure representing XDMA operation
+ */
+struct AspeedXdmaOp
+{
+    uint64_t hostAddr; //!< the DMA address on the host side, configured by
+                       //!< PCI subsystem.
+    uint32_t len;      //!< the size of the transfer in bytes, it should be a
+                       //!< multiple of 16 bytes
+    uint32_t upstream; //!< boolean indicating the direction of the DMA
+                       //!< operation, true means a transfer from BMC to host.
+    uint32_t bmcAddr;
+    uint32_t reserved;
+};
+
+constexpr auto xdmaDev = "/dev/aspeed-xdma";
 
 namespace oem_ibm
 {
@@ -41,26 +62,9 @@ void registerHandlers()
 } // namespace oem_ibm
 
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 
 namespace dma
 {
-
-/** @struct AspeedXdmaOp
- *
- * Structure representing XDMA operation
- */
-struct AspeedXdmaOp
-{
-    uint64_t hostAddr; //!< the DMA address on the host side, configured by
-                       //!< PCI subsystem.
-    uint32_t len;      //!< the size of the transfer in bytes, it should be a
-                       //!< multiple of 16 bytes
-    uint32_t upstream; //!< boolean indicating the direction of the DMA
-                       //!< operation, true means a transfer from BMC to host.
-};
-
-constexpr auto xdmaDev = "/dev/xdma";
 
 int DMA::transferDataHost(const fs::path& path, uint32_t offset,
                           uint32_t length, uint64_t address, bool upstream)
@@ -89,6 +93,10 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
     }
 
     utils::CustomFD xdmaFd(fd);
+
+    AspeedXdmaOp xdmaOp{};
+    xdmaOp.upstream = 2; // 2 = RESET
+    write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
 
     void* vgaMem;
     vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
@@ -126,7 +134,6 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
         }
     }
 
-    AspeedXdmaOp xdmaOp;
     xdmaOp.upstream = upstream ? 1 : 0;
     xdmaOp.hostAddr = address;
     xdmaOp.len = length;
@@ -139,6 +146,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
                         entry("RC=%d", rc), entry("UPSTREAM=%d", upstream),
                         entry("ADDRESS=%lld", address),
                         entry("LENGTH=%d", length));
+std::cerr << " DMA op fail " << rc << std::endl;
         return rc;
     }
 
