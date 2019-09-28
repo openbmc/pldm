@@ -24,27 +24,7 @@ namespace pldm
 namespace responder
 {
 
-namespace oem_ibm
-{
-
-void registerHandlers()
-{
-    registerHandler(PLDM_OEM, PLDM_GET_FILE_TABLE, std::move(getFileTable));
-    registerHandler(PLDM_OEM, PLDM_READ_FILE_INTO_MEMORY,
-                    std::move(readFileIntoMemory));
-    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_FROM_MEMORY,
-                    std::move(writeFileFromMemory));
-    registerHandler(PLDM_OEM, PLDM_READ_FILE, std::move(readFile));
-    registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
-}
-
-} // namespace oem_ibm
-
-namespace fs = std::filesystem;
 using namespace phosphor::logging;
-
-namespace dma
-{
 
 /** @struct AspeedXdmaOp
  *
@@ -58,9 +38,43 @@ struct AspeedXdmaOp
                        //!< multiple of 16 bytes
     uint32_t upstream; //!< boolean indicating the direction of the DMA
                        //!< operation, true means a transfer from BMC to host.
+    uint32_t bmcAddr;
+    uint32_t reserved;
 };
 
-constexpr auto xdmaDev = "/dev/xdma";
+constexpr auto xdmaDev = "/dev/aspeed-xdma";
+
+namespace oem_ibm
+{
+
+void registerHandlers()
+{
+    registerHandler(PLDM_OEM, PLDM_GET_FILE_TABLE, std::move(getFileTable));
+    registerHandler(PLDM_OEM, PLDM_READ_FILE_INTO_MEMORY,
+                    std::move(readFileIntoMemory));
+    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_FROM_MEMORY,
+                    std::move(writeFileFromMemory));
+    registerHandler(PLDM_OEM, PLDM_READ_FILE, std::move(readFile));
+    registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
+    AspeedXdmaOp xdmaOp{};
+    xdmaOp.upstream = 2; // 2 = RESET
+    int fd = -1;
+    fd = open(xdmaDev, O_RDWR);
+    if (fd < 0)
+    {
+        log<level::ERR>("Failed to open the XDMA device", entry("RC=%d", fd));
+        return;
+    }
+    utils::CustomFD xdmaFd(fd);
+    write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+}
+
+} // namespace oem_ibm
+
+namespace fs = std::filesystem;
+
+namespace dma
+{
 
 int DMA::transferDataHost(const fs::path& path, uint32_t offset,
                           uint32_t length, uint64_t address, bool upstream)
@@ -126,7 +140,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
         }
     }
 
-    AspeedXdmaOp xdmaOp;
+    AspeedXdmaOp xdmaOp{};
     xdmaOp.upstream = upstream ? 1 : 0;
     xdmaOp.hostAddr = address;
     xdmaOp.len = length;
