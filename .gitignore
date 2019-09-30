@@ -85,3 +85,6 @@ pldmd
 # meson
 /build
 /builddir
+
+# vscode
+.vscode
