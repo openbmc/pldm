@@ -55,6 +55,25 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
     year = decimalToBcd(time->tm_year + 1900); // The number of years since 1900
 }
 
+size_t getTableTotalsize(size_t sizeWithoutPad)
+{
+    auto padSize = getNumPadBytes(sizeWithoutPad);
+    return sizeWithoutPad + padSize + sizeof(uint32_t) /* checksum */;
+}
+
+void padAndChecksum(Table& table)
+{
+    auto padSize = getNumPadBytes(table.size());
+    table.insert(table.end(), padSize, 0);
+
+    boost::crc_32_type result;
+    size_t size = table.size();
+    result.process_bytes(table.data(), size);
+    uint32_t checkSum = result.checksum();
+    uint8_t* checkSumPtr = reinterpret_cast<uint8_t*>(&checkSum);
+    table.insert(table.end(), checkSumPtr, checkSumPtr + sizeof(checkSum));
+}
+
 } // namespace utils
 
 Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
@@ -162,17 +181,11 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
         size_t sizeWithoutPad =
             allStringsLen +
             (biosStrings.size() * (sizeof(pldm_bios_string_table_entry) - 1));
-        uint8_t padSize = utils::getNumPadBytes(sizeWithoutPad);
-        uint32_t stringTableSize{};
-        uint32_t checkSum;
-        if (biosStrings.size())
-        {
-            stringTableSize = sizeWithoutPad + padSize + sizeof(checkSum);
-        }
-        Table stringTable(
-            stringTableSize,
-            0); // initializing to 0 so that pad will be automatically added
-        auto tablePtr = reinterpret_cast<uint8_t*>(stringTable.data());
+        Table stringTable;
+        stringTable.reserve(utils::getTableTotalsize(sizeWithoutPad));
+
+        stringTable.resize(sizeWithoutPad);
+        auto tablePtr = stringTable.data();
         for (const auto& elem : biosStrings)
         {
             auto stringPtr =
@@ -186,22 +199,12 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
                         sizeof(stringPtr->string_length);
             tablePtr += elem.length();
         }
-        tablePtr += padSize;
 
-        if (stringTableSize)
-        {
-            // compute checksum
-            boost::crc_32_type result;
-            result.process_bytes(stringTable.data(), stringTableSize);
-            checkSum = result.checksum();
-            std::copy_n(reinterpret_cast<uint8_t*>(&checkSum), sizeof(checkSum),
-                        stringTable.data() + sizeWithoutPad + padSize);
-            BIOSStringTable.store(stringTable);
-        }
-
+        utils::padAndChecksum(stringTable);
+        BIOSStringTable.store(stringTable);
         response.resize(sizeof(pldm_msg_hdr) +
                             PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
-                            stringTableSize,
+                            stringTable.size(),
                         0);
         responsePtr = reinterpret_cast<pldm_msg*>(response.data());
         size_t respPayloadLength = response.size();
@@ -815,28 +818,8 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
                                        response.size(), responsePtr);
             return response;
         }
-
-        // calculate pad
-        uint8_t padSize = utils::getNumPadBytes(attributeTable.size());
-        std::vector<uint8_t> pad(padSize, 0);
-        if (padSize)
-        {
-            std::move(pad.begin(), pad.end(),
-                      std::back_inserter(attributeTable));
-        }
-
-        if (!attributeTable.empty())
-        {
-            // compute checksum
-            boost::crc_32_type result;
-            size_t size = attributeTable.size();
-            result.process_bytes(attributeTable.data(), size);
-            uint32_t checkSum = result.checksum();
-            attributeTable.resize(size + sizeof(checkSum));
-            std::copy_n(reinterpret_cast<uint8_t*>(&checkSum), sizeof(checkSum),
-                        attributeTable.data() + size);
-            BIOSAttributeTable.store(attributeTable);
-        }
+        utils::padAndChecksum(attributeTable);
+        BIOSAttributeTable.store(attributeTable);
         response.resize(sizeof(pldm_msg_hdr) +
                         PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
                         attributeTable.size());
