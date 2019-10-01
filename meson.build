@@ -21,6 +21,12 @@ if get_option('oem-ibm').enabled()
   conf_data.set_quoted('FILE_TABLE_JSON', '/etc/default/obmc/pldm/fileTable.json')
   add_global_arguments('-DOEM_IBM', language : 'c')
   add_global_arguments('-DOEM_IBM', language : 'cpp')
+  executable(
+    'xdma-reset',
+    'oem/ibm/xdma_reset.cpp',
+    implicit_include_directories: false,
+    install: true,
+    install_dir: get_option('bindir'))
 endif
 configure_file(output: 'config.h',
   configuration: conf_data
