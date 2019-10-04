@@ -60,7 +60,7 @@ struct AspeedXdmaOp
                        //!< operation, true means a transfer from BMC to host.
 };
 
-constexpr auto xdmaDev = "/dev/xdma";
+constexpr auto xdmaDev = "/dev/aspeed-xdma";
 
 int DMA::transferDataHost(const fs::path& path, uint32_t offset,
                           uint32_t length, uint64_t address, bool upstream)
