@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <nlohmann/json.hpp>
 #include <optional>
 #include <phosphor-logging/log.hpp>
@@ -15,21 +16,43 @@ using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
 
-namespace
-{
-
 const std::vector<Json> emptyJsonList{};
 const Json emptyJson{};
 
-} // namespace
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+};
 
-int parseBiosJsonFile(const char* dirPath, const std::string& fileName,
+using AttrName = std::string;
+using BIOSJsonName = std::string;
+using AttrLookup = std::map<AttrName, std::optional<DBusMapping>>;
+using BIOSStringHandler =
+    std::function<int(const Json& entry, Strings& strings)>;
+using AttrLookupHandler = std::function<int(const Json& entry, AttrLookup)>;
+using typeHandler = std::function<int(const Json& entry)>;
+
+Strings BIOSStrings;
+AttrLookup BIOSAttrLookup;
+
+bool isAttributeReadOnly(const std::string& attrName)
+{
+    return BIOSAttrLookup.at(attrName) == std::nullopt;
+}
+
+const Strings& getStrings()
+{
+    return BIOSStrings;
+}
+
+int parseBiosJsonFile(const fs::path& dirPath, const std::string& fileName,
                       Json& fileData)
 {
     int rc = 0;
 
-    fs::path filePath(dirPath);
-    filePath /= fileName;
+    fs::path filePath = dirPath / fileName;
 
     std::ifstream jsonFile(filePath);
     if (!jsonFile.is_open())
@@ -62,31 +85,14 @@ using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
                  uint64_t, double, std::string>;
 using Value = std::string;
+using DbusValToValMap = std::map<PropertyValue, Value>;
 
-/** @struct DBusMapping
- *
- *  Data structure for storing information regarding BIOS enumeration attribute
- *  and the D-Bus object for the attribute.
- */
-struct DBusMapping
-{
-    std::string objectPath;   //!< D-Bus object path
-    std::string interface;    //!< D-Bus interface
-    std::string propertyName; //!< D-Bus property name
-    std::map<PropertyValue, Value>
-        dBusValToValMap; //!< Map of D-Bus property
-                         //!< value to attribute value
-};
+std::map<AttrName, DbusValToValMap> dbusValToValMaps;
 
 /** @brief Map containing the possible and the default values for the BIOS
  *         enumeration type attributes.
  */
 AttrValuesMap valueMap;
-
-/** @brief Map containing the optional D-Bus property information about the
- *         BIOS enumeration type attributes.
- */
-std::map<AttrName, std::optional<DBusMapping>> attrLookup;
 
 /** @brief Populate the mapping between D-Bus property value and attribute value
  *         for the BIOS enumeration attribute.
@@ -97,11 +103,12 @@ std::map<AttrName, std::optional<DBusMapping>> attrLookup;
  *  @param[out] mapping - D-Bus mapping object for the attribute
  *
  */
-void populateMapping(const std::string& type, const Json& dBusValues,
-                     const PossibleValues& pv, DBusMapping& mapping)
+DbusValToValMap populateMapping(const std::string& type, const Json& dBusValues,
+                                const PossibleValues& pv)
 {
     size_t pos = 0;
     PropertyValue value;
+    DbusValToValMap valueMap;
     for (auto it = dBusValues.begin(); it != dBusValues.end(); ++it, ++pos)
     {
         if (type == "uint8_t")
@@ -150,102 +157,56 @@ void populateMapping(const std::string& type, const Json& dBusValues,
                             entry("TYPE=%s", type.c_str()));
         }
 
-        mapping.dBusValToValMap.emplace(value, pv[pos]);
-    }
-}
-
-/** @brief Read the possible values for the BIOS enumeration type
- *
- *  @param[in] possibleValues - json array of BIOS enumeration possible values
- */
-PossibleValues readPossibleValues(Json& possibleValues)
-{
-    Strings biosStrings{};
-
-    for (auto& val : possibleValues)
-    {
-        biosStrings.emplace_back(std::move(val));
+        valueMap.emplace(value, pv[pos]);
     }
 
-    return biosStrings;
+    return valueMap;
 }
 
 } // namespace internal
 
-int setupValueLookup(const char* dirPath)
+int setupBIOSStrings(const Json& entry, Strings& strings)
 {
-    int rc = 0;
+    Json pvs = entry.value("possible_values", emptyJsonList);
 
-    if (!internal::valueMap.empty() && !internal::attrLookup.empty())
+    for (auto& pv : pvs)
     {
-        return rc;
+        strings.emplace_back(std::move(pv.get<std::string>()));
     }
 
-    // Parse the BIOS enumeration config file
-    fs::path filePath(dirPath);
-    filePath /= bIOSEnumJson;
+    return 0;
+}
 
-    std::ifstream jsonFile(filePath);
-    if (!jsonFile.is_open())
+int setup(const Json& entry)
+{
+    PossibleValues possibleValues;
+    DefaultValues defaultValues;
+
+    std::string attrName = entry.value("attribute_name", "");
+    Json pv = entry["possible_values"];
+    for (auto& val : pv)
     {
-        log<level::ERR>("BIOS enum config file does not exist",
-                        entry("FILE=%s", filePath.c_str()));
-        rc = -1;
-        return rc;
+        possibleValues.emplace_back(std::move(val));
     }
-
-    auto fileData = Json::parse(jsonFile, nullptr, false);
-    if (fileData.is_discarded())
+    Json dv = entry["default_values"];
+    for (auto& val : dv)
     {
-        log<level::ERR>("Parsing config file failed");
-        rc = -1;
-        return rc;
+        defaultValues.emplace_back(std::move(val));
     }
-
-    auto entries = fileData.value("entries", emptyJsonList);
-    // Iterate through each JSON object in the config file
-    for (const auto& entry : entries)
+    if (entry.count("dbus") != 0)
     {
-        std::string attr = entry.value("attribute_name", "");
-        PossibleValues possibleValues;
-        DefaultValues defaultValues;
-
-        Json pv = entry["possible_values"];
-        for (auto& val : pv)
-        {
-            possibleValues.emplace_back(std::move(val));
-        }
-
-        Json dv = entry["default_values"];
-        for (auto& val : dv)
-        {
-            defaultValues.emplace_back(std::move(val));
-        }
-
-        std::optional<internal::DBusMapping> dBusMap = std::nullopt;
-
-        if (entry.count("dbus") != 0)
-        {
-            auto dBusEntry = entry.value("dbus", emptyJson);
-            dBusMap = std::make_optional<internal::DBusMapping>();
-            dBusMap.value().objectPath = dBusEntry.value("object_path", "");
-            dBusMap.value().interface = dBusEntry.value("interface", "");
-            dBusMap.value().propertyName = dBusEntry.value("property_name", "");
-            std::string propType = dBusEntry.value("property_type", "");
-            Json propValues = dBusEntry["property_values"];
-            internal::populateMapping(propType, propValues, possibleValues,
-                                      dBusMap.value());
-        }
-
-        internal::attrLookup.emplace(attr, std::move(dBusMap));
-
-        // Defaulting all the types of attributes to BIOSEnumeration
-        internal::valueMap.emplace(
-            std::move(attr), std::make_tuple(false, std::move(possibleValues),
-                                             std::move(defaultValues)));
+        auto dbusEntry = entry.value("dbus", emptyJson);
+        std::string propertyType = dbusEntry.value("property_type", "");
+        Json propValues = dbusEntry["property_values"];
+        internal::dbusValToValMaps.emplace(
+            attrName, internal::populateMapping(propertyType, propValues,
+                                                possibleValues));
     }
-
-    return rc;
+    // Defaulting all the types of attributes to BIOSEnumeration
+    internal::valueMap.emplace(std::move(attrName),
+                               std::make_tuple(false, std::move(possibleValues),
+                                               std::move(defaultValues)));
+    return 0;
 }
 
 const AttrValuesMap& getValues()
@@ -255,7 +216,7 @@ const AttrValuesMap& getValues()
 
 CurrentValues getAttrValue(const AttrName& attrName)
 {
-    const auto& dBusMap = internal::attrLookup.at(attrName);
+    const auto& dBusMap = BIOSAttrLookup.at(attrName);
     CurrentValues currentValues;
     internal::PropertyValue propValue;
 
@@ -266,18 +227,19 @@ CurrentValues getAttrValue(const AttrName& attrName)
         return currentValues;
     }
 
+    const auto& dbusValToValMap = internal::dbusValToValMaps.at(attrName);
     auto bus = sdbusplus::bus::new_default();
     auto service = pldm::responder::getService(bus, dBusMap.value().objectPath,
                                                dBusMap.value().interface);
     auto method =
         bus.new_method_call(service.c_str(), dBusMap.value().objectPath.c_str(),
                             "org.freedesktop.DBus.Properties", "Get");
-    method.append(dBusMap.value().interface, dBusMap.value().propertyName);
+    method.append(dBusMap->interface, dBusMap->propertyName);
     auto reply = bus.call(method);
     reply.read(propValue);
 
-    auto iter = dBusMap.value().dBusValToValMap.find(propValue);
-    if (iter != dBusMap.value().dBusValToValMap.end())
+    auto iter = dbusValToValMap.find(propValue);
+    if (iter != dbusValToValMap.end())
     {
         currentValues.push_back(iter->second);
     }
@@ -315,118 +277,56 @@ const std::map<std::string, uint8_t> strTypeMap{
 namespace internal
 {
 
-/** @struct DBusMapping
- *
- *  Data structure for storing information regarding BIOS string attribute
- *  and the D-Bus object for the attribute.
- */
-struct DBusMapping
-{
-    std::string objectPath;   //!< D-Bus object path
-    std::string interface;    //!< D-Bus interface
-    std::string propertyName; //!< D-Bus property name
-};
-
 /** @brief Map containing the possible and the default values for the BIOS
  *         string type attributes.
  */
 AttrValuesMap valueMap;
 
-/** @brief Map containing the optional D-Bus property information about the
- *         BIOS string type attributes.
- */
-std::map<AttrName, std::optional<DBusMapping>> attrLookup;
-
 } // namespace internal
 
-int setupValueLookup(const char* dirPath)
+int setup(const Json& entry)
 {
-    int rc = 0;
 
-    if (!internal::valueMap.empty() && !internal::attrLookup.empty())
+    std::string attr = entry.value("attribute_name", "");
+    // Transfer string type from string to enum
+    std::string strTypeTmp = entry.value("string_type", "Unknown");
+    auto iter = strTypeMap.find(strTypeTmp);
+    if (iter == strTypeMap.end())
     {
-        return rc;
+        log<level::ERR>(
+            "Wrong string type",
+            phosphor::logging::entry("STRING_TYPE=%s", strTypeTmp.c_str()),
+            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
+        return -1;
+    }
+    uint8_t strType = iter->second;
+
+    uint16_t minStrLen = entry.value("minimum_string_length", 0);
+    uint16_t maxStrLen = entry.value("maximum_string_length", 0);
+    if (maxStrLen - minStrLen < 0)
+    {
+        log<level::ERR>(
+            "Maximum string length is smaller than minimum string length",
+            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
+        return -1;
+    }
+    uint16_t defaultStrLen = entry.value("default_string_length", 0);
+    std::string defaultStr = entry.value("default_string", "");
+    if ((defaultStrLen == 0) && (defaultStr.size() > 0))
+    {
+        log<level::ERR>(
+            "Default string length is 0, but default string is existing",
+            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
+        return -1;
     }
 
-    Json fileData;
-    rc = parseBiosJsonFile(dirPath, bIOSStrJson, fileData);
-    if (rc != 0)
-    {
-        return rc;
-    }
+    // Defaulting all the types of attributes to BIOSString
+    internal::valueMap.emplace(
+        std::move(attr),
+        std::make_tuple(entry.count("dbus") == 0, strType, minStrLen, maxStrLen,
+                        defaultStrLen, std::move(defaultStr)));
 
-    auto entries = fileData.value("entries", emptyJsonList);
-    // Iterate through each JSON object in the config file
-    for (const auto& entry : entries)
-    {
-        std::string attr = entry.value("attribute_name", "");
-        // Transfer string type from string to enum
-        std::string strTypeTmp = entry.value("string_type", "Unknown");
-        auto iter = strTypeMap.find(strTypeTmp);
-        if (iter == strTypeMap.end())
-        {
-            log<level::ERR>(
-                "Wrong string type",
-                phosphor::logging::entry("STRING_TYPE=%s", strTypeTmp.c_str()),
-                phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
-            return -1;
-        }
-        uint8_t strType = iter->second;
-
-        uint16_t minStrLen = entry.value("minimum_string_length", 0);
-        uint16_t maxStrLen = entry.value("maximum_string_length", 0);
-        if (maxStrLen - minStrLen < 0)
-        {
-            log<level::ERR>(
-                "Maximum string length is smaller than minimum string length",
-                phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
-            return -1;
-        }
-        uint16_t defaultStrLen = entry.value("default_string_length", 0);
-        std::string defaultStr = entry.value("default_string", "");
-        if ((defaultStrLen == 0) && (defaultStr.size() > 0))
-        {
-            log<level::ERR>(
-                "Default string length is 0, but default string is existing",
-                phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
-            return -1;
-        }
-
-        // dbus handling
-        std::optional<internal::DBusMapping> dBusMap;
-
-        if (entry.count("dbus") != 0)
-        {
-            auto dBusEntry = entry.value("dbus", emptyJson);
-            dBusMap = std::make_optional<internal::DBusMapping>();
-            dBusMap->objectPath = dBusEntry.value("object_path", "");
-            dBusMap->interface = dBusEntry.value("interface", "");
-            dBusMap->propertyName = dBusEntry.value("property_name", "");
-            if (dBusMap->objectPath.empty() || dBusMap->interface.empty() ||
-                dBusMap->propertyName.empty())
-            {
-                log<level::ERR>(
-                    "Invalid dbus config",
-                    phosphor::logging::entry("OBJPATH=%s",
-                                             dBusMap->objectPath.c_str()),
-                    phosphor::logging::entry("INTERFACE=%s",
-                                             dBusMap->interface.c_str()),
-                    phosphor::logging::entry("PROPERTY_NAME=%s",
-                                             dBusMap->propertyName.c_str()));
-                return -1;
-            }
-        }
-
-        internal::attrLookup.emplace(attr, std::move(dBusMap));
-
-        // Defaulting all the types of attributes to BIOSString
-        internal::valueMap.emplace(
-            std::move(attr),
-            std::make_tuple(entry.count("dbus") == 0, strType, minStrLen,
-                            maxStrLen, defaultStrLen, std::move(defaultStr)));
-    }
-
-    return rc;
+    return 0;
 }
 
 const AttrValuesMap& getValues()
@@ -436,7 +336,7 @@ const AttrValuesMap& getValues()
 
 std::string getAttrValue(const AttrName& attrName)
 {
-    const auto& dBusMap = internal::attrLookup.at(attrName);
+    const auto& dBusMap = BIOSAttrLookup.at(attrName);
     std::variant<std::string> propValue;
 
     if (dBusMap == std::nullopt)
@@ -460,53 +360,95 @@ std::string getAttrValue(const AttrName& attrName)
 
 } // namespace bios_string
 
-Strings getStrings(const char* dirPath)
-{
-    Strings biosStrings{};
-    fs::path dir(dirPath);
+std::map<BIOSJsonName, BIOSStringHandler> BIOSStringHandlers = {
+    {bIOSEnumJson, bios_enum::setupBIOSStrings},
+};
 
+std::map<BIOSJsonName, typeHandler> BIOSTypeHandlers = {
+    {bIOSEnumJson, bios_enum::setup},
+    {bIOSStrJson, bios_string::setup},
+};
+
+void setupBIOSStrings(const BIOSJsonName& jsonName, const Json& entry,
+                      Strings& strings)
+{
+    strings.emplace_back(entry.value("attribute_name", ""));
+    auto iter = BIOSStringHandlers.find(jsonName);
+    if (iter != BIOSStringHandlers.end())
+    {
+        iter->second(entry, strings);
+    }
+}
+
+void setupBIOSAttrLookup(const Json& entry, AttrLookup& lookup)
+{
+    std::optional<DBusMapping> dBusMap;
+    std::string attrName = entry.value("attribute_name", "");
+
+    if (entry.count("dbus") != 0)
+    {
+        auto dBusEntry = entry.value("dbus", emptyJson);
+        std::string objectPath = dBusEntry.value("object_path", "");
+        std::string interface = dBusEntry.value("interface", "");
+        std::string propertyName = dBusEntry.value("property_name", "");
+        if (!objectPath.empty() && !interface.empty() && !propertyName.empty())
+        {
+            dBusMap = std::make_optional<DBusMapping>();
+            dBusMap->objectPath = objectPath;
+            dBusMap->interface = interface;
+            dBusMap->propertyName = propertyName;
+        }
+        log<level::ERR>(
+            "Invalid dbus config",
+            phosphor::logging::entry("OBJPATH=%s", dBusMap->objectPath.c_str()),
+            phosphor::logging::entry("INTERFACE=%s",
+                                     dBusMap->interface.c_str()),
+            phosphor::logging::entry("PROPERTY_NAME=%s",
+                                     dBusMap->propertyName.c_str()));
+    }
+    lookup.emplace(attrName, dBusMap);
+}
+
+int setupBIOSType(const BIOSJsonName& jsonName, const Json& entry)
+{
+    auto iter = BIOSTypeHandlers.find(jsonName);
+    if (iter != BIOSTypeHandlers.end())
+    {
+        iter->second(entry);
+    }
+    return 0;
+}
+
+std::vector<BIOSJsonName> BIOSConfigFiles = {bIOSEnumJson, bIOSStrJson};
+
+int setupConfig(const char* dirPath)
+{
+    if (!BIOSStrings.empty() && !BIOSAttrLookup.empty())
+    {
+        return 0;
+    }
+
+    fs::path dir(dirPath);
     if (!fs::exists(dir) || fs::is_empty(dir))
     {
-        return biosStrings;
+        return -1;
     }
-
-    for (const auto& file : fs::directory_iterator(dir))
+    for (auto jsonName : BIOSConfigFiles)
     {
-        std::ifstream jsonFile(file.path().c_str());
-        if (!jsonFile.is_open())
+        Json json;
+        if (parseBiosJsonFile(dir, jsonName, json) < 0)
         {
-            log<level::ERR>("JSON BIOS config file does not exist",
-                            entry("FILE=%s", file.path().filename().c_str()));
             continue;
         }
-
-        auto fileData = Json::parse(jsonFile, nullptr, false);
-        if (fileData.is_discarded())
-        {
-            log<level::ERR>("Parsing config file failed",
-                            entry("FILE=%s", file.path().filename().c_str()));
-            continue;
-        }
-
-        auto entries = fileData.value("entries", emptyJsonList);
-
-        // Iterate through each entry in the config file
+        auto entries = json.value("entries", emptyJsonList);
         for (auto& entry : entries)
         {
-            biosStrings.emplace_back(entry.value("attribute_name", ""));
-
-            // For BIOS enumeration attributes the possible values are strings
-            if (file.path().filename() == bIOSEnumJson)
-            {
-                auto possibleValues = bios_enum::internal::readPossibleValues(
-                    entry["possible_values"]);
-                std::move(possibleValues.begin(), possibleValues.end(),
-                          std::back_inserter(biosStrings));
-            }
+            setupBIOSStrings(jsonName, entry, BIOSStrings);
+            setupBIOSAttrLookup(entry, BIOSAttrLookup);
+            setupBIOSType(jsonName, entry);
         }
     }
-
-    return biosStrings;
+    return 0;
 }
 
 } // namespace bios_parser
