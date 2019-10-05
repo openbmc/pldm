@@ -8,7 +8,6 @@
 #include <boost/crc.hpp>
 #include <chrono>
 #include <ctime>
-#include <iostream>
 #include <memory>
 #include <numeric>
 #include <phosphor-logging/elog-errors.hpp>
@@ -161,7 +160,8 @@ StringHandle nextStringHandle()
 Response getBIOSStringTable(BIOSTable& BIOSStringTable,
                             uint32_t /*transferHandle*/,
                             uint8_t /*transferOpFlag*/, uint8_t instanceID,
-                            const char* biosJsonDir)
+                            const char* /*biosJsonDir*/)
+
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
@@ -169,14 +169,7 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
 
     if (BIOSStringTable.isEmpty())
     { // no persisted table, constructing fresh table and file
-        auto biosStrings = bios_parser::getStrings(biosJsonDir);
-        if (biosStrings.empty())
-        {
-            encode_get_bios_table_resp(instanceID, PLDM_BIOS_TABLE_UNAVAILABLE,
-                                       0, PLDM_START_AND_END, nullptr,
-                                       response.size(), responsePtr);
-            return response;
-        }
+        auto biosStrings = bios_parser::getStrings();
         std::sort(biosStrings.begin(), biosStrings.end());
         // remove all duplicate strings received from bios json
         biosStrings.erase(std::unique(biosStrings.begin(), biosStrings.end()),
@@ -408,10 +401,8 @@ std::vector<uint8_t> findDefaultValHandle(const PossibleValues& possiVals,
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BIOSTable& BIOSStringTable,
-                        const char* biosJsonDir, Table& attributeTable)
+void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 {
-    setupValueLookup(biosJsonDir);
     const auto& attributeMap = getValues();
     StringHandle strHandle;
 
@@ -535,15 +526,8 @@ using namespace bios_parser::bios_string;
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BIOSTable& BIOSStringTable,
-                        const char* biosJsonDir, Table& attributeTable)
+void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 {
-    auto rc = setupValueLookup(biosJsonDir);
-    if (rc == -1)
-    {
-        log<level::ERR>("Failed to parse entries in Json file");
-        return;
-    }
     const auto& attributeMap = getValues();
     StringHandle strHandle;
 
@@ -650,9 +634,8 @@ void traverseBIOSAttrTable(const Table& biosAttrTable,
     }
 }
 
-using typeHandler =
-    std::function<void(const BIOSTable& BIOSStringTable,
-                       const char* biosJsonDir, Table& attributeTable)>;
+using typeHandler = std::function<void(const BIOSTable& BIOSStringTable,
+                                       Table& attributeTable)>;
 std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
     {bios_parser::bIOSEnumJson, bios_type_enum::constructAttrTable},
     {bios_parser::bIOSStrJson, bios_type_string::constructAttrTable}};
@@ -690,7 +673,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
             fs::path file = dir / it->first;
             if (fs::exists(file))
             {
-                it->second(BIOSStringTable, biosJsonDir, attributeTable);
+                it->second(BIOSStringTable, attributeTable);
             }
         }
 
@@ -825,6 +808,7 @@ Response getBIOSTable(const pldm_msg* request, size_t payloadLength)
 
 namespace bios
 {
+
 void registerHandlers()
 {
     registerHandler(PLDM_BIOS, PLDM_GET_DATE_TIME, std::move(getDateTime));
@@ -840,6 +824,15 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (setupConfig(biosJsonDir) != 0)
+    {
+        encode_get_bios_table_resp(
+            request->hdr.instance_id, PLDM_BIOS_TABLE_UNAVAILABLE,
+            0 /* nxtTransferHandle */, PLDM_START_AND_END, nullptr,
+            response.size(), responsePtr);
+        return response;
+    }
 
     uint32_t transferHandle{};
     uint8_t transferOpFlag{};
