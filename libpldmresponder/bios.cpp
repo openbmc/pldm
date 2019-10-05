@@ -158,7 +158,8 @@ StringHandle nextStringHandle()
 Response getBIOSStringTable(BIOSTable& BIOSStringTable,
                             uint32_t /*transferHandle*/,
                             uint8_t /*transferOpFlag*/, uint8_t instanceID,
-                            const char* biosJsonDir)
+                            const char* /*biosJsonDir*/)
+
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
@@ -166,7 +167,7 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
 
     if (BIOSStringTable.isEmpty())
     { // no persisted table, constructing fresh table and file
-        auto biosStrings = bios_parser::getStrings(biosJsonDir);
+        auto biosStrings = bios_parser::getStrings();
         std::sort(biosStrings.begin(), biosStrings.end());
         // remove all duplicate strings received from bios json
         biosStrings.erase(std::unique(biosStrings.begin(), biosStrings.end()),
@@ -395,10 +396,8 @@ std::vector<uint8_t> findDefaultValHandle(const PossibleValues& possiVals,
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BIOSTable& BIOSStringTable,
-                        const char* biosJsonDir, Table& attributeTable)
+void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 {
-    setupValueLookup(biosJsonDir);
     const auto& attributeMap = getValues();
     StringHandle strHandle;
 
@@ -522,15 +521,8 @@ using namespace bios_parser::bios_string;
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BIOSTable& BIOSStringTable,
-                        const char* biosJsonDir, Table& attributeTable)
+void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 {
-    auto rc = setupValueLookup(biosJsonDir);
-    if (rc == -1)
-    {
-        log<level::ERR>("Failed to parse entries in Json file");
-        return;
-    }
     const auto& attributeMap = getValues();
     StringHandle strHandle;
 
@@ -643,20 +635,11 @@ void traverseBIOSAttrTable(const BIOSTable& BIOSAttrTable,
     pldm_bios_table_attr_iter_free(iter);
 }
 
-using typeHandler =
-    std::function<void(const BIOSTable& BIOSStringTable,
-                       const char* biosJsonDir, Table& attributeTable)>;
+using typeHandler = std::function<void(const BIOSTable& BIOSStringTable,
+                                       Table& attributeTable)>;
 std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
     {bios_parser::bIOSEnumJson, bios_type_enum::constructAttrTable},
     {bios_parser::bIOSStrJson, bios_type_string::constructAttrTable}};
-
-using valueHandler = std::function<void(const BIOSTable& BIOSAttributeTable,
-
-                                        const BIOSTable& BIOSStringTable,
-
-                                        Table& attributeTable)>;
-
-std::map<BIOSJsonName, valueHandler> attrValueHandlers{};
 
 /** @brief Construct the BIOS attribute table
  *
@@ -691,7 +674,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
             fs::path file = dir / it->first;
             if (fs::exists(file))
             {
-                it->second(BIOSStringTable, biosJsonDir, attributeTable);
+                it->second(BIOSStringTable, attributeTable);
             }
         }
 
@@ -820,10 +803,15 @@ Response getBIOSTable(const pldm_msg* request, size_t payloadLength)
 
 namespace bios
 {
+
 void registerHandlers()
 {
     registerHandler(PLDM_BIOS, PLDM_GET_DATE_TIME, std::move(getDateTime));
-    registerHandler(PLDM_BIOS, PLDM_GET_BIOS_TABLE, std::move(getBIOSTable));
+    if (bios_parser::setupConfig(BIOS_JSONS_DIR) == 0)
+    {
+        registerHandler(PLDM_BIOS, PLDM_GET_BIOS_TABLE,
+                        std::move(getBIOSTable));
+    }
 }
 
 namespace internal
