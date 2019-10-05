@@ -65,10 +65,12 @@ TEST(GetBIOSStrings, allScenarios)
     Strings nullVec{};
 
     // Invalid directory
-    auto strings = bios_parser::getStrings("./bios_json");
+    bios_parser::setupConfig("./bios_json");
+    auto strings = bios_parser::getStrings();
     ASSERT_EQ(strings == nullVec, true);
 
-    strings = bios_parser::getStrings("./bios_jsons");
+    bios_parser::setupConfig("./bios_jsons");
+    strings = bios_parser::getStrings();
     std::sort(strings.begin(), strings.end());
     std::sort(vec.begin(), vec.end());
     ASSERT_EQ(strings == vec, true);
@@ -84,7 +86,7 @@ TEST(getAttrValue, enumScenarios)
         {"CodeUpdatePolicy",
          {false, {"Concurrent", "Disruptive"}, {"Concurrent"}}}};
 
-    auto rc = bios_parser::bios_enum::setupValueLookup("./bios_jsons");
+    auto rc = bios_parser::setupConfig("./bios_json");
     ASSERT_EQ(rc, 0);
 
     auto values = bios_parser::bios_enum::getValues();
@@ -107,7 +109,7 @@ TEST(getAttrValue, stringScenarios)
         {"str_example2", {false, 2, 0, 100, 0, ""}},
         {"str_example3", {true, 0, 1, 100, 2, "ef"}}};
 
-    auto rc = bios_parser::bios_string::setupValueLookup("./bios_jsons");
+    auto rc = bios_parser::setupConfig("./bios_jsons");
     EXPECT_EQ(rc, 0);
 
     auto values = bios_parser::bios_string::getValues();
@@ -260,7 +262,7 @@ TEST_F(TestAllBIOSTables, GetBIOSStringTableTestGoodRequest)
     req->transfer_op_flag = PLDM_GET_FIRSTPART;
     req->table_type = PLDM_BIOS_STRING_TABLE;
 
-    Strings biosStrings = getStrings("./bios_jsons");
+    Strings biosStrings = getStrings();
     std::sort(biosStrings.begin(), biosStrings.end());
     biosStrings.erase(std::unique(biosStrings.begin(), biosStrings.end()),
                       biosStrings.end());
