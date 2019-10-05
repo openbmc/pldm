@@ -13,10 +13,9 @@
  *    strings used in representing the values of the attributes. This will be
  *    used to populate the BIOS String table.
  *
- * 2) bios_enum::setupValueLookup (similar API for other supported BIOS
- *    attribute types) has to be invoked to setup the lookup data structure for
- *    all the attributes of that type. This API needs to be invoked before
- *    invoking bios_enum::getValues and bios_enum::getAttrValue.
+ * 2) bios_parser::setupConfig has to be invoked to setup the lookup data
+ *    structure all the attributes of that type. This API needs to be invoked
+ *    before invoking bios_enum::getValues and bios_enum::getAttrValue.
  *
  * 3) bios_enum::getValues is invoked to populate the BIOS attribute table for
  *    BIOSEnumeration and BIOSEnumerationReadonly types.(similar API for other
@@ -35,32 +34,18 @@ using Strings = std::vector<std::string>;
 inline constexpr auto bIOSEnumJson = "enum_attrs.json";
 inline constexpr auto bIOSStrJson = "string_attrs.json";
 
-/** @brief Parse every BIOS configuration JSON files in the directory path
- *         and populate all the attribute names and all the preconfigured
- *         strings used in representing the values of attributes.
- *
- *  @param[in] dirPath - directory path where all the BIOS configuration JSON
- *                      files exist.
- *
- *  @return all the strings that should be populated in the BIOS string table
+/** @brief Get all the preconfigured strings
+ *  @return all the preconfigurated strings
  */
-Strings getStrings(const char* dirPath);
+const Strings& getStrings();
+/** @brief Parse every BIOS Configuration JSON file in the directory path
+ *  @param[in] dirPath - directory path where all the bios configuration JSON
+ * files exist
+ */
+int setupConfig(const char* dirPath);
 
 namespace bios_enum
 {
-
-/** @brief Parse the JSON file specific to BIOSEnumeration and
- *         BIOSEnumerationReadOnly types and populate the data structure for
- *         the corresponding possible values and the default value. Setup the
- *         data structure to lookup the current value of the BIOS enumeration
- *         attribute. JSON is parsed once and the information is cached.
- *
- *  @param[in] dirPath - directory path where all the BIOS configuration JSON
- *                      exist
- *
- *  @return 0 for success and negative return code for failure
- */
-int setupValueLookup(const char* dirPath);
 
 using AttrName = std::string;
 using IsReadOnly = bool;
@@ -91,19 +76,6 @@ CurrentValues getAttrValue(const AttrName& attrName);
 
 namespace bios_string
 {
-
-/** @brief Parse the JSON file specific to BIOSString and
- *         BIOSStringReadOnly types and populate the data structure for
- *         the corresponding possible values and the default value. Setup the
- *         data structure to lookup the current value of the BIOS string
- *         attribute. JSON is parsed once and the information is cached.
- *
- *  @param[in] dirPath - directory path where all the BIOS configuration JSON
- *                      exist
- *
- *  @return 0 for success and negative return code for failure
- */
-int setupValueLookup(const char* dirPath);
 
 using AttrName = std::string;
 using IsReadOnly = bool;
