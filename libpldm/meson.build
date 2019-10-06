@@ -3,6 +3,7 @@ headers = [
   'pldm_types.h',
   'platform.h',
   'bios.h',
+  'bios_table.h',
   'states.h',
   'fru.h',
   'utils.h'
@@ -12,6 +13,7 @@ sources = [
   'base.c',
   'platform.c',
   'bios.c',
+  'bios_table.c',
   'fru.c',
   'utils.c'
 ]

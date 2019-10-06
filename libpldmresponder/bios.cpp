@@ -9,6 +9,7 @@
 #include <chrono>
 #include <ctime>
 #include <iostream>
+#include <memory>
 #include <numeric>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
@@ -763,6 +764,30 @@ void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
 }
 
 } // end namespace bios_type_string
+
+void traverseBIOSAttrTable(const Table& biosAttrTable,
+                           AttrTableEntryHandler handler)
+{
+    std::unique_ptr<pldm_bios_table_iter, decltype(&pldm_bios_table_iter_free)>
+        iter(pldm_bios_table_iter_create(biosAttrTable.data(),
+                                         biosAttrTable.size(),
+                                         PLDM_BIOS_ATTR_TABLE),
+             pldm_bios_table_iter_free);
+    while (!pldm_bios_table_iter_is_end(iter.get()))
+    {
+        auto table_entry = pldm_bios_table_iter_attr_entry_value(iter.get());
+        try
+        {
+            handler(table_entry);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>("handler fails when traversing BIOSAttrTable",
+                            entry("ERROR=%s", e.what()));
+        }
+        pldm_bios_table_iter_next(iter.get());
+    }
+}
 
 using typeHandler =
     std::function<void(const BIOSTable& BIOSStringTable,
