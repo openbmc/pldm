@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include <array>
+#include <cstring>
 #include <ctime>
 #include <filesystem>
 
@@ -120,6 +121,56 @@ TEST(getAttrValue, stringScenarios)
     // Invalid attribute name
     ASSERT_THROW(bios_parser::bios_string::getAttrValue("str_example"),
                  std::out_of_range);
+}
+
+TEST(traverseBIOSTable, attrTableScenarios)
+{
+    std::vector<uint8_t> enumEntry{
+        0, 0, /* attr handle */
+        0,    /* attr type */
+        1, 0, /* attr name handle */
+        2,    /* number of possible value */
+        2, 0, /* possible value handle */
+        3, 0, /* possible value handle */
+        1,    /* number of default value */
+        0     /* defaut value string handle index */
+    };
+    std::vector<uint8_t> stringEntry{
+        4,   0,       /* attr handle */
+        1,            /* attr type */
+        12,  0,       /* attr name handle */
+        1,            /* string type */
+        1,   0,       /* minimum length of the string in bytes */
+        100, 0,       /* maximum length of the string in bytes */
+        3,   0,       /* length of default string in length */
+        'a', 'b', 'c' /* default string  */
+    };
+    std::vector<uint8_t> table;
+    table.insert(table.end(), enumEntry.begin(), enumEntry.end());
+    table.insert(table.end(), stringEntry.begin(), stringEntry.end());
+    auto padSize = ((table.size() % 4) ? (4 - table.size() % 4) : 0);
+
+    table.insert(table.end(), padSize, 0);
+    table.insert(table.end(), sizeof(uint32_t) /*checksum*/, 0);
+
+    pldm::responder::traverseBIOSAttrTable(
+        table, [&](const struct pldm_bios_attr_table_entry* entry) {
+            int rc;
+            switch (entry->attr_type)
+            {
+                case 0:
+                    rc = std::memcmp(entry, enumEntry.data(), enumEntry.size());
+                    EXPECT_EQ(rc, 0);
+                    break;
+                case 1:
+                    rc = std::memcmp(entry, stringEntry.data(),
+                                     stringEntry.size());
+                    EXPECT_EQ(rc, 0);
+                    break;
+                default:
+                    break;
+            }
+        });
 }
 
 namespace fs = std::filesystem;
