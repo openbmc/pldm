@@ -3,13 +3,15 @@ headers = [
   'pldm_types.h',
   'platform.h',
   'bios.h',
+  'bios_table.h',
   'states.h',
 ]
 
 sources = [
   'base.c',
   'platform.c',
-  'bios.c'
+  'bios.c',
+  'bios_table.c'
 ]
 
 libpldm_headers = ['.', '..']
