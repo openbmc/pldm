@@ -27,9 +27,52 @@ TEST(AttrEntryEnum, DecodeTest)
         reinterpret_cast<struct pldm_bios_attr_table_entry*>(enumEntry.data());
     pldm_bios_table_attr_entry_enum_decode_pv_num(entry, &pvNumber);
     EXPECT_EQ(pvNumber, 2);
+    std::vector<uint16_t> pvHdls(pvNumber, 0);
+    pldm_bios_table_attr_entry_enum_decode_pv_hdls(entry, pvHdls.data(),
+                                                   pvHdls.size());
+    EXPECT_EQ(pvHdls[0], 2);
+    EXPECT_EQ(pvHdls[1], 3);
     uint8_t defNumber;
     pldm_bios_table_attr_entry_enum_decode_def_num(entry, &defNumber);
     EXPECT_EQ(defNumber, 1);
+}
+
+TEST(AttrValueEntryEnum, EncodeTest)
+{
+    std::vector<uint8_t> attrValueEntry{
+        1, 0, /* attr handle */
+        0,    /* attr type */
+        2,    /* number of current value */
+        0,    /* index of string handles */
+        1,    /* index of string handles */
+    };
+
+    auto size = pldm_bios_table_attr_value_entry_encode_enum_length(2);
+    std::vector<uint8_t> entry(size, 0);
+
+    std::vector<uint8_t> hdls{0, 1};
+    auto rc = pldm_bios_table_attr_value_entry_encode_enum(
+        entry.data(), entry.size(), 1, 0, 2, hdls.data());
+    EXPECT_EQ(rc, 0);
+    EXPECT_EQ(entry, attrValueEntry);
+}
+
+TEST(AttrValueStringEnum, EncodeTest)
+{
+    std::vector<uint8_t> attrValueEntry{
+        1,   0,   /* attr handle */
+        1,        /* attr type */
+        2,   0,   /* length of current string */
+        'e', 'f', /* current string */
+    };
+
+    const char* str = "ef";
+    auto size = pldm_bios_table_attr_value_entry_encode_string_length(2);
+    std::vector<uint8_t> entry(size, 0);
+    auto rc = pldm_bios_table_attr_value_entry_encode_string(
+        entry.data(), entry.size(), 1, 1, 2, str);
+    EXPECT_EQ(rc, 0);
+    EXPECT_EQ(entry, attrValueEntry);
 }
 
 TEST(AttrTable, ItearatorTest)
