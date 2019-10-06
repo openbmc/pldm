@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "libpldm/bios.h"
+#include "libpldm/bios_table.h"
 
 namespace pldm
 {
