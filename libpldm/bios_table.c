@@ -14,6 +14,12 @@
 			return PLDM_ERROR_INVALID_DATA;                        \
 	} while (0)
 
+#define BUFFER_SIZE_EXPECT(current_size, expected_size)                        \
+	do {                                                                   \
+		if (current_size < expected_size)                              \
+			return PLDM_ERROR_INVALID_LENGTH;                      \
+	} while (0)
+
 uint8_t pldm_bios_table_attr_entry_enum_decode_pv_num(
     const struct pldm_bios_attr_table_entry *entry)
 {
@@ -41,6 +47,33 @@ int pldm_bios_table_attr_entry_enum_decode_def_num_check(
 {
 	ATTR_TYPE_EXPECT(entry->attr_type, PLDM_BIOS_ENUMERATION);
 	*def_num = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
+	return PLDM_SUCCESS;
+}
+
+uint8_t pldm_bios_table_attr_entry_enum_decode_pv_hdls(
+    const struct pldm_bios_attr_table_entry *entry, uint16_t *pv_hdls,
+    uint8_t pv_num)
+{
+	uint8_t num = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
+	num = num < pv_num ? num : pv_num;
+	size_t i;
+	for (i = 0; i < num; i++) {
+		uint16_t *hdl = (uint16_t *)(entry->metadata + sizeof(uint8_t) +
+					     i * sizeof(uint16_t));
+		pv_hdls[i] = le16toh(*hdl);
+	}
+	return num;
+}
+
+int pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
+    const struct pldm_bios_attr_table_entry *entry, uint16_t *pv_hdls,
+    uint8_t pv_num)
+{
+	ATTR_TYPE_EXPECT(entry->attr_type, PLDM_BIOS_ENUMERATION);
+	uint8_t num = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
+	if (num != pv_num)
+		return PLDM_ERROR_INVALID_DATA;
+	pldm_bios_table_attr_entry_enum_decode_pv_hdls(entry, pv_hdls, pv_num);
 	return PLDM_SUCCESS;
 }
 
@@ -128,6 +161,76 @@ static size_t attr_table_entry_length(const void *table_entry)
 	assert(attr_table_entry->entry_length_handler != NULL);
 
 	return attr_table_entry->entry_length_handler(entry);
+}
+
+size_t pldm_bios_table_attr_value_entry_encode_enum_length(uint8_t count)
+{
+	return sizeof(struct pldm_bios_attr_val_table_entry) - 1 +
+	       sizeof(count) + count;
+}
+
+void pldm_bios_table_attr_value_entry_encode_enum(
+    void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
+    uint8_t count, uint8_t *handles)
+{
+	size_t length =
+	    pldm_bios_table_attr_value_entry_encode_enum_length(count);
+	assert(length <= entry_length);
+
+	struct pldm_bios_attr_val_table_entry *table_entry = entry;
+	table_entry->attr_handle = htole16(attr_handle);
+	table_entry->attr_type = attr_type;
+	table_entry->value[0] = count;
+	memcpy(&table_entry->value[1], handles, count);
+}
+
+int pldm_bios_table_attr_value_entry_encode_enum_check(
+    void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
+    uint8_t count, uint8_t *handles)
+{
+	ATTR_TYPE_EXPECT(attr_type, PLDM_BIOS_ENUMERATION);
+	size_t length =
+	    pldm_bios_table_attr_value_entry_encode_enum_length(count);
+	BUFFER_SIZE_EXPECT(entry_length, length);
+	pldm_bios_table_attr_value_entry_encode_enum(
+	    entry, entry_length, attr_handle, attr_type, count, handles);
+	return PLDM_SUCCESS;
+}
+
+size_t
+pldm_bios_table_attr_value_entry_encode_string_length(uint16_t string_length)
+{
+	return sizeof(struct pldm_bios_attr_val_table_entry) - 1 +
+	       sizeof(string_length) + string_length;
+}
+
+void pldm_bios_table_attr_value_entry_encode_string(
+    void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
+    uint16_t str_length, const char *str)
+{
+	size_t length =
+	    pldm_bios_table_attr_value_entry_encode_string_length(str_length);
+	assert(length <= entry_length);
+
+	struct pldm_bios_attr_val_table_entry *table_entry = entry;
+	table_entry->attr_handle = htole16(attr_handle);
+	table_entry->attr_type = attr_type;
+	memcpy(table_entry->value + sizeof(str_length), str, str_length);
+	str_length = htole16(str_length);
+	memcpy(table_entry->value, &str_length, sizeof(str_length));
+}
+
+int pldm_bios_table_attr_value_entry_encode_string_check(
+    void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
+    uint16_t str_length, const char *str)
+{
+	ATTR_TYPE_EXPECT(attr_type, PLDM_BIOS_STRING);
+	size_t length =
+	    pldm_bios_table_attr_value_entry_encode_string_length(str_length);
+	BUFFER_SIZE_EXPECT(entry_length, length);
+	pldm_bios_table_attr_value_entry_encode_string(
+	    entry, entry_length, attr_handle, attr_type, str_length, str);
+	return PLDM_SUCCESS;
 }
 
 struct pldm_bios_table_iter {
