@@ -766,6 +766,32 @@ void constructAttrValueTable(const BIOSTable& BIOSAttributeTable,
 
 } // end namespace bios_type_string
 
+void traverseBIOSAttrTable(const Table& biosAttrTable,
+                           AttrTableEntryHandler handler)
+{
+    struct pldm_bios_table_iter* iter = pldm_bios_table_iter_create(
+        biosAttrTable.data(), biosAttrTable.size(), PLDM_BIOS_ATTR_TABLE);
+    while (true)
+    {
+        const struct pldm_bios_attr_table_entry* table_entry =
+            pldm_bios_table_attr_entry_next(iter);
+        if (table_entry == nullptr)
+        {
+            break;
+        }
+        try
+        {
+            handler(table_entry);
+        }
+        catch (const std::exception& e)
+        {
+            log<level::ERR>("handler fails when traversing BIOSAttrTable",
+                            entry("ERROR=%s", e.what()));
+        }
+    }
+    pldm_bios_table_iter_free(iter);
+}
+
 using typeHandler =
     std::function<void(const BIOSTable& BIOSStringTable,
                        const char* biosJsonDir, Table& attributeTable)>;
