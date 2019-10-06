@@ -124,12 +124,6 @@ static_assert(attrTableSize == sizeof(uint16_t) + sizeof(uint8_t) +
                                    sizeof(uint16_t) + sizeof(uint8_t) +
                                    sizeof(uint16_t) + sizeof(uint16_t) +
                                    sizeof(uint16_t));
-/* attrValueTableSize is the sum of fixed length of members which construct a
- * string attribute value table, including attr_handle(uint16_t),
- * attr_type(uint8_t), CurrentStringLength(uint16_t)*/
-constexpr auto attrValueTableSize = 5;
-static_assert(attrValueTableSize ==
-              sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint16_t));
 
 /** @brief Get the string related values and the default values for the
  *         BIOSString and BIOSStringReadOnly types
