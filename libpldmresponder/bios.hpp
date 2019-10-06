@@ -7,10 +7,12 @@
 
 #include <stdint.h>
 
+#include <functional>
 #include <map>
 #include <vector>
 
 #include "libpldm/bios.h"
+#include "libpldm/bios_table.h"
 
 namespace pldm
 {
@@ -22,6 +24,12 @@ using PossibleValuesByHandle = std::vector<StringHandle>;
 
 namespace responder
 {
+
+using AttrTableEntryHandler =
+    std::function<void(const struct pldm_bios_attr_table_entry*)>;
+
+void traverseBIOSAttrTable(const bios::Table& BIOSAttrTable,
+                           AttrTableEntryHandler handler);
 
 namespace bios
 {
