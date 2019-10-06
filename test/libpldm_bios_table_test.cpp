@@ -42,6 +42,12 @@ TEST(AttrTable, EnumEntryDecodeTest)
         reinterpret_cast<struct pldm_bios_attr_table_entry*>(enumEntry.data());
     uint8_t pvNumber = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
     EXPECT_EQ(pvNumber, 2);
+    std::vector<uint16_t> pvHandles(pvNumber, 0);
+    auto rc = pldm_bios_table_attr_entry_enum_decode_pv_hdls(
+        entry, pvHandles.data(), pvNumber);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(pvHandles[0], 2);
+    EXPECT_EQ(pvHandles[1], 3);
     uint8_t defNumber = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
     EXPECT_EQ(defNumber, 1);
 }
