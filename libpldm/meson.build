@@ -26,6 +26,16 @@ if get_option('oem-ibm').enabled()
   libpldm_headers += ['../oem/ibm']
 endif
 
+if get_option('transport-api').enabled()
+  headers += [
+    'transport/mctp.h'
+  ]
+  sources += [
+    'transport/mctp.c'
+  ]
+  libpldm_headers += ['transport']
+endif
+
 install_headers(
   headers,
   subdir: 'libpldm')
