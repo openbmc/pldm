@@ -35,6 +35,12 @@ if get_option('oem-ibm').enabled()
   ]
 endif
 
+if get_option('requester-api').enabled()
+  tests += [
+    'libpldm_requester_test',
+  ]
+endif
+
 foreach t : tests
   test(t, executable(t.underscorify(), t + '.cpp',
                      implicit_include_directories: false,
