@@ -29,7 +29,7 @@ install_headers(
   subdir: 'libpldm')
 
 libpldm = library(
-  'libpldm',
+  'pldm',
   sources,
   implicit_include_directories: false,
   include_directories: include_directories(libpldm_headers),

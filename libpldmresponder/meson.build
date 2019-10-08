@@ -25,7 +25,7 @@ if get_option('oem-ibm').enabled()
 endif
 
 libpldmresponder = library(
-  'libpldmresponder',
+  'pldmresponder',
   sources,
   version: meson.project_version(),
   dependencies: deps,
