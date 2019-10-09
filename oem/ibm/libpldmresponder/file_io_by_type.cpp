@@ -3,6 +3,7 @@
 #include "file_io_by_type.hpp"
 
 #include "libpldmresponder/utils.hpp"
+#include "lid_file_io.hpp"
 #include "pel_file_io.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
@@ -26,6 +27,8 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 namespace responder
 {
+
+using namespace phosphor::logging;
 
 namespace oem_file_type
 {
@@ -83,6 +86,13 @@ std::unique_ptr<FileHandler>
             handler = std::make_unique<PelHandler>(fileHandle, offset, length,
                                                    address, path);
             break;
+        case PLDM_FILE_LID:
+        {
+            auto lidpath = createLidPath(fileHandle);
+            handler = std::make_unique<LidHandler>(fileHandle, offset, length,
+                                                   address, lidpath);
+        }
+        break;
         default:
         {
             log<level::ERR>("Passed invalid file type to getHandlerByType ",

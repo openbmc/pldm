@@ -63,6 +63,13 @@ class FileHandler
     {
     }
 
+    /** @brief returns the length
+     */
+    uint32_t getLength()
+    {
+        return length;
+    }
+
   protected:
     uint32_t fileHandle; //!< file handle indicating name of file or invalid
     uint32_t offset;     //!< from where read/write will be done

@@ -150,6 +150,36 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
 Response writeFileByTypeFromMemory(const pldm_msg* request,
                                    size_t payloadLength);
 
+/** @brief Handler for readFileByTypeIntoMemory command
+ *
+ *  @param[in] request - pointer to PLDM request payload
+ *  @param[in] payloadLength - length of the message
+ *
+ *  @return PLDM response message
+ */
+Response readFileByTypeIntoMemory(const pldm_msg* request,
+                                  size_t payloadLength);
+/** @brief processes the common function for read/write file
+ *  by type to/from memory
+ *
+ *  @param[in/out] response - PLDM response message
+ *  @param[in] request - pointer to PLDM request payload
+ *  @param[in] payloadLength - length of the request message
+ *  @param[in] command - command to process
+ *  @param[out] fileType - type of file to be transferred
+ *  @param[out] fileHandle - file handle
+ *  @param[out] offset - offset from where read/write should start
+ *  @param[out] length - length of dada transfer
+ *  @param[out] address - Host address to write to or read from
+ *
+ *  @return PLDM status code
+ */
+int processReadWriteFileTypeMemory(Response& response, const pldm_msg* request,
+                                   size_t payloadLength, uint8_t command,
+                                   uint16_t& fileType, uint32_t& fileHandle,
+                                   uint32_t& offset, uint32_t& length,
+                                   uint64_t& address);
+
 /** @brief Handler for GetFileTable command
  *
  *  @param[in] request - pointer to PLDM request payload

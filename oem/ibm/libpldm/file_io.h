@@ -45,6 +45,7 @@ enum pldm_fileio_table_type {
  *  */
 enum pldm_fileio_file_type {
 	PLDM_FILE_ERROR_LOG = 0,
+	PLDM_FILE_LID = 1,
 };
 
 #define PLDM_RW_FILE_MEM_REQ_BYTES 20
