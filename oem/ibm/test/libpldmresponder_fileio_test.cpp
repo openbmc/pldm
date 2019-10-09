@@ -776,3 +776,28 @@ TEST(writeFileByTypeFromMemory, testBadPath)
         responsePtr->payload);
     ASSERT_EQ(PLDM_INVALID_WRITE_LENGTH, resp->completion_code);
 }
+
+TEST(readFileByTypeIntoMemory, testBadPath)
+{
+    using namespace pldm::responder::oem_file_type;
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_RW_FILE_TYPE_MEM_REQ_BYTES>
+        requestMsg{};
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_read_write_file_type_memory_req* request =
+        reinterpret_cast<struct pldm_read_write_file_type_memory_req*>(
+            req->payload);
+    request->file_type = PLDM_FILE_LID;
+    request->file_handle = 0;
+    request->offset = 0;
+    request->length = 17;
+    request->address = 0;
+
+    auto response = readFileByTypeIntoMemory(req, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_read_write_file_type_memory_resp* resp =
+        reinterpret_cast<struct pldm_read_write_file_type_memory_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
+}
