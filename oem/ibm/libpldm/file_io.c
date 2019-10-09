@@ -514,9 +514,9 @@ int decode_new_file_req(const struct pldm_msg *msg, size_t payload_length,
 	struct pldm_new_file_req *request =
 	    (struct pldm_new_file_req *)msg->payload;
 	*file_type = le16toh(request->file_type);
-	if (*file_type != PLDM_FILE_ERROR_LOG) {
+	/*if (*file_type != PLDM_FILE_ERROR_LOG) {
 		return PLDM_INVALID_FILE_TYPE;
-	}
+	}*/
 	*file_handle = le32toh(request->file_handle);
 	*length = le32toh(request->length);
 
@@ -572,9 +572,9 @@ int encode_new_file_req(uint8_t instance_id, uint16_t file_type,
 	struct pldm_new_file_req *req =
 	    (struct pldm_new_file_req *)msg->payload;
 	req->file_type = htole16(file_type);
-	if (file_type != PLDM_FILE_ERROR_LOG) {
+	/*if (file_type != PLDM_FILE_ERROR_LOG) {
 		return PLDM_INVALID_FILE_TYPE;
-	}
+	}*/
 	req->file_handle = htole32(file_handle);
 	req->length = htole32(length);
 
@@ -615,9 +615,9 @@ int decode_rw_file_type_req(const struct pldm_msg *msg, size_t payload_length,
 	struct pldm_read_write_file_type_req *request =
 	    (struct pldm_read_write_file_type_req *)msg->payload;
 	*file_type = le16toh(request->file_type);
-	if (*file_type != PLDM_FILE_ERROR_LOG) {
+	/*if (*file_type != PLDM_FILE_ERROR_LOG) {
 		return PLDM_INVALID_FILE_TYPE;
-	}
+	}*/
 	*file_handle = le32toh(request->file_handle);
 	*offset = le32toh(request->offset);
 	*length = le32toh(request->length);
@@ -667,9 +667,9 @@ int encode_rw_file_type_req(uint8_t instance_id, uint8_t command,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	if (file_type != PLDM_FILE_ERROR_LOG) {
+	/*if (file_type != PLDM_FILE_ERROR_LOG) {
 		return PLDM_INVALID_FILE_TYPE;
-	}
+	}*/
 
 	header.msg_type = PLDM_REQUEST;
 	header.instance = instance_id;

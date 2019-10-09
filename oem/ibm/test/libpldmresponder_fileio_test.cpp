@@ -44,6 +44,14 @@ class TestFileTable : public testing::Test
   public:
     void SetUp() override
     {
+        char tmpdir[] = "/tmp/lid.XXXXXX";
+        readFilePath = std::string(mkdtemp(tmpdir));
+        std::string input("This is a test file for the lid handler");
+        std::string readFile(readFilePath);
+        readFile += "/80a02023.lid";
+        std::ofstream out(readFile.c_str());
+        out << input;
+        out.close();
         // Create a temporary directory to hold the config file and files to
         // populate the file table.
         char tmppldm[] = "/tmp/pldm_fileio_table.XXXXXX";
@@ -79,6 +87,7 @@ class TestFileTable : public testing::Test
     fs::path imageFile;
     fs::path cksumFile;
     fs::path fileTableConfig;
+    std::string readFilePath;
 
     // <4 bytes - File handle - 0 (0x00 0x00 0x00 0x00)>,
     // <2 bytes - Filename length - 11 (0x0b 0x00>
@@ -742,6 +751,54 @@ TEST_F(TestFileTable, WriteFileGoodPath)
     ASSERT_EQ(0, memcmp(fileData.data(), buffer.data(), length));
 
     table.clear();
+}
+
+TEST_F(TestFileTable, testAllreadFileByTypeHandler)
+{
+    using namespace pldm::responder::oem_file_type;
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_RW_FILE_TYPE_REQ_BYTES> requestMsg{};
+    auto payload_length = requestMsg.size() - hdr_size;
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_read_write_file_type_req* request =
+        reinterpret_cast<struct pldm_read_write_file_type_req*>(req->payload);
+    request->file_type = PLDM_FILE_LID;
+    request->file_handle = 0;
+    request->offset = 0;
+    request->length = 13;
+
+    auto response = readFileByTypeHandler(req, 0, readFilePath.c_str());
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_read_write_file_type_resp* resp =
+        reinterpret_cast<struct pldm_read_write_file_type_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
+
+    request->offset = 1000;
+    response = readFileByTypeHandler(req, payload_length, readFilePath.c_str());
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    resp = reinterpret_cast<struct pldm_read_write_file_type_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_INVALID_FILE_HANDLE, resp->completion_code);
+
+    request->file_handle = 0x80a02023;
+    response = readFileByTypeHandler(req, payload_length, readFilePath.c_str());
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    resp = reinterpret_cast<struct pldm_read_write_file_type_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_DATA_OUT_OF_RANGE, resp->completion_code);
+
+    request->offset = 26;
+
+    response = readFileByTypeHandler(req, payload_length, readFilePath.c_str());
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    resp = reinterpret_cast<struct pldm_read_write_file_type_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
 }
 
 TEST(writeFileByTypeFromMemory, testBadPath)
