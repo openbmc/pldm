@@ -5,6 +5,7 @@
 #include "file_io_by_type.hpp"
 #include "file_table.hpp"
 #include "libpldmresponder/utils.hpp"
+#include "lid_file_io.hpp"
 #include "registration.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
@@ -14,6 +15,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <cerrno>
 #include <cstring>
 #include <fstream>
 #include <memory>
@@ -43,10 +45,12 @@ void registerHandlers()
                     std::move(writeFileFromMemory));
     registerHandler(PLDM_OEM, PLDM_READ_FILE, std::move(readFile));
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
-    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
                     std::move(writeFileByTypeFromMemory));
-    registerHandler(PLDM_OEM, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+    registerHandler(PLDM_OEM, PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
                     std::move(readFileByTypeIntoMemory));
+    registerHandler(PLDM_OEM, PLDM_READ_FILE_BY_TYPE,
+                    std::move(readFileByType));
 }
 
 } // namespace oem_ibm
@@ -552,7 +556,7 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
     uint64_t address{};
 
     auto rc = processReadWriteFileTypeMemory(
-        response, request, payloadLength, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+        response, request, payloadLength, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
         fileType, fileHandle, offset, length, address);
 
     if (rc != PLDM_SUCCESS)
@@ -567,7 +571,7 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
         log<level::ERR>("Write length is not a multiple of DMA minSize",
                         entry("LENGTH=%d", length));
         encode_rw_file_type_memory_resp(
-            request->hdr.instance_id, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
+            request->hdr.instance_id, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
             PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
         return response;
     }
@@ -594,7 +598,7 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
     rc = handler->writeFromMemory();
 
     encode_rw_file_type_memory_resp(request->hdr.instance_id,
-                                    PLDM_WRITE_FILE_TYPE_FROM_MEMORY, rc,
+                                    PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY, rc,
                                     length, responsePtr);
     return response;
 }
@@ -611,7 +615,7 @@ Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
     uint64_t address{};
 
     auto rc = processReadWriteFileTypeMemory(
-        response, request, payloadLength, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+        response, request, payloadLength, PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
         fileType, fileHandle, offset, length, address);
 
     if (rc != PLDM_SUCCESS)
@@ -634,7 +638,7 @@ Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
                         " readFileTypeIntoMemory",
                         entry("TYPE=%d", fileType));
         encode_rw_file_type_memory_resp(request->hdr.instance_id,
-                                        PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                                        PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
                                         PLDM_INVALID_FILE_TYPE, 0, responsePtr);
         return response;
     }
@@ -642,7 +646,7 @@ Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
     rc = handler->readIntoMemory();
 
     encode_rw_file_type_memory_resp(request->hdr.instance_id,
-                                    PLDM_READ_FILE_TYPE_INTO_MEMORY, rc,
+                                    PLDM_READ_FILE_BY_TYPE_INTO_MEMORY, rc,
                                     handler->getLength(), responsePtr);
     return response;
 }
@@ -653,10 +657,11 @@ int processReadWriteFileTypeMemory(Response& response, const pldm_msg* request,
                                    uint32_t& offset, uint32_t& length,
                                    uint64_t& address)
 {
-    response.resize(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_TYPE_MEM_RESP_BYTES, 0);
+    response.resize(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_MEM_RESP_BYTES,
+                    0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
-    if (payloadLength != PLDM_RW_FILE_TYPE_MEM_REQ_BYTES)
+    if (payloadLength != PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES)
     {
         encode_rw_file_type_memory_resp(request->hdr.instance_id, command,
                                         PLDM_ERROR_INVALID_LENGTH, 0,
@@ -675,6 +680,120 @@ int processReadWriteFileTypeMemory(Response& response, const pldm_msg* request,
         return PLDM_ERROR_INVALID_LENGTH;
     }
     return PLDM_SUCCESS;
+}
+
+namespace internal
+{
+
+Response readFileByTypeHandler(const pldm_msg* request, size_t payloadLength,
+                               const char* fileDir)
+{
+    using namespace pldm::responder::oem_file_type;
+
+    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_RW_FILE_BY_TYPE_REQ_BYTES)
+    {
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_READ_FILE_BY_TYPE,
+                                    PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length{};
+
+    auto rc = decode_rw_file_by_type_req(request, payloadLength, &fileType,
+                                         &fileHandle, &offset, &length);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_READ_FILE_BY_TYPE, rc, 0, responsePtr);
+        return response;
+    }
+
+    fs::path filePath{};
+    switch (fileType)
+    {
+        case PLDM_FILE_LID:
+        {
+            filePath = createLidPath(fileHandle, fileDir);
+        }
+        break;
+        default:
+        {
+            encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                        PLDM_READ_FILE_BY_TYPE,
+                                        PLDM_INVALID_FILE_TYPE, 0, responsePtr);
+            return response;
+        }
+    }
+
+    if (!fs::exists(filePath))
+    {
+        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle),
+                        entry("PATH=%s", filePath.c_str()));
+        encode_rw_file_by_type_resp(
+            request->hdr.instance_id, PLDM_READ_FILE_BY_TYPE,
+            PLDM_INVALID_FILE_HANDLE, length, responsePtr);
+        return response;
+    }
+
+    size_t fileSize = fs::file_size(filePath);
+
+    if (offset >= fileSize)
+    {
+        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
+                        entry("FILE_SIZE=%d", fileSize));
+        encode_rw_file_by_type_resp(
+            request->hdr.instance_id, PLDM_READ_FILE_BY_TYPE,
+            PLDM_DATA_OUT_OF_RANGE, length, responsePtr);
+        return response;
+    }
+
+    if (offset + length > fileSize)
+    {
+        length = fileSize - offset;
+    }
+
+    response.resize(response.size() + length);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto fileDataPos = reinterpret_cast<char*>(responsePtr);
+    fileDataPos += sizeof(pldm_msg_hdr) + sizeof(uint8_t) + sizeof(length);
+
+    errno = 0;
+    auto err = errno;
+    std::ifstream stream(filePath, std::ios::in | std::ios::binary);
+    if (stream)
+    {
+        stream.seekg(offset);
+        stream.read(fileDataPos, length);
+        rc = PLDM_SUCCESS;
+    }
+    else
+    {
+        err = errno;
+        log<level::ERR>("Unable to open file for readFileByType",
+                        entry("FILE=%s", filePath.c_str()),
+                        entry("ERRNO=%d", err));
+        rc = PLDM_ERROR;
+    }
+
+    encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                PLDM_READ_FILE_BY_TYPE, rc, length,
+                                responsePtr);
+    return response;
+}
+
+} // namespace internal
+
+Response readFileByType(const pldm_msg* request, size_t payloadLength)
+{
+    auto response =
+        internal::readFileByTypeHandler(request, payloadLength, LID_PRIM_DIR);
+    return response;
 }
 
 } // namespace responder

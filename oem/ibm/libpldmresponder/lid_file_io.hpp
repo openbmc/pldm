@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "file_io_by_type.hpp"
 
 namespace pldm
@@ -40,7 +42,7 @@ class LidHandler : public FileHandler
  *
  *  @return fs::path for the lid file
  */
-fs::path createLidPath(uint32_t fileHandle);
+fs::path createLidPath(uint32_t fileHandle, const char* fileDir = LID_PRIM_DIR);
 
 } // namespace oem_file_type
 

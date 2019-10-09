@@ -206,5 +206,29 @@ Response readFile(const pldm_msg* request, size_t payloadLength);
  *  @return PLDM response message
  */
 Response writeFile(const pldm_msg* request, size_t payloadLength);
+
+/** @brief Handler for readFileByType command
+ *
+ *  @param[in] request - PLDM request msg
+ *  @param[in] payloadLength - length of the message payload
+ *
+ *  @return PLDM response message
+ */
+Response readFileByType(const pldm_msg* request, size_t payloadLength);
+
+namespace internal
+{
+/** @brief Processes the request for readFileByType command
+ *
+ *  @param[in] request - pointer to PLDM request payload
+ *  @param[in] payloadLength - length of the message
+ *  @param[in] fileDir - file path
+ *
+ */
+Response readFileByTypeHandler(const pldm_msg* request, size_t payloadLength,
+                               const char* fileDir);
+} // namespace internal
+
 } // namespace responder
+
 } // namespace pldm

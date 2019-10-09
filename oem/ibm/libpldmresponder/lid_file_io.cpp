@@ -59,7 +59,7 @@ int LidHandler::readIntoMemory()
     return rc;
 }
 
-fs::path createLidPath(uint32_t fileHandle)
+fs::path createLidPath(uint32_t fileHandle, const char* fileDir)
 
 {
     std::stringstream stream;
@@ -67,7 +67,7 @@ fs::path createLidPath(uint32_t fileHandle)
     std::string lidName(stream.str());
     lidName += ".lid";
     char sep = '/';
-    std::string lidPath(LID_PRIM_DIR);
+    std::string lidPath(fileDir);
     lidPath += sep + lidName;
     fs::path path(lidPath);
     return path;

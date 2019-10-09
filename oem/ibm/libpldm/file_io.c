@@ -392,7 +392,7 @@ int decode_rw_file_type_memory_req(const struct pldm_msg *msg,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	if (payload_length != PLDM_RW_FILE_TYPE_MEM_REQ_BYTES) {
+	if (payload_length != PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
@@ -484,7 +484,7 @@ int decode_rw_file_type_memory_resp(const struct pldm_msg *msg,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	if (payload_length != PLDM_RW_FILE_TYPE_MEM_RESP_BYTES) {
+	if (payload_length != PLDM_RW_FILE_BY_TYPE_MEM_RESP_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
