@@ -25,12 +25,11 @@ class FileHandler
      *  need to override this method to do the file specific processing
      *
      *  @param[in] xdmaInterface - DMA interface
-     *  @param[in] command - PLDM command
      *  @param[in] upstream - indicates direction of the transfer; true
      * indicates transfer to the host
      *  @return PLDM status code
      */
-    virtual int handle(DMA* xdmaInterface, uint8_t command, bool upstream) = 0;
+    virtual int handle(DMA* xdmaInterface, bool upstream) = 0;
 
     /** @brief Set all the mandatory parameters to process a file
      *
@@ -65,6 +64,16 @@ class FileHandler
         return address;
     }
 
+    uint32_t getFileHandle()
+    {
+        return fileHandle;
+    }
+
+    void setLength(uint32_t newLength)
+    {
+        length = newLength;
+    }
+
     virtual ~FileHandler()
     {
     }
@@ -85,9 +94,24 @@ class FileHandler
 class PelHandler : public FileHandler
 {
   public:
-    int handle(DMA* xdmaInterface, uint8_t command, bool upstream);
+    int handle(DMA* xdmaInterface, bool upstream);
 
     ~PelHandler()
+    {
+    }
+};
+
+/** @class LidHandler
+ *
+ *  @brief Inherits and implements FileHandler. This class is used
+ *  to read/write lid files.
+ */
+class LidHandler : public FileHandler
+{
+  public:
+    int handle(DMA* xdmaInterface, bool upstream);
+
+    ~LidHandler()
     {
     }
 };

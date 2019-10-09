@@ -41,6 +41,8 @@ void registerHandlers()
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
                     std::move(writeFileByTypeFromMemory));
+    registerHandler(PLDM_OEM, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                    std::move(readFileByTypeIntoMemory));
 }
 
 } // namespace oem_ibm
@@ -638,7 +640,7 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
     handler->setHandler(fileHandle, offset, length, address, path);
     using namespace dma;
     DMA intf;
-    rc = handler->handle(&intf, PLDM_WRITE_FILE_TYPE_FROM_MEMORY, false);
+    rc = handler->handle(&intf, false);
 
     if (rc != PLDM_SUCCESS)
     {
@@ -650,6 +652,125 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
     encode_rw_file_type_memory_resp(request->hdr.instance_id,
                                     PLDM_WRITE_FILE_TYPE_FROM_MEMORY,
                                     PLDM_SUCCESS, length, responsePtr);
+    return response;
+}
+
+Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
+{
+    using namespace pldm::responder::oem_file_type;
+
+    Response response((sizeof(pldm_msg_hdr) + PLDM_RW_FILE_TYPE_MEM_RESP_BYTES),
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_RW_FILE_TYPE_MEM_REQ_BYTES)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length{};
+    uint64_t address{};
+    auto rc =
+        decode_rw_file_type_memory_req(request, payloadLength, &fileType,
+                                       &fileHandle, &offset, &length, &address);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_type_memory_resp(
+            request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+
+    fs::path path{};
+    if (fileHandle != invalidFileHandle && fileType != PLDM_FILE_LID)
+    {
+        using namespace pldm::filetable;
+        auto& table = buildFileTable(FILE_TABLE_JSON);
+        FileEntry value{};
+        try
+        {
+            value = table.at(fileHandle);
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("File handle does not exist in the file table",
+                            entry("HANDLE=%d", fileHandle));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+            return response;
+        }
+        if (!fs::exists(value.fsPath))
+        {
+            log<level::ERR>("File does not exist",
+                            entry("HANDLE=%d", fileHandle));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+            return response;
+        }
+        auto fileSize = fs::file_size(value.fsPath);
+        if (offset >= fileSize)
+        {
+            log<level::ERR>("Offset exceeds file size",
+                            entry("OFFSET=%d", offset),
+                            entry("FILE_SIZE=%d", fileSize));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
+            return response;
+        }
+        if (offset + length > fileSize)
+        {
+            length = fileSize - offset;
+        }
+        if (length % dma::minSize)
+        {
+            log<level::ERR>("Read length is not a multiple of DMA minSize",
+                            entry("LENGTH=%d", length));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_INVALID_READ_LENGTH, 0, responsePtr);
+            return response;
+        }
+    }
+
+    std::unique_ptr<FileHandler> handler;
+
+    switch (fileType)
+    {
+        case PLDM_FILE_LID:
+            handler = std::make_unique<LidHandler>();
+            break;
+
+        default:
+        {
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_INVALID_FILE_TYPE, 0, responsePtr);
+            return response;
+        }
+    }
+    handler->setHandler(fileHandle, offset, length, address, path);
+    using namespace dma;
+    DMA intf;
+    rc = handler->handle(&intf, true);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_type_memory_resp(request->hdr.instance_id,
+                                        PLDM_READ_FILE_TYPE_INTO_MEMORY, rc, 0,
+                                        responsePtr);
+        return response;
+    }
+    encode_rw_file_type_memory_resp(
+        request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY, PLDM_SUCCESS,
+        handler->getLength(), responsePtr);
     return response;
 }
 
