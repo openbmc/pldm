@@ -1,6 +1,7 @@
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/file_io_by_type.hpp"
 #include "libpldmresponder/file_table.hpp"
+#include "libpldmresponder/lid_file_io.hpp"
 #include "libpldmresponder/pel_file_io.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
@@ -817,6 +818,23 @@ class DummyPelHandler : public PelHandler
     }
 };
 
+class DummyLidHandler : public LidHandler
+{
+  public:
+    DummyLidHandler(uint32_t newfileHandle, uint32_t newOffset,
+                    uint32_t newLength, uint64_t newAddress, fs::path newPath) :
+        LidHandler(newfileHandle, newOffset, newLength, newAddress, newPath)
+    {
+    }
+
+    int transferFileData(fs::path& path, bool upstream)
+    {
+        EXPECT_EQ(true, upstream);
+        EXPECT_EQ(path, path);
+        return PLDM_SUCCESS;
+    }
+};
+
 TEST(writeFromMemory, allPathsForPel)
 {
     uint32_t fileHandle{};
@@ -829,4 +847,53 @@ TEST(writeFromMemory, allPathsForPel)
                                                      address, path);
     auto rc = handler->writeFromMemory();
     ASSERT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(readIntoMemory, allPathsForLid)
+{
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length = 16;
+    uint64_t address{};
+
+    char tmpdir[] = "/tmp/lid.XXXXXX";
+    char* dir = mkdtemp(tmpdir);
+    std::string input(
+        "This is a test file for the lid handler. To be tested in tempfs.");
+    std::string filePath(dir);
+    filePath += "/1234.lid";
+    std::ofstream out(filePath.c_str());
+    out << input;
+    out.close();
+    fs::path path = filePath;
+
+    auto handler = std::make_unique<DummyLidHandler>(fileHandle, offset, length,
+                                                     address, path);
+    auto rc = handler->readIntoMemory();
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(readFileByTypeIntoMemory, testBadPath)
+{
+    using namespace pldm::responder::oem_file_type;
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_RW_FILE_TYPE_MEM_REQ_BYTES>
+        requestMsg{};
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_read_write_file_type_memory_req* request =
+        reinterpret_cast<struct pldm_read_write_file_type_memory_req*>(
+            req->payload);
+    request->file_type = PLDM_FILE_LID;
+    request->file_handle = 0;
+    request->offset = 0;
+    request->length = 17;
+    request->address = 0;
+
+    auto response = readFileByTypeIntoMemory(req, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct pldm_read_write_file_type_memory_resp* resp =
+        reinterpret_cast<struct pldm_read_write_file_type_memory_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
 }
