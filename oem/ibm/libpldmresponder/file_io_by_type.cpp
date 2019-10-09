@@ -10,6 +10,8 @@
 
 #include <exception>
 #include <filesystem>
+#include <iostream>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/server.hpp>
 #include <vector>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
@@ -23,12 +25,13 @@ namespace pldm
 namespace responder
 {
 
+using namespace phosphor::logging;
+
 namespace oem_file_type
 {
 
-int PelHandler::handle(DMA* xdmaInterface, uint8_t command, bool upstream)
+int PelHandler::handle(DMA* xdmaInterface, bool upstream)
 {
-    command = command;
     fs::create_directories(PEL_TEMP_DIR);
 
     auto timeMs =
@@ -96,6 +99,69 @@ int PelHandler::handle(DMA* xdmaInterface, uint8_t command, bool upstream)
     bus.call_noreply(method);
 
     fs::remove(fileName);
+
+    return PLDM_SUCCESS;
+}
+
+int LidHandler::handle(DMA* xdmaInterface, bool upstream)
+{
+    std::stringstream stream;
+    stream << std::hex << this->getFileHandle();
+    std::string lidName(stream.str());
+    lidName += ".lid";
+    char sep = '/';
+    std::string lidPath(LID_TEMP_DIR);
+    lidPath += sep + lidName;
+    fs::path path(lidPath);
+
+    if (!fs::exists(path))
+    {
+        log<level::ERR>("File does not exist", entry("PATH=%s", path.c_str()));
+        return PLDM_INVALID_FILE_HANDLE;
+    }
+    auto fileSize = fs::file_size(path);
+    auto offset = this->getOffset();
+    auto address = this->getAddress();
+    auto length = this->getLength();
+
+    if (offset >= fileSize)
+    {
+        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
+                        entry("FILE_SIZE=%d", fileSize));
+        return PLDM_DATA_OUT_OF_RANGE;
+    }
+
+    if (offset + length > fileSize)
+    {
+        length = fileSize - offset;
+    }
+
+    if (length % dma::minSize)
+    {
+        log<level::ERR>("Read length is not a multiple of DMA minSize",
+                        entry("LENGTH=%d", length));
+        return PLDM_INVALID_READ_LENGTH;
+    }
+    this->setLength(length);
+
+    while (length > dma::maxSize)
+    {
+        auto rc = xdmaInterface->transferDataHost(path, offset, dma::maxSize,
+                                                  address, upstream);
+        if (rc < 0)
+        {
+            return PLDM_ERROR;
+        }
+        offset += dma::maxSize;
+        length -= dma::maxSize;
+        address += dma::maxSize;
+    }
+    auto rc = xdmaInterface->transferDataHost(path, offset, length, address,
+                                              upstream);
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
 
     return PLDM_SUCCESS;
 }

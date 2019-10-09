@@ -84,6 +84,7 @@ AC_DEFINE(BIOS_JSONS_DIR, "/etc/default/obmc/pldm/bios", [Directory housing the 
 AC_DEFINE(BIOS_TABLES_DIR, "/var/lib/pldm/bios", [Directory housing actual BIOS tables])
 AC_DEFINE(PDR_JSONS_DIR, "/var/lib/pldm/pdr", [Directory housing platform specific PDR config])
 AC_DEFINE(PEL_TEMP_DIR, "/tmp/pel", [Directory housing the pel buffers received from host until committed])
+AC_DEFINE(LID_TEMP_DIR,"/var/lib/pldm/lid",[Directory housing the host lid files])
 
 # Create configured output
 AC_CONFIG_FILES([Makefile libpldm/Makefile libpldmresponder/Makefile test/Makefile tool/Makefile])
