@@ -57,6 +57,19 @@ pldm_bios_table_attr_entry_next(struct pldm_bios_table_iter *iter)
 	    pldm_bios_table_entry_next(iter);
 }
 
+/** @brief Get iterator to next entry
+ *  @details Return pointer to entry that the iterator current point to and get
+ *  the iterator to next entry
+ *  @param[in] iter - Pointer the bios string table iterator
+ *  @return Pointer to an entry in bios string table
+ */
+static inline const struct pldm_bios_string_table_entry *
+pldm_bios_table_string_entry_next(struct pldm_bios_table_iter *iter)
+{
+	return (const struct pldm_bios_string_table_entry *)
+	    pldm_bios_table_entry_next(iter);
+}
+
 /** @brief Get the total number of possible values for the entry
  *  @param[in] entry - Pointer to bios attribute table entry
  *  @return total number of possible values
@@ -133,6 +146,23 @@ pldm_bios_table_attr_value_entry_encode_string_length(uint16_t string_length);
 int pldm_bios_table_attr_value_entry_encode_string(
     void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
     uint16_t string_length, const char *string);
+
+size_t pldm_bios_table_string_entry_encode_length(uint16_t string_length);
+int pldm_bios_table_string_entry_encode(void *entry, size_t entry_length,
+					const char *str, uint16_t str_length);
+uint16_t pldm_bios_table_string_entry_decode_handle(
+    const struct pldm_bios_string_table_entry *entry);
+uint16_t pldm_bios_table_string_entry_decode_string_length(
+    const struct pldm_bios_string_table_entry *entry);
+int pldm_bios_table_string_entry_decode_string(
+    const struct pldm_bios_string_table_entry *entry, char *buffer, int size);
+
+const struct pldm_bios_string_table_entry *
+pldm_bios_table_string_find_by_string(const void *table, const size_t length,
+				      const char *str);
+const struct pldm_bios_string_table_entry *
+pldm_bios_table_string_find_by_handle(const void *table, const size_t length,
+				      uint16_t handle);
 
 #ifdef __cplusplus
 }
