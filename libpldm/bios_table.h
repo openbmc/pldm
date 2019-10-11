@@ -58,6 +58,96 @@ pldm_bios_table_iter_attr_entry_value(struct pldm_bios_table_iter *iter)
 	    pldm_bios_table_iter_value(iter);
 }
 
+/** @brief Get the bios string table entry that the iterator ponit to
+ *  @param[in] iter - Pointer the bios string table iterator
+ *  @return Pointer to an entry in bios string table
+ */
+static inline const struct pldm_bios_string_table_entry *
+pldm_bios_table_iter_string_entry_value(struct pldm_bios_table_iter *iter)
+{
+	return (const struct pldm_bios_string_table_entry *)
+	    pldm_bios_table_iter_value(iter);
+}
+
+/** @brief Get the length of an entry in the BIOS String Table
+ *  @param[in] string_length - Length of string
+ *  @return Length of an entry in bytes
+ */
+size_t pldm_bios_table_string_entry_encode_length(uint16_t string_length);
+
+/** @brief Create an entry of BIOS String Table
+ *  @param[out] entry - Pointer to a buffer to create an entry
+ *  @param[in] entry_length - Length of the buffer to create an entry
+ *  @param[in] str - String itself
+ *  @param[in] str_length - Length of the string
+ */
+void pldm_bios_table_string_entry_encode(void *entry, size_t entry_length,
+					 const char *str, uint16_t str_length);
+
+/** @brief Create an entry of BIOS String Table
+ *  @param[out] entry - Pointer to a buffer to create an entry
+ *  @param[in] entry_length - Length of the buffer to create an entry
+ *  @param[in] str - String itself
+ *  @param[in] str_length - Length of the string
+ *  @return pldm_completion_codes
+ */
+int pldm_bios_table_string_entry_encode_check(void *entry, size_t entry_length,
+					      const char *str,
+					      uint16_t str_length);
+
+/** @brief Get the string handle for the entry
+ *  @param[in] entry - Pointer to a bios string table entry
+ *  @return Handle to identify a string in the bios string table
+ */
+uint16_t pldm_bios_table_string_entry_decode_handle(
+    const struct pldm_bios_string_table_entry *entry);
+
+/** @brief Get the string length for the entry
+ *  @param[in] entry - Pointer to a bios string table entry
+ *  @return Length of string in bytes
+ */
+uint16_t pldm_bios_table_string_entry_decode_string_length(
+    const struct pldm_bios_string_table_entry *entry);
+
+/** @brief Get the string from the entry
+ *  @param[in] entry - Pointer to a bios string table entry
+ *  @param[out] buffer - Pointer to a buffer to store the string
+ *  @param[in] size - Size of the buffer to store the string
+ *  @return Length of the string decoded
+ */
+uint16_t pldm_bios_table_string_entry_decode_string(
+    const struct pldm_bios_string_table_entry *entry, char *buffer,
+    size_t size);
+
+/** @brief Get the string from the entry
+ *  @param[in] entry - Pointer to a bios string table entry
+ *  @param[out] buffer - Pointer to a buffer to store the string
+ *  @param[in] size - Size of the buffer to store the string
+ *  @return pldm_completion_codes
+ */
+int pldm_bios_table_string_entry_decode_string_check(
+    const struct pldm_bios_string_table_entry *entry, char *buffer,
+    size_t size);
+
+/** @brief Find an entry in bios string table by string
+ *  @param[in] table - The BIOS String Table
+ *  @param[length] - Length of the BIOS String Table
+ *  @param[str] - String itself
+ *  @return Pointer to an entry in the bios string table
+ */
+const struct pldm_bios_string_table_entry *
+pldm_bios_table_string_find_by_string(const void *table, size_t length,
+				      const char *str);
+/** @brief Find an entry in bios string table by handle
+ *  @param[in] table - The BIOS String Table
+ *  @param[length] - Length of the BIOS String Table
+ *  @param[handle] - Handle to identify a string in the bios string table
+ *  @return Pointer to an entry in the bios string table
+ */
+const struct pldm_bios_string_table_entry *
+pldm_bios_table_string_find_by_handle(const void *table, size_t length,
+				      uint16_t handle);
+
 /** @brief Get the total number of possible values for the entry
  *  @param[in] entry - Pointer to bios attribute table entry
  *  @return total number of possible values
