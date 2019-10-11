@@ -8,6 +8,61 @@
 #include "bios.h"
 #include "bios_table.h"
 
+static uint16_t get_bios_string_handle()
+{
+	static uint16_t handle = 0;
+	assert(handle != UINT16_MAX);
+
+	return handle++;
+}
+
+size_t pldm_bios_table_string_entry_encode_length(uint16_t string_length)
+{
+	return sizeof(struct pldm_bios_string_table_entry) - 1 + string_length;
+}
+
+int pldm_bios_table_string_entry_encode(void *entry, size_t entry_length,
+					const char *str, uint16_t str_length)
+{
+	size_t length = pldm_bios_table_string_entry_encode_length(str_length);
+	assert(length <= entry_length);
+	struct pldm_bios_string_table_entry *string_entry = entry;
+	string_entry->string_handle = get_bios_string_handle();
+	string_entry->string_length = str_length;
+	memcpy(string_entry->name, str, str_length);
+
+	return PLDM_SUCCESS;
+}
+
+uint16_t pldm_bios_table_string_entry_decode_handle(
+    const struct pldm_bios_string_table_entry *entry)
+{
+	return le16toh(entry->string_handle);
+}
+
+uint16_t pldm_bios_table_string_entry_decode_string_length(
+    const struct pldm_bios_string_table_entry *entry)
+{
+	return le16toh(entry->string_length);
+}
+
+int pldm_bios_table_string_entry_decode_string(
+    const struct pldm_bios_string_table_entry *entry, char *buffer, int size)
+{
+	uint16_t length =
+	    pldm_bios_table_string_entry_decode_string_length(entry);
+	assert(length < size);
+	memcpy(buffer, entry->name, length);
+	buffer[length] = 0;
+	return PLDM_SUCCESS;
+}
+
+static size_t string_table_entry_length(const void *table_entry)
+{
+	const struct pldm_bios_string_table_entry *entry = table_entry;
+	return sizeof(*entry) - 1 + entry->string_length;
+}
+
 uint8_t pldm_bios_table_attr_entry_enum_decode_pv_num(
     const struct pldm_bios_attr_table_entry *entry)
 {
@@ -178,7 +233,7 @@ pldm_bios_table_iter_create(const void *table, size_t length,
 	iter->current_pos = 0;
 	switch (type) {
 	case PLDM_BIOS_STRING_TABLE:
-		iter->entry_length_handler = NULL;
+		iter->entry_length_handler = string_table_entry_length;
 		break;
 	case PLDM_BIOS_ATTR_TABLE:
 		iter->entry_length_handler = attr_table_entry_length;
@@ -215,4 +270,69 @@ void pldm_bios_table_iter_next(struct pldm_bios_table_iter *iter)
 const void *pldm_bios_table_iter_value(struct pldm_bios_table_iter *iter)
 {
 	return iter->table_data + iter->current_pos;
+}
+
+static const void *
+pldm_bios_table_entry_find(struct pldm_bios_table_iter *iter, const void *key,
+			   int (*equal)(const void *entry, const void *key))
+{
+	const void *entry;
+	while (!pldm_bios_table_iter_is_end(iter)) {
+		entry = pldm_bios_table_iter_value(iter);
+		if (equal(entry, key))
+			return entry;
+		pldm_bios_table_iter_next(iter);
+	}
+	return NULL;
+}
+
+static int string_table_handle_equal(const void *entry, const void *key)
+{
+	const struct pldm_bios_string_table_entry *string_entry = entry;
+	uint16_t handle = *(uint16_t *)key;
+	if (le16toh(string_entry->string_handle) == handle)
+		return true;
+	return false;
+}
+
+struct string_equal_arg {
+	uint16_t str_length;
+	const char *str;
+};
+
+static int string_table_string_equal(const void *entry, const void *key)
+{
+	const struct pldm_bios_string_table_entry *string_entry = entry;
+	const struct string_equal_arg *arg = key;
+	if (arg->str_length != le16toh(string_entry->string_length))
+		return false;
+	if (memcmp(string_entry->name, arg->str, arg->str_length) != 0)
+		return false;
+	return true;
+}
+
+const struct pldm_bios_string_table_entry *
+pldm_bios_table_string_find_by_string(const void *table, size_t length,
+				      const char *str)
+{
+	uint16_t str_length = strlen(str);
+	struct string_equal_arg arg = {str_length, str};
+	struct pldm_bios_table_iter *iter =
+	    pldm_bios_table_iter_create(table, length, PLDM_BIOS_STRING_TABLE);
+	const void *entry =
+	    pldm_bios_table_entry_find(iter, &arg, string_table_string_equal);
+	pldm_bios_table_iter_free(iter);
+	return entry;
+}
+
+const struct pldm_bios_string_table_entry *
+pldm_bios_table_string_find_by_handle(const void *table, size_t length,
+				      uint16_t handle)
+{
+	struct pldm_bios_table_iter *iter =
+	    pldm_bios_table_iter_create(table, length, PLDM_BIOS_STRING_TABLE);
+	const void *entry = pldm_bios_table_entry_find(
+	    iter, &handle, string_table_handle_equal);
+	pldm_bios_table_iter_free(iter);
+	return entry;
 }
