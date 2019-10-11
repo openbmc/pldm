@@ -138,16 +138,6 @@ AttributeHandle nextAttributeHandle()
     return attrHdl++;
 }
 
-/** @brief Generate the next string handle
- *  *
- *  @return - uint16_t - next string handle
- */
-StringHandle nextStringHandle()
-{
-    static StringHandle strHdl = 0;
-    return strHdl++;
-}
-
 /** @brief Construct the BIOS string table
  *
  *  @param[in] BIOSStringTable - the string table
@@ -164,66 +154,52 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-
-    if (BIOSStringTable.isEmpty())
-    { // no persisted table, constructing fresh table and file
-        auto biosStrings = bios_parser::getStrings();
-        std::sort(biosStrings.begin(), biosStrings.end());
-        // remove all duplicate strings received from bios json
-        biosStrings.erase(std::unique(biosStrings.begin(), biosStrings.end()),
-                          biosStrings.end());
-        size_t allStringsLen =
-            std::accumulate(biosStrings.begin(), biosStrings.end(), 0,
-                            [](size_t sum, const std::string& elem) {
-                                return sum + elem.size();
-                            });
-        size_t sizeWithoutPad =
-            allStringsLen +
-            (biosStrings.size() * (sizeof(pldm_bios_string_table_entry) - 1));
-        Table stringTable;
-        stringTable.reserve(utils::getTableTotalsize(sizeWithoutPad));
-
-        stringTable.resize(sizeWithoutPad);
-        auto tablePtr = stringTable.data();
-        for (const auto& elem : biosStrings)
-        {
-            auto stringPtr =
-                reinterpret_cast<struct pldm_bios_string_table_entry*>(
-                    tablePtr);
-
-            stringPtr->string_handle = nextStringHandle();
-            stringPtr->string_length = elem.length();
-            memcpy(stringPtr->name, elem.c_str(), elem.length());
-            tablePtr += sizeof(stringPtr->string_handle) +
-                        sizeof(stringPtr->string_length);
-            tablePtr += elem.length();
-        }
-
-        utils::padAndChecksum(stringTable);
-        BIOSStringTable.store(stringTable);
-        response.resize(sizeof(pldm_msg_hdr) +
-                            PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
-                            stringTable.size(),
-                        0);
-        responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-        size_t respPayloadLength = response.size();
-        uint32_t nxtTransferHandle = 0;
-        uint8_t transferFlag = PLDM_START_AND_END;
-        encode_get_bios_table_resp(instanceID, PLDM_SUCCESS, nxtTransferHandle,
-                                   transferFlag, stringTable.data(),
-                                   respPayloadLength, responsePtr);
-    }
-    else
-    { // persisted table present, constructing response
-        size_t respPayloadLength = response.size();
-        uint32_t nxtTransferHandle = 0;
-        uint8_t transferFlag = PLDM_START_AND_END;
-        encode_get_bios_table_resp(instanceID, PLDM_SUCCESS, nxtTransferHandle,
-                                   transferFlag, nullptr, respPayloadLength,
+    if (!BIOSStringTable.isEmpty())
+    {
+        encode_get_bios_table_resp(instanceID, PLDM_SUCCESS,
+                                   0, /* next transfer handle */
+                                   PLDM_START_AND_END, nullptr, response.size(),
                                    responsePtr); // filling up the header here
         BIOSStringTable.load(response);
+        return response;
+    }
+    auto biosStrings = bios_parser::getStrings();
+    std::sort(biosStrings.begin(), biosStrings.end());
+    // remove all duplicate strings received from bios json
+    biosStrings.erase(std::unique(biosStrings.begin(), biosStrings.end()),
+                      biosStrings.end());
+
+    size_t sizeWithoutPad = std::accumulate(
+        biosStrings.begin(), biosStrings.end(), 0,
+        [](size_t sum, const std::string& elem) {
+            return sum +
+                   pldm_bios_table_string_entry_encode_length(elem.length());
+        });
+
+    Table stringTable;
+    stringTable.reserve(utils::getTableTotalsize(sizeWithoutPad));
+
+    stringTable.resize(sizeWithoutPad);
+    auto tablePtr = stringTable.data();
+    for (const auto& elem : biosStrings)
+    {
+        auto entry_length =
+            pldm_bios_table_string_entry_encode_length(elem.length());
+        pldm_bios_table_string_entry_encode(tablePtr, sizeWithoutPad,
+                                            elem.c_str(), elem.length());
+        tablePtr += entry_length;
+        sizeWithoutPad -= entry_length;
     }
 
+    utils::padAndChecksum(stringTable);
+    BIOSStringTable.store(stringTable);
+    response.resize(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
+                        stringTable.size(),
+                    0);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    encode_get_bios_table_resp(
+        instanceID, PLDM_SUCCESS, 0 /* nxtTransferHandle */, PLDM_START_AND_END,
+        stringTable.data(), response.size(), responsePtr);
     return response;
 }
 
@@ -236,38 +212,19 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
 StringHandle findStringHandle(const std::string& name,
                               const BIOSTable& BIOSStringTable)
 {
-    StringHandle hdl{};
-    Response response;
-    BIOSStringTable.load(response);
-
-    auto tableData = response.data();
-    size_t tableLen = response.size();
-    auto tableEntry =
-        reinterpret_cast<struct pldm_bios_string_table_entry*>(response.data());
-    while (1)
+    Table table;
+    BIOSStringTable.load(table);
+    auto stringEntry = pldm_bios_table_string_find_by_string(
+        table.data(), table.size(), name.c_str());
+    if (stringEntry == nullptr)
     {
-        hdl = tableEntry->string_handle;
-        uint16_t len = tableEntry->string_length;
-        if (name.compare(0, name.length(), tableEntry->name, len) == 0)
-        {
-            break;
-        }
-        tableData += (sizeof(struct pldm_bios_string_table_entry) - 1) + len;
-
-        if (std::distance(tableData, response.data() + tableLen) <=
-            padChksumMax)
-        {
-            log<level::ERR>("Reached end of BIOS string table,did not find the "
-                            "handle for the string",
-                            entry("STRING=%s", name.c_str()));
-            elog<InternalFailure>();
-            break;
-        }
-
-        tableEntry =
-            reinterpret_cast<struct pldm_bios_string_table_entry*>(tableData);
+        log<level::ERR>("Reached end of BIOS string table,did not find the "
+                        "handle for the string",
+                        entry("STRING=%s", name.c_str()));
+        elog<InternalFailure>();
     }
-    return hdl;
+
+    return pldm_bios_table_string_entry_decode_handle(stringEntry);
 }
 
 /** @brief Find the string name from the BIOS string table for a string handle
@@ -280,38 +237,22 @@ StringHandle findStringHandle(const std::string& name,
 std::string findStringName(StringHandle stringHdl,
                            const BIOSTable& BIOSStringTable)
 {
+    Table table;
+    BIOSStringTable.load(table);
+    auto stringEntry = pldm_bios_table_string_find_by_handle(
+        table.data(), table.size(), stringHdl);
     std::string name;
-    Response response;
-    BIOSStringTable.load(response);
-
-    auto tableData = response.data();
-    size_t tableLen = response.size();
-    auto tableEntry =
-        reinterpret_cast<struct pldm_bios_string_table_entry*>(response.data());
-    while (1)
+    if (stringEntry == nullptr)
     {
-        StringHandle currHdl = tableEntry->string_handle;
-        uint16_t len = tableEntry->string_length;
-        if (currHdl == stringHdl)
-        {
-            name.resize(len);
-            memcpy(name.data(), tableEntry->name, len);
-            break;
-        }
-        tableData += (sizeof(struct pldm_bios_string_table_entry) - 1) + len;
-
-        if (std::distance(tableData, response.data() + tableLen) <=
-            padChksumMax)
-        {
-            log<level::ERR>("Reached end of BIOS string table,did not find "
-                            "string name for handle",
-                            entry("STRING_HANDLE=%d", stringHdl));
-            break;
-        }
-
-        tableEntry =
-            reinterpret_cast<struct pldm_bios_string_table_entry*>(tableData);
+        log<level::ERR>("Reached end of BIOS string table,did not find "
+                        "string name for handle",
+                        entry("STRING_HANDLE=%d", stringHdl));
     }
+    auto strLength =
+        pldm_bios_table_string_entry_decode_string_length(stringEntry);
+    name.resize(strLength);
+    pldm_bios_table_string_entry_decode_string(
+        stringEntry, name.data(), name.size() + 1 /* sizeof('\0') */);
     return name;
 }
 
