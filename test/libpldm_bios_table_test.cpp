@@ -84,3 +84,93 @@ TEST(AttrTable, ItearatorTest)
     EXPECT_EQ(entry, nullptr);
     pldm_bios_table_iter_free(iter);
 }
+
+TEST(StringTable, EntryEncodeTest)
+{
+    std::vector<uint8_t> stringEntry{
+        0,   0,                            /* string handle*/
+        7,   0,                            /* string length */
+        'A', 'l', 'l', 'o', 'w', 'e', 'd', /* string */
+    };
+
+    const char* str = "Allowed";
+    auto str_length = std::strlen(str);
+    auto encodeLength = pldm_bios_table_string_entry_encode_length(str_length);
+    EXPECT_EQ(encodeLength, stringEntry.size());
+
+    std::vector<uint8_t> encodeEntry(encodeLength, 0);
+    pldm_bios_table_string_entry_encode(encodeEntry.data(), encodeEntry.size(),
+                                        str, str_length);
+    // set string handle = 0
+    encodeEntry[0] = 0;
+    encodeEntry[1] = 0;
+
+    EXPECT_EQ(stringEntry, encodeEntry);
+}
+
+TEST(StringTable, IteratorTest)
+{
+    std::vector<uint8_t> stringHello{
+        0,   0,                  /* string handle*/
+        5,   0,                  /* string length */
+        'H', 'e', 'l', 'l', 'o', /* string */
+    };
+    std::vector<uint8_t> stringWorld{
+        1,   0,                       /* string handle*/
+        6,   0,                       /* string length */
+        'W', 'o', 'r', 'l', 'd', '!', /* string */
+    };
+
+    Table table;
+    buildTable(table, stringHello, stringWorld);
+
+    auto iter = pldm_bios_table_iter_create(table.data(), table.size(),
+                                            PLDM_BIOS_STRING_TABLE);
+    auto entry = pldm_bios_table_string_entry_next(iter);
+    auto rc = std::memcmp(entry, stringHello.data(), stringHello.size());
+    EXPECT_EQ(rc, 0);
+    entry = pldm_bios_table_string_entry_next(iter);
+    rc = std::memcmp(entry, stringWorld.data(), stringWorld.size());
+    EXPECT_EQ(rc, 0);
+    EXPECT_TRUE(pldm_bios_table_iter_is_end(iter));
+    entry = pldm_bios_table_string_entry_next(iter);
+    EXPECT_EQ(entry, nullptr);
+    pldm_bios_table_iter_free(iter);
+}
+
+TEST(StringTable, FindTest)
+{
+    std::vector<uint8_t> stringHello{
+        1,   0,                  /* string handle*/
+        5,   0,                  /* string length */
+        'H', 'e', 'l', 'l', 'o', /* string */
+    };
+    std::vector<uint8_t> stringWorld{
+        2,   0,                       /* string handle*/
+        6,   0,                       /* string length */
+        'W', 'o', 'r', 'l', 'd', '!', /* string */
+    };
+    std::vector<uint8_t> stringHi{
+        3,   0,   /* string handle*/
+        2,   0,   /* string length */
+        'H', 'i', /* string */
+    };
+
+    Table table;
+    buildTable(table, stringHello, stringWorld, stringHi);
+
+    const char* world = "World!";
+    uint16_t handle;
+    auto rc = pldm_bios_table_string_find_handle(table.data(), table.size(),
+                                                 world, &handle);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(handle, 2);
+
+    std::vector<char> strBuf(3, 0);
+    size_t strBufLen = strBuf.size();
+    rc = pldm_bios_table_string_find_string(table.data(), table.size(), 3,
+                                            strBuf.data(), &strBufLen);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(strBufLen, 2);
+    EXPECT_EQ(std::memcmp(strBuf.data(), "Hi", 2), 0);
+}
