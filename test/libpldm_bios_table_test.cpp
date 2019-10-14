@@ -52,6 +52,43 @@ TEST(AttrTable, EnumEntryDecodeTest)
     EXPECT_EQ(defNumber, 1);
 }
 
+TEST(AttrTable, EnumEntryEncodeTest)
+{
+    std::vector<uint8_t> enumEntry{
+        0, 0, /* attr handle */
+        0,    /* attr type */
+        1, 0, /* attr name handle */
+        2,    /* number of possible value */
+        2, 0, /* possible value handle */
+        3, 0, /* possible value handle */
+        1,    /* number of default value */
+        0     /* defaut value string handle index */
+    };
+
+    std::vector<uint16_t> pv_hdls{2, 3};
+    std::vector<uint8_t> defs{0};
+
+    struct pldm_bios_table_attr_entry_enum_info info = {
+        1,              /* name handle */
+        false,          /* read only */
+        2,              /* pv number */
+        pv_hdls.data(), /* pv handle */
+        1,              /*def number */
+        defs.data()     /*def index*/
+    };
+    auto encodeLength = pldm_bios_table_attr_entry_enum_encode_length(2, 1);
+    EXPECT_EQ(encodeLength, enumEntry.size());
+
+    std::vector<uint8_t> encodeEntry(encodeLength, 0);
+    pldm_bios_table_attr_entry_enum_encode(encodeEntry.data(),
+                                           encodeEntry.size(), &info);
+    // set attr handle = 0
+    encodeEntry[0] = 0;
+    encodeEntry[1] = 0;
+
+    EXPECT_EQ(enumEntry, encodeEntry);
+}
+
 TEST(AttrTable, ItearatorTest)
 {
     std::vector<uint8_t> enumEntry{
