@@ -92,6 +92,22 @@ const struct pldm_bios_string_table_entry *
 pldm_bios_table_string_find_by_handle(const void *table, const size_t length,
 				      uint16_t handle);
 
+struct pldm_bios_table_attr_entry_enum_info {
+	uint16_t name_handle;
+	bool read_only;
+	uint8_t pv_num;
+	const uint16_t *pv_handle;
+	uint8_t def_num;
+	const uint8_t *def_index;
+};
+
+size_t pldm_bios_table_attr_entry_enum_encode_length(uint8_t pv_num,
+						     uint8_t def_num);
+
+int pldm_bios_table_attr_entry_enum_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_enum_info *info);
+
 /** @brief Get the total number of possible values for the entry
  *  @param[in] entry - Pointer to bios attribute table entry
  *  @return total number of possible values
@@ -115,6 +131,22 @@ uint8_t pldm_bios_table_attr_entry_enum_decode_def_num(
 int pldm_bios_table_attr_entry_enum_decode_pv_hdls(
     const struct pldm_bios_attr_table_entry *entry, uint16_t *pv_hdls,
     uint8_t pv_num);
+
+struct pldm_bios_table_attr_entry_string_info {
+	uint16_t name_handle;
+	bool read_only;
+	uint8_t string_type;
+	uint16_t min_length;
+	uint16_t max_length;
+	uint16_t def_length;
+	const char *def_string;
+};
+
+size_t pldm_bios_table_attr_entry_string_encode_length(uint16_t def_str_len);
+
+int pldm_bios_table_attr_entry_string_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_string_info *info);
 
 /** @brief Get the length of default string in bytes for the entry
  *  @param[in] entry - Pointer to bios attribute table entry
