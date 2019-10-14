@@ -128,16 +128,6 @@ Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     return response;
 }
 
-/** @brief Generate the next attribute handle
- *
- *  @return - uint16_t - next attribute handle
- */
-AttributeHandle nextAttributeHandle()
-{
-    static AttributeHandle attrHdl = 0;
-    return attrHdl++;
-}
-
 /** @brief Construct the BIOS string table
  *
  *  @param[in] BIOSStringTable - the string table
@@ -359,9 +349,7 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
                             entry("ATTRIBUTE=%s", key.c_str()));
             continue;
         }
-        uint8_t typeOfAttr = (std::get<0>(value))
-                                 ? PLDM_BIOS_ENUMERATION_READ_ONLY
-                                 : PLDM_BIOS_ENUMERATION;
+        bool readOnly = (std::get<0>(value));
         PossibleValues possiVals = std::get<1>(value);
         DefaultValues defVals = std::get<2>(value);
         // both the possible and default values are stored in sorted manner to
@@ -385,35 +373,21 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
             }
         }
         auto defValsByHdl = findDefaultValHandle(possiVals, defVals);
+        auto entryLength = pldm_bios_table_attr_entry_enum_encode_length(
+            possiValsByHdl.size(), defValsByHdl.size());
 
-        BIOSTableRow enumAttrTable(
-            (sizeof(struct pldm_bios_attr_table_entry) - 1) + sizeof(uint8_t) +
-                possiValsByHdl.size() * sizeof(uint16_t) + sizeof(uint8_t) +
-                defValsByHdl.size() * sizeof(uint8_t),
-            0);
-        BIOSTableRow::iterator it = enumAttrTable.begin();
-        auto attrPtr = reinterpret_cast<struct pldm_bios_attr_table_entry*>(
-            enumAttrTable.data());
-        attrPtr->attr_handle = nextAttributeHandle();
-        attrPtr->attr_type = typeOfAttr;
-        attrPtr->string_handle = std::move(strHandle);
-        std::advance(it, (sizeof(struct pldm_bios_attr_table_entry) - 1));
-        uint8_t numPossibleVals = possiValsByHdl.size();
-        std::copy_n(&numPossibleVals, sizeof(numPossibleVals), it);
-        std::advance(it, sizeof(numPossibleVals));
-        std::copy_n(reinterpret_cast<uint8_t*>(possiValsByHdl.data()),
-                    sizeof(uint16_t) * possiValsByHdl.size(), it);
-        std::advance(
-            it, sizeof(uint16_t) *
-                    possiValsByHdl.size()); // possible val handle is uint16_t
-        uint8_t numDefaultVals = defValsByHdl.size();
-        std::copy_n(&numDefaultVals, sizeof(numDefaultVals), it);
-        std::advance(it, sizeof(numDefaultVals));
-        std::copy(defValsByHdl.begin(), defValsByHdl.end(), it);
-        std::advance(it, defValsByHdl.size());
-
-        std::move(enumAttrTable.begin(), enumAttrTable.end(),
-                  std::back_inserter(attributeTable));
+        auto attrTableSize = attributeTable.size();
+        attributeTable.resize(attrTableSize + entryLength, 0);
+        struct pldm_bios_table_attr_entry_enum_info info = {
+            strHandle,
+            readOnly,
+            (uint8_t)possiValsByHdl.size(),
+            possiValsByHdl.data(),
+            (uint8_t)defValsByHdl.size(),
+            defValsByHdl.data(),
+        };
+        pldm_bios_table_attr_entry_enum_encode(
+            attributeTable.data() + attrTableSize, entryLength, &info);
     }
 }
 
@@ -471,7 +445,6 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 {
     const auto& attributeMap = getValues();
     StringHandle strHandle;
-
     for (const auto& [key, value] : attributeMap)
     {
         try
@@ -485,37 +458,19 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
             continue;
         }
 
-        const auto& [type, strType, minStrLen, maxStrLen, defaultStrLen,
+        const auto& [readOnly, strType, minStrLen, maxStrLen, defaultStrLen,
                      defaultStr] = value;
-        uint8_t typeOfAttr =
-            type ? PLDM_BIOS_STRING_READ_ONLY : PLDM_BIOS_STRING;
+        auto entryLength =
+            pldm_bios_table_attr_entry_string_encode_length(defaultStrLen);
 
-        BIOSTableRow stringAttrTable(bios_parser::bios_string::attrTableSize +
-                                     defaultStr.size());
-        BIOSTableRow::iterator it = stringAttrTable.begin();
-        auto attrPtr = reinterpret_cast<struct pldm_bios_attr_table_entry*>(
-            stringAttrTable.data());
-        attrPtr->attr_handle = nextAttributeHandle();
-        attrPtr->attr_type = typeOfAttr;
-        attrPtr->string_handle = strHandle;
-
-        std::advance(it, (sizeof(struct pldm_bios_attr_table_entry) - 1));
-        std::copy_n(&strType, sizeof(uint8_t), it);
-        std::advance(it, sizeof(uint8_t));
-        std::copy_n(reinterpret_cast<const uint8_t*>(&minStrLen),
-                    sizeof(uint16_t), it);
-        std::advance(it, sizeof(uint16_t));
-        std::copy_n(reinterpret_cast<const uint8_t*>(&maxStrLen),
-                    sizeof(uint16_t), it);
-        std::advance(it, sizeof(uint16_t));
-        std::copy_n(reinterpret_cast<const uint8_t*>(&defaultStrLen),
-                    sizeof(uint16_t), it);
-        std::advance(it, sizeof(uint16_t));
-        std::copy_n(defaultStr.data(), defaultStr.size(), it);
-        std::advance(it, defaultStr.size());
-
-        attributeTable.insert(attributeTable.end(), stringAttrTable.begin(),
-                              stringAttrTable.end());
+        struct pldm_bios_table_attr_entry_string_info info = {
+            strHandle, readOnly,      strType,           minStrLen,
+            maxStrLen, defaultStrLen, defaultStr.data(),
+        };
+        auto attrTableSize = attributeTable.size();
+        attributeTable.resize(attrTableSize + entryLength, 0);
+        pldm_bios_table_attr_entry_string_encode(
+            attributeTable.data() + attrTableSize, entryLength, &info);
     }
 }
 
