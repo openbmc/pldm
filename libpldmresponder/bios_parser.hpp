@@ -88,15 +88,6 @@ using DefaultStr = std::string;
 using AttrValuesMap =
     std::map<AttrName, std::tuple<IsReadOnly, StrType, MinStrLen, MaxStrLen,
                                   DefaultStrLen, DefaultStr>>;
-/* attrTableSize is the sum of fixed length of members which construct a string
- * attribute table, including attr_handle(uint16_t), attr_type(uint8_t),
- * string_handle(uint16_t), strType(uint8_t), minStrLen(uint16_t),
- * MaxStrLen(uint16_t), DefaultStrLen(uint16_t) */
-constexpr auto attrTableSize = 12;
-static_assert(attrTableSize == sizeof(uint16_t) + sizeof(uint8_t) +
-                                   sizeof(uint16_t) + sizeof(uint8_t) +
-                                   sizeof(uint16_t) + sizeof(uint16_t) +
-                                   sizeof(uint16_t));
 
 /** @brief Get the string related values and the default values for the
  *         BIOSString and BIOSStringReadOnly types

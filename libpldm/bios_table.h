@@ -126,6 +126,39 @@ const struct pldm_bios_string_table_entry *
 pldm_bios_table_string_find_by_handle(const void *table, size_t length,
 				      uint16_t handle);
 
+/** @struct pldm_bios_table_attr_entry_enum_info
+ *
+ *  An auxiliary structure for passing parameters to @ref
+ * pldm_bios_table_attr_entry_enum_encode
+ *
+ */
+struct pldm_bios_table_attr_entry_enum_info {
+	uint16_t name_handle; //!< attribute name handle
+	bool read_only;       //!< indicate whether the attribute is read-only
+	uint8_t pv_num;       //!< number of possible values
+	const uint16_t *pv_handle; //!< handles of possible values
+	uint8_t def_num;	   //!< nnumber of default values
+	const uint8_t *def_index;  //!< indices of default values.
+};
+
+/** @brief Get length that an attribute entry(type: enum) will take
+ *  @param[in] pv_num - Number of possible values
+ *  @param[in] def_num - Number of default values
+ *  @return The length that an entry(type: enum) will take
+ */
+size_t pldm_bios_table_attr_entry_enum_encode_length(uint8_t pv_num,
+						     uint8_t def_num);
+
+/** @brief Create an entry of BIOS Attribute Table (type: enum)
+ *  @param[out] entry - Pointer to a buffer to create an entry
+ *  @param[in] entry_length - Length of the buffer to create an entry
+ *  @param[in] info - Pointer to an auxiliary structure @ref
+ * pldm_bios_table_attr_entry_enum_info
+ */
+void pldm_bios_table_attr_entry_enum_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_enum_info *info);
+
 /** @brief Get the total number of possible values for the entry
  *  @param[in] entry - Pointer to bios attribute table entry
  *  @return total number of possible values
@@ -149,6 +182,38 @@ uint8_t pldm_bios_table_attr_entry_enum_decode_def_num(
 int pldm_bios_table_attr_entry_enum_decode_pv_hdls(
     const struct pldm_bios_attr_table_entry *entry, uint16_t *pv_hdls,
     uint8_t pv_num);
+
+/** @struct pldm_bios_table_attr_entry_string_info
+ *
+ *  An auxiliary structure for passing parameters to @ref
+ * pldm_bios_table_attr_entry_string_encode
+ *
+ */
+struct pldm_bios_table_attr_entry_string_info {
+	uint16_t name_handle;   //!< attribute name handle
+	bool read_only;		//!< indicate whether the attribute is read-only
+	uint8_t string_type;    //!< The type of the string
+	uint16_t min_length;    //!< The minimum length of the string in bytes
+	uint16_t max_length;    //!< The maximum length of the string in bytes
+	uint16_t def_length;    //!< The length of the defaut string in bytes
+	const char *def_string; //!< The default string itself
+};
+
+/** @brief Get length that an attribute entry(type: string) will take
+ *  @param[in] def_str_len - Length of default string
+ *  @return The length that an entry(type: string) will take
+ */
+size_t pldm_bios_table_attr_entry_string_encode_length(uint16_t def_str_len);
+
+/** @brief Create an entry of BIOS Attribute Table (type: string)
+ *  @param[out] entry - Pointer to a buffer to create an entry
+ *  @param[in] entry_length - Length of the buffer to create an entry
+ *  @param[in] info - Pointer to an auxiliary structure @ref
+ * pldm_bios_table_attr_entry_string_info
+ */
+void pldm_bios_table_attr_entry_string_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_string_info *info);
 
 /** @brief Get the length of default string in bytes for the entry
  *  @param[in] entry - Pointer to bios attribute table entry
