@@ -88,6 +88,66 @@ static size_t string_table_entry_length(const void *table_entry)
 	return sizeof(*entry) - 1 + entry->string_length;
 }
 
+static uint16_t get_bios_attr_handle()
+{
+	static uint16_t handle = 0;
+	assert(handle != UINT16_MAX);
+
+	return handle++;
+}
+
+static void attr_table_entry_encode_header(void *entry, size_t length,
+					   uint8_t attr_type,
+					   uint16_t string_handle)
+{
+	struct pldm_bios_attr_table_entry *attr_entry = entry;
+	assert(sizeof(*attr_entry) <= length);
+	attr_entry->attr_handle = htole16(get_bios_attr_handle());
+	attr_entry->attr_type = attr_type;
+	attr_entry->string_handle = htole16(string_handle);
+}
+
+size_t pldm_bios_table_attr_entry_enum_encode_length(uint8_t pv_num,
+						     uint8_t def_num)
+{
+	return sizeof(struct pldm_bios_attr_table_entry) - 1 + sizeof(pv_num) +
+	       pv_num * sizeof(uint16_t) + sizeof(def_num) + def_num;
+}
+
+void pldm_bios_table_attr_entry_enum_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_enum_info *info)
+{
+	size_t length = pldm_bios_table_attr_entry_enum_encode_length(
+	    info->pv_num, info->def_num);
+	assert(length <= entry_length);
+	uint8_t attr_type = info->read_only ? PLDM_BIOS_ENUMERATION_READ_ONLY
+					    : PLDM_BIOS_ENUMERATION;
+	attr_table_entry_encode_header(entry, entry_length, attr_type,
+				       info->name_handle);
+	struct pldm_bios_attr_table_entry *attr_entry = entry;
+	attr_entry->metadata[0] = info->pv_num;
+	uint16_t *pv_hdls = (uint16_t *)(attr_entry->metadata + 1);
+	size_t i;
+	for (i = 0; i < info->pv_num; i++)
+		pv_hdls[i] = htole16(info->pv_handle[i]);
+	attr_entry->metadata[1 + info->pv_num * sizeof(uint16_t)] =
+	    info->def_num;
+	memcpy(attr_entry->metadata + 1 + info->pv_num * sizeof(uint16_t) + 1,
+	       info->def_index, info->def_num);
+}
+
+int pldm_bios_table_attr_entry_enum_encode_check(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_enum_info *info)
+{
+	size_t length = pldm_bios_table_attr_entry_enum_encode_length(
+	    info->pv_num, info->def_num);
+	BUFFER_SIZE_EXPECT(entry_length, length);
+	pldm_bios_table_attr_entry_enum_encode(entry, entry_length, info);
+	return PLDM_SUCCESS;
+}
+
 #define ATTR_TYPE_EXPECT(type, expected)                                       \
 	do {                                                                   \
 		if (type != expected && type != (expected | 0x80))             \
@@ -158,23 +218,69 @@ attr_table_entry_length_enum(const struct pldm_bios_attr_table_entry *entry)
 {
 	uint8_t pv_num = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
 	uint8_t def_num = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
-	return sizeof(*entry) - 1 + sizeof(pv_num) + pv_num * sizeof(uint16_t) +
-	       sizeof(def_num) + def_num;
+	return pldm_bios_table_attr_entry_enum_encode_length(pv_num, def_num);
 }
 
-#define ATTR_ENTRY_STRING_LENGTH_MIN                                           \
-	sizeof(uint8_t) /* string type */ +                                    \
-	    sizeof(uint16_t) /* minimum string length */ +                     \
-	    sizeof(uint16_t) /* maximum string length */ +                     \
-	    sizeof(uint16_t) /* default string length */
+struct attr_table_string_entry_fields {
+	uint8_t string_type;
+	uint16_t min_length;
+	uint16_t max_length;
+	uint16_t def_length;
+	uint8_t def_string[1];
+} __attribute__((packed));
+
+size_t pldm_bios_table_attr_entry_string_encode_length(uint16_t def_str_len)
+{
+	return sizeof(struct pldm_bios_attr_table_entry) - 1 +
+	       sizeof(struct attr_table_string_entry_fields) - 1 + def_str_len;
+}
+
+void pldm_bios_table_attr_entry_string_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_string_info *info)
+{
+	size_t length =
+	    pldm_bios_table_attr_entry_string_encode_length(info->def_length);
+	assert(length <= entry_length);
+	uint8_t attr_type =
+	    info->read_only ? PLDM_BIOS_STRING_READ_ONLY : PLDM_BIOS_STRING;
+	attr_table_entry_encode_header(entry, entry_length, attr_type,
+				       info->name_handle);
+	struct pldm_bios_attr_table_entry *attr_entry = entry;
+	struct attr_table_string_entry_fields *attr_fields =
+	    (struct attr_table_string_entry_fields *)attr_entry->metadata;
+	attr_fields->string_type = info->string_type;
+	attr_fields->min_length = htole16(info->min_length);
+	attr_fields->max_length = htole16(info->max_length);
+	attr_fields->def_length = htole16(info->def_length);
+	if (info->def_length != 0 && info->def_string != NULL)
+		memcpy(attr_fields->def_string, info->def_string,
+		       info->def_length);
+}
+
+int pldm_bios_table_attr_entry_string_encode_check(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_string_info *info)
+{
+	size_t length =
+	    pldm_bios_table_attr_entry_string_encode_length(info->def_length);
+	BUFFER_SIZE_EXPECT(entry_length, length);
+	if (info->def_length > info->max_length ||
+	    info->def_length < info->min_length ||
+	    info->min_length > info->max_length)
+		return PLDM_ERROR_INVALID_DATA;
+	if (info->string_type > 5 && info->string_type != 0xFF)
+		return PLDM_ERROR_INVALID_DATA;
+	pldm_bios_table_attr_entry_string_encode(entry, entry_length, info);
+	return PLDM_SUCCESS;
+}
 
 uint16_t pldm_bios_table_attr_entry_string_decode_def_string_length(
     const struct pldm_bios_attr_table_entry *entry)
 {
-	int def_string_pos = ATTR_ENTRY_STRING_LENGTH_MIN - sizeof(uint16_t);
-	uint16_t def_string_length =
-	    *(uint16_t *)(entry->metadata + def_string_pos);
-	return le16toh(def_string_length);
+	struct attr_table_string_entry_fields *fields =
+	    (struct attr_table_string_entry_fields *)entry->metadata;
+	return le16toh(fields->def_length);
 }
 
 int pldm_bios_table_attr_entry_string_decode_def_string_length_check(
@@ -191,10 +297,9 @@ int pldm_bios_table_attr_entry_string_decode_def_string_length_check(
 static size_t
 attr_table_entry_length_string(const struct pldm_bios_attr_table_entry *entry)
 {
-	uint16_t def_string_len =
+	uint16_t def_str_len =
 	    pldm_bios_table_attr_entry_string_decode_def_string_length(entry);
-	return sizeof(*entry) - 1 + ATTR_ENTRY_STRING_LENGTH_MIN +
-	       def_string_len;
+	return pldm_bios_table_attr_entry_string_encode_length(def_str_len);
 }
 
 struct attr_table_entry {
