@@ -222,6 +222,37 @@ void pldm_bios_table_attr_entry_string_encode(
 uint16_t pldm_bios_table_attr_entry_string_decode_def_string_length(
     const struct pldm_bios_attr_table_entry *entry);
 
+/** @struct pldm_bios_table_attr_entry_integer_info
+ *
+ *  An auxiliary structure for passing parameters to @ref
+ * pldm_bios_table_attr_entry_integer_encode
+ *
+ */
+struct pldm_bios_table_attr_entry_integer_info {
+	uint16_t name_handle; //!< attribute name handl
+	bool read_only;       //!< indicate whether the attribute is read-only
+	uint64_t lower_bound; //!< The lower bound on the integer value
+	uint64_t upper_bound; //!< The upper bound on the integer value
+	uint32_t scalar_increment; //!< The scalar value that is used for the
+				   //!< increments to this integer
+	uint64_t default_value;    //!< The default value of the integer
+};
+
+/** @brief Get length that an attribute entry(type: integer) will take
+ *  @return The length that an entry(type: integer) will take
+ */
+size_t pldm_bios_table_attr_entry_integer_encode_length();
+
+/** @brief Create an entry of BIOS Attribute Table (type: integer)
+ *  @param[out] entry - Pointer to a buffer to create an entry
+ *  @param[in] entry_length - Length of the buffer to create an entry
+ *  @param[in] info - Pointer to an auxiliary structure @ref
+ * pldm_bios_table_attr_entry_integer_info
+ */
+void pldm_bios_table_attr_entry_integer_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_integer_info *info);
+
 /** @brief Get length that an attribute value entry(type: enum) will take
  *  @param[in] count - Total number of current values for this enumeration
  *  @return The length that an entry(type: enum) will take
@@ -265,6 +296,14 @@ pldm_bios_table_attr_value_entry_encode_string_length(uint16_t string_length);
 void pldm_bios_table_attr_value_entry_encode_string(
     void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
     uint16_t string_length, const char *string);
+
+size_t pldm_bios_table_attr_value_entry_encode_integer_length();
+
+int pldm_bios_table_attr_value_entry_encode_integer(void *entry,
+						    size_t entry_length,
+						    uint16_t attr_handle,
+						    uint8_t attr_type,
+						    uint64_t cv);
 
 #ifdef __cplusplus
 }
