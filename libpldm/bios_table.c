@@ -207,6 +207,46 @@ attr_table_entry_length_string(const struct pldm_bios_attr_table_entry *entry)
 	return pldm_bios_table_attr_entry_string_encode_length(def_str_len);
 }
 
+struct attr_table_integer_entry_fields {
+	uint64_t lower_bound;
+	uint64_t upper_bound;
+	uint32_t scalar_increment;
+	uint64_t default_value;
+} __attribute__((packed));
+
+int pldm_bios_table_attr_entry_integer_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_integer_info *info)
+{
+	size_t length = pldm_bios_table_attr_entry_integer_encode_length();
+	assert(length <= entry_length);
+	uint8_t attr_type =
+	    info->read_only ? PLDM_BIOS_INTEGER_READ_ONLY : PLDM_BIOS_INTEGER;
+	attr_table_entry_encode_header(entry, entry_length, attr_type,
+				       info->name_handle);
+	struct pldm_bios_attr_table_entry *attr_entry = entry;
+	struct attr_table_integer_entry_fields *attr_fields =
+	    (struct attr_table_integer_entry_fields *)attr_entry->metadata;
+	attr_fields->lower_bound = htole64(info->lower_bound);
+	attr_fields->upper_bound = htole64(info->upper_bound);
+	attr_fields->scalar_increment = htole32(info->scalar_increment);
+	attr_fields->default_value = htole64(info->default_value);
+	return PLDM_SUCCESS;
+}
+
+size_t pldm_bios_table_attr_entry_integer_encode_length()
+{
+	return sizeof(struct pldm_bios_attr_table_entry) - 1 +
+	       sizeof(struct attr_table_integer_entry_fields);
+}
+
+static size_t
+attr_table_entry_length_integer(const struct pldm_bios_attr_table_entry *entry)
+{
+	(void)entry;
+	return pldm_bios_table_attr_entry_integer_encode_length();
+}
+
 struct attr_table_entry {
 	uint8_t attr_type;
 	size_t (*entry_length_handler)(
@@ -222,6 +262,10 @@ static struct attr_table_entry attr_table_entrys[] = {
      .entry_length_handler = attr_table_entry_length_string},
     {.attr_type = PLDM_BIOS_STRING_READ_ONLY,
      .entry_length_handler = attr_table_entry_length_string},
+    {.attr_type = PLDM_BIOS_INTEGER,
+     .entry_length_handler = attr_table_entry_length_integer},
+    {.attr_type = PLDM_BIOS_INTEGER_READ_ONLY,
+     .entry_length_handler = attr_table_entry_length_integer},
 };
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
@@ -290,6 +334,30 @@ int pldm_bios_table_attr_value_entry_encode_string(
 	memcpy(table_entry->value + sizeof(str_length), str, str_length);
 	str_length = htole16(str_length);
 	memcpy(table_entry->value, &str_length, sizeof(str_length));
+	return PLDM_SUCCESS;
+}
+
+size_t pldm_bios_table_attr_value_entry_encode_integer_length()
+{
+	return sizeof(struct pldm_bios_attr_val_table_entry) - 1 +
+	       sizeof(uint64_t);
+}
+int pldm_bios_table_attr_value_entry_encode_integer(void *entry,
+						    size_t entry_length,
+						    uint16_t attr_handle,
+						    uint8_t attr_type,
+						    uint64_t cv)
+{
+	size_t length =
+	    pldm_bios_table_attr_value_entry_encode_integer_length();
+	assert(length <= entry_length);
+
+	struct pldm_bios_attr_val_table_entry *table_entry = entry;
+	table_entry->attr_handle = htole16(attr_handle);
+	table_entry->attr_type = attr_type;
+	uint64_t *current_value = (uint64_t *)table_entry->value;
+	*current_value = htole64(cv);
+
 	return PLDM_SUCCESS;
 }
 
