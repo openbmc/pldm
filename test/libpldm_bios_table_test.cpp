@@ -124,6 +124,42 @@ TEST(AttrTable, StringEntryEncodeTest)
     EXPECT_EQ(stringEntry, encodeEntry);
 }
 
+TEST(AttrTable, integerEntryEncodeTest)
+{
+    std::vector<uint8_t> integerEntry{
+        0,  0,                   /* attr handle */
+        3,                       /* attr type */
+        1,  0,                   /* attr name handle */
+        1,  0, 0, 0, 0, 0, 0, 0, /* lower bound */
+        10, 0, 0, 0, 0, 0, 0, 0, /* upper bound */
+        2,  0, 0, 0,             /* scalar increment */
+        3,  0, 0, 0, 0, 0, 0, 0, /* defaut value */
+    };
+
+    std::vector<uint16_t> pv_hdls{2, 3};
+    std::vector<uint8_t> defs{0};
+
+    struct pldm_bios_table_attr_entry_integer_info info = {
+        1,     /* name handle */
+        false, /* read only */
+        1,     /* lower bound */
+        10,    /* upper bound */
+        2,     /* sacalar increment */
+        3      /* default value */
+    };
+    auto encodeLength = pldm_bios_table_attr_entry_integer_encode_length();
+    EXPECT_EQ(encodeLength, integerEntry.size());
+
+    std::vector<uint8_t> encodeEntry(encodeLength, 0);
+    pldm_bios_table_attr_entry_integer_encode(encodeEntry.data(),
+                                              encodeEntry.size(), &info);
+    // set attr handle = 0
+    encodeEntry[0] = 0;
+    encodeEntry[1] = 0;
+
+    EXPECT_EQ(integerEntry, encodeEntry);
+}
+
 TEST(AttrTable, ItearatorTest)
 {
     std::vector<uint8_t> enumEntry{
@@ -146,9 +182,18 @@ TEST(AttrTable, ItearatorTest)
         3,   0,       /* length of default string in length */
         'a', 'b', 'c' /* default string  */
     };
+    std::vector<uint8_t> integerEntry{
+        0,  0,                   /* attr handle */
+        3,                       /* attr type */
+        1,  0,                   /* attr name handle */
+        1,  0, 0, 0, 0, 0, 0, 0, /* lower bound */
+        10, 0, 0, 0, 0, 0, 0, 0, /* upper bound */
+        2,  0, 0, 0,             /* scalar increment */
+        3,  0, 0, 0, 0, 0, 0, 0, /* defaut value */
+    };
 
     Table table;
-    buildTable(table, enumEntry, stringEntry, enumEntry);
+    buildTable(table, enumEntry, stringEntry, integerEntry, enumEntry);
     auto iter = pldm_bios_table_iter_create(table.data(), table.size(),
                                             PLDM_BIOS_ATTR_TABLE);
     auto entry = pldm_bios_table_iter_attr_entry_value(iter);
@@ -160,6 +205,11 @@ TEST(AttrTable, ItearatorTest)
     rc = std::memcmp(entry, stringEntry.data(), stringEntry.size());
     EXPECT_EQ(rc, 0);
 
+    pldm_bios_table_iter_next(iter);
+    entry = pldm_bios_table_iter_attr_entry_value(iter);
+    rc = std::memcmp(entry, integerEntry.data(), integerEntry.size());
+    EXPECT_EQ(rc, 0);
+    
     pldm_bios_table_iter_next(iter);
     entry = pldm_bios_table_iter_attr_entry_value(iter);
     rc = std::memcmp(entry, enumEntry.data(), enumEntry.size());

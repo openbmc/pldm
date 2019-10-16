@@ -154,6 +154,21 @@ int pldm_bios_table_attr_entry_string_encode(
 uint16_t pldm_bios_table_attr_entry_string_decode_def_string_length(
     const struct pldm_bios_attr_table_entry *entry);
 
+struct pldm_bios_table_attr_entry_integer_info {
+	uint16_t name_handle;
+	bool read_only;
+	uint64_t lower_bound;
+	uint64_t upper_bound;
+	uint32_t scalar_increment;
+	uint64_t default_value;
+};
+
+size_t pldm_bios_table_attr_entry_integer_encode_length();
+
+int pldm_bios_table_attr_entry_integer_encode(
+    void *entry, size_t entry_length,
+    const struct pldm_bios_table_attr_entry_integer_info *info);
+
 /** @brief Get length that an attribute value entry(type: enum) will take
  *  @param[in] count - Total number of current values for this enumeration
  *  @return The length that an entry(type: enum) will take
