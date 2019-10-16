@@ -67,7 +67,7 @@ Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     uint16_t year = 0;
 
     constexpr auto timeInterface = "xyz.openbmc_project.Time.EpochTime";
-    constexpr auto bmcTimePath = "/xyz/openbmc_project/time/bmc";
+    constexpr auto hostTimePath = "/xyz/openbmc_project/time/host";
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     std::variant<EpochTimeUS> value;
@@ -75,9 +75,9 @@ Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     auto bus = sdbusplus::bus::new_default();
     try
     {
-        auto service = getService(bus, bmcTimePath, timeInterface);
+        auto service = getService(bus, hostTimePath, timeInterface);
 
-        auto method = bus.new_method_call(service.c_str(), bmcTimePath,
+        auto method = bus.new_method_call(service.c_str(), hostTimePath,
                                           dbusProperties, "Get");
         method.append(timeInterface, "Elapsed");
 
@@ -87,7 +87,7 @@ Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
 
     catch (std::exception& e)
     {
-        log<level::ERR>("Error getting time", entry("PATH=%s", bmcTimePath),
+        log<level::ERR>("Error getting time", entry("PATH=%s", hostTimePath),
                         entry("TIME INTERACE=%s", timeInterface));
 
         encode_get_date_time_resp(request->hdr.instance_id, PLDM_ERROR, seconds,
