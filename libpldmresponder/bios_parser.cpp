@@ -8,6 +8,8 @@
 #include <optional>
 #include <phosphor-logging/log.hpp>
 
+#include "libpldm/bios_table.h"
+
 namespace bios_parser
 {
 
@@ -299,20 +301,27 @@ int setup(const Json& entry)
 
     uint16_t minStrLen = entry.value("minimum_string_length", 0);
     uint16_t maxStrLen = entry.value("maximum_string_length", 0);
-    if (maxStrLen - minStrLen < 0)
-    {
-        log<level::ERR>(
-            "Maximum string length is smaller than minimum string length",
-            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
-        return -1;
-    }
     uint16_t defaultStrLen = entry.value("default_string_length", 0);
     std::string defaultStr = entry.value("default_string", "");
-    if ((defaultStrLen == 0) && (defaultStr.size() > 0))
+
+    pldm_bios_table_attr_entry_string_info info = {
+        0,     /* name handle */
+        false, /* read only */
+        strType, minStrLen, maxStrLen, defaultStrLen, defaultStr.data(),
+    };
+
+    const char* errmsg;
+    auto rc = pldm_bios_table_attr_entry_string_info_check(&info, &errmsg);
+    if (rc != PLDM_SUCCESS)
     {
         log<level::ERR>(
-            "Default string length is 0, but default string is existing",
-            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()));
+            "Wrong filed for string attribute",
+            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()),
+            phosphor::logging::entry("ERRMSG=%s", errmsg),
+            phosphor::logging::entry("MINIMUM_STRING_LENGTH=%u", minStrLen),
+            phosphor::logging::entry("MAXIMUM_STRING_LENGTH=%u", maxStrLen),
+            phosphor::logging::entry("DEFAULT_STRING_LENGTH=%u", defaultStrLen),
+            phosphor::logging::entry("DEFAULT_STRING=%s", defaultStr.data()));
         return -1;
     }
 
@@ -348,6 +357,72 @@ std::string getAttrValue(const AttrName& attrName)
 
 } // namespace bios_string
 
+namespace bios_integer
+{
+
+AttrValuesMap valueMap;
+
+int setup(const Json& entry)
+{
+
+    std::string attr = entry.value("attribute_name", "");
+    // Transfer string type from string to enum
+
+    uint64_t lowerBound = entry.value("lower_bound", 0);
+    uint64_t upperBound = entry.value("upper_bound", 0);
+    uint32_t scalarIncrement = entry.value("scalar_increment", 1);
+    uint64_t defaultValue = entry.value("default_value", 0);
+    pldm_bios_table_attr_entry_integer_info info = {
+        0,     /* name handle*/
+        false, /* read only */
+        lowerBound, upperBound, scalarIncrement, defaultValue,
+    };
+    const char* errmsg = nullptr;
+    auto rc = pldm_bios_table_attr_entry_integer_info_check(&info, &errmsg);
+    if (rc != PLDM_SUCCESS)
+    {
+        log<level::ERR>(
+            "Wrong filed for integer attribute",
+            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()),
+            phosphor::logging::entry("ERRMSG=%s", errmsg),
+            phosphor::logging::entry("LOWER_BOUND=%llu", lowerBound),
+            phosphor::logging::entry("UPPER_BOUND=%llu", upperBound),
+            phosphor::logging::entry("DEFAULT_VALUE=%llu", defaultValue),
+            phosphor::logging::entry("SCALAR_INCREMENT=%lu", scalarIncrement));
+        return -1;
+    }
+
+    valueMap.emplace(std::move(attr),
+                     std::make_tuple(entry.count("dbus") == 0, lowerBound,
+                                     upperBound, scalarIncrement,
+                                     defaultValue));
+
+    return 0;
+}
+
+const AttrValuesMap& getValues()
+{
+    return valueMap;
+}
+
+uint64_t getAttrValue(const AttrName& attrName)
+{
+    const auto& dBusMap = BIOSAttrLookup.at(attrName);
+    std::variant<std::string> propValue;
+
+    if (dBusMap == std::nullopt)
+    { // return default string
+        const auto& valueEntry = valueMap.at(attrName);
+        return std::get<AttrDefaultValue>(valueEntry);
+    }
+
+    return pldm::responder::DBusHandler().getDbusProperty<uint64_t>(
+        dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+        dBusMap->interface.c_str());
+}
+
+} // namespace bios_integer
+
 const std::map<BIOSJsonName, BIOSStringHandler> BIOSStringHandlers = {
     {bIOSEnumJson, bios_enum::setupBIOSStrings},
 };
@@ -355,6 +430,7 @@ const std::map<BIOSJsonName, BIOSStringHandler> BIOSStringHandlers = {
 const std::map<BIOSJsonName, typeHandler> BIOSTypeHandlers = {
     {bIOSEnumJson, bios_enum::setup},
     {bIOSStrJson, bios_string::setup},
+    {bIOSIntegerJson, bios_integer::setup},
 };
 
 void setupBIOSStrings(const BIOSJsonName& jsonName, const Json& entry,
@@ -409,7 +485,8 @@ int setupBIOSType(const BIOSJsonName& jsonName, const Json& entry)
     return 0;
 }
 
-const std::vector<BIOSJsonName> BIOSConfigFiles = {bIOSEnumJson, bIOSStrJson};
+const std::vector<BIOSJsonName> BIOSConfigFiles = {bIOSEnumJson, bIOSStrJson,
+                                                   bIOSIntegerJson};
 
 int setupConfig(const char* dirPath)
 {
