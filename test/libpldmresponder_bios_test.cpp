@@ -19,7 +19,6 @@ using namespace pldm::responder;
 using namespace pldm::responder::bios;
 using namespace pldm::responder::utils;
 using namespace bios_parser;
-using namespace bios_parser::bios_enum;
 
 TEST(epochToBCDTime, testTime)
 {
@@ -56,11 +55,23 @@ TEST(GetBIOSStrings, allScenarios)
 {
     using namespace bios_parser;
     // All the BIOS Strings in the BIOS JSON config files.
-    Strings vec{"HMCManagedState",  "On",           "Off",
-                "FWBootSide",       "Perm",         "Temp",
-                "InbandCodeUpdate", "Allowed",      "NotAllowed",
-                "CodeUpdatePolicy", "Concurrent",   "Disruptive",
-                "str_example1",     "str_example2", "str_example3"};
+    Strings vec{"HMCManagedState",
+                "On",
+                "Off",
+                "FWBootSide",
+                "Perm",
+                "Temp",
+                "InbandCodeUpdate",
+                "Allowed",
+                "NotAllowed",
+                "CodeUpdatePolicy",
+                "Concurrent",
+                "Disruptive",
+                "VDD_AVSBUS_RAIL",
+                "SBE_IMAGE_MINIMUM_VALID_ECS",
+                "str_example1",
+                "str_example2",
+                "str_example3"};
 
     Strings nullVec{};
 
@@ -78,6 +89,7 @@ TEST(GetBIOSStrings, allScenarios)
 
 TEST(getAttrValue, enumScenarios)
 {
+    using namespace bios_parser::bios_enum;
     // All the BIOS Strings in the BIOS JSON config files.
     AttrValuesMap valueMap{
         {"HMCManagedState", {false, {"On", "Off"}, {"On"}}},
@@ -117,6 +129,21 @@ TEST(getAttrValue, stringScenarios)
     // Invalid attribute name
     ASSERT_THROW(bios_parser::bios_string::getAttrValue("str_example"),
                  std::out_of_range);
+}
+
+TEST(getAttrValue, integerScenarios)
+{
+    using namespace bios_parser::bios_integer;
+    AttrValuesMap valueMap{
+        {"VDD_AVSBUS_RAIL", {false, 0, 15, 1, 0}},
+        {"SBE_IMAGE_MINIMUM_VALID_ECS", {true, 1, 15, 1, 2}}};
+
+    auto values = getValues();
+    EXPECT_EQ(valueMap, values);
+    auto value = getAttrValue("SBE_IMAGE_MINIMUM_VALID_ECS");
+    EXPECT_EQ(value, 2);
+
+    EXPECT_THROW(getAttrValue("VDM"), std::out_of_range);
 }
 
 TEST(traverseBIOSTable, attrTableScenarios)
@@ -396,7 +423,7 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeValueTableTestGoodRequest)
     req->table_type = PLDM_BIOS_ATTR_VAL_TABLE;
 
     std::string attrName("CodeUpdatePolicy");
-    CurrentValues currVals = getAttrValue(attrName);
+    bios_enum::CurrentValues currVals = bios_enum::getAttrValue(attrName);
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
