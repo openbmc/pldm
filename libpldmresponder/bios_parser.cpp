@@ -346,6 +346,67 @@ std::string getAttrValue(const AttrName& attrName)
 
 } // namespace bios_string
 
+namespace bios_integer
+{
+
+AttrValuesMap valueMap;
+
+int setup(const Json& entry)
+{
+
+    std::string attr = entry.value("attribute_name", "");
+    // Transfer string type from string to enum
+
+    uint64_t lowerBound = entry.value("lower_bound", 0);
+    uint64_t upperBound = entry.value("upper_bound", 0);
+    uint32_t scalarIncrement = entry.value("scalar_increment", 1);
+    uint64_t defaultValue = entry.value("default_value", 0);
+
+    if (lowerBound > upperBound || defaultValue < lowerBound ||
+        defaultValue > upperBound)
+    {
+        log<level::ERR>(
+            "Wrong filed for integer attribute",
+            phosphor::logging::entry("ATTRIBUTE_NAME=%s", attr.c_str()),
+            phosphor::logging::entry("LOWER_BOUND=%PRIu64", lowerBound),
+            phosphor::logging::entry("UPPER_BOUND=%PRIu64", upperBound),
+            phosphor::logging::entry("DEFAULT_VALUE=%PRIu64", defaultValue),
+            phosphor::logging::entry("SCALAR_INCREMENT=%PRIu32",
+                                     scalarIncrement));
+        return -1;
+    }
+
+    valueMap.emplace(std::move(attr),
+                     std::make_tuple(entry.count("dbus") == 0, lowerBound,
+                                     upperBound, scalarIncrement,
+                                     defaultValue));
+
+    return 0;
+}
+
+const AttrValuesMap& getValues()
+{
+    return valueMap;
+}
+
+uint64_t getAttrValue(const AttrName& attrName)
+{
+    const auto& dBusMap = BIOSAttrLookup.at(attrName);
+    std::variant<std::string> propValue;
+
+    if (dBusMap == std::nullopt)
+    { // return default string
+        const auto& valueEntry = valueMap.at(attrName);
+        return std::get<AttrDefaultValue>(valueEntry);
+    }
+
+    return pldm::responder::DBusHandler().getDbusProperty<uint64_t>(
+        dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+        dBusMap->interface.c_str());
+}
+
+} // namespace bios_integer
+
 std::map<BIOSJsonName, BIOSStringHandler> BIOSStringHandlers = {
     {bIOSEnumJson, bios_enum::setupBIOSStrings},
 };
@@ -353,6 +414,7 @@ std::map<BIOSJsonName, BIOSStringHandler> BIOSStringHandlers = {
 std::map<BIOSJsonName, typeHandler> BIOSTypeHandlers = {
     {bIOSEnumJson, bios_enum::setup},
     {bIOSStrJson, bios_string::setup},
+    {bIOSIntegerJson, bios_integer::setup},
 };
 
 void setupBIOSStrings(const BIOSJsonName& jsonName, const Json& entry,
@@ -409,7 +471,8 @@ int setupBIOSType(const BIOSJsonName& jsonName, const Json& entry)
     return 0;
 }
 
-std::vector<BIOSJsonName> BIOSConfigFiles = {bIOSEnumJson, bIOSStrJson};
+std::vector<BIOSJsonName> BIOSConfigFiles = {bIOSEnumJson, bIOSStrJson,
+                                             bIOSIntegerJson};
 
 int setupConfig(const char* dirPath)
 {
