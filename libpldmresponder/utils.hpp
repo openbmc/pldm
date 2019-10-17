@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <exception>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/server.hpp>
 #include <string>
 #include <variant>
@@ -126,6 +127,42 @@ class DBusHandler
                                           dbusProperties, "Set");
         method.append(dbusInterface, dbusProp, value);
         bus.call_noreply(method);
+    }
+
+    template <typename Variant>
+    auto getDbusPropertyVariant(const char* objPath, const char* dbusProp,
+                                const char* dbusInterface)
+    {
+        using namespace phosphor::logging;
+        Variant value;
+        auto bus = sdbusplus::bus::new_default();
+        auto service = getService(bus, objPath, dbusInterface);
+        auto method = bus.new_method_call(service.c_str(), objPath,
+                                          dbusProperties, "Get");
+        method.append(dbusInterface, dbusProp);
+        try
+        {
+            auto reply = bus.call(method);
+            reply.read(value);
+            return value;
+        }
+        catch (const sdbusplus::exception::SdBusError& e)
+        {
+            log<level::ERR>("dbus call expection", entry("OBJPATH=%s", objPath),
+                            entry("INTERFACE=%s", dbusInterface),
+                            entry("PropName=%s", dbusProp),
+                            entry("EXPECTION=%s", e.what()));
+            return value;
+        }
+    }
+
+    template <typename Property>
+    auto getDbusProperty(const char* objPath, const char* dbusProp,
+                         const char* dbusInterface)
+    {
+        auto VariantValue = getDbusPropertyVariant<std::variant<Property>>(
+            objPath, dbusProp, dbusInterface);
+        return std::get<Property>(VariantValue);
     }
 };
 
