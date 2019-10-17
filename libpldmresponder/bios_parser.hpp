@@ -34,6 +34,7 @@ namespace bios_parser
 using Strings = std::vector<std::string>;
 inline constexpr auto bIOSEnumJson = "enum_attrs.json";
 inline constexpr auto bIOSStrJson = "string_attrs.json";
+inline constexpr auto bIOSIntegerJson = "integer_attrs.json";
 
 /** @brief Get all the preconfigured strings
  *  @return all the preconfigurated strings
@@ -106,5 +107,43 @@ const AttrValuesMap& getValues();
 std::string getAttrValue(const AttrName& attrName);
 
 } // namespace bios_string
+
+namespace bios_integer
+{
+
+using AttrName = std::string;
+using IsReadOnly = bool;
+using LowerBound = uint64_t;
+using UpperBound = uint64_t;
+using ScalarIncrement = uint32_t;
+using DefaultValue = uint64_t;
+using AttrValues = std::tuple<IsReadOnly, LowerBound, UpperBound,
+                              ScalarIncrement, DefaultValue>;
+
+constexpr auto AttrIsReadOnly = 0;
+constexpr auto AttrLowerBound = 1;
+constexpr auto AttrUpperBound = 2;
+constexpr auto AttrScalarIncrement = 3;
+constexpr auto AttrDefaultValue = 4;
+
+using AttrValuesMap = std::map<AttrName, AttrValues>;
+
+/** @brief Get the values of all fields for the
+ *         BIOSInteger and BIOSIntegerReadOnly types
+ *
+ *  @return information needed to build the BIOS attribute table specific to
+ *         BIOSInteger and BIOSIntegerReadOnly types
+ */
+const AttrValuesMap& getValues();
+
+/** @brief Get the current values for the BIOS Attribute
+ *
+ *  @param[in] attrName - BIOS attribute name
+ *
+ *  @return BIOS attribute value
+ */
+uint64_t getAttrValue(const AttrName& attrName);
+
+} // namespace bios_integer
 
 } // namespace bios_parser
