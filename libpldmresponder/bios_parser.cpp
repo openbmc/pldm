@@ -226,15 +226,11 @@ CurrentValues getAttrValue(const AttrName& attrName)
     }
 
     const auto& dbusValToValMap = internal::dbusValToValMaps.at(attrName);
-    auto bus = sdbusplus::bus::new_default();
-    auto service = pldm::responder::getService(bus, dBusMap.value().objectPath,
-                                               dBusMap.value().interface);
-    auto method =
-        bus.new_method_call(service.c_str(), dBusMap.value().objectPath.c_str(),
-                            "org.freedesktop.DBus.Properties", "Get");
-    method.append(dBusMap->interface, dBusMap->propertyName);
-    auto reply = bus.call(method);
-    reply.read(propValue);
+    propValue =
+        pldm::responder::DBusHandler()
+            .getDbusPropertyVariant<internal::PropertyValue>(
+                dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+                dBusMap->interface.c_str());
 
     auto iter = dbusValToValMap.find(propValue);
     if (iter != dbusValToValMap.end())
@@ -343,17 +339,9 @@ std::string getAttrValue(const AttrName& attrName)
         return std::get<DefaultStr>(valueEntry);
     }
 
-    auto bus = sdbusplus::bus::new_default();
-    auto service = pldm::responder::getService(bus, dBusMap->objectPath,
-                                               dBusMap->interface);
-    auto method =
-        bus.new_method_call(service.c_str(), dBusMap->objectPath.c_str(),
-                            "org.freedesktop.DBus.Properties", "Get");
-    method.append(dBusMap->interface, dBusMap->propertyName);
-    auto reply = bus.call(method);
-    reply.read(propValue);
-
-    return std::get<std::string>(propValue);
+    return pldm::responder::DBusHandler().getDbusProperty<DefaultStr>(
+        dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+        dBusMap->interface.c_str());
 }
 
 } // namespace bios_string
