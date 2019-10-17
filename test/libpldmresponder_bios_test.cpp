@@ -19,7 +19,6 @@ using namespace pldm::responder;
 using namespace pldm::responder::bios;
 using namespace pldm::responder::utils;
 using namespace bios_parser;
-using namespace bios_parser::bios_enum;
 
 TEST(epochToBCDTime, testTime)
 {
@@ -56,11 +55,23 @@ TEST(GetBIOSStrings, allScenarios)
 {
     using namespace bios_parser;
     // All the BIOS Strings in the BIOS JSON config files.
-    Strings vec{"HMCManagedState",  "On",           "Off",
-                "FWBootSide",       "Perm",         "Temp",
-                "InbandCodeUpdate", "Allowed",      "NotAllowed",
-                "CodeUpdatePolicy", "Concurrent",   "Disruptive",
-                "str_example1",     "str_example2", "str_example3"};
+    Strings vec{"HMCManagedState",
+                "On",
+                "Off",
+                "FWBootSide",
+                "Perm",
+                "Temp",
+                "InbandCodeUpdate",
+                "Allowed",
+                "NotAllowed",
+                "CodeUpdatePolicy",
+                "Concurrent",
+                "Disruptive",
+                "VDD_AVSBUS_RAIL",
+                "SBE_IMAGE_MINIMUM_VALID_ECS",
+                "str_example1",
+                "str_example2",
+                "str_example3"};
 
     Strings nullVec{};
 
@@ -78,6 +89,7 @@ TEST(GetBIOSStrings, allScenarios)
 
 TEST(getAttrValue, enumScenarios)
 {
+    using namespace bios_parser::bios_enum;
     // All the BIOS Strings in the BIOS JSON config files.
     AttrValuesMap valueMap{
         {"HMCManagedState", {false, {"On", "Off"}, {"On"}}},
@@ -117,6 +129,21 @@ TEST(getAttrValue, stringScenarios)
     // Invalid attribute name
     ASSERT_THROW(bios_parser::bios_string::getAttrValue("str_example"),
                  std::out_of_range);
+}
+
+TEST(getAttrValue, integerScenarios)
+{
+    using namespace bios_parser::bios_integer;
+    AttrValuesMap valueMap{
+        {"VDD_AVSBUS_RAIL", {false, 0, 15, 1, 0}},
+        {"SBE_IMAGE_MINIMUM_VALID_ECS", {true, 1, 15, 1, 2}}};
+
+    auto values = getValues();
+    EXPECT_EQ(valueMap, values);
+    auto value = getAttrValue("SBE_IMAGE_MINIMUM_VALID_ECS");
+    EXPECT_EQ(value, 2);
+
+    EXPECT_THROW(getAttrValue("VDM"), std::out_of_range);
 }
 
 TEST(traverseBIOSTable, attrTableScenarios)
@@ -396,7 +423,7 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeValueTableTestGoodRequest)
     req->table_type = PLDM_BIOS_ATTR_VAL_TABLE;
 
     std::string attrName("CodeUpdatePolicy");
-    CurrentValues currVals = getAttrValue(attrName);
+    bios_enum::CurrentValues currVals = bios_enum::getAttrValue(attrName);
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
@@ -565,3 +592,70 @@ TEST_F(TestSingleTypeBIOSTable, getBIOSAttributeValueTableBasedOnStringTypeTest)
     }
 
 } // end TEST
+
+TEST_F(TestSingleTypeBIOSTable,
+       getBIOSAttributeValueTableBasedOnIntegerTypeTest)
+{
+    // Copy integer json file to the destination
+    TestSingleTypeBIOSTable::CopySingleJsonFile(bios_parser::bIOSIntegerJson);
+    auto fpath = TestSingleTypeBIOSTable::destBiosPath.c_str();
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
+        requestPayload{};
+    auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    struct pldm_get_bios_table_req* req =
+        (struct pldm_get_bios_table_req*)request->payload;
+
+    // Get string table with integer json file only
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_STRING_TABLE;
+
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+    auto str_response =
+        internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+
+    // Get attribute table with integer json file only
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_ATTR_TABLE;
+
+    auto attr_response =
+        internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+
+    // Get attribute value table with integer type
+    req->transfer_handle = 9;
+    req->transfer_op_flag = PLDM_GET_FIRSTPART;
+    req->table_type = PLDM_BIOS_ATTR_VAL_TABLE;
+
+    // Test attribute SBE_IMAGE_MINIMUM_VALID_ECS here, which has no dbus
+    for (uint8_t times = 0; times < 2; times++)
+    { // first time first table second time existing table
+        auto response = internal::buildBIOSTables(request, requestPayloadLength,
+                                                  fpath, fpath);
+        auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+        struct pldm_get_bios_table_resp* resp =
+            reinterpret_cast<struct pldm_get_bios_table_resp*>(
+                responsePtr->payload);
+
+        ASSERT_EQ(0, resp->completion_code);
+        ASSERT_EQ(0, resp->next_transfer_handle);
+        ASSERT_EQ(PLDM_START_AND_END, resp->transfer_flag);
+        uint8_t* tableData = reinterpret_cast<uint8_t*>(resp->table_data);
+
+        while (true)
+        {
+            struct pldm_bios_attr_val_table_entry* ptr =
+                reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(
+                    tableData);
+            uint16_t attrHdl = ptr->attr_handle;
+            uint8_t attrType = ptr->attr_type;
+            EXPECT_EQ(PLDM_BIOS_INTEGER_READ_ONLY, attrType);
+            tableData += sizeof(attrHdl) + sizeof(attrType);
+            auto cv = *(reinterpret_cast<uint64_t*>(tableData));
+            EXPECT_EQ(2, cv);
+            break; // testing for first row
+        }
+    }
+}
