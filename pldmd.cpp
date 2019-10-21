@@ -1,6 +1,7 @@
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/utils.hpp"
 #include "registration.hpp"
 
@@ -133,6 +134,7 @@ int main(int argc, char** argv)
     pldm::responder::base::registerHandlers();
     pldm::responder::bios::registerHandlers();
     pldm::responder::platform::registerHandlers();
+    pldm::responder::fru::registerHandlers();
 
     // Outgoing message.
     struct iovec iov[2]{};

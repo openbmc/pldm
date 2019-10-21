@@ -14,6 +14,7 @@ sources = [
   'effecters.cpp',
   'utils.cpp',
   'platform.cpp',
+  'fru.cpp',
   '../registration.cpp'
 ]
 
