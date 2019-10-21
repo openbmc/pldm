@@ -3,6 +3,7 @@
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/utils.hpp"
 
 #include <err.h>
@@ -150,7 +151,6 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>());
-
 #ifdef OEM_IBM
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
 #endif
