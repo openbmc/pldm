@@ -15,7 +15,8 @@ sources = [
   'utils.cpp',
   'platform.cpp',
   '../registration.cpp',
-  'fru_parser.cpp'
+  'fru_parser.cpp',
+  'fru.cpp',
 ]
 
 if get_option('oem-ibm').enabled()
