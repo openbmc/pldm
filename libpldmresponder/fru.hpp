@@ -121,6 +121,52 @@ class FruImpl
                          const fru_parser::FruRecordInfos& recordInfos);
 };
 
+namespace fru
+{
+
+class Handler : public CmdHandler
+{
+
+  public:
+    Handler(const std::string configPath) : impl(configPath)
+    {
+        handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->getFRURecordTableMetadata(
+                                 request, payloadLength);
+                         });
+
+        handlers.emplace(PLDM_GET_FRU_RECORD_TABLE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->getFRURecordTable(request,
+                                                            payloadLength);
+                         });
+    }
+
+    FruImpl impl;
+
+    /** @brief Handler for Get FRURecordTableMetadata
+     *
+     *  @param[in] request - Request message payload
+     *  @param[in] payloadLength - Request payload length
+     *
+     *  @return PLDM response message
+     */
+    Response getFRURecordTableMetadata(const pldm_msg* request,
+                                       size_t payloadLength);
+
+    /** @brief Handler for GetFRURecordTable
+     *
+     *  @param[in] request - Request message payload
+     *  @param[in] payloadLength - Request payload length
+     *
+     *  @return PLDM response message
+     */
+    Response getFRURecordTable(const pldm_msg* request, size_t payloadLength);
+};
+
+} // namespace fru
+
 } // namespace responder
 
 } // namespace pldm
