@@ -22,6 +22,38 @@ enum pldm_fru_commands {
 	PLDM_GET_FRU_RECORD_TABLE = 0X02,
 };
 
+enum pldm_fru_record_type {
+	PLDM_FRU_RECORD_TYPE_GENERAL = 0X01,
+	PLDM_FRU_RECORD_TYPE_OEM = 0XFE,
+};
+
+enum pldm_fru_field_encoding {
+	PLDM_FRU_ENCODING_UNSPECIFIED = 0X00,
+	PLDM_FRU_ENCODING_ASCII = 0X01,
+	PLDM_FRU_ENCODING_UTF8 = 0X02,
+	PLDM_FRU_ENCODING_UTF16 = 0X03,
+	PLDM_FRU_ENCODING_UTF16LE = 0X04,
+	PLDM_FRU_ENCODING_UTF16BE = 0X05,
+};
+
+enum pldm_fru_field_type {
+	PLDM_FRU_FIELD_TYPE_CHASSIS = 0X01,
+	PLDM_FRU_FIELD_TYPE_MODEL = 0X02,
+	PLDM_FRU_FIELD_TYPE_PN = 0X03,
+	PLDM_FRU_FIELD_TYPE_SN = 0X04,
+	PLDM_FRU_FIELD_TYPE_MANUFAC = 0X05,
+	PLDM_FRU_FIELD_TYPE_MANUFAC_DATE = 0X06,
+	PLDM_FRU_FIELD_TYPE_VENDOR = 0X07,
+	PLDM_FRU_FIELD_TYPE_NAME = 0X08,
+	PLDM_FRU_FIELD_TYPE_SKU = 0X09,
+	PLDM_FRU_FIELD_TYPE_VERSION = 0X0A,
+	PLDM_FRU_FIELD_TYPE_ASSET_TAG = 0X0B,
+	PLDM_FRU_FIELD_TYPE_DESC = 0X0C,
+	PLDM_FRU_FIELD_TYPE_EC_LVL = 0X0D,
+	PLDM_FRU_FIELD_TYPE_OTHER = 0X0E,
+	PLDM_FRU_FIELD_TYPE_IANA = 0X0F,
+};
+
 /** @struct pldm_get_fru_record_table_metadata_resp
  *
  *  Structure representing PLDM get FRU table metadata response.
@@ -60,6 +92,25 @@ struct pldm_get_fru_record_table_resp {
 	uint8_t transfer_flag;
 	uint8_t fru_record_table_data[1];
 } __attribute__((packed));
+
+struct pldm_fru_record_tlv {
+	uint8_t type;
+	uint8_t length;
+	uint8_t value[1];
+} __attribute__((packed));
+
+struct pldm_fru_record_data_format {
+	uint16_t record_set_id;
+	uint8_t record_type;
+	uint8_t num_fru_fields;
+	uint8_t encoding_type;
+	struct pldm_fru_record_tlv tlvs[1];
+} __attribute__((packed));
+
+int encode_fru_record(uint8_t *fru_table, size_t total_size, size_t *curr_size,
+		      uint16_t record_set_id, uint8_t record_type,
+		      uint8_t num_frus, uint8_t encoding, uint8_t *tlvs,
+		      size_t tlvs_size);
 
 /* Requester */
 
