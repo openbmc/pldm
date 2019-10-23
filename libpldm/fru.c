@@ -159,3 +159,35 @@ int encode_get_fru_record_table_resp(uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_fru_record(uint8_t *fru_table, size_t total_size, size_t *curr_size,
+		      uint16_t record_set_id, uint8_t record_type,
+		      uint8_t num_frus, uint8_t encoding, uint8_t *tlvs,
+		      size_t tlvs_size)
+{
+	size_t record_hdr_size = sizeof(struct pldm_fru_record_data_format) -
+				 sizeof(struct pldm_fru_record_tlv);
+
+	if ((*curr_size + record_hdr_size + tlvs_size) != total_size) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if (fru_table == NULL || curr_size == NULL || !tlvs_size) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_fru_record_data_format *record =
+	    (struct pldm_fru_record_data_format *)(fru_table + *curr_size);
+	record->record_set_id = htole16(record_set_id);
+	record->record_type = record_type;
+	record->num_fru_fields = num_frus;
+	record->encoding_type = encoding;
+	*curr_size += record_hdr_size;
+
+	if (tlvs) {
+		memcpy(fru_table + *curr_size, tlvs, tlvs_size);
+		*curr_size += tlvs_size;
+	}
+
+	return PLDM_SUCCESS;
+}
