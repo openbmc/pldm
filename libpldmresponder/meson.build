@@ -14,7 +14,7 @@ sources = [
   'effecters.cpp',
   'utils.cpp',
   'platform.cpp',
-  'fru_parser.cpp'
+  'fru_parser.cpp',
   'fru.cpp',
 ]
 
