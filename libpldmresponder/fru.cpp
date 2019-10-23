@@ -172,6 +172,60 @@ void FruImpl::getFRUTable(Response& response)
                 iter);
 }
 
+namespace fru
+{
+
+Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
+                                            size_t /*payloadLength*/)
+{
+    constexpr uint8_t major = 0x01;
+    constexpr uint8_t minor = 0x00;
+    constexpr uint32_t maxSize = 0xFFFFFFFF;
+
+    Response response(sizeof(pldm_msg_hdr) +
+                          PLDM_GET_FRU_RECORD_TABLE_METADATA_RESP_BYTES,
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    auto rc = encode_get_fru_record_table_metadata_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, major, minor, maxSize,
+        impl.size(), impl.numRSI(), impl.numRecords(), impl.checkSum(),
+        responsePtr);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    return response;
+}
+
+Response Handler::getFRURecordTable(const pldm_msg* request,
+                                    size_t payloadLength)
+{
+    if (payloadLength != PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES)
+    {
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    auto rc =
+        encode_get_fru_record_table_resp(request->hdr.instance_id, PLDM_SUCCESS,
+                                         0, PLDM_START_AND_END, responsePtr);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    impl.getFRUTable(response);
+
+    return response;
+}
+
+} // namespace fru
+
 } // namespace responder
 
 } // namespace pldm
