@@ -688,7 +688,8 @@ Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
     }
 
     fs::path path{};
-    if (fileHandle != invalidFileHandle && fileType != PLDM_FILE_LID)
+    if (fileHandle != invalidFileHandle && fileType != PLDM_FILE_LID_PRIM &&
+        fileType != PLDM_FILE_LID_TEMP)
     {
         using namespace pldm::filetable;
         auto& table = buildFileTable(FILE_TABLE_JSON);
@@ -745,7 +746,11 @@ Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
 
     switch (fileType)
     {
-        case PLDM_FILE_LID:
+        case PLDM_FILE_LID_PRIM:
+            handler = std::make_unique<LidHandler>();
+            break;
+
+        case PLDM_FILE_LID_TEMP:
             handler = std::make_unique<LidHandler>();
             break;
 
@@ -802,7 +807,8 @@ Response readFileByTypeHandler(const pldm_msg* request, size_t payloadLength,
     }
 
     fs::path filePath{};
-    if ((invalidFileHandle != fileHandle) && (fileType != PLDM_FILE_LID))
+    if ((invalidFileHandle != fileHandle) && (fileType != PLDM_FILE_LID_PRIM) &&
+        (fileType != PLDM_FILE_LID_TEMP))
     {
         using namespace pldm::filetable;
         auto& table = buildFileTable(FILE_TABLE_JSON);
@@ -826,7 +832,19 @@ Response readFileByTypeHandler(const pldm_msg* request, size_t payloadLength,
     {
         switch (fileType)
         {
-            case PLDM_FILE_LID:
+            case PLDM_FILE_LID_PRIM:
+            {
+                std::stringstream stream;
+                stream << std::hex << fileHandle;
+                std::string lidName(stream.str());
+                lidName += ".lid";
+                char sep = '/';
+                std::string lidPath(fileDir);
+                lidPath += sep + lidName;
+                filePath = lidPath;
+            }
+            break;
+            case PLDM_FILE_LID_TEMP:
             {
                 std::stringstream stream;
                 stream << std::hex << fileHandle;
@@ -889,7 +907,15 @@ Response readFileByTypeHandler(const pldm_msg* request, size_t payloadLength,
 
 Response readFileByType(const pldm_msg* request, size_t payloadLength)
 {
-    auto response = readFileByTypeHandler(request, payloadLength, LID_TEMP_DIR);
+    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_TYPE_RESP_BYTES);
+
+    struct pldm_read_write_file_type_req* req =
+        (struct pldm_read_write_file_type_req*)request->payload;
+    uint16_t fileType = le16toh(req->file_type);
+    if (fileType == PLDM_FILE_LID_PRIM)
+        response = readFileByTypeHandler(request, payloadLength, LID_PRIM_DIR);
+    else
+        response = readFileByTypeHandler(request, payloadLength, LID_TEMP_DIR);
     return response;
 }
 
