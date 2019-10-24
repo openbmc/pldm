@@ -455,7 +455,7 @@ TEST(FileTable, ConfigNotExist)
 {
     logs.clear();
     FileTable tableObj("");
-    EXPECT_EQ(logs.size(), 1);
+    EXPECT_EQ(tableObj.isEmpty(), true);
 }
 
 TEST_F(TestFileTable, ValidateFileEntry)
