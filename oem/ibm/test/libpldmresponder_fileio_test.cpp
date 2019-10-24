@@ -12,28 +12,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#define SD_JOURNAL_SUPPRESS_LOCATION
-
-#include <systemd/sd-journal.h>
-
-std::vector<std::string> logs;
-
-extern "C" {
-
-int sd_journal_send(const char* format, ...)
-{
-    logs.push_back(format);
-    return 0;
-}
-
-int sd_journal_send_with_location(const char* /*file*/, const char* /*line*/,
-                                  const char* /*func*/, const char* format, ...)
-{
-    logs.push_back(format);
-    return 0;
-}
-}
-
 namespace fs = std::filesystem;
 using Json = nlohmann::json;
 using namespace pldm::filetable;
@@ -453,9 +431,8 @@ TEST_F(TestFileTable, WriteFileInvalidOffset)
 
 TEST(FileTable, ConfigNotExist)
 {
-    logs.clear();
     FileTable tableObj("");
-    EXPECT_EQ(logs.size(), 1);
+    EXPECT_EQ(tableObj.isEmpty(), true);
 }
 
 TEST_F(TestFileTable, ValidateFileEntry)
