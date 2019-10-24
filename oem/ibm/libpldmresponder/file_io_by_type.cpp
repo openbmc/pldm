@@ -110,15 +110,25 @@ int LidHandler::handle(DMA* xdmaInterface, bool upstream)
     std::string lidName(stream.str());
     lidName += ".lid";
     char sep = '/';
-    std::string lidPath(LID_TEMP_DIR);
+    auto fileType = this->getFileType();
+    std::string lidPath;
+    if (fileType == PLDM_FILE_LID_PRIM)
+    {
+        lidPath = LID_PRIM_DIR;
+    }
+    else if (fileType == PLDM_FILE_LID_TEMP)
+    {
+        lidPath = LID_TEMP_DIR;
+    }
+
     lidPath += sep + lidName;
     fs::path path(lidPath);
-
     if (!fs::exists(path))
     {
         log<level::ERR>("File does not exist", entry("PATH=%s", path.c_str()));
         return PLDM_INVALID_FILE_HANDLE;
     }
+
     auto fileSize = fs::file_size(path);
     auto offset = this->getOffset();
     auto address = this->getAddress();
