@@ -739,7 +739,7 @@ TEST_F(TestFileTable, testAllreadFileByTypeHandler)
     auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
     struct pldm_read_write_file_type_req* request =
         reinterpret_cast<struct pldm_read_write_file_type_req*>(req->payload);
-    request->file_type = PLDM_FILE_LID;
+    request->file_type = PLDM_FILE_LID_TEMP;
     request->file_handle = 0;
     request->offset = 0;
     request->length = 13;
@@ -821,7 +821,7 @@ TEST(readFileByTypeIntoMemory, testBadPath)
     struct pldm_read_write_file_type_memory_req* request =
         reinterpret_cast<struct pldm_read_write_file_type_memory_req*>(
             req->payload);
-    request->file_type = PLDM_FILE_LID;
+    request->file_type = PLDM_FILE_LID_PRIM;
     request->file_handle = 0;
     request->offset = 0;
     request->length = 17;

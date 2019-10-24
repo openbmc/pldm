@@ -41,13 +41,15 @@ class FileHandler
      *  @return none
      */
     void setHandler(uint32_t newfileHandle, uint32_t newOffset,
-                    uint32_t newLength, uint64_t newAddress, fs::path newPath)
+                    uint32_t newLength, uint64_t newAddress, fs::path newPath,
+                    uint16_t newFileType)
     {
         fileHandle = newfileHandle;
         offset = newOffset;
         length = newLength;
         address = newAddress;
         path = newPath;
+        fileType = newFileType;
     }
     uint32_t getLength()
     {
@@ -69,6 +71,11 @@ class FileHandler
         return fileHandle;
     }
 
+    uint32_t getFileType()
+    {
+        return fileType;
+    }
+
     void setLength(uint32_t newLength)
     {
         length = newLength;
@@ -83,6 +90,7 @@ class FileHandler
     uint32_t offset;
     uint32_t length;
     uint64_t address;
+    uint16_t fileType;
     fs::path path;
 };
 
