@@ -504,6 +504,77 @@ void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
 
 } // end namespace bios_type_string
 
+namespace bios_type_integer
+{
+
+using namespace bios_parser::bios_integer;
+
+/** @brief Construct the attibute table for BIOS type Integer and
+ *         Integer ReadOnly
+ *  @param[in] BIOSStringTable - the string table
+ *  @param[in,out] attributeTable - the attribute table
+ *
+ */
+void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
+{
+    const auto& attributeMap = getValues();
+    StringHandle strHandle;
+    for (const auto& [key, value] : attributeMap)
+    {
+        try
+        {
+            strHandle = findStringHandle(key, BIOSStringTable);
+        }
+        catch (InternalFailure& e)
+        {
+            log<level::ERR>("Could not find handle for BIOS string",
+                            entry("ATTRIBUTE=%s", key.c_str()));
+            continue;
+        }
+
+        const auto& [readOnly, lowerBound, upperBound, scalarIncrement,
+                     defaultValue] = value;
+        auto entryLength = pldm_bios_table_attr_entry_integer_encode_length();
+
+        struct pldm_bios_table_attr_entry_integer_info info = {
+            strHandle,  readOnly,        lowerBound,
+            upperBound, scalarIncrement, defaultValue,
+        };
+        auto attrTableSize = attributeTable.size();
+        attributeTable.resize(attrTableSize + entryLength, 0);
+        pldm_bios_table_attr_entry_integer_encode(
+            attributeTable.data() + attrTableSize, entryLength, &info);
+    }
+}
+
+void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
+                             const std::string& attrName,
+                             const BIOSTable& BIOSStringTable,
+                             Table& attrValueTable)
+{
+    std::ignore = BIOSStringTable;
+    uint64_t currentValue;
+    try
+    {
+        currentValue = getAttrValue(attrName);
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>("Failed to get attribute value",
+                        entry("NAME=%s", attrName.c_str()),
+                        entry("ERROR=%s", e.what()));
+        return;
+    }
+    auto entryLength = pldm_bios_table_attr_value_entry_encode_integer_length();
+    auto tableSize = attrValueTable.size();
+    attrValueTable.resize(tableSize + entryLength);
+    pldm_bios_table_attr_value_entry_encode_integer(
+        attrValueTable.data() + tableSize, entryLength,
+        attrTableEntry->attr_handle, attrTableEntry->attr_type, currentValue);
+}
+
+} // namespace bios_type_integer
+
 void traverseBIOSAttrTable(const Table& biosAttrTable,
                            AttrTableEntryHandler handler)
 {
@@ -532,7 +603,9 @@ using typeHandler = std::function<void(const BIOSTable& BIOSStringTable,
                                        Table& attributeTable)>;
 std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
     {bios_parser::bIOSEnumJson, bios_type_enum::constructAttrTable},
-    {bios_parser::bIOSStrJson, bios_type_string::constructAttrTable}};
+    {bios_parser::bIOSStrJson, bios_type_string::constructAttrTable},
+    {bios_parser::bIOSIntegerJson, bios_type_integer::constructAttrTable},
+};
 
 /** @brief Construct the BIOS attribute table
  *
@@ -612,6 +685,9 @@ const std::map<AttrType, AttrValTableEntryConstructHandler>
         {PLDM_BIOS_ENUMERATION, bios_type_enum::constructAttrValueEntry},
         {PLDM_BIOS_ENUMERATION_READ_ONLY,
          bios_type_enum::constructAttrValueEntry},
+        {PLDM_BIOS_INTEGER, bios_type_integer::constructAttrValueEntry},
+        {PLDM_BIOS_INTEGER_READ_ONLY,
+         bios_type_integer::constructAttrValueEntry},
     };
 
 void constructAttrValueTableEntry(
