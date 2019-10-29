@@ -1,7 +1,6 @@
+#include "bios.h"
 #include <endian.h>
 #include <string.h>
-
-#include "bios.h"
 
 int encode_get_date_time_req(uint8_t instance_id, struct pldm_msg *msg)
 {
@@ -124,6 +123,31 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 				    PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES));
 		}
 	}
+	return PLDM_SUCCESS;
+}
+
+int encode_get_bios_table_req(uint8_t instance_id, uint32_t transfer_handle,
+			      uint8_t transfer_op_flag, uint8_t table_type,
+			      struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_GET_BIOS_TABLE;
+	pack_pldm_header(&header, &(msg->hdr));
+
+	struct pldm_get_bios_table_req *request =
+	    (struct pldm_get_bios_table_req *)msg->payload;
+
+	request->transfer_handle = transfer_handle;
+	request->transfer_op_flag = transfer_op_flag;
+	request->table_type = table_type;
 	return PLDM_SUCCESS;
 }
 

@@ -152,6 +152,27 @@ TEST(GetBIOSTable, testBadEncodeResponse)
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
+TEST(GetBIOSTable, testGoodEncodeRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
+        requestMsg{};
+    uint32_t transferHandle = 0x0;
+    uint8_t transferOpFlag = 0x01;
+    uint8_t tableType = PLDM_BIOS_ATTR_TABLE;
+
+    auto rc =
+        encode_get_bios_table_req(0, transferHandle, transferOpFlag, tableType)
+
+            ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(
+        0, memcmp(request->payload, &transferHandle, sizeof(transferHandle)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(transferHandle),
+                        &transferOpFlag, sizeof(transferOpFlag)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(transferHandle) +
+                            sizeof(transferOpFlag),
+                        &tableType, sizeof(tableType)));
+}
+
 TEST(GetBIOSTable, testGoodDecodeRequest)
 {
     const auto hdr_size = sizeof(pldm_msg_hdr);
