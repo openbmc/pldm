@@ -262,6 +262,23 @@ int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 			       uint8_t transfer_flag, uint8_t *table_data,
 			       size_t payload_length, struct pldm_msg *msg);
 
+
+
+/** @brief Encode  GetBIOSTable request packet
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] transfer_handle - Handle to identify a BIOS table transfer
+ *  @param[in] transfer_op_flag - Flag to indicate the start of a multipart
+ *                                 transfer
+ *  @param[in] table_type - BIOS table type
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_get_bios_table_req(uint8_t instance_id, uint32_t transfer_handle,
+                              uint8_t transfer_op_flag, uint8_t table_type,
+                              struct pldm_msg *msg);
+
+
 /** @brief Decode GetBIOSTable request packet
  *
  *  @param[in] msg - Request message
