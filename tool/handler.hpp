@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pldm_base_cmd.hpp"
+#include "pldm_bios_cmd.hpp"
 
 #include <functional>
 #include <map>
@@ -18,5 +19,9 @@ class Handler
         {"GetPLDMVersion",
          [](Args&& args) { return getPLDMVersion(std::move(args)); }},
         {"HandleRawOp",
-         [](Args&& args) { return handleRawOp(std::move(args)); }}};
+         [](Args&& args) { return handleRawOp(std::move(args)); }},
+        {"GetBIOSTable",
+         [](Args&& args) { return getBIOSTable(std::move(args)); }},
+        {"GetDateTime",
+         [](Args&& args) { return getDateTime(std::move(args)); }}};
 };

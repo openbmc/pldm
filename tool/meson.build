@@ -1,13 +1,11 @@
-sources = [
-  'pldm_cmd_helper.cpp',
-  'pldm_base_cmd.cpp',
-  'pldmtool.cpp'
-]
+sources =
+    [
+        'pldm_cmd_helper.cpp', 'pldm_base_cmd.cpp', 'pldm_bios_cmd.cpp',
+        'pldmtool.cpp'
+    ]
 
-executable(
-  'pldmtool',
-  sources,
-  implicit_include_directories: false,
-  dependencies: libpldm,
-  install: true,
-  install_dir: get_option('bindir'))
+    executable('pldmtool', sources, implicit_include_directories
+               : false, dependencies
+               : libpldm, install
+               : true, install_dir
+               : get_option('bindir'))
