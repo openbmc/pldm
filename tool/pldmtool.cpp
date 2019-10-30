@@ -19,6 +19,8 @@ int main(int argc, char** argv)
     std::string pldmCmdName;
     app.add_option("GetPLDMTypes", pldmCmdName, "Get PLDM Type");
     app.add_option("GetPLDMVersion", pldmCmdName, "Get PLDM Version");
+    app.add_option("GetBIOSTable", pldmCmdName, "Get BIOS Table");
+    app.add_option("GetDateTime", pldmCmdName, "Get Date Time");
 
     app.add_subcommand("BASE", "PLDM Command Type = BASE");
     app.add_subcommand("BIOS", "PLDM Command Type = BIOS");

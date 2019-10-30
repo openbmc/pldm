@@ -15,6 +15,7 @@
 #include <iostream>
 
 #include "libpldm/base.h"
+#include "libpldm/bios.h"
 #include "libpldm/platform.h"
 
 using namespace pldm::responder::utils;
