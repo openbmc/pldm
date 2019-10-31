@@ -490,6 +490,21 @@ int pldm_bios_table_attr_value_entry_encode_integer_check(void *entry,
 							  uint16_t attr_handle,
 							  uint8_t attr_type,
 							  uint64_t cv);
+
+/** @brief Get the size of pad and checksum
+ *  @param[in] size_without_pad - Table size without pad
+ *  @return The size of pad and checksum
+ */
+size_t pldm_bios_table_pad_checksum_size(size_t size_without_pad);
+
+/** @brief Append pad and checksum at the end of the table
+ *  @param[in,out] table - Pointer to a buffer of a bios table
+ *  @param[in] size - Size of the buffer of a bios table
+ *  @param[in] size_without_pad - Table size without pad and checksum
+ */
+void pldm_bios_table_append_pad_checksum(void *table, size_t size,
+					 size_t size_without_pad);
+
 #ifdef __cplusplus
 }
 #endif
