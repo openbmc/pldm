@@ -87,6 +87,98 @@ int decode_get_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
 	return PLDM_SUCCESS;
 }
 
+int encode_set_date_time_req(uint8_t instance_id, uint8_t seconds,
+			     uint8_t minutes, uint8_t hours, uint8_t day,
+			     uint8_t month, uint16_t year, struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_SET_DATE_TIME;
+	pack_pldm_header(&header, &msg->hdr);
+
+	struct pldm_set_date_time_req *request =
+	    (struct pldm_set_date_time_req *)msg->payload;
+	request->seconds = seconds;
+	request->minutes = minutes;
+	request->hours = hours;
+	request->day = day;
+	request->month = month;
+	request->year = htole16(year);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_date_time_req(const struct pldm_msg *msg, size_t payload_length,
+			     uint8_t *seconds, uint8_t *minutes, uint8_t *hours,
+			     uint8_t *day, uint8_t *month, uint16_t *year)
+{
+	if (seconds == NULL || minutes == NULL || hours == NULL ||
+	    day == NULL || month == NULL || year == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct pldm_set_date_time_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_set_date_time_req *request =
+	    (struct pldm_set_date_time_req *)msg->payload;
+	*seconds = request->seconds;
+	*minutes = request->minutes;
+	*hours = request->hours;
+	*day = request->day;
+	*month = request->month;
+	*year = le16toh(request->year);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_date_time_resp(uint8_t instance_id, uint8_t completion_code,
+			      struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_SET_DATE_TIME;
+	pack_pldm_header(&header, &(msg->hdr));
+
+	struct pldm_only_cc_resp *response =
+	    (struct pldm_only_cc_resp *)msg->payload;
+	response->completion_code = completion_code;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
+			      uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_only_cc_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_only_cc_resp *response =
+	    (struct pldm_only_cc_resp *)msg->payload;
+	*completion_code = response->completion_code;
+
+	return PLDM_SUCCESS;
+}
+
 int encode_get_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
 			       uint32_t next_transfer_handle,
 			       uint8_t transfer_flag, uint8_t *table_data,
