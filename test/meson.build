@@ -25,6 +25,7 @@ tests = [
   'libpldmresponder_bios_table_test',
   'libpldmresponder_platform_test',
   'libpldm_fru_test',
+  'libpldm_utils_test'
 ]
 
 if get_option('oem-ibm').enabled()
