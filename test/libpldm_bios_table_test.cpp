@@ -685,3 +685,25 @@ TEST(Itearator, DeathTest)
     EXPECT_DEATH(pldm_bios_table_iter_next(iter), "attr_table_entry != NULL");
     pldm_bios_table_iter_free(iter);
 }
+
+TEST(PadAndChecksum, PadAndChecksum)
+{
+    EXPECT_EQ(4, pldm_bios_table_pad_checksum_size(0));
+    EXPECT_EQ(7, pldm_bios_table_pad_checksum_size(1));
+    EXPECT_EQ(6, pldm_bios_table_pad_checksum_size(2));
+    EXPECT_EQ(5, pldm_bios_table_pad_checksum_size(3));
+    EXPECT_EQ(4, pldm_bios_table_pad_checksum_size(4));
+
+    // The table is borrowed from
+    // https://github.com/openbmc/pldm/commit/69d3e7fb2d9935773f4fbf44326c33f3fc0a3c38
+    // refer to the commit message
+    Table attrValTable = {0x09, 0x00, 0x01, 0x02, 0x00, 0x65, 0x66};
+    auto sizeWithoutPad = attrValTable.size();
+    attrValTable.resize(sizeWithoutPad +
+                        pldm_bios_table_pad_checksum_size(sizeWithoutPad));
+    pldm_bios_table_append_pad_checksum(attrValTable.data(),
+                                        attrValTable.size(), sizeWithoutPad);
+    Table expectedTable = {0x09, 0x00, 0x01, 0x02, 0x00, 0x65,
+                           0x66, 0x00, 0x6d, 0x81, 0x4a, 0xb6};
+    EXPECT_EQ(attrValTable, expectedTable);
+}
