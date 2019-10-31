@@ -30,6 +30,7 @@ enum pldm_bios_commands {
 	PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE = 0x07,
 	PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE = 0x08,
 	PLDM_GET_DATE_TIME = 0x0c,
+	PLDM_SET_DATE_TIME = 0x0d,
 };
 
 enum pldm_bios_table_types {
@@ -106,6 +107,28 @@ struct pldm_get_date_time_resp {
 	uint8_t day;		 //!< Day of the month in BCD format
 	uint8_t month;		 //!< Month in BCD format
 	uint16_t year;		 //!< Year in BCD format
+} __attribute__((packed));
+
+/** @struct pldm_set_date_time_req
+ *
+ *  structure representing SetDateTime request packet
+ *
+ */
+struct pldm_set_date_time_req {
+	uint8_t seconds; //!< Seconds in BCD format
+	uint8_t minutes; //!< Minutes in BCD format
+	uint8_t hours;   //!< Hours in BCD format
+	uint8_t day;     //!< Day of the month in BCD format
+	uint8_t month;   //!< Month in BCD format
+	uint16_t year;   //!< Year in BCD format
+} __attribute__((packed));
+
+/** @struct pldm_only_cc_resp
+ *
+ *  Structure representing PLDM responses only have completion code
+ */
+struct pldm_only_cc_resp {
+	uint8_t completion_code;
 } __attribute__((packed));
 
 /** @struct pldm_get_bios_attribute_current_value_by_handle_req
@@ -343,6 +366,65 @@ int encode_set_bios_attribute_current_value_resp(uint8_t instance_id,
 						 uint8_t completion_code,
 						 uint32_t next_transfer_handle,
 						 struct pldm_msg *msg);
+
+/** @brief Create a PLDM request message for SetDateTime
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] seconds - Seconds in BCD format
+ *  @param[in] minutes - minutes in BCD format
+ *  @param[in] hours - hours in BCD format
+ *  @param[in] day - day of month in BCD format
+ *  @param[in] month - number of month in BCD format
+ *  @param[in] year - year in BCD format
+ *  @param[out] msg - Message will be written to this
+ *  @param[out] payload_length - Length of request message payload
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.body.payload'
+ */
+int encode_set_date_time_req(uint8_t instance_id, uint8_t seconds,
+			     uint8_t minutes, uint8_t hours, uint8_t day,
+			     uint8_t month, uint16_t year, struct pldm_msg *msg,
+			     size_t payload_length);
+
+/** @brief Decode a SetDateTime request message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] seconds - seconds in BCD format
+ *  @param[out] minutes - minutes in BCD format
+ *  @param[out] hours - hours in BCD format
+ *  @param[out] day - day of the month in BCD format
+ *  @param[out] month - number of month in BCD format
+ *  @param[out] year - year in BCD format
+ *  @return pldm_completion_codes
+ */
+int decode_set_date_time_req(const struct pldm_msg *msg, size_t payload_length,
+			     uint8_t *seconds, uint8_t *minutes, uint8_t *hours,
+			     uint8_t *day, uint8_t *month, uint16_t *year);
+
+/** @brief Create a PLDM response message for SetDateTime
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[out] msg - Message will be written to this
+ *  @param[out] payload_length - Length of response message payload
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.body.payload'
+ */
+int encode_set_date_time_resp(uint8_t instance_id, uint8_t completion_code,
+			      struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Decode a SetDateTime response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @return pldm_completion_codes
+ */
+int decode_set_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
+			      uint8_t *completion_code);
 
 #ifdef __cplusplus
 }
