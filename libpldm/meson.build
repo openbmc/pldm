@@ -6,6 +6,7 @@ headers = [
   'bios_table.h',
   'states.h',
   'fru.h',
+  'utils.h'
 ]
 
 sources = [
@@ -14,6 +15,7 @@ sources = [
   'bios.c',
   'bios_table.c',
   'fru.c',
+  'utils.c'
 ]
 
 libpldm_headers = ['.', '..']
