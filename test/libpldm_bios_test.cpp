@@ -113,6 +113,155 @@ TEST(GetDateTime, testDecodeResponse)
     ASSERT_EQ(year, retYear);
 }
 
+TEST(SetDateTime, testGoodEncodeResponse)
+{
+    uint8_t instanceId = 0;
+    uint8_t completionCode = PLDM_SUCCESS;
+
+    std::array<uint8_t, hdrSize + (sizeof(struct pldm_set_date_time_resp))>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+
+    auto rc = encode_set_date_time_resp(instanceId, completionCode, response);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_set_date_time_resp* resp =
+        reinterpret_cast<struct pldm_set_date_time_resp*>(response->payload);
+    EXPECT_EQ(completionCode, resp->completion_code);
+}
+
+TEST(SetDateTime, testBadEncodeResponse)
+{
+
+    uint8_t instanceId = 10;
+    uint8_t completionCode = PLDM_SUCCESS;
+    auto rc = encode_set_date_time_resp(instanceId, completionCode, nullptr);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(SetDsteTime, testGoodDecodeResponse)
+{
+    uint8_t completionCode = PLDM_SUCCESS;
+    std::array<uint8_t, hdrSize + (sizeof(struct pldm_set_date_time_resp))>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    struct pldm_set_date_time_resp* resp =
+        reinterpret_cast<struct pldm_set_date_time_resp*>(response->payload);
+
+    resp->completion_code = completionCode;
+
+    uint8_t retCompletionCode;
+    auto rc = decode_set_date_time_resp(response, responseMsg.size() - hdrSize,
+                                        &retCompletionCode);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, retCompletionCode);
+}
+
+TEST(SetDsteTime, testBadDecodeResponse)
+{
+    uint8_t completionCode = PLDM_SUCCESS;
+
+    std::array<uint8_t, hdrSize + (sizeof(struct pldm_set_date_time_resp))>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    auto rc = decode_set_date_time_resp(nullptr, responseMsg.size() - hdrSize,
+                                        &completionCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_set_date_time_resp(response, responseMsg.size() - hdrSize - 4,
+                                   &completionCode);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(SetDateTime, testGoodEncodeRequset)
+{
+    uint8_t instanceId = 10;
+    uint8_t seconds = 50;
+    uint8_t minutes = 20;
+    uint8_t hours = 10;
+    uint8_t day = 11;
+    uint8_t month = 11;
+    uint16_t year = 2019;
+
+    std::array<uint8_t, hdrSize + (sizeof(struct pldm_set_date_time_req))>
+        requestMsg{};
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_set_date_time_req(instanceId, seconds, minutes, hours, day,
+                                       month, year, request);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(SetDateTime, testBadEncodeRequset)
+{
+    uint8_t instanceId = 10;
+
+    uint8_t seconds = 50;
+    uint8_t minutes = 20;
+    uint8_t hours = 10;
+    uint8_t day = 13;
+    uint8_t month = 11;
+    uint16_t year = 2019;
+
+    auto rc = encode_set_date_time_req(instanceId, seconds, minutes, hours, day,
+                                       month, year, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(SetDateTime, testGoodDecodeRequest)
+{
+    std::array<uint8_t, hdrSize + (sizeof(struct pldm_set_date_time_req))>
+        requestMsg{};
+    uint8_t seconds = 50;
+    uint8_t minutes = 20;
+    uint8_t hours = 10;
+    uint8_t day = 11;
+    uint8_t month = 11;
+    uint16_t year = 2019;
+
+    auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
+
+    auto rc =
+        decode_set_date_time_req(request, requestMsg.size() - hdrSize, &seconds,
+                                 &minutes, &hours, &day, &month, &year);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(SetDateTime, testBadDecodeRequest)
+{
+    uint8_t seconds = 50;
+    uint8_t minutes = 20;
+    uint8_t hours = 10;
+    uint8_t day = 11;
+    uint8_t month = 11;
+    uint16_t year = 2019;
+
+    std::array<uint8_t, hdrSize + (sizeof(struct pldm_set_date_time_req))>
+        requestMsg{};
+
+    auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
+
+    decode_set_date_time_req(request, requestMsg.size() - hdrSize, &seconds,
+                             &minutes, &hours, &day, &month, &year);
+
+    auto rc = decode_set_date_time_req(request, requestMsg.size() - hdrSize, 0,
+                                       0, 0, 0, 0, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_set_date_time_req(request, requestMsg.size() - hdrSize - 4,
+                                  &seconds, &minutes, &hours, &day, &month,
+                                  &year);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
 TEST(GetBIOSTable, testGoodEncodeResponse)
 {
     std::array<uint8_t,
