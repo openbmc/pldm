@@ -7,6 +7,7 @@
 
 #include "bios.h"
 #include "bios_table.h"
+#include "utils.h"
 
 #define POINTER_CHECK(pointer)                                                 \
 	do {                                                                   \
@@ -634,6 +635,50 @@ int pldm_bios_table_attr_value_entry_encode_integer_check(void *entry,
 	pldm_bios_table_attr_value_entry_encode_integer(
 	    entry, entry_length, attr_handle, attr_type, cv);
 	return PLDM_SUCCESS;
+}
+
+static size_t pad_size_get(size_t size_without_pad)
+{
+	return ((size_without_pad % 4) ? (4 - size_without_pad % 4) : 0);
+}
+
+static uint8_t *pad_append(uint8_t *table_end, size_t pad_size)
+{
+	while (pad_size--)
+		*table_end++ = 0;
+
+	return table_end;
+}
+
+static uint8_t *checksum_append(uint8_t *table_end, uint32_t checksum)
+{
+	checksum = htole32(checksum);
+	memcpy(table_end, &checksum, sizeof(checksum));
+
+	return table_end + sizeof(checksum);
+}
+
+size_t pldm_bios_table_pad_checksum_size(size_t size_without_pad)
+{
+	size_t size = pad_size_get(size_without_pad) +
+		      sizeof(uint32_t) /*sizeof(checksum)*/;
+	return size;
+}
+
+void pldm_bios_table_append_pad_checksum(void *table, size_t size,
+					 size_t size_without_pad)
+{
+
+	size_t pad_checksum_size =
+	    pldm_bios_table_pad_checksum_size(size_without_pad);
+	assert(size >= (size_without_pad + pad_checksum_size));
+
+	uint8_t *table_end = (uint8_t *)table + size_without_pad;
+	size_t pad_size = pad_size_get(size_without_pad);
+	table_end = pad_append(table_end, pad_size);
+
+	uint32_t checksum = crc32(table, size_without_pad + pad_size);
+	checksum_append(table_end, checksum);
 }
 
 struct pldm_bios_table_iter {
