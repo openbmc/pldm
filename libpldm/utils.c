@@ -60,3 +60,33 @@ uint32_t crc32(const void *data, size_t size)
 		crc = crc32_tab[(crc ^ *p++) & 0xff] ^ (crc >> 8);
 	return crc ^ ~0U;
 }
+
+/** @brief Judge whether the input time is legal
+ *
+ *  @param[in] seconds - Seconds in BCD format
+ *  @param[in] minutes - minutes in BCD format
+ *  @param[in] hours - hours in BCD format
+ *  @param[in] day - day of month in BCD format
+ *  @param[in] month - month in BCD format
+ *  @param[in] year - year in BCD format
+ *  @return 0 or 1
+ */
+int judge_time_legal(uint8_t seconds, uint8_t minutes, uint8_t hours,
+		     uint8_t day, uint8_t month, uint16_t year)
+{
+	if (month < 1 || month > 12) {
+		return 0; // illegal
+	}
+	static int days[13] = {0,  31, 28, 31, 30, 31, 30,
+			       31, 31, 30, 31, 30, 31};
+	int rday = days[month];
+	if ((year % 4 == 0 && year % 100 != 0) ||
+	    ((year % 400 == 0) && month == 2)) {
+		rday += 1;
+	}
+	if (year < 1970 || day < 1 || day > rday || seconds > 59 ||
+	    minutes > 59 || hours > 23) {
+		return 0; // illegal
+	}
+	return 1; // legal
+}
