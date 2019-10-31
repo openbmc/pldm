@@ -57,21 +57,17 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
 
 size_t getTableTotalsize(size_t sizeWithoutPad)
 {
-    auto padSize = getNumPadBytes(sizeWithoutPad);
-    return sizeWithoutPad + padSize + sizeof(uint32_t) /* checksum */;
+    return sizeWithoutPad + pldm_bios_table_pad_checksum_size(sizeWithoutPad);
 }
 
 void padAndChecksum(Table& table)
 {
-    auto padSize = getNumPadBytes(table.size());
-    table.insert(table.end(), padSize, 0);
+    auto sizeWithoutPad = table.size();
+    auto padAndChecksumSize = pldm_bios_table_pad_checksum_size(sizeWithoutPad);
+    table.resize(table.size() + padAndChecksumSize);
 
-    boost::crc_32_type result;
-    size_t size = table.size();
-    result.process_bytes(table.data(), size);
-    uint32_t checkSum = result.checksum();
-    uint8_t* checkSumPtr = reinterpret_cast<uint8_t*>(&checkSum);
-    table.insert(table.end(), checkSumPtr, checkSumPtr + sizeof(checkSum));
+    pldm_bios_table_append_pad_checksum(table.data(), table.size(),
+                                        sizeWithoutPad);
 }
 
 } // namespace utils
