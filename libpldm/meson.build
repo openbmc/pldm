@@ -30,6 +30,16 @@ if get_option('oem-ibm').enabled()
   libpldm_headers += ['../oem/ibm']
 endif
 
+if get_option('requester-api').enabled()
+  headers += [
+    'requester/pldm.h'
+  ]
+  sources += [
+    'requester/pldm.c'
+  ]
+  libpldm_headers += ['requester']
+endif
+
 install_headers(
   headers,
   subdir: 'libpldm')
