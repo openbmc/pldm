@@ -47,3 +47,7 @@ executable(
 if get_option('tests').enabled()
   subdir('test')
 endif
+
+if get_option('utilities').enabled()
+  subdir('utilities')
+endif
