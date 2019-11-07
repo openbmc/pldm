@@ -10,38 +10,38 @@ int main(int argc, char** argv)
     // TODO: To enable it later
     // bool verbose_flag = false;
     // app.add_flag("-v, --verbose", verbose_flag, "Output debug logs ");
+    std::vector<std::string> rawCmd{};
+    app.add_option("-r, --raw", rawCmd,
+                   "Send a RAW PLDM request and print response");
+
+    auto base = app.add_subcommand("BASE", "PLDM Command Type = BASE");
     std::vector<std::string> args{};
-    app.add_option("-c, —command", args, "  PLDM request command");
-
-    std::string rawCmd;
-    app.add_option("raw", rawCmd, "Send a RAW PLDM request and print response");
-
+    base->add_option("-c, --command", args, "PLDM request command");
     std::string pldmCmdName;
-    app.add_option("GetPLDMTypes", pldmCmdName, "Get PLDM Type");
-    app.add_option("GetPLDMVersion", pldmCmdName, "Get PLDM Version");
+    base->add_option("GetPLDMTypes", pldmCmdName, "Get PLDM Type");
+    base->add_option("GetPLDMVersion", pldmCmdName, "Get PLDM Version");
 
-    app.add_subcommand("BASE", "PLDM Command Type = BASE");
-    app.add_subcommand("BIOS", "PLDM Command Type = BIOS");
-    app.add_subcommand("OEM", "PLDM Command Type = OEM");
+    auto bios = app.add_subcommand("BIOS", "PLDM Command Type = BIOS");
+    bios->add_option("-c, --command", args, "PLDM request command");
+
+    auto oem = app.add_subcommand("OEM", "PLDM Command Type = OEM");
+    oem->add_option("-c, --command", args, "PLDM request command");
 
     CLI11_PARSE(app, argc, argv);
 
     std::string cmdName;
     int rc = 0;
 
-    if (args[0] != "raw")
+    if (memcmp(argv[1], "--raw", strlen(argv[1])) != 0 &&
+        memcmp(argv[1], "-r", strlen(argv[1])) != 0)
     {
         // Parse args to program
         cmdName = args[0];
     }
     else
     {
-        // removing 'raw' from the args list since it is positional argument
-        // and not an input value.
-        args.erase(args.begin());
-
         // loop through the remaining argument list
-        for (auto&& item : args)
+        for (auto&& item : rawCmd)
         {
 
             if (item[0] == '0' && (item[1] == 'x' || item[1] == 'X'))
@@ -73,6 +73,7 @@ int main(int argc, char** argv)
                 return rc;
             }
         }
+        args = rawCmd;
     }
 
     Handler handler;
