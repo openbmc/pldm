@@ -85,6 +85,21 @@ void getPLDMVersion(vector<std::string>&& args)
         cout << "PLDM Type requested : " << args[1] << endl;
         pldmType = PLDM_BASE;
     }
+    else if (!strcasecmp(args[1].c_str(), "bios"))
+    {
+        cout << "PLDM Type requested : " << args[1] << endl;
+        pldmType = PLDM_BIOS;
+    }
+    else if (!strcasecmp(args[1].c_str(), "fru"))
+    {
+        cout << "PLDM Type requested : " << args[1] << endl;
+        pldmType = PLDM_FRU;
+    }
+    else if (!strcasecmp(args[1].c_str(), "oem"))
+    {
+        cout << "PLDM Type requested : " << args[1] << endl;
+        pldmType = PLDM_OEM;
+    }
     else
     {
         cerr << "Unsupported pldm command type OR not supported yet : "
