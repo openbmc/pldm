@@ -238,6 +238,14 @@ TEST(AttrTable, StringEntryEncodeTest)
         encodeEntry.data(), encodeEntry.size() - 1, &info);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
     std::swap(info.max_length, info.min_length);
+    const char* errmsg;
+    rc = pldm_bios_table_attr_entry_string_info_check(&info, &errmsg);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(
+        std::strcmp(
+            "MinimumStingLength should not be greater than MaximumStringLength",
+            errmsg),
+        0);
     rc = pldm_bios_table_attr_entry_string_encode_check(
         encodeEntry.data(), encodeEntry.size(), &info);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
@@ -323,6 +331,12 @@ TEST(AttrTable, integerEntryEncodeTest)
 
     info.lower_bound = 100;
     info.upper_bound = 50;
+    const char* errmsg;
+    rc = pldm_bios_table_attr_entry_integer_info_check(&info, &errmsg);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(
+        std::strcmp("LowerBound should not be greater than UpperBound", errmsg),
+        0);
     rc = pldm_bios_table_attr_entry_integer_encode_check(
         encodeEntry.data(), encodeEntry.size(), &info);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);

@@ -28,6 +28,12 @@
 
 #define MEMBER_SIZE(type, member) sizeof(((struct type *)0)->member)
 
+static void set_errmsg(const char **errmsg, const char *msg)
+{
+	if (errmsg != NULL)
+		*errmsg = msg;
+}
+
 static uint16_t get_bios_string_handle()
 {
 	static uint16_t handle = 0;
@@ -295,6 +301,42 @@ void pldm_bios_table_attr_entry_string_encode(
 		       info->def_length);
 }
 
+#define PLDM_STRING_TYPE_MAX 5
+#define PLDM_STRING_TYPE_VENDOR 0xff
+
+int pldm_bios_table_attr_entry_string_info_check(
+    const struct pldm_bios_table_attr_entry_string_info *info,
+    const char **errmsg)
+{
+	if (info->min_length > info->max_length) {
+		set_errmsg(errmsg, "MinimumStingLength should not be greater "
+				   "than MaximumStringLength");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (info->min_length == info->max_length &&
+	    info->def_length != info->min_length) {
+		set_errmsg(errmsg, "Wrong DefaultStringLength");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (info->def_length > info->max_length ||
+	    info->def_length < info->min_length) {
+		set_errmsg(errmsg, "Wrong DefaultStringLength");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (info->string_type > PLDM_STRING_TYPE_MAX &&
+	    info->string_type != PLDM_STRING_TYPE_VENDOR) {
+		set_errmsg(errmsg, "Wrong StringType");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (info->def_length != strlen(info->def_string)) {
+		set_errmsg(errmsg, "Length of DefaultString should be equal to "
+				   "DefaultStringLength");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	return PLDM_SUCCESS;
+}
+
 int pldm_bios_table_attr_entry_string_encode_check(
     void *entry, size_t entry_length,
     const struct pldm_bios_table_attr_entry_string_info *info)
@@ -304,11 +346,8 @@ int pldm_bios_table_attr_entry_string_encode_check(
 	size_t length =
 	    pldm_bios_table_attr_entry_string_encode_length(info->def_length);
 	BUFFER_SIZE_EXPECT(entry_length, length);
-	if (info->def_length > info->max_length ||
-	    info->def_length < info->min_length ||
-	    info->min_length > info->max_length)
-		return PLDM_ERROR_INVALID_DATA;
-	if (info->string_type > 5 && info->string_type != 0xFF)
+	if (pldm_bios_table_attr_entry_string_info_check(info, NULL) !=
+	    PLDM_SUCCESS)
 		return PLDM_ERROR_INVALID_DATA;
 	pldm_bios_table_attr_entry_string_encode(entry, entry_length, info);
 	return PLDM_SUCCESS;
@@ -375,6 +414,38 @@ void pldm_bios_table_attr_entry_integer_encode(
 	attr_fields->default_value = htole64(info->default_value);
 }
 
+int pldm_bios_table_attr_entry_integer_info_check(
+    const struct pldm_bios_table_attr_entry_integer_info *info,
+    const char **errmsg)
+{
+	if (info->lower_bound > info->upper_bound) {
+		set_errmsg(errmsg,
+			   "LowerBound should not be greater than UpperBound");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (info->lower_bound == info->upper_bound &&
+	    info->default_value != info->lower_bound) {
+		set_errmsg(errmsg, "Wrong DefaultValue");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (info->default_value > info->upper_bound ||
+	    info->default_value < info->lower_bound) {
+		set_errmsg(errmsg, "Wrong DefaultValue");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (info->scalar_increment == 0) {
+		set_errmsg(errmsg, "ScalarIncrement should not be zero");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if ((info->default_value - info->lower_bound) %
+		info->scalar_increment !=
+	    0) {
+		set_errmsg(errmsg, "Wrong DefaultValue or ScalarIncrement");
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return PLDM_SUCCESS;
+}
+
 int pldm_bios_table_attr_entry_integer_encode_check(
     void *entry, size_t entry_length,
     const struct pldm_bios_table_attr_entry_integer_info *info)
@@ -383,12 +454,8 @@ int pldm_bios_table_attr_entry_integer_encode_check(
 	POINTER_CHECK(info);
 	size_t length = pldm_bios_table_attr_entry_integer_encode_length();
 	BUFFER_SIZE_EXPECT(entry_length, length);
-	if (info->lower_bound > info->upper_bound ||
-	    info->default_value > info->upper_bound ||
-	    info->default_value < info->lower_bound ||
-	    (info->default_value - info->lower_bound) %
-		    info->scalar_increment !=
-		0)
+	if (pldm_bios_table_attr_entry_integer_info_check(info, NULL) !=
+	    PLDM_SUCCESS)
 		return PLDM_ERROR_INVALID_DATA;
 	pldm_bios_table_attr_entry_integer_encode(entry, entry_length, info);
 	return PLDM_SUCCESS;
