@@ -269,6 +269,16 @@ struct pldm_bios_table_attr_entry_string_info {
 	const char *def_string; //!< The default string itself
 };
 
+/** @brief Check fields in @ref pldm_bios_table_attr_entry_string_info
+ *  @param[in] info - Pointer to the pldm_bios_table_attr_entry_string_info
+ *  @param[out] errmsg - Pointer to an errmsg stored in the statically allocated
+ * memory
+ *  @return pldm_completion_codes
+ */
+int pldm_bios_table_attr_entry_string_info_check(
+    const struct pldm_bios_table_attr_entry_string_info *info,
+    const char **errmsg);
+
 /** @brief Get length that an attribute entry(type: string) will take
  *  @param[in] def_str_len - Length of default string
  *  @return The length that an entry(type: string) will take
@@ -329,6 +339,16 @@ struct pldm_bios_table_attr_entry_integer_info {
 				   //!< increments to this integer
 	uint64_t default_value;    //!< The default value of the integer
 };
+
+/** @brief Check fields in @ref pldm_bios_table_attr_entry_integer_info
+ *  @param[in] info - Pointer to the pldm_bios_table_attr_entry_integer_info
+ *  @param[out] errmsg - Pointer to an errmsg stored in the statically allocated
+ * memory
+ *  @return pldm_completion_codes
+ */
+int pldm_bios_table_attr_entry_integer_info_check(
+    const struct pldm_bios_table_attr_entry_integer_info *info,
+    const char **errmsg);
 
 /** @brief Get length that an attribute entry(type: integer) will take
  *  @return The length that an entry(type: integer) will take
