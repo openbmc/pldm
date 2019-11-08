@@ -13,6 +13,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <utility>
 
 #include "libpldm/base.h"
 #include "libpldm/platform.h"
@@ -38,5 +39,24 @@ void printBuffer(const std::vector<uint8_t>& buffer);
  */
 int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
                      std::vector<uint8_t>& responseMsg);
+
+class CommandInterface
+{
+  public:
+    CommandInterface(std::string name) : commandName(name)
+    {
+    }
+    virtual ~CommandInterface() = default;
+
+    virtual std::pair<int, std::vector<uint8_t>>
+        createRequestMsg(std::vector<std::string>& args) = 0;
+
+    virtual void parseResponseMsg(struct pldm_msg* responsePtr,
+                                  size_t payloadLength) = 0;
+
+    void exec(std::vector<std::string>& args);
+
+    const std::string commandName;
+};
 
 #endif
