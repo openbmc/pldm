@@ -1,37 +1,14 @@
 #pragma once
 
-#ifndef PLDM_BASE_CMD_H
-#define PLDM_BASE_CMD_H
+#include <CLI/CLI.hpp>
 
-#include "pldm_cmd_helper.hpp"
+namespace pldmtool
+{
 
-/** @brief Handler for GetPLDMTypes command
- *
- *  @param[in]  args - Argument to be passed to the handler.
- *                     Optional argument.
- *
- *  @return - None
- */
-void getPLDMTypes(std::vector<std::string>&& args);
+namespace base
+{
 
-/** @brief Handler for GetPLDMVersion command
- *
- *
- *  @param[in]  args - Argument to be passed to the handler
- *              e.g :  PLDM Command Type : base, bios etc.
- *
- *  @return - None
- */
-void getPLDMVersion(std::vector<std::string>&& args);
+void registerCommand(CLI::App& app);
+}
 
-/** @brief Handler for Raw PLDM commands
- *
- *
- *  @param[in]  args - Argument to be passed to the handler
- *              e.g :  PLDM raw commands.
- *
- *  @return - None
- */
-void handleRawOp(std::vector<std::string>&& args);
-
-#endif /* PLDM_BASE_CMD_H */
+} // namespace pldmtool

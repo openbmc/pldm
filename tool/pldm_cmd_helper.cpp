@@ -1,9 +1,10 @@
 #include "pldm_cmd_helper.hpp"
 
-constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
-constexpr uint8_t PLDM_ENTITY_ID = 8;
+namespace pldmtool
+{
 
-using namespace std;
+namespace helper
+{
 
 /*
  * print the input buffer
@@ -20,7 +21,7 @@ void printBuffer(const std::vector<uint8_t>& buffer)
                        << " ";
         }
     }
-    cout << tempStream.str().c_str() << endl;
+    std::cout << tempStream.str() << std::endl;
 }
 
 /*
@@ -37,10 +38,12 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     if (-1 == sockFd)
     {
         returnCode = -errno;
-        cerr << "Failed to create the socket : RC = " << sockFd << endl;
+        std::cerr << "Failed to create the socket : RC = " << sockFd
+                  << std::endl;
         return returnCode;
     }
-    cout << "Success in creating the socket : RC = " << sockFd << endl;
+    std::cout << "Success in creating the socket : RC = " << sockFd
+              << std::endl;
 
     struct sockaddr_un addr
     {
@@ -55,43 +58,48 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     if (-1 == result)
     {
         returnCode = -errno;
-        cerr << "Failed to connect to socket : RC = " << returnCode << endl;
+        std::cerr << "Failed to connect to socket : RC = " << returnCode
+                  << std::endl;
         return returnCode;
     }
-    cout << "Success in connecting to socket : RC = " << returnCode << endl;
+    std::cout << "Success in connecting to socket : RC = " << returnCode
+              << std::endl;
 
     auto pldmType = MCTP_MSG_TYPE_PLDM;
     result = write(socketFd(), &pldmType, sizeof(pldmType));
     if (-1 == result)
     {
         returnCode = -errno;
-        cerr << "Failed to send message type as pldm to mctp : RC = "
-             << returnCode << endl;
+        std::cerr << "Failed to send message type as pldm to mctp : RC = "
+                  << returnCode << std::endl;
         return returnCode;
     }
-    cout << "Success in sending message type as pldm to mctp : RC = "
-         << returnCode << endl;
+    std::cout << "Success in sending message type as pldm to mctp : RC = "
+              << returnCode << std::endl;
 
     result = send(socketFd(), requestMsg.data(), requestMsg.size(), 0);
     if (-1 == result)
     {
         returnCode = -errno;
-        cerr << "Write to socket failure : RC = " << returnCode << endl;
+        std::cerr << "Write to socket failure : RC = " << returnCode
+                  << std::endl;
         return returnCode;
     }
-    cout << "Write to socket successful : RC = " << result << endl;
+    std::cout << "Write to socket successful : RC = " << result << std::endl;
 
     // Read the response from socket
     ssize_t peekedLength = recv(socketFd(), nullptr, 0, MSG_TRUNC | MSG_PEEK);
     if (0 == peekedLength)
     {
-        cerr << "Socket is closed : peekedLength = " << peekedLength << endl;
+        std::cerr << "Socket is closed : peekedLength = " << peekedLength
+                  << std::endl;
         return returnCode;
     }
     else if (peekedLength <= -1)
     {
         returnCode = -errno;
-        cerr << "recv() system call failed : RC = " << returnCode << endl;
+        std::cerr << "recv() system call failed : RC = " << returnCode
+                  << std::endl;
         return returnCode;
     }
     else
@@ -103,16 +111,16 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
                  peekedLength, 0);
         if (recvDataLength == peekedLength)
         {
-            cout << "Total length:" << recvDataLength << endl;
-            cout << "Loopback response message:" << endl;
+            std::cout << "Total length:" << recvDataLength << std::endl;
+            std::cout << "Loopback response message:" << std::endl;
             printBuffer(loopBackRespMsg);
         }
         else
         {
-            cerr << "Failure to read peeked length packet : RC = " << returnCode
-                 << endl;
-            cerr << "peekedLength: " << peekedLength << endl;
-            cerr << "Total length: " << recvDataLength << endl;
+            std::cerr << "Failure to read peeked length packet : RC = "
+                      << returnCode << std::endl;
+            std::cerr << "peekedLength: " << peekedLength << std::endl;
+            std::cerr << "Total length: " << recvDataLength << std::endl;
             return returnCode;
         }
 
@@ -122,8 +130,8 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
         uint8_t request = hdr->request;
         if (request == PLDM_REQUEST)
         {
-            cout << "On first recv(),response == request : RC = " << returnCode
-                 << endl;
+            std::cout << "On first recv(),response == request : RC = "
+                      << returnCode << std::endl;
             ssize_t peekedLength =
                 recv(socketFd(), nullptr, 0, MSG_PEEK | MSG_TRUNC);
 
@@ -133,19 +141,19 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
                      peekedLength, 0);
             if (recvDataLength == peekedLength)
             {
-                cout << "Total length: " << recvDataLength << endl;
+                std::cout << "Total length: " << recvDataLength << std::endl;
             }
             else
             {
-                cerr << "Failure to read response length packet: length = "
-                     << recvDataLength << endl;
+                std::cerr << "Failure to read response length packet: length = "
+                          << recvDataLength << std::endl;
                 return returnCode;
             }
         }
         else
         {
-            cerr << "On first recv(),request != response : RC = " << returnCode
-                 << endl;
+            std::cerr << "On first recv(),request != response : RC = "
+                      << returnCode << std::endl;
             return returnCode;
         }
     }
@@ -153,10 +161,53 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     if (-1 == returnCode)
     {
         returnCode = -errno;
-        cerr << "Failed to shutdown the socket : RC = " << returnCode << endl;
+        std::cerr << "Failed to shutdown the socket : RC = " << returnCode
+                  << std::endl;
         return returnCode;
     }
 
-    cout << "Shutdown Socket successful :  RC = " << returnCode << endl;
+    std::cout << "Shutdown Socket successful :  RC = " << returnCode
+              << std::endl;
     return PLDM_SUCCESS;
 }
+
+void CommandInterface::exec()
+{
+    auto [rc, requestMsg] = createRequestMsg();
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to encode request message for " << pldmType << ":"
+                  << commandName << " rc = " << rc << std::endl;
+        return;
+    }
+
+    std::cout << "Encode request successfully" << std::endl;
+
+    // Insert the PLDM message type and EID at the begining of the request msg.
+    requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+    requestMsg.insert(requestMsg.begin(), PLDM_ENTITY_ID);
+
+    std::cout << "Request Message:" << std::endl;
+    printBuffer(requestMsg);
+
+    std::vector<uint8_t> responseMsg;
+    rc = mctpSockSendRecv(requestMsg, responseMsg);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to receive from socket: RC = " << rc << std::endl;
+        return;
+    }
+
+    std::cout << "Response Message:" << std::endl;
+    printBuffer(responseMsg);
+
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(
+        responseMsg.data() + 2 /*skip the mctp header*/);
+    parseResponseMsg(responsePtr, responseMsg.size() -
+                                      2 /*skip the mctp header*/ -
+                                      sizeof(pldm_msg_hdr));
+}
+
+} // namespace helper
+} // namespace pldmtool
