@@ -14,11 +14,11 @@ project('pldm', ['c', 'cpp'],
 add_project_arguments('-Wno-psabi', language: 'cpp')
 
 conf_data = configuration_data()
-conf_data.set_quoted('BIOS_JSONS_DIR', '/etc/default/obmc/pldm/bios')
+conf_data.set_quoted('BIOS_JSONS_DIR', '/usr/share/pldm/bios')
 conf_data.set_quoted('BIOS_TABLES_DIR', '/var/lib/pldm/bios')
-conf_data.set_quoted('PDR_JSONS_DIR', '/etc/default/obmc/pldm/pdr')
+conf_data.set_quoted('PDR_JSONS_DIR', '/usr/share/pldm/pdr')
 if get_option('oem-ibm').enabled()
-  conf_data.set_quoted('FILE_TABLE_JSON', '/etc/default/obmc/pldm/fileTable.json')
+  conf_data.set_quoted('FILE_TABLE_JSON', '/usr/share/pldm/fileTable.json')
   add_global_arguments('-DOEM_IBM', language : 'c')
   add_global_arguments('-DOEM_IBM', language : 'cpp')
 endif
