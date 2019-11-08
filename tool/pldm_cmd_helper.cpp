@@ -160,3 +160,38 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     cout << "Shutdown Socket successful :  RC = " << returnCode << endl;
     return PLDM_SUCCESS;
 }
+
+void CommandInterface::exec()
+{
+    auto [rc, requestMsg] = createRequestMsg();
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to encode request message for " << pldmType << ":"
+                  << commandName << " rc = " << rc << std::endl;
+        return;
+    }
+
+    std::cout << "Encode request successfully" << std::endl;
+
+    // Insert the PLDM message type and EID at the begining of the request msg.
+    requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+    requestMsg.insert(requestMsg.begin(), PLDM_ENTITY_ID);
+
+    std::cout << "Request Message:" << std::endl;
+    printBuffer(requestMsg);
+
+    std::vector<uint8_t> responseMsg;
+    rc = mctpSockSendRecv(requestMsg, responseMsg);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to receive from socket: RC = " << rc << std::endl;
+        return;
+    }
+
+    std::cout << "Response Message:" << std::endl;
+    printBuffer(requestMsg);
+
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    parseResponseMsg(responsePtr, responseMsg.size());
+}
