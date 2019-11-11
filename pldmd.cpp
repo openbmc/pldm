@@ -19,6 +19,8 @@
 #include <iostream>
 #include <iterator>
 #include <phosphor-logging/log.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/source/io.hpp>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -35,6 +37,8 @@ constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 
 using namespace phosphor::logging;
 using namespace pldm;
+using namespace sdeventplus;
+using namespace sdeventplus::source;
 
 static Response processRxMsg(const std::vector<uint8_t>& requestMsg)
 {
@@ -134,15 +138,6 @@ int main(int argc, char** argv)
     pldm::responder::bios::registerHandlers();
     pldm::responder::platform::registerHandlers();
 
-    // Outgoing message.
-    struct iovec iov[2]{};
-
-    // This structure contains the parameter information for the response
-    // message.
-    struct msghdr msg
-    {
-    };
-
 #ifdef OEM_IBM
     pldm::responder::oem_ibm::registerHandlers();
 #endif
@@ -185,27 +180,38 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    do
-    {
-        ssize_t peekedLength =
-            recv(socketFd(), nullptr, 0, MSG_PEEK | MSG_TRUNC);
+    auto callback = [verbose](IO& /*io*/, int fd, uint32_t revents) {
+        if (!(revents & EPOLLIN))
+        {
+            return;
+        }
+
+        // Outgoing message.
+        struct iovec iov[2]{};
+
+        // This structure contains the parameter information for the response
+        // message.
+        struct msghdr msg
+        {
+        };
+
+        int returnCode = 0;
+        ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);
         if (0 == peekedLength)
         {
             log<level::ERR>("Socket has been closed");
-            exit(EXIT_FAILURE);
         }
         else if (peekedLength <= -1)
         {
             returnCode = -errno;
             log<level::ERR>("recv system call failed",
                             entry("RC=%d", returnCode));
-            exit(EXIT_FAILURE);
         }
         else
         {
             std::vector<uint8_t> requestMsg(peekedLength);
             auto recvDataLength = recv(
-                sockfd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
+                fd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
             if (recvDataLength == peekedLength)
             {
                 if (verbose)
@@ -243,13 +249,12 @@ int main(int argc, char** argv)
                         msg.msg_iov = iov;
                         msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
 
-                        result = sendmsg(socketFd(), &msg, 0);
+                        int result = sendmsg(fd, &msg, 0);
                         if (-1 == result)
                         {
                             returnCode = -errno;
                             log<level::ERR>("sendto system call failed",
                                             entry("RC=%d", returnCode));
-                            exit(EXIT_FAILURE);
                         }
                     }
                 }
@@ -259,10 +264,13 @@ int main(int argc, char** argv)
                 log<level::ERR>("Failure to read peeked length packet",
                                 entry("PEEKED_LENGTH=%zu", peekedLength),
                                 entry("READ_LENGTH=%zu", recvDataLength));
-                exit(EXIT_FAILURE);
             }
         }
-    } while (true);
+    };
+
+    auto event = Event::get_default();
+    IO io(event, socketFd(), EPOLLIN, std::move(callback));
+    event.loop();
 
     result = shutdown(sockfd, SHUT_RDWR);
     if (-1 == result)

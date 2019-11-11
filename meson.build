@@ -33,7 +33,8 @@ subdir('tool')
 deps = [
   libpldm,
   libpldmresponder,
-  dependency('sdbusplus')
+  dependency('sdbusplus'),
+  dependency('sdeventplus')
 ]
 
 executable(
