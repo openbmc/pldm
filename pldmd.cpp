@@ -1,3 +1,4 @@
+#include "dbus_impl_requester.hpp"
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/platform.hpp"
@@ -40,7 +41,8 @@ using namespace pldm;
 using namespace sdeventplus;
 using namespace sdeventplus::source;
 
-static Response processRxMsg(const std::vector<uint8_t>& requestMsg)
+static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
+                             dbus_api::Requester& requester)
 {
 
     Response response;
@@ -77,6 +79,10 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg)
             }
             response.insert(response.end(), completion_code);
         }
+    }
+    else
+    {
+        requester.markFree(eid, hdr->instance_id);
     }
     return response;
 }
@@ -180,7 +186,10 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    auto callback = [verbose](IO& /*io*/, int fd, uint32_t revents) {
+    auto bus = sdbusplus::bus::new_default();
+    dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
+    auto callback = [verbose, &dbusImplReq](IO& /*io*/, int fd,
+                                            uint32_t revents) {
         if (!(revents & EPOLLIN))
         {
             return;
@@ -231,7 +240,7 @@ int main(int argc, char** argv)
                 else
                 {
                     // process message and send response
-                    auto response = processRxMsg(requestMsg);
+                    auto response = processRxMsg(requestMsg, dbusImplReq);
                     if (!response.empty())
                     {
                         if (verbose)
@@ -269,6 +278,8 @@ int main(int argc, char** argv)
     };
 
     auto event = Event::get_default();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+    bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
     event.loop();
 
