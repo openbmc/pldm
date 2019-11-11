@@ -14,6 +14,7 @@ endif
 
 gtest = dependency('gtest', main: true, disabler: true, required: true)
 gmock = dependency('gmock', disabler: true, required: true)
+pldmd = declare_dependency(sources: '../instance_id.cpp')
 
 tests = [
   'libpldm_base_test',
@@ -26,7 +27,8 @@ tests = [
   'libpldmresponder_bios_table_test',
   'libpldmresponder_platform_test',
   'libpldm_fru_test',
-  'libpldm_utils_test'
+  'libpldm_utils_test',
+  'pldmd_instanceid_test',
 ]
 
 if get_option('oem-ibm').enabled()
@@ -41,6 +43,14 @@ foreach t : tests
                      implicit_include_directories: false,
                      link_args: dynamic_linker,
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
-                     dependencies: [libpldm, libpldmresponder, gtest, gmock, dependency('sdbusplus'),dependency('phosphor-logging')]),
+                     dependencies: [
+                         libpldm,
+                         libpldmresponder,
+                         gtest,
+                         gmock,
+                         pldmd,
+                         dependency('phosphor-dbus-interfaces'),
+                         dependency('phosphor-logging'),
+                         dependency('sdbusplus')]),
        workdir: meson.current_source_dir())
 endforeach

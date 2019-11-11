@@ -37,12 +37,15 @@ deps = [
   libpldm,
   libpldmresponder,
   dependency('sdbusplus'),
-  dependency('sdeventplus')
+  dependency('sdeventplus'),
+  dependency('phosphor-dbus-interfaces')
 ]
 
 executable(
   'pldmd',
   'pldmd.cpp',
+  'dbus_impl_requester.cpp',
+  'instance_id.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
