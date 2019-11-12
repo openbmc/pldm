@@ -66,3 +66,18 @@ TEST(BcdConversion, BcdCoversion)
     EXPECT_EQ(0x12345678, dec2bcd32(12345678));
     EXPECT_EQ(0x99999999, dec2bcd32(99999999));
 }
+
+TEST(TimeLegal, TimeLegal)
+{
+    EXPECT_EQ(true, is_time_legal(30, 25, 16, 18, 8, 2019));
+    EXPECT_EQ(true, is_time_legal(30, 25, 16, 29, 2, 2020)); // leap year
+
+    EXPECT_EQ(false, is_time_legal(30, 25, 16, 18, 8, 1960));  // year illegal
+    EXPECT_EQ(false, is_time_legal(30, 25, 16, 18, 15, 2019)); // month illegal
+    EXPECT_EQ(false, is_time_legal(30, 25, 16, 18, 0, 2019));  // month illegal
+    EXPECT_EQ(false, is_time_legal(30, 25, 16, 0, 8, 2019));   // day illegal
+    EXPECT_EQ(false, is_time_legal(30, 25, 16, 29, 2, 2019));  // day illegal
+    EXPECT_EQ(false, is_time_legal(30, 25, 25, 18, 8, 2019));  // hours illegal
+    EXPECT_EQ(false, is_time_legal(30, 70, 16, 18, 8, 2019)); // minutes illegal
+    EXPECT_EQ(false, is_time_legal(80, 25, 16, 18, 8, 2019)); // seconds illegal
+}
