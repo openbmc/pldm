@@ -1,5 +1,7 @@
 #include "bios.h"
+#include "utils.h"
 #include <endian.h>
+#include <stdbool.h>
 #include <string.h>
 
 int encode_get_date_time_req(uint8_t instance_id, struct pldm_msg *msg)
@@ -82,6 +84,116 @@ int decode_get_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
 	*day = response->day;
 	*month = response->month;
 	*year = le16toh(response->year);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_date_time_req(uint8_t instance_id, uint8_t seconds,
+			     uint8_t minutes, uint8_t hours, uint8_t day,
+			     uint8_t month, uint16_t year, struct pldm_msg *msg,
+			     size_t payload_length)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct pldm_set_date_time_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if (!is_time_legal(seconds, minutes, hours, day, month, year)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_SET_DATE_TIME;
+	pack_pldm_header(&header, &msg->hdr);
+
+	struct pldm_set_date_time_req *request =
+	    (struct pldm_set_date_time_req *)msg->payload;
+	request->seconds = dec2bcd8(seconds);
+	request->minutes = dec2bcd8(minutes);
+	request->hours = dec2bcd8(hours);
+	request->day = dec2bcd8(day);
+	request->month = dec2bcd8(month);
+	request->year = htole16(dec2bcd16(year));
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_date_time_req(const struct pldm_msg *msg, size_t payload_length,
+			     uint8_t *seconds, uint8_t *minutes, uint8_t *hours,
+			     uint8_t *day, uint8_t *month, uint16_t *year)
+{
+	if (msg == NULL || seconds == NULL || minutes == NULL ||
+	    hours == NULL || day == NULL || month == NULL || year == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct pldm_set_date_time_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	const struct pldm_set_date_time_req *request =
+	    (struct pldm_set_date_time_req *)msg->payload;
+
+	*seconds = bcd2dec8(request->seconds);
+	*minutes = bcd2dec8(request->minutes);
+	*hours = bcd2dec8(request->hours);
+	*day = bcd2dec8(request->day);
+	*month = bcd2dec8(request->month);
+	*year = bcd2dec16(le16toh(request->year));
+
+	if (!is_time_legal(*seconds, *minutes, *hours, *day, *month, *year)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_date_time_resp(uint8_t instance_id, uint8_t completion_code,
+			      struct pldm_msg *msg, size_t payload_length)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct pldm_only_cc_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_BIOS;
+	header.command = PLDM_SET_DATE_TIME;
+	int rc = pack_pldm_header(&header, &msg->hdr);
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_only_cc_resp *response =
+	    (struct pldm_only_cc_resp *)msg->payload;
+	response->completion_code = completion_code;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
+			      uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_only_cc_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	const struct pldm_only_cc_resp *response =
+	    (struct pldm_only_cc_resp *)msg->payload;
+	*completion_code = response->completion_code;
 
 	return PLDM_SUCCESS;
 }
