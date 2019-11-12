@@ -140,3 +140,23 @@ uint32_t dec2bcd32(uint32_t dec)
 {
 	return dec2bcd16(dec % 10000) | dec2bcd16(dec / 10000) << 16;
 }
+
+bool is_time_legal(uint8_t seconds, uint8_t minutes, uint8_t hours, uint8_t day,
+		   uint8_t month, uint16_t year)
+{
+	if (month < 1 || month > 12) {
+		return false;
+	}
+	static int days[13] = {0,  31, 28, 31, 30, 31, 30,
+			       31, 31, 30, 31, 30, 31};
+	int rday = days[month];
+	if (((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) &&
+	    month == 2) {
+		rday += 1;
+	}
+	if (year < 1970 || day < 1 || day > rday || seconds > 59 ||
+	    minutes > 59 || hours > 23) {
+		return false;
+	}
+	return true;
+}

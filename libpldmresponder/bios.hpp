@@ -60,6 +60,13 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
  */
 Response getDateTime(const pldm_msg* request, size_t payloadLength);
 
+/** @brief Handler for SetDateTime
+ *
+ *  @param[in] request - Request message payload
+ *  @param[return] Response - PLDM Response message
+ */
+Response setDateTime(const pldm_msg* request, size_t payloadLength);
+
 /** @brief Handler for GetBIOSTable
  *
  *  @param[in] request - Request message
