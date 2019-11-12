@@ -59,6 +59,17 @@ struct CustomFD
  */
 uint8_t getNumPadBytes(uint32_t data);
 
+/** @breif Convert bcd number(uint8_t) to decimal
+ *  @param[in] bcd - bcd number
+ *  @return the decimal number
+ */
+uint8_t bcd2dec8(uint8_t bcd);
+
+/** @breif Convert bcd number(uint16_t) to decimal
+ *  @param[in] bcd - bcd number
+ *  @return the decimal number
+ */
+uint16_t bcd2dec16(uint16_t bcd);
 } // namespace utils
 
 /**
