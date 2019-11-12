@@ -6,9 +6,9 @@ extern "C" {
 #endif
 
 #include "pldm_types.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-
 /** @brief Compute Crc32(same as the one used by IEEE802.3)
  *
  *  @param[in] data - Pointer to the target data
@@ -61,6 +61,19 @@ uint32_t bcd2dec32(uint32_t bcd);
  *  @return the bcd number
  */
 uint32_t dec2bcd32(uint32_t dec);
+
+/** @brief Judge whether the input time is legal
+ *
+ *  @param[in] seconds
+ *  @param[in] minutes
+ *  @param[in] hours
+ *  @param[in] day
+ *  @param[in] month
+ *  @param[in] year
+ *  @return true if time is legal
+ */
+bool is_time_legal(uint8_t seconds, uint8_t minutes, uint8_t hours, uint8_t day,
+		   uint8_t month, uint16_t year);
 
 #ifdef __cplusplus
 }
