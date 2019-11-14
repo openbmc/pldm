@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#include "pldm_types.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -15,6 +16,15 @@ extern "C" {
  *  @return The checksum
  */
 uint32_t crc32(const void *data, size_t size);
+
+/** @brief Covert ver32_t to string
+ *  @param[in] version - Pointer to ver32_t
+ *  @param[out] buffer - Pointer to the buffer
+ *  @param[in] buffer_size - Size of the buffer
+ *  @return The number of characters(excluding the null byte) or negative if
+ * error is encountered
+ */
+int ver2str(const ver32_t *version, char *buffer, size_t buffer_size);
 
 #ifdef __cplusplus
 }
