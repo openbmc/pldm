@@ -1,5 +1,8 @@
 #include "utils.h"
 
+#include <assert.h>
+#include <stdio.h>
+
 /** CRC32 code derived from work by Gary S. Brown.
  *  http://web.mit.edu/freebsd/head/sys/libkern/crc32.c
  *
@@ -59,4 +62,51 @@ uint32_t crc32(const void *data, size_t size)
 	while (size--)
 		crc = crc32_tab[(crc ^ *p++) & 0xff] ^ (crc >> 8);
 	return crc ^ ~0U;
+}
+
+static int print_version_filed(uint8_t bcd, char *buffer, size_t buffer_size)
+{
+	int v;
+	if (bcd == 0xff)
+		return 0;
+	if ((bcd & 0xf0) == 0xf0) {
+		v = bcd & 0x0f;
+		return snprintf(buffer, buffer_size, "%d", v);
+	}
+	v = ((bcd >> 4) * 10) + (bcd & 0x0f);
+	return snprintf(buffer, buffer_size, "%02d", v);
+}
+
+#define POINTER_MOVE(rc, buffer, buffer_size, original_size)                   \
+	do {                                                                   \
+		if (rc < 0)                                                    \
+			return rc;                                             \
+		if ((size_t)rc >= buffer_size)                                 \
+			return original_size - 1;                              \
+		buffer += rc;                                                  \
+		buffer_size -= rc;                                             \
+	} while (0)
+
+int ver2str(const ver32_t *version, char *buffer, size_t buffer_size)
+{
+	int rc;
+	size_t original_size = buffer_size;
+	rc = print_version_filed(version->major, buffer, buffer_size);
+	POINTER_MOVE(rc, buffer, buffer_size, original_size);
+	rc = snprintf(buffer, buffer_size, ".");
+	POINTER_MOVE(rc, buffer, buffer_size, original_size);
+	rc = print_version_filed(version->minor, buffer, buffer_size);
+	POINTER_MOVE(rc, buffer, buffer_size, original_size);
+	if (version->update != 0xff) {
+		rc = snprintf(buffer, buffer_size, ".");
+		POINTER_MOVE(rc, buffer, buffer_size, original_size);
+		rc = print_version_filed(version->update, buffer, buffer_size);
+		POINTER_MOVE(rc, buffer, buffer_size, original_size);
+	}
+	if (version->alpha != 0) {
+		rc = snprintf(buffer, buffer_size, "%c", version->alpha);
+		fprintf(stderr, "rc==%d\n", rc);
+		POINTER_MOVE(rc, buffer, buffer_size, original_size);
+	}
+	return original_size - buffer_size;
 }
