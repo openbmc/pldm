@@ -1,0 +1,29 @@
+{
+   "record_details":
+   {
+        "fru_record_type" : 254,
+        "encoding_type": 1
+   },
+   "fields":[
+      {
+         "field_type" : 2,
+         "dbus":
+            {
+               "interface" : "com.ibm.ipzvpd.VINI",
+               "property_name" : "RT",
+               "property_type" : "string"
+            }
+      },
+      {
+         "field_type" : 3,
+         "dbus":
+            {
+               "interface" : "com.ibm.ipzvpd.VINI",
+               "property_name" : "B3",
+               "property_type" : "bytearray"
+            }
+      }
+
+    ]
+}
+
