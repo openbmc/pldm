@@ -31,6 +31,7 @@ tests = [
   'pldmd_instanceid_test',
   'pldmd_registration_test',
   'pldm_utils_test',
+  'libpldmresponder_fru_test'
 ]
 
 if get_option('oem-ibm').enabled()
