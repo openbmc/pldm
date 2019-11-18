@@ -837,7 +837,7 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                 }
                 break;
             case PLDM_BIOS_ATTR_VAL_TABLE:
-                if (BIOSAttributeTable.isEmpty())
+                if (BIOSAttributeTable.isEmpty() || BIOSStringTable.isEmpty())
                 {
                     rc = PLDM_BIOS_TABLE_UNAVAILABLE;
                 }
