@@ -21,6 +21,8 @@ enum pldm_fileio_commands {
 	PLDM_READ_FILE_BY_TYPE_INTO_MEMORY = 0x8,
 	PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY = 0x9,
 	PLDM_NEW_FILE_AVAILABLE = 0xA,
+	PLDM_READ_FILE_BY_TYPE = 0xB,
+	PLDM_WRITE_FILE_BY_TYPE = 0xC
 };
 
 /** @brief PLDM Command specific codes
@@ -60,6 +62,8 @@ enum pldm_fileio_file_type {
 #define PLDM_RW_FILE_BY_TYPE_MEM_RESP_BYTES 5
 #define PLDM_NEW_FILE_REQ_BYTES 10
 #define PLDM_NEW_FILE_RESP_BYTES 1
+#define PLDM_RW_FILE_BY_TYPE_REQ_BYTES 14
+#define PLDM_RW_FILE_BY_TYPE_RESP_BYTES 5
 
 /** @struct pldm_read_write_file_memory_req
  *
@@ -509,6 +513,92 @@ int encode_new_file_req(uint8_t instance_id, uint16_t file_type,
  */
 int decode_new_file_resp(const struct pldm_msg *msg, size_t payload_length,
 			 uint8_t *completion_code);
+
+/** @struct pldm_read_write_file_by_type_req
+ *
+ *  Structure representing ReadFileByType and
+ *  WriteFileByType request
+ */
+struct pldm_read_write_file_by_type_req {
+	uint16_t file_type;   //!< Type of file
+	uint32_t file_handle; //!< Handle to file
+	uint32_t offset;      //!< Offset to file where read/write starts
+	uint32_t length;      //!< Bytes to be read
+} __attribute__((packed));
+
+/** @struct pldm_read_write_file_by_type_resp
+ *
+ *  Structure representing ReadFileByType and
+ *  WriteFileByType response
+ */
+struct pldm_read_write_file_by_type_resp {
+	uint8_t completion_code; //!< Completion code
+	uint32_t length;	 //!< Number of bytes read
+} __attribute__((packed));
+
+/** @brief Decode ReadFileByType and WriteFileByType
+ *  commands request data
+ *
+ *  @param[in] msg - Pointer to PLDM request message
+ *  @param[in] payload_length - Length of request payload
+ *  @param[in] file_type - Type of the file
+ *  @param[out] file_handle - A handle to the file
+ *  @param[out] offset - Offset to the file at which the read/write should begin
+ *  @param[out] length - Number of bytes to be read/written
+ *  @return pldm_completion_codes
+ */
+int decode_rw_file_by_type_req(const struct pldm_msg *msg,
+			       size_t payload_length, uint16_t *file_type,
+			       uint32_t *file_handle, uint32_t *offset,
+			       uint32_t *length);
+
+/** @brief Create a PLDM response for ReadFileByType and
+ *  WriteFileByType
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] command - PLDM command
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] length - Number of bytes read/written. This could be less than
+ * what the requester asked for.
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'msg'
+ *  @note File content has to be copied directly by the caller.
+ */
+int encode_rw_file_by_type_resp(uint8_t instance_id, uint8_t command,
+				uint8_t completion_code, uint32_t length,
+				struct pldm_msg *msg);
+
+/** @brief Encode ReadFileByType and WriteFileByType
+ *         commands request data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] command - PLDM command
+ *  @param[in] file_type - Type of the file
+ *  @param[in] file_handle - A handle to the file
+ *  @param[in] offset -  Offset to the file at which the read should begin
+ *  @param[in] length -  Number of bytes to be read/written
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note File content has to be read directly by the caller.
+ */
+int encode_rw_file_by_type_req(uint8_t instance_id, uint8_t command,
+			       uint16_t file_type, uint32_t file_handle,
+			       uint32_t offset, uint32_t length,
+			       struct pldm_msg *msg);
+
+/** @brief Decode ReadFileByType and WriteFileByType
+ *         commands response data
+ *
+ *  @param[in] msg - pointer to PLDM response message
+ *  @param[in] payload_length - Length of response payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] length - Number of bytes to be read/written
+ *  @return pldm_completion_codes
+ */
+int decode_rw_file_by_type_resp(const struct pldm_msg *msg,
+				size_t payload_length, uint8_t *completion_code,
+				uint32_t *length);
 
 #ifdef __cplusplus
 }
