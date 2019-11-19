@@ -569,14 +569,71 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
                                            responsePtr);
         return response;
     }
-    if (length % dma::minSize)
+    fs::path filePath{};
+    if (fileHandle != invalidFileHandle)
     {
-        log<level::ERR>("Length is not a multiple of DMA minSize",
-                        entry("LENGTH=%d", length));
-        encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
-                                           PLDM_INVALID_WRITE_LENGTH, 0,
-                                           responsePtr);
-        return response;
+        using namespace pldm::filetable;
+        auto& table = buildFileTable(FILE_TABLE_JSON);
+        FileEntry value{};
+        try
+        {
+            value = table.at(fileHandle);
+        }
+        catch (std::exception& e)
+        {
+            log<level::ERR>("File handle does not exist in the file table",
+                            entry("HANDLE=%d", fileHandle));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+            return response;
+        }
+        if (fileType == PLDM_FILE_PEL)
+        {
+            std::stringstream stream;
+            stream << std::hex << fileHandle;
+            std::string pelName(stream.str());
+            pelName += ".pel";
+            fs::path file(pelName);
+            filePath = value.fsPath / file;
+        }
+        else
+        {
+            filePath = value.fsPath;
+        }
+        if (!fs::exists(filePath))
+        {
+            log<level::ERR>("File does not exist",
+                            entry("HANDLE=%d", fileHandle));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
+            return response;
+        }
+        auto fileSize = fs::file_size(filePath);
+        if (offset >= fileSize)
+        {
+            log<level::ERR>("Offset exceeds file size",
+                            entry("OFFSET=%d", offset),
+                            entry("FILE_SIZE=%d", fileSize));
+            encode_rw_file_type_memory_resp(
+                request->hdr.instance_id, PLDM_READ_FILE_TYPE_INTO_MEMORY,
+                PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
+            return response;
+        }
+        if (offset + length > fileSize)
+        {
+            length = fileSize - offset;
+        }
+        if (length % dma::minSize)
+        {
+            log<level::ERR>("Length is not a multiple of DMA minSize",
+                            entry("LENGTH=%d", length));
+            encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
+                                               PLDM_INVALID_WRITE_LENGTH, 0,
+                                               responsePtr);
+            return response;
+        }
     }
 
     std::unique_ptr<FileHandler> handler{};
