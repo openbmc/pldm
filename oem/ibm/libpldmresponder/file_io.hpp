@@ -60,6 +60,20 @@ class DMA
      */
     int transferDataHost(const fs::path& path, uint32_t offset, uint32_t length,
                          uint64_t address, bool upstream);
+
+    /** @brief API to transfer data between BMC and host using DMA
+     *
+     * @param[in] fileDesc - file descriptor for file that contains PEL
+     * @param[in] offset   - offset in the file
+     * @param[in] length   - length of the data to transfer
+     * @param[in] address  - DMA address on the host
+     * @param[in] upstream - indicates direction of the transfer; true indicates
+     *                       transfer to the host
+     *
+     * @return returns 0 on success, negative errno on failure
+     */
+    int transferDataHost(uint32_t fileDesc, uint32_t offset, uint32_t length,
+                         uint64_t address, bool upstream);
 };
 
 /** @brief Transfer the data between BMC and host using DMA.
