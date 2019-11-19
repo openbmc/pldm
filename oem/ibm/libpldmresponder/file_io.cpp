@@ -45,6 +45,8 @@ void registerHandlers()
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
     registerHandler(PLDM_OEM, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
                     std::move(writeFileByTypeFromMemory));
+    registerHandler(PLDM_OEM, PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
+                    std::move(readFileByTypeIntoMemory));
 }
 
 } // namespace oem_ibm
@@ -536,8 +538,8 @@ Response writeFile(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
-Response writeFileByTypeFromMemory(const pldm_msg* request,
-                                   size_t payloadLength)
+Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
+                                size_t payloadLength)
 {
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_MEM_RESP_BYTES, 0);
@@ -545,9 +547,9 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
 
     if (payloadLength != PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES)
     {
-        encode_rw_file_by_type_memory_resp(
-            request->hdr.instance_id, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
-            PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
+                                           PLDM_ERROR_INVALID_LENGTH, 0,
+                                           responsePtr);
         return response;
     }
 
@@ -561,18 +563,17 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
                                                 &length, &address);
     if (rc != PLDM_SUCCESS)
     {
-        encode_rw_file_by_type_memory_resp(request->hdr.instance_id,
-                                           PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
-                                           rc, 0, responsePtr);
+        encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd, rc, 0,
+                                           responsePtr);
         return response;
     }
     if (length % dma::minSize)
     {
-        log<level::ERR>("Write length is not a multiple of DMA minSize",
+        log<level::ERR>("Length is not a multiple of DMA minSize",
                         entry("LENGTH=%d", length));
-        encode_rw_file_by_type_memory_resp(
-            request->hdr.instance_id, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
-            PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
+        encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
+                                           PLDM_INVALID_WRITE_LENGTH, 0,
+                                           responsePtr);
         return response;
     }
 
@@ -584,17 +585,31 @@ Response writeFileByTypeFromMemory(const pldm_msg* request,
     catch (const InternalFailure& e)
     {
         log<level::ERR>("unknown file type ", entry("TYPE=%d", fileType));
-        encode_rw_file_by_type_memory_resp(
-            request->hdr.instance_id, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
-            PLDM_INVALID_FILE_TYPE, 0, responsePtr);
+        encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
+                                           PLDM_INVALID_FILE_TYPE, 0,
+                                           responsePtr);
         return response;
     }
 
-    rc = handler->writeFromMemory(offset, length, address);
-    encode_rw_file_by_type_memory_resp(request->hdr.instance_id,
-                                       PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY, rc,
+    rc = cmd == PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY
+             ? handler->writeFromMemory(offset, length, address)
+             : handler->readIntoMemory(offset, length, address);
+    encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd, rc,
                                        length, responsePtr);
     return response;
+}
+
+Response writeFileByTypeFromMemory(const pldm_msg* request,
+                                   size_t payloadLength)
+{
+    return rwFileByTypeIntoMemory(PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY, request,
+                                  payloadLength);
+}
+
+Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
+{
+    return rwFileByTypeIntoMemory(PLDM_READ_FILE_BY_TYPE_INTO_MEMORY, request,
+                                  payloadLength);
 }
 
 } // namespace responder

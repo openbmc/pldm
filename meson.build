@@ -20,6 +20,8 @@ conf_data.set_quoted('PDR_JSONS_DIR', '/usr/share/pldm/pdr')
 if get_option('oem-ibm').enabled()
   conf_data.set_quoted('FILE_TABLE_JSON', '/usr/share/pldm/fileTable.json')
   conf_data.set_quoted('PEL_TEMP_DIR', '/tmp/pel')
+  conf_data.set_quoted('LID_PERM_DIR', '/var/lib/pldm/lid')
+  conf_data.set_quoted('LID_TEMP_DIR', '/var/lib/pldm/lid/temp')
   add_global_arguments('-DOEM_IBM', language : 'c')
   add_global_arguments('-DOEM_IBM', language : 'cpp')
 endif

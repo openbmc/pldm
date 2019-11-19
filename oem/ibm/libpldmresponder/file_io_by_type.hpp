@@ -29,6 +29,17 @@ class FileHandler
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address) = 0;
 
+    /** @brief Method to read an oem file type into host memory. Individual
+     *  file types need to override this method to do the file specific
+     *  processing
+     *  @param[in] offset - offset to read
+     *  @param[in] length - length to be read mentioned by Host
+     *  @param[in] address - DMA address
+     *  @return PLDM status code
+     */
+    virtual int readIntoMemory(uint32_t offset, uint32_t length,
+                               uint64_t address) = 0;
+
     /** @brief Method to do the file content transfer ove DMA between host and
      *  bmc. This method is made virtual to be overridden in test case. And need
      *  not be defined in other child classes
