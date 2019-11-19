@@ -702,3 +702,97 @@ int decode_rw_file_by_type_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_file_ack_req(const struct pldm_msg *msg, size_t payload_length,
+			uint16_t *file_type, uint32_t *file_handle,
+			uint8_t *file_status)
+{
+	if (msg == NULL || file_type == NULL || file_handle == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_FILE_ACK_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_file_ack_req *request =
+	    (struct pldm_file_ack_req *)msg->payload;
+	*file_type = le16toh(request->file_type);
+	*file_handle = le32toh(request->file_handle);
+	*file_status = request->file_status;
+
+	return PLDM_SUCCESS;
+}
+
+int encode_file_ack_resp(uint8_t instance_id, uint8_t completion_code,
+			 struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_OEM;
+	header.command = PLDM_FILE_ACK;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_file_ack_resp *response =
+	    (struct pldm_file_ack_resp *)msg->payload;
+	response->completion_code = completion_code;
+
+	return PLDM_SUCCESS;
+}
+
+int encode_file_ack_req(uint8_t instance_id, uint16_t file_type,
+			uint32_t file_handle, uint8_t file_status,
+			struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_OEM;
+	header.command = PLDM_FILE_ACK;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_file_ack_req *req =
+	    (struct pldm_file_ack_req *)msg->payload;
+	req->file_type = htole16(file_type);
+	req->file_handle = htole32(file_handle);
+	req->file_status = file_status;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_file_ack_resp(const struct pldm_msg *msg, size_t payload_length,
+			 uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_FILE_ACK_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_file_ack_resp *response =
+	    (struct pldm_file_ack_resp *)msg->payload;
+	*completion_code = response->completion_code;
+
+	return PLDM_SUCCESS;
+}

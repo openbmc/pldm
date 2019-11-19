@@ -22,7 +22,8 @@ enum pldm_fileio_commands {
 	PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY = 0x9,
 	PLDM_NEW_FILE_AVAILABLE = 0xA,
 	PLDM_READ_FILE_BY_TYPE = 0xB,
-	PLDM_WRITE_FILE_BY_TYPE = 0xC
+	PLDM_WRITE_FILE_BY_TYPE = 0xC,
+	PLDM_FILE_ACK = 0xD,
 };
 
 /** @brief PLDM Command specific codes
@@ -66,6 +67,8 @@ enum pldm_fileio_file_type {
 #define PLDM_NEW_FILE_RESP_BYTES 1
 #define PLDM_RW_FILE_BY_TYPE_REQ_BYTES 14
 #define PLDM_RW_FILE_BY_TYPE_RESP_BYTES 5
+#define PLDM_FILE_ACK_REQ_BYTES 7
+#define PLDM_FILE_ACK_RESP_BYTES 1
 
 /** @struct pldm_read_write_file_memory_req
  *
@@ -543,7 +546,7 @@ struct pldm_read_write_file_by_type_resp {
  *
  *  @param[in] msg - Pointer to PLDM request message
  *  @param[in] payload_length - Length of request payload
- *  @param[in] file_type - Type of the file
+ *  @param[out] file_type - Type of the file
  *  @param[out] file_handle - A handle to the file
  *  @param[out] offset - Offset to the file at which the read/write should begin
  *  @param[out] length - Number of bytes to be read/written
@@ -561,7 +564,7 @@ int decode_rw_file_by_type_req(const struct pldm_msg *msg,
  *  @param[in] command - PLDM command
  *  @param[in] completion_code - PLDM completion code
  *  @param[in] length - Number of bytes read/written. This could be less than
- * what the requester asked for.
+ *                      what the requester asked for.
  *  @param[in,out] msg - Message will be written to this
  *  @return pldm_completion_codes
  *  @note  Caller is responsible for memory alloc and dealloc of param 'msg'
@@ -601,6 +604,71 @@ int encode_rw_file_by_type_req(uint8_t instance_id, uint8_t command,
 int decode_rw_file_by_type_resp(const struct pldm_msg *msg,
 				size_t payload_length, uint8_t *completion_code,
 				uint32_t *length);
+
+/** @struct pldm_file_ack_req
+ *
+ *  Structure representing FileAck request
+ */
+struct pldm_file_ack_req {
+	uint16_t file_type;   //!< Type of file
+	uint32_t file_handle; //!< Handle to file
+	uint8_t file_status;  //!< Status of file processing
+} __attribute__((packed));
+
+/** @struct pldm_file_ack_resp
+ *
+ *  Structure representing NewFile response data
+ */
+struct pldm_file_ack_resp {
+	uint8_t completion_code; //!< Completion code
+} __attribute__((packed));
+
+/** @brief Decode FileAck command request data
+ *
+ *  @param[in] msg - Pointer to PLDM request message
+ *  @param[in] payload_length - Length of request payload
+ *  @param[out] file_type - Type of the file
+ *  @param[out] file_handle - A handle to the file
+ *  @param[out] file_status - Status of file processing
+ *  @return pldm_completion_codes
+ */
+int decode_file_ack_req(const struct pldm_msg *msg, size_t payload_length,
+			uint16_t *file_type, uint32_t *file_handle,
+			uint8_t *file_status);
+
+/** @brief Create a PLDM response for FileAck
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'msg'
+ */
+int encode_file_ack_resp(uint8_t instance_id, uint8_t completion_code,
+			 struct pldm_msg *msg);
+
+/** @brief Encode FileAck command request data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] file_type - Type of the file
+ *  @param[in] file_handle - A handle to the file
+ *  @param[in] file_status - Status of file processing
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_file_ack_req(uint8_t instance_id, uint16_t file_type,
+			uint32_t file_handle, uint8_t file_status,
+			struct pldm_msg *msg);
+
+/** @brief Decode FileAck command response data
+ *
+ *  @param[in] msg - pointer to PLDM response message
+ *  @param[in] payload_length - Length of response payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @return pldm_completion_codes
+ */
+int decode_file_ack_resp(const struct pldm_msg *msg, size_t payload_length,
+			 uint8_t *completion_code);
 
 #ifdef __cplusplus
 }
