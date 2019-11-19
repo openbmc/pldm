@@ -25,6 +25,8 @@ class PelHandler : public FileHandler
 
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address);
+    virtual int readIntoMemory(uint32_t offset, uint32_t length,
+                               uint64_t address);
 
     /** @brief method to store a pel file in tempfs and send
      *  d-bus notification to pel daemon that it is ready for consumption
