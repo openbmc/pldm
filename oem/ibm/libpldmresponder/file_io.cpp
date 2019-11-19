@@ -148,6 +148,121 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
     return 0;
 }
 
+int DMA::transferDataHost(int32_t fd, uint32_t offset, uint32_t length,
+                          uint64_t address, bool upstream)
+{
+    static const size_t pageSize = getpagesize();
+    uint32_t numPages = length / pageSize;
+    uint32_t pageAlignedLength = numPages * pageSize;
+
+    if (length > pageAlignedLength)
+    {
+        pageAlignedLength += pageSize;
+    }
+
+    auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
+        munmap(vgaMem, pageAlignedLength);
+    };
+
+    int dmaFd = -1;
+    int rc = 0;
+    dmaFd = open(xdmaDev, O_RDWR);
+    if (dmaFd < 0)
+    {
+        auto rc = -errno;
+        log<level::ERR>("Failed to open the XDMA device", entry("RC=%d", rc));
+        return rc;
+    }
+    utils::CustomFD xdmaFd(dmaFd);
+
+    void* vgaMem;
+    vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
+                  MAP_SHARED, xdmaFd(), 0);
+    if (MAP_FAILED == vgaMem)
+    {
+        auto rc = -errno;
+        log<level::ERR>("Failed to mmap the XDMA device", entry("RC=%d", rc));
+        return rc;
+    }
+
+    std::unique_ptr<void, decltype(mmapCleanup)> vgaMemPtr(vgaMem, mmapCleanup);
+
+    if (upstream)
+    {
+        rc = lseek(fd, offset, SEEK_SET);
+        if (rc == -1)
+        {
+            log<level::ERR>("lseek failed", entry("ERROR=%d", errno),
+                            entry("UPSTREAM=%d", upstream),
+                            entry("OFFSET=%d", offset));
+            return rc;
+        }
+
+        // Writing to the VGA memory should be aligned at page boundary,
+        // otherwise write data into a buffer aligned at page boundary and
+        // then write to the VGA memory.
+        std::vector<char> buffer{};
+        buffer.resize(pageAlignedLength);
+        rc = read(fd, buffer.data(), length);
+        if (rc == -1)
+        {
+            log<level::ERR>("file read failed", entry("ERROR=%d", errno),
+                            entry("UPSTREAM=%d", upstream),
+                            entry("LENGTH=%d", length),
+                            entry("OFFSET=%d", offset));
+            return rc;
+        }
+        if (rc != static_cast<int>(length))
+        {
+            log<level::ERR>("mismatch between number of characters to read and "
+                            "the length read",
+                            entry("LENGTH=%d", length), entry("COUNT=%d", rc));
+            return -1;
+        }
+        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
+               pageAlignedLength);
+    }
+
+    AspeedXdmaOp xdmaOp;
+    xdmaOp.upstream = upstream ? 1 : 0;
+    xdmaOp.hostAddr = address;
+    xdmaOp.len = length;
+
+    rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    if (rc < 0)
+    {
+        auto rc = -errno;
+        log<level::ERR>("Failed to execute the DMA operation",
+                        entry("RC=%d", rc), entry("UPSTREAM=%d", upstream),
+                        entry("ADDRESS=%lld", address),
+                        entry("LENGTH=%d", length));
+        return rc;
+    }
+
+    if (!upstream)
+    {
+        rc = lseek(fd, offset, SEEK_SET);
+        if (rc == -1)
+        {
+            log<level::ERR>("lseek failed", entry("ERROR=%d", errno),
+                            entry("UPSTREAM=%d", upstream),
+                            entry("OFFSET=%d", offset));
+            return rc;
+        }
+        rc = write(fd, static_cast<const char*>(vgaMemPtr.get()), length);
+        if (rc == -1)
+        {
+            log<level::ERR>("file read failed", entry("ERROR=%d", errno),
+                            entry("UPSTREAM=%d", upstream),
+                            entry("LENGTH=%d", length),
+                            entry("OFFSET=%d", offset));
+            return rc;
+        }
+    }
+
+    return 0;
+}
+
 } // namespace dma
 
 namespace oem_ibm

@@ -25,10 +25,36 @@ namespace responder
 
 using namespace phosphor::logging;
 
-int PelHandler::readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
-                               uint64_t /*address*/)
+int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
+                               uint64_t address)
 {
-    return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "org.open_power.Logging.PEL";
+
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    try
+    {
+        auto service = getService(bus, logObjPath, logInterface);
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "GetPEL");
+        method.append(fileHandle);
+        auto reply = bus.call(method);
+        sdbusplus::message::unix_fd fd{};
+        reply.read(fd);
+        log<level::ERR>("GetPEL D-Bus call done");
+        auto rc = transferFileData(fd, true, offset, length, address);
+        return rc;
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>("GetPEL D-Bus call failed",
+                        entry("PELID=%d", fileHandle),
+                        entry("ERROR=%s", e.what()));
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
 }
 
 int PelHandler::read(uint32_t /*offset*/, uint32_t& /*length*/,
