@@ -75,6 +75,23 @@ class FileHandler
                                  uint32_t offset, uint32_t& length,
                                  uint64_t address);
 
+    /** @brief Method to do the file content transfer ove DMA between host and
+     *  bmc. This method is made virtual to be overridden in test case. And need
+     *  not be defined in other child classes
+     *
+     *  @param[in] fileDescriptor - file descriptor for file that contains PEL.
+     *  @param[in] upstream - direction of DMA transfer. "false" means a
+     *                        transfer from host to BMC
+     *  @param[in] offset - offset to read/write
+     *  @param[in/out] length - length to be read/write mentioned by Host
+     *  @param[in] address - DMA address
+     *
+     *  @return PLDM status code
+     */
+    virtual int transferFileData(int32_t fileDescriptor, bool upstream,
+                                 uint32_t offset, uint32_t& length,
+                                 uint64_t address);
+
     /** @brief Constructor to create a FileHandler object
      */
     FileHandler(uint32_t fileHandle) : fileHandle(fileHandle)
