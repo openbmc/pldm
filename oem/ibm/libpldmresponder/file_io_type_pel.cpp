@@ -25,10 +25,22 @@ namespace responder
 
 using namespace phosphor::logging;
 
-int PelHandler::readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
-                               uint64_t /*address*/)
+int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
+                               uint64_t address)
 {
-    return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    fs::create_directories(PEL_TEMP_DIR);
+
+    std::string fileName(PEL_TEMP_DIR);
+    fileName += "/pel." + std::to_string(fileHandle);
+    fs::path path(fileName);
+
+    auto rc = transferFileData(path, false, offset, length, address);
+    if (rc == PLDM_SUCCESS)
+    {
+        rc = readPel(path.string());
+    }
+    fs::remove(path);
+    return rc;
 }
 
 int PelHandler::read(uint32_t /*offset*/, uint32_t& /*length*/,
@@ -82,6 +94,34 @@ int PelHandler::storePel(std::string&& pelFileName)
         method.append("xyz.openbmc_project.Host.Error.Event", severity,
                       addlData);
         bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>("failed to make a d-bus call to PEL daemon",
+                        entry("ERROR=%s", e.what()));
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
+int PelHandler::readPel(std::string&& pelFileName)
+{
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "xyz.openbmc_project.Logging.GetPel";
+
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    try
+    {
+        auto service = getService(bus, logObjPath, logInterface);
+        using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "GetPel");
+        method.append(logInterface, pelFileName);
+        auto reply = bus.call(method);
+        reply.read(pelFileName);
     }
     catch (const std::exception& e)
     {
