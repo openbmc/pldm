@@ -171,6 +171,97 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
     return 0;
 }
 
+int DMA::transferDataHost(uint32_t fd, uint32_t offset, uint32_t length,
+                          uint64_t address, bool upstream)
+{
+    static const size_t pageSize = getpagesize();
+    uint32_t numPages = length / pageSize;
+    uint32_t pageAlignedLength = numPages * pageSize;
+
+    if (length > pageAlignedLength)
+    {
+        pageAlignedLength += pageSize;
+    }
+
+    auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
+        munmap(vgaMem, pageAlignedLength);
+    };
+
+    utils::CustomFD xdmaFd(fd);
+
+    void* vgaMem;
+    vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
+                  MAP_SHARED, xdmaFd(), 0);
+    if (MAP_FAILED == vgaMem)
+    {
+        auto rc = -errno;
+        log<level::ERR>("Failed to mmap the XDMA device", entry("RC=%d", rc));
+        return rc;
+    }
+
+    std::unique_ptr<void, decltype(mmapCleanup)> vgaMemPtr(vgaMem, mmapCleanup);
+    FILE* fp = fdopen(fd, "r");
+
+    if (upstream)
+    {
+        std::ifstream fp("data", std::ios::in | std::ios::binary);
+        fp.seekg(offset);
+        uint32_t count = 0;
+
+        // Writing to the VGA memory should be aligned at page boundary,
+        // otherwise write data into a buffer aligned at page boundary and
+        // then write to the VGA memory.
+        std::vector<char> buffer{};
+        buffer.resize(pageAlignedLength);
+        while (!fp.eof())
+        {
+            fp >> buffer[count++];
+        }
+        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
+               pageAlignedLength);
+
+        if (count != length)
+        {
+            log<level::ERR>("mismatch between number of characters to read and "
+                            "the length read",
+                            entry("LENGTH=%d", length),
+                            entry("COUNT=%d", count));
+            return -1;
+        }
+    }
+
+    AspeedXdmaOp xdmaOp;
+    xdmaOp.upstream = upstream ? 1 : 0;
+    xdmaOp.hostAddr = address;
+    xdmaOp.len = length;
+
+    auto rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    if (rc < 0)
+    {
+        auto rc = -errno;
+        log<level::ERR>("Failed to execute the DMA operation",
+                        entry("RC=%d", rc), entry("UPSTREAM=%d", upstream),
+                        entry("ADDRESS=%lld", address),
+                        entry("LENGTH=%d", length));
+        return rc;
+    }
+
+    if (!upstream)
+    {
+        std::ios_base::openmode mode = std::ios::out | std::ios::binary;
+        if (fp != NULL)
+        {
+            mode |= std::ios::in;
+        }
+        std::ofstream fp("data", mode);
+
+        fp.seekp(offset);
+        fp.write(static_cast<const char*>(vgaMemPtr.get()), length);
+    }
+
+    return 0;
+}
+
 } // namespace dma
 
 Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)

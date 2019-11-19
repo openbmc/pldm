@@ -36,6 +36,13 @@ class PelHandler : public FileHandler
      */
     virtual int storePel(std::string&& pelFileName);
 
+    /** @brief method to read a pel file in tempfs and send
+     *  d-bus notification to pel daemon that it is ready for processing
+     *
+     *  @param[in] pel ID - the ID of pel to be read
+     */
+    virtual int readPel(uint32_t pelID, uint32_t& fileDescriptor);
+
     /** @brief PelHandler destructor
      */
     ~PelHandler()
