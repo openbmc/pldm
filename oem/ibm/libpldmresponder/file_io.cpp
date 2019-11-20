@@ -47,6 +47,8 @@ void registerHandlers()
                     std::move(writeFileByTypeFromMemory));
     registerHandler(PLDM_OEM, PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
                     std::move(readFileByTypeIntoMemory));
+    registerHandler(PLDM_OEM, PLDM_READ_FILE_BY_TYPE,
+                    std::move(readFileByType));
 }
 
 } // namespace oem_ibm
@@ -610,6 +612,53 @@ Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
 {
     return rwFileByTypeIntoMemory(PLDM_READ_FILE_BY_TYPE_INTO_MEMORY, request,
                                   payloadLength);
+}
+
+Response readFileByType(const pldm_msg* request, size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_RW_FILE_BY_TYPE_REQ_BYTES)
+    {
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_READ_FILE_BY_TYPE,
+                                    PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length{};
+
+    auto rc = decode_rw_file_by_type_req(request, payloadLength, &fileType,
+                                         &fileHandle, &offset, &length);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_READ_FILE_BY_TYPE, rc, 0, responsePtr);
+        return response;
+    }
+
+    std::unique_ptr<FileHandler> handler{};
+    try
+    {
+        handler = getHandlerByType(fileType, fileHandle);
+    }
+    catch (const InternalFailure& e)
+    {
+        log<level::ERR>("unknown file type", entry("TYPE=%d", fileType));
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_READ_FILE_BY_TYPE,
+                                    PLDM_INVALID_FILE_TYPE, 0, responsePtr);
+        return response;
+    }
+
+    rc = handler->read(offset, length, response);
+    encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                PLDM_READ_FILE_BY_TYPE, rc, length,
+                                responsePtr);
+    return response;
 }
 
 } // namespace responder

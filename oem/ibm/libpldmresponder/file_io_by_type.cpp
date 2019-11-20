@@ -12,6 +12,7 @@
 
 #include <exception>
 #include <filesystem>
+#include <fstream>
 #include <phosphor-logging/elog-errors.hpp>
 #include <phosphor-logging/log.hpp>
 #include <vector>
@@ -29,7 +30,7 @@ using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 int FileHandler::transferFileData(const fs::path& path, bool upstream,
-                                  uint32_t offset, uint32_t length,
+                                  uint32_t offset, uint32_t& length,
                                   uint64_t address)
 {
     if (upstream)
@@ -101,6 +102,44 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         }
     }
     return nullptr;
+}
+
+int FileHandler::readFile(const std::string& filePath, uint32_t offset,
+                          uint32_t& length, Response& response)
+{
+    if (!fs::exists(filePath))
+    {
+        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle),
+                        entry("PATH=%s", filePath.c_str()));
+        return PLDM_INVALID_FILE_HANDLE;
+    }
+
+    size_t fileSize = fs::file_size(filePath);
+    if (offset >= fileSize)
+    {
+        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
+                        entry("FILE_SIZE=%d", fileSize));
+        return PLDM_DATA_OUT_OF_RANGE;
+    }
+
+    if (offset + length > fileSize)
+    {
+        length = fileSize - offset;
+    }
+
+    size_t currSize = response.size();
+    response.resize(currSize + length);
+    auto filePos = reinterpret_cast<char*>(response.data());
+    filePos += currSize;
+    std::ifstream stream(filePath, std::ios::in | std::ios::binary);
+    if (stream)
+    {
+        stream.seekg(offset);
+        stream.read(filePos, length);
+        return PLDM_SUCCESS;
+    }
+    log<level::ERR>("Unable to read file", entry("FILE=%s", filePath.c_str()));
+    return PLDM_ERROR;
 }
 
 } // namespace responder

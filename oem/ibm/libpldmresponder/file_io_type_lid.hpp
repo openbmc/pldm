@@ -38,10 +38,15 @@ class LidHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
-    virtual int readIntoMemory(uint32_t offset, uint32_t length,
+    virtual int readIntoMemory(uint32_t offset, uint32_t& length,
                                uint64_t address)
     {
         return transferFileData(lidPath, true, offset, length, address);
+    }
+
+    virtual int read(uint32_t offset, uint32_t& length, Response& response)
+    {
+        return readFile(lidPath, offset, length, response);
     }
 
     /** @brief LidHandler destructor

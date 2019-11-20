@@ -33,12 +33,30 @@ class FileHandler
      *  file types need to override this method to do the file specific
      *  processing
      *  @param[in] offset - offset to read
-     *  @param[in] length - length to be read mentioned by Host
+     *  @param[in/out] length - length to be read mentioned by Host
      *  @param[in] address - DMA address
      *  @return PLDM status code
      */
-    virtual int readIntoMemory(uint32_t offset, uint32_t length,
+    virtual int readIntoMemory(uint32_t offset, uint32_t& length,
                                uint64_t address) = 0;
+
+    /** @brief Method to read an oem file type's content into the PLDM response.
+     *  @param[in] offset - offset to read
+     *  @param[in/out] length - length to be read
+     *  @param[in] response - PLDM response
+     *  @return PLDM status code
+     */
+    virtual int read(uint32_t offset, uint32_t& length, Response& response) = 0;
+
+    /** @brief Method to read an oem file type's content into the PLDM response.
+     *  @param[in] filePath - file to read from
+     *  @param[in] offset - offset to read
+     *  @param[in/out] length - length to be read
+     *  @param[in] response - PLDM response
+     *  @return PLDM status code
+     */
+    virtual int readFile(const std::string& filePath, uint32_t offset,
+                         uint32_t& length, Response& response);
 
     /** @brief Method to do the file content transfer ove DMA between host and
      *  bmc. This method is made virtual to be overridden in test case. And need
@@ -48,13 +66,13 @@ class FileHandler
      *  @param[in] upstream - direction of DMA transfer. "false" means a
      *                        transfer from host to BMC
      *  @param[in] offset - offset to read/write
-     *  @param[in] length - length to be read/write mentioned by Host
+     *  @param[in/out] length - length to be read/write mentioned by Host
      *  @param[in] address - DMA address
      *
      *  @return PLDM status code
      */
     virtual int transferFileData(const fs::path& path, bool upstream,
-                                 uint32_t offset, uint32_t length,
+                                 uint32_t offset, uint32_t& length,
                                  uint64_t address);
 
     /** @brief Constructor to create a FileHandler object

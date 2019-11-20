@@ -25,8 +25,14 @@ namespace responder
 
 using namespace phosphor::logging;
 
-int PelHandler::readIntoMemory(uint32_t /*offset*/, uint32_t /*length*/,
+int PelHandler::readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
                                uint64_t /*address*/)
+{
+    return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+}
+
+int PelHandler::read(uint32_t /*offset*/, uint32_t& /*length*/,
+                     Response& /*response*/)
 {
     return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
 }

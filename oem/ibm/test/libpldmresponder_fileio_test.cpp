@@ -1,5 +1,6 @@
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/file_io_by_type.hpp"
+#include "libpldmresponder/file_io_type_lid.hpp"
 #include "libpldmresponder/file_io_type_pel.hpp"
 #include "libpldmresponder/file_table.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
@@ -763,6 +764,103 @@ TEST(getHandlerByType, allPaths)
     auto pelType = dynamic_cast<PelHandler*>(handler.get());
     ASSERT_TRUE(pelType != nullptr);
 
+    handler = getHandlerByType(PLDM_FILE_TYPE_LID_PERM, fileHandle);
+    auto lidType = dynamic_cast<LidHandler*>(handler.get());
+    ASSERT_TRUE(lidType != nullptr);
+    pelType = dynamic_cast<PelHandler*>(handler.get());
+    ASSERT_TRUE(pelType == nullptr);
+    handler = getHandlerByType(PLDM_FILE_TYPE_LID_TEMP, fileHandle);
+    lidType = dynamic_cast<LidHandler*>(handler.get());
+    ASSERT_TRUE(lidType != nullptr);
+
     using namespace sdbusplus::xyz::openbmc_project::Common::Error;
     ASSERT_THROW(getHandlerByType(0xFFFF, fileHandle), InternalFailure);
+}
+
+TEST(readFileByTypeIntoMemory, testBadPath)
+{
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES>
+        requestMsg{};
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_read_write_file_by_type_memory_req* request =
+        reinterpret_cast<struct pldm_read_write_file_by_type_memory_req*>(
+            req->payload);
+    request->file_type = 0xFFFF;
+    request->file_handle = 0;
+    request->offset = 0;
+    request->length = 17;
+    request->address = 0;
+
+    auto response = readFileByTypeIntoMemory(req, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    struct pldm_read_write_file_by_type_memory_resp* resp =
+        reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
+
+    response =
+        readFileByTypeIntoMemory(req, PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_INVALID_WRITE_LENGTH, resp->completion_code);
+
+    request->length = 16;
+    response =
+        readFileByTypeIntoMemory(req, PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_INVALID_FILE_TYPE, resp->completion_code);
+}
+
+TEST(readFileByType, testBadPath)
+{
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    std::array<uint8_t, hdr_size + PLDM_RW_FILE_BY_TYPE_REQ_BYTES> requestMsg{};
+    auto payloadLength = requestMsg.size() - hdr_size;
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_read_write_file_by_type_req* request =
+        reinterpret_cast<struct pldm_read_write_file_by_type_req*>(
+            req->payload);
+    request->file_type = 0xFFFF;
+    request->file_handle = 0;
+    request->offset = 0;
+    request->length = 13;
+
+    auto response = readFileByType(req, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    struct pldm_read_write_file_by_type_resp* resp =
+        reinterpret_cast<struct pldm_read_write_file_by_type_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
+
+    response = readFileByType(req, payloadLength);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    resp = reinterpret_cast<struct pldm_read_write_file_by_type_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_INVALID_FILE_TYPE, resp->completion_code);
+}
+
+TEST(readFileByType, testReadFile)
+{
+    LidHandler handler(0, true);
+    Response response;
+    uint32_t length{};
+
+    auto rc = handler.readFile({}, 0, length, response);
+    ASSERT_EQ(PLDM_INVALID_FILE_HANDLE, rc);
+
+    char tmplt[] = "/tmp/lid.XXXXXX";
+    auto fd = mkstemp(tmplt);
+    std::vector<uint8_t> in = {100, 10, 56, 78, 34, 56, 79, 235, 111};
+    write(fd, in.data(), in.size());
+    close(fd);
+    length = in.size() + 1000;
+    rc = handler.readFile(tmplt, 0, length, response);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(length, in.size());
+    ASSERT_EQ(response.size(), in.size());
+    ASSERT_EQ(std::equal(in.begin(), in.end(), response.begin()), true);
 }
