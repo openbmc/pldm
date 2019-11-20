@@ -26,6 +26,13 @@ uint32_t crc32(const void *data, size_t size);
  */
 int ver2str(const ver32_t *version, char *buffer, size_t buffer_size);
 
+uint8_t bcd2dec8(uint8_t bcd);
+uint8_t dec2bcd8(uint8_t dec);
+uint16_t bcd2dec16(uint16_t bcd);
+uint16_t dec2bcd16(uint16_t dec);
+uint32_t bcd2dec32(uint32_t bcd);
+uint32_t dec2bcd32(uint32_t dec);
+
 #ifdef __cplusplus
 }
 #endif
