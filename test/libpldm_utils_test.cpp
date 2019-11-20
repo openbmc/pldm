@@ -49,3 +49,20 @@ TEST(Ver2string, Ver2string)
     rc = ver2str(&version, buffer, 0);
     EXPECT_EQ(rc, -1);
 }
+
+TEST(BcdConversion, BcdCoversion)
+{
+    EXPECT_EQ(12, bcd2dec8(0x12));
+    EXPECT_EQ(99, bcd2dec8(0x99));
+    EXPECT_EQ(1234, bcd2dec16(0x1234));
+    EXPECT_EQ(9999, bcd2dec16(0x9999));
+    EXPECT_EQ(12345678, bcd2dec32(0x12345678));
+    EXPECT_EQ(99999999, bcd2dec32(0x99999999));
+
+    EXPECT_EQ(0x12, dec2bcd8(12));
+    EXPECT_EQ(0x99, dec2bcd8(99));
+    EXPECT_EQ(0x1234, dec2bcd16(1234));
+    EXPECT_EQ(0x9999, dec2bcd16(9999));
+    EXPECT_EQ(0x12345678, dec2bcd32(12345678));
+    EXPECT_EQ(0x99999999, dec2bcd32(99999999));
+}
