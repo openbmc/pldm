@@ -26,6 +26,42 @@ uint32_t crc32(const void *data, size_t size);
  */
 int ver2str(const ver32_t *version, char *buffer, size_t buffer_size);
 
+/** @breif Convert bcd number(uint8_t) to decimal
+ *  @param[in] bcd - bcd number
+ *  @return the decimal number
+ */
+uint8_t bcd2dec8(uint8_t bcd);
+
+/** @breif Convert decimal number(uint8_t) to bcd
+ *  @param[in] dec - decimal number
+ *  @return the bcd number
+ */
+uint8_t dec2bcd8(uint8_t dec);
+
+/** @breif Convert bcd number(uint16_t) to decimal
+ *  @param[in] bcd - bcd number
+ *  @return the decimal number
+ */
+uint16_t bcd2dec16(uint16_t bcd);
+
+/** @breif Convert decimal number(uint16_t) to bcd
+ *  @param[in] dec - decimal number
+ *  @return the bcd number
+ */
+uint16_t dec2bcd16(uint16_t dec);
+
+/** @breif Convert bcd number(uint32_t) to decimal
+ *  @param[in] bcd - bcd number
+ *  @return the decimal number
+ */
+uint32_t bcd2dec32(uint32_t bcd);
+
+/** @breif Convert decimal number(uint32_t) to bcd
+ *  @param[in] dec - decimal number
+ *  @return the bcd number
+ */
+uint32_t dec2bcd32(uint32_t dec);
+
 #ifdef __cplusplus
 }
 #endif
