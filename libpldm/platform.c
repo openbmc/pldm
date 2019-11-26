@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "platform.h"
+#include "utils.h"
 
 int encode_set_state_effecter_states_resp(uint8_t instance_id,
 					  uint8_t completion_code,
@@ -163,6 +164,99 @@ int encode_get_pdr_resp(uint8_t instance_id, uint8_t completion_code,
 			    (sizeof(struct pldm_get_pdr_resp) - 1) + resp_cnt;
 			*dst = transfer_crc;
 		}
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int encode_get_pdr_req(uint8_t instance_id, uint32_t record_hndl,
+		       uint32_t data_transfer_hndl, uint8_t transfer_op_flag,
+		       uint16_t request_cnt, uint16_t record_chg_num,
+		       struct pldm_msg *msg, size_t payload_length)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	struct pldm_get_pdr_req *request =
+	    (struct pldm_get_pdr_req *)msg->payload;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_GET_PDR;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	if (payload_length != PLDM_GET_PDR_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	request->record_handle = htole32(record_hndl);
+	request->data_transfer_handle = htole32(data_transfer_hndl);
+	request->transfer_op_flag = transfer_op_flag;
+	request->request_count = htole16(request_cnt);
+	request->record_change_number = htole16(record_chg_num);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_pdr_resp(const struct pldm_msg *msg, size_t payload_length,
+			uint8_t *completion_code, uint32_t *next_record_hndl,
+			uint32_t *next_data_transfer_hndl,
+			uint8_t *transfer_flag, uint16_t *resp_cnt,
+			uint8_t *record_data, size_t record_data_length,
+			uint8_t *transfer_crc)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    next_record_hndl == NULL || next_data_transfer_hndl == NULL ||
+	    transfer_flag == NULL || resp_cnt == NULL || record_data == NULL ||
+	    transfer_crc == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return *completion_code;
+	}
+
+	if (payload_length < PLDM_GET_PDR_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_pdr_resp *response =
+	    (struct pldm_get_pdr_resp *)msg->payload;
+
+	*next_record_hndl = le32toh(response->next_record_handle);
+	*next_data_transfer_hndl = le32toh(response->next_data_transfer_handle);
+	*transfer_flag = response->transfer_flag;
+	*resp_cnt = le16toh(response->response_count);
+
+	if (*transfer_flag != PLDM_END &&
+	    (int)payload_length != PLDM_GET_PDR_MIN_RESP_BYTES + *resp_cnt) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if (*transfer_flag == PLDM_END &&
+	    (int)payload_length !=
+		PLDM_GET_PDR_MIN_RESP_BYTES + *resp_cnt + 1) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if (*resp_cnt > 0) {
+		if (record_data_length < *resp_cnt) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(record_data, response->record_data, *resp_cnt);
+	}
+
+	if (*transfer_flag == PLDM_END) {
+		*transfer_crc =
+		    msg->payload[PLDM_GET_PDR_MIN_RESP_BYTES + *resp_cnt];
 	}
 
 	return PLDM_SUCCESS;
