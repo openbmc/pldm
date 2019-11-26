@@ -12,6 +12,13 @@ TEST(Crc32, CheckSumTest)
     EXPECT_EQ(checksum, 0xcbf43926);
 }
 
+TEST(Crc8, CheckSumTest)
+{
+    const char* data = "123456789";
+    auto checksum = crc8(data, 9);
+    EXPECT_EQ(checksum, 0xf4);
+}
+
 TEST(Ver2string, Ver2string)
 {
     ver32_t version{0xf3, 0xf7, 0x10, 0x61};
