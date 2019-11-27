@@ -10,6 +10,30 @@
 
 using namespace pldm::responder;
 using namespace pldm::responder::pdr;
+using namespace pldm::responder::platform::utils;
+
+TEST(decodeEffecterData, testDecodeEffecterData)
+{
+    std::vector<uint8_t> effecterData = {2, 1, 1, 0, 1, 2};
+    uint16_t effecter_id = 2;
+    set_effecter_state_field stateField0 = {1, 1};
+    set_effecter_state_field stateField1 = {0, 0};
+    set_effecter_state_field stateField2 = {1, 2};
+
+    uint16_t retEffecter_id = 0;
+    std::vector<set_effecter_state_field> retStateField = {};
+
+    std::vector<set_effecter_state_field> stateField =
+        decodeEffecterData(effecterData, &retEffecter_id);
+
+    EXPECT_EQ(effecter_id, retEffecter_id);
+    EXPECT_EQ(stateField[0].set_request, stateField0.set_request);
+    EXPECT_EQ(stateField[0].effecter_state, stateField0.effecter_state);
+    EXPECT_EQ(stateField[1].set_request, stateField1.set_request);
+    EXPECT_EQ(stateField[1].effecter_state, stateField1.effecter_state);
+    EXPECT_EQ(stateField[2].set_request, stateField2.set_request);
+    EXPECT_EQ(stateField[2].effecter_state, stateField2.effecter_state);
+}
 
 TEST(getPDR, testGoodPath)
 {

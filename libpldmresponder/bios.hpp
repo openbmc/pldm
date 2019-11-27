@@ -107,6 +107,20 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
  */
 std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
                         uint8_t day, uint8_t month, uint16_t year);
+
+/** @brief Convert uint64 to date
+ *
+ *  @param[in] data - time date of uint64
+ *  @param[out] year - year number in dec
+ *  @param[out] month - month number in dec
+ *  @param[out] day - day of the month in dec
+ *  @param[out] hour - number of hours in dec
+ *  @param[out] min - number of minutes in dec
+ *  @param[out] sec - number of seconds in dec
+ *  @return true if decode success, false if decode faild
+ */
+bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
+                uint8_t* hour, uint8_t* min, uint8_t* sec);
 } // namespace utils
 
 } // namespace responder

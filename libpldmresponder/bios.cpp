@@ -78,6 +78,30 @@ std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
     return timeSec;
 }
 
+bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
+                uint8_t* hour, uint8_t* min, uint8_t* sec)
+{
+    uint64_t max_data = 29991231115959;
+    uint64_t min_data = 19700101000000;
+    if (data < min_data || data > max_data)
+    {
+        return false;
+    }
+
+    *year = data / 10000000000;
+    data = data % 10000000000;
+    *month = data / 100000000;
+    data = data % 100000000;
+    *day = data / 1000000;
+    data = data % 1000000;
+    *hour = data / 10000;
+    data = data % 10000;
+    *min = data / 100;
+    *sec = data % 100;
+
+    return true;
+}
+
 size_t getTableTotalsize(size_t sizeWithoutPad)
 {
     return sizeWithoutPad + pldm_bios_table_pad_checksum_size(sizeWithoutPad);
