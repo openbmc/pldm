@@ -1,5 +1,7 @@
 #pragma once
 
+#include "libpldmresponder/bios.hpp"
+#include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/utils.hpp"
 
 #include <err.h>
@@ -13,8 +15,9 @@
 #include <iostream>
 #include <utility>
 
-#include "libpldm/base.h"
-#include "libpldm/platform.h"
+// #include "libpldm/base.h"
+// #include "libpldm/bios.h"
+// #include "libpldm/platform.h"
 
 namespace pldmtool
 {

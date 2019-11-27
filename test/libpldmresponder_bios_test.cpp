@@ -67,6 +67,35 @@ TEST(timeToEpoch, testTime0)
     EXPECT_EQ(ret, timeSec);
 }
 
+TEST(decodeDate, testGooduintToDate)
+{
+    uint64_t data = 20191212115959;
+    uint16_t year = 2019;
+    uint8_t month = 12;
+    uint8_t day = 12;
+    uint8_t hours = 11;
+    uint8_t minutes = 59;
+    uint8_t seconds = 59;
+
+    uint16_t retyear = 0;
+    uint8_t retmonth = 0;
+    uint8_t retday = 0;
+    uint8_t rethours = 0;
+    uint8_t retminutes = 0;
+    uint8_t retseconds = 0;
+
+    auto ret = uintToDate(data, &retyear, &retmonth, &retday, &rethours,
+                          &retminutes, &retseconds);
+
+    EXPECT_EQ(ret, true);
+    EXPECT_EQ(year, retyear);
+    EXPECT_EQ(month, retmonth);
+    EXPECT_EQ(day, retday);
+    EXPECT_EQ(hours, rethours);
+    EXPECT_EQ(minutes, retminutes);
+    EXPECT_EQ(seconds, retseconds);
+}
+
 TEST(GetBIOSStrings, allScenarios)
 {
     using namespace bios_parser;

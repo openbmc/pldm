@@ -278,6 +278,20 @@ class Handler : public CmdHandler
     }
 };
 
+namespace utils
+{
+/** @brief Convert effecter data to structure of set_effecter_state_field
+ *
+ *  @param[in] effecterData - the date of effecter
+ *  @param[out] effecter_id - a handle that is used to identify and access the
+ * effecter
+ *  @return stateField - structure of set_effecter_state_field
+ */
+std::vector<set_effecter_state_field>
+    decodeEffecterData(std::vector<uint8_t> effecterData,
+                       uint16_t* effecter_id);
+} // namespace utils
+
 } // namespace platform
 } // namespace responder
 } // namespace pldm

@@ -11,6 +11,45 @@ namespace platform
 using namespace phosphor::logging;
 using namespace pldm::responder::effecter::dbus_mapping;
 
+namespace utils
+{
+std::vector<set_effecter_state_field>
+    decodeEffecterData(std::vector<uint8_t> effecterData, uint16_t* effecter_id)
+{
+    std::vector<set_effecter_state_field> stateField = {};
+    int flag = 0;
+    for (auto data : effecterData)
+    {
+        switch (flag)
+        {
+            case 0:
+                *effecter_id = data;
+                flag = 1;
+                break;
+            case 1:
+                if (data == PLDM_REQUEST_SET)
+                {
+                    flag = 2;
+                }
+                else
+                {
+                    stateField.push_back({PLDM_NO_CHANGE, 0});
+                }
+                break;
+            case 2:
+                stateField.push_back({PLDM_REQUEST_SET, data});
+                flag = 1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    return stateField;
+}
+
+} // namespace utils
+
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES, 0);
