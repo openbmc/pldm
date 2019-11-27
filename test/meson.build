@@ -30,6 +30,7 @@ tests = [
   'libpldm_utils_test',
   'pldmd_instanceid_test',
   'pldmd_registration_test',
+  'utility_test',
 ]
 
 if get_option('oem-ibm').enabled()
@@ -52,6 +53,9 @@ foreach t : tests
                          pldmd,
                          dependency('phosphor-dbus-interfaces'),
                          dependency('phosphor-logging'),
-                         dependency('sdbusplus')]),
+                         dependency('sdbusplus')],
+                         include_directories: '..',
+                         link_with: [libutility,],
+                         ),
        workdir: meson.current_source_dir())
 endforeach

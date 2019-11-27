@@ -5,6 +5,7 @@
 #include "file_io_by_type.hpp"
 #include "file_table.hpp"
 #include "libpldmresponder/utils.hpp"
+#include "utility.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <fcntl.h>
@@ -78,7 +79,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
         return rc;
     }
 
-    utils::CustomFD xdmaFd(fd);
+    utility::CustomFD xdmaFd(fd);
 
     void* vgaMem;
     vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
