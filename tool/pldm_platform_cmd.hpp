@@ -1,14 +1,15 @@
 #pragma once
+
 #include <CLI/CLI.hpp>
 
 namespace pldmtool
 {
 
-namespace bios
+namespace platform
 {
 
 void registerCommand(CLI::App& app);
 
-} // namespace bios
+} // namespace platform
 
 } // namespace pldmtool
