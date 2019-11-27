@@ -28,9 +28,13 @@ configure_file(output: 'config.h',
   configuration: conf_data
 )
 
+
+
+libutils_inc = include_directories('.')
+
 subdir('libpldm')
 subdir('libpldmresponder')
-subdir('tool')
+
 
 deps = [
   libpldm,
@@ -39,6 +43,16 @@ deps = [
   dependency('sdeventplus'),
   dependency('phosphor-dbus-interfaces')
 ]
+
+libutility = static_library(
+    'pldmutility',
+    'utility.cpp',
+    dependencies: [
+        libpldm,
+    ],
+)
+
+subdir('tool')
 
 executable(
   'pldmd',
