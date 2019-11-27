@@ -32,7 +32,7 @@ Response getPDR(const pldm_msg* request, size_t payloadLength)
     if (payloadLength != PLDM_GET_PDR_REQ_BYTES)
     {
         encode_get_pdr_resp(request->hdr.instance_id, PLDM_ERROR_INVALID_LENGTH,
-                            0, 0, 0, 0, nullptr, 0, responsePtr);
+                            0, 0, 0, 0, nullptr, responsePtr);
         return response;
     }
 
@@ -70,14 +70,14 @@ Response getPDR(const pldm_msg* request, size_t payloadLength)
         responsePtr = reinterpret_cast<pldm_msg*>(response.data());
         encode_get_pdr_resp(request->hdr.instance_id, PLDM_SUCCESS,
                             nextRecordHandle, 0, PLDM_START, respSizeBytes,
-                            recordData, 0, responsePtr);
+                            recordData, responsePtr);
     }
     catch (const std::out_of_range& e)
     {
         encode_get_pdr_resp(request->hdr.instance_id,
                             PLDM_PLATFORM_INVALID_RECORD_HANDLE,
                             nextRecordHandle, 0, PLDM_START, respSizeBytes,
-                            recordData, 0, responsePtr);
+                            recordData, responsePtr);
         return response;
     }
     catch (const std::exception& e)
@@ -86,7 +86,7 @@ Response getPDR(const pldm_msg* request, size_t payloadLength)
                         entry("ERROR=%s", e.what()));
         encode_get_pdr_resp(request->hdr.instance_id, PLDM_ERROR,
                             nextRecordHandle, 0, PLDM_START, respSizeBytes,
-                            recordData, 0, responsePtr);
+                            recordData, responsePtr);
         return response;
     }
     return response;

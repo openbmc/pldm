@@ -195,8 +195,6 @@ int decode_set_state_effecter_states_req(const struct pldm_msg *msg,
  *  @param[in] resp_cnt - The number of recordData bytes returned in this
  *        response
  *  @param[in] record_data - PDR data bytes of length resp_cnt
- *  @param[in] transfer_crc - A CRC-8 for the overall PDR. This is present only
- *        in the last part of a PDR being transferred
  *  @param[out] msg - Message will be written to this
  *  @return pldm_completion_codes
  *  @note  Caller is responsible for memory alloc and dealloc of param
@@ -206,7 +204,7 @@ int encode_get_pdr_resp(uint8_t instance_id, uint8_t completion_code,
 			uint32_t next_record_hndl,
 			uint32_t next_data_transfer_hndl, uint8_t transfer_flag,
 			uint16_t resp_cnt, const uint8_t *record_data,
-			uint8_t transfer_crc, struct pldm_msg *msg);
+			struct pldm_msg *msg);
 
 /** @brief Decode GetPDR request data
  *

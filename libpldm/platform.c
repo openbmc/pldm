@@ -128,7 +128,7 @@ int encode_get_pdr_resp(uint8_t instance_id, uint8_t completion_code,
 			uint32_t next_record_hndl,
 			uint32_t next_data_transfer_hndl, uint8_t transfer_flag,
 			uint16_t resp_cnt, const uint8_t *record_data,
-			uint8_t transfer_crc, struct pldm_msg *msg)
+			struct pldm_msg *msg)
 {
 	struct pldm_header_info header = {0};
 	int rc = PLDM_SUCCESS;
@@ -162,7 +162,8 @@ int encode_get_pdr_resp(uint8_t instance_id, uint8_t completion_code,
 			uint8_t *dst = msg->payload;
 			dst +=
 			    (sizeof(struct pldm_get_pdr_resp) - 1) + resp_cnt;
-			*dst = transfer_crc;
+			*dst = crc8(msg->payload,
+				    PLDM_GET_PDR_MIN_RESP_BYTES + resp_cnt);
 		}
 	}
 
