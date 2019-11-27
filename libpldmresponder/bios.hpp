@@ -108,6 +108,7 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
  */
 std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
                         uint8_t day, uint8_t month, uint16_t year);
+
 } // namespace utils
 
 } // namespace responder
