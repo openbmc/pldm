@@ -1,6 +1,7 @@
 sources = [
   'pldm_cmd_helper.cpp',
   'pldm_base_cmd.cpp',
+  'pldm_bios_cmd.cpp',
   'pldmtool.cpp'
 ]
 
