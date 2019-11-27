@@ -30,7 +30,6 @@ configure_file(output: 'config.h',
 
 subdir('libpldm')
 subdir('libpldmresponder')
-subdir('tool')
 
 deps = [
   libpldm,
@@ -49,6 +48,19 @@ executable(
   dependencies: deps,
   install: true,
   install_dir: get_option('bindir'))
+
+libutility = static_library(
+    'pldmutility',
+    'utility.cpp',
+    dependencies: [
+        libpldm,
+    ],
+)
+
+libutility = declare_dependency(
+  link_with: libutility)
+
+subdir('tool')
 
 if get_option('tests').enabled()
   subdir('test')
