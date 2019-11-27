@@ -1,4 +1,5 @@
 #include "pldm_base_cmd.hpp"
+#include "pldm_bios_cmd.hpp"
 #include "pldm_cmd_helper.hpp"
 
 #include <CLI/CLI.hpp>
@@ -66,6 +67,7 @@ int main(int argc, char** argv)
 
     pldmtool::raw::registerCommand(app);
     pldmtool::base::registerCommand(app);
+    pldmtool::bios::registerCommand(app);
 
     CLI11_PARSE(app, argc, argv);
     return 0;
