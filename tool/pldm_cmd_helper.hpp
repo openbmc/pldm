@@ -13,9 +13,6 @@
 #include <iostream>
 #include <utility>
 
-#include "libpldm/base.h"
-#include "libpldm/platform.h"
-
 namespace pldmtool
 {
 
