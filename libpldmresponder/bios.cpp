@@ -7,6 +7,7 @@
 #include <boost/crc.hpp>
 #include <chrono>
 #include <ctime>
+#include <filesystem>
 #include <memory>
 #include <numeric>
 #include <phosphor-logging/elog-errors.hpp>
@@ -16,8 +17,13 @@
 #include <variant>
 #include <vector>
 
+namespace fs = std::filesystem;
 using namespace pldm::responder::bios;
 using namespace bios_parser;
+
+constexpr auto stringTableFile = "stringTable";
+constexpr auto attrTableFile = "attributeTable";
+constexpr auto attrValTableFile = "attributeValueTable";
 
 namespace pldm
 {
@@ -77,6 +83,31 @@ void padAndChecksum(Table& table)
 
 namespace bios
 {
+
+Handler::Handler()
+{
+    try
+    {
+        fs::remove(
+            fs::path(std::string(BIOS_TABLES_DIR) + "/" + stringTableFile));
+        fs::remove(
+            fs::path(std::string(BIOS_TABLES_DIR) + "/" + attrTableFile));
+        fs::remove(
+            fs::path(std::string(BIOS_TABLES_DIR) + "/" + attrValTableFile));
+    }
+    catch (const std::exception& e)
+    {
+    }
+
+    handlers.emplace(PLDM_GET_DATE_TIME,
+                     [this](const pldm_msg* request, size_t payloadLength) {
+                         return this->getDateTime(request, payloadLength);
+                     });
+    handlers.emplace(PLDM_GET_BIOS_TABLE,
+                     [this](const pldm_msg* request, size_t payloadLength) {
+                         return this->getBIOSTable(request, payloadLength);
+                     });
+}
 
 Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
 {
@@ -809,11 +840,11 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
     if (rc == PLDM_SUCCESS)
     {
         BIOSTable BIOSStringTable(
-            ((std::string(biosTablePath) + "/stringTable")).c_str());
+            (std::string(biosTablePath) + "/" + stringTableFile).c_str());
         BIOSTable BIOSAttributeTable(
-            ((std::string(biosTablePath) + "/attributeTable")).c_str());
+            (std::string(biosTablePath) + "/" + attrTableFile).c_str());
         BIOSTable BIOSAttributeValueTable(
-            ((std::string(biosTablePath) + "/attributeValueTable")).c_str());
+            (std::string(biosTablePath) + "/" + attrValTableFile).c_str());
         switch (tableType)
         {
             case PLDM_BIOS_STRING_TABLE:
