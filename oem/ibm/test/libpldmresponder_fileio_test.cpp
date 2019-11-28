@@ -20,6 +20,7 @@
 namespace fs = std::filesystem;
 using Json = nlohmann::json;
 using namespace pldm::filetable;
+using namespace pldm::responder;
 
 class TestFileTable : public testing::Test
 {
@@ -213,7 +214,8 @@ TEST(ReadFileIntoMemory, BadPath)
            &address, sizeof(address));
 
     // Pass invalid payload length
-    auto response = readFileIntoMemory(request, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.readFileIntoMemory(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 }
@@ -242,7 +244,8 @@ TEST_F(TestFileTable, ReadFileInvalidFileHandle)
     // Initialise the file table with 2 valid file handles 0 & 1.
     auto& table = buildFileTable(fileTableConfig.c_str());
 
-    auto response = readFileIntoMemory(request, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
     // Clear the file table contents.
@@ -272,7 +275,8 @@ TEST_F(TestFileTable, ReadFileInvalidOffset)
     using namespace pldm::filetable;
     auto& table = buildFileTable(fileTableConfig.c_str());
 
-    auto response = readFileIntoMemory(request, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
     // Clear the file table contents.
@@ -302,7 +306,8 @@ TEST_F(TestFileTable, ReadFileInvalidLength)
     using namespace pldm::filetable;
     auto& table = buildFileTable(fileTableConfig.c_str());
 
-    auto response = readFileIntoMemory(request, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_READ_LENGTH);
     // Clear the file table contents.
@@ -335,7 +340,8 @@ TEST_F(TestFileTable, ReadFileInvalidEffectiveLength)
     using namespace pldm::filetable;
     auto& table = buildFileTable(fileTableConfig.c_str());
 
-    auto response = readFileIntoMemory(request, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_READ_LENGTH);
     // Clear the file table contents.
@@ -362,12 +368,13 @@ TEST(WriteFileFromMemory, BadPath)
            &address, sizeof(address));
 
     // Pass invalid payload length
-    auto response = writeFileFromMemory(request, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.writeFileFromMemory(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 
     // The length field is not a multiple of DMA minsize
-    response = writeFileFromMemory(request, requestPayloadLength);
+    response = handler.writeFileFromMemory(request, requestPayloadLength);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_WRITE_LENGTH);
 }
@@ -396,7 +403,8 @@ TEST_F(TestFileTable, WriteFileInvalidFileHandle)
     // Initialise the file table with 2 valid file handles 0 & 1.
     auto& table = buildFileTable(fileTableConfig.c_str());
 
-    auto response = writeFileFromMemory(request, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.writeFileFromMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
     // Clear the file table contents.
@@ -427,7 +435,8 @@ TEST_F(TestFileTable, WriteFileInvalidOffset)
     // Initialise the file table with 2 valid file handles 0 & 1.
     auto& table = buildFileTable(TestFileTable::fileTableConfig.c_str());
 
-    auto response = writeFileFromMemory(request, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.writeFileFromMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
     // Clear the file table contents.
@@ -495,7 +504,8 @@ TEST_F(TestFileTable, GetFileTableCommand)
     request->operation_flag = opFlag;
     request->table_type = type;
 
-    auto response = getFileTable(requestMsgPtr, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.getFileTable(requestMsgPtr, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
     size_t offsetSize = sizeof(responsePtr->payload[0]);
@@ -517,7 +527,8 @@ TEST_F(TestFileTable, GetFileTableCommandReqLengthMismatch)
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
     // Pass invalid command payload length
-    auto response = getFileTable(request, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.getFileTable(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 }
@@ -538,7 +549,8 @@ TEST_F(TestFileTable, GetFileTableCommandOEMAttrTable)
     request->operation_flag = opFlag;
     request->table_type = type;
 
-    auto response = getFileTable(requestMsgPtr, requestPayloadLength);
+    oem_ibm::Handler handler;
+    auto response = handler.getFileTable(requestMsgPtr, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_TABLE_TYPE);
 }
@@ -565,21 +577,22 @@ TEST_F(TestFileTable, ReadFileBadPath)
     auto& table = buildFileTable(fileTableConfig.c_str());
 
     // Invalid payload length
-    auto response = readFile(requestMsgPtr, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.readFile(requestMsgPtr, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 
     // Data out of range. File size is 1024, offset = 1024 is invalid.
     request->offset = 1024;
 
-    response = readFile(requestMsgPtr, payload_length);
+    response = handler.readFile(requestMsgPtr, payload_length);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
 
     // Invalid file handle
     request->file_handle = 2;
 
-    response = readFile(requestMsgPtr, payload_length);
+    response = handler.readFile(requestMsgPtr, payload_length);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
 
@@ -614,7 +627,8 @@ TEST_F(TestFileTable, ReadFileGoodPath)
     std::vector<char> buffer(length);
     stream.read(buffer.data(), length);
 
-    auto responseMsg = readFile(requestMsgPtr, payload_length);
+    oem_ibm::Handler handler;
+    auto responseMsg = handler.readFile(requestMsgPtr, payload_length);
     auto response = reinterpret_cast<pldm_read_file_resp*>(
         responseMsg.data() + sizeof(pldm_msg_hdr));
     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
@@ -630,7 +644,7 @@ TEST_F(TestFileTable, ReadFileGoodPath)
     buffer.resize(fileSize - request->offset);
     stream.read(buffer.data(), (fileSize - request->offset));
 
-    responseMsg = readFile(requestMsgPtr, payload_length);
+    responseMsg = handler.readFile(requestMsgPtr, payload_length);
     response = reinterpret_cast<pldm_read_file_resp*>(responseMsg.data() +
                                                       sizeof(pldm_msg_hdr));
     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
@@ -663,21 +677,22 @@ TEST_F(TestFileTable, WriteFileBadPath)
     request->length = length;
 
     // Invalid payload length
-    auto response = writeFile(requestMsgPtr, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.writeFile(requestMsgPtr, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 
     // Data out of range. File size is 1024, offset = 1024 is invalid.
     request->offset = 1024;
 
-    response = writeFile(requestMsgPtr, payload_length);
+    response = handler.writeFile(requestMsgPtr, payload_length);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
 
     // Invalid file handle
     request->file_handle = 2;
 
-    response = writeFile(requestMsgPtr, payload_length);
+    response = handler.writeFile(requestMsgPtr, payload_length);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
 
@@ -709,7 +724,8 @@ TEST_F(TestFileTable, WriteFileGoodPath)
     request->length = length;
     memcpy(request->file_data, fileData.data(), fileData.size());
 
-    auto responseMsg = writeFile(requestMsgPtr, payload_length);
+    oem_ibm::Handler handler;
+    auto responseMsg = handler.writeFile(requestMsgPtr, payload_length);
     auto response = reinterpret_cast<pldm_read_file_resp*>(
         responseMsg.data() + sizeof(pldm_msg_hdr));
 
@@ -741,7 +757,8 @@ TEST(writeFileByTypeFromMemory, testBadPath)
     request->length = 17;
     request->address = 0;
 
-    auto response = writeFileByTypeFromMemory(req, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.writeFileByTypeFromMemory(req, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     struct pldm_read_write_file_by_type_memory_resp* resp =
@@ -749,7 +766,7 @@ TEST(writeFileByTypeFromMemory, testBadPath)
             responsePtr->payload);
     ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
 
-    response = writeFileByTypeFromMemory(req, requestPayloadLength);
+    response = handler.writeFileByTypeFromMemory(req, requestPayloadLength);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
@@ -792,23 +809,24 @@ TEST(readFileByTypeIntoMemory, testBadPath)
     request->length = 17;
     request->address = 0;
 
-    auto response = readFileByTypeIntoMemory(req, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.readFileByTypeIntoMemory(req, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     struct pldm_read_write_file_by_type_memory_resp* resp =
         reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
             responsePtr->payload);
     ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
 
-    response =
-        readFileByTypeIntoMemory(req, PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES);
+    response = handler.readFileByTypeIntoMemory(
+        req, PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
         responsePtr->payload);
     ASSERT_EQ(PLDM_INVALID_WRITE_LENGTH, resp->completion_code);
 
     request->length = 16;
-    response =
-        readFileByTypeIntoMemory(req, PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES);
+    response = handler.readFileByTypeIntoMemory(
+        req, PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
         responsePtr->payload);
@@ -829,14 +847,15 @@ TEST(readFileByType, testBadPath)
     request->offset = 0;
     request->length = 13;
 
-    auto response = readFileByType(req, 0);
+    oem_ibm::Handler handler;
+    auto response = handler.readFileByType(req, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     struct pldm_read_write_file_by_type_resp* resp =
         reinterpret_cast<struct pldm_read_write_file_by_type_resp*>(
             responsePtr->payload);
     ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
 
-    response = readFileByType(req, payloadLength);
+    response = handler.readFileByType(req, payloadLength);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     resp = reinterpret_cast<struct pldm_read_write_file_by_type_resp*>(
         responsePtr->payload);

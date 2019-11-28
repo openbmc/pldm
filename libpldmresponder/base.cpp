@@ -1,7 +1,6 @@
 #include "libpldm/base.h"
 
 #include "base.hpp"
-#include "registration.hpp"
 
 #include <array>
 #include <cstring>
@@ -14,6 +13,9 @@
 
 namespace pldm
 {
+
+using Type = uint8_t;
+
 namespace responder
 {
 
@@ -36,19 +38,8 @@ static const std::map<Type, ver32_t> versions{
 namespace base
 {
 
-void registerHandlers()
-{
-    registerHandler(PLDM_BASE, PLDM_GET_PLDM_TYPES, std::move(getPLDMTypes));
-    registerHandler(PLDM_BASE, PLDM_GET_PLDM_COMMANDS,
-                    std::move(getPLDMCommands));
-    registerHandler(PLDM_BASE, PLDM_GET_PLDM_VERSION,
-                    std::move(getPLDMVersion));
-    registerHandler(PLDM_BASE, PLDM_GET_TID, std::move(getTID));
-}
-
-} // namespace base
-
-Response getPLDMTypes(const pldm_msg* request, size_t /*payloadLength*/)
+Response Handler::getPLDMTypes(const pldm_msg* request,
+                               size_t /*payloadLength*/)
 {
     // DSP0240 has this as a bitfield8[N], where N = 0 to 7
     std::array<bitfield8_t, 8> types{};
@@ -68,7 +59,7 @@ Response getPLDMTypes(const pldm_msg* request, size_t /*payloadLength*/)
     return response;
 }
 
-Response getPLDMCommands(const pldm_msg* request, size_t payloadLength)
+Response Handler::getPLDMCommands(const pldm_msg* request, size_t payloadLength)
 {
     ver32_t version{};
     Type type;
@@ -109,7 +100,7 @@ Response getPLDMCommands(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
-Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
+Response Handler::getPLDMVersion(const pldm_msg* request, size_t payloadLength)
 {
     uint32_t transferHandle;
     Type type;
@@ -147,7 +138,7 @@ Response getPLDMVersion(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
-Response getTID(const pldm_msg* request, size_t /*payloadLength*/)
+Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
 {
     // assigned 1 to the bmc as the PLDM terminus
     uint8_t tid = 1;
@@ -160,5 +151,6 @@ Response getTID(const pldm_msg* request, size_t /*payloadLength*/)
     return response;
 }
 
+} // namespace base
 } // namespace responder
 } // namespace pldm

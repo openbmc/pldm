@@ -5,7 +5,6 @@
 #include "file_io_by_type.hpp"
 #include "file_table.hpp"
 #include "libpldmresponder/utils.hpp"
-#include "registration.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <fcntl.h>
@@ -30,28 +29,6 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 namespace responder
 {
-
-namespace oem_ibm
-{
-
-void registerHandlers()
-{
-    registerHandler(PLDM_OEM, PLDM_GET_FILE_TABLE, std::move(getFileTable));
-    registerHandler(PLDM_OEM, PLDM_READ_FILE_INTO_MEMORY,
-                    std::move(readFileIntoMemory));
-    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_FROM_MEMORY,
-                    std::move(writeFileFromMemory));
-    registerHandler(PLDM_OEM, PLDM_READ_FILE, std::move(readFile));
-    registerHandler(PLDM_OEM, PLDM_WRITE_FILE, std::move(writeFile));
-    registerHandler(PLDM_OEM, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
-                    std::move(writeFileByTypeFromMemory));
-    registerHandler(PLDM_OEM, PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
-                    std::move(readFileByTypeIntoMemory));
-    registerHandler(PLDM_OEM, PLDM_READ_FILE_BY_TYPE,
-                    std::move(readFileByType));
-}
-
-} // namespace oem_ibm
 
 namespace fs = std::filesystem;
 using namespace phosphor::logging;
@@ -173,7 +150,11 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
 } // namespace dma
 
-Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
+namespace oem_ibm
+{
+
+Response Handler::readFileIntoMemory(const pldm_msg* request,
+                                     size_t payloadLength)
 {
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
@@ -254,7 +235,8 @@ Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength)
                             request->hdr.instance_id);
 }
 
-Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
+Response Handler::writeFileFromMemory(const pldm_msg* request,
+                                      size_t payloadLength)
 {
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
@@ -330,7 +312,7 @@ Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength)
                             request->hdr.instance_id);
 }
 
-Response getFileTable(const pldm_msg* request, size_t payloadLength)
+Response Handler::getFileTable(const pldm_msg* request, size_t payloadLength)
 {
     uint32_t transferHandle = 0;
     uint8_t transferFlag = 0;
@@ -385,7 +367,7 @@ Response getFileTable(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
-Response readFile(const pldm_msg* request, size_t payloadLength)
+Response Handler::readFile(const pldm_msg* request, size_t payloadLength)
 {
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
@@ -465,7 +447,7 @@ Response readFile(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
-Response writeFile(const pldm_msg* request, size_t payloadLength)
+Response Handler::writeFile(const pldm_msg* request, size_t payloadLength)
 {
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
@@ -601,20 +583,21 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
     return response;
 }
 
-Response writeFileByTypeFromMemory(const pldm_msg* request,
-                                   size_t payloadLength)
+Response Handler::writeFileByTypeFromMemory(const pldm_msg* request,
+                                            size_t payloadLength)
 {
     return rwFileByTypeIntoMemory(PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY, request,
                                   payloadLength);
 }
 
-Response readFileByTypeIntoMemory(const pldm_msg* request, size_t payloadLength)
+Response Handler::readFileByTypeIntoMemory(const pldm_msg* request,
+                                           size_t payloadLength)
 {
     return rwFileByTypeIntoMemory(PLDM_READ_FILE_BY_TYPE_INTO_MEMORY, request,
                                   payloadLength);
 }
 
-Response readFileByType(const pldm_msg* request, size_t payloadLength)
+Response Handler::readFileByType(const pldm_msg* request, size_t payloadLength)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_RESP_BYTES);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -661,5 +644,6 @@ Response readFileByType(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
+} // namespace oem_ibm
 } // namespace responder
 } // namespace pldm
