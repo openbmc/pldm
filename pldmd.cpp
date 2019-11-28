@@ -1,9 +1,9 @@
 #include "dbus_impl_requester.hpp"
+#include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/utils.hpp"
-#include "registration.hpp"
 
 #include <err.h>
 #include <getopt.h>
@@ -23,6 +23,7 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -36,13 +37,14 @@
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 
+using namespace pldm::responder;
 using namespace phosphor::logging;
 using namespace pldm;
 using namespace sdeventplus;
 using namespace sdeventplus::source;
 
 static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
-                             dbus_api::Requester& requester)
+                             Invoker& invoker, dbus_api::Requester& requester)
 {
 
     Response response;
@@ -60,9 +62,12 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
                             sizeof(eid) - sizeof(type);
-        response = pldm::responder::invokeHandler(
-            hdrFields.pldm_type, hdrFields.command, request, requestLen);
-        if (response.empty())
+        try
+        {
+            response = invoker.handle(hdrFields.pldm_type, hdrFields.command,
+                                      request, requestLen);
+        }
+        catch (const std::out_of_range& e)
         {
             uint8_t completion_code = PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
             response.resize(sizeof(pldm_msg_hdr));
@@ -140,12 +145,14 @@ int main(int argc, char** argv)
             break;
     }
 
-    pldm::responder::base::registerHandlers();
-    pldm::responder::bios::registerHandlers();
-    pldm::responder::platform::registerHandlers();
+    Invoker invoker{};
+    invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
+    invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
+    invoker.registerHandler(PLDM_PLATFORM,
+                            std::make_unique<platform::Handler>());
 
 #ifdef OEM_IBM
-    pldm::responder::oem_ibm::registerHandlers();
+    invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
 #endif
 
     /* Create local socket. */
@@ -188,8 +195,8 @@ int main(int argc, char** argv)
 
     auto bus = sdbusplus::bus::new_default();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
-    auto callback = [verbose, &dbusImplReq](IO& /*io*/, int fd,
-                                            uint32_t revents) {
+    auto callback = [verbose, &invoker, &dbusImplReq](IO& /*io*/, int fd,
+                                                      uint32_t revents) {
         if (!(revents & EPOLLIN))
         {
             return;
@@ -240,7 +247,8 @@ int main(int argc, char** argv)
                 else
                 {
                     // process message and send response
-                    auto response = processRxMsg(requestMsg, dbusImplReq);
+                    auto response =
+                        processRxMsg(requestMsg, invoker, dbusImplReq);
                     if (!response.empty())
                     {
                         if (verbose)
