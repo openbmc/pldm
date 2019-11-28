@@ -177,7 +177,7 @@ TEST(traverseBIOSTable, attrTableScenarios)
     table.insert(table.end(), padSize, 0);
     table.insert(table.end(), sizeof(uint32_t) /*checksum*/, 0);
 
-    pldm::responder::traverseBIOSAttrTable(
+    pldm::responder::bios::traverseBIOSAttrTable(
         table, [&](const struct pldm_bios_attr_table_entry* entry) {
             int rc;
             switch (entry->attr_type)

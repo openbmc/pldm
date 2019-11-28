@@ -4,6 +4,7 @@
 
 #include "bios_parser.hpp"
 #include "bios_table.hpp"
+#include "handler.hpp"
 
 #include <stdint.h>
 
@@ -17,7 +18,6 @@
 namespace pldm
 {
 
-using Response = std::vector<uint8_t>;
 using AttributeHandle = uint16_t;
 using StringHandle = uint16_t;
 using PossibleValuesByHandle = std::vector<StringHandle>;
@@ -25,17 +25,14 @@ using PossibleValuesByHandle = std::vector<StringHandle>;
 namespace responder
 {
 
+namespace bios
+{
+
 using AttrTableEntryHandler =
     std::function<void(const struct pldm_bios_attr_table_entry*)>;
 
 void traverseBIOSAttrTable(const bios::Table& BIOSAttrTable,
                            AttrTableEntryHandler handler);
-
-namespace bios
-{
-/** @brief Register handlers for command from the platform spec
- */
-void registerHandlers();
 
 namespace internal
 {
@@ -49,24 +46,40 @@ namespace internal
  */
 Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                          const char* biosJsonDir, const char* biosTablePath);
-} // end namespace internal
+} // namespace internal
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler()
+    {
+        handlers.emplace(PLDM_GET_DATE_TIME,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->getDateTime(request, payloadLength);
+                         });
+        handlers.emplace(PLDM_GET_BIOS_TABLE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->getBIOSTable(request, payloadLength);
+                         });
+    }
+
+    /** @brief Handler for GetDateTime
+     *
+     *  @param[in] request - Request message payload
+     *  @param[return] Response - PLDM Response message
+     */
+    Response getDateTime(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for GetBIOSTable
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payload_length - Request message payload length
+     *  @param[return] Response - PLDM Response message
+     */
+    Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
+};
 
 } // namespace bios
-
-/** @brief Handler for GetDateTime
- *
- *  @param[in] request - Request message payload
- *  @param[return] Response - PLDM Response message
- */
-Response getDateTime(const pldm_msg* request, size_t payloadLength);
-
-/** @brief Handler for GetBIOSTable
- *
- *  @param[in] request - Request message
- *  @param[in] payload_length - Request message payload length
- *  @param[return] Response - PLDM Response message
- */
-Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
 
 namespace utils
 {

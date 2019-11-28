@@ -1,30 +1,17 @@
 
 #include "platform.hpp"
 
-#include "registration.hpp"
-
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace platform
 {
-
-void registerHandlers()
-{
-    registerHandler(PLDM_PLATFORM, PLDM_GET_PDR, std::move(getPDR));
-    registerHandler(PLDM_PLATFORM, PLDM_SET_STATE_EFFECTER_STATES,
-                    std::move(setStateEffecterStates));
-}
-
-} // namespace platform
 
 using namespace phosphor::logging;
 using namespace pldm::responder::effecter::dbus_mapping;
 
-Response getPDR(const pldm_msg* request, size_t payloadLength)
+Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -92,7 +79,8 @@ Response getPDR(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
-Response setStateEffecterStates(const pldm_msg* request, size_t payloadLength)
+Response Handler::setStateEffecterStates(const pldm_msg* request,
+                                         size_t payloadLength)
 {
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES, 0);
@@ -129,5 +117,6 @@ Response setStateEffecterStates(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
+} // namespace platform
 } // namespace responder
 } // namespace pldm

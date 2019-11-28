@@ -16,7 +16,8 @@ TEST(GetPLDMTypes, testGoodRequest)
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
     // payload length will be 0 in this case
     size_t requestPayloadLength = 0;
-    auto response = getPLDMTypes(request, requestPayloadLength);
+    base::Handler handler;
+    auto response = handler.getPLDMTypes(request, requestPayloadLength);
     // Only base type supported at the moment
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
@@ -33,7 +34,8 @@ TEST(GetPLDMCommands, testGoodRequest)
         requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
-    auto response = getPLDMCommands(request, requestPayloadLength);
+    base::Handler handler;
+    auto response = handler.getPLDMCommands(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
     ASSERT_EQ(payload_ptr[0], 0);
@@ -49,7 +51,8 @@ TEST(GetPLDMCommands, testBadRequest)
 
     request->payload[0] = 0xFF;
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
-    auto response = getPLDMCommands(request, requestPayloadLength);
+    base::Handler handler;
+    auto response = handler.getPLDMCommands(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
     ASSERT_EQ(payload_ptr[0], PLDM_ERROR_INVALID_PLDM_TYPE);
@@ -72,7 +75,8 @@ TEST(GetPLDMVersion, testGoodRequest)
 
     ASSERT_EQ(0, rc);
 
-    auto response = getPLDMVersion(request, requestPayloadLength);
+    base::Handler handler;
+    auto response = handler.getPLDMVersion(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     ASSERT_EQ(responsePtr->payload[0], 0);
@@ -101,7 +105,8 @@ TEST(GetPLDMVersion, testBadRequest)
 
     ASSERT_EQ(0, rc);
 
-    auto response = getPLDMVersion(request, requestPayloadLength - 1);
+    base::Handler handler;
+    auto response = handler.getPLDMVersion(request, requestPayloadLength - 1);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -113,7 +118,7 @@ TEST(GetPLDMVersion, testBadRequest)
 
     ASSERT_EQ(0, rc);
 
-    response = getPLDMVersion(request, requestPayloadLength);
+    response = handler.getPLDMVersion(request, requestPayloadLength);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_PLDM_TYPE);
@@ -125,7 +130,8 @@ TEST(GetTID, testGoodRequest)
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
     size_t requestPayloadLength = 0;
 
-    auto response = getTID(request, requestPayloadLength);
+    base::Handler handler;
+    auto response = handler.getTID(request, requestPayloadLength);
 
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload = responsePtr->payload;
