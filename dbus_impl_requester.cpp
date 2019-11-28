@@ -27,7 +27,7 @@ uint8_t Requester::getInstanceId(uint8_t eid)
     }
     catch (const std::runtime_error& e)
     {
-        elog<TooManyResources>();
+        // elog<TooManyResources>();
     }
 
     return id;

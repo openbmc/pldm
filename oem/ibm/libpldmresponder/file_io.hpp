@@ -1,5 +1,7 @@
 #pragma once
 
+#include "handler.hpp"
+
 #include <stdint.h>
 #include <unistd.h>
 
@@ -11,19 +13,8 @@
 
 namespace pldm
 {
-
 namespace responder
 {
-
-namespace oem_ibm
-{
-/** @brief Register handlers for command from the platform spec
- */
-void registerHandlers();
-} // namespace oem_ibm
-
-using Response = std::vector<uint8_t>;
-
 namespace dma
 {
 
@@ -121,79 +112,128 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
 
 } // namespace dma
 
-/** @brief Handler for readFileIntoMemory command
- *
- *  @param[in] request - pointer to PLDM request payload
- *  @param[in] payloadLength - length of the message
- *
- *  @return PLDM response message
- */
-Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength);
+namespace oem_ibm
+{
 
-/** @brief Handler for writeFileIntoMemory command
- *
- *  @param[in] request - pointer to PLDM request payload
- *  @param[in] payloadLength - length of the message
- *
- *  @return PLDM response message
- */
-Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
+class Handler : public CmdHandler
+{
+  public:
+    Handler()
+    {
+        handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->readFileIntoMemory(request,
+                                                             payloadLength);
+                         });
+        handlers.emplace(PLDM_WRITE_FILE_FROM_MEMORY,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->writeFileFromMemory(request,
+                                                              payloadLength);
+                         });
+        handlers.emplace(PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->writeFileByTypeFromMemory(
+                                 request, payloadLength);
+                         });
+        handlers.emplace(PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->readFileByTypeIntoMemory(
+                                 request, payloadLength);
+                         });
+        handlers.emplace(PLDM_READ_FILE_BY_TYPE, [this](const pldm_msg* request,
+                                                        size_t payloadLength) {
+            return this->readFileByType(request, payloadLength);
+        });
+        handlers.emplace(PLDM_GET_FILE_TABLE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->getFileTable(request, payloadLength);
+                         });
+        handlers.emplace(PLDM_READ_FILE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->readFile(request, payloadLength);
+                         });
+        handlers.emplace(PLDM_WRITE_FILE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->writeFile(request, payloadLength);
+                         });
+    }
 
-/** @brief Handler for writeFileByTypeFromMemory command
- *
- *  @param[in] request - pointer to PLDM request payload
- *  @param[in] payloadLength - length of the message
- *
- *  @return PLDM response message
- */
+    /** @brief Handler for readFileIntoMemory command
+     *
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message
+     *
+     *  @return PLDM response message
+     */
+    Response readFileIntoMemory(const pldm_msg* request, size_t payloadLength);
 
-Response writeFileByTypeFromMemory(const pldm_msg* request,
-                                   size_t payloadLength);
+    /** @brief Handler for writeFileIntoMemory command
+     *
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message
+     *
+     *  @return PLDM response message
+     */
+    Response writeFileFromMemory(const pldm_msg* request, size_t payloadLength);
 
-/** @brief Handler for readFileByTypeIntoMemory command
- *
- *  @param[in] request - pointer to PLDM request payload
- *  @param[in] payloadLength - length of the message
- *
- *  @return PLDM response message
- */
-Response readFileByTypeIntoMemory(const pldm_msg* request,
-                                  size_t payloadLength);
+    /** @brief Handler for writeFileByTypeFromMemory command
+     *
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message
+     *
+     *  @return PLDM response message
+     */
 
-/** @brief Handler for readFileByType command
- *
- *  @param[in] request - pointer to PLDM request payload
- *  @param[in] payloadLength - length of the message
- *
- *  @return PLDM response message
- */
-Response readFileByType(const pldm_msg* request, size_t payloadLength);
+    Response writeFileByTypeFromMemory(const pldm_msg* request,
+                                       size_t payloadLength);
 
-/** @brief Handler for GetFileTable command
- *
- *  @param[in] request - pointer to PLDM request payload
- *  @param[in] payloadLength - length of the message payload
- *
- *  @return PLDM response message
- */
-Response getFileTable(const pldm_msg* request, size_t payloadLength);
+    /** @brief Handler for readFileByTypeIntoMemory command
+     *
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message
+     *
+     *  @return PLDM response message
+     */
+    Response readFileByTypeIntoMemory(const pldm_msg* request,
+                                      size_t payloadLength);
 
-/** @brief Handler for readFile command
- *
- *  @param[in] request - PLDM request msg
- *  @param[in] payloadLength - length of the message payload
- *
- *  @return PLDM response message
- */
-Response readFile(const pldm_msg* request, size_t payloadLength);
+    /** @brief Handler for readFileByType command
+     *
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message
+     *
+     *  @return PLDM response message
+     */
+    Response readFileByType(const pldm_msg* request, size_t payloadLength);
 
-/** @brief Handler for writeFile command
- *
- *  @param[in] request - PLDM request msg
- *  @param[in] payloadLength - length of the message payload
- *
- *  @return PLDM response message
- */
-Response writeFile(const pldm_msg* request, size_t payloadLength);
+    /** @brief Handler for GetFileTable command
+     *
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *  @return PLDM response message
+     */
+    Response getFileTable(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for readFile command
+     *
+     *  @param[in] request - PLDM request msg
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *  @return PLDM response message
+     */
+    Response readFile(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for writeFile command
+     *
+     *  @param[in] request - PLDM request msg
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *  @return PLDM response message
+     */
+    Response writeFile(const pldm_msg* request, size_t payloadLength);
+};
+
+} // namespace oem_ibm
 } // namespace responder
 } // namespace pldm

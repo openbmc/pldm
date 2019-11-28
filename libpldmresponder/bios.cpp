@@ -1,7 +1,6 @@
 #include "bios.hpp"
 
 #include "libpldmresponder/utils.hpp"
-#include "registration.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <array>
@@ -76,7 +75,10 @@ void padAndChecksum(Table& table)
 
 } // namespace utils
 
-Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
+namespace bios
+{
+
+Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
 {
     uint8_t seconds = 0;
     uint8_t minutes = 0;
@@ -121,7 +123,8 @@ Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
                            std::chrono::microseconds(timeUsec))
                            .count();
 
-    utils::epochToBCDTime(timeSec, seconds, minutes, hours, day, month, year);
+    pldm::responder::utils::epochToBCDTime(timeSec, seconds, minutes, hours,
+                                           day, month, year);
 
     encode_get_date_time_resp(request->hdr.instance_id, PLDM_SUCCESS, seconds,
                               minutes, hours, day, month, year, responsePtr);
@@ -167,7 +170,8 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
         });
 
     Table stringTable;
-    stringTable.reserve(utils::getTableTotalsize(sizeWithoutPad));
+    stringTable.reserve(
+        pldm::responder::utils::getTableTotalsize(sizeWithoutPad));
 
     stringTable.resize(sizeWithoutPad);
     auto tablePtr = stringTable.data();
@@ -181,7 +185,7 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable,
         sizeWithoutPad -= entry_length;
     }
 
-    utils::padAndChecksum(stringTable);
+    pldm::responder::utils::padAndChecksum(stringTable);
     BIOSStringTable.store(stringTable);
     response.resize(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
                         stringTable.size(),
@@ -651,7 +655,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
                                        response.size(), responsePtr);
             return response;
         }
-        utils::padAndChecksum(attributeTable);
+        pldm::responder::utils::padAndChecksum(attributeTable);
         BIOSAttributeTable.store(attributeTable);
         response.resize(sizeof(pldm_msg_hdr) +
                         PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
@@ -755,7 +759,7 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
                                    response.size(), responsePtr);
         return response;
     }
-    utils::padAndChecksum(attributeValueTable);
+    pldm::responder::utils::padAndChecksum(attributeValueTable);
     BIOSAttributeValueTable.store(attributeValueTable);
 
     response.resize(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
@@ -768,22 +772,13 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
     return response;
 }
 
-Response getBIOSTable(const pldm_msg* request, size_t payloadLength)
+Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
 {
     fs::create_directory(BIOS_TABLES_DIR);
     auto response = internal::buildBIOSTables(request, payloadLength,
                                               BIOS_JSONS_DIR, BIOS_TABLES_DIR);
 
     return response;
-}
-
-namespace bios
-{
-
-void registerHandlers()
-{
-    registerHandler(PLDM_BIOS, PLDM_GET_DATE_TIME, std::move(getDateTime));
-    registerHandler(PLDM_BIOS, PLDM_GET_BIOS_TABLE, std::move(getBIOSTable));
 }
 
 namespace internal
