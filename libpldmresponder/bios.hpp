@@ -51,17 +51,7 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
 class Handler : public CmdHandler
 {
   public:
-    Handler()
-    {
-        handlers.emplace(PLDM_GET_DATE_TIME,
-                         [this](const pldm_msg* request, size_t payloadLength) {
-                             return this->getDateTime(request, payloadLength);
-                         });
-        handlers.emplace(PLDM_GET_BIOS_TABLE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
-                             return this->getBIOSTable(request, payloadLength);
-                         });
-    }
+    Handler();
 
     /** @brief Handler for GetDateTime
      *
