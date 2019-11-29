@@ -516,6 +516,23 @@ TEST(AttrValTable, StringEntryDecodeTest)
         stringEntry.data());
     auto length = pldm_bios_table_attr_value_entry_string_decode_length(entry);
     EXPECT_EQ(3, length);
+
+    auto handle = pldm_bios_table_attr_value_entry_decode_handle(entry);
+    EXPECT_EQ(0, handle);
+
+    std::vector<uint8_t> value(10);
+    size_t valueLength = value.size();
+    auto rc = pldm_bios_table_attr_value_entry_get_value(entry, value.data(),
+                                                         &valueLength);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(5, valueLength);
+    EXPECT_EQ(0,
+              std::memcmp(stringEntry.data() + 3, value.data(), valueLength));
+
+    valueLength = 3;
+    rc = pldm_bios_table_attr_value_entry_get_value(entry, value.data(),
+                                                    &valueLength);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(AttrValTable, integerEntryEncodeTest)
@@ -609,6 +626,41 @@ TEST(AttrValTable, IteratorTest)
     EXPECT_TRUE(pldm_bios_table_iter_is_end(iter));
 
     pldm_bios_table_iter_free(iter);
+}
+
+TEST(AttrValTable, FindTest)
+{
+    std::vector<uint8_t> enumEntry{
+        0, 0, /* attr handle */
+        0,    /* attr type */
+        2,    /* number of current value */
+        0,    /* current value string handle index */
+        1,    /* current value string handle index */
+    };
+    std::vector<uint8_t> stringEntry{
+        1,   0,        /* attr handle */
+        1,             /* attr type */
+        3,   0,        /* current string length */
+        'a', 'b', 'c', /* defaut value string handle index */
+    };
+    std::vector<uint8_t> integerEntry{
+        2,  0,                   /* attr handle */
+        3,                       /* attr type */
+        10, 0, 0, 0, 0, 0, 0, 0, /* current value */
+    };
+
+    Table table;
+    buildTable(table, enumEntry, stringEntry, integerEntry);
+
+    auto entry = pldm_bios_table_attr_value_find_by_handle(table.data(),
+                                                           table.size(), 1);
+    EXPECT_NE(entry, nullptr);
+    auto rc = std::memcmp(entry, stringEntry.data(), stringEntry.size());
+    EXPECT_EQ(rc, 0);
+
+    entry = pldm_bios_table_attr_value_find_by_handle(table.data(),
+                                                      table.size(), 3);
+    EXPECT_EQ(entry, nullptr);
 }
 
 TEST(StringTable, EntryEncodeTest)
