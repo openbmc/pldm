@@ -517,6 +517,38 @@ int pldm_bios_table_attr_value_entry_encode_integer_check(void *entry,
 							  uint8_t attr_type,
 							  uint64_t cv);
 
+/** @brief Get the handle from the attribute value entry
+ *  @param[in] entry - Pointer to bios attribute value entry
+ *  @return handle to identify the attribute in the attribute value table
+ */
+uint16_t pldm_bios_table_attr_value_entry_decode_handle(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
+/** @brief Get the value field length from the attribute value entry
+ *  @param[in] entry - Pointer to bios attribute value entry
+ *  @return Length of the value filed
+ */
+size_t pldm_bios_table_attr_value_entry_value_length(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
+/** @brief Get the value field address from the attribute value entry
+ *  @param[in] entry - Pointer to bios attribute value entry
+ *  @return Pointer to the value field in the attribute value entry;
+ */
+const uint8_t *pldm_bios_table_attr_value_entry_value(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
+/** @brief Find an entry in attribute value table by handle
+ *  @param[in] table - The BIOS Attribute Value Table
+ *  @param[in] length - Length of the BIOS Attribute Value Table
+ *  @param[in] handle - handle to identify the attribute in the attribute value
+ * table
+ *  @return Pointer to the entry
+ */
+const struct pldm_bios_attr_val_table_entry *
+pldm_bios_table_attr_value_find_by_handle(const void *table, size_t length,
+					  uint16_t handle);
+
 /** @brief Get the size of pad and checksum
  *  @param[in] size_without_pad - Table size without pad
  *  @return The size of pad and checksum
