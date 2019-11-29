@@ -517,6 +517,34 @@ int pldm_bios_table_attr_value_entry_encode_integer_check(void *entry,
 							  uint8_t attr_type,
 							  uint64_t cv);
 
+/** @brief Get the handle from the attribute value entry
+ *  @param[in] entry - Pointer to bios attribute value entry
+ *  @return handle to identify the attribute in the attribute value table
+ */
+uint16_t pldm_bios_table_attr_value_entry_decode_handle(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
+/** @brief Get the value data from the attribute value entry
+ *  @param[in] entry - Pointer to bios attribute value entry
+ *  @param[in] buffer - Pointer to the buffer to receive the value data
+ *  @param[in,out] length - Pointer to the length of the buffer
+ *  @return pldm_completion_codes
+ */
+int pldm_bios_table_attr_value_entry_get_value(
+    const struct pldm_bios_attr_val_table_entry *entry, uint8_t *buffer,
+    size_t *length);
+
+/** @brief Find an entry in attribute value table by handle
+ *  @param[in] table - The BIOS Attribute Value Table
+ *  @param[in] length - Length of the BIOS Attribute Value Table
+ *  @param[in] handle - handle to identify the attribute in the attribute value
+ * table
+ *  @return Pointer to the entry
+ */
+const struct pldm_bios_attr_val_table_entry *
+pldm_bios_table_attr_value_find_by_handle(const void *table, size_t length,
+					  uint16_t handle);
+
 /** @brief Get the size of pad and checksum
  *  @param[in] size_without_pad - Table size without pad
  *  @return The size of pad and checksum
