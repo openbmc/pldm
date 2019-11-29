@@ -518,6 +518,14 @@ TEST(AttrValTable, StringEntryDecodeTest)
         stringEntry.data());
     auto length = pldm_bios_table_attr_value_entry_string_decode_length(entry);
     EXPECT_EQ(3, length);
+
+    auto handle = pldm_bios_table_attr_value_entry_decode_handle(entry);
+    EXPECT_EQ(0, handle);
+
+    auto valueLength = pldm_bios_table_attr_value_entry_value_length(entry);
+    EXPECT_EQ(5, valueLength);
+    auto value = pldm_bios_table_attr_value_entry_value(entry);
+    EXPECT_EQ(0, std::memcmp(value, stringEntry.data() + 3, valueLength));
 }
 
 TEST(AttrValTable, integerEntryEncodeTest)
@@ -616,6 +624,49 @@ TEST(AttrValTable, IteratorTest)
     EXPECT_TRUE(pldm_bios_table_iter_is_end(iter));
 
     pldm_bios_table_iter_free(iter);
+}
+
+TEST(AttrValTable, FindTest)
+{
+    std::vector<uint8_t> enumEntry{
+        0, 0, /* attr handle */
+        0,    /* attr type */
+        2,    /* number of current value */
+        0,    /* current value string handle index */
+        1,    /* current value string handle index */
+    };
+    std::vector<uint8_t> stringEntry{
+        1,   0,        /* attr handle */
+        1,             /* attr type */
+        3,   0,        /* current string length */
+        'a', 'b', 'c', /* defaut value string handle index */
+    };
+    std::vector<uint8_t> integerEntry{
+        2,  0,                   /* attr handle */
+        3,                       /* attr type */
+        10, 0, 0, 0, 0, 0, 0, 0, /* current value */
+    };
+
+    Table table;
+    buildTable(table, enumEntry, stringEntry, integerEntry);
+
+    auto entry = pldm_bios_table_attr_value_find_by_handle(table.data(),
+                                                           table.size(), 1);
+    EXPECT_NE(entry, nullptr);
+    auto p = reinterpret_cast<const uint8_t*>(entry);
+    EXPECT_THAT(std::vector<uint8_t>(p, p + stringEntry.size()),
+                ElementsAreArray(stringEntry));
+
+    entry = pldm_bios_table_attr_value_find_by_handle(table.data(),
+                                                      table.size(), 3);
+    EXPECT_EQ(entry, nullptr);
+
+    auto firstEntry =
+        reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(table.data());
+    firstEntry->attr_type = PLDM_BIOS_PASSWORD;
+    EXPECT_DEATH(pldm_bios_table_attr_value_find_by_handle(table.data(),
+                                                           table.size(), 1),
+                 "entry_length != NULL");
 }
 
 TEST(StringTable, EntryEncodeTest)
