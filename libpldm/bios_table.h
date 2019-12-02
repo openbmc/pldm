@@ -70,6 +70,17 @@ pldm_bios_table_iter_string_entry_value(struct pldm_bios_table_iter *iter)
 	    pldm_bios_table_iter_value(iter);
 }
 
+/** @brief Get the bios attribute value table entry that the iterator ponit to
+ *  @param[in] iter - Pointer the bios attribute value table iterator
+ *  @return Pointer to an entry in bios attribute value table
+ */
+static inline const struct pldm_bios_attr_val_table_entry *
+pldm_bios_table_iter_attr_value_entry_value(struct pldm_bios_table_iter *iter)
+{
+	return (const struct pldm_bios_attr_val_table_entry *)
+	    pldm_bios_table_iter_value(iter);
+}
+
 /** @brief Get the length of an entry in the BIOS String Table
  *  @param[in] string_length - Length of string
  *  @return Length of an entry in bytes
@@ -398,6 +409,13 @@ void pldm_bios_table_attr_value_entry_encode_enum(
     void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
     uint8_t count, uint8_t *handle_indexes);
 
+/** @brief Get number of current values for the enum entry
+ *  @param[in] entry - Pointer to bios attribute value table entry
+ *  @return Total number of current values for this enumeration
+ */
+uint8_t pldm_bios_table_attr_value_entry_enum_decode_number(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
 /** @brief Create an attribute value entry(type: enum) and check the validity of
  * the parameters
  *  @param[out] entry - Pointer to bios attribute value entry
@@ -437,6 +455,14 @@ pldm_bios_table_attr_value_entry_encode_string_length(uint16_t string_length);
 void pldm_bios_table_attr_value_entry_encode_string(
     void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
     uint16_t string_length, const char *string);
+
+/** @brief Get length of the current string in bytes
+ *  @param [in] entry - Pointer to bios attribute value table entry
+ *  @return The length of the current string in bytes
+ */
+uint16_t pldm_bios_table_attr_value_entry_string_decode_length(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
 /** @brief Create an attribute value entry(type: string) and check the validity
  * of the parameters
  *  @param[out] entry - Pointer to bios attribute value entry
