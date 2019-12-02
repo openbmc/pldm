@@ -254,8 +254,7 @@ int pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
 
 /** @brief Get length of an enum attribute entry
  */
-static size_t
-attr_table_entry_length_enum(const struct pldm_bios_attr_table_entry *entry)
+static size_t attr_table_entry_length_enum(const void *entry)
 {
 	uint8_t pv_num = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
 	uint8_t def_num = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
@@ -375,8 +374,7 @@ int pldm_bios_table_attr_entry_string_decode_def_string_length_check(
 
 /** @brief Get length of a string attribute entry
  */
-static size_t
-attr_table_entry_length_string(const struct pldm_bios_attr_table_entry *entry)
+static size_t attr_table_entry_length_string(const void *entry)
 {
 	uint16_t def_str_len =
 	    pldm_bios_table_attr_entry_string_decode_def_string_length(entry);
@@ -469,20 +467,31 @@ int pldm_bios_table_attr_entry_integer_encode_check(
 	return PLDM_SUCCESS;
 }
 
-static size_t
-attr_table_entry_length_integer(const struct pldm_bios_attr_table_entry *entry)
+static size_t attr_table_entry_length_integer(const void *entry)
 {
 	(void)entry;
 	return pldm_bios_table_attr_entry_integer_encode_length();
 }
 
-struct attr_table_entry {
+struct table_entry_length {
 	uint8_t attr_type;
-	size_t (*entry_length_handler)(
-	    const struct pldm_bios_attr_table_entry *);
+	size_t (*entry_length_handler)(const void *);
 };
 
-static struct attr_table_entry attr_table_entrys[] = {
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+
+static struct table_entry_length *find_table_entry_length_by_type(
+    uint8_t attr_type, struct table_entry_length *handlers, size_t count)
+{
+	size_t i;
+	for (i = 0; i < count; i++) {
+		if (attr_type == handlers[i].attr_type)
+			return &handlers[i];
+	}
+	return NULL;
+}
+
+static struct table_entry_length attr_table_entries[] = {
     {.attr_type = PLDM_BIOS_ENUMERATION,
      .entry_length_handler = attr_table_entry_length_enum},
     {.attr_type = PLDM_BIOS_ENUMERATION_READ_ONLY,
@@ -497,23 +506,13 @@ static struct attr_table_entry attr_table_entrys[] = {
      .entry_length_handler = attr_table_entry_length_integer},
 };
 
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
-
-static struct attr_table_entry *find_attr_table_entry_by_type(uint8_t attr_type)
-{
-	size_t i;
-	for (i = 0; i < ARRAY_SIZE(attr_table_entrys); i++) {
-		if (attr_type == attr_table_entrys[i].attr_type)
-			return &attr_table_entrys[i];
-	}
-	return NULL;
-}
-
 static size_t attr_table_entry_length(const void *table_entry)
 {
 	const struct pldm_bios_attr_table_entry *entry = table_entry;
-	struct attr_table_entry *attr_table_entry =
-	    find_attr_table_entry_by_type(entry->attr_type);
+	struct table_entry_length *attr_table_entry =
+	    find_table_entry_length_by_type(entry->attr_type,
+					    attr_table_entries,
+					    ARRAY_SIZE(attr_table_entries));
 	assert(attr_table_entry != NULL);
 	assert(attr_table_entry->entry_length_handler != NULL);
 
@@ -542,6 +541,12 @@ void pldm_bios_table_attr_value_entry_encode_enum(
 		memcpy(&table_entry->value[1], handles, count);
 }
 
+uint8_t pldm_bios_table_attr_value_entry_enum_decode_number(
+    const struct pldm_bios_attr_val_table_entry *entry)
+{
+	return entry->value[0];
+}
+
 int pldm_bios_table_attr_value_entry_encode_enum_check(
     void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
     uint8_t count, uint8_t *handles)
@@ -556,6 +561,13 @@ int pldm_bios_table_attr_value_entry_encode_enum_check(
 	pldm_bios_table_attr_value_entry_encode_enum(
 	    entry, entry_length, attr_handle, attr_type, count, handles);
 	return PLDM_SUCCESS;
+}
+
+static size_t attr_value_table_entry_length_enum(const void *entry)
+{
+	uint8_t number =
+	    pldm_bios_table_attr_value_entry_enum_decode_number(entry);
+	return pldm_bios_table_attr_value_entry_encode_enum_length(number);
 }
 
 size_t
@@ -583,6 +595,14 @@ void pldm_bios_table_attr_value_entry_encode_string(
 	memcpy(table_entry->value, &str_length, sizeof(str_length));
 }
 
+uint16_t pldm_bios_table_attr_value_entry_string_decode_length(
+    const struct pldm_bios_attr_val_table_entry *entry)
+{
+	uint16_t str_length = 0;
+	memcpy(&str_length, entry->value, sizeof(str_length));
+	return le16toh(str_length);
+}
+
 int pldm_bios_table_attr_value_entry_encode_string_check(
     void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
     uint16_t str_length, const char *str)
@@ -597,6 +617,14 @@ int pldm_bios_table_attr_value_entry_encode_string_check(
 	pldm_bios_table_attr_value_entry_encode_string(
 	    entry, entry_length, attr_handle, attr_type, str_length, str);
 	return PLDM_SUCCESS;
+}
+
+static size_t attr_value_table_entry_length_string(const void *entry)
+{
+	uint16_t str_length =
+	    pldm_bios_table_attr_value_entry_string_decode_length(entry);
+	return pldm_bios_table_attr_value_entry_encode_string_length(
+	    str_length);
 }
 
 size_t pldm_bios_table_attr_value_entry_encode_integer_length()
@@ -635,6 +663,40 @@ int pldm_bios_table_attr_value_entry_encode_integer_check(void *entry,
 	pldm_bios_table_attr_value_entry_encode_integer(
 	    entry, entry_length, attr_handle, attr_type, cv);
 	return PLDM_SUCCESS;
+}
+
+static size_t attr_value_table_entry_length_integer(const void *entry)
+{
+	(void)entry;
+	return pldm_bios_table_attr_value_entry_encode_integer_length();
+}
+
+static struct table_entry_length attr_value_table_entries[] = {
+    {.attr_type = PLDM_BIOS_ENUMERATION,
+     .entry_length_handler = attr_value_table_entry_length_enum},
+    {.attr_type = PLDM_BIOS_ENUMERATION_READ_ONLY,
+     .entry_length_handler = attr_value_table_entry_length_enum},
+    {.attr_type = PLDM_BIOS_STRING,
+     .entry_length_handler = attr_value_table_entry_length_string},
+    {.attr_type = PLDM_BIOS_STRING_READ_ONLY,
+     .entry_length_handler = attr_value_table_entry_length_string},
+    {.attr_type = PLDM_BIOS_INTEGER,
+     .entry_length_handler = attr_value_table_entry_length_integer},
+    {.attr_type = PLDM_BIOS_INTEGER_READ_ONLY,
+     .entry_length_handler = attr_value_table_entry_length_integer},
+};
+
+static size_t attr_value_table_entry_length(const void *table_entry)
+{
+	const struct pldm_bios_attr_val_table_entry *entry = table_entry;
+	struct table_entry_length *entry_length =
+	    find_table_entry_length_by_type(
+		entry->attr_type, attr_value_table_entries,
+		ARRAY_SIZE(attr_value_table_entries));
+	assert(entry_length != NULL);
+	assert(entry_length->entry_length_handler != NULL);
+
+	return entry_length->entry_length_handler(entry);
 }
 
 static size_t pad_size_get(size_t size_without_pad)
@@ -706,6 +768,7 @@ pldm_bios_table_iter_create(const void *table, size_t length,
 		iter->entry_length_handler = attr_table_entry_length;
 		break;
 	case PLDM_BIOS_ATTR_VAL_TABLE:
+		iter->entry_length_handler = attr_value_table_entry_length;
 		break;
 	}
 
