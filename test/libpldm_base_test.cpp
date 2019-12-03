@@ -1,6 +1,8 @@
 #include <string.h>
 
 #include <array>
+#include <vector>
+#include <cstring>
 
 #include "libpldm/base.h"
 
@@ -465,4 +467,18 @@ TEST(GetTID, testDecodeResponse)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(completion_code, PLDM_SUCCESS);
     ASSERT_EQ(tid, 1);
+}
+
+TEST(OnlyCcResponse, testEncode)
+{
+    struct pldm_msg responseMsg;
+
+    auto rc =
+        encode_only_cc_resp(0 /*instance id*/, 1 /*pldm type*/, 2 /*command*/,
+                            3 /*complection code*/, &responseMsg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    std::vector<uint8_t> expectEncodeMsg = {0, 1, 2, 3};
+    EXPECT_EQ(0, std::memcmp(expectEncodeMsg.data(), &responseMsg,
+                             sizeof(struct pldm_msg)));
 }
