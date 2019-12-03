@@ -28,6 +28,17 @@ class TestHandler : public CmdHandler
     }
 };
 
+TEST(CcOnlyResponse, testEncode)
+{
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    encode_get_types_req(0, request);
+
+    auto responseMsg = CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
+    std::vector<uint8_t> expectMsg = {0, 0, 4, 1};
+    EXPECT_EQ(responseMsg, expectMsg);
+}
+
 TEST(Registration, testSuccess)
 {
     Invoker invoker{};
