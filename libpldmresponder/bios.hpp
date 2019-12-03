@@ -67,6 +67,14 @@ class Handler : public CmdHandler
      *  @param[return] Response - PLDM Response message
      */
     Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Create a response message containing only cc
+     *
+     *  @param[in] request - PLDM request message
+     *  @param[in] cc - Completion Code
+     *  @return PLDM response message
+     */
+    Response onlyCCResponse(const pldm_msg* request, uint8_t cc);
 };
 
 } // namespace bios
