@@ -1,10 +1,15 @@
 #include <string.h>
 
 #include <array>
+#include <cstring>
+#include <vector>
 
 #include "libpldm/base.h"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+using testing::ElementsAreArray;
 
 constexpr auto hdrSize = sizeof(pldm_msg_hdr);
 
@@ -465,4 +470,18 @@ TEST(GetTID, testDecodeResponse)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(completion_code, PLDM_SUCCESS);
     ASSERT_EQ(tid, 1);
+}
+
+TEST(CcOnlyResponse, testEncode)
+{
+    struct pldm_msg responseMsg;
+
+    auto rc =
+        encode_cc_only_resp(0 /*instance id*/, 1 /*pldm type*/, 2 /*command*/,
+                            3 /*complection code*/, &responseMsg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    std::vector<uint8_t> expectEncodeMsg = {0, 1, 2, 3};
+    EXPECT_THAT(expectEncodeMsg,
+                ElementsAreArray((uint8_t*)&responseMsg, sizeof(responseMsg)));
 }

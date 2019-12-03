@@ -412,6 +412,18 @@ int decode_get_version_req(const struct pldm_msg *msg, size_t payload_length,
 int encode_get_tid_resp(uint8_t instance_id, uint8_t completion_code,
 			uint8_t tid, struct pldm_msg *msg);
 
+/** @brief Create a PLDM response message containing only cc
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] type - PLDM Type
+ *  @param[in] command - PLDM Command
+ *  @param[in] cc - PLDM Completion Code
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
+			uint8_t cc, struct pldm_msg *msg);
+
 #ifdef __cplusplus
 }
 #endif
