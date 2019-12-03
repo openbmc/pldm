@@ -367,3 +367,26 @@ int decode_get_tid_resp(const struct pldm_msg *msg, size_t payload_length,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
+			uint8_t cc, struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = type;
+	header.command = command;
+	int rc = pack_pldm_header(&header, &msg->hdr);
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	msg->payload[0] = cc;
+
+	return PLDM_SUCCESS;
+}
