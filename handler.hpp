@@ -1,7 +1,9 @@
 #pragma once
 
+#include <cassert>
 #include <functional>
 #include <map>
+#include <vector>
 
 #include "libpldm/base.h"
 
@@ -32,6 +34,23 @@ class CmdHandler
                     size_t reqMsgLen)
     {
         return handlers.at(pldmCommand)(request, reqMsgLen);
+    }
+
+    /** @brief Create a response message containing only cc
+     *
+     *  @param[in] request - PLDM request message
+     *  @param[in] cc - Completion Code
+     *  @return PLDM response message
+     */
+    static Response ccOnlyResponse(const pldm_msg* request, uint8_t cc)
+    {
+        Response response(sizeof(pldm_msg), 0);
+        auto ptr = reinterpret_cast<pldm_msg*>(response.data());
+        auto rc =
+            encode_cc_only_resp(request->hdr.instance_id, request->hdr.type,
+                                request->hdr.command, cc, ptr);
+        assert(rc == PLDM_SUCCESS);
+        return response;
     }
 
   protected:
