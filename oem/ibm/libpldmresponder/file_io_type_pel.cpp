@@ -40,15 +40,16 @@ int PelHandler::read(uint32_t /*offset*/, uint32_t& /*length*/,
 int PelHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address)
 {
-    fs::create_directories(PEL_TEMP_DIR);
-
-    auto timeMs =
-        std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch())
-            .count();
-    std::string fileName(PEL_TEMP_DIR);
-    fileName += "/pel." + std::to_string(timeMs);
-    fs::path path(std::move(fileName));
+    char tmpFile[] = "/tmp/pel.XXXXXX";
+    int fd = mkstemp(tmpFile);
+    if (fd == -1)
+    {
+        log<level::ERR>("failed to create a temporary pel",
+                        entry("ERROR=%d", errno));
+        return PLDM_ERROR;
+    }
+    close(fd);
+    fs::path path(tmpFile);
 
     auto rc = transferFileData(path, false, offset, length, address);
     if (rc == PLDM_SUCCESS)
