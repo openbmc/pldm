@@ -8,6 +8,7 @@
 #include <boost/crc.hpp>
 #include <chrono>
 #include <ctime>
+#include <iostream>
 #include <memory>
 #include <numeric>
 #include <phosphor-logging/elog-errors.hpp>
@@ -53,6 +54,30 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
         decimalToBcd(time->tm_mon + 1); // The number of months in the range
                                         // 0 to 11.PLDM expects range 1 to 12
     year = decimalToBcd(time->tm_year + 1900); // The number of years since 1900
+}
+
+std::time_t BCDTimeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
+                           uint8_t day, uint8_t month, uint16_t year)
+{
+    uint8_t sseconds = bcd2dec8(seconds);
+    uint8_t sminutes = bcd2dec8(minutes);
+    uint8_t shours = bcd2dec8(hours);
+    uint8_t sdays = bcd2dec8(day);
+    uint8_t smonth = bcd2dec8(month) - 1;
+    uint16_t syear = bcd2dec16(year) - 1900;
+
+    struct std::tm stm;
+    stm.tm_year = syear;
+    stm.tm_mon = smonth;
+    stm.tm_mday = sdays;
+    stm.tm_hour = shours;
+    stm.tm_min = sminutes;
+    stm.tm_sec = sseconds;
+    stm.tm_isdst = -1;
+
+    auto timeSec = std::mktime(&stm);
+
+    return timeSec;
 }
 
 size_t getTableTotalsize(size_t sizeWithoutPad)
@@ -121,6 +146,106 @@ Response getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
 
     encode_get_date_time_resp(request->hdr.instance_id, PLDM_SUCCESS, seconds,
                               minutes, hours, day, month, year, responsePtr);
+    return response;
+}
+
+Response setDateTime(const pldm_msg* request, size_t payloadLength)
+{
+    uint8_t seconds = 0;
+    uint8_t minutes = 0;
+    uint8_t hours = 0;
+    uint8_t day = 0;
+    uint8_t month = 0;
+    uint16_t year = 0;
+    std::time_t timeSec;
+
+    constexpr auto getSyncModeInterface =
+        "xyz.openbmc_project.Time.Synchronization";
+    constexpr auto getSyncModePath = "/xyz/openbmc_project/time/sync_method";
+    constexpr auto timeOwnerInterface = "xyz.openbmc_project.Time.Owner";
+    constexpr auto timeOwnerPath = "/xyz/openbmc_project/time/owner";
+    constexpr auto setTimeInterface = "xyz.openbmc_project.Time.Manager";
+    constexpr auto setTimePath = "/xyz/openbmc_project/time/host";
+    constexpr auto timeOwnerPro = "TimeOwner";
+    constexpr auto timeSyncMethodPro = "TimeSyncMethod";
+    constexpr auto timeSetPro = "Elapsed";
+
+    Response response(sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp),
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    std::variant<EpochTimeUS> value;
+    auto bus = sdbusplus::bus::new_default();
+    auto dBusIntf = std::make_shared<DBusHandler>();
+
+    auto timeowner =
+        pldm::responder::DBusHandler().getDbusProperty<std::string>(
+            timeOwnerPath, timeOwnerPro, timeOwnerInterface);
+    if (timeowner == "xyz.openbmc_project.Time.Owner.Owners.Host")
+    {
+        log<level::ERR>(
+            "Not Allowed Error.Setting BmcTime with HOST owner is not allowed",
+            entry("PATH=%s", timeOwnerPath),
+            entry("TIME INTERACE=%s", timeOwnerInterface));
+
+        encode_set_date_time_resp(
+            request->hdr.instance_id, PLDM_ERROR, responsePtr,
+            sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp));
+
+        return response;
+    };
+
+    auto syncModeValue =
+        pldm::responder::DBusHandler().getDbusProperty<std::string>(
+            getSyncModePath, timeSyncMethodPro, getSyncModeInterface);
+    if (syncModeValue == "xyz.openbmc_project.Time.Synchronization.Method.NTP")
+    {
+        log<level::ERR>("Failed to set the time.The current mode is NTP ",
+                        entry("PATH=%s", getSyncModePath),
+                        entry("TIME INTERACE=%s", getSyncModeInterface));
+        elog<InternalFailure>();
+
+        return response;
+    };
+
+    try
+    {
+        auto rc =
+            decode_set_date_time_req(request, payloadLength, &seconds, &minutes,
+                                     &hours, &day, &month, &year);
+        if (rc != PLDM_SUCCESS)
+        {
+            encode_set_date_time_resp(
+                request->hdr.instance_id, PLDM_ERROR, responsePtr,
+                sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp));
+
+            return response;
+        }
+        timeSec =
+            utils::BCDTimeToEpoch(seconds, minutes, hours, day, month, year);
+        uint64_t timeUsec =
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                std::chrono::seconds(timeSec))
+                .count();
+        std::variant<uint64_t> value{timeUsec};
+
+        dBusIntf->setDbusProperty(setTimePath, timeSetPro, setTimeInterface,
+                                  value);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("Error Setting time", entry("PATH=%s", setTimePath),
+                        entry("TIME INTERACE=%s", setTimeInterface));
+
+        encode_set_date_time_resp(
+            request->hdr.instance_id, PLDM_ERROR, responsePtr,
+            sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp));
+        return response;
+    }
+
+    encode_set_date_time_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, responsePtr,
+        sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp));
+
     return response;
 }
 
