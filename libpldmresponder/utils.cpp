@@ -50,6 +50,17 @@ std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
 namespace utils
 {
 
+uint8_t bcd2dec8(uint8_t bcd)
+{
+    uint8_t dec = (bcd >> 4) * 10 + (bcd & 0x0f);
+    return dec;
+}
+
+uint16_t bcd2dec16(uint16_t bcd)
+{
+    return bcd2dec8(bcd >> 8) * 100 + bcd2dec8(bcd & 0xff);
+}
+
 uint8_t getNumPadBytes(uint32_t data)
 {
     uint8_t pad;
