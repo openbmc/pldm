@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 
+#include <ctime>
 #include <functional>
 #include <map>
 #include <vector>
@@ -67,6 +68,13 @@ class Handler : public CmdHandler
      *  @param[return] Response - PLDM Response message
      */
     Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for SetDateTime
+     *
+     *  @param[in] request - Request message payload
+     *  @param[return] Response - PLDM Response message
+     */
+    Response setDateTime(const pldm_msg* request, size_t payloadLength);
 };
 
 } // namespace bios
@@ -87,6 +95,19 @@ namespace utils
 void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
                     uint8_t& hours, uint8_t& day, uint8_t& month,
                     uint16_t& year);
+
+/** @brief Convert dec time to epoch time
+ *
+ *  @param[in] seconds - number of seconds in dec
+ *  @param[in] minutes - number of minutes in dec
+ *  @param[in] hours - number of hours in dec
+ *  @param[in] day - day of the month in dec
+ *  @param[in] month - month number in dec
+ *  @param[in] year - year number in dec
+ *  @return time - epoch time
+ */
+std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
+                        uint8_t day, uint8_t month, uint16_t year);
 } // namespace utils
 
 } // namespace responder
