@@ -3,6 +3,8 @@
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
+#include <time.h>
+
 #include <array>
 #include <boost/crc.hpp>
 #include <chrono>
@@ -59,6 +61,24 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
                                      1900); // The number of years since 1900
 }
 
+std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
+                        uint8_t day, uint8_t month, uint16_t year)
+{
+    struct std::tm stm;
+
+    stm.tm_year = year - 1900;
+    stm.tm_mon = month - 1;
+    stm.tm_mday = day;
+    stm.tm_hour = hours;
+    stm.tm_min = minutes;
+    stm.tm_sec = seconds;
+    stm.tm_isdst = -1;
+
+    // It will get the time in seconds since
+    // Epoch, 1970.1.1 00:00:00 +0000,UTC.
+    return timegm(&stm);
+}
+
 size_t getTableTotalsize(size_t sizeWithoutPad)
 {
     return sizeWithoutPad + pldm_bios_table_pad_checksum_size(sizeWithoutPad);
@@ -93,7 +113,10 @@ Handler::Handler()
     catch (const std::exception& e)
     {
     }
-
+    handlers.emplace(PLDM_SET_DATE_TIME,
+                     [this](const pldm_msg* request, size_t payloadLength) {
+                         return this->setDateTime(request, payloadLength);
+                     });
     handlers.emplace(PLDM_GET_DATE_TIME,
                      [this](const pldm_msg* request, size_t payloadLength) {
                          return this->getDateTime(request, payloadLength);
@@ -153,6 +176,50 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     encode_get_date_time_resp(request->hdr.instance_id, PLDM_SUCCESS, seconds,
                               minutes, hours, day, month, year, responsePtr);
     return response;
+}
+
+Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
+{
+    uint8_t seconds = 0;
+    uint8_t minutes = 0;
+    uint8_t hours = 0;
+    uint8_t day = 0;
+    uint8_t month = 0;
+    uint16_t year = 0;
+    std::time_t timeSec;
+
+    constexpr auto setTimeInterface = "xyz.openbmc_project.Time.EpochTime";
+    constexpr auto setTimePath = "/xyz/openbmc_project/time/host";
+    constexpr auto timeSetPro = "Elapsed";
+
+    auto rc = decode_set_date_time_req(request, payloadLength, &seconds,
+                                       &minutes, &hours, &day, &month, &year);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+    timeSec = pldm::responder::utils::timeToEpoch(seconds, minutes, hours, day,
+                                                  month, year);
+    uint64_t timeUsec = std::chrono::duration_cast<std::chrono::microseconds>(
+                            std::chrono::seconds(timeSec))
+                            .count();
+    std::variant<uint64_t> value{timeUsec};
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(setTimePath, timeSetPro,
+                                                   setTimeInterface, value);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr << "Error Setting time,PATH=" << setTimePath
+                  << "TIME INTERFACE=" << setTimeInterface
+                  << "ERROR=" << e.what() << "\n";
+
+        return ccOnlyResponse(request, PLDM_ERROR);
+    }
+
+    return ccOnlyResponse(request, PLDM_SUCCESS);
 }
 
 /** @brief Construct the BIOS string table
