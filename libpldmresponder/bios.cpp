@@ -60,6 +60,26 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
     year = decimalToBcd(time->tm_year + 1900); // The number of years since 1900
 }
 
+std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
+                        uint8_t day, uint8_t month, uint16_t year)
+{
+    struct std::tm stm;
+
+    stm.tm_year = year - 1900;
+    stm.tm_mon = month - 1;
+    stm.tm_mday = day;
+    stm.tm_hour = hours;
+    stm.tm_min = minutes;
+    stm.tm_sec = seconds;
+    stm.tm_isdst = -1;
+
+    // Like `mktime', return the `time_t' representation of TP and normalize
+    // TP,but for TP represents Universal Time, not local time.
+    auto timeSec = timegm(&stm);
+
+    return timeSec;
+}
+
 size_t getTableTotalsize(size_t sizeWithoutPad)
 {
     return sizeWithoutPad + pldm_bios_table_pad_checksum_size(sizeWithoutPad);
@@ -94,7 +114,10 @@ Handler::Handler()
     catch (const std::exception& e)
     {
     }
-
+    handlers.emplace(PLDM_SET_DATE_TIME,
+                     [this](const pldm_msg* request, size_t payloadLength) {
+                         return this->setDateTime(request, payloadLength);
+                     });
     handlers.emplace(PLDM_GET_DATE_TIME,
                      [this](const pldm_msg* request, size_t payloadLength) {
                          return this->getDateTime(request, payloadLength);
@@ -155,6 +178,69 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
 
     encode_get_date_time_resp(request->hdr.instance_id, PLDM_SUCCESS, seconds,
                               minutes, hours, day, month, year, responsePtr);
+    return response;
+}
+
+Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
+{
+    uint8_t seconds = 0;
+    uint8_t minutes = 0;
+    uint8_t hours = 0;
+    uint8_t day = 0;
+    uint8_t month = 0;
+    uint16_t year = 0;
+    std::time_t timeSec;
+
+    constexpr auto setTimeInterface = "xyz.openbmc_project.Time.EpochTime";
+    constexpr auto setTimePath = "/xyz/openbmc_project/time/host";
+    constexpr auto timeSetPro = "Elapsed";
+
+    Response response(sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp),
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto bus = sdbusplus::bus::new_default();
+    auto dBusIntf = std::make_shared<DBusHandler>();
+
+    try
+    {
+        auto rc =
+            decode_set_date_time_req(request, payloadLength, &seconds, &minutes,
+                                     &hours, &day, &month, &year);
+        if (rc != PLDM_SUCCESS)
+        {
+            encode_set_date_time_resp(
+                request->hdr.instance_id, PLDM_ERROR, responsePtr,
+                sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp));
+
+            return response;
+        }
+        timeSec = pldm::responder::utils::timeToEpoch(seconds, minutes, hours,
+                                                      day, month, year);
+        uint64_t timeUsec =
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                std::chrono::seconds(timeSec))
+                .count();
+        std::variant<uint64_t> value{timeUsec};
+
+        dBusIntf->setDbusProperty(setTimePath, timeSetPro, setTimeInterface,
+                                  value);
+    }
+    catch (std::exception& e)
+    {
+        log<level::ERR>("Error Setting time", entry("PATH=%s", setTimePath),
+                        entry("TIME INTERACE=%s", setTimeInterface),
+                        entry("ERROR=%s", e.what()));
+
+        encode_set_date_time_resp(
+            request->hdr.instance_id, PLDM_ERROR, responsePtr,
+            sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp));
+        return response;
+    }
+
+    encode_set_date_time_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, responsePtr,
+        sizeof(pldm_msg_hdr) + sizeof(struct pldm_only_cc_resp));
+
     return response;
 }
 
