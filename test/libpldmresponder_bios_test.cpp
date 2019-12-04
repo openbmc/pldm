@@ -51,6 +51,23 @@ TEST(epochToBCDTime, testTime)
     ASSERT_EQ(0x2019, year);
 }
 
+TEST(timeToEpoch, testTime0)
+{
+    std::time_t ret = 1555132693;
+
+    uint8_t sec = 13;
+    uint8_t min = 18;
+    uint8_t hours = 5;
+    uint8_t day = 13;
+    uint8_t month = 4;
+    uint16_t year = 2019;
+
+    std::time_t timeSec = 0;
+    timeSec = timeToEpoch(sec, min, hours, day, month, year);
+
+    EXPECT_EQ(ret, timeSec);
+}
+
 TEST(GetBIOSStrings, allScenarios)
 {
     using namespace bios_parser;
