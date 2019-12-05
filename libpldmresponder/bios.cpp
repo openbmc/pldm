@@ -808,6 +808,48 @@ Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
+Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
+                                                       size_t payloadLength)
+{
+    uint32_t transferHandle;
+    uint8_t transferOpFlag;
+    uint16_t attributeHandle;
+
+    auto rc = decode_get_bios_attribute_current_value_by_handle_req(
+        request, payloadLength, &transferHandle, &transferOpFlag,
+        &attributeHandle);
+    if (rc != PLDM_SUCCESS)
+    {
+        return onlyCCResponse(request, PLDM_ERROR_INVALID_DATA);
+    }
+
+    BIOSTable attributeValueTable(
+        (std::string(BIOS_TABLES_DIR) + "/" + attrValTableFile).c_str());
+
+    Response table;
+    attributeValueTable.load(table);
+
+    auto entry = pldm_bios_table_attr_value_find_by_handle(
+        table.data(), table.size(), attributeHandle);
+    if (entry == nullptr)
+    {
+        return onlyCCResponse(request, PLDM_INVALID_BIOS_ATTR_HANDLE);
+    }
+
+    auto valueLength = pldm_bios_table_attr_value_entry_value_length(entry);
+    auto valuePtr = pldm_bios_table_attr_value_entry_value(entry);
+    Response response(sizeof(pldm_msg_hdr) +
+                          PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_MIN_RESP_BYTES +
+                          valueLength,
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    encode_get_bios_current_value_by_handle_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END, valuePtr,
+        valueLength, responsePtr);
+
+    return response;
+}
+
 namespace internal
 {
 
