@@ -70,6 +70,7 @@ pldmd
 /test-suite.log
 /test/*.gcda
 /test/*.gcno
+/test/vgcore.*
 /test/libpldm_base_test
 /test/libpldmresponder_base_test
 /test/libpldm_bios_test
