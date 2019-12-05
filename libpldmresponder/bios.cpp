@@ -103,6 +103,11 @@ Handler::Handler()
                      [this](const pldm_msg* request, size_t payloadLength) {
                          return this->getBIOSTable(request, payloadLength);
                      });
+    handlers.emplace(PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE,
+                     [this](const pldm_msg* request, size_t payloadLength) {
+                         return this->getBIOSAttributeCurrentValueByHandle(
+                             request, payloadLength);
+                     });
 }
 
 Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
@@ -804,6 +809,49 @@ Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
     fs::create_directory(BIOS_TABLES_DIR);
     auto response = internal::buildBIOSTables(request, payloadLength,
                                               BIOS_JSONS_DIR, BIOS_TABLES_DIR);
+
+    return response;
+}
+
+Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
+                                                       size_t payloadLength)
+{
+    uint32_t transferHandle;
+    uint8_t transferOpFlag;
+    uint16_t attributeHandle;
+
+    auto rc = decode_get_bios_attribute_current_value_by_handle_req(
+        request, payloadLength, &transferHandle, &transferOpFlag,
+        &attributeHandle);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    fs::path attrValueTablePath(BIOS_TABLES_DIR);
+    attrValueTablePath /= attrValTableFile;
+    BIOSTable attributeValueTable(attrValueTablePath.c_str());
+
+    Response table;
+    attributeValueTable.load(table);
+
+    auto entry = pldm_bios_table_attr_value_find_by_handle(
+        table.data(), table.size(), attributeHandle);
+    if (entry == nullptr)
+    {
+        return ccOnlyResponse(request, PLDM_INVALID_BIOS_ATTR_HANDLE);
+    }
+
+    auto valueLength = pldm_bios_table_attr_value_entry_value_length(entry);
+    auto valuePtr = pldm_bios_table_attr_value_entry_value(entry);
+    Response response(sizeof(pldm_msg_hdr) +
+                          PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_MIN_RESP_BYTES +
+                          valueLength,
+                      0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    encode_get_bios_current_value_by_handle_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END, valuePtr,
+        valueLength, responsePtr);
 
     return response;
 }

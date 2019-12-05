@@ -26,7 +26,10 @@ static const std::map<Type, Cmd> capabilities{
      {PLDM_GET_TID, PLDM_GET_PLDM_VERSION, PLDM_GET_PLDM_TYPES,
       PLDM_GET_PLDM_COMMANDS}},
     {PLDM_PLATFORM, {PLDM_SET_STATE_EFFECTER_STATES}},
-    {PLDM_BIOS, {PLDM_GET_DATE_TIME}}};
+    {PLDM_BIOS,
+     {PLDM_GET_DATE_TIME, PLDM_GET_BIOS_TABLE,
+      PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE}},
+};
 
 static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
