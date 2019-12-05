@@ -67,6 +67,15 @@ class Handler : public CmdHandler
      *  @param[return] Response - PLDM Response message
      */
     Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for GetBIOSAttributeCurrentValueByHandle
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request message payload length
+     *  @return Response - PLDM Response message
+     */
+    Response getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
+                                                  size_t payloadLength);
 };
 
 } // namespace bios
