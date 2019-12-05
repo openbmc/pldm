@@ -53,6 +53,13 @@ class Handler : public CmdHandler
   public:
     Handler();
 
+    /** @brief Create a response message containing only cc
+     *
+     *  @param[in] request - PLDM request message
+     *  @param[in] cc - Completion Code
+     *  @return PLDM response message
+     */
+    Response onlyCCResponse(const pldm_msg* request, uint8_t cc);
     /** @brief Handler for GetDateTime
      *
      *  @param[in] request - Request message payload
@@ -68,14 +75,14 @@ class Handler : public CmdHandler
      */
     Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
 
-    /** @brief Create a response message containing only cc
+    /** @brief Handler for GetBIOSAttributeCurrentValueByHandle
      *
-     *  @param[in] request - PLDM request message
-     *  @param[in] cc - Completion Code
-     *  @return PLDM response message
+     *  @param[in] request - Request message
+     *  @param[in] payload_length - Request message payload length
+     *  @param[return] Response - PLDM Response message
      */
-    Response onlyCCResponse(const pldm_msg* request, uint8_t cc);
-
+    Response getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
+                                                  size_t payloadLength);
 };
 
 } // namespace bios
