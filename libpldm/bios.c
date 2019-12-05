@@ -285,6 +285,40 @@ int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 	return PLDM_SUCCESS;
 }
 
+int decode_get_bios_table_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint32_t *next_transfer_handle,
+			       uint8_t *transfer_flag,
+			       size_t *bios_table_offset)
+
+{
+	if (msg == NULL || transfer_flag == NULL ||
+	    next_transfer_handle == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length <= PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_bios_table_resp *response =
+	    (struct pldm_get_bios_table_resp *)msg->payload;
+
+	*completion_code = response->completion_code;
+
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
+	*next_transfer_handle = le32toh(response->next_transfer_handle);
+	*transfer_flag = response->transfer_flag;
+
+	*bios_table_offset = sizeof(*completion_code) +
+			     sizeof(*next_transfer_handle) +
+			     sizeof(*transfer_flag);
+
+	return PLDM_SUCCESS;
+}
+
 int decode_get_bios_attribute_current_value_by_handle_req(
     const struct pldm_msg *msg, size_t payload_length,
     uint32_t *transfer_handle, uint8_t *transfer_op_flag,

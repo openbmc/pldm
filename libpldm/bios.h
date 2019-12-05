@@ -315,6 +315,25 @@ int decode_get_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
 			      uint32_t *transfer_handle,
 			      uint8_t *transfer_op_flag, uint8_t *table_type);
 
+/** @brief Decode GetBIOSTable response packet
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_transfer_handle - handle to identify the next portion of the
+ *                                    transfer
+ *  @param[in] transfer_flag - To indicate what part of the transfer this
+ *                             response represents
+ *  @param[out] bios_table_offset - Offset where bios table data should be read
+ *                                  in pldm msg
+ *  @return pldm_completion_codes
+ */
+int decode_get_bios_table_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint32_t *next_transfer_handle,
+			       uint8_t *transfer_flag,
+			       size_t *bios_table_offset);
+
 /* GetBIOSAttributeCurrentValueByHandle */
 
 /** @brief Decode GetBIOSAttributeCurrentValueByHandle request packet
