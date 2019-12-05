@@ -568,3 +568,39 @@ TEST(SetBiosAttributeCurrentValue, testBadDecodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetBIOSTable, testDecodeResponse)
+{
+    static uint32_t nextTransferHandle = 32;
+    static uint8_t completionCode = PLDM_SUCCESS;
+    static uint8_t transfer_flag = PLDM_START_AND_END;
+    uint8_t table_data[1];
+
+    std::array<uint8_t, hdrSize + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES - 1>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+
+    struct pldm_get_bios_table_resp* resp =
+        reinterpret_cast<struct pldm_get_bios_table_resp*>(response->payload);
+
+    resp->completion_code = completionCode;
+    resp->next_transfer_handle = htole32(nextTransferHandle);
+    resp->transfer_flag = transfer_flag;
+    memcpy(resp->table_data, &table_data,
+           sizeof(PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES));
+
+    uint8_t retCompletionCode;
+    uint32_t retNextTransferHandle;
+    uint8_t retransfer_flag;
+    uint8_t retable_data[1];
+    auto rc = decode_get_bios_table_resp(
+        response, responseMsg.size(), &retCompletionCode,
+        &retNextTransferHandle, &retransfer_flag, retable_data);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completionCode, retCompletionCode);
+    ASSERT_EQ(nextTransferHandle, retNextTransferHandle);
+    ASSERT_EQ(transfer_flag, retransfer_flag);
+    ASSERT_EQ(sizeof(table_data), sizeof(retable_data));
+}
