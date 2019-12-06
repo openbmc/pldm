@@ -67,17 +67,18 @@ int decode_get_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	if (payload_length != PLDM_GET_DATE_TIME_RESP_BYTES) {
-		return PLDM_ERROR_INVALID_LENGTH;
-	}
-
 	struct pldm_get_date_time_resp *response =
 	    (struct pldm_get_date_time_resp *)msg->payload;
 	*completion_code = response->completion_code;
 
 	if (PLDM_SUCCESS != *completion_code) {
-		return PLDM_SUCCESS;
+		return *completion_code;
 	}
+
+	if (payload_length != PLDM_GET_DATE_TIME_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
 	*seconds = response->seconds;
 	*minutes = response->minutes;
 	*hours = response->hours;
@@ -389,16 +390,17 @@ int decode_set_bios_attribute_current_value_resp(const struct pldm_msg *msg,
 	    next_transfer_handle == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-	if (payload_length != PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES) {
-		return PLDM_ERROR_INVALID_LENGTH;
-	}
 
 	struct pldm_set_bios_attribute_current_value_resp *response =
 	    (struct pldm_set_bios_attribute_current_value_resp *)msg->payload;
 
 	*completion_code = response->completion_code;
 	if (PLDM_SUCCESS != *completion_code) {
-		return PLDM_SUCCESS;
+		return *completion_code;
+	}
+
+	if (payload_length != PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
 	}
 	*next_transfer_handle = le32toh(response->next_transfer_handle);
 

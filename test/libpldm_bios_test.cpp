@@ -768,17 +768,26 @@ TEST(SetBiosAttributeCurrentValue, testBadDecodeResponse)
     uint32_t nextTransferHandle = 32;
     uint8_t completionCode = PLDM_SUCCESS;
 
-    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES - 1>
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES>
         responseMsg{};
     struct pldm_msg* response =
         reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    struct pldm_set_bios_attribute_current_value_resp* resp =
+        reinterpret_cast<struct pldm_set_bios_attribute_current_value_resp*>(
+            response->payload);
+
+    resp->completion_code = completionCode;
+    resp->next_transfer_handle = htole32(nextTransferHandle);
+
+    uint8_t retCompletionCode;
+    uint32_t retNextTransferHandle;
     auto rc = decode_set_bios_attribute_current_value_resp(
         nullptr, 0, &completionCode, &nextTransferHandle);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     rc = decode_set_bios_attribute_current_value_resp(
-        response, responseMsg.size() - hdrSize, &completionCode,
-        &nextTransferHandle);
+        response, responseMsg.size() - hdrSize - 1, &retCompletionCode,
+        &retNextTransferHandle);
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
