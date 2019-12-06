@@ -233,6 +233,11 @@ int unpack_pldm_header(const struct pldm_msg_hdr *msg,
 int encode_get_types_req(uint8_t instance_id, struct pldm_msg *msg);
 
 /** @brief Decode a GetPLDMTypes response message
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
@@ -260,6 +265,11 @@ int encode_get_commands_req(uint8_t instance_id, uint8_t type, ver32_t version,
 			    struct pldm_msg *msg);
 
 /** @brief Decode a GetPLDMCommands response message
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of reponse message payload
@@ -292,6 +302,11 @@ int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
 			   struct pldm_msg *msg);
 
 /** @brief Decode a GetPLDMVersion response message
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of reponse message payload
@@ -308,6 +323,11 @@ int decode_get_version_resp(const struct pldm_msg *msg, size_t payload_length,
 /* GetTID */
 
 /** @brief Decode a GetTID response message
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload

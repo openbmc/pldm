@@ -189,6 +189,11 @@ struct pldm_set_bios_attribute_current_value_resp {
 int encode_get_date_time_req(uint8_t instance_id, struct pldm_msg *msg);
 
 /** @brief Decode a GetDateTime response message
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
@@ -228,12 +233,17 @@ int encode_set_bios_attribute_current_value_req(
     struct pldm_msg *msg, size_t payload_length);
 
 /** @brief Decode a SetBiosAttributeCurrentValue response message
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code
  *  @param[out] next_transfer_handle - Pointer to a handle that identify the
- * next portion of the transfer
+ *              next portion of the transfer
  *  @return pldm_completion_codes
  */
 int decode_set_bios_attribute_current_value_resp(
@@ -431,6 +441,11 @@ int encode_set_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 			      struct pldm_msg *msg, size_t payload_length);
 
 /** @brief Decode a SetDateTime response message
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload

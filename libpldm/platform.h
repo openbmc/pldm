@@ -255,6 +255,11 @@ int encode_get_pdr_req(uint8_t instance_id, uint32_t record_hndl,
 		       struct pldm_msg *msg, size_t payload_length);
 
 /** @brief Decode GetPDR response data
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
  *
  *  @param[in] msg - Request message
  *  @param[in] payload_length - Length of request message payload
@@ -309,6 +314,12 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 					 struct pldm_msg *msg);
 
 /** @brief Decode SetStateEffecterStates response data
+ *         note: if the return value is not PLDM_SUCCESS, it represents a
+ *         transport layer error. if the complation_code value is not
+ *         PLDM_SUCCESS, it represents a protocol layer error and all the
+ *         out-parameters are invalid. but the return value is still
+ *         PLDM_SUCCESS.
+ *
  *  @param[in] msg - Request message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] completion_code - PLDM completion code
