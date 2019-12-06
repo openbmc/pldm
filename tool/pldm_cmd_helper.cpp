@@ -1,5 +1,7 @@
 #include "pldm_cmd_helper.hpp"
 
+#include "libpldm/requester/pldm.h"
+
 namespace pldmtool
 {
 
@@ -20,6 +22,17 @@ void printBuffer(const std::vector<uint8_t>& buffer)
             tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
                        << " ";
         }
+    }
+    std::cout << tempStream.str() << std::endl;
+}
+
+void printBuffer(uint8_t* responseMessage, size_t responseMessageSize)
+{
+    std::ostringstream tempStream;
+    for (size_t index = 0; index < responseMessageSize; ++index)
+    {
+        tempStream << std::setfill('0') << std::setw(2) << std::hex
+                   << static_cast<int>(responseMessage[index]) << " ";
     }
     std::cout << tempStream.str() << std::endl;
 }
@@ -196,29 +209,48 @@ void CommandInterface::exec()
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
-
-    // Insert the PLDM message type and EID at the begining of the request msg.
-    requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
-    requestMsg.insert(requestMsg.begin(), PLDM_ENTITY_ID);
-
-    std::cout << "Request Message:" << std::endl;
-    printBuffer(requestMsg);
-
-    auto rc = mctpSockSendRecv(requestMsg, responseMsg);
-
-    if (rc != PLDM_SUCCESS)
+    if (mctp_eid != PLDM_ENTITY_ID)
     {
-        std::cerr << "Failed to receive from mctpSocket: RC = " << rc << "\n";
-        return rc;
+        int fd = pldm_open();
+        if (-1 == fd)
+        {
+            std::cerr << "failed to init mctp "
+                      << "\n";
+            return -1;
+        }
+        uint8_t* responseMessage = nullptr;
+        size_t responseMessageSize{};
+        requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+        requestMsg.insert(requestMsg.begin(), mctp_eid);
+        std::cout << "Request Message:" << std::endl;
+        printBuffer(requestMsg);
+        requestMsg.erase(requestMsg.begin(), requestMsg.begin() + 2);
+        pldm_send_recv(mctp_eid, fd, requestMsg.data(), requestMsg.size(),
+                       &responseMessage, &responseMessageSize);
+        std::cout << "ResponseSize: " << responseMessageSize << std::endl;
+        std::cout << "Response Message:" << std::endl;
+
+        printBuffer(responseMessage, responseMessageSize);
+
+        free(responseMessage);
     }
+    else
+    {
+        // Insert the PLDM message type and EID at the begining of the request
+        // msg.
+        requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+        requestMsg.insert(requestMsg.begin(), PLDM_ENTITY_ID);
 
-    std::cout << "Response Message:" << std::endl;
-    printBuffer(responseMsg);
+        std::cout << "Request Message:" << std::endl;
+        printBuffer(requestMsg);
 
-    responseMsg.erase(responseMsg.begin(),
-                      responseMsg.begin() + 2 /* skip the mctp header */);
+        mctpSockSendRecv(requestMsg, responseMsg);
+        std::cout << "Response Message:" << std::endl;
+        printBuffer(responseMsg);
+        responseMsg.erase(responseMsg.begin(),
+                          responseMsg.begin() + 2 /* skip the mctp header */);
+    }
     return PLDM_SUCCESS;
 }
-
 } // namespace helper
 } // namespace pldmtool
