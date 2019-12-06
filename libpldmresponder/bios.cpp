@@ -159,10 +159,7 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
         log<level::ERR>("Error getting time", entry("PATH=%s", hostTimePath),
                         entry("TIME INTERACE=%s", timeInterface));
 
-        encode_get_date_time_resp(request->hdr.instance_id, PLDM_ERROR, seconds,
-                                  minutes, hours, day, month, year,
-                                  responsePtr);
-        return response;
+        return onlyCCResponse(request, PLDM_ERROR);
     }
 
     uint64_t timeUsec = std::get<EpochTimeUS>(value);
@@ -798,10 +795,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
 
         if (attributeTable.empty())
         { // no available json file is found
-            encode_get_bios_table_resp(instanceID, PLDM_BIOS_TABLE_UNAVAILABLE,
-                                       nxtTransferHandle, transferFlag, nullptr,
-                                       response.size(), responsePtr);
-            return response;
+            return onlyCCResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
         }
         pldm::responder::utils::padAndChecksum(attributeTable);
         BIOSAttributeTable.store(attributeTable);
@@ -902,9 +896,7 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
         });
     if (attributeValueTable.empty())
     {
-        encode_get_bios_table_resp(instanceID, PLDM_BIOS_TABLE_UNAVAILABLE,
-                                   nxtTransferHandle, transferFlag, nullptr,
-                                   response.size(), responsePtr);
+        return onlyCCResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
         return response;
     }
     pldm::responder::utils::padAndChecksum(attributeValueTable);
@@ -941,11 +933,7 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
 
     if (setupConfig(biosJsonDir) != 0)
     {
-        encode_get_bios_table_resp(
-            request->hdr.instance_id, PLDM_BIOS_TABLE_UNAVAILABLE,
-            0 /* nxtTransferHandle */, PLDM_START_AND_END, nullptr,
-            response.size(), responsePtr);
-        return response;
+        return onlyCCResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
     }
 
     uint32_t transferHandle{};
@@ -954,65 +942,54 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
 
     auto rc = decode_get_bios_table_req(request, payloadLength, &transferHandle,
                                         &transferOpFlag, &tableType);
-    if (rc == PLDM_SUCCESS)
-    {
-        BIOSTable BIOSStringTable(
-            (std::string(biosTablePath) + "/" + stringTableFile).c_str());
-        BIOSTable BIOSAttributeTable(
-            (std::string(biosTablePath) + "/" + attrTableFile).c_str());
-        BIOSTable BIOSAttributeValueTable(
-            (std::string(biosTablePath) + "/" + attrValTableFile).c_str());
-        switch (tableType)
-        {
-            case PLDM_BIOS_STRING_TABLE:
-
-                response = getBIOSStringTable(BIOSStringTable, transferHandle,
-                                              transferOpFlag,
-                                              request->hdr.instance_id);
-                break;
-            case PLDM_BIOS_ATTR_TABLE:
-
-                if (BIOSStringTable.isEmpty())
-                {
-                    rc = PLDM_BIOS_TABLE_UNAVAILABLE;
-                }
-                else
-                {
-                    response = getBIOSAttributeTable(
-                        BIOSAttributeTable, BIOSStringTable, transferHandle,
-                        transferOpFlag, request->hdr.instance_id, biosJsonDir);
-                }
-                break;
-            case PLDM_BIOS_ATTR_VAL_TABLE:
-                if (BIOSAttributeTable.isEmpty() || BIOSStringTable.isEmpty())
-                {
-                    rc = PLDM_BIOS_TABLE_UNAVAILABLE;
-                }
-                else
-                {
-                    response = getBIOSAttributeValueTable(
-                        BIOSAttributeValueTable, BIOSAttributeTable,
-                        BIOSStringTable, transferHandle, transferOpFlag,
-                        request->hdr.instance_id);
-                }
-                break;
-            default:
-                rc = PLDM_INVALID_BIOS_TABLE_TYPE;
-                break;
-        }
-    }
 
     if (rc != PLDM_SUCCESS)
     {
-        uint32_t nxtTransferHandle{};
-        uint8_t transferFlag{};
-        size_t respPayloadLength{};
-
-        encode_get_bios_table_resp(request->hdr.instance_id, rc,
-                                   nxtTransferHandle, transferFlag, nullptr,
-                                   respPayloadLength, responsePtr);
+        return onlyCCResponse(request, rc);
     }
 
+    BIOSTable BIOSStringTable(
+        (std::string(biosTablePath) + "/" + stringTableFile).c_str());
+    BIOSTable BIOSAttributeTable(
+        (std::string(biosTablePath) + "/" + attrTableFile).c_str());
+    BIOSTable BIOSAttributeValueTable(
+        (std::string(biosTablePath) + "/" + attrValTableFile).c_str());
+    switch (tableType)
+    {
+        case PLDM_BIOS_STRING_TABLE:
+            response =
+                getBIOSStringTable(BIOSStringTable, transferHandle,
+                                   transferOpFlag, request->hdr.instance_id);
+            break;
+        case PLDM_BIOS_ATTR_TABLE:
+            if (BIOSStringTable.isEmpty())
+            {
+                rc = PLDM_BIOS_TABLE_UNAVAILABLE;
+            }
+            else
+            {
+                response = getBIOSAttributeTable(
+                    BIOSAttributeTable, BIOSStringTable, transferHandle,
+                    transferOpFlag, request->hdr.instance_id, biosJsonDir);
+            }
+            break;
+        case PLDM_BIOS_ATTR_VAL_TABLE:
+            if (BIOSAttributeTable.isEmpty() || BIOSStringTable.isEmpty())
+            {
+                rc = PLDM_BIOS_TABLE_UNAVAILABLE;
+            }
+            else
+            {
+                response = getBIOSAttributeValueTable(
+                    BIOSAttributeValueTable, BIOSAttributeTable,
+                    BIOSStringTable, transferHandle, transferOpFlag,
+                    request->hdr.instance_id);
+            }
+            break;
+        default:
+            rc = PLDM_INVALID_BIOS_TABLE_TYPE;
+            break;
+    }
     return response;
 }
 
