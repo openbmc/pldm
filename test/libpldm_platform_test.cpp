@@ -61,12 +61,9 @@ TEST(SetStateEffecterStates, testGoodDecodeResponse)
     std::array<uint8_t, hdrSize + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
         responseMsg{};
 
-    uint8_t completion_code = 0xA0;
-
     uint8_t retcompletion_code = 0;
 
-    memcpy(responseMsg.data() + hdrSize, &completion_code,
-           sizeof(completion_code));
+    responseMsg[hdrSize] = PLDM_SUCCESS;
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
@@ -74,7 +71,7 @@ TEST(SetStateEffecterStates, testGoodDecodeResponse)
         response, responseMsg.size() - hdrSize, &retcompletion_code);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, retcompletion_code);
+    ASSERT_EQ(PLDM_SUCCESS, retcompletion_code);
 }
 
 TEST(SetStateEffecterStates, testGoodDecodeRequest)
