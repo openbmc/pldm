@@ -51,12 +51,15 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
 
 class CommandInterface
 {
+
   public:
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :
         pldmType(type),
-        commandName(name)
+        commandName(name), 
+	mctp_eid(0)
     {
+        app->add_option("-m,--mctp_eid", mctp_eid, "mctp endpoint id");
         app->callback([&]() { exec(); });
     }
     virtual ~CommandInterface() = default;
@@ -71,6 +74,7 @@ class CommandInterface
   private:
     const std::string pldmType;
     const std::string commandName;
+    uint8_t mctp_eid;
 };
 
 } // namespace helper
