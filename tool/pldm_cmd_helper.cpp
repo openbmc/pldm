@@ -1,5 +1,7 @@
 #include "pldm_cmd_helper.hpp"
 
+#include "libpldm/requester/pldm.h"
+
 namespace pldmtool
 {
 
@@ -180,22 +182,45 @@ void CommandInterface::exec()
 
     std::cout << "Encode request successfully" << std::endl;
 
-    // Insert the PLDM message type and EID at the begining of the request msg.
-    requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
-    requestMsg.insert(requestMsg.begin(), PLDM_ENTITY_ID);
-
+    if (mctp_eid == 0 || mctp_eid == PLDM_ENTITY_ID)
+    {
+        requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+        requestMsg.insert(requestMsg.begin(), PLDM_ENTITY_ID);
+    }
+    else
+    {
+        // Insert the PLDM message type and EID at the begining of the request
+        // msg.
+        requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+        requestMsg.insert(requestMsg.begin(), mctp_eid);
+    }
     std::cout << "Request Message:" << std::endl;
     printBuffer(requestMsg);
 
     std::vector<uint8_t> responseMsg;
-    rc = mctpSockSendRecv(requestMsg, responseMsg);
-
+    int fd = pldm_open();
+    if (-1 == fd)
+    {
+        std::cerr << "failed to init mctp "
+                  << "\n";
+        return;
+    }
+    if (mctp_eid == 0 || mctp_eid == PLDM_ENTITY_ID)
+    {
+        rc = mctpSockSendRecv(requestMsg, responseMsg);
+    }
+    else
+    {
+        uint8_t* responseMsg = nullptr;
+        size_t responseMsgSize{};
+        rc = pldm_send_recv(mctp_eid, fd, requestMsg.data(), requestMsg.size(),
+                            &responseMsg, &responseMsgSize);
+    }
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Failed to receive from socket: RC = " << rc << "\n";
         return;
     }
-
     std::cout << "Response Message:" << std::endl;
     printBuffer(responseMsg);
 
@@ -205,6 +230,5 @@ void CommandInterface::exec()
                                       2 /*skip the mctp header*/ -
                                       sizeof(pldm_msg_hdr));
 }
-
 } // namespace helper
 } // namespace pldmtool

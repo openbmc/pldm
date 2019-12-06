@@ -6,6 +6,8 @@
 
 #include <CLI/CLI.hpp>
 
+#include "libpldm/requester/pldm.h"
+
 namespace pldmtool
 {
 
@@ -63,7 +65,6 @@ void registerCommand(CLI::App& app)
 
 int main(int argc, char** argv)
 {
-
     CLI::App app{"PLDM requester tool for OpenBMC"};
     app.require_subcommand(1)->ignore_case();
 
@@ -74,5 +75,6 @@ int main(int argc, char** argv)
     pldmtool::fru::registerCommand(app);
 
     CLI11_PARSE(app, argc, argv);
+
     return 0;
 }
