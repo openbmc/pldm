@@ -29,9 +29,13 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     uint16_t reqSizeBytes{};
     uint16_t recordChangeNum{};
 
-    decode_get_pdr_req(request, payloadLength, &recordHandle,
-                       &dataTransferHandle, &transferOpFlag, &reqSizeBytes,
-                       &recordChangeNum);
+    auto rc = decode_get_pdr_req(request, payloadLength, &recordHandle,
+                                 &dataTransferHandle, &transferOpFlag,
+                                 &reqSizeBytes, &recordChangeNum);
+    if (rc != PLDM_SUCCESS)
+    {
+        return onlyCCResponse(request, rc);
+    }
 
     uint32_t nextRecordHandle{};
     uint16_t respSizeBytes{};
@@ -100,17 +104,19 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
         return response;
     }
 
-    int rc = decode_set_state_effecter_states_req(request, payloadLength,
-                                                  &effecterId, &compEffecterCnt,
-                                                  stateField.data());
+    auto rc = decode_set_state_effecter_states_req(
+        request, payloadLength, &effecterId, &compEffecterCnt,
+        stateField.data());
 
-    if (rc == PLDM_SUCCESS)
+    if (rc != PLDM_SUCCESS)
     {
-        stateField.resize(compEffecterCnt);
-        const DBusHandler dBusIntf;
-        rc = setStateEffecterStatesHandler<DBusHandler>(dBusIntf, effecterId,
-                                                        stateField);
+        return onlyCCResponse(request, rc);
     }
+
+    stateField.resize(compEffecterCnt);
+    const DBusHandler dBusIntf;
+    rc = setStateEffecterStatesHandler<DBusHandler>(dBusIntf, effecterId,
+                                                    stateField);
 
     encode_set_state_effecter_states_resp(request->hdr.instance_id, rc,
                                           responsePtr);
