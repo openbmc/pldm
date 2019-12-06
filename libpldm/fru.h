@@ -138,6 +138,12 @@ int encode_get_fru_record_table_metadata_req(uint8_t instance_id,
 
 /** @brief Decode GetFruRecordTable response data
  *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code

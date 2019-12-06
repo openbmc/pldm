@@ -37,16 +37,17 @@ int decode_get_fru_record_table_metadata_resp(
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
 	if (payload_length != PLDM_GET_FRU_RECORD_TABLE_METADATA_RESP_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	struct pldm_get_fru_record_table_metadata_resp *response =
 	    (struct pldm_get_fru_record_table_metadata_resp *)msg->payload;
-	*completion_code = response->completion_code;
-	if (PLDM_SUCCESS != *completion_code) {
-		return PLDM_SUCCESS;
-	};
 
 	*fru_data_major_version = response->fru_data_major_version;
 	*fru_data_minor_version = response->fru_data_minor_version;

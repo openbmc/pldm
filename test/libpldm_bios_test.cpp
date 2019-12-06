@@ -15,7 +15,7 @@ TEST(GetDateTime, testEncodeRequest)
     pldm_msg request{};
 
     auto rc = encode_get_date_time_req(0, &request);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 }
 
 TEST(GetDateTime, testEncodeResponse)
@@ -36,25 +36,25 @@ TEST(GetDateTime, testEncodeResponse)
     auto rc = encode_get_date_time_resp(0, PLDM_SUCCESS, seconds, minutes,
                                         hours, day, month, year, response);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completionCode, response->payload[0]);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, response->payload[0]);
 
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
                         &seconds, sizeof(seconds)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(seconds),
                         &minutes, sizeof(minutes)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(seconds) + sizeof(minutes),
                         &hours, sizeof(hours)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(seconds) + sizeof(minutes) + sizeof(hours),
                         &day, sizeof(day)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
                             sizeof(day),
                         &month, sizeof(month)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
                             sizeof(day) + sizeof(month),
                         &year, sizeof(year)));
@@ -105,13 +105,13 @@ TEST(GetDateTime, testDecodeResponse)
         response, responseMsg.size() - hdrSize, &completionCode, &retSeconds,
         &retMinutes, &retHours, &retDay, &retMonth, &retYear);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(seconds, retSeconds);
-    ASSERT_EQ(minutes, retMinutes);
-    ASSERT_EQ(hours, retHours);
-    ASSERT_EQ(day, retDay);
-    ASSERT_EQ(month, retMonth);
-    ASSERT_EQ(year, retYear);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(seconds, retSeconds);
+    EXPECT_EQ(minutes, retMinutes);
+    EXPECT_EQ(hours, retHours);
+    EXPECT_EQ(day, retDay);
+    EXPECT_EQ(month, retMonth);
+    EXPECT_EQ(year, retYear);
 }
 
 TEST(SetDateTime, testGoodEncodeResponse)
@@ -343,15 +343,15 @@ TEST(GetBIOSTable, testGoodEncodeResponse)
         0, PLDM_SUCCESS, nextTransferHandle, transferFlag, tableData.data(),
         sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES + 4,
         response);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     struct pldm_get_bios_table_resp* resp =
         reinterpret_cast<struct pldm_get_bios_table_resp*>(response->payload);
 
-    ASSERT_EQ(completionCode, resp->completion_code);
-    ASSERT_EQ(nextTransferHandle, resp->next_transfer_handle);
-    ASSERT_EQ(transferFlag, resp->transfer_flag);
-    ASSERT_EQ(0, memcmp(tableData.data(), resp->table_data, tableData.size()));
+    EXPECT_EQ(completionCode, resp->completion_code);
+    EXPECT_EQ(nextTransferHandle, resp->next_transfer_handle);
+    EXPECT_EQ(transferFlag, resp->transfer_flag);
+    EXPECT_EQ(0, memcmp(tableData.data(), resp->table_data, tableData.size()));
 }
 
 TEST(GetBIOSTable, testBadEncodeResponse)
@@ -363,7 +363,7 @@ TEST(GetBIOSTable, testBadEncodeResponse)
     auto rc = encode_get_bios_table_resp(
         0, PLDM_SUCCESS, nextTransferHandle, transferFlag, tableData.data(),
         sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES + 4, nullptr);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(GetBIOSTable, testGoodEncodeRequest)
@@ -378,13 +378,13 @@ TEST(GetBIOSTable, testGoodEncodeRequest)
     auto rc = encode_get_bios_table_req(0, transferHandle, transferOpFlag,
                                         tableType, request);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     struct pldm_get_bios_table_req* req =
         reinterpret_cast<struct pldm_get_bios_table_req*>(request->payload);
-    ASSERT_EQ(transferHandle, le32toh(req->transfer_handle));
-    ASSERT_EQ(transferOpFlag, req->transfer_op_flag);
-    ASSERT_EQ(tableType, req->table_type);
+    EXPECT_EQ(transferHandle, le32toh(req->transfer_handle));
+    EXPECT_EQ(transferOpFlag, req->transfer_op_flag);
+    EXPECT_EQ(tableType, req->table_type);
 }
 
 TEST(GetBIOSTable, testBadEncodeRequest)
@@ -396,7 +396,7 @@ TEST(GetBIOSTable, testBadEncodeRequest)
     auto rc = encode_get_bios_table_req(0, transferHandle, transferOpFlag,
                                         tableType, nullptr);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(GetBIOSTable, testGoodDecodeRequest)
@@ -422,10 +422,10 @@ TEST(GetBIOSTable, testGoodDecodeRequest)
                                         &retTransferHandle, &retTransferOpFlag,
                                         &retTableType);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(transferHandle, retTransferHandle);
-    ASSERT_EQ(transferOpFlag, retTransferOpFlag);
-    ASSERT_EQ(tableType, retTableType);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferHandle, retTransferHandle);
+    EXPECT_EQ(transferOpFlag, retTransferOpFlag);
+    EXPECT_EQ(tableType, retTableType);
 }
 TEST(GetBIOSTable, testBadDecodeRequest)
 {
@@ -450,10 +450,10 @@ TEST(GetBIOSTable, testBadDecodeRequest)
                                         &retTransferHandle, &retTransferOpFlag,
                                         &retTableType);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(transferHandle, retTransferHandle);
-    ASSERT_EQ(transferOpFlag, retTransferOpFlag);
-    ASSERT_EQ(tableType, retTableType);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferHandle, retTransferHandle);
+    EXPECT_EQ(transferOpFlag, retTransferOpFlag);
+    EXPECT_EQ(tableType, retTableType);
 }
 /*
 TEST(GetBIOSTable, testBadDecodeRequest)
@@ -479,7 +479,7 @@ TEST(GetBIOSTable, testBadDecodeRequest)
                                         &retTransferHandle, &retTransferOpFlag,
                                         &retTableType);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }*/
 
 TEST(GetBIOSAttributeCurrentValueByHandle, testGoodDecodeRequest)
@@ -508,10 +508,10 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testGoodDecodeRequest)
         req, requestMsg.size() - hdrSize, &retTransferHandle,
         &retTransferOpFlag, &retattributehandle);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(transferHandle, retTransferHandle);
-    ASSERT_EQ(transferOpFlag, retTransferOpFlag);
-    ASSERT_EQ(attributehandle, retattributehandle);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferHandle, retTransferHandle);
+    EXPECT_EQ(transferOpFlag, retTransferOpFlag);
+    EXPECT_EQ(attributehandle, retattributehandle);
 }
 
 TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
@@ -540,7 +540,7 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
     auto rc = decode_get_bios_attribute_current_value_by_handle_req(
         NULL, requestMsg.size() - hdrSize, &retTransferHandle,
         &retTransferOpFlag, &retattribute_handle);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     transferHandle = 31;
     request->transfer_handle = transferHandle;
@@ -548,7 +548,7 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
     rc = decode_get_bios_attribute_current_value_by_handle_req(
         req, 0, &retTransferHandle, &retTransferOpFlag, &retattribute_handle);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(GetBIOSAttributeCurrentValueByHandle, testGoodEncodeResponse)
@@ -569,17 +569,17 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testGoodEncodeResponse)
         instanceId, completionCode, nextTransferHandle, transferFlag,
         &attributeData, sizeof(attributeData), response);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     struct pldm_get_bios_attribute_current_value_by_handle_resp* resp =
         reinterpret_cast<
             struct pldm_get_bios_attribute_current_value_by_handle_resp*>(
             response->payload);
 
-    ASSERT_EQ(completionCode, resp->completion_code);
-    ASSERT_EQ(nextTransferHandle, resp->next_transfer_handle);
-    ASSERT_EQ(transferFlag, resp->transfer_flag);
-    ASSERT_EQ(
+    EXPECT_EQ(completionCode, resp->completion_code);
+    EXPECT_EQ(nextTransferHandle, resp->next_transfer_handle);
+    EXPECT_EQ(transferFlag, resp->transfer_flag);
+    EXPECT_EQ(
         0, memcmp(&attributeData, resp->attribute_data, sizeof(attributeData)));
 }
 
@@ -592,7 +592,7 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadEncodeResponse)
     auto rc = encode_get_bios_current_value_by_handle_resp(
         0, PLDM_SUCCESS, nextTransferHandle, transferFlag, &attributeData,
         sizeof(attributeData), nullptr);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     std::array<uint8_t,
                hdrSize +
@@ -602,7 +602,7 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadEncodeResponse)
     rc = encode_get_bios_current_value_by_handle_resp(
         0, PLDM_SUCCESS, nextTransferHandle, transferFlag, nullptr,
         sizeof(attributeData), response);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(SetBiosAttributeCurrentValue, testGoodEncodeRequest)
@@ -620,14 +620,14 @@ TEST(SetBiosAttributeCurrentValue, testGoodEncodeRequest)
         reinterpret_cast<uint8_t*>(&attributeData), sizeof(attributeData),
         request, requestMsg.size() - hdrSize);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     struct pldm_set_bios_attribute_current_value_req* req =
         reinterpret_cast<struct pldm_set_bios_attribute_current_value_req*>(
             request->payload);
-    ASSERT_EQ(htole32(transferHandle), req->transfer_handle);
-    ASSERT_EQ(transferFlag, req->transfer_flag);
-    ASSERT_EQ(
+    EXPECT_EQ(htole32(transferHandle), req->transfer_handle);
+    EXPECT_EQ(transferFlag, req->transfer_flag);
+    EXPECT_EQ(
         0, memcmp(&attributeData, req->attribute_data, sizeof(attributeData)));
 }
 
@@ -643,13 +643,13 @@ TEST(SetBiosAttributeCurrentValue, testBadEncodeRequest)
 
     auto rc = encode_set_bios_attribute_current_value_req(
         instanceId, transferHandle, transferFlag, nullptr, 0, nullptr, 0);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     rc = encode_set_bios_attribute_current_value_req(
         instanceId, transferHandle, transferFlag,
         reinterpret_cast<uint8_t*>(&attributeData), sizeof(attributeData),
         request, requestMsg.size() - hdrSize);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(SetBiosAttributeCurrentValue, testGoodDecodeRequest)
@@ -678,11 +678,11 @@ TEST(SetBiosAttributeCurrentValue, testGoodDecodeRequest)
         &retTransferFlag, reinterpret_cast<uint8_t*>(&retAttributeData),
         &retAttributeDataLength);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(retTransferHandle, transferHandle);
-    ASSERT_EQ(retTransferFlag, transferFlag);
-    ASSERT_EQ(retAttributeDataLength, sizeof(attributeData));
-    ASSERT_EQ(0,
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retTransferHandle, transferHandle);
+    EXPECT_EQ(retTransferFlag, transferFlag);
+    EXPECT_EQ(retAttributeDataLength, sizeof(attributeData));
+    EXPECT_EQ(0,
               memcmp(&retAttributeData, &attributeData, sizeof(attributeData)));
 }
 
@@ -699,11 +699,11 @@ TEST(SetBiosAttributeCurrentValue, testBadDecodeRequest)
     auto rc = decode_set_bios_attribute_current_value_req(
         nullptr, 0, &transferHandle, &transferFlag,
         reinterpret_cast<uint8_t*>(&attributeData), &attributeDataLength);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     rc = decode_set_bios_attribute_current_value_req(
         request, requestMsg.size() - hdrSize, &transferHandle, &transferFlag,
         reinterpret_cast<uint8_t*>(&attributeData), &attributeDataLength);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(SetBiosAttributeCurrentValue, testGoodEncodeResponse)
@@ -718,13 +718,13 @@ TEST(SetBiosAttributeCurrentValue, testGoodEncodeResponse)
         reinterpret_cast<struct pldm_msg*>(responseMsg.data());
     auto rc = encode_set_bios_attribute_current_value_resp(
         instanceId, completionCode, nextTransferHandle, response);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     struct pldm_set_bios_attribute_current_value_resp* resp =
         reinterpret_cast<struct pldm_set_bios_attribute_current_value_resp*>(
             response->payload);
-    ASSERT_EQ(completionCode, resp->completion_code);
-    ASSERT_EQ(htole32(nextTransferHandle), resp->next_transfer_handle);
+    EXPECT_EQ(completionCode, resp->completion_code);
+    EXPECT_EQ(htole32(nextTransferHandle), resp->next_transfer_handle);
 }
 
 TEST(SetBiosAttributeCurrentValue, testBadEncodeResponse)
@@ -735,7 +735,7 @@ TEST(SetBiosAttributeCurrentValue, testBadEncodeResponse)
     auto rc = encode_set_bios_attribute_current_value_resp(
         instanceId, completionCode, nextTransferHandle, nullptr);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 TEST(SetBiosAttributeCurrentValue, testGoodDecodeResponse)
 {
@@ -758,9 +758,9 @@ TEST(SetBiosAttributeCurrentValue, testGoodDecodeResponse)
         response, responseMsg.size() - hdrSize, &retCompletionCode,
         &retNextTransferHandle);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completionCode, retCompletionCode);
-    ASSERT_EQ(nextTransferHandle, retNextTransferHandle);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, retCompletionCode);
+    EXPECT_EQ(nextTransferHandle, retNextTransferHandle);
 }
 
 TEST(SetBiosAttributeCurrentValue, testBadDecodeResponse)
@@ -768,19 +768,26 @@ TEST(SetBiosAttributeCurrentValue, testBadDecodeResponse)
     uint32_t nextTransferHandle = 32;
     uint8_t completionCode = PLDM_SUCCESS;
 
-    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES - 1>
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES>
         responseMsg{};
     struct pldm_msg* response =
         reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    struct pldm_set_bios_attribute_current_value_resp* resp =
+        reinterpret_cast<struct pldm_set_bios_attribute_current_value_resp*>(
+            response->payload);
+
+    resp->completion_code = completionCode;
+    resp->next_transfer_handle = htole32(nextTransferHandle);
+
     auto rc = decode_set_bios_attribute_current_value_resp(
         nullptr, 0, &completionCode, &nextTransferHandle);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     rc = decode_set_bios_attribute_current_value_resp(
-        response, responseMsg.size() - hdrSize, &completionCode,
+        response, responseMsg.size() - hdrSize - 1, &completionCode,
         &nextTransferHandle);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(GetBIOSTable, testDecodeResponse)

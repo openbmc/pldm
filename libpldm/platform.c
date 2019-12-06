@@ -63,11 +63,14 @@ int decode_set_state_effecter_states_resp(const struct pldm_msg *msg,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
 	if (payload_length > PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
-
-	*completion_code = msg->payload[0];
 
 	return PLDM_SUCCESS;
 }
@@ -220,7 +223,7 @@ int decode_get_pdr_resp(const struct pldm_msg *msg, size_t payload_length,
 
 	*completion_code = msg->payload[0];
 	if (PLDM_SUCCESS != *completion_code) {
-		return *completion_code;
+		return PLDM_SUCCESS;
 	}
 
 	if (payload_length < PLDM_GET_PDR_MIN_RESP_BYTES) {
