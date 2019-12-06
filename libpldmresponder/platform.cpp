@@ -57,9 +57,7 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 
     if (payloadLength != PLDM_GET_PDR_REQ_BYTES)
     {
-        encode_get_pdr_resp(request->hdr.instance_id, PLDM_ERROR_INVALID_LENGTH,
-                            0, 0, 0, 0, nullptr, 0, responsePtr);
-        return response;
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
     }
 
     uint32_t recordHandle{};
@@ -68,9 +66,13 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     uint16_t reqSizeBytes{};
     uint16_t recordChangeNum{};
 
-    decode_get_pdr_req(request, payloadLength, &recordHandle,
-                       &dataTransferHandle, &transferOpFlag, &reqSizeBytes,
-                       &recordChangeNum);
+    auto rc = decode_get_pdr_req(request, payloadLength, &recordHandle,
+                                 &dataTransferHandle, &transferOpFlag,
+                                 &reqSizeBytes, &recordChangeNum);
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
 
     uint32_t nextRecordHandle{};
     uint16_t respSizeBytes{};
@@ -100,20 +102,14 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     }
     catch (const std::out_of_range& e)
     {
-        encode_get_pdr_resp(request->hdr.instance_id,
-                            PLDM_PLATFORM_INVALID_RECORD_HANDLE,
-                            nextRecordHandle, 0, PLDM_START, respSizeBytes,
-                            recordData, 0, responsePtr);
-        return response;
+        return CmdHandler::ccOnlyResponse(request,
+                                          PLDM_PLATFORM_INVALID_RECORD_HANDLE);
     }
     catch (const std::exception& e)
     {
         log<level::ERR>("Error accessing PDR", entry("HANDLE=%d", recordHandle),
                         entry("ERROR=%s", e.what()));
-        encode_get_pdr_resp(request->hdr.instance_id, PLDM_ERROR,
-                            nextRecordHandle, 0, PLDM_START, respSizeBytes,
-                            recordData, 0, responsePtr);
-        return response;
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
     return response;
 }
@@ -134,21 +130,25 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
         (payloadLength < sizeof(effecterId) + sizeof(compEffecterCnt) +
                              sizeof(set_effecter_state_field)))
     {
-        encode_set_state_effecter_states_resp(
-            request->hdr.instance_id, PLDM_ERROR_INVALID_LENGTH, responsePtr);
-        return response;
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
     }
 
     int rc = decode_set_state_effecter_states_req(request, payloadLength,
                                                   &effecterId, &compEffecterCnt,
                                                   stateField.data());
 
-    if (rc == PLDM_SUCCESS)
+    if (rc != PLDM_SUCCESS)
     {
-        stateField.resize(compEffecterCnt);
-        const DBusHandler dBusIntf;
-        rc = setStateEffecterStatesHandler<DBusHandler>(dBusIntf, effecterId,
-                                                        stateField);
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
+
+    stateField.resize(compEffecterCnt);
+    const DBusHandler dBusIntf;
+    rc = setStateEffecterStatesHandler<DBusHandler>(dBusIntf, effecterId,
+                                                    stateField);
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
     }
 
     encode_set_state_effecter_states_resp(request->hdr.instance_id, rc,
