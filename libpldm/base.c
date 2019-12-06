@@ -179,16 +179,17 @@ int decode_get_types_resp(const struct pldm_msg *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
 	if (payload_length != PLDM_GET_TYPES_RESP_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	struct pldm_get_types_resp *response =
 	    (struct pldm_get_types_resp *)msg->payload;
-	*completion_code = response->completion_code;
-	if (PLDM_SUCCESS != *completion_code) {
-		return PLDM_SUCCESS;
-	};
 
 	memcpy(&(types->byte), response->types, PLDM_MAX_TYPES / 8);
 
@@ -202,16 +203,17 @@ int decode_get_commands_resp(const struct pldm_msg *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
 	if (payload_length != PLDM_GET_COMMANDS_RESP_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	struct pldm_get_commands_resp *response =
 	    (struct pldm_get_commands_resp *)msg->payload;
-	*completion_code = response->completion_code;
-	if (PLDM_SUCCESS != *completion_code) {
-		return PLDM_SUCCESS;
-	};
 
 	memcpy(&(commands->byte), response->commands,
 	       PLDM_MAX_CMDS_PER_TYPE / 8);
@@ -305,16 +307,17 @@ int decode_get_version_resp(const struct pldm_msg *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
 	if (payload_length < PLDM_GET_VERSION_RESP_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	struct pldm_get_version_resp *response =
 	    (struct pldm_get_version_resp *)msg->payload;
-	*completion_code = response->completion_code;
-	if (PLDM_SUCCESS != *completion_code) {
-		return PLDM_SUCCESS;
-	};
 
 	*next_transfer_handle = le32toh(response->next_transfer_handle);
 	*transfer_flag = response->transfer_flag;
@@ -366,16 +369,17 @@ int decode_get_tid_resp(const struct pldm_msg *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
 	if (payload_length != PLDM_GET_TID_RESP_BYTES) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	struct pldm_get_tid_resp *response =
 	    (struct pldm_get_tid_resp *)msg->payload;
-	*completion_code = response->completion_code;
-	if (PLDM_SUCCESS != *completion_code) {
-		return PLDM_SUCCESS;
-	};
 
 	*tid = response->tid;
 

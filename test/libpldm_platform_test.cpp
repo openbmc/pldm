@@ -19,8 +19,8 @@ TEST(SetStateEffecterStates, testEncodeResponse)
 
     auto rc = encode_set_state_effecter_states_resp(0, PLDM_SUCCESS, response);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completionCode, response->payload[0]);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, response->payload[0]);
 }
 
 TEST(SetStateEffecterStates, testEncodeRequest)
@@ -39,18 +39,18 @@ TEST(SetStateEffecterStates, testEncodeRequest)
     auto rc = encode_set_state_effecter_states_req(
         0, effecterId, compEffecterCnt, stateField.data(), request);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(effecterId, request->payload[0]);
-    ASSERT_EQ(compEffecterCnt, request->payload[sizeof(effecterId)]);
-    ASSERT_EQ(stateField[0].set_request,
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(effecterId, request->payload[0]);
+    EXPECT_EQ(compEffecterCnt, request->payload[sizeof(effecterId)]);
+    EXPECT_EQ(stateField[0].set_request,
               request->payload[sizeof(effecterId) + sizeof(compEffecterCnt)]);
-    ASSERT_EQ(stateField[0].effecter_state,
+    EXPECT_EQ(stateField[0].effecter_state,
               request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
                                sizeof(stateField[0].set_request)]);
-    ASSERT_EQ(stateField[1].set_request,
+    EXPECT_EQ(stateField[1].set_request,
               request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
                                sizeof(stateField[0])]);
-    ASSERT_EQ(stateField[1].effecter_state,
+    EXPECT_EQ(stateField[1].effecter_state,
               request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
                                sizeof(stateField[0]) +
                                sizeof(stateField[1].set_request)]);
@@ -61,20 +61,17 @@ TEST(SetStateEffecterStates, testGoodDecodeResponse)
     std::array<uint8_t, hdrSize + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
         responseMsg{};
 
-    uint8_t completion_code = 0xA0;
-
     uint8_t retcompletion_code = 0;
 
-    memcpy(responseMsg.data() + hdrSize, &completion_code,
-           sizeof(completion_code));
+    responseMsg[hdrSize] = PLDM_SUCCESS;
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_set_state_effecter_states_resp(
         response, responseMsg.size() - hdrSize, &retcompletion_code);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, retcompletion_code);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(PLDM_SUCCESS, retcompletion_code);
 }
 
 TEST(SetStateEffecterStates, testGoodDecodeRequest)
@@ -107,13 +104,13 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
         request, requestMsg.size() - hdrSize, &retEffecterId,
         &retCompEffecterCnt, retStateField.data());
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(effecterId, retEffecterId);
-    ASSERT_EQ(retCompEffecterCnt, compEffecterCnt);
-    ASSERT_EQ(retStateField[0].set_request, stateField[0].set_request);
-    ASSERT_EQ(retStateField[0].effecter_state, stateField[0].effecter_state);
-    ASSERT_EQ(retStateField[1].set_request, stateField[1].set_request);
-    ASSERT_EQ(retStateField[1].effecter_state, stateField[1].effecter_state);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(effecterId, retEffecterId);
+    EXPECT_EQ(retCompEffecterCnt, compEffecterCnt);
+    EXPECT_EQ(retStateField[0].set_request, stateField[0].set_request);
+    EXPECT_EQ(retStateField[0].effecter_state, stateField[0].effecter_state);
+    EXPECT_EQ(retStateField[1].set_request, stateField[1].set_request);
+    EXPECT_EQ(retStateField[1].effecter_state, stateField[1].effecter_state);
 }
 
 TEST(SetStateEffecterStates, testBadDecodeRequest)
@@ -123,7 +120,7 @@ TEST(SetStateEffecterStates, testBadDecodeRequest)
     auto rc = decode_set_state_effecter_states_req(msg, sizeof(*msg), NULL,
                                                    NULL, NULL);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(SetStateEffecterStates, testBadDecodeResponse)
@@ -136,7 +133,7 @@ TEST(SetStateEffecterStates, testBadDecodeResponse)
     auto rc = decode_set_state_effecter_states_resp(response,
                                                     responseMsg.size(), NULL);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(GetPDR, testGoodEncodeResponse)
@@ -158,18 +155,18 @@ TEST(GetPDR, testGoodEncodeResponse)
                                   nextDataTransferHndl, transferFlag, respCnt,
                                   recordData.data(), transferCRC, response);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     struct pldm_get_pdr_resp* resp =
         reinterpret_cast<struct pldm_get_pdr_resp*>(response->payload);
 
-    ASSERT_EQ(completionCode, resp->completion_code);
-    ASSERT_EQ(nextRecordHndl, resp->next_record_handle);
-    ASSERT_EQ(nextDataTransferHndl, resp->next_data_transfer_handle);
-    ASSERT_EQ(transferFlag, resp->transfer_flag);
-    ASSERT_EQ(respCnt, resp->response_count);
-    ASSERT_EQ(0,
+    EXPECT_EQ(completionCode, resp->completion_code);
+    EXPECT_EQ(nextRecordHndl, resp->next_record_handle);
+    EXPECT_EQ(nextDataTransferHndl, resp->next_data_transfer_handle);
+    EXPECT_EQ(transferFlag, resp->transfer_flag);
+    EXPECT_EQ(respCnt, resp->response_count);
+    EXPECT_EQ(0,
               memcmp(recordData.data(), resp->record_data, recordData.size()));
-    ASSERT_EQ(*(response->payload + sizeof(pldm_get_pdr_resp) - 1 +
+    EXPECT_EQ(*(response->payload + sizeof(pldm_get_pdr_resp) - 1 +
                 recordData.size()),
               transferCRC);
 
@@ -178,7 +175,7 @@ TEST(GetPDR, testGoodEncodeResponse)
     rc = encode_get_pdr_resp(0, PLDM_SUCCESS, nextRecordHndl,
                              nextDataTransferHndl, transferFlag, respCnt,
                              recordData.data(), transferCRC, response);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 }
 
 TEST(GetPDR, testBadEncodeResponse)
@@ -194,7 +191,7 @@ TEST(GetPDR, testBadEncodeResponse)
                                   nextDataTransferHndl, transferFlag, respCnt,
                                   recordData.data(), transferCRC, nullptr);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(GetPDR, testGoodDecodeRequest)
@@ -227,12 +224,12 @@ TEST(GetPDR, testGoodDecodeRequest)
         req, requestMsg.size() - hdrSize, &retRecordHndl, &retDataTransferHndl,
         &retTransferOpFlag, &retRequestCnt, &retRecordChangeNum);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(retRecordHndl, recordHndl);
-    ASSERT_EQ(retDataTransferHndl, dataTransferHndl);
-    ASSERT_EQ(retTransferOpFlag, transferOpFlag);
-    ASSERT_EQ(retRequestCnt, requestCnt);
-    ASSERT_EQ(retRecordChangeNum, recordChangeNum);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retRecordHndl, recordHndl);
+    EXPECT_EQ(retDataTransferHndl, dataTransferHndl);
+    EXPECT_EQ(retTransferOpFlag, transferOpFlag);
+    EXPECT_EQ(retRequestCnt, requestCnt);
+    EXPECT_EQ(retRecordChangeNum, recordChangeNum);
 }
 
 TEST(GetPDR, testBadDecodeRequest)
@@ -243,7 +240,7 @@ TEST(GetPDR, testBadDecodeRequest)
     auto rc = decode_get_pdr_req(req, requestMsg.size(), NULL, NULL, NULL, NULL,
                                  NULL);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(GetPDR, testGoodEncodeRequest)
@@ -323,8 +320,7 @@ TEST(GetPDR, testGoodDecodeResponse)
     resp->transfer_flag = transferFlag;
     resp->response_count = htole16(respCnt);
     memcpy(resp->record_data, recordData, respCnt);
-    memcpy(response->payload + PLDM_GET_PDR_MIN_RESP_BYTES + respCnt,
-           &transferCRC, 1);
+    response->payload[PLDM_GET_PDR_MIN_RESP_BYTES + respCnt] = transferCRC;
 
     auto rc = decode_get_pdr_resp(
         response, responseMsg.size() - hdrSize, &retCompletionCode,
@@ -355,7 +351,7 @@ TEST(GetPDR, testBadDecodeResponse)
         responseMsg{};
 
     uint8_t retCompletionCode = 0;
-    uint8_t retRecordData[32];
+    uint8_t retRecordData[32] = {0};
     uint32_t retNextRecordHndl = 0;
     uint32_t retNextDataTransferHndl = 0;
     uint8_t retTransferFlag = 0;
@@ -371,8 +367,7 @@ TEST(GetPDR, testBadDecodeResponse)
     resp->transfer_flag = transferFlag;
     resp->response_count = htole16(respCnt);
     memcpy(resp->record_data, recordData, respCnt);
-    memcpy(response->payload + PLDM_GET_PDR_MIN_RESP_BYTES + respCnt,
-           &transferCRC, 1);
+    response->payload[PLDM_GET_PDR_MIN_RESP_BYTES + respCnt] = transferCRC;
 
     auto rc = decode_get_pdr_resp(response, responseMsg.size() - hdrSize, NULL,
                                   NULL, NULL, NULL, NULL, NULL, 0, NULL);

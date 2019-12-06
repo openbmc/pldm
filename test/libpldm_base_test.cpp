@@ -21,33 +21,33 @@ TEST(PackPLDMMessage, BadPathTest)
 
     // PLDM header information pointer is NULL
     auto rc = pack_pldm_header(hdr_ptr, &msg);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     // PLDM message pointer is NULL
     rc = pack_pldm_header(&hdr, nullptr);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     // PLDM header information pointer and PLDM message pointer is NULL
     rc = pack_pldm_header(hdr_ptr, nullptr);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     // RESERVED message type
     hdr.msg_type = PLDM_RESERVED;
     rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     // Instance ID out of range
     hdr.msg_type = PLDM_REQUEST;
     hdr.instance = 32;
     rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     // PLDM type out of range
     hdr.msg_type = PLDM_REQUEST;
     hdr.instance = 31;
     hdr.pldm_type = 64;
     rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_PLDM_TYPE);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_PLDM_TYPE);
 }
 
 TEST(PackPLDMMessage, RequestMessageGoodPath)
@@ -62,12 +62,12 @@ TEST(PackPLDMMessage, RequestMessageGoodPath)
     hdr.command = 0;
 
     auto rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(msg.request, 1);
-    ASSERT_EQ(msg.datagram, 0);
-    ASSERT_EQ(msg.instance_id, 0);
-    ASSERT_EQ(msg.type, 0);
-    ASSERT_EQ(msg.command, 0);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg.request, 1);
+    EXPECT_EQ(msg.datagram, 0);
+    EXPECT_EQ(msg.instance_id, 0);
+    EXPECT_EQ(msg.type, 0);
+    EXPECT_EQ(msg.command, 0);
 
     // Message type is REQUEST and upper range of the field values
     hdr.instance = 31;
@@ -75,23 +75,23 @@ TEST(PackPLDMMessage, RequestMessageGoodPath)
     hdr.command = 255;
 
     rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(msg.request, 1);
-    ASSERT_EQ(msg.datagram, 0);
-    ASSERT_EQ(msg.instance_id, 31);
-    ASSERT_EQ(msg.type, 63);
-    ASSERT_EQ(msg.command, 255);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg.request, 1);
+    EXPECT_EQ(msg.datagram, 0);
+    EXPECT_EQ(msg.instance_id, 31);
+    EXPECT_EQ(msg.type, 63);
+    EXPECT_EQ(msg.command, 255);
 
     // Message type is PLDM_ASYNC_REQUEST_NOTIFY
     hdr.msg_type = PLDM_ASYNC_REQUEST_NOTIFY;
 
     rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(msg.request, 1);
-    ASSERT_EQ(msg.datagram, 1);
-    ASSERT_EQ(msg.instance_id, 31);
-    ASSERT_EQ(msg.type, 63);
-    ASSERT_EQ(msg.command, 255);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg.request, 1);
+    EXPECT_EQ(msg.datagram, 1);
+    EXPECT_EQ(msg.instance_id, 31);
+    EXPECT_EQ(msg.type, 63);
+    EXPECT_EQ(msg.command, 255);
 }
 
 TEST(PackPLDMMessage, ResponseMessageGoodPath)
@@ -106,12 +106,12 @@ TEST(PackPLDMMessage, ResponseMessageGoodPath)
     hdr.command = 0;
 
     auto rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(msg.request, 0);
-    ASSERT_EQ(msg.datagram, 0);
-    ASSERT_EQ(msg.instance_id, 0);
-    ASSERT_EQ(msg.type, 0);
-    ASSERT_EQ(msg.command, 0);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg.request, 0);
+    EXPECT_EQ(msg.datagram, 0);
+    EXPECT_EQ(msg.instance_id, 0);
+    EXPECT_EQ(msg.type, 0);
+    EXPECT_EQ(msg.command, 0);
 
     // Message type is PLDM_RESPONSE and upper range of the field values
     hdr.instance = 31;
@@ -119,12 +119,12 @@ TEST(PackPLDMMessage, ResponseMessageGoodPath)
     hdr.command = 255;
 
     rc = pack_pldm_header(&hdr, &msg);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(msg.request, 0);
-    ASSERT_EQ(msg.datagram, 0);
-    ASSERT_EQ(msg.instance_id, 31);
-    ASSERT_EQ(msg.type, 63);
-    ASSERT_EQ(msg.command, 255);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg.request, 0);
+    EXPECT_EQ(msg.datagram, 0);
+    EXPECT_EQ(msg.instance_id, 31);
+    EXPECT_EQ(msg.type, 63);
+    EXPECT_EQ(msg.command, 255);
 }
 
 TEST(UnpackPLDMMessage, BadPathTest)
@@ -133,7 +133,7 @@ TEST(UnpackPLDMMessage, BadPathTest)
 
     // PLDM message pointer is NULL
     auto rc = unpack_pldm_header(nullptr, &hdr);
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(UnpackPLDMMessage, RequestMessageGoodPath)
@@ -144,17 +144,17 @@ TEST(UnpackPLDMMessage, RequestMessageGoodPath)
     // Unpack PLDM request message and lower range of field values
     msg.request = 1;
     auto rc = unpack_pldm_header(&msg, &hdr);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(hdr.msg_type, PLDM_REQUEST);
-    ASSERT_EQ(hdr.instance, 0);
-    ASSERT_EQ(hdr.pldm_type, 0);
-    ASSERT_EQ(hdr.command, 0);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(hdr.msg_type, PLDM_REQUEST);
+    EXPECT_EQ(hdr.instance, 0);
+    EXPECT_EQ(hdr.pldm_type, 0);
+    EXPECT_EQ(hdr.command, 0);
 
     // Unpack PLDM async request message and lower range of field values
     msg.datagram = 1;
     rc = unpack_pldm_header(&msg, &hdr);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(hdr.msg_type, PLDM_ASYNC_REQUEST_NOTIFY);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(hdr.msg_type, PLDM_ASYNC_REQUEST_NOTIFY);
 
     // Unpack PLDM request message and upper range of field values
     msg.datagram = 0;
@@ -162,11 +162,11 @@ TEST(UnpackPLDMMessage, RequestMessageGoodPath)
     msg.type = 63;
     msg.command = 255;
     rc = unpack_pldm_header(&msg, &hdr);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(hdr.msg_type, PLDM_REQUEST);
-    ASSERT_EQ(hdr.instance, 31);
-    ASSERT_EQ(hdr.pldm_type, 63);
-    ASSERT_EQ(hdr.command, 255);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(hdr.msg_type, PLDM_REQUEST);
+    EXPECT_EQ(hdr.instance, 31);
+    EXPECT_EQ(hdr.pldm_type, 63);
+    EXPECT_EQ(hdr.command, 255);
 }
 
 TEST(UnpackPLDMMessage, ResponseMessageGoodPath)
@@ -176,22 +176,22 @@ TEST(UnpackPLDMMessage, ResponseMessageGoodPath)
 
     // Unpack PLDM response message and lower range of field values
     auto rc = unpack_pldm_header(&msg, &hdr);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(hdr.msg_type, PLDM_RESPONSE);
-    ASSERT_EQ(hdr.instance, 0);
-    ASSERT_EQ(hdr.pldm_type, 0);
-    ASSERT_EQ(hdr.command, 0);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(hdr.msg_type, PLDM_RESPONSE);
+    EXPECT_EQ(hdr.instance, 0);
+    EXPECT_EQ(hdr.pldm_type, 0);
+    EXPECT_EQ(hdr.command, 0);
 
     // Unpack PLDM response message and upper range of field values
     msg.instance_id = 31;
     msg.type = 63;
     msg.command = 255;
     rc = unpack_pldm_header(&msg, &hdr);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(hdr.msg_type, PLDM_RESPONSE);
-    ASSERT_EQ(hdr.instance, 31);
-    ASSERT_EQ(hdr.pldm_type, 63);
-    ASSERT_EQ(hdr.command, 255);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(hdr.msg_type, PLDM_RESPONSE);
+    EXPECT_EQ(hdr.instance, 31);
+    EXPECT_EQ(hdr.pldm_type, 63);
+    EXPECT_EQ(hdr.command, 255);
 }
 
 TEST(GetPLDMCommands, testEncodeRequest)
@@ -203,9 +203,9 @@ TEST(GetPLDMCommands, testEncodeRequest)
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
     auto rc = encode_get_commands_req(0, pldmType, version, request);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(0, memcmp(request->payload, &pldmType, sizeof(pldmType)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(pldmType), &version,
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(0, memcmp(request->payload, &pldmType, sizeof(pldmType)));
+    EXPECT_EQ(0, memcmp(request->payload + sizeof(pldmType), &version,
                         sizeof(version)));
 }
 
@@ -225,9 +225,9 @@ TEST(GetPLDMCommands, testDecodeRequest)
     auto rc = decode_get_commands_req(request, requestMsg.size() - hdrSize,
                                       &pldmTypeOut, &versionOut);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(pldmTypeOut, pldmType);
-    ASSERT_EQ(0, memcmp(&versionOut, &version, sizeof(version)));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(pldmTypeOut, pldmType);
+    EXPECT_EQ(0, memcmp(&versionOut, &version, sizeof(version)));
 }
 
 TEST(GetPLDMCommands, testEncodeResponse)
@@ -243,13 +243,13 @@ TEST(GetPLDMCommands, testEncodeResponse)
 
     auto rc =
         encode_get_commands_resp(0, PLDM_SUCCESS, commands.data(), response);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     uint8_t* payload_ptr = response->payload;
-    ASSERT_EQ(completionCode, payload_ptr[0]);
-    ASSERT_EQ(1, payload_ptr[sizeof(completionCode)]);
-    ASSERT_EQ(2,
+    EXPECT_EQ(completionCode, payload_ptr[0]);
+    EXPECT_EQ(1, payload_ptr[sizeof(completionCode)]);
+    EXPECT_EQ(2,
               payload_ptr[sizeof(completionCode) + sizeof(commands[0].byte)]);
-    ASSERT_EQ(3, payload_ptr[sizeof(completionCode) + sizeof(commands[0].byte) +
+    EXPECT_EQ(3, payload_ptr[sizeof(completionCode) + sizeof(commands[0].byte) +
                              sizeof(commands[1].byte)]);
 }
 
@@ -265,55 +265,98 @@ TEST(GetPLDMTypes, testEncodeResponse)
     types[2].byte = 3;
 
     auto rc = encode_get_types_resp(0, PLDM_SUCCESS, types.data(), response);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     uint8_t* payload_ptr = response->payload;
-    ASSERT_EQ(completionCode, payload_ptr[0]);
-    ASSERT_EQ(1, payload_ptr[sizeof(completionCode)]);
-    ASSERT_EQ(2, payload_ptr[sizeof(completionCode) + sizeof(types[0].byte)]);
-    ASSERT_EQ(3, payload_ptr[sizeof(completionCode) + sizeof(types[0].byte) +
+    EXPECT_EQ(completionCode, payload_ptr[0]);
+    EXPECT_EQ(1, payload_ptr[sizeof(completionCode)]);
+    EXPECT_EQ(2, payload_ptr[sizeof(completionCode) + sizeof(types[0].byte)]);
+    EXPECT_EQ(3, payload_ptr[sizeof(completionCode) + sizeof(types[0].byte) +
                              sizeof(types[1].byte)]);
 }
 
-TEST(GetPLDMTypes, testDecodeResponse)
+TEST(GetPLDMTypes, testGoodDecodeResponse)
 {
     std::array<uint8_t, hdrSize + PLDM_GET_TYPES_RESP_BYTES> responseMsg{};
     responseMsg[1 + hdrSize] = 1;
     responseMsg[2 + hdrSize] = 2;
     responseMsg[3 + hdrSize] = 3;
     std::array<bitfield8_t, PLDM_MAX_TYPES / 8> outTypes{};
+
     uint8_t completion_code;
+    responseMsg[hdrSize] = PLDM_SUCCESS;
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_get_types_resp(response, responseMsg.size() - hdrSize,
                                     &completion_code, outTypes.data());
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
-    ASSERT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
-    ASSERT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completion_code, PLDM_SUCCESS);
+    EXPECT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
+    EXPECT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
+    EXPECT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
 }
 
-TEST(GetPLDMCommands, testDecodeResponse)
+TEST(GetPLDMTypes, testBadDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_TYPES_RESP_BYTES> responseMsg{};
+    responseMsg[1 + hdrSize] = 1;
+    responseMsg[2 + hdrSize] = 2;
+    responseMsg[3 + hdrSize] = 3;
+    std::array<bitfield8_t, PLDM_MAX_TYPES / 8> outTypes{};
+
+    uint8_t retcompletion_code = 0;
+    responseMsg[hdrSize] = PLDM_SUCCESS;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_get_types_resp(response, responseMsg.size() - hdrSize - 1,
+                                    &retcompletion_code, outTypes.data());
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(GetPLDMCommands, testGoodDecodeResponse)
 {
     std::array<uint8_t, hdrSize + PLDM_GET_COMMANDS_RESP_BYTES> responseMsg{};
     responseMsg[1 + hdrSize] = 1;
     responseMsg[2 + hdrSize] = 2;
     responseMsg[3 + hdrSize] = 3;
     std::array<bitfield8_t, PLDM_MAX_CMDS_PER_TYPE / 8> outTypes{};
+
     uint8_t completion_code;
+    responseMsg[hdrSize] = PLDM_SUCCESS;
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_get_commands_resp(response, responseMsg.size() - hdrSize,
                                        &completion_code, outTypes.data());
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
-    ASSERT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
-    ASSERT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completion_code, PLDM_SUCCESS);
+    EXPECT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
+    EXPECT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
+    EXPECT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
+}
+
+TEST(GetPLDMCommands, testBadDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_COMMANDS_RESP_BYTES> responseMsg{};
+    responseMsg[1 + hdrSize] = 1;
+    responseMsg[2 + hdrSize] = 2;
+    responseMsg[3 + hdrSize] = 3;
+    std::array<bitfield8_t, PLDM_MAX_CMDS_PER_TYPE / 8> outTypes{};
+
+    uint8_t retcompletion_code = 0;
+    responseMsg[hdrSize] = PLDM_SUCCESS;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc =
+        decode_get_commands_resp(response, responseMsg.size() - hdrSize - 1,
+                                 &retcompletion_code, outTypes.data());
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(GetPLDMVersion, testGoodEncodeRequest)
@@ -327,12 +370,12 @@ TEST(GetPLDMVersion, testGoodEncodeRequest)
 
     auto rc =
         encode_get_version_req(0, transferHandle, opFlag, pldmType, request);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(
         0, memcmp(request->payload, &transferHandle, sizeof(transferHandle)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(transferHandle), &opFlag,
+    EXPECT_EQ(0, memcmp(request->payload + sizeof(transferHandle), &opFlag,
                         sizeof(opFlag)));
-    ASSERT_EQ(0,
+    EXPECT_EQ(0,
               memcmp(request->payload + sizeof(transferHandle) + sizeof(opFlag),
                      &pldmType, sizeof(pldmType)));
 }
@@ -346,7 +389,7 @@ TEST(GetPLDMVersion, testBadEncodeRequest)
     auto rc =
         encode_get_version_req(0, transferHandle, opFlag, pldmType, nullptr);
 
-    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(GetPLDMVersion, testEncodeResponse)
@@ -362,14 +405,14 @@ TEST(GetPLDMVersion, testEncodeResponse)
     auto rc = encode_get_version_resp(0, PLDM_SUCCESS, 0, PLDM_START_AND_END,
                                       &version, sizeof(ver32_t), response);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completionCode, response->payload[0]);
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, response->payload[0]);
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
                         &transferHandle, sizeof(transferHandle)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(transferHandle),
                         &flag, sizeof(flag)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
+    EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(transferHandle) + sizeof(flag),
                         &version, sizeof(version)));
 }
@@ -396,10 +439,10 @@ TEST(GetPLDMVersion, testDecodeRequest)
     auto rc = decode_get_version_req(request, requestMsg.size() - hdrSize,
                                      &retTransferHandle, &retFlag, &retType);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(transferHandle, retTransferHandle);
-    ASSERT_EQ(flag, retFlag);
-    ASSERT_EQ(pldmType, retType);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferHandle, retTransferHandle);
+    EXPECT_EQ(flag, retFlag);
+    EXPECT_EQ(pldmType, retType);
 }
 
 TEST(GetPLDMVersion, testDecodeResponse)
@@ -429,14 +472,14 @@ TEST(GetPLDMVersion, testDecodeResponse)
     auto rc = decode_get_version_resp(response, responseMsg.size() - hdrSize,
                                       &completion_code, &retTransferHandle,
                                       &retFlag, &versionOut);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(transferHandle, retTransferHandle);
-    ASSERT_EQ(flag, retFlag);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferHandle, retTransferHandle);
+    EXPECT_EQ(flag, retFlag);
 
-    ASSERT_EQ(versionOut.major, version.major);
-    ASSERT_EQ(versionOut.minor, version.minor);
-    ASSERT_EQ(versionOut.update, version.update);
-    ASSERT_EQ(versionOut.alpha, version.alpha);
+    EXPECT_EQ(versionOut.major, version.major);
+    EXPECT_EQ(versionOut.minor, version.minor);
+    EXPECT_EQ(versionOut.update, version.update);
+    EXPECT_EQ(versionOut.alpha, version.alpha);
 }
 
 TEST(GetTID, testEncodeRequest)
@@ -456,10 +499,10 @@ TEST(GetTID, testEncodeResponse)
     uint8_t tid = 1;
 
     auto rc = encode_get_tid_resp(0, PLDM_SUCCESS, tid, response);
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     uint8_t* payload = response->payload;
-    ASSERT_EQ(completionCode, payload[0]);
-    ASSERT_EQ(1, payload[sizeof(completionCode)]);
+    EXPECT_EQ(completionCode, payload[0]);
+    EXPECT_EQ(1, payload[sizeof(completionCode)]);
 }
 
 TEST(GetTID, testDecodeResponse)
@@ -469,15 +512,16 @@ TEST(GetTID, testDecodeResponse)
 
     uint8_t tid;
     uint8_t completion_code;
+    responseMsg[hdrSize] = PLDM_SUCCESS;
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_get_tid_resp(response, responseMsg.size() - hdrSize,
                                   &completion_code, &tid);
 
-    ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(tid, 1);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completion_code, PLDM_SUCCESS);
+    EXPECT_EQ(tid, 1);
 }
 
 TEST(CcOnlyResponse, testEncode)
