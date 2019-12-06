@@ -71,19 +71,14 @@ Response Handler::getPLDMCommands(const pldm_msg* request, size_t payloadLength)
 
     if (rc != PLDM_SUCCESS)
     {
-        encode_get_commands_resp(request->hdr.instance_id, rc, nullptr,
-                                 responsePtr);
-        return response;
+        return ccOnlyResponse(request, rc);
     }
 
     // DSP0240 has this as a bitfield8[N], where N = 0 to 31
     std::array<bitfield8_t, 32> cmds{};
     if (capabilities.find(type) == capabilities.end())
     {
-        encode_get_commands_resp(request->hdr.instance_id,
-                                 PLDM_ERROR_INVALID_PLDM_TYPE, nullptr,
-                                 responsePtr);
-        return response;
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_PLDM_TYPE);
     }
 
     for (const auto& cmd : capabilities.at(type))
@@ -114,9 +109,7 @@ Response Handler::getPLDMVersion(const pldm_msg* request, size_t payloadLength)
 
     if (rc != PLDM_SUCCESS)
     {
-        encode_get_version_resp(request->hdr.instance_id, rc, 0, 0, nullptr, 4,
-                                responsePtr);
-        return response;
+        return ccOnlyResponse(request, rc);
     }
 
     ver32_t version{};
@@ -124,10 +117,7 @@ Response Handler::getPLDMVersion(const pldm_msg* request, size_t payloadLength)
 
     if (search == versions.end())
     {
-        encode_get_version_resp(request->hdr.instance_id,
-                                PLDM_ERROR_INVALID_PLDM_TYPE, 0, 0, nullptr, 4,
-                                responsePtr);
-        return response;
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_PLDM_TYPE);
     }
 
     memcpy(&version, &(search->second), sizeof(version));

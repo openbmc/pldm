@@ -159,10 +159,7 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
         log<level::ERR>("Error getting time", entry("PATH=%s", hostTimePath),
                         entry("TIME INTERACE=%s", timeInterface));
 
-        encode_get_date_time_resp(request->hdr.instance_id, PLDM_ERROR, seconds,
-                                  minutes, hours, day, month, year,
-                                  responsePtr);
-        return response;
+        return ccOnlyResponse(request, PLDM_ERROR);
     }
 
     uint64_t timeUsec = std::get<EpochTimeUS>(value);
