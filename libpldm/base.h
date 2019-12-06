@@ -234,6 +234,12 @@ int encode_get_types_req(uint8_t instance_id, struct pldm_msg *msg);
 
 /** @brief Decode a GetPLDMTypes response message
  *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code
@@ -260,6 +266,12 @@ int encode_get_commands_req(uint8_t instance_id, uint8_t type, ver32_t version,
 			    struct pldm_msg *msg);
 
 /** @brief Decode a GetPLDMCommands response message
+ *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of reponse message payload
@@ -293,6 +305,12 @@ int encode_get_version_req(uint8_t instance_id, uint32_t transfer_handle,
 
 /** @brief Decode a GetPLDMVersion response message
  *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of reponse message payload
  *  @param[out] completion_code - Pointer to response msg's PLDM completion code
@@ -308,6 +326,12 @@ int decode_get_version_resp(const struct pldm_msg *msg, size_t payload_length,
 /* GetTID */
 
 /** @brief Decode a GetTID response message
+ *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
