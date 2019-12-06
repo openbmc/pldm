@@ -61,7 +61,7 @@ TEST(SetStateEffecterStates, testGoodDecodeResponse)
     std::array<uint8_t, hdrSize + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>
         responseMsg{};
 
-    uint8_t completion_code = 0xA0;
+    uint8_t completion_code = 0;
 
     uint8_t retcompletion_code = 0;
 
