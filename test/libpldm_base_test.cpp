@@ -281,15 +281,19 @@ TEST(GetPLDMTypes, testDecodeResponse)
     responseMsg[2 + hdrSize] = 2;
     responseMsg[3 + hdrSize] = 3;
     std::array<bitfield8_t, PLDM_MAX_TYPES / 8> outTypes{};
-    uint8_t completion_code;
+
+    uint8_t completion_code = 0;
+    uint8_t retcompletion_code = 0;
+    memcpy(responseMsg.data() + hdrSize, &completion_code,
+           sizeof(completion_code));
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_get_types_resp(response, responseMsg.size() - hdrSize,
-                                    &completion_code, outTypes.data());
+                                    &retcompletion_code, outTypes.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(retcompletion_code, PLDM_SUCCESS);
     ASSERT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
     ASSERT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
     ASSERT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
@@ -302,15 +306,19 @@ TEST(GetPLDMCommands, testDecodeResponse)
     responseMsg[2 + hdrSize] = 2;
     responseMsg[3 + hdrSize] = 3;
     std::array<bitfield8_t, PLDM_MAX_CMDS_PER_TYPE / 8> outTypes{};
-    uint8_t completion_code;
+
+    uint8_t completion_code = 0;
+    uint8_t retcompletion_code = 0;
+    memcpy(responseMsg.data() + hdrSize, &completion_code,
+           sizeof(completion_code));
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_get_commands_resp(response, responseMsg.size() - hdrSize,
-                                       &completion_code, outTypes.data());
+                                       &retcompletion_code, outTypes.data());
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(retcompletion_code, PLDM_SUCCESS);
     ASSERT_EQ(responseMsg[1 + hdrSize], outTypes[0].byte);
     ASSERT_EQ(responseMsg[2 + hdrSize], outTypes[1].byte);
     ASSERT_EQ(responseMsg[3 + hdrSize], outTypes[2].byte);
@@ -460,15 +468,18 @@ TEST(GetTID, testDecodeResponse)
     responseMsg[1 + hdrSize] = 1;
 
     uint8_t tid;
-    uint8_t completion_code;
+    uint8_t completion_code = 0;
+    uint8_t retcompletion_code = 0;
+    memcpy(responseMsg.data() + hdrSize, &completion_code,
+           sizeof(completion_code));
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     auto rc = decode_get_tid_resp(response, responseMsg.size() - hdrSize,
-                                  &completion_code, &tid);
+                                  &retcompletion_code, &tid);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(retcompletion_code, PLDM_SUCCESS);
     ASSERT_EQ(tid, 1);
 }
 
