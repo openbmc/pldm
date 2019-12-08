@@ -3,9 +3,10 @@ sources = [
   'pldm_base_cmd.cpp',
   'pldm_platform_cmd.cpp',
   'pldm_bios_cmd.cpp',
+  'pldm_fru_cmd.cpp',
   'pldmtool.cpp'
 ]
-
+	
 executable(
   'pldmtool',
   sources,
