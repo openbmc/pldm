@@ -14,6 +14,7 @@
 #include <utility>
 
 #include "libpldm/base.h"
+#include "libpldm/fru.h"
 #include "libpldm/platform.h"
 
 namespace pldmtool
