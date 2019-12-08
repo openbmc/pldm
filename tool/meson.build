@@ -5,7 +5,7 @@ sources = [
   'pldm_bios_cmd.cpp',
   'pldmtool.cpp'
 ]
-
+		
 executable(
   'pldmtool',
   sources,
