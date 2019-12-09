@@ -1,3 +1,4 @@
+#include <endian.h>
 #include <string.h>
 
 #include <cstring>
@@ -7,6 +8,7 @@
 #include "libpldm/base.h"
 #include "libpldm/bios.h"
 #include "libpldm/bios_table.h"
+#include "libpldm/utils.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -18,7 +20,11 @@ void buildTable(Table& table)
 {
     auto padSize = ((table.size() % 4) ? (4 - table.size() % 4) : 0);
     table.insert(table.end(), padSize, 0);
-    table.insert(table.end(), sizeof(uint32_t) /*checksum*/, 0);
+    uint32_t checksum = crc32(table.data(), table.size());
+    checksum = htole32(checksum);
+    uint8_t a[4];
+    std::memcpy(a, &checksum, sizeof(checksum));
+    table.insert(table.end(), std::begin(a), std::end(a));
 }
 
 template <typename First, typename... Rest>
@@ -667,6 +673,93 @@ TEST(AttrValTable, FindTest)
     EXPECT_DEATH(pldm_bios_table_attr_value_find_by_handle(table.data(),
                                                            table.size(), 1),
                  "entry_length != NULL");
+}
+
+TEST(AttrValTable, CopyAndUpdateTest)
+{
+    std::vector<uint8_t> enumEntry{
+        0, 0, /* attr handle */
+        0,    /* attr type */
+        2,    /* number of current value */
+        0,    /* current value string handle index */
+        1,    /* current value string handle index */
+    };
+    std::vector<uint8_t> stringEntry{
+        1,   0,        /* attr handle */
+        1,             /* attr type */
+        3,   0,        /* current string length */
+        'a', 'b', 'c', /* defaut value string handle index */
+    };
+    std::vector<uint8_t> integerEntry{
+        2,  0,                   /* attr handle */
+        3,                       /* attr type */
+        10, 0, 0, 0, 0, 0, 0, 0, /* current value */
+    };
+
+    Table srcTable;
+    buildTable(srcTable, enumEntry, stringEntry, integerEntry);
+
+    std::vector<uint8_t> stringEntry1{
+        1,   0,        /* attr handle */
+        1,             /* attr type */
+        3,   0,        /* current string length */
+        'd', 'e', 'f', /* defaut value string handle index */
+    };
+
+    Table expectTable;
+    buildTable(expectTable, enumEntry, stringEntry1, integerEntry);
+    Table destTable(expectTable.size() + 10);
+    auto destLength = destTable.size();
+    auto entry =
+        reinterpret_cast<pldm_bios_attr_val_table_entry*>(stringEntry1.data());
+    auto rc = pldm_bios_table_attr_value_copy_and_update(
+        srcTable.data(), srcTable.size(), destTable.data(), &destLength, entry,
+        stringEntry1.size());
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(destLength, expectTable.size());
+    destTable.resize(destLength);
+    EXPECT_THAT(expectTable, ElementsAreArray(destTable));
+
+    std::vector<uint8_t> stringEntry2{
+        1,   0,                  /* attr handle */
+        1,                       /* attr type */
+        5,   0,                  /* current string length */
+        'd', 'e', 'f', 'a', 'b', /* defaut value string handle index */
+    };
+    expectTable.resize(0);
+    buildTable(expectTable, enumEntry, stringEntry2, integerEntry);
+    destTable.resize(expectTable.size() + 10);
+    destLength = destTable.size();
+    entry =
+        reinterpret_cast<pldm_bios_attr_val_table_entry*>(stringEntry2.data());
+    rc = pldm_bios_table_attr_value_copy_and_update(
+        srcTable.data(), srcTable.size(), destTable.data(), &destLength, entry,
+        stringEntry2.size());
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(destLength, expectTable.size());
+    destTable.resize(destLength);
+    EXPECT_THAT(expectTable, ElementsAreArray(destTable));
+
+    std::vector<uint8_t> stringEntry3{
+        1,   0, /* attr handle */
+        1,      /* attr type */
+        1,   0, /* current string length */
+        'd',    /* defaut value string handle index */
+    };
+    expectTable.resize(0);
+    buildTable(expectTable, enumEntry, stringEntry2, integerEntry);
+    destTable.resize(expectTable.size() + 10);
+    destLength = destTable.size();
+    entry =
+        reinterpret_cast<pldm_bios_attr_val_table_entry*>(stringEntry3.data());
+    rc = pldm_bios_table_attr_value_copy_and_update(
+        srcTable.data(), srcTable.size(), destTable.data(), &destLength, entry,
+        stringEntry3.size());
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(destLength, expectTable.size());
+    destTable.resize(destLength);
+    EXPECT_THAT(expectTable, ElementsAreArray(destTable));
 }
 
 TEST(StringTable, EntryEncodeTest)
