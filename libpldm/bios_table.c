@@ -751,13 +751,14 @@ size_t pldm_bios_table_pad_checksum_size(size_t size_without_pad)
 	return size;
 }
 
-void pldm_bios_table_append_pad_checksum(void *table, size_t size,
-					 size_t size_without_pad)
+size_t pldm_bios_table_append_pad_checksum(void *table, size_t size,
+					   size_t size_without_pad)
 {
 
 	size_t pad_checksum_size =
 	    pldm_bios_table_pad_checksum_size(size_without_pad);
-	assert(size >= (size_without_pad + pad_checksum_size));
+	size_t total_length = size_without_pad + pad_checksum_size;
+	assert(size >= total_length);
 
 	uint8_t *table_end = (uint8_t *)table + size_without_pad;
 	size_t pad_size = pad_size_get(size_without_pad);
@@ -765,6 +766,8 @@ void pldm_bios_table_append_pad_checksum(void *table, size_t size,
 
 	uint32_t checksum = crc32(table, size_without_pad + pad_size);
 	checksum_append(table_end, checksum);
+
+	return total_length;
 }
 
 struct pldm_bios_table_iter {
@@ -913,4 +916,37 @@ pldm_bios_table_attr_value_find_by_handle(const void *table, size_t length,
 	return pldm_bios_table_entry_find_from_table(
 	    table, length, PLDM_BIOS_ATTR_VAL_TABLE,
 	    attr_value_table_handle_equal, &handle);
+}
+
+int pldm_bios_table_attr_value_copy_and_update(
+    const void *src_table, size_t src_length, void *dest_table,
+    size_t *dest_length, const struct pldm_bios_attr_val_table_entry *entry,
+    size_t entry_length)
+{
+	struct pldm_bios_table_iter *iter = pldm_bios_table_iter_create(
+	    src_table, src_length, PLDM_BIOS_ATTR_VAL_TABLE);
+
+	const struct pldm_bios_attr_val_table_entry *tmp;
+	size_t buffer_length = *dest_length, copied_length = 0, length = 0;
+	while (!pldm_bios_table_iter_is_end(iter)) {
+		tmp = pldm_bios_table_iter_attr_value_entry_value(iter);
+		length = attr_value_table_entry_length(tmp);
+		iter->current_pos += length;
+		if (tmp->attr_handle == entry->attr_handle) {
+			length = entry_length;
+			tmp = entry;
+		}
+		if (copied_length + length > buffer_length) {
+			pldm_bios_table_iter_free(iter);
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy((uint8_t *)dest_table + copied_length, tmp, length);
+		copied_length += length;
+	}
+
+	*dest_length = pldm_bios_table_append_pad_checksum(
+	    dest_table, buffer_length, copied_length);
+	pldm_bios_table_iter_free(iter);
+
+	return PLDM_SUCCESS;
 }
