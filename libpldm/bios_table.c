@@ -771,6 +771,7 @@ struct pldm_bios_table_iter {
 	const uint8_t *table_data;
 	size_t table_len;
 	size_t current_pos;
+	size_t entry_length;
 	size_t (*entry_length_handler)(const void *table_entry);
 };
 
@@ -784,6 +785,7 @@ pldm_bios_table_iter_create(const void *table, size_t length,
 	iter->table_len = length;
 	iter->current_pos = 0;
 	iter->entry_length_handler = NULL;
+	iter->entry_length = 0;
 	switch (type) {
 	case PLDM_BIOS_STRING_TABLE:
 		iter->entry_length_handler = string_table_entry_length;
@@ -795,6 +797,10 @@ pldm_bios_table_iter_create(const void *table, size_t length,
 		iter->entry_length_handler = attr_value_table_entry_length;
 		break;
 	}
+
+	if (pldm_bios_table_iter_is_end(iter))
+		return iter;
+	iter->entry_length = iter->entry_length_handler(table);
 
 	return iter;
 }
@@ -816,8 +822,11 @@ void pldm_bios_table_iter_next(struct pldm_bios_table_iter *iter)
 {
 	if (pldm_bios_table_iter_is_end(iter))
 		return;
+	iter->current_pos += iter->entry_length;
+	if (pldm_bios_table_iter_is_end(iter))
+		return;
 	const void *entry = iter->table_data + iter->current_pos;
-	iter->current_pos += iter->entry_length_handler(entry);
+	iter->entry_length = iter->entry_length_handler(entry);
 }
 
 const void *pldm_bios_table_iter_value(struct pldm_bios_table_iter *iter)
@@ -913,4 +922,35 @@ pldm_bios_table_attr_value_find_by_handle(const void *table, size_t length,
 	return pldm_bios_table_entry_find_from_table(
 	    table, length, PLDM_BIOS_ATTR_VAL_TABLE,
 	    attr_value_table_handle_equal, &handle);
+}
+
+int pldm_bios_table_attr_value_copy_and_update(
+    const void *src_table, size_t src_length, void *dest_table,
+    size_t dest_length, const struct pldm_bios_attr_val_table_entry *entry,
+    size_t entry_length)
+{
+	struct pldm_bios_table_iter *iter = pldm_bios_table_iter_create(
+	    src_table, src_length, PLDM_BIOS_ATTR_VAL_TABLE);
+
+	const struct pldm_bios_attr_val_table_entry *tmp;
+	size_t copied_length = 0, length = 0;
+	while (!pldm_bios_table_iter_is_end(iter)) {
+		tmp = pldm_bios_table_iter_attr_value_entry_value(iter);
+		if (tmp->attr_handle != entry->attr_handle) {
+			length = attr_value_table_entry_length(tmp);
+		} else {
+			length = entry_length;
+			tmp = entry;
+		}
+
+		if (copied_length + length > dest_length)
+			return PLDM_ERROR_INVALID_LENGTH;
+		memcpy((uint8_t *)dest_table + copied_length, tmp, length);
+		copied_length += length;
+	}
+	
+	pldm_bios_table_append_pad_checksum(dest_table, dest_length,
+					    copied_length);
+
+	return PLDM_SUCCESS;
 }
