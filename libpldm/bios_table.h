@@ -552,9 +552,26 @@ size_t pldm_bios_table_pad_checksum_size(size_t size_without_pad);
  *  @param[in,out] table - Pointer to a buffer of a bios table
  *  @param[in] size - Size of the buffer of a bios table
  *  @param[in] size_without_pad - Table size without pad and checksum
+ *  @return Total size of the table
  */
-void pldm_bios_table_append_pad_checksum(void *table, size_t size,
-					 size_t size_without_pad);
+size_t pldm_bios_table_append_pad_checksum(void *table, size_t size,
+					   size_t size_without_pad);
+
+/** @brief Build a new table and update an entry
+ *  @param[in] src_table - Pointer to the source table
+ *  @param[in] src_length - Size of the source table
+ *  @param[out] dest_table - Pointer to the buffer of destination table
+ *  @param[in,out] dest_length - Buffer size of the destination table as input
+ *                               parameter and will be assigned the length of
+ *                               the new table, if the function returns
+ * 				 PLDM_SUCCESS
+ *  @param[in] entry - Pointer to an entry
+ *  @param[in] entry_length - Size of the entry
+ *  @return pldm_completion_codes
+ */
+int pldm_bios_table_attr_value_copy_and_update(
+    const void *src_table, size_t src_length, void *dest_table,
+    size_t *dest_length, const void *entry, size_t entry_length);
 
 #ifdef __cplusplus
 }
