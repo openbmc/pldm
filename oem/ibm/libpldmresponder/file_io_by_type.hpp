@@ -48,6 +48,12 @@ class FileHandler
      */
     virtual int read(uint32_t offset, uint32_t& length, Response& response) = 0;
 
+    /** @brief Method to acknowledge file created/present to the host.
+     *  @param[in] fileHandle - Handle to the file created
+     *  @return PLDM status code
+     **/
+    virtual int fileAck(uint32_t fileHandle) = 0;
+
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] filePath - file to read from
      *  @param[in] offset - offset to read
