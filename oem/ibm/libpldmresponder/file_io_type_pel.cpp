@@ -94,5 +94,32 @@ int PelHandler::storePel(std::string&& pelFileName)
     return PLDM_SUCCESS;
 }
 
+int PelHandler::fileAck()
+{
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "xyz.openbmc_project.Logging.PEL";
+
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    try
+    {
+        auto service = getService(bus, logObjPath, logInterface);
+        using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "HostAck");
+        method.append(fileHandle);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>("failed to make a d-bus call to PEL daemon",
+                        entry("ERROR=%s", e.what()));
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
 } // namespace responder
 } // namespace pldm

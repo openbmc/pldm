@@ -36,6 +36,12 @@ class PelHandler : public FileHandler
      */
     virtual int storePel(std::string&& pelFileName);
 
+    /** @brief method to send acknowledgement via d-bus notification to host
+     *  for a pel file created in tempfs
+     *
+     */
+    virtual int fileAck();
+
     /** @brief PelHandler destructor
      */
     ~PelHandler()

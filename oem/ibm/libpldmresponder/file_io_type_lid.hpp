@@ -49,6 +49,11 @@ class LidHandler : public FileHandler
         return readFile(lidPath, offset, length, response);
     }
 
+    virtual int fileAck()
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief LidHandler destructor
      */
     ~LidHandler()
