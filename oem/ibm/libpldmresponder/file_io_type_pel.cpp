@@ -37,6 +37,13 @@ int PelHandler::read(uint32_t /*offset*/, uint32_t& /*length*/,
     return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
 }
 
+int PelHandler::fileAck(uint32_t fileHandle)
+{
+    auto rc = fileAckPel(fileHandle);
+
+    return rc;
+}
+
 int PelHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address)
 {
@@ -82,6 +89,33 @@ int PelHandler::storePel(std::string&& pelFileName)
                                           logInterface, "Create");
         method.append("xyz.openbmc_project.Host.Error.Event", severity,
                       addlData);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        log<level::ERR>("failed to make a d-bus call to PEL daemon",
+                        entry("ERROR=%s", e.what()));
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
+int PelHandler::fileAckPel(uint32_t pelID)
+{
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "xyz.openbmc_project.Logging.HostAck";
+
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    try
+    {
+        auto service = getService(bus, logObjPath, logInterface);
+        using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "HostAck");
+        method.append(logInterface, pelID);
         bus.call_noreply(method);
     }
     catch (const std::exception& e)
