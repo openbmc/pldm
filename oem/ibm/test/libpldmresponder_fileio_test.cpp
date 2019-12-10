@@ -883,3 +883,21 @@ TEST(readFileByType, testReadFile)
     ASSERT_EQ(response.size(), in.size());
     ASSERT_EQ(std::equal(in.begin(), in.end(), response.begin()), true);
 }
+
+/*TEST(fileAck, testFileAck)
+{
+    Response response;
+    uint32_t fileHandle;
+
+    char tmplt[] = "/tmp/pel.0";
+    fileHandle = 0;
+    PelHandler handler(fileHandle);
+    auto fd = mkstemp(tmplt);
+    std::vector<uint8_t> in = {100, 10, 56, 78, 34, 56, 79, 235, 111};
+    write(fd, in.data(), in.size());
+    close(fd);
+    auto rc = handler.fileAck(fileHandle);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(response.size(), in.size());
+    ASSERT_EQ(std::equal(in.begin(), in.end(), response.begin()), true);
+}*/

@@ -29,12 +29,21 @@ class PelHandler : public FileHandler
                                uint64_t address);
     virtual int read(uint32_t offset, uint32_t& length, Response& response);
 
+    virtual int fileAck(uint32_t fileHandle);
+
     /** @brief method to store a pel file in tempfs and send
      *  d-bus notification to pel daemon that it is ready for consumption
      *
      *  @param[in] pelFileName - the pel file path
      */
     virtual int storePel(std::string&& pelFileName);
+
+    /** @brief method to send acknowledgement via d-bus notification to host
+     *  for a pel file created in tempfs
+     *
+     *  @param[in] pelID - the pel ID
+     */
+    virtual int fileAckPel(uint32_t pelID);
 
     /** @brief PelHandler destructor
      */
