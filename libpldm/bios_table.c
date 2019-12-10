@@ -480,8 +480,8 @@ struct table_entry_length {
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
-static struct table_entry_length *find_table_entry_length_by_type(
-    uint8_t attr_type, struct table_entry_length *handlers, size_t count)
+static const struct table_entry_length *find_table_entry_length_by_type(
+    uint8_t attr_type, const struct table_entry_length *handlers, size_t count)
 {
 	size_t i;
 	for (i = 0; i < count; i++) {
@@ -491,7 +491,7 @@ static struct table_entry_length *find_table_entry_length_by_type(
 	return NULL;
 }
 
-static struct table_entry_length attr_table_entries[] = {
+static const struct table_entry_length attr_table_entries[] = {
     {.attr_type = PLDM_BIOS_ENUMERATION,
      .entry_length_handler = attr_table_entry_length_enum},
     {.attr_type = PLDM_BIOS_ENUMERATION_READ_ONLY,
@@ -509,7 +509,7 @@ static struct table_entry_length attr_table_entries[] = {
 static size_t attr_table_entry_length(const void *table_entry)
 {
 	const struct pldm_bios_attr_table_entry *entry = table_entry;
-	struct table_entry_length *attr_table_entry =
+	const struct table_entry_length *attr_table_entry =
 	    find_table_entry_length_by_type(entry->attr_type,
 					    attr_table_entries,
 					    ARRAY_SIZE(attr_table_entries));
@@ -671,7 +671,7 @@ static size_t attr_value_table_entry_length_integer(const void *entry)
 	return pldm_bios_table_attr_value_entry_encode_integer_length();
 }
 
-static struct table_entry_length attr_value_table_entries[] = {
+static const struct table_entry_length attr_value_table_entries[] = {
     {.attr_type = PLDM_BIOS_ENUMERATION,
      .entry_length_handler = attr_value_table_entry_length_enum},
     {.attr_type = PLDM_BIOS_ENUMERATION_READ_ONLY,
@@ -689,7 +689,7 @@ static struct table_entry_length attr_value_table_entries[] = {
 static size_t attr_value_table_entry_length(const void *table_entry)
 {
 	const struct pldm_bios_attr_val_table_entry *entry = table_entry;
-	struct table_entry_length *entry_length =
+	const struct table_entry_length *entry_length =
 	    find_table_entry_length_by_type(
 		entry->attr_type, attr_value_table_entries,
 		ARRAY_SIZE(attr_value_table_entries));
