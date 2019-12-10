@@ -638,6 +638,7 @@ Response Handler::readFileByType(const pldm_msg* request, size_t payloadLength)
     }
 
     rc = handler->read(offset, length, response);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     encode_rw_file_by_type_resp(request->hdr.instance_id,
                                 PLDM_READ_FILE_BY_TYPE, rc, length,
                                 responsePtr);
