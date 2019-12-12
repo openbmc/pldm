@@ -323,6 +323,20 @@ int decode_get_version_resp(const struct pldm_msg *msg, size_t payload_length,
 	return PLDM_SUCCESS;
 }
 
+int encode_get_tid_req(uint8_t instance_id, struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.command = PLDM_GET_TID;
+	pack_pldm_header(&header, &(msg->hdr));
+
+	return PLDM_SUCCESS;
+}
 int encode_get_tid_resp(uint8_t instance_id, uint8_t completion_code,
 			uint8_t tid, struct pldm_msg *msg)
 {

@@ -397,7 +397,19 @@ int decode_get_version_req(const struct pldm_msg *msg, size_t payload_length,
 			   uint32_t *transfer_handle, uint8_t *transfer_opflag,
 			   uint8_t *type);
 
+/* Requester */
+
 /* GetTID */
+
+/** @brief Create a PLDM request message for GetTID
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_get_tid_req(uint8_t instance_id, struct pldm_msg *msg);
 
 /** @brief Create a PLDM response message for GetTID
  *
