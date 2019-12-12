@@ -8,10 +8,9 @@
 #include <chrono>
 #include <ctime>
 #include <filesystem>
+#include <iostream>
 #include <memory>
 #include <numeric>
-#include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
 #include <stdexcept>
 #include <string>
 #include <variant>
@@ -28,7 +27,6 @@ constexpr auto attrValTableFile = "attributeValueTable";
 namespace pldm
 {
 
-using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 using EpochTimeUS = uint64_t;
 using BIOSTableRow = std::vector<uint8_t>;
@@ -140,8 +138,8 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
 
     catch (std::exception& e)
     {
-        log<level::ERR>("Error getting time", entry("PATH=%s", hostTimePath),
-                        entry("TIME INTERACE=%s", timeInterface));
+        std::cerr << "Error getting time, PATH=" << hostTimePath
+                  << " TIME INTERACE=" << timeInterface << "\n";
 
         encode_get_date_time_resp(request->hdr.instance_id, PLDM_ERROR, seconds,
                                   minutes, hours, day, month, year,
@@ -244,10 +242,9 @@ StringHandle findStringHandle(const std::string& name,
         table.data(), table.size(), name.c_str());
     if (stringEntry == nullptr)
     {
-        log<level::ERR>("Reached end of BIOS string table,did not find the "
-                        "handle for the string",
-                        entry("STRING=%s", name.c_str()));
-        elog<InternalFailure>();
+        std::cerr << "Reached end of BIOS string table,did not find the "
+                  << "handle for the string, STRING=" << name.c_str() << "\n";
+        throw InternalFailure();
     }
 
     return pldm_bios_table_string_entry_decode_handle(stringEntry);
@@ -270,9 +267,9 @@ std::string findStringName(StringHandle stringHdl,
     std::string name;
     if (stringEntry == nullptr)
     {
-        log<level::ERR>("Reached end of BIOS string table,did not find "
-                        "string name for handle",
-                        entry("STRING_HANDLE=%d", stringHdl));
+        std::cerr << "Reached end of BIOS string table,did not find "
+                  << "string name for handle, STRING_HANDLE=" << stringHdl
+                  << "\n";
     }
     auto strLength =
         pldm_bios_table_string_entry_decode_string_length(stringEntry);
@@ -314,8 +311,8 @@ std::vector<uint8_t> findStrIndices(PossibleValuesByHandle possiVals,
         }
         catch (InternalFailure& e)
         {
-            log<level::ERR>("Exception fetching handle for the string",
-                            entry("STRING=%s", currVal.c_str()));
+            std::cerr << "Exception fetching handle for the string, STRING="
+                      << currVal.c_str() << "\n";
             continue;
         }
 
@@ -379,8 +376,8 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
         }
         catch (InternalFailure& e)
         {
-            log<level::ERR>("Could not find handle for BIOS string",
-                            entry("ATTRIBUTE=%s", key.c_str()));
+            std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
+                      << key.c_str() << "\n";
             continue;
         }
         bool readOnly = (std::get<0>(value));
@@ -401,8 +398,8 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
             }
             catch (InternalFailure& e)
             {
-                log<level::ERR>("Could not find handle for BIOS string",
-                                entry("STRING=%s", elem.c_str()));
+                std::cerr << "Could not find handle for BIOS string, STRING="
+                          << elem.c_str() << "\n";
                 continue;
             }
         }
@@ -437,9 +434,8 @@ void constructAttrValueEntry(
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("getAttrValue returned error for attribute",
-                        entry("NAME=%s", attrName.c_str()),
-                        entry("ERROR=%s", e.what()));
+        std::cerr << "getAttrValue returned error for attribute, NAME="
+                  << attrName.c_str() << " ERROR=" << e.what() << "\n";
         return;
     }
     uint8_t pv_num =
@@ -487,8 +483,8 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
         }
         catch (InternalFailure& e)
         {
-            log<level::ERR>("Could not find handle for BIOS string",
-                            entry("ATTRIBUTE=%s", key.c_str()));
+            std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
+                      << key.c_str() << "\n";
             continue;
         }
 
@@ -523,9 +519,8 @@ void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("getAttrValue returned error for attribute",
-                        entry("NAME=%s", attrName.c_str()),
-                        entry("ERROR=%s", e.what()));
+        std::cerr << "getAttrValue returned error for attribute, NAME="
+                  << attrName.c_str() << " ERROR=" << e.what() << "\n";
         return;
     }
     auto entryLength =
@@ -563,8 +558,8 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
         }
         catch (InternalFailure& e)
         {
-            log<level::ERR>("Could not find handle for BIOS string",
-                            entry("ATTRIBUTE=%s", key.c_str()));
+            std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
+                      << key.c_str() << "\n";
             continue;
         }
 
@@ -596,9 +591,8 @@ void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Failed to get attribute value",
-                        entry("NAME=%s", attrName.c_str()),
-                        entry("ERROR=%s", e.what()));
+        std::cerr << "Failed to get attribute value, NAME=" << attrName.c_str()
+                  << " ERROR=" << e.what() << "\n";
         return;
     }
     auto entryLength = pldm_bios_table_attr_value_entry_encode_integer_length();
@@ -628,8 +622,8 @@ void traverseBIOSAttrTable(const Table& biosAttrTable,
         }
         catch (const std::exception& e)
         {
-            log<level::ERR>("handler fails when traversing BIOSAttrTable",
-                            entry("ERROR=%s", e.what()));
+            std::cerr << "handler fails when traversing BIOSAttrTable, ERROR="
+                      << e.what() << "\n";
         }
         pldm_bios_table_iter_next(iter.get());
     }
@@ -733,8 +727,8 @@ void constructAttrValueTableEntry(
     auto attrName = findStringName(attrEntry->string_handle, BIOSStringTable);
     if (attrName.empty())
     {
-        log<level::ERR>("invalid string handle",
-                        entry("STRING_HANDLE=%d", attrEntry->string_handle));
+        std::cerr << "invalid string handle, STRING_HANDLE="
+                  << attrEntry->string_handle << "\n";
         return;
     }
 

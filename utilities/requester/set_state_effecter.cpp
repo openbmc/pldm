@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Message encode failure. PLDM error code = " << std::hex
-                  << std::showbase << rc << std::endl;
+                  << std::showbase << rc << "\n";
         return -1;
     }
 
@@ -37,7 +37,8 @@ int main(int argc, char** argv)
     int fd = pldm_open();
     if (-1 == fd)
     {
-        std::cerr << "Failed to init mctp" << std::endl;
+        std::cerr << "Failed to init mctp"
+                  << "\n";
         return -1;
     }
 
@@ -49,7 +50,7 @@ int main(int argc, char** argv)
     if (0 > rc)
     {
         std::cerr << "Failed to send message/receive response. RC = " << rc
-                  << ", errno = " << errno << std::endl;
+                  << ", errno = " << errno << "\n";
         return -1;
     }
     pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg);

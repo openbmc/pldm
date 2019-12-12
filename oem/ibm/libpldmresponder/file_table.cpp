@@ -2,7 +2,7 @@
 
 #include <boost/crc.hpp>
 #include <fstream>
-#include <phosphor-logging/log.hpp>
+#include <iostream>
 
 namespace pldm
 {
@@ -10,22 +10,21 @@ namespace pldm
 namespace filetable
 {
 
-using namespace phosphor::logging;
-
 FileTable::FileTable(const std::string& fileTableConfigPath)
 {
     std::ifstream jsonFile(fileTableConfigPath);
     if (!jsonFile.is_open())
     {
-        log<level::ERR>("File table config file does not exist",
-                        entry("FILE=%s", fileTableConfigPath.c_str()));
+        std::cerr << "File table config file does not exist, FILE="
+                  << fileTableConfigPath.c_str() << "\n";
         return;
     }
 
     auto data = Json::parse(jsonFile, nullptr, false);
     if (data.is_discarded())
     {
-        log<level::ERR>("Parsing config file failed");
+        std::cerr << "Parsing config file failed"
+                  << "\n";
         return;
     }
 

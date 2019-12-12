@@ -103,5 +103,7 @@ TEST(GeneratePDR, testMalformedJson)
     Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
     ASSERT_EQ(pdrRepo.numEntries(), 2);
     pdrRepo.makeEmpty();
-    ASSERT_THROW(get("./pdr_jsons/state_effecter/malformed"), std::exception);
+    ASSERT_THROW(pldm::responder::pdr::internal::readJson(
+                     "./pdr_jsons/state_effecter/malformed"),
+                 std::exception);
 }

@@ -15,23 +15,20 @@
 
 #include <cstring>
 #include <fstream>
+#include <iostream>
 #include <memory>
-#include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
 
 #include "libpldm/base.h"
 
 namespace pldm
 {
 
-using namespace phosphor::logging;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 namespace responder
 {
 
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 
 namespace dma
 {
@@ -74,7 +71,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
     if (fd < 0)
     {
         rc = -errno;
-        log<level::ERR>("Failed to open the XDMA device", entry("RC=%d", rc));
+        std::cerr << "Failed to open the XDMA device, RC=" << rc << "\n";
         return rc;
     }
 
@@ -86,7 +83,7 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
     if (MAP_FAILED == vgaMem)
     {
         rc = -errno;
-        log<level::ERR>("Failed to mmap the XDMA device", entry("RC=%d", rc));
+        std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
         return rc;
     }
 
@@ -108,10 +105,9 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
         if (static_cast<uint32_t>(stream.gcount()) != length)
         {
-            log<level::ERR>("mismatch between number of characters to read and "
-                            "the length read",
-                            entry("LENGTH=%d", length),
-                            entry("COUNT=%d", stream.gcount()));
+            std::cerr << "mismatch between number of characters to read and "
+                      << "the length read, LENGTH=" << length
+                      << " COUNT=" << stream.gcount() << "\n";
             return -1;
         }
     }
@@ -125,10 +121,9 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
     if (rc < 0)
     {
         rc = -errno;
-        log<level::ERR>("Failed to execute the DMA operation",
-                        entry("RC=%d", rc), entry("UPSTREAM=%d", upstream),
-                        entry("ADDRESS=%lld", address),
-                        entry("LENGTH=%d", length));
+        std::cerr << "Failed to execute the DMA operation, RC=" << rc
+                  << " UPSTREAM=" << upstream << " ADDRESS=" << address
+                  << " LENGTH=" << length << "\n";
         return rc;
     }
 
@@ -185,8 +180,8 @@ Response Handler::readFileIntoMemory(const pldm_msg* request,
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("File handle does not exist in the file table",
-                        entry("HANDLE=%d", fileHandle));
+        std::cerr << "File handle does not exist in the file table, HANDLE="
+                  << fileHandle << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
@@ -195,7 +190,7 @@ Response Handler::readFileIntoMemory(const pldm_msg* request,
 
     if (!fs::exists(value.fsPath))
     {
-        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        std::cerr << "File does not exist, HANDLE=" << fileHandle << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
@@ -205,8 +200,8 @@ Response Handler::readFileIntoMemory(const pldm_msg* request,
     auto fileSize = fs::file_size(value.fsPath);
     if (offset >= fileSize)
     {
-        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
-                        entry("FILE_SIZE=%d", fileSize));
+        std::cerr << "Offset exceeds file size, OFFSET=" << offset
+                  << " FILE_SIZE=" << fileSize << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
@@ -220,8 +215,8 @@ Response Handler::readFileIntoMemory(const pldm_msg* request,
 
     if (length % dma::minSize)
     {
-        log<level::ERR>("Read length is not a multiple of DMA minSize",
-                        entry("LENGTH=%d", length));
+        std::cerr << "Read length is not a multiple of DMA minSize, LENGTH="
+                  << length << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_INVALID_READ_LENGTH, 0, responsePtr);
@@ -259,8 +254,8 @@ Response Handler::writeFileFromMemory(const pldm_msg* request,
 
     if (length % dma::minSize)
     {
-        log<level::ERR>("Write length is not a multiple of DMA minSize",
-                        entry("LENGTH=%d", length));
+        std::cerr << "Write length is not a multiple of DMA minSize, LENGTH="
+                  << length << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
@@ -277,8 +272,8 @@ Response Handler::writeFileFromMemory(const pldm_msg* request,
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("File handle does not exist in the file table",
-                        entry("HANDLE=%d", fileHandle));
+        std::cerr << "File handle does not exist in the file table, HANDLE="
+                  << fileHandle << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
@@ -287,7 +282,7 @@ Response Handler::writeFileFromMemory(const pldm_msg* request,
 
     if (!fs::exists(value.fsPath))
     {
-        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        std::cerr << "File does not exist, HANDLE=" << fileHandle << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
@@ -297,8 +292,8 @@ Response Handler::writeFileFromMemory(const pldm_msg* request,
     auto fileSize = fs::file_size(value.fsPath);
     if (offset >= fileSize)
     {
-        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
-                        entry("FILE_SIZE=%d", fileSize));
+        std::cerr << "Offset exceeds file size, OFFSET=" << offset
+                  << " FILE_SIZE=" << fileSize << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_DATA_OUT_OF_RANGE, 0, responsePtr);
@@ -402,8 +397,8 @@ Response Handler::readFile(const pldm_msg* request, size_t payloadLength)
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("File handle does not exist in the file table",
-                        entry("HANDLE=%d", fileHandle));
+        std::cerr << "File handle does not exist in the file table, HANDLE="
+                  << fileHandle << "\n";
         encode_read_file_resp(request->hdr.instance_id,
                               PLDM_INVALID_FILE_HANDLE, length, responsePtr);
         return response;
@@ -411,7 +406,7 @@ Response Handler::readFile(const pldm_msg* request, size_t payloadLength)
 
     if (!fs::exists(value.fsPath))
     {
-        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        std::cerr << "File does not exist, HANDLE=" << fileHandle << "\n";
         encode_read_file_resp(request->hdr.instance_id,
                               PLDM_INVALID_FILE_HANDLE, length, responsePtr);
         return response;
@@ -420,8 +415,8 @@ Response Handler::readFile(const pldm_msg* request, size_t payloadLength)
     auto fileSize = fs::file_size(value.fsPath);
     if (offset >= fileSize)
     {
-        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
-                        entry("FILE_SIZE=%d", fileSize));
+        std::cerr << "Offset exceeds file size, OFFSET=" << offset
+                  << " FILE_SIZE=" << fileSize << "\n";
         encode_read_file_resp(request->hdr.instance_id, PLDM_DATA_OUT_OF_RANGE,
                               length, responsePtr);
         return response;
@@ -483,8 +478,8 @@ Response Handler::writeFile(const pldm_msg* request, size_t payloadLength)
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("File handle does not exist in the file table",
-                        entry("HANDLE=%d", fileHandle));
+        std::cerr << "File handle does not exist in the file table, HANDLE="
+                  << fileHandle << "\n";
         encode_write_file_resp(request->hdr.instance_id,
                                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
         return response;
@@ -492,7 +487,7 @@ Response Handler::writeFile(const pldm_msg* request, size_t payloadLength)
 
     if (!fs::exists(value.fsPath))
     {
-        log<level::ERR>("File does not exist", entry("HANDLE=%d", fileHandle));
+        std::cerr << "File does not exist, HANDLE=" << fileHandle << "\n";
         encode_write_file_resp(request->hdr.instance_id,
                                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
         return response;
@@ -501,8 +496,8 @@ Response Handler::writeFile(const pldm_msg* request, size_t payloadLength)
     auto fileSize = fs::file_size(value.fsPath);
     if (offset >= fileSize)
     {
-        log<level::ERR>("Offset exceeds file size", entry("OFFSET=%d", offset),
-                        entry("FILE_SIZE=%d", fileSize));
+        std::cerr << "Offset exceeds file size, OFFSET=" << offset
+                  << " FILE_SIZE=" << fileSize << "\n";
         encode_write_file_resp(request->hdr.instance_id, PLDM_DATA_OUT_OF_RANGE,
                                0, responsePtr);
         return response;
@@ -553,8 +548,8 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
     }
     if (length % dma::minSize)
     {
-        log<level::ERR>("Length is not a multiple of DMA minSize",
-                        entry("LENGTH=%d", length));
+        std::cerr << "Length is not a multiple of DMA minSize, LENGTH="
+                  << length << "\n";
         encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
                                            PLDM_INVALID_WRITE_LENGTH, 0,
                                            responsePtr);
@@ -568,7 +563,7 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
     }
     catch (const InternalFailure& e)
     {
-        log<level::ERR>("unknown file type ", entry("TYPE=%d", fileType));
+        std::cerr << "unknown file type, TYPE=" << fileType << "\n";
         encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
                                            PLDM_INVALID_FILE_TYPE, 0,
                                            responsePtr);
@@ -630,7 +625,7 @@ Response Handler::readFileByType(const pldm_msg* request, size_t payloadLength)
     }
     catch (const InternalFailure& e)
     {
-        log<level::ERR>("unknown file type", entry("TYPE=%d", fileType));
+        std::cerr << "unknown file type, TYPE=" << fileType << "\n";
         encode_rw_file_by_type_resp(request->hdr.instance_id,
                                     PLDM_READ_FILE_BY_TYPE,
                                     PLDM_INVALID_FILE_TYPE, 0, responsePtr);
