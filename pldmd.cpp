@@ -19,7 +19,6 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
-#include <phosphor-logging/log.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <sstream>
@@ -38,7 +37,6 @@
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 
 using namespace pldm::responder;
-using namespace phosphor::logging;
 using namespace pldm;
 using namespace sdeventplus;
 using namespace sdeventplus::source;
@@ -55,7 +53,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
         requestMsg.data() + sizeof(eid) + sizeof(type));
     if (PLDM_SUCCESS != unpack_pldm_header(hdr, &hdrFields))
     {
-        log<level::ERR>("Empty PLDM request header");
+        std::cerr << "Empty PLDM request header \n";
     }
     else if (PLDM_RESPONSE != hdrFields.msg_type)
     {
@@ -80,7 +78,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
             auto result = pack_pldm_header(&header, responseHdr);
             if (PLDM_SUCCESS != result)
             {
-                log<level::ERR>("Failed adding response header");
+                std::cerr << "Failed adding response header \n";
             }
             response.insert(response.end(), completion_code);
         }
@@ -104,7 +102,7 @@ void printBuffer(const std::vector<uint8_t>& buffer)
                        << " ";
         }
     }
-    log<level::INFO>(tempStream.str().c_str());
+    std::cout << tempStream.str().c_str() << std::endl;
 }
 
 void optionUsage(void)
@@ -161,8 +159,7 @@ int main(int argc, char** argv)
     if (-1 == sockfd)
     {
         returnCode = -errno;
-        log<level::ERR>("Failed to create the socket",
-                        entry("RC=%d", returnCode));
+        std::cerr << "Failed to create the socket, RC= " << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
 
@@ -179,8 +176,8 @@ int main(int argc, char** argv)
     if (-1 == result)
     {
         returnCode = -errno;
-        log<level::ERR>("Failed to connect to the socket",
-                        entry("RC=%d", returnCode));
+        std::cerr << "Failed to connect to the socket, RC= " << returnCode
+                  << "\n";
         exit(EXIT_FAILURE);
     }
 
@@ -188,8 +185,8 @@ int main(int argc, char** argv)
     if (-1 == result)
     {
         returnCode = -errno;
-        log<level::ERR>("Failed to send message type as pldm to mctp",
-                        entry("RC=%d", returnCode));
+        std::cerr << "Failed to send message type as pldm to mctp, RC= "
+                  << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
 
@@ -215,13 +212,12 @@ int main(int argc, char** argv)
         ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);
         if (0 == peekedLength)
         {
-            log<level::ERR>("Socket has been closed");
+            std::cerr << "Socket has been closed \n";
         }
         else if (peekedLength <= -1)
         {
             returnCode = -errno;
-            log<level::ERR>("recv system call failed",
-                            entry("RC=%d", returnCode));
+            std::cerr << "recv system call failed, RC= " << returnCode << "\n";
         }
         else
         {
@@ -232,17 +228,14 @@ int main(int argc, char** argv)
             {
                 if (verbose)
                 {
-                    log<level::INFO>("Received Msg ",
-                                     entry("LENGTH=%zu", recvDataLength),
-                                     entry("EID=0x%02x", requestMsg[0]),
-                                     entry("TYPE=0x%02x", requestMsg[1]));
+                    std::cout << "Received Msg" << std::endl;
                     printBuffer(requestMsg);
                 }
                 if (MCTP_MSG_TYPE_PLDM != requestMsg[1])
                 {
                     // Skip this message and continue.
-                    log<level::ERR>("Encountered Non-PLDM type message",
-                                    entry("TYPE=0x%02x", requestMsg[1]));
+                    std::cerr << "Encountered Non-PLDM type message"
+                              << "\n";
                 }
                 else
                 {
@@ -253,7 +246,7 @@ int main(int argc, char** argv)
                     {
                         if (verbose)
                         {
-                            log<level::INFO>("Sending Msg ");
+                            std::cout << "Sending Msg" << std::endl;
                             printBuffer(response);
                         }
 
@@ -270,17 +263,18 @@ int main(int argc, char** argv)
                         if (-1 == result)
                         {
                             returnCode = -errno;
-                            log<level::ERR>("sendto system call failed",
-                                            entry("RC=%d", returnCode));
+                            std::cerr << "sendto system call failed, RC= "
+                                      << returnCode << "\n";
                         }
                     }
                 }
             }
             else
             {
-                log<level::ERR>("Failure to read peeked length packet",
-                                entry("PEEKED_LENGTH=%zu", peekedLength),
-                                entry("READ_LENGTH=%zu", recvDataLength));
+                std::cerr
+                    << "Failure to read peeked length packet. peekedLength= "
+                    << peekedLength << " recvDataLength=" << recvDataLength
+                    << "\n";
             }
         }
     };
@@ -295,8 +289,7 @@ int main(int argc, char** argv)
     if (-1 == result)
     {
         returnCode = -errno;
-        log<level::ERR>("Failed to shutdown the socket",
-                        entry("RC=%d", returnCode));
+        std::cerr << "Failed to shutdown the socket, RC=" << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
     exit(EXIT_FAILURE);

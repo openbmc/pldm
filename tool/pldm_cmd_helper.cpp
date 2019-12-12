@@ -38,8 +38,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     if (-1 == sockFd)
     {
         returnCode = -errno;
-        std::cerr << "Failed to create the socket : RC = " << sockFd
-                  << std::endl;
+        std::cerr << "Failed to create the socket : RC = " << sockFd << "\n";
         return returnCode;
     }
     std::cout << "Success in creating the socket : RC = " << sockFd
@@ -59,7 +58,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     {
         returnCode = -errno;
         std::cerr << "Failed to connect to socket : RC = " << returnCode
-                  << std::endl;
+                  << "\n";
         return returnCode;
     }
     std::cout << "Success in connecting to socket : RC = " << returnCode
@@ -71,7 +70,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     {
         returnCode = -errno;
         std::cerr << "Failed to send message type as pldm to mctp : RC = "
-                  << returnCode << std::endl;
+                  << returnCode << "\n";
         return returnCode;
     }
     std::cout << "Success in sending message type as pldm to mctp : RC = "
@@ -81,8 +80,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     if (-1 == result)
     {
         returnCode = -errno;
-        std::cerr << "Write to socket failure : RC = " << returnCode
-                  << std::endl;
+        std::cerr << "Write to socket failure : RC = " << returnCode << "\n";
         return returnCode;
     }
     std::cout << "Write to socket successful : RC = " << result << std::endl;
@@ -92,14 +90,13 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     if (0 == peekedLength)
     {
         std::cerr << "Socket is closed : peekedLength = " << peekedLength
-                  << std::endl;
+                  << "\n";
         return returnCode;
     }
     else if (peekedLength <= -1)
     {
         returnCode = -errno;
-        std::cerr << "recv() system call failed : RC = " << returnCode
-                  << std::endl;
+        std::cerr << "recv() system call failed : RC = " << returnCode << "\n";
         return returnCode;
     }
     else
@@ -118,9 +115,9 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
         else
         {
             std::cerr << "Failure to read peeked length packet : RC = "
-                      << returnCode << std::endl;
-            std::cerr << "peekedLength: " << peekedLength << std::endl;
-            std::cerr << "Total length: " << recvDataLength << std::endl;
+                      << returnCode << "\n";
+            std::cerr << "peekedLength: " << peekedLength << "\n";
+            std::cerr << "Total length: " << recvDataLength << "\n";
             return returnCode;
         }
 
@@ -146,14 +143,14 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
             else
             {
                 std::cerr << "Failure to read response length packet: length = "
-                          << recvDataLength << std::endl;
+                          << recvDataLength << "\n";
                 return returnCode;
             }
         }
         else
         {
             std::cerr << "On first recv(),request != response : RC = "
-                      << returnCode << std::endl;
+                      << returnCode << "\n";
             return returnCode;
         }
     }
@@ -162,7 +159,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     {
         returnCode = -errno;
         std::cerr << "Failed to shutdown the socket : RC = " << returnCode
-                  << std::endl;
+                  << "\n";
         return returnCode;
     }
 
@@ -177,7 +174,7 @@ void CommandInterface::exec()
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Failed to encode request message for " << pldmType << ":"
-                  << commandName << " rc = " << rc << std::endl;
+                  << commandName << " rc = " << rc << "\n";
         return;
     }
 
@@ -195,7 +192,7 @@ void CommandInterface::exec()
 
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Failed to receive from socket: RC = " << rc << std::endl;
+        std::cerr << "Failed to receive from socket: RC = " << rc << "\n";
         return;
     }
 

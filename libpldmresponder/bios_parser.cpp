@@ -4,9 +4,9 @@
 
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <nlohmann/json.hpp>
 #include <optional>
-#include <phosphor-logging/log.hpp>
 
 #include "libpldm/bios_table.h"
 
@@ -15,7 +15,6 @@ namespace bios_parser
 
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
-using namespace phosphor::logging;
 
 const std::vector<Json> emptyJsonList{};
 const Json emptyJson{};
@@ -53,8 +52,8 @@ int parseBiosJsonFile(const fs::path& dirPath, const std::string& fileName,
     std::ifstream jsonFile(filePath);
     if (!jsonFile.is_open())
     {
-        log<level::ERR>("BIOS config file does not exist",
-                        entry("FILE=%s", filePath.c_str()));
+        std::cerr << "BIOS config file does not exist, FILE="
+                  << filePath.c_str() << "\n";
         rc = -1;
     }
     else
@@ -62,8 +61,8 @@ int parseBiosJsonFile(const fs::path& dirPath, const std::string& fileName,
         fileData = Json::parse(jsonFile, nullptr, false);
         if (fileData.is_discarded())
         {
-            log<level::ERR>("Parsing config file failed",
-                            entry("FILE=%s", filePath.c_str()));
+            std::cerr << "Parsing config file failed, FILE=" << filePath.c_str()
+                      << "\n";
             rc = -1;
         }
     }
@@ -154,8 +153,8 @@ DbusValToValMap populateMapping(const std::string& type, const Json& dBusValues,
         }
         else
         {
-            log<level::ERR>("Unknown D-Bus property type",
-                            entry("TYPE=%s", type.c_str()));
+            std::cerr << "Unknown D-Bus property type, TYPE=" << type.c_str()
+                      << "\n";
         }
 
         valueMap.emplace(value, pv[pos]);
@@ -291,9 +290,8 @@ int setup(const Json& jsonEntry)
     auto iter = strTypeMap.find(strTypeTmp);
     if (iter == strTypeMap.end())
     {
-        log<level::ERR>("Wrong string type",
-                        entry("STRING_TYPE=%s", strTypeTmp.c_str()),
-                        entry("ATTRIBUTE_NAME=%s", attr.c_str()));
+        std::cerr << "Wrong string type, STRING_TYPE=" << strTypeTmp.c_str()
+                  << " ATTRIBUTE_NAME=" << attr.c_str() << "\n";
         return -1;
     }
     uint8_t strType = iter->second;
@@ -313,13 +311,12 @@ int setup(const Json& jsonEntry)
     auto rc = pldm_bios_table_attr_entry_string_info_check(&info, &errmsg);
     if (rc != PLDM_SUCCESS)
     {
-        log<level::ERR>("Wrong filed for string attribute",
-                        entry("ATTRIBUTE_NAME=%s", attr.c_str()),
-                        entry("ERRMSG=%s", errmsg),
-                        entry("MINIMUM_STRING_LENGTH=%u", minStrLen),
-                        entry("MAXIMUM_STRING_LENGTH=%u", maxStrLen),
-                        entry("DEFAULT_STRING_LENGTH=%u", defaultStrLen),
-                        entry("DEFAULT_STRING=%s", defaultStr.data()));
+        std::cerr << "Wrong filed for string attribute, ATTRIBUTE_NAME="
+                  << attr.c_str() << " ERRMSG=" << errmsg
+                  << " MINIMUM_STRING_LENGTH=" << minStrLen
+                  << " MAXIMUM_STRING_LENGTH=" << maxStrLen
+                  << " DEFAULT_STRING_LENGTH=" << defaultStrLen
+                  << " DEFAULT_STRING=" << defaultStr.data() << "\n";
         return -1;
     }
 
@@ -379,13 +376,12 @@ int setup(const Json& jsonEntry)
     auto rc = pldm_bios_table_attr_entry_integer_info_check(&info, &errmsg);
     if (rc != PLDM_SUCCESS)
     {
-        log<level::ERR>("Wrong filed for integer attribute",
-                        entry("ATTRIBUTE_NAME=%s", attr.c_str()),
-                        entry("ERRMSG=%s", errmsg),
-                        entry("LOWER_BOUND=%llu", lowerBound),
-                        entry("UPPER_BOUND=%llu", upperBound),
-                        entry("DEFAULT_VALUE=%llu", defaultValue),
-                        entry("SCALAR_INCREMENT=%lu", scalarIncrement));
+        std::cerr << "Wrong filed for integer attribute, ATTRIBUTE_NAME="
+                  << attr.c_str() << " ERRMSG=" << errmsg
+                  << " LOWER_BOUND=" << lowerBound
+                  << " UPPER_BOUND=" << upperBound
+                  << " DEFAULT_VALUE=" << defaultValue
+                  << " SCALAR_INCREMENT=" << scalarIncrement << "\n";
         return -1;
     }
 
@@ -459,11 +455,11 @@ void setupBIOSAttrLookup(const Json& jsonEntry, AttrLookup& lookup)
         }
         else
         {
-            log<level::ERR>(
-                "Invalid dbus config",
-                entry("OBJPATH=%s", dBusMap->objectPath.c_str()),
-                entry("INTERFACE=%s", dBusMap->interface.c_str()),
-                entry("PROPERTY_NAME=%s", dBusMap->propertyName.c_str()));
+            std::cerr << "Invalid dbus config, OBJPATH="
+                      << dBusMap->objectPath.c_str()
+                      << " INTERFACE=" << dBusMap->interface.c_str()
+                      << " PROPERTY_NAME=" << dBusMap->propertyName.c_str()
+                      << "\n";
         }
     }
     lookup.emplace(attrName, dBusMap);
@@ -492,8 +488,8 @@ int setupConfig(const char* dirPath)
     fs::path dir(dirPath);
     if (!fs::exists(dir) || fs::is_empty(dir))
     {
-        log<level::ERR>("BIOS config directory does not exist or empty",
-                        entry("DIR=%s", dirPath));
+        std::cerr << "BIOS config directory does not exist or empty, DIR="
+                  << dirPath << "\n";
         return -1;
     }
     for (auto jsonName : BIOSConfigFiles)
@@ -513,8 +509,8 @@ int setupConfig(const char* dirPath)
     }
     if (BIOSStrings.empty())
     { // means there is no attribute
-        log<level::ERR>("No attribute is found in the config directory",
-                        entry("DIR=%s", dirPath));
+        std::cerr << "No attribute is found in the config directory, DIR="
+                  << dirPath << "\n";
         return -1;
     }
     return 0;
