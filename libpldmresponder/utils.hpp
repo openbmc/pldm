@@ -5,11 +5,12 @@
 #include <unistd.h>
 
 #include <exception>
-#include <phosphor-logging/log.hpp>
+#include <iostream>
 #include <sdbusplus/server.hpp>
 #include <string>
 #include <variant>
 #include <vector>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include "libpldm/base.h"
 
@@ -70,6 +71,12 @@ uint8_t getNumPadBytes(uint32_t data);
  */
 std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
                        const std::string& interface);
+
+/**
+ *  @brief creates an error log
+ *  @param[in] failureType - the failure type
+ */
+void reportError(const std::string& failureType);
 
 /** @brief Convert any Decimal number to BCD
  *
@@ -133,7 +140,6 @@ class DBusHandler
     auto getDbusPropertyVariant(const char* objPath, const char* dbusProp,
                                 const char* dbusInterface)
     {
-        using namespace phosphor::logging;
         Variant value;
         auto bus = sdbusplus::bus::new_default();
         auto service = getService(bus, objPath, dbusInterface);
@@ -147,10 +153,10 @@ class DBusHandler
         }
         catch (const sdbusplus::exception::SdBusError& e)
         {
-            log<level::ERR>("dbus call expection", entry("OBJPATH=%s", objPath),
-                            entry("INTERFACE=%s", dbusInterface),
-                            entry("PROPERTY=%s", dbusProp),
-                            entry("EXPECTION=%s", e.what()));
+            std::cerr << "dbus call exception, OBJPATH=" << objPath
+                      << " INTERFACE=" << dbusInterface
+                      << " PROPERTY=" << dbusProp << " EXCEPTION=" << e.what()
+                      << std::endl;
         }
         return value;
     }

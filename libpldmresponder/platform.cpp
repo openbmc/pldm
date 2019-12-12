@@ -8,7 +8,6 @@ namespace responder
 namespace platform
 {
 
-using namespace phosphor::logging;
 using namespace pldm::responder::effecter::dbus_mapping;
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
@@ -69,8 +68,8 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     }
     catch (const std::exception& e)
     {
-        log<level::ERR>("Error accessing PDR", entry("HANDLE=%d", recordHandle),
-                        entry("ERROR=%s", e.what()));
+        std::cerr << "Error accessing PDR, HANDLE=" << recordHandle
+                  << " ERROR=" << e.what() << std::endl;
         encode_get_pdr_resp(request->hdr.instance_id, PLDM_ERROR,
                             nextRecordHandle, 0, PLDM_START, respSizeBytes,
                             recordData, 0, responsePtr);

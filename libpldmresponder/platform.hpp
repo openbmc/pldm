@@ -83,7 +83,6 @@ class Handler : public CmdHandler
             {PLDM_SYSTEM_POWER_STATE,
              {{PLDM_OFF_SOFT_GRACEFUL,
                "xyz.openbmc_project.State.Chassis.Transition.Off"s}}}};
-        using namespace phosphor::logging;
         using namespace pldm::responder::pdr;
         using namespace pldm::responder::effecter::dbus_mapping;
 
@@ -116,11 +115,10 @@ class Handler : public CmdHandler
                     pdr->possible_states);
                 if (compEffecterCnt > pdr->composite_effecter_count)
                 {
-                    log<level::ERR>(
-                        "The requester sent wrong composite effecter "
-                        "count for the effecter",
-                        entry("EFFECTER_ID=%d", effecterId),
-                        entry("COMP_EFF_CNT=%d", compEffecterCnt));
+                    std::cerr
+                        << "The requester sent wrong composite effecter"
+                        << " count for the effecter, EFFECTER_ID=" << effecterId
+                        << "COMP_EFF_CNT=" << compEffecterCnt << std::endl;
                     return PLDM_ERROR_INVALID_DATA;
                 }
                 break;
@@ -142,22 +140,22 @@ class Handler : public CmdHandler
                          stateNumToDbusProp.find(PLDM_BOOT_PROGRESS_STATE);
                      if (stateSet == stateNumToDbusProp.end())
                      {
-                         log<level::ERR>("Couldn't find D-Bus mapping for "
-                                         "PLDM_BOOT_PROGRESS_STATE",
-                                         entry("EFFECTER_ID=%d", effecterId));
+                         std::cerr << "Couldn't find D-Bus mapping for "
+                                   << "PLDM_BOOT_PROGRESS_STATE, EFFECTER_ID="
+                                   << effecterId << std::endl;
                          return PLDM_ERROR;
                      }
                      auto iter = stateSet->second.find(
                          stateField[currState].effecter_state);
                      if (iter == stateSet->second.end())
                      {
-                         log<level::ERR>(
-                             "Invalid state field passed or field not "
-                             "found for PLDM_BOOT_PROGRESS_STATE",
-                             entry("EFFECTER_ID=%d", effecterId),
-                             entry("FIELD=%d",
-                                   stateField[currState].effecter_state),
-                             entry("OBJECT_PATH=%s", objPath.c_str()));
+                         std::cerr << "Invalid state field passed or field not "
+                                   << "found for PLDM_BOOT_PROGRESS_STATE, "
+                                      "EFFECTER_ID="
+                                   << effecterId << " FIELD="
+                                   << stateField[currState].effecter_state
+                                   << " OBJECT_PATH=" << objPath.c_str()
+                                   << std::endl;
                          return PLDM_ERROR_INVALID_DATA;
                      }
                      auto dbusProp = "OperatingSystemState";
@@ -172,11 +170,11 @@ class Handler : public CmdHandler
                      }
                      catch (const std::exception& e)
                      {
-                         log<level::ERR>("Error setting property",
-                                         entry("ERROR=%s", e.what()),
-                                         entry("PROPERTY=%s", dbusProp),
-                                         entry("INTERFACE=%s", dbusInterface),
-                                         entry("PATH=%s", objPath.c_str()));
+                         std::cerr
+                             << "Error setting property, ERROR=" << e.what()
+                             << " PROPERTY=" << dbusProp
+                             << " INTERFACE=" << dbusInterface
+                             << " PATH=" << objPath.c_str() << std::endl;
                          return PLDM_ERROR;
                      }
                      return PLDM_SUCCESS;
@@ -187,22 +185,22 @@ class Handler : public CmdHandler
                          stateNumToDbusProp.find(PLDM_SYSTEM_POWER_STATE);
                      if (stateSet == stateNumToDbusProp.end())
                      {
-                         log<level::ERR>("Couldn't find D-Bus mapping for "
-                                         "PLDM_SYSTEM_POWER_STATE",
-                                         entry("EFFECTER_ID=%d", effecterId));
+                         std::cerr << "Couldn't find D-Bus mapping for "
+                                   << "PLDM_SYSTEM_POWER_STATE, EFFECTER_ID="
+                                   << effecterId << std::endl;
                          return PLDM_ERROR;
                      }
                      auto iter = stateSet->second.find(
                          stateField[currState].effecter_state);
                      if (iter == stateSet->second.end())
                      {
-                         log<level::ERR>(
-                             "Invalid state field passed or field not "
-                             "found for PLDM_SYSTEM_POWER_STATE",
-                             entry("EFFECTER_ID=%d", effecterId),
-                             entry("FIELD=%d",
-                                   stateField[currState].effecter_state),
-                             entry("OBJECT_PATH=%s", objPath.c_str()));
+                         std::cerr << "Invalid state field passed or field not "
+                                   << "found for PLDM_SYSTEM_POWER_STATE, "
+                                      "EFFECTER_ID="
+                                   << effecterId << " FIELD="
+                                   << stateField[currState].effecter_state
+                                   << " OBJECT_PATH=" << objPath.c_str()
+                                   << std::endl;
                          return PLDM_ERROR_INVALID_DATA;
                      }
                      auto dbusProp = "RequestedPowerTransition";
@@ -216,11 +214,11 @@ class Handler : public CmdHandler
                      }
                      catch (const std::exception& e)
                      {
-                         log<level::ERR>("Error setting property",
-                                         entry("ERROR=%s", e.what()),
-                                         entry("PROPERTY=%s", dbusProp),
-                                         entry("INTERFACE=%s", dbusInterface),
-                                         entry("PATH=%s", objPath.c_str()));
+                         std::cerr
+                             << "Error setting property, ERROR=" << e.what()
+                             << " PROPERTY=" << dbusProp
+                             << " INTERFACE=" << dbusInterface
+                             << " PATH=" << objPath.c_str() << std::endl;
                          return PLDM_ERROR;
                      }
                      return PLDM_SUCCESS;
@@ -238,12 +236,12 @@ class Handler : public CmdHandler
             if (states->possible_states_size < bitfieldIndex ||
                 !(states->states[bitfieldIndex].byte & (1 << bit)))
             {
-                log<level::ERR>(
-                    "Invalid state set value",
-                    entry("EFFECTER_ID=%d", effecterId),
-                    entry("VALUE=%d", stateField[currState].effecter_state),
-                    entry("COMPOSITE_EFFECTER_ID=%d", currState),
-                    entry("DBUS_PATH=%c", paths[currState].c_str()));
+                std::cerr << "Invalid state set value, EFFECTER_ID="
+                          << effecterId
+                          << " VALUE=" << stateField[currState].effecter_state
+                          << " COMPOSITE_EFFECTER_ID=" << currState
+                          << " DBUS_PATH=" << paths[currState].c_str()
+                          << std::endl;
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                 break;
             }
@@ -251,10 +249,9 @@ class Handler : public CmdHandler
             if (iter == effecterToDbusEntries.end())
             {
                 uint16_t setId = states->state_set_id;
-                log<level::ERR>(
-                    "Did not find the state set for the state effecter pdr  ",
-                    entry("STATE=%d", setId),
-                    entry("EFFECTER_ID=%d", effecterId));
+                std::cerr << "Did not find the state set for the"
+                          << " state effecter pdr, STATE=" << setId
+                          << " EFFECTER_ID=" << effecterId << std::endl;
                 rc = PLDM_PLATFORM_INVALID_STATE_VALUE;
                 break;
             }

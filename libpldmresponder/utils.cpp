@@ -6,14 +6,12 @@
 #include <ctime>
 #include <iostream>
 #include <map>
-#include <phosphor-logging/log.hpp>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 namespace pldm
 {
-using namespace phosphor::logging;
 
 constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
@@ -39,12 +37,39 @@ std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
     }
     catch (std::exception& e)
     {
-        log<level::ERR>("Error in mapper call", entry("ERROR=%s", e.what()),
-                        entry("PATH=%s", path.c_str()),
-                        entry("INTERFACE=%s", interface.c_str()));
+        std::cerr << "Error in mapper call, ERROR=" << e.what()
+                  << " PATH=" << path.c_str()
+                  << " INTERFACE=" << interface.c_str() << std::endl;
         throw;
     }
     return mapperResponse.begin()->first;
+}
+
+void reportError(const std::string& failureType)
+{
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
+
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    try
+    {
+        auto service = getService(bus, logObjPath, logInterface);
+        using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+        auto severity =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                    Error);
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "Create");
+        method.append(failureType.c_str(), severity);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a d-bus call to create error log, ERROR="
+                  << e.what() << std::endl;
+    }
 }
 
 namespace utils

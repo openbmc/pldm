@@ -1,23 +1,22 @@
 #pragma once
 
 #include "effecters.hpp"
+#include "utils.hpp"
 
 #include <stdint.h>
 
 #include <filesystem>
 #include <fstream>
 #include <functional>
+#include <iostream>
 #include <map>
 #include <nlohmann/json.hpp>
-#include <phosphor-logging/elog-errors.hpp>
-#include <phosphor-logging/log.hpp>
 #include <string>
 #include <vector>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/platform.h"
 
-using namespace phosphor::logging;
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 namespace fs = std::filesystem;
@@ -109,8 +108,8 @@ inline Json readJson(const std::string& path)
     std::ifstream jsonFile(path);
     if (!jsonFile.is_open())
     {
-        log<level::INFO>("Error opening PDR JSON file",
-                         entry("PATH=%s", path.c_str()));
+        std::cout << "Error opening PDR JSON file, PATH=" << path.c_str()
+                  << std::endl;
         return {};
     }
 
@@ -207,10 +206,10 @@ void generate(const std::string& dir, T& repo)
                       auto statesSize = set.value("size", 0);
                       if (!statesSize)
                       {
-                          log<level::ERR>(
-                              "Malformed PDR JSON - no state set info",
-                              entry("TYPE=%d", PLDM_STATE_EFFECTER_PDR));
-                          elog<InternalFailure>();
+                          std::cerr
+                              << "Malformed PDR JSON - no state set info, TYPE="
+                              << PLDM_STATE_EFFECTER_PDR << std::endl;
+                          throw InternalFailure();
                       }
                       pdrSize += sizeof(state_effecter_possible_states) -
                                  sizeof(bitfield8_t) +
@@ -295,12 +294,17 @@ void generate(const std::string& dir, T& repo)
         catch (const InternalFailure& e)
         {
         }
+        catch (const Json::exception& e)
+        {
+            std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
+                      << " ERROR=" << e.what() << std::endl;
+            reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
+        }
         catch (const std::exception& e)
         {
-            log<level::ERR>("Failed parsing PDR JSON file",
-                            entry("TYPE=%d", pdrType),
-                            entry("ERROR=%s", e.what()));
-            report<InternalFailure>();
+            std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
+                      << " ERROR=" << e.what() << std::endl;
+            reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
         }
     }
 }
