@@ -439,6 +439,14 @@ TEST(GetPLDMVersion, testDecodeResponse)
     ASSERT_EQ(versionOut.alpha, version.alpha);
 }
 
+TEST(GetTID, testEncodeRequest)
+{
+    pldm_msg request{};
+
+    auto rc = encode_get_tid_req(0, &request);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+}
+
 TEST(GetTID, testEncodeResponse)
 {
     uint8_t completionCode = 0;
