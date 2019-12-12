@@ -160,13 +160,13 @@ TEST(getPDR, testFindPDR)
                  sizeof(uint16_t);
         pldm_pdr_hdr* hdr = reinterpret_cast<pldm_pdr_hdr*>(start);
         uint32_t intType = hdr->type;
-        std::cerr << "PDR next record handle " << handle << std::endl;
-        std::cerr << "PDR type " << intType << std::endl;
+        std::cerr << "PDR next record handle " << handle << "\n";
+        std::cerr << "PDR type " << intType << "\n";
         if (hdr->type == PLDM_STATE_EFFECTER_PDR)
         {
             pldm_state_effecter_pdr* pdr =
                 reinterpret_cast<pldm_state_effecter_pdr*>(start);
-            std::cerr << "PDR entity type " << pdr->entity_type << std::endl;
+            std::cerr << "PDR entity type " << pdr->entity_type << "\n";
             if (pdr->entity_type == 100)
             {
                 found = true;

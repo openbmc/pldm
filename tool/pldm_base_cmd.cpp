@@ -57,7 +57,7 @@ class GetPLDMTypes : public CommandInterface
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
             return;
         }
 
@@ -128,7 +128,7 @@ class GetPLDMVersion : public CommandInterface
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
             return;
         }
         char buffer[16] = {0};

@@ -2,10 +2,9 @@
 
 #include "xyz/openbmc_project/Common/error.hpp"
 
-#include <phosphor-logging/elog-errors.hpp>
+#include <iostream>
 
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
-using namespace phosphor::logging;
 
 namespace pldm
 {
@@ -27,7 +26,7 @@ uint8_t Requester::getInstanceId(uint8_t eid)
     }
     catch (const std::runtime_error& e)
     {
-        elog<TooManyResources>();
+        throw TooManyResources();
     }
 
     return id;
