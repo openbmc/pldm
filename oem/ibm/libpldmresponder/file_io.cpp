@@ -49,8 +49,8 @@ struct AspeedXdmaOp
 
 constexpr auto xdmaDev = "/dev/aspeed-xdma";
 
-int DMA::transferDataHost(const fs::path& path, uint32_t offset,
-                          uint32_t length, uint64_t address, bool upstream)
+int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
+                          uint64_t address, bool upstream)
 {
     static const size_t pageSize = getpagesize();
     uint32_t numPages = length / pageSize;
@@ -65,17 +65,17 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
         munmap(vgaMem, pageAlignedLength);
     };
 
-    int fd = -1;
+    int dmaFd = -1;
     int rc = 0;
-    fd = open(xdmaDev, O_RDWR);
-    if (fd < 0)
+    dmaFd = open(xdmaDev, O_RDWR);
+    if (dmaFd < 0)
     {
         rc = -errno;
         std::cerr << "Failed to open the XDMA device, RC=" << rc << "\n";
         return rc;
     }
 
-    utils::CustomFD xdmaFd(fd);
+    utils::CustomFD xdmaFd(dmaFd);
 
     void* vgaMem;
     vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
@@ -91,25 +91,37 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
     if (upstream)
     {
-        std::ifstream stream(path.string(), std::ios::in | std::ios::binary);
-        stream.seekg(offset);
+        rc = lseek(fd, offset, SEEK_SET);
+        if (rc == -1)
+        {
+            std::cerr << "lseek failed, ERROR=" << errno
+                      << ", UPSTREAM=" << upstream << ", OFFSET=" << offset
+                      << "\n";
+            return rc;
+        }
 
         // Writing to the VGA memory should be aligned at page boundary,
         // otherwise write data into a buffer aligned at page boundary and
         // then write to the VGA memory.
         std::vector<char> buffer{};
         buffer.resize(pageAlignedLength);
-        stream.read(buffer.data(), length);
-        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
-               pageAlignedLength);
-
-        if (static_cast<uint32_t>(stream.gcount()) != length)
+        rc = read(fd, buffer.data(), length);
+        if (rc == -1)
+        {
+            std::cerr << "file read failed, ERROR=" << errno
+                      << ", UPSTREAM=" << upstream << ", LENGTH=" << length
+                      << ", OFFSET=" << offset << "\n";
+            return rc;
+        }
+        if (rc != static_cast<int>(length))
         {
             std::cerr << "mismatch between number of characters to read and "
-                      << "the length read, LENGTH=" << length
-                      << " COUNT=" << stream.gcount() << "\n";
+                      << "the length read, LENGTH=" << length << " COUNT=" << rc
+                      << "\n";
             return -1;
         }
+        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
+               pageAlignedLength);
     }
 
     AspeedXdmaOp xdmaOp;
@@ -129,15 +141,22 @@ int DMA::transferDataHost(const fs::path& path, uint32_t offset,
 
     if (!upstream)
     {
-        std::ios_base::openmode mode = std::ios::out | std::ios::binary;
-        if (fs::exists(path))
+        rc = lseek(fd, offset, SEEK_SET);
+        if (rc == -1)
         {
-            mode |= std::ios::in;
+            std::cerr << "lseek failed, ERROR=" << errno
+                      << ", UPSTREAM=" << upstream << ", OFFSET=" << offset
+                      << "\n";
+            return rc;
         }
-        std::ofstream stream(path.string(), mode);
-
-        stream.seekp(offset);
-        stream.write(static_cast<const char*>(vgaMemPtr.get()), length);
+        rc = write(fd, static_cast<const char*>(vgaMemPtr.get()), length);
+        if (rc == -1)
+        {
+            std::cerr << "file write failed, ERROR=" << errno
+                      << ", UPSTREAM=" << upstream << ", LENGTH=" << length
+                      << ", OFFSET=" << offset << "\n";
+            return rc;
+        }
     }
 
     return 0;
