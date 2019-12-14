@@ -1,8 +1,12 @@
 #pragma once
 
 #include "handler.hpp"
+#include "libpldmresponder/utils.hpp"
 
+#include <fcntl.h>
 #include <stdint.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include <filesystem>
@@ -49,7 +53,7 @@ class DMA
      *
      * @return returns 0 on success, negative errno on failure
      */
-    int transferDataHost(const fs::path& path, uint32_t offset, uint32_t length,
+    int transferDataHost(int fd, uint32_t offset, uint32_t length,
                          uint64_t address, bool upstream);
 };
 
@@ -77,13 +81,38 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
                      uint32_t offset, uint32_t length, uint64_t address,
                      bool upstream, uint8_t instanceId)
 {
+    using namespace phosphor::logging;
     uint32_t origLength = length;
     Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
+    int flags{};
+    if (upstream)
+    {
+        flags = O_RDONLY;
+    }
+    else if (fs::exists(path))
+    {
+        flags = O_RDWR;
+    }
+    else
+    {
+        flags = O_WRONLY;
+    }
+    auto filePath = path.string().c_str();
+    int file = open(path.string().c_str(), flags);
+    if (file == -1)
+    {
+        log<level::ERR>("File does not exist", entry("PATH=%s", filePath));
+        encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
+                                   responsePtr);
+        return response;
+    }
+    utils::CustomFD fd(file);
+
     while (length > dma::maxSize)
     {
-        auto rc = intf->transferDataHost(path, offset, dma::maxSize, address,
+        auto rc = intf->transferDataHost(fd(), offset, dma::maxSize, address,
                                          upstream);
         if (rc < 0)
         {
@@ -97,7 +126,7 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
         address += dma::maxSize;
     }
 
-    auto rc = intf->transferDataHost(path, offset, length, address, upstream);
+    auto rc = intf->transferDataHost(fd(), offset, length, address, upstream);
     if (rc < 0)
     {
         encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
