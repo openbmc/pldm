@@ -96,9 +96,8 @@ namespace dma
 class MockDMA
 {
   public:
-    MOCK_METHOD5(transferDataHost,
-                 int(const fs::path& file, uint32_t offset, uint32_t length,
-                     uint64_t address, bool upstream));
+    MOCK_METHOD5(transferDataHost, int(int fd, uint32_t offset, uint32_t length,
+                                       uint64_t address, bool upstream));
 };
 
 } // namespace dma
@@ -113,13 +112,16 @@ TEST(TransferDataHost, GoodPath)
     using namespace pldm::responder::dma;
 
     MockDMA dmaObj;
-    fs::path path("");
+    char tmpfile[] = "/tmp/pldm_fileio_table.XXXXXX";
+    int fd = mkstemp(tmpfile);
+    close(fd);
+    fs::path path(tmpfile);
 
     // Minimum length of 16 and expect transferDataHost to be called once
     // returns the default value of 0 (the return type of transferDataHost is
     // int, the default value for int is 0)
     uint32_t length = minSize;
-    EXPECT_CALL(dmaObj, transferDataHost(path, 0, length, 0, true)).Times(1);
+    EXPECT_CALL(dmaObj, transferDataHost(_, 0, length, 0, true)).Times(1);
     auto response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY,
                                          path, 0, length, 0, true, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -129,7 +131,7 @@ TEST(TransferDataHost, GoodPath)
 
     // maxsize of DMA
     length = maxSize;
-    EXPECT_CALL(dmaObj, transferDataHost(path, 0, length, 0, true)).Times(1);
+    EXPECT_CALL(dmaObj, transferDataHost(_, 0, length, 0, true)).Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
                                     0, length, 0, true, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -139,8 +141,8 @@ TEST(TransferDataHost, GoodPath)
 
     // length greater than maxsize of DMA
     length = maxSize + minSize;
-    EXPECT_CALL(dmaObj, transferDataHost(path, 0, maxSize, 0, true)).Times(1);
-    EXPECT_CALL(dmaObj, transferDataHost(path, maxSize, minSize, maxSize, true))
+    EXPECT_CALL(dmaObj, transferDataHost(_, 0, maxSize, 0, true)).Times(1);
+    EXPECT_CALL(dmaObj, transferDataHost(_, maxSize, minSize, maxSize, true))
         .Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
                                     0, length, 0, true, 0);
@@ -161,7 +163,7 @@ TEST(TransferDataHost, GoodPath)
 
     // check for downstream(copy data from host to BMC) parameter
     length = minSize;
-    EXPECT_CALL(dmaObj, transferDataHost(path, 0, length, 0, false)).Times(1);
+    EXPECT_CALL(dmaObj, transferDataHost(_, 0, length, 0, false)).Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
                                     0, length, 0, false, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -175,7 +177,10 @@ TEST(TransferDataHost, BadPath)
     using namespace pldm::responder::dma;
 
     MockDMA dmaObj;
-    fs::path path("");
+    char tmpfile[] = "/tmp/pldm_fileio_table.XXXXXX";
+    int fd = mkstemp(tmpfile);
+    close(fd);
+    fs::path path(tmpfile);
 
     // Minimum length of 16 and transferDataHost returning a negative errno
     uint32_t length = minSize;

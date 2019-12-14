@@ -24,16 +24,98 @@ namespace pldm
 namespace responder
 {
 
-int PelHandler::readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
-                               uint64_t /*address*/)
+int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
+                               uint64_t address)
 {
-    return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "org.open_power.Logging.PEL";
+
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    try
+    {
+        auto service = getService(bus, logObjPath, logInterface);
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "GetPEL");
+        method.append(fileHandle);
+        auto reply = bus.call(method);
+        sdbusplus::message::unix_fd fd{};
+        reply.read(fd);
+        auto rc = transferFileData(fd, true, offset, length, address);
+        return rc;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "GetPEL D-Bus call failed, PEL id = " << fileHandle
+                  << ", error = " << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
 }
 
-int PelHandler::read(uint32_t /*offset*/, uint32_t& /*length*/,
-                     Response& /*response*/)
+int PelHandler::read(uint32_t offset, uint32_t& length, Response& response)
 {
-    return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "org.open_power.Logging.PEL";
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    try
+    {
+        auto service = getService(bus, logObjPath, logInterface);
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "GetPEL");
+        method.append(fileHandle);
+        auto reply = bus.call(method);
+        sdbusplus::message::unix_fd fd{};
+        reply.read(fd);
+        std::cerr << "GetPEL D-Bus call done\n";
+        off_t fileSize = lseek(fd, 0, SEEK_END);
+        if (fileSize == -1)
+        {
+            std::cerr << "file seek failed";
+            return PLDM_ERROR;
+        }
+        if (offset >= fileSize)
+        {
+            std::cerr << "Offset exceeds file size, OFFSET=" << offset
+                      << " FILE_SIZE=" << fileSize << std::endl;
+            return PLDM_DATA_OUT_OF_RANGE;
+        }
+        if (offset + length > fileSize)
+        {
+            length = fileSize - offset;
+        }
+        auto rc = lseek(fd, offset, SEEK_SET);
+        if (rc == -1)
+        {
+            std::cerr << "file seek failed";
+            return PLDM_ERROR;
+        }
+        size_t currSize = response.size();
+        response.resize(currSize + length);
+        auto filePos = reinterpret_cast<char*>(response.data());
+        filePos += currSize;
+        rc = ::read(fd, filePos, length);
+        if (rc == -1)
+        {
+            std::cerr << "file read failed";
+            return PLDM_ERROR;
+        }
+        if (rc != length)
+        {
+            std::cerr << "mismatch between number of characters to read and "
+                      << "the length read, LENGTH=" << length << " COUNT=" << rc
+                      << std::endl;
+            return PLDM_ERROR;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "GetPEL D-Bus call failed";
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
 }
 
 int PelHandler::writeFromMemory(uint32_t offset, uint32_t length,
