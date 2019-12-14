@@ -29,6 +29,8 @@ class PelHandler : public FileHandler
                                uint64_t address);
     virtual int read(uint32_t offset, uint32_t& length, Response& response);
 
+    virtual int fileAck(uint8_t fileStatus);
+
     /** @brief method to store a pel file in tempfs and send
      *  d-bus notification to pel daemon that it is ready for consumption
      *
