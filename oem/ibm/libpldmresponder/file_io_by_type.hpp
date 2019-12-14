@@ -48,6 +48,8 @@ class FileHandler
      */
     virtual int read(uint32_t offset, uint32_t& length, Response& response) = 0;
 
+    virtual int fileAck(uint8_t fileStatus) = 0;
+
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] filePath - file to read from
      *  @param[in] offset - offset to read

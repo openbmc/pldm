@@ -659,6 +659,46 @@ Response Handler::readFileByType(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
+Response Handler::fileAck(const pldm_msg* request, size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) + PLDM_FILE_ACK_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_FILE_ACK_REQ_BYTES)
+    {
+        encode_file_ack_resp(request->hdr.instance_id,
+                             PLDM_ERROR_INVALID_LENGTH, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint8_t fileStatus{};
+
+    auto rc = decode_file_ack_req(request, payloadLength, &fileType,
+                                  &fileHandle, &fileStatus);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_file_ack_resp(request->hdr.instance_id, rc, responsePtr);
+        return response;
+    }
+
+    std::unique_ptr<FileHandler> handler{};
+    try
+    {
+        handler = getHandlerByType(fileType, fileHandle);
+    }
+    catch (const InternalFailure& e)
+    {
+        encode_file_ack_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
+                             responsePtr);
+        return response;
+    }
+
+    rc = handler->fileAck(fileStatus);
+    encode_file_ack_resp(request->hdr.instance_id, rc, responsePtr);
+    return response;
+}
+
 } // namespace oem_ibm
 } // namespace responder
 } // namespace pldm
