@@ -386,12 +386,12 @@ int encode_set_bios_attribute_current_value_resp(uint8_t instance_id,
 /** @brief Create a PLDM request message for SetDateTime
  *
  *  @param[in] instance_id - Message's instance id
- *  @param[in] seconds - Seconds in BCD format
- *  @param[in] minutes - minutes in BCD format
- *  @param[in] hours - hours in BCD format
- *  @param[in] day - day of month in BCD format
- *  @param[in] month - number of month in BCD format
- *  @param[in] year - year in BCD format
+ *  @param[in] seconds - Seconds in decimal format. Value range 0~59
+ *  @param[in] minutes - minutes in decimal format. Value range 0~59
+ *  @param[in] hours - hours in decimal format. Value range 0~23
+ *  @param[in] day - day of month in decimal format. Value range 1~31
+ *  @param[in] month - number of month in decimal format. Value range 1~12
+ *  @param[in] year - year in decimal format. Value range 1970~
  *  @param[out] msg - Message will be written to this
  *  @param[in] payload_length - Length of request message payload
  *  @return pldm_completion_codes
