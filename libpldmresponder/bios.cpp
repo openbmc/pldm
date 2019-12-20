@@ -108,6 +108,11 @@ Handler::Handler()
                          return this->getBIOSAttributeCurrentValueByHandle(
                              request, payloadLength);
                      });
+    handlers.emplace(PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE,
+                     [this](const pldm_msg* request, size_t payloadLength) {
+                         return this->setBIOSAttributeCurrentValue(
+                             request, payloadLength);
+                     });
 }
 
 Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
@@ -854,6 +859,51 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
         valueLength, responsePtr);
 
     return response;
+}
+
+Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
+                                               size_t payloadLength)
+{
+    uint32_t transferHandle;
+    uint8_t transferOpFlag;
+    variable_field attributeField;
+
+    auto rc = decode_set_bios_attribute_current_value_req(
+        request, payloadLength, &transferHandle, &transferOpFlag,
+        &attributeField);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    const pldm_attribute_value
+
+        fs::path attrValueTablePath(BIOS_TABLES_DIR);
+    attrValueTablePath /= attrTableFile;
+    BIOSTable attributeValueTable(attrValueTablePath.c_str());
+
+    Response srcTable;
+    attributeValueTable.load(srcTable);
+
+    /*
+    Replace the old attribute with the new attribute, the size of table will
+     change:
+       sizeof(newTable) = srcTableSize + sizeof(newAttribute) -
+                          sizeof(oldAttribute) + pad(4-byte alignment, max = 3)
+    For simplicity, we use
+       sizeof(newTableBuffer) = srcTableSize + sizeof(newAttribute) + 3
+    */
+    size_t destBufferLength = srcTable.size() + attributeField.length + 3;
+    Response destTable(srcTable.size() + destBufferLength);
+    rc = pldm_bios_table_attr_value_copy_and_update(
+        srcTable.data(), srcTable.size(), destTable.data(), destTable.size(),
+        attributeField.ptr, attributeField.length);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    return ccOnlyResponse(request, PLDM_SUCCESS);
 }
 
 namespace internal
