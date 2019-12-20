@@ -671,38 +671,33 @@ TEST(SetBiosAttributeCurrentValue, testGoodDecodeRequest)
 
     uint32_t retTransferHandle;
     uint8_t retTransferFlag;
-    uint32_t retAttributeData;
-    size_t retAttributeDataLength;
+    struct variable_field attribute;
     auto rc = decode_set_bios_attribute_current_value_req(
         request, requestMsg.size() - hdrSize, &retTransferHandle,
-        &retTransferFlag, reinterpret_cast<uint8_t*>(&retAttributeData),
-        &retAttributeDataLength);
+        &retTransferFlag, &attribute);
 
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(retTransferHandle, transferHandle);
     EXPECT_EQ(retTransferFlag, transferFlag);
-    EXPECT_EQ(retAttributeDataLength, sizeof(attributeData));
-    EXPECT_EQ(0,
-              memcmp(&retAttributeData, &attributeData, sizeof(attributeData)));
+    EXPECT_EQ(attribute.length, sizeof(attributeData));
+    EXPECT_EQ(0, memcmp(attribute.ptr, &attributeData, sizeof(attributeData)));
 }
 
 TEST(SetBiosAttributeCurrentValue, testBadDecodeRequest)
 {
     uint32_t transferHandle = 32;
     uint8_t transferFlag = PLDM_START_AND_END;
-    uint32_t attributeData = 44;
-    size_t attributeDataLength = sizeof(attributeData);
+    struct variable_field attribute;
     std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES - 1>
         requestMsg{};
     auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
 
     auto rc = decode_set_bios_attribute_current_value_req(
-        nullptr, 0, &transferHandle, &transferFlag,
-        reinterpret_cast<uint8_t*>(&attributeData), &attributeDataLength);
+        nullptr, 0, &transferHandle, &transferFlag, &attribute);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     rc = decode_set_bios_attribute_current_value_req(
         request, requestMsg.size() - hdrSize, &transferHandle, &transferFlag,
-        reinterpret_cast<uint8_t*>(&attributeData), &attributeDataLength);
+        &attribute);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
