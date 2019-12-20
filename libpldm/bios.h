@@ -10,6 +10,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "base.h"
+#include "utils.h"
 
 /* Response lengths are inclusive of completion code */
 #define PLDM_GET_DATE_TIME_RESP_BYTES 8
@@ -379,16 +380,13 @@ int encode_get_bios_current_value_by_handle_resp(
  *  @param[out] transfer_handle - Handle to identify a BIOS table transfer
  *  @param[out] transfer_flag - Flag to indicate what part of the transfer
  * this request represents
- *  @param[out] attribute_data - Contains current value of attribute
- *  @param[out] attribute_length - Pointer to length of attribute
+ *  @param[out] attribute - variable_field representing attributes
  *  @return pldm_completion_codes
  */
-int decode_set_bios_attribute_current_value_req(const struct pldm_msg *msg,
-						size_t payload_length,
-						uint32_t *transfer_handle,
-						uint8_t *transfer_flag,
-						uint8_t *attribute_data,
-						size_t *attribute_length);
+int decode_set_bios_attribute_current_value_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *transfer_handle, uint8_t *transfer_flag,
+    struct variable_field *attribute);
 
 /** @brief Create a PLDM response message for SetBiosAttributeCurrentValue
  *
