@@ -85,6 +85,15 @@ class Handler : public CmdHandler
      *  @return Response - PLDM Response message
      */
     Response setDateTime(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for setBIOSAttributeCurrentValue
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request message payload length
+     *  @return Response - PLDM Response message
+     */
+    Response setBIOSAttributeCurrentValue(const pldm_msg* request,
+                                          size_t payloadLength);
 };
 
 } // namespace bios
