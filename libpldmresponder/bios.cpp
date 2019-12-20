@@ -130,6 +130,11 @@ Handler::Handler()
                          return this->getBIOSAttributeCurrentValueByHandle(
                              request, payloadLength);
                      });
+    handlers.emplace(PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE,
+                     [this](const pldm_msg* request, size_t payloadLength) {
+                         return this->setBIOSAttributeCurrentValue(
+                             request, payloadLength);
+                     });
 }
 
 Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
@@ -953,6 +958,66 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
     }
 
     return response;
+}
+
+Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
+                                               size_t payloadLength)
+{
+    uint32_t transferHandle;
+    uint8_t transferOpFlag;
+    variable_field attributeField;
+
+    auto rc = decode_set_bios_attribute_current_value_req(
+        request, payloadLength, &transferHandle, &transferOpFlag,
+        &attributeField);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    fs::path tablesPath(BIOS_TABLES_DIR);
+    auto stringTablePath = tablesPath / stringTableFile;
+    BIOSStringTable biosStringTable(stringTablePath.c_str());
+    auto attrTablePath = tablesPath / attrTableFile;
+    BIOSTable biosAttributeTable(attrTablePath.c_str());
+    auto attrValueTablePath = tablesPath / attrValTableFile;
+    BIOSTable biosAttributeValueTable(attrValueTablePath.c_str());
+    // TODO: Construct attribute value table if it's empty. (another commit)
+
+    Response srcTable;
+    biosAttributeValueTable.load(srcTable);
+
+    // Replace the old attribute with the new attribute, the size of table will
+    // change:
+    //   sizeof(newTableBuffer) = srcTableSize + sizeof(newAttribute) -
+    //                      sizeof(oldAttribute) + pad(4-byte alignment, max =
+    //                      3)
+    // For simplicity, we use
+    //   sizeof(newTableBuffer) = srcTableSize + sizeof(newAttribute) + 3
+    size_t destBufferLength = srcTable.size() + attributeField.length + 3;
+    Response destTable(destBufferLength);
+    size_t destTableLen = destTable.size();
+
+    rc = pldm_bios_table_attr_value_copy_and_update(
+        srcTable.data(), srcTable.size(), destTable.data(), &destTableLen,
+        attributeField.ptr, attributeField.length);
+    destTable.resize(destTableLen);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    rc = setAttributeValueOnDbus(&attributeField, biosAttributeTable,
+                                 biosStringTable);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    biosAttributeValueTable.store(destTable);
+
+    return ccOnlyResponse(request, PLDM_SUCCESS);
 }
 
 namespace internal
