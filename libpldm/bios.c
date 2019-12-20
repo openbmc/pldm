@@ -435,15 +435,13 @@ int decode_set_bios_attribute_current_value_resp(const struct pldm_msg *msg,
 	return PLDM_SUCCESS;
 }
 
-int decode_set_bios_attribute_current_value_req(const struct pldm_msg *msg,
-						size_t payload_length,
-						uint32_t *transfer_handle,
-						uint8_t *transfer_flag,
-						uint8_t *attribute_data,
-						size_t *attribute_length)
+int decode_set_bios_attribute_current_value_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *transfer_handle, uint8_t *transfer_flag,
+    struct variable_field *attribute)
 {
 	if (msg == NULL || transfer_handle == NULL || transfer_flag == NULL ||
-	    attribute_data == NULL || attribute_length == NULL) {
+	    attribute == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 	if (payload_length < PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES) {
@@ -454,10 +452,9 @@ int decode_set_bios_attribute_current_value_req(const struct pldm_msg *msg,
 	    (struct pldm_set_bios_attribute_current_value_req *)msg->payload;
 	*transfer_handle = le32toh(request->transfer_handle);
 	*transfer_flag = request->transfer_flag;
-	*attribute_length =
+	attribute->length =
 	    payload_length - PLDM_SET_BIOS_ATTR_CURR_VAL_MIN_REQ_BYTES;
-	memcpy(attribute_data, request->attribute_data, *attribute_length);
-
+	attribute->ptr = request->attribute_data;
 	return PLDM_SUCCESS;
 }
 
