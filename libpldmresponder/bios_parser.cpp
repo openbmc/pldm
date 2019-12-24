@@ -1,6 +1,6 @@
 #include "bios_parser.hpp"
 
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -230,7 +230,7 @@ CurrentValues getAttrValue(const AttrName& attrName)
 
     const auto& dbusValToValMap = internal::dbusValToValMaps.at(attrName);
     propValue =
-        pldm::responder::DBusHandler()
+        pldm::utils::DBusHandler()
             .getDbusPropertyVariant<internal::PropertyValue>(
                 dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
                 dBusMap->interface.c_str());
@@ -345,7 +345,7 @@ std::string getAttrValue(const AttrName& attrName)
         return std::get<DefaultStr>(valueEntry);
     }
 
-    return pldm::responder::DBusHandler().getDbusProperty<std::string>(
+    return pldm::utils::DBusHandler().getDbusProperty<std::string>(
         dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
         dBusMap->interface.c_str());
 }
@@ -409,7 +409,7 @@ uint64_t getAttrValue(const AttrName& attrName)
         return std::get<AttrDefaultValue>(valueEntry);
     }
 
-    return pldm::responder::DBusHandler().getDbusProperty<uint64_t>(
+    return pldm::utils::DBusHandler().getDbusProperty<uint64_t>(
         dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
         dBusMap->interface.c_str());
 }

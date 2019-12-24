@@ -1,6 +1,6 @@
 #include "bios.hpp"
 
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <array>
@@ -48,14 +48,15 @@ void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
     auto t = time_t(timeSec);
     auto time = localtime(&t);
 
-    seconds = decimalToBcd(time->tm_sec);
-    minutes = decimalToBcd(time->tm_min);
-    hours = decimalToBcd(time->tm_hour);
-    day = decimalToBcd(time->tm_mday);
-    month =
-        decimalToBcd(time->tm_mon + 1); // The number of months in the range
-                                        // 0 to 11.PLDM expects range 1 to 12
-    year = decimalToBcd(time->tm_year + 1900); // The number of years since 1900
+    seconds = pldm::utils::decimalToBcd(time->tm_sec);
+    minutes = pldm::utils::decimalToBcd(time->tm_min);
+    hours = pldm::utils::decimalToBcd(time->tm_hour);
+    day = pldm::utils::decimalToBcd(time->tm_mday);
+    month = pldm::utils::decimalToBcd(time->tm_mon +
+                                      1); // The number of months in the range
+                                          // 0 to 11.PLDM expects range 1 to 12
+    year = pldm::utils::decimalToBcd(time->tm_year +
+                                     1900); // The number of years since 1900
 }
 
 size_t getTableTotalsize(size_t sizeWithoutPad)
@@ -126,7 +127,9 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     auto bus = sdbusplus::bus::new_default();
     try
     {
-        auto service = getService(bus, hostTimePath, timeInterface);
+
+        auto service =
+            pldm::utils::getService(bus, hostTimePath, timeInterface);
 
         auto method = bus.new_method_call(service.c_str(), hostTimePath,
                                           dbusProperties, "Get");
