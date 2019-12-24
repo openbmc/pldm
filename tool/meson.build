@@ -8,6 +8,6 @@ executable(
   'pldmtool',
   sources,
   implicit_include_directories: false,
-  dependencies: libpldm,
+  dependencies: [libpldm, libutility],
   install: true,
   install_dir: get_option('bindir'))

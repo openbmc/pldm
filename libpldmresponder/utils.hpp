@@ -11,56 +11,10 @@
 #include <variant>
 #include <vector>
 
-#include "libpldm/base.h"
-
 namespace pldm
 {
 namespace responder
 {
-namespace utils
-{
-
-/** @struct CustomFD
- *
- *  RAII wrapper for file descriptor.
- */
-struct CustomFD
-{
-    CustomFD(const CustomFD&) = delete;
-    CustomFD& operator=(const CustomFD&) = delete;
-    CustomFD(CustomFD&&) = delete;
-    CustomFD& operator=(CustomFD&&) = delete;
-
-    CustomFD(int fd) : fd(fd)
-    {
-    }
-
-    ~CustomFD()
-    {
-        if (fd >= 0)
-        {
-            close(fd);
-        }
-    }
-
-    int operator()() const
-    {
-        return fd;
-    }
-
-  private:
-    int fd = -1;
-};
-
-/** @brief Calculate the pad for PLDM data
- *
- *  @param[in] data - Length of the data
- *  @return - uint8_t - number of pad bytes
- */
-uint8_t getNumPadBytes(uint32_t data);
-
-} // namespace utils
-
 /**
  *  @brief Get the DBUS Service name for the input dbus path
  *  @param[in] bus - DBUS Bus Object
