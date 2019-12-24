@@ -30,6 +30,7 @@ tests = [
   'libpldm_utils_test',
   'pldmd_instanceid_test',
   'pldmd_registration_test',
+  'pldm_utils_test',
 ]
 
 if get_option('oem-ibm').enabled()
@@ -47,6 +48,7 @@ foreach t : tests
                      dependencies: [
                          libpldm,
                          libpldmresponder,
+                         libutils,
                          gtest,
                          gmock,
                          pldmd,
