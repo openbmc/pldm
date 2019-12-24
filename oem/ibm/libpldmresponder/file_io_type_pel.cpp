@@ -2,7 +2,7 @@
 
 #include "file_io_type_pel.hpp"
 
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <stdint.h>
@@ -69,7 +69,7 @@ int PelHandler::storePel(std::string&& pelFileName)
 
     try
     {
-        auto service = getService(bus, logObjPath, logInterface);
+        auto service = pldm::utils::getService(bus, logObjPath, logInterface);
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         std::map<std::string, std::string> addlData{};
         addlData.emplace("RAWPEL", std::move(pelFileName));
