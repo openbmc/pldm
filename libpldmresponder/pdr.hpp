@@ -298,13 +298,15 @@ void generate(const std::string& dir, T& repo)
         {
             std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
                       << " ERROR=" << e.what() << "\n";
-            reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
+            pldm::utils::reportError(
+                "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }
         catch (const std::exception& e)
         {
             std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
                       << " ERROR=" << e.what() << "\n";
-            reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
+            pldm::utils::reportError(
+                "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }
     }
 }
