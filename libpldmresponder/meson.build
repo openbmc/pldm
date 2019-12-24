@@ -11,8 +11,8 @@ sources = [
   'bios_parser.cpp',
   'pdr.cpp',
   'effecters.cpp',
-  'utils.cpp',
   'platform.cpp',
+  '../utils.cpp'
 ]
 
 if get_option('oem-ibm').enabled()

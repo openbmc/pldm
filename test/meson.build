@@ -14,7 +14,7 @@ endif
 
 gtest = dependency('gtest', main: true, disabler: true, required: true)
 gmock = dependency('gmock', disabler: true, required: true)
-pldmd = declare_dependency(sources: '../instance_id.cpp')
+pldmd = declare_dependency(sources: ['../instance_id.cpp', '../utils.cpp'])
 
 tests = [
   'libpldm_base_test',
@@ -30,6 +30,7 @@ tests = [
   'libpldm_utils_test',
   'pldmd_instanceid_test',
   'pldmd_registration_test',
+  'pldm_utils_test',
 ]
 
 if get_option('oem-ibm').enabled()
