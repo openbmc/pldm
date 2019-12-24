@@ -4,7 +4,7 @@
 
 #include "file_io_type_lid.hpp"
 #include "file_io_type_pel.hpp"
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <stdint.h>

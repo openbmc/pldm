@@ -2,7 +2,8 @@ deps = [
   dependency('phosphor-dbus-interfaces'),
   dependency('phosphor-logging'),
   dependency('sdbusplus'),
-  libpldm
+  libpldm,
+  libpldmutils
 ]
 
 sources = [
@@ -12,7 +13,6 @@ sources = [
   'bios_parser.cpp',
   'pdr.cpp',
   'effecters.cpp',
-  'utils.cpp',
   'platform.cpp',
 ]
 
