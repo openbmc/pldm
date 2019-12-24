@@ -1,7 +1,7 @@
 #pragma once
 
 #include "handler.hpp"
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 
 #include <fcntl.h>
 #include <stdint.h>

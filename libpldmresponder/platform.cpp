@@ -1,6 +1,8 @@
 
 #include "platform.hpp"
 
+#include "utils.hpp"
+
 namespace pldm
 {
 namespace responder
@@ -106,9 +108,10 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     if (rc == PLDM_SUCCESS)
     {
         stateField.resize(compEffecterCnt);
-        const DBusHandler dBusIntf;
-        rc = setStateEffecterStatesHandler<DBusHandler>(dBusIntf, effecterId,
-                                                        stateField);
+
+        const pldm::utils::DBusHandler dBusIntf;
+        rc = setStateEffecterStatesHandler<pldm::utils::DBusHandler>(
+            dBusIntf, effecterId, stateField);
     }
 
     encode_set_state_effecter_states_resp(request->hdr.instance_id, rc,
