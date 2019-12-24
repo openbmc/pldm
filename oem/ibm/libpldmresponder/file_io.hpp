@@ -1,7 +1,7 @@
 #pragma once
 
 #include "handler.hpp"
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 
 #include <fcntl.h>
 #include <stdint.h>
@@ -107,7 +107,7 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
                                    responsePtr);
         return response;
     }
-    utils::CustomFD fd(file);
+    pldm::utils::CustomFD fd(file);
 
     while (length > dma::maxSize)
     {
