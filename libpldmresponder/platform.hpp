@@ -4,7 +4,7 @@
 
 #include "handler.hpp"
 #include "libpldmresponder/pdr.hpp"
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 
 #include <stdint.h>
 
