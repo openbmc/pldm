@@ -29,8 +29,22 @@ configure_file(output: 'config.h',
 )
 
 subdir('libpldm')
+libpldmutils_headers = ['libpldmresponder', 'tool']
+libpldmutils = library(
+  'utils',
+  'utils.cpp',
+  dependencies: [
+      libpldm,
+      dependency('phosphor-logging'),
+      dependency('sdbusplus'),
+  ],
+  include_directories: include_directories(libpldmutils_headers),
+)
+
+libpldmutils = declare_dependency(
+  link_with: libpldmutils)
+
 subdir('libpldmresponder')
-subdir('tool')
 
 deps = [
   libpldm,
@@ -49,6 +63,8 @@ executable(
   dependencies: deps,
   install: true,
   install_dir: get_option('bindir'))
+
+subdir('tool')
 
 if get_option('tests').enabled()
   subdir('test')
