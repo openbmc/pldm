@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 
 #include <err.h>
 #include <sys/socket.h>
@@ -23,7 +23,7 @@ namespace pldmtool
 namespace helper
 {
 
-using namespace pldm::responder::utils;
+using namespace pldm::utils;
 constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 constexpr uint8_t PLDM_LOCAL_INSTANCE_ID = 0;

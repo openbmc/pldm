@@ -3,7 +3,7 @@
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/platform.hpp"
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 
 #include <err.h>
 #include <getopt.h>
@@ -163,7 +163,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    responder::utils::CustomFD socketFd(sockfd);
+    pldm::utils::CustomFD socketFd(sockfd);
 
     struct sockaddr_un addr
     {
