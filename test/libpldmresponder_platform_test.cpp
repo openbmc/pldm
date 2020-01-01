@@ -191,10 +191,10 @@ namespace responder
 class MockdBusHandler
 {
   public:
-    MOCK_CONST_METHOD4(setDbusProperty,
+    MOCK_CONST_METHOD5(setDbusProperty,
                        int(const std::string&, const std::string&,
-                           const std::string&,
-                           const std::variant<std::string>&));
+                           const std::string&, const std::variant<std::string>&,
+                           bool isThrow));
 };
 } // namespace responder
 } // namespace pldm
@@ -222,7 +222,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
 
     MockdBusHandler handlerObj;
     EXPECT_CALL(handlerObj, setDbusProperty(objPath, bootProgressProp,
-                                            bootProgressInf, value))
+                                            bootProgressInf, value, true))
         .Times(2);
     platform::Handler handler;
     auto rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(

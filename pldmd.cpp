@@ -190,7 +190,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    auto bus = sdbusplus::bus::new_default();
+    auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
     auto callback = [verbose, &invoker, &dbusImplReq](IO& /*io*/, int fd,
                                                       uint32_t revents) {
