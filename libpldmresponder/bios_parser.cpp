@@ -234,7 +234,6 @@ CurrentValues getAttrValue(const AttrName& attrName)
             .getDbusPropertyVariant<internal::PropertyValue>(
                 dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
                 dBusMap->interface.c_str());
-
     auto iter = dbusValToValMap.find(propValue);
     if (iter != dbusValToValMap.end())
     {
