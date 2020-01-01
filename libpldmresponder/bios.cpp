@@ -124,22 +124,13 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     std::variant<EpochTimeUS> value;
 
-    auto bus = sdbusplus::bus::new_default();
     try
     {
-
-        auto service =
-            pldm::utils::getService(bus, hostTimePath, timeInterface);
-
-        auto method = bus.new_method_call(service.c_str(), hostTimePath,
-                                          dbusProperties, "Get");
-        method.append(timeInterface, "Elapsed");
-
-        auto reply = bus.call(method);
-        reply.read(value);
+        value = pldm::utils::DBusHandler()
+                    .getDbusProperty<std::variant<EpochTimeUS>>(
+                        hostTimePath, "Elapsed", timeInterface);
     }
-
-    catch (std::exception& e)
+    catch (const sdbusplus::exception::SdBusError& e)
     {
         std::cerr << "Error getting time, PATH=" << hostTimePath
                   << " TIME INTERACE=" << timeInterface << "\n";
