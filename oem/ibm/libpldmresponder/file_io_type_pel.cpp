@@ -65,11 +65,12 @@ int PelHandler::storePel(std::string&& pelFileName)
     static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
     static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
 
-    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+    auto& bus = pldm::utils::DBusHandler::getBus();
 
     try
     {
-        auto service = pldm::utils::getService(bus, logObjPath, logInterface);
+        auto service =
+            pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         std::map<std::string, std::string> addlData{};
         addlData.emplace("RAWPEL", std::move(pelFileName));
