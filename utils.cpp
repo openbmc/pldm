@@ -89,27 +89,19 @@ bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
     return true;
 }
 
-std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
-                       const std::string& interface)
+std::string DBusHandler::getService(const char* path,
+                                    const char* interface) const
 {
     using DbusInterfaceList = std::vector<std::string>;
     std::map<std::string, std::vector<std::string>> mapperResponse;
+    auto& bus = DBusHandler::getBus();
 
-    try
-    {
-        auto mapper = bus.new_method_call(mapperBusName, mapperPath,
-                                          mapperInterface, "GetObject");
-        mapper.append(path, DbusInterfaceList({interface}));
+    auto mapper = bus.new_method_call(mapperBusName, mapperPath,
+                                      mapperInterface, "GetObject");
+    mapper.append(path, DbusInterfaceList({interface}));
 
-        auto mapperResponseMsg = bus.call(mapper);
-        mapperResponseMsg.read(mapperResponse);
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << "gete dbus service, PATH=" << path
-                  << " INTERFACE=" << interface << e.what() << "\n";
-        throw;
-    }
+    auto mapperResponseMsg = bus.call(mapper);
+    mapperResponseMsg.read(mapperResponse);
     return mapperResponse.begin()->first;
 }
 
@@ -118,11 +110,11 @@ void reportError(const char* errorMsg)
     static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
     static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
 
-    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+    auto& bus = pldm::utils::DBusHandler::getBus();
 
     try
     {
-        auto service = getService(bus, logObjPath, logInterface);
+        auto service = DBusHandler().getService(logObjPath, logInterface);
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
