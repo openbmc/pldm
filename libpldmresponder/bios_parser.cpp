@@ -230,16 +230,21 @@ CurrentValues getAttrValue(const AttrName& attrName)
     }
 
     const auto& dbusValToValMap = internal::dbusValToValMaps.at(attrName);
-    propValue =
-        pldm::utils::DBusHandler()
-            .getDbusPropertyVariant<internal::PropertyValue>(
-                dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
-                dBusMap->interface.c_str());
-
-    auto iter = dbusValToValMap.find(propValue);
-    if (iter != dbusValToValMap.end())
+    try
     {
-        currentValues.push_back(iter->second);
+        propValue =
+            pldm::utils::DBusHandler()
+                .getDbusPropertyVariant<internal::PropertyValue>(
+                    dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+                    dBusMap->interface.c_str());
+        auto iter = dbusValToValMap.find(propValue);
+        if (iter != dbusValToValMap.end())
+        {
+            currentValues.push_back(iter->second);
+        }
+    }
+    catch (std::exception& e)
+    {
     }
 
     return currentValues;
