@@ -166,7 +166,7 @@ class Handler : public CmdHandler
                      try
                      {
                          dBusIntf.setDbusProperty(objPath.c_str(), dbusProp,
-                                                  dbusInterface, value);
+                                                  dbusInterface, value, true);
                      }
                      catch (const std::exception& e)
                      {
@@ -210,7 +210,7 @@ class Handler : public CmdHandler
                      try
                      {
                          dBusIntf.setDbusProperty(objPath.c_str(), dbusProp,
-                                                  dbusInterface, value);
+                                                  dbusInterface, value, true);
                      }
                      catch (const std::exception& e)
                      {
