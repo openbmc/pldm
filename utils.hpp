@@ -86,16 +86,6 @@ bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
                         std::vector<set_effecter_state_field>& stateField);
 
 /**
- *  @brief Get the DBUS Service name for the input dbus path
- *  @param[in] bus - DBUS Bus Object
- *  @param[in] path - DBUS object path
- *  @param[in] interface - DBUS Interface
- *  @return std::string - the dbus service name
- */
-std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
-                       const std::string& interface);
-
-/**
  *  @brief creates an error log
  *  @param[in] errorMsg - the error message
  */
@@ -138,34 +128,67 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 class DBusHandler
 {
   public:
+    /** @brief Get the bus connection. */
+    static auto& getBus()
+    {
+        static auto bus = sdbusplus::bus::new_default();
+        return bus;
+    }
+
+    /**
+     *  @brief Get the DBUS Service name for the input dbus path
+     *  @param[in] path - DBUS object path
+     *  @param[in] interface - DBUS Interface
+     *  @param[in] isThrow - Whether to throw an exception, true means throw and
+     *             false means don't throw
+     *  @return std::string - the dbus service name
+     */
+    std::string getService(const char* path, const char* interface,
+                           bool isThrow = false) const;
+
     /** @brief API to set a D-Bus property
      *
      *  @param[in] objPath - Object path for the D-Bus object
      *  @param[in] dbusProp - The D-Bus property
      *  @param[in] dbusInterface - The D-Bus interface
      *  @param[in] value - The value to be set
+     *  @param[in] isThrow - Whether to throw an exception, true means throw and
+     *             false means don't throw
      * failure
      */
     template <typename T>
     void setDbusProperty(const char* objPath, const char* dbusProp,
                          const char* dbusInterface,
-                         const std::variant<T>& value) const
+                         const std::variant<T>& value,
+                         bool isThrow = false) const
     {
-        auto bus = sdbusplus::bus::new_default();
-        auto service = getService(bus, objPath, dbusInterface);
-        auto method = bus.new_method_call(service.c_str(), objPath,
-                                          dbusProperties, "Set");
-        method.append(dbusInterface, dbusProp, value);
-        bus.call_noreply(method);
+        auto& bus = DBusHandler::getBus();
+        try
+        {
+            auto service = getService(objPath, dbusInterface);
+            auto method = bus.new_method_call(service.c_str(), objPath,
+                                              dbusProperties, "Set");
+            method.append(dbusInterface, dbusProp, value);
+            bus.call_noreply(method);
+        }
+        catch (const sdbusplus::exception::SdBusError& e)
+        {
+            std::cerr << "set dbus property exception, OBJPATH=" << objPath
+                      << " INTERFACE=" << dbusInterface
+                      << " PROPERTY=" << dbusProp << " EXCEPTION=" << e.what()
+                      << "\n";
+            isThrow ? throw
+                    : throw std::runtime_error("setDbusProperty exception");
+        }
     }
 
     template <typename Variant>
     auto getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                                const char* dbusInterface)
+                                const char* dbusInterface, bool isThrow = false)
     {
         Variant value;
-        auto bus = sdbusplus::bus::new_default();
-        auto service = getService(bus, objPath, dbusInterface);
+        auto& bus = DBusHandler::getBus();
+        auto service = getService(objPath, dbusInterface);
         auto method = bus.new_method_call(service.c_str(), objPath,
                                           dbusProperties, "Get");
         method.append(dbusInterface, dbusProp);
@@ -176,20 +199,23 @@ class DBusHandler
         }
         catch (const sdbusplus::exception::SdBusError& e)
         {
-            std::cerr << "dbus call exception, OBJPATH=" << objPath
+            std::cerr << "get dbus property exception, OBJPATH=" << objPath
                       << " INTERFACE=" << dbusInterface
                       << " PROPERTY=" << dbusProp << " EXCEPTION=" << e.what()
                       << "\n";
+            isThrow
+                ? throw
+                : throw std::runtime_error("getDbusPropertyVariant exception");
         }
         return value;
     }
 
     template <typename Property>
     auto getDbusProperty(const char* objPath, const char* dbusProp,
-                         const char* dbusInterface)
+                         const char* dbusInterface, bool isThrow = false)
     {
         auto VariantValue = getDbusPropertyVariant<std::variant<Property>>(
-            objPath, dbusProp, dbusInterface);
+            objPath, dbusProp, dbusInterface, isThrow);
         return std::get<Property>(VariantValue);
     }
 };

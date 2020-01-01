@@ -90,12 +90,12 @@ bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
     return true;
 }
 
-std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
-                       const std::string& interface)
+std::string DBusHandler::getService(const char* path, const char* interface,
+                                    bool isThrow) const
 {
     using DbusInterfaceList = std::vector<std::string>;
     std::map<std::string, std::vector<std::string>> mapperResponse;
-
+    auto& bus = DBusHandler::getBus();
     try
     {
         auto mapper = bus.new_method_call(mapperBusName, mapperPath,
@@ -105,11 +105,11 @@ std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
         auto mapperResponseMsg = bus.call(mapper);
         mapperResponseMsg.read(mapperResponse);
     }
-    catch (std::exception& e)
+    catch (const sdbusplus::exception::SdBusError& e)
     {
-        std::cerr << "gete dbus service, PATH=" << path
+        std::cerr << "get dbus service exception, PATH=" << path
                   << " INTERFACE=" << interface << e.what() << "\n";
-        throw;
+        isThrow ? throw : throw std::runtime_error("getService exception");
     }
     return mapperResponse.begin()->first;
 }
@@ -119,11 +119,11 @@ void reportError(const char* errorMsg)
     static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
     static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
 
-    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+    auto& bus = pldm::utils::DBusHandler::getBus();
 
     try
     {
-        auto service = getService(bus, logObjPath, logInterface);
+        auto service = DBusHandler().getService(logObjPath, logInterface);
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
