@@ -91,12 +91,12 @@ bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
     return true;
 }
 
-std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
-                       const std::string& interface)
+std::string DBusHandler::getService(const char* path, const char* interface,
+                                    bool isThrow) const
 {
     using DbusInterfaceList = std::vector<std::string>;
     std::map<std::string, std::vector<std::string>> mapperResponse;
-
+    auto& bus = DBusHandler::getBus();
     try
     {
         auto mapper = bus.new_method_call(mapperBusName, mapperPath,
@@ -106,12 +106,15 @@ std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
         auto mapperResponseMsg = bus.call(mapper);
         mapperResponseMsg.read(mapperResponse);
     }
-    catch (std::exception& e)
+    catch (const sdbusplus::exception::SdBusError& e)
     {
         log<level::ERR>("Error in mapper call", entry("ERROR=%s", e.what()),
-                        entry("PATH=%s", path.c_str()),
-                        entry("INTERFACE=%s", interface.c_str()));
-        throw;
+                        entry("PATH=%s", path),
+                        entry("INTERFACE=%s", interface));
+        if (isThrow)
+        {
+            throw;
+        }
     }
     return mapperResponse.begin()->first;
 }
