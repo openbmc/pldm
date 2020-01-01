@@ -15,6 +15,8 @@
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
 
+using namespace phosphor::logging;
+
 namespace pldm
 {
 namespace utils
@@ -84,16 +86,6 @@ bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
                         uint16_t& effecter_id,
                         std::vector<set_effecter_state_field>& stateField);
 
-/**
- *  @brief Get the DBUS Service name for the input dbus path
- *  @param[in] bus - DBUS Bus Object
- *  @param[in] path - DBUS object path
- *  @param[in] interface - DBUS Interface
- *  @return std::string - the dbus service name
- */
-std::string getService(sdbusplus::bus::bus& bus, const std::string& path,
-                       const std::string& interface);
-
 /** @brief Convert any Decimal number to BCD
  *
  *  @tparam[in] decimal - Decimal number
@@ -131,6 +123,21 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 class DBusHandler
 {
   public:
+    /** @brief Get the bus connection. */
+    static auto& getBus()
+    {
+        static auto bus = sdbusplus::bus::new_default();
+        return bus;
+    }
+
+    /**
+     *  @brief Get the DBUS Service name for the input dbus path
+     *  @param[in] path - DBUS object path
+     *  @param[in] interface - DBUS Interface
+     *  @return std::string - the dbus service name
+     */
+    std::string getService(const char* path, const char* interface) const;
+
     /** @brief API to set a D-Bus property
      *
      *  @param[in] objPath - Object path for the D-Bus object
@@ -144,8 +151,8 @@ class DBusHandler
                          const char* dbusInterface,
                          const std::variant<T>& value) const
     {
-        auto bus = sdbusplus::bus::new_default();
-        auto service = getService(bus, objPath, dbusInterface);
+        auto& bus = DBusHandler::getBus();
+        auto service = getService(objPath, dbusInterface);
         auto method = bus.new_method_call(service.c_str(), objPath,
                                           dbusProperties, "Set");
         method.append(dbusInterface, dbusProp, value);
@@ -158,8 +165,8 @@ class DBusHandler
     {
         using namespace phosphor::logging;
         Variant value;
-        auto bus = sdbusplus::bus::new_default();
-        auto service = getService(bus, objPath, dbusInterface);
+        auto& bus = DBusHandler::getBus();
+        auto service = getService(objPath, dbusInterface);
         auto method = bus.new_method_call(service.c_str(), objPath,
                                           dbusProperties, "Get");
         method.append(dbusInterface, dbusProp);
@@ -174,6 +181,7 @@ class DBusHandler
                             entry("INTERFACE=%s", dbusInterface),
                             entry("PROPERTY=%s", dbusProp),
                             entry("EXPECTION=%s", e.what()));
+            throw;
         }
         return value;
     }
