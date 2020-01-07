@@ -828,12 +828,41 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
-    fs::path attrValueTablePath(BIOS_TABLES_DIR);
-    attrValueTablePath /= attrValTableFile;
-    BIOSTable attributeValueTable(attrValueTablePath.c_str());
+    fs::path tablesPath(BIOS_TABLES_DIR);
+    auto stringTablePath = tablesPath / stringTableFile;
+    BIOSTable BIOSStringTable(stringTablePath.c_str());
+    auto attrTablePath = tablesPath / attrTableFile;
+    BIOSTable BIOSAttributeTable(attrTablePath.c_str());
+    if (BIOSAttributeTable.isEmpty() || BIOSStringTable.isEmpty())
+    {
+        return ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
+    }
+
+    auto attrValueTablePath = tablesPath / attrValTableFile;
+    BIOSTable BIOSAttributeValueTable(attrValueTablePath.c_str());
+
+    if (BIOSAttributeValueTable.isEmpty())
+    {
+        Table attributeValueTable;
+        Table attributeTable;
+        BIOSAttributeTable.load(attributeTable);
+        traverseBIOSAttrTable(
+            attributeTable,
+            [&BIOSStringTable, &attributeValueTable](
+                const struct pldm_bios_attr_table_entry* tableEntry) {
+                constructAttrValueTableEntry(tableEntry, BIOSStringTable,
+                                             attributeValueTable);
+            });
+        if (attributeValueTable.empty())
+        {
+            return ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
+        }
+        pldm::responder::utils::padAndChecksum(attributeValueTable);
+        BIOSAttributeValueTable.store(attributeValueTable);
+    }
 
     Response table;
-    attributeValueTable.load(table);
+    BIOSAttributeValueTable.load(table);
 
     auto entry = pldm_bios_table_attr_value_find_by_handle(
         table.data(), table.size(), attributeHandle);
