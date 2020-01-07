@@ -384,3 +384,167 @@ TEST(GetPDR, testBadDecodeResponse)
         &retRespCnt, retRecordData, recordDataLength, &retTransferCRC);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(SetNumericEffecterValue, testGoodDecodeRequest)
+{
+    std::array<uint8_t,
+               hdrSize + PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 3>
+        requestMsg{};
+
+    uint16_t effecter_id = 32768;
+    uint8_t effecter_data_size = PLDM_EFFECTER_DATA_SIZE_UINT32;
+    uint32_t effecter_value = 123456789;
+
+    uint16_t reteffecter_id;
+    uint8_t reteffecter_data_size;
+    uint8_t reteffecter_value[4];
+
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_set_numeric_effecter_value_req* request =
+        reinterpret_cast<struct pldm_set_numeric_effecter_value_req*>(
+            req->payload);
+
+    request->effecter_id = effecter_id;
+    request->effecter_data_size = effecter_data_size;
+    memcpy(request->effecter_value, &effecter_value, sizeof(effecter_value));
+
+    auto rc = decode_set_numeric_effecter_value_req(
+        req, requestMsg.size() - hdrSize, &reteffecter_id,
+        &reteffecter_data_size, reinterpret_cast<uint8_t*>(&reteffecter_value));
+
+    uint32_t value = *(reinterpret_cast<uint32_t*>(&reteffecter_value[0]));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(reteffecter_id, effecter_id);
+    EXPECT_EQ(reteffecter_data_size, effecter_data_size);
+    EXPECT_EQ(value, effecter_value);
+}
+
+TEST(SetNumericEffecterValue, testBadDecodeRequest)
+{
+    std::array<uint8_t, hdrSize + PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES>
+        requestMsg{};
+
+    auto rc = decode_set_numeric_effecter_value_req(
+        NULL, requestMsg.size() - hdrSize, NULL, NULL, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    uint16_t effecter_id = 0x10;
+    uint8_t effecter_data_size = PLDM_EFFECTER_DATA_SIZE_UINT8;
+    uint8_t effecter_value = 1;
+
+    uint16_t reteffecter_id;
+    uint8_t reteffecter_data_size;
+    uint8_t reteffecter_value[4];
+
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_set_numeric_effecter_value_req* request =
+        reinterpret_cast<struct pldm_set_numeric_effecter_value_req*>(
+            req->payload);
+
+    request->effecter_id = effecter_id;
+    request->effecter_data_size = effecter_data_size;
+    memcpy(request->effecter_value, &effecter_value, sizeof(effecter_value));
+
+    rc = decode_set_numeric_effecter_value_req(
+        req, requestMsg.size() - hdrSize - 1, &reteffecter_id,
+        &reteffecter_data_size, reinterpret_cast<uint8_t*>(&reteffecter_value));
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(SetNumericEffecterValue, testGoodEncodeRequest)
+{
+    uint16_t effecter_id = 0;
+    uint8_t effecter_data_size = PLDM_EFFECTER_DATA_SIZE_UINT8;
+    uint8_t effecter_value = 1;
+
+    std::vector<uint8_t> requestMsg(
+        hdrSize + PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_set_numeric_effecter_value_req(
+        0, effecter_id, effecter_data_size,
+        reinterpret_cast<uint8_t*>(&effecter_value), request,
+        PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_set_numeric_effecter_value_req* req =
+        reinterpret_cast<struct pldm_set_numeric_effecter_value_req*>(
+            request->payload);
+    EXPECT_EQ(effecter_id, req->effecter_id);
+    EXPECT_EQ(effecter_data_size, req->effecter_data_size);
+    EXPECT_EQ(effecter_value,
+              *(reinterpret_cast<uint8_t*>(&req->effecter_value[0])));
+}
+
+TEST(SetNumericEffecterValue, testBadEncodeRequest)
+{
+    std::vector<uint8_t> requestMsg(
+        hdrSize + PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_set_numeric_effecter_value_req(
+        0, 0, 0, NULL, NULL, PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    uint16_t effecter_value;
+    rc = encode_set_numeric_effecter_value_req(
+        0, 0, 6, reinterpret_cast<uint8_t*>(&effecter_value), request,
+        PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(SetNumericEffecterValue, testGoodDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES>
+        responseMsg{};
+
+    uint8_t completion_code = 0xA0;
+
+    uint8_t retcompletion_code;
+
+    memcpy(responseMsg.data() + hdrSize, &completion_code,
+           sizeof(completion_code));
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_set_numeric_effecter_value_resp(
+        response, responseMsg.size() - hdrSize, &retcompletion_code);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completion_code, retcompletion_code);
+}
+
+TEST(SetNumericEffecterValue, testBadDecodeResponse)
+{
+    std::array<uint8_t, PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES>
+        responseMsg{};
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_set_numeric_effecter_value_resp(response,
+                                                     responseMsg.size(), NULL);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(SetNumericEffecterValue, testGoodEncodeResponse)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    uint8_t completionCode = 0;
+
+    auto rc = encode_set_numeric_effecter_value_resp(
+        0, PLDM_SUCCESS, response, PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, response->payload[0]);
+}
+
+TEST(SetNumericEffecterValue, testBadEncodeResponse)
+{
+    auto rc = encode_set_numeric_effecter_value_resp(
+        0, PLDM_SUCCESS, NULL, PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
