@@ -7,7 +7,6 @@
 
 #include "bios.h"
 #include "bios_table.h"
-#include "utils.h"
 
 #define POINTER_CHECK(pointer)                                                 \
 	do {                                                                   \
@@ -139,6 +138,18 @@ static void attr_table_entry_encode_header(void *entry, size_t length,
 	attr_entry->attr_handle = htole16(get_bios_attr_handle());
 	attr_entry->attr_type = attr_type;
 	attr_entry->string_handle = htole16(string_handle);
+}
+
+uint16_t pldm_bios_table_attr_entry_decode_attribute_handle(
+    const struct pldm_bios_attr_table_entry *entry)
+{
+	return le16toh(entry->attr_handle);
+}
+
+uint16_t pldm_bios_table_attr_entry_decode_string_handle(
+    const struct pldm_bios_attr_table_entry *entry)
+{
+	return le16toh(entry->string_handle);
 }
 
 size_t pldm_bios_table_attr_entry_enum_encode_length(uint8_t pv_num,
@@ -377,6 +388,14 @@ int pldm_bios_table_attr_entry_string_decode_def_string_length_check(
 	return PLDM_SUCCESS;
 }
 
+uint8_t pldm_bios_table_attr_entry_string_decode_string_type(
+    const struct pldm_bios_attr_table_entry *entry)
+{
+	struct attr_table_string_entry_fields *fields =
+	    (struct attr_table_string_entry_fields *)entry->metadata;
+	return fields->string_type;
+}
+
 /** @brief Get length of a string attribute entry
  */
 static size_t attr_table_entry_length_string(const void *entry)
@@ -524,6 +543,18 @@ static size_t attr_table_entry_length(const void *table_entry)
 	return attr_table_entry->entry_length_handler(entry);
 }
 
+uint16_t pldm_bios_table_attr_value_entry_decode_attribute_handle(
+    const struct pldm_bios_attr_val_table_entry *entry)
+{
+	return le16toh(entry->attr_handle);
+}
+
+uint8_t pldm_bios_table_attr_value_entry_decode_attribute_type(
+    const struct pldm_bios_attr_val_table_entry *entry)
+{
+	return entry->attr_type;
+}
+
 size_t pldm_bios_table_attr_value_entry_encode_enum_length(uint8_t count)
 {
 	return sizeof(struct pldm_bios_attr_val_table_entry) - 1 +
@@ -550,6 +581,18 @@ uint8_t pldm_bios_table_attr_value_entry_enum_decode_number(
     const struct pldm_bios_attr_val_table_entry *entry)
 {
 	return entry->value[0];
+}
+
+uint8_t pldm_bios_table_attr_value_entry_enum_decode_handles(
+    const struct pldm_bios_attr_val_table_entry *entry, uint8_t *handles,
+    uint8_t number)
+{
+	uint8_t curr_num =
+	    pldm_bios_table_attr_value_entry_enum_decode_number(entry);
+	number = number < curr_num ? number : curr_num;
+	memcpy(handles, &entry->value[1], number);
+
+	return number;
 }
 
 int pldm_bios_table_attr_value_entry_encode_enum_check(
@@ -606,6 +649,16 @@ uint16_t pldm_bios_table_attr_value_entry_string_decode_length(
 	uint16_t str_length = 0;
 	memcpy(&str_length, entry->value, sizeof(str_length));
 	return le16toh(str_length);
+}
+
+void pldm_bios_table_attr_value_entry_string_decode_string(
+    const struct pldm_bios_attr_val_table_entry *entry,
+    struct variable_field *current_string)
+{
+	current_string->length =
+	    pldm_bios_table_attr_value_entry_string_decode_length(entry);
+	current_string->ptr =
+	    entry->value + sizeof(uint16_t); // sizeof(CurrentStringLength)
 }
 
 int pldm_bios_table_attr_value_entry_encode_string_check(
@@ -668,6 +721,15 @@ int pldm_bios_table_attr_value_entry_encode_integer_check(void *entry,
 	pldm_bios_table_attr_value_entry_encode_integer(
 	    entry, entry_length, attr_handle, attr_type, cv);
 	return PLDM_SUCCESS;
+}
+
+uint64_t pldm_bios_table_attr_value_entry_integer_decode_cv(
+    const struct pldm_bios_attr_val_table_entry *entry)
+{
+	uint64_t cv = 0;
+	memcpy(&cv, entry->value, sizeof(cv));
+	cv = le64toh(cv);
+	return cv;
 }
 
 static size_t attr_value_table_entry_length_integer(const void *entry)
@@ -894,6 +956,22 @@ pldm_bios_table_string_find_by_string(const void *table, size_t length,
 	return pldm_bios_table_entry_find_from_table(
 	    table, length, PLDM_BIOS_STRING_TABLE, string_table_string_equal,
 	    &arg);
+}
+
+static bool attr_table_handle_equal(const void *entry, const void *key)
+{
+	uint16_t handle = *(uint16_t *)key;
+	return pldm_bios_table_attr_entry_decode_attribute_handle(entry) ==
+	       handle;
+}
+
+const struct pldm_bios_attr_table_entry *
+pldm_bios_table_attr_find_by_handle(const void *table, size_t length,
+				    uint16_t handle)
+{
+	return pldm_bios_table_entry_find_from_table(
+	    table, length, PLDM_BIOS_ATTR_TABLE, attr_table_handle_equal,
+	    &handle);
 }
 
 static bool attr_value_table_handle_equal(const void *entry, const void *key)
