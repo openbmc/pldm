@@ -15,15 +15,28 @@ extern "C" {
 /* Response lengths are inclusive of completion code */
 #define PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES 1
 
+#define PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES 1
+#define PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES 4
+
 #define PLDM_GET_PDR_REQ_BYTES 13
 /* Minimum response length */
 #define PLDM_GET_PDR_MIN_RESP_BYTES 12
+
+enum pldm_effecter_data_size {
+	PLDM_EFFECTER_DATA_SIZE_UINT8,
+	PLDM_EFFECTER_DATA_SIZE_SINT8,
+	PLDM_EFFECTER_DATA_SIZE_UINT16,
+	PLDM_EFFECTER_DATA_SIZE_SINT16,
+	PLDM_EFFECTER_DATA_SIZE_UINT32,
+	PLDM_EFFECTER_DATA_SIZE_SINT32
+};
 
 enum set_request { PLDM_NO_CHANGE = 0x00, PLDM_REQUEST_SET = 0x01 };
 
 enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
 
 enum pldm_platform_commands {
+	PLDM_SET_NUMERIC_EFFECTER_VALUE = 0x31,
 	PLDM_SET_STATE_EFFECTER_STATES = 0x39,
 	PLDM_GET_PDR = 0x51,
 };
@@ -138,7 +151,52 @@ struct pldm_get_pdr_req {
 	uint16_t record_change_number;
 } __attribute__((packed));
 
+/** @struct pldm_set_numeric_effecter_value_req
+ *
+ *  structure representing SetNumericEffecterValue request packet
+ */
+struct pldm_set_numeric_effecter_value_req {
+	uint16_t effecter_id;
+	uint8_t effecter_data_size;
+	uint8_t effecter_value[1];
+} __attribute__((packed));
+
 /* Responder */
+
+/* SetNumericEffecterValue */
+
+/** @brief Decode SetNumericEffecterValue request data
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] effecter_id - used to identify and access the effecter
+ *  @param[out] effecter_data_size - The bit width and format of the setting
+ * 				value for the effecter.
+ * 				value:{uint8,sint8,uint16,sint16,uint32,sint32}
+ *  @param[out] effecter_value - The setting value of numeric effecter being
+ * 				requested.
+ *  @return pldm_completion_codes
+ */
+int decode_set_numeric_effecter_value_req(const struct pldm_msg *msg,
+					  size_t payload_length,
+					  uint16_t *effecter_id,
+					  uint8_t *effecter_data_size,
+					  uint8_t *effecter_value);
+
+/** @brief Create a PLDM response message for SetNumericEffecterValue
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.body.payload'
+ */
+int encode_set_numeric_effecter_value_resp(uint8_t instance_id,
+					   uint8_t completion_code,
+					   struct pldm_msg *msg,
+					   size_t payload_length);
 
 /* SetStateEffecterStates */
 
@@ -317,6 +375,38 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 int decode_set_state_effecter_states_resp(const struct pldm_msg *msg,
 					  size_t payload_length,
 					  uint8_t *completion_code);
+
+/* SetNumericEffecterValue */
+
+/** @brief Create a PLDM request message for SetNumericEffecterValue
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] effecter_id - used to identify and access the effecter
+ *  @param[in] effecter_data_size - The bit width and format of the setting
+ * 				value for the effecter.
+ * 				value:{uint8,sint8,uint16,sint16,uint32,sint32}
+ *  @param[in] effecter_value - The setting value of numeric effecter being
+ * 				requested.
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_set_numeric_effecter_value_req(
+    uint8_t instance_id, uint16_t effecter_id, uint8_t effecter_data_size,
+    uint8_t *effecter_value, struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Decode SetNumericEffecterValue response data
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @return pldm_completion_codes
+ */
+int decode_set_numeric_effecter_value_resp(const struct pldm_msg *msg,
+					   size_t payload_length,
+					   uint8_t *completion_code);
+
 #ifdef __cplusplus
 }
 #endif

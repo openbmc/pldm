@@ -2,7 +2,6 @@
 #include <string.h>
 
 #include "platform.h"
-#include "utils.h"
 
 int encode_set_state_effecter_states_resp(uint8_t instance_id,
 					  uint8_t completion_code,
@@ -258,6 +257,172 @@ int decode_get_pdr_resp(const struct pldm_msg *msg, size_t payload_length,
 		*transfer_crc =
 		    msg->payload[PLDM_GET_PDR_MIN_RESP_BYTES + *resp_cnt];
 	}
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_numeric_effecter_value_req(const struct pldm_msg *msg,
+					  size_t payload_length,
+					  uint16_t *effecter_id,
+					  uint8_t *effecter_data_size,
+					  uint8_t *effecter_value)
+{
+	if (msg == NULL || effecter_id == NULL || effecter_data_size == NULL ||
+	    effecter_value == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length < PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_set_numeric_effecter_value_req *request =
+	    (struct pldm_set_numeric_effecter_value_req *)msg->payload;
+	*effecter_id = le16toh(request->effecter_id);
+	*effecter_data_size = request->effecter_data_size;
+
+	if (*effecter_data_size > PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT8 ||
+	    *effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT8) {
+
+		if (payload_length !=
+		    PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+
+		*effecter_value = request->effecter_value[0];
+	}
+
+	if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
+	    *effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT16) {
+
+		if (payload_length !=
+		    PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 1) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+
+		memcpy(effecter_value, request->effecter_value, 2);
+		*effecter_value = le16toh(*effecter_value);
+	}
+
+	if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+	    *effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
+
+		if (payload_length !=
+		    PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 3) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+
+		memcpy(effecter_value, request->effecter_value, 4);
+		*effecter_value = le32toh(*effecter_value);
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_numeric_effecter_value_resp(uint8_t instance_id,
+					   uint8_t completion_code,
+					   struct pldm_msg *msg,
+					   size_t payload_length)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	msg->payload[0] = completion_code;
+
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_SET_NUMERIC_EFFECTER_VALUE;
+
+	rc = pack_pldm_header(&header, &(msg->hdr));
+
+	return rc;
+}
+
+int encode_set_numeric_effecter_value_req(
+    uint8_t instance_id, uint16_t effecter_id, uint8_t effecter_data_size,
+    uint8_t *effecter_value, struct pldm_msg *msg, size_t payload_length)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL || effecter_value == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	struct pldm_set_numeric_effecter_value_req *request =
+	    (struct pldm_set_numeric_effecter_value_req *)msg->payload;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_SET_NUMERIC_EFFECTER_VALUE;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	if (effecter_data_size > PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT8 ||
+	    effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT8) {
+		if (payload_length !=
+		    PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		request->effecter_value[0] = *effecter_value;
+	} else if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
+		   effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT16) {
+		if (payload_length !=
+		    PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 1) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+
+		memcpy(request->effecter_value, effecter_value, 2);
+		*request->effecter_value = htole16(*request->effecter_value);
+	} else if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+		   effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		if (payload_length !=
+		    PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 3) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+
+		memcpy(request->effecter_value, effecter_value, 4);
+		*request->effecter_value = htole32(*request->effecter_value);
+	}
+
+	request->effecter_id = htole16(effecter_id);
+	request->effecter_data_size = effecter_data_size;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_numeric_effecter_value_resp(const struct pldm_msg *msg,
+					   size_t payload_length,
+					   uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*completion_code = msg->payload[0];
 
 	return PLDM_SUCCESS;
 }
