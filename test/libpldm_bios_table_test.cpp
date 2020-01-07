@@ -34,6 +34,26 @@ void buildTable(Table& table, First& first, Rest&... rest)
     buildTable(table, rest...);
 }
 
+TEST(AttrTable, HeaderDecodeTest)
+{
+    std::vector<uint8_t> enumEntry{
+        2, 0, /* attr handle */
+        0,    /* attr type */
+        1, 0, /* attr name handle (string handle) */
+        2,    /* number of possible value */
+        2, 0, /* possible value handle */
+        3, 0, /* possible value handle */
+        1,    /* number of default value */
+        0     /* defaut value string handle index */
+    };
+    auto entry =
+        reinterpret_cast<struct pldm_bios_attr_table_entry*>(enumEntry.data());
+    auto attrHandle = pldm_bios_table_attr_entry_decode_attribute_handle(entry);
+    EXPECT_EQ(attrHandle, 2);
+    auto stringHandle = pldm_bios_table_attr_entry_decode_string_handle(entry);
+    EXPECT_EQ(stringHandle, 1);
+}
+
 TEST(AttrTable, EnumEntryDecodeTest)
 {
     std::vector<uint8_t> enumEntry{
@@ -172,6 +192,10 @@ TEST(AttrTable, StringEntryDecodeTest)
 
     auto entry = reinterpret_cast<struct pldm_bios_attr_table_entry*>(
         stringEntry.data());
+    auto stringType =
+        pldm_bios_table_attr_entry_string_decode_string_type(entry);
+    EXPECT_EQ(stringType, 1);
+
     uint16_t def_string_length =
         pldm_bios_table_attr_entry_string_decode_def_string_length(entry);
     EXPECT_EQ(def_string_length, 3);
@@ -406,6 +430,71 @@ TEST(AttrTable, ItearatorTest)
     pldm_bios_table_iter_free(iter);
 }
 
+TEST(AttrTable, FindTest)
+{
+    std::vector<uint8_t> enumEntry{
+        0, 0, /* attr handle */
+        0,    /* attr type */
+        1, 0, /* attr name handle */
+        2,    /* number of possible value */
+        2, 0, /* possible value handle */
+        3, 0, /* possible value handle */
+        1,    /* number of default value */
+        0     /* defaut value string handle index */
+    };
+    std::vector<uint8_t> stringEntry{
+        1,   0,       /* attr handle */
+        1,            /* attr type */
+        12,  0,       /* attr name handle */
+        1,            /* string type */
+        1,   0,       /* minimum length of the string in bytes */
+        100, 0,       /* maximum length of the string in bytes */
+        3,   0,       /* length of default string in length */
+        'a', 'b', 'c' /* default string  */
+    };
+    std::vector<uint8_t> integerEntry{
+        0,  0,                   /* attr handle */
+        3,                       /* attr type */
+        1,  0,                   /* attr name handle */
+        1,  0, 0, 0, 0, 0, 0, 0, /* lower bound */
+        10, 0, 0, 0, 0, 0, 0, 0, /* upper bound */
+        2,  0, 0, 0,             /* scalar increment */
+        3,  0, 0, 0, 0, 0, 0, 0, /* defaut value */
+    };
+
+    Table table;
+    buildTable(table, enumEntry, stringEntry, integerEntry, enumEntry);
+
+    auto entry =
+        pldm_bios_table_attr_find_by_handle(table.data(), table.size(), 1);
+    EXPECT_NE(entry, nullptr);
+    auto p = reinterpret_cast<const uint8_t*>(entry);
+    EXPECT_THAT(std::vector<uint8_t>(p, p + stringEntry.size()),
+                ElementsAreArray(stringEntry));
+
+    entry = pldm_bios_table_attr_find_by_handle(table.data(), table.size(), 3);
+    EXPECT_EQ(entry, nullptr);
+}
+
+TEST(AttrValTable, HeaderDecodeTest)
+{
+    std::vector<uint8_t> enumEntry{
+        1, 0, /* attr handle */
+        0,    /* attr type */
+        2,    /* number of current value */
+        0,    /* current value string handle index */
+        1,    /* current value string handle index */
+    };
+    auto entry = reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(
+        enumEntry.data());
+    auto attrHandle =
+        pldm_bios_table_attr_value_entry_decode_attribute_handle(entry);
+    EXPECT_EQ(attrHandle, 1);
+    auto attrType =
+        pldm_bios_table_attr_value_entry_decode_attribute_type(entry);
+    EXPECT_EQ(attrType, 0);
+}
+
 TEST(AttrValTable, EnumEntryEncodeTest)
 {
     std::vector<uint8_t> enumEntry{
@@ -466,6 +555,13 @@ TEST(AttrValTable, EnumEntryDecodeTest)
         enumEntry.data());
     auto number = pldm_bios_table_attr_value_entry_enum_decode_number(entry);
     EXPECT_EQ(2, number);
+
+    std::vector<uint8_t> handles(2, 0);
+    auto rc = pldm_bios_table_attr_value_entry_enum_decode_handles(
+        entry, handles.data(), handles.size());
+    EXPECT_EQ(rc, 2);
+    EXPECT_EQ(handles[0], 0);
+    EXPECT_EQ(handles[1], 1);
 }
 
 TEST(AttrValTable, stringEntryEncodeTest)
@@ -530,6 +626,13 @@ TEST(AttrValTable, StringEntryDecodeTest)
 
     auto entryLength = pldm_bios_table_attr_value_entry_length(entry);
     EXPECT_EQ(stringEntry.size(), entryLength);
+
+    variable_field currentString{};
+    pldm_bios_table_attr_value_entry_string_decode_string(entry,
+                                                          &currentString);
+    EXPECT_THAT(std::vector<uint8_t>(currentString.ptr,
+                                     currentString.ptr + currentString.length),
+                ElementsAreArray(std::vector<uint8_t>{'a', 'b', 'c'}));
 }
 
 TEST(AttrValTable, integerEntryEncodeTest)
@@ -572,6 +675,20 @@ TEST(AttrValTable, integerEntryEncodeTest)
         encodeEntry.data(), encodeEntry.size() - 1, 0,
         PLDM_BIOS_INTEGER_READ_ONLY, 10);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(AttrValTable, integerEntryDecodeTest)
+{
+    std::vector<uint8_t> integerEntry{
+        0,  0,                   /* attr handle */
+        3,                       /* attr type */
+        10, 0, 0, 0, 0, 0, 0, 0, /* current value */
+    };
+
+    auto entry = reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(
+        integerEntry.data());
+    auto cv = pldm_bios_table_attr_value_entry_integer_decode_cv(entry);
+    EXPECT_EQ(cv, 10);
 }
 
 TEST(AttrValTable, IteratorTest)
