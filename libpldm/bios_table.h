@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "bios.h"
+#include "utils.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -162,6 +163,31 @@ pldm_bios_table_string_find_by_string(const void *table, size_t length,
 const struct pldm_bios_string_table_entry *
 pldm_bios_table_string_find_by_handle(const void *table, size_t length,
 				      uint16_t handle);
+
+/** @brief Get the attribute handle from the attribute table entry
+ *  @param[in] entry - Pointer to bios attribute table entry
+ *  @return handle to identify the attribute in the attribute table
+ */
+uint16_t pldm_bios_table_attr_entry_decode_attribute_handle(
+    const struct pldm_bios_attr_table_entry *entry);
+
+/** @brief Get the attribute name handle from the attribute table entry
+ *  @param[in] entry - Pointer to bios attribute table entry
+ *  @return handle to identify the name of the attribute, this handle points
+ *          to a string in the bios string table.
+ */
+uint16_t pldm_bios_table_attr_entry_decode_string_handle(
+    const struct pldm_bios_attr_table_entry *entry);
+
+/** @brief Find an entry in attribute table by handle
+ *  @param[in] table - The BIOS Attribute Table
+ *  @param[in] length - Length of the BIOS Attribute Table
+ *  @param[in] handle - handle to identify the attribute in the attribute table
+ *  @return Pointer to the entry
+ */
+const struct pldm_bios_attr_table_entry *
+pldm_bios_table_attr_find_by_handle(const void *table, size_t length,
+				    uint16_t handle);
 
 /** @struct pldm_bios_table_attr_entry_enum_info
  *
@@ -335,6 +361,13 @@ int pldm_bios_table_attr_entry_string_decode_def_string_length_check(
     const struct pldm_bios_attr_table_entry *entry,
     uint16_t *def_string_length);
 
+/** @brief Get the type of string of bios attribute table entry
+ *  @param[in] entry - Pointer to bios attribute table entry
+ *  @return Type of the string
+ */
+uint8_t pldm_bios_table_attr_entry_string_decode_string_type(
+    const struct pldm_bios_attr_table_entry *entry);
+
 /** @struct pldm_bios_table_attr_entry_integer_info
  *
  *  An auxiliary structure for passing parameters to @ref
@@ -388,6 +421,20 @@ int pldm_bios_table_attr_entry_integer_encode_check(
     void *entry, size_t entry_length,
     const struct pldm_bios_table_attr_entry_integer_info *info);
 
+/** @brief Get the attribute handle from the attribute value table entry
+ *  @param[in] entry - Pointer to bios attribute value table entry
+ *  @return handle to identify the attribute in the attribute value table
+ */
+uint16_t pldm_bios_table_attr_value_entry_decode_attribute_handle(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
+/** @brief Get the attribute type from the attribute value table entry
+ *  @param[in] entry - Pointer to bios attribute value table entry
+ *  @return Type of the attribute value entry
+ */
+uint8_t pldm_bios_table_attr_value_entry_decode_attribute_type(
+    const struct pldm_bios_attr_val_table_entry *entry);
+
 /** @brief Get length that an attribute value entry(type: enum) will take
  *  @param[in] count - Total number of current values for this enumeration
  *  @return The length that an entry(type: enum) will take
@@ -415,6 +462,17 @@ void pldm_bios_table_attr_value_entry_encode_enum(
  */
 uint8_t pldm_bios_table_attr_value_entry_enum_decode_number(
     const struct pldm_bios_attr_val_table_entry *entry);
+
+/** @brief Get CurrentValueStringHandleIndex
+ *  @param[in] entry - Pointer to bios attribute value table entry
+ *  @param[in, out] handles - Pointer to a buffer to store
+ *                            CurrentValueStringHandleIndex
+ *  @param[in] number - Number of PossibleValuesStringHandles expected
+ *  @return Number of CurrentValueStringHandleIndex decoded.
+ */
+uint8_t pldm_bios_table_attr_value_entry_enum_decode_handles(
+    const struct pldm_bios_attr_val_table_entry *entry, uint8_t *handles,
+    uint8_t number);
 
 /** @brief Create an attribute value entry(type: enum) and check the validity of
  * the parameters
@@ -463,6 +521,17 @@ void pldm_bios_table_attr_value_entry_encode_string(
 uint16_t pldm_bios_table_attr_value_entry_string_decode_length(
     const struct pldm_bios_attr_val_table_entry *entry);
 
+/** @brief Get Current String Itself
+ *  @param[in] entry - Pointer to bios attribute value table entry
+ *  @param[in, out] current_string - Struct variable_field, contains a pointer
+ *                                   to the CurrentString field in the buffer of
+ *                                    \p entry, \p entry must be valid
+ *                                    when \p current_string is used.
+ */
+void pldm_bios_table_attr_value_entry_string_decode_string(
+    const struct pldm_bios_attr_val_table_entry *entry,
+    struct variable_field *current_string);
+
 /** @brief Create an attribute value entry(type: string) and check the validity
  * of the parameters
  *  @param[out] entry - Pointer to bios attribute value entry
@@ -499,6 +568,13 @@ void pldm_bios_table_attr_value_entry_encode_integer(void *entry,
 						     uint16_t attr_handle,
 						     uint8_t attr_type,
 						     uint64_t cv);
+
+/** @brief Get current values for the integer entry
+ *  @param[in] entry - Pointer to bios attribute value table entry
+ *  @return Current Value
+ */
+uint64_t pldm_bios_table_attr_value_entry_integer_decode_cv(
+    const struct pldm_bios_attr_val_table_entry *entry);
 
 /** @brief Create an attribute value entry(type: integer) and check the validity
  * of the parameters
