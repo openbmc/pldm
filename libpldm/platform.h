@@ -43,6 +43,7 @@ enum pldm_platform_commands {
 /** @brief PLDM PDR types
  */
 enum pldm_pdr_types {
+	PLDM_NUMERIC_EFFECTER_PDR = 9,
 	PLDM_STATE_EFFECTER_PDR = 11,
 };
 
