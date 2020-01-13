@@ -95,6 +95,65 @@ struct pldm_state_effecter_pdr {
 	uint8_t possible_states[1];
 } __attribute__((packed));
 
+union union_effecter_data_size {
+	uint8_t value_u8;
+	int8_t value_s8;
+	uint16_t value_u16;
+	int16_t value_s16;
+	uint32_t value_u32;
+	int32_t value_s32;
+};
+
+union union_fange_field_format {
+	uint8_t value_u8;
+	int8_t value_s8;
+	uint16_t value_u16;
+	uint32_t value_u32;
+	int32_t value_s32;
+	_Float32 value_f32;
+};
+
+/** @struct pldm_numeric_effecter_value_pdr
+ *
+ *  Structure representing PLDM numeric effecter value PDR
+ */
+struct pldm_numeric_effecter_valuer_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t effecter_id;
+	uint16_t entity_type;
+	uint16_t entity_instance;
+	uint16_t container_id;
+	uint16_t effecter_semantic_id;
+	uint8_t effecter_init;
+	bool8_t has_description_pdr;
+	uint8_t base_unit;
+	int8_t unit_modifier;
+	uint8_t rate_unit;
+	uint8_t base_oem_unit_handle;
+	uint8_t aux_unit;
+	int8_t aux_unit_modifier;
+	uint8_t aux_rate_unit;
+	bool8_t is_linear;
+	uint8_t effecter_data_size;
+	_Float32 resolution;
+	_Float32 offset;
+	uint16_t accuracy;
+	uint8_t plus_to_lerance;
+	uint8_t minus_to_lerance;
+	_Float32 state_transition_interval;
+	_Float32 transition_interval;
+	union_effecter_data_size max_set_table;
+	union_effecter_data_size min_set_table;
+	uint8_t range_field_format;
+	bitfield8_t range_field_support;
+	union_fange_field_format nominal_value;
+	union_fange_field_format normal_max;
+	union_fange_field_format normal_min;
+	union_fange_field_format rated_max;
+	union_fange_field_format rated_min;
+} __attribute__((packed));
+
 /** @struct state_effecter_possible_states
  *
  *  Structure representing state enums for state effecter
