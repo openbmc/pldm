@@ -19,7 +19,7 @@ pldmd = declare_dependency(sources: '../instance_id.cpp')
 tests = [
   'libpldmresponder_base_test',
   'libpldmresponder_bios_test',
-  'libpldmresponder_pdr_state_effecter_test',
+  'libpldmresponder_pdr_effecter_test',
   'libpldmresponder_bios_table_test',
   'libpldmresponder_platform_test',
   'pldmd_instanceid_test',
