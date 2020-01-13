@@ -1,6 +1,7 @@
 
 #include "platform.hpp"
 
+#include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
 #include "utils.hpp"
 
@@ -73,6 +74,11 @@ void Handler::generate(const std::string& dir, Repo& repo)
          [this](const auto& json, RepoInterface& repo) {
              pdr_state_effecter::generateStateEffecterPDR<Handler>(json, *this,
                                                                    repo);
+         }},
+        {PLDM_NUMERIC_EFFECTER_PDR,
+         [this](const auto& json, RepoInterface& repo) {
+             pdr_numeric_effecter::generateNumericEffecterPDR<Handler>(
+                 json, *this, repo);
          }}};
 
     Type pdrType{};
