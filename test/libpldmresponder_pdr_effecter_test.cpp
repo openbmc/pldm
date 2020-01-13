@@ -10,7 +10,7 @@ using namespace pldm::responder::platform;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
 
-TEST(GeneratePDR, testGoodJson)
+TEST(GeneratePDRByStateEffecter, testGoodJson)
 {
     Handler handler("./pdr_jsons/state_effecter/good");
     pdr_utils::Repo outRepo =
@@ -93,6 +93,39 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(dbusObj2[1].objectPath, "/foo/bar/baz");
 
     ASSERT_THROW(handler.getDbusObjs(0xDEAD), std::exception);
+}
+
+TEST(GeneratePDRByNumericEffecter, testGoodJson)
+{
+    Handler handler("./pdr_jsons/state_effecter/good");
+    pdr_utils::Repo outRepo =
+        getRepoByType(handler.getRepo(), PLDM_NUMERIC_EFFECTER_PDR);
+
+    // 1 entries
+    ASSERT_EQ(outRepo.getRecordCount(), 1);
+
+    // Check first PDR
+    pdr_utils::PdrEntry e;
+    auto record = pdr::getRecordByHandle(outRepo, 3, e);
+    ASSERT_NE(record, nullptr);
+
+    pldm_numeric_effecter_value_pdr* pdr =
+        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.record_handle, 3);
+    EXPECT_EQ(pdr->hdr.version, 1);
+    EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
+    EXPECT_EQ(pdr->hdr.record_change_num, 0);
+    EXPECT_EQ(pdr->hdr.length,
+              sizeof(pldm_numeric_effecter_value_pdr) - sizeof(pldm_pdr_hdr));
+
+    EXPECT_EQ(pdr->effecter_id, 3);
+    EXPECT_EQ(pdr->effecter_data_size, 4);
+
+    const auto& dbusObjs = handler.getDbusObjs(pdr->effecter_id);
+    EXPECT_EQ(dbusObjs[0].objectPath, "/foo/bar");
+    EXPECT_EQ(dbusObjs[0].interface, "xyz.openbmc_project.Foo.Bar");
+    EXPECT_EQ(dbusObjs[0].propertyName, "propertyName");
+    EXPECT_EQ(dbusObjs[0].propertyType, "uint64_t");
 }
 
 TEST(GeneratePDR, testNoJson)
