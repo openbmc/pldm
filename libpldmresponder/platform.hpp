@@ -91,14 +91,13 @@ class Handler : public CmdHandler
         if (pdrRepo.empty())
         {
             std::cerr << "PDR repo is empty." << std::endl;
-
             return PLDM_ERROR;
         }
 
         state_effecter_possible_states* states = nullptr;
         pldm_state_effecter_pdr* pdr = nullptr;
         uint8_t compEffecterCnt = stateField.size();
-        uint32_t recordHndl{};
+        uint32_t recordHndl = 1;
         pdr::Entry pdrEntry{};
 
         while (!pdr)

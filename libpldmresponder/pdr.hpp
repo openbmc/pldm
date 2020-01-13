@@ -1,6 +1,7 @@
 #pragma once
 
 #include "effecters.hpp"
+#include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
 #include "utils.hpp"
 
@@ -192,9 +193,14 @@ void generate(const std::string& dir, T& repo)
     // generate the PDR structures. This function iterates through the map to
     // invoke all lambdas, so that all PDR types can be created.
     std::map<Type, std::function<void(const Json& json, T& repo)>> generators =
-        {{PLDM_STATE_EFFECTER_PDR, [](const auto& json, T& repo) {
+        {{PLDM_STATE_EFFECTER_PDR,
+          [](const auto& json, T& repo) {
               pldm::responder::pdrStateEffecter::
                   generate_pldm_state_effecter_pdr(json, repo);
+          }},
+         {PLDM_NUMERIC_EFFECTER_PDR, [](const auto& json, T& repo) {
+              pldm::responder::pdrNumericEffecter::
+                  generate_pldm_numeric_effecter_pdr(json, repo);
           }}};
 
     Type pdrType{};

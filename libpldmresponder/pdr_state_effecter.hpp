@@ -97,7 +97,7 @@ void generate_pldm_state_effecter_pdr(const Json& json, T& repo)
             start += possibleStates->possible_states_size;
 
             DBusMapping dbusMapping;
-            dbusMapping.objectPath = effecter.value("dbus", empty);
+            dbusMapping.objectPath = effecter.value("dbus", "");
             dbusObj.emplace_back(std::move(dbusMapping));
         }
         add(pdr->effecter_id, std::move(dbusObj));

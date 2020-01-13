@@ -31,6 +31,16 @@ enum pldm_effecter_data_size {
 	PLDM_EFFECTER_DATA_SIZE_SINT32
 };
 
+enum pldm_range_field_format {
+	PLDM_RANGE_FIELD_FORMAT_UINT8,
+	PLDM_RANGE_FIELD_FORMAT_SINT8,
+	PLDM_RANGE_FIELD_FORMAT_UINT16,
+	PLDM_RANGE_FIELD_FORMAT_SINT16,
+	PLDM_RANGE_FIELD_FORMAT_UINT32,
+	PLDM_RANGE_FIELD_FORMAT_SINT32,
+	PLDM_RANGE_FIELD_FORMAT_REAL32
+};
+
 enum set_request { PLDM_NO_CHANGE = 0x00, PLDM_REQUEST_SET = 0x01 };
 
 enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
@@ -44,6 +54,7 @@ enum pldm_platform_commands {
 /** @brief PLDM PDR types
  */
 enum pldm_pdr_types {
+	PLDM_NUMERIC_EFFECTER_PDR = 9,
 	PLDM_STATE_EFFECTER_PDR = 11,
 };
 
@@ -93,6 +104,79 @@ struct pldm_state_effecter_pdr {
 	bool8_t has_description_pdr;
 	uint8_t composite_effecter_count;
 	uint8_t possible_states[1];
+} __attribute__((packed));
+
+/** @union union_effecter_data_size
+ *
+ *  The bit width and format of reading and threshold values that the effecter
+ *  returns.
+ *  Refer to: DSP0248_1.2.0: 28.11 Table 87
+ */
+typedef union {
+	uint8_t value_u8;
+	int8_t value_s8;
+	uint16_t value_u16;
+	int16_t value_s16;
+	uint32_t value_u32;
+	int32_t value_s32;
+} union_effecter_data_size;
+
+/** @union union_effecter_data_size
+ *
+ *  Indicates the format used for the nominalValue, normalMax, and normalMin
+ *  fields.
+ *  Refer to: DSP0248_1.2.0: 28.11 Table 87
+ */
+typedef union {
+	uint8_t value_u8;
+	int8_t value_s8;
+	uint16_t value_u16;
+	int16_t value_s16;
+	uint32_t value_u32;
+	int32_t value_s32;
+	float value_f32;
+} union_range_field_format;
+
+/** @struct pldm_numeric_effecter_value_pdr
+ *
+ *  Structure representing PLDM numeric effecter value PDR
+ */
+struct pldm_numeric_effecter_value_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t effecter_id;
+	uint16_t entity_type;
+	uint16_t entity_instance;
+	uint16_t container_id;
+	uint16_t effecter_semantic_id;
+	uint8_t effecter_init;
+	bool8_t effecter_auxiliary_names;
+	uint8_t base_unit;
+	int8_t unit_modifier;
+	uint8_t rate_unit;
+	uint8_t base_oem_unit_handle;
+	uint8_t aux_unit;
+	int8_t aux_unit_modifier;
+	uint8_t aux_rate_unit;
+	uint8_t aux_oem_unit_handle;
+	bool8_t is_linear;
+	uint8_t effecter_data_size;
+	float resolution;
+	float offset;
+	uint16_t accuracy;
+	uint8_t plus_to_lerance;
+	uint8_t minus_to_lerance;
+	float state_transition_interval;
+	float transition_interval;
+	union_effecter_data_size max_set_table;
+	union_effecter_data_size min_set_table;
+	uint8_t range_field_format;
+	bitfield8_t range_field_support;
+	union_range_field_format nominal_value;
+	union_range_field_format normal_max;
+	union_range_field_format normal_min;
+	union_range_field_format rated_max;
+	union_range_field_format rated_min;
 } __attribute__((packed));
 
 /** @struct state_effecter_possible_states
