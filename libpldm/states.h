@@ -12,6 +12,7 @@ extern "C" {
 enum pldm_state_set_ids {
 	PLDM_BOOT_PROGRESS_STATE = 196,
 	PLDM_SYSTEM_POWER_STATE = 260,
+	PLDM_TIMED_POWER_ON_STATE = 32768,
 };
 
 /** @brief PLDM enums for the boot progress state set
