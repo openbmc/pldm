@@ -1,6 +1,7 @@
 #include "pdr.hpp"
 
-#include "pdr_state_effecter.hpp"
+#include "libpldmresponder/pdr_numeric_effecter.hpp"
+#include "libpldmresponder/pdr_state_effecter.hpp"
 
 namespace pldm
 {
@@ -19,8 +20,12 @@ void generate(const std::string& dir, RepoInterface& repo)
     // generate the PDR structures. This function iterates through the map to
     // invoke all lambdas, so that all PDR types can be created.
     const std::map<Type, generateHandler> generateHandlers = {
-        {PLDM_STATE_EFFECTER_PDR, [](const auto& json, RepoInterface& repo) {
+        {PLDM_STATE_EFFECTER_PDR,
+         [](const auto& json, RepoInterface& repo) {
              pdr_state_effecter::generateStateEffecterHandler(json, repo);
+         }},
+        {PLDM_NUMERIC_EFFECTER_PDR, [](const auto& json, RepoInterface& repo) {
+             pdr_numeric_effecter::generateNumericEffecterHandler(json, repo);
          }}};
 
     Type pdrType{};
