@@ -2,6 +2,7 @@
 
 #include "effecters.hpp"
 #include "pdr_state_effecter.hpp"
+#include "pdr_numeric_effecter.hpp"
 #include "utils.hpp"
 
 #include <stdint.h>
@@ -195,6 +196,10 @@ void generate(const std::string& dir, T& repo)
         {{PLDM_STATE_EFFECTER_PDR, [](const auto& json, T& repo) {
               pldm::responder::pdrStateEffecter::
                   generate_pldm_state_effecter_pdr(json, repo);
+          }},
+         {PLDM_NUMERIC_EFFECTER_PDR, [](const auto& json, T& repo) {
+              pldm::responder::pdrNumericEffecter::
+                  generate_pldm_numeric_effecter_pdr(json, repo);
           }}};
 
     Type pdrType{};
