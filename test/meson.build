@@ -28,7 +28,7 @@ tests = [
   'libpldmresponder_bios_config_test',
   'libpldmresponder_bios_integer_attribute_test',
   'libpldmresponder_bios_enum_attribute_test',
-  'libpldmresponder_pdr_state_effecter_test',
+  'libpldmresponder_pdr_effecter_test',
   'libpldmresponder_bios_table_test',
   'libpldmresponder_platform_test',
   'pldmd_instanceid_test',
