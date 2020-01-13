@@ -13,15 +13,15 @@ TEST(GeneratePDR, testGoodJson)
     using namespace effecter::dbus_mapping;
     Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
 
-    // 2 entries
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    // 3 entries
+    ASSERT_EQ(pdrRepo.numEntries(), 3);
 
-    // Check first PDR
-    pdr::Entry e = pdrRepo.at(1);
+    // Check second PDR
+    pdr::Entry e = pdrRepo.at(2);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
 
-    ASSERT_EQ(pdr->hdr.record_handle, 1);
+    ASSERT_EQ(pdr->hdr.record_handle, 2);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
@@ -47,11 +47,11 @@ TEST(GeneratePDR, testGoodJson)
     auto paths = get(pdr->effecter_id);
     ASSERT_EQ(paths[0], "/foo/bar");
 
-    // Check second PDR
-    e = pdrRepo.at(2);
+    // Check third PDR
+    e = pdrRepo.at(3);
     pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
 
-    ASSERT_EQ(pdr->hdr.record_handle, 2);
+    ASSERT_EQ(pdr->hdr.record_handle, 3);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
@@ -94,14 +94,14 @@ TEST(GeneratePDR, testNoJson)
     using namespace pdr;
     Repo& pdrRepo = get("./pdr_jsons/not_there");
 
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    ASSERT_EQ(pdrRepo.numEntries(), 3);
 }
 
 TEST(GeneratePDR, testMalformedJson)
 {
     using namespace pdr;
     Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    ASSERT_EQ(pdrRepo.numEntries(), 3);
     pdrRepo.makeEmpty();
     ASSERT_THROW(pldm::responder::pdr::internal::readJson(
                      "./pdr_jsons/state_effecter/malformed"),
