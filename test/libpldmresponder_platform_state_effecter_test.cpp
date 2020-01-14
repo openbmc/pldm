@@ -51,9 +51,9 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     EXPECT_CALL(handlerObj, setDbusProperty(objPath, bootProgressProp,
                                             bootProgressInf, value))
         .Times(2);
-    platform::Handler handler;
-    auto rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
-        handlerObj, pdrRepo, 0x1, stateField);
+    auto rc =
+        pldm::responder::platformStateEffecter::setStateEffecterStatesHandler<
+            MockdBusHandler>(handlerObj, pdrRepo, 0x1, stateField);
     ASSERT_EQ(rc, 0);
 }
 
@@ -72,24 +72,24 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     stateField.push_back({PLDM_REQUEST_SET, 4});
 
     MockdBusHandler handlerObj;
-    platform::Handler handler;
-    auto rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
-        handlerObj, pdrRepo, 0x1, stateField);
+    auto rc =
+        pldm::responder::platformStateEffecter::setStateEffecterStatesHandler<
+            MockdBusHandler>(handlerObj, pdrRepo, 0x1, stateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
 
-    rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
-        handlerObj, pdrRepo, 0x9, stateField);
+    rc = pldm::responder::platformStateEffecter::setStateEffecterStatesHandler<
+        MockdBusHandler>(handlerObj, pdrRepo, 0x9, stateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_EFFECTER_ID);
 
     stateField.push_back({PLDM_REQUEST_SET, 4});
-    rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
-        handlerObj, pdrRepo, 0x1, stateField);
+    rc = pldm::responder::platformStateEffecter::setStateEffecterStatesHandler<
+        MockdBusHandler>(handlerObj, pdrRepo, 0x1, stateField);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     std::vector<set_effecter_state_field> newStateField;
     newStateField.push_back({PLDM_REQUEST_SET, 1});
 
-    rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
-        handlerObj, pdrRepo, 0x2, newStateField);
+    rc = pldm::responder::platformStateEffecter::setStateEffecterStatesHandler<
+        MockdBusHandler>(handlerObj, pdrRepo, 0x2, newStateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_STATE_VALUE);
 }
