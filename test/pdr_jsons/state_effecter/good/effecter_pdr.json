@@ -98,6 +98,21 @@
                     ]
                 }
             ]
+        },
+        {
+            "pdrType": 9,
+            "entries": [
+                {
+                    "base_unit": 21,
+                    "effecter_data_size": 4,
+                    "dbus": {
+                        "path": "/foo/bar",
+                        "interface": "xyz.openbmc_project.Foo.Bar",
+                        "property_name": "propertyName",
+                        "property_type": "uint64_t"
+                    }
+                }
+            ]
         }
     ]
 }
