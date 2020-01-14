@@ -1,0 +1,11 @@
+{
+    "entries": [
+        {
+            "effecter_id": 32768,
+            "base_unit": 21,
+            "unit_modifier": 3,
+            "effecter_data_size": 4,
+            "dbus": "/xyz/openbmc_project/State/TimedPowerOn"
+        }
+    ]
+}
