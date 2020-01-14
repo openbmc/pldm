@@ -684,18 +684,62 @@ Response Handler::fileAck(const pldm_msg* request, size_t payloadLength)
 
     std::unique_ptr<FileHandler> handler{};
     try
+        {
+                    handler = getHandlerByType(fileType, fileHandle);
+                        }
+
+    catch (const InternalFailure& e)
+        {
+                    encode_file_ack_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
+                                                 responsePtr);
+                            return response;
+                                }
+                                
+     rc = handler->fileAck(fileStatus);
+         encode_file_ack_resp(request->hdr.instance_id, rc, responsePtr);
+             return response;
+}
+
+Response Handler::newFileAvailable(const pldm_msg* request,
+                                   size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_NEW_FILE_REQ_BYTES)
+    {
+        encode_new_file_resp(request->hdr.instance_id,
+                             PLDM_ERROR_INVALID_LENGTH, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t length{};
+
+    auto rc = decode_new_file_req(request, payloadLength, &fileType,
+                                  &fileHandle, &length);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_new_file_resp(request->hdr.instance_id, rc, responsePtr);
+        return response;
+    }
+
+    std::unique_ptr<FileHandler> handler{};
+    try
     {
         handler = getHandlerByType(fileType, fileHandle);
     }
     catch (const InternalFailure& e)
     {
-        encode_file_ack_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
+        std::cerr << "unknown file type, TYPE=" << fileType << "\n";
+        encode_new_file_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
                              responsePtr);
         return response;
     }
 
-    rc = handler->fileAck(fileStatus);
-    encode_file_ack_resp(request->hdr.instance_id, rc, responsePtr);
+    rc = handler->processNewFileNotification(length);
+    encode_new_file_resp(request->hdr.instance_id, rc, responsePtr);
     return response;
 }
 
