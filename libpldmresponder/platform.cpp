@@ -107,13 +107,44 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     {
         stateField.resize(compEffecterCnt);
         const DBusHandler dBusIntf;
-        rc = setStateEffecterStatesHandler<DBusHandler>(dBusIntf, effecterId,
-                                                        stateField);
+        rc = pldm::responder::platform_11::setStateEffecterStatesHandler<
+            DBusHandler>(dBusIntf, effecterId, stateField);
     }
 
     encode_set_state_effecter_states_resp(request->hdr.instance_id, rc,
                                           responsePtr);
     return response;
+}
+
+Response Handler::setNumericEffecterValue(const pldm_msg* request,
+                                          size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
+    uint16_t effecterId;
+    uint8_t effecterDataSize;
+    uint8_t effecterValue[4];
+
+    if ((payloadLength > sizeof(effecterId) + sizeof(effecterDataSize) +
+                             sizeof(union_effecter_data_size)) ||
+        (payloadLength < sizeof(effecterId) + sizeof(effecterDataSize) + 1))
+    {
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+
+    int rc = decode_set_numeric_effecter_value_req(
+        request, payloadLength, &effecterId, &effecterDataSize,
+        reinterpret_cast<uint8_t*>(&effecterValue));
+
+    if (rc == PLDM_SUCCESS)
+    {
+        const DBusHandler dBusIntf;
+        rc = pldm::responder::platform_9::setNumericEffecterValueHandler<
+            DBusHandler>(dBusIntf, effecterId, effecterDataSize, effecterValue,
+                         sizeof(effecterValue));
+    }
+
+    return ccOnlyResponse(request, rc);
 }
 
 } // namespace platform
