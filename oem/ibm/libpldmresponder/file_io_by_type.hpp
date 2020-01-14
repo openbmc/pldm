@@ -48,6 +48,12 @@ class FileHandler
      */
     virtual int read(uint32_t offset, uint32_t& length, Response& response) = 0;
 
+    /** @brief Method to process a new file available notification from the
+     *  host. The bmc can chose to do different actions based on the file type.
+     *  @return PLDM status code
+     */
+    virtual int processNewFileNotification(uint32_t length) = 0;
+
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] filePath - file to read from
      *  @param[in] offset - offset to read
