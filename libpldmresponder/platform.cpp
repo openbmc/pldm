@@ -3,6 +3,7 @@
 
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
+#include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
 #include "utils.hpp"
 
@@ -201,6 +202,38 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     }
 
     return response;
+}
+
+Response Handler::setNumericEffecterValue(const pldm_msg* request,
+                                          size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
+    uint16_t effecterId{};
+    uint8_t effecterDataSize{};
+    uint8_t effecterValue[4] = {};
+
+    if ((payloadLength > sizeof(effecterId) + sizeof(effecterDataSize) +
+                             sizeof(union_effecter_data_size)) ||
+        (payloadLength < sizeof(effecterId) + sizeof(effecterDataSize) + 1))
+    {
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+
+    int rc = decode_set_numeric_effecter_value_req(
+        request, payloadLength, &effecterId, &effecterDataSize,
+        reinterpret_cast<uint8_t*>(&effecterValue));
+
+    if (rc == PLDM_SUCCESS)
+    {
+        const pldm::utils::DBusHandler dBusIntf;
+        rc = platform_numeric_effecter::setNumericEffecterValueHandler<
+            pldm::utils::DBusHandler, Handler>(dBusIntf, *this, effecterId,
+                                               effecterDataSize, effecterValue,
+                                               sizeof(effecterValue));
+    }
+
+    return ccOnlyResponse(request, rc);
 }
 
 } // namespace platform
