@@ -1,5 +1,6 @@
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/file_io_by_type.hpp"
+#include "libpldmresponder/file_io_type_dump.hpp"
 #include "libpldmresponder/file_io_type_lid.hpp"
 #include "libpldmresponder/file_io_type_pel.hpp"
 #include "libpldmresponder/file_table.hpp"
@@ -794,6 +795,10 @@ TEST(getHandlerByType, allPaths)
     handler = getHandlerByType(PLDM_FILE_TYPE_LID_TEMP, fileHandle);
     lidType = dynamic_cast<LidHandler*>(handler.get());
     ASSERT_TRUE(lidType != nullptr);
+
+    handler = getHandlerByType(PLDM_FILE_TYPE_DUMP, fileHandle);
+    auto dumpType = dynamic_cast<DumpHandler*>(handler.get());
+    ASSERT_TRUE(dumpType != nullptr);
 
     using namespace sdbusplus::xyz::openbmc_project::Common::Error;
     ASSERT_THROW(getHandlerByType(0xFFFF, fileHandle), InternalFailure);
