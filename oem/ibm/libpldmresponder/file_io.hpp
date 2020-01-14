@@ -189,6 +189,11 @@ class Handler : public CmdHandler
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->fileAck(request, payloadLength);
                          });
+        handlers.emplace(PLDM_NEW_FILE_AVAILABLE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->newFileAvailable(request,
+                                                           payloadLength);
+                         });
     }
 
     /** @brief Handler for readFileIntoMemory command
@@ -267,6 +272,15 @@ class Handler : public CmdHandler
     Response writeFile(const pldm_msg* request, size_t payloadLength);
 
     Response fileAck(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for newFileAvailable command
+     *
+     *  @param[in] request - PLDM request msg
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *  @return PLDM response message
+     */
+    Response newFileAvailable(const pldm_msg* request, size_t payloadLength);
 };
 
 } // namespace oem_ibm

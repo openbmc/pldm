@@ -38,6 +38,11 @@ class PelHandler : public FileHandler
      */
     virtual int storePel(std::string&& pelFileName);
 
+    virtual int newFileAvailable(uint64_t /*length*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief PelHandler destructor
      */
     ~PelHandler()
