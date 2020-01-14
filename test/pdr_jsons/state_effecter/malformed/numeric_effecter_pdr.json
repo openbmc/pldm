@@ -1,0 +1,14 @@
+{
+    "pdrType": 9,
+    "entries": [
+        {
+            "effecter_id": 32768
+            "effecter_data_size": 4,
+            "dbus": {
+                "path": "/xyz/openbmc_project/state/scheduledHostTransition",
+                "interface": "xyz.openbmc_project.State.ScheduledHostTransition",
+                "property": "ScheduledTime"
+            }
+        }
+    ]
+}
