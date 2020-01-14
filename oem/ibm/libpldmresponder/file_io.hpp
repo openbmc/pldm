@@ -173,6 +173,11 @@ class Handler : public CmdHandler
                                                         size_t payloadLength) {
             return this->readFileByType(request, payloadLength);
         });
+        handlers.emplace(PLDM_WRITE_FILE_BY_TYPE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->writeFileByType(request,
+                                                          payloadLength);
+                         });
         handlers.emplace(PLDM_GET_FILE_TABLE,
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->getFileTable(request, payloadLength);
@@ -193,6 +198,11 @@ class Handler : public CmdHandler
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->getAlertStatus(request,
                                                          payloadLength);
+                         });
+        handlers.emplace(PLDM_NEW_FILE_AVAILABLE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->newFileAvailable(request,
+                                                           payloadLength);
                          });
     }
 
@@ -235,7 +245,7 @@ class Handler : public CmdHandler
     Response readFileByTypeIntoMemory(const pldm_msg* request,
                                       size_t payloadLength);
 
-    /** @brief Handler for readFileByType command
+    /** @brief Handler for writeFileByType command
      *
      *  @param[in] request - pointer to PLDM request payload
      *  @param[in] payloadLength - length of the message
@@ -243,6 +253,8 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response readFileByType(const pldm_msg* request, size_t payloadLength);
+
+    Response writeFileByType(const pldm_msg* request, size_t payloadLength);
 
     /** @brief Handler for GetFileTable command
      *
@@ -281,6 +293,15 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response getAlertStatus(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for newFileAvailable command
+     *
+     *  @param[in] request - PLDM request msg
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *  @return PLDM response message
+     */
+    Response newFileAvailable(const pldm_msg* request, size_t payloadLength);
 };
 
 } // namespace oem_ibm

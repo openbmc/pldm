@@ -611,6 +611,56 @@ Response Handler::readFileByTypeIntoMemory(const pldm_msg* request,
                                   payloadLength);
 }
 
+Response Handler::writeFileByType(const pldm_msg* request, size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    if (payloadLength != PLDM_RW_FILE_BY_TYPE_REQ_BYTES)
+    {
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_WRITE_FILE_BY_TYPE,
+                                    PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint32_t offset{};
+    uint32_t length{};
+
+    auto rc = decode_rw_file_by_type_req(request, payloadLength, &fileType,
+                                         &fileHandle, &offset, &length);
+    if (rc != PLDM_SUCCESS)
+    {
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_WRITE_FILE_BY_TYPE, rc, 0,
+                                    responsePtr);
+        return response;
+    }
+
+    std::unique_ptr<FileHandler> handler{};
+    try
+    {
+        handler = getHandlerByType(fileType, fileHandle);
+    }
+    catch (const InternalFailure& e)
+    {
+        std::cerr << "unknown file type, TYPE=" << fileType << "\n";
+        encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                    PLDM_WRITE_FILE_BY_TYPE,
+                                    PLDM_INVALID_FILE_TYPE, 0, responsePtr);
+        return response;
+    }
+
+    rc = handler->write(reinterpret_cast<const char*>(
+                            request->payload + PLDM_RW_FILE_BY_TYPE_RESP_BYTES),
+                        offset, length);
+    encode_rw_file_by_type_resp(request->hdr.instance_id,
+                                PLDM_WRITE_FILE_BY_TYPE, rc, length,
+                                responsePtr);
+    return response;
+}
+
 Response Handler::readFileByType(const pldm_msg* request, size_t payloadLength)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_RESP_BYTES);
@@ -687,6 +737,7 @@ Response Handler::fileAck(const pldm_msg* request, size_t payloadLength)
     {
         handler = getHandlerByType(fileType, fileHandle);
     }
+
     catch (const InternalFailure& e)
     {
         encode_file_ack_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
@@ -732,6 +783,44 @@ Response Handler::getAlertStatus(const pldm_msg* request, size_t payloadLength)
         return CmdHandler::ccOnlyResponse(request, rc);
     }
 
+    return response;
+}
+
+Response Handler::newFileAvailable(const pldm_msg* request,
+                                   size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_RESP_BYTES);
+
+    if (payloadLength != PLDM_NEW_FILE_REQ_BYTES)
+    {
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint64_t length{};
+
+    auto rc = decode_new_file_req(request, payloadLength, &fileType,
+                                  &fileHandle, &length);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
+
+    std::unique_ptr<FileHandler> handler{};
+    try
+    {
+        handler = getHandlerByType(fileType, fileHandle);
+    }
+    catch (const InternalFailure& e)
+    {
+        std::cerr << "unknown file type, TYPE=" << fileType << "\n";
+        return CmdHandler::ccOnlyResponse(request, PLDM_INVALID_FILE_TYPE);
+    }
+
+    rc = handler->newFileAvailable(length);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    encode_new_file_resp(request->hdr.instance_id, rc, responsePtr);
     return response;
 }
 

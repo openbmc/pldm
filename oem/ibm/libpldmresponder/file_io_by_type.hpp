@@ -48,7 +48,25 @@ class FileHandler
      */
     virtual int read(uint32_t offset, uint32_t& length, Response& response) = 0;
 
+    /** @brief Method to write an oem file by type
+     *  @param[in] buffer - buffer to be written to file
+     *  @param[in] offset - offset to write to
+     *  @param[in/out] length - length to be written
+     *  @return PLDM status code
+     */
+    virtual int write(const char* buffer, uint32_t offset,
+                      uint32_t& length) = 0;
+
     virtual int fileAck(uint8_t fileStatus) = 0;
+
+    /** @brief Method to process a new file available notification from the
+     *  host. The bmc can chose to do different actions based on the file type.
+     *
+     *  @param[in] length - size of the file content to be transferred
+     *
+     *  @return PLDM status code
+     */
+    virtual int newFileAvailable(uint64_t length) = 0;
 
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] filePath - file to read from

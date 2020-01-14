@@ -51,6 +51,7 @@ enum pldm_fileio_file_type {
 	PLDM_FILE_TYPE_PEL = 0,
 	PLDM_FILE_TYPE_LID_PERM = 1,
 	PLDM_FILE_TYPE_LID_TEMP = 2,
+	PLDM_FILE_TYPE_DUMP = 3,
 };
 
 #define PLDM_RW_FILE_MEM_REQ_BYTES 20
