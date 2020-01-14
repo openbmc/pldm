@@ -29,6 +29,11 @@ class Handler : public CmdHandler
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->getPDR(request, payloadLength);
                          });
+        handlers.emplace(PLDM_SET_NUMERIC_EFFECTER_VALUE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->setNumericEffecterValue(
+                                 request, payloadLength);
+                         });
         handlers.emplace(PLDM_SET_STATE_EFFECTER_STATES,
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->setStateEffecterStates(request,
@@ -43,6 +48,15 @@ class Handler : public CmdHandler
      *  @param[out] Response - Response message written here
      */
     Response getPDR(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for setNumericEffecterValue
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @return Response - PLDM Response message
+     */
+    Response setNumericEffecterValue(const pldm_msg* request,
+                                     size_t payloadLength);
 
     /** @brief Handler for setStateEffecterStates
      *
@@ -272,6 +286,30 @@ class Handler : public CmdHandler
         }
         return rc;
     }
+
+    /** @brief Function to set the effecter requested by pldm requester
+     *  @param[in] dBusIntf - The interface object
+     *  @param[in] effecterId - Effecter ID sent by the requester to act on
+     *  @param[in] effecterDataSize - The bit width and format of the setting
+     * 				value for the effecter
+     *  @param[in] effecter_value - The setting value of numeric effecter being
+     * 				requested.
+     *  @param[in] effecterValueLength - The setting value length of numeric
+     *              effecter being requested.
+     *  @return - Success or failure in setting the states. Returns failure in
+     * terms of PLDM completion codes if atleast one state fails to be set
+     */
+    // template <class DBusInterface>
+    // int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
+    //                                    effecter::Id effecterId,
+    //                                    const uint8_t effecterDataSize,
+    //                                    uint8_t* effecterValue,
+    //                                    size_t effecterValueLength)
+    // {
+    //     int rc = PLDM_SUCCESS;
+
+    //     return rc;
+    // }
 };
 
 } // namespace platform

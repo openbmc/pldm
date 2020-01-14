@@ -116,6 +116,44 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     return response;
 }
 
+Response Handler::setNumericEffecterValue(const pldm_msg* request,
+                                          size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    uint16_t effecterId;
+    uint8_t effecterDataSize;
+    uint8_t effecterValue[4];
+
+    if ((payloadLength > sizeof(effecterId) + sizeof(effecterDataSize) +
+                             sizeof(union_effecter_data_size)) ||
+        (payloadLength < sizeof(effecterId) + sizeof(effecterDataSize) + 1))
+    {
+        encode_set_numeric_effecter_value_resp(
+            request->hdr.instance_id, PLDM_ERROR_INVALID_LENGTH, responsePtr,
+            PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
+        return response;
+    }
+
+    int rc = decode_set_numeric_effecter_value_req(
+        request, payloadLength, &effecterId, &effecterDataSize,
+        reinterpret_cast<uint8_t*>(&effecterValue));
+
+    if (rc == PLDM_SUCCESS)
+    {
+        // const DBusHandler dBusIntf;
+        // rc = setNumericEffecterValueHandler<DBusHandler>(
+        //     dBusIntf, effecterId, effecterDataSize, effecterValue,
+        //     sizeof(effecterValue));
+    }
+
+    encode_set_numeric_effecter_value_resp(
+        request->hdr.instance_id, rc, responsePtr,
+        PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
+    return response;
+}
+
 } // namespace platform
 } // namespace responder
 } // namespace pldm
