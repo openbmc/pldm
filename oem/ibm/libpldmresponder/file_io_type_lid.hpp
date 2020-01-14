@@ -53,6 +53,11 @@ class LidHandler : public FileHandler
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
+    
+    virtual int processNewFileNotification(uint32_t /*length*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
 
     /** @brief LidHandler destructor
      */
