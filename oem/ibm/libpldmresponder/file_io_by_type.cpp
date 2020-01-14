@@ -2,6 +2,7 @@
 
 #include "file_io_by_type.hpp"
 
+#include "file_io_type_dump.hpp"
 #include "file_io_type_lid.hpp"
 #include "file_io_type_pel.hpp"
 #include "utils.hpp"
@@ -118,6 +119,11 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         case PLDM_FILE_TYPE_LID_TEMP:
         {
             return std::make_unique<LidHandler>(fileHandle, false);
+            break;
+        }
+        case PLDM_FILE_TYPE_DUMP:
+        {
+            return std::make_unique<DumpHandler>(fileHandle);
             break;
         }
         default:
