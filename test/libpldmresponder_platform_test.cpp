@@ -1,5 +1,6 @@
 #include "libpldmresponder/effecters.hpp"
 #include "libpldmresponder/pdr.hpp"
+#include "libpldmresponder/pdr_state_effecter.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
 #include "mocked_utils.hpp"
@@ -187,9 +188,9 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
 
     EXPECT_CALL(handlerObj, updateDbusProperty(dbusMapping, propertyValue))
         .Times(2);
-    platform::Handler handler;
-    auto rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
-        handlerObj, 0x1, stateField);
+    auto rc =
+        platform_state_effecter::setStateEffecterStatesHandler<MockdBusHandler>(
+            handlerObj, 0x1, stateField);
     ASSERT_EQ(rc, 0);
 }
 
@@ -209,17 +210,19 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     stateField.push_back({PLDM_REQUEST_SET, 4});
 
     MockdBusHandler handlerObj;
-    platform::Handler handler;
-    auto rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
-        handlerObj, 0x1, stateField);
+    auto rc =
+        platform_state_effecter::setStateEffecterStatesHandler<MockdBusHandler>(
+            handlerObj, 0x1, stateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
 
-    rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(handlerObj, 0x9,
-                                                                stateField);
+    rc =
+        platform_state_effecter::setStateEffecterStatesHandler<MockdBusHandler>(
+            handlerObj, 0x9, stateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_EFFECTER_ID);
 
     stateField.push_back({PLDM_REQUEST_SET, 4});
-    rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(handlerObj, 0x1,
-                                                                stateField);
+    rc =
+        platform_state_effecter::setStateEffecterStatesHandler<MockdBusHandler>(
+            handlerObj, 0x1, stateField);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
