@@ -33,7 +33,8 @@ int getEffecterValue(const pldm_numeric_effecter_value_pdr* pdr, T& value,
 {
     // Y = (m * X + B)
     // refer to DSP0248_1.2.0 27.7
-    value = pdr->resolution * value * pow(10, pdr->unit_modifier) + pdr->offset;
+    value = (T)(pdr->resolution * value * pow(10, pdr->unit_modifier) +
+                pdr->offset);
 
     if (maxValue == 0 && minValue == 0)
     {
@@ -120,12 +121,11 @@ std::pair<int, std::optional<PropertyValue>>
             break;
     }
 
-    return {rc, std::make_optional<PropertyValue>(value)};
+    return {rc, std::make_optional(std::move(value))};
 }
 
 /** @brief Function to set the effecter value requested by pldm requester
  *  @param[in] dBusIntf - The interface object
- *  @param[in] pdrRepo - the interface API to the PDR repository
  *  @param[in] effecterId - Effecter ID sent by the requester to act on
  *  @param[in] effecterDataSize - The bit width and format of the setting
  * 				value for the effecter
@@ -138,8 +138,8 @@ std::pair<int, std::optional<PropertyValue>>
  */
 template <class DBusInterface>
 int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
-                                   const uint16_t effecterId,
-                                   const uint8_t effecterDataSize,
+                                   uint16_t effecterId,
+                                   uint8_t effecterDataSize,
                                    uint8_t* effecterValue,
                                    size_t effecterValueLength)
 {
