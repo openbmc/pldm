@@ -1,6 +1,7 @@
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "libpldmresponder/platform_numeric_effecter.hpp"
 #include "libpldmresponder/platform_state_effecter.hpp"
 #include "mocked_utils.hpp"
 #include "utils.hpp"
@@ -247,4 +248,71 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
+}
+
+TEST(setNumericEffecterValueHandler, testGoodRequest)
+{
+    auto inPDRRepo = pldm_pdr_init();
+    auto numericEffecterPdrRepo = pldm_pdr_init();
+    Repo numericEffecterPDRs(numericEffecterPdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
+
+    pdr_utils::PdrEntry e;
+    auto record3 = pdr::getRecordByHandle(numericEffecterPDRs, 3, e);
+    ASSERT_NE(record3, nullptr);
+
+    pldm_numeric_effecter_value_pdr* pdr =
+        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
+
+    uint16_t effecterId = 3;
+    uint32_t effecterValue = 2100000000; // 2036-07-18 21:20:00
+    PropertyValue propertyValue = static_cast<uint32_t>(effecterValue);
+
+    MockdBusHandler handlerObj;
+    DBusMapping dbusMapping{"/foo/bar", "xyz.openbmc_project.Foo.Bar",
+                            "propertyName", "uint64_t"};
+    EXPECT_CALL(handlerObj, setDbusProperty(dbusMapping, propertyValue))
+        .Times(1);
+
+    auto rc = platform_numeric_effecter::setNumericEffecterValueHandler<
+        MockdBusHandler, Handler>(
+        handlerObj, handler, effecterId, PLDM_EFFECTER_DATA_SIZE_UINT32,
+        reinterpret_cast<uint8_t*>(&effecterValue), 4);
+    ASSERT_EQ(rc, 0);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(numericEffecterPdrRepo);
+}
+
+TEST(setNumericEffecterValueHandler, testBadRequest)
+{
+    auto inPDRRepo = pldm_pdr_init();
+    auto numericEffecterPdrRepo = pldm_pdr_init();
+    Repo numericEffecterPDRs(numericEffecterPdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
+
+    pdr_utils::PdrEntry e;
+    auto record3 = pdr::getRecordByHandle(numericEffecterPDRs, 3, e);
+    ASSERT_NE(record3, nullptr);
+
+    pldm_numeric_effecter_value_pdr* pdr =
+        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
+
+    uint16_t effecterId = 3;
+    uint64_t effecterValue = 9876543210;
+    MockdBusHandler handlerObj;
+    auto rc = platform_numeric_effecter::setNumericEffecterValueHandler<
+        MockdBusHandler, Handler>(
+        handlerObj, handler, effecterId, PLDM_EFFECTER_DATA_SIZE_SINT32,
+        reinterpret_cast<uint8_t*>(&effecterValue), 4);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(numericEffecterPdrRepo);
 }
