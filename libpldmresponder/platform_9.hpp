@@ -28,15 +28,15 @@ int setTimedPowerOnValue(const DBusInterface& dBusIntf,
 {
     // Update Dbus interfaces
     auto dbusProp = "PowerOnTime";
-    uint32_t timeNow = time(0);
-    uint32_t timeValue = *(reinterpret_cast<uint32_t*>(&effecterValue[0]));
+    uint64_t timeNow = time(0);
+    uint64_t timeValue = *(reinterpret_cast<uint64_t*>(&effecterValue[0]));
     if (timeValue < timeNow)
     {
         std::cerr << "Error setting TPO time, effecterValue=" << timeValue
                   << "\n";
         return PLDM_ERROR;
     }
-    std::variant<uint32_t> value{timeValue};
+    std::variant<uint64_t> value{timeValue};
     try
     {
         dBusIntf.setDbusProperty(objPath.c_str(), dbusProp,
@@ -67,7 +67,7 @@ int setTimedPowerOnValue(const DBusInterface& dBusIntf,
  */
 template <class DBusInterface>
 int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
-                                   const uint8_t effecterId,
+                                   const uint16_t effecterId,
                                    const uint8_t effecterDataSize,
                                    uint8_t* effecterValue,
                                    size_t effecterValueLength)
