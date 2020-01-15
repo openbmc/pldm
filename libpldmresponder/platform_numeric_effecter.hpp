@@ -66,6 +66,7 @@ std::optional<PropertyValue>
             uint32_t currentValue =
                 *(reinterpret_cast<uint32_t*>(&effecterValue[0]));
             value = static_cast<uint32_t>(currentValue);
+            printf("georget---value: %d\n", currentValue);
             break;
         }
         case PLDM_EFFECTER_DATA_SIZE_SINT32:
@@ -84,7 +85,6 @@ std::optional<PropertyValue>
 
 /** @brief Function to set the effecter value requested by pldm requester
  *  @param[in] dBusIntf - The interface object
- *  @param[in] pdrRepo - the interface API to the PDR repository
  *  @param[in] effecterId - Effecter ID sent by the requester to act on
  *  @param[in] effecterDataSize - The bit width and format of the setting
  * 				value for the effecter
@@ -97,8 +97,8 @@ std::optional<PropertyValue>
  */
 template <class DBusInterface>
 int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
-                                   const uint16_t effecterId,
-                                   const uint8_t effecterDataSize,
+                                   uint16_t effecterId,
+                                   uint8_t effecterDataSize,
                                    uint8_t* effecterValue,
                                    size_t effecterValueLength)
 {
