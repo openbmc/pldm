@@ -10,10 +10,13 @@ extern "C" {
 
 #include "base.h"
 
+#define PLDM_MAX_SENSORS 8
 /* Maximum size for request */
+#define PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES 4
 #define PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES 19
 /* Response lengths are inclusive of completion code */
 #define PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES 1
+#define PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES 1
 
 #define PLDM_GET_PDR_REQ_BYTES 13
 /* Minimum response length */
@@ -24,6 +27,7 @@ enum set_request { PLDM_NO_CHANGE = 0x00, PLDM_REQUEST_SET = 0x01 };
 enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
 
 enum pldm_platform_commands {
+	PLDM_GET_STATE_SENSOR_READINGS = 0x21,
 	PLDM_SET_STATE_EFFECTER_STATES = 0x39,
 	PLDM_GET_PDR = 0x51,
 };
@@ -82,6 +86,15 @@ struct pldm_state_effecter_pdr {
 	uint8_t possible_states[1];
 } __attribute__((packed));
 
+/** @struct PLDM_GetStateSensorReadings_Request
+ *
+ *  Structure representing PLDM get state sensor readings request.
+ */
+struct pldm_get_state_sensor_readings_req {
+	uint16_t sensor_id;
+	bitfield8_t sensor_rearm[1];
+	uint8_t reserved;
+} __attribute__((packed));
 /** @struct state_effecter_possible_states
  *
  *  Structure representing state enums for state effecter
@@ -137,6 +150,50 @@ struct pldm_get_pdr_req {
 	uint16_t request_count;
 	uint16_t record_change_number;
 } __attribute__((packed));
+
+/* GetStateSensorReadings */
+
+/** @brief Decode GetStateSensorReadings request data
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] sensor_id - used to identify and access the simple or composite
+ * sensor
+ *  @param[out] sensorRearm - Each bit location in this field corresponds to a
+ * particular sensor within the state sensor, where bit [0] corresponds to the
+ * first state sensor (sensor offset 0) and bit [7] corresponds to the eighth
+ * sensor (sensor offset 7), sequentially.
+ *  @param[out] reserved - value: 0x00
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_state_sensor_readings_req(const struct pldm_msg *msg,
+					 size_t payload_length,
+					 uint16_t *sensor_id,
+					 bitfield8_t *sensor_rearm,
+					 uint8_t *reserved);
+
+/** @brief Create a PLDM request message for GetStateSensorReadings
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] sensor_id - used to identify and access the simple or composite
+ * sensor
+ *  @param[in] sensorRearm - Each bit location in this field corresponds to a
+ * particular sensor within the state sensor, where bit [0] corresponds to the
+ * first state sensor (sensor offset 0) and bit [7] corresponds to the eighth
+ * sensor (sensor offset 7), sequentially.
+ *  @param[in] reserved - value: 0x00
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+
+int encode_get_state_sensor_readings_req(uint8_t instance_id,
+					 uint16_t sensor_id,
+					 bitfield8_t sensor_rearm,
+					 uint8_t reserved,
+					 struct pldm_msg *msg);
 
 /* Responder */
 
