@@ -83,8 +83,6 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
     using namespace pldm::responder::pdr;
     using namespace pldm::responder::effecter::dbus_mapping;
 
-    // Get the pdr structure of pldm_numeric_effecter_valuer_pdr according
-    // to the effecterId
     pldm_numeric_effecter_valuer_pdr* pdr = nullptr;
     uint32_t recordHndl{};
     Repo& pdrRepo = get(PDR_JSONS_DIR);
@@ -106,6 +104,9 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
         pdr = reinterpret_cast<pldm_numeric_effecter_valuer_pdr*>(
             pdrEntry.data());
         recordHndl = pdr->hdr.record_handle;
+
+        // Get the pdr structure of pldm_numeric_effecter_valuer_pdr according
+        // to the effecterId
         if (pdr->effecter_id == effecterId)
         {
             if (pdr->effecter_data_size != effecterDataSize ||
@@ -127,8 +128,6 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
         pdr = nullptr;
     }
 
-    // Get the value of effecterValue according to the value of
-    // effecterDataSize
     std::map<uint16_t, std::function<int(const std::string& objPath,
                                          const std::string& dbusInterface,
                                          uint8_t* effecterValue)>>
