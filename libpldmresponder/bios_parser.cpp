@@ -1,5 +1,6 @@
 #include "bios_parser.hpp"
 
+#include "bios_table.hpp"
 #include "utils.hpp"
 
 #include <filesystem>
@@ -8,6 +9,7 @@
 #include <nlohmann/json.hpp>
 #include <optional>
 
+#include "libpldm/bios.h"
 #include "libpldm/bios_table.h"
 
 namespace bios_parser
@@ -15,6 +17,7 @@ namespace bios_parser
 
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
+using namespace pldm::responder::bios;
 
 const std::vector<Json> emptyJsonList{};
 const Json emptyJson{};
@@ -26,7 +29,8 @@ struct DBusMapping
     std::string propertyName; //!< D-Bus property name
 };
 
-using AttrName = std::string;
+using AttrType = uint8_t;
+using Table = std::vector<uint8_t>;
 using BIOSJsonName = std::string;
 using AttrLookup = std::map<AttrName, std::optional<DBusMapping>>;
 using BIOSStringHandler =
@@ -244,6 +248,108 @@ CurrentValues getAttrValue(const AttrName& attrName)
     return currentValues;
 }
 
+int setAttrValue(const AttrName& attrName,
+                 const pldm_bios_attr_val_table_entry* attrValueEntry,
+                 const pldm_bios_attr_table_entry* attrEntry,
+                 const BIOSStringTable& stringTable)
+{
+    const auto& dBusMap = BIOSAttrLookup.at(attrName);
+    if (dBusMap == std::nullopt)
+    {
+        return PLDM_SUCCESS;
+    }
+
+    uint8_t pvNum = pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry);
+    std::vector<uint16_t> pvHdls(pvNum, 0);
+    pldm_bios_table_attr_entry_enum_decode_pv_hdls(attrEntry, pvHdls.data(),
+                                                   pvNum);
+
+    uint8_t defNum =
+        pldm_bios_table_attr_value_entry_enum_decode_number(attrValueEntry);
+
+    assert(defNum == 1);
+
+    std::vector<uint8_t> currHdls(1, 0);
+    pldm_bios_table_attr_value_entry_enum_decode_handles(
+        attrValueEntry, currHdls.data(), currHdls.size());
+
+    auto valueString = stringTable.findString(pvHdls[currHdls[0]]);
+
+    const auto& dbusValToValMap = internal::dbusValToValMaps.at(attrName);
+
+    auto it = std::find_if(dbusValToValMap.begin(), dbusValToValMap.end(),
+                           [&valueString](const auto& typePair) {
+                               return typePair.second == valueString;
+                           });
+    if (it == dbusValToValMap.end())
+    {
+        return PLDM_ERROR;
+    }
+
+    auto setDbusProperty = [&dBusMap](const auto& variant) {
+        pldm::utils::DBusHandler().setDbusProperty(
+            dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+            dBusMap->interface.c_str(), variant);
+    };
+
+    std::visit(
+        [&setDbusProperty](internal::PropertyValue&& arg) {
+            if (std::holds_alternative<bool>(arg))
+            {
+                std::variant<bool> value = std::get<bool>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<uint8_t>(arg))
+            {
+                std::variant<uint8_t> value = std::get<uint8_t>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<int16_t>(arg))
+            {
+                std::variant<int16_t> value = std::get<int16_t>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<uint16_t>(arg))
+            {
+                std::variant<uint16_t> value = std::get<uint16_t>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<int32_t>(arg))
+            {
+                std::variant<int32_t> value = std::get<int32_t>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<uint32_t>(arg))
+            {
+                std::variant<uint32_t> value = std::get<uint32_t>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<int64_t>(arg))
+            {
+                std::variant<int64_t> value = std::get<int64_t>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<uint64_t>(arg))
+            {
+                std::variant<uint64_t> value = std::get<uint64_t>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<double>(arg))
+            {
+                std::variant<double> value = std::get<double>(arg);
+                setDbusProperty(value);
+            }
+            if (std::holds_alternative<std::string>(arg))
+            {
+                std::variant<std::string> value = std::get<std::string>(arg);
+                setDbusProperty(value);
+            }
+        },
+        it->first);
+
+    return PLDM_SUCCESS;
+}
+
 } // namespace bios_enum
 
 namespace bios_string
@@ -350,6 +456,54 @@ std::string getAttrValue(const AttrName& attrName)
         dBusMap->interface.c_str());
 }
 
+std::string stringToUtf8(uint8_t stringType, const std::vector<uint8_t>& data)
+{
+    switch (stringType)
+    {
+        case ASCII:
+        case UTF_8:
+        case HEX:
+            return std::string(data.begin(), data.end());
+        case UTF_16BE:
+        case UTF_16LE: // TODO
+            return std::string(data.begin(), data.end());
+        case VENDOR_SPECIFIC:
+            throw std::runtime_error("Unsupported StringType");
+        case UNKNOWN:
+        default:
+            throw std::runtime_error("Invalid StringType");
+    }
+}
+
+int setAttrValue(const AttrName& attrName,
+                 const pldm_bios_attr_val_table_entry* attrValueEntry,
+                 const pldm_bios_attr_table_entry* attrEntry,
+                 const BIOSStringTable&)
+{
+    const auto& dBusMap = BIOSAttrLookup.at(attrName);
+    if (dBusMap == std::nullopt)
+    {
+        return PLDM_SUCCESS;
+    }
+
+    auto stringType =
+        pldm_bios_table_attr_entry_string_decode_string_type(attrEntry);
+
+    variable_field currentString{};
+    pldm_bios_table_attr_value_entry_string_decode_string(attrValueEntry,
+                                                          &currentString);
+    std::vector<uint8_t> data(currentString.ptr,
+                              currentString.ptr + currentString.length);
+
+    std::variant<std::string> value = stringToUtf8(stringType, data);
+
+    pldm::utils::DBusHandler().setDbusProperty(
+        dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+        dBusMap->interface.c_str(), value);
+
+    return PLDM_SUCCESS;
+}
+
 } // namespace bios_string
 
 namespace bios_integer
@@ -412,6 +566,27 @@ uint64_t getAttrValue(const AttrName& attrName)
     return pldm::utils::DBusHandler().getDbusProperty<uint64_t>(
         dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
         dBusMap->interface.c_str());
+}
+
+int setAttrValue(const AttrName& attrName,
+                 const pldm_bios_attr_val_table_entry* attrValueEntry,
+                 const pldm_bios_attr_table_entry*, const BIOSStringTable&)
+{
+    const auto& dBusMap = BIOSAttrLookup.at(attrName);
+    if (dBusMap == std::nullopt)
+    {
+        return PLDM_SUCCESS;
+    }
+
+    uint64_t currentValue =
+        pldm_bios_table_attr_value_entry_integer_decode_cv(attrValueEntry);
+    std::variant<uint64_t> value = currentValue;
+
+    pldm::utils::DBusHandler().setDbusProperty(
+        dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+        dBusMap->interface.c_str(), value);
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace bios_integer
@@ -514,6 +689,58 @@ int setupConfig(const char* dirPath)
         return -1;
     }
     return 0;
+}
+
+using setAttrValueHandler = std::function<int(
+    const AttrName&, const pldm_bios_attr_val_table_entry*,
+    const pldm_bios_attr_table_entry*, const BIOSStringTable&)>;
+
+const std::map<AttrType, setAttrValueHandler> SetAttrValueMap{{
+    {PLDM_BIOS_STRING, bios_string::setAttrValue},
+    {PLDM_BIOS_STRING_READ_ONLY, bios_string::setAttrValue},
+    {PLDM_BIOS_ENUMERATION, bios_enum::setAttrValue},
+    {PLDM_BIOS_ENUMERATION_READ_ONLY, bios_enum::setAttrValue},
+    {PLDM_BIOS_INTEGER, bios_integer::setAttrValue},
+    {PLDM_BIOS_INTEGER_READ_ONLY, bios_integer::setAttrValue},
+
+}};
+
+int setAttributeValueOnDbus(const variable_field* attributeData,
+                            const BIOSTable& biosAttributeTable,
+                            const BIOSStringTable& stringTable)
+{
+    Table attributeTable;
+    biosAttributeTable.load(attributeTable);
+    auto attrValueEntry =
+        reinterpret_cast<const pldm_bios_attr_val_table_entry*>(
+            attributeData->ptr);
+
+    auto attrType =
+        pldm_bios_table_attr_value_entry_decode_attribute_type(attrValueEntry);
+    auto attrHandle = pldm_bios_table_attr_value_entry_decode_attribute_handle(
+        attrValueEntry);
+
+    auto attrEntry = pldm_bios_table_attr_find_by_handle(
+        attributeTable.data(), attributeTable.size(), attrHandle);
+
+    assert(attrEntry != nullptr);
+
+    auto attrNameHandle =
+        pldm_bios_table_attr_entry_decode_string_handle(attrEntry);
+
+    auto attrName = stringTable.findString(attrNameHandle);
+
+    try
+    {
+        auto rc = SetAttrValueMap.at(attrType)(attrName, attrValueEntry,
+                                               attrEntry, stringTable);
+        return rc;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "setAttributeValueOnDbus Error: " << e.what() << std::endl;
+        return PLDM_ERROR;
+    }
 }
 
 } // namespace bios_parser
