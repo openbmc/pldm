@@ -1,5 +1,7 @@
 #pragma once
 
+#include "bios_table.hpp"
+
 #include <map>
 #include <string>
 #include <tuple>
@@ -26,10 +28,11 @@
  *    default value is returned.(similar API for other BIOS attribute types).
  *
  */
-
 namespace bios_parser
 {
 
+using namespace pldm::responder::bios;
+using AttrName = std::string;
 using Strings = std::vector<std::string>;
 inline constexpr auto bIOSEnumJson = "enum_attrs.json";
 inline constexpr auto bIOSStrJson = "string_attrs.json";
@@ -39,16 +42,20 @@ inline constexpr auto bIOSIntegerJson = "integer_attrs.json";
  *  @return all the preconfigurated strings
  */
 const Strings& getStrings();
+
 /** @brief Parse every BIOS Configuration JSON file in the directory path
  *  @param[in] dirPath - directory path where all the bios configuration JSON
  * files exist
  */
 int setupConfig(const char* dirPath);
 
+int setAttributeValueOnDbus(const variable_field* attributeData,
+                            const BIOSTable& attributeTable,
+                            const BIOSStringTable& stringTable);
+
 namespace bios_enum
 {
 
-using AttrName = std::string;
 using IsReadOnly = bool;
 using PossibleValues = std::vector<std::string>;
 using DefaultValues = std::vector<std::string>;
@@ -78,7 +85,6 @@ CurrentValues getAttrValue(const AttrName& attrName);
 namespace bios_string
 {
 
-using AttrName = std::string;
 using IsReadOnly = bool;
 using StrType = uint8_t;
 using MinStrLen = uint16_t;
@@ -110,7 +116,6 @@ std::string getAttrValue(const AttrName& attrName);
 namespace bios_integer
 {
 
-using AttrName = std::string;
 using IsReadOnly = bool;
 using LowerBound = uint64_t;
 using UpperBound = uint64_t;
