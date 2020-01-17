@@ -71,6 +71,17 @@ class BIOSTable
     fs::path filePath;
 };
 
+class BIOSStringTable : public BIOSTable
+{
+  public:
+    BIOSStringTable(const char* filePath);
+
+    std::string findString(uint16_t handle) const;
+
+  private:
+    Table stringTble;
+};
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm
