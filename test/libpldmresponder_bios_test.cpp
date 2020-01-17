@@ -194,7 +194,7 @@ TEST(traverseBIOSTable, attrTableScenarios)
     table.insert(table.end(), padSize, 0);
     table.insert(table.end(), sizeof(uint32_t) /*checksum*/, 0);
 
-    pldm::responder::bios::traverseBIOSAttrTable(
+    pldm::responder::bios::traverseBiosAttrTable(
         table, [&](const struct pldm_bios_attr_table_entry* entry) {
             int rc;
             switch (entry->attr_type)
@@ -249,7 +249,7 @@ TEST_F(TestAllBIOSTables, GetBIOSTableTestBadRequest)
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
-    auto response = internal::buildBIOSTables(request, requestPayloadLength,
+    auto response = internal::buildBiosTables(request, requestPayloadLength,
                                               "./bios_jsons", biosPath.c_str());
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -273,7 +273,7 @@ TEST_F(TestAllBIOSTables, buildBIOSTablesTestBadRequest)
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
-    auto response = internal::buildBIOSTables(request, requestPayloadLength,
+    auto response = internal::buildBiosTables(request, requestPayloadLength,
                                               "./bios_jsons", biosPath.c_str());
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     struct pldm_get_bios_table_resp* resp =
@@ -282,7 +282,7 @@ TEST_F(TestAllBIOSTables, buildBIOSTablesTestBadRequest)
     ASSERT_EQ(PLDM_BIOS_TABLE_UNAVAILABLE, resp->completion_code);
 
     req->table_type = PLDM_BIOS_ATTR_TABLE;
-    response = internal::buildBIOSTables(request, requestPayloadLength,
+    response = internal::buildBiosTables(request, requestPayloadLength,
                                          "./bios_jsons", biosPath.c_str());
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     resp = reinterpret_cast<struct pldm_get_bios_table_resp*>(
@@ -310,7 +310,7 @@ TEST_F(TestAllBIOSTables, GetBIOSStringTableTestGoodRequest)
     uint8_t times = 0;
     while (times < 2)
     { // first time fresh table second time existing table
-        auto response = internal::buildBIOSTables(
+        auto response = internal::buildBiosTables(
             request, requestPayloadLength, "./bios_jsons", biosPath.c_str());
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -356,7 +356,7 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeTableTestGoodRequest)
     uint8_t times = 0;
     while (times < 2)
     { // first time fresh table second time existing table
-        auto response = internal::buildBIOSTables(
+        auto response = internal::buildBiosTables(
             request, requestPayloadLength, "./bios_jsons", biosPath.c_str());
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -448,7 +448,7 @@ TEST_F(TestAllBIOSTables, getBIOSAttributeValueTableTestGoodRequest)
     uint8_t times = 0;
     while (times < 2)
     { // first time frest table second time existing table
-        auto response = internal::buildBIOSTables(
+        auto response = internal::buildBiosTables(
             request, requestPayloadLength, "./bios_jsons", biosPath.c_str());
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -547,7 +547,7 @@ TEST_F(TestSingleTypeBIOSTable, getBIOSAttributeValueTableBasedOnStringTypeTest)
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
     auto str_response =
-        internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+        internal::buildBiosTables(request, requestPayloadLength, fpath, fpath);
 
     // Get attribute table with string json file only
     req->transfer_handle = 9;
@@ -555,7 +555,7 @@ TEST_F(TestSingleTypeBIOSTable, getBIOSAttributeValueTableBasedOnStringTypeTest)
     req->table_type = PLDM_BIOS_ATTR_TABLE;
 
     auto attr_response =
-        internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+        internal::buildBiosTables(request, requestPayloadLength, fpath, fpath);
 
     // Get attribute value table with string type
     req->transfer_handle = 9;
@@ -565,7 +565,7 @@ TEST_F(TestSingleTypeBIOSTable, getBIOSAttributeValueTableBasedOnStringTypeTest)
     // Test attribute str_example3 here, which has no dbus
     for (uint8_t times = 0; times < 2; times++)
     { // first time first table second time existing table
-        auto response = internal::buildBIOSTables(request, requestPayloadLength,
+        auto response = internal::buildBiosTables(request, requestPayloadLength,
                                                   fpath, fpath);
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -630,7 +630,7 @@ TEST_F(TestSingleTypeBIOSTable,
     req->table_type = PLDM_BIOS_STRING_TABLE;
 
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
-    internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+    internal::buildBiosTables(request, requestPayloadLength, fpath, fpath);
 
     // Get attribute table with integer json file only
     req->transfer_handle = 9;
@@ -638,7 +638,7 @@ TEST_F(TestSingleTypeBIOSTable,
     req->table_type = PLDM_BIOS_ATTR_TABLE;
 
     auto attr_response =
-        internal::buildBIOSTables(request, requestPayloadLength, fpath, fpath);
+        internal::buildBiosTables(request, requestPayloadLength, fpath, fpath);
 
     // Get attribute value table with integer type
     req->transfer_handle = 9;
@@ -648,7 +648,7 @@ TEST_F(TestSingleTypeBIOSTable,
     // Test attribute SBE_IMAGE_MINIMUM_VALID_ECS here, which has no dbus
     for (uint8_t times = 0; times < 2; times++)
     { // first time first table second time existing table
-        auto response = internal::buildBIOSTables(request, requestPayloadLength,
+        auto response = internal::buildBiosTables(request, requestPayloadLength,
                                                   fpath, fpath);
         auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 

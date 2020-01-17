@@ -32,7 +32,7 @@ namespace bios
 using AttrTableEntryHandler =
     std::function<void(const struct pldm_bios_attr_table_entry*)>;
 
-void traverseBIOSAttrTable(const bios::Table& BIOSAttrTable,
+void traverseBiosAttrTable(const bios::Table& BIOSAttrTable,
                            AttrTableEntryHandler handler);
 
 namespace internal
@@ -45,7 +45,7 @@ namespace internal
  *  @param[in] biosJsonDir - path to fetch the BIOS json files
  *  @param[in] biosTablePath - path where the BIOS tables will be persisted
  */
-Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
+Response buildBiosTables(const pldm_msg* request, size_t payloadLength,
                          const char* biosJsonDir, const char* biosTablePath);
 } // namespace internal
 
