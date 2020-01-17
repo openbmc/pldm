@@ -9,7 +9,7 @@
 
 using namespace pldm::responder::bios;
 
-class TestBIOSTable : public testing::Test
+class TestBiosTable : public testing::Test
 {
   public:
     void SetUp() override
@@ -26,11 +26,11 @@ class TestBIOSTable : public testing::Test
     fs::path dir;
 };
 
-TEST_F(TestBIOSTable, testStoreLoad)
+TEST_F(TestBiosTable, testStoreLoad)
 {
     std::vector<uint8_t> table{10, 34, 56, 100, 44, 55, 69, 21, 48, 2, 7, 82};
     fs::path file(dir / "t1");
-    BIOSTable t(file.string().c_str());
+    BiosTable t(file.string().c_str());
     std::vector<uint8_t> out{};
 
     ASSERT_THROW(t.load(out), fs::filesystem_error);
@@ -42,11 +42,11 @@ TEST_F(TestBIOSTable, testStoreLoad)
     ASSERT_EQ(true, std::equal(table.begin(), table.end(), out.begin()));
 }
 
-TEST_F(TestBIOSTable, testLoadOntoExisting)
+TEST_F(TestBiosTable, testLoadOntoExisting)
 {
     std::vector<uint8_t> table{10, 34, 56, 100, 44, 55, 69, 21, 48, 2, 7, 82};
     fs::path file(dir / "t1");
-    BIOSTable t(file.string().c_str());
+    BiosTable t(file.string().c_str());
     std::vector<uint8_t> out{99, 99};
 
     ASSERT_THROW(t.load(out), fs::filesystem_error);

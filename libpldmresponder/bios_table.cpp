@@ -1,6 +1,9 @@
 #include "bios_table.hpp"
 
 #include <fstream>
+#include <iostream>
+
+#include "bios_table.h"
 
 namespace pldm
 {
@@ -11,11 +14,11 @@ namespace responder
 namespace bios
 {
 
-BIOSTable::BIOSTable(const char* filePath) : filePath(filePath)
+BiosTable::BiosTable(const char* filePath) : filePath(filePath)
 {
 }
 
-bool BIOSTable::isEmpty() const noexcept
+bool BiosTable::isEmpty() const noexcept
 {
     bool empty = false;
     try
@@ -29,19 +32,44 @@ bool BIOSTable::isEmpty() const noexcept
     return empty;
 }
 
-void BIOSTable::store(const Table& table)
+void BiosTable::store(const Table& table)
 {
     std::ofstream stream(filePath.string(), std::ios::out | std::ios::binary);
     stream.write(reinterpret_cast<const char*>(table.data()), table.size());
 }
 
-void BIOSTable::load(Response& response) const
+void BiosTable::load(Response& response) const
 {
     auto currSize = response.size();
     auto fileSize = fs::file_size(filePath);
     response.resize(currSize + fileSize);
     std::ifstream stream(filePath.string(), std::ios::in | std::ios::binary);
     stream.read(reinterpret_cast<char*>(response.data() + currSize), fileSize);
+}
+
+BiosStringTable::BiosStringTable(const char* filePath) : BiosTable(filePath)
+{
+    if (!isEmpty())
+    {
+        load(stringTable);
+    }
+}
+
+std::string BiosStringTable::findString(uint16_t handle) const
+{
+    auto stringEntry = pldm_bios_table_string_find_by_handle(
+        stringTable.data(), stringTable.size(), handle);
+    if (stringEntry == nullptr)
+    {
+        throw std::invalid_argument("Invalid String Handle");
+    }
+    auto strLength =
+        pldm_bios_table_string_entry_decode_string_length(stringEntry);
+    std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
+    pldm_bios_table_string_entry_decode_string(stringEntry, buffer.data(),
+                                               buffer.size());
+
+    return std::string(buffer.data(), buffer.data() + strLength);
 }
 
 } // namespace bios

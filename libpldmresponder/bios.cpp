@@ -224,28 +224,22 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
 
 /** @brief Construct the BIOS string table
  *
- *  @param[in,out] BIOSStringTable - the string table
+ *  @param[in,out] biosStringTable - the string table
  *  @param[in] request - Request message
  */
-Response getBIOSStringTable(BIOSTable& BIOSStringTable, const pldm_msg* request)
+Response getBiosStringTable(BiosTable& biosStringTable, const pldm_msg* request)
 
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
                       0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-    if (!BIOSStringTable.isEmpty())
+    if (!biosStringTable.isEmpty())
     {
-        auto rc = encode_get_bios_table_resp(
-            request->hdr.instance_id, PLDM_SUCCESS,
-            0, /* next transfer handle */
-            PLDM_START_AND_END, nullptr, response.size(),
-            responsePtr); // filling up the header here
-        if (rc != PLDM_SUCCESS)
-        {
-            return CmdHandler::ccOnlyResponse(request, rc);
-        }
-
-        BIOSStringTable.load(response);
+        encode_get_bios_table_resp(request->hdr.instance_id, PLDM_SUCCESS,
+                                   0, /* next transfer handle */
+                                   PLDM_START_AND_END, nullptr, response.size(),
+                                   responsePtr); // filling up the header here
+        biosStringTable.load(response);
         return response;
     }
     auto biosStrings = bios_parser::getStrings();
@@ -278,7 +272,7 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable, const pldm_msg* request)
     }
 
     pldm::responder::utils::padAndChecksum(stringTable);
-    BIOSStringTable.store(stringTable);
+    biosStringTable.store(stringTable);
     response.resize(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
                         stringTable.size(),
                     0);
@@ -297,14 +291,14 @@ Response getBIOSStringTable(BIOSTable& BIOSStringTable, const pldm_msg* request)
 /** @brief Find the string handle from the BIOS string table given the name
  *
  *  @param[in] name - name of the BIOS string
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosStringTable - the string table
  *  @return - uint16_t - handle of the string
  */
 StringHandle findStringHandle(const std::string& name,
-                              const BIOSTable& BIOSStringTable)
+                              const BiosTable& biosStringTable)
 {
     Table table;
-    BIOSStringTable.load(table);
+    biosStringTable.load(table);
     auto stringEntry = pldm_bios_table_string_find_by_string(
         table.data(), table.size(), name.c_str());
     if (stringEntry == nullptr)
@@ -320,15 +314,15 @@ StringHandle findStringHandle(const std::string& name,
 /** @brief Find the string name from the BIOS string table for a string handle
  *
  *  @param[in] stringHdl - string handle
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosStringTable - the string table
  *
  *  @return - std::string - name of the corresponding BIOS string
  */
 std::string findStringName(StringHandle stringHdl,
-                           const BIOSTable& BIOSStringTable)
+                           const BiosTable& biosStringTable)
 {
     Table table;
-    BIOSStringTable.load(table);
+    biosStringTable.load(table);
     auto stringEntry = pldm_bios_table_string_find_by_handle(
         table.data(), table.size(), stringHdl);
     if (stringEntry == nullptr)
@@ -359,14 +353,14 @@ using namespace bios_parser::bios_enum;
  *                         values for an attribute
  *  @param[in] currVals - vector of strings comprising all current values
  *                        for an attribute
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosStringTable - the string table
  *
  *  @return - std::vector<uint8_t> - indices into the array of the possible
  *                                   values of string handles
  */
 std::vector<uint8_t> findStrIndices(PossibleValuesByHandle possiVals,
                                     CurrentValues currVals,
-                                    const BIOSTable& BIOSStringTable)
+                                    const BiosTable& biosStringTable)
 {
     std::vector<uint8_t> stringIndices;
 
@@ -375,7 +369,7 @@ std::vector<uint8_t> findStrIndices(PossibleValuesByHandle possiVals,
         StringHandle curHdl;
         try
         {
-            curHdl = findStringHandle(currVal, BIOSStringTable);
+            curHdl = findStringHandle(currVal, biosStringTable);
         }
         catch (InternalFailure& e)
         {
@@ -426,12 +420,12 @@ std::vector<uint8_t> findDefaultValHandle(const PossibleValues& possiVals,
 
 /** @brief Construct the attibute table for BIOS type Enumeration and
  *         Enumeration ReadOnly
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosStringTable - the string table
  *  @param[in] biosJsonDir - path where the BIOS json files are present
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
+void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
 {
     const auto& attributeMap = getValues();
     StringHandle strHandle;
@@ -440,7 +434,7 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
     {
         try
         {
-            strHandle = findStringHandle(key, BIOSStringTable);
+            strHandle = findStringHandle(key, biosStringTable);
         }
         catch (InternalFailure& e)
         {
@@ -461,7 +455,7 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
         {
             try
             {
-                auto hdl = findStringHandle(elem, BIOSStringTable);
+                auto hdl = findStringHandle(elem, biosStringTable);
                 possiValsByHdl.push_back(std::move(hdl));
             }
             catch (InternalFailure& e)
@@ -492,7 +486,7 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 
 void constructAttrValueEntry(
     const struct pldm_bios_attr_table_entry* attrTableEntry,
-    const std::string& attrName, const BIOSTable& BIOSStringTable,
+    const std::string& attrName, const BiosTable& biosStringTable,
     Table& attrValueTable)
 {
     CurrentValues currVals;
@@ -513,7 +507,7 @@ void constructAttrValueEntry(
                                                    pvHdls.data(), pv_num);
     std::sort(currVals.begin(), currVals.end());
 
-    auto currValStrIndices = findStrIndices(pvHdls, currVals, BIOSStringTable);
+    auto currValStrIndices = findStrIndices(pvHdls, currVals, biosStringTable);
 
     auto entryLength = pldm_bios_table_attr_value_entry_encode_enum_length(
         currValStrIndices.size());
@@ -534,12 +528,12 @@ using namespace bios_parser::bios_string;
 
 /** @brief Construct the attibute table for BIOS type String and
  *         String ReadOnly
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosStringTable - the string table
  *  @param[in] biosJsonDir - path where the BIOS json files are present
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
+void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
 {
     const auto& attributeMap = getValues();
     StringHandle strHandle;
@@ -547,7 +541,7 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
     {
         try
         {
-            strHandle = findStringHandle(key, BIOSStringTable);
+            strHandle = findStringHandle(key, biosStringTable);
         }
         catch (InternalFailure& e)
         {
@@ -574,10 +568,10 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 
 void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
                              const std::string& attrName,
-                             const BIOSTable& BIOSStringTable,
+                             const BiosTable& biosStringTable,
                              Table& attrValueTable)
 {
-    std::ignore = BIOSStringTable;
+    std::ignore = biosStringTable;
     std::string currStr;
     uint16_t currStrLen = 0;
     try
@@ -610,11 +604,11 @@ using namespace bios_parser::bios_integer;
 
 /** @brief Construct the attibute table for BIOS type Integer and
  *         Integer ReadOnly
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosStringTable - the string table
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
+void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
 {
     const auto& attributeMap = getValues();
     StringHandle strHandle;
@@ -622,7 +616,7 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
     {
         try
         {
-            strHandle = findStringHandle(key, BIOSStringTable);
+            strHandle = findStringHandle(key, biosStringTable);
         }
         catch (InternalFailure& e)
         {
@@ -648,10 +642,10 @@ void constructAttrTable(const BIOSTable& BIOSStringTable, Table& attributeTable)
 
 void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
                              const std::string& attrName,
-                             const BIOSTable& BIOSStringTable,
+                             const BiosTable& biosStringTable,
                              Table& attrValueTable)
 {
-    std::ignore = BIOSStringTable;
+    std::ignore = biosStringTable;
     uint64_t currentValue;
     try
     {
@@ -673,7 +667,7 @@ void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
 
 } // namespace bios_type_integer
 
-void traverseBIOSAttrTable(const Table& biosAttrTable,
+void traverseBiosAttrTable(const Table& biosAttrTable,
                            AttrTableEntryHandler handler)
 {
     std::unique_ptr<pldm_bios_table_iter, decltype(&pldm_bios_table_iter_free)>
@@ -697,7 +691,7 @@ void traverseBIOSAttrTable(const Table& biosAttrTable,
     }
 }
 
-using typeHandler = std::function<void(const BIOSTable& BIOSStringTable,
+using typeHandler = std::function<void(const BiosTable& biosStringTable,
                                        Table& attributeTable)>;
 std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
     {bios_parser::bIOSEnumJson, bios_type_enum::constructAttrTable},
@@ -707,13 +701,13 @@ std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
 
 /** @brief Construct the BIOS attribute table
  *
- *  @param[in,out] BIOSAttributeTable - the attribute table
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in] biosAttributeTable - the attribute table
+ *  @param[in] biosStringTable - the string table
  *  @param[in] biosJsonDir - path where the BIOS json files are present
  *  @param[in] request - Request message
  */
-Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
-                               const BIOSTable& BIOSStringTable,
+Response getBiosAttributeTable(BiosTable& biosAttributeTable,
+                               const BiosTable& biosStringTable,
                                const char* biosJsonDir, const pldm_msg* request)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
@@ -722,7 +716,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
     uint32_t nxtTransferHandle = 0;
     uint8_t transferFlag = PLDM_START_AND_END;
 
-    if (BIOSAttributeTable.isEmpty())
+    if (biosAttributeTable.isEmpty())
     { // no persisted table, constructing fresh table and response
         Table attributeTable;
         fs::path dir(biosJsonDir);
@@ -733,7 +727,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
             fs::path file = dir / it->first;
             if (fs::exists(file))
             {
-                it->second(BIOSStringTable, attributeTable);
+                it->second(biosStringTable, attributeTable);
             }
         }
 
@@ -743,7 +737,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
                                               PLDM_BIOS_TABLE_UNAVAILABLE);
         }
         pldm::responder::utils::padAndChecksum(attributeTable);
-        BIOSAttributeTable.store(attributeTable);
+        biosAttributeTable.store(attributeTable);
         response.resize(sizeof(pldm_msg_hdr) +
                         PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
                         attributeTable.size());
@@ -767,7 +761,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
         {
             return CmdHandler::ccOnlyResponse(request, rc);
         }
-        BIOSAttributeTable.load(response);
+        biosAttributeTable.load(response);
     }
 
     return response;
@@ -776,7 +770,7 @@ Response getBIOSAttributeTable(BIOSTable& BIOSAttributeTable,
 using AttrValTableEntryConstructHandler =
     std::function<void(const struct pldm_bios_attr_table_entry* tableEntry,
                        const std::string& attrName,
-                       const BIOSTable& BIOSStringTable, Table& table)>;
+                       const BiosTable& biosStringTable, Table& table)>;
 
 using AttrType = uint8_t;
 const std::map<AttrType, AttrValTableEntryConstructHandler>
@@ -793,9 +787,9 @@ const std::map<AttrType, AttrValTableEntryConstructHandler>
 
 void constructAttrValueTableEntry(
     const struct pldm_bios_attr_table_entry* attrEntry,
-    const BIOSTable& BIOSStringTable, Table& attributeValueTable)
+    const BiosTable& biosStringTable, Table& attributeValueTable)
 {
-    auto attrName = findStringName(attrEntry->string_handle, BIOSStringTable);
+    auto attrName = findStringName(attrEntry->string_handle, biosStringTable);
     if (attrName.empty())
     {
         std::cerr << "invalid string handle, STRING_HANDLE="
@@ -804,19 +798,19 @@ void constructAttrValueTableEntry(
     }
 
     AttrValTableConstructMap.at(attrEntry->attr_type)(
-        attrEntry, attrName, BIOSStringTable, attributeValueTable);
+        attrEntry, attrName, biosStringTable, attributeValueTable);
 }
 
 /** @brief Construct the BIOS attribute value table
  *
- *  @param[in,out] BIOSAttributeValueTable - the attribute value table
- *  @param[in] BIOSAttributeTable - the attribute table
- *  @param[in] BIOSStringTable - the string table
+ *  @param[in,out] biosAttributeValueTable - the attribute value table
+ *  @param[in] biosAttributeTable - the attribute table
+ *  @param[in] biosStringTable - the string table
  *  @param[in] request - Request message
  */
-Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
-                                    const BIOSTable& BIOSAttributeTable,
-                                    const BIOSTable& BIOSStringTable,
+Response getBiosAttributeValueTable(BiosTable& biosAttributeValueTable,
+                                    const BiosTable& biosAttributeTable,
+                                    const BiosTable& biosStringTable,
                                     const pldm_msg* request)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
@@ -825,7 +819,7 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
     uint32_t nxtTransferHandle = 0;
     uint8_t transferFlag = PLDM_START_AND_END;
 
-    if (!BIOSAttributeValueTable.isEmpty())
+    if (!biosAttributeValueTable.isEmpty())
     {
         auto rc = encode_get_bios_table_resp(
             request->hdr.instance_id, PLDM_SUCCESS, nxtTransferHandle,
@@ -836,18 +830,18 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
             return CmdHandler::ccOnlyResponse(request, rc);
         }
 
-        BIOSAttributeValueTable.load(response);
+        biosAttributeValueTable.load(response);
         return response;
     }
 
     Table attributeValueTable;
     Table attributeTable;
-    BIOSAttributeTable.load(attributeTable);
-    traverseBIOSAttrTable(
+    biosAttributeTable.load(attributeTable);
+    traverseBiosAttrTable(
         attributeTable,
-        [&BIOSStringTable, &attributeValueTable](
+        [&biosStringTable, &attributeValueTable](
             const struct pldm_bios_attr_table_entry* tableEntry) {
-            constructAttrValueTableEntry(tableEntry, BIOSStringTable,
+            constructAttrValueTableEntry(tableEntry, biosStringTable,
                                          attributeValueTable);
         });
     if (attributeValueTable.empty())
@@ -855,7 +849,7 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
         return CmdHandler::ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
     }
     pldm::responder::utils::padAndChecksum(attributeValueTable);
-    BIOSAttributeValueTable.store(attributeValueTable);
+    biosAttributeValueTable.store(attributeValueTable);
 
     response.resize(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES +
                     attributeValueTable.size());
@@ -874,7 +868,7 @@ Response getBIOSAttributeValueTable(BIOSTable& BIOSAttributeValueTable,
 Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
 {
     fs::create_directory(BIOS_TABLES_DIR);
-    auto response = internal::buildBIOSTables(request, payloadLength,
+    auto response = internal::buildBiosTables(request, payloadLength,
                                               BIOS_JSONS_DIR, BIOS_TABLES_DIR);
 
     return response;
@@ -897,27 +891,27 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
 
     fs::path tablesPath(BIOS_TABLES_DIR);
     auto stringTablePath = tablesPath / stringTableFile;
-    BIOSTable BIOSStringTable(stringTablePath.c_str());
+    BiosTable biosStringTable(stringTablePath.c_str());
     auto attrTablePath = tablesPath / attrTableFile;
-    BIOSTable BIOSAttributeTable(attrTablePath.c_str());
-    if (BIOSAttributeTable.isEmpty() || BIOSStringTable.isEmpty())
+    BiosTable biosAttributeTable(attrTablePath.c_str());
+    if (biosAttributeTable.isEmpty() || biosStringTable.isEmpty())
     {
         return ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
     }
 
     auto attrValueTablePath = tablesPath / attrValTableFile;
-    BIOSTable BIOSAttributeValueTable(attrValueTablePath.c_str());
+    BiosTable biosAttributeValueTable(attrValueTablePath.c_str());
 
-    if (BIOSAttributeValueTable.isEmpty())
+    if (biosAttributeValueTable.isEmpty())
     {
         Table attributeValueTable;
         Table attributeTable;
-        BIOSAttributeTable.load(attributeTable);
-        traverseBIOSAttrTable(
+        biosAttributeTable.load(attributeTable);
+        traverseBiosAttrTable(
             attributeTable,
-            [&BIOSStringTable, &attributeValueTable](
+            [&biosStringTable, &attributeValueTable](
                 const struct pldm_bios_attr_table_entry* tableEntry) {
-                constructAttrValueTableEntry(tableEntry, BIOSStringTable,
+                constructAttrValueTableEntry(tableEntry, biosStringTable,
                                              attributeValueTable);
             });
         if (attributeValueTable.empty())
@@ -925,11 +919,11 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
             return ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
         }
         pldm::responder::utils::padAndChecksum(attributeValueTable);
-        BIOSAttributeValueTable.store(attributeValueTable);
+        biosAttributeValueTable.store(attributeValueTable);
     }
 
     Response table;
-    BIOSAttributeValueTable.load(table);
+    biosAttributeValueTable.load(table);
 
     auto entry = pldm_bios_table_attr_value_find_by_handle(
         table.data(), table.size(), attributeHandle);
@@ -958,7 +952,7 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
 namespace internal
 {
 
-Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
+Response buildBiosTables(const pldm_msg* request, size_t payloadLength,
                          const char* biosJsonDir, const char* biosTablePath)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
@@ -980,40 +974,40 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
         return CmdHandler::ccOnlyResponse(request, rc);
     }
 
-    BIOSTable BIOSStringTable(
+    BiosTable biosStringTable(
         (std::string(biosTablePath) + "/" + stringTableFile).c_str());
-    BIOSTable BIOSAttributeTable(
+    BiosTable biosAttributeTable(
         (std::string(biosTablePath) + "/" + attrTableFile).c_str());
-    BIOSTable BIOSAttributeValueTable(
+    BiosTable biosAttributeValueTable(
         (std::string(biosTablePath) + "/" + attrValTableFile).c_str());
     switch (tableType)
     {
         case PLDM_BIOS_STRING_TABLE:
 
-            response = getBIOSStringTable(BIOSStringTable, request);
+            response = getBiosStringTable(biosStringTable, request);
             break;
         case PLDM_BIOS_ATTR_TABLE:
 
-            if (BIOSStringTable.isEmpty())
+            if (biosStringTable.isEmpty())
             {
                 rc = PLDM_BIOS_TABLE_UNAVAILABLE;
             }
             else
             {
-                response = getBIOSAttributeTable(
-                    BIOSAttributeTable, BIOSStringTable, biosJsonDir, request);
+                response = getBiosAttributeTable(
+                    biosAttributeTable, biosStringTable, biosJsonDir, request);
             }
             break;
         case PLDM_BIOS_ATTR_VAL_TABLE:
-            if (BIOSAttributeTable.isEmpty() || BIOSStringTable.isEmpty())
+            if (biosAttributeTable.isEmpty() || biosStringTable.isEmpty())
             {
                 rc = PLDM_BIOS_TABLE_UNAVAILABLE;
             }
             else
             {
-                response = getBIOSAttributeValueTable(BIOSAttributeValueTable,
-                                                      BIOSAttributeTable,
-                                                      BIOSStringTable, request);
+                response = getBiosAttributeValueTable(biosAttributeValueTable,
+                                                      biosAttributeTable,
+                                                      biosStringTable, request);
             }
             break;
         default:
@@ -1029,8 +1023,8 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
     return response;
 }
 
-} // end namespace internal
-} // namespace bios
+} // namespace internal
 
+} // namespace bios
 } // namespace responder
 } // namespace pldm
