@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include "bios_table.h"
+
 namespace pldm
 {
 
@@ -42,6 +44,31 @@ void BIOSTable::load(Response& response) const
     response.resize(currSize + fileSize);
     std::ifstream stream(filePath.string(), std::ios::in | std::ios::binary);
     stream.read(reinterpret_cast<char*>(response.data() + currSize), fileSize);
+}
+
+BIOSStringTable::BIOSStringTable(const char* filePath) : BIOSTable(filePath)
+{
+    if (!isEmpty())
+    {
+        load(stringTable);
+    }
+}
+
+std::string BIOSStringTable::findString(uint16_t handle) const
+{
+    auto stringEntry = pldm_bios_table_string_find_by_handle(
+        stringTable.data(), stringTable.size(), handle);
+    if (stringEntry == nullptr)
+    {
+        throw std::invalid_argument("Invalid String Handle");
+    }
+    auto strLength =
+        pldm_bios_table_string_entry_decode_string_length(stringEntry);
+    std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
+    pldm_bios_table_string_entry_decode_string(stringEntry, buffer.data(),
+                                               buffer.size());
+
+    return std::string(buffer.data(), buffer.data() + strLength);
 }
 
 } // namespace bios

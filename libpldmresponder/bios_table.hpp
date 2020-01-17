@@ -71,6 +71,26 @@ class BIOSTable
     fs::path filePath;
 };
 
+class BIOSStringTable : public BIOSTable
+{
+  public:
+    /** @brief Ctor - set file path to persist BIOS String table
+     *
+     *  @param[in] filePath - file where BIOS table should be persisted
+     */
+    BIOSStringTable(const char* filePath);
+
+    /** @brief Find the string name from the BIOS string table for a string
+     * handle
+     *  @param[in] handle - string handle
+     *  @return - std::string - name of the corresponding BIOS string
+     */
+    std::string findString(uint16_t handle) const;
+
+  private:
+    Table stringTable;
+};
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm
