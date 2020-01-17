@@ -221,7 +221,7 @@ class TestAllBIOSTables : public ::testing::Test
     static void SetUpTestCase() // will execute once at the begining of all
                                 // TestAllBIOSTables objects
     {
-        char tmpdir[] = "/tmp/allBiosTables.XXXXXX";
+        char tmpdir[] = "/tmp/allBIOSTables.XXXXXX";
         biosPath = fs::path(mkdtemp(tmpdir));
     }
 
@@ -509,30 +509,30 @@ class TestSingleTypeBIOSTable : public ::testing::Test
     { // will be executed before each individual test defined
         // in TestSingleTypeBIOSTable
         char tmpdir[] = "/tmp/singleTypeBIOSTable.XXXXXX";
-        destBiosPath = fs::path(mkdtemp(tmpdir));
+        destBIOSPath = fs::path(mkdtemp(tmpdir));
     }
 
     void TearDown() override
     { // will be executed after each individual test
         // defined in TestSingleTypeBIOSTable
-        fs::remove_all(destBiosPath);
+        fs::remove_all(destBIOSPath);
     }
 
     void CopySingleJsonFile(std::string file)
     {
         fs::path srcDir("./bios_jsons");
-        fs::path srcBiosPath = srcDir / file;
-        std::filesystem::copy(srcBiosPath, destBiosPath);
+        fs::path srcBIOSPath = srcDir / file;
+        std::filesystem::copy(srcBIOSPath, destBIOSPath);
     }
 
-    fs::path destBiosPath;
+    fs::path destBIOSPath;
 };
 
 TEST_F(TestSingleTypeBIOSTable, getBIOSAttributeValueTableBasedOnStringTypeTest)
 {
     // Copy string json file to the destination
     TestSingleTypeBIOSTable::CopySingleJsonFile(bios_parser::bIOSStrJson);
-    auto fpath = TestSingleTypeBIOSTable::destBiosPath.c_str();
+    auto fpath = TestSingleTypeBIOSTable::destBIOSPath.c_str();
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
         requestPayload{};
@@ -616,7 +616,7 @@ TEST_F(TestSingleTypeBIOSTable,
 {
     // Copy integer json file to the destination
     TestSingleTypeBIOSTable::CopySingleJsonFile(bios_parser::bIOSIntegerJson);
-    auto fpath = TestSingleTypeBIOSTable::destBiosPath.c_str();
+    auto fpath = TestSingleTypeBIOSTable::destBIOSPath.c_str();
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_REQ_BYTES>
         requestPayload{};
