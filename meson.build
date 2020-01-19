@@ -29,8 +29,25 @@ configure_file(output: 'config.h',
 )
 
 subdir('libpldm')
+
+libpldmutils_headers = ['.']
+libpldmutils = library(
+  'pldmutils',
+  'utils.cpp',
+  version: meson.project_version(),
+  dependencies: [
+      libpldm,
+      dependency('phosphor-logging'),
+      dependency('sdbusplus'),
+  ],
+  install: true,
+  include_directories: include_directories(libpldmutils_headers),
+)
+
+libpldmutils = declare_dependency(
+  include_directories: include_directories(libpldmutils_headers),
+  link_with: libpldmutils)
 subdir('libpldmresponder')
-subdir('tool')
 
 deps = [
   libpldm,
@@ -49,6 +66,8 @@ executable(
   dependencies: deps,
   install: true,
   install_dir: get_option('bindir'))
+
+subdir('tool')
 
 if get_option('tests').enabled()
   subdir('test')
