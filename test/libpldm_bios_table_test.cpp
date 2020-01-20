@@ -928,8 +928,8 @@ TEST(StringTable, EntryDecodeTest)
         entry, buffer.data(), buffer.size());
     EXPECT_EQ(decodedLength, strLength);
     EXPECT_EQ(std::strcmp("Allowed", buffer.data()), 0);
-    decodedLength =
-        pldm_bios_table_string_entry_decode_string(entry, buffer.data(), 2);
+    decodedLength = pldm_bios_table_string_entry_decode_string(
+        entry, buffer.data(), 2 + 1 /* sizeof '\0'*/);
     EXPECT_EQ(decodedLength, 2);
     EXPECT_EQ(std::strcmp("Al", buffer.data()), 0);
 
