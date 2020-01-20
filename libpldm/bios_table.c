@@ -96,7 +96,7 @@ uint16_t pldm_bios_table_string_entry_decode_string(
 {
 	uint16_t length =
 	    pldm_bios_table_string_entry_decode_string_length(entry);
-	length = length < size ? length : size;
+	length = length < (size - 1) ? length : (size - 1);
 	memcpy(buffer, entry->name, length);
 	buffer[length] = 0;
 	return length;
