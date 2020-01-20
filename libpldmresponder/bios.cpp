@@ -331,19 +331,20 @@ std::string findStringName(StringHandle stringHdl,
     BIOSStringTable.load(table);
     auto stringEntry = pldm_bios_table_string_find_by_handle(
         table.data(), table.size(), stringHdl);
-    std::string name;
     if (stringEntry == nullptr)
     {
         std::cerr << "Reached end of BIOS string table,did not find "
                   << "string name for handle, STRING_HANDLE=" << stringHdl
                   << "\n";
+        throw InternalFailure();
     }
     auto strLength =
         pldm_bios_table_string_entry_decode_string_length(stringEntry);
-    name.resize(strLength);
-    pldm_bios_table_string_entry_decode_string(stringEntry, name.data(),
-                                               name.size());
-    return name;
+    std::vector<char> buffer(strLength + 1);
+    pldm_bios_table_string_entry_decode_string(stringEntry, buffer.data(),
+                                               buffer.size());
+
+    return std::string(buffer.data(), buffer.data() + strLength);
 }
 
 namespace bios_type_enum
