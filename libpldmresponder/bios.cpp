@@ -278,7 +278,7 @@ std::string findStringName(StringHandle stringHdl,
         pldm_bios_table_string_entry_decode_string_length(stringEntry);
     name.resize(strLength);
     pldm_bios_table_string_entry_decode_string(stringEntry, name.data(),
-                                               name.size());
+                                               name.size() + 1);
     return name;
 }
 
