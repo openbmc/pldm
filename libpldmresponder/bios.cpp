@@ -355,7 +355,8 @@ std::vector<uint8_t> findDefaultValHandle(const PossibleValues& possiVals,
     std::vector<uint8_t> defHdls;
     for (const auto& defs : defVals)
     {
-        auto index = std::lower_bound(possiVals.begin(), possiVals.end(), defs);
+        auto index = std::find_if(possiVals.begin(), possiVals.end(),
+                                  [&defs](const auto& v) { return defs == v; });
         if (index != possiVals.end())
         {
             defHdls.push_back(index - possiVals.begin());
@@ -392,10 +393,6 @@ void constructAttrTable(const BIOSTable& biosStringTable, Table& attributeTable)
         bool readOnly = (std::get<0>(value));
         PossibleValues possiVals = std::get<1>(value);
         DefaultValues defVals = std::get<2>(value);
-        // both the possible and default values are stored in sorted manner to
-        // ease in fetching back/comparison
-        std::sort(possiVals.begin(), possiVals.end());
-        std::sort(defVals.begin(), defVals.end());
 
         std::vector<StringHandle> possiValsByHdl;
         for (const auto& elem : possiVals)
