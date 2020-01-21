@@ -149,10 +149,48 @@ class GetPLDMVersion : public CommandInterface
     pldm_supported_types pldmType;
 };
 
+class GetTID : public CommandInterface
+{
+  public:
+    ~GetTID() = default;
+    GetTID() = delete;
+    GetTID(const GetTID&) = delete;
+    GetTID(GetTID&&) = default;
+    GetTID& operator=(const GetTID&) = delete;
+    GetTID& operator=(GetTID&&) = default;
+
+    using CommandInterface::CommandInterface;
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto rc = encode_get_tid_req(PLDM_LOCAL_INSTANCE_ID, request);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        uint8_t tid = 0;
+        std::vector<bitfield8_t> types(8);
+        auto rc = decode_get_tid_resp(responsePtr, payloadLength, &cc, &tid);
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            return;
+        }
+        std::cout << "Parsed Response Msg: " << std::endl;
+        std::cout << "TID : " << static_cast<uint32_t>(tid) << std::endl;
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto base = app.add_subcommand("base", "base type command");
     base->require_subcommand(1);
+
     auto getPLDMTypes =
         base->add_subcommand("GetPLDMTypes", "get pldm supported types");
     commands.push_back(
@@ -162,6 +200,9 @@ void registerCommand(CLI::App& app)
         base->add_subcommand("GetPLDMVersion", "get version of a certain type");
     commands.push_back(std::make_unique<GetPLDMVersion>(
         "base", "GetPLDMVersion", getPLDMVersion));
+
+    auto getPLDMTID = base->add_subcommand("GetTID", "get Terminus ID (TID)");
+    commands.push_back(std::make_unique<GetTID>("base", "GetTID", getPLDMTID));
 }
 
 } // namespace base
