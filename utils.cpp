@@ -4,7 +4,6 @@
 #include <ctime>
 #include <iostream>
 #include <map>
-#include <phosphor-logging/log.hpp>
 #include <stdexcept>
 #include <string>
 #include <vector>
