@@ -1,6 +1,6 @@
 #include "file_io_type_dump.hpp"
 
-#include "libpldmresponder/utils.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <stdint.h>
@@ -10,6 +10,7 @@
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <sdbusplus/server.hpp>
 
 #include "libpldm/base.h"
 #include "oem/ibm/libpldm/file_io.h"
@@ -19,27 +20,43 @@ namespace pldm
 namespace responder
 {
 
-int DumpHandler::processNewFileNotification(uint32_t length)
+int DumpHandler::fd = -1;
+
+int DumpHandler::processNewFileNotification(uint32_t length,
+                                            uint32_t fileHandle)
 {
     std::cout << "length of dump is " << length
+              << " and dump id= " << fileHandle
               << std::endl; // to get rid of unused
 #if 0
-    static constexpr auto dumpObjPath = "";
-    static constexpr auto dumpInterface = "";
+
+    static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump";
+    static constexpr auto dumpInterface = "xyz.openbmc_project.Dump.NewDump";
 
     static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
 
-    Variant value;
     try
     {
-        auto service = getService(bus,dumpObjPath,dumpInterface);
-        //using namespace sdbusplus::  ;
-        //need to add the dump id and size as method parameter
+        auto service = pldm::utils::getService(bus,dumpObjPath,dumpInterface);
+        using namespace sdbusplus::xyz.openbmc_project.Dump ;
+
         auto method = bus.new_method_call(service.c_str(),dumpObjPath,
-                                   dumpInterface,"Create"); //change the method name accordingly
-        //method.append();
-        auto reply = bus.call(method);                           
-        reply.read(value);
+                                   dumpInterface,"Notify");
+        method.append(convertForMessage(NewDump::DumpType::System).c_str(),fileHandle,length);
+        bus.call_noreply(method);                           
+    }
+    catch (const sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure& e)
+    {
+        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
+        << e.what() << "\n";
+        return PLDM_ERROR;
+          
+    }
+    catch (const sdbusplus::xyz::openbmc_project::Dump::Create::Error::Disabled& e)
+    {
+        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
+              << e.what() << "\n";
+        return PLDM_ERROR;      
     }
     catch (const std::exception& e)
     {
@@ -47,9 +64,28 @@ int DumpHandler::processNewFileNotification(uint32_t length)
             << e.what() << "\n";
         return PLDM_ERROR;    
     }
-
 #endif
-    return PLDM_SUCCESS; // or return value?
+
+    return PLDM_SUCCESS;
+}
+
+int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
+                                 uint64_t address)
+{
+    static constexpr auto nbdInterface = "/dev/nbd1";
+    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
+
+    if (DumpHandler::fd == -1)
+    {
+        DumpHandler::fd = open(nbdInterface, flags);
+        if (DumpHandler::fd == -1)
+        {
+            std::cerr << "NBD file does not exist at " << nbdInterface
+                      << " ERROR=" << errno << "\n";
+            return PLDM_ERROR;
+        }
+    }
+    return transferFileData(DumpHandler::fd, false, offset, length, address);
 }
 
 } // namespace responder
