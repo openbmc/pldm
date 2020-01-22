@@ -19,6 +19,8 @@ namespace pldm
 namespace responder
 {
 
+int DumpHandler::fd = -1;
+
 int DumpHandler::processNewFileNotification(uint32_t length)
 {
     std::cout << "length of dump is " << length
@@ -50,6 +52,24 @@ int DumpHandler::processNewFileNotification(uint32_t length)
 
 #endif
     return PLDM_SUCCESS; // or return value?
+}
+
+int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
+                                 uint64_t address)
+{
+    static constexpr auto nbdInterface = "/dev/nbd1";
+    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
+
+    if (DumpHandler::fd == -1)
+    {
+        DumpHandler::fd = open(nbdInterface, flags);
+        if (DumpHandler::fd == -1)
+        {
+            std::cerr << "NBD file does not exist at " << nbdInterface << "\n";
+            return PLDM_ERROR;
+        }
+    }
+    return transferFileData(DumpHandler::fd, false, offset, length, address);
 }
 
 } // namespace responder
