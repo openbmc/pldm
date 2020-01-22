@@ -38,7 +38,8 @@ class PelHandler : public FileHandler
      */
     virtual int storePel(std::string&& pelFileName);
 
-    virtual int processNewFileNotification(uint32_t /*length*/)
+    virtual int processNewFileNotification(uint32_t /*length*/,
+                                           uint32_t /* fileHandle */)
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
