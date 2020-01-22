@@ -52,5 +52,23 @@ int DumpHandler::processNewFileNotification(uint32_t length)
     return PLDM_SUCCESS; // or return value?
 }
 
+int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
+                                 uint64_t address)
+{
+    static constexpr auto nbdInterface = "/dev/nbd1";
+    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
+
+    if (fd == -1)
+    {
+        fd = open(nbdInterface, flags);
+        if (fd == -1)
+        {
+            std::cerr << "NBD file does not exist at " << nbdInterface << "\n";
+            return PLDM_ERROR;
+        }
+    }
+    return transferFileData(fd, false, offset, length, address);
+}
+
 } // namespace responder
 } // namespace pldm

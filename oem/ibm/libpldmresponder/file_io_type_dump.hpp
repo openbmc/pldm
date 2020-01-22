@@ -17,15 +17,13 @@ class DumpHandler : public FileHandler
   public:
     /** @brief DumpHandler constructor
      */
-    DumpHandler(uint32_t fileHandle) : FileHandler(fileHandle)
+    DumpHandler(uint32_t fileHandle) : FileHandler(fileHandle), fd(-1)
     {
     }
 
-    virtual int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
-                                uint64_t /*address*/)
-    {
-        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
-    }
+    virtual int writeFromMemory(uint32_t offset, uint32_t length,
+                                uint64_t address);
+
     virtual int readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
                                uint64_t /*address*/)
     {
@@ -39,11 +37,19 @@ class DumpHandler : public FileHandler
 
     virtual int processNewFileNotification(uint32_t length);
 
+    virtual int fileAck(uint8_t /*fileStatus*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief DumpHandler destructor
      */
     ~DumpHandler()
     {
     }
+
+  private:
+    int fd; //!< fd to manage the dump offload to bmc
 };
 
 } // namespace responder
