@@ -72,5 +72,42 @@ int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
     return transferFileData(DumpHandler::fd, false, offset, length, address);
 }
 
+int DumpHandler::fileAck(uint8_t /*fileStatus*/)
+{
+#if 0
+    static constexpr auto dumpObjPath = "/xyz/openbmc_project/Dump";
+    static constexpr auto dumpInterface = "org.openbmc_project.Dump.Entry.Status";
+    static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+
+    if (fd <= 0)
+    {
+        std::cerr << "File does not exist. Invalid FD.";
+        close(fd);
+        fd = -1;
+        return PLDM_ERROR;
+    }
+    else if (fd > 0)
+    {    
+        try
+        {
+            auto service = getService(bus, dumpObjPath, dumpInterface);
+            auto method = bus.new_method_call(service.c_str(), dumpObjPath,
+                                          dumpInterface, "OffloadComplete");
+            method.append(fileHandle);
+            bus.call_noreply(method);
+        }
+        catch (const std::exception& e)
+        {
+     I      std::cerr << "Dump Offload Ack D-Bus call failed";
+            return PLDM_ERROR;
+        }
+        close(fd);
+        fd = -1;
+    }
+
+#endif
+    return PLDM_SUCCESS;
+}
+
 } // namespace responder
 } // namespace pldm
