@@ -72,5 +72,96 @@ int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
     return transferFileData(DumpHandler::fd, false, offset, length, address);
 }
 
+int DumpHandler::fileAck(uint8_t /*fileStatus*/)
+{
+    if (fd <= 0)
+    {
+        // std::cerr << "File does not exist. Invalid FD.";
+        close(fd);
+        fd = -1;
+        return PLDM_ERROR;
+    }
+    else if (fd > 0)
+    {
+        static constexpr auto dumpObjPath = "/xyz/openbmc_project/Dump/Entry";
+        static constexpr auto dumpInterface =
+            "org.openbmc_project.Dump.Entry.System.interace";
+        static sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+        std::variant<uint32_t> value;
+        try
+        {
+
+            auto service =
+                pldm::utils::getService(bus, dumpObjPath, dumpInterface);
+
+            auto method = bus.new_method_call(service.c_str(), dumpObjPath,
+                                              dbusProperties, "Get");
+            method.append(dumpInterface, "SourceDumpId");
+
+            auto reply = bus.call(method);
+            reply.read(value);
+        }
+        catch (const std::exception& e)
+        {
+            return PLDM_ERROR;
+        }
+
+        auto dbusInfo = handle.inventoryLookup();
+
+        // Read the all the inventory D-Bus objects
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        dbus::ObjectValueTree objects;
+
+        try
+        {
+            auto method = bus.new_method_call(
+                std::get<0>(dbusInfo).c_str(), std::get<1>(dbusInfo).c_str(),
+                "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
+            auto reply = bus.call(method);
+            reply.read(objects);
+        }
+        catch (const std::exception& e)
+        {
+            return;
+        }
+
+        // Populate all the interested Item types to a map for easy lookup
+        std::set<dbus::Interface> itemIntfsLookup;
+        auto itemIntfs = std::get<2>(dbusInfo);
+        std::transform(std::begin(itemIntfs), std::end(itemIntfs),
+                       std::inserter(itemIntfsLookup, itemIntfsLookup.end()),
+                       [](dbus::Interface intf) { return intf; });
+        static constexpr auto dumpObjPath2 = "/xyz/openbmc_project/Dump/Entry";
+        static constexpr auto dumpInterface2 =
+            "org.openbmc_project.Dump.Entry.interace";
+
+        for (const auto& object : objects)
+        {
+            if (itemIntfsLookup.find(value) == fd)
+            {
+                try
+                {
+                    auto service = pldm::utils::getService(bus, dumpObjPath2,
+                                                           dumpInterface2);
+
+                    auto method = bus.new_method_call(
+                        service.c_str(), dumpObjPath2, dbusProperties, "Set");
+                    method.append(dumpInterface2, "Offloaded");
+                    bus.call_noreply(method);
+                }
+                catch (const std::exception& e)
+                {
+                    return;
+                }
+            }
+        }
+        close(fd);
+        fd = -1;
+    }
+
+#endif
+    return PLDM_SUCCESS;
+}
+
 } // namespace responder
 } // namespace pldm
