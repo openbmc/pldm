@@ -684,20 +684,20 @@ Response Handler::fileAck(const pldm_msg* request, size_t payloadLength)
 
     std::unique_ptr<FileHandler> handler{};
     try
-        {
-                    handler = getHandlerByType(fileType, fileHandle);
-                        }
+    {
+        handler = getHandlerByType(fileType, fileHandle);
+    }
 
     catch (const InternalFailure& e)
-        {
-                    encode_file_ack_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
-                                                 responsePtr);
-                            return response;
-                                }
-                                
-     rc = handler->fileAck(fileStatus);
-         encode_file_ack_resp(request->hdr.instance_id, rc, responsePtr);
-             return response;
+    {
+        encode_file_ack_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
+                             responsePtr);
+        return response;
+    }
+
+    rc = handler->fileAck(fileStatus);
+    encode_file_ack_resp(request->hdr.instance_id, rc, responsePtr);
+    return response;
 }
 
 Response Handler::newFileAvailable(const pldm_msg* request,
