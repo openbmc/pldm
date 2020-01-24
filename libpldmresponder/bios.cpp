@@ -145,13 +145,12 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     constexpr auto hostTimePath = "/xyz/openbmc_project/time/host";
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-    std::variant<EpochTimeUS> value;
+    EpochTimeUS timeUsec;
 
     try
     {
-        value = pldm::utils::DBusHandler()
-                    .getDbusProperty<std::variant<EpochTimeUS>>(
-                        hostTimePath, "Elapsed", timeInterface);
+        timeUsec = pldm::utils::DBusHandler().getDbusProperty<EpochTimeUS>(
+            hostTimePath, "Elapsed", timeInterface);
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
@@ -163,8 +162,6 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
                                   responsePtr);
         return response;
     }
-
-    uint64_t timeUsec = std::get<EpochTimeUS>(value);
 
     uint64_t timeSec = std::chrono::duration_cast<std::chrono::seconds>(
                            std::chrono::microseconds(timeUsec))
