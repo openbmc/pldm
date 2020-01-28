@@ -956,7 +956,7 @@ TEST(NewFile, testGoodDecodeRequest)
     // Random value for fileHandle and length
     uint16_t fileType = 0xFF;
     uint32_t fileHandle = 0x12345678;
-    uint32_t length = 0x13245768;
+    uint64_t length = 0x13245768;
 
     request->file_type = fileType;
     request->file_handle = fileHandle;
@@ -964,7 +964,7 @@ TEST(NewFile, testGoodDecodeRequest)
 
     uint16_t retFileType = 0xFF;
     uint32_t retFileHandle = 0;
-    uint32_t retLength = 0;
+    uint64_t retLength = 0;
 
     // Invoke decode the read file request
     auto rc = decode_new_file_req(requestPtr, payload_length, &retFileType,
@@ -1004,7 +1004,7 @@ TEST(NewFile, testBadDecodeRequest)
 {
     uint16_t fileType = 0;
     uint32_t fileHandle = 0;
-    uint32_t length = 0;
+    uint64_t length = 0;
 
     // Request payload message is missing
     auto rc = decode_new_file_req(NULL, 0, &fileType, &fileHandle, &length);

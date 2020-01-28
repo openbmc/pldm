@@ -63,7 +63,7 @@ enum pldm_fileio_file_type {
 #define PLDM_WRITE_FILE_RESP_BYTES 5
 #define PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES 22
 #define PLDM_RW_FILE_BY_TYPE_MEM_RESP_BYTES 5
-#define PLDM_NEW_FILE_REQ_BYTES 10
+#define PLDM_NEW_FILE_REQ_BYTES 14
 #define PLDM_NEW_FILE_RESP_BYTES 1
 #define PLDM_RW_FILE_BY_TYPE_REQ_BYTES 14
 #define PLDM_RW_FILE_BY_TYPE_RESP_BYTES 5
@@ -461,7 +461,7 @@ int decode_rw_file_by_type_memory_resp(const struct pldm_msg *msg,
 struct pldm_new_file_req {
 	uint16_t file_type;   //!< Type of file
 	uint32_t file_handle; //!< Handle to file
-	uint32_t length;      //!< Number of bytes in new file
+	uint64_t length;      //!< Number of bytes in new file
 } __attribute__((packed));
 
 /** @struct pldm_new_file_resp
@@ -483,7 +483,7 @@ struct pldm_new_file_resp {
  */
 int decode_new_file_req(const struct pldm_msg *msg, size_t payload_length,
 			uint16_t *file_type, uint32_t *file_handle,
-			uint32_t *length);
+			uint64_t *length);
 
 /** @brief Create a PLDM response for NewFileAvailable
  *
@@ -506,7 +506,7 @@ int encode_new_file_resp(uint8_t instance_id, uint8_t completion_code,
  *  @return pldm_completion_codes
  */
 int encode_new_file_req(uint8_t instance_id, uint16_t file_type,
-			uint32_t file_handle, uint32_t length,
+			uint32_t file_handle, uint64_t length,
 			struct pldm_msg *msg);
 
 /** @brief Decode NewFileAvailable command response data
