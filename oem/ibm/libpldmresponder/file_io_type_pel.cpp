@@ -71,7 +71,7 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response)
         auto reply = bus.call(method);
         sdbusplus::message::unix_fd fd{};
         reply.read(fd);
-        std::cerr << "GetPEL D-Bus call done\n";
+
         off_t fileSize = lseek(fd, 0, SEEK_END);
         if (fileSize == -1)
         {
