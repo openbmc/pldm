@@ -2,6 +2,7 @@
 
 #include "pldm_cmd_helper.hpp"
 
+#include "libpldm/bios_table.h"
 #include "libpldm/utils.h"
 
 namespace pldmtool
@@ -16,6 +17,12 @@ namespace
 using namespace pldmtool::helper;
 
 std::vector<std::unique_ptr<CommandInterface>> commands;
+
+const std::map<const char*, pldm_bios_table_types> pldmBIOSTableTypes{
+    {"StringTable", PLDM_BIOS_STRING_TABLE},
+    {"AttributeTable", PLDM_BIOS_ATTR_TABLE},
+    {"AttributeValueTable", PLDM_BIOS_ATTR_VAL_TABLE},
+};
 
 } // namespace
 
@@ -147,6 +154,121 @@ class SetDateTime : public CommandInterface
     uint64_t tmData;
 };
 
+class GetBIOSTable : public CommandInterface
+{
+  public:
+    ~GetBIOSTable() = default;
+    GetBIOSTable() = delete;
+    GetBIOSTable(const GetBIOSTable&) = delete;
+    GetBIOSTable(GetBIOSTable&&) = default;
+    GetBIOSTable& operator=(const GetBIOSTable&) = delete;
+    GetBIOSTable& operator=(GetBIOSTable&&) = default;
+
+    using CommandInterface::CommandInterface;
+
+    explicit GetBIOSTable(const char* type, const char* name, CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("-t,--type", pldmBIOSTableType, "pldm bios table type")
+            ->required()
+            ->transform(
+                CLI::CheckedTransformer(pldmBIOSTableTypes, CLI::ignore_case));
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        uint32_t nextTransferHandle = 32;
+
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                        PLDM_GET_BIOS_TABLE_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        auto rc = encode_get_bios_table_req(
+            PLDM_LOCAL_INSTANCE_ID, nextTransferHandle, PLDM_GET_FIRSTPART,
+            pldmBIOSTableType, request);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0, transferFlag = 0;
+        uint32_t nextTransferHandle = 0;
+        size_t bios_table_offset;
+
+        auto rc = decode_get_bios_table_resp(responsePtr, payloadLength, &cc,
+                                             &nextTransferHandle, &transferFlag,
+                                             &bios_table_offset);
+
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            return;
+        }
+        auto tableData =
+            reinterpret_cast<char*>((responsePtr->payload) + bios_table_offset);
+        auto tableSize =
+            payloadLength - sizeof(nextTransferHandle) - sizeof(transferFlag);
+        printBIOSTable(tableData, tableSize, pldmBIOSTableType);
+    }
+
+  private:
+    pldm_bios_table_types pldmBIOSTableType;
+
+    void decodeStringTable(const void* tableData, size_t tableSize)
+    {
+        std::cout << "Parsed Response Msg: " << std::endl;
+        std::cout << "BIOSStringHandle : BIOSString" << std::endl;
+        std::string strTableData;
+        std::unique_ptr<pldm_bios_table_iter,
+                        decltype(&pldm_bios_table_iter_free)>
+            iter(pldm_bios_table_iter_create(tableData, tableSize,
+                                             PLDM_BIOS_STRING_TABLE),
+                 pldm_bios_table_iter_free);
+        while (!pldm_bios_table_iter_is_end(iter.get()))
+        {
+            try
+            {
+                auto tableEntry =
+                    pldm_bios_table_iter_string_entry_value(iter.get());
+                auto strLength =
+                    pldm_bios_table_string_entry_decode_string_length(
+                        tableEntry);
+                strTableData.resize(strLength + 1);
+                auto strHandle =
+                    pldm_bios_table_string_entry_decode_handle(tableEntry);
+                pldm_bios_table_string_entry_decode_string(
+                    tableEntry, strTableData.data(), strTableData.size());
+                std::cout << strHandle << " : " << strTableData << std::endl;
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "handler fails when traversing BIOSStringTable, ERROR="
+                    << e.what() << "\n";
+            }
+            pldm_bios_table_iter_next(iter.get());
+        }
+    }
+    void printBIOSTable(const void* tableData, size_t tableSize,
+                        enum pldm_bios_table_types type)
+    {
+        if (!tableSize)
+        {
+            std::cerr << "Found table size null." << std::endl;
+            return;
+        }
+        switch (type)
+        {
+            case PLDM_BIOS_STRING_TABLE:
+                decodeStringTable(tableData, tableSize);
+                break;
+            default:
+                break;
+        }
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto bios = app.add_subcommand("bios", "bios type command");
@@ -159,6 +281,10 @@ void registerCommand(CLI::App& app)
         bios->add_subcommand("SetDateTime", "set host date time");
     commands.push_back(
         std::make_unique<SetDateTime>("bios", "setDateTime", setDateTime));
+
+    auto getBIOSTable = bios->add_subcommand("GetBIOSTable", "get bios table");
+    commands.push_back(
+        std::make_unique<GetBIOSTable>("bios", "GetBIOSTable", getBIOSTable));
 }
 
 } // namespace bios
