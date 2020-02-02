@@ -37,10 +37,7 @@ class DumpHandler : public FileHandler
 
     virtual int newFileAvailable(uint64_t length);
 
-    virtual int fileAck(uint8_t /*fileStatus*/)
-    {
-        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
-    }
+    virtual int fileAck(uint8_t /*fileStatus*/);
 
     /** @brief DumpHandler destructor
      */
