@@ -135,6 +135,11 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
         std::variant<uint8_t> v = std::get<uint8_t>(value);
         setDbusValue(v);
     }
+    else if (dBusMap.propertyType == "bool")
+    {
+        std::variant<bool> v = std::get<bool>(value);
+        setDbusValue(v);
+    }
     else if (dBusMap.propertyType == "int16_t")
     {
         std::variant<int16_t> v = std::get<int16_t>(value);
