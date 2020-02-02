@@ -75,5 +75,54 @@ int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
     return transferFileData(DumpHandler::fd, false, offset, length, address);
 }
 
+int DumpHandler::fileAck(uint8_t /*fileStatus*/)
+{
+    if (DumpHandler::fd >= 0)
+    {
+        static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump";
+        static constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+        static constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+        static constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+        static constexpr auto systemDumpEntry = "xyz.openbmc_project.Dump.Entry.System";
+        static constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
+        auto& bus = pldm::utils::DBusHandler::getBus();
+
+        try
+        {
+            std::vector<std::string> paths;
+            auto method = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                              MAPPER_INTERFACE, "GetSubTreePaths");
+            method.append(dumpObjPath);
+            method.append(0);
+            method.append(std::vector<std::string>({systemDumpEntry}));
+            auto reply = bus.call(method);
+            reply.read(paths);
+            for (auto path: paths)
+            {
+                std::cout << "found dump path " << path << std::endl;
+                uint32_t dumpId = pldm::utils::DBusHandler().getDbusProperty<uint32_t>(
+                    path.c_str(), "SourceDumpId", systemDumpEntry);
+                if (dumpId == fileHandle)
+                {
+                    std::cout << "found dump id " << dumpId << std::endl;
+                    std::variant<bool> value{true};
+                    pldm::utils::DBusHandler().setDbusProperty(path.c_str(), "Offloaded",
+                                                       dumpEntry, value);
+                    close(DumpHandler::fd);
+                    DumpHandler::fd = -1;
+                    return PLDM_SUCCESS;
+                }
+            }
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
+                      << e.what() << "\n";
+        }
+    }
+
+    return PLDM_ERROR;
+}
+
 } // namespace responder
 } // namespace pldm
