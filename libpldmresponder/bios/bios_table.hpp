@@ -71,21 +71,36 @@ class BIOSTable
     fs::path filePath;
 };
 
-class BIOSStringTable : public BIOSTable
+class BIOSStringTable
 {
   public:
-    /** @brief Ctor - set file path to persist BIOS String table
+    /** @brief Constructs BIOSStringTable
      *
-     *  @param[in] filePath - file where BIOS table should be persisted
+     *  @param[in] stringTable - The stringTable in RAM
      */
-    BIOSStringTable(const char* filePath);
+    BIOSStringTable(const Table& stringTable);
+
+    /** @brief Constructs BIOSStringTable
+     *
+     *  @param[in] biosTable - The BIOSTable
+     */
+    BIOSStringTable(const BIOSTable& biosTable);
 
     /** @brief Find the string name from the BIOS string table for a string
      * handle
      *  @param[in] handle - string handle
-     *  @return - std::string - name of the corresponding BIOS string
+     *  @return name of the corresponding BIOS string
+     *  @throw std::invalid_argument if the string can not be found.
      */
     std::string findString(uint16_t handle) const;
+
+    /** @brief Find the string handle from the BIOS string table by the given
+     *         name
+     *  @param[in] name - name of the BIOS string
+     *  @return handle of the string
+     *  @throw std::invalid_argument if the string can not be found
+     */
+    uint16_t findHandle(const std::string& name) const;
 
   private:
     Table stringTable;
