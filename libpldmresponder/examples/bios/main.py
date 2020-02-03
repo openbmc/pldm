@@ -1,20 +1,18 @@
 import jsonschema
 import json
-
-with open('schema.json','r') as f:
+import sys
+with open('integer_schema.json','r') as f:
     schema=json.loads(f.read()) 
-		
-
-input_file=input('Enter the data_file:')
+input_file=sys.argv[1]
 with open(input_file,'r') as file:
     json_data=json.loads(file.read())
- 
-
 try:
     jsonschema.validate(json_data,schema)
 except jsonschema.ValidationError as e:
     print(e.message)
 except jsonschema.SchemaError as e:
     print (e)
-
+	
+	
+		
 
