@@ -56,7 +56,7 @@ const Strings& getStrings()
     return BIOSStrings;
 }
 
-int parseBiosJsonFile(const fs::path& dirPath, const std::string& fileName,
+int parseBIOSJsonFile(const fs::path& dirPath, const std::string& fileName,
                       Json& fileData)
 {
     int rc = 0;
@@ -316,7 +316,7 @@ CurrentValues getAttrValue(const AttrName& attrName)
 int setAttrValue(const AttrName& attrName,
                  const pldm_bios_attr_val_table_entry* attrValueEntry,
                  const pldm_bios_attr_table_entry* attrEntry,
-                 const BiosStringTable& stringTable)
+                 const BIOSStringTable& stringTable)
 {
     const auto& dBusMap = BIOSAttrLookup.at(attrName);
     if (dBusMap == std::nullopt)
@@ -364,7 +364,7 @@ namespace bios_string
 
 /** @brief BIOS string types
  */
-enum BiosStringEncoding
+enum BIOSStringEncoding
 {
     UNKNOWN = 0x00,
     ASCII = 0x01,
@@ -463,7 +463,7 @@ std::string getAttrValue(const AttrName& attrName)
         dBusMap->interface.c_str());
 }
 
-std::string stringToUtf8(BiosStringEncoding stringType,
+std::string stringToUtf8(BIOSStringEncoding stringType,
                          const std::vector<uint8_t>& data)
 {
     switch (stringType)
@@ -486,7 +486,7 @@ std::string stringToUtf8(BiosStringEncoding stringType,
 int setAttrValue(const AttrName& attrName,
                  const pldm_bios_attr_val_table_entry* attrValueEntry,
                  const pldm_bios_attr_table_entry* attrEntry,
-                 const BiosStringTable&)
+                 const BIOSStringTable&)
 {
     const auto& dBusMap = BIOSAttrLookup.at(attrName);
     if (dBusMap == std::nullopt)
@@ -504,7 +504,7 @@ int setAttrValue(const AttrName& attrName,
                               currentString.ptr + currentString.length);
 
     std::variant<std::string> value =
-        stringToUtf8(static_cast<BiosStringEncoding>(stringType), data);
+        stringToUtf8(static_cast<BIOSStringEncoding>(stringType), data);
 
     pldm::utils::DBusHandler().setDbusProperty(
         dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
@@ -628,7 +628,7 @@ uint64_t getAttrValue(const AttrName& attrName)
 
 int setAttrValue(const AttrName& attrName,
                  const pldm_bios_attr_val_table_entry* attrValueEntry,
-                 const pldm_bios_attr_table_entry*, const BiosStringTable&)
+                 const pldm_bios_attr_table_entry*, const BIOSStringTable&)
 {
     const auto& dBusMap = BIOSAttrLookup.at(attrName);
     if (dBusMap == std::nullopt)
@@ -730,7 +730,7 @@ int setupConfig(const char* dirPath)
     for (auto jsonName : BIOSConfigFiles)
     {
         Json json;
-        if (parseBiosJsonFile(dir, jsonName, json) < 0)
+        if (parseBIOSJsonFile(dir, jsonName, json) < 0)
         {
             continue;
         }
@@ -753,7 +753,7 @@ int setupConfig(const char* dirPath)
 
 using setAttrValueHandler = std::function<int(
     const AttrName&, const pldm_bios_attr_val_table_entry*,
-    const pldm_bios_attr_table_entry*, const BiosStringTable&)>;
+    const pldm_bios_attr_table_entry*, const BIOSStringTable&)>;
 
 const std::map<AttrType, setAttrValueHandler> SetAttrValueMap{{
     {PLDM_BIOS_STRING, bios_string::setAttrValue},
@@ -766,8 +766,8 @@ const std::map<AttrType, setAttrValueHandler> SetAttrValueMap{{
 }};
 
 int setAttributeValueOnDbus(const variable_field* attributeData,
-                            const BiosTable& biosAttributeTable,
-                            const BiosStringTable& stringTable)
+                            const BIOSTable& biosAttributeTable,
+                            const BIOSStringTable& stringTable)
 {
     Table attributeTable;
     biosAttributeTable.load(attributeTable);

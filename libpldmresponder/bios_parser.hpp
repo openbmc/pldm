@@ -50,8 +50,8 @@ const Strings& getStrings();
 int setupConfig(const char* dirPath);
 
 int setAttributeValueOnDbus(const variable_field* attributeData,
-                            const BiosTable& attributeTable,
-                            const BiosStringTable& stringTable);
+                            const BIOSTable& attributeTable,
+                            const BIOSStringTable& stringTable);
 
 namespace bios_enum
 {
