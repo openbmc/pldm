@@ -293,59 +293,6 @@ Response getBiosStringTable(BiosTable& biosStringTable, const pldm_msg* request)
     return response;
 }
 
-/** @brief Find the string handle from the BIOS string table given the name
- *
- *  @param[in] name - name of the BIOS string
- *  @param[in] biosStringTable - the string table
- *  @return - uint16_t - handle of the string
- */
-StringHandle findStringHandle(const std::string& name,
-                              const BiosTable& biosStringTable)
-{
-    Table table;
-    biosStringTable.load(table);
-    auto stringEntry = pldm_bios_table_string_find_by_string(
-        table.data(), table.size(), name.c_str());
-    if (stringEntry == nullptr)
-    {
-        std::cerr << "Reached end of BIOS string table,did not find the "
-                  << "handle for the string, STRING=" << name.c_str() << "\n";
-        throw InternalFailure();
-    }
-
-    return pldm_bios_table_string_entry_decode_handle(stringEntry);
-}
-
-/** @brief Find the string name from the BIOS string table for a string handle
- *
- *  @param[in] stringHdl - string handle
- *  @param[in] biosStringTable - the string table
- *
- *  @return - std::string - name of the corresponding BIOS string
- */
-std::string findStringName(StringHandle stringHdl,
-                           const BiosTable& biosStringTable)
-{
-    Table table;
-    biosStringTable.load(table);
-    auto stringEntry = pldm_bios_table_string_find_by_handle(
-        table.data(), table.size(), stringHdl);
-    if (stringEntry == nullptr)
-    {
-        std::cerr << "Reached end of BIOS string table,did not find "
-                  << "string name for handle, STRING_HANDLE=" << stringHdl
-                  << "\n";
-        throw InternalFailure();
-    }
-    auto strLength =
-        pldm_bios_table_string_entry_decode_string_length(stringEntry);
-    std::vector<char> buffer(strLength + 1);
-    pldm_bios_table_string_entry_decode_string(stringEntry, buffer.data(),
-                                               buffer.size());
-
-    return std::string(buffer.data(), buffer.data() + strLength);
-}
-
 namespace bios_type_enum
 {
 
@@ -365,7 +312,7 @@ using namespace bios_parser::bios_enum;
  */
 std::vector<uint8_t> findStrIndices(PossibleValuesByHandle possiVals,
                                     CurrentValues currVals,
-                                    const BiosTable& biosStringTable)
+                                    const BiosStringTable& biosStringTable)
 {
     std::vector<uint8_t> stringIndices;
 
@@ -374,9 +321,9 @@ std::vector<uint8_t> findStrIndices(PossibleValuesByHandle possiVals,
         StringHandle curHdl;
         try
         {
-            curHdl = findStringHandle(currVal, biosStringTable);
+            curHdl = biosStringTable.findHandle(currVal);
         }
-        catch (InternalFailure& e)
+        catch (const std::exception& e)
         {
             std::cerr << "Exception fetching handle for the string, STRING="
                       << currVal.c_str() << "\n";
@@ -400,8 +347,8 @@ std::vector<uint8_t> findStrIndices(PossibleValuesByHandle possiVals,
 /** @brief Find the indices into the array of the possible values of string
  *  handles for the default values. This is used in attribute table
  *
- *  @param[in] possiVals - vector of strings comprising all the possible values
- *                         for an attribute
+ *  @param[in] possiVals - vector of strings comprising all the possible
+ * values for an attribute
  *  @param[in] defVals - vector of strings comprising all the default values
  *                       for an attribute
  *  @return - std::vector<uint8_t> - indices into the array of the possible
@@ -431,7 +378,8 @@ std::vector<uint8_t> findDefaultValHandle(const PossibleValues& possiVals,
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
+void constructAttrTable(const BiosStringTable& biosStringTable,
+                        Table& attributeTable)
 {
     const auto& attributeMap = getValues();
     StringHandle strHandle;
@@ -440,9 +388,9 @@ void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
     {
         try
         {
-            strHandle = findStringHandle(key, biosStringTable);
+            strHandle = biosStringTable.findHandle(key);
         }
-        catch (InternalFailure& e)
+        catch (const std::exception& e)
         {
             std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
                       << key.c_str() << "\n";
@@ -457,10 +405,10 @@ void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
         {
             try
             {
-                auto hdl = findStringHandle(elem, biosStringTable);
+                auto hdl = biosStringTable.findHandle(elem);
                 possiValsByHdl.push_back(std::move(hdl));
             }
-            catch (InternalFailure& e)
+            catch (const std::exception& e)
             {
                 std::cerr << "Could not find handle for BIOS string, STRING="
                           << elem.c_str() << "\n";
@@ -488,7 +436,7 @@ void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
 
 void constructAttrValueEntry(
     const struct pldm_bios_attr_table_entry* attrTableEntry,
-    const std::string& attrName, const BiosTable& biosStringTable,
+    const std::string& attrName, const BiosStringTable& biosStringTable,
     Table& attrValueTable)
 {
     CurrentValues currVals;
@@ -535,7 +483,8 @@ using namespace bios_parser::bios_string;
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
+void constructAttrTable(const BiosStringTable& biosStringTable,
+                        Table& attributeTable)
 {
     const auto& attributeMap = getValues();
     StringHandle strHandle;
@@ -543,9 +492,9 @@ void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
     {
         try
         {
-            strHandle = findStringHandle(key, biosStringTable);
+            strHandle = biosStringTable.findHandle(key);
         }
-        catch (InternalFailure& e)
+        catch (const std::exception& e)
         {
             std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
                       << key.c_str() << "\n";
@@ -570,7 +519,7 @@ void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
 
 void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
                              const std::string& attrName,
-                             const BiosTable& biosStringTable,
+                             const BiosStringTable& biosStringTable,
                              Table& attrValueTable)
 {
     std::ignore = biosStringTable;
@@ -610,7 +559,8 @@ using namespace bios_parser::bios_integer;
  *  @param[in,out] attributeTable - the attribute table
  *
  */
-void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
+void constructAttrTable(const BiosStringTable& biosStringTable,
+                        Table& attributeTable)
 {
     const auto& attributeMap = getValues();
     StringHandle strHandle;
@@ -618,9 +568,9 @@ void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
     {
         try
         {
-            strHandle = findStringHandle(key, biosStringTable);
+            strHandle = biosStringTable.findHandle(key);
         }
-        catch (InternalFailure& e)
+        catch (const std::exception& e)
         {
             std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
                       << key.c_str() << "\n";
@@ -644,7 +594,7 @@ void constructAttrTable(const BiosTable& biosStringTable, Table& attributeTable)
 
 void constructAttrValueEntry(const pldm_bios_attr_table_entry* attrTableEntry,
                              const std::string& attrName,
-                             const BiosTable& biosStringTable,
+                             const BiosStringTable& biosStringTable,
                              Table& attrValueTable)
 {
     std::ignore = biosStringTable;
@@ -693,7 +643,7 @@ void traverseBiosAttrTable(const Table& biosAttrTable,
     }
 }
 
-using typeHandler = std::function<void(const BiosTable& biosStringTable,
+using typeHandler = std::function<void(const BiosStringTable& biosStringTable,
                                        Table& attributeTable)>;
 std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
     {bios_parser::bIOSEnumJson, bios_type_enum::constructAttrTable},
@@ -709,7 +659,7 @@ std::map<BIOSJsonName, typeHandler> attrTypeHandlers{
  *  @param[in] request - Request message
  */
 Response getBiosAttributeTable(BiosTable& biosAttributeTable,
-                               const BiosTable& biosStringTable,
+                               const BiosStringTable& biosStringTable,
                                const char* biosJsonDir, const pldm_msg* request)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
@@ -772,7 +722,7 @@ Response getBiosAttributeTable(BiosTable& biosAttributeTable,
 using AttrValTableEntryConstructHandler =
     std::function<void(const struct pldm_bios_attr_table_entry* tableEntry,
                        const std::string& attrName,
-                       const BiosTable& biosStringTable, Table& table)>;
+                       const BiosStringTable& biosStringTable, Table& table)>;
 
 using AttrType = uint8_t;
 const std::map<AttrType, AttrValTableEntryConstructHandler>
@@ -789,16 +739,11 @@ const std::map<AttrType, AttrValTableEntryConstructHandler>
 
 void constructAttrValueTableEntry(
     const struct pldm_bios_attr_table_entry* attrEntry,
-    const BiosTable& biosStringTable, Table& attributeValueTable)
+    const BiosStringTable& biosStringTable, Table& attributeValueTable)
 {
-    auto attrName = findStringName(attrEntry->string_handle, biosStringTable);
-    if (attrName.empty())
-    {
-        std::cerr << "invalid string handle, STRING_HANDLE="
-                  << attrEntry->string_handle << "\n";
-        return;
-    }
-
+    auto stringHandle =
+        pldm_bios_table_attr_entry_decode_string_handle(attrEntry);
+    auto attrName = biosStringTable.findString(stringHandle);
     AttrValTableConstructMap.at(attrEntry->attr_type)(
         attrEntry, attrName, biosStringTable, attributeValueTable);
 }
@@ -812,7 +757,7 @@ void constructAttrValueTableEntry(
  */
 Response getBiosAttributeValueTable(BiosTable& biosAttributeValueTable,
                                     const BiosTable& biosAttributeTable,
-                                    const BiosTable& biosStringTable,
+                                    const BiosStringTable& biosStringTable,
                                     const pldm_msg* request)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES,
@@ -893,7 +838,7 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
 
     fs::path tablesPath(BIOS_TABLES_DIR);
     auto stringTablePath = tablesPath / stringTableFile;
-    BiosTable biosStringTable(stringTablePath.c_str());
+    BiosStringTable biosStringTable(stringTablePath.c_str());
     auto attrTablePath = tablesPath / attrTableFile;
     BiosTable biosAttributeTable(attrTablePath.c_str());
     if (biosAttributeTable.isEmpty() || biosStringTable.isEmpty())
@@ -1036,7 +981,7 @@ Response buildBiosTables(const pldm_msg* request, size_t payloadLength,
         return CmdHandler::ccOnlyResponse(request, rc);
     }
 
-    BiosTable biosStringTable(
+    BiosStringTable biosStringTable(
         (std::string(biosTablePath) + "/" + stringTableFile).c_str());
     BiosTable biosAttributeTable(
         (std::string(biosTablePath) + "/" + attrTableFile).c_str());
