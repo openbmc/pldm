@@ -1,0 +1,121 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"$id":"https://github.com/openbmc/pldm/blob/master/libpldmresponder/examples/bios/integer_schema.json",
+	"title":"JSON schema for bios integer type attributes",
+	"type":"object",
+	"properties":{
+		"entries":{
+			"$ref":"#/definitions/entries"
+			  }
+		     },
+		"definitions":
+			{
+			"entries":
+				{
+				"type":"array",
+				"items":
+				    {
+					"type":"object",
+					"properties":
+					  {
+					    "attribute_name":{"$ref":"#/definitions/attribute_name"},
+
+					    "lower_bound":{"$ref":"#/definitions/lower_bound"},
+		
+					    "upper_bound":{"$ref":"#/definitions/upper_bound"},
+
+					    "scalar_increment":{"$ref":"#/definitions/scalar_increment"},
+
+					    "default_value":{"type":"integer"},
+			
+			            
+					                    
+
+					    "dbus":{"$ref":"#/definitions/dbus"}
+						},
+						"if":{"properties":{"lower_bound":{"const":0}}},
+                 
+			                        "then":{"properties":{"default_value":{"enum":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}}},
+                   
+			                        "else":{"properties":{"default_value":{"enum":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}}},
+                                        
+					 
+					"required":["attribute_name","lower_bound","upper_bound","scalar_increment","default_value"]
+				    }
+				},
+			"attribute_name":
+			{
+			    "type":"string",
+			    "pattern":"^[A-Z_]+$"
+			},
+
+			"lower_bound":
+			{
+			     "type":"integer"
+                 
+			},
+
+			"upper_bound":
+			{
+			    "type":"integer",
+                            "const":15
+			},
+			
+			"scalar_increment":
+			{
+			     "type":"integer"
+			     
+			},
+			
+	
+       		"dbus":
+			{
+			   "type":"object",
+			   "properties":
+			    {
+  				"object_path":{"$ref":"#/definitions/object_path"},
+
+				"interface":{"$ref":"#/definitions/interface"},
+
+				"property_type":{"$ref":"#/definitions/property_type"},
+
+				"property_name":{"$ref":"#/definitions/property_name"}
+
+			    },
+				"required":["object_path","interface","property_type","property_name"]
+			},
+ 
+			"object_path":
+				{
+    				  "type":"string",
+                                  "pattern":"^/[a-zA-Z0-9_]+"
+				},
+
+			"interface":
+				{
+				   "type":"string",
+					   
+		                   "pattern":"[a-zA-Z0-9_]+\\.[a-zA-Z0-9_]+$"
+				},
+			"property_type":
+				{
+				    "enum":["bool","uint8_t","int16_t","uint16_t","int32_t","uint32_t","int64_t","uint64_t","double","string"]
+				},
+
+			"property_name":
+				{
+				   "type":"string"
+		   		}
+
+                     }
+}
+   
+		 	
+                 
+			    
+
+
+						
+					
+	
+
