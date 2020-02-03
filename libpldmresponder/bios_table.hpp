@@ -87,6 +87,14 @@ class BiosStringTable : public BiosTable
      */
     std::string findString(uint16_t handle) const;
 
+    /** @brief Find the string handle from the BIOS string table given the name
+     *
+     *  @param[in] name - name of the BIOS string
+     *  @param[in] biosStringTable - the string table
+     *  @return - uint16_t - handle of the string
+     */
+    uint16_t findHandle(const std::string& name) const;
+
   private:
     Table stringTable;
 };
