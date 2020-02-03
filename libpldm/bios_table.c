@@ -699,28 +699,16 @@ static size_t attr_value_table_entry_length(const void *table_entry)
 	return entry_length->entry_length_handler(entry);
 }
 
+size_t pldm_bios_table_attr_value_entry_length(
+    const struct pldm_bios_attr_val_table_entry *entry)
+{
+	return attr_value_table_entry_length(entry);
+}
+
 uint16_t pldm_bios_table_attr_value_entry_decode_handle(
     const struct pldm_bios_attr_val_table_entry *entry)
 {
 	return le16toh(entry->attr_handle);
-}
-
-size_t pldm_bios_table_attr_value_entry_value_length(
-    const struct pldm_bios_attr_val_table_entry *entry)
-{
-	size_t entry_length = attr_value_table_entry_length(entry);
-	size_t header_length =
-	    MEMBER_SIZE(pldm_bios_attr_val_table_entry, attr_handle) +
-	    MEMBER_SIZE(pldm_bios_attr_val_table_entry, attr_type);
-	assert(entry_length > header_length);
-
-	return (entry_length - header_length);
-}
-
-const uint8_t *pldm_bios_table_attr_value_entry_value(
-    const struct pldm_bios_attr_val_table_entry *entry)
-{
-	return entry->value;
 }
 
 static size_t pad_size_get(size_t size_without_pad)

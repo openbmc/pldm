@@ -522,10 +522,8 @@ TEST(AttrValTable, StringEntryDecodeTest)
     auto handle = pldm_bios_table_attr_value_entry_decode_handle(entry);
     EXPECT_EQ(0, handle);
 
-    auto valueLength = pldm_bios_table_attr_value_entry_value_length(entry);
-    EXPECT_EQ(5, valueLength);
-    auto value = pldm_bios_table_attr_value_entry_value(entry);
-    EXPECT_EQ(0, std::memcmp(value, stringEntry.data() + 3, valueLength));
+    auto entryLength = pldm_bios_table_attr_value_entry_length(entry);
+    EXPECT_EQ(stringEntry.size(), entryLength);
 }
 
 TEST(AttrValTable, integerEntryEncodeTest)

@@ -524,18 +524,11 @@ int pldm_bios_table_attr_value_entry_encode_integer_check(void *entry,
 uint16_t pldm_bios_table_attr_value_entry_decode_handle(
     const struct pldm_bios_attr_val_table_entry *entry);
 
-/** @brief Get the value field length from the attribute value entry
+/** @brief Get the length of the attribute value entry
  *  @param[in] entry - Pointer to bios attribute value entry
- *  @return Length of the value filed
+ *  @return Length of the entry
  */
-size_t pldm_bios_table_attr_value_entry_value_length(
-    const struct pldm_bios_attr_val_table_entry *entry);
-
-/** @brief Get the value field address from the attribute value entry
- *  @param[in] entry - Pointer to bios attribute value entry
- *  @return Pointer to the value field in the attribute value entry;
- */
-const uint8_t *pldm_bios_table_attr_value_entry_value(
+size_t pldm_bios_table_attr_value_entry_length(
     const struct pldm_bios_attr_val_table_entry *entry);
 
 /** @brief Find an entry in attribute value table by handle

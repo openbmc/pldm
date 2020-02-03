@@ -937,16 +937,15 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
         return ccOnlyResponse(request, PLDM_INVALID_BIOS_ATTR_HANDLE);
     }
 
-    auto valueLength = pldm_bios_table_attr_value_entry_value_length(entry);
-    auto valuePtr = pldm_bios_table_attr_value_entry_value(entry);
+    auto entryLength = pldm_bios_table_attr_value_entry_length(entry);
     Response response(sizeof(pldm_msg_hdr) +
                           PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_MIN_RESP_BYTES +
-                          valueLength,
+                          entryLength,
                       0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     rc = encode_get_bios_current_value_by_handle_resp(
-        request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END, valuePtr,
-        valueLength, responsePtr);
+        request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END,
+        reinterpret_cast<const uint8_t*>(entry), entryLength, responsePtr);
     if (rc != PLDM_SUCCESS)
     {
         return ccOnlyResponse(request, rc);
