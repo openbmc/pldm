@@ -56,11 +56,13 @@ class GetDateTime : public CommandInterface
             return;
         }
         std::cout << "Date & Time : " << std::endl;
-        std::cout << "DD-MM-YYYY HH:MM:SS - ";
-        setWidth(day);
+        std::cout << "YYYY-MM-DD HH:MM:SS - ";
+        std::cout << bcd2dec16(year);
         std::cout << "-";
         setWidth(month);
-        std::cout << "-" << bcd2dec16(year) << " ";
+        std::cout << "-";
+        setWidth(day);
+        std::cout << " ";
         setWidth(hours);
         std::cout << ":";
         setWidth(minutes);
