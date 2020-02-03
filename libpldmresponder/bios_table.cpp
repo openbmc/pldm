@@ -71,6 +71,18 @@ std::string BIOSStringTable::findString(uint16_t handle) const
     return std::string(buffer.data(), buffer.data() + strLength);
 }
 
+uint16_t BIOSStringTable::findHandle(const std::string& name) const
+{
+    auto stringEntry = pldm_bios_table_string_find_by_string(
+        stringTable.data(), stringTable.size(), name.c_str());
+    if (stringEntry == nullptr)
+    {
+        throw std::invalid_argument("Invalid String Name");
+    }
+
+    return pldm_bios_table_string_entry_decode_handle(stringEntry);
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm
