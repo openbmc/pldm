@@ -46,12 +46,14 @@ void BIOSTable::load(Response& response) const
     stream.read(reinterpret_cast<char*>(response.data() + currSize), fileSize);
 }
 
-BIOSStringTable::BIOSStringTable(const char* filePath) : BIOSTable(filePath)
+BIOSStringTable::BIOSStringTable(const Table& stringTable) :
+    stringTable(stringTable)
 {
-    if (!isEmpty())
-    {
-        load(stringTable);
-    }
+}
+
+BIOSStringTable::BIOSStringTable(const BIOSTable& biosTable)
+{
+    biosTable.load(stringTable);
 }
 
 std::string BIOSStringTable::findString(uint16_t handle) const
@@ -69,6 +71,18 @@ std::string BIOSStringTable::findString(uint16_t handle) const
                                                buffer.size());
 
     return std::string(buffer.data(), buffer.data() + strLength);
+}
+
+uint16_t BIOSStringTable::findHandle(const std::string& name) const
+{
+    auto stringEntry = pldm_bios_table_string_find_by_string(
+        stringTable.data(), stringTable.size(), name.c_str());
+    if (stringEntry == nullptr)
+    {
+        throw std::invalid_argument("Invalid String Name");
+    }
+
+    return pldm_bios_table_string_entry_decode_handle(stringEntry);
 }
 
 } // namespace bios
