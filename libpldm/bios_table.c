@@ -1038,3 +1038,37 @@ out:
 	pldm_bios_table_iter_free(iter);
 	return rc;
 }
+
+int pldm_bios_table_attr_value_find_by_type(const void *table,
+					    size_t table_length, void *dest,
+					    size_t *dest_length, uint8_t type)
+{
+	struct pldm_bios_table_iter *iter = pldm_bios_table_iter_create(
+	    table, table_length, PLDM_BIOS_ATTR_VAL_TABLE);
+
+	int rc = PLDM_SUCCESS;
+	const struct pldm_bios_attr_val_table_entry *tmp;
+	size_t buffer_length = *dest_length, copied_length = 0, length = 0;
+	while (!pldm_bios_table_iter_is_end(iter)) {
+		tmp = pldm_bios_table_iter_attr_value_entry_value(iter);
+		length = attr_value_table_entry_length(tmp);
+
+		/* we need the tmp's entry_length here, iter_next will calculate
+		 * it too, use current_pos directly to avoid calculating it
+		 * twice */
+		iter->current_pos += length;
+		if (tmp->attr_type != type) {
+			continue;
+		}
+		if (copied_length + length > buffer_length) {
+			rc = PLDM_ERROR_INVALID_LENGTH;
+			goto out;
+		}
+		memcpy((uint8_t *)dest + copied_length, tmp, length);
+		copied_length += length;
+	}
+	*dest_length = copied_length;
+out:
+	pldm_bios_table_iter_free(iter);
+	return rc;
+}
