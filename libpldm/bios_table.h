@@ -618,6 +618,10 @@ const struct pldm_bios_attr_val_table_entry *
 pldm_bios_table_attr_value_find_by_handle(const void *table, size_t length,
 					  uint16_t handle);
 
+int pldm_bios_table_attr_value_find_by_type(const void *table,
+					    size_t table_length, void *dest,
+					    size_t *dest_length, uint8_t type);
+
 /** @brief Get the size of pad and checksum
  *  @param[in] size_without_pad - Table size without pad
  *  @return The size of pad and checksum

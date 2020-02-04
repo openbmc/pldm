@@ -768,8 +768,14 @@ TEST(AttrValTable, FindTest)
         10, 0, 0, 0, 0, 0, 0, 0, /* current value */
     };
 
+    std::vector<uint8_t> integerEntry1{
+        3,  0,                   /* attr handle */
+        3,                       /* attr type */
+        11, 0, 0, 0, 0, 0, 0, 0, /* current value */
+    };
+
     Table table;
-    buildTable(table, enumEntry, stringEntry, integerEntry);
+    buildTable(table, enumEntry, stringEntry, integerEntry, integerEntry1);
 
     auto entry = pldm_bios_table_attr_value_find_by_handle(table.data(),
                                                            table.size(), 1);
@@ -779,8 +785,28 @@ TEST(AttrValTable, FindTest)
                 ElementsAreArray(stringEntry));
 
     entry = pldm_bios_table_attr_value_find_by_handle(table.data(),
-                                                      table.size(), 3);
+                                                      table.size(), 4);
     EXPECT_EQ(entry, nullptr);
+
+    std::vector<uint8_t> integerEntries(table.size(), 0);
+    size_t entriesLength = integerEntries.size();
+    auto rc = pldm_bios_table_attr_value_find_by_type(
+        table.data(), table.size(), integerEntries.data(), &entriesLength,
+        3 /*type = integer*/);
+    integerEntries.resize(entriesLength);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    std::vector<uint8_t> expectedEntries(integerEntry);
+    expectedEntries.insert(expectedEntries.end(), integerEntry1.begin(),
+                           integerEntry1.end());
+    EXPECT_THAT(integerEntries, ElementsAreArray(expectedEntries));
+
+    entriesLength -= 1;
+    rc = pldm_bios_table_attr_value_find_by_type(
+        table.data(), table.size(), integerEntries.data(), &entriesLength,
+        3 /*type = integer*/);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 
     auto firstEntry =
         reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(table.data());
