@@ -49,44 +49,27 @@ bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
     return true;
 }
 
-bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
-                        uint16_t& effecter_id,
-                        std::vector<set_effecter_state_field>& stateField)
+std::optional<std::vector<set_effecter_state_field>>
+    parseEffecterData(const std::vector<uint8_t>& effecterData,
+                      uint8_t effecterCount)
 {
-    int flag = 0;
-    for (auto data : effecterData)
+    std::vector<set_effecter_state_field> stateField;
+
+    if (effecterData.size() != effecterCount * 2)
     {
-        switch (flag)
-        {
-            case 0:
-                effecter_id = data;
-                flag = 1;
-                break;
-            case 1:
-                if (data == PLDM_REQUEST_SET)
-                {
-                    flag = 2;
-                }
-                else
-                {
-                    stateField.push_back({PLDM_NO_CHANGE, 0});
-                }
-                break;
-            case 2:
-                stateField.push_back({PLDM_REQUEST_SET, data});
-                flag = 1;
-                break;
-            default:
-                break;
-        }
+        return std::nullopt;
     }
 
-    if (stateField.size() < 1 || stateField.size() > 8)
+    for (uint8_t i = 0; i < effecterCount; ++i)
     {
-        return false;
+        uint8_t set_request = effecterData[i * 2] == PLDM_REQUEST_SET
+                                  ? PLDM_REQUEST_SET
+                                  : PLDM_NO_CHANGE;
+        set_effecter_state_field filed{set_request, effecterData[i * 2 + 1]};
+        stateField.emplace_back(std::move(filed));
     }
 
-    return true;
+    return std::make_optional(std::move(stateField));
 }
 
 std::string DBusHandler::getService(const char* path,
