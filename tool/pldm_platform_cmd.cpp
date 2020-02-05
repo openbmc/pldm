@@ -163,22 +163,28 @@ class SetStateEffecter : public CommandInterface
     SetStateEffecter& operator=(const SetStateEffecter&) = delete;
     SetStateEffecter& operator=(SetStateEffecter&&) = default;
 
-    //  effecterID(1) +  compositeEffecterCount(value: 0x01 to 0x08) *
-    //  stateField(2)
-    static constexpr auto maxEffecterDataSize = 17;
+    // compositeEffecterCount(value: 0x01 to 0x08) * stateField(2)
+    static constexpr auto maxEffecterDataSize = 16;
+
+    // compositeEffecterCount(value: 0x01 to 0x08)
+    static constexpr auto minEffecterCount = 1;
+    static constexpr auto maxEffecterCount = 8;
     explicit SetStateEffecter(const char* type, const char* name,
                               CLI::App* app) :
         CommandInterface(type, name, app)
     {
         app->add_option(
+               "-i, --id", effecterId,
+               "A handle that is used to identify and access the effecter")
+            ->required();
+        app->add_option("-c, --count", effecterCount,
+                        "The number of individual sets of effecter information")
+            ->required();
+        app->add_option(
                "-d,--data", effecterData,
-               "set effecter state data, the noChange value is 0 and the "
-               "requestSet value is 1 and access up to eight sets of state "
-               "effector information. \n"
-               "eg1: effecterID, requestSet0, effecterState0... \n"
-               "eg2: effecterID, noChange0, requestSet1, effecterState1...")
-            ->required()
-            ->expected(-1);
+               "Set effecter state data\n"
+               "eg: requestSet0 effecterState0 noChange1 dummyState1 ...")
+            ->required();
     }
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
@@ -186,6 +192,15 @@ class SetStateEffecter : public CommandInterface
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        if (effecterCount > maxEffecterCount ||
+            effecterCount < minEffecterCount)
+        {
+            std::cerr << "Request Message Error: effecterCount size "
+                      << effecterCount << std::endl;
+            auto rc = PLDM_ERROR_INVALID_DATA;
+            return {rc, requestMsg};
+        }
 
         if (effecterData.size() > maxEffecterDataSize)
         {
@@ -195,16 +210,18 @@ class SetStateEffecter : public CommandInterface
             return {rc, requestMsg};
         }
 
-        uint16_t effecterId = 0;
         std::vector<set_effecter_state_field> stateField = {};
-        if (!decodeEffecterData(effecterData, effecterId, stateField))
+        if (!parseEffecterData(effecterData, effecterCount, stateField))
         {
+            std::cerr << "parseEffecterData: effecterCount size "
+                      << effecterCount << ", stateField size "
+                      << stateField.size() << std::endl;
             auto rc = PLDM_ERROR_INVALID_DATA;
             return {rc, requestMsg};
         }
 
         auto rc = encode_set_state_effecter_states_req(
-            PLDM_LOCAL_INSTANCE_ID, effecterId, stateField.size(),
+            PLDM_LOCAL_INSTANCE_ID, effecterId, effecterCount,
             stateField.data(), request);
         return {rc, requestMsg};
     }
@@ -227,6 +244,8 @@ class SetStateEffecter : public CommandInterface
     }
 
   private:
+    uint16_t effecterId;
+    uint8_t effecterCount;
     std::vector<uint8_t> effecterData;
 };
 
