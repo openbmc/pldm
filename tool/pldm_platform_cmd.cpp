@@ -1,3 +1,5 @@
+#include "pldm_platform_cmd.hpp"
+
 #include "pldm_cmd_helper.hpp"
 
 namespace pldmtool
@@ -76,17 +78,202 @@ class GetPDR : public CommandInterface
             return;
         }
 
-        printPDRMsg(nextRecordHndl, respCnt, recordData, sizeof(recordData));
+        printPDRMsg(nextRecordHndl, respCnt, recordData);
     }
 
   private:
-    void printPDR11(uint8_t* data, size_t len)
+    void printPDR9(uint8_t* data)
     {
-        if (data == NULL || len == 0)
+        struct pldm_numeric_effecter_value_pdr* pdr =
+            (struct pldm_numeric_effecter_value_pdr*)data;
+        std::cout << "recordHandle: " << pdr->hdr.record_handle << std::endl;
+        std::cout << "PDRHeaderVersion: " << unsigned(pdr->hdr.version)
+                  << std::endl;
+        std::cout << "PDRType: " << unsigned(pdr->hdr.type) << std::endl;
+        std::cout << "recordChangeNumber: " << pdr->hdr.record_change_num
+                  << std::endl;
+        std::cout << "dataLength: " << pdr->hdr.length << std::endl;
+        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
+                  << std::endl;
+        std::cout << "effecterID: " << pdr->effecter_id << std::endl;
+        std::cout << "entityType: " << pdr->entity_type << std::endl;
+        std::cout << "entityInstanceNumber: " << pdr->entity_instance
+                  << std::endl;
+        std::cout << "containerID: " << pdr->container_id << std::endl;
+        std::cout << "effecterSemanticID: " << pdr->effecter_semantic_id
+                  << std::endl;
+        std::cout << "effecterInit: " << unsigned(pdr->effecter_init)
+                  << std::endl;
+        std::cout << "effecterAuxiliaryNames: "
+                  << (unsigned(pdr->effecter_auxiliary_names) ? "true"
+                                                              : "false")
+                  << std::endl;
+        std::cout << "baseUnit: " << unsigned(pdr->base_unit) << std::endl;
+        std::cout << "unitModifier: " << unsigned(pdr->unit_modifier)
+                  << std::endl;
+        std::cout << "rateUnit: " << unsigned(pdr->rate_unit) << std::endl;
+        std::cout << "baseOEMUnitHandle: "
+                  << unsigned(pdr->base_oem_unit_handle) << std::endl;
+        std::cout << "auxUnit: " << unsigned(pdr->aux_unit) << std::endl;
+        std::cout << "auxUnitModifier: " << unsigned(pdr->aux_unit_modifier)
+                  << std::endl;
+        std::cout << "auxrateUnit: " << unsigned(pdr->aux_rate_unit)
+                  << std::endl;
+        std::cout << "auxOEMUnitHandle: " << unsigned(pdr->aux_oem_unit_handle)
+                  << std::endl;
+        std::cout << "isLinear: "
+                  << (unsigned(pdr->is_linear) ? "true" : "false") << std::endl;
+        std::cout << "effecterDataSize: " << unsigned(pdr->effecter_data_size)
+                  << std::endl;
+        std::cout << "resolution: " << pdr->resolution << std::endl;
+        std::cout << "offset: " << pdr->offset << std::endl;
+        std::cout << "accuracy: " << pdr->accuracy << std::endl;
+        std::cout << "plusTolerance: " << unsigned(pdr->plus_to_lerance)
+                  << std::endl;
+        std::cout << "minusTolerance: " << unsigned(pdr->minus_to_lerance)
+                  << std::endl;
+        std::cout << "stateTransitionInterval: "
+                  << pdr->state_transition_interval << std::endl;
+        std::cout << "TransitionInterval: " << pdr->transition_interval
+                  << std::endl;
+        switch (pdr->effecter_data_size)
         {
-            return;
+            case PLDM_EFFECTER_DATA_SIZE_UINT8:
+                std::cout << "maxSettable: "
+                          << unsigned(pdr->max_set_table.value_u8) << std::endl;
+                std::cout << "minSettable: "
+                          << unsigned(pdr->min_set_table.value_u8) << std::endl;
+                break;
+            case PLDM_EFFECTER_DATA_SIZE_SINT8:
+                std::cout << "maxSettable: "
+                          << unsigned(pdr->max_set_table.value_s8) << std::endl;
+                std::cout << "minSettable: "
+                          << unsigned(pdr->min_set_table.value_s8) << std::endl;
+                break;
+            case PLDM_EFFECTER_DATA_SIZE_UINT16:
+                std::cout << "maxSettable: " << pdr->max_set_table.value_u16
+                          << std::endl;
+                std::cout << "minSettable: " << pdr->min_set_table.value_u16
+                          << std::endl;
+                break;
+            case PLDM_EFFECTER_DATA_SIZE_SINT16:
+                std::cout << "maxSettable: " << pdr->max_set_table.value_s16
+                          << std::endl;
+                std::cout << "minSettable: " << pdr->min_set_table.value_s16
+                          << std::endl;
+                break;
+            case PLDM_EFFECTER_DATA_SIZE_UINT32:
+                std::cout << "maxSettable: " << pdr->max_set_table.value_u32
+                          << std::endl;
+                std::cout << "minSettable: " << pdr->min_set_table.value_u32
+                          << std::endl;
+                break;
+            case PLDM_EFFECTER_DATA_SIZE_SINT32:
+                std::cout << "maxSettable: " << pdr->max_set_table.value_s32
+                          << std::endl;
+                std::cout << "minSettable: " << pdr->min_set_table.value_s32
+                          << std::endl;
+                break;
+            default:
+                break;
         }
+        std::cout << "rangeFieldFormat: " << unsigned(pdr->range_field_format)
+                  << std::endl;
+        std::cout << "rangeFieldSupport: "
+                  << unsigned(pdr->range_field_support.byte) << std::endl;
+        switch (pdr->range_field_format)
+        {
+            case PLDM_RANGE_FIELD_FORMAT_UINT8:
+                std::cout << "nominalValue: "
+                          << unsigned(pdr->nominal_value.value_u8) << std::endl;
+                std::cout << "normalMax: " << unsigned(pdr->normal_max.value_u8)
+                          << std::endl;
+                std::cout << "normalMin: " << unsigned(pdr->normal_min.value_u8)
+                          << std::endl;
+                std::cout << "ratedMax: " << unsigned(pdr->rated_max.value_u8)
+                          << std::endl;
+                std::cout << "ratedMin: " << unsigned(pdr->rated_min.value_u8)
+                          << std::endl;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT8:
+                std::cout << "nominalValue: "
+                          << unsigned(pdr->nominal_value.value_s8) << std::endl;
+                std::cout << "normalMax: " << unsigned(pdr->normal_max.value_s8)
+                          << std::endl;
+                std::cout << "normalMin: " << unsigned(pdr->normal_min.value_s8)
+                          << std::endl;
+                std::cout << "ratedMax: " << unsigned(pdr->rated_max.value_s8)
+                          << std::endl;
+                std::cout << "ratedMin: " << unsigned(pdr->rated_min.value_s8)
+                          << std::endl;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT16:
+                std::cout << "nominalValue: " << pdr->nominal_value.value_u16
+                          << std::endl;
+                std::cout << "normalMax: " << pdr->normal_max.value_u16
+                          << std::endl;
+                std::cout << "normalMin: " << pdr->normal_min.value_u16
+                          << std::endl;
+                std::cout << "ratedMax: " << pdr->rated_max.value_u16
+                          << std::endl;
+                std::cout << "ratedMin: " << pdr->rated_min.value_u16
+                          << std::endl;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT16:
+                std::cout << "nominalValue: " << pdr->nominal_value.value_s16
+                          << std::endl;
+                std::cout << "normalMax: " << pdr->normal_max.value_s16
+                          << std::endl;
+                std::cout << "normalMin: " << pdr->normal_min.value_s16
+                          << std::endl;
+                std::cout << "ratedMax: " << pdr->rated_max.value_s16
+                          << std::endl;
+                std::cout << "ratedMin: " << pdr->rated_min.value_s16
+                          << std::endl;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT32:
+                std::cout << "nominalValue: " << pdr->nominal_value.value_u32
+                          << std::endl;
+                std::cout << "normalMax: " << pdr->normal_max.value_u32
+                          << std::endl;
+                std::cout << "normalMin: " << pdr->normal_min.value_u32
+                          << std::endl;
+                std::cout << "ratedMax: " << pdr->rated_max.value_u32
+                          << std::endl;
+                std::cout << "ratedMin: " << pdr->rated_min.value_u32
+                          << std::endl;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT32:
+                std::cout << "nominalValue: " << pdr->nominal_value.value_s32
+                          << std::endl;
+                std::cout << "normalMax: " << pdr->normal_max.value_s32
+                          << std::endl;
+                std::cout << "normalMin: " << pdr->normal_min.value_s32
+                          << std::endl;
+                std::cout << "ratedMax: " << pdr->rated_max.value_s32
+                          << std::endl;
+                std::cout << "ratedMin: " << pdr->rated_min.value_s32
+                          << std::endl;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_REAL32:
+                std::cout << "nominalValue: " << pdr->nominal_value.value_f32
+                          << std::endl;
+                std::cout << "normalMax: " << pdr->normal_max.value_f32
+                          << std::endl;
+                std::cout << "normalMin: " << pdr->normal_min.value_f32
+                          << std::endl;
+                std::cout << "ratedMax: " << pdr->rated_max.value_f32
+                          << std::endl;
+                std::cout << "ratedMin: " << pdr->rated_min.value_f32
+                          << std::endl;
+                break;
+            default:
+                break;
+        }
+    }
 
+    void printPDR11(uint8_t* data)
+    {
         struct pldm_state_effecter_pdr* pdr =
             (struct pldm_state_effecter_pdr*)data;
         std::cout << "recordHandle: " << pdr->hdr.record_handle << std::endl;
@@ -127,9 +314,9 @@ class GetPDR : public CommandInterface
     }
 
     void printPDRMsg(const uint32_t nextRecordHndl, const uint16_t respCnt,
-                     uint8_t* data, size_t len)
+                     uint8_t* data)
     {
-        if (data == NULL || len == 0)
+        if (data == NULL)
         {
             return;
         }
@@ -141,8 +328,11 @@ class GetPDR : public CommandInterface
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
         switch (pdr->type)
         {
+            case PLDM_NUMERIC_EFFECTER_PDR:
+                printPDR9(data);
+                break;
             case PLDM_STATE_EFFECTER_PDR:
-                printPDR11(data, len);
+                printPDR11(data);
                 break;
             default:
                 break;
