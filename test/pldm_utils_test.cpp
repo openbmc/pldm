@@ -50,35 +50,29 @@ TEST(decodeDate, testBaduintToDate)
     EXPECT_EQ(ret, false);
 }
 
-TEST(decodeEffecterData, testGoodDecodeEffecterData)
+TEST(parseEffecterData, testGoodDecodeEffecterData)
 {
-    std::vector<uint8_t> effecterData = {2, 1, 1, 0, 1, 2};
-    uint16_t effecter_id = 2;
+    std::vector<uint8_t> effecterData = {1, 1, 0, 1};
+    uint8_t effecterCount = 2;
     set_effecter_state_field stateField0 = {1, 1};
-    set_effecter_state_field stateField1 = {0, 0};
-    set_effecter_state_field stateField2 = {1, 2};
+    set_effecter_state_field stateField1 = {0, 1};
 
-    uint16_t retEffecter_id = 0;
-    std::vector<set_effecter_state_field> stateField = {};
-    auto rc = decodeEffecterData(effecterData, retEffecter_id, stateField);
+    auto [rc, stateField] = parseEffecterData(effecterData, effecterCount);
 
     EXPECT_EQ(rc, true);
-    EXPECT_EQ(effecter_id, retEffecter_id);
+    EXPECT_EQ(effecterCount, stateField.size());
     EXPECT_EQ(stateField[0].set_request, stateField0.set_request);
     EXPECT_EQ(stateField[0].effecter_state, stateField0.effecter_state);
     EXPECT_EQ(stateField[1].set_request, stateField1.set_request);
     EXPECT_EQ(stateField[1].effecter_state, stateField1.effecter_state);
-    EXPECT_EQ(stateField[2].set_request, stateField2.set_request);
-    EXPECT_EQ(stateField[2].effecter_state, stateField2.effecter_state);
 }
 
-TEST(decodeEffecterData, testBadDecodeEffecterData)
+TEST(parseEffecterData, testBadDecodeEffecterData)
 {
-    std::vector<uint8_t> effecterData = {2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint8_t> effecterData = {0, 1, 0, 1, 0, 1};
+    uint8_t effecterCount = 2;
 
-    uint16_t retEffecter_id = 0;
-    std::vector<set_effecter_state_field> stateField = {};
-    auto rc = decodeEffecterData(effecterData, retEffecter_id, stateField);
+    auto [rc, stateField] = parseEffecterData(effecterData, effecterCount);
 
     EXPECT_EQ(rc, false);
 }
