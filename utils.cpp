@@ -49,7 +49,7 @@ bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
     return true;
 }
 
-bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
+bool decodeEffecterData(const std::vector<uint16_t>& effecterData,
                         uint16_t& effecter_id,
                         std::vector<set_effecter_state_field>& stateField)
 {
@@ -73,7 +73,7 @@ bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
                 }
                 break;
             case 2:
-                stateField.push_back({PLDM_REQUEST_SET, data});
+                stateField.push_back({PLDM_REQUEST_SET, *(uint8_t*)&data});
                 flag = 1;
                 break;
             default:

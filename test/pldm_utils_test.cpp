@@ -52,7 +52,7 @@ TEST(decodeDate, testBaduintToDate)
 
 TEST(decodeEffecterData, testGoodDecodeEffecterData)
 {
-    std::vector<uint8_t> effecterData = {2, 1, 1, 0, 1, 2};
+    std::vector<uint16_t> effecterData = {2, 1, 1, 0, 1, 2};
     uint16_t effecter_id = 2;
     set_effecter_state_field stateField0 = {1, 1};
     set_effecter_state_field stateField1 = {0, 0};
@@ -74,7 +74,7 @@ TEST(decodeEffecterData, testGoodDecodeEffecterData)
 
 TEST(decodeEffecterData, testBadDecodeEffecterData)
 {
-    std::vector<uint8_t> effecterData = {2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<uint16_t> effecterData = {2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     uint16_t retEffecter_id = 0;
     std::vector<set_effecter_state_field> stateField = {};

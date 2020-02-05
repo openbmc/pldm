@@ -81,7 +81,7 @@ bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
  * effecter
  *  @param[out] stateField - structure of set_effecter_state_field
  */
-bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
+bool decodeEffecterData(const std::vector<uint16_t>& effecterData,
                         uint16_t& effecter_id,
                         std::vector<set_effecter_state_field>& stateField);
 

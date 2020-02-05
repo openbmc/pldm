@@ -230,7 +230,7 @@ class SetStateEffecter : public CommandInterface
     }
 
   private:
-    std::vector<uint8_t> effecterData;
+    std::vector<uint16_t> effecterData;
 };
 
 void registerCommand(CLI::App& app)
