@@ -77,13 +77,13 @@ bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
 /** @brief Convert effecter data to structure of set_effecter_state_field
  *
  *  @param[in] effecterData - the date of effecter
- *  @param[out] effecter_id - a handle that is used to identify and access the
- * effecter
- *  @param[out] stateField - structure of set_effecter_state_field
+ *  @param[in] effecterCount - the number of individual sets of effecter
+ *                              information
+ *  @return[out] true means parse success, false means parse failed.
  */
-bool decodeEffecterData(const std::vector<uint8_t>& effecterData,
-                        uint16_t& effecter_id,
-                        std::vector<set_effecter_state_field>& stateField);
+std::pair<bool, std::vector<set_effecter_state_field>>
+    parseEffecterData(const std::vector<uint8_t>& effecterData,
+                      uint8_t effecterCount);
 
 /**
  *  @brief creates an error log
