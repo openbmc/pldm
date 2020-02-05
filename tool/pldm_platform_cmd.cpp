@@ -436,6 +436,93 @@ class SetStateEffecter : public CommandInterface
     std::vector<uint8_t> effecterData;
 };
 
+class SetNumericEffecterValue : public CommandInterface
+{
+  public:
+    ~SetNumericEffecterValue() = default;
+    SetNumericEffecterValue() = delete;
+    SetNumericEffecterValue(const SetNumericEffecterValue&) = delete;
+    SetNumericEffecterValue(SetNumericEffecterValue&&) = default;
+    SetNumericEffecterValue& operator=(const SetNumericEffecterValue&) = delete;
+    SetNumericEffecterValue& operator=(SetNumericEffecterValue&&) = default;
+
+    explicit SetNumericEffecterValue(const char* type, const char* name,
+                                     CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-i, --id", effecterId,
+               "A handle that is used to identify and access the effecter")
+            ->required();
+        app->add_option("-s, --size", effecterDataSize,
+                        "The bit width and format of the setting value for the "
+                        "effecter. enum value: {uint8, sint8, uint16, sint16, "
+                        "uint32, sint32}\n")
+            ->required();
+        app->add_option("-d,--data", maxEffecterValue,
+                        "The setting value of numeric effecter being "
+                        "requested\n")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) +
+            PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 3);
+
+        uint8_t* effecterValue = (uint8_t*)&maxEffecterValue;
+        if (!effecterValue)
+        {
+            std::cerr << "Request Message Error: effecterDataSize: "
+                      << effecterDataSize << "\n";
+            auto rc = PLDM_ERROR_INVALID_DATA;
+            return {rc, requestMsg};
+        }
+
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        size_t payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES;
+
+        if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
+            effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT16)
+        {
+            payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 1;
+        }
+        if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+            effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT32)
+        {
+            payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 3;
+        }
+        auto rc = encode_set_numeric_effecter_value_req(
+            0, effecterId, effecterDataSize, effecterValue, request,
+            payload_length);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = 0;
+        auto rc = decode_set_numeric_effecter_value_resp(
+            responsePtr, payloadLength, &completionCode);
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)completionCode
+                      << std::endl;
+            return;
+        }
+
+        std::cout << "SetNumericEffecterValue: SUCCESS" << std::endl;
+    }
+
+  private:
+    uint16_t effecterId;
+    uint8_t effecterDataSize;
+    uint64_t maxEffecterValue;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
@@ -449,6 +536,11 @@ void registerCommand(CLI::App& app)
         "SetStateEffecterStates", "set effecter states");
     commands.push_back(std::make_unique<SetStateEffecter>(
         "platform", "setStateEffecterStates", setStateEffecterStates));
+
+    auto setNumericEffecterValue = platform->add_subcommand(
+        "SetNumericEffecterValue", "set the value for a PLDM Numeric Effecter");
+    commands.push_back(std::make_unique<SetNumericEffecterValue>(
+        "platform", "setNumericEffecterValue", setNumericEffecterValue));
 }
 
 } // namespace platform
