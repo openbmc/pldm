@@ -31,15 +31,15 @@ FruParser::FruParser(const std::string& dirPath)
     if (!fs::exists(dir) || fs::is_empty(dir))
     {
         std::cerr << "FRU config directory does not exist or empty, DIR="
-                  << dirPath;
-        throw InternalFailure();
+                  << dirPath << "\n";
+        return;
     }
 
     fs::path masterFilePath = dir / fruMasterJson;
     if (!fs::exists(masterFilePath))
     {
         std::cerr << "FRU D-Bus lookup JSON does not exist, PATH="
-                  << masterFilePath;
+                  << masterFilePath << "\n";
         throw InternalFailure();
     }
 
