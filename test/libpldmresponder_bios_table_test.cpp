@@ -1,4 +1,4 @@
-#include "libpldmresponder/bios_table.hpp"
+#include "libpldmresponder/bios/bios_table.hpp"
 
 #include <stdlib.h>
 
