@@ -1,4 +1,4 @@
-#include "bios_table.hpp"
+#include "table.hpp"
 
 #include <fstream>
 

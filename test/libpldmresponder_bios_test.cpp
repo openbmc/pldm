@@ -1,6 +1,6 @@
-#include "libpldmresponder/bios.hpp"
-#include "libpldmresponder/bios_parser.hpp"
-#include "libpldmresponder/bios_table.hpp"
+#include "libpldmresponder/bios/bios.hpp"
+#include "libpldmresponder/bios/parser.hpp"
+#include "libpldmresponder/bios/table.hpp"
 
 #include <string.h>
 
