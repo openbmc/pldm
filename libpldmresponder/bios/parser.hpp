@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bios_table.hpp"
+#include "table.hpp"
 
 #include <map>
 #include <string>
