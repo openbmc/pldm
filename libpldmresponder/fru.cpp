@@ -19,14 +19,14 @@ FruImpl::FruImpl(const std::string& configPath)
 {
     fru_parser::FruParser handle(configPath);
 
-    auto dbusInfo = handle.inventoryLookup();
-
+    fru_parser::DBusLookupInfo dbusInfo;
     // Read the all the inventory D-Bus objects
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus::ObjectValueTree objects;
 
     try
     {
+        dbusInfo = handle.inventoryLookup();
         auto method = bus.new_method_call(
             std::get<0>(dbusInfo).c_str(), std::get<1>(dbusInfo).c_str(),
             "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
