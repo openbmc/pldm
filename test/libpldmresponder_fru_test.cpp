@@ -6,8 +6,6 @@ TEST(FruParser, allScenarios)
 {
     using namespace pldm::responder::fru_parser;
 
-    // Empty directory condition
-    ASSERT_THROW(FruParser("./fru_json"), std::exception);
     // No master FRU JSON
     ASSERT_THROW(FruParser("./fru_jsons/malformed1"), std::exception);
     // Malformed master FRU JSON
