@@ -19,6 +19,9 @@ extern "C" {
 /* Minimum response length */
 #define PLDM_GET_PDR_MIN_RESP_BYTES 12
 
+/* Minimum response length for PLDM PlatformEventMessage request */
+#define PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES 3
+
 enum set_request { PLDM_NO_CHANGE = 0x00, PLDM_REQUEST_SET = 0x01 };
 
 enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
@@ -26,6 +29,7 @@ enum effecter_state { PLDM_INVALID_VALUE = 0xFF };
 enum pldm_platform_commands {
 	PLDM_SET_STATE_EFFECTER_STATES = 0x39,
 	PLDM_GET_PDR = 0x51,
+	PLDM_PLATFORM_EVENT_MESSAGE = 0x0A
 };
 
 /** @brief PLDM PDR types
@@ -33,6 +37,20 @@ enum pldm_platform_commands {
 enum pldm_pdr_types {
 	PLDM_STATE_EFFECTER_PDR = 11,
 };
+
+/** @brief PLDM Event types
+ */
+enum pldm_event_types {
+	PLDM_SENSOR_EVENT = 0,
+};
+
+/** @brief PLDM sensorEventClass
+ */
+typedef enum sensor_event_class_states {
+	PLDM_SENSOR_OP_STATE,
+	PLDM_STATE_SENSOR_STATE,
+	PLDM_NUMERIC_SENSOR_STATE
+} sensor_event_class;
 
 /** @brief PLDM effecter initialization schemes
  */
@@ -50,6 +68,36 @@ enum pldm_platform_completion_codes {
 	PLDM_PLATFORM_INVALID_STATE_VALUE = 0x81,
 	PLDM_PLATFORM_INVALID_RECORD_HANDLE = 0x82,
 	PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE = 0x82,
+};
+
+/** @brief PLDM GetStateSensorReadings stateField format
+ */
+enum pldm_get_state_sensor_readings {
+	PLDM_SENSOR_OPERATIONAL_STATE,
+	PLDM_PRESENT_STATE,
+	PLDM_PREVIOUS_STATE,
+	PLDM_EVENT_STATE
+};
+
+/** @brief PLDM sensor supported states
+ */
+enum pldm_sensor_state {
+	PLDM_ENABLED,
+	PLDM_DISABLED,
+	PLDM_UNAVAILABLE,
+	PLDM_STATUSUNKOWN,
+	PLDM_FAILED,
+	PLDM_INITIALIZING,
+	PLDM_SHUTTINGDOWN,
+	PLDM_INTEST
+};
+
+/** @brief PLDM pldmPDRRepositoryChgEvent class eventData format
+ */
+enum pldm_pdr_repository_chg_event_data_format {
+	REFRESH_ENTIRE_REPOSITORY,
+	FORMAT_IS_PDR_TYPES,
+	FORMAT_IS_PDR_HANDLES
 };
 
 /** @struct pldm_pdr_hdr
@@ -136,6 +184,75 @@ struct pldm_get_pdr_req {
 	uint8_t transfer_op_flag;
 	uint16_t request_count;
 	uint16_t record_change_number;
+} __attribute__((packed));
+
+/** @struct pldm_sensor_event
+ *
+ *  structure representing sensorEventClass
+ */
+struct pldm_sensor_event_data {
+	uint16_t sensor_id;
+	uint8_t sensor_event_class_type;
+	uint8_t event_class[1];
+} __attribute__((packed));
+
+/** @struct pldm_state_sensor_state
+ *
+ *  structure representing sensorEventClass for stateSensorState
+ */
+struct pldm_sensor_event_state_sensor_state {
+	uint8_t sensor_offset;
+	uint8_t event_state;
+	uint8_t previous_event_state;
+} __attribute__((packed));
+
+/** @struct pldm_state_sensor_state
+ *
+ *  structure representing sensorEventClass for SensorOpState
+ */
+struct pldm_sensor_event_sensor_op_state {
+	uint8_t present_op_state;
+	uint8_t previous_op_state;
+} __attribute__((packed));
+
+/** @struct platform_event_message_req
+ *
+ *  structure representing PlatformEventMessage command request data
+ */
+struct platform_event_message_req {
+	uint8_t format_version;
+	uint8_t tid;
+	uint8_t event_class;
+	uint8_t event_data[1];
+} __attribute__((packed));
+
+/** @struct platform_event_message_response
+ *
+ *  structure representing PlatformEventMessage command response data
+ */
+struct platform_event_message_resp {
+	uint8_t completion_code;
+	uint8_t status;
+} __attribute__((packed));
+
+/** @struct pldm_pdr_repository_chg_event_data
+ *
+ *  structure representing pldmPDRRepositoryChgEvent class eventData
+ */
+struct pldm_pdr_repository_chg_event_data {
+	uint8_t event_data_format;
+	uint8_t number_of_change_records;
+	uint8_t change_records[1];
+} __attribute__((packed));
+
+/** @struct pldm_pdr_repository_chg_event_change_record_data
+ *
+ *  structure representing pldmPDRRepositoryChgEvent class eventData
+ */
+struct pldm_pdr_repository_chg_event_change_record_data {
+	uint8_t event_data_operation;
+	uint8_t number_of_change_entries;
+	uint32_t change_entry[1];
 } __attribute__((packed));
 
 /* Responder */
@@ -317,6 +434,38 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 int decode_set_state_effecter_states_resp(const struct pldm_msg *msg,
 					  size_t payload_length,
 					  uint8_t *completion_code);
+/*  PlatformEventMessage */
+
+/** @brief Decode PlatformEventMessage request data
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] format_version - Version of the event format
+ *  @param[out] tid - Terminus ID for the terminus that originated the event
+ * message
+ *  @param[out] event_class - The class of event being sent
+ *  @param[out] event_data - Event data based on the eventClass
+ *  @param[out] event_data_length - length of Event data
+ *  @return pldm_completion_codes
+ */
+int decode_platform_event_message_req(const struct pldm_msg *msg,
+				      size_t payload_length,
+				      uint8_t *format_version, uint8_t *tid,
+				      uint8_t *event_class, uint8_t *event_data,
+				      uint8_t *event_data_length);
+
+/** @brief Encode PlatformEventMessage response data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] status - Response status of the event message command
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_platform_event_message_resp(uint8_t instance_id,
+				       uint8_t completion_code, uint8_t status,
+				       struct pldm_msg *msg);
 #ifdef __cplusplus
 }
 #endif
