@@ -7,9 +7,9 @@ deps = [
 
 sources = [
   'base.cpp',
-  'bios.cpp',
-  'bios_table.cpp',
-  'bios_parser.cpp',
+  './bios/bios.cpp',
+  './bios/bios_table.cpp',
+  './bios/bios_parser.cpp',
   'pdr.cpp',
   'effecters.cpp',
   'platform.cpp',
