@@ -2,8 +2,8 @@
 
 #include "config.h"
 
-#include "bios_parser.hpp"
-#include "bios_table.hpp"
+#include "parser.hpp"
+#include "table.hpp"
 #include "handler.hpp"
 
 #include <stdint.h>
