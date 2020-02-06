@@ -1,7 +1,7 @@
 #include "dbus_impl_requester.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
-#include "libpldmresponder/bios.hpp"
+#include "libpldmresponder/bios/bios.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/platform.hpp"
 #include "utils.hpp"

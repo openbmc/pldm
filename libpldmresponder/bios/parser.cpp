@@ -1,6 +1,6 @@
-#include "bios_parser.hpp"
+#include "parser.hpp"
 
-#include "bios_table.hpp"
+#include "table.hpp"
 #include "utils.hpp"
 
 #include <cassert>
