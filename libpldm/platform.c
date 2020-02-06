@@ -429,3 +429,57 @@ int decode_set_numeric_effecter_value_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_platform_event_message_req(const struct pldm_msg *msg,
+				      size_t payload_length,
+				      uint8_t *format_version, uint8_t *tid,
+				      uint8_t *event_class, uint8_t *event_data,
+				      uint8_t *event_data_length)
+{
+
+	if (msg == NULL || format_version == NULL || tid == NULL ||
+	    event_class == NULL || event_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length <= PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct pldm_platform_event_message_req *response =
+	    (struct pldm_platform_event_message_req *)msg->payload;
+
+	*format_version = response->format_version;
+	*tid = response->tid;
+	*event_class = response->event_class;
+	*event_data_length =
+	    payload_length - PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES;
+	memcpy(event_data, response->event_data, *event_data_length);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_platform_event_message_resp(uint8_t instance_id,
+				       uint8_t completion_code, uint8_t status,
+				       struct pldm_msg *msg)
+{
+	int rc;
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_platform_event_message_resp *response =
+	    (struct pldm_platform_event_message_resp *)msg->payload;
+	response->completion_code = completion_code;
+	response->status = status;
+
+	struct pldm_header_info header = {0};
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_PLATFORM_EVENT_MESSAGE;
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	return PLDM_SUCCESS;
+}
