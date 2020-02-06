@@ -766,3 +766,91 @@ TEST(GetStateSensorReadings, testBadDecodeRequest)
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(PlatformEventMessage, testGoodStateSensorDecodeRequest)
+{
+    std::array<uint8_t,
+               hdrSize + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                   PLDM_PLATFORM_EVENT_MESSAGE_STATE_SENSOR_STATE_REQ_BYTES>
+        requestMsg{};
+
+    uint8_t retFormatVersion = 0;
+    uint8_t retTid = 0;
+    uint8_t retEventClass = 0;
+    size_t retEventDataOffset = 0;
+
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    struct pldm_platform_event_message_req* request =
+        reinterpret_cast<struct pldm_platform_event_message_req*>(req->payload);
+
+    uint8_t formatVersion = 0x01;
+    uint8_t tid = 0x02;
+    // Sensor Event
+    uint8_t eventClass = 0x00;
+
+    request->format_version = formatVersion;
+    request->tid = tid;
+    request->event_class = eventClass;
+    size_t eventDataOffset =
+        sizeof(formatVersion) + sizeof(tid) + sizeof(eventClass);
+
+    auto rc = decode_platform_event_message_req(
+        req, requestMsg.size() - hdrSize, &retFormatVersion, &retTid,
+        &retEventClass, &retEventDataOffset);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retFormatVersion, formatVersion);
+    EXPECT_EQ(retTid, tid);
+    EXPECT_EQ(retEventClass, eventClass);
+    EXPECT_EQ(retEventDataOffset, eventDataOffset);
+}
+
+TEST(PlatformEventMessage, testBadDecodeRequest)
+{
+    const struct pldm_msg* msg = NULL;
+    std::array<uint8_t,
+               hdrSize + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                   PLDM_PLATFORM_EVENT_MESSAGE_STATE_SENSOR_STATE_REQ_BYTES - 1>
+        requestMsg{};
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    uint8_t retFormatVersion;
+    uint8_t retTid = 0;
+    uint8_t retEventClass = 0;
+    size_t retEventDataOffset;
+
+    auto rc = decode_platform_event_message_req(msg, sizeof(*msg), NULL, NULL,
+                                                NULL, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_platform_event_message_req(
+        req,
+        requestMsg.size() - hdrSize -
+            PLDM_PLATFORM_EVENT_MESSAGE_STATE_SENSOR_STATE_REQ_BYTES,
+        &retFormatVersion, &retTid, &retEventClass, &retEventDataOffset);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(PlatformEventMessage, testGoodEncodeResponse)
+{
+    std::array<uint8_t,
+               hdrSize + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                   PLDM_PLATFORM_EVENT_MESSAGE_STATE_SENSOR_STATE_REQ_BYTES - 1>
+        responseMsg{};
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    uint8_t completionCode = 0;
+    uint8_t instanceId = 0x01;
+    uint8_t status = 1;
+
+    auto rc = encode_platform_event_message_resp(instanceId, PLDM_SUCCESS,
+                                                 status, response);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, response->payload[0]);
+    EXPECT_EQ(status, response->payload[1]);
+}
+
+TEST(PlatformEventMessage, testBadEncodeResponse)
+{
+    auto rc = encode_platform_event_message_resp(0, PLDM_SUCCESS, 1, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
