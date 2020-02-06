@@ -32,7 +32,7 @@ FruParser::FruParser(const std::string& dirPath)
     {
         std::cerr << "FRU config directory does not exist or empty, DIR="
                   << dirPath;
-        throw InternalFailure();
+        return;
     }
 
     fs::path masterFilePath = dir / fruMasterJson;
