@@ -15,7 +15,8 @@ sources = [
   'bios.c',
   'bios_table.c',
   'fru.c',
-  'utils.c'
+  'utils.c',
+  'pdr.c'
 ]
 
 libpldm_headers = ['.', '..']
