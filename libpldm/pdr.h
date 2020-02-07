@@ -134,6 +134,47 @@ pldm_pdr_find_record_by_type(const pldm_pdr *repo, uint8_t pdr_type,
 			     const pldm_pdr_record *curr_record, uint8_t **data,
 			     uint32_t *size);
 
+/* ======================= */
+/* FRU Record Set PDR APIs */
+/* ======================= */
+
+/** @brief Add a FRU record set PDR record to a PDR repository
+ *
+ *  @param[in/out] repo - opaque pointer acting as a PDR repo handle
+ *  @param[in] terminus_handle - PLDM terminus handle of terminus owning the PDR
+ *  record
+ *  @param[in] fru_rsi - FRU record set identifier
+ *  @param[in] entity_type - entity type of FRU
+ *  @param[in] entity_instance_num - entity instance number of FRU
+ *  @param[in] container_id - container id of FRU
+ *
+ *  @return uint32_t - record handle assigned to PDR record
+ */
+uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
+				     uint16_t fru_rsi, uint16_t entity_type,
+				     uint16_t entity_instance_num,
+				     uint16_t container_id);
+
+/** @brief Find a FRU record set PDR by FRU record set identifier
+ *
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ *  @param[in] fru_rsi - FRU record set identifier
+ *  @param[in] terminus_handle - *terminus_handle will be FRU terminus handle of
+ *  found PDR, or 0 if not found
+ *  @param[in] entity_type - *entity_type will be FRU entity type of found PDR,
+ *  or 0 if not found
+ *  @param[in] entity_instance_num - *entity_instance_num will be FRU entity
+ *  instance number of found PDR, or 0 if not found
+ *  @param[in] container_id - *cintainer_id will be FRU container id of found
+ *  PDR, or 0 if not found
+ *
+ *  @return uint32_t - record handle assigned to PDR record
+ */
+const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
+    const pldm_pdr *repo, uint16_t fru_rsi, uint16_t *terminus_handle,
+    uint16_t *entity_type, uint16_t *entity_instance_num,
+    uint16_t *container_id);
+
 #ifdef __cplusplus
 }
 #endif
