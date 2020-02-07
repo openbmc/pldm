@@ -2,12 +2,6 @@
 
 #include "pldm_cmd_helper.hpp"
 
-#include <map>
-#include <memory>
-#include <string>
-#include <typeinfo>
-#include <vector>
-
 #include "libpldm/utils.h"
 
 namespace pldmtool

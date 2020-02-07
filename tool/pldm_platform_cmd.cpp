@@ -1,8 +1,5 @@
 #include "pldm_cmd_helper.hpp"
 
-#include <string>
-#include <vector>
-
 namespace pldmtool
 {
 
