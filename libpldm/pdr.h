@@ -43,6 +43,12 @@ pldm_pdr_find_record_by_type(const pldm_pdr *repo, uint8_t pdr_type,
 			     const pldm_pdr_record *curr_record, uint8_t **data,
 			     uint32_t *size);
 
+/* FRU Record Set PDR APIs */
+uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
+				     uint16_t fru_rsi, uint16_t entity_type,
+				     uint16_t entity_instance_num,
+				     uint16_t container_id);
+
 #ifdef __cplusplus
 }
 #endif

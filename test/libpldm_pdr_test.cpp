@@ -200,3 +200,77 @@ TEST(PDRAccess, testFindByType)
 
     pldm_pdr_destroy(&repo);
 }
+
+TEST(PDRUpdate, testAddFruRecordSet)
+{
+    auto repo = pldm_pdr_init();
+
+    auto handle = pldm_pdr_add_fru_record_set(repo, 1, 10, 1, 0, 100);
+    EXPECT_EQ(handle, 1);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
+    EXPECT_EQ(pldm_pdr_get_repo_size(repo),
+              sizeof(pldm_pdr_hdr) + sizeof(pldm_pdr_fru_record_set));
+    uint32_t size{};
+    uint32_t nextRecHdl{};
+    uint8_t* outData = nullptr;
+    auto hdl = pldm_pdr_get_record(repo, 0, &outData, &size, &nextRecHdl);
+    EXPECT_NE(hdl, nullptr);
+    EXPECT_EQ(size, sizeof(pldm_pdr_hdr) + sizeof(pldm_pdr_fru_record_set));
+    EXPECT_EQ(nextRecHdl, 0);
+    pldm_pdr_hdr* hdr = reinterpret_cast<pldm_pdr_hdr*>(outData);
+    EXPECT_EQ(hdr->version, 1);
+    EXPECT_EQ(hdr->type, PLDM_PDR_FRU_RECORD_SET);
+    EXPECT_EQ(hdr->length, sizeof(pldm_pdr_fru_record_set));
+    EXPECT_EQ(hdr->record_handle, 1);
+    pldm_pdr_fru_record_set* fru = reinterpret_cast<pldm_pdr_fru_record_set*>(
+        outData + sizeof(pldm_pdr_hdr));
+    EXPECT_EQ(fru->terminus_handle, 1);
+    EXPECT_EQ(fru->fru_rsi, 10);
+    EXPECT_EQ(fru->entity_type, 1);
+    EXPECT_EQ(fru->entity_instance_num, 0);
+    EXPECT_EQ(fru->container_id, 100);
+    outData = nullptr;
+
+    handle = pldm_pdr_add_fru_record_set(repo, 2, 11, 2, 1, 101);
+    EXPECT_EQ(handle, 2);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 2);
+    EXPECT_EQ(pldm_pdr_get_repo_size(repo),
+              2 * (sizeof(pldm_pdr_hdr) + sizeof(pldm_pdr_fru_record_set)));
+    hdl = pldm_pdr_get_record(repo, 2, &outData, &size, &nextRecHdl);
+    EXPECT_NE(hdl, nullptr);
+    EXPECT_EQ(size, sizeof(pldm_pdr_hdr) + sizeof(pldm_pdr_fru_record_set));
+    EXPECT_EQ(nextRecHdl, 0);
+    hdr = reinterpret_cast<pldm_pdr_hdr*>(outData);
+    EXPECT_EQ(hdr->version, 1);
+    EXPECT_EQ(hdr->type, PLDM_PDR_FRU_RECORD_SET);
+    EXPECT_EQ(hdr->length, sizeof(pldm_pdr_fru_record_set));
+    EXPECT_EQ(hdr->record_handle, 2);
+    fru = reinterpret_cast<pldm_pdr_fru_record_set*>(outData +
+                                                     sizeof(pldm_pdr_hdr));
+    EXPECT_EQ(fru->terminus_handle, 2);
+    EXPECT_EQ(fru->fru_rsi, 11);
+    EXPECT_EQ(fru->entity_type, 2);
+    EXPECT_EQ(fru->entity_instance_num, 1);
+    EXPECT_EQ(fru->container_id, 101);
+    outData = nullptr;
+
+    hdl = pldm_pdr_get_record(repo, 1, &outData, &size, &nextRecHdl);
+    EXPECT_NE(hdl, nullptr);
+    EXPECT_EQ(size, sizeof(pldm_pdr_hdr) + sizeof(pldm_pdr_fru_record_set));
+    EXPECT_EQ(nextRecHdl, 2);
+    hdr = reinterpret_cast<pldm_pdr_hdr*>(outData);
+    EXPECT_EQ(hdr->version, 1);
+    EXPECT_EQ(hdr->type, PLDM_PDR_FRU_RECORD_SET);
+    EXPECT_EQ(hdr->length, sizeof(pldm_pdr_fru_record_set));
+    EXPECT_EQ(hdr->record_handle, 1);
+    fru = reinterpret_cast<pldm_pdr_fru_record_set*>(outData +
+                                                     sizeof(pldm_pdr_hdr));
+    EXPECT_EQ(fru->terminus_handle, 1);
+    EXPECT_EQ(fru->fru_rsi, 10);
+    EXPECT_EQ(fru->entity_type, 1);
+    EXPECT_EQ(fru->entity_instance_num, 0);
+    EXPECT_EQ(fru->container_id, 100);
+    outData = nullptr;
+
+    pldm_pdr_destroy(&repo);
+}
