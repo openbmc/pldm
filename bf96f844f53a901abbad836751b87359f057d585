@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0fd3918a_e13f21b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T12:29:21Z",
+      "side": 1,
+      "message": "which BIOS type?",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47f1cbc6_a50266f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T12:29:21Z",
+      "side": 1,
+      "message": "Could you specifically refer here the key name from the JSON in quotes (for what\u0027s validated what\u0027s not)? That makes it easy when someone\u0027s reading this and looking at an example JSON.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 16
+      },
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "48d27868_feadbbc3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T12:29:21Z",
+      "side": 1,
+      "message": "Need to add a \"Tested:\" section, which describes how you tested this. You should have tested positive and negative paths.",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "97b63a0b_5989d09d",
+        "filename": "libpldmresponder/examples/bios/main.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T12:29:21Z",
+      "side": 1,
+      "message": "pls cleanup whitespaces",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eaa4b9d5_f58a35b2",
+        "filename": "libpldmresponder/examples/bios/main.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T12:29:21Z",
+      "side": 1,
+      "message": "the input file should be specified via cmdline, it will never be inputted to stdin.",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "695ae967_2edfb14a",
+        "filename": "libpldmresponder/examples/bios/schema.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-07T12:29:21Z",
+      "side": 1,
+      "message": "pls cleanup whitespaces",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
