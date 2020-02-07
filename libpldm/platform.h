@@ -45,6 +45,7 @@ enum pldm_platform_commands {
  */
 enum pldm_pdr_types {
 	PLDM_STATE_EFFECTER_PDR = 11,
+	PLDM_PDR_FRU_RECORD_SET = 20,
 };
 
 /** @brief PLDM effecter initialization schemes
@@ -75,6 +76,18 @@ struct pldm_pdr_hdr {
 	uint8_t type;
 	uint16_t record_change_num;
 	uint16_t length;
+} __attribute__((packed));
+
+/** @struct pldm_pdr_fru_record_set
+ *
+ *  Structure representing PLDM FRU record set PDR
+ */
+struct pldm_pdr_fru_record_set {
+	uint16_t terminus_handle;
+	uint16_t fru_rsi;
+	uint16_t entity_type;
+	uint16_t entity_instance_num;
+	uint16_t container_id;
 } __attribute__((packed));
 
 /** @struct pldm_state_effecter_pdr
