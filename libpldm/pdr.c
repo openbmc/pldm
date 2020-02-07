@@ -235,3 +235,68 @@ uint32_t pldm_pdr_get_record_handle(const pldm_pdr *repo,
 
 	return record->record_handle;
 }
+
+uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
+				     uint16_t fru_rsi, uint16_t entity_type,
+				     uint16_t entity_instance_num,
+				     uint16_t container_id)
+{
+	uint32_t size = sizeof(struct pldm_pdr_hdr) +
+			sizeof(struct pldm_pdr_fru_record_set);
+	uint8_t data[size];
+
+	struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)&data;
+	hdr->version = 1;
+	hdr->record_handle = 0;
+	hdr->type = PLDM_PDR_FRU_RECORD_SET;
+	hdr->record_change_num = 0;
+	hdr->length = sizeof(struct pldm_pdr_fru_record_set);
+	struct pldm_pdr_fru_record_set *fru =
+	    (struct pldm_pdr_fru_record_set *)((uint8_t *)hdr +
+					       sizeof(struct pldm_pdr_hdr));
+	fru->terminus_handle = terminus_handle;
+	fru->fru_rsi = fru_rsi;
+	fru->entity_type = entity_type;
+	fru->entity_instance_num = entity_instance_num;
+	fru->container_id = container_id;
+
+	return pldm_pdr_add(repo, data, size, 0);
+}
+
+const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
+    const pldm_pdr *repo, uint16_t fru_rsi, uint16_t *terminus_handle,
+    uint16_t *entity_type, uint16_t *entity_instance_num,
+    uint16_t *container_id)
+{
+	assert(terminus_handle != NULL);
+	assert(entity_type != NULL);
+	assert(entity_instance_num != NULL);
+	assert(container_id != NULL);
+
+	uint8_t *data = NULL;
+	uint32_t size = 0;
+	const pldm_pdr_record *curr_record = pldm_pdr_find_record_by_type(
+	    repo, PLDM_PDR_FRU_RECORD_SET, NULL, &data, &size);
+	while (curr_record != NULL) {
+		struct pldm_pdr_fru_record_set *fru =
+		    (struct pldm_pdr_fru_record_set
+			 *)(data + sizeof(struct pldm_pdr_hdr));
+		if (fru->fru_rsi == fru_rsi) {
+			*terminus_handle = fru->terminus_handle;
+			*entity_type = fru->entity_type;
+			*entity_instance_num = fru->entity_instance_num;
+			*container_id = fru->container_id;
+			return curr_record;
+		}
+		data = NULL;
+		curr_record = pldm_pdr_find_record_by_type(
+		    repo, PLDM_PDR_FRU_RECORD_SET, curr_record, &data, &size);
+	}
+
+	*terminus_handle = 0;
+	*entity_type = 0;
+	*entity_instance_num = 0;
+	*container_id = 0;
+
+	return NULL;
+}
