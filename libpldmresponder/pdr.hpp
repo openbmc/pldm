@@ -276,7 +276,6 @@ void generate(const std::string& dir, T& repo)
               }
           }}};
 
-    auto eraseLen = strlen(".json");
     Type pdrType{};
     for (const auto& dirEntry : fs::directory_iterator(dir))
     {
@@ -285,9 +284,7 @@ void generate(const std::string& dir, T& repo)
             auto json = readJson(dirEntry.path().string());
             if (!json.empty())
             {
-                auto fileName = dirEntry.path().filename().string();
-                fileName.erase(fileName.end() - eraseLen);
-                pdrType = stoi(fileName);
+                pdrType = json.value("pdrType", 0);
                 generators.at(pdrType)(json, repo);
             }
         }
