@@ -76,6 +76,24 @@
     },
     {
       "key": {
+        "uuid": "f3edac92_9de0cf8a",
+        "filename": "libpldmresponder/examples/bios/main.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-11T07:36:24Z",
+      "side": 1,
+      "message": "Not addressed. Also, please respond to the comments (by clicking Done if you\u0027ve addressed them, or details if you have not addressed for some reason).",
+      "parentUuid": "97b63a0b_5989d09d",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eaa4b9d5_f58a35b2",
         "filename": "libpldmresponder/examples/bios/main.py",
         "patchSetId": 7
@@ -93,6 +111,24 @@
     },
     {
       "key": {
+        "uuid": "da3a50e1_93563a30",
+        "filename": "libpldmresponder/examples/bios/main.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-11T07:36:24Z",
+      "side": 1,
+      "message": "This is not addressed.",
+      "parentUuid": "eaa4b9d5_f58a35b2",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "695ae967_2edfb14a",
         "filename": "libpldmresponder/examples/bios/schema.json",
         "patchSetId": 7
@@ -104,6 +140,24 @@
       "writtenOn": "2020-02-07T12:29:21Z",
       "side": 1,
       "message": "pls cleanup whitespaces",
+      "revId": "bf96f844f53a901abbad836751b87359f057d585",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3bd19159_7a475ab2",
+        "filename": "libpldmresponder/examples/bios/schema.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-02-11T07:36:24Z",
+      "side": 1,
+      "message": "Unaddressed comment. Still see whitespaces. Please use a JSON beautifier.",
+      "parentUuid": "695ae967_2edfb14a",
       "revId": "bf96f844f53a901abbad836751b87359f057d585",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
