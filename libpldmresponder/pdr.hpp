@@ -1,12 +1,9 @@
 #pragma once
 
 #include "libpldmresponder/pdr_utils.hpp"
+#include "utils.hpp"
 
 #include <stdint.h>
-
-#include <string>
-
-#include "libpldm/pdr.h"
 
 using namespace pldm::responder::pdr_utils;
 
