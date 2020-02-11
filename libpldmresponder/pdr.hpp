@@ -1,29 +1,17 @@
 #pragma once
 
-#include "effecters.hpp"
+#include "libpldmresponder/effecters.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "utils.hpp"
 
-#include <stdint.h>
-
-#include <filesystem>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <nlohmann/json.hpp>
-#include <string>
-#include <vector>
-#include <xyz/openbmc_project/Common/error.hpp>
-
-#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 
-using InternalFailure =
-    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 namespace fs = std::filesystem;
 
 using namespace pldm::responder::pdrUtils;
+
+using Type = uint8_t;
+using generateHandler = std::function<void(const Json& json, Repo& repo)>;
 
 namespace pldm
 {

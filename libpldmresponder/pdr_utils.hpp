@@ -6,11 +6,16 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <vector>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/pdr.h"
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 namespace fs = std::filesystem;
 
@@ -33,7 +38,6 @@ struct PdrEntry
         uint32_t next_handle;
     } handle;
 };
-using Type = uint8_t;
 using Json = nlohmann::json;
 using RecordHandle = uint32_t;
 
