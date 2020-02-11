@@ -6,18 +6,20 @@
 #include <gtest/gtest.h>
 
 using namespace pldm::responder;
+using namespace pdr::internal;
 
 TEST(GeneratePDR, testGoodJson)
 {
-    using namespace pdr;
     using namespace effecter::dbus_mapping;
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
 
+    IndexedRepo pdrRepo11;
+    getRepoByType("./pdr_jsons/state_effecter/good", PLDM_STATE_EFFECTER_PDR,
+                  pdrRepo11);
     // 2 entries
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    ASSERT_EQ(pdrRepo11.numEntries(), 2);
 
     // Check first PDR
-    pdr::Entry e = pdrRepo.at(1);
+    pdr::Entry e = pdrRepo11.at(1);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
 
@@ -48,7 +50,7 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(paths[0], "/foo/bar");
 
     // Check second PDR
-    e = pdrRepo.at(2);
+    e = pdrRepo11.at(2);
     pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
 
     ASSERT_EQ(pdr->hdr.record_handle, 2);
@@ -91,18 +93,19 @@ TEST(GeneratePDR, testGoodJson)
 
 TEST(GeneratePDR, testNoJson)
 {
-    using namespace pdr;
-    Repo& pdrRepo = get("./pdr_jsons/not_there");
-
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    IndexedRepo pdrRepo11;
+    ASSERT_THROW(getRepoByType("./pdr_jsons/not_there", PLDM_STATE_EFFECTER_PDR,
+                               pdrRepo11),
+                 std::exception);
 }
 
 TEST(GeneratePDR, testMalformedJson)
 {
-    using namespace pdr;
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
-    pdrRepo.makeEmpty();
+    IndexedRepo pdrRepo11;
+    getRepoByType("./pdr_jsons/state_effecter/good", PLDM_STATE_EFFECTER_PDR,
+                  pdrRepo11);
+    ASSERT_EQ(pdrRepo11.numEntries(), 2);
+    pdrRepo11.makeEmpty();
     ASSERT_THROW(pldm::responder::pdr::internal::readJson(
                      "./pdr_jsons/state_effecter/malformed"),
                  std::exception);

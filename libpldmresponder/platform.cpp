@@ -11,6 +11,7 @@ namespace platform
 {
 
 using namespace pldm::responder::effecter::dbus_mapping;
+using namespace pldm::responder::pdr::internal;
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
@@ -110,8 +111,10 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
 
     stateField.resize(compEffecterCnt);
     const pldm::utils::DBusHandler dBusIntf;
+    IndexedRepo pdrRepo;
+    getRepoByType(PDR_JSONS_DIR, PLDM_STATE_EFFECTER_PDR, pdrRepo);
     rc = setStateEffecterStatesHandler<pldm::utils::DBusHandler>(
-        dBusIntf, effecterId, stateField);
+        dBusIntf, pdrRepo, effecterId, stateField);
     if (rc != PLDM_SUCCESS)
     {
         return CmdHandler::ccOnlyResponse(request, rc);

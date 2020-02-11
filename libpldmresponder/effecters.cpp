@@ -11,12 +11,6 @@ namespace responder
 namespace effecter
 {
 
-Id nextId()
-{
-    static Id id = 0;
-    return ++id;
-}
-
 namespace dbus_mapping
 {
 
