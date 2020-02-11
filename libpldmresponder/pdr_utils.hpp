@@ -8,12 +8,16 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <vector>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/pdr.h"
 
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 using namespace pldm::utils;
 
 namespace fs = std::filesystem;
