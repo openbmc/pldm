@@ -46,11 +46,14 @@ using Type = uint8_t;
 using Json = nlohmann::json;
 using RecordHandle = uint32_t;
 using StateId = uint16_t;
-using PossibleValues = std::vector<uint8_t>;
 
 /** @brief Map of DBus property stateId to attribute value
  */
 using StateIdtoDbusVal = std::map<StateId, pldm::utils::PropertyValue>;
+
+using PossibleValues = std::vector<uint8_t>;
+using DbusMappings = std::vector<pldm::utils::DBusMapping>;
+using DbusValMaps = std::vector<StateIdtoDbusVal>;
 
 /** @brief Parse PDR JSON file and output Json object
  *

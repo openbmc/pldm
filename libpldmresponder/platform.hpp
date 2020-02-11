@@ -24,6 +24,9 @@ namespace platform
 using namespace pldm::utils;
 using namespace pldm::responder::pdr_utils;
 
+using generateHandler =
+    std::function<void(const Json& json, pdr_utils::RepoInterface& repo)>;
+
 using DbusMappings = std::vector<DBusMapping>;
 using DbusValMaps = std::vector<StateIdtoDbusVal>;
 using DbusObjMaps = std::map<uint16_t, std::tuple<DbusMappings, DbusValMaps>>;
