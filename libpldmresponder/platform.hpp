@@ -13,6 +13,8 @@
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
+using namespace pldm::responder::pdr;
+
 namespace pldm
 {
 namespace responder
@@ -63,7 +65,8 @@ class Handler : public CmdHandler
      */
     template <class DBusInterface>
     int setStateEffecterStatesHandler(
-        const DBusInterface& dBusIntf, effecter::Id effecterId,
+        const DBusInterface& dBusIntf, const Repo& pdrRepo,
+        effecter::Id effecterId,
         const std::vector<set_effecter_state_field>& stateField)
     {
         using namespace std::string_literals;
@@ -83,32 +86,25 @@ class Handler : public CmdHandler
             {PLDM_SYSTEM_POWER_STATE,
              {{PLDM_OFF_SOFT_GRACEFUL,
                "xyz.openbmc_project.State.Chassis.Transition.Off"s}}}};
-        using namespace pldm::responder::pdr;
         using namespace pldm::responder::effecter::dbus_mapping;
+
+        if (pdrRepo.empty())
+        {
+            std::cerr << "PDR repo is empty." << std::endl;
+
+            return PLDM_ERROR;
+        }
 
         state_effecter_possible_states* states = nullptr;
         pldm_state_effecter_pdr* pdr = nullptr;
         uint8_t compEffecterCnt = stateField.size();
         uint32_t recordHndl{};
-        Repo& pdrRepo = get(PDR_JSONS_DIR);
         pdr::Entry pdrEntry{};
 
         while (!pdr)
         {
             pdrEntry = pdrRepo.at(recordHndl);
-            pldm_pdr_hdr* header =
-                reinterpret_cast<pldm_pdr_hdr*>(pdrEntry.data());
-            if (header->type != PLDM_STATE_EFFECTER_PDR)
-            {
-                recordHndl = pdrRepo.getNextRecordHandle(recordHndl);
-                if (recordHndl)
-                {
-                    continue;
-                }
-                return PLDM_PLATFORM_INVALID_EFFECTER_ID;
-            }
             pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data());
-            recordHndl = pdr->hdr.record_handle;
             if (pdr->effecter_id == effecterId)
             {
                 states = reinterpret_cast<state_effecter_possible_states*>(
