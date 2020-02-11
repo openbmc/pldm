@@ -52,6 +52,10 @@ using PossibleValues = std::vector<uint8_t>;
  */
 using StatestoDbusVal = std::map<State, pldm::utils::PropertyValue>;
 
+using PossibleValues = std::vector<uint8_t>;
+using DbusMappings = std::vector<pldm::utils::DBusMapping>;
+using DbusValMaps = std::vector<StateIdtoDbusVal>;
+
 /** @brief Parse PDR JSON file and output Json object
  *
  *  @param[in] path - path of PDR JSON file
