@@ -62,7 +62,7 @@ void generate_pldm_state_effecter_pdr(const Json& json, T& repo)
         pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
 
         pdr->terminus_handle = 0;
-        pdr->effecter_id = effecter::nextId();
+        pdr->effecter_id = e.value("effecter_id", 0);
         pdr->entity_type = e.value("type", 0);
         pdr->entity_instance = e.value("instance", 0);
         pdr->container_id = e.value("container", 0);
