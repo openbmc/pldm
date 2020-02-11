@@ -29,7 +29,8 @@ using ::testing::Return;
 
 TEST(setStateEffecterStatesHandler, testGoodRequest)
 {
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
+    Repo& pdrRepo = getRepoByType("./pdr_jsons/state_effecter/good",
+                                  PLDM_STATE_EFFECTER_PDR);
     pdr::Entry e = pdrRepo.at(2);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
@@ -57,7 +58,8 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
 
 TEST(setStateEffecterStatesHandler, testBadRequest)
 {
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
+    Repo& pdrRepo = getRepoByType("./pdr_jsons/state_effecter/good",
+                                  PLDM_STATE_EFFECTER_PDR);
     pdr::Entry e = pdrRepo.at(2);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
