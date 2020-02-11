@@ -181,20 +181,20 @@ class Repo : public RepoInterface
         pldm_pdr_destroy(repo);
     }
 
-    const pldm_pdr* getPdr();
+    const pldm_pdr* getPdr() override;
 
-    RecordHandle addRecord(const PdrEntry& pdrEntry);
+    RecordHandle addRecord(const PdrEntry& pdrEntry) override;
 
-    const pldm_pdr_record* getFirstRecord(PdrEntry& pdrEntry);
+    const pldm_pdr_record* getFirstRecord(PdrEntry& pdrEntry) override;
 
     const pldm_pdr_record* getNextRecord(const pldm_pdr_record* currRecord,
-                                         PdrEntry& pdrEntry);
+                                         PdrEntry& pdrEntry) override;
 
-    uint32_t getRecordHandle(const pldm_pdr_record* record);
+    uint32_t getRecordHandle(const pldm_pdr_record* record) override;
 
-    uint32_t getRecordCount();
+    uint32_t getRecordCount() override;
 
-    bool empty();
+    bool empty() override;
 };
 
 } // namespace pdr_utils
