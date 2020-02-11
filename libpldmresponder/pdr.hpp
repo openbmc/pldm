@@ -1,14 +1,15 @@
 #pragma once
 
 #include "libpldmresponder/pdr_utils.hpp"
+#include "utils.hpp"
 
 #include <stdint.h>
 
-#include <string>
-
-#include "libpldm/pdr.h"
+namespace fs = std::filesystem;
 
 using namespace pldm::responder::pdr_utils;
+
+using Type = uint8_t;
 
 namespace pldm
 {
