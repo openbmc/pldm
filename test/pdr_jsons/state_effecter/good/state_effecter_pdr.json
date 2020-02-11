@@ -2,6 +2,7 @@
     "pdrType": 11,
     "entries": [
         {
+            "effecter_id": 1,
             "type": 33,
             "instance": 0,
             "container": 0,
@@ -30,6 +31,7 @@
             ]
         },
         {
+            "effecter_id": 2,
             "type": 100,
             "instance": 0,
             "container": 0,

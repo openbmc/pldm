@@ -62,7 +62,7 @@ void generate_pldm_state_effecter_pdr(const Json& json, T& repo)
         pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
 
         pdr->terminus_handle = 0;
-        pdr->effecter_id = effecter::nextId();
+        pdr->effecter_id = e.value("effecter_id", 0);
         pdr->entity_type = e.value("type", 0);
         pdr->entity_instance = e.value("instance", 0);
         pdr->container_id = e.value("container", 0);
@@ -72,7 +72,7 @@ void generate_pldm_state_effecter_pdr(const Json& json, T& repo)
         pdr->composite_effecter_count = effecters.size();
 
         using namespace effecter::dbus_mapping;
-        Paths paths{};
+        DbusObj dbusObj{};
         uint8_t* start =
             pdrEntry.data() + sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
         for (const auto& effecter : effecters)
@@ -96,10 +96,11 @@ void generate_pldm_state_effecter_pdr(const Json& json, T& repo)
             }
             start += possibleStates->possible_states_size;
 
-            auto dbus = effecter.value("dbus", empty);
-            paths.emplace_back(std::move(dbus));
+            DBusMapping dbusMapping;
+            dbusMapping.objectPath = effecter.value("dbus", empty);
+            dbusObj.emplace_back(std::move(dbusMapping));
         }
-        add(pdr->effecter_id, std::move(paths));
+        add(pdr->effecter_id, std::move(dbusObj));
         repo.add(std::move(pdrEntry));
     }
 }
