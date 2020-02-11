@@ -135,10 +135,6 @@ void FruImpl::populateRecords(
             }
             catch (const std::out_of_range& e)
             {
-                std::cout << "Interface = " << intf
-                          << " , and Property = " << prop
-                          << " , in config json not present in D-Bus"
-                          << "\n";
                 continue;
             }
         }
