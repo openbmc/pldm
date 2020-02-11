@@ -1,6 +1,6 @@
 #include "pdr.hpp"
 
-#include "platform.hpp"
+#include "pdr_state_effecter.hpp"
 
 namespace pldm
 {
@@ -10,7 +10,6 @@ namespace responder
 
 namespace pdr
 {
-
 using namespace pldm::responder::pdr_utils;
 
 void getRepoByType(const Repo& inRepo, Repo& outRepo, Type pdrType)
