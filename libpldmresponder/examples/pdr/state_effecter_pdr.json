@@ -1,0 +1,52 @@
+{
+  "pdrType": 11,
+  "entries": [
+    {
+      "type": 33,
+      "instance": 0,
+      "container": 0,
+      "effecters": [
+        {
+          "set": {
+            "id": 196,
+            "size": 1,
+            "states": [
+              1
+            ]
+          },
+          "dbus": "/foo/bar"
+        }
+      ]
+    },
+    {
+      "type": 100,
+      "instance": 0,
+      "container": 0,
+      "effecters": [
+        {
+          "set": {
+            "id": 197,
+            "size": 1,
+            "states": [
+              1
+            ]
+          },
+          "dbus": "/foo/bar"
+        },
+        {
+          "set": {
+            "id": 198,
+            "size": 2,
+            "states": [
+              1,
+              2,
+              5,
+              15
+            ]
+          },
+          "dbus": "/foo/bar/baz"
+        }
+      ]
+    }
+  ]
+}
