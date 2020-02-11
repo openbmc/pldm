@@ -239,6 +239,15 @@ void generate(const std::string& dir, T& repo)
  */
 Repo& get(const std::string& dir);
 
+/** @brief Build (if not built already) and retrieve PDR by PDR type
+ *
+ *  @param[in] dir - directory housing platform specific PDR JSON files
+ *  @param[in] type - PDR type
+ *
+ *  @return Repo& - Reference to instance of pdr::Repo
+ */
+Repo& getRepoByType(const std::string& dir, const Type type);
+
 } // namespace pdr
 } // namespace responder
 } // namespace pldm
