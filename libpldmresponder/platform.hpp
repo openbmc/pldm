@@ -24,10 +24,13 @@ namespace platform
 using namespace pldm::utils;
 using namespace pldm::responder::pdr_utils;
 
+using generatePDR =
+    std::function<void(const Json& json, pdr_utils::RepoInterface& repo)>;
+
 using EffecterId = uint16_t;
-using DbusMappings = std::vector<DBusMapping>;
-using DbusValMaps = std::vector<StatestoDbusVal>;
-using DbusObjMaps = std::map<EffecterId, std::tuple<DbusMappings, DbusValMaps>>;
+using DbusObjMaps =
+    std::map<EffecterId,
+             std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>>;
 
 class Handler : public CmdHandler
 {
@@ -60,17 +63,19 @@ class Handler : public CmdHandler
      *  @param[in] dbusObj - list of D-Bus object structure and list of D-Bus
      *                       property value to attribute value
      */
-    void addDbusObjMaps(uint16_t effecterId,
-                        std::tuple<DbusMappings, DbusValMaps> dbusObj);
+    void addDbusObjMaps(
+        uint16_t effecterId,
+        std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> dbusObj);
 
     /** @brief Retrieve an effecter id -> D-Bus objects mapping
      *
      *  @param[in] effecterId - effecter id
      *
-     *  @return std::tuple<DbusMappings, DbusValMaps> - list of D-Bus object
-     *          structure and list of D-Bus property value to attribute value
+     *  @return std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> -
+     *          list of D-Bus object structure and list of D-Bus property value
+     *          to attribute value
      */
-    const std::tuple<DbusMappings, DbusValMaps>&
+    const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
         getDbusObjMaps(uint16_t effecterId) const;
 
     uint16_t getNextEffecterId()

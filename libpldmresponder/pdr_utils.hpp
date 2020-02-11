@@ -51,6 +51,8 @@ using PossibleValues = std::vector<uint8_t>;
 /** @brief Map of DBus property State to attribute value
  */
 using StatestoDbusVal = std::map<State, pldm::utils::PropertyValue>;
+using DbusMappings = std::vector<pldm::utils::DBusMapping>;
+using DbusValMaps = std::vector<StatestoDbusVal>;
 
 /** @brief Parse PDR JSON file and output Json object
  *
