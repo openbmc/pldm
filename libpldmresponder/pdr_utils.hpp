@@ -1,19 +1,24 @@
 #pragma once
 
+#include "utils.hpp"
+
 #include <stdint.h>
 
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <vector>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/pdr.h"
 
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+using namespace pldm::utils;
 
 namespace fs = std::filesystem;
 
@@ -43,6 +48,12 @@ struct PdrEntry
 using Type = uint8_t;
 using Json = nlohmann::json;
 using RecordHandle = uint32_t;
+using StateId = uint16_t;
+using PossibleValues = std::vector<uint8_t>;
+
+/** @brief Map of DBus property stateId to attribute value
+ */
+using DbusIdToValMap = std::map<StateId, PropertyValue>;
 
 /** @brief Parse PDR JSON file and output Json object
  *
@@ -67,6 +78,17 @@ inline Json readJson(const std::string& path)
 
     return Json::parse(jsonFile);
 }
+
+/** @brief Populate the mapping between D-Bus property stateId and attribute
+ *          value for the effecter PDR enumeration attribute.
+ *
+ *  @param[in] type - type of the D-Bus property
+ *  @param[in] dBusValues - json array of D-Bus property values
+ *  @param[in] pv - Possible values for the effecter PDR enumeration attribute
+ *
+ */
+DbusIdToValMap populateMapping(const std::string& type, const Json& dBusValues,
+                               const PossibleValues& pv);
 
 /**
  *  @class RepoInterface
