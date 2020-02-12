@@ -225,7 +225,7 @@ class Handler : public CmdHandler
                  }}};
 
         int rc = PLDM_SUCCESS;
-        auto paths = get(effecterId);
+        auto dbusObj = get(effecterId);
         for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
         {
             std::vector<StateSetNum> allowed{};
@@ -240,7 +240,8 @@ class Handler : public CmdHandler
                           << effecterId
                           << " VALUE=" << stateField[currState].effecter_state
                           << " COMPOSITE_EFFECTER_ID=" << currState
-                          << " DBUS_PATH=" << paths[currState].c_str() << "\n";
+                          << " DBUS_PATH=" << dbusObj[0].objectPath.c_str()
+                          << "\n";
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                 break;
             }
@@ -256,7 +257,7 @@ class Handler : public CmdHandler
             }
             if (stateField[currState].set_request == PLDM_REQUEST_SET)
             {
-                rc = iter->second(paths[currState], currState);
+                rc = iter->second(dbusObj[0].objectPath, currState);
                 if (rc != PLDM_SUCCESS)
                 {
                     break;
