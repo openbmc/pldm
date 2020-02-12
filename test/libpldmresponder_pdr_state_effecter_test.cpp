@@ -52,8 +52,9 @@ TEST(GeneratePDR, testGoodJson)
     bf1.byte = 2;
     ASSERT_EQ(states->states[0].byte, bf1.byte);
 
-    const auto& paths = handler.getEffecterObjs(pdr->effecter_id);
-    ASSERT_EQ(paths[0], "/foo/bar");
+    const auto& [dbusMappings1, dbusValMaps1] =
+        handler.getDbusObjMaps(pdr->effecter_id);
+    ASSERT_EQ(dbusMappings1[0].objectPath, "/foo/bar");
 
     // Check second PDR
     auto record2 = pdr::getRecordByHandle(outRepo, 2, e);
@@ -91,11 +92,12 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(states->states[0].byte, bf2[0].byte);
     ASSERT_EQ(states->states[1].byte, bf2[1].byte);
 
-    const auto& paths1 = handler.getEffecterObjs(pdr->effecter_id);
-    ASSERT_EQ(paths1[0], "/foo/bar");
-    ASSERT_EQ(paths1[1], "/foo/bar/baz");
+    const auto& [dbusMappings2, dbusValMaps2] =
+        handler.getDbusObjMaps(pdr->effecter_id);
+    ASSERT_EQ(dbusMappings2[0].objectPath, "/foo/bar");
+    ASSERT_EQ(dbusMappings2[1].objectPath, "/foo/bar/baz");
 
-    ASSERT_THROW(handler.getEffecterObjs(0xDEAD), std::exception);
+    ASSERT_THROW(handler.getDbusObjMaps(0xDEAD), std::exception);
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
