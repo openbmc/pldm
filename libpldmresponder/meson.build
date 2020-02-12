@@ -9,6 +9,7 @@ sources = [
   'base.cpp',
   './bios/bios.cpp',
   './bios/table.cpp',
+  './bios/attribute.cpp',
   './bios/parser.cpp',
   'pdr.cpp',
   'effecters.cpp',
