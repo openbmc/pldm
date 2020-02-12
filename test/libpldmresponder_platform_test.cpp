@@ -192,14 +192,12 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     std::vector<set_effecter_state_field> stateField;
     stateField.push_back({PLDM_REQUEST_SET, 1});
     stateField.push_back({PLDM_REQUEST_SET, 1});
-    std::string value = "xyz.openbmc_project.State.OperatingSystem."
-                        "Status.OSStatus.Standby";
+    std::string value = "xyz.openbmc_project.Foo.Bar.V1";
     PropertyValue propertyValue = value;
 
     MockdBusHandler handlerObj;
-    DBusMapping dbusMapping{"/foo/bar",
-                            "xyz.openbmc_project.State.OperatingSystem.Status",
-                            "OperatingSystemState", "string"};
+    DBusMapping dbusMapping{"/foo/bar", "xyz.openbmc_project.Foo.Bar",
+                            "propertyName", "string"};
 
     EXPECT_CALL(handlerObj, setDbusProperty(dbusMapping, propertyValue))
         .Times(2);
@@ -243,13 +241,6 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(handlerObj, 0x1,
                                                                 stateField);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
-
-    std::vector<set_effecter_state_field> newStateField;
-    newStateField.push_back({PLDM_REQUEST_SET, 1});
-
-    rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(handlerObj, 0x2,
-                                                                newStateField);
-    ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_STATE_VALUE);
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);

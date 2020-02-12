@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils.hpp"
+
 #include <stdint.h>
 
 #include <filesystem>
@@ -43,6 +45,12 @@ struct PdrEntry
 using Type = uint8_t;
 using Json = nlohmann::json;
 using RecordHandle = uint32_t;
+using StateId = uint16_t;
+using PossibleValues = std::vector<uint8_t>;
+
+/** @brief Map of DBus property stateId to attribute value
+ */
+using StateIdtoDbusVal = std::map<StateId, pldm::utils::PropertyValue>;
 
 /** @brief Parse PDR JSON file and output Json object
  *
@@ -67,6 +75,19 @@ inline Json readJson(const std::string& path)
 
     return Json::parse(jsonFile);
 }
+
+/** @brief Populate the mapping between D-Bus property stateId and attribute
+ *          value for the effecter PDR enumeration attribute.
+ *
+ *  @param[in] type - type of the D-Bus property
+ *  @param[in] dBusValues - json array of D-Bus property values
+ *  @param[in] pv - Possible values for the effecter PDR enumeration attribute
+ *
+ *  @return StateIdtoDbusVal - Map of DBus property stateId to attribute value
+ */
+StateIdtoDbusVal populateMapping(const std::string& type,
+                                 const Json& dBusValues,
+                                 const PossibleValues& pv);
 
 /**
  *  @class RepoInterface
