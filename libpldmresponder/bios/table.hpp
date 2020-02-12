@@ -1,8 +1,11 @@
 #pragma once
 
+#include "bios_utils.hpp"
+
 #include <stdint.h>
 
 #include <filesystem>
+#include <string>
 #include <vector>
 
 #include "libpldm/bios.h"
@@ -71,7 +74,7 @@ class BIOSTable
     fs::path filePath;
 };
 
-class BIOSStringTable
+class BIOSStringTable : public pldm::bios::utils::BIOSStringTableInterface
 {
   public:
     /** @brief Constructs BIOSStringTable
@@ -92,7 +95,7 @@ class BIOSStringTable
      *  @return name of the corresponding BIOS string
      *  @throw std::invalid_argument if the string can not be found.
      */
-    std::string findString(uint16_t handle) const;
+    std::string findString(uint16_t handle) const override;
 
     /** @brief Find the string handle from the BIOS string table by the given
      *         name
@@ -100,7 +103,13 @@ class BIOSStringTable
      *  @return handle of the string
      *  @throw std::invalid_argument if the string can not be found
      */
-    uint16_t findHandle(const std::string& name) const;
+    uint16_t findHandle(const std::string& name) const override;
+
+    uint16_t
+        decodeHandle(const pldm_bios_string_table_entry* entry) const override;
+
+    std::string
+        decodeString(const pldm_bios_string_table_entry* entry) const override;
 
   private:
     Table stringTable;

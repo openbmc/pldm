@@ -64,13 +64,7 @@ std::string BIOSStringTable::findString(uint16_t handle) const
     {
         throw std::invalid_argument("Invalid String Handle");
     }
-    auto strLength =
-        pldm_bios_table_string_entry_decode_string_length(stringEntry);
-    std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
-    pldm_bios_table_string_entry_decode_string(stringEntry, buffer.data(),
-                                               buffer.size());
-
-    return std::string(buffer.data(), buffer.data() + strLength);
+    return decodeString(stringEntry);
 }
 
 uint16_t BIOSStringTable::findHandle(const std::string& name) const
@@ -82,7 +76,23 @@ uint16_t BIOSStringTable::findHandle(const std::string& name) const
         throw std::invalid_argument("Invalid String Name");
     }
 
-    return pldm_bios_table_string_entry_decode_handle(stringEntry);
+    return decodeHandle(stringEntry);
+}
+
+uint16_t BIOSStringTable::decodeHandle(
+    const pldm_bios_string_table_entry* entry) const
+{
+    return pldm_bios_table_string_entry_decode_handle(entry);
+}
+
+std::string BIOSStringTable::decodeString(
+    const pldm_bios_string_table_entry* entry) const
+{
+    auto strLength = pldm_bios_table_string_entry_decode_string_length(entry);
+    std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
+    pldm_bios_table_string_entry_decode_string(entry, buffer.data(),
+                                               buffer.size());
+    return std::string(buffer.data(), buffer.data() + strLength);
 }
 
 } // namespace bios

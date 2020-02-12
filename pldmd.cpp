@@ -146,7 +146,8 @@ int main(int argc, char** argv)
 
     Invoker invoker{};
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
-    invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
+    invoker.registerHandler(PLDM_BIOS,
+                            std::make_unique<pldm::responder::bios::Handler>());
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>());
     invoker.registerHandler(PLDM_FRU,

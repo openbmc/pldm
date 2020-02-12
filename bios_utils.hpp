@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <memory>
+#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -133,6 +134,22 @@ class BIOSTableIter
   private:
     const void* tableData;
     size_t tableSize;
+};
+
+class BIOSStringTableInterface
+{
+  public:
+    virtual ~BIOSStringTableInterface() = default;
+
+    virtual std::string findString(uint16_t handle) const = 0;
+
+    virtual uint16_t findHandle(const std::string& name) const = 0;
+
+    virtual uint16_t
+        decodeHandle(const pldm_bios_string_table_entry* entry) const = 0;
+
+    virtual std::string
+        decodeString(const pldm_bios_string_table_entry* entry) const = 0;
 };
 
 } // namespace utils
