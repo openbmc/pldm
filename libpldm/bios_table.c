@@ -146,6 +146,12 @@ uint16_t pldm_bios_table_attr_entry_decode_attribute_handle(
 	return le16toh(entry->attr_handle);
 }
 
+uint8_t pldm_bios_table_attr_entry_decode_attribute_type(
+    const struct pldm_bios_attr_table_entry *entry)
+{
+	return entry->attr_type;
+}
+
 uint16_t pldm_bios_table_attr_entry_decode_string_handle(
     const struct pldm_bios_attr_table_entry *entry)
 {
@@ -266,6 +272,21 @@ int pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
 		return PLDM_ERROR_INVALID_DATA;
 	pldm_bios_table_attr_entry_enum_decode_pv_hdls(entry, pv_hdls, pv_num);
 	return PLDM_SUCCESS;
+}
+
+uint8_t pldm_bios_table_attr_entry_enum_decode_def_indices(
+    const struct pldm_bios_attr_table_entry *entry, uint8_t *def_indices,
+    uint8_t def_num)
+{
+	uint8_t num = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
+	num = num < def_num ? num : def_num;
+	uint8_t pv_num = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
+	const uint8_t *p = entry->metadata +
+			   sizeof(uint8_t) /* number of possible values*/
+			   + pv_num * sizeof(uint16_t) /* possible values */
+			   + sizeof(uint8_t); /* number of default values */
+	memcpy(def_indices, p, num);
+	return num;
 }
 
 /** @brief Get length of an enum attribute entry
@@ -396,6 +417,35 @@ uint8_t pldm_bios_table_attr_entry_string_decode_string_type(
 	return fields->string_type;
 }
 
+uint8_t pldm_bios_table_attr_entry_string_decode_max_length(
+    const struct pldm_bios_attr_table_entry *entry)
+{
+	struct attr_table_string_entry_fields *fields =
+	    (struct attr_table_string_entry_fields *)entry->metadata;
+	return le16toh(fields->max_length);
+}
+
+uint8_t pldm_bios_table_attr_entry_string_decode_min_length(
+    const struct pldm_bios_attr_table_entry *entry)
+{
+	struct attr_table_string_entry_fields *fields =
+	    (struct attr_table_string_entry_fields *)entry->metadata;
+	return le16toh(fields->min_length);
+}
+
+uint8_t pldm_bios_table_attr_entry_string_decode_def_string(
+    const struct pldm_bios_attr_table_entry *entry, char *buffer, size_t size)
+{
+	uint16_t length =
+	    pldm_bios_table_attr_entry_string_decode_def_string_length(entry);
+	length = length < (size - 1) ? length : (size - 1);
+	struct attr_table_string_entry_fields *fields =
+	    (struct attr_table_string_entry_fields *)entry->metadata;
+	memcpy(buffer, fields->def_string, length);
+	buffer[length] = 0;
+	return length;
+}
+
 /** @brief Get length of a string attribute entry
  */
 static size_t attr_table_entry_length_string(const void *entry)
@@ -489,6 +539,18 @@ int pldm_bios_table_attr_entry_integer_encode_check(
 		return PLDM_ERROR_INVALID_DATA;
 	pldm_bios_table_attr_entry_integer_encode(entry, entry_length, info);
 	return PLDM_SUCCESS;
+}
+
+void pldm_bios_table_attr_entry_integer_decode(
+    const struct pldm_bios_attr_table_entry *entry, uint64_t *lower,
+    uint64_t *upper, uint32_t *scalar, uint64_t *def)
+{
+	struct attr_table_integer_entry_fields *fields =
+	    (struct attr_table_integer_entry_fields *)entry->metadata;
+	*lower = le64toh(fields->lower_bound);
+	*upper = le64toh(fields->upper_bound);
+	*scalar = le32toh(fields->scalar_increment);
+	*def = le64toh(fields->default_value);
 }
 
 static size_t attr_table_entry_length_integer(const void *entry)
