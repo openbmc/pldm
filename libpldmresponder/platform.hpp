@@ -67,27 +67,10 @@ class Handler : public CmdHandler
         const DBusInterface& dBusIntf, effecter::Id effecterId,
         const std::vector<set_effecter_state_field>& stateField)
     {
+        using namespace pldm::responder::effecter::dbus_mapping;
         using namespace pldm::responder::pdr;
         using namespace pldm::utils;
-        using namespace std::string_literals;
-        using DBusProperty = std::variant<std::string, bool>;
-        using StateSetId = uint16_t;
         using StateSetNum = uint8_t;
-        using PropertyMap =
-            std::map<StateSetId, std::map<StateSetNum, DBusProperty>>;
-        static const PropertyMap stateNumToDbusProp = {
-            {PLDM_BOOT_PROGRESS_STATE,
-             {{PLDM_BOOT_NOT_ACTIVE,
-               "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
-               "Standby"s},
-              {PLDM_BOOT_COMPLETED,
-               "xyz.openbmc_project.State.OperatingSystem.Status.OSStatus."
-               "BootComplete"s}}},
-            {PLDM_SYSTEM_POWER_STATE,
-             {{PLDM_OFF_SOFT_GRACEFUL,
-               "xyz.openbmc_project.State.Chassis.Transition.Off"s}}}};
-        using namespace pldm::responder::pdr;
-        using namespace pldm::responder::effecter::dbus_mapping;
 
         state_effecter_possible_states* states = nullptr;
         pldm_state_effecter_pdr* pdr = nullptr;
@@ -100,6 +83,7 @@ class Handler : public CmdHandler
             std::cerr << "Failed to get record by PDR type\n";
             return PLDM_PLATFORM_INVALID_EFFECTER_ID;
         }
+
         PdrEntry pdrEntry{};
         auto pdrRecord = repo.getFirstRecord(pdrEntry);
         while (pdrRecord)
@@ -130,101 +114,9 @@ class Handler : public CmdHandler
             return PLDM_PLATFORM_INVALID_EFFECTER_ID;
         }
 
-        std::map<StateSetId, std::function<int(const std::string& objPath,
-                                               const uint8_t currState)>>
-            effecterToDbusEntries = {
-                {PLDM_BOOT_PROGRESS_STATE,
-                 [&](const std::string& objPath, const uint8_t currState) {
-                     auto stateSet =
-                         stateNumToDbusProp.find(PLDM_BOOT_PROGRESS_STATE);
-                     if (stateSet == stateNumToDbusProp.end())
-                     {
-                         std::cerr << "Couldn't find D-Bus mapping for "
-                                   << "PLDM_BOOT_PROGRESS_STATE, EFFECTER_ID="
-                                   << effecterId << "\n";
-                         return PLDM_ERROR;
-                     }
-                     auto iter = stateSet->second.find(
-                         stateField[currState].effecter_state);
-                     if (iter == stateSet->second.end())
-                     {
-                         std::cerr << "Invalid state field passed or field not "
-                                   << "found for PLDM_BOOT_PROGRESS_STATE, "
-                                      "EFFECTER_ID="
-                                   << effecterId << " FIELD="
-                                   << stateField[currState].effecter_state
-                                   << " OBJECT_PATH=" << objPath.c_str()
-                                   << "\n";
-                         return PLDM_ERROR_INVALID_DATA;
-                     }
-                     PropertyValue value{std::get<std::string>(iter->second)};
-                     DBusMapping dbusMapping{
-                         objPath,
-                         "xyz.openbmc_project.State.OperatingSystem.Status",
-                         "OperatingSystemState", "string"};
-                     try
-                     {
-                         dBusIntf.updateDbusProperty(dbusMapping, value);
-                     }
-                     catch (const std::exception& e)
-                     {
-                         std::cerr
-                             << "Error setting property, ERROR=" << e.what()
-                             << " PROPERTY=" << dbusMapping.propertyName
-                             << " INTERFACE="
-                             << dbusMapping.interface << " PATH="
-                             << dbusMapping.objectPath << "\n";
-                         return PLDM_ERROR;
-                     }
-                     return PLDM_SUCCESS;
-                 }},
-                {PLDM_SYSTEM_POWER_STATE,
-                 [&](const std::string& objPath, const uint8_t currState) {
-                     auto stateSet =
-                         stateNumToDbusProp.find(PLDM_SYSTEM_POWER_STATE);
-                     if (stateSet == stateNumToDbusProp.end())
-                     {
-                         std::cerr << "Couldn't find D-Bus mapping for "
-                                   << "PLDM_SYSTEM_POWER_STATE, EFFECTER_ID="
-                                   << effecterId << "\n";
-                         return PLDM_ERROR;
-                     }
-                     auto iter = stateSet->second.find(
-                         stateField[currState].effecter_state);
-                     if (iter == stateSet->second.end())
-                     {
-                         std::cerr << "Invalid state field passed or field not "
-                                   << "found for PLDM_SYSTEM_POWER_STATE, "
-                                      "EFFECTER_ID="
-                                   << effecterId << " FIELD="
-                                   << stateField[currState].effecter_state
-                                   << " OBJECT_PATH=" << objPath.c_str()
-                                   << "\n";
-                         return PLDM_ERROR_INVALID_DATA;
-                     }
-                     PropertyValue value{std::get<std::string>(iter->second)};
-                     DBusMapping dbusMapping{
-                         objPath, "xyz.openbmc_project.State.Chassis",
-                         "RequestedPowerTransition", "string"};
-                     try
-                     {
-                         dBusIntf.updateDbusProperty(dbusMapping, value);
-                     }
-                     catch (const std::exception& e)
-                     {
-                         std::cerr
-                             << "Error setting property, ERROR=" << e.what()
-                             << " PROPERTY=" << dbusMapping.propertyName
-                             << " INTERFACE="
-                             << dbusMapping.interface << " PATH="
-                             << dbusMapping.objectPath << "\n";
-                         return PLDM_ERROR;
-                     }
-                     return PLDM_SUCCESS;
-                 }}};
-
         int rc = PLDM_SUCCESS;
-        auto paths = get(effecterId);
+        const auto& dbusObjs = getDbusObjs(effecterId);
+        const auto& dbusValMaps = getDbusValMaps(effecterId);
         for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
         {
             std::vector<StateSetNum> allowed{};
@@ -239,26 +131,29 @@ class Handler : public CmdHandler
                           << effecterId
                           << " VALUE=" << stateField[currState].effecter_state
                           << " COMPOSITE_EFFECTER_ID=" << currState
-                          << " DBUS_PATH=" << paths[currState].c_str() << "\n";
+                          << " DBUS_PATH=" << dbusObjs[currState].objectPath
+                          << "\n";
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                 break;
             }
-            auto iter = effecterToDbusEntries.find(states->state_set_id);
-            if (iter == effecterToDbusEntries.end())
-            {
-                uint16_t setId = states->state_set_id;
-                std::cerr << "Did not find the state set for the"
-                          << " state effecter pdr, STATE=" << setId
-                          << " EFFECTER_ID=" << effecterId << "\n";
-                rc = PLDM_PLATFORM_INVALID_STATE_VALUE;
-                break;
-            }
+            DBusMapping dbusMapping = dbusObjs[currState];
+            DbusIdToValMap dbusValToMap = dbusValMaps[currState];
             if (stateField[currState].set_request == PLDM_REQUEST_SET)
             {
-                rc = iter->second(paths[currState], currState);
-                if (rc != PLDM_SUCCESS)
+                try
                 {
-                    break;
+                    dBusIntf.updateDbusProperty(
+                        dbusMapping,
+                        dbusValToMap.at(stateField[currState].effecter_state));
+                }
+                catch (const std::exception& e)
+                {
+                    std::cerr
+                        << "Error setting property, ERROR=" << e.what()
+                        << " PROPERTY=" << dbusMapping.propertyName
+                        << " INTERFACE=" << dbusMapping.interface << " PATH="
+                        << dbusMapping.objectPath << "\n";
+                    return PLDM_ERROR;
                 }
             }
             uint8_t* nextState =
