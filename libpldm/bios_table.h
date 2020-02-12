@@ -171,6 +171,13 @@ pldm_bios_table_string_find_by_handle(const void *table, size_t length,
 uint16_t pldm_bios_table_attr_entry_decode_attribute_handle(
     const struct pldm_bios_attr_table_entry *entry);
 
+/** @brief Get the attribute type of the attribute table entry
+ *  @param[in] entry - Pointer to bios attribute table entry
+ *  @return Type of the attribute table entry
+ */
+uint8_t pldm_bios_table_attr_entry_decode_attribute_type(
+    const struct pldm_bios_attr_table_entry *entry);
+
 /** @brief Get the attribute name handle from the attribute table entry
  *  @param[in] entry - Pointer to bios attribute table entry
  *  @return handle to identify the name of the attribute, this handle points

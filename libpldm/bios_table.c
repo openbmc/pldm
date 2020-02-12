@@ -146,6 +146,12 @@ uint16_t pldm_bios_table_attr_entry_decode_attribute_handle(
 	return le16toh(entry->attr_handle);
 }
 
+uint8_t pldm_bios_table_attr_entry_decode_attribute_type(
+    const struct pldm_bios_attr_table_entry *entry)
+{
+	return entry->attr_type;
+}
+
 uint16_t pldm_bios_table_attr_entry_decode_string_handle(
     const struct pldm_bios_attr_table_entry *entry)
 {
