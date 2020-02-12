@@ -197,8 +197,8 @@ class Handler : public CmdHandler
                          std::cerr << "Invalid state field passed or field not "
                                    << "found for PLDM_SYSTEM_POWER_STATE, "
                                       "EFFECTER_ID="
-                                   << effecterId << " FIELD="
-                                   << stateField[currState].effecter_state
+                                   << effecterId
+                                   << " FIELD=" << stateField[c].effecter_state
                                    << " OBJECT_PATH=" << objPath.c_str()
                                    << "\n";
                          return PLDM_ERROR_INVALID_DATA;
@@ -225,9 +225,14 @@ class Handler : public CmdHandler
                  }}};
 
         int rc = PLDM_SUCCESS;
-        auto paths = get(effecterId);
+        auto dbusObj = get(effecterId);
         for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
         {
+            if (!states)
+            {
+                break;
+            }
+
             std::vector<StateSetNum> allowed{};
             // computation is based on table 79 from DSP0248 v1.1.1
             uint8_t bitfieldIndex = stateField[currState].effecter_state / 8;
@@ -240,7 +245,8 @@ class Handler : public CmdHandler
                           << effecterId
                           << " VALUE=" << stateField[currState].effecter_state
                           << " COMPOSITE_EFFECTER_ID=" << currState
-                          << " DBUS_PATH=" << paths[currState].c_str() << "\n";
+                          << " DBUS_PATH="
+                          << dbusObj[currState].objectPath.c_str() << "\n";
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                 break;
             }
@@ -256,7 +262,7 @@ class Handler : public CmdHandler
             }
             if (stateField[currState].set_request == PLDM_REQUEST_SET)
             {
-                rc = iter->second(paths[currState], currState);
+                rc = iter->second(dbusObj[currState].objectPath, currState);
                 if (rc != PLDM_SUCCESS)
                 {
                     break;
