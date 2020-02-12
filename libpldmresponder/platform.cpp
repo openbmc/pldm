@@ -13,16 +13,46 @@ namespace platform
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
+static const Json empty{};
+
+void Handler::addDbusObjs(uint16_t effecterId, DbusObjs&& dbusObjs)
+{
+    idToDbusObjs.emplace(effecterId, std::move(dbusObjs));
+}
+
+const DbusObjs& Handler::getDbusObjs(uint16_t effecterId) const
+{
+    if (idToDbusObjs.find(effecterId) == idToDbusObjs.end())
+    {
+        throw std::out_of_range("effecterId does not exist");
+    }
+
+    return idToDbusObjs.at(effecterId);
+}
+
+void Handler::addDbusValMaps(uint16_t effecterId, DbusValMaps&& dbusValMap)
+{
+    idToDbusValMaps.emplace(effecterId, std::move(dbusValMap));
+}
+
+const DbusValMaps& Handler::getDbusValMaps(uint16_t effecterId) const
+{
+    if (idToDbusValMaps.find(effecterId) == idToDbusValMaps.end())
+    {
+        throw std::out_of_range("effecterId does not exist");
+    }
+
+    return idToDbusValMaps.at(effecterId);
+}
+
 void Handler::generateStateEffecterRepo(const Json& json, Repo& repo)
 {
     static const std::vector<Json> emptyList{};
-    static const Json empty{};
     auto entries = json.value("entries", emptyList);
     for (const auto& e : entries)
     {
         size_t pdrSize = 0;
         auto effecters = e.value("effecters", emptyList);
-        static const Json empty{};
         for (const auto& effecter : effecters)
         {
             auto set = effecter.value("set", empty);
@@ -61,7 +91,8 @@ void Handler::generateStateEffecterRepo(const Json& json, Repo& repo)
         pdr->has_description_pdr = false;
         pdr->composite_effecter_count = effecters.size();
 
-        EffecterObjs paths{};
+        DbusObjs dbusObjs{};
+        DbusValMaps dbusValMaps{};
         uint8_t* start =
             entry.data() + sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
         for (const auto& effecter : effecters)
@@ -75,6 +106,7 @@ void Handler::generateStateEffecterRepo(const Json& json, Repo& repo)
             start += sizeof(possibleStates->state_set_id) +
                      sizeof(possibleStates->possible_states_size);
             static const std::vector<uint8_t> emptyStates{};
+            PossibleValues stateValues;
             auto states = set.value("states", emptyStates);
             for (const auto& state : states)
             {
@@ -82,13 +114,29 @@ void Handler::generateStateEffecterRepo(const Json& json, Repo& repo)
                 auto bit = state - (index * 8);
                 bitfield8_t* bf = reinterpret_cast<bitfield8_t*>(start + index);
                 bf->byte |= 1 << bit;
+                stateValues.emplace_back(std::move(state));
             }
             start += possibleStates->possible_states_size;
 
-            auto dbus = effecter.value("dbus", empty);
-            paths.emplace_back(std::move(dbus));
+            auto dbusEntry = effecter.value("dbus", empty);
+            auto objectPath = dbusEntry.value("path", "");
+            auto interface = dbusEntry.value("interface", "");
+            auto propertyName = dbusEntry.value("property_name", "");
+            auto propertyType = dbusEntry.value("property_type", "");
+            pldm::utils::DBusMapping dbusMapping{objectPath, interface,
+                                                 propertyName, propertyType};
+            dbusObjs.emplace_back(std::move(dbusMapping));
+
+            Json propValues = dbusEntry["property_values"];
+            DbusIdToValMap dbusIdToValMap =
+                populateMapping(propertyType, propValues, stateValues);
+            if (!dbusIdToValMap.empty())
+            {
+                dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            }
         }
-        addEffecterObjs(pdr->effecter_id, std::move(paths));
+        addDbusObjs(pdr->effecter_id, std::move(dbusObjs));
+        addDbusValMaps(pdr->effecter_id, std::move(dbusValMaps));
         PdrEntry pdrEntry{};
         pdrEntry.data = entry.data();
         pdrEntry.size = pdrSize;
@@ -116,8 +164,12 @@ void Handler::generate(const std::string& dir, Repo& repo)
             auto json = readJson(dirEntry.path().string());
             if (!json.empty())
             {
-                pdrType = json.value("pdrType", 0);
-                generators.at(pdrType)(json, repo);
+                auto effecterPDRs = json.value("effecterPDRs", empty);
+                for (const auto& effecter : effecterPDRs)
+                {
+                    pdrType = effecter.value("pdrType", 0);
+                    generators.at(pdrType)(effecter, repo);
+                }
             }
         }
         catch (const InternalFailure& e)

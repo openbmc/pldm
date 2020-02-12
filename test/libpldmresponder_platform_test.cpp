@@ -23,9 +23,9 @@ TEST(getPDR, testGoodPath)
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->request_count = 100;
 
-    auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
-    Repo repo(pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    Repo& repo = handler.getRepo();
+
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -39,8 +39,6 @@ TEST(getPDR, testGoodPath)
     pldm_pdr_hdr* hdr = reinterpret_cast<pldm_pdr_hdr*>(resp->record_data);
     ASSERT_EQ(hdr->record_handle, 1);
     ASSERT_EQ(hdr->version, 1);
-
-    pldm_pdr_destroy(pdrRepo);
 }
 
 TEST(getPDR, testShortRead)
@@ -54,9 +52,9 @@ TEST(getPDR, testShortRead)
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->request_count = 1;
 
-    auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
-    Repo repo(pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    Repo& repo = handler.getRepo();
+
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -64,7 +62,6 @@ TEST(getPDR, testShortRead)
         reinterpret_cast<struct pldm_get_pdr_resp*>(responsePtr->payload);
     ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
     ASSERT_EQ(1, resp->response_count);
-    pldm_pdr_destroy(pdrRepo);
 }
 
 TEST(getPDR, testBadRecordHandle)
@@ -79,16 +76,14 @@ TEST(getPDR, testBadRecordHandle)
     request->record_handle = 100000;
     request->request_count = 1;
 
-    auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
-    Repo repo(pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    Repo& repo = handler.getRepo();
+
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     ASSERT_EQ(responsePtr->payload[0], PLDM_PLATFORM_INVALID_RECORD_HANDLE);
-
-    pldm_pdr_destroy(pdrRepo);
 }
 
 TEST(getPDR, testNoNextRecord)
@@ -102,9 +97,9 @@ TEST(getPDR, testNoNextRecord)
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->record_handle = 1;
 
-    auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
-    Repo repo(pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    Repo& repo = handler.getRepo();
+
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -112,8 +107,6 @@ TEST(getPDR, testNoNextRecord)
         reinterpret_cast<struct pldm_get_pdr_resp*>(responsePtr->payload);
     ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
     ASSERT_EQ(2, resp->next_record_handle);
-
-    pldm_pdr_destroy(pdrRepo);
 }
 
 TEST(getPDR, testFindPDR)
@@ -127,9 +120,9 @@ TEST(getPDR, testFindPDR)
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->request_count = 100;
 
-    auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
-    Repo repo(pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    Repo& repo = handler.getRepo();
+
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
 
@@ -170,18 +163,14 @@ TEST(getPDR, testFindPDR)
         }
     }
     ASSERT_EQ(found, true);
-
-    pldm_pdr_destroy(pdrRepo);
 }
 
 TEST(setStateEffecterStatesHandler, testGoodRequest)
 {
-    auto inPDRRepo = pldm_pdr_init();
-    auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
-    Repo inRepo(inPDRRepo);
-    getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    pdr_utils::Repo outRepo =
+        getRepoByType(handler.getRepo(), PLDM_STATE_EFFECTER_PDR);
+
     pdr_utils::PdrEntry e;
     auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
     ASSERT_NE(record1, nullptr);
@@ -192,33 +181,26 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     std::vector<set_effecter_state_field> stateField;
     stateField.push_back({PLDM_REQUEST_SET, 1});
     stateField.push_back({PLDM_REQUEST_SET, 1});
-    std::string value = "xyz.openbmc_project.State.OperatingSystem."
-                        "Status.OSStatus.Standby";
+    std::string value = "xyz.openbmc_project.Foo.Bar.V1";
     PropertyValue propertyValue = value;
 
     MockdBusHandler handlerObj;
-    DBusMapping dbusMapping{"/foo/bar",
-                            "xyz.openbmc_project.State.OperatingSystem.Status",
-                            "OperatingSystemState", "string"};
+    DBusMapping dbusMapping{"/foo/bar", "xyz.openbmc_project.Foo.Bar",
+                            "propertyName", "string"};
 
     EXPECT_CALL(handlerObj, setDbusProperty(dbusMapping, propertyValue))
         .Times(2);
     auto rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
         handlerObj, 0x1, stateField);
     ASSERT_EQ(rc, 0);
-
-    pldm_pdr_destroy(inPDRRepo);
-    pldm_pdr_destroy(outPDRRepo);
 }
 
 TEST(setStateEffecterStatesHandler, testBadRequest)
 {
-    auto inPDRRepo = pldm_pdr_init();
-    auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
-    Repo inRepo(inPDRRepo);
-    getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    pdr_utils::Repo outRepo =
+        getRepoByType(handler.getRepo(), PLDM_STATE_EFFECTER_PDR);
+
     pdr_utils::PdrEntry e;
     auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
     ASSERT_NE(record1, nullptr);
@@ -243,14 +225,4 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(handlerObj, 0x1,
                                                                 stateField);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
-
-    std::vector<set_effecter_state_field> newStateField;
-    newStateField.push_back({PLDM_REQUEST_SET, 1});
-
-    rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(handlerObj, 0x2,
-                                                                newStateField);
-    ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_STATE_VALUE);
-
-    pldm_pdr_destroy(inPDRRepo);
-    pldm_pdr_destroy(outPDRRepo);
 }
