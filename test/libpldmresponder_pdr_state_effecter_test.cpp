@@ -44,8 +44,8 @@ TEST(GeneratePDR, testGoodJson)
     bf1.byte = 2;
     ASSERT_EQ(states->states[0].byte, bf1.byte);
 
-    auto paths = get(pdr->effecter_id);
-    ASSERT_EQ(paths[0], "/foo/bar");
+    auto dbusObj = get(pdr->effecter_id);
+    ASSERT_EQ(dbusObj[0].objectPath, "/foo/bar");
 
     // Check second PDR
     e = pdrRepo.at(2);
@@ -82,9 +82,9 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(states->states[0].byte, bf2[0].byte);
     ASSERT_EQ(states->states[1].byte, bf2[1].byte);
 
-    paths = get(pdr->effecter_id);
-    ASSERT_EQ(paths[0], "/foo/bar");
-    ASSERT_EQ(paths[1], "/foo/bar/baz");
+    dbusObj = get(pdr->effecter_id);
+    ASSERT_EQ(dbusObj[0].objectPath, "/foo/bar");
+    ASSERT_EQ(dbusObj[1].objectPath, "/foo/bar/baz");
 
     ASSERT_THROW(get(0xDEAD), std::exception);
 }
