@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include <cstring>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -50,6 +51,8 @@ TEST(AttrTable, HeaderDecodeTest)
         reinterpret_cast<struct pldm_bios_attr_table_entry*>(enumEntry.data());
     auto attrHandle = pldm_bios_table_attr_entry_decode_attribute_handle(entry);
     EXPECT_EQ(attrHandle, 2);
+    auto attrType = pldm_bios_table_attr_entry_decode_attribute_type(entry);
+    EXPECT_EQ(attrType, 0);
     auto stringHandle = pldm_bios_table_attr_entry_decode_string_handle(entry);
     EXPECT_EQ(stringHandle, 1);
 }
@@ -101,6 +104,12 @@ TEST(AttrTable, EnumEntryDecodeTest)
 
     uint8_t defNumber = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
     EXPECT_EQ(defNumber, 1);
+    std::vector<uint8_t> defIndices(defNumber);
+    rc = pldm_bios_table_attr_entry_enum_decode_def_indices(
+        entry, defIndices.data(), defIndices.size());
+    EXPECT_EQ(rc, defNumber);
+    EXPECT_THAT(defIndices, ElementsAreArray({0}));
+
     defNumber = 0;
     rc =
         pldm_bios_table_attr_entry_enum_decode_def_num_check(entry, &defNumber);
@@ -195,29 +204,42 @@ TEST(AttrTable, StringEntryDecodeTest)
     auto stringType =
         pldm_bios_table_attr_entry_string_decode_string_type(entry);
     EXPECT_EQ(stringType, 1);
+    auto minLength = pldm_bios_table_attr_entry_string_decode_min_length(entry);
+    EXPECT_EQ(minLength, 1);
+    auto maxLength = pldm_bios_table_attr_entry_string_decode_max_length(entry);
+    EXPECT_EQ(maxLength, 100);
 
-    uint16_t def_string_length =
+    uint16_t defStringLength =
         pldm_bios_table_attr_entry_string_decode_def_string_length(entry);
-    EXPECT_EQ(def_string_length, 3);
+    EXPECT_EQ(defStringLength, 3);
+    std::vector<char> defString(defStringLength + 1);
+    auto rc = pldm_bios_table_attr_entry_string_decode_def_string(
+        entry, defString.data(), defString.size());
+    EXPECT_EQ(rc, 3);
+    EXPECT_STREQ(defString.data(), "abc");
+    rc = pldm_bios_table_attr_entry_string_decode_def_string(
+        entry, defString.data(), defString.size() - 1);
+    EXPECT_EQ(rc, 2);
+    EXPECT_STREQ(defString.data(), "ab");
 
-    def_string_length = 0;
-    auto rc = pldm_bios_table_attr_entry_string_decode_def_string_length_check(
-        entry, &def_string_length);
+    defStringLength = 0;
+    rc = pldm_bios_table_attr_entry_string_decode_def_string_length_check(
+        entry, &defStringLength);
     EXPECT_EQ(rc, PLDM_SUCCESS);
-    EXPECT_EQ(def_string_length, 3);
+    EXPECT_EQ(defStringLength, 3);
 
     rc = pldm_bios_table_attr_entry_string_decode_def_string_length_check(
         entry, nullptr);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     rc = pldm_bios_table_attr_entry_string_decode_def_string_length_check(
-        nullptr, &def_string_length);
+        nullptr, &defStringLength);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     entry->attr_type = PLDM_BIOS_INTEGER;
     rc = pldm_bios_table_attr_entry_string_decode_def_string_length_check(
-        entry, &def_string_length);
+        entry, &defStringLength);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     rc = pldm_bios_table_attr_entry_string_decode_def_string_length_check(
-        nullptr, &def_string_length);
+        nullptr, &defStringLength);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
@@ -368,6 +390,30 @@ TEST(AttrTable, integerEntryEncodeTest)
     rc = pldm_bios_table_attr_entry_integer_encode_check(
         encodeEntry.data(), encodeEntry.size(), &info);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(AttrTable, integerEntryDecodeTest)
+{
+    std::vector<uint8_t> integerEntry{
+        0,  0,                   /* attr handle */
+        3,                       /* attr type */
+        1,  0,                   /* attr name handle */
+        1,  0, 0, 0, 0, 0, 0, 0, /* lower bound */
+        10, 0, 0, 0, 0, 0, 0, 0, /* upper bound */
+        2,  0, 0, 0,             /* scalar increment */
+        3,  0, 0, 0, 0, 0, 0, 0, /* defaut value */
+    };
+
+    uint64_t lower, upper, def;
+    uint32_t scalar;
+    auto entry = reinterpret_cast<struct pldm_bios_attr_table_entry*>(
+        integerEntry.data());
+    pldm_bios_table_attr_entry_integer_decode(entry, &lower, &upper, &scalar,
+                                              &def);
+    EXPECT_EQ(lower, 1);
+    EXPECT_EQ(upper, 10);
+    EXPECT_EQ(scalar, 2);
+    EXPECT_EQ(def, 3);
 }
 
 TEST(AttrTable, ItearatorTest)
