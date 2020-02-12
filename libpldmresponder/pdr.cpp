@@ -69,7 +69,8 @@ void generate(const std::string& dir, Repo& repo)
                      pdr->composite_effecter_count = effecters.size();
 
                      using namespace effecter::dbus_mapping;
-                     Paths paths{};
+                     DbusObjs dbusObjs{};
+                     DbusValMaps dbusValMaps{};
                      uint8_t* start = entry.data() +
                                       sizeof(pldm_state_effecter_pdr) -
                                       sizeof(uint8_t);
@@ -86,6 +87,7 @@ void generate(const std::string& dir, Repo& repo)
                          start += sizeof(possibleStates->state_set_id) +
                                   sizeof(possibleStates->possible_states_size);
                          static const std::vector<uint8_t> emptyStates{};
+                         PossibleValues stateValues;
                          auto states = set.value("states", emptyStates);
                          for (const auto& state : states)
                          {
@@ -94,13 +96,29 @@ void generate(const std::string& dir, Repo& repo)
                              bitfield8_t* bf =
                                  reinterpret_cast<bitfield8_t*>(start + index);
                              bf->byte |= 1 << bit;
+                             stateValues.emplace_back(std::move(state));
                          }
                          start += possibleStates->possible_states_size;
 
-                         auto dbus = effecter.value("dbus", empty);
-                         paths.emplace_back(std::move(dbus));
+                         auto dbusEntry = effecter.value("dbus", empty);
+                         auto objectPath = dbusEntry.value("path", "");
+                         auto interface = dbusEntry.value("interface", "");
+                         auto propertyName =
+                             dbusEntry.value("property_name", "");
+                         auto propertyType =
+                             dbusEntry.value("property_type", "");
+                         DBusMapping dbusMapping{objectPath, interface,
+                                                 propertyName, propertyType};
+                         dbusObjs.emplace_back(std::move(dbusMapping));
+
+                         DbusIdToValMap dbusIdToValMap;
+                         Json propValues = dbusEntry["property_values"];
+                         dbusIdToValMap = populateMapping(
+                             propertyType, propValues, stateValues);
+                         dbusValMaps.emplace_back(std::move(dbusIdToValMap));
                      }
-                     add(pdr->effecter_id, std::move(paths));
+                     addDbusObjs(pdr->effecter_id, std::move(dbusObjs));
+                     addDbusValMaps(pdr->effecter_id, std::move(dbusValMaps));
                      PdrEntry pdrEntry{};
                      pdrEntry.data = entry.data();
                      pdrEntry.size = pdrSize;
@@ -109,6 +127,7 @@ void generate(const std::string& dir, Repo& repo)
              }}};
 
     Type pdrType{};
+    static const Json empty{};
     for (const auto& dirEntry : fs::directory_iterator(dir))
     {
         try
@@ -116,8 +135,12 @@ void generate(const std::string& dir, Repo& repo)
             auto json = readJson(dirEntry.path().string());
             if (!json.empty())
             {
-                pdrType = json.value("pdrType", 0);
-                generators.at(pdrType)(json, repo);
+                auto effecterPDRs = json.value("effecterPDRs", empty);
+                for (const auto& effecter : effecterPDRs)
+                {
+                    pdrType = effecter.value("pdrType", 0);
+                    generators.at(pdrType)(effecter, repo);
+                }
             }
         }
         catch (const InternalFailure& e)
