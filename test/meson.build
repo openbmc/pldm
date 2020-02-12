@@ -25,11 +25,12 @@ tests = [
   'pldmd_instanceid_test',
   'pldmd_registration_test',
   'pldm_utils_test',
-  'libpldmresponder_fru_test',
+  'libpldmresponder_fru_test'
 ]
 
 if get_option('oem-ibm').enabled()
   tests += [
+    '../oem/ibm/test/libpldm_fileio_test',
     '../oem/ibm/test/libpldmresponder_fileio_test'
   ]
 endif
