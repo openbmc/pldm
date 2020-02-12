@@ -23,6 +23,7 @@ tests = [
   'libpldm_bios_test',
   'libpldm_bios_table_test',
   'libpldmresponder_bios_test',
+  'libpldmresponder_bios_attribute_test',
   'libpldmresponder_pdr_state_effecter_test',
   'libpldmresponder_bios_table_test',
   'libpldmresponder_platform_test',
