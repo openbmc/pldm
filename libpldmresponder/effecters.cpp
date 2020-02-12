@@ -10,6 +10,7 @@ namespace responder
 
 namespace effecter
 {
+using namespace pldm::utils;
 
 Id nextId()
 {
@@ -23,18 +24,30 @@ namespace dbus_mapping
 namespace internal
 {
 
-std::map<Id, Paths> idToDbus{};
+std::map<Id, DbusObjs> idToDbusObjs{};
+
+std::map<Id, DbusValMaps> idToDbusValMaps;
 
 } // namespace internal
 
-void add(Id id, Paths&& paths)
+void addDbusObjs(Id id, DbusObjs&& dbusObjs)
 {
-    internal::idToDbus.emplace(id, std::move(paths));
+    internal::idToDbusObjs.emplace(id, std::move(dbusObjs));
 }
 
-Paths get(Id id)
+const DbusObjs& getDbusObjs(Id id)
 {
-    return internal::idToDbus.at(id);
+    return internal::idToDbusObjs.at(id);
+}
+
+void addDbusValMaps(Id id, DbusValMaps&& dbusValMap)
+{
+    internal::idToDbusValMaps.emplace(id, std::move(dbusValMap));
+}
+
+const DbusValMaps& getDbusValMaps(Id id)
+{
+    return internal::idToDbusValMaps.at(id);
 }
 
 } // namespace dbus_mapping

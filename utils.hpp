@@ -7,6 +7,7 @@
 #include <any>
 #include <exception>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <sdbusplus/server.hpp>
 #include <string>
 #include <variant>
@@ -16,6 +17,8 @@
 #include "libpldm/base.h"
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
+
+using Json = nlohmann::json;
 
 namespace pldm
 {
