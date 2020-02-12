@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include <filesystem>
+#include <string>
 #include <vector>
 
 #include "libpldm/bios.h"
@@ -71,7 +72,23 @@ class BIOSTable
     fs::path filePath;
 };
 
-class BIOSStringTable
+/** @class BIOSStringTableInterface
+ *  @brief Provide interfaces to the BIOS string table operations
+ */
+class BIOSStringTableInterface
+{
+  public:
+    virtual ~BIOSStringTableInterface() = default;
+
+    virtual std::string findString(uint16_t handle) const = 0;
+
+    virtual uint16_t findHandle(const std::string& name) const = 0;
+};
+
+/** @class BIOSStringTable
+ *  @brief Collection of BIOS string table operations.
+ */
+class BIOSStringTable : public BIOSStringTableInterface
 {
   public:
     /** @brief Constructs BIOSStringTable
@@ -92,7 +109,7 @@ class BIOSStringTable
      *  @return name of the corresponding BIOS string
      *  @throw std::invalid_argument if the string can not be found.
      */
-    std::string findString(uint16_t handle) const;
+    std::string findString(uint16_t handle) const override;
 
     /** @brief Find the string handle from the BIOS string table by the given
      *         name
@@ -100,7 +117,19 @@ class BIOSStringTable
      *  @return handle of the string
      *  @throw std::invalid_argument if the string can not be found
      */
-    uint16_t findHandle(const std::string& name) const;
+    uint16_t findHandle(const std::string& name) const override;
+
+    /** @brief Get the string handle for the entry
+     *  @param[in] entry - Pointer to a bios string table entry
+     *  @return Handle to identify a string in the bios string table
+     */
+    static uint16_t decodeHandle(const pldm_bios_string_table_entry* entry);
+
+    /** @brief Get the string from the entry
+     *  @param[in] entry - Pointer to a bios string table entry
+     *  @return The String
+     */
+    static std::string decodeString(const pldm_bios_string_table_entry* entry);
 
   private:
     Table stringTable;
