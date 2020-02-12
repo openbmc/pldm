@@ -23,16 +23,16 @@ namespace dbus_mapping
 namespace internal
 {
 
-std::map<Id, Paths> idToDbus{};
+std::map<Id, DbusObjs> idToDbus{};
 
 } // namespace internal
 
-void add(Id id, Paths&& paths)
+void add(Id id, DbusObjs&& dbusObj)
 {
-    internal::idToDbus.emplace(id, std::move(paths));
+    internal::idToDbus.emplace(id, std::move(dbusObj));
 }
 
-Paths get(Id id)
+const DbusObjs& get(Id id)
 {
     return internal::idToDbus.at(id);
 }
