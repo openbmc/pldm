@@ -10,6 +10,7 @@ sources = [
   './bios/bios.cpp',
   './bios/bios_table.cpp',
   './bios/bios_attribute.cpp',
+  './bios/bios_string_attribute.cpp',
   './bios/bios_parser.cpp',
   'pdr.cpp',
   'effecters.cpp',
