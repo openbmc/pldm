@@ -171,6 +171,13 @@ pldm_bios_table_string_find_by_handle(const void *table, size_t length,
 uint16_t pldm_bios_table_attr_entry_decode_attribute_handle(
     const struct pldm_bios_attr_table_entry *entry);
 
+/** @brief Get the attribute type of the attribute table entry
+ *  @param[in] entry - Pointer to bios attribute table entry
+ *  @return Type of the attribute table entry
+ */
+uint8_t pldm_bios_table_attr_entry_decode_attribute_type(
+    const struct pldm_bios_attr_table_entry *entry);
+
 /** @brief Get the attribute name handle from the attribute table entry
  *  @param[in] entry - Pointer to bios attribute table entry
  *  @return handle to identify the name of the attribute, this handle points
@@ -290,6 +297,10 @@ int pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
     const struct pldm_bios_attr_table_entry *entry, uint16_t *pv_hdls,
     uint8_t pv_num);
 
+uint8_t pldm_bios_table_attr_entry_enum_decode_def_indices(
+    const struct pldm_bios_attr_table_entry *entry, uint8_t *def_indices,
+    uint8_t def_num);
+
 /** @struct pldm_bios_table_attr_entry_string_info
  *
  *  An auxiliary structure for passing parameters to @ref
@@ -368,6 +379,13 @@ int pldm_bios_table_attr_entry_string_decode_def_string_length_check(
 uint8_t pldm_bios_table_attr_entry_string_decode_string_type(
     const struct pldm_bios_attr_table_entry *entry);
 
+uint8_t pldm_bios_table_attr_entry_string_decode_max_length(
+    const struct pldm_bios_attr_table_entry *entry);
+uint8_t pldm_bios_table_attr_entry_string_decode_min_length(
+    const struct pldm_bios_attr_table_entry *entry);
+uint8_t pldm_bios_table_attr_entry_string_decode_def_string(
+    const struct pldm_bios_attr_table_entry *entry, char *buffer, size_t size);
+
 /** @struct pldm_bios_table_attr_entry_integer_info
  *
  *  An auxiliary structure for passing parameters to @ref
@@ -421,6 +439,9 @@ int pldm_bios_table_attr_entry_integer_encode_check(
     void *entry, size_t entry_length,
     const struct pldm_bios_table_attr_entry_integer_info *info);
 
+void pldm_bios_table_attr_entry_integer_decode(
+    const struct pldm_bios_attr_table_entry *entry, uint64_t *lower,
+    uint64_t *upper, uint32_t *scalar, uint64_t *def);
 /** @brief Get the attribute handle from the attribute value table entry
  *  @param[in] entry - Pointer to bios attribute value table entry
  *  @return handle to identify the attribute in the attribute value table
