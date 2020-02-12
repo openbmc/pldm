@@ -24,22 +24,30 @@ Id nextId();
 
 namespace dbus_mapping
 {
-using Paths = std::vector<std::string>;
+
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+};
+
+using DbusObj = std::vector<DBusMapping>;
 
 /** @brief Add an effecter id -> D-Bus objects mapping
  *
  *  @param[in] id - effecter id
- *  @param[in] paths - list of D-Bus object paths
+ *  @param[in] dbusObj - list of D-Bus object structure
  */
-void add(Id id, Paths&& paths);
+void add(Id id, DbusObj&& dbusObj);
 
 /** @brief Retrieve an effecter id -> D-Bus objects mapping
  *
  *  @param[in] id - effecter id
  *
- *  @return Paths - list of D-Bus object paths
+ *  @return DbusObj - list of D-Bus object structure
  */
-Paths get(Id id);
+const DbusObj& get(Id id);
 } // namespace dbus_mapping
 
 } // namespace effecter
