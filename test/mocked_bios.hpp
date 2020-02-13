@@ -14,6 +14,8 @@ class MockBIOSStringTable : public BIOSStringTable
     }
 
     MOCK_METHOD(uint16_t, findHandle, (const std::string&), (const override));
+
+    MOCK_METHOD(std::string, findString, (const uint16_t), (const override));
 };
 
 void checkHeader(const Table& attrEntry, const Table& attrValueEntry)
