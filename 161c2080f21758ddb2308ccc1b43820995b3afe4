@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3d945e91_9e858872",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "856e51b5_89fe9e8d",
+      "revId": "161c2080f21758ddb2308ccc1b43820995b3afe4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0e00c54_62fa58ef",
         "filename": "/COMMIT_MSG",
         "patchSetId": 10
@@ -30,6 +48,30 @@
       "writtenOn": "2020-02-11T07:36:24Z",
       "side": 1,
       "message": "It would be much easier to read this in a bulleted list",
+      "range": {
+        "startLine": 11,
+        "startChar": 26,
+        "endLine": 17,
+        "endChar": 50
+      },
+      "revId": "161c2080f21758ddb2308ccc1b43820995b3afe4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "400557b1_d44bab8e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0e00c54_62fa58ef",
       "range": {
         "startLine": 11,
         "startChar": 26,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "7f3d2655_530ab5cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "639b930c_f599bda5",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 16
+      },
+      "revId": "161c2080f21758ddb2308ccc1b43820995b3afe4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "08c842ff_d4d7c666",
         "filename": "/COMMIT_MSG",
         "patchSetId": 10
@@ -88,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "f73a9272_a97bae31",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08c842ff_d4d7c666",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "161c2080f21758ddb2308ccc1b43820995b3afe4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "057513d5_86fedb0b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 10
@@ -99,6 +189,30 @@
       "writtenOn": "2020-02-11T07:36:24Z",
       "side": 1,
       "message": "That\u0027s just one failure type. I think we need to test and document few more.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "161c2080f21758ddb2308ccc1b43820995b3afe4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "39f5390a_67a87dd1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "057513d5_86fedb0b",
       "range": {
         "startLine": 28,
         "startChar": 0,
