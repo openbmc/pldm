@@ -11,6 +11,7 @@ sources = [
   './bios/table.cpp',
   './bios/attribute.cpp',
   './bios/string_attribute.cpp',
+  './bios/integer_attribute.cpp',
   './bios/config.cpp',
   './bios/parser.cpp',
   'pdr.cpp',
