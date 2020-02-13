@@ -1,5 +1,6 @@
 #include "config.hpp"
 
+#include "integer_attribute.hpp"
 #include "string_attribute.hpp"
 
 #include <fstream>
