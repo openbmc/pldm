@@ -231,6 +231,27 @@ const pldm_bios_attr_table_entry*
     constructStringEntry(Table& table,
                          pldm_bios_table_attr_entry_string_info* info);
 
+/** @struct IntegerField
+ *  @brief Integer field of attribute table
+ */
+struct IntegerField
+{
+    uint64_t lowerBound;
+    uint64_t upperBound;
+    uint32_t scalarIncrement;
+    uint64_t defaultValue;
+};
+
+/** @brief construct integer entry of attribute table at the end of the
+ *         given table
+ *  @param[in,out] table - The given table
+ *  @param[in] info - integer info
+ *  @return pointer to the constructed entry
+ */
+const pldm_bios_attr_table_entry*
+    constructIntegerEntry(Table& table,
+                          pldm_bios_table_attr_entry_integer_info* info);
+
 } // namespace attr
 
 namespace attrval
@@ -257,6 +278,12 @@ TableHeader decodeHeader(const pldm_bios_attr_val_table_entry* entry);
  */
 std::string decodeStringEntry(const pldm_bios_attr_val_table_entry* entry);
 
+/** @brief Decode integer entry of attribute value table
+ *  @param[in] entry - Pointer to an attribute value table entry
+ *  @return The decoded integer
+ */
+uint64_t decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry);
+
 /** @brief Construct string entry of attribute value table at the end of the
  *         given table
  *  @param[in] table - The given table
@@ -268,6 +295,19 @@ std::string decodeStringEntry(const pldm_bios_attr_val_table_entry* entry);
 const pldm_bios_attr_val_table_entry*
     constructStringEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
                          const std::string& str);
+
+/** @brief Construct integer entry of attribute value table at the end of
+ *         the given table
+ *  @param[in] table - The given table
+ *  @param[in] attrHandle - attribute handle
+ *  @param[in] attrType - attribute type
+ *  @param[in] value - The integer
+ *  @return Pointer to the constructed entry
+ */
+const pldm_bios_attr_val_table_entry* constructIntegerEntry(Table& table,
+                                                            uint16_t attrHandle,
+                                                            uint8_t attrType,
+                                                            uint64_t value);
 
 /** @brief construct a table with an new entry
  *  @param[in] table - the table need to be updated
