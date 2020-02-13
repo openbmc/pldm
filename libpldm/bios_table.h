@@ -509,7 +509,7 @@ size_t pldm_bios_table_attr_value_entry_encode_enum_length(uint8_t count);
  */
 void pldm_bios_table_attr_value_entry_encode_enum(
     void *entry, size_t entry_length, uint16_t attr_handle, uint8_t attr_type,
-    uint8_t count, uint8_t *handle_indexes);
+    uint8_t count, const uint8_t *handle_indexes);
 
 /** @brief Get number of current values for the enum entry
  *  @param[in] entry - Pointer to bios attribute value table entry
