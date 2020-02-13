@@ -12,6 +12,7 @@ sources = [
   './bios/bios_attribute.cpp',
   './bios/bios_string_attribute.cpp',
   './bios/bios_integer_attribute.cpp',
+  './bios/bios_enum_attribute.cpp',
   './bios/bios_config.cpp',
   './bios/bios_parser.cpp',
   'pdr.cpp',
