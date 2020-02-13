@@ -31,6 +31,7 @@ class TestBIOSConfig : public ::testing::Test
         std::vector<fs::path> paths = {
             "./bios_jsons/string_attrs.json",
             "./bios_jsons/integer_attrs.json",
+            "./bios_jsons/enum_attrs.json",
         };
 
         for (auto& path : paths)
@@ -165,6 +166,29 @@ TEST_F(TestBIOSConfig, buildTablesTest)
                           jsonEntry->at("default_value").get<uint64_t>());
                 break;
             }
+            case PLDM_BIOS_ENUMERATION:
+            case PLDM_BIOS_ENUMERATION_READ_ONLY:
+            {
+                auto [pvHdls, defInds] =
+                    table::attribute::decodeEnumEntry(entry);
+                auto possibleValues = jsonEntry->at("possible_values")
+                                          .get<std::vector<std::string>>();
+                std::vector<std::string> strings;
+                for (auto pv : pvHdls)
+                {
+                    auto s = biosStringTable.findString(pv);
+                    strings.emplace_back(s);
+                }
+                EXPECT_EQ(strings, possibleValues);
+                EXPECT_EQ(defInds.size(), 1);
+
+                auto defValue = biosStringTable.findString(pvHdls[defInds[0]]);
+                auto defaultValues = jsonEntry->at("default_values")
+                                         .get<std::vector<std::string>>();
+                EXPECT_EQ(defValue, defaultValues[0]);
+
+                break;
+            }
             default:
                 EXPECT_TRUE(false);
                 break;
@@ -198,6 +222,19 @@ TEST_F(TestBIOSConfig, buildTablesTest)
                 auto value = table::attribute_value::decodeIntegerEntry(entry);
                 auto defValue = jsonEntry->at("default_value").get<uint64_t>();
                 EXPECT_EQ(value, defValue);
+                break;
+            }
+            case PLDM_BIOS_ENUMERATION:
+            case PLDM_BIOS_ENUMERATION_READ_ONLY:
+            {
+                auto indices = table::attribute_value::decodeEnumEntry(entry);
+                EXPECT_EQ(indices.size(), 1);
+                auto possibleValues = jsonEntry->at("possible_values")
+                                          .get<std::vector<std::string>>();
+
+                auto defValues = jsonEntry->at("default_values")
+                                     .get<std::vector<std::string>>();
+                EXPECT_EQ(possibleValues[indices[0]], defValues[0]);
                 break;
             }
             default:
