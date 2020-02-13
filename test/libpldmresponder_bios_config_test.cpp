@@ -24,6 +24,7 @@ class TestBIOSConfig : public ::testing::Test
 
         std::vector<fs::path> paths = {
             "./bios_jsons/string_attrs.json",
+            "./bios_jsons/integer_attrs.json",
         };
 
         for (auto& path : paths)
@@ -141,6 +142,20 @@ TEST_F(TestBIOSConfig, buildTablesTest)
                           jsonEntry->at("default_string").get<std::string>());
                 break;
             }
+            case PLDM_BIOS_INTEGER:
+            case PLDM_BIOS_INTEGER_READ_ONLY:
+            {
+                auto integerField = table::attribute::decodeIntegerEntry(entry);
+                EXPECT_EQ(integerField.lowerBound,
+                          jsonEntry->at("lower_bound").get<uint64_t>());
+                EXPECT_EQ(integerField.upperBound,
+                          jsonEntry->at("upper_bound").get<uint64_t>());
+                EXPECT_EQ(integerField.scalarIncrement,
+                          jsonEntry->at("scalar_increment").get<uint32_t>());
+                EXPECT_EQ(integerField.defaultValue,
+                          jsonEntry->at("default_value").get<uint64_t>());
+                break;
+            }
             default:
                 EXPECT_TRUE(false);
                 break;
@@ -165,6 +180,14 @@ TEST_F(TestBIOSConfig, buildTablesTest)
                 auto value = table::attribute_value::decodeStringEntry(entry);
                 auto defValue =
                     jsonEntry->at("default_string").get<std::string>();
+                EXPECT_EQ(value, defValue);
+                break;
+            }
+            case PLDM_BIOS_INTEGER:
+            case PLDM_BIOS_INTEGER_READ_ONLY:
+            {
+                auto value = table::attribute_value::decodeIntegerEntry(entry);
+                auto defValue = jsonEntry->at("default_value").get<uint64_t>();
                 EXPECT_EQ(value, defValue);
                 break;
             }
