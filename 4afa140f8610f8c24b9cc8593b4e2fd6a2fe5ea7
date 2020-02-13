@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a464dd0b_625c22c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03fa8f68_edc59787",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 36
+      },
+      "revId": "4afa140f8610f8c24b9cc8593b4e2fd6a2fe5ea7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "76fc1ed2_b4371b9f",
         "filename": "libpldmresponder/examples/bios/integer_schema.json",
         "patchSetId": 3
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "6c319a40_b1585722",
+        "filename": "libpldmresponder/examples/bios/integer_schema.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76fc1ed2_b4371b9f",
+      "revId": "4afa140f8610f8c24b9cc8593b4e2fd6a2fe5ea7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2dcec503_ef64e2f5",
         "filename": "libpldmresponder/examples/bios/main.py",
         "patchSetId": 3
@@ -53,6 +95,30 @@
       "writtenOn": "2020-02-11T07:37:25Z",
       "side": 1,
       "message": "more whitespaces",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 2
+      },
+      "revId": "4afa140f8610f8c24b9cc8593b4e2fd6a2fe5ea7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3892ee87_b4e00d8e",
+        "filename": "libpldmresponder/examples/bios/main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-02-13T08:58:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dcec503_ef64e2f5",
       "range": {
         "startLine": 15,
         "startChar": 0,
