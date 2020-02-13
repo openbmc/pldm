@@ -1,5 +1,6 @@
 #include "bios_config.hpp"
 
+#include "bios_enum_attribute.hpp"
 #include "bios_integer_attribute.hpp"
 #include "bios_string_attribute.hpp"
 
@@ -36,7 +37,7 @@ BIOSConfig::BIOSConfig(const char* jsonDir, const char* tableDir,
 void BIOSConfig::buildTables()
 {
     fs::create_directory(tableDir);
-    auto stringTable = buildStringTable();
+    auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
     if (stringTable)
     {
         buildAttrTables(*stringTable);
@@ -66,8 +67,11 @@ void BIOSConfig::constructAttributes()
     load(jsonDir / stringJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSStringAttribute>(entry);
     });
-    load(jsonDir / stringJsonFile, [this](const Json& entry) {
+    load(jsonDir / integerJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSIntegerAttribute>(entry);
+    });
+    load(jsonDir / enumJsonFile, [this](const Json& entry) {
+        constructAttribute<BIOSEnumAttribute>(entry);
     });
 }
 
