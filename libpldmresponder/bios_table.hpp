@@ -154,12 +154,23 @@ class BIOSAttrTable
     static StringField
         decodeStringEntry(const pldm_bios_attr_table_entry* entry);
 
+    struct EnumField
+    {
+        std::vector<uint16_t> possibleValueStringHandle;
+        std::vector<uint8_t> defaultValueIndex;
+    };
+
+    static EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry);
+
     static const pldm_bios_attr_table_entry*
         constructStringEntry(Table& table,
                              pldm_bios_table_attr_entry_string_info* info);
     static const pldm_bios_attr_table_entry*
         constructIntegerEntry(Table& table,
                               pldm_bios_table_attr_entry_integer_info* info);
+    static const pldm_bios_attr_table_entry*
+        constructEnumEntry(Table& table,
+                           pldm_bios_table_attr_entry_enum_info* info);
 };
 
 class BIOSAttrValTable
@@ -179,6 +190,8 @@ class BIOSAttrValTable
                           uint8_t strType);
     static uint64_t
         decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry);
+    static std::vector<uint8_t>
+        decodeEnumEntry(const pldm_bios_attr_val_table_entry* entry);
 
     static const pldm_bios_attr_val_table_entry*
         constructStringEntry(Table& table, uint16_t attrHandle,
@@ -186,6 +199,9 @@ class BIOSAttrValTable
     static const pldm_bios_attr_val_table_entry*
         constructIntegerEntry(Table& table, uint16_t attrHandle,
                               uint8_t attrType, uint64_t value);
+    static const pldm_bios_attr_val_table_entry*
+        constructEnumEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
+                           const std::vector<uint8_t>& handleIndices);
 };
 
 } // namespace bios

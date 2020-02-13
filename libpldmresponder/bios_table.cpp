@@ -120,6 +120,21 @@ const pldm_bios_attr_table_entry* BIOSAttrTable::constructIntegerEntry(
                                                          tableSize);
 }
 
+const pldm_bios_attr_table_entry* BIOSAttrTable::constructEnumEntry(
+    Table& table, pldm_bios_table_attr_entry_enum_info* info)
+{
+    auto entryLength = pldm_bios_table_attr_entry_enum_encode_length(
+        info->pv_num, info->def_num);
+
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength, 0);
+    pldm_bios_table_attr_entry_enum_encode(table.data() + tableSize,
+                                           entryLength, info);
+
+    return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
+                                                         tableSize);
+}
+
 BIOSAttrTable::TableHeader
     BIOSAttrTable::decodeHeader(const pldm_bios_attr_table_entry* entry)
 {
@@ -143,6 +158,18 @@ BIOSAttrTable::StringField
                                                         buffer.size());
     return {strType, minLength, maxLength, defLength,
             std::string(buffer.data(), buffer.data() + defLength)};
+}
+BIOSAttrTable::EnumField
+    BIOSAttrTable::decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
+{
+    uint8_t pvNum = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
+    std::vector<uint16_t> pvHdls(pvNum, 0);
+    pldm_bios_table_attr_entry_enum_decode_pv_hdls(entry, pvHdls.data(), pvNum);
+    auto defNum = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
+    std::vector<uint8_t> defIndices(defNum, 0);
+    pldm_bios_table_attr_entry_enum_decode_def_indices(entry, defIndices.data(),
+                                                       defIndices.size());
+    return {pvHdls, defIndices};
 }
 
 BIOSAttrValTable::TableHeader
@@ -170,6 +197,16 @@ uint64_t BIOSAttrValTable::decodeIntegerEntry(
     return pldm_bios_table_attr_value_entry_integer_decode_cv(entry);
 }
 
+std::vector<uint8_t> BIOSAttrValTable::decodeEnumEntry(
+    const pldm_bios_attr_val_table_entry* entry)
+{
+    auto number = pldm_bios_table_attr_value_entry_enum_decode_number(entry);
+    std::vector<uint8_t> currHdls(number, 0);
+    pldm_bios_table_attr_value_entry_enum_decode_handles(entry, currHdls.data(),
+                                                         currHdls.size());
+    return currHdls;
+}
+
 const pldm_bios_attr_val_table_entry* BIOSAttrValTable::constructStringEntry(
     Table& table, uint16_t attrHandle, uint8_t attrType, const std::string& str)
 {
@@ -194,6 +231,21 @@ const pldm_bios_attr_val_table_entry*
     table.resize(tableSize + entryLength);
     pldm_bios_table_attr_value_entry_encode_integer(
         table.data() + tableSize, entryLength, attrHandle, attrType, value);
+    return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
+                                                             tableSize);
+}
+
+const pldm_bios_attr_val_table_entry* BIOSAttrValTable::constructEnumEntry(
+    Table& table, uint16_t attrHandle, uint8_t attrType,
+    const std::vector<uint8_t>& handleIndices)
+{
+    auto entryLength = pldm_bios_table_attr_value_entry_encode_enum_length(
+        handleIndices.size());
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength);
+    pldm_bios_table_attr_value_entry_encode_enum(
+        table.data() + tableSize, entryLength, attrHandle, attrType,
+        handleIndices.size(), handleIndices.data());
     return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
                                                              tableSize);
 }
