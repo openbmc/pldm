@@ -1,5 +1,6 @@
 #include "config.hpp"
 
+#include "enum_attribute.hpp"
 #include "integer_attribute.hpp"
 #include "string_attribute.hpp"
 
@@ -64,6 +65,10 @@ void BIOSConfig::buildAttrTables(const Table& stringTable)
     load(jsonDir / stringJsonFile, [&biosStringTable, this](const Json& entry) {
         constructAttributes<BIOSStringAttribute>(entry);
     });
+    load(jsonDir / integerJsonFile,
+         [&biosStringTable, this](const Json& entry) {
+             constructAttributes<BIOSIntegerAttribute>(entry);
+         });
 
     if (biosAttributes.empty())
     {
