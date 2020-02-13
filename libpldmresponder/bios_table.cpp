@@ -193,6 +193,33 @@ IntegerField decodeIntegerEntry(const pldm_bios_attr_table_entry* entry)
     return {lower, upper, scalar, def};
 }
 
+const pldm_bios_attr_table_entry*
+    constructEnumEntry(Table& table, pldm_bios_table_attr_entry_enum_info* info)
+{
+    auto entryLength = pldm_bios_table_attr_entry_enum_encode_length(
+        info->pv_num, info->def_num);
+
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength, 0);
+    pldm_bios_table_attr_entry_enum_encode(table.data() + tableSize,
+                                           entryLength, info);
+
+    return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
+                                                         tableSize);
+}
+
+EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
+{
+    uint8_t pvNum = pldm_bios_table_attr_entry_enum_decode_pv_num(entry);
+    std::vector<uint16_t> pvHdls(pvNum, 0);
+    pldm_bios_table_attr_entry_enum_decode_pv_hdls(entry, pvHdls.data(), pvNum);
+    auto defNum = pldm_bios_table_attr_entry_enum_decode_def_num(entry);
+    std::vector<uint8_t> defIndices(defNum, 0);
+    pldm_bios_table_attr_entry_enum_decode_def_indices(entry, defIndices.data(),
+                                                       defIndices.size());
+    return {pvHdls, defIndices};
+}
+
 } // namespace attribute
 
 namespace attribute_value
@@ -218,6 +245,16 @@ std::string decodeStringEntry(const pldm_bios_attr_val_table_entry* entry)
 uint64_t decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry)
 {
     return pldm_bios_table_attr_value_entry_integer_decode_cv(entry);
+}
+
+std::vector<uint8_t>
+    decodeEnumEntry(const pldm_bios_attr_val_table_entry* entry)
+{
+    auto number = pldm_bios_table_attr_value_entry_enum_decode_number(entry);
+    std::vector<uint8_t> currHdls(number, 0);
+    pldm_bios_table_attr_value_entry_enum_decode_handles(entry, currHdls.data(),
+                                                         currHdls.size());
+    return currHdls;
 }
 
 const pldm_bios_attr_val_table_entry*
@@ -247,6 +284,21 @@ const pldm_bios_attr_val_table_entry* constructIntegerEntry(Table& table,
     table.resize(tableSize + entryLength);
     pldm_bios_table_attr_value_entry_encode_integer(
         table.data() + tableSize, entryLength, attrHandle, attrType, value);
+    return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
+                                                             tableSize);
+}
+
+const pldm_bios_attr_val_table_entry*
+    constructEnumEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
+                       const std::vector<uint8_t>& handleIndices)
+{
+    auto entryLength = pldm_bios_table_attr_value_entry_encode_enum_length(
+        handleIndices.size());
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength);
+    pldm_bios_table_attr_value_entry_encode_enum(
+        table.data() + tableSize, entryLength, attrHandle, attrType,
+        handleIndices.size(), handleIndices.data());
     return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
                                                              tableSize);
 }
