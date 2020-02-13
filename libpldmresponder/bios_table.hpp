@@ -211,6 +211,21 @@ class BIOSAttrTable
     static StringField
         decodeStringEntry(const pldm_bios_attr_table_entry* entry);
 
+    /** @struct EnumField
+     *  @brief Enum field of attribute table
+     */
+    struct EnumField
+    {
+        std::vector<uint16_t> possibleValueStringHandle;
+        std::vector<uint8_t> defaultValueIndex;
+    };
+
+    /** @brief decode enum entry of attribute table
+     *  @param[in] entry - Pointer to an attribute table entry
+     *  @return Enum field of the entry
+     */
+    static EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry);
+
     /** @brief construct string entry of attribute table at the end of the given
      *         table
      *  @param[in,out] table - The given table
@@ -230,6 +245,16 @@ class BIOSAttrTable
     static const pldm_bios_attr_table_entry*
         constructIntegerEntry(Table& table,
                               pldm_bios_table_attr_entry_integer_info* info);
+
+    /** @brief construct enum entry of attribute table at the end of the
+     *         given table
+     *  @param[in,out] table - The given table
+     *  @param[in] info - enum info
+     *  @return pointer to the constructed entry
+     */
+    static const pldm_bios_attr_table_entry*
+        constructEnumEntry(Table& table,
+                           pldm_bios_table_attr_entry_enum_info* info);
 };
 
 /** @class BIOSAttrValTable *
@@ -268,6 +293,13 @@ class BIOSAttrValTable
     static uint64_t
         decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry);
 
+    /** @brief Decode enum entry of attribute value table
+     *  @param[in] entry - Pointer to an attribute value table entry
+     *  @return Current value string handle indices
+     */
+    static std::vector<uint8_t>
+        decodeEnumEntry(const pldm_bios_attr_val_table_entry* entry);
+
     /** @brief Construct string entry of attribute value table at the end of the
      *         given table
      *  @param[in] table - The given table
@@ -291,6 +323,18 @@ class BIOSAttrValTable
     static const pldm_bios_attr_val_table_entry*
         constructIntegerEntry(Table& table, uint16_t attrHandle,
                               uint8_t attrType, uint64_t value);
+
+    /** @brief Construct enum entry of attribute value table at the end of
+     *         the given table
+     *  @param[in] table - The given table
+     *  @param[in] attrHandle - attribute handle
+     *  @param[in] attrType - attribute type
+     *  @param[in] handleIndices -  handle indices
+     *  @return Pointer to the constructed entry
+     */
+    static const pldm_bios_attr_val_table_entry*
+        constructEnumEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
+                           const std::vector<uint8_t>& handleIndices);
 
     /** @brief construct a table with an new entry
      *  @param[in] table - the table need to be updated
