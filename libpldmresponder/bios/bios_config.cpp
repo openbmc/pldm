@@ -1,5 +1,6 @@
 #include "bios_config.hpp"
 
+#include "bios_enum_attribute.hpp"
 #include "bios_integer_attribute.hpp"
 #include "bios_string_attribute.hpp"
 
@@ -70,6 +71,9 @@ void BIOSConfig::buildAttrTables(const Table& stringTable)
          [&biosStringTable, this](const Json& entry) {
              constructAttributes<BIOSIntegerAttribute>(entry);
          });
+    load(jsonDir / enumJsonFile, [&biosStringTable, this](const Json& entry) {
+        constructAttributes<BIOSEnumAttribute>(entry);
+    });
 
     if (biosAttributes.empty())
     {
