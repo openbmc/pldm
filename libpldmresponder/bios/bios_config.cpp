@@ -1,5 +1,6 @@
 #include "bios_config.hpp"
 
+#include "bios_integer_attribute.hpp"
 #include "bios_string_attribute.hpp"
 
 #include <fstream>
@@ -72,6 +73,11 @@ void BIOSConfig::buildAttrTables(const Table& stringTable)
         constructAttributes<BIOSStringAttribute>(biosAttributes, entry,
                                                  biosStringTable);
     });
+    load(jsonDir / integerJsonFile,
+         [&biosStringTable, this](const Json& entry) {
+             constructAttributes<BIOSIntegerAttribute>(biosAttributes, entry,
+                                                       biosStringTable);
+         });
 
     if (biosAttributes.empty())
     {
