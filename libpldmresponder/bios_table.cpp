@@ -155,6 +155,19 @@ const pldm_bios_attr_table_entry*
                                                          tableSize);
 }
 
+const pldm_bios_attr_table_entry*
+    constructIntegerEntry(Table& table,
+                          pldm_bios_table_attr_entry_integer_info* info)
+{
+    auto entryLength = pldm_bios_table_attr_entry_integer_encode_length();
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength, 0);
+    pldm_bios_table_attr_entry_integer_encode(table.data() + tableSize,
+                                              entryLength, info);
+    return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
+                                                         tableSize);
+}
+
 StringField decodeStringEntry(const pldm_bios_attr_table_entry* entry)
 {
     auto strType = pldm_bios_table_attr_entry_string_decode_string_type(entry);
@@ -192,6 +205,11 @@ std::string decodeStringEntry(const pldm_bios_attr_val_table_entry* entry)
                        currentString.ptr + currentString.length);
 }
 
+uint64_t decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry)
+{
+    return pldm_bios_table_attr_value_entry_integer_decode_cv(entry);
+}
+
 const pldm_bios_attr_val_table_entry*
     constructStringEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
                          const std::string& str)
@@ -207,6 +225,22 @@ const pldm_bios_attr_val_table_entry*
     return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
                                                              tableSize);
 }
+
+const pldm_bios_attr_val_table_entry* constructIntegerEntry(Table& table,
+                                                            uint16_t attrHandle,
+                                                            uint8_t attrType,
+                                                            uint64_t value)
+{
+    auto entryLength = pldm_bios_table_attr_value_entry_encode_integer_length();
+
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength);
+    pldm_bios_table_attr_value_entry_encode_integer(
+        table.data() + tableSize, entryLength, attrHandle, attrType, value);
+    return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
+                                                             tableSize);
+}
+
 std::optional<Table> updateTable(const Table& table, const void* entry,
                                  size_t size)
 {
