@@ -210,6 +210,16 @@ class BIOSAttrTable
     static const pldm_bios_attr_table_entry*
         constructStringEntry(Table& table,
                              pldm_bios_table_attr_entry_string_info* info);
+
+    /** @brief construct integer entry of attribute table at the end of the
+     *         given table
+     *  @param[in,out] table - The given table
+     *  @param[in] info - integer info
+     *  @return pointer to the constructed entry
+     */
+    static const pldm_bios_attr_table_entry*
+        constructIntegerEntry(Table& table,
+                              pldm_bios_table_attr_entry_integer_info* info);
 };
 
 /** @class BIOSAttrValTable *
@@ -241,6 +251,13 @@ class BIOSAttrValTable
     static std::string
         decodeStringEntry(const pldm_bios_attr_val_table_entry* entry);
 
+    /** @brief Decode integer entry of attribute value table
+     *  @param[in] entry - Pointer to an attribute value table entry
+     *  @return The decoded integer
+     */
+    static uint64_t
+        decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry);
+
     /** @brief Construct string entry of attribute value table at the end of the
      *         given table
      *  @param[in] table - The given table
@@ -253,8 +270,26 @@ class BIOSAttrValTable
         constructStringEntry(Table& table, uint16_t attrHandle,
                              uint8_t attrType, const std::string& str);
 
-    static std::optional<Table> updateTable(Table& table, const void* entry,
-                                            size_t size);
+    /** @brief Construct integer entry of attribute value table at the end of
+     *         the given table
+     *  @param[in] table - The given table
+     *  @param[in] attrHandle - attribute handle
+     *  @param[in] attrType - attribute type
+     *  @param[in] value - The integer
+     *  @return Pointer to the constructed entry
+     */
+    static const pldm_bios_attr_val_table_entry*
+        constructIntegerEntry(Table& table, uint16_t attrHandle,
+                              uint8_t attrType, uint64_t value);
+
+    /** @brief construct a table with an new entry
+     *  @param[in] table - the table need to be updated
+     *  @param[in] entry - the new attribute value entry
+     *  @param[in] size - size of the new entry
+     *  @return newly constructed table, std::nullopt if failed
+     */
+    static std::optional<Table> updateTable(const Table& table,
+                                            const void* entry, size_t size);
 };
 
 } // namespace bios
