@@ -1,5 +1,6 @@
 #include "bios_config.hpp"
 
+#include "bios_integer_attribute.hpp"
 #include "bios_string_attribute.hpp"
 
 #include <fstream>
@@ -64,6 +65,9 @@ void BIOSConfig::constructAttributes()
 {
     load(jsonDir / stringJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSStringAttribute>(entry);
+    });
+    load(jsonDir / stringJsonFile, [this](const Json& entry) {
+        constructAttribute<BIOSIntegerAttribute>(entry);
     });
 }
 
