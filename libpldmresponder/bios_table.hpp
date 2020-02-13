@@ -157,6 +157,9 @@ class BIOSAttrTable
     static const pldm_bios_attr_table_entry*
         constructStringEntry(Table& table,
                              pldm_bios_table_attr_entry_string_info* info);
+    static const pldm_bios_attr_table_entry*
+        constructIntegerEntry(Table& table,
+                              pldm_bios_table_attr_entry_integer_info* info);
 };
 
 class BIOSAttrValTable
@@ -174,10 +177,15 @@ class BIOSAttrValTable
     static std::string
         decodeStringEntry(const pldm_bios_attr_val_table_entry* entry,
                           uint8_t strType);
+    static uint64_t
+        decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry);
 
     static const pldm_bios_attr_val_table_entry*
         constructStringEntry(Table& table, uint16_t attrHandle,
                              uint8_t attrType, const std::string& str);
+    static const pldm_bios_attr_val_table_entry*
+        constructIntegerEntry(Table& table, uint16_t attrHandle,
+                              uint8_t attrType, uint64_t value);
 };
 
 } // namespace bios
