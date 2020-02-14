@@ -195,7 +195,6 @@ void CommandInterface::exec()
         std::cerr << "Failed to receive from socket: RC = " << rc << "\n";
         return;
     }
-
     std::cout << "Response Message:" << std::endl;
     printBuffer(responseMsg);
 

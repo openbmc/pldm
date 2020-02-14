@@ -55,7 +55,8 @@ class CommandInterface
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :
         pldmType(type),
-        commandName(name)
+        commandName(name), 
+	mctp_eid(0)
     {
         app->callback([&]() { exec(); });
     }

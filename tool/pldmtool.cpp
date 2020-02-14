@@ -66,7 +66,6 @@ int main(int argc, char** argv)
 
     CLI::App app{"PLDM requester tool for OpenBMC"};
     app.require_subcommand(1)->ignore_case();
-
     pldmtool::raw::registerCommand(app);
     pldmtool::base::registerCommand(app);
     pldmtool::bios::registerCommand(app);
