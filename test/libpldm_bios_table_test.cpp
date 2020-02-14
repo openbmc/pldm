@@ -870,6 +870,13 @@ TEST(AttrValTable, CopyAndUpdateTest)
     destTable.resize(destLength);
     EXPECT_THAT(destTable, ElementsAreArray(expectTable));
 
+    stringEntry3[2] = 0; // set attribute type to integer
+    rc = pldm_bios_table_attr_value_copy_and_update(
+        srcTable.data(), srcTable.size(), destTable.data(), &destLength,
+        stringEntry3.data(), stringEntry3.size());
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    stringEntry3[2] = 1; // set attribute type to string
+
     destTable.resize(expectTable.size() - 1);
     destLength = destTable.size();
     rc = pldm_bios_table_attr_value_copy_and_update(
