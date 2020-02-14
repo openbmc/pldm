@@ -2,7 +2,7 @@
 
 #include "config.h"
 
-#include "bios_parser.hpp"
+#include "bios_config.hpp"
 #include "bios_table.hpp"
 #include "handler.hpp"
 
@@ -19,35 +19,11 @@
 namespace pldm
 {
 
-using AttributeHandle = uint16_t;
-using StringHandle = uint16_t;
-using PossibleValuesByHandle = std::vector<StringHandle>;
-
 namespace responder
 {
 
 namespace bios
 {
-
-using AttrTableEntryHandler =
-    std::function<void(const struct pldm_bios_attr_table_entry*)>;
-
-void traverseBIOSAttrTable(const bios::Table& BIOSAttrTable,
-                           AttrTableEntryHandler handler);
-
-namespace internal
-{
-
-/** @brief Constructs all the BIOS Tables
- *
- *  @param[in] request - Request message
- *  @param[in] payload_length - Request message payload length
- *  @param[in] biosJsonDir - path to fetch the BIOS json files
- *  @param[in] biosTablePath - path where the BIOS tables will be persisted
- */
-Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
-                         const char* biosJsonDir, const char* biosTablePath);
-} // namespace internal
 
 class Handler : public CmdHandler
 {
@@ -94,6 +70,9 @@ class Handler : public CmdHandler
      */
     Response setBIOSAttributeCurrentValue(const pldm_msg* request,
                                           size_t payloadLength);
+
+  private:
+    BIOSConfig biosConfig;
 };
 
 } // namespace bios
