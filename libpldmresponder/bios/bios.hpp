@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "config.hpp"
 #include "handler.hpp"
 #include "parser.hpp"
 #include "table.hpp"
@@ -49,6 +50,8 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                          const char* biosJsonDir, const char* biosTablePath);
 } // namespace internal
 
+using namespace pldm::responder::bios::wip;
+
 class Handler : public CmdHandler
 {
   public:
@@ -94,6 +97,9 @@ class Handler : public CmdHandler
      */
     Response setBIOSAttributeCurrentValue(const pldm_msg* request,
                                           size_t payloadLength);
+
+  private:
+    BIOSConfig biosConfig;
 };
 
 } // namespace bios
