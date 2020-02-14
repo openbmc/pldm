@@ -99,20 +99,11 @@ void padAndChecksum(Table& table)
 namespace bios
 {
 
-Handler::Handler()
+Handler::Handler() : biosConfig(BIOS_JSONS_DIR, BIOS_TABLES_DIR)
 {
-    try
-    {
-        fs::remove(
-            fs::path(std::string(BIOS_TABLES_DIR) + "/" + stringTableFile));
-        fs::remove(
-            fs::path(std::string(BIOS_TABLES_DIR) + "/" + attrTableFile));
-        fs::remove(
-            fs::path(std::string(BIOS_TABLES_DIR) + "/" + attrValTableFile));
-    }
-    catch (const std::exception& e)
-    {
-    }
+    biosConfig.removeTables();
+    biosConfig.buildTables();
+
     handlers.emplace(PLDM_SET_DATE_TIME,
                      [this](const pldm_msg* request, size_t payloadLength) {
                          return this->setDateTime(request, payloadLength);
@@ -820,9 +811,35 @@ Response getBIOSAttributeValueTable(BIOSTable& biosAttributeValueTable,
 
 Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
 {
-    fs::create_directory(BIOS_TABLES_DIR);
-    auto response = internal::buildBIOSTables(request, payloadLength,
-                                              BIOS_JSONS_DIR, BIOS_TABLES_DIR);
+    uint32_t transferHandle{};
+    uint8_t transferOpFlag{};
+    uint8_t tableType{};
+
+    auto rc = decode_get_bios_table_req(request, payloadLength, &transferHandle,
+                                        &transferOpFlag, &tableType);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    auto table =
+        biosConfig.getBIOSTable(static_cast<pldm_bios_table_types>(tableType));
+    if (!table)
+    {
+        return ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
+    }
+
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES + table->size());
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = encode_get_bios_table_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, 0 /* nxtTransferHandle */,
+        PLDM_START_AND_END, table->data(), response.size(), responsePtr);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
 
     return response;
 }
@@ -842,44 +859,14 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
-    fs::path tablesPath(BIOS_TABLES_DIR);
-    auto stringTablePath = tablesPath / stringTableFile;
-    BIOSTable biosStringTable(stringTablePath.c_str());
-    auto attrTablePath = tablesPath / attrTableFile;
-    BIOSTable biosAttributeTable(attrTablePath.c_str());
-    if (biosAttributeTable.isEmpty() || biosStringTable.isEmpty())
+    auto table = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
+    if (!table)
     {
         return ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
     }
 
-    auto attrValueTablePath = tablesPath / attrValTableFile;
-    BIOSTable biosAttributeValueTable(attrValueTablePath.c_str());
-
-    if (biosAttributeValueTable.isEmpty())
-    {
-        Table attributeValueTable;
-        Table attributeTable;
-        biosAttributeTable.load(attributeTable);
-        traverseBIOSAttrTable(
-            attributeTable,
-            [&biosStringTable, &attributeValueTable](
-                const struct pldm_bios_attr_table_entry* tableEntry) {
-                constructAttrValueTableEntry(tableEntry, biosStringTable,
-                                             attributeValueTable);
-            });
-        if (attributeValueTable.empty())
-        {
-            return ccOnlyResponse(request, PLDM_BIOS_TABLE_UNAVAILABLE);
-        }
-        pldm::responder::utils::padAndChecksum(attributeValueTable);
-        biosAttributeValueTable.store(attributeValueTable);
-    }
-
-    Response table;
-    biosAttributeValueTable.load(table);
-
     auto entry = pldm_bios_table_attr_value_find_by_handle(
-        table.data(), table.size(), attributeHandle);
+        table->data(), table->size(), attributeHandle);
     if (entry == nullptr)
     {
         return ccOnlyResponse(request, PLDM_INVALID_BIOS_ATTR_HANDLE);
@@ -917,49 +904,9 @@ Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
-    fs::path tablesPath(BIOS_TABLES_DIR);
-    auto stringTablePath = tablesPath / stringTableFile;
-    BIOSStringTable biosStringTable(stringTablePath.c_str());
-    auto attrTablePath = tablesPath / attrTableFile;
-    BIOSTable biosAttributeTable(attrTablePath.c_str());
-    auto attrValueTablePath = tablesPath / attrValTableFile;
-    BIOSTable biosAttributeValueTable(attrValueTablePath.c_str());
-    // TODO: Construct attribute value table if it's empty. (another commit)
+    rc = biosConfig.setAttrValue(attributeField.ptr, attributeField.length);
 
-    Response srcTable;
-    biosAttributeValueTable.load(srcTable);
-
-    // Replace the old attribute with the new attribute, the size of table will
-    // change:
-    //   sizeof(newTableBuffer) = srcTableSize + sizeof(newAttribute) -
-    //                      sizeof(oldAttribute) + pad(4-byte alignment, max =
-    //                      3)
-    // For simplicity, we use
-    //   sizeof(newTableBuffer) = srcTableSize + sizeof(newAttribute) + 3
-    size_t destBufferLength = srcTable.size() + attributeField.length + 3;
-    Response destTable(destBufferLength);
-    size_t destTableLen = destTable.size();
-
-    rc = pldm_bios_table_attr_value_copy_and_update(
-        srcTable.data(), srcTable.size(), destTable.data(), &destTableLen,
-        attributeField.ptr, attributeField.length);
-    destTable.resize(destTableLen);
-
-    if (rc != PLDM_SUCCESS)
-    {
-        return ccOnlyResponse(request, rc);
-    }
-
-    rc = setAttributeValueOnDbus(&attributeField, biosAttributeTable,
-                                 biosStringTable);
-    if (rc != PLDM_SUCCESS)
-    {
-        return ccOnlyResponse(request, rc);
-    }
-
-    biosAttributeValueTable.store(destTable);
-
-    return ccOnlyResponse(request, PLDM_SUCCESS);
+    return ccOnlyResponse(request, rc);
 }
 
 namespace internal
