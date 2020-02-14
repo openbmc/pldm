@@ -997,7 +997,7 @@ int pldm_bios_table_attr_value_copy_and_update(
 	    src_table, src_length, PLDM_BIOS_ATTR_VAL_TABLE);
 
 	int rc = PLDM_SUCCESS;
-	const struct pldm_bios_attr_val_table_entry *tmp;
+	const struct pldm_bios_attr_val_table_entry *tmp, *to_update = entry;
 	size_t buffer_length = *dest_length, copied_length = 0, length = 0;
 	while (!pldm_bios_table_iter_is_end(iter)) {
 		tmp = pldm_bios_table_iter_attr_value_entry_value(iter);
@@ -1007,9 +1007,8 @@ int pldm_bios_table_attr_value_copy_and_update(
 		 * it too, use current_pos directly to avoid calculating it
 		 * twice */
 		iter->current_pos += length;
-		if (tmp->attr_handle ==
-		    ((const struct pldm_bios_attr_val_table_entry *)entry)
-			->attr_handle) {
+		if ((tmp->attr_handle == to_update->attr_handle) &&
+		    (tmp->attr_type == to_update->attr_type)) {
 			if (attribute_is_readonly(tmp->attr_type)) {
 				rc = PLDM_ERROR_INVALID_DATA;
 				goto out;
