@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "bios_config.hpp"
 #include "bios_parser.hpp"
 #include "bios_table.hpp"
 #include "handler.hpp"
@@ -94,6 +95,9 @@ class Handler : public CmdHandler
      */
     Response setBIOSAttributeCurrentValue(const pldm_msg* request,
                                           size_t payloadLength);
+
+  private:
+    BIOSConfig biosConfig;
 };
 
 } // namespace bios
