@@ -9,7 +9,6 @@ sources = [
   'base.cpp',
   'bios.cpp',
   'bios_table.cpp',
-  'bios_parser.cpp',
   'bios_attribute.cpp',
   'bios_string_attribute.cpp',
   'bios_integer_attribute.cpp',
