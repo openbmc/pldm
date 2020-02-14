@@ -18,18 +18,17 @@ TEST(GetPLDMTypes, testGoodRequest)
     size_t requestPayloadLength = 0;
     base::Handler handler;
     auto response = handler.getPLDMTypes(request, requestPayloadLength);
-    // Only base type supported at the moment
+    // Need to support OEM type.
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
     ASSERT_EQ(payload_ptr[0], 0);
-    ASSERT_EQ(payload_ptr[1], 13);
+    ASSERT_EQ(payload_ptr[1], 29);
     ASSERT_EQ(payload_ptr[2], 0);
 }
 
 TEST(GetPLDMCommands, testGoodRequest)
 {
-    // Only base type supported at the moment, and commands -
-    // GetPLDMTypes, GetPLDMCommands
+    // Need to support OEM type commands.
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES>
         requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
