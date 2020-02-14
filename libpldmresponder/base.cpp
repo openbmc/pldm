@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "libpldm/bios.h"
+#include "libpldm/fru.h"
 #include "libpldm/platform.h"
 
 namespace pldm
@@ -25,10 +26,11 @@ static const std::map<Type, Cmd> capabilities{
     {PLDM_BASE,
      {PLDM_GET_TID, PLDM_GET_PLDM_VERSION, PLDM_GET_PLDM_TYPES,
       PLDM_GET_PLDM_COMMANDS}},
-    {PLDM_PLATFORM, {PLDM_SET_STATE_EFFECTER_STATES}},
+    {PLDM_PLATFORM, {PLDM_GET_PDR, PLDM_SET_STATE_EFFECTER_STATES}},
     {PLDM_BIOS,
-     {PLDM_GET_DATE_TIME, PLDM_GET_BIOS_TABLE,
+     {PLDM_GET_DATE_TIME, PLDM_SET_DATE_TIME, PLDM_GET_BIOS_TABLE,
       PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE}},
+    {PLDM_FRU, {PLDM_GET_FRU_RECORD_TABLE_METADATA, PLDM_GET_FRU_RECORD_TABLE}},
 };
 
 static const std::map<Type, ver32_t> versions{
