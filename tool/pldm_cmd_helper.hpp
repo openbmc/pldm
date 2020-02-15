@@ -66,7 +66,10 @@ class CommandInterface
     virtual void parseResponseMsg(struct pldm_msg* responsePtr,
                                   size_t payloadLength) = 0;
 
-    void exec();
+    virtual void exec();
+
+    int pldmSendRecv(std::vector<uint8_t>& requestMsg,
+                     std::vector<uint8_t>& responseMsg);
 
   private:
     const std::string pldmType;
