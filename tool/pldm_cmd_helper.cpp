@@ -180,6 +180,23 @@ void CommandInterface::exec()
 
     std::cout << "Encode request successfully" << std::endl;
 
+    std::vector<uint8_t> responseMsg;
+    rc = pldmSendRecv(requestMsg, responseMsg);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
+        return;
+    }
+
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
+}
+
+int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
+                                   std::vector<uint8_t>& responseMsg)
+{
+
     // Insert the PLDM message type and EID at the begining of the request msg.
     requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
     requestMsg.insert(requestMsg.begin(), PLDM_ENTITY_ID);
@@ -187,23 +204,20 @@ void CommandInterface::exec()
     std::cout << "Request Message:" << std::endl;
     printBuffer(requestMsg);
 
-    std::vector<uint8_t> responseMsg;
-    rc = mctpSockSendRecv(requestMsg, responseMsg);
+    auto rc = mctpSockSendRecv(requestMsg, responseMsg);
 
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Failed to receive from socket: RC = " << rc << "\n";
-        return;
+        std::cerr << "Failed to receive from mctpSocket: RC = " << rc << "\n";
+        return rc;
     }
 
     std::cout << "Response Message:" << std::endl;
     printBuffer(responseMsg);
 
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(
-        responseMsg.data() + 2 /*skip the mctp header*/);
-    parseResponseMsg(responsePtr, responseMsg.size() -
-                                      2 /*skip the mctp header*/ -
-                                      sizeof(pldm_msg_hdr));
+    responseMsg.erase(responseMsg.begin(),
+                      responseMsg.begin() + 2 /* skip the mctp header */);
+    return PLDM_SUCCESS;
 }
 
 } // namespace helper
