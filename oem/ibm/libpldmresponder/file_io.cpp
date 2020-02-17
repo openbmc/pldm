@@ -47,19 +47,11 @@ struct AspeedXdmaOp
                        //!< operation, true means a transfer from BMC to host.
 };
 
-constexpr auto xdmaDev = "/dev/aspeed-xdma";
-
 int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
                           uint64_t address, bool upstream)
 {
-    static const size_t pageSize = getpagesize();
-    uint32_t numPages = length / pageSize;
-    uint32_t pageAlignedLength = numPages * pageSize;
-
-    if (length > pageAlignedLength)
-    {
-        pageAlignedLength += pageSize;
-    }
+    uint32_t pageAlignedLength = getPageAlignedLength(length);
+    uint32_t lengthTemp = length;
 
     auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
         munmap(vgaMem, pageAlignedLength);
@@ -74,24 +66,66 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         std::cerr << "Failed to open the XDMA device, RC=" << rc << "\n";
         return rc;
     }
-
     pldm::utils::CustomFD xdmaFd(dmaFd);
 
     void* vgaMem;
     vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
                   MAP_SHARED, xdmaFd(), 0);
-    if (MAP_FAILED == vgaMem)
+    while (MAP_FAILED == vgaMem)
     {
-        rc = -errno;
-        std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
-        return rc;
+        if (errno != ENOMEM)
+        {
+            rc = -errno;
+            std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
+            return rc;
+        }
+        else
+        {
+            lengthTemp /= 2;
+            pageAlignedLength = getPageAlignedLength(lengthTemp);
+            vgaMem = mmap(nullptr, pageAlignedLength,
+                          upstream ? PROT_WRITE : PROT_READ, MAP_SHARED,
+                          xdmaFd(), 0);
+        }
     }
 
     std::unique_ptr<void, decltype(mmapCleanup)> vgaMemPtr(vgaMem, mmapCleanup);
+    while (length > 0)
+    {
+        rc = transferDataHost(fd, xdmaFd(), pageAlignedLength, offset, lengthTemp, address, upstream, vgaMemPtr.get());
+        if (rc < 0)
+        {
+            return PLDM_ERROR;
+        }
+        offset += lengthTemp;
+        length -= lengthTemp;
+        address += lengthTemp;
+    }
 
+    return rc;
+}
+
+uint32_t DMA::getPageAlignedLength(uint32_t length)
+{
+    static const size_t pageSize = getpagesize();
+    uint32_t numPages = length / pageSize;
+    uint32_t pageAlignedLength = numPages * pageSize;
+
+    if (length > pageAlignedLength)
+    {
+        pageAlignedLength += pageSize;
+    }
+
+    return pageAlignedLength;
+}
+
+int DMA::transferDataHost(int fd, int xdmaFd, uint32_t pageAlignedLength,
+                          uint32_t offset, uint32_t length, uint64_t address,
+                          bool upstream, void* vgaMemPtr)
+{
     if (upstream)
     {
-        rc = lseek(fd, offset, SEEK_SET);
+        auto rc = lseek(fd, offset, SEEK_SET);
         if (rc == -1)
         {
             std::cerr << "lseek failed, ERROR=" << errno
@@ -120,8 +154,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
                       << "\n";
             return -1;
         }
-        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
-               pageAlignedLength);
+        memcpy(static_cast<char*>(vgaMemPtr), buffer.data(), pageAlignedLength);
     }
 
     AspeedXdmaOp xdmaOp;
@@ -129,7 +162,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     xdmaOp.hostAddr = address;
     xdmaOp.len = length;
 
-    rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    auto rc = write(xdmaFd, &xdmaOp, sizeof(xdmaOp));
     if (rc < 0)
     {
         rc = -errno;
@@ -149,7 +182,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
                       << "\n";
             return rc;
         }
-        rc = write(fd, static_cast<const char*>(vgaMemPtr.get()), length);
+        rc = write(fd, static_cast<const char*>(vgaMemPtr), length);
         if (rc == -1)
         {
             std::cerr << "file write failed, ERROR=" << errno

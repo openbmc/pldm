@@ -45,7 +45,7 @@ class DMA
   public:
     /** @brief API to transfer data between BMC and host using DMA
      *
-     * @param[in] path     - pathname of the file to transfer data from or to
+     * @param[in] fd       - fd of the file to transfer data from or to
      * @param[in] offset   - offset in the file
      * @param[in] length   - length of the data to transfer
      * @param[in] address  - DMA address on the host
@@ -56,7 +56,29 @@ class DMA
      */
     int transferDataHost(int fd, uint32_t offset, uint32_t length,
                          uint64_t address, bool upstream);
+
+    uint32_t getPageAlignedLength(uint32_t length);
+
+    /** @brief API to transfer data between BMC and host using DMA
+     *
+     * @param[in] fd                - fd of the file to transfer data from or to
+     * @param[in] xdmaFd            - xdmaFd of the XDMA channel
+     * @param[in] pageAlignedLength - Page aligned length for given length
+     * @param[in] offset            - offset in the file
+     * @param[in] length            - length of the data to transfer
+     * @param[in] address           - DMA address on the host
+     * @param[in] upstream          - indicates direction of the transfer; true
+     * indicates transfer to the host
+     * @param[in] vgaMemPtr         - VGA mem pointer
+     *
+     * @return returns 0 on success, negative errno on failure
+     */
+    int transferDataHost(int fd, int xdmaFd, uint32_t pageAlignedLength,
+                         uint32_t offset, uint32_t length, uint64_t address,
+                         bool upstream, void* vgaMemPtr);
 };
+
+constexpr auto xdmaDev = "/dev/aspeed-xdma";
 
 /** @brief Transfer the data between BMC and host using DMA.
  *
@@ -109,27 +131,10 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
     }
     pldm::utils::CustomFD fd(file);
 
-    while (length > dma::maxSize)
-    {
-        auto rc = intf->transferDataHost(fd(), offset, dma::maxSize, address,
-                                         upstream);
-        if (rc < 0)
-        {
-            encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
-                                       responsePtr);
-            return response;
-        }
-
-        offset += dma::maxSize;
-        length -= dma::maxSize;
-        address += dma::maxSize;
-    }
-
     auto rc = intf->transferDataHost(fd(), offset, length, address, upstream);
     if (rc < 0)
     {
-        encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
-                                   responsePtr);
+        encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0, responsePtr);
         return response;
     }
 
