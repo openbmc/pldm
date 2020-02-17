@@ -16,6 +16,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <memory>
 
 #include "libpldm/base.h"
@@ -24,6 +25,10 @@ namespace pldm
 {
 
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+
+using origPageAlignedLen = uint32_t;
+using modPageAlignedLen = uint32_t;
+std::map<origPageAlignedLen, modPageAlignedLen> pageAlignedLengthMap;
 
 namespace responder
 {
@@ -80,11 +85,31 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     void* vgaMem;
     vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
                   MAP_SHARED, xdmaFd(), 0);
-    if (MAP_FAILED == vgaMem)
+    while (MAP_FAILED == vgaMem)
     {
-        rc = -errno;
-        std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
-        return rc;
+        if (errno != ENOMEM)
+        {
+            rc = -errno;
+            std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
+            return rc;
+        }
+        else
+        {
+            uint32_t newPageAlignedLength;
+            do
+            {
+                newPageAlignedLength =
+                    getNewPageAlignedLength(pageAlignedLength);
+                vgaMem = mmap(nullptr, newPageAlignedLength,
+                              upstream ? PROT_WRITE : PROT_READ, MAP_SHARED,
+                              xdmaFd(), 0);
+            } while (errno == ENOMEM);
+            pageAlignedLengthMap.insert(
+                {pageAlignedLength, newPageAlignedLength});
+            vgaMem = mmap(nullptr, newPageAlignedLength,
+                          upstream ? PROT_WRITE : PROT_READ, MAP_SHARED,
+                          xdmaFd(), 0);
+        }
     }
 
     std::unique_ptr<void, decltype(mmapCleanup)> vgaMemPtr(vgaMem, mmapCleanup);
@@ -160,6 +185,22 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     }
 
     return 0;
+}
+
+uint32_t DMA::getNewPageAlignedLength(uint32_t pageAlignedLength)
+{
+    uint32_t newPageAlignedLength = pageAlignedLength;
+
+    if (pageAlignedLengthMap.find(pageAlignedLength) ==
+        pageAlignedLengthMap.end())
+    {
+        newPageAlignedLength /= 2;
+    }
+    else
+    {
+        newPageAlignedLength = pageAlignedLengthMap[pageAlignedLength];
+    }
+    return newPageAlignedLength;
 }
 
 } // namespace dma

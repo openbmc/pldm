@@ -56,6 +56,8 @@ class DMA
      */
     int transferDataHost(int fd, uint32_t offset, uint32_t length,
                          uint64_t address, bool upstream);
+
+    uint32_t getNewPageAlignedLength(uint32_t pageAlignedLength);
 };
 
 /** @brief Transfer the data between BMC and host using DMA.
@@ -108,22 +110,6 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
         return response;
     }
     pldm::utils::CustomFD fd(file);
-
-    while (length > dma::maxSize)
-    {
-        auto rc = intf->transferDataHost(fd(), offset, dma::maxSize, address,
-                                         upstream);
-        if (rc < 0)
-        {
-            encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
-                                       responsePtr);
-            return response;
-        }
-
-        offset += dma::maxSize;
-        length -= dma::maxSize;
-        address += dma::maxSize;
-    }
 
     auto rc = intf->transferDataHost(fd(), offset, length, address, upstream);
     if (rc < 0)
