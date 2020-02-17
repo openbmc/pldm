@@ -109,22 +109,6 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
     }
     pldm::utils::CustomFD fd(file);
 
-    while (length > dma::maxSize)
-    {
-        auto rc = intf->transferDataHost(fd(), offset, dma::maxSize, address,
-                                         upstream);
-        if (rc < 0)
-        {
-            encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
-                                       responsePtr);
-            return response;
-        }
-
-        offset += dma::maxSize;
-        length -= dma::maxSize;
-        address += dma::maxSize;
-    }
-
     auto rc = intf->transferDataHost(fd(), offset, length, address, upstream);
     if (rc < 0)
     {
