@@ -141,9 +141,7 @@ TEST(TransferDataHost, GoodPath)
 
     // length greater than maxsize of DMA
     length = maxSize + minSize;
-    EXPECT_CALL(dmaObj, transferDataHost(_, 0, maxSize, 0, true)).Times(1);
-    EXPECT_CALL(dmaObj, transferDataHost(_, maxSize, minSize, maxSize, true))
-        .Times(1);
+    EXPECT_CALL(dmaObj, transferDataHost(_, 0, length, 0, true)).Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
                                     0, length, 0, true, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -153,7 +151,7 @@ TEST(TransferDataHost, GoodPath)
 
     // length greater than 2*maxsize of DMA
     length = 3 * maxSize;
-    EXPECT_CALL(dmaObj, transferDataHost(_, _, _, _, true)).Times(3);
+    EXPECT_CALL(dmaObj, transferDataHost(_, 0, length, 0, true)).Times(1);
     response = transferAll<MockDMA>(&dmaObj, PLDM_READ_FILE_INTO_MEMORY, path,
                                     0, length, 0, true, 0);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
