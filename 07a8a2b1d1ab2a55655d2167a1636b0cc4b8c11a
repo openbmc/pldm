@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c7d34e1e_63443a85",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T15:38:46Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "07a8a2b1d1ab2a55655d2167a1636b0cc4b8c11a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f977fdb1_e0bb09fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T15:38:46Z",
+      "side": 1,
+      "message": "nit",
+      "range": {
+        "startLine": 12,
+        "startChar": 29,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "07a8a2b1d1ab2a55655d2167a1636b0cc4b8c11a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c44d912_3074ba6f",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T15:38:46Z",
+      "side": 1,
+      "message": "using xyz \u003d uint32_t;\nusing abc \u003d uint32_t;\nstd::map\u003cxyz, abc\u003e pageAlignedLengthMap;\n\nThis will make the code readable.\n\nShould this be in the dma namespace?",
+      "range": {
+        "startLine": 29,
+        "startChar": 9,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "07a8a2b1d1ab2a55655d2167a1636b0cc4b8c11a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40e71aff_7bcce81e",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T15:38:46Z",
+      "side": 1,
+      "message": "This can be handled by an helper API, which can take a passed in length and return the size of the alignedLength.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 13
+      },
+      "revId": "07a8a2b1d1ab2a55655d2167a1636b0cc4b8c11a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "563faf92_b4de49c2",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T15:38:46Z",
+      "side": 1,
+      "message": "I will prefer a better variable name, very confusing trying to read the code.",
+      "range": {
+        "startLine": 115,
+        "startChar": 17,
+        "endLine": 115,
+        "endChar": 26
+      },
+      "revId": "07a8a2b1d1ab2a55655d2167a1636b0cc4b8c11a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf292fd4_3a32370f",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T15:38:46Z",
+      "side": 1,
+      "message": "1) With this logic only newLength will be DMA\u0027ed instead of pageAlignedLength.\n\n2) As per the comment on the issue https://github.com/ibm-openbmc/dev/issues/1661#issuecomment-581199493, only one mmap of pageAlignedLength is needed and not for every chunks.",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 13
+      },
+      "revId": "07a8a2b1d1ab2a55655d2167a1636b0cc4b8c11a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
