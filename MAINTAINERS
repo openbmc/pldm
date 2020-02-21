@@ -50,6 +50,8 @@ Change approval rules:
     - Patches should include unit tests where possible.
     - Feel free to ping on IRC about patches that look good but have not
       received +2
+    - Wait 24 hours before doing the final submit after doing a +2 on a
+      commit and any maintainer can do the final submit
 
 Design approval rules:
 
@@ -62,3 +64,4 @@ START OF MAINTAINERS LIST
 
 M:  Deepak Kodihalli <dkodihal@linux.vnet.ibm.com> <dkodihal!>
 M:  Tom Joseph <tomjose@linux.vnet.ibm.com> <tomjose>
+M:  John Wang <wangzqbj@inspur.com> <JohnWang!>
