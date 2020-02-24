@@ -36,40 +36,39 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
         return CmdHandler::ccOnlyResponse(request, rc);
     }
 
-    uint32_t nextRecordHandle{};
     uint16_t respSizeBytes{};
     uint8_t* recordData = nullptr;
     try
     {
-        pdr::Repo& pdrRepo = pdr::get(PDR_JSONS_DIR);
-        nextRecordHandle = pdrRepo.getNextRecordHandle(recordHandle);
-        pdr::Entry e;
+        pdr_utils::RepoInterface& pdrRepo = pdr::getRepo(PDR_JSONS_DIR);
+        pdr_utils::PdrEntry e;
+        auto record = pdr::getRecordByHandle(pdrRepo, recordHandle, e);
+        if (record == NULL)
+        {
+            return CmdHandler::ccOnlyResponse(
+                request, PLDM_PLATFORM_INVALID_RECORD_HANDLE);
+        }
+
         if (reqSizeBytes)
         {
-            e = pdrRepo.at(recordHandle);
-            respSizeBytes = e.size();
+            respSizeBytes = e.size;
             if (respSizeBytes > reqSizeBytes)
             {
                 respSizeBytes = reqSizeBytes;
             }
-            recordData = e.data();
+            recordData = e.data;
         }
         response.resize(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES +
                             respSizeBytes,
                         0);
         responsePtr = reinterpret_cast<pldm_msg*>(response.data());
         rc = encode_get_pdr_resp(request->hdr.instance_id, PLDM_SUCCESS,
-                                 nextRecordHandle, 0, PLDM_START, respSizeBytes,
-                                 recordData, 0, responsePtr);
+                                 e.handle.nextRecordHandle, 0, PLDM_START,
+                                 respSizeBytes, recordData, 0, responsePtr);
         if (rc != PLDM_SUCCESS)
         {
             return ccOnlyResponse(request, rc);
         }
-    }
-    catch (const std::out_of_range& e)
-    {
-        return CmdHandler::ccOnlyResponse(request,
-                                          PLDM_PLATFORM_INVALID_RECORD_HANDLE);
     }
     catch (const std::exception& e)
     {
