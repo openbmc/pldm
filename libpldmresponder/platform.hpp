@@ -4,6 +4,7 @@
 
 #include "handler.hpp"
 #include "libpldmresponder/pdr.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
 #include "utils.hpp"
 
 #include <stdint.h>
@@ -66,6 +67,7 @@ class Handler : public CmdHandler
         const DBusInterface& dBusIntf, effecter::Id effecterId,
         const std::vector<set_effecter_state_field>& stateField)
     {
+        using namespace pldm::responder::pdr;
         using namespace std::string_literals;
         using DBusProperty = std::variant<std::string, bool>;
         using StateSetId = uint16_t;
@@ -89,46 +91,42 @@ class Handler : public CmdHandler
         state_effecter_possible_states* states = nullptr;
         pldm_state_effecter_pdr* pdr = nullptr;
         uint8_t compEffecterCnt = stateField.size();
-        uint32_t recordHndl{};
-        Repo& pdrRepo = get(PDR_JSONS_DIR);
-        pdr::Entry pdrEntry{};
 
-        while (!pdr)
+        pdr_utils::Repo repo =
+            getRepoByType(PDR_JSONS_DIR, PLDM_STATE_EFFECTER_PDR);
+        if (repo.empty())
         {
-            pdrEntry = pdrRepo.at(recordHndl);
-            pldm_pdr_hdr* header =
-                reinterpret_cast<pldm_pdr_hdr*>(pdrEntry.data());
-            if (header->type != PLDM_STATE_EFFECTER_PDR)
+            std::cerr << "Failed to get record by PDR type\n";
+            return PLDM_PLATFORM_INVALID_EFFECTER_ID;
+        }
+        PdrEntry pdrEntry{};
+        auto pdrRecord = repo.getFirstRecord(pdrEntry);
+        while (pdrRecord)
+        {
+            pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
+            if (pdr->effecter_id != effecterId)
             {
-                recordHndl = pdrRepo.getNextRecordHandle(recordHndl);
-                if (recordHndl)
-                {
-                    continue;
-                }
-                return PLDM_PLATFORM_INVALID_EFFECTER_ID;
+                pdr = nullptr;
+                pdrRecord = repo.getNextRecord(pdrRecord, pdrEntry);
+                continue;
             }
-            pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data());
-            recordHndl = pdr->hdr.record_handle;
-            if (pdr->effecter_id == effecterId)
+
+            states = reinterpret_cast<state_effecter_possible_states*>(
+                pdr->possible_states);
+            if (compEffecterCnt > pdr->composite_effecter_count)
             {
-                states = reinterpret_cast<state_effecter_possible_states*>(
-                    pdr->possible_states);
-                if (compEffecterCnt > pdr->composite_effecter_count)
-                {
-                    std::cerr
-                        << "The requester sent wrong composite effecter"
-                        << " count for the effecter, EFFECTER_ID=" << effecterId
-                        << "COMP_EFF_CNT=" << compEffecterCnt << "\n";
-                    return PLDM_ERROR_INVALID_DATA;
-                }
-                break;
+                std::cerr << "The requester sent wrong composite effecter"
+                          << " count for the effecter, EFFECTER_ID="
+                          << effecterId << "COMP_EFF_CNT=" << compEffecterCnt
+                          << "\n";
+                return PLDM_ERROR_INVALID_DATA;
             }
-            recordHndl = pdrRepo.getNextRecordHandle(recordHndl);
-            if (!recordHndl)
-            {
-                return PLDM_PLATFORM_INVALID_EFFECTER_ID;
-            }
-            pdr = nullptr;
+            break;
+        }
+
+        if (!pdr)
+        {
+            return PLDM_PLATFORM_INVALID_EFFECTER_ID;
         }
 
         std::map<StateSetId, std::function<int(const std::string& objPath,
