@@ -128,7 +128,7 @@ class Handler : public CmdHandler
 {
 
   public:
-    Handler(const std::string configPath) : impl(configPath)
+    Handler(const std::string& configPath) : impl(configPath)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
                          [this](const pldm_msg* request, size_t payloadLength) {
