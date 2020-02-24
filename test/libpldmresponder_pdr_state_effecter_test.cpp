@@ -1,5 +1,6 @@
 #include "libpldmresponder/effecters.hpp"
 #include "libpldmresponder/pdr.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
 
 #include "libpldm/platform.h"
 
@@ -9,17 +10,19 @@ using namespace pldm::responder;
 
 TEST(GeneratePDR, testGoodJson)
 {
-    using namespace pdr;
     using namespace effecter::dbus_mapping;
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
+    pdr_utils::Repo pdrRepo = pdr::getRepoByType(
+        "./pdr_jsons/state_effecter/good", PLDM_STATE_EFFECTER_PDR);
 
     // 2 entries
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    ASSERT_EQ(pdrRepo.getRecordCount(), 2);
 
     // Check first PDR
-    pdr::Entry e = pdrRepo.at(1);
+    pdr_utils::PdrEntry e;
+    auto record1 = pdr::getRecordByHandle(pdrRepo, 1, e);
+    ASSERT_NE(record1, nullptr);
     pldm_state_effecter_pdr* pdr =
-        reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+        reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
 
     ASSERT_EQ(pdr->hdr.record_handle, 1);
     ASSERT_EQ(pdr->hdr.version, 1);
@@ -48,8 +51,9 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(paths[0], "/foo/bar");
 
     // Check second PDR
-    e = pdrRepo.at(2);
-    pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data());
+    auto record2 = pdr::getRecordByHandle(pdrRepo, 2, e);
+    ASSERT_NE(record2, nullptr);
+    pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
 
     ASSERT_EQ(pdr->hdr.record_handle, 2);
     ASSERT_EQ(pdr->hdr.version, 1);
@@ -91,19 +95,16 @@ TEST(GeneratePDR, testGoodJson)
 
 TEST(GeneratePDR, testNoJson)
 {
-    using namespace pdr;
-    Repo& pdrRepo = get("./pdr_jsons/not_there");
+    pdr_utils::Repo& pdrRepo = pdr::getRepo("./pdr_jsons/not_there");
 
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
+    ASSERT_EQ(pdrRepo.getRecordCount(), 2);
 }
 
 TEST(GeneratePDR, testMalformedJson)
 {
-    using namespace pdr;
-    Repo& pdrRepo = get("./pdr_jsons/state_effecter/good");
-    ASSERT_EQ(pdrRepo.numEntries(), 2);
-    pdrRepo.makeEmpty();
-    ASSERT_THROW(pldm::responder::pdr::internal::readJson(
-                     "./pdr_jsons/state_effecter/malformed"),
+    pdr_utils::Repo pdrRepo = pdr::getRepoByType(
+        "./pdr_jsons/state_effecter/good", PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdrRepo.getRecordCount(), 2);
+    ASSERT_THROW(pdr_utils::readJson("./pdr_jsons/state_effecter/malformed"),
                  std::exception);
 }
