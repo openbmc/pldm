@@ -57,7 +57,6 @@ class GetFruRecordTableMetadata : public CommandInterface
                       << "rc=" << rc << ",cc=" << (int)cc << std::endl;
             return;
         }
-        std::cout << "Parsed Response Msg : " << std::endl;
         std::cout << "FRUDATAMajorVersion : "
                   << static_cast<uint32_t>(fru_data_major_version) << std::endl;
         std::cout << "FRUDATAMinorVersion : "
