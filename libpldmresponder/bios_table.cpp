@@ -46,6 +46,16 @@ void BIOSTable::load(Response& response) const
     stream.read(reinterpret_cast<char*>(response.data() + currSize), fileSize);
 }
 
+void BIOSTable::appendPadAndChecksum(Table& table)
+{
+    auto sizeWithoutPad = table.size();
+    auto padAndChecksumSize = pldm_bios_table_pad_checksum_size(sizeWithoutPad);
+    table.resize(table.size() + padAndChecksumSize);
+
+    pldm_bios_table_append_pad_checksum(table.data(), table.size(),
+                                        sizeWithoutPad);
+}
+
 BIOSStringTable::BIOSStringTable(const Table& stringTable) :
     stringTable(stringTable)
 {
@@ -64,7 +74,7 @@ std::string BIOSStringTable::findString(uint16_t handle) const
     {
         throw std::invalid_argument("Invalid String Handle");
     }
-    return decodeString(stringEntry);
+    return table::str::decodeString(stringEntry);
 }
 
 uint16_t BIOSStringTable::findHandle(const std::string& name) const
@@ -76,17 +86,31 @@ uint16_t BIOSStringTable::findHandle(const std::string& name) const
         throw std::invalid_argument("Invalid String Name");
     }
 
-    return decodeHandle(stringEntry);
+    return table::str::decodeHandle(stringEntry);
 }
 
-uint16_t
-    BIOSStringTable::decodeHandle(const pldm_bios_string_table_entry* entry)
+namespace table
+{
+
+void appendPadAndChecksum(Table& table)
+{
+    auto sizeWithoutPad = table.size();
+    auto padAndChecksumSize = pldm_bios_table_pad_checksum_size(sizeWithoutPad);
+    table.resize(table.size() + padAndChecksumSize);
+
+    pldm_bios_table_append_pad_checksum(table.data(), table.size(),
+                                        sizeWithoutPad);
+}
+
+namespace str
+{
+
+uint16_t decodeHandle(const pldm_bios_string_table_entry* entry)
 {
     return pldm_bios_table_string_entry_decode_handle(entry);
 }
 
-std::string
-    BIOSStringTable::decodeString(const pldm_bios_string_table_entry* entry)
+std::string decodeString(const pldm_bios_string_table_entry* entry)
 {
     auto strLength = pldm_bios_table_string_entry_decode_string_length(entry);
     std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
@@ -94,6 +118,127 @@ std::string
                                                buffer.size());
     return std::string(buffer.data(), buffer.data() + strLength);
 }
+
+const pldm_bios_string_table_entry* constructEntry(Table& table,
+                                                   const std::string& str)
+{
+    auto tableSize = table.size();
+    auto entryLength = pldm_bios_table_string_entry_encode_length(str.length());
+    table.resize(tableSize + entryLength);
+    pldm_bios_table_string_entry_encode(table.data() + tableSize, entryLength,
+                                        str.c_str(), str.length());
+    return reinterpret_cast<pldm_bios_string_table_entry*>(table.data() +
+                                                           tableSize);
+}
+
+} // namespace str
+
+namespace attr
+{
+
+TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry)
+{
+    auto attrHandle = pldm_bios_table_attr_entry_decode_attribute_handle(entry);
+    auto attrType = pldm_bios_table_attr_entry_decode_attribute_type(entry);
+    auto stringHandle = pldm_bios_table_attr_entry_decode_string_handle(entry);
+    return {attrHandle, attrType, stringHandle};
+}
+
+const pldm_bios_attr_table_entry* findByHandle(const Table& table,
+                                               uint16_t handle)
+{
+    return pldm_bios_table_attr_find_by_handle(table.data(), table.size(),
+                                               handle);
+}
+
+const pldm_bios_attr_table_entry*
+    constructStringEntry(Table& table,
+                         pldm_bios_table_attr_entry_string_info* info)
+{
+    auto entryLength =
+        pldm_bios_table_attr_entry_string_encode_length(info->def_length);
+
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength, 0);
+    pldm_bios_table_attr_entry_string_encode(table.data() + tableSize,
+                                             entryLength, info);
+    return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
+                                                         tableSize);
+}
+
+StringField decodeStringEntry(const pldm_bios_attr_table_entry* entry)
+{
+    auto strType = pldm_bios_table_attr_entry_string_decode_string_type(entry);
+    auto minLength = pldm_bios_table_attr_entry_string_decode_min_length(entry);
+    auto maxLength = pldm_bios_table_attr_entry_string_decode_max_length(entry);
+    auto defLength =
+        pldm_bios_table_attr_entry_string_decode_def_string_length(entry);
+
+    std::vector<char> buffer(defLength + 1);
+    pldm_bios_table_attr_entry_string_decode_def_string(entry, buffer.data(),
+                                                        buffer.size());
+    return {strType, minLength, maxLength, defLength,
+            std::string(buffer.data(), buffer.data() + defLength)};
+}
+
+} // namespace attr
+
+namespace attrval
+{
+
+TableHeader decodeHeader(const pldm_bios_attr_val_table_entry* entry)
+{
+    auto handle =
+        pldm_bios_table_attr_value_entry_decode_attribute_handle(entry);
+    auto type = pldm_bios_table_attr_value_entry_decode_attribute_type(entry);
+    return {handle, type};
+}
+
+std::string decodeStringEntry(const pldm_bios_attr_val_table_entry* entry)
+{
+    variable_field currentString{};
+    pldm_bios_table_attr_value_entry_string_decode_string(entry,
+                                                          &currentString);
+    return std::string(currentString.ptr,
+                       currentString.ptr + currentString.length);
+}
+
+const pldm_bios_attr_val_table_entry*
+    constructStringEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
+                         const std::string& str)
+{
+    auto strLen = str.size();
+    auto entryLength =
+        pldm_bios_table_attr_value_entry_encode_string_length(strLen);
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength);
+    pldm_bios_table_attr_value_entry_encode_string(
+        table.data() + tableSize, entryLength, attrHandle, attrType, strLen,
+        str.c_str());
+    return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
+                                                             tableSize);
+}
+std::optional<Table> updateTable(Table& table, const void* entry, size_t size)
+{
+    size_t destBufferLength = table.size() + size + 3;
+    Table destTable(destBufferLength);
+    size_t destTableLen = destTable.size();
+
+    auto rc = pldm_bios_table_attr_value_copy_and_update(
+        table.data(), table.size(), destTable.data(), &destTableLen, entry,
+        size);
+    if (rc != PLDM_SUCCESS)
+    {
+        return std::nullopt;
+    }
+    destTable.resize(destTableLen);
+
+    return destTable;
+}
+
+} // namespace attrval
+
+} // namespace table
 
 } // namespace bios
 } // namespace responder
