@@ -1,5 +1,3 @@
-#pragma once
-
 #include "utils.hpp"
 
 #include <gmock/gmock.h>
@@ -32,4 +30,7 @@ class MockdBusHandler : public DBusHandler
   public:
     MOCK_METHOD(void, setDbusProperty,
                 (const DBusMapping&, const PropertyValue&), (const override));
+
+    MOCK_METHOD(PropertyValue, getDbusPropertyVariant,
+                (const char*, const char*, const char*), (const override));
 };
