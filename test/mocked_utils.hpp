@@ -1,5 +1,3 @@
-#pragma once
-
 #include "utils.hpp"
 
 #include <gmock/gmock.h>
