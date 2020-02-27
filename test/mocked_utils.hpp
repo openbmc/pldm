@@ -8,8 +8,8 @@ using namespace pldm::utils;
 class MockdBusHandler : public DBusHandler
 {
   public:
-    virtual ~MockdBusHandler() = default;
-
     MOCK_CONST_METHOD2(setDbusProperty,
                        void(const DBusMapping&, const PropertyValue&));
+    MOCK_METHOD(PropertyValue, getDbusPropertyVariant,
+                (const char*, const char*, const char*), (const override));
 };
