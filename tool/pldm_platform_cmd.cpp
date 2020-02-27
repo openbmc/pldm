@@ -216,7 +216,6 @@ class GetPDR : public CommandInterface
             return;
         }
 
-        std::cout << "Parsed Response Msg: " << std::endl;
         std::cout << "nextRecordHandle: " << nextRecordHndl << std::endl;
         std::cout << "responseCount: " << respCnt << std::endl;
 
