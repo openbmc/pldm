@@ -1,0 +1,11 @@
+Code-Review+1: Lei YU <mine260309@gmail.com>
+Code-Review+1: Carol Wang <wangkair@cn.ibm.com>
+Code-Review+1: <smriti.ayushi@linux.intel.com>
+Code-Review+2: John Wang <wangzq.jn@gmail.com>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Submitted-by: John Wang <wangzq.jn@gmail.com>
+Submitted-at: Thu, 27 Feb 2020 10:35:29 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/28663
+Project: openbmc/pldm
+Branch: refs/heads/master
