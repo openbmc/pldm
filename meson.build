@@ -31,6 +31,8 @@ configure_file(output: 'config.h',
 
 subdir('libpldm')
 
+if get_option('libpldm-only').disabled()
+
 libpldmutils_headers = ['.']
 libpldmutils = library(
   'pldmutils',
@@ -77,3 +79,5 @@ endif
 if get_option('utilities').enabled()
   subdir('utilities')
 endif
+
+endif # pldm-only
