@@ -79,7 +79,7 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
     std::array<uint8_t, hdrSize + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES>
         requestMsg{};
 
-    uint16_t effecterId = 0x32;
+    uint16_t effecterId = htole16(0x0032);
     uint8_t compEffecterCnt = 0x2;
 
     std::array<set_effecter_state_field, 8> stateField{};
