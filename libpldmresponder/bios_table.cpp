@@ -46,6 +46,16 @@ void BIOSTable::load(Response& response) const
     stream.read(reinterpret_cast<char*>(response.data() + currSize), fileSize);
 }
 
+void BIOSTable::appendPadAndChecksum(Table& table)
+{
+    auto sizeWithoutPad = table.size();
+    auto padAndChecksumSize = pldm_bios_table_pad_checksum_size(sizeWithoutPad);
+    table.resize(table.size() + padAndChecksumSize);
+
+    pldm_bios_table_append_pad_checksum(table.data(), table.size(),
+                                        sizeWithoutPad);
+}
+
 BIOSStringTable::BIOSStringTable(const Table& stringTable) :
     stringTable(stringTable)
 {
@@ -95,6 +105,18 @@ std::string
     return std::string(buffer.data(), buffer.data() + strLength);
 }
 
+const pldm_bios_string_table_entry*
+    BIOSStringTable::constructEntry(Table& table, const std::string& str)
+{
+    auto tableSize = table.size();
+    auto entryLength = pldm_bios_table_string_entry_encode_length(str.length());
+    table.resize(tableSize + entryLength);
+    pldm_bios_table_string_entry_encode(table.data() + tableSize, entryLength,
+                                        str.c_str(), str.length());
+    return reinterpret_cast<pldm_bios_string_table_entry*>(table.data() +
+                                                           tableSize);
+}
+
 const pldm_bios_attr_table_entry* BIOSAttrTable::constructStringEntry(
     Table& table, pldm_bios_table_attr_entry_string_info* info)
 {
@@ -116,6 +138,13 @@ BIOSAttrTable::TableHeader
     auto attrType = pldm_bios_table_attr_entry_decode_attribute_type(entry);
     auto stringHandle = pldm_bios_table_attr_entry_decode_string_handle(entry);
     return {attrHandle, attrType, stringHandle};
+}
+
+const pldm_bios_attr_table_entry*
+    BIOSAttrTable::findByHandle(const Table& table, uint16_t handle)
+{
+    return pldm_bios_table_attr_find_by_handle(table.data(), table.size(),
+                                               handle);
 }
 
 BIOSAttrTable::StringField
@@ -166,6 +195,24 @@ const pldm_bios_attr_val_table_entry* BIOSAttrValTable::constructStringEntry(
         str.c_str());
     return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
                                                              tableSize);
+}
+std::optional<Table>
+    BIOSAttrValTable::updateTable(Table& table, const void* entry, size_t size)
+{
+    size_t destBufferLength = table.size() + size + 3;
+    Table destTable(destBufferLength);
+    size_t destTableLen = destTable.size();
+
+    auto rc = pldm_bios_table_attr_value_copy_and_update(
+        table.data(), table.size(), destTable.data(), &destTableLen, entry,
+        size);
+    if (rc != PLDM_SUCCESS)
+    {
+        return std::nullopt;
+    }
+    destTable.resize(destTableLen);
+
+    return destTable;
 }
 
 } // namespace bios
