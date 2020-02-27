@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "libpldm/bios.h"
+#include "libpldm/bios_table.h"
 
 namespace pldm
 {
@@ -127,6 +128,56 @@ class BIOSStringTable : public BIOSStringTableInterface
 
   private:
     Table stringTable;
+};
+
+class BIOSAttrTable
+{
+  public:
+    struct TableHeader
+    {
+        uint16_t attrHandle;
+        uint8_t attrType;
+        uint16_t stringHandle;
+    };
+
+    static TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry);
+
+    struct StringField
+    {
+        uint8_t stringType;
+        uint16_t minLength;
+        uint16_t maxLength;
+        uint16_t defLength;
+        std::string defString;
+    };
+
+    static StringField
+        decodeStringEntry(const pldm_bios_attr_table_entry* entry);
+
+    static const pldm_bios_attr_table_entry*
+        constructStringEntry(Table& table,
+                             pldm_bios_table_attr_entry_string_info* info);
+};
+
+class BIOSAttrValTable
+{
+  public:
+    struct TableHeader
+    {
+        uint16_t attrHandle;
+        uint8_t attrType;
+    };
+
+    static TableHeader
+        decodeHeader(const pldm_bios_attr_val_table_entry* entry);
+
+    static std::string
+        decodeStringEntry(const pldm_bios_attr_val_table_entry* entry,
+                          uint8_t strType);
+
+    static const pldm_bios_attr_val_table_entry*
+        constructStringEntry(Table& table, uint16_t attrHandle,
+                             uint8_t attrType, const std::string& str);
 };
 
 } // namespace bios
