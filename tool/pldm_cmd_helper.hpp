@@ -32,22 +32,42 @@ constexpr uint8_t PLDM_LOCAL_INSTANCE_ID = 0;
 /** @brief Print the buffer
  *
  *  @param[in]  buffer  - Buffer to print
+ *  @param[in]  pldmVerbose - enable verbose true/false
  *
  *  @return - None
  */
-void printBuffer(const std::vector<uint8_t>& buffer);
+void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose);
 
+/** @brief print the input message if pldmverbose is enabled
+ *
+ *  @param[in]  pldmVerbose - enable verbose true/false
+ *  @param[in]  msg         - message to print
+ *  @param[in]  data        - data to print
+ *
+ *  @return - None
+ */
+template <class T>
+void Logger(int pldmverbose, const char* msg, const T& data)
+{
+    if (pldmverbose)
+    {
+        std::stringstream s;
+        s << data;
+        std::cout << msg << s.str() << std::endl;
+    }
+}
 /** @brief MCTP socket read/recieve
  *
  *  @param[in]  requestMsg - Request message to compare against loopback
  *              message recieved from mctp socket
  *  @param[out] responseMsg - Response buffer recieved from mctp socket
+ *  @param[in]  pldmVerbose - enable verbose true/false
  *
  *  @return -   0 on success.
  *             -1 or -errno on failure.
  */
 int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
-                     std::vector<uint8_t>& responseMsg);
+                     std::vector<uint8_t>& responseMsg, bool pldmVerbose);
 
 class CommandInterface
 {
@@ -59,6 +79,7 @@ class CommandInterface
         commandName(name), mctp_eid(PLDM_ENTITY_ID)
     {
         app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");
+        app->add_flag("-v, --verbose", pldmVerbose);
         app->callback([&]() { exec(); });
     }
     virtual ~CommandInterface() = default;
@@ -77,6 +98,7 @@ class CommandInterface
     const std::string pldmType;
     const std::string commandName;
     uint8_t mctp_eid;
+    bool pldmVerbose;
 };
 
 } // namespace helper
