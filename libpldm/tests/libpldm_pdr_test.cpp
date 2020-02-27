@@ -27,7 +27,7 @@ TEST(PDRUpdate, testAdd)
     EXPECT_EQ(handle, 2);
     handle = pldm_pdr_add(repo, data.data(), data.size(), 0);
     EXPECT_EQ(handle, 3);
-    handle = pldm_pdr_add(repo, data.data(), data.size(), 0xdeeddeed);
+    handle = pldm_pdr_add(repo, data.data(), data.size(), htole32(0xdeeddeed));
     EXPECT_EQ(handle, 0xdeeddeed);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), data.size() * 4);
@@ -61,7 +61,8 @@ TEST(PDRAccess, testGet)
     EXPECT_EQ(memcmp(outData, in.data(), sizeof(in)), 0);
     outData = nullptr;
 
-    hdl = pldm_pdr_find_record(repo, 0xdeaddead, &outData, &size, &nextRecHdl);
+    hdl = pldm_pdr_find_record(repo, htole32(0xdeaddead), &outData, &size,
+                               &nextRecHdl);
     EXPECT_EQ(hdl, nullptr);
     EXPECT_EQ(size, 0);
     EXPECT_EQ(nextRecHdl, 0);

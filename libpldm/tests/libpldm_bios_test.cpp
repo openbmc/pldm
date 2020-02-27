@@ -263,7 +263,7 @@ TEST(SetDateTime, testGoodDecodeRequest)
     uint8_t hours = 0x10;
     uint8_t day = 0x11;
     uint8_t month = 0x11;
-    uint16_t year = 0x2019;
+    uint16_t year = htole16(0x2019);
 
     auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
     struct pldm_set_date_time_req* req =
@@ -302,7 +302,7 @@ TEST(SetDateTime, testBadDecodeRequest)
     uint8_t hours = 0x10;
     uint8_t day = 0x11;
     uint8_t month = 0x11;
-    uint16_t year = 0x2019;
+    uint16_t year = htole16(0x2019);
 
     std::array<uint8_t, hdrSize + sizeof(struct pldm_set_date_time_req)>
         requestMsg{};
