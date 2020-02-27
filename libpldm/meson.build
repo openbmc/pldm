@@ -62,3 +62,7 @@ import('pkgconfig').generate(
   description: 'PLDM protocol encode/decode C lib',
   version: meson.project_version(),
   libraries: libpldm)
+
+if get_option('tests').enabled()
+  subdir('tests')
+endif
