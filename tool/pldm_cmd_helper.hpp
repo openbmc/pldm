@@ -28,6 +28,7 @@ using namespace pldm::utils;
 constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 constexpr uint8_t PLDM_LOCAL_INSTANCE_ID = 0;
+constexpr int PLDM_VERBOSE = 0;
 
 /** @brief Print the buffer
  *
@@ -47,7 +48,7 @@ void printBuffer(const std::vector<uint8_t>& buffer);
  *             -1 or -errno on failure.
  */
 int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
-                     std::vector<uint8_t>& responseMsg);
+                     std::vector<uint8_t>& responseMsg, uint8_t pldmVerbose);
 
 class CommandInterface
 {
@@ -55,8 +56,10 @@ class CommandInterface
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :
         pldmType(type),
-        commandName(name)
+        commandName(name), pldmVerbose(PLDM_VERBOSE)
+
     {
+        app->add_option("-v, --verbose", pldmVerbose, "Enable verbose 0/1");
         app->callback([&]() { exec(); });
     }
     virtual ~CommandInterface() = default;
@@ -74,6 +77,7 @@ class CommandInterface
   private:
     const std::string pldmType;
     const std::string commandName;
+    int pldmVerbose;
 };
 
 } // namespace helper
