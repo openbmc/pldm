@@ -338,7 +338,6 @@ class GetBIOSTable : public CommandInterface
 
     void decodeStringTable(const std::optional<Table>& stringTable)
     {
-        std::cout << "Parsed Response Msg: " << std::endl;
         if (!stringTable)
         {
             std::cerr << "GetBIOSStringTable Error" << std::endl;
@@ -359,7 +358,6 @@ class GetBIOSTable : public CommandInterface
     void decodeAttributeTable(const std::optional<Table>& attrTable,
                               const std::optional<Table>& stringTable)
     {
-        std::cout << "Parsed Response Msg: " << std::endl;
         if (!stringTable)
         {
             std::cerr << "GetBIOSAttributeTable Error" << std::endl;
@@ -472,7 +470,6 @@ class GetBIOSTable : public CommandInterface
                                    const std::optional<Table>& attrTable,
                                    const std::optional<Table>& stringTable)
     {
-        std::cout << "Parsed Response Msg: " << std::endl;
         if (!attrValTable)
         {
             std::cerr << "GetBIOSAttributeValueTable Error" << std::endl;
