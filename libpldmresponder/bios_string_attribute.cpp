@@ -1,0 +1,119 @@
+#include "bios_string_attribute.hpp"
+
+#include "utils.hpp"
+
+#include <iostream>
+#include <tuple>
+#include <variant>
+
+namespace pldm
+{
+namespace responder
+{
+namespace bios
+{
+
+BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
+                                         DBusHandler* const dbusHandler) :
+    BIOSAttribute(entry, dbusHandler)
+{
+    std::string strTypeTmp = entry.at("string_type");
+    auto iter = strTypeMap.find(strTypeTmp);
+    if (iter == strTypeMap.end())
+    {
+        std::cerr << "Wrong string type, STRING_TYPE=" << strTypeTmp
+                  << " ATTRIBUTE_NAME=" << name << "\n";
+        throw std::invalid_argument("Wrong string type");
+    }
+    stringType = iter->second;
+
+    minStringLength = entry.at("minimum_string_length");
+    maxStringLength = entry.at("maximum_string_length");
+    defaultStringLength = entry.at("default_string_length");
+    defaultString = entry.at("default_string");
+
+    pldm_bios_table_attr_entry_string_info info = {
+        0,
+        readOnly,
+        stringType,
+        minStringLength,
+        maxStringLength,
+        defaultStringLength,
+        defaultString.data(),
+    };
+
+    const char* errmsg;
+    auto rc = pldm_bios_table_attr_entry_string_info_check(&info, &errmsg);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Wrong field for string attribute, ATTRIBUTE_NAME=" << name
+                  << " ERRMSG=" << errmsg
+                  << " MINIMUM_STRING_LENGTH=" << minStringLength
+                  << " MAXIMUM_STRING_LENGTH=" << maxStringLength
+                  << " DEFAULT_STRING_LENGTH=" << defaultStringLength
+                  << " DEFAULT_STRING=" << defaultString.data() << "\n";
+        throw std::invalid_argument("Wrong field for string attribute");
+    }
+}
+
+void BIOSStringAttribute::setAttrValueOnDbus(
+    const pldm_bios_attr_val_table_entry* attrValueEntry,
+    const pldm_bios_attr_table_entry* attrEntry, const BIOSStringTable&)
+{
+    if (readOnly)
+        return;
+
+    auto stringEntry = BIOSAttrTable::decodeStringEntry(attrEntry);
+    std::variant<std::string> value = BIOSAttrValTable::decodeStringEntry(
+        attrValueEntry, stringEntry.stringType);
+
+    dbusHandler->setDbusProperty(dBusMap->objectPath.c_str(),
+                                 dBusMap->propertyName.c_str(),
+                                 dBusMap->interface.c_str(), value);
+}
+
+std::string BIOSStringAttribute::getAttrValue()
+{
+    if (readOnly)
+    {
+        return defaultString;
+    }
+    try
+    {
+        return dbusHandler->getDbusProperty<std::string>(
+            dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
+            dBusMap->interface.c_str());
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Get String Attribute Value Error: AttributeName = "
+                  << name << std::endl;
+        return defaultString;
+    }
+}
+
+void BIOSStringAttribute::constructEntry(const BIOSStringTable& stringTable,
+                                         Table& attrTable,
+                                         Table& attrValueTable)
+{
+    pldm_bios_table_attr_entry_string_info info = {
+        stringTable.findHandle(name),
+        readOnly,
+        stringType,
+        minStringLength,
+        maxStringLength,
+        defaultStringLength,
+        defaultString.data(),
+    };
+
+    auto attrTableEntry = BIOSAttrTable::constructStringEntry(attrTable, &info);
+    auto [attrHandle, attrType, _] =
+        BIOSAttrTable::decodeHeader(attrTableEntry);
+    auto currStr = getAttrValue();
+    BIOSAttrValTable::constructStringEntry(attrValueTable, attrHandle, attrType,
+                                           currStr);
+}
+
+} // namespace bios
+} // namespace responder
+} // namespace pldm
