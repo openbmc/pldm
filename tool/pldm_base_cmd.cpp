@@ -199,7 +199,6 @@ class GetTID : public CommandInterface
                       << "rc=" << rc << ",cc=" << (int)cc << "\n";
             return;
         }
-        std::cout << "Parsed Response Msg: " << std::endl;
         std::cout << "TID : " << static_cast<uint32_t>(tid) << std::endl;
     }
 };
@@ -267,7 +266,6 @@ class GetPLDMCommands : public CommandInterface
     void printPldmCommands(std::vector<bitfield8_t>& cmdTypes,
                            pldm_supported_types pldmType)
     {
-        std::cout << "Parsed Response Msg:" << std::endl;
         std::cout << "Supported Commands :";
         for (int i = 0; i < PLDM_MAX_CMDS_PER_TYPE; i++)
         {
