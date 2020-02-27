@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include <filesystem>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -137,6 +138,12 @@ class BIOSStringTable : public BIOSStringTableInterface
 namespace table
 {
 
+/** @brief Append Pad and Checksum
+ *
+ *  @param[in,out] table - table to be appended with pad and checksum
+ */
+void appendPadAndChecksum(Table& table);
+
 namespace string
 {
 
@@ -151,6 +158,15 @@ uint16_t decodeHandle(const pldm_bios_string_table_entry* entry);
  *  @return The String
  */
 std::string decodeString(const pldm_bios_string_table_entry* entry);
+
+/** @brief construct entry of string table at the end of the given
+ *         table
+ *  @param[in,out] table - The given table
+ *  @param[in] str - string itself
+ *  @return pointer to the constructed entry
+ */
+const pldm_bios_string_table_entry* constructEntry(Table& table,
+                                                   const std::string& str);
 
 } // namespace string
 
@@ -172,6 +188,14 @@ struct TableHeader
  *  @return Attribute table header
  */
 TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry);
+
+/** @brief Find attribute entry by handle
+ *  @param[in] table - attribute table
+ *  @param[in] handle - attribute handle
+ *  @return Pointer to the attribute table entry
+ */
+const pldm_bios_attr_table_entry* findByHandle(const Table& table,
+                                               uint16_t handle);
 
 /** @struct StringField
  *  @brief String field of attribute table
@@ -238,6 +262,15 @@ std::string decodeStringEntry(const pldm_bios_attr_val_table_entry* entry);
 const pldm_bios_attr_val_table_entry*
     constructStringEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
                          const std::string& str);
+
+/** @brief construct a table with an new entry
+ *  @param[in] table - the table need to be updated
+ *  @param[in] entry - the new attribute value entry
+ *  @param[in] size - size of the new entry
+ *  @return newly constructed table, std::nullopt if failed
+ */
+std::optional<Table> updateTable(const Table& table, const void* entry,
+                                 size_t size);
 
 } // namespace attribute_value
 
