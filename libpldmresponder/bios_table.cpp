@@ -95,6 +95,79 @@ std::string
     return std::string(buffer.data(), buffer.data() + strLength);
 }
 
+const pldm_bios_attr_table_entry* BIOSAttrTable::constructStringEntry(
+    Table& table, pldm_bios_table_attr_entry_string_info* info)
+{
+    auto entryLength =
+        pldm_bios_table_attr_entry_string_encode_length(info->def_length);
+
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength, 0);
+    pldm_bios_table_attr_entry_string_encode(table.data() + tableSize,
+                                             entryLength, info);
+    return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
+                                                         tableSize);
+}
+
+BIOSAttrTable::TableHeader
+    BIOSAttrTable::decodeHeader(const pldm_bios_attr_table_entry* entry)
+{
+    auto attrHandle = pldm_bios_table_attr_entry_decode_attribute_handle(entry);
+    auto attrType = pldm_bios_table_attr_entry_decode_attribute_type(entry);
+    auto stringHandle = pldm_bios_table_attr_entry_decode_string_handle(entry);
+    return {attrHandle, attrType, stringHandle};
+}
+
+BIOSAttrTable::StringField
+    BIOSAttrTable::decodeStringEntry(const pldm_bios_attr_table_entry* entry)
+{
+    auto strType = pldm_bios_table_attr_entry_string_decode_string_type(entry);
+    auto minLength = pldm_bios_table_attr_entry_string_decode_min_length(entry);
+    auto maxLength = pldm_bios_table_attr_entry_string_decode_max_length(entry);
+    auto defLength =
+        pldm_bios_table_attr_entry_string_decode_def_string_length(entry);
+
+    std::vector<char> buffer(defLength + 1);
+    pldm_bios_table_attr_entry_string_decode_def_string(entry, buffer.data(),
+                                                        buffer.size());
+    return {strType, minLength, maxLength, defLength,
+            std::string(buffer.data(), buffer.data() + defLength)};
+}
+
+BIOSAttrValTable::TableHeader
+    BIOSAttrValTable::decodeHeader(const pldm_bios_attr_val_table_entry* entry)
+{
+    auto handle =
+        pldm_bios_table_attr_value_entry_decode_attribute_handle(entry);
+    auto type = pldm_bios_table_attr_value_entry_decode_attribute_type(entry);
+    return {handle, type};
+}
+
+std::string BIOSAttrValTable::decodeStringEntry(
+    const pldm_bios_attr_val_table_entry* entry)
+{
+    variable_field currentString{};
+    pldm_bios_table_attr_value_entry_string_decode_string(entry,
+                                                          &currentString);
+    return std::string(currentString.ptr,
+                       currentString.ptr + currentString.length);
+}
+
+const pldm_bios_attr_val_table_entry* BIOSAttrValTable::constructStringEntry(
+    Table& table, uint16_t attrHandle, uint8_t attrType, const std::string& str)
+{
+    auto strLen = str.size();
+    auto entryLength =
+        pldm_bios_table_attr_value_entry_encode_string_length(strLen);
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength);
+    pldm_bios_table_attr_value_entry_encode_string(
+        table.data() + tableSize, entryLength, attrHandle, attrType, strLen,
+        str.c_str());
+    return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
+                                                             tableSize);
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm
