@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "libpldm/bios.h"
+#include "libpldm/bios_table.h"
 
 namespace pldm
 {
@@ -129,21 +130,117 @@ class BIOSStringTable : public BIOSStringTableInterface
      */
     uint16_t findHandle(const std::string& name) const override;
 
-    /** @brief Get the string handle for the entry
-     *  @param[in] entry - Pointer to a bios string table entry
-     *  @return Handle to identify a string in the bios string table
-     */
-    static uint16_t decodeHandle(const pldm_bios_string_table_entry* entry);
-
-    /** @brief Get the string from the entry
-     *  @param[in] entry - Pointer to a bios string table entry
-     *  @return The String
-     */
-    static std::string decodeString(const pldm_bios_string_table_entry* entry);
-
   private:
     Table stringTable;
 };
+
+namespace table
+{
+
+namespace str
+{
+
+/** @brief Get the string handle for the entry
+ *  @param[in] entry - Pointer to a bios string table entry
+ *  @return Handle to identify a string in the bios string table
+ */
+uint16_t decodeHandle(const pldm_bios_string_table_entry* entry);
+
+/** @brief Get the string from the entry
+ *  @param[in] entry - Pointer to a bios string table entry
+ *  @return The String
+ */
+std::string decodeString(const pldm_bios_string_table_entry* entry);
+
+} // namespace str
+
+namespace attr
+{
+
+/** @struct TableHeader
+ *  @brief Header of attribute table
+ */
+struct TableHeader
+{
+    uint16_t attrHandle;
+    uint8_t attrType;
+    uint16_t stringHandle;
+};
+
+/** @brief Decode header of attribute table entry
+ *  @param[in] entry - Pointer to an attribute table entry
+ *  @return Attribute table header
+ */
+TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry);
+
+/** @struct StringField
+ *  @brief String field of attribute table
+ */
+struct StringField
+{
+    uint8_t stringType;
+    uint16_t minLength;
+    uint16_t maxLength;
+    uint16_t defLength;
+    std::string defString;
+};
+
+/** @brief decode string entry of attribute table
+ *  @param[in] entry - Pointer to an attribute table entry
+ *  @return String field of the entry
+ */
+StringField decodeStringEntry(const pldm_bios_attr_table_entry* entry);
+
+/** @brief construct string entry of attribute table at the end of the given
+ *         table
+ *  @param[in,out] table - The given table
+ *  @param[in] info - string info
+ *  @return pointer to the constructed entry
+ */
+const pldm_bios_attr_table_entry*
+    constructStringEntry(Table& table,
+                         pldm_bios_table_attr_entry_string_info* info);
+
+} // namespace attr
+
+namespace attrval
+{
+
+/** @struct TableHeader
+ *  @brief Header of attribute value table
+ */
+struct TableHeader
+{
+    uint16_t attrHandle;
+    uint8_t attrType;
+};
+
+/** @brief Decode header of attribute value table
+ *  @param[in] entry - Pointer to an attribute value table entry
+ *  @return Attribute value table header
+ */
+TableHeader decodeHeader(const pldm_bios_attr_val_table_entry* entry);
+
+/** @brief Decode string entry of attribute value table
+ *  @param[in] entry - Pointer to an attribute value table entry
+ *  @return The decoded string
+ */
+std::string decodeStringEntry(const pldm_bios_attr_val_table_entry* entry);
+
+/** @brief Construct string entry of attribute value table at the end of the
+ *         given table
+ *  @param[in] table - The given table
+ *  @param[in] attrHandle - attribute handle
+ *  @param[in] attrType - attribute type
+ *  @param[in] str - The string
+ *  @return Pointer to the constructed entry
+ */
+const pldm_bios_attr_val_table_entry*
+    constructStringEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
+                         const std::string& str);
+} // namespace attrval
+
+} // namespace table
 
 } // namespace bios
 } // namespace responder
