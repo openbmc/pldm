@@ -16,10 +16,10 @@ namespace pldmtool
 namespace helper
 {
 /*
- * print the input buffer
+ * print the input buffer if pldm verbosity is enabled.
  *
  */
-void printBuffer(const std::vector<uint8_t>& buffer)
+void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose)
 {
     std::ostringstream tempStream;
     if (!buffer.empty())
@@ -30,15 +30,19 @@ void printBuffer(const std::vector<uint8_t>& buffer)
                        << " ";
         }
     }
-    std::cout << tempStream.str() << std::endl;
+    if (pldmVerbose)
+    {
+        std::cout << tempStream.str() << std::endl;
+    }
 }
 /*
  * Initialize the socket, send pldm command & recieve response from socket
  *
  */
 int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
-                     std::vector<uint8_t>& responseMsg)
+                     std::vector<uint8_t>& responseMsg, bool pldmVerbose)
 {
+
     const char devPath[] = "\0mctp-mux";
     int returnCode = 0;
 
@@ -49,8 +53,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
         std::cerr << "Failed to create the socket : RC = " << sockFd << "\n";
         return returnCode;
     }
-    std::cout << "Success in creating the socket : RC = " << sockFd
-              << std::endl;
+    Logger(pldmVerbose, "Success in creating the socket : RC = ", sockFd);
 
     struct sockaddr_un addr
     {
@@ -69,8 +72,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
                   << "\n";
         return returnCode;
     }
-    std::cout << "Success in connecting to socket : RC = " << returnCode
-              << std::endl;
+    Logger(pldmVerbose, "Success in connecting to socket : RC = ", returnCode);
 
     auto pldmType = MCTP_MSG_TYPE_PLDM;
     result = write(socketFd(), &pldmType, sizeof(pldmType));
@@ -81,8 +83,9 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
                   << returnCode << "\n";
         return returnCode;
     }
-    std::cout << "Success in sending message type as pldm to mctp : RC = "
-              << returnCode << std::endl;
+    Logger(
+        pldmVerbose,
+        "Success in sending message type as pldm to mctp : RC = ", returnCode);
 
     result = send(socketFd(), requestMsg.data(), requestMsg.size(), 0);
     if (-1 == result)
@@ -91,7 +94,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
         std::cerr << "Write to socket failure : RC = " << returnCode << "\n";
         return returnCode;
     }
-    std::cout << "Write to socket successful : RC = " << result << std::endl;
+    Logger(pldmVerbose, "Write to socket successful : RC = ", result);
 
     // Read the response from socket
     ssize_t peekedLength = recv(socketFd(), nullptr, 0, MSG_TRUNC | MSG_PEEK);
@@ -118,13 +121,13 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
             auto recvDataLength =
                 recv(socketFd(), reinterpret_cast<void*>(responseMsg.data()),
                      peekedLength, 0);
-            auto resphdr =
-                reinterpret_cast<const pldm_msg_hdr*>(&responseMsg[2]);
+            struct pldm_msg_hdr* hdr =
+                (struct pldm_msg_hdr*)(responseMsg.data() + 2);
             if (recvDataLength == peekedLength &&
-                resphdr->instance_id == reqhdr->instance_id &&
-                resphdr->request != PLDM_REQUEST)
+                hdr->instance_id == reqhdr->instance_id &&
+                hdr->request != PLDM_REQUEST)
             {
-                std::cout << "Total length: " << recvDataLength << std::endl;
+                Logger(pldmVerbose, "Total length:", recvDataLength);
                 break;
             }
             else if (recvDataLength != peekedLength)
@@ -145,22 +148,21 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
         return returnCode;
     }
 
-    std::cout << "Shutdown Socket successful :  RC = " << returnCode
-              << std::endl;
+    Logger(pldmVerbose, "Shutdown Socket successful :  RC = ", returnCode);
     return PLDM_SUCCESS;
 }
 
 void CommandInterface::exec()
 {
     static constexpr auto pldmObjPath = "/xyz/openbmc_project/pldm";
-    static constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
+    static constexpr auto pldmInterface = "xyz.openbmc_project.PLDM.Requester";
     auto& bus = pldm::utils::DBusHandler::getBus();
     try
     {
         auto service =
-            pldm::utils::DBusHandler().getService(pldmObjPath, pldmRequester);
+            pldm::utils::DBusHandler().getService(pldmObjPath, pldmInterface);
         auto method = bus.new_method_call(service.c_str(), pldmObjPath,
-                                          pldmRequester, "GetInstanceId");
+                                          pldmInterface, "GetInstanceId");
         method.append(mctp_eid);
         auto reply = bus.call(method);
         reply.read(instanceId);
@@ -179,8 +181,6 @@ void CommandInterface::exec()
         return;
     }
 
-    std::cout << "Encode request successfully" << std::endl;
-
     std::vector<uint8_t> responseMsg;
     rc = pldmSendRecv(requestMsg, responseMsg);
 
@@ -197,13 +197,19 @@ void CommandInterface::exec()
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
+
     // Insert the PLDM message type and EID at the beginning of the
     // msg.
     requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
     requestMsg.insert(requestMsg.begin(), mctp_eid);
 
-    std::cout << "Request Message:" << std::endl;
-    printBuffer(requestMsg);
+    if (CommandInterface::pldmType == "raw")
+    {
+        pldmVerbose = "true";
+    }
+
+    Logger(pldmVerbose, "Request Message:", "");
+    printBuffer(requestMsg, pldmVerbose);
 
     if (mctp_eid != PLDM_ENTITY_ID)
     {
@@ -219,19 +225,19 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         pldm_send_recv(mctp_eid, fd, requestMsg.data() + 2,
                        requestMsg.size() - 2, &responseMessage,
                        &responseMessageSize);
-        std::cout << "Response Message:" << std::endl;
 
+        Logger(pldmVerbose, "Response Message:", "");
         responseMsg.resize(responseMessageSize);
         memcpy(responseMsg.data(), responseMessage, responseMsg.size());
 
         free(responseMessage);
-        printBuffer(responseMsg);
+        printBuffer(responseMsg, pldmVerbose);
     }
     else
     {
-        mctpSockSendRecv(requestMsg, responseMsg);
-        std::cout << "Response Message:" << std::endl;
-        printBuffer(responseMsg);
+        mctpSockSendRecv(requestMsg, responseMsg, pldmVerbose);
+        Logger(pldmVerbose, "Response Message:", "");
+        printBuffer(responseMsg, pldmVerbose);
         responseMsg.erase(responseMsg.begin(),
                           responseMsg.begin() + 2 /* skip the mctp header */);
     }
