@@ -116,6 +116,18 @@ T decimalToBcd(T decimal)
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::string propertyType; //!< D-Bus property type
+};
+
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+
 /**
  *  @class DBusHandler
  *
@@ -188,6 +200,9 @@ class DBusHandler
             objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
+
+    void updateDbusProperty(const DBusMapping& dBusMap,
+                            const PropertyValue& value) const;
 };
 
 } // namespace utils
