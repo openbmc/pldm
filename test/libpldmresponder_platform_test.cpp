@@ -2,13 +2,12 @@
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "mocked_utils.hpp"
+#include "utils.hpp"
 
 #include <iostream>
 
-#include <gmock/gmock-matchers.h>
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-
+using namespace pldm::utils;
 using namespace pldm::responder;
 
 TEST(getPDR, testGoodPath)
@@ -165,26 +164,6 @@ TEST(getPDR, testFindPDR)
     ASSERT_EQ(found, true);
 }
 
-namespace pldm
-{
-
-namespace responder
-{
-
-class MockdBusHandler
-{
-  public:
-    MOCK_CONST_METHOD4(setDbusProperty,
-                       int(const std::string&, const std::string&,
-                           const std::string&,
-                           const std::variant<std::string>&));
-};
-} // namespace responder
-} // namespace pldm
-
-using ::testing::_;
-using ::testing::Return;
-
 TEST(setStateEffecterStatesHandler, testGoodRequest)
 {
     pdr_utils::Repo pdrRepo = pdr::getRepoByType(
@@ -199,16 +178,16 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     std::vector<set_effecter_state_field> stateField;
     stateField.push_back({PLDM_REQUEST_SET, 1});
     stateField.push_back({PLDM_REQUEST_SET, 1});
-
-    auto bootProgressInf = "xyz.openbmc_project.State.OperatingSystem.Status";
-    auto bootProgressProp = "OperatingSystemState";
-    std::string objPath = "/foo/bar";
-    std::variant<std::string> value{"xyz.openbmc_project.State.OperatingSystem."
-                                    "Status.OSStatus.Standby"};
+    std::string value = "xyz.openbmc_project.State.OperatingSystem."
+                        "Status.OSStatus.Standby";
+    PropertyValue propertyValue = value;
 
     MockdBusHandler handlerObj;
-    EXPECT_CALL(handlerObj, setDbusProperty(objPath, bootProgressProp,
-                                            bootProgressInf, value))
+    DBusMapping dbusMapping{"/foo/bar",
+                            "xyz.openbmc_project.State.OperatingSystem.Status",
+                            "OperatingSystemState", "string"};
+
+    EXPECT_CALL(handlerObj, setDbusProperty(dbusMapping, propertyValue))
         .Times(2);
     platform::Handler handler;
     auto rc = handler.setStateEffecterStatesHandler<MockdBusHandler>(
