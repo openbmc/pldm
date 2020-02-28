@@ -116,6 +116,37 @@ T decimalToBcd(T decimal)
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::string propertyType; //!< D-Bus property type
+};
+
+inline bool operator==(const DBusMapping& lhs, const DBusMapping& rhs)
+{
+    return lhs.objectPath == rhs.objectPath && lhs.interface == rhs.interface &&
+           lhs.propertyName == rhs.propertyName &&
+           lhs.propertyType == rhs.propertyType;
+}
+
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+
+/**
+ * @brief The interface for DBusHandler
+ */
+class DBusHandlerInterface
+{
+  public:
+    virtual ~DBusHandlerInterface() = default;
+
+    virtual void updateDbusProperty(const DBusMapping& dBusMap,
+                                    const PropertyValue& value) const = 0;
+};
+
 /**
  *  @class DBusHandler
  *
@@ -125,7 +156,7 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
  *  to cater the request from pldm requester.
  *  A class is created to mock the apis in the test cases
  */
-class DBusHandler
+class DBusHandler : public DBusHandlerInterface
 {
   public:
     /** @brief Get the bus connection. */
@@ -188,6 +219,9 @@ class DBusHandler
             objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
+
+    void updateDbusProperty(const DBusMapping& dBusMap,
+                            const PropertyValue& value) const override;
 };
 
 } // namespace utils
