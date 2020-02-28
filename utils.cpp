@@ -133,5 +133,65 @@ void reportError(const char* errorMsg)
     }
 }
 
+void DBusHandler::updateDbusProperty(const DBusMapping& dBusMap,
+                                     const PropertyValue& value) const
+{
+    auto setDbusProperty = [&dBusMap](const auto& variant) {
+        DBusHandler().setDbusProperty(dBusMap.objectPath.c_str(),
+                                      dBusMap.propertyName.c_str(),
+                                      dBusMap.interface.c_str(), variant);
+    };
+
+    if (dBusMap.propertyType == "uint8_t")
+    {
+        std::variant<uint8_t> v = std::get<uint8_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "int16_t")
+    {
+        std::variant<int16_t> v = std::get<int16_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "uint16_t")
+    {
+        std::variant<uint16_t> v = std::get<uint16_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "int32_t")
+    {
+        std::variant<int32_t> v = std::get<int32_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "uint32_t")
+    {
+        std::variant<uint32_t> v = std::get<uint32_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "int64_t")
+    {
+        std::variant<int64_t> v = std::get<int64_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "uint64_t")
+    {
+        std::variant<uint64_t> v = std::get<uint64_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "double")
+    {
+        std::variant<double> v = std::get<double>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "string")
+    {
+        std::variant<std::string> v = std::get<std::string>(value);
+        setDbusProperty(v);
+    }
+    else
+    {
+        std::cerr << "UnSpported Dbus Type\n";
+    }
+}
+
 } // namespace utils
 } // namespace pldm

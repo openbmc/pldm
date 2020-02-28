@@ -85,6 +85,7 @@ class Handler : public CmdHandler
                "xyz.openbmc_project.State.Chassis.Transition.Off"s}}}};
         using namespace pldm::responder::pdr;
         using namespace pldm::responder::effecter::dbus_mapping;
+        using namespace pldm::utils;
 
         state_effecter_possible_states* states = nullptr;
         pldm_state_effecter_pdr* pdr = nullptr;
@@ -163,6 +164,7 @@ class Handler : public CmdHandler
                          std::get<std::string>(iter->second)};
                      auto dbusInterface =
                          "xyz.openbmc_project.State.OperatingSystem.Status";
+
                      try
                      {
                          dBusIntf.setDbusProperty(objPath.c_str(), dbusProp,
