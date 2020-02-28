@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bios_table.hpp"
+#include "utils.hpp"
 
 #include <map>
 #include <string>
@@ -31,6 +32,7 @@
 namespace bios_parser
 {
 
+using namespace pldm::utils;
 using namespace pldm::responder::bios;
 using AttrName = std::string;
 using Strings = std::vector<std::string>;
@@ -57,7 +59,6 @@ namespace bios_enum
 {
 
 using IsReadOnly = bool;
-using PossibleValues = std::vector<std::string>;
 using DefaultValues = std::vector<std::string>;
 using AttrValuesMap =
     std::map<AttrName, std::tuple<IsReadOnly, PossibleValues, DefaultValues>>;

@@ -6,6 +6,7 @@
 
 #include <exception>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <sdbusplus/server.hpp>
 #include <string>
 #include <variant>
@@ -15,6 +16,8 @@
 #include "libpldm/base.h"
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
+
+using Json = nlohmann::json;
 
 namespace pldm
 {
@@ -116,6 +119,24 @@ T decimalToBcd(T decimal)
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::string propertyType; //!< D-Bus property type
+};
+
+using Value = std::string;
+using PossibleValues = std::vector<std::string>;
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+
+/** @brief Map of DBus property value to attribute value
+ */
+using DbusValToValMap = std::map<PropertyValue, Value>;
+
 /**
  *  @class DBusHandler
  *
@@ -188,6 +209,21 @@ class DBusHandler
             objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
+
+    void updateDbusProperty(const DBusMapping& dBusMap,
+                            const PropertyValue& value) const;
+
+    /** @brief Populate the mapping between D-Bus property value and attribute
+     * value for the BIOS enumeration attribute.
+     *
+     *  @param[in] type - type of the D-Bus property
+     *  @param[in] dBusValues - json array of D-Bus property values
+     *  @param[in] pv - Possible values for the BIOS enumeration attribute
+     *
+     */
+    DbusValToValMap populateMapping(const std::string& type,
+                                    const Json& dBusValues,
+                                    const PossibleValues& pv);
 };
 
 } // namespace utils

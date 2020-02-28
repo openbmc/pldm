@@ -17,6 +17,7 @@
 namespace bios_parser
 {
 
+using namespace pldm::utils;
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace pldm::responder::bios;
@@ -24,21 +25,11 @@ using namespace pldm::responder::bios;
 const std::vector<Json> emptyJsonList{};
 const Json emptyJson{};
 
-struct DBusMapping
-{
-    std::string objectPath;   //!< D-Bus object path
-    std::string interface;    //!< D-Bus interface
-    std::string propertyName; //!< D-Bus property name
-    std::string propertyType; //!< D-Bus property type
-};
-
 using AttrType = uint8_t;
 using Table = std::vector<uint8_t>;
 using BIOSJsonName = std::string;
 using AttrLookup = std::map<AttrName, std::optional<DBusMapping>>;
-using PropertyValue =
-    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string>;
+
 const std::set<std::string> SupportedDbusPropertyTypes = {
     "bool",     "uint8_t", "int16_t",  "uint16_t", "int32_t",
     "uint32_t", "int64_t", "uint64_t", "double",   "string"};
@@ -90,11 +81,11 @@ namespace bios_enum
 namespace internal
 {
 
-using Value = std::string;
+// using Value = std::string;
 
-/** @brief Map of DBus property value to attribute value
- */
-using DbusValToValMap = std::map<PropertyValue, Value>;
+// /** @brief Map of DBus property value to attribute value
+//  */
+// using DbusValToValMap = std::map<PropertyValue, Value>;
 
 /** @brief Map containing the DBus property value to attribute value map for the
  * BIOS enumeration type attributes
@@ -105,133 +96,6 @@ std::map<AttrName, DbusValToValMap> dbusValToValMaps;
  *         enumeration type attributes.
  */
 AttrValuesMap valueMap;
-
-/** @brief Populate the mapping between D-Bus property value and attribute value
- *         for the BIOS enumeration attribute.
- *
- *  @param[in] type - type of the D-Bus property
- *  @param[in] dBusValues - json array of D-Bus property values
- *  @param[in] pv - Possible values for the BIOS enumeration attribute
- *
- */
-DbusValToValMap populateMapping(const std::string& type, const Json& dBusValues,
-                                const PossibleValues& pv)
-{
-    size_t pos = 0;
-    PropertyValue value;
-    DbusValToValMap valueMap;
-    for (auto it = dBusValues.begin(); it != dBusValues.end(); ++it, ++pos)
-    {
-        if (type == "uint8_t")
-        {
-            value = static_cast<uint8_t>(it.value());
-        }
-        else if (type == "uint16_t")
-        {
-            value = static_cast<uint16_t>(it.value());
-        }
-        else if (type == "uint32_t")
-        {
-            value = static_cast<uint32_t>(it.value());
-        }
-        else if (type == "uint64_t")
-        {
-            value = static_cast<uint64_t>(it.value());
-        }
-        else if (type == "int16_t")
-        {
-            value = static_cast<int16_t>(it.value());
-        }
-        else if (type == "int32_t")
-        {
-            value = static_cast<int32_t>(it.value());
-        }
-        else if (type == "int64_t")
-        {
-            value = static_cast<int64_t>(it.value());
-        }
-        else if (type == "bool")
-        {
-            value = static_cast<bool>(it.value());
-        }
-        else if (type == "double")
-        {
-            value = static_cast<double>(it.value());
-        }
-        else if (type == "string")
-        {
-            value = static_cast<std::string>(it.value());
-        }
-        else
-        {
-            std::cerr << "Unknown D-Bus property type, TYPE=" << type.c_str()
-                      << "\n";
-        }
-
-        valueMap.emplace(value, pv[pos]);
-    }
-
-    return valueMap;
-}
-
-void updateDbusProperty(const DBusMapping& dBusMap, const PropertyValue& value)
-{
-    auto setDbusProperty = [&dBusMap](const auto& variant) {
-        pldm::utils::DBusHandler().setDbusProperty(
-            dBusMap.objectPath.c_str(), dBusMap.propertyName.c_str(),
-            dBusMap.interface.c_str(), variant);
-    };
-
-    if (dBusMap.propertyType == "uint8_t")
-    {
-        std::variant<uint8_t> v = std::get<uint8_t>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "int16_t")
-    {
-        std::variant<int16_t> v = std::get<int16_t>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "uint16_t")
-    {
-        std::variant<uint16_t> v = std::get<uint16_t>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "int32_t")
-    {
-        std::variant<int32_t> v = std::get<int32_t>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "uint32_t")
-    {
-        std::variant<uint32_t> v = std::get<uint32_t>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "int64_t")
-    {
-        std::variant<int64_t> v = std::get<int64_t>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "uint64_t")
-    {
-        std::variant<uint64_t> v = std::get<uint64_t>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "double")
-    {
-        std::variant<double> v = std::get<double>(value);
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "string")
-    {
-        std::variant<std::string> v = std::get<std::string>(value);
-        setDbusProperty(v);
-    }
-    else
-    {
-        assert(false && "UnSpported Dbus Type");
-    }
-}
 
 } // namespace internal
 
@@ -269,8 +133,8 @@ int setup(const Json& entry)
         std::string propertyType = dbusEntry.value("property_type", "");
         Json propValues = dbusEntry["property_values"];
         internal::dbusValToValMaps.emplace(
-            attrName, internal::populateMapping(propertyType, propValues,
-                                                possibleValues));
+            attrName, pldm::utils::DBusHandler().populateMapping(
+                          propertyType, propValues, possibleValues));
     }
     // Defaulting all the types of attributes to BIOSEnumeration
     internal::valueMap.emplace(std::move(attrName),
@@ -352,7 +216,7 @@ int setAttrValue(const AttrName& attrName,
         return PLDM_ERROR;
     }
 
-    internal::updateDbusProperty(dBusMap.value(), it->first);
+    pldm::utils::DBusHandler().updateDbusProperty(dBusMap.value(), it->first);
 
     return PLDM_SUCCESS;
 }
@@ -503,12 +367,9 @@ int setAttrValue(const AttrName& attrName,
     std::vector<uint8_t> data(currentString.ptr,
                               currentString.ptr + currentString.length);
 
-    std::variant<std::string> value =
+    PropertyValue value =
         stringToUtf8(static_cast<BIOSStringEncoding>(stringType), data);
-
-    pldm::utils::DBusHandler().setDbusProperty(
-        dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
-        dBusMap->interface.c_str(), value);
+    pldm::utils::DBusHandler().updateDbusProperty(dBusMap.value(), value);
 
     return PLDM_SUCCESS;
 }
@@ -556,55 +417,6 @@ int setup(const Json& jsonEntry)
     return 0;
 }
 
-void updateDbusProperty(const DBusMapping& dBusMap, uint64_t value)
-{
-    auto setDbusProperty = [&dBusMap](const auto& variant) {
-        pldm::utils::DBusHandler().setDbusProperty(
-            dBusMap.objectPath.c_str(), dBusMap.propertyName.c_str(),
-            dBusMap.interface.c_str(), variant);
-    };
-
-    if (dBusMap.propertyType == "uint8_t")
-    {
-        std::variant<uint8_t> v = value;
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "int16_t")
-    {
-        std::variant<int16_t> v = value;
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "uint16_t")
-    {
-        std::variant<uint16_t> v = value;
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "int32_t")
-    {
-        std::variant<int32_t> v = value;
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "uint32_t")
-    {
-        std::variant<uint32_t> v = value;
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "int64_t")
-    {
-        std::variant<int64_t> v = value;
-        setDbusProperty(v);
-    }
-    else if (dBusMap.propertyType == "uint64_t")
-    {
-        std::variant<uint64_t> v = value;
-        setDbusProperty(v);
-    }
-    else
-    {
-        assert(false && "Unsupported Dbus Type");
-    }
-}
-
 const AttrValuesMap& getValues()
 {
     return valueMap;
@@ -639,7 +451,8 @@ int setAttrValue(const AttrName& attrName,
     uint64_t currentValue =
         pldm_bios_table_attr_value_entry_integer_decode_cv(attrValueEntry);
 
-    updateDbusProperty(dBusMap.value(), currentValue);
+    PropertyValue value = static_cast<uint64_t>(currentValue);
+    pldm::utils::DBusHandler().updateDbusProperty(dBusMap.value(), value);
 
     return PLDM_SUCCESS;
 }

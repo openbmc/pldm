@@ -133,5 +133,126 @@ void reportError(const char* errorMsg)
     }
 }
 
+void DBusHandler::updateDbusProperty(const DBusMapping& dBusMap,
+                                     const PropertyValue& value) const
+{
+    auto setDbusProperty = [&dBusMap](const auto& variant) {
+        DBusHandler().setDbusProperty(dBusMap.objectPath.c_str(),
+                                      dBusMap.propertyName.c_str(),
+                                      dBusMap.interface.c_str(), variant);
+    };
+
+    if (dBusMap.propertyType == "uint8_t")
+    {
+        std::variant<uint8_t> v = std::get<uint8_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "int16_t")
+    {
+        std::variant<int16_t> v = std::get<int16_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "uint16_t")
+    {
+        std::variant<uint16_t> v = std::get<uint16_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "int32_t")
+    {
+        std::variant<int32_t> v = std::get<int32_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "uint32_t")
+    {
+        std::variant<uint32_t> v = std::get<uint32_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "int64_t")
+    {
+        std::variant<int64_t> v = std::get<int64_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "uint64_t")
+    {
+        std::variant<uint64_t> v = std::get<uint64_t>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "double")
+    {
+        std::variant<double> v = std::get<double>(value);
+        setDbusProperty(v);
+    }
+    else if (dBusMap.propertyType == "string")
+    {
+        std::variant<std::string> v = std::get<std::string>(value);
+        setDbusProperty(v);
+    }
+    else
+    {
+        std::cerr << "UnSpported Dbus Type\n";
+    }
+}
+
+DbusValToValMap DBusHandler::populateMapping(const std::string& type,
+                                             const Json& dBusValues,
+                                             const PossibleValues& pv)
+{
+    size_t pos = 0;
+    PropertyValue value;
+    DbusValToValMap valueMap;
+    for (auto it = dBusValues.begin(); it != dBusValues.end(); ++it, ++pos)
+    {
+        if (type == "uint8_t")
+        {
+            value = static_cast<uint8_t>(it.value());
+        }
+        else if (type == "uint16_t")
+        {
+            value = static_cast<uint16_t>(it.value());
+        }
+        else if (type == "uint32_t")
+        {
+            value = static_cast<uint32_t>(it.value());
+        }
+        else if (type == "uint64_t")
+        {
+            value = static_cast<uint64_t>(it.value());
+        }
+        else if (type == "int16_t")
+        {
+            value = static_cast<int16_t>(it.value());
+        }
+        else if (type == "int32_t")
+        {
+            value = static_cast<int32_t>(it.value());
+        }
+        else if (type == "int64_t")
+        {
+            value = static_cast<int64_t>(it.value());
+        }
+        else if (type == "bool")
+        {
+            value = static_cast<bool>(it.value());
+        }
+        else if (type == "double")
+        {
+            value = static_cast<double>(it.value());
+        }
+        else if (type == "string")
+        {
+            value = static_cast<std::string>(it.value());
+        }
+        else
+        {
+            std::cerr << "Unknown D-Bus property type, TYPE=" << type.c_str()
+                      << "\n";
+        }
+
+        valueMap.emplace(value, pv[pos]);
+    }
+
+    return valueMap;
+}
+
 } // namespace utils
 } // namespace pldm
