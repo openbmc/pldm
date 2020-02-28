@@ -79,7 +79,8 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
     std::array<uint8_t, hdrSize + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES>
         requestMsg{};
 
-    uint16_t effecterId = htole16(0x0032);
+    uint16_t effecterId = 0x32;
+    uint16_t effecterIdLE = htole16(effecterId);
     uint8_t compEffecterCnt = 0x2;
 
     std::array<set_effecter_state_field, 8> stateField{};
@@ -91,10 +92,10 @@ TEST(SetStateEffecterStates, testGoodDecodeRequest)
 
     std::array<set_effecter_state_field, 8> retStateField{};
 
-    memcpy(requestMsg.data() + hdrSize, &effecterId, sizeof(effecterId));
-    memcpy(requestMsg.data() + sizeof(effecterId) + hdrSize, &compEffecterCnt,
+    memcpy(requestMsg.data() + hdrSize, &effecterIdLE, sizeof(effecterIdLE));
+    memcpy(requestMsg.data() + sizeof(effecterIdLE) + hdrSize, &compEffecterCnt,
            sizeof(compEffecterCnt));
-    memcpy(requestMsg.data() + sizeof(effecterId) + sizeof(compEffecterCnt) +
+    memcpy(requestMsg.data() + sizeof(effecterIdLE) + sizeof(compEffecterCnt) +
                hdrSize,
            &stateField, sizeof(stateField));
 
@@ -160,10 +161,10 @@ TEST(GetPDR, testGoodEncodeResponse)
         reinterpret_cast<struct pldm_get_pdr_resp*>(response->payload);
 
     EXPECT_EQ(completionCode, resp->completion_code);
-    EXPECT_EQ(nextRecordHndl, resp->next_record_handle);
-    EXPECT_EQ(nextDataTransferHndl, resp->next_data_transfer_handle);
+    EXPECT_EQ(nextRecordHndl, le32toh(resp->next_record_handle));
+    EXPECT_EQ(nextDataTransferHndl, le32toh(resp->next_data_transfer_handle));
     EXPECT_EQ(transferFlag, resp->transfer_flag);
-    EXPECT_EQ(respCnt, resp->response_count);
+    EXPECT_EQ(respCnt, le16toh(resp->response_count));
     EXPECT_EQ(0,
               memcmp(recordData.data(), resp->record_data, recordData.size()));
     EXPECT_EQ(*(response->payload + sizeof(pldm_get_pdr_resp) - 1 +
@@ -202,7 +203,7 @@ TEST(GetPDR, testGoodDecodeRequest)
     uint32_t dataTransferHndl = 0x11;
     uint8_t transferOpFlag = PLDM_GET_FIRSTPART;
     uint16_t requestCnt = 0x5;
-    uint16_t recordChangeNum = 0;
+    uint16_t recordChangeNum = 0x01;
 
     uint32_t retRecordHndl = 0;
     uint32_t retDataTransferHndl = 0;
@@ -214,11 +215,11 @@ TEST(GetPDR, testGoodDecodeRequest)
     struct pldm_get_pdr_req* request =
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
 
-    request->record_handle = recordHndl;
-    request->data_transfer_handle = dataTransferHndl;
+    request->record_handle = htole32(recordHndl);
+    request->data_transfer_handle = htole32(dataTransferHndl);
     request->transfer_op_flag = transferOpFlag;
-    request->request_count = requestCnt;
-    request->record_change_number = recordChangeNum;
+    request->request_count = htole16(requestCnt);
+    request->record_change_number = htole16(recordChangeNum);
 
     auto rc = decode_get_pdr_req(
         req, requestMsg.size() - hdrSize, &retRecordHndl, &retDataTransferHndl,
@@ -260,11 +261,11 @@ TEST(GetPDR, testGoodEncodeRequest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
     struct pldm_get_pdr_req* req =
         reinterpret_cast<struct pldm_get_pdr_req*>(request->payload);
-    EXPECT_EQ(record_hndl, req->record_handle);
-    EXPECT_EQ(data_transfer_hndl, req->data_transfer_handle);
+    EXPECT_EQ(record_hndl, le32toh(req->record_handle));
+    EXPECT_EQ(data_transfer_hndl, le32toh(req->data_transfer_handle));
     EXPECT_EQ(transfer_op_flag, req->transfer_op_flag);
-    EXPECT_EQ(request_cnt, req->request_count);
-    EXPECT_EQ(record_chg_num, req->record_change_number);
+    EXPECT_EQ(request_cnt, le16toh(req->request_count));
+    EXPECT_EQ(record_chg_num, le16toh(req->record_change_number));
 }
 
 TEST(GetPDR, testBadEncodeRequest)
@@ -399,15 +400,17 @@ TEST(SetNumericEffecterValue, testGoodDecodeRequest)
         reinterpret_cast<struct pldm_set_numeric_effecter_value_req*>(
             req->payload);
 
-    request->effecter_id = effecter_id;
+    request->effecter_id = htole16(effecter_id);
     request->effecter_data_size = effecter_data_size;
-    memcpy(request->effecter_value, &effecter_value, sizeof(effecter_value));
+    uint32_t effecter_value_le = htole32(effecter_value);
+    memcpy(request->effecter_value, &effecter_value_le,
+           sizeof(effecter_value_le));
 
     auto rc = decode_set_numeric_effecter_value_req(
         req, requestMsg.size() - hdrSize, &reteffecter_id,
-        &reteffecter_data_size, reinterpret_cast<uint8_t*>(&reteffecter_value));
+        &reteffecter_data_size, reteffecter_value);
 
-    uint32_t value = *(reinterpret_cast<uint32_t*>(&reteffecter_value[0]));
+    uint32_t value = le32toh(*(reinterpret_cast<uint32_t*>(reteffecter_value)));
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(reteffecter_id, effecter_id);
     EXPECT_EQ(reteffecter_data_size, effecter_data_size);

@@ -320,7 +320,6 @@ int decode_set_numeric_effecter_value_req(const struct pldm_msg *msg,
 		}
 
 		memcpy(effecter_value, request->effecter_value, 4);
-		*effecter_value = le32toh(*effecter_value);
 	}
 
 	return PLDM_SUCCESS;
