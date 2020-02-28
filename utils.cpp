@@ -133,5 +133,70 @@ void reportError(const char* errorMsg)
     }
 }
 
+void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
+                                  const PropertyValue& value) const
+{
+    auto setDbusValue = [&dBusMap, this](const auto& variant) {
+        auto& bus = getBus();
+        auto service =
+            getService(dBusMap.objectPath.c_str(), dBusMap.interface.c_str());
+        auto method = bus.new_method_call(
+            service.c_str(), dBusMap.objectPath.c_str(), dbusProperties, "Set");
+        method.append(dBusMap.interface.c_str(), dBusMap.propertyName.c_str(),
+                      variant);
+        bus.call_noreply(method);
+    };
+
+    if (dBusMap.propertyType == "uint8_t")
+    {
+        std::variant<uint8_t> v = std::get<uint8_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "int16_t")
+    {
+        std::variant<int16_t> v = std::get<int16_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "uint16_t")
+    {
+        std::variant<uint16_t> v = std::get<uint16_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "int32_t")
+    {
+        std::variant<int32_t> v = std::get<int32_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "uint32_t")
+    {
+        std::variant<uint32_t> v = std::get<uint32_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "int64_t")
+    {
+        std::variant<int64_t> v = std::get<int64_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "uint64_t")
+    {
+        std::variant<uint64_t> v = std::get<uint64_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "double")
+    {
+        std::variant<double> v = std::get<double>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "string")
+    {
+        std::variant<std::string> v = std::get<std::string>(value);
+        setDbusValue(v);
+    }
+    else
+    {
+        throw std::invalid_argument("UnSpported Dbus Type");
+    }
+}
+
 } // namespace utils
 } // namespace pldm
