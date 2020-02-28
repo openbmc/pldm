@@ -102,6 +102,7 @@ class Handler : public CmdHandler
         const std::vector<set_effecter_state_field>& stateField)
     {
         using namespace pldm::responder::pdr;
+        using namespace pldm::utils;
         using namespace std::string_literals;
         using DBusProperty = std::variant<std::string, bool>;
         using StateSetId = uint16_t;
@@ -181,23 +182,23 @@ class Handler : public CmdHandler
                                    << "\n";
                          return PLDM_ERROR_INVALID_DATA;
                      }
-                     auto dbusProp = "OperatingSystemState";
-                     std::variant<std::string> value{
-                         std::get<std::string>(iter->second)};
-                     auto dbusInterface =
-                         "xyz.openbmc_project.State.OperatingSystem.Status";
+                     PropertyValue value{std::get<std::string>(iter->second)};
+                     DBusMapping dbusMapping{
+                         objPath,
+                         "xyz.openbmc_project.State.OperatingSystem.Status",
+                         "OperatingSystemState", "string"};
                      try
                      {
-                         dBusIntf.setDbusProperty(objPath.c_str(), dbusProp,
-                                                  dbusInterface, value);
+                         dBusIntf.setDbusProperty(dbusMapping, value);
                      }
                      catch (const std::exception& e)
                      {
                          std::cerr
                              << "Error setting property, ERROR=" << e.what()
-                             << " PROPERTY=" << dbusProp
-                             << " INTERFACE=" << dbusInterface
-                             << " PATH=" << objPath.c_str() << "\n";
+                             << " PROPERTY=" << dbusMapping.propertyName
+                             << " INTERFACE="
+                             << dbusMapping.interface << " PATH="
+                             << dbusMapping.objectPath << "\n";
                          return PLDM_ERROR;
                      }
                      return PLDM_SUCCESS;
@@ -226,22 +227,22 @@ class Handler : public CmdHandler
                                    << "\n";
                          return PLDM_ERROR_INVALID_DATA;
                      }
-                     auto dbusProp = "RequestedPowerTransition";
-                     std::variant<std::string> value{
-                         std::get<std::string>(iter->second)};
-                     auto dbusInterface = "xyz.openbmc_project.State.Chassis";
+                     PropertyValue value{std::get<std::string>(iter->second)};
+                     DBusMapping dbusMapping{
+                         objPath, "xyz.openbmc_project.State.Chassis",
+                         "RequestedPowerTransition", "string"};
                      try
                      {
-                         dBusIntf.setDbusProperty(objPath.c_str(), dbusProp,
-                                                  dbusInterface, value);
+                         dBusIntf.setDbusProperty(dbusMapping, value);
                      }
                      catch (const std::exception& e)
                      {
                          std::cerr
                              << "Error setting property, ERROR=" << e.what()
-                             << " PROPERTY=" << dbusProp
-                             << " INTERFACE=" << dbusInterface
-                             << " PATH=" << objPath.c_str() << "\n";
+                             << " PROPERTY=" << dbusMapping.propertyName
+                             << " INTERFACE="
+                             << dbusMapping.interface << " PATH="
+                             << dbusMapping.objectPath << "\n";
                          return PLDM_ERROR;
                      }
                      return PLDM_SUCCESS;
