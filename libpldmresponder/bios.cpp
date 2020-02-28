@@ -21,6 +21,7 @@
 namespace fs = std::filesystem;
 using namespace pldm::responder::bios;
 using namespace bios_parser;
+using namespace pldm::utils;
 
 constexpr auto stringTableFile = "stringTable";
 constexpr auto attrTableFile = "attributeTable";
@@ -208,11 +209,12 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     uint64_t timeUsec = std::chrono::duration_cast<std::chrono::microseconds>(
                             std::chrono::seconds(timeSec))
                             .count();
-    std::variant<uint64_t> value{timeUsec};
+    PropertyValue value{timeUsec};
     try
     {
-        pldm::utils::DBusHandler().setDbusProperty(setTimePath, timeSetPro,
-                                                   setTimeInterface, value);
+        DBusMapping dbusMapping{setTimePath, setTimeInterface, timeSetPro,
+                                "uint64_t"};
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
     }
     catch (std::exception& e)
     {
