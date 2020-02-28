@@ -117,6 +117,30 @@ T decimalToBcd(T decimal)
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::string propertyType; //!< D-Bus property type
+};
+
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+
+/**
+ * @brief The interface for DBusHandler
+ */
+class DBusHandlerInterface
+{
+  public:
+    virtual ~DBusHandlerInterface() = default;
+
+    virtual void setDbusProperty(const DBusMapping& dBusMap,
+                                 const PropertyValue& value) const = 0;
+};
+
 /**
  *  @class DBusHandler
  *
@@ -126,7 +150,7 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
  *  to cater the request from pldm requester.
  *  A class is created to mock the apis in the test cases
  */
-class DBusHandler
+class DBusHandler : public DBusHandlerInterface
 {
   public:
     /** @brief Get the bus connection. */
@@ -143,27 +167,6 @@ class DBusHandler
      *  @return std::string - the dbus service name
      */
     std::string getService(const char* path, const char* interface) const;
-
-    /** @brief API to set a D-Bus property
-     *
-     *  @param[in] objPath - Object path for the D-Bus object
-     *  @param[in] dbusProp - The D-Bus property
-     *  @param[in] dbusInterface - The D-Bus interface
-     *  @param[in] value - The value to be set
-     * failure
-     */
-    template <typename T>
-    void setDbusProperty(const char* objPath, const char* dbusProp,
-                         const char* dbusInterface,
-                         const std::variant<T>& value) const
-    {
-        auto& bus = DBusHandler::getBus();
-        auto service = getService(objPath, dbusInterface);
-        auto method = bus.new_method_call(service.c_str(), objPath,
-                                          dbusProperties, "Set");
-        method.append(dbusInterface, dbusProp, value);
-        bus.call_noreply(method);
-    }
 
     template <typename Variant>
     auto getDbusPropertyVariant(const char* objPath, const char* dbusProp,
@@ -189,6 +192,15 @@ class DBusHandler
             objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
+
+    /** @brief Set Dbus property
+     *
+     *  @param[in] dBusMap - Object path, property name, interface and property
+     *                       type for the D-Bus object
+     *  @param[in] value - The value to be set
+     */
+    void setDbusProperty(const DBusMapping& dBusMap,
+                         const PropertyValue& value) const override;
 };
 
 } // namespace utils
