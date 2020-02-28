@@ -4,6 +4,7 @@
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
+#include <any>
 #include <exception>
 #include <iostream>
 #include <sdbusplus/server.hpp>
@@ -116,6 +117,40 @@ T decimalToBcd(T decimal)
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 
+struct DBusMapping
+{
+    std::string objectPath;   //!< D-Bus object path
+    std::string interface;    //!< D-Bus interface
+    std::string propertyName; //!< D-Bus property name
+    std::string propertyType; //!< D-Bus property type
+};
+
+inline bool operator==(const DBusMapping& lhs, const DBusMapping& rhs)
+{
+    return lhs.objectPath == rhs.objectPath && lhs.interface == rhs.interface &&
+           lhs.propertyName == rhs.propertyName &&
+           lhs.propertyType == rhs.propertyType;
+}
+
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+
+/**
+ * @brief The interface for DBusHandler
+ */
+class DBusHandlerInterface
+{
+  public:
+    virtual ~DBusHandlerInterface() = default;
+
+    virtual void setDbusProperty(const DBusMapping& dBusMap,
+                                 const PropertyValue& value) const = 0;
+
+    virtual std::any getPropertyImpl(const char* objPath, const char* dbusProp,
+                                     const char* dbusInterface) const = 0;
+};
+
 /**
  *  @class DBusHandler
  *
@@ -125,7 +160,7 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
  *  to cater the request from pldm requester.
  *  A class is created to mock the apis in the test cases
  */
-class DBusHandler
+class DBusHandler : public DBusHandlerInterface
 {
   public:
     /** @brief Get the bus connection. */
@@ -164,30 +199,24 @@ class DBusHandler
         bus.call_noreply(method);
     }
 
-    template <typename Variant>
-    auto getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                                const char* dbusInterface)
-    {
-        Variant value;
-        auto& bus = DBusHandler::getBus();
-        auto service = getService(objPath, dbusInterface);
-        auto method = bus.new_method_call(service.c_str(), objPath,
-                                          dbusProperties, "Get");
-        method.append(dbusInterface, dbusProp);
-        auto reply = bus.call(method);
-        reply.read(value);
+    std::any getPropertyImpl(const char* objPath, const char* dbusProp,
+                             const char* dbusInterface) const override;
 
-        return value;
-    }
+    PropertyValue getDbusPropertyVariant(const char* objPath,
+                                         const char* dbusProp,
+                                         const char* dbusInterface);
 
     template <typename Property>
     auto getDbusProperty(const char* objPath, const char* dbusProp,
                          const char* dbusInterface)
     {
-        auto VariantValue = getDbusPropertyVariant<std::variant<Property>>(
-            objPath, dbusProp, dbusInterface);
+        auto VariantValue =
+            getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
+
+    void setDbusProperty(const DBusMapping& dBusMap,
+                         const PropertyValue& value) const override;
 };
 
 } // namespace utils
