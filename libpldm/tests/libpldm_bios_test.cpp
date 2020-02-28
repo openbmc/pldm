@@ -54,10 +54,11 @@ TEST(GetDateTime, testEncodeResponse)
                             sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
                             sizeof(day),
                         &month, sizeof(month)));
+    uint16_t yearLe = htole16(year);
     EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
                             sizeof(day) + sizeof(month),
-                        &year, sizeof(year)));
+                        &yearLe, sizeof(yearLe)));
 }
 
 TEST(GetDateTime, testDecodeResponse)
@@ -72,6 +73,7 @@ TEST(GetDateTime, testDecodeResponse)
     uint8_t day = 9;
     uint8_t month = 7;
     uint16_t year = 2020;
+    uint16_t yearLe = htole16(year);
 
     uint8_t retSeconds = 0;
     uint8_t retMinutes = 0;
@@ -97,7 +99,7 @@ TEST(GetDateTime, testDecodeResponse)
     memcpy(responseMsg.data() + sizeof(completionCode) + sizeof(seconds) +
                sizeof(minutes) + sizeof(hours) + sizeof(day) + sizeof(month) +
                hdrSize,
-           &year, sizeof(year));
+           &yearLe, sizeof(yearLe));
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
@@ -217,7 +219,7 @@ TEST(SetDateTime, testGoodEncodeRequset)
     EXPECT_EQ(hours, bcd2dec8(req->hours));
     EXPECT_EQ(day, bcd2dec8(req->day));
     EXPECT_EQ(month, bcd2dec8(req->month));
-    EXPECT_EQ(year, le16toh(bcd2dec16(req->year)));
+    EXPECT_EQ(year, bcd2dec16(le16toh(req->year)));
 }
 
 TEST(SetDateTime, testBadEncodeRequset)
@@ -263,7 +265,7 @@ TEST(SetDateTime, testGoodDecodeRequest)
     uint8_t hours = 0x10;
     uint8_t day = 0x11;
     uint8_t month = 0x11;
-    uint16_t year = htole16(0x2019);
+    uint16_t year = 0x2019;
 
     auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
     struct pldm_set_date_time_req* req =
@@ -349,7 +351,7 @@ TEST(GetBIOSTable, testGoodEncodeResponse)
         reinterpret_cast<struct pldm_get_bios_table_resp*>(response->payload);
 
     EXPECT_EQ(completionCode, resp->completion_code);
-    EXPECT_EQ(nextTransferHandle, resp->next_transfer_handle);
+    EXPECT_EQ(nextTransferHandle, le32toh(resp->next_transfer_handle));
     EXPECT_EQ(transferFlag, resp->transfer_flag);
     EXPECT_EQ(0, memcmp(tableData.data(), resp->table_data, tableData.size()));
 }
@@ -414,7 +416,7 @@ TEST(GetBIOSTable, testGoodDecodeRequest)
     struct pldm_get_bios_table_req* request =
         reinterpret_cast<struct pldm_get_bios_table_req*>(req->payload);
 
-    request->transfer_handle = transferHandle;
+    request->transfer_handle = htole32(transferHandle);
     request->transfer_op_flag = transferOpFlag;
     request->table_type = tableType;
 
@@ -442,7 +444,7 @@ TEST(GetBIOSTable, testBadDecodeRequest)
     struct pldm_get_bios_table_req* request =
         reinterpret_cast<struct pldm_get_bios_table_req*>(req->payload);
 
-    request->transfer_handle = transferHandle;
+    request->transfer_handle = htole32(transferHandle);
     request->transfer_op_flag = transferOpFlag;
     request->table_type = tableType;
 
@@ -471,7 +473,7 @@ TEST(GetBIOSTable, testBadDecodeRequest)
     struct pldm_get_bios_table_req* request =
         reinterpret_cast<struct pldm_get_bios_table_req*>(req->payload);
 
-    request->transfer_handle = transferHandle;
+    request->transfer_handle = htole32(transferHandle);
     request->transfer_op_flag = transferOpFlag;
     request->table_type = tableType;
 
@@ -500,9 +502,9 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testGoodDecodeRequest)
             struct pldm_get_bios_attribute_current_value_by_handle_req*>(
             req->payload);
 
-    request->transfer_handle = transferHandle;
+    request->transfer_handle = htole32(transferHandle);
     request->transfer_op_flag = transferOpFlag;
-    request->attribute_handle = attributehandle;
+    request->attribute_handle = htole16(attributehandle);
 
     auto rc = decode_get_bios_attribute_current_value_by_handle_req(
         req, requestMsg.size() - hdrSize, &retTransferHandle,
@@ -533,7 +535,7 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
             struct pldm_get_bios_attribute_current_value_by_handle_req*>(
             req->payload);
 
-    request->transfer_handle = transferHandle;
+    request->transfer_handle = htole32(transferHandle);
     request->transfer_op_flag = transferOpFlag;
     request->attribute_handle = attribute_handle;
 
@@ -543,7 +545,7 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     transferHandle = 31;
-    request->transfer_handle = transferHandle;
+    request->transfer_handle = htole32(transferHandle);
 
     rc = decode_get_bios_attribute_current_value_by_handle_req(
         req, 0, &retTransferHandle, &retTransferOpFlag, &retattribute_handle);
@@ -577,7 +579,7 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testGoodEncodeResponse)
             response->payload);
 
     EXPECT_EQ(completionCode, resp->completion_code);
-    EXPECT_EQ(nextTransferHandle, resp->next_transfer_handle);
+    EXPECT_EQ(nextTransferHandle, le32toh(resp->next_transfer_handle));
     EXPECT_EQ(transferFlag, resp->transfer_flag);
     EXPECT_EQ(
         0, memcmp(&attributeData, resp->attribute_data, sizeof(attributeData)));
