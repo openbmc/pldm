@@ -546,3 +546,223 @@ TEST(SetNumericEffecterValue, testBadEncodeResponse)
         0, PLDM_SUCCESS, NULL, PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(GetStateSensorReadings, testGoodEncodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES>
+        responseMsg{};
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    uint8_t completionCode = 0;
+    uint8_t comp_sensorCnt = 0x2;
+
+    std::array<get_sensor_state_field, 2> stateField{};
+    stateField[0] = {ENABLED, NORMAL, WARNING, UNKNOWN};
+    stateField[1] = {FAILED, UPPERFATAL, UPPERCRITICAL, FATAL};
+
+    auto rc = encode_get_state_sensor_readings_resp(
+        0, PLDM_SUCCESS, comp_sensorCnt, stateField.data(), response);
+
+    struct pldm_get_state_sensor_readings_resp* resp =
+        reinterpret_cast<struct pldm_get_state_sensor_readings_resp*>(
+            response->payload);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, resp->completion_code);
+    EXPECT_EQ(comp_sensorCnt, resp->comp_sensor_count);
+    EXPECT_EQ(stateField[0].sensor_op_state, resp->field->sensor_op_state);
+    EXPECT_EQ(stateField[0].present_state, resp->field->present_state);
+    EXPECT_EQ(stateField[0].previous_state, resp->field->previous_state);
+    EXPECT_EQ(stateField[0].event_state, resp->field->event_state);
+    EXPECT_EQ(stateField[1].sensor_op_state, resp->field[1].sensor_op_state);
+    EXPECT_EQ(stateField[1].present_state, resp->field[1].present_state);
+    EXPECT_EQ(stateField[1].previous_state, resp->field[1].previous_state);
+    EXPECT_EQ(stateField[1].event_state, resp->field[1].event_state);
+}
+
+TEST(GetStateSensorReadings, testBadEncodeResponse)
+{
+    auto rc = encode_get_state_sensor_readings_resp(0, PLDM_SUCCESS, 0, nullptr,
+                                                    NULL);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(GetStateSensorReadings, testGoodDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES>
+        responseMsg{};
+
+    uint8_t completionCode = 0;
+    uint8_t comp_sensorCnt = 0x2;
+    size_t field_size = 8;
+
+    std::array<get_sensor_state_field, 2> stateField{};
+    stateField[0] = {DISABLED, UNKNOWN, UNKNOWN, UNKNOWN};
+    stateField[1] = {ENABLED, LOWERFATAL, LOWERCRITICAL, WARNING};
+
+    uint8_t retcompletion_code = 0;
+    uint8_t retcomp_sensorCnt = 0;
+    std::array<get_sensor_state_field, 2> retstateField{};
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    struct pldm_get_state_sensor_readings_resp* resp =
+        reinterpret_cast<struct pldm_get_state_sensor_readings_resp*>(
+            response->payload);
+
+    resp->completion_code = completionCode;
+    resp->comp_sensor_count = comp_sensorCnt;
+    memcpy(resp->field, &stateField,
+           (sizeof(get_sensor_state_field) * comp_sensorCnt));
+
+    auto rc = decode_get_state_sensor_readings_resp(
+        response, responseMsg.size() - hdrSize, &retcompletion_code,
+        &retcomp_sensorCnt, retstateField.data(), field_size);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, retcompletion_code);
+    EXPECT_EQ(comp_sensorCnt, retcomp_sensorCnt);
+    EXPECT_EQ(stateField[0].sensor_op_state, retstateField[0].sensor_op_state);
+    EXPECT_EQ(stateField[0].present_state, retstateField[0].present_state);
+    EXPECT_EQ(stateField[0].previous_state, retstateField[0].previous_state);
+    EXPECT_EQ(stateField[0].event_state, retstateField[0].event_state);
+    EXPECT_EQ(stateField[1].sensor_op_state, retstateField[1].sensor_op_state);
+    EXPECT_EQ(stateField[1].present_state, retstateField[1].present_state);
+    EXPECT_EQ(stateField[1].previous_state, retstateField[1].previous_state);
+    EXPECT_EQ(stateField[1].event_state, retstateField[1].event_state);
+}
+
+TEST(GetStateSensorReadings, testBadDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES>
+        responseMsg{};
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_get_state_sensor_readings_resp(
+        response, responseMsg.size() - hdrSize, NULL, NULL, NULL, 0);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    uint8_t completionCode = 0;
+    uint8_t comp_sensorCnt = 0x1;
+
+    std::array<get_sensor_state_field, 1> stateField{};
+    stateField[0] = {ENABLED, UPPERFATAL, UPPERCRITICAL, WARNING};
+
+    uint8_t retcompletion_code = 0;
+    uint8_t retcomp_sensorCnt = 0;
+    std::array<get_sensor_state_field, 1> retstateField{};
+
+    struct pldm_get_state_sensor_readings_resp* resp =
+        reinterpret_cast<struct pldm_get_state_sensor_readings_resp*>(
+            response->payload);
+
+    resp->completion_code = completionCode;
+    resp->comp_sensor_count = comp_sensorCnt;
+    memcpy(resp->field, &stateField,
+           (sizeof(get_sensor_state_field) * comp_sensorCnt));
+
+    rc = decode_get_state_sensor_readings_resp(
+        response, responseMsg.size() - hdrSize, &retcompletion_code,
+        &retcomp_sensorCnt, retstateField.data(), 0);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(GetStateSensorReadings, testGoodEncodeRequest)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES>
+        requestMsg{};
+
+    uint16_t sensorId = 0xAB;
+    bitfield8_t sensorRearm;
+    sensorRearm.byte = 0x03;
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_get_state_sensor_readings_req(0, sensorId, sensorRearm, 0,
+                                                   request);
+
+    struct pldm_get_state_sensor_readings_req* req =
+        reinterpret_cast<struct pldm_get_state_sensor_readings_req*>(
+            request->payload);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(sensorId, le16toh(req->sensor_id));
+    EXPECT_EQ(sensorRearm.byte, req->sensor_rearm.byte);
+}
+
+TEST(GetStateSensorReadings, testBadEncodeRequest)
+{
+    bitfield8_t sensorRearm;
+    sensorRearm.byte = 0x0;
+
+    auto rc = encode_get_state_sensor_readings_req(0, 0, sensorRearm, 0, NULL);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(GetStateSensorReadings, testGoodDecodeRequest)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES>
+        requestMsg{};
+
+    uint16_t sensorId = 0xCD;
+    bitfield8_t sensorRearm;
+    sensorRearm.byte = 0x10;
+
+    uint16_t retsensorId;
+    bitfield8_t retsensorRearm;
+    uint8_t retreserved;
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    struct pldm_get_state_sensor_readings_req* req =
+        reinterpret_cast<struct pldm_get_state_sensor_readings_req*>(
+            request->payload);
+
+    req->sensor_id = htole16(sensorId);
+    req->sensor_rearm.byte = sensorRearm.byte;
+
+    auto rc = decode_get_state_sensor_readings_req(
+        request, requestMsg.size() - hdrSize, &retsensorId, &retsensorRearm,
+        &retreserved);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(sensorId, retsensorId);
+    EXPECT_EQ(sensorRearm.byte, retsensorRearm.byte);
+    EXPECT_EQ(0, retreserved);
+}
+
+TEST(GetStateSensorReadings, testBadDecodeRequest)
+{
+    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES>
+        requestMsg{};
+
+    auto rc = decode_get_state_sensor_readings_req(
+        NULL, requestMsg.size() - hdrSize, NULL, NULL, NULL);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    uint16_t sensorId = 0x11;
+    bitfield8_t sensorRearm;
+    sensorRearm.byte = 0x04;
+
+    uint16_t retsensorId;
+    bitfield8_t retsensorRearm;
+    uint8_t retreserved;
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    struct pldm_get_state_sensor_readings_req* req =
+        reinterpret_cast<struct pldm_get_state_sensor_readings_req*>(
+            request->payload);
+
+    req->sensor_id = htole16(sensorId);
+    req->sensor_rearm.byte = sensorRearm.byte;
+
+    rc = decode_get_state_sensor_readings_req(
+        request, requestMsg.size() - hdrSize - 1, &retsensorId, &retsensorRearm,
+        &retreserved);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
