@@ -302,7 +302,7 @@ TEST(GetFruRecordTable, testGoodDecodeRequest)
     auto request =
         reinterpret_cast<pldm_get_fru_record_table_req*>(requestPtr->payload);
 
-    request->data_transfer_handle = data_transfer_handle;
+    request->data_transfer_handle = htole32(data_transfer_handle);
     request->transfer_operation_flag = transfer_operation_flag;
 
     uint32_t ret_data_transfer_handle = 0;
@@ -363,7 +363,8 @@ TEST(GetFruRecordTable, testGoodEncodeResponse)
     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(response->next_data_transfer_handle, next_data_transfer_handle);
+    ASSERT_EQ(le32toh(response->next_data_transfer_handle),
+              next_data_transfer_handle);
     ASSERT_EQ(response->transfer_flag, transfer_flag);
 }
 
