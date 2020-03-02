@@ -28,7 +28,7 @@ TEST(PDRUpdate, testAdd)
     handle = pldm_pdr_add(repo, data.data(), data.size(), 0);
     EXPECT_EQ(handle, 3);
     handle = pldm_pdr_add(repo, data.data(), data.size(), htole32(0xdeeddeed));
-    EXPECT_EQ(handle, 0xdeeddeed);
+    EXPECT_EQ(handle, htole32(0xdeeddeed));
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), data.size() * 4);
 
