@@ -1004,9 +1004,23 @@ Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
     switch (tableType)
     {
         case PLDM_BIOS_STRING_TABLE:
+        {
+            try
+            {
+                fs::remove(fs::path(std::string(BIOS_TABLES_DIR) + "/" +
+                                    stringTableFile));
+                fs::remove(fs::path(std::string(BIOS_TABLES_DIR) + "/" +
+                                    attrTableFile));
+                fs::remove(fs::path(std::string(BIOS_TABLES_DIR) + "/" +
+                                    attrValTableFile));
+            }
+            catch (const std::exception& e)
+            {
+            }
 
             response = getBIOSStringTable(biosStringTable, request);
-            break;
+        }
+        break;
         case PLDM_BIOS_ATTR_TABLE:
 
             if (biosStringTable.isEmpty())
