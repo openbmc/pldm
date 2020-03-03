@@ -18,15 +18,20 @@ TEST(ReadWriteFileMemory, testGoodDecodeRequest)
     uint32_t offset = 0x87654321;
     uint32_t length = 0x13245768;
     uint64_t address = 0x124356879ACBDE0F;
+    uint32_t fileHandleLe = htole32(fileHandle);
+    uint32_t offsetLe = htole32(offset);
+    uint32_t lengthLe = htole32(length);
+    uint64_t addressLe = htole64(address);
 
-    memcpy(requestMsg.data() + hdrSize, &fileHandle, sizeof(fileHandle));
-    memcpy(requestMsg.data() + sizeof(fileHandle) + hdrSize, &offset,
-           sizeof(offset));
-    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset) + hdrSize,
-           &length, sizeof(length));
-    memcpy(requestMsg.data() + sizeof(fileHandle) + sizeof(offset) +
-               sizeof(length) + hdrSize,
-           &address, sizeof(address));
+    memcpy(requestMsg.data() + hdrSize, &fileHandleLe, sizeof(fileHandleLe));
+    memcpy(requestMsg.data() + sizeof(fileHandleLe) + hdrSize, &offsetLe,
+           sizeof(offsetLe));
+    memcpy(requestMsg.data() + sizeof(fileHandleLe) + sizeof(offsetLe) +
+               hdrSize,
+           &lengthLe, sizeof(lengthLe));
+    memcpy(requestMsg.data() + sizeof(fileHandleLe) + sizeof(offsetLe) +
+               sizeof(lengthLe) + hdrSize,
+           &addressLe, sizeof(addressLe));
 
     uint32_t retFileHandle = 0;
     uint32_t retOffset = 0;
@@ -79,6 +84,7 @@ TEST(ReadWriteFileMemory, testGoodEncodeResponse)
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_RESP_BYTES>
         responseMsg{};
     uint32_t length = 0xFF00EE11;
+    uint32_t lengthLe = htole32(length);
     pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
     // ReadFileIntoMemory
@@ -92,7 +98,7 @@ TEST(ReadWriteFileMemory, testGoodEncodeResponse)
     ASSERT_EQ(response->hdr.command, PLDM_READ_FILE_INTO_MEMORY);
     ASSERT_EQ(response->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
-                        &length, sizeof(length)));
+                        &lengthLe, sizeof(lengthLe)));
 
     // WriteFileFromMemory
     rc = encode_rw_file_memory_resp(0, PLDM_WRITE_FILE_FROM_MEMORY,
@@ -105,7 +111,7 @@ TEST(ReadWriteFileMemory, testGoodEncodeResponse)
     ASSERT_EQ(response->hdr.command, PLDM_WRITE_FILE_FROM_MEMORY);
     ASSERT_EQ(response->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
-                        &length, sizeof(length)));
+                        &lengthLe, sizeof(lengthLe)));
 }
 
 TEST(ReadWriteFileMemory, testBadEncodeResponse)
@@ -143,12 +149,13 @@ TEST(ReadWriteFileIntoMemory, testGoodDecodeResponse)
     std::array<uint8_t, PLDM_RW_FILE_MEM_RESP_BYTES + hdrSize> responseMsg{};
     // Random value for length
     uint32_t length = 0xFF00EE12;
+    uint32_t lengthLe = htole32(length);
     uint8_t completionCode = 0;
 
     memcpy(responseMsg.data() + hdrSize, &completionCode,
            sizeof(completionCode));
-    memcpy(responseMsg.data() + sizeof(completionCode) + hdrSize, &length,
-           sizeof(length));
+    memcpy(responseMsg.data() + sizeof(completionCode) + hdrSize, &lengthLe,
+           sizeof(lengthLe));
 
     uint8_t retCompletionCode = 0;
     uint32_t retLength = 0;
@@ -190,6 +197,10 @@ TEST(ReadWriteFileIntoMemory, testGoodEncodeRequest)
     uint32_t offset = 0x87654321;
     uint32_t length = 0x13245768;
     uint64_t address = 0x124356879ACBDE0F;
+    uint32_t fileHandleLe = htole32(fileHandle);
+    uint32_t offsetLe = htole32(offset);
+    uint32_t lengthLe = htole32(length);
+    uint64_t addressLe = htole64(address);
 
     pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
@@ -203,15 +214,16 @@ TEST(ReadWriteFileIntoMemory, testGoodEncodeRequest)
     ASSERT_EQ(request->hdr.type, PLDM_OEM);
     ASSERT_EQ(request->hdr.command, PLDM_READ_FILE_INTO_MEMORY);
 
-    ASSERT_EQ(0, memcmp(request->payload, &fileHandle, sizeof(fileHandle)));
+    ASSERT_EQ(0, memcmp(request->payload, &fileHandleLe, sizeof(fileHandleLe)));
 
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandle), &offset,
-                        sizeof(offset)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandle) + sizeof(offset),
-                        &length, sizeof(length)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandle) + sizeof(offset) +
-                            sizeof(length),
-                        &address, sizeof(address)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandleLe), &offsetLe,
+                        sizeof(offsetLe)));
+    ASSERT_EQ(0,
+              memcmp(request->payload + sizeof(fileHandleLe) + sizeof(offsetLe),
+                     &lengthLe, sizeof(lengthLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileHandleLe) +
+                            sizeof(offsetLe) + sizeof(lengthLe),
+                        &addressLe, sizeof(addressLe)));
 }
 
 TEST(ReadWriteFileIntoMemory, testBadEncodeRequest)
@@ -234,11 +246,12 @@ TEST(GetFileTable, GoodDecodeRequest)
 
     // Random value for DataTransferHandle, TransferOperationFlag, TableType
     uint32_t transferHandle = 0x12345678;
+    uint32_t transferHandleLe = htole32(transferHandle);
     uint8_t transferOpFlag = 1;
     uint8_t tableType = 1;
 
-    memcpy(requestMsg.data() + hdrSize, &transferHandle,
-           sizeof(transferHandle));
+    memcpy(requestMsg.data() + hdrSize, &transferHandleLe,
+           sizeof(transferHandleLe));
     memcpy(requestMsg.data() + sizeof(transferHandle) + hdrSize,
            &transferOpFlag, sizeof(transferOpFlag));
     memcpy(requestMsg.data() + sizeof(transferHandle) + sizeof(transferOpFlag) +
@@ -293,6 +306,7 @@ TEST(GetFileTable, GoodEncodeResponse)
     // Random value for NextDataTransferHandle and TransferFlag
     uint8_t completionCode = 0;
     uint32_t nextTransferHandle = 0x87654321;
+    uint32_t nextTransferHandleLe = htole32(nextTransferHandle);
     uint8_t transferFlag = 5;
     // Mock file table contents of size 5
     std::array<uint8_t, 5> fileTable = {1, 2, 3, 4, 5};
@@ -315,7 +329,7 @@ TEST(GetFileTable, GoodEncodeResponse)
     ASSERT_EQ(response->hdr.command, PLDM_GET_FILE_TABLE);
     ASSERT_EQ(response->payload[0], PLDM_SUCCESS);
     ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]),
-                        &nextTransferHandle, sizeof(nextTransferHandle)));
+                        &nextTransferHandleLe, sizeof(nextTransferHandle)));
     ASSERT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(nextTransferHandle),
                         &transferFlag, sizeof(transferFlag)));
@@ -365,9 +379,9 @@ TEST(ReadFile, testGoodDecodeRequest)
     uint32_t offset = 0x87654321;
     uint32_t length = 0x13245768;
 
-    request->file_handle = fileHandle;
-    request->offset = offset;
-    request->length = length;
+    request->file_handle = htole32(fileHandle);
+    request->offset = htole32(offset);
+    request->length = htole32(length);
 
     uint32_t retFileHandle = 0;
     uint32_t retOffset = 0;
@@ -399,9 +413,9 @@ TEST(WriteFile, testGoodDecodeRequest)
     size_t fileDataOffset =
         sizeof(fileHandle) + sizeof(offset) + sizeof(length);
 
-    request->file_handle = fileHandle;
-    request->offset = offset;
-    request->length = length;
+    request->file_handle = htole32(fileHandle);
+    request->offset = htole32(offset);
+    request->length = htole32(length);
 
     uint32_t retFileHandle = 0;
     uint32_t retOffset = 0;
@@ -433,7 +447,7 @@ TEST(ReadFile, testGoodDecodeResponse)
         reinterpret_cast<pldm_read_file_resp*>(responsePtr->payload);
 
     response->completion_code = completionCode;
-    response->length = length;
+    response->length = htole32(length);
 
     size_t fileDataOffset = sizeof(completionCode) + sizeof(length);
 
@@ -465,7 +479,7 @@ TEST(WriteFile, testGoodDecodeResponse)
     uint32_t length = 0x4678;
 
     response->completion_code = completionCode;
-    response->length = length;
+    response->length = htole32(length);
 
     uint32_t retLength = 0;
     uint8_t retCompletionCode = 0;
@@ -569,7 +583,7 @@ TEST(ReadFile, testGoodEncodeResponse)
     ASSERT_EQ(responsePtr->hdr.type, PLDM_OEM);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_READ_FILE);
     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(response->length, length);
+    ASSERT_EQ(le32toh(response->length), length);
 }
 
 TEST(WriteFile, testGoodEncodeResponse)
@@ -591,7 +605,7 @@ TEST(WriteFile, testGoodEncodeResponse)
     ASSERT_EQ(responsePtr->hdr.type, PLDM_OEM);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_WRITE_FILE);
     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(response->length, length);
+    ASSERT_EQ(le32toh(response->length), length);
 }
 
 TEST(ReadFile, testGoodEncodeRequest)
@@ -613,9 +627,9 @@ TEST(ReadFile, testGoodEncodeRequest)
     ASSERT_EQ(requestPtr->hdr.instance_id, 0);
     ASSERT_EQ(requestPtr->hdr.type, PLDM_OEM);
     ASSERT_EQ(requestPtr->hdr.command, PLDM_READ_FILE);
-    ASSERT_EQ(request->file_handle, fileHandle);
-    ASSERT_EQ(request->offset, offset);
-    ASSERT_EQ(request->length, length);
+    ASSERT_EQ(le32toh(request->file_handle), fileHandle);
+    ASSERT_EQ(le32toh(request->offset), offset);
+    ASSERT_EQ(le32toh(request->length), length);
 }
 
 TEST(WriteFile, testGoodEncodeRequest)
@@ -637,9 +651,9 @@ TEST(WriteFile, testGoodEncodeRequest)
     ASSERT_EQ(requestPtr->hdr.instance_id, 0);
     ASSERT_EQ(requestPtr->hdr.type, PLDM_OEM);
     ASSERT_EQ(requestPtr->hdr.command, PLDM_WRITE_FILE);
-    ASSERT_EQ(request->file_handle, fileHandle);
-    ASSERT_EQ(request->offset, offset);
-    ASSERT_EQ(request->length, length);
+    ASSERT_EQ(le32toh(request->file_handle), fileHandle);
+    ASSERT_EQ(le32toh(request->offset), offset);
+    ASSERT_EQ(le32toh(request->length), length);
 }
 
 TEST(ReadWriteFile, testBadEncodeRequest)
@@ -722,11 +736,11 @@ TEST(ReadWriteFileByTypeMemory, testGoodDecodeRequest)
     uint32_t length = 0x13245768;
     uint64_t address = 0x124356879ACBD456;
 
-    request->file_type = fileType;
-    request->file_handle = fileHandle;
-    request->offset = offset;
-    request->length = length;
-    request->address = address;
+    request->file_type = htole16(fileType);
+    request->file_handle = htole32(fileHandle);
+    request->offset = htole32(offset);
+    request->length = htole32(length);
+    request->address = htole64(address);
 
     uint16_t retFileType = 0x1;
     uint32_t retFileHandle = 0;
@@ -763,7 +777,7 @@ TEST(ReadWriteFileByTypeMemory, testGoodDecodeResponse)
     uint32_t length = 0x13245768;
 
     response->completion_code = completionCode;
-    response->length = length;
+    response->length = htole32(length);
 
     uint8_t retCompletionCode = 0x1;
     uint32_t retLength = 0;
@@ -846,6 +860,11 @@ TEST(ReadWriteFileByTypeMemory, testGoodEncodeRequest)
     uint32_t offset = 0x87654321;
     uint32_t length = 0x13245768;
     uint64_t address = 0x124356879ACBDE0F;
+    uint16_t fileTypeLe = htole16(fileType);
+    uint32_t fileHandleLe = htole32(fileHandle);
+    uint32_t offsetLe = htole32(offset);
+    uint32_t lengthLe = htole32(length);
+    uint64_t addressLe = htole64(address);
 
     pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
@@ -859,20 +878,20 @@ TEST(ReadWriteFileByTypeMemory, testGoodEncodeRequest)
     ASSERT_EQ(request->hdr.type, PLDM_OEM);
     ASSERT_EQ(request->hdr.command, PLDM_READ_FILE_BY_TYPE_INTO_MEMORY);
 
-    ASSERT_EQ(0, memcmp(request->payload, &fileType, sizeof(fileType)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileType), &fileHandle,
-                        sizeof(fileHandle)));
+    ASSERT_EQ(0, memcmp(request->payload, &fileTypeLe, sizeof(fileTypeLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe), &fileHandleLe,
+                        sizeof(fileHandleLe)));
 
-    ASSERT_EQ(0,
-              memcmp(request->payload + sizeof(fileType) + sizeof(fileHandle),
-                     &offset, sizeof(offset)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileType) +
-                            sizeof(fileHandle) + sizeof(offset),
-                        &length, sizeof(length)));
-    ASSERT_EQ(0,
-              memcmp(request->payload + sizeof(fileType) + sizeof(fileHandle) +
-                         sizeof(offset) + sizeof(length),
-                     &address, sizeof(address)));
+    ASSERT_EQ(
+        0, memcmp(request->payload + sizeof(fileTypeLe) + sizeof(fileHandleLe),
+                  &offsetLe, sizeof(offsetLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe) +
+                            sizeof(fileHandleLe) + sizeof(offsetLe),
+                        &lengthLe, sizeof(lengthLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe) +
+                            sizeof(fileHandleLe) + sizeof(offsetLe) +
+                            sizeof(lengthLe),
+                        &addressLe, sizeof(addressLe)));
 }
 
 TEST(ReadWriteFileByTypeMemory, testGoodEncodeResponse)
@@ -882,6 +901,7 @@ TEST(ReadWriteFileByTypeMemory, testGoodEncodeResponse)
         responseMsg{};
 
     uint32_t length = 0x13245768;
+    uint32_t lengthLe = htole32(length);
     uint8_t completionCode = 0x0;
 
     pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
@@ -898,8 +918,8 @@ TEST(ReadWriteFileByTypeMemory, testGoodEncodeResponse)
 
     ASSERT_EQ(
         0, memcmp(response->payload, &completionCode, sizeof(completionCode)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(completionCode), &length,
-                        sizeof(length)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(completionCode), &lengthLe,
+                        sizeof(lengthLe)));
 }
 
 TEST(ReadWriteFileByTypeMemory, testBadEncodeResponse)
@@ -958,9 +978,9 @@ TEST(NewFile, testGoodDecodeRequest)
     uint32_t fileHandle = 0x12345678;
     uint64_t length = 0x13245768;
 
-    request->file_type = fileType;
-    request->file_handle = fileHandle;
-    request->length = length;
+    request->file_type = htole16(fileType);
+    request->file_handle = htole32(fileHandle);
+    request->length = htole64(length);
 
     uint16_t retFileType = 0xFF;
     uint32_t retFileHandle = 0;
@@ -1047,6 +1067,9 @@ TEST(NewFile, testGoodEncodeRequest)
     uint16_t fileType = 0xFF;
     uint32_t fileHandle = 0x12345678;
     uint32_t length = 0x13245768;
+    uint16_t fileTypeLe = htole16(fileType);
+    uint32_t fileHandleLe = htole32(fileHandle);
+    uint32_t lengthLe = htole32(length);
 
     pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
@@ -1057,12 +1080,12 @@ TEST(NewFile, testGoodEncodeRequest)
     ASSERT_EQ(request->hdr.instance_id, 0);
     ASSERT_EQ(request->hdr.type, PLDM_OEM);
     ASSERT_EQ(request->hdr.command, PLDM_NEW_FILE_AVAILABLE);
-    ASSERT_EQ(0, memcmp(request->payload, &fileType, sizeof(fileType)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileType), &fileHandle,
-                        sizeof(fileHandle)));
-    ASSERT_EQ(0,
-              memcmp(request->payload + sizeof(fileType) + sizeof(fileHandle),
-                     &length, sizeof(length)));
+    ASSERT_EQ(0, memcmp(request->payload, &fileTypeLe, sizeof(fileTypeLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe), &fileHandleLe,
+                        sizeof(fileHandleLe)));
+    ASSERT_EQ(
+        0, memcmp(request->payload + sizeof(fileTypeLe) + sizeof(fileHandleLe),
+                  &lengthLe, sizeof(lengthLe)));
 }
 
 TEST(NewFile, testGoodEncodeResponse)
@@ -1135,10 +1158,9 @@ TEST(ReadWriteFileByType, testGoodDecodeRequest)
     uint32_t offset = 0x87654321;
     uint32_t length = 0x13245768;
 
-    request->file_type = fileType;
-    request->file_handle = fileHandle;
-    request->offset = offset;
-    request->length = length;
+    request->file_handle = htole32(fileHandle);
+    request->offset = htole32(offset);
+    request->length = htole32(length);
 
     uint16_t retFileType = 0x1;
     uint32_t retFileHandle = 0;
@@ -1172,7 +1194,7 @@ TEST(ReadWriteFileByType, testGoodDecodeResponse)
     uint32_t length = 0x13245768;
 
     response->completion_code = completionCode;
-    response->length = length;
+    response->length = htole32(length);
 
     uint8_t retCompletionCode = 0x1;
     uint32_t retLength = 0;
@@ -1242,6 +1264,10 @@ TEST(ReadWriteFileByType, testGoodEncodeRequest)
     uint32_t fileHandle = 0x12345678;
     uint32_t offset = 0x87654321;
     uint32_t length = 0x13245768;
+    uint16_t fileTypeLe = htole16(fileType);
+    uint32_t fileHandleLe = htole32(fileHandle);
+    uint32_t offsetLe = htole32(offset);
+    uint32_t lengthLe = htole32(length);
 
     pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
@@ -1254,16 +1280,16 @@ TEST(ReadWriteFileByType, testGoodEncodeRequest)
     ASSERT_EQ(request->hdr.type, PLDM_OEM);
     ASSERT_EQ(request->hdr.command, PLDM_READ_FILE_BY_TYPE);
 
-    ASSERT_EQ(0, memcmp(request->payload, &fileType, sizeof(fileType)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileType), &fileHandle,
-                        sizeof(fileHandle)));
+    ASSERT_EQ(0, memcmp(request->payload, &fileTypeLe, sizeof(fileTypeLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe), &fileHandleLe,
+                        sizeof(fileHandleLe)));
 
-    ASSERT_EQ(0,
-              memcmp(request->payload + sizeof(fileType) + sizeof(fileHandle),
-                     &offset, sizeof(offset)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileType) +
-                            sizeof(fileHandle) + sizeof(offset),
-                        &length, sizeof(length)));
+    ASSERT_EQ(
+        0, memcmp(request->payload + sizeof(fileTypeLe) + sizeof(fileHandleLe),
+                  &offsetLe, sizeof(offsetLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe) +
+                            sizeof(fileHandleLe) + sizeof(offsetLe),
+                        &lengthLe, sizeof(lengthLe)));
 }
 
 TEST(ReadWriteFileByType, testGoodEncodeResponse)
@@ -1272,6 +1298,7 @@ TEST(ReadWriteFileByType, testGoodEncodeResponse)
         responseMsg{};
 
     uint32_t length = 0x13245768;
+    uint32_t lengthLe = htole32(length);
     uint8_t completionCode = 0x0;
     pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
@@ -1286,8 +1313,8 @@ TEST(ReadWriteFileByType, testGoodEncodeResponse)
 
     ASSERT_EQ(
         0, memcmp(response->payload, &completionCode, sizeof(completionCode)));
-    ASSERT_EQ(0, memcmp(response->payload + sizeof(completionCode), &length,
-                        sizeof(length)));
+    ASSERT_EQ(0, memcmp(response->payload + sizeof(completionCode), &lengthLe,
+                        sizeof(lengthLe)));
 }
 
 TEST(ReadWriteFileByType, testBadEncodeResponse)
@@ -1341,10 +1368,10 @@ TEST(FileAck, testGoodDecodeRequest)
     // Random value for fileHandle
     uint16_t fileType = 0xFFFF;
     uint32_t fileHandle = 0x12345678;
-    uint32_t fileStatus = 0xFF;
+    uint8_t fileStatus = 0xFF;
 
-    request->file_type = fileType;
-    request->file_handle = fileHandle;
+    request->file_type = htole16(fileType);
+    request->file_handle = htole32(fileHandle);
     request->file_status = fileStatus;
 
     uint16_t retFileType = 0xFF;
@@ -1433,6 +1460,8 @@ TEST(FileAck, testGoodEncodeRequest)
     uint16_t fileType = 0xFFFF;
     uint32_t fileHandle = 0x12345678;
     uint8_t fileStatus = 0xFF;
+    uint16_t fileTypeLe = htole16(fileType);
+    uint32_t fileHandleLe = htole32(fileHandle);
 
     pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
@@ -1443,9 +1472,9 @@ TEST(FileAck, testGoodEncodeRequest)
     ASSERT_EQ(request->hdr.instance_id, 0);
     ASSERT_EQ(request->hdr.type, PLDM_OEM);
     ASSERT_EQ(request->hdr.command, PLDM_FILE_ACK);
-    ASSERT_EQ(0, memcmp(request->payload, &fileType, sizeof(fileType)));
-    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileType), &fileHandle,
-                        sizeof(fileHandle)));
+    ASSERT_EQ(0, memcmp(request->payload, &fileTypeLe, sizeof(fileTypeLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe), &fileHandleLe,
+                        sizeof(fileHandleLe)));
 }
 
 TEST(FileAck, testGoodEncodeResponse)
