@@ -77,13 +77,17 @@ inline Json readJson(const std::string& path)
 class RepoInterface
 {
   public:
+    RepoInterface(pldm_pdr* repo) : repo(repo)
+    {
+    }
+
     virtual ~RepoInterface() = default;
 
     /** @brief Get an opaque pldm_pdr structure
      *
      *  @return pldm_pdr - pldm_pdr structure
      */
-    virtual const pldm_pdr* getPdr() = 0;
+    virtual pldm_pdr* getPdr() const = 0;
 
     /** @brief Add a PDR record to a PDR repository
      *
@@ -121,7 +125,7 @@ class RepoInterface
      *  @return uint32_t - record handle assigned to PDR record; 0 if record is
      *                     not found
      */
-    virtual uint32_t getRecordHandle(const pldm_pdr_record* record) = 0;
+    virtual uint32_t getRecordHandle(const pldm_pdr_record* record) const = 0;
 
     /** @brief Get number of records in a PDR repository
      *
@@ -149,30 +153,24 @@ class RepoInterface
 class Repo : public RepoInterface
 {
   public:
-    Repo()
+    Repo(pldm_pdr* repo) : RepoInterface(repo)
     {
-        repo = pldm_pdr_init();
     }
 
-    ~Repo()
-    {
-        pldm_pdr_destroy(repo);
-    }
+    pldm_pdr* getPdr() const override;
 
-    const pldm_pdr* getPdr();
+    RecordHandle addRecord(const PdrEntry& pdrEntry) override;
 
-    RecordHandle addRecord(const PdrEntry& pdrEntry);
-
-    const pldm_pdr_record* getFirstRecord(PdrEntry& pdrEntry);
+    const pldm_pdr_record* getFirstRecord(PdrEntry& pdrEntry) override;
 
     const pldm_pdr_record* getNextRecord(const pldm_pdr_record* currRecord,
-                                         PdrEntry& pdrEntry);
+                                         PdrEntry& pdrEntry) override;
 
-    uint32_t getRecordHandle(const pldm_pdr_record* record);
+    uint32_t getRecordHandle(const pldm_pdr_record* record) const override;
 
-    uint32_t getRecordCount();
+    uint32_t getRecordCount() override;
 
-    bool empty();
+    bool empty() override;
 };
 
 } // namespace pdr_utils
