@@ -28,6 +28,16 @@ extern "C" {
 #define PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES 3
 #define PLDM_PLATFORM_EVENT_MESSAGE_STATE_SENSOR_STATE_REQ_BYTES 6
 
+/* Minumum length of senson event data */
+#define PLDM_SENSOR_EVENT_DATA_MIN_LENGTH 5
+#define PLDM_SENSOR_EVENT_SENSOR_OP_STATE_DATA_LENGTH 2
+#define PLDM_SENSOR_EVENT_STATE_SENSOR_STATE_DATA_LENGTH 3
+#define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_MIN_DATA_LENGTH 4
+#define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_MAX_DATA_LENGTH 7
+#define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_8BIT_DATA_LENGTH 4
+#define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_16BIT_DATA_LENGTH 5
+#define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_32BIT_DATA_LENGTH 7
+
 enum pldm_effecter_data_size {
 	PLDM_EFFECTER_DATA_SIZE_UINT8,
 	PLDM_EFFECTER_DATA_SIZE_SINT8,
@@ -138,6 +148,17 @@ enum pldm_pdr_repository_chg_event_data_format {
 	REFRESH_ENTIRE_REPOSITORY,
 	FORMAT_IS_PDR_TYPES,
 	FORMAT_IS_PDR_HANDLES
+};
+
+/** @brief PLDM NumericSensorStatePresentReading data type
+ */
+enum pldm_sensor_readings_data_type {
+	PLDM_SENSOR_DATA_SIZE_UINT8,
+	PLDM_SENSOR_DATA_SIZE_SINT8,
+	PLDM_SENSOR_DATA_SIZE_UINT16,
+	PLDM_SENSOR_DATA_SIZE_SINT16,
+	PLDM_SENSOR_DATA_SIZE_UINT32,
+	PLDM_SENSOR_DATA_SIZE_SINT32
 };
 
 /** @struct pldm_pdr_hdr
@@ -736,6 +757,80 @@ int decode_platform_event_message_req(const struct pldm_msg *msg,
 int encode_platform_event_message_resp(uint8_t instance_id,
 				       uint8_t completion_code, uint8_t status,
 				       struct pldm_msg *msg);
+
+/** @brief Decode sensorEventData response data
+ *
+ *  @param[in] event_data - event data from the response message
+ *  @param[in] event_data_length - length of the event data
+ *  @param[out] sensor_id -  sensorID value of the sensor
+ *  @param[out] sensor_event_class_type - Type of sensor event class
+ *  @param[out] event_class_data_offset - Offset where the event class data
+ * should be read from event data
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'event_data'
+ */
+int decode_sensor_event_data(const uint8_t *event_data,
+			     size_t event_data_length, uint16_t *sensor_id,
+			     uint8_t *sensor_event_class_type,
+			     size_t *event_class_data_offset);
+
+/** @brief Decode sensorOpState response data
+ *
+ *  @param[in] sensor_data - sensor_data for sensorEventClass = sensorOpState
+ *  @param[in] sensor_data_length - Length of sensor_data
+ *  @param[out] present_op_state - The sensorOperationalState value from the
+ * state change that triggered the event message
+ *  @param[out] previous_op_state - The sensorOperationalState value for the
+ * state from which the present state was entered
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'sensor_data'
+ */
+int decode_sensor_op_data(const uint8_t *sensor_data, size_t sensor_data_length,
+			  uint8_t *present_op_state,
+			  uint8_t *previous_op_state);
+
+/** @brief Decode stateSensorState response data
+ *
+ *  @param[in] sensor_data - sensor_data for sensorEventClass = stateSensorState
+ *  @param[in] sensor_data_length - Length of sensor_data
+ *  @param[out] sensor_offset - Identifies which state sensor within a composite
+ * state sensor the event is being returned for
+ *  @param[out] event_state - The event state value from the state change that
+ * triggered the event message
+ *  @param[out] previous_event_state - The event state value for the state from
+ * which the present event state was entered
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'sensor_data'
+ */
+int decode_state_sensor_data(const uint8_t *sensor_data,
+			     size_t sensor_data_length, uint8_t *sensor_offset,
+			     uint8_t *event_state,
+			     uint8_t *previous_event_state);
+
+/** @brief Decode numericSensorState response data
+ *
+ *  @param[in] sensor_data - sensor_data for sensorEventClass =
+ * numericSensorState
+ *  @param[in] sensor_data_length - Length of sensor_data
+ *  @param[out] event_state - The eventState value from the state change that
+ * triggered the event message
+ *  @param[out] previous_event_state - The eventState value for the state from
+ * which the present state was entered
+ *  @param[out] sensor_data_size - The bit width and format of reading and
+ * threshold values that the sensor returns
+ *  @param[out] present_reading - The present value indicated by the sensor
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'sensor_data'
+ */
+int decode_numeric_sensor_data(const uint8_t *sensor_data,
+			       size_t sensor_data_length, uint8_t *event_state,
+			       uint8_t *previous_event_state,
+			       uint8_t *sensor_data_size,
+			       uint32_t *present_reading);
 
 #ifdef __cplusplus
 }
