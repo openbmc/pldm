@@ -30,6 +30,7 @@
 #include "libpldm/base.h"
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
+#include "libpldm/pdr.h"
 
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
@@ -144,11 +145,13 @@ int main(int argc, char** argv)
             break;
     }
 
+    auto pdrRepo = pldm_pdr_init();
+
     Invoker invoker{};
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
     invoker.registerHandler(PLDM_PLATFORM,
-                            std::make_unique<platform::Handler>());
+                            std::make_unique<platform::Handler>(PDR_JSONS_DIR, pdrRepo));
     invoker.registerHandler(PLDM_FRU,
                             std::make_unique<fru::Handler>(FRU_JSONS_DIR));
 
@@ -288,6 +291,7 @@ int main(int argc, char** argv)
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
     event.loop();
 
+    pldm_pdr_destroy(pdrRepo);
     result = shutdown(sockfd, SHUT_RDWR);
     if (-1 == result)
     {

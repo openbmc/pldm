@@ -12,7 +12,6 @@ sources = [
   'bios_parser.cpp',
   'pdr_utils.cpp',
   'pdr.cpp',
-  'effecters.cpp',
   'platform.cpp',
   'fru_parser.cpp',
   'fru.cpp'

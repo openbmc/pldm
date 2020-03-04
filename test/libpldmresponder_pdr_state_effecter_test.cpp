@@ -1,5 +1,4 @@
-#include "libpldmresponder/effecters.hpp"
-#include "libpldmresponder/pdr.hpp"
+#include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 
 #include "libpldm/platform.h"
@@ -7,19 +6,25 @@
 #include <gtest/gtest.h>
 
 using namespace pldm::responder;
+using namespace pldm::responder::platform;
+using namespace pldm::responder::pdr;
+using namespace pldm::responder::pdr_utils;
 
 TEST(GeneratePDR, testGoodJson)
 {
-    using namespace effecter::dbus_mapping;
-    pdr_utils::Repo pdrRepo = pdr::getRepoByType(
-        "./pdr_jsons/state_effecter/good", PLDM_STATE_EFFECTER_PDR);
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
     // 2 entries
-    ASSERT_EQ(pdrRepo.getRecordCount(), 2);
+    ASSERT_EQ(outRepo.getRecordCount(), 2);
 
     // Check first PDR
     pdr_utils::PdrEntry e;
-    auto record1 = pdr::getRecordByHandle(pdrRepo, 1, e);
+    auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
     ASSERT_NE(record1, nullptr);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
@@ -47,11 +52,11 @@ TEST(GeneratePDR, testGoodJson)
     bf1.byte = 2;
     ASSERT_EQ(states->states[0].byte, bf1.byte);
 
-    auto paths = get(pdr->effecter_id);
+    const auto& paths = handler.getEffecterObjs(pdr->effecter_id);
     ASSERT_EQ(paths[0], "/foo/bar");
 
     // Check second PDR
-    auto record2 = pdr::getRecordByHandle(pdrRepo, 2, e);
+    auto record2 = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record2, nullptr);
     pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
 
@@ -86,23 +91,38 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(states->states[0].byte, bf2[0].byte);
     ASSERT_EQ(states->states[1].byte, bf2[1].byte);
 
-    paths = get(pdr->effecter_id);
-    ASSERT_EQ(paths[0], "/foo/bar");
-    ASSERT_EQ(paths[1], "/foo/bar/baz");
+    const auto& paths1 = handler.getEffecterObjs(pdr->effecter_id);
+    ASSERT_EQ(paths1[0], "/foo/bar");
+    ASSERT_EQ(paths1[1], "/foo/bar/baz");
 
-    ASSERT_THROW(get(0xDEAD), std::exception);
+    ASSERT_THROW(handler.getEffecterObjs(0xDEAD), std::exception);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
 }
 
 TEST(GeneratePDR, testNoJson)
 {
-    ASSERT_THROW(pdr_utils::readJson("./pdr_jsons/not_there"), std::exception);
+    auto pdrRepo = pldm_pdr_init();
+
+    ASSERT_THROW(Handler("./pdr_jsons/not_there", pdrRepo), std::exception);
+
+    pldm_pdr_destroy(pdrRepo);
 }
 
 TEST(GeneratePDR, testMalformedJson)
 {
-    pdr_utils::Repo pdrRepo = pdr::getRepoByType(
-        "./pdr_jsons/state_effecter/good", PLDM_STATE_EFFECTER_PDR);
-    ASSERT_EQ(pdrRepo.getRecordCount(), 2);
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
+
+    ASSERT_EQ(outRepo.getRecordCount(), 2);
     ASSERT_THROW(pdr_utils::readJson("./pdr_jsons/state_effecter/malformed"),
                  std::exception);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
 }
