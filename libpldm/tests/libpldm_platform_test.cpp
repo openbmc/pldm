@@ -673,3 +673,176 @@ TEST(PlatformEventMessage, testBadEncodeResponse)
     auto rc = encode_platform_event_message_resp(0, PLDM_SUCCESS, 1, NULL);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(PlatformEventMessage, testGoodSensorOpEventDataDecodeRequest)
+{
+    std::array<uint8_t, PLDM_SENSOR_EVENT_SENSOR_OP_STATE_DATA_LENGTH +
+                            PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES>
+        eventDataArr{};
+    uint16_t sensorId = 0x1234;
+    uint8_t sensorEventClassType = PLDM_SENSOR_OP_STATE;
+
+    struct pldm_sensor_event_data* eventData =
+        (struct pldm_sensor_event_data*)eventDataArr.data();
+    eventData->sensor_id = sensorId;
+    eventData->sensor_event_class_type = sensorEventClassType;
+    struct pldm_sensor_event_sensor_op_state* sensorData =
+        reinterpret_cast<pldm_sensor_event_sensor_op_state*>(
+            eventData->event_class);
+    uint8_t presentState = PLDM_SENSOR_ENABLED;
+    uint8_t previousState = PLDM_SENSOR_INITIALIZING;
+    sensorData->present_op_state = presentState;
+    sensorData->previous_op_state = previousState;
+
+    std::array<uint8_t, PLDM_SENSOR_EVENT_SENSOR_OP_STATE_DATA_LENGTH>
+        retSensorOpData{};
+
+    size_t retSensorOpDataLength;
+    uint16_t retSensorId = 0;
+    uint8_t retSensorEventClassType;
+    auto rc = decode_sensor_event_data(
+        reinterpret_cast<uint8_t*>(eventData), eventDataArr.size(),
+        &retSensorId, &retSensorEventClassType,
+        reinterpret_cast<uint8_t*>(&retSensorOpData), &retSensorOpDataLength);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retSensorId, sensorId);
+    EXPECT_EQ(retSensorEventClassType, sensorEventClassType);
+    EXPECT_EQ(retSensorOpDataLength,
+              PLDM_SENSOR_EVENT_SENSOR_OP_STATE_DATA_LENGTH);
+    struct pldm_sensor_event_sensor_op_state* sensorOpData =
+        reinterpret_cast<pldm_sensor_event_sensor_op_state*>(
+            retSensorOpData.data());
+    EXPECT_EQ(sensorOpData->present_op_state, presentState);
+    EXPECT_EQ(sensorOpData->previous_op_state, previousState);
+
+    uint8_t retPresentState;
+    uint8_t retPreviousState;
+    rc = decode_sensor_op_data(reinterpret_cast<uint8_t*>(&retSensorOpData),
+                               retSensorOpDataLength, &retPresentState,
+                               &retPreviousState);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retPresentState, presentState);
+    EXPECT_EQ(retPreviousState, previousState);
+}
+
+TEST(PlatformEventMessage, testGoodSensorStateEventDataDecodeRequest)
+{
+    std::array<uint8_t, PLDM_SENSOR_EVENT_STATE_SENSOR_STATE_DATA_LENGTH +
+                            PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES>
+        eventDataArr{};
+    uint16_t sensorId = 0x2345;
+    uint8_t sensorEventClassType = PLDM_STATE_SENSOR_STATE;
+
+    struct pldm_sensor_event_data* eventData =
+        (struct pldm_sensor_event_data*)eventDataArr.data();
+    eventData->sensor_id = sensorId;
+    eventData->sensor_event_class_type = sensorEventClassType;
+    struct pldm_sensor_event_state_sensor_state* sensorData =
+        reinterpret_cast<pldm_sensor_event_state_sensor_state*>(
+            eventData->event_class);
+    uint8_t sensorOffset = 0x02;
+    uint8_t eventState = PLDM_SENSOR_SHUTTINGDOWN;
+    uint8_t previousEventState = PLDM_SENSOR_INTEST;
+    sensorData->sensor_offset = sensorOffset;
+    sensorData->event_state = eventState;
+    sensorData->previous_event_state = previousEventState;
+
+    std::array<uint8_t, PLDM_SENSOR_EVENT_STATE_SENSOR_STATE_DATA_LENGTH>
+        retSensorStateData{};
+
+    size_t retSensorStateDataLength;
+    uint16_t retSensorId = 0;
+    uint8_t retSensorEventClassType;
+    auto rc = decode_sensor_event_data(
+        reinterpret_cast<uint8_t*>(eventData), eventDataArr.size(),
+        &retSensorId, &retSensorEventClassType,
+        reinterpret_cast<uint8_t*>(&retSensorStateData),
+        &retSensorStateDataLength);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retSensorId, sensorId);
+    EXPECT_EQ(retSensorEventClassType, sensorEventClassType);
+    EXPECT_EQ(retSensorStateDataLength,
+              PLDM_SENSOR_EVENT_STATE_SENSOR_STATE_DATA_LENGTH);
+    struct pldm_sensor_event_state_sensor_state* sensorStateData =
+        reinterpret_cast<pldm_sensor_event_state_sensor_state*>(
+            retSensorStateData.data());
+    EXPECT_EQ(sensorStateData->sensor_offset, sensorOffset);
+    EXPECT_EQ(sensorStateData->event_state, eventState);
+    EXPECT_EQ(sensorStateData->previous_event_state, previousEventState);
+
+    uint8_t retSensorOffset;
+    uint8_t retEventState;
+    uint8_t retPreviousState;
+    rc = decode_state_sensor_data(
+        reinterpret_cast<uint8_t*>(&retSensorStateData),
+        retSensorStateDataLength, &retSensorOffset, &retEventState,
+        &retPreviousState);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retSensorOffset, sensorOffset);
+    EXPECT_EQ(retEventState, eventState);
+    EXPECT_EQ(retPreviousState, previousEventState);
+}
+
+TEST(PlatformEventMessage, testGoodNumericSensorEventDataDecodeRequest)
+{
+    std::array<uint8_t, PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_MIN_DATA_LENGTH +
+                            PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES>
+        eventDataArr{};
+    uint16_t sensorId = 0x3456;
+    uint8_t sensorEventClassType = PLDM_NUMERIC_SENSOR_STATE;
+
+    struct pldm_sensor_event_data* eventData =
+        (struct pldm_sensor_event_data*)eventDataArr.data();
+    eventData->sensor_id = sensorId;
+    eventData->sensor_event_class_type = sensorEventClassType;
+    struct pldm_sensor_event_numeric_sensor_state* sensorData =
+        reinterpret_cast<pldm_sensor_event_numeric_sensor_state*>(
+            eventData->event_class);
+
+    uint8_t eventState = PLDM_SENSOR_SHUTTINGDOWN;
+    uint8_t previousEventState = PLDM_SENSOR_INTEST;
+    uint8_t sensorDataSize = PLDM_SENSOR_DATA_SIZE_UINT8;
+    uint8_t presentReading = 0xAB;
+    sensorData->event_state = eventState;
+    sensorData->previous_event_state = previousEventState;
+    sensorData->sensor_data_size = sensorDataSize;
+    sensorData->present_reading[0] = presentReading;
+
+    std::array<uint8_t, PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_MIN_DATA_LENGTH>
+        retSensorNumericData{};
+
+    size_t retSensorNumericDataLength;
+    uint16_t retSensorId = 0;
+    uint8_t retSensorEventClassType;
+    auto rc = decode_sensor_event_data(
+        reinterpret_cast<uint8_t*>(eventData), eventDataArr.size(),
+        &retSensorId, &retSensorEventClassType,
+        reinterpret_cast<uint8_t*>(&retSensorNumericData),
+        &retSensorNumericDataLength);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retSensorId, sensorId);
+    EXPECT_EQ(retSensorEventClassType, sensorEventClassType);
+    EXPECT_EQ(retSensorNumericDataLength,
+              PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_MIN_DATA_LENGTH);
+    struct pldm_sensor_event_numeric_sensor_state* sensorNumericData =
+        reinterpret_cast<pldm_sensor_event_numeric_sensor_state*>(
+            retSensorNumericData.data());
+    EXPECT_EQ(sensorNumericData->event_state, eventState);
+    EXPECT_EQ(sensorNumericData->previous_event_state, previousEventState);
+    EXPECT_EQ(sensorNumericData->sensor_data_size, sensorDataSize);
+    EXPECT_EQ(sensorNumericData->present_reading[0], presentReading);
+
+    uint8_t retSensorDataSize;
+    uint8_t retEventState;
+    uint8_t retPreviousState;
+    uint32_t retPresentReading;
+    rc = decode_numeric_sensor_data(
+        reinterpret_cast<uint8_t*>(&retSensorNumericData),
+        retSensorNumericDataLength, &retEventState, &retPreviousState,
+        &retSensorDataSize, &retPresentReading);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retSensorDataSize, sensorDataSize);
+    EXPECT_EQ(retEventState, eventState);
+    EXPECT_EQ(retPreviousState, previousEventState);
+    EXPECT_EQ(retPresentReading, presentReading);
+}
