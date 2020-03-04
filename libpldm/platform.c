@@ -482,3 +482,140 @@ int encode_platform_event_message_resp(uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_sensor_event_data(uint8_t *event_data, size_t event_data_length,
+			     uint16_t *sensor_id,
+			     uint8_t *sensor_event_class_type,
+			     uint8_t *event_class_data,
+			     size_t *event_class_data_length)
+{
+	if (event_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (event_data_length < PLDM_SENSOR_EVENT_DATA_MIN_LENGTH) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*event_class_data_length = event_data_length - 3;
+
+	struct pldm_sensor_event_data *sensor_event_data =
+	    (struct pldm_sensor_event_data *)event_data;
+	*sensor_id = sensor_event_data->sensor_id;
+	*sensor_event_class_type = sensor_event_data->sensor_event_class_type;
+	if (sensor_event_data->sensor_event_class_type ==
+	    PLDM_SENSOR_OP_STATE) {
+		if (*event_class_data_length !=
+		    PLDM_SENSOR_EVENT_SENSOR_OP_STATE_DATA_LENGTH) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+	} else if (sensor_event_data->sensor_event_class_type ==
+		   PLDM_STATE_SENSOR_STATE) {
+		if (*event_class_data_length !=
+		    PLDM_SENSOR_EVENT_STATE_SENSOR_STATE_DATA_LENGTH) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+	} else if (sensor_event_data->sensor_event_class_type ==
+		   PLDM_NUMERIC_SENSOR_STATE) {
+		if (*event_class_data_length <
+		    PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_MIN_DATA_LENGTH) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+	} else {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	memcpy(event_class_data, sensor_event_data->event_class,
+	       *event_class_data_length);
+	return PLDM_SUCCESS;
+}
+
+int decode_sensor_op_data(uint8_t *sensor_data, size_t sensor_data_length,
+			  uint8_t *present_op_state, uint8_t *previous_op_state)
+{
+	if (sensor_data == NULL || present_op_state == NULL ||
+	    previous_op_state == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (sensor_data_length != 2) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_sensor_event_sensor_op_state *sensor_op_data =
+	    (struct pldm_sensor_event_sensor_op_state *)sensor_data;
+	*present_op_state = sensor_op_data->present_op_state;
+	*previous_op_state = sensor_op_data->previous_op_state;
+	return PLDM_SUCCESS;
+}
+
+int decode_state_sensor_data(uint8_t *sensor_data, size_t sensor_data_length,
+			     uint8_t *sensor_offset, uint8_t *event_state,
+			     uint8_t *previous_event_state)
+{
+	if (sensor_data == NULL || sensor_offset == NULL ||
+	    event_state == NULL || previous_event_state == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (sensor_data_length != 3) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_sensor_event_state_sensor_state *sensor_state_data =
+	    (struct pldm_sensor_event_state_sensor_state *)sensor_data;
+	*sensor_offset = sensor_state_data->sensor_offset;
+	*event_state = sensor_state_data->event_state;
+	*previous_event_state = sensor_state_data->previous_event_state;
+	return PLDM_SUCCESS;
+}
+
+int decode_numeric_sensor_data(uint8_t *sensor_data, size_t sensor_data_length,
+			       uint8_t *event_state,
+			       uint8_t *previous_event_state,
+			       uint8_t *sensor_data_size,
+			       uint32_t *present_reading)
+{
+	if (sensor_data == NULL || sensor_data_size == NULL ||
+	    event_state == NULL || previous_event_state == NULL ||
+	    present_reading == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (sensor_data_length < 4 || sensor_data_length > 7) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct pldm_sensor_event_numeric_sensor_state *numeric_sensor_data =
+	    (struct pldm_sensor_event_numeric_sensor_state *)sensor_data;
+	*event_state = numeric_sensor_data->event_state;
+	*previous_event_state = numeric_sensor_data->previous_event_state;
+	*sensor_data_size = numeric_sensor_data->sensor_data_size;
+	*present_reading = 0;
+	switch (*sensor_data_size) {
+	case PLDM_SENSOR_DATA_SIZE_UINT8:
+	case PLDM_SENSOR_DATA_SIZE_SINT8:
+		if (sensor_data_length != 4) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		*present_reading = numeric_sensor_data->present_reading[0];
+		break;
+	case PLDM_SENSOR_DATA_SIZE_UINT16:
+	case PLDM_SENSOR_DATA_SIZE_SINT16:
+		if (sensor_data_length != 5) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		*present_reading =
+		    numeric_sensor_data->present_reading[0] |
+		    (numeric_sensor_data->present_reading[1] << 8);
+		break;
+	case PLDM_SENSOR_DATA_SIZE_UINT32:
+	case PLDM_SENSOR_DATA_SIZE_SINT32:
+		if (sensor_data_length != 5) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		*present_reading =
+		    numeric_sensor_data->present_reading[0] |
+		    (numeric_sensor_data->present_reading[1] << 8) |
+		    (numeric_sensor_data->present_reading[2] << 16) |
+		    (numeric_sensor_data->present_reading[3] << 24);
+		break;
+	default:
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return PLDM_SUCCESS;
+}
