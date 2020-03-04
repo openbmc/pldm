@@ -416,7 +416,7 @@ TEST(GetBIOSTable, testGoodDecodeRequest)
     struct pldm_get_bios_table_req* request =
         reinterpret_cast<struct pldm_get_bios_table_req*>(req->payload);
 
-    request->transfer_handle = htole32(transferHandle);
+    request->transfer_handle = transferHandle;
     request->transfer_op_flag = transferOpFlag;
     request->table_type = tableType;
 
