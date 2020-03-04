@@ -9,7 +9,7 @@ namespace responder
 namespace pdr_utils
 {
 
-const pldm_pdr* Repo::getPdr()
+pldm_pdr* Repo::getPdr() const
 {
     return repo;
 }
@@ -50,7 +50,7 @@ const pldm_pdr_record* Repo::getNextRecord(const pldm_pdr_record* currRecord,
     return record;
 }
 
-uint32_t Repo::getRecordHandle(const pldm_pdr_record* record)
+uint32_t Repo::getRecordHandle(const pldm_pdr_record* record) const
 {
     return pldm_pdr_get_record_handle(getPdr(), record);
 }
