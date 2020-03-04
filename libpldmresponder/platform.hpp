@@ -21,11 +21,15 @@ namespace responder
 namespace platform
 {
 
+using DbusPath = std::string;
+using EffecterObjs = std::vector<DbusPath>;
+
 class Handler : public CmdHandler
 {
   public:
-    Handler()
+    Handler(const std::string& dir, pldm_pdr* repo) : pdrRepo(repo)
     {
+        generate(dir, pdrRepo);
         handlers.emplace(PLDM_GET_PDR,
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->getPDR(request, payloadLength);
@@ -36,6 +40,28 @@ class Handler : public CmdHandler
                                                                  payloadLength);
                          });
     }
+
+    const EffecterObjs& getEffecterObjs(uint16_t effecterId) const
+    {
+        return effecterObjs.at(effecterId);
+    }
+
+    void addEffecterObjs(uint16_t effecterId, EffecterObjs&& paths)
+    {
+        effecterObjs.emplace(effecterId, std::move(paths));
+    }
+
+    uint16_t getNextEffecterId()
+    {
+        return ++nextEffecterId;
+    }
+
+    /** @brief Parse PDR JSONs and build PDR repository
+     *
+     *  @param[in] dir - directory housing platform specific PDR JSON files
+     *  @param[in] repo - instance of concrete implementation of Repo
+     */
+    void generate(const std::string& dir, Repo& repo);
 
     /** @brief Handler for GetPDR
      *
@@ -64,7 +90,7 @@ class Handler : public CmdHandler
      */
     template <class DBusInterface>
     int setStateEffecterStatesHandler(
-        const DBusInterface& dBusIntf, effecter::Id effecterId,
+        const DBusInterface& dBusIntf, uint16_t effecterId,
         const std::vector<set_effecter_state_field>& stateField)
     {
         using namespace pldm::responder::pdr;
@@ -86,28 +112,22 @@ class Handler : public CmdHandler
              {{PLDM_OFF_SOFT_GRACEFUL,
                "xyz.openbmc_project.State.Chassis.Transition.Off"s}}}};
         using namespace pldm::responder::pdr;
-        using namespace pldm::responder::effecter::dbus_mapping;
 
         state_effecter_possible_states* states = nullptr;
         pldm_state_effecter_pdr* pdr = nullptr;
         uint8_t compEffecterCnt = stateField.size();
 
-        pdr_utils::Repo repo =
-            getRepoByType(PDR_JSONS_DIR, PLDM_STATE_EFFECTER_PDR);
-        if (repo.empty())
-        {
-            std::cerr << "Failed to get record by PDR type\n";
-            return PLDM_PLATFORM_INVALID_EFFECTER_ID;
-        }
         PdrEntry pdrEntry{};
-        auto pdrRecord = repo.getFirstRecord(pdrEntry);
+        auto pdrRecord = pdrRepo.getFirstRecord(pdrEntry);
         while (pdrRecord)
         {
             pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
+            std::cerr << "effecter ids, given : " << effecterId
+                      << ", pdr : " << pdr->effecter_id << "\n";
             if (pdr->effecter_id != effecterId)
             {
                 pdr = nullptr;
-                pdrRecord = repo.getNextRecord(pdrRecord, pdrEntry);
+                pdrRecord = pdrRepo.getNextRecord(pdrRecord, pdrEntry);
                 continue;
             }
 
@@ -223,7 +243,7 @@ class Handler : public CmdHandler
                  }}};
 
         int rc = PLDM_SUCCESS;
-        auto paths = get(effecterId);
+        const auto& paths = getEffecterObjs(effecterId);
         for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
         {
             std::vector<StateSetNum> allowed{};
@@ -270,6 +290,11 @@ class Handler : public CmdHandler
         }
         return rc;
     }
+
+  private:
+    pdr_utils::Repo pdrRepo;
+    uint16_t nextEffecterId{};
+    std::map<uint16_t, EffecterObjs> effecterObjs{};
 };
 
 } // namespace platform
