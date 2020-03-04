@@ -1,27 +1,12 @@
 #pragma once
 
-#include "effecters.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-#include "utils.hpp"
 
 #include <stdint.h>
 
-#include <filesystem>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <nlohmann/json.hpp>
 #include <string>
-#include <vector>
-#include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/pdr.h"
-#include "libpldm/platform.h"
-
-using InternalFailure =
-    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
-namespace fs = std::filesystem;
 
 using namespace pldm::responder::pdr_utils;
 
@@ -33,20 +18,6 @@ namespace responder
 
 namespace pdr
 {
-/** @brief Parse PDR JSONs and build PDR repository
- *
- *  @param[in] dir - directory housing platform specific PDR JSON files
- *  @param[in] repo - instance of the concrete implementation of RepoInterface
- */
-void generate(const std::string& dir, RepoInterface& repo);
-
-/** @brief Build (if not built already) and retrieve PDR
- *
- *  @param[in] dir - directory housing platform specific PDR JSON files
- *
- *  @return RepoInterface& - Reference to instance of pdr::RepoInterface
- */
-RepoInterface& getRepo(const std::string& dir);
 
 /** @brief Build (if not built already) and retrieve PDR by the PDR types
  *
@@ -55,7 +26,7 @@ RepoInterface& getRepo(const std::string& dir);
  *
  *  @return Repo - Instance of pdr::Repo
  */
-Repo getRepoByType(const std::string& dir, Type pdrType);
+void getRepoByType(const Repo& inRepo, Repo& outRepo, Type pdrType);
 
 /** @brief Get the record of PDR by the record handle
  *
@@ -66,7 +37,7 @@ Repo getRepoByType(const std::string& dir, Type pdrType);
  *
  *  @return pldm_pdr_record - Instance of pdr::RepoInterface
  */
-const pldm_pdr_record* getRecordByHandle(RepoInterface& pdrRepo,
+const pldm_pdr_record* getRecordByHandle(const RepoInterface& pdrRepo,
                                          RecordHandle recordHandle,
                                          PdrEntry& pdrEntry);
 
