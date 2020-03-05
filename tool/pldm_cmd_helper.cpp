@@ -1,5 +1,13 @@
 #include "pldm_cmd_helper.hpp"
 
+#include "xyz/openbmc_project/Common/error.hpp"
+
+#include <systemd/sd-bus.h>
+
+#include <exception>
+#include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+
 #include "libpldm/requester/pldm.h"
 
 namespace pldmtool
@@ -101,57 +109,30 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     }
     else
     {
-        // loopback response message
-        std::vector<uint8_t> loopBackRespMsg(peekedLength);
-        auto recvDataLength =
-            recv(socketFd(), reinterpret_cast<void*>(loopBackRespMsg.data()),
-                 peekedLength, 0);
-        if (recvDataLength == peekedLength)
+        auto reqhdr = reinterpret_cast<const pldm_msg_hdr*>(&requestMsg[2]);
+        do
         {
-            std::cout << "Total length:" << recvDataLength << std::endl;
-            std::cout << "Loopback response message:" << std::endl;
-            printBuffer(loopBackRespMsg);
-        }
-        else
-        {
-            std::cerr << "Failure to read peeked length packet : RC = "
-                      << returnCode << "\n";
-            std::cerr << "peekedLength: " << peekedLength << "\n";
-            std::cerr << "Total length: " << recvDataLength << "\n";
-            return returnCode;
-        }
-
-        // Confirming on the first recv() the Request bit is set in
-        // pldm_msg_hdr struct. If set proceed with recv() or else, quit.
-        auto hdr = reinterpret_cast<const pldm_msg_hdr*>(&loopBackRespMsg[2]);
-        uint8_t request = hdr->request;
-        if (request == PLDM_REQUEST)
-        {
-            std::cout << "On first recv(),response == request : RC = "
-                      << returnCode << std::endl;
             ssize_t peekedLength =
                 recv(socketFd(), nullptr, 0, MSG_PEEK | MSG_TRUNC);
             responseMsg.resize(peekedLength);
-            recvDataLength =
+            auto recvDataLength =
                 recv(socketFd(), reinterpret_cast<void*>(responseMsg.data()),
                      peekedLength, 0);
-            if (recvDataLength == peekedLength)
+            auto hdr = reinterpret_cast<const pldm_msg_hdr*>(&responseMsg[2]);
+            if (recvDataLength == peekedLength &&
+                hdr->instance_id == reqhdr->instance_id &&
+                hdr->request != PLDM_REQUEST)
             {
                 std::cout << "Total length: " << recvDataLength << std::endl;
+                break;
             }
-            else
+            else if (recvDataLength != peekedLength)
             {
                 std::cerr << "Failure to read response length packet: length = "
                           << recvDataLength << "\n";
                 return returnCode;
             }
-        }
-        else
-        {
-            std::cerr << "On first recv(),request != response : RC = "
-                      << returnCode << "\n";
-            return returnCode;
-        }
+        } while (1);
     }
 
     returnCode = shutdown(socketFd(), SHUT_RDWR);
@@ -170,6 +151,25 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
 
 void CommandInterface::exec()
 {
+    static constexpr auto pldmObjPath = "/xyz/openbmc_project/pldm";
+    static constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto service =
+            pldm::utils::DBusHandler().getService(pldmObjPath, pldmRequester);
+        auto method = bus.new_method_call(service.c_str(), pldmObjPath,
+                                          pldmRequester, "GetInstanceId");
+        method.append(mctp_eid);
+        auto reply = bus.call(method);
+        reply.read(instanceId);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = " << mctp_eid
+                  << ", error = " << e.what() << "\n";
+        return;
+    }
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {

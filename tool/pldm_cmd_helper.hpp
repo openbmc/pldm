@@ -27,7 +27,6 @@ namespace helper
 using namespace pldm::utils;
 constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
-constexpr uint8_t PLDM_LOCAL_INSTANCE_ID = 0;
 
 /** @brief Print the buffer
  *
@@ -56,7 +55,7 @@ class CommandInterface
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :
         pldmType(type),
-        commandName(name), mctp_eid(PLDM_ENTITY_ID)
+        commandName(name), mctp_eid(PLDM_ENTITY_ID), instanceId(0)
     {
         app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");
         app->callback([&]() { exec(); });
@@ -77,6 +76,9 @@ class CommandInterface
     const std::string pldmType;
     const std::string commandName;
     uint8_t mctp_eid;
+
+  protected:
+    uint8_t instanceId;
 };
 
 } // namespace helper
