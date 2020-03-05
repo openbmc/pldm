@@ -23,6 +23,8 @@ namespace pldm
 namespace responder
 {
 
+static constexpr auto nbdInterface = "/dev/nbd1";
+
 int DumpHandler::fd = -1;
 
 int DumpHandler::newFileAvailable(uint64_t length)
@@ -61,7 +63,6 @@ int DumpHandler::newFileAvailable(uint64_t length)
 int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                  uint64_t address)
 {
-    static constexpr auto nbdInterface = "/dev/nbd1";
     int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
 
     if (DumpHandler::fd == -1)
@@ -132,6 +133,39 @@ int DumpHandler::fileAck(uint8_t /*fileStatus*/)
     }
 
     return PLDM_ERROR;
+}
+
+int DumpHandler::write(const char* buffer, uint32_t offset, uint32_t& length)
+{
+    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
+    if (DumpHandler::fd == -1)
+    {
+        DumpHandler::fd = open(nbdInterface, flags);
+        if (DumpHandler::fd == -1)
+        {
+            std::cerr << "NBD file does not exist at " << nbdInterface
+                      << " ERROR=" << errno << "\n";
+            return PLDM_ERROR;
+        }
+    }
+
+    int rc = lseek(DumpHandler::fd, offset, SEEK_SET);
+    if (rc == -1)
+    {
+        std::cerr << "lseek failed, ERROR=" << errno << ", OFFSET=" << offset
+                  << "\n";
+        return PLDM_ERROR;
+    }
+    rc = ::write(DumpHandler::fd, buffer, length);
+    if (rc == -1)
+    {
+        std::cerr << "file write failed, ERROR=" << errno
+                  << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
+        return PLDM_ERROR;
+    }
+    length = rc;
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace responder
