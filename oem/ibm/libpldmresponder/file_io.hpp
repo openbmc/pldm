@@ -173,6 +173,11 @@ class Handler : public CmdHandler
                                                         size_t payloadLength) {
             return this->readFileByType(request, payloadLength);
         });
+        handlers.emplace(PLDM_WRITE_FILE_BY_TYPE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->writeFileByType(request,
+                                                          payloadLength);
+                         });
         handlers.emplace(PLDM_GET_FILE_TABLE,
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->getFileTable(request, payloadLength);
@@ -235,7 +240,7 @@ class Handler : public CmdHandler
     Response readFileByTypeIntoMemory(const pldm_msg* request,
                                       size_t payloadLength);
 
-    /** @brief Handler for readFileByType command
+    /** @brief Handler for writeFileByType command
      *
      *  @param[in] request - pointer to PLDM request payload
      *  @param[in] payloadLength - length of the message
@@ -243,6 +248,8 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response readFileByType(const pldm_msg* request, size_t payloadLength);
+
+    Response writeFileByType(const pldm_msg* request, size_t payloadLength);
 
     /** @brief Handler for GetFileTable command
      *
