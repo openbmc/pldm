@@ -145,6 +145,10 @@ class DBusHandlerInterface
 
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
+
+    virtual PropertyValue
+        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
+                               const char* dbusInterface) const = 0;
 };
 
 /**
@@ -174,28 +178,33 @@ class DBusHandler : public DBusHandlerInterface
      */
     std::string getService(const char* path, const char* interface) const;
 
-    template <typename Variant>
-    auto getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                                const char* dbusInterface)
-    {
-        Variant value;
-        auto& bus = DBusHandler::getBus();
-        auto service = getService(objPath, dbusInterface);
-        auto method = bus.new_method_call(service.c_str(), objPath,
-                                          dbusProperties, "Get");
-        method.append(dbusInterface, dbusProp);
-        auto reply = bus.call(method);
-        reply.read(value);
+    /** @brief Get property(type: variant) from the requested dbus
+     *
+     * @param[in] objPath - The Dbus object path
+     * @param[in] dbusProp - The property name to get
+     * @param[in] dbusInterface - The Dbus interface
+     *
+     * @return The value of the property(type: variant)
+     */
+    PropertyValue
+        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
+                               const char* dbusInterface) const override;
 
-        return value;
-    }
-
+    /** @brief The template function to get property from the requested dbus
+     *         path
+     *
+     * @param[in] objPath - The Dbus object path
+     * @param[in] dbusProp - The property name to get
+     * @param[in] dbusInterface - The Dbus interface
+     *
+     * @return The value of the property
+     */
     template <typename Property>
     auto getDbusProperty(const char* objPath, const char* dbusProp,
                          const char* dbusInterface)
     {
-        auto VariantValue = getDbusPropertyVariant<std::variant<Property>>(
-            objPath, dbusProp, dbusInterface);
+        auto VariantValue =
+            getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
 
