@@ -11,6 +11,7 @@
 
 #include <exception>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <sdbusplus/server.hpp>
 #include <vector>
@@ -23,6 +24,71 @@ namespace pldm
 {
 namespace responder
 {
+
+using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+
+namespace detail
+{
+
+/**
+ * @brief Finds the Entry::Level value for the severity of the PEL
+ *        passed in.
+ *
+ * The severity byte is at offset 10 in the User Header section,
+ * which is always after the 48 byte Private Header section.
+ *
+ * @param[in] pelFileName - The file containing the PEL
+ *
+ * @return Entry::Level - The severity value for the Entry
+ */
+Entry::Level getEntryLevelFromPEL(const std::string& pelFileName)
+{
+    const std::map<uint8_t, Entry::Level> severityMap{
+        {0x00, Entry::Level::Informational}, // Informational event
+        {0x10, Entry::Level::Warning},       // Recoverable error
+        {0x20, Entry::Level::Warning},       // Predictive error
+        {0x40, Entry::Level::Error},         // Unrecoverable error
+        {0x50, Entry::Level::Error},         // Critical error
+        {0x60, Entry::Level::Error},         // Error from a diagnostic test
+        {0x70, Entry::Level::Warning}        // Recoverable symptom
+    };
+
+    const size_t severityOffset = 0x3A;
+
+    size_t size = 0;
+    if (fs::exists(pelFileName))
+    {
+        size = fs::file_size(pelFileName);
+    }
+
+    if (size > severityOffset)
+    {
+        std::ifstream pel{pelFileName};
+        if (pel.good())
+        {
+            pel.seekg(severityOffset);
+
+            uint8_t sev;
+            pel.read(reinterpret_cast<char*>(&sev), 1);
+
+            // Get the type
+            sev = sev & 0xF0;
+
+            auto entry = severityMap.find(sev);
+            if (entry != severityMap.end())
+            {
+                return entry->second;
+            }
+        }
+        else
+        {
+            std::cerr << "Unable to open PEL file " << pelFileName << "\n";
+        }
+    }
+
+    return Entry::Level::Error;
+}
+} // namespace detail
 
 int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
                                uint64_t address)
@@ -180,11 +246,10 @@ int PelHandler::storePel(std::string&& pelFileName)
             pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         std::map<std::string, std::string> addlData{};
-        addlData.emplace("RAWPEL", std::move(pelFileName));
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
-                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
-                    Error);
+                detail::getEntryLevelFromPEL(pelFileName));
+        addlData.emplace("RAWPEL", std::move(pelFileName));
 
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "Create");
