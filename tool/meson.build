@@ -11,6 +11,6 @@ executable(
   'pldmtool',
   sources,
   implicit_include_directories: false,
-  dependencies: [libpldm, libpldmutils],
+  dependencies: [libpldm, libpldmutils, dependency('sdbusplus')],
   install: true,
   install_dir: get_option('bindir'))
