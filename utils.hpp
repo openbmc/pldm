@@ -138,6 +138,10 @@ class DBusHandlerInterface
 
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
+
+    virtual PropertyValue
+        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
+                               const char* dbusInterface) const = 0;
 };
 
 /**
@@ -161,38 +165,53 @@ class DBusHandler : public DBusHandlerInterface
 
     /**
      *  @brief Get the DBUS Service name for the input dbus path
+     *
+     *  @note Will throw when it fails
+     *
      *  @param[in] path - DBUS object path
      *  @param[in] interface - DBUS Interface
+     *
      *  @return std::string - the dbus service name
      */
     std::string getService(const char* path, const char* interface) const;
 
-    template <typename Variant>
-    auto getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                                const char* dbusInterface)
-    {
-        Variant value;
-        auto& bus = DBusHandler::getBus();
-        auto service = getService(objPath, dbusInterface);
-        auto method = bus.new_method_call(service.c_str(), objPath,
-                                          dbusProperties, "Get");
-        method.append(dbusInterface, dbusProp);
-        auto reply = bus.call(method);
-        reply.read(value);
+    /** @brief Get property(type: variant) from the requested dbus
+     *
+     *  @note Will throw when it fails
+     *
+     *  @param[in] objPath - The Dbus object path
+     *  @param[in] dbusProp - The property name to get
+     *  @param[in] dbusInterface - The Dbus interface
+     *
+     *  @return The value of the property(type: variant)
+     */
+    PropertyValue
+        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
+                               const char* dbusInterface) const override;
 
-        return value;
-    }
-
+    /** @brief The template function to get property from the requested dbus
+     *         path
+     *
+     *  @note Will throw when it fails
+     *
+     *  @param[in] objPath - The Dbus object path
+     *  @param[in] dbusProp - The property name to get
+     *  @param[in] dbusInterface - The Dbus interface
+     *
+     *  @return The value of the property
+     */
     template <typename Property>
     auto getDbusProperty(const char* objPath, const char* dbusProp,
                          const char* dbusInterface)
     {
-        auto VariantValue = getDbusPropertyVariant<std::variant<Property>>(
-            objPath, dbusProp, dbusInterface);
+        auto VariantValue =
+            getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
 
     /** @brief Set Dbus property
+     *
+     *  @note Will throw when it fails
      *
      *  @param[in] dBusMap - Object path, property name, interface and property
      *                       type for the D-Bus object
