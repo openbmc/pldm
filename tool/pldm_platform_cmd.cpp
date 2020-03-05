@@ -47,7 +47,7 @@ class GetPDR : public CommandInterface
                                         PLDM_GET_PDR_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
-        auto rc = encode_get_pdr_req(PLDM_LOCAL_INSTANCE_ID, recordHandle, 0,
+        auto rc = encode_get_pdr_req(instanceId, recordHandle, 0,
                                      PLDM_GET_FIRSTPART, requestCount, 0,
                                      request, PLDM_GET_PDR_REQ_BYTES);
         return {rc, requestMsg};
@@ -204,8 +204,8 @@ class SetStateEffecter : public CommandInterface
         }
 
         auto rc = encode_set_state_effecter_states_req(
-            PLDM_LOCAL_INSTANCE_ID, effecterId, stateField.size(),
-            stateField.data(), request);
+            instanceId, effecterId, stateField.size(), stateField.data(),
+            request);
         return {rc, requestMsg};
     }
 
