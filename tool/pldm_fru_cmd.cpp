@@ -35,8 +35,7 @@ class GetFruRecordTableMetadata : public CommandInterface
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
-        auto rc = encode_get_fru_record_table_metadata_req(
-            PLDM_LOCAL_INSTANCE_ID, request);
+        auto rc = encode_get_fru_record_table_metadata_req(instanceId, request);
         return {rc, requestMsg};
     }
 
