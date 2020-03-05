@@ -186,5 +186,19 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
     }
 }
 
+PropertyValue DBusHandler::getDbusPropertyVariant(
+    const char* objPath, const char* dbusProp, const char* dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto service = getService(objPath, dbusInterface);
+    auto method =
+        bus.new_method_call(service.c_str(), objPath, dbusProperties, "Get");
+    method.append(dbusInterface, dbusProp);
+    PropertyValue value{};
+    auto reply = bus.call(method);
+    reply.read(value);
+    return value;
+}
+
 } // namespace utils
 } // namespace pldm
