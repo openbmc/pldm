@@ -29,6 +29,12 @@ class PelHandler : public FileHandler
                                uint64_t address);
     virtual int read(uint32_t offset, uint32_t& length, Response& response);
 
+    virtual int write(const char* /*buffer*/, uint32_t /*offset*/,
+                      uint32_t& /*length*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     virtual int fileAck(uint8_t fileStatus);
 
     /** @brief method to store a pel file in tempfs and send

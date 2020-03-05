@@ -48,6 +48,15 @@ class FileHandler
      */
     virtual int read(uint32_t offset, uint32_t& length, Response& response) = 0;
 
+    /** @brief Method to write an oem file by type
+     *  @param[in] buffer - buffer to be written to file
+     *  @param[in] offset - offset to write to
+     *  @param[in/out] length - length to be written
+     *  @return PLDM status code
+     */
+    virtual int write(const char* buffer, uint32_t offset,
+                      uint32_t& length) = 0;
+
     virtual int fileAck(uint8_t fileStatus) = 0;
 
     /** @brief Method to process a new file available notification from the

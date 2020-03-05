@@ -44,6 +44,12 @@ class LidHandler : public FileHandler
         return transferFileData(lidPath, true, offset, length, address);
     }
 
+    virtual int write(const char* /*buffer*/, uint32_t /*offset*/,
+                      uint32_t& /*length*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     virtual int read(uint32_t offset, uint32_t& length, Response& response)
     {
         return readFile(lidPath, offset, length, response);
