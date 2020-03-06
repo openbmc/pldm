@@ -555,3 +555,186 @@ int decode_get_state_sensor_readings_req(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_numeric_effecter_value_req(uint8_t instance_id,
+					  uint16_t effecter_id,
+					  struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_get_numeric_effecter_value_req *request =
+	    (struct pldm_get_numeric_effecter_value_req *)msg->payload;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_GET_NUMERIC_EFFECTER_VALUE;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	request->effecter_id = htole16(effecter_id);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_get_numeric_effecter_value_resp(
+    uint8_t instance_id, uint8_t completion_code, uint8_t effecter_data_size,
+    uint8_t effecter_oper_state, uint8_t *pending_value, uint8_t *present_value,
+    struct pldm_msg *msg, size_t payload_length)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL || pending_value == NULL || present_value == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (effecter_data_size > PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (effecter_oper_state > EFFECTER_OPER_STATE_INTEST) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_GET_NUMERIC_EFFECTER_VALUE;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_get_numeric_effecter_value_resp *response =
+	    (struct pldm_get_numeric_effecter_value_resp *)msg->payload;
+
+	response->completion_code = completion_code;
+	response->effecter_data_size = effecter_data_size;
+	response->effecter_oper_state = effecter_oper_state;
+
+	if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT8 ||
+	    effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT8) {
+		if (payload_length !=
+		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		*response->pending_value = *pending_value;
+		*response->present_value = *present_value;
+	} else if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
+		   effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT16) {
+		if (payload_length !=
+		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES + 2) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(response->pending_value, pending_value, 2);
+		memcpy(response->present_value, present_value, 2);
+		*response->pending_value = htole16(*response->pending_value);
+		*response->present_value = htole16(*response->present_value);
+	} else if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+		   effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		if (payload_length !=
+		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES + 6) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(response->pending_value, pending_value, 4);
+		memcpy(response->present_value, present_value, 4);
+		*response->pending_value = htole32(*response->pending_value);
+		*response->present_value = htole32(*response->present_value);
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_numeric_effecter_value_req(const struct pldm_msg *msg,
+					  size_t payload_length,
+					  uint16_t *effecter_id)
+{
+	if (msg == NULL || effecter_id == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_numeric_effecter_value_req *request =
+	    (struct pldm_get_numeric_effecter_value_req *)msg->payload;
+
+	*effecter_id = le16toh(request->effecter_id);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_numeric_effecter_value_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint8_t *effecter_data_size, uint8_t *effecter_oper_state,
+    uint8_t *pending_value, uint8_t *present_value)
+{
+	if (msg == NULL || effecter_data_size == NULL ||
+	    effecter_oper_state == NULL || pending_value == NULL ||
+	    present_value == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length < PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_numeric_effecter_value_resp *response =
+	    (struct pldm_get_numeric_effecter_value_resp *)msg->payload;
+
+	*effecter_data_size = response->effecter_data_size;
+	*effecter_oper_state = response->effecter_oper_state;
+
+	if (*effecter_data_size > PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (*effecter_oper_state > EFFECTER_OPER_STATE_INTEST) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT8 ||
+	    *effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT8) {
+		if (payload_length !=
+		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		*pending_value = *response->pending_value;
+		*present_value = *response->present_value;
+	} else if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
+		   *effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT16) {
+		if (payload_length !=
+		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES + 2) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(pending_value, response->pending_value, 2);
+		memcpy(present_value, response->present_value, 2);
+		*pending_value = le16toh(*pending_value);
+		*present_value = le16toh(*present_value);
+	} else if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+		   *effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		if (payload_length !=
+		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES + 6) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(pending_value, response->pending_value, 4);
+		memcpy(present_value, response->present_value, 4);
+		*pending_value = le32toh(*pending_value);
+		*present_value = le32toh(*present_value);
+	}
+	return PLDM_SUCCESS;
+}
