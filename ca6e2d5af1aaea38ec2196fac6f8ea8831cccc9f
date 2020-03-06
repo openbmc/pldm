@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9868c15d_f9849d33",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-06T08:59:50Z",
+      "side": 1,
+      "message": "The getPageAlignedLength at line no #53 already aligns length to pagesize, lengthTemp/2 will be a multiple of pageSize , so do we need  the call here?",
+      "range": {
+        "startLine": 85,
+        "startChar": 12,
+        "endLine": 85,
+        "endChar": 65
+      },
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60173a17_c1158bd2",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-06T08:59:50Z",
+      "side": 1,
+      "message": "The whole length cannot be guaranteed to be transferred because pageAlignedLength can be less than the \"length\". Would we not need multiple DMA operations to achieve transferring\"length\" bytes?",
+      "range": {
+        "startLine": 176,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 68
+      },
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36de9672_81cbef94",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-06T08:59:50Z",
+      "side": 1,
+      "message": "doxygen/documentation",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 51
+      },
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9533b843_6985123f",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-06T08:59:50Z",
+      "side": 1,
+      "message": "How is this different from the function declared at line no #57? either documentation or naming it differently.",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 76,
+        "endChar": 24
+      },
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9daf2f4_d65e0ad1",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-06T08:59:50Z",
+      "side": 1,
+      "message": "Probably this can be removed in the next patch.",
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
