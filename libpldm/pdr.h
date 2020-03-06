@@ -247,6 +247,24 @@ void pldm_entity_association_tree_destroy(pldm_entity_association_tree *tree);
  */
 bool pldm_entity_is_node_parent(pldm_entity_node *node);
 
+/** @brief Convert entity association tree to PDR
+ *
+ *  @param[in] tree - opaque pointer to entity association tree
+ *  @param[in] repo - PDR repo where entity association records should be added
+ */
+void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
+				     pldm_pdr *repo);
+
+/** @brief Get number of children of entity
+ *
+ *  @param[in] node - opaque pointer acting as a handle to an entity node
+ *  @param[in] association_type - relation type filter : logical or physical
+ *
+ *  @return uint8_t number of children
+ */
+uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
+				     uint8_t association_type);
+
 #ifdef __cplusplus
 }
 #endif
