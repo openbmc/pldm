@@ -188,7 +188,7 @@ typedef struct pldm_entity {
 
 enum entity_association_containment_type {
 	PLDM_ENTITY_ASSOCIAION_PHYSICAL = 0x0,
-	PLDM_ENTITY_ASSOCIAION_LOGICAL = 0x1
+	PLDM_ENTITY_ASSOCIAION_LOGICAL = 0x1,
 };
 
 /** @struct pldm_entity_association_tree
@@ -210,6 +210,11 @@ void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
 void pldm_entity_association_tree_destroy(pldm_entity_association_tree *tree);
 
 bool pldm_entity_is_node_parent(pldm_entity_node *node);
+
+void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
+				     pldm_pdr *repo);
+
+uint8_t get_num_children(pldm_entity_node *node, uint8_t association_type);
 
 #ifdef __cplusplus
 }
