@@ -34,6 +34,8 @@ using AttrTableEntryHandler =
 
 void traverseBIOSAttrTable(const bios::Table& BIOSAttrTable,
                            AttrTableEntryHandler handler);
+StringHandle findStringHandle(const std::string& name,
+                              const BIOSTable& biosStringTable);
 
 namespace internal
 {
@@ -47,6 +49,7 @@ namespace internal
  */
 Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                          const char* biosJsonDir, const char* biosTablePath);
+
 } // namespace internal
 
 class Handler : public CmdHandler
