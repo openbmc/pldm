@@ -1,5 +1,6 @@
 #include "bios_parser.hpp"
 
+#include "bios.hpp"
 #include "bios_table.hpp"
 #include "utils.hpp"
 
@@ -10,6 +11,7 @@
 #include <nlohmann/json.hpp>
 #include <optional>
 #include <set>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/bios.h"
 #include "libpldm/bios_table.h"
@@ -24,6 +26,9 @@ using namespace pldm::responder::bios;
 const std::vector<Json> emptyJsonList{};
 const Json emptyJson{};
 
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+
 struct DBusMapping
 {
     std::string objectPath;   //!< D-Bus object path
@@ -36,9 +41,7 @@ using AttrType = uint8_t;
 using Table = std::vector<uint8_t>;
 using BIOSJsonName = std::string;
 using AttrLookup = std::map<AttrName, std::optional<DBusMapping>>;
-using PropertyValue =
-    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string>;
+
 const std::set<std::string> SupportedDbusPropertyTypes = {
     "bool",     "uint8_t", "int16_t",  "uint16_t", "int32_t",
     "uint32_t", "int64_t", "uint64_t", "double",   "string"};
@@ -50,6 +53,8 @@ using typeHandler = std::function<int(const Json& entry)>;
 
 Strings BIOSStrings;
 AttrLookup BIOSAttrLookup;
+
+std::vector<std::unique_ptr<sdbusplus::bus::match::match>> chBiosAttrPropSignal;
 
 const Strings& getStrings()
 {
@@ -646,6 +651,234 @@ int setAttrValue(const AttrName& attrName,
 
 } // namespace bios_integer
 
+void processBiosAttrChangeNotification(const DbusChObjProperties& chProperties,
+                                       const std::string& propertyName,
+                                       const std::string& propertyType,
+                                       const std::string& attrName)
+{
+    std::cout << "entered processBiosAttrChangeNotification for property "
+              << propertyName.c_str() << " and attribute " << attrName.c_str()
+              << std::endl;
+
+    const auto it = chProperties.find(propertyName);
+
+    if (it == chProperties.end())
+    {
+        std::cout << "property " << propertyName.c_str() << " has not changed"
+                  << std::endl;
+        return;
+    }
+    std::pair<std::string, DbusVariant> matchedProp =
+        std::make_pair(it->first, it->second);
+
+    fs::path tablesPath(BIOS_TABLES_DIR);
+    constexpr auto stringTableFile = "stringTable";
+    auto stringTablePath = tablesPath / stringTableFile;
+    BIOSTable biosStringTable(stringTablePath.c_str());
+    pldm::StringHandle attrNameHdl;
+    try
+    {
+        attrNameHdl = findStringHandle(attrName, biosStringTable);
+        std::cout << "found string handle " << attrNameHdl << " for attribute "
+                  << attrName.c_str() << std::endl;
+    }
+    catch (InternalFailure& e)
+    {
+        std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
+                  << attrName.c_str() << std::endl;
+        return;
+    }
+    Table attrTable;
+    constexpr auto attrTableFile = "attributeTable";
+    auto attrTablePath = tablesPath / attrTableFile;
+    BIOSTable biosAttributeTable(attrTablePath.c_str());
+    biosAttributeTable.load(attrTable);
+
+    auto iter = pldm_bios_table_iter_create(attrTable.data(), attrTable.size(),
+                                            PLDM_BIOS_ATTR_TABLE);
+    constexpr auto PLDM_BIOS_INVALID_TYPE = 0x9;
+    uint8_t attrType = PLDM_BIOS_INVALID_TYPE;
+    uint16_t attrHdl;
+    const struct pldm_bios_attr_table_entry* tableEntry = nullptr;
+    while (!pldm_bios_table_iter_is_end(iter))
+    {
+        tableEntry = pldm_bios_table_iter_attr_entry_value(iter);
+        if (tableEntry->string_handle == attrNameHdl)
+        {
+            attrHdl = tableEntry->attr_handle;
+            attrType = tableEntry->attr_type;
+            break;
+        }
+        pldm_bios_table_iter_next(iter);
+    }
+
+    if (pldm_bios_table_iter_is_end(iter))
+    {
+        std::cerr << "Attribute not found in attribute table, name handle="
+                  << attrNameHdl << std::endl;
+        pldm_bios_table_iter_free(iter);
+        return;
+    }
+    pldm_bios_table_iter_free(iter);
+
+    std::cout << "attribute handle is " << attrHdl << std::endl;
+    std::cout << "attribute type from attr table is " << (uint32_t)attrType
+              << std::endl;
+
+    constexpr auto attrValTableFile = "attributeValueTable";
+    auto attrValueTablePath = tablesPath / attrValTableFile;
+    BIOSTable biosAttributeValueTable(attrValueTablePath.c_str());
+    Table attrValueSrcTable;
+    biosAttributeValueTable.load(attrValueSrcTable);
+
+    Table newValue;
+    std::copy_n(reinterpret_cast<uint8_t*>(&attrHdl), sizeof(attrHdl),
+                std::back_inserter(newValue));
+    std::copy_n(reinterpret_cast<uint8_t*>(&attrType), sizeof(attrType),
+                std::back_inserter(newValue));
+
+    if (attrType == PLDM_BIOS_ENUMERATION)
+    {
+        using JsonToDBusMap = std::map<std::string, std::string>;
+        static const JsonToDBusMap enumValToDBusValMap = {
+            {"xyz.openbmc_project.Network.IP.AddressOrigin.Static",
+             "IPv4Static"},
+            {"xyz.openbmc_project.Network.IP.AddressOrigin.DHCP", "IPv4DHCP"}};
+        std::cout << "at attrType PLDM_BIOS_ENUMERATION" << std::endl;
+        pldm::StringHandle newValueHdl;
+        try
+        {
+            auto enumVal = enumValToDBusValMap.at(
+                std::get<std::string>(matchedProp.second));
+            newValueHdl = findStringHandle(enumVal, biosStringTable);
+        }
+        catch (InternalFailure& e)
+        {
+            std::cerr
+                << "Could not find string handle for new BIOS enum, value="
+                << std::get<std::string>(matchedProp.second).c_str() << "\n";
+            return;
+        }
+
+        uint8_t num = tableEntry->metadata[0];
+        uint16_t* valHdls = reinterpret_cast<uint16_t*>(
+            const_cast<uint8_t*>(tableEntry->metadata) + 1);
+        uint8_t index = 0;
+        for (; index < num; index++)
+        {
+            if (valHdls[index] == newValueHdl)
+            {
+                std::cout << "found match at index" << (uint32_t)index << "\n";
+                uint8_t currNum = 1; // one current value for one attribute
+                                     // change notification
+                std::copy_n(reinterpret_cast<uint8_t*>(&currNum),
+                            sizeof(currNum), std::back_inserter(newValue));
+                std::copy_n(reinterpret_cast<uint8_t*>(&index), sizeof(index),
+                            std::back_inserter(newValue));
+                break;
+            }
+        }
+        if (index == num)
+        {
+            std::cerr << "the new enum value could not be found in the table"
+                      << std::endl;
+            return;
+        }
+    }
+    else if (attrType == PLDM_BIOS_STRING)
+    {
+        std::cout << "attrType PLDM_BIOS_STRING " << std::endl;
+        std::string propSecond{};
+        try
+        {
+            propSecond = std::get<std::string>(matchedProp.second);
+        }
+        catch (const std::bad_variant_access& e)
+        {
+            std::cerr << "invalid value passed for the property, error: "
+                      << e.what() << "\n";
+            return;
+        }
+        std::cout << "new value to be updated: " << propSecond.c_str()
+                  << std::endl;
+        uint16_t len = propSecond.size();
+        std::copy_n(reinterpret_cast<uint8_t*>(&len), sizeof(len),
+                    std::back_inserter(newValue));
+        std::copy_n(propSecond.begin(), len, std::back_inserter(newValue));
+    }
+    else if (attrType == PLDM_BIOS_INTEGER)
+    {
+        std::cout << "attrType PLDM_BIOS_INTEGER" << std::endl;
+        uint64_t newVal{};
+        if (propertyType == "uint8_t")
+        {
+            uint8_t propSecond = std::get<uint8_t>(matchedProp.second);
+            newVal = propSecond;
+        }
+        else if (propertyType == "uint16_t")
+        {
+            uint16_t propSecond = std::get<uint16_t>(matchedProp.second);
+            newVal = propSecond;
+        }
+        else if (propertyType == "uint32_t")
+        {
+            uint32_t propSecond = std::get<uint32_t>(matchedProp.second);
+            newVal = propSecond;
+        }
+        else if (propertyType == "uint64_t")
+        {
+            uint64_t propSecond = std::get<uint64_t>(matchedProp.second);
+            newVal = propSecond;
+        }
+        else if (propertyType == "int16_t")
+        {
+            int16_t propSecond = std::get<int16_t>(matchedProp.second);
+            newVal = propSecond;
+        }
+        else if (propertyType == "int32_t")
+        {
+            int32_t propSecond = std::get<int32_t>(matchedProp.second);
+            newVal = propSecond;
+        }
+        else if (propertyType == "int64_t")
+        {
+            int64_t propSecond = std::get<int64_t>(matchedProp.second);
+            newVal = propSecond;
+        }
+        std::cout << "new integer prop value " << newVal << std::endl;
+        std::copy_n(reinterpret_cast<uint8_t*>(&newVal), sizeof(newVal),
+                    std::back_inserter(newValue));
+    }
+    else
+    {
+        std::cerr << "value type not supported yet, type=" << (uint32_t)attrType
+                  << std::endl;
+        return;
+    }
+    variable_field attrField;
+    attrField.ptr = newValue.data();
+    attrField.length = newValue.size();
+
+    size_t destBufferLength = attrValueSrcTable.size() + attrField.length + 3;
+    Response destTable(destBufferLength);
+    size_t destTableLen = destTable.size();
+
+    auto rc = pldm_bios_table_attr_value_copy_and_update(
+        attrValueSrcTable.data(), attrValueSrcTable.size(), destTable.data(),
+        &destTableLen, attrField.ptr, attrField.length);
+    destTable.resize(destTableLen);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "could not update the attribute value table,rc="
+                  << (uint32_t)rc << "\n";
+        return;
+    }
+
+    biosAttributeValueTable.store(destTable);
+    std::cout << "exiting processBiosAttrChangeNotification " << std::endl;
+}
+
 const std::map<BIOSJsonName, BIOSStringHandler> BIOSStringHandlers = {
     {bIOSEnumJson, bios_enum::setupBIOSStrings},
 };
@@ -747,6 +980,34 @@ int setupConfig(const char* dirPath)
         std::cerr << "No attribute is found in the config directory, DIR="
                   << dirPath << "\n";
         return -1;
+    }
+    std::cout << "registering for the property change" << std::endl;
+
+    for (auto const& attrLookup : BIOSAttrLookup)
+    {
+        const auto& attrName = attrLookup.first;
+        const auto& dBusMap = attrLookup.second;
+
+        if (dBusMap == std::nullopt)
+        {
+            std::cout << "attribute " << attrName.c_str()
+                      << " does not have dbus property \n";
+            continue;
+        }
+
+        using namespace sdbusplus::bus::match::rules;
+        chBiosAttrPropSignal.emplace_back(
+            std::make_unique<sdbusplus::bus::match::match>(
+                pldm::utils::DBusHandler::getBus(),
+                propertiesChanged(dBusMap->objectPath, dBusMap->interface),
+                [&](sdbusplus::message::message& msg) {
+                    DbusChObjProperties props;
+                    std::string iface;
+                    msg.read(iface, props);
+                    processBiosAttrChangeNotification(
+                        props, dBusMap->propertyName, dBusMap->propertyType,
+                        attrName);
+                }));
     }
     return 0;
 }
