@@ -38,6 +38,12 @@ inline constexpr auto bIOSEnumJson = "enum_attrs.json";
 inline constexpr auto bIOSStrJson = "string_attrs.json";
 inline constexpr auto bIOSIntegerJson = "integer_attrs.json";
 
+using PropertyValue =
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>;
+using DbusVariant = PropertyValue;
+using DbusChObjProperties = std::map<std::string, DbusVariant>;
+
 /** @brief Get all the preconfigured strings
  *  @return all the preconfigurated strings
  */
