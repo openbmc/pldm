@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "handler.hpp"
 #include "utils.hpp"
 
@@ -26,8 +28,7 @@ namespace dma
 // The minimum data size of dma transfer in bytes
 constexpr uint32_t minSize = 16;
 
-// 16MB - 4096B (16773120 bytes) is the maximum data size of DMA transfer
-constexpr size_t maxSize = (16 * 1024 * 1024) - 4096;
+constexpr size_t maxSize = DMA_MAXSIZE;
 
 namespace fs = std::filesystem;
 
