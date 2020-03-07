@@ -47,6 +47,7 @@ namespace internal
  */
 Response buildBIOSTables(const pldm_msg* request, size_t payloadLength,
                          const char* biosJsonDir, const char* biosTablePath);
+
 } // namespace internal
 
 class Handler : public CmdHandler
