@@ -5,3 +5,4 @@ option('requester-api', type: 'feature', description: 'Enable libpldm requester 
 option('utilities', type: 'feature', description: 'Enable debug utilities', value: 'enabled')
 
 option('libpldm-only', type: 'feature', description: 'Only build libpldm', value: 'disabled')
+option('oem-ibm-dma-maxsize', type: 'integer', description: 'OEM-IBM: max DMA size', value: 16773120) #16MB - 4K
