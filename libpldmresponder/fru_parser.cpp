@@ -60,7 +60,15 @@ void FruParser::setupDBusLookup(const fs::path& filePath)
 
     Service service = data.value("service", "");
     RootPath rootPath = data.value("root_path", "");
-    Interfaces interfaces = data.value("interfaces", emptyStringVec);
+    auto entities = data.value("entities", emptyJsonList);
+    Interfaces interfaces{};
+    EntityType entityType{};
+    for (auto& entity : entities)
+    {
+        auto intf = entity.value("interface", "");
+        intfToEntityType[intf] = std::move(entity.value("type", entityType));
+        interfaces.emplace(std::move(intf));
+    }
     lookupInfo.emplace(std::make_tuple(std::move(service), std::move(rootPath),
                                        std::move(interfaces)));
 }

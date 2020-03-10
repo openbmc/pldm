@@ -15,7 +15,10 @@ namespace pldm
 namespace responder
 {
 
-FruImpl::FruImpl(const std::string& configPath)
+FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
+                 pldm_entity_association_tree* entityTree) :
+    pdrRepo(pdrRepo),
+    entityTree(entityTree)
 {
     fru_parser::FruParser handle(configPath);
 
@@ -40,12 +43,7 @@ FruImpl::FruImpl(const std::string& configPath)
         return;
     }
 
-    // Populate all the interested Item types to a map for easy lookup
-    std::set<dbus::Interface> itemIntfsLookup;
-    auto itemIntfs = std::get<2>(dbusInfo);
-    std::transform(std::begin(itemIntfs), std::end(itemIntfs),
-                   std::inserter(itemIntfsLookup, itemIntfsLookup.end()),
-                   [](dbus::Interface intf) { return intf; });
+    auto itemIntfsLookup = std::get<2>(dbusInfo);
 
     for (const auto& object : objects)
     {
@@ -60,8 +58,33 @@ FruImpl::FruImpl(const std::string& configPath)
                 // not have corresponding config jsons
                 try
                 {
+                    pldm_entity entity{};
+                    entity.entity_type = handle.getEntityType(interface.first);
+                    std::cerr << "found object " << object.first.str
+                              << std::endl;
+                    pldm_entity_node* parent = nullptr;
+                    auto parentObj = pldm::utils::findParent(object.first.str);
+                    do
+                    {
+                        auto iter = objToEntityNode.find(parentObj);
+                        if (iter != objToEntityNode.end())
+                        {
+                            std::cerr << "found object parent " << parentObj
+                                      << std::endl;
+                            parent = iter->second;
+                            break;
+                        }
+                        parentObj = pldm::utils::findParent(parentObj);
+                    } while (parentObj != "/");
+
+                    auto node = pldm_entity_association_tree_add(
+                        entityTree, &entity, parent,
+                        PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                    objToEntityNode[object.first.str] = node;
+
                     auto recordInfos = handle.getRecordInfo(interface.first);
-                    populateRecords(interfaces, recordInfos);
+                    populateRecords(interfaces, recordInfos, entity);
+                    break;
                 }
                 catch (const std::exception& e)
                 {
@@ -72,6 +95,20 @@ FruImpl::FruImpl(const std::string& configPath)
                 }
             }
         }
+    }
+
+    pldm_entity_association_pdr_add(entityTree, pdrRepo);
+    size_t num{};
+    pldm_entity* out = nullptr;
+    pldm_entity_association_tree_visit(entityTree, &out, &num);
+    for (size_t i = 0; i < num; ++i)
+    {
+        std::cerr << "entity type : " << out[i].entity_type << std::endl;
+        std::cerr << "entity instance num : " << out[i].entity_instance_num
+                  << std::endl;
+        std::cerr << "entity container id : " << out[i].entity_container_id
+                  << std::endl;
+        std::cerr << std::endl << std::endl;
     }
 
     if (table.size())
@@ -88,7 +125,7 @@ FruImpl::FruImpl(const std::string& configPath)
 
 void FruImpl::populateRecords(
     const pldm::responder::dbus::InterfaceMap& interfaces,
-    const fru_parser::FruRecordInfos& recordInfos)
+    const fru_parser::FruRecordInfos& recordInfos, const pldm_entity& entity)
 {
     // recordSetIdentifier for the FRU will be set when the first record gets
     // added for the FRU
@@ -144,6 +181,9 @@ void FruImpl::populateRecords(
             if (numRecs == numRecsCount)
             {
                 recordSetIdentifier = nextRSI();
+                pldm_pdr_add_fru_record_set(
+                    pdrRepo, 0, recordSetIdentifier, entity.entity_type,
+                    entity.entity_instance_num, entity.entity_container_id);
             }
             auto curSize = table.size();
             table.resize(curSize + recHeaderSize + tlvs.size());

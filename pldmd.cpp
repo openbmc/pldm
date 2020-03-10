@@ -148,14 +148,19 @@ int main(int argc, char** argv)
 
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
+    std::unique_ptr<pldm_entity_association_tree,
+                    decltype(&pldm_entity_association_tree_destroy)>
+        entityTree(pldm_entity_association_tree_init(),
+                   pldm_entity_association_tree_destroy);
 
     Invoker invoker{};
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
     invoker.registerHandler(PLDM_PLATFORM, std::make_unique<platform::Handler>(
                                                PDR_JSONS_DIR, pdrRepo.get()));
-    invoker.registerHandler(PLDM_FRU,
-                            std::make_unique<fru::Handler>(FRU_JSONS_DIR));
+    invoker.registerHandler(
+        PLDM_FRU, std::make_unique<fru::Handler>(FRU_JSONS_DIR, pdrRepo.get(),
+                                                 entityTree.get()));
 
 #ifdef OEM_IBM
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
