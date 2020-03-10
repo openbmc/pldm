@@ -73,6 +73,7 @@ enum pldm_platform_commands {
  */
 enum pldm_pdr_types {
 	PLDM_STATE_EFFECTER_PDR = 11,
+	PLDM_PDR_ENTITY_ASSOCIATION = 15,
 	PLDM_PDR_FRU_RECORD_SET = 20,
 };
 
