@@ -15,7 +15,10 @@ namespace pldm
 namespace responder
 {
 
-FruImpl::FruImpl(const std::string& configPath)
+FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
+                 pldm_entity_association_tree* entityTree) :
+    pdrRepo(pdrRepo),
+    entityTree(entityTree)
 {
     fru_parser::FruParser handle(configPath);
 
@@ -51,6 +54,8 @@ FruImpl::FruImpl(const std::string& configPath)
     {
         const auto& interfaces = object.second;
 
+        bool found{};
+        pldm_entity entity{};
         for (const auto& interface : interfaces)
         {
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
@@ -62,6 +67,8 @@ FruImpl::FruImpl(const std::string& configPath)
                 {
                     auto recordInfos = handle.getRecordInfo(interface.first);
                     populateRecords(interfaces, recordInfos);
+                    entity.entity_type = 99;
+                    found = true;
                 }
                 catch (const std::exception& e)
                 {
@@ -72,7 +79,29 @@ FruImpl::FruImpl(const std::string& configPath)
                 }
             }
         }
+
+        if (found)
+        {
+            pldm_entity_node* parent = nullptr;
+            auto parentObj = pldm::utils::findParent(object.first);
+            do
+            {
+                auto iter = objToEntityNode.find(parentObj);
+                if (iter != objToEntityNode.end())
+                {
+                    parent = iter->second;
+                    break;
+                }
+                parentObj = pldm::utils::findParent(parentObj);
+            } while (parentObj != "/");
+
+            auto node = pldm_entity_association_tree_add(
+                entityTree, &entity, parent, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+            objToEntityNode[object.first.str] = node;
+        }
     }
+
+    pldm_entity_association_pdr_add(entityTree, pdrRepo);
 
     if (table.size())
     {
