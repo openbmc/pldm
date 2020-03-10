@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 /** @struct pldm_pdr
@@ -173,6 +175,79 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
     const pldm_pdr *repo, uint16_t fru_rsi, uint16_t *terminus_handle,
     uint16_t *entity_type, uint16_t *entity_instance_num,
     uint16_t *container_id);
+
+/* =========================== */
+/* Entity Association PDR APIs */
+/* =========================== */
+
+typedef struct pldm_entity {
+	uint16_t entity_type;
+	uint16_t entity_instance_num;
+	uint16_t entity_container_id;
+} __attribute__((packed)) pldm_entity;
+
+enum entity_association_containment_type {
+	PLDM_ENTITY_ASSOCIAION_PHYSICAL = 0x0,
+	PLDM_ENTITY_ASSOCIAION_LOGICAL = 0x1
+};
+
+/** @struct pldm_entity_association_tree
+ *  opaque structure that represents the entity association hierarchy
+ */
+typedef struct pldm_entity_association_tree pldm_entity_association_tree;
+
+/** @struct pldm_entity_node
+ *  opaque structure that represents a node in the entity association hierarchy
+ */
+typedef struct pldm_entity_node pldm_entity_node;
+
+/** @brief Make a new entity association tree
+ *
+ *  @return opaque pointer that acts as a handle to the tree; NULL if no
+ *  tree could be created
+ */
+pldm_entity_association_tree *pldm_entity_association_tree_init();
+
+/** @brief Add an entity into the entity association tree
+ *
+ *  @param[in/out] tree - opaque pointer acting as a handle to the tree
+ *  @param[in/out] entity - pointer to the entity to be added. Input has the
+ *                          entity type. On output, instance number and the
+ *                          container id are populated.
+ *  @param[in] parent - pointer to the node that should be the parent of input
+ *                      entity. If this is NULL, then the entity is the root
+ *  @param[in] association_type - relation with the parent : logical or physical
+ *
+ *  @return pldm_entity_node* - opaque pointer to added entity
+ */
+pldm_entity_node *
+pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
+				 pldm_entity *entity, pldm_entity_node *parent,
+				 uint8_t association_type);
+
+/** @brief Visit and note each entity in the entity association tree
+ *
+ *  @param[in] tree - opaque pointer acting as a handle to the tree
+ *  @param[out] entities - pointer to list of pldm_entity's. To be free()'d by
+ *                         the caller
+ *  @param[out] size - number of pldm_entity's
+ */
+void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
+					pldm_entity **entities, size_t *size);
+
+/** @brief Destroy entity association tree
+ *
+ *  @param[in] tree - opaque pointer acting as a handle to the tree
+ */
+void pldm_entity_association_tree_destroy(pldm_entity_association_tree *tree);
+
+/** @brief Check if input enity node is a parent
+ *
+ *  @param[in] node - opaque pointer acting as a handle to an entity node
+ *
+ *  @return bool true if node is a parent, false otherwise
+ */
+bool pldm_entity_is_node_parent(pldm_entity_node *node);
 
 #ifdef __cplusplus
 }
