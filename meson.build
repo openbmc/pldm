@@ -85,4 +85,8 @@ if get_option('utilities').enabled()
   subdir('utilities')
 endif
 
+if get_option('softoff').enabled()
+  subdir('softoff')
+endif
+
 endif # pldm-only
