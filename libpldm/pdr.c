@@ -301,3 +301,176 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 
 	return NULL;
 }
+
+typedef struct pldm_entity_association_tree {
+	pldm_entity_node *root;
+	uint16_t last_used_container_id;
+} pldm_entity_association_tree;
+
+typedef struct pldm_entity_node {
+	pldm_entity entity;
+	pldm_entity_node *first_child;
+	pldm_entity_node *next_sibling;
+	uint8_t association_type;
+} pldm_entity_node;
+
+static inline uint16_t next_container_id(pldm_entity_association_tree *tree)
+{
+	assert(tree != NULL);
+	assert(tree->last_used_container_id != UINT16_MAX);
+
+	return ++tree->last_used_container_id;
+}
+
+pldm_entity_association_tree *pldm_entity_association_tree_init()
+{
+	pldm_entity_association_tree *tree =
+	    malloc(sizeof(pldm_entity_association_tree));
+	assert(tree != NULL);
+	tree->root = NULL;
+	tree->last_used_container_id = 0;
+
+	return tree;
+}
+
+static pldm_entity_node *find_insertion_at(pldm_entity_node *start,
+					   uint16_t entity_type)
+{
+	assert(start != NULL);
+
+	/* Insert after the the last node that matches the input entity type, or
+	 * at the end if no such match occurrs
+	 */
+	while (start->next_sibling != NULL) {
+		uint16_t this_type = start->entity.entity_type;
+		pldm_entity_node *next = start->next_sibling;
+		if (this_type == entity_type && next &&
+		    (this_type != next->entity.entity_type)) {
+			break;
+		}
+		start = start->next_sibling;
+	}
+
+	return start;
+}
+
+pldm_entity_node *
+pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
+				 pldm_entity *entity, pldm_entity_node *parent,
+				 uint8_t association_type)
+{
+	assert(tree != NULL);
+	assert(association_type == PLDM_ENTITY_ASSOCIAION_PHYSICAL ||
+	       association_type == PLDM_ENTITY_ASSOCIAION_LOGICAL);
+	pldm_entity_node *node = malloc(sizeof(pldm_entity_node));
+	assert(node != NULL);
+	node->first_child = NULL;
+	node->next_sibling = NULL;
+	node->entity.entity_type = entity->entity_type;
+	node->entity.entity_instance_num = 1;
+	node->association_type = association_type;
+
+	if (parent == NULL) {
+		tree->root = node;
+		/* container_id 0 here indicates this is the top-most entry */
+		node->entity.entity_container_id = 0;
+	} else {
+		if (parent->first_child == NULL) {
+			parent->first_child = node;
+			node->entity.entity_container_id =
+			    next_container_id(tree);
+		} else {
+			pldm_entity_node *prev = find_insertion_at(
+			    parent->first_child, entity->entity_type);
+			assert(prev != NULL);
+			pldm_entity_node *next = prev->next_sibling;
+			if (prev->entity.entity_type == entity->entity_type) {
+				assert(prev->entity.entity_instance_num !=
+				       UINT16_MAX);
+				node->entity.entity_instance_num =
+				    prev->entity.entity_instance_num + 1;
+			}
+			prev->next_sibling = node;
+			node->next_sibling = next;
+			node->entity.entity_container_id =
+			    prev->entity.entity_container_id;
+		}
+	}
+	entity->entity_instance_num = node->entity.entity_instance_num;
+	entity->entity_container_id = node->entity.entity_container_id;
+
+	return node;
+}
+
+static void get_num_nodes(pldm_entity_node *node, size_t *num)
+{
+	if (node == NULL) {
+		return;
+	}
+
+	++(*num);
+	get_num_nodes(node->next_sibling, num);
+	get_num_nodes(node->first_child, num);
+}
+
+static void entity_association_tree_visit(pldm_entity_node *node,
+					  pldm_entity *entities, size_t *index)
+{
+	if (node == NULL) {
+		return;
+	}
+
+	pldm_entity *entity = &entities[*index];
+	++(*index);
+	entity->entity_type = node->entity.entity_type;
+	entity->entity_instance_num = node->entity.entity_instance_num;
+	entity->entity_container_id = node->entity.entity_container_id;
+
+	entity_association_tree_visit(node->next_sibling, entities, index);
+	entity_association_tree_visit(node->first_child, entities, index);
+}
+
+void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
+					pldm_entity **entities, size_t *size)
+{
+	assert(tree != NULL);
+
+	*size = 0;
+	if (tree->root == NULL) {
+		return;
+	}
+
+	get_num_nodes(tree->root, size);
+	*entities = malloc(*size * sizeof(pldm_entity));
+	size_t *index = malloc(sizeof(size_t));
+	assert(index != NULL);
+	*index = 0;
+	entity_association_tree_visit(tree->root, *entities, index);
+	free(index);
+}
+
+static void entity_association_tree_destroy(pldm_entity_node *node)
+{
+	if (node == NULL) {
+		return;
+	}
+
+	entity_association_tree_destroy(node->next_sibling);
+	entity_association_tree_destroy(node->first_child);
+	free(node);
+}
+
+void pldm_entity_association_tree_destroy(pldm_entity_association_tree *tree)
+{
+	assert(tree != NULL);
+
+	entity_association_tree_destroy(tree->root);
+	free(tree);
+}
+
+inline bool pldm_entity_is_node_parent(pldm_entity_node *node)
+{
+	assert(node != NULL);
+
+	return node->first_child != NULL;
+}
