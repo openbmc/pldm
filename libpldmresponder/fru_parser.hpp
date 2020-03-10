@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <map>
+#include <set>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -18,9 +19,10 @@ namespace dbus
 using Service = std::string;
 using RootPath = std::string;
 using Interface = std::string;
-using Interfaces = std::vector<Interface>;
+using Interfaces = std::set<Interface>;
 using Property = std::string;
 using PropertyType = std::string;
+using EntityType = uint8_t;
 
 } // namespace dbus
 
@@ -95,6 +97,11 @@ class FruParser
         return recordMap.at(intf);
     }
 
+    EntityType getEntityType(const Interface& intf) const
+    {
+        return intfToEntityType.at(intf);
+    }
+
   private:
     /** @brief Parse the FRU_Master.json file and populate the D-Bus lookup
      *         information which provides the service, root D-Bus path and the
@@ -114,6 +121,7 @@ class FruParser
 
     std::optional<DBusLookupInfo> lookupInfo;
     FruRecordMap recordMap;
+    std::map<Interface, EntityType> intfToEntityType;
 };
 
 } // namespace fru_parser

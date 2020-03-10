@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "libpldm/fru.h"
+#include "libpldm/pdr.h"
 
 namespace pldm
 {
@@ -28,6 +29,7 @@ using Value =
 using PropertyMap = std::map<Property, Value>;
 using InterfaceMap = std::map<Interface, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
+using ObjectPath = std::string;
 
 } // namespace dbus
 
@@ -53,7 +55,8 @@ class FruImpl
      *  @param[in] configPath - path to the directory containing config files
      * for PLDM FRU
      */
-    FruImpl(const std::string& configPath);
+    FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
+            pldm_entity_association_tree* entityTree);
 
     /** @brief Total length of the FRU table in bytes, this excludes the pad
      *         bytes and the checksum.
@@ -110,15 +113,22 @@ class FruImpl
     std::vector<uint8_t> table;
     uint32_t checksum = 0;
 
+    pldm_pdr* pdrRepo;
+    pldm_entity_association_tree* entityTree;
+
+    std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
+
     /** @brief populateRecord builds the FRU records for an instance of FRU and
      *         updates the FRU table with the FRU records.
      *
      *  @param[in] interfaces - D-Bus interfaces and the associated property
      *                          values for the FRU
      *  @param[in] recordInfos - FRU record info to build the FRU records
+     *  @param[in/out] entity - PLDM entity corresponding to FRU instance
      */
     void populateRecords(const pldm::responder::dbus::InterfaceMap& interfaces,
-                         const fru_parser::FruRecordInfos& recordInfos);
+                         const fru_parser::FruRecordInfos& recordInfos,
+                         const pldm_entity& entity);
 };
 
 namespace fru
@@ -128,7 +138,9 @@ class Handler : public CmdHandler
 {
 
   public:
-    Handler(const std::string& configPath) : impl(configPath)
+    Handler(const std::string& configPath, pldm_pdr* pdrRepo,
+            pldm_entity_association_tree* entityTree) :
+        impl(configPath, pdrRepo, entityTree)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -142,8 +154,6 @@ class Handler : public CmdHandler
                                                             payloadLength);
                          });
     }
-
-    FruImpl impl;
 
     /** @brief Handler for Get FRURecordTableMetadata
      *
@@ -163,6 +173,9 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response getFRURecordTable(const pldm_msg* request, size_t payloadLength);
+
+  private:
+    FruImpl impl;
 };
 
 } // namespace fru

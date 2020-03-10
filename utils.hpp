@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <exception>
+#include <filesystem>
 #include <iostream>
 #include <sdbusplus/server.hpp>
 #include <string>
@@ -20,6 +21,8 @@ namespace pldm
 {
 namespace utils
 {
+
+namespace fs = std::filesystem;
 
 /** @struct CustomFD
  *
@@ -202,6 +205,18 @@ class DBusHandler : public DBusHandlerInterface
     void setDbusProperty(const DBusMapping& dBusMap,
                          const PropertyValue& value) const override;
 };
+
+/** @brief Fetch parent D-Bus object based on pathname
+ *
+ *  @param[in] dbusObj - child D-Bus object
+ *
+ *  @return std::string - the parent D-Bus object path
+ */
+inline std::string findParent(const std::string& dbusObj)
+{
+    fs::path p(dbusObj);
+    return p.parent_path().string();
+}
 
 } // namespace utils
 } // namespace pldm
