@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "2cf5c6fb_533b0243",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-03-10T07:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60173a17_c1158bd2",
+      "range": {
+        "startLine": 176,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 68
+      },
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "36de9672_81cbef94",
         "filename": "oem/ibm/libpldmresponder/file_io.hpp",
         "patchSetId": 5
@@ -94,6 +118,30 @@
     },
     {
       "key": {
+        "uuid": "ae63553b_ae25d893",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-03-10T07:13:44Z",
+      "side": 1,
+      "message": "The first function does only mmap of the length. This function does the rest of transfer data and write. This is split to two function to give more clarity.",
+      "parentUuid": "9533b843_6985123f",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 76,
+        "endChar": 24
+      },
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b9daf2f4_d65e0ad1",
         "filename": "oem/ibm/libpldmresponder/file_io.hpp",
         "patchSetId": 5
@@ -108,6 +156,24 @@
       "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8eac0bdf_1663c770",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-03-10T07:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9daf2f4_d65e0ad1",
+      "revId": "ca6e2d5af1aaea38ec2196fac6f8ea8831cccc9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
