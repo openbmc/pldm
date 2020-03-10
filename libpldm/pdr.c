@@ -474,3 +474,121 @@ inline bool pldm_entity_is_node_parent(pldm_entity_node *node)
 
 	return node->first_child != NULL;
 }
+
+uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
+				     uint8_t association_type)
+{
+	assert(node != NULL);
+	assert(association_type == PLDM_ENTITY_ASSOCIAION_PHYSICAL ||
+	       association_type == PLDM_ENTITY_ASSOCIAION_LOGICAL);
+
+	size_t count = 0;
+	pldm_entity_node *curr = node->first_child;
+	while (curr != NULL) {
+		if (curr->association_type == association_type) {
+			++count;
+		}
+		curr = curr->next_sibling;
+	}
+
+	assert(count < UINT8_MAX);
+	return count;
+}
+
+static void _entity_association_pdr_add_entry(pldm_entity_node *curr,
+					      pldm_pdr *repo, uint16_t size,
+					      uint8_t contained_count,
+					      uint8_t association_type)
+{
+	uint8_t pdr[size];
+	uint8_t *start = pdr;
+
+	struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)start;
+	hdr->version = 1;
+	hdr->record_handle = 0;
+	hdr->type = PLDM_PDR_ENTITY_ASSOCIATION;
+	hdr->record_change_num = 0;
+	hdr->length = size;
+	start += sizeof(struct pldm_pdr_hdr);
+
+	uint16_t *container_id = (uint16_t *)start;
+	*container_id = curr->first_child->entity.entity_container_id;
+	start += sizeof(uint16_t);
+	*start = association_type;
+	start += sizeof(uint8_t);
+
+	pldm_entity *entity = (pldm_entity *)start;
+	entity->entity_type = curr->entity.entity_type;
+	entity->entity_instance_num = curr->entity.entity_instance_num;
+	entity->entity_container_id = curr->entity.entity_container_id;
+	start += sizeof(pldm_entity);
+
+	*start = contained_count;
+	start += sizeof(uint8_t);
+
+	pldm_entity_node *node = curr->first_child;
+	while (node != NULL) {
+		if (node->association_type == association_type) {
+			pldm_entity *entity = (pldm_entity *)start;
+			entity->entity_type = node->entity.entity_type;
+			entity->entity_instance_num =
+			    node->entity.entity_instance_num;
+			entity->entity_container_id =
+			    node->entity.entity_container_id;
+			start += sizeof(pldm_entity);
+		}
+		node = node->next_sibling;
+	}
+
+	pldm_pdr_add(repo, pdr, size, 0);
+}
+
+#include <stdio.h>
+static void entity_association_pdr_add_entry(pldm_entity_node *curr,
+					     pldm_pdr *repo)
+{
+	printf("entity id %d\n", curr->entity.entity_type);
+	uint8_t num_logical_children =
+	    pldm_entity_get_num_children(curr, PLDM_ENTITY_ASSOCIAION_LOGICAL);
+	uint8_t num_physical_children =
+	    pldm_entity_get_num_children(curr, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+
+	if (num_logical_children) {
+		uint16_t logical_pdr_size =
+		    sizeof(struct pldm_pdr_hdr) + sizeof(uint16_t) +
+		    sizeof(uint8_t) + sizeof(pldm_entity) + sizeof(uint8_t) +
+		    (num_logical_children * sizeof(pldm_entity));
+		_entity_association_pdr_add_entry(
+		    curr, repo, logical_pdr_size, num_logical_children,
+		    PLDM_ENTITY_ASSOCIAION_LOGICAL);
+	}
+
+	if (num_physical_children) {
+		uint16_t physical_pdr_size =
+		    sizeof(struct pldm_pdr_hdr) + sizeof(uint16_t) +
+		    sizeof(uint8_t) + sizeof(pldm_entity) + sizeof(uint8_t) +
+		    (num_physical_children * sizeof(pldm_entity));
+		_entity_association_pdr_add_entry(
+		    curr, repo, physical_pdr_size, num_physical_children,
+		    PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+	}
+}
+
+static void entity_association_pdr_add(pldm_entity_node *curr, pldm_pdr *repo)
+{
+	if (curr == NULL) {
+		return;
+	}
+	entity_association_pdr_add_entry(curr, repo);
+	entity_association_pdr_add(curr->next_sibling, repo);
+	entity_association_pdr_add(curr->first_child, repo);
+}
+
+void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
+				     pldm_pdr *repo)
+{
+	assert(tree != NULL);
+	assert(repo != NULL);
+
+	entity_association_pdr_add(tree->root, repo);
+}
