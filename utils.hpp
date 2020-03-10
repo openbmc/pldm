@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <exception>
+#include <filesystem>
 #include <iostream>
 #include <sdbusplus/server.hpp>
 #include <string>
@@ -20,6 +21,8 @@ namespace pldm
 {
 namespace utils
 {
+
+namespace fs = std::filesystem;
 
 /** @struct CustomFD
  *
@@ -190,6 +193,12 @@ class DBusHandler
         return std::get<Property>(VariantValue);
     }
 };
+
+inline std::string findParent(const std::string& dbusObj)
+{
+    fs::path p(dbusObj);
+    return p.parent_path().string();
+}
 
 } // namespace utils
 } // namespace pldm
