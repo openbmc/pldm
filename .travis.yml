@@ -1,0 +1,19 @@
+language: c
+os: linux
+arch:
+ - s390x
+ - amd64
+ - ppc64le
+dist: bionic
+
+services:
+  - docker
+
+before_install:
+  - docker pull ubuntu:eoan
+
+script:
+  - echo FROM ubuntu:eoan > Dockerfile
+  - echo add . /root >> Dockerfile
+  - docker build -t pldm .
+  - docker run pldm /bin/bash -c "apt update && apt -yq install meson ninja-build libgtest-dev gcc g++ && cd /root && TRAVIS=true meson -Dlibpldm-only=enabled -Doem-ibm=enabled build && ninja -C build/ test"
