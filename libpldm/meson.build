@@ -23,10 +23,12 @@ libpldm_headers = ['.', '..']
 
 if get_option('oem-ibm').enabled()
   headers += [
-    '../oem/ibm/libpldm/file_io.h'
+    '../oem/ibm/libpldm/file_io.h',
+    '../oem/ibm/libpldm/power_host.h'
   ]
   sources += [
-    '../oem/ibm/libpldm/file_io.c'
+    '../oem/ibm/libpldm/file_io.c',
+    '../oem/ibm/libpldm/power_host.c'
   ]
   libpldm_headers += ['../oem/ibm']
 endif
