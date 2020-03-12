@@ -699,6 +699,42 @@ Response Handler::fileAck(const pldm_msg* request, size_t payloadLength)
     return response;
 }
 
+Response Handler::getAlertStatus(const pldm_msg* request, size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) + PLDM_GET_ALERT_STATUS_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    if (payloadLength != PLDM_GET_ALERT_STATUS_REQ_BYTES)
+    {
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+
+    uint8_t versionId{};
+
+    auto rc = decode_get_alert_status_req(request, payloadLength, &versionId);
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
+
+    if (versionId != 0)
+    {
+        return CmdHandler::ccOnlyResponse(request,
+                                          PLDM_HOST_UNSUPPORTED_FORMAT_VERSION);
+    }
+
+    constexpr uint32_t rackEntry = 0xFF000030;
+    constexpr uint32_t priCecNode = 0x00008030;
+    rc = encode_get_alert_status_resp(request->hdr.instance_id, PLDM_SUCCESS,
+                                      rackEntry, priCecNode, responsePtr,
+                                      PLDM_GET_ALERT_STATUS_RESP_BYTES);
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
+
+    return response;
+}
+
 } // namespace oem_ibm
 } // namespace responder
 } // namespace pldm
