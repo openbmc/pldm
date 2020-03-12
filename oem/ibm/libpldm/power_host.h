@@ -75,6 +75,36 @@ int decode_get_alert_status_resp(const struct pldm_msg *msg,
 				 uint8_t *completion_code, uint32_t *rack_entry,
 				 uint32_t *pri_cec_node);
 
+/* Responder */
+
+/* GetAlertStatus */
+
+/** @brief Decode GetAlertStatus request data
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] version_id - the command/response format. 0x00 for this format
+ *  @return pldm_completion_codes
+ */
+int decode_get_alert_status_req(const struct pldm_msg *msg,
+				size_t payload_length, uint8_t *version_id);
+
+/** @brief Create a PLDM OEM response message for GetAlertStatus
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] rack_entry - Enclosure ID, Alert Status, Flags, Config ID
+ *  @param[in] pri_cec_node - Enclosure ID, Alert Status, Flags, Config ID
+ *  @param[out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.body.payload'
+ */
+int encode_get_alert_status_resp(uint8_t instance_id, uint8_t completion_code,
+				 uint32_t rack_entry, uint32_t pri_cec_node,
+				 struct pldm_msg *msg, size_t payload_length);
+
 #ifdef __cplusplus
 }
 #endif
