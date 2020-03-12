@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf83f717_669eed91",
+        "filename": ".travis.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2020-03-12T06:50:17Z",
+      "side": 1,
+      "message": "pldm CI is already run on OpenBMC Jenkins, so I think they could be removed to save some resource, although it\u0027s free :)",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 10
+      },
+      "revId": "b1132db23ccd2027cbafc18b783b309553ac8e22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
