@@ -17,6 +17,7 @@
 
 #include "libpldm/base.h"
 #include "oem/ibm/libpldm/file_io.h"
+#include "oem/ibm/libpldm/power_host.h"
 
 namespace pldm
 {
@@ -143,7 +144,6 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
 
 namespace oem_ibm
 {
-
 class Handler : public CmdHandler
 {
   public:
@@ -189,6 +189,10 @@ class Handler : public CmdHandler
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->fileAck(request, payloadLength);
                          });
+        handlers.emplace(PLDM_GET_ALERT_STATUS, [this](const pldm_msg* request,
+                                                       size_t payloadLength) {
+            return this->getAlertStatus(request, payloadLength);
+        });
     }
 
     /** @brief Handler for readFileIntoMemory command
@@ -267,6 +271,15 @@ class Handler : public CmdHandler
     Response writeFile(const pldm_msg* request, size_t payloadLength);
 
     Response fileAck(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for getAlertStatus command
+     *
+     *  @param[in] request - PLDM request msg
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *  @return PLDM response message
+     */
+    Response getAlertStatus(const pldm_msg* request, size_t payloadLength);
 };
 
 } // namespace oem_ibm
