@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "41389b9b_f40ed5f7",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-12T13:28:20Z",
+      "side": 1,
+      "message": "while (length \u003e pageAlignedLength)\n    {\n        rc \u003d transferDataHost(fd, xdmaFd(), pageAlignedLength, offset,pageAlignedLength\n                              address, upstream, vgaMemPtr.get());\n        if (rc \u003c 0)\n        {\n            return rc;\n        }\n        offset +\u003d pageAlignedLength;\n        length -\u003d pageAlignedLength;\n        address +\u003d pageAlignedLength;\n    }\n    rc \u003d transferDataHost(fd, xdmaFd(), pageAlignedLength, offset, length\n                          address, upstream, vgaMemPtr.get());\n    return rc;",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 14
+      },
+      "revId": "169c69e114676d12296cbb2e14d94f6dbb010eb6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
