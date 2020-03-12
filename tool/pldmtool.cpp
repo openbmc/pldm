@@ -3,6 +3,7 @@
 #include "pldm_cmd_helper.hpp"
 #include "pldm_fru_cmd.hpp"
 #include "pldm_platform_cmd.hpp"
+#include "tool/oem/ibm/pldm_host_cmd.hpp"
 
 #include <CLI/CLI.hpp>
 
@@ -72,6 +73,7 @@ int main(int argc, char** argv)
     pldmtool::bios::registerCommand(app);
     pldmtool::platform::registerCommand(app);
     pldmtool::fru::registerCommand(app);
+    pldmtool::oem_ibm::power_host::registerCommand(app);
 
     CLI11_PARSE(app, argc, argv);
     return 0;
