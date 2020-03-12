@@ -28,6 +28,7 @@ tests = [
 if get_option('oem-ibm').enabled()
   tests += [
     '../../oem/ibm/test/libpldm_fileio_test',
+    '../../oem/ibm/test/libpldm_platform_test',
   ]
 endif
 
