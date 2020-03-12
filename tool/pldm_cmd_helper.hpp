@@ -17,6 +17,7 @@
 #include "libpldm/bios.h"
 #include "libpldm/fru.h"
 #include "libpldm/platform.h"
+#include "oem/ibm/libpldm/power_host.h"
 
 namespace pldmtool
 {
