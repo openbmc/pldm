@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e64d8dac_e69a324b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-13T06:02:52Z",
+      "side": 1,
+      "message": "This is not true as per the commit, can you update the commit message.",
+      "revId": "23403395c743f94e4548f9cb8c5e8f920b040863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf3cb7a5_64790be3",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-13T06:02:52Z",
+      "side": 1,
+      "message": "Should this not be length?",
+      "range": {
+        "startLine": 110,
+        "startChar": 25,
+        "endLine": 110,
+        "endChar": 42
+      },
+      "revId": "23403395c743f94e4548f9cb8c5e8f920b040863",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
