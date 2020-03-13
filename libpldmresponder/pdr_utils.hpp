@@ -1,13 +1,17 @@
 #pragma once
 
+#include "utils.hpp"
+
 #include <stdint.h>
 
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <vector>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/pdr.h"
@@ -77,10 +81,6 @@ inline Json readJson(const std::string& path)
 class RepoInterface
 {
   public:
-    RepoInterface(pldm_pdr* repo) : repo(repo)
-    {
-    }
-
     virtual ~RepoInterface() = default;
 
     /** @brief Get an opaque pldm_pdr structure
@@ -153,8 +153,14 @@ class RepoInterface
 class Repo : public RepoInterface
 {
   public:
-    Repo(pldm_pdr* repo) : RepoInterface(repo)
+    Repo()
     {
+        repo = pldm_pdr_init();
+    }
+
+    ~Repo()
+    {
+        pldm_pdr_destroy(repo);
     }
 
     pldm_pdr* getPdr() const override;

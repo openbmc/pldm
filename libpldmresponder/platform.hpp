@@ -21,13 +21,16 @@ namespace responder
 namespace platform
 {
 
+using namespace pldm::utils;
+using namespace pldm::responder::pdr_utils;
+
 using DbusPath = std::string;
 using EffecterObjs = std::vector<DbusPath>;
 
 class Handler : public CmdHandler
 {
   public:
-    Handler(const std::string& dir, pldm_pdr* repo) : pdrRepo(repo)
+    Handler(const std::string& dir)
     {
         generate(dir, pdrRepo);
 
@@ -40,6 +43,11 @@ class Handler : public CmdHandler
                              return this->setStateEffecterStates(request,
                                                                  payloadLength);
                          });
+    }
+
+    pdr_utils::Repo& getRepo()
+    {
+        return this->pdrRepo;
     }
 
     const EffecterObjs& getEffecterObjs(uint16_t effecterId) const

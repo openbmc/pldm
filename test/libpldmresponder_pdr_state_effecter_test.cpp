@@ -12,12 +12,9 @@ using namespace pldm::responder::pdr_utils;
 
 TEST(GeneratePDR, testGoodJson)
 {
-    auto inPDRRepo = pldm_pdr_init();
-    auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
-    Repo inRepo(inPDRRepo);
-    getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    pdr_utils::Repo outRepo =
+        getRepoByType(handler.getRepo(), PLDM_STATE_EFFECTER_PDR);
 
     // 2 entries
     ASSERT_EQ(outRepo.getRecordCount(), 2);
@@ -96,33 +93,20 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(paths1[1], "/foo/bar/baz");
 
     ASSERT_THROW(handler.getEffecterObjs(0xDEAD), std::exception);
-
-    pldm_pdr_destroy(inPDRRepo);
-    pldm_pdr_destroy(outPDRRepo);
 }
 
 TEST(GeneratePDR, testNoJson)
 {
-    auto pdrRepo = pldm_pdr_init();
-
-    ASSERT_THROW(Handler("./pdr_jsons/not_there", pdrRepo), std::exception);
-
-    pldm_pdr_destroy(pdrRepo);
+    ASSERT_THROW(Handler("./pdr_jsons/not_there"), std::exception);
 }
 
 TEST(GeneratePDR, testMalformedJson)
 {
-    auto inPDRRepo = pldm_pdr_init();
-    auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
-    Repo inRepo(inPDRRepo);
-    getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
+    Handler handler("./pdr_jsons/state_effecter/good");
+    pdr_utils::Repo outRepo =
+        getRepoByType(handler.getRepo(), PLDM_STATE_EFFECTER_PDR);
 
     ASSERT_EQ(outRepo.getRecordCount(), 2);
     ASSERT_THROW(pdr_utils::readJson("./pdr_jsons/state_effecter/malformed"),
                  std::exception);
-
-    pldm_pdr_destroy(inPDRRepo);
-    pldm_pdr_destroy(outPDRRepo);
 }

@@ -21,12 +21,12 @@ namespace pdr
 
 /** @brief Build (if not built already) and retrieve PDR by the PDR types
  *
- *  @param[in] dir - directory housing platform specific PDR JSON files
+ *  @param[in] inRepo - pdr::RepoInterface
  *  @param[in] pdrType - the type of PDRs
  *
  *  @return Repo - Instance of pdr::Repo
  */
-void getRepoByType(const Repo& inRepo, Repo& outRepo, Type pdrType);
+Repo getRepoByType(const Repo& inRepo, Type pdrType);
 
 /** @brief Get the record of PDR by the record handle
  *
