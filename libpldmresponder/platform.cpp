@@ -195,6 +195,89 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     return response;
 }
 
+Response Handler::platformEventMessage(const pldm_msg* request,
+                                       size_t payloadLength)
+{
+    uint8_t formatVersion{};
+    uint8_t tid{};
+    uint8_t eventClass{};
+    size_t offset{};
+
+    auto rc = decode_platform_event_message_req(
+        request, payloadLength, &formatVersion, &tid, &eventClass, &offset);
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
+
+    try
+    {
+        const auto& handlers = eventHandlers.at(eventClass);
+        for (const auto& handler : handlers)
+        {
+            auto rc =
+                handler(request, payloadLength, formatVersion, tid, offset);
+            if (rc != PLDM_SUCCESS)
+            {
+                return CmdHandler::ccOnlyResponse(request, rc);
+            }
+        }
+    }
+    catch (const std::out_of_range& e)
+    {
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_DATA);
+    }
+
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = encode_platform_event_message_resp(request->hdr.instance_id, rc,
+                                            PLDM_EVENT_NO_LOGGING, responsePtr);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    return response;
+}
+
+int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
+                         uint8_t /*formatVersion*/, uint8_t /*tid*/,
+                         size_t eventDataOffset)
+{
+    uint16_t sensorId{};
+    uint8_t eventClass{};
+    size_t eventClassDataOffset{};
+    auto eventData =
+        reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
+    auto eventDataSize = payloadLength - eventDataOffset;
+
+    auto rc = decode_sensor_event_data(eventData, eventDataSize, &sensorId,
+                                       &eventClass, &eventClassDataOffset);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
+
+    if (eventClass == PLDM_STATE_SENSOR_STATE)
+    {
+        uint8_t sensorOffset{};
+        uint8_t eventState{};
+        uint8_t previousEventState{};
+
+        rc = decode_state_sensor_data(&eventClass, eventClassDataOffset,
+                                      &sensorOffset, &eventState,
+                                      &previousEventState);
+    }
+    else
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+
+    return PLDM_SUCCESS;
+}
+
 } // namespace platform
 } // namespace responder
 } // namespace pldm
