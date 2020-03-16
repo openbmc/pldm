@@ -27,6 +27,7 @@ extern "C" {
 /* Minimum length for PLDM PlatformEventMessage request */
 #define PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES 3
 #define PLDM_PLATFORM_EVENT_MESSAGE_STATE_SENSOR_STATE_REQ_BYTES 6
+#define PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES 2
 
 /* Minumum length of senson event data */
 #define PLDM_SENSOR_EVENT_DATA_MIN_LENGTH 5
@@ -160,6 +161,17 @@ enum pldm_sensor_readings_data_type {
 	PLDM_SENSOR_DATA_SIZE_SINT16,
 	PLDM_SENSOR_DATA_SIZE_UINT32,
 	PLDM_SENSOR_DATA_SIZE_SINT32
+};
+
+/** @brief PLDM PlatformEventMessage response status
+ */
+enum pldm_platform_event_status {
+	NO_LOGGING = 0x00,
+	LOGGING_DISABLED = 0x01,
+	LOG_FULL = 0x02,
+	ACCEPTED_FOR_LOGGING = 0x03,
+	LOGGED = 0x04,
+	LOGGING_REJECTED = 0x05
 };
 
 /** @struct pldm_pdr_hdr
