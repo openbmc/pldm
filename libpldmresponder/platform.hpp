@@ -40,6 +40,19 @@ class Handler : public CmdHandler
                              return this->setStateEffecterStates(request,
                                                                  payloadLength);
                          });
+        handlers.emplace(PLDM_PLATFORM_EVENT_MESSAGE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->platformEventMessage(request,
+                                                               payloadLength);
+                         });
+        eventHandlers.emplace(
+            PLDM_SENSOR_EVENT,
+            [this](const pldm_msg* request, size_t payloadLength,
+                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset) {
+                return this->processSensorEvent(request, payloadLength,
+                                                formatVersion, tid,
+                                                eventDataOffset);
+            });
     }
 
     const EffecterObjs& getEffecterObjs(uint16_t effecterId) const
@@ -71,6 +84,16 @@ class Handler : public CmdHandler
      */
     void generateStateEffecterRepo(const Json& json, Repo& repo);
 
+    using EventType = uint8_t;
+    using PlatformEventHandler = std::function<Response(
+        const pldm_msg* request, size_t payloadLength, uint8_t formatVersion,
+        uint8_t tid, size_t eventDataOffset)>;
+
+    /** @brief map of PLDM event type to handler
+     *
+     */
+    std::map<EventType, PlatformEventHandler> eventHandlers;
+
     /** @brief Handler for GetPDR
      *
      *  @param[in] request - Request message payload
@@ -87,6 +110,29 @@ class Handler : public CmdHandler
      */
     Response setStateEffecterStates(const pldm_msg* request,
                                     size_t payloadLength);
+
+    /** @brief Handler for PlatformEventMessage
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @return Response - PLDM Response message
+     */
+    Response platformEventMessage(const pldm_msg* request,
+                                  size_t payloadLength);
+
+    /** @brief Handler for event class Sensor event
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @param[in] formatVersion - Version of the event format
+     *  @param[in] tid - Terminus ID of the event's originator
+     *  @param[in] eventDataOffset - Offset of the event data in the request
+     *                               message
+     *  @return Response - PLDM Response message
+     */
+    Response processSensorEvent(const pldm_msg* request, size_t payloadLength,
+                                uint8_t formatVersion, uint8_t tid,
+                                size_t eventDataOffset);
 
     /** @brief Function to set the effecter requested by pldm requester
      *  @param[in] dBusIntf - The interface object
