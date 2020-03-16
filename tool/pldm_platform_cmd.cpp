@@ -80,6 +80,95 @@ class GetPDR : public CommandInterface
     }
 
   private:
+    const std::map<uint16_t, std::string> entityType = {
+        {64, "System Board"},
+        {137, "Management Controller"},
+        {69, "Chassis front panel board (control panel)"},
+        {123, "Power converter"},
+        {45, "System chassis (main enclosure)"},
+        {11521, "System (logical)"},
+    };
+
+    std::string getEntityName(uint8_t type)
+    {
+        try
+        {
+            return entityType.at(type);
+        }
+        catch (const std::out_of_range& e)
+        {
+            return std::to_string(static_cast<unsigned>(type));
+        }
+    }
+
+    void printPDRFruRecordSet(uint8_t* data, size_t len)
+    {
+        if (data == NULL || len == 0)
+        {
+            return;
+        }
+
+        data += sizeof(pldm_pdr_hdr);
+        pldm_pdr_fru_record_set* pdr =
+            reinterpret_cast<pldm_pdr_fru_record_set*>(data);
+
+        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
+                  << std::endl;
+        std::cout << "FRURecordSetIdentifier: " << pdr->fru_rsi << std::endl;
+        std::cout << "entityType: " << getEntityName(pdr->entity_type)
+                  << std::endl;
+        std::cout << "entityInstanceNumber: " << pdr->entity_instance_num
+                  << std::endl;
+        std::cout << "containerID: " << pdr->container_id << std::endl;
+    }
+
+    void printPDREntityAssociation(uint8_t* data, size_t len)
+    {
+        const std::map<uint8_t, const char*> assocationType = {
+            {PLDM_ENTITY_ASSOCIAION_PHYSICAL, "Physical"},
+            {PLDM_ENTITY_ASSOCIAION_LOGICAL, "Logical"},
+        };
+
+        if (data == NULL || len == 0)
+        {
+            return;
+        }
+
+        data += sizeof(pldm_pdr_hdr);
+        pldm_pdr_entity_association* pdr =
+            reinterpret_cast<pldm_pdr_entity_association*>(data);
+
+        std::cout << "containerID: " << pdr->container_id << std::endl;
+        std::cout << "associationType: "
+                  << assocationType.at(pdr->association_type) << std::endl
+                  << std::endl;
+
+        std::cout << "containerEntityType: "
+                  << getEntityName(pdr->container.entity_type) << std::endl;
+        std::cout << "containerEntityInstanceNumber: "
+                  << pdr->container.entity_instance_num << std::endl;
+        std::cout << "containerEntityContainerID: "
+                  << pdr->container.entity_container_id << std::endl;
+
+        std::cout << "containedEntityCount: "
+                  << static_cast<unsigned>(pdr->num_children) << std::endl
+                  << std::endl;
+
+        auto child = reinterpret_cast<pldm_entity*>(&pdr->children[0]);
+        for (int i = 0; i < pdr->num_children; ++i)
+        {
+            std::cout << "containedEntityType[" << i + 1
+                      << "]: " << getEntityName(child->entity_type)
+                      << std::endl;
+            std::cout << "containedEntityInstanceNumber[" << i + 1
+                      << "]: " << child->entity_instance_num << std::endl;
+            std::cout << "containedEntityContainerID[" << i + 1
+                      << "]: " << child->entity_container_id << std::endl
+                      << std::endl;
+            ++child;
+        }
+    }
+
     void printPDR11(uint8_t* data, size_t len)
     {
         if (data == NULL || len == 0)
@@ -89,13 +178,6 @@ class GetPDR : public CommandInterface
 
         struct pldm_state_effecter_pdr* pdr =
             (struct pldm_state_effecter_pdr*)data;
-        std::cout << "recordHandle: " << pdr->hdr.record_handle << std::endl;
-        std::cout << "PDRHeaderVersion: " << unsigned(pdr->hdr.version)
-                  << std::endl;
-        std::cout << "PDRType: " << unsigned(pdr->hdr.type) << std::endl;
-        std::cout << "recordChangeNumber: " << pdr->hdr.record_change_num
-                  << std::endl;
-        std::cout << "dataLength: " << pdr->hdr.length << std::endl;
         std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
                   << std::endl;
         std::cout << "effecterID: " << pdr->effecter_id << std::endl;
@@ -139,10 +221,24 @@ class GetPDR : public CommandInterface
         std::cout << "responseCount: " << respCnt << std::endl;
 
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
+        std::cout << "recordHandle: " << pdr->record_handle << std::endl;
+        std::cout << "PDRHeaderVersion: " << unsigned(pdr->version)
+                  << std::endl;
+        std::cout << "PDRType: " << unsigned(pdr->type) << std::endl;
+        std::cout << "recordChangeNumber: " << pdr->record_change_num
+                  << std::endl;
+        std::cout << "dataLength: " << pdr->length << std::endl << std::endl;
+
         switch (pdr->type)
         {
             case PLDM_STATE_EFFECTER_PDR:
                 printPDR11(data, len);
+                break;
+            case PLDM_PDR_ENTITY_ASSOCIATION:
+                printPDREntityAssociation(data, len);
+                break;
+            case PLDM_PDR_FRU_RECORD_SET:
+                printPDRFruRecordSet(data, len);
                 break;
             default:
                 break;

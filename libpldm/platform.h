@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "base.h"
+#include "pdr.h"
 
 /* Maximum size for request */
 #define PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES 19
@@ -105,6 +106,18 @@ struct pldm_pdr_hdr {
 	uint8_t type;
 	uint16_t record_change_num;
 	uint16_t length;
+} __attribute__((packed));
+
+/** @struct pldm_pdr_entity_association
+ *
+ *  Structure representing PLDM Entity Association PDR
+ */
+struct pldm_pdr_entity_association {
+	uint16_t container_id;
+	uint8_t association_type;
+	pldm_entity container;
+	uint8_t num_children;
+	pldm_entity children[1];
 } __attribute__((packed));
 
 /** @struct pldm_pdr_fru_record_set
