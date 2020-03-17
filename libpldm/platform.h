@@ -13,12 +13,14 @@ extern "C" {
 /* Maximum size for request */
 #define PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES 19
 #define PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES 4
+#define PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES 2
 /* Response lengths are inclusive of completion code */
 #define PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES 1
 #define PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES 34
 
 #define PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES 1
 #define PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES 4
+#define PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES 5
 
 #define PLDM_GET_PDR_REQ_BYTES 13
 /* Minimum response length */
@@ -65,10 +67,22 @@ enum present_state {
 	UPPERCRITICAL = 0x09,
 	UPPERFATAL = 0x0a
 };
+enum pldm_effecter_oper_state {
+	EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING,
+	EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+	EFFECTER_OPER_STATE_DISABLED,
+	EFFECTER_OPER_STATE_UNAVAILABLE,
+	EFFECTER_OPER_STATE_STATUSUNKNOWN,
+	EFFECTER_OPER_STATE_FAILED,
+	EFFECTER_OPER_STATE_INITIALIZING,
+	EFFECTER_OPER_STATE_SHUTTINGDOWN,
+	EFFECTER_OPER_STATE_INTEST
+};
 
 enum pldm_platform_commands {
 	PLDM_GET_STATE_SENSOR_READINGS = 0x21,
 	PLDM_SET_NUMERIC_EFFECTER_VALUE = 0x31,
+	PLDM_GET_NUMERIC_EFFECTER_VALUE = 0x32,
 	PLDM_SET_STATE_EFFECTER_STATES = 0x39,
 	PLDM_GET_PDR = 0x51,
 	PLDM_PLATFORM_EVENT_MESSAGE = 0x0A
@@ -364,6 +378,25 @@ struct pldm_pdr_repository_change_record_data {
 	uint32_t change_entry[1];
 } __attribute__((packed));
 
+/** @struct pldm_get_numeric_effecter_value_req
+ *
+ *  structure representing GetNumericEffecterValue request packet
+ */
+struct pldm_get_numeric_effecter_value_req {
+	uint16_t effecter_id;
+} __attribute__((packed));
+
+/** @struct pldm_get_numeric_effecter_value_resp
+ *
+ *  structure representing GetNumericEffecterValue response packet
+ */
+struct pldm_get_numeric_effecter_value_resp {
+	uint8_t completion_code;
+	uint8_t effecter_data_size;
+	uint8_t effecter_oper_state;
+	uint8_t pending_and_present_values[1];
+} __attribute__((packed));
+
 /* Responder */
 
 /* SetNumericEffecterValue */
@@ -530,6 +563,44 @@ int encode_get_state_sensor_readings_resp(uint8_t instance_id,
 					  uint8_t comp_sensor_count,
 					  get_sensor_state_field *field,
 					  struct pldm_msg *msg);
+
+/* GetNumericEffecterValue */
+
+/** @brief Decode GetNumericEffecterValue request data
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] effecter_id - used to identify and access the effecter
+ *  @return pldm_completion_codes
+ */
+int decode_get_numeric_effecter_value_req(const struct pldm_msg *msg,
+					  size_t payload_length,
+					  uint16_t *effecter_id);
+
+/** @brief Create a PLDM response message for GetNumericEffecterValue
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] effecter_data_size - The bit width and format of the setting
+ *             value for the effecter.
+ * 	       value:{uint8,sint8,uint16,sint16,uint32,sint32}
+ *  @param[in] effecter_oper_state - The state of the effecter itself
+ *  @param[in] pending_value - The pending numeric value setting of the
+ *             effecter. The effecterDataSize field indicates the number of
+ *             bits used for this field
+ *  @param[in] present_value - The present numeric value setting of the
+ *             effecter. The effecterDataSize indicates the number of bits
+ *             used for this field
+ *  @param[out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of response message payload
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_get_numeric_effecter_value_resp(
+    uint8_t instance_id, uint8_t completion_code, uint8_t effecter_data_size,
+    uint8_t effecter_oper_state, uint8_t *pending_value, uint8_t *present_value,
+    struct pldm_msg *msg, size_t payload_length);
 
 /* Requester */
 
@@ -737,6 +808,43 @@ int decode_platform_event_message_req(const struct pldm_msg *msg,
 int encode_platform_event_message_resp(uint8_t instance_id,
 				       uint8_t completion_code, uint8_t status,
 				       struct pldm_msg *msg);
+
+/* GetNumericEffecterValue */
+
+/** @brief Create a PLDM request message for GetNumericEffecterValue
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] effecter_id - used to identify and access the effecter
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_get_numeric_effecter_value_req(uint8_t instance_id,
+					  uint16_t effecter_id,
+					  struct pldm_msg *msg);
+
+/** @brief Create a PLDM response message for GetNumericEffecterValue
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] effecter_data_size - The bit width and format of the setting
+ *		value for the effecter.
+ *		value:{uint8,sint8,uint16,sint16,uint32,sint32}
+ *  @param[out] effecter_oper_state - The state of the effecter itself
+ *  @param[out] pending_value - The pending numeric value setting of the
+ *              effecter. The effecterDataSize field indicates the number of
+ *              bits used for this field
+ *  @param[out] present_value - The present numeric value setting of the
+ *              effecter. The effecterDataSize indicates the number of bits
+ *              used for this field
+ *  @return pldm_completion_codes
+ */
+int decode_get_numeric_effecter_value_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint8_t *effecter_data_size, uint8_t *effecter_oper_state,
+    uint8_t *pending_value, uint8_t *present_value);
 
 #ifdef __cplusplus
 }
