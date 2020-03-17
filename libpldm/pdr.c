@@ -82,7 +82,7 @@ static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
 		if (!record_handle) {
 			struct pldm_pdr_hdr *hdr =
 			    (struct pldm_pdr_hdr *)(record->data);
-			hdr->record_handle = record->record_handle;
+			hdr->record_handle = htole32(record->record_handle);
 		}
 	}
 	record->next = NULL;
@@ -251,15 +251,15 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 	hdr->record_handle = 0;
 	hdr->type = PLDM_PDR_FRU_RECORD_SET;
 	hdr->record_change_num = 0;
-	hdr->length = sizeof(struct pldm_pdr_fru_record_set);
+	hdr->length = htole16(sizeof(struct pldm_pdr_fru_record_set));
 	struct pldm_pdr_fru_record_set *fru =
 	    (struct pldm_pdr_fru_record_set *)((uint8_t *)hdr +
 					       sizeof(struct pldm_pdr_hdr));
-	fru->terminus_handle = terminus_handle;
-	fru->fru_rsi = fru_rsi;
-	fru->entity_type = entity_type;
-	fru->entity_instance_num = entity_instance_num;
-	fru->container_id = container_id;
+	fru->terminus_handle = htole16(terminus_handle);
+	fru->fru_rsi = htole16(fru_rsi);
+	fru->entity_type = htole16(entity_type);
+	fru->entity_instance_num = htole16(entity_instance_num);
+	fru->container_id = htole16(container_id);
 
 	return pldm_pdr_add(repo, data, size, 0);
 }
@@ -282,11 +282,12 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 		struct pldm_pdr_fru_record_set *fru =
 		    (struct pldm_pdr_fru_record_set
 			 *)(data + sizeof(struct pldm_pdr_hdr));
-		if (fru->fru_rsi == fru_rsi) {
-			*terminus_handle = fru->terminus_handle;
-			*entity_type = fru->entity_type;
-			*entity_instance_num = fru->entity_instance_num;
-			*container_id = fru->container_id;
+		if (fru->fru_rsi == htole16(fru_rsi)) {
+			*terminus_handle = le16toh(fru->terminus_handle);
+			*entity_type = le16toh(fru->entity_type);
+			*entity_instance_num =
+			    le16toh(fru->entity_instance_num);
+			*container_id = le16toh(fru->container_id);
 			return curr_record;
 		}
 		data = NULL;
@@ -504,19 +505,19 @@ static void _entity_association_pdr_add_entry(pldm_entity_node *curr,
 	hdr->record_handle = 0;
 	hdr->type = PLDM_PDR_ENTITY_ASSOCIATION;
 	hdr->record_change_num = 0;
-	hdr->length = size - sizeof(struct pldm_pdr_hdr);
+	hdr->length = htole16(size - sizeof(struct pldm_pdr_hdr));
 	start += sizeof(struct pldm_pdr_hdr);
 
 	uint16_t *container_id = (uint16_t *)start;
-	*container_id = curr->first_child->entity.entity_container_id;
+	*container_id = htole16(curr->first_child->entity.entity_container_id);
 	start += sizeof(uint16_t);
 	*start = association_type;
 	start += sizeof(uint8_t);
 
 	pldm_entity *entity = (pldm_entity *)start;
-	entity->entity_type = curr->entity.entity_type;
-	entity->entity_instance_num = curr->entity.entity_instance_num;
-	entity->entity_container_id = curr->entity.entity_container_id;
+	entity->entity_type = htole16(curr->entity.entity_type);
+	entity->entity_instance_num = htole16(curr->entity.entity_instance_num);
+	entity->entity_container_id = htole16(curr->entity.entity_container_id);
 	start += sizeof(pldm_entity);
 
 	*start = contained_count;
@@ -526,11 +527,11 @@ static void _entity_association_pdr_add_entry(pldm_entity_node *curr,
 	while (node != NULL) {
 		if (node->association_type == association_type) {
 			pldm_entity *entity = (pldm_entity *)start;
-			entity->entity_type = node->entity.entity_type;
+			entity->entity_type = htole16(node->entity.entity_type);
 			entity->entity_instance_num =
-			    node->entity.entity_instance_num;
+			    htole16(node->entity.entity_instance_num);
 			entity->entity_container_id =
-			    node->entity.entity_container_id;
+			    htole16(node->entity.entity_container_id);
 			start += sizeof(pldm_entity);
 		}
 		node = node->next_sibling;
