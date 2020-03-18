@@ -192,9 +192,9 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
                             respSizeBytes,
                         0);
         responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-        rc = encode_get_pdr_resp(request->hdr.instance_id, PLDM_SUCCESS,
-                                 e.handle.nextRecordHandle, 0, PLDM_START,
-                                 respSizeBytes, recordData, 0, responsePtr);
+        rc = encode_get_pdr_resp(
+            request->hdr.instance_id, PLDM_SUCCESS, e.handle.nextRecordHandle,
+            0, PLDM_START_AND_END, respSizeBytes, recordData, 0, responsePtr);
         if (rc != PLDM_SUCCESS)
         {
             return ccOnlyResponse(request, rc);
