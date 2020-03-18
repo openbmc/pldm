@@ -1,8 +1,11 @@
+#include "config.h"
+
 #include "bios_enum_attribute.hpp"
 
 #include "utils.hpp"
 
 #include <iostream>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace pldm
 {
@@ -10,6 +13,9 @@ namespace responder
 {
 namespace bios
 {
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
                                      DBusHandler* const dbusHandler) :
@@ -197,6 +203,58 @@ void BIOSEnumAttribute::constructEntry(const BIOSStringTable& stringTable,
 
     table::attribute_value::constructEnumEntry(attrValueTable, attrHandle,
                                                attrType, currValueIndices);
+}
+
+int BIOSEnumAttribute::updateAttrVal(
+    Table& newValue, const std::pair<std::string, DbusVariant>& matchedProp,
+    const struct pldm_bios_attr_table_entry* tableEntry)
+{
+    using JsonToDBusMap = std::map<std::string, std::string>;
+    static const JsonToDBusMap enumValToDBusValMap = {
+        {"xyz.openbmc_project.Network.IP.AddressOrigin.Static", "IPv4Static"},
+        {"xyz.openbmc_project.Network.IP.AddressOrigin.DHCP", "IPv4DHCP"}};
+
+    fs::path tablesPath(BIOS_TABLES_DIR);
+    constexpr auto stringTableFile = "stringTable";
+    auto stringTablePath = tablesPath / stringTableFile;
+    BIOSStringTable biosStringTable(stringTablePath.c_str());
+    uint16_t newValueHdl;
+
+    try
+    {
+        auto enumVal =
+            enumValToDBusValMap.at(std::get<std::string>(matchedProp.second));
+        newValueHdl = biosStringTable.findHandle(enumVal);
+    }
+    catch (InternalFailure& e)
+    {
+        std::cerr << "Could not find string handle for new BIOS enum, value="
+                  << std::get<std::string>(matchedProp.second).c_str() << "\n";
+        return PLDM_ERROR;
+    }
+    uint8_t num = tableEntry->metadata[0];
+    uint16_t* valHdls = reinterpret_cast<uint16_t*>(
+        const_cast<uint8_t*>(tableEntry->metadata) + 1);
+    uint8_t index = 0;
+    for (; index < num; index++)
+    {
+        if (valHdls[index] == newValueHdl)
+        {
+            uint8_t currNum =
+                1; // one current value for one attribute change notification
+            std::copy_n(reinterpret_cast<uint8_t*>(&currNum), sizeof(currNum),
+                        std::back_inserter(newValue));
+            std::copy_n(reinterpret_cast<uint8_t*>(&index), sizeof(index),
+                        std::back_inserter(newValue));
+            break;
+        }
+    }
+    if (index == num)
+    {
+        std::cerr << "the new enum value could not be found in the table\n";
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
 }
 
 } // namespace bios
