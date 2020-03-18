@@ -70,6 +70,10 @@ class BIOSStringAttribute : public BIOSAttribute
     void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
                         Table& attrValueTable) override;
 
+    int updateAttrVal(Table& newValue,
+                      const std::pair<std::string, DbusVariant>& matchedProp,
+                      const struct pldm_bios_attr_table_entry* /*tableEntry*/);
+
   private:
     /** @brief string field from json */
     table::attribute::StringField stringInfo;

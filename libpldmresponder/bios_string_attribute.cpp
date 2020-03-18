@@ -110,6 +110,30 @@ void BIOSStringAttribute::constructEntry(const BIOSStringTable& stringTable,
                                                  attrType, currStr);
 }
 
+int BIOSStringAttribute::updateAttrVal(
+    Table& newValue, const std::pair<std::string, DbusVariant>& matchedProp,
+    const struct pldm_bios_attr_table_entry* /*tableEntry*/)
+{
+    std::string propSecond{};
+    try
+    {
+        propSecond = std::get<std::string>(matchedProp.second);
+    }
+    catch (const std::bad_variant_access& e)
+    {
+        std::cerr << "invalid value passed for the property, error: "
+                  << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+    std::cout << "new value to be updated: " << propSecond.c_str() << std::endl;
+    uint16_t len = propSecond.size();
+    std::copy_n(reinterpret_cast<uint8_t*>(&len), sizeof(len),
+                std::back_inserter(newValue));
+    std::copy_n(propSecond.begin(), len, std::back_inserter(newValue));
+
+    return PLDM_SUCCESS;
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm

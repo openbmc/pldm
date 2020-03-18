@@ -28,6 +28,20 @@ class TestAttribute : public BIOSAttribute
     {
         return dBusMap;
     }
+
+    void processBiosAttrChangeNotificatio(
+        const DbusChObjProperties& /*chProperties*/,
+        const std::string& /*propertyName*/, const std::string& /*attrName*/)
+    {
+    }
+
+    int updateAttrVal(
+        Table& /*newValue*/,
+        const std::pair<std::string, DbusVariant>& /*matchedProp*/,
+        const struct pldm_bios_attr_table_entry* /*tableEntry*/) override
+    {
+        return PLDM_SUCCESS;
+    }
 };
 
 TEST(BIOSAttribute, CtorTest)
