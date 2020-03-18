@@ -177,6 +177,52 @@ uint64_t BIOSIntegerAttribute::getAttrValue()
     }
 }
 
+int BIOSIntegerAttribute::updateAttrVal(
+    Table& newValue, const std::pair<std::string, DbusVariant>& matchedProp,
+    const struct pldm_bios_attr_table_entry* /*tableEntry*/)
+{
+    uint64_t newVal{};
+    if (dBusMap->propertyType == "uint8_t")
+    {
+        uint8_t propSecond = std::get<uint8_t>(matchedProp.second);
+        newVal = propSecond;
+    }
+    else if (dBusMap->propertyType == "uint16_t")
+    {
+        uint16_t propSecond = std::get<uint16_t>(matchedProp.second);
+        newVal = propSecond;
+    }
+    else if (dBusMap->propertyType == "uint32_t")
+    {
+        uint32_t propSecond = std::get<uint32_t>(matchedProp.second);
+        newVal = propSecond;
+    }
+    else if (dBusMap->propertyType == "uint64_t")
+    {
+        uint64_t propSecond = std::get<uint64_t>(matchedProp.second);
+        newVal = propSecond;
+    }
+    else if (dBusMap->propertyType == "int16_t")
+    {
+        int16_t propSecond = std::get<int16_t>(matchedProp.second);
+        newVal = propSecond;
+    }
+    else if (dBusMap->propertyType == "int32_t")
+    {
+        int32_t propSecond = std::get<int32_t>(matchedProp.second);
+        newVal = propSecond;
+    }
+    else if (dBusMap->propertyType == "int64_t")
+    {
+        int64_t propSecond = std::get<int64_t>(matchedProp.second);
+        newVal = propSecond;
+    }
+    std::cout << "new integer prop value " << newVal << std::endl;
+    std::copy_n(reinterpret_cast<uint8_t*>(&newVal), sizeof(newVal),
+                std::back_inserter(newValue));
+    return PLDM_SUCCESS;
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm
