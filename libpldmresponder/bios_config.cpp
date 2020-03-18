@@ -213,10 +213,9 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
     auto attrValueEntry =
         reinterpret_cast<const pldm_bios_attr_val_table_entry*>(entry);
 
-    auto attrValHeader = table::attribute_value::decodeHeader(attrValueEntry);
+    auto [attrHandle, _] = table::attribute_value::decodeHeader(attrValueEntry);
 
-    auto attrEntry =
-        table::attribute::findByHandle(*attrTable, attrValHeader.attrHandle);
+    auto attrEntry = table::attribute::findByHandle(*attrTable, attrHandle);
     if (!attrEntry)
     {
         return PLDM_ERROR;
@@ -224,19 +223,16 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
 
     try
     {
-        auto attrHeader = table::attribute::decodeHeader(attrEntry);
-
-        BIOSStringTable biosStringTable(*stringTable);
-        auto attrName = biosStringTable.findString(attrHeader.stringHandle);
-
-        auto iter = std::find_if(
-            biosAttributes.begin(), biosAttributes.end(),
-            [&attrName](const auto& attr) { return attr->name == attrName; });
+        auto iter = std::find_if(biosAttributes.begin(), biosAttributes.end(),
+                                 [&attrHandle](const auto& attr) {
+                                     return attr->handle == attrHandle;
+                                 });
 
         if (iter == biosAttributes.end())
         {
             return PLDM_ERROR;
         }
+        BIOSStringTable biosStringTable(*stringTable);
         (*iter)->setAttrValueOnDbus(attrValueEntry, attrEntry, biosStringTable);
     }
     catch (const std::exception& e)

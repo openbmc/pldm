@@ -78,8 +78,11 @@ class BIOSAttribute
     /** @brief Name of this attribute */
     const std::string name;
 
-    /** Weather this attribute is read-only */
+    /** @brief Weather this attribute is read-only */
     const bool readOnly;
+
+    /** @brief Handle to identify the attribute */
+    const uint16_t handle;
 
   protected:
     /** @brief dbus backend, nullopt if this attribute is read-only*/
