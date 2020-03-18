@@ -151,6 +151,7 @@ TEST(AttrTable, EnumEntryEncodeTest)
     std::vector<uint8_t> defs{0};
 
     struct pldm_bios_table_attr_entry_enum_info info = {
+        0,              /* attribute handle */
         1,              /* name handle */
         false,          /* read only */
         2,              /* pv number */
@@ -164,23 +165,18 @@ TEST(AttrTable, EnumEntryEncodeTest)
     std::vector<uint8_t> encodeEntry(encodeLength, 0);
     pldm_bios_table_attr_entry_enum_encode(encodeEntry.data(),
                                            encodeEntry.size(), &info);
-    // set attr handle = 0
-    encodeEntry[0] = 0;
-    encodeEntry[1] = 0;
 
     EXPECT_EQ(enumEntry, encodeEntry);
 
     EXPECT_DEATH(pldm_bios_table_attr_entry_enum_encode(
                      encodeEntry.data(), encodeEntry.size() - 1, &info),
                  "length <= entry_length");
+
     auto rc = pldm_bios_table_attr_entry_enum_encode_check(
         encodeEntry.data(), encodeEntry.size(), &info);
     EXPECT_EQ(rc, PLDM_SUCCESS);
-    // set attr handle = 0
-    encodeEntry[0] = 0;
-    encodeEntry[1] = 0;
-
     EXPECT_EQ(enumEntry, encodeEntry);
+
     rc = pldm_bios_table_attr_entry_enum_encode_check(
         encodeEntry.data(), encodeEntry.size() - 1, &info);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
@@ -257,6 +253,7 @@ TEST(AttrTable, StringEntryEncodeTest)
     };
 
     struct pldm_bios_table_attr_entry_string_info info = {
+        0,     /* attribute handle */
         3,     /* name handle */
         false, /* read only */
         1,     /* string type ascii */
@@ -271,9 +268,6 @@ TEST(AttrTable, StringEntryEncodeTest)
     std::vector<uint8_t> encodeEntry(encodeLength, 0);
     pldm_bios_table_attr_entry_string_encode(encodeEntry.data(),
                                              encodeEntry.size(), &info);
-    // set attr handle = 0
-    encodeEntry[0] = 0;
-    encodeEntry[1] = 0;
 
     EXPECT_EQ(stringEntry, encodeEntry);
 
@@ -283,9 +277,6 @@ TEST(AttrTable, StringEntryEncodeTest)
     auto rc = pldm_bios_table_attr_entry_string_encode_check(
         encodeEntry.data(), encodeEntry.size(), &info);
     EXPECT_EQ(rc, PLDM_SUCCESS);
-    // set attr handle = 0
-    encodeEntry[0] = 0;
-    encodeEntry[1] = 0;
 
     EXPECT_EQ(stringEntry, encodeEntry);
     rc = pldm_bios_table_attr_entry_string_encode_check(
@@ -345,6 +336,7 @@ TEST(AttrTable, integerEntryEncodeTest)
     std::vector<uint8_t> defs{0};
 
     struct pldm_bios_table_attr_entry_integer_info info = {
+        0,     /* attribute handle */
         1,     /* name handle */
         false, /* read only */
         1,     /* lower bound */
@@ -358,9 +350,6 @@ TEST(AttrTable, integerEntryEncodeTest)
     std::vector<uint8_t> encodeEntry(encodeLength, 0);
     pldm_bios_table_attr_entry_integer_encode(encodeEntry.data(),
                                               encodeEntry.size(), &info);
-    // set attr handle = 0
-    encodeEntry[0] = 0;
-    encodeEntry[1] = 0;
 
     EXPECT_EQ(integerEntry, encodeEntry);
 
@@ -371,10 +360,6 @@ TEST(AttrTable, integerEntryEncodeTest)
     auto rc = pldm_bios_table_attr_entry_integer_encode_check(
         encodeEntry.data(), encodeEntry.size(), &info);
     EXPECT_EQ(rc, PLDM_SUCCESS);
-    // set attr handle = 0
-    encodeEntry[0] = 0;
-    encodeEntry[1] = 0;
-
     EXPECT_EQ(integerEntry, encodeEntry);
 
     rc = pldm_bios_table_attr_entry_integer_encode_check(
