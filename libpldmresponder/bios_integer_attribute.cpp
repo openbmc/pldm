@@ -115,7 +115,7 @@ void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
                                                   attrType, currentValue);
 }
 
-uint64_t BIOSIntegerAttribute::getAttrValue(PropertyValue propertyValue)
+uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
 {
     uint64_t value;
     if (dBusMap->propertyType == "uint8_t")
@@ -170,6 +170,16 @@ uint64_t BIOSIntegerAttribute::getAttrValue()
                   << name << std::endl;
         return integerInfo.defaultValue;
     }
+}
+
+int BIOSIntegerAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
+                                        uint8_t attrType,
+                                        const PropertyValue& newPropVal)
+{
+    auto newVal = getAttrValue(newPropVal);
+    table::attribute_value::constructIntegerEntry(newValue, attrHdl, attrType,
+                                                  newVal);
+    return PLDM_SUCCESS;
 }
 
 } // namespace bios
