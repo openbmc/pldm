@@ -1,8 +1,11 @@
+#include "config.h"
+
 #include "bios_enum_attribute.hpp"
 
 #include "utils.hpp"
 
 #include <iostream>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace pldm
 {
@@ -10,6 +13,9 @@ namespace responder
 {
 namespace bios
 {
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
                                      DBusHandler* const dbusHandler) :
@@ -197,6 +203,27 @@ void BIOSEnumAttribute::constructEntry(const BIOSStringTable& stringTable,
 
     table::attribute_value::constructEnumEntry(attrValueTable, attrHandle,
                                                attrType, currValueIndices);
+}
+
+int BIOSEnumAttribute::updateAttrVal(Table& newValue,
+                                     const PropertyValue& newPropVal)
+{
+    auto iter = valMap.find(newPropVal);
+    if (iter == valMap.end())
+    {
+        std::cerr << "Could not find index for new BIOS enum, value="
+                  << std::get<std::string>(newPropVal).c_str() << "\n";
+        return PLDM_ERROR;
+    }
+    auto currentValue = iter->second;
+    auto index = getValueIndex(currentValue, possibleValues);
+    uint8_t currNum =
+        1; // one current value for one attribute change notification
+    std::copy_n(reinterpret_cast<uint8_t*>(&currNum), sizeof(currNum),
+                std::back_inserter(newValue));
+    std::copy_n(reinterpret_cast<uint8_t*>(&index), sizeof(index),
+                std::back_inserter(newValue));
+    return PLDM_SUCCESS;
 }
 
 } // namespace bios

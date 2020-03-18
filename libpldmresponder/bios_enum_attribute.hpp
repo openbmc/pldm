@@ -51,6 +51,8 @@ class BIOSEnumAttribute : public BIOSAttribute
     void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
                         Table& attrValueTable) override;
 
+    int updateAttrVal(Table& newValue, const PropertyValue& newPropVal);
+
   private:
     std::vector<std::string> possibleValues;
     std::string defaultValue;

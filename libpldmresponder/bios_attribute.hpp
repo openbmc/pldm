@@ -60,6 +60,16 @@ class BIOSAttribute
     virtual void constructEntry(const BIOSStringTable& stringTable,
                                 Table& attrTable, Table& attrValueTable) = 0;
 
+    /** @brief Method to update the value for an attribute
+     *  @param[in,out] newValue - An attribute value table row with the new
+     * value for the attribute
+     *  @param[in] newPropVal - The new value
+     *  @return Success or failure status
+     */
+    virtual int updateAttrVal(Table& newValue,
+                              const PropertyValue& newPropVal) = 0;
+
+    std::optional<DBusMapping> getDBusMap();
     /** @brief Name of this attribute */
     const std::string name;
 
@@ -72,6 +82,8 @@ class BIOSAttribute
 
     /** @brief dbus handler */
     DBusHandler* const dbusHandler;
+
+    std::unique_ptr<sdbusplus::bus::match::match> biosAttrMatch;
 };
 
 } // namespace bios

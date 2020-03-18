@@ -177,6 +177,43 @@ uint64_t BIOSIntegerAttribute::getAttrValue()
     }
 }
 
+int BIOSIntegerAttribute::updateAttrVal(Table& newValue,
+                                        const PropertyValue& newPropVal)
+{
+    uint64_t newVal{};
+    if (dBusMap->propertyType == "uint8_t")
+    {
+        newVal = std::get<uint8_t>(newPropVal);
+    }
+    else if (dBusMap->propertyType == "uint16_t")
+    {
+        newVal = std::get<uint16_t>(newPropVal);
+    }
+    else if (dBusMap->propertyType == "uint32_t")
+    {
+        newVal = std::get<uint32_t>(newPropVal);
+    }
+    else if (dBusMap->propertyType == "uint64_t")
+    {
+        newVal = std::get<uint64_t>(newPropVal);
+    }
+    else if (dBusMap->propertyType == "int16_t")
+    {
+        newVal = std::get<int16_t>(newPropVal);
+    }
+    else if (dBusMap->propertyType == "int32_t")
+    {
+        newVal = std::get<int32_t>(newPropVal);
+    }
+    else if (dBusMap->propertyType == "int64_t")
+    {
+        newVal = std::get<int64_t>(newPropVal);
+    }
+    std::copy_n(reinterpret_cast<uint8_t*>(&newVal), sizeof(newVal),
+                std::back_inserter(newValue));
+    return PLDM_SUCCESS;
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm
