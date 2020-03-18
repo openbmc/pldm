@@ -19,9 +19,11 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     integerInfo.upperBound = entry.at("upper_bound");
     integerInfo.scalarIncrement = entry.at("scalar_increment");
     integerInfo.defaultValue = entry.at("default_value");
+    type = readOnly ? PLDM_BIOS_INTEGER_READ_ONLY : PLDM_BIOS_INTEGER;
     pldm_bios_table_attr_entry_integer_info info = {
+        handle,
         0,
-        readOnly,
+        type,
         integerInfo.lowerBound,
         integerInfo.upperBound,
         integerInfo.scalarIncrement,
@@ -32,7 +34,7 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Wrong filed for integer attribute, ATTRIBUTE_NAME="
-                  << attr.c_str() << " ERRMSG=" << errmsg
+                  << attr << " ERRMSG=" << errmsg
                   << " LOWER_BOUND=" << integerInfo.lowerBound
                   << " UPPER_BOUND=" << integerInfo.upperBound
                   << " DEFAULT_VALUE=" << integerInfo.defaultValue
@@ -99,9 +101,13 @@ void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
 {
 
     pldm_bios_table_attr_entry_integer_info info = {
-        stringTable.findHandle(name), readOnly,
-        integerInfo.lowerBound,       integerInfo.upperBound,
-        integerInfo.scalarIncrement,  integerInfo.defaultValue,
+        handle,
+        stringTable.findHandle(name),
+        type,
+        integerInfo.lowerBound,
+        integerInfo.upperBound,
+        integerInfo.scalarIncrement,
+        integerInfo.defaultValue,
     };
 
     auto attrTableEntry =

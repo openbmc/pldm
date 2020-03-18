@@ -33,7 +33,8 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
     stringInfo.defString = entry.at("default_string");
 
     pldm_bios_table_attr_entry_string_info info = {
-        0,
+        handle,
+        type,
         readOnly,
         stringInfo.stringType,
         stringInfo.minLength,
@@ -54,6 +55,8 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
                   << " DEFAULT_STRING=" << stringInfo.defString << "\n";
         throw std::invalid_argument("Wrong field for string attribute");
     }
+
+    type = readOnly ? PLDM_BIOS_STRING_READ_ONLY : PLDM_BIOS_STRING;
 }
 
 void BIOSStringAttribute::setAttrValueOnDbus(
@@ -95,9 +98,13 @@ void BIOSStringAttribute::constructEntry(const BIOSStringTable& stringTable,
                                          Table& attrValueTable)
 {
     pldm_bios_table_attr_entry_string_info info = {
-        stringTable.findHandle(name), readOnly,
-        stringInfo.stringType,        stringInfo.minLength,
-        stringInfo.maxLength,         stringInfo.defLength,
+        handle,
+        stringTable.findHandle(name),
+        type,
+        stringInfo.stringType,
+        stringInfo.minLength,
+        stringInfo.maxLength,
+        stringInfo.defLength,
         stringInfo.defString.data(),
     };
 

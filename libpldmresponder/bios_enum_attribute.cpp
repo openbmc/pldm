@@ -37,6 +37,8 @@ BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
         auto dbusValues = entry.at("dbus").at("property_values");
         buildValMap(dbusValues);
     }
+
+    type = readOnly ? PLDM_BIOS_ENUMERATION_READ_ONLY : PLDM_BIOS_ENUMERATION;
 }
 
 uint8_t BIOSEnumAttribute::getValueIndex(const std::string& value,
@@ -184,9 +186,13 @@ void BIOSEnumAttribute::constructEntry(const BIOSStringTable& stringTable,
     defaultIndices[0] = getValueIndex(defaultValue, possibleValues);
 
     pldm_bios_table_attr_entry_enum_info info = {
-        stringTable.findHandle(name),         readOnly,
-        (uint8_t)possibleValuesHandle.size(), possibleValuesHandle.data(),
-        (uint8_t)defaultIndices.size(),       defaultIndices.data(),
+        handle,
+        stringTable.findHandle(name),
+        type,
+        (uint8_t)possibleValuesHandle.size(),
+        possibleValuesHandle.data(),
+        (uint8_t)defaultIndices.size(),
+        defaultIndices.data(),
     };
 
     auto attrTableEntry =
