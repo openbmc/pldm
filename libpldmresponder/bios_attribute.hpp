@@ -60,6 +60,21 @@ class BIOSAttribute
     virtual void constructEntry(const BIOSStringTable& stringTable,
                                 Table& attrTable, Table& attrValueTable) = 0;
 
+    /** @brief Method to update the value for an attribute
+     *  @param[in,out] newValue - An attribute value table row with the new
+     * value for the attribute
+     *  @param[in] attrHdl - attribute handle
+     *  @param[in] attrType - attribute type
+     *  @param[in] newPropVal - The new value
+     *  @return PLDM Success or failure status
+     */
+    virtual int updateAttrVal(Table& newValue, uint16_t attrHdl,
+                              uint8_t attrType,
+                              const PropertyValue& newPropVal) = 0;
+
+    /** @brief Method to return the D-Bus map */
+    std::optional<DBusMapping> getDBusMap();
+
     /** @brief Name of this attribute */
     const std::string name;
 

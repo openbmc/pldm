@@ -3,6 +3,7 @@
 #include "bios_enum_attribute.hpp"
 #include "bios_integer_attribute.hpp"
 #include "bios_string_attribute.hpp"
+#include "bios_table.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -260,6 +261,83 @@ void BIOSConfig::removeTables()
     catch (const std::exception& e)
     {
         std::cerr << "Remove the tables error: " << e.what() << std::endl;
+    }
+}
+
+void BIOSConfig::processBiosAttrChangeNotification(
+    const DbusChObjProperties& chProperties, uint32_t biosAttrIndex)
+{
+    const auto& dBusMap = biosAttributes[biosAttrIndex]->getDBusMap();
+    const auto& propertyName = dBusMap->propertyName;
+    const auto& attrName = biosAttributes[biosAttrIndex]->name;
+
+    const auto it = chProperties.find(propertyName);
+    if (it == chProperties.end())
+    {
+        return;
+    }
+
+    PropertyValue newPropVal = it->second;
+    auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
+    if (!stringTable.has_value())
+    {
+        std::cerr << "BIOS string table unavailable\n";
+        return;
+    }
+    BIOSStringTable biosStringTable(*stringTable);
+    uint16_t attrNameHdl{};
+    try
+    {
+        attrNameHdl = biosStringTable.findHandle(attrName);
+    }
+    catch (std::invalid_argument& e)
+    {
+        std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
+                  << attrName.c_str() << "\n";
+        return;
+    }
+
+    auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
+    if (!attrTable.has_value())
+    {
+        std::cerr << "Attribute table not present\n";
+        return;
+    }
+    const struct pldm_bios_attr_table_entry* tableEntry =
+        table::attribute::findByStringHandle(*attrTable, attrNameHdl);
+    if (tableEntry == nullptr)
+    {
+        std::cerr << "Attribute not found in attribute table, name= "
+                  << attrName.c_str() << "name handle=" << attrNameHdl << "\n";
+        return;
+    }
+
+    auto [attrHdl, attrType, stringHdl] =
+        table::attribute::decodeHeader(tableEntry);
+
+    auto attrValueSrcTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
+
+    if (!attrValueSrcTable.has_value())
+    {
+        std::cerr << "Attribute value table not present\n";
+        return;
+    }
+
+    Table newValue;
+    auto rc = biosAttributes[biosAttrIndex]->updateAttrVal(
+        newValue, attrHdl, attrType, newPropVal);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Could not update the attribute value table for attribute "
+                     "handle="
+                  << attrHdl << " and type=" << (uint32_t)attrType << "\n";
+        return;
+    }
+    auto destTable = table::attribute_value::updateTable(
+        *attrValueSrcTable, newValue.data(), newValue.size());
+    if (destTable.has_value())
+    {
+        storeTable(tableDir / attrValueTableFile, *destTable);
     }
 }
 
