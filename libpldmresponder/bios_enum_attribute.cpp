@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "bios_enum_attribute.hpp"
 
 #include "utils.hpp"
@@ -197,6 +199,29 @@ void BIOSEnumAttribute::constructEntry(const BIOSStringTable& stringTable,
 
     table::attribute_value::constructEnumEntry(attrValueTable, attrHandle,
                                                attrType, currValueIndices);
+}
+
+int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
+                                     uint8_t attrType,
+                                     const PropertyValue& newPropVal)
+{
+    auto iter = valMap.find(newPropVal);
+    if (iter == valMap.end())
+    {
+        std::cerr << "Could not find index for new BIOS enum, value="
+                  << std::get<std::string>(newPropVal) << "\n";
+        return PLDM_ERROR;
+    }
+    auto currentValue = iter->second;
+    std::vector<uint8_t> handleIndices{
+        getValueIndex(currentValue, possibleValues)};
+    auto enumEntry = table::attribute_value::constructEnumEntry(
+        newValue, attrHdl, attrType, handleIndices);
+    if (enumEntry == nullptr)
+    {
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
 }
 
 } // namespace bios

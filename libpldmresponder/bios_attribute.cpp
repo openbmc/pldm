@@ -1,5 +1,8 @@
+#include "config.h"
+
 #include "bios_attribute.hpp"
 
+#include "bios_config.hpp"
 #include "utils.hpp"
 
 #include <iostream>
@@ -26,6 +29,11 @@ BIOSAttribute::BIOSAttribute(const Json& entry,
 
         dBusMap = {objectPath, interface, propertyName, propertyType};
     }
+}
+
+std::optional<DBusMapping> BIOSAttribute::getDBusMap()
+{
+    return dBusMap;
 }
 
 } // namespace bios

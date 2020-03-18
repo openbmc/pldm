@@ -28,6 +28,13 @@ class TestAttribute : public BIOSAttribute
     {
         return dBusMap;
     }
+
+    int updateAttrVal(Table& /*newValue*/, uint16_t /*attrHdl*/,
+                      uint8_t /*attrType*/,
+                      const PropertyValue& /*newPropVal*/) override
+    {
+        return PLDM_SUCCESS;
+    }
 };
 
 TEST(BIOSAttribute, CtorTest)

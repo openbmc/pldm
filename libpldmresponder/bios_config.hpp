@@ -70,6 +70,22 @@ class BIOSConfig
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
     BIOSAttributes biosAttributes;
 
+    using propName = std::string;
+    using DbusChObjProperties = std::map<propName, PropertyValue>;
+
+    // vector to catch the D-Bus property change signals for BIOS attributes
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> biosAttrMatch;
+
+    /** @brief Method to update a BIOS attribute when the corresponding Dbus
+     *  property is changed
+     *  @param[in] chProperties - list of properties which have changed
+     *  @param[in] biosAttrIndex - Index of BIOSAttribute pointer in
+     * biosAttributes
+     *  @return - none
+     */
+    void processBiosAttrChangeNotification(
+        const DbusChObjProperties& chProperties, uint32_t biosAttrIndex);
+
     /** @brief Construct an attribute and persist it
      *  @tparam T - attribute type
      *  @param[in] entry - json entry
@@ -80,6 +96,25 @@ class BIOSConfig
         try
         {
             biosAttributes.push_back(std::make_unique<T>(entry, dbusHandler));
+            auto biosAttrIndex = biosAttributes.size() - 1;
+            auto dBusMap = biosAttributes[biosAttrIndex]->getDBusMap();
+
+            if (dBusMap.has_value())
+            {
+                using namespace sdbusplus::bus::match::rules;
+                biosAttrMatch.push_back(
+                    std::make_unique<sdbusplus::bus::match::match>(
+                        pldm::utils::DBusHandler::getBus(),
+                        propertiesChanged(dBusMap->objectPath,
+                                          dBusMap->interface),
+                        [&, biosAttrIndex](sdbusplus::message::message& msg) {
+                            DbusChObjProperties props;
+                            std::string iface;
+                            msg.read(iface, props);
+                            processBiosAttrChangeNotification(props,
+                                                              biosAttrIndex);
+                        }));
+            }
         }
         catch (const std::exception& e)
         {
