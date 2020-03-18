@@ -110,6 +110,28 @@ void BIOSStringAttribute::constructEntry(const BIOSStringTable& stringTable,
                                                  attrType, currStr);
 }
 
+int BIOSStringAttribute::updateAttrVal(Table& newValue,
+                                       const PropertyValue& newPropVal)
+{
+    std::string newStringValue{};
+    try
+    {
+        newStringValue = std::get<std::string>(newPropVal);
+    }
+    catch (const std::bad_variant_access& e)
+    {
+        std::cerr << "invalid value passed for the property, error: "
+                  << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+    uint16_t len = newStringValue.size();
+    std::copy_n(reinterpret_cast<uint8_t*>(&len), sizeof(len),
+                std::back_inserter(newValue));
+    std::copy_n(newStringValue.begin(), len, std::back_inserter(newValue));
+
+    return PLDM_SUCCESS;
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm

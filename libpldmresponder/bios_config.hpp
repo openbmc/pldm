@@ -11,6 +11,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include "bios_table.h"
 
@@ -70,6 +71,26 @@ class BIOSConfig
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
     BIOSAttributes biosAttributes;
 
+    using propName = std::string;
+    using DbusChObjProperties = std::map<propName, PropertyValue>;
+
+    // vector to catch the D-Bus property change signals for BIOS attributes
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> biosAttrMatch;
+
+    /** @brief Method to update a BIOS attribute when the corresponding Dbus
+     *  property is changed
+     *  @param[in] chProperties - list of properties which have changed
+     *  @param[in] attrName - The BIOS attribute for the property
+     *  @param[in] propertyName - Each BIOS property which has same object path
+     *                            and interface as that of the changed property
+     *  @param[in] biosAttrIndex - Index of BIOSAttribute pointer in
+     * biosAttributes
+     *  @return - none
+     */
+    void processBiosAttrChangeNotification(
+        const DbusChObjProperties& chProperties, const std::string& attrName,
+        const std::string& propertyName, uint32_t biosAttrIndex);
+
     /** @brief Construct an attribute and persist it
      *  @tparam T - attribute type
      *  @param[in] entry - json entry
@@ -80,6 +101,28 @@ class BIOSConfig
         try
         {
             biosAttributes.push_back(std::make_unique<T>(entry, dbusHandler));
+            auto biosAttrIndex = biosAttributes.size() - 1;
+            auto dBusMap = biosAttributes[biosAttrIndex]->getDBusMap();
+
+            if (dBusMap.has_value())
+            {
+                std::string propertyName = dBusMap->propertyName;
+                std::string attrName = biosAttributes[biosAttrIndex]->name;
+                using namespace sdbusplus::bus::match::rules;
+                biosAttrMatch.push_back(
+                    std::make_unique<sdbusplus::bus::match::match>(
+                        pldm::utils::DBusHandler::getBus(),
+                        propertiesChanged(dBusMap->objectPath,
+                                          dBusMap->interface),
+                        [&, propertyName, biosAttrIndex,
+                         attrName](sdbusplus::message::message& msg) {
+                            DbusChObjProperties props;
+                            std::string iface;
+                            msg.read(iface, props);
+                            processBiosAttrChangeNotification(
+                                props, attrName, propertyName, biosAttrIndex);
+                        }));
+            }
         }
         catch (const std::exception& e)
         {

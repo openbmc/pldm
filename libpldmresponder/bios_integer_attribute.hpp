@@ -47,6 +47,8 @@ class BIOSIntegerAttribute : public BIOSAttribute
     void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
                         Table& attrValueTable) override;
 
+    int updateAttrVal(Table& newValue, const PropertyValue& newPropVal);
+
   private:
     /** @brief Integer field from json */
     table::attribute::IntegerField integerInfo;
