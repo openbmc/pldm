@@ -70,6 +70,9 @@ class BIOSStringAttribute : public BIOSAttribute
     void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
                         Table& attrValueTable) override;
 
+    int updateAttrVal(Table& newValue, uint16_t attrHdl, uint8_t attrType,
+                      const PropertyValue& newPropVal);
+
   private:
     /** @brief string field from json */
     table::attribute::StringField stringInfo;
