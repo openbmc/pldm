@@ -47,12 +47,15 @@ class BIOSIntegerAttribute : public BIOSAttribute
     void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
                         Table& attrValueTable) override;
 
+    int updateAttrVal(Table& newValue, uint16_t attrHdl, uint8_t attrType,
+                      const PropertyValue& newPropVal);
+
   private:
     /** @brief Integer field from json */
     table::attribute::IntegerField integerInfo;
 
     /** @brief Get pldm value from dbus propertyValue */
-    uint64_t getAttrValue(PropertyValue value);
+    uint64_t getAttrValue(const PropertyValue& value);
 
     /** @brief Get value on dbus */
     uint64_t getAttrValue();
