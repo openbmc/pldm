@@ -20,6 +20,7 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     integerInfo.scalarIncrement = entry.at("scalar_increment");
     integerInfo.defaultValue = entry.at("default_value");
     pldm_bios_table_attr_entry_integer_info info = {
+        handle,
         0,
         readOnly,
         integerInfo.lowerBound,
@@ -99,9 +100,13 @@ void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
 {
 
     pldm_bios_table_attr_entry_integer_info info = {
-        stringTable.findHandle(name), readOnly,
-        integerInfo.lowerBound,       integerInfo.upperBound,
-        integerInfo.scalarIncrement,  integerInfo.defaultValue,
+        handle,
+        stringTable.findHandle(name),
+        readOnly,
+        integerInfo.lowerBound,
+        integerInfo.upperBound,
+        integerInfo.scalarIncrement,
+        integerInfo.defaultValue,
     };
 
     auto attrTableEntry =
