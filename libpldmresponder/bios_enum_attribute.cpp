@@ -184,9 +184,13 @@ void BIOSEnumAttribute::constructEntry(const BIOSStringTable& stringTable,
     defaultIndices[0] = getValueIndex(defaultValue, possibleValues);
 
     pldm_bios_table_attr_entry_enum_info info = {
-        stringTable.findHandle(name),         readOnly,
-        (uint8_t)possibleValuesHandle.size(), possibleValuesHandle.data(),
-        (uint8_t)defaultIndices.size(),       defaultIndices.data(),
+        handle,
+        stringTable.findHandle(name),
+        readOnly,
+        (uint8_t)possibleValuesHandle.size(),
+        possibleValuesHandle.data(),
+        (uint8_t)defaultIndices.size(),
+        defaultIndices.data(),
     };
 
     auto attrTableEntry =
