@@ -33,6 +33,7 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
     stringInfo.defString = entry.at("default_string");
 
     pldm_bios_table_attr_entry_string_info info = {
+        handle,
         0,
         readOnly,
         stringInfo.stringType,
@@ -95,9 +96,13 @@ void BIOSStringAttribute::constructEntry(const BIOSStringTable& stringTable,
                                          Table& attrValueTable)
 {
     pldm_bios_table_attr_entry_string_info info = {
-        stringTable.findHandle(name), readOnly,
-        stringInfo.stringType,        stringInfo.minLength,
-        stringInfo.maxLength,         stringInfo.defLength,
+        handle,
+        stringTable.findHandle(name),
+        readOnly,
+        stringInfo.stringType,
+        stringInfo.minLength,
+        stringInfo.maxLength,
+        stringInfo.defLength,
         stringInfo.defString.data(),
     };
 

@@ -11,6 +11,11 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+/** @brief Get a unique attribute handle
+ *  @return The attribute handle
+ */
+uint16_t pldm_bios_table_get_attr_handle();
+
 /** @struct pldm_bios_table_iter
  *  structure representing bios table iterator
  */
@@ -213,6 +218,7 @@ pldm_bios_table_attr_find_by_string_handle(const void *table, size_t length,
  *
  */
 struct pldm_bios_table_attr_entry_enum_info {
+	uint16_t attr_handle; //!< attribute handle
 	uint16_t name_handle; //!< attribute name handle
 	bool read_only;       //!< indicate whether the attribute is read-only
 	uint8_t pv_num;       //!< number of possible values
@@ -326,6 +332,7 @@ uint8_t pldm_bios_table_attr_entry_enum_decode_def_indices(
  *
  */
 struct pldm_bios_table_attr_entry_string_info {
+	uint16_t attr_handle;   //!< attribute handle
 	uint16_t name_handle;   //!< attribute name handle
 	bool read_only;		//!< indicate whether the attribute is read-only
 	uint8_t string_type;    //!< The type of the string
@@ -428,6 +435,7 @@ uint16_t pldm_bios_table_attr_entry_string_decode_def_string(
  *
  */
 struct pldm_bios_table_attr_entry_integer_info {
+	uint16_t attr_handle; //!< attribute handle
 	uint16_t name_handle; //!< attribute name handle
 	bool read_only;       //!< indicate whether the attribute is read-only
 	uint64_t lower_bound; //!< The lower bound on the integer value
