@@ -49,7 +49,7 @@ int setStateEffecterStatesHandler(
 
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> stateEffecterPdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
-    Repo stateEffecterPDRs(stateEffecterPdrRepo.get());
+    Repo stateEffecterPDRs(stateEffecterPdrRepo.get(), NULL);
     getRepoByType(handler.getRepo(), stateEffecterPDRs,
                   PLDM_STATE_EFFECTER_PDR);
     if (stateEffecterPDRs.empty())
