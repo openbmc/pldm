@@ -98,6 +98,7 @@ void Handler::generate(const std::string& dir, Repo& repo)
                     pdrType = effecter.value("pdrType", 0);
                     generateHandlers.at(pdrType)(effecter, repo);
                 }
+                repo.addPdrEntityAssociation();
             }
         }
         catch (const InternalFailure& e)

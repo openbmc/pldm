@@ -5,8 +5,8 @@
       "entries": [
         {
           "type": 33,
-          "instance": 0,
-          "container": 0,
+          "parentEntityType": 1,
+          "parentEntityInstanceNum": 1,
           "effecters": [
             {
               "set": {
@@ -50,8 +50,8 @@
         },
         {
           "type": 100,
-          "instance": 0,
-          "container": 0,
+          "parentEntityType": 2,
+          "parentEntityInstanceNum": 1,
           "effecters": [
             {
               "set": {
@@ -103,6 +103,9 @@
       "pdrType": 9,
       "entries": [
         {
+          "type": 24576,  # DSP0249_1.1.0 Table 15
+          "parentEntityType": 3,
+          "parentEntityInstanceNum": 1,
           "base_unit": 21,
           "rate_unit": 3,
           "effecter_resolution_init": 1,
