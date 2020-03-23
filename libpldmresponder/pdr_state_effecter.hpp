@@ -62,11 +62,16 @@ void generateStateEffecterPDR(const Json& json, Handler& handler,
         pdr->hdr.record_change_num = 0;
         pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
 
-        pdr->terminus_handle = 0;
-        pdr->effecter_id = handler.getNextEffecterId();
         pdr->entity_type = e.value("type", 0);
         pdr->entity_instance = e.value("instance", 0);
-        pdr->container_id = e.value("container", 0);
+        pldm_entity entity{};
+        entity.entity_type = pdr->entity_type;
+        entity.entity_instance_num = pdr->entity_instance;
+        repo.addToEntityAssociationTree(&entity);
+        pdr->container_id = entity.entity_container_id;
+
+        pdr->terminus_handle = 0;
+        pdr->effecter_id = handler.getNextEffecterId();
         pdr->effecter_semantic_id = 0;
         pdr->effecter_init = PLDM_NO_INIT;
         pdr->has_description_pdr = false;
@@ -123,6 +128,7 @@ void generateStateEffecterPDR(const Json& json, Handler& handler,
         pdrEntry.data = entry.data();
         pdrEntry.size = pdrSize;
         repo.addRecord(pdrEntry);
+        repo.addPdrEntityAssociation();
     }
 }
 

@@ -12,6 +12,7 @@
 
 #include <map>
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
@@ -54,9 +55,10 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const std::string& dir, pldm_pdr* repo,
+            pldm_entity_association_tree* entityTree,
             HostPDRHandler* hostPDRHandler,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
-        pdrRepo(repo),
+        pdrRepo(repo, entityTree),
         hostPDRHandler(hostPDRHandler)
     {
         generate(dir, pdrRepo);
@@ -283,7 +285,11 @@ class Handler : public CmdHandler
 
         std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
             stateEffecterPdrRepo(pldm_pdr_init(), pldm_pdr_destroy);
-        Repo stateEffecterPDRs(stateEffecterPdrRepo.get());
+        std::unique_ptr<pldm_entity_association_tree,
+                        decltype(&pldm_entity_association_tree_destroy)>
+            entityTree(pldm_entity_association_tree_init(),
+                       pldm_entity_association_tree_destroy);
+        Repo stateEffecterPDRs(stateEffecterPdrRepo.get(), entityTree.get());
         getRepoByType(pdrRepo, stateEffecterPDRs, PLDM_STATE_EFFECTER_PDR);
         if (stateEffecterPDRs.empty())
         {
