@@ -179,9 +179,10 @@ int main(int argc, char** argv)
     Invoker invoker{};
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
-    invoker.registerHandler(
-        PLDM_PLATFORM, std::make_unique<platform::Handler>(
-                           PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get()));
+    invoker.registerHandler(PLDM_PLATFORM,
+                            std::make_unique<platform::Handler>(
+                                PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
+                                hostPDRHandler.get()));
     invoker.registerHandler(
         PLDM_FRU, std::make_unique<fru::Handler>(FRU_JSONS_DIR, pdrRepo.get(),
                                                  entityTree.get()));
