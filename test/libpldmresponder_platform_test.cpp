@@ -26,8 +26,10 @@ TEST(getPDR, testGoodPath)
     request->request_count = 100;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
-    Repo repo(pdrRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, entityTree,
+                    nullptr);
+    Repo repo(pdrRepo, entityTree);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -42,6 +44,7 @@ TEST(getPDR, testGoodPath)
     ASSERT_EQ(hdr->record_handle, 1);
     ASSERT_EQ(hdr->version, 1);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(pdrRepo);
 }
 
@@ -57,8 +60,10 @@ TEST(getPDR, testShortRead)
     request->request_count = 1;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
-    Repo repo(pdrRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, entityTree,
+                    nullptr);
+    Repo repo(pdrRepo, entityTree);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -66,6 +71,8 @@ TEST(getPDR, testShortRead)
         reinterpret_cast<struct pldm_get_pdr_resp*>(responsePtr->payload);
     ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
     ASSERT_EQ(1, resp->response_count);
+
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(pdrRepo);
 }
 
@@ -82,14 +89,17 @@ TEST(getPDR, testBadRecordHandle)
     request->request_count = 1;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
-    Repo repo(pdrRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, entityTree,
+                    nullptr);
+    Repo repo(pdrRepo, entityTree);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     ASSERT_EQ(responsePtr->payload[0], PLDM_PLATFORM_INVALID_RECORD_HANDLE);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(pdrRepo);
 }
 
@@ -105,8 +115,10 @@ TEST(getPDR, testNoNextRecord)
     request->record_handle = 1;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
-    Repo repo(pdrRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, entityTree,
+                    nullptr);
+    Repo repo(pdrRepo, entityTree);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -115,6 +127,7 @@ TEST(getPDR, testNoNextRecord)
     ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
     ASSERT_EQ(2, resp->next_record_handle);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(pdrRepo);
 }
 
@@ -130,8 +143,10 @@ TEST(getPDR, testFindPDR)
     request->request_count = 100;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
-    Repo repo(pdrRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, entityTree,
+                    nullptr);
+    Repo repo(pdrRepo, entityTree);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
 
@@ -173,6 +188,7 @@ TEST(getPDR, testFindPDR)
     }
     ASSERT_EQ(found, true);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(pdrRepo);
 }
 
@@ -180,9 +196,11 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
-    Repo inRepo(inPDRRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Repo outRepo(outPDRRepo, entityTree);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, entityTree,
+                    nullptr);
+    Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;
     auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
@@ -207,6 +225,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
         MockdBusHandler, Handler>(handlerObj, handler, 0x1, stateField);
     ASSERT_EQ(rc, 0);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }
@@ -215,9 +234,11 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
-    Repo inRepo(inPDRRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Repo outRepo(outPDRRepo, entityTree);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, entityTree,
+                    nullptr);
+    Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;
     auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
@@ -246,6 +267,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
         handlerObj, handler, 0x1, stateField);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }
@@ -254,9 +276,11 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     auto numericEffecterPdrRepo = pldm_pdr_init();
-    Repo numericEffecterPDRs(numericEffecterPdrRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
-    Repo inRepo(inPDRRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Repo numericEffecterPDRs(numericEffecterPdrRepo, entityTree);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, entityTree,
+                    nullptr);
+    Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
     pdr_utils::PdrEntry e;
@@ -283,6 +307,7 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
         reinterpret_cast<uint8_t*>(&effecterValue), 4);
     ASSERT_EQ(rc, 0);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(numericEffecterPdrRepo);
 }
@@ -291,9 +316,11 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     auto numericEffecterPdrRepo = pldm_pdr_init();
-    Repo numericEffecterPDRs(numericEffecterPdrRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
-    Repo inRepo(inPDRRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Repo numericEffecterPDRs(numericEffecterPdrRepo, entityTree);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, entityTree,
+                    nullptr);
+    Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
     pdr_utils::PdrEntry e;
@@ -313,6 +340,7 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
         reinterpret_cast<uint8_t*>(&effecterValue), 3);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(numericEffecterPdrRepo);
 }
