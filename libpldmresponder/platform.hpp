@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "event_parser.hpp"
 #include "handler.hpp"
 #include "host_pdr_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
@@ -53,13 +54,13 @@ struct DBusInfo
 class Handler : public CmdHandler
 {
   public:
-    Handler(const std::string& dir, pldm_pdr* repo,
-            HostPDRHandler* hostPDRHandler,
+    Handler(const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
+            pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
-        hostPDRHandler(hostPDRHandler)
+        hostPDRHandler(hostPDRHandler), eventParser(eventsJsonsDir)
     {
-        generate(dir, pdrRepo);
+        generate(pdrJsonsDir, pdrRepo);
 
         handlers.emplace(PLDM_GET_PDR,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -381,6 +382,7 @@ class Handler : public CmdHandler
     DbusObjMaps dbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
     PDRRecordHandles pdrRecordHandles;
+    events::EventParser eventParser;
 };
 
 } // namespace platform
