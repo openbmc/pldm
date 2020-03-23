@@ -183,7 +183,7 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>(
                                 PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
-                                hostPDRHandler.get()));
+                                entityTree.get(), hostPDRHandler.get()));
     invoker.registerHandler(
         PLDM_FRU, std::make_unique<fru::Handler>(FRU_JSONS_DIR, pdrRepo.get(),
                                                  entityTree.get()));
