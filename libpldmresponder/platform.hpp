@@ -13,6 +13,7 @@
 
 #include <map>
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
@@ -55,9 +56,10 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
-            pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
+            pldm_pdr* repo, pldm_entity_association_tree* entityTree,
+            HostPDRHandler* hostPDRHandler,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
-        pdrRepo(repo),
+        pdrRepo(repo, entityTree),
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir)
     {
         generate(pdrJsonsDir, pdrRepo);

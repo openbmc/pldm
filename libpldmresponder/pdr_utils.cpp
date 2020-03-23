@@ -24,6 +24,18 @@ RecordHandle Repo::addRecord(const PdrEntry& pdrEntry)
                         pdrEntry.handle.recordHandle, false);
 }
 
+void Repo::addToEntityAssociationTree(pldm_entity* entity, Type type)
+{
+    pldm_entity_node* parent = nullptr;
+    parent = pldm_entity_association_tree_find(this->entityTree, entity);
+    pldm_entity_association_tree_add(this->entityTree, entity, parent, type);
+}
+
+void Repo::addPdrEntityAssociation()
+{
+    return pldm_entity_association_pdr_add(this->entityTree, this->repo, false);
+}
+
 const pldm_pdr_record* Repo::getFirstRecord(PdrEntry& pdrEntry)
 {
     constexpr uint32_t firstNum = 0;
