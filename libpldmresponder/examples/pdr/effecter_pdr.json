@@ -6,7 +6,6 @@
         {
           "type": 33,
           "instance": 0,
-          "container": 0,
           "effecters": [
             {
               "set": {
@@ -51,7 +50,6 @@
         {
           "type": 100,
           "instance": 0,
-          "container": 0,
           "effecters": [
             {
               "set": {
@@ -103,6 +101,8 @@
       "pdrType": 9,
       "entries": [
         {
+          "type": 32768,
+          "instance": 0,
           "base_unit": 21,
           "rate_unit": 3,
           "effecter_resolution_init": 1,
