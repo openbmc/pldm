@@ -156,11 +156,17 @@ int main(int argc, char** argv)
     Invoker invoker{};
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
-    invoker.registerHandler(PLDM_PLATFORM, std::make_unique<platform::Handler>(
-                                               PDR_JSONS_DIR, pdrRepo.get()));
     invoker.registerHandler(
         PLDM_FRU, std::make_unique<fru::Handler>(FRU_JSONS_DIR, pdrRepo.get(),
                                                  entityTree.get()));
+    /* platform registered after fru.
+       because the fru code will create the fru entities(like "system",
+       "chassis", "BMC" ans so on) and the platform code may need to associate
+       an entity to a fru.
+    */
+    invoker.registerHandler(
+        PLDM_PLATFORM, std::make_unique<platform::Handler>(
+                           PDR_JSONS_DIR, pdrRepo.get(), entityTree.get()));
 
 #ifdef OEM_IBM
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
