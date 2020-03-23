@@ -5,8 +5,7 @@
             "entries": [
                 {
                     "type": 33,
-                    "instance": 0,
-                    "container": 0,
+                    "parentObj": "/foo/bar1",
                     "effecters": [
                         {
                             "set": {
@@ -50,8 +49,7 @@
                 },
                 {
                     "type": 100,
-                    "instance": 0,
-                    "container": 0,
+                    "parentObj": "/foo/bar2",
                     "effecters": [
                         {
                             "set": {

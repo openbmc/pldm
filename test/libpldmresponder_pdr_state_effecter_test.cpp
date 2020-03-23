@@ -14,9 +14,10 @@ TEST(GeneratePDR, testGoodJson)
 {
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
-    Repo inRepo(inPDRRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+    Repo outRepo(outPDRRepo, entityTree);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, entityTree);
+    Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
     // 2 entries
@@ -38,8 +39,6 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(pdr->terminus_handle, 0);
     ASSERT_EQ(pdr->effecter_id, 1);
     ASSERT_EQ(pdr->entity_type, 33);
-    ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
     ASSERT_EQ(pdr->effecter_semantic_id, 0);
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
@@ -70,8 +69,6 @@ TEST(GeneratePDR, testGoodJson)
     ASSERT_EQ(pdr->terminus_handle, 0);
     ASSERT_EQ(pdr->effecter_id, 2);
     ASSERT_EQ(pdr->entity_type, 100);
-    ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
     ASSERT_EQ(pdr->effecter_semantic_id, 0);
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
@@ -99,6 +96,7 @@ TEST(GeneratePDR, testGoodJson)
 
     ASSERT_THROW(handler.getDbusObjMaps(0xDEAD), std::exception);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }
@@ -106,9 +104,12 @@ TEST(GeneratePDR, testGoodJson)
 TEST(GeneratePDR, testNoJson)
 {
     auto pdrRepo = pldm_pdr_init();
+    auto entityTree = pldm_entity_association_tree_init();
 
-    ASSERT_THROW(Handler("./pdr_jsons/not_there", pdrRepo), std::exception);
+    ASSERT_THROW(Handler("./pdr_jsons/not_there", pdrRepo, entityTree),
+                 std::exception);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(pdrRepo);
 }
 
@@ -116,15 +117,18 @@ TEST(GeneratePDR, testMalformedJson)
 {
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
-    Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
-    Repo inRepo(inPDRRepo);
+    auto entityTree = pldm_entity_association_tree_init();
+
+    Repo outRepo(outPDRRepo, entityTree);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, entityTree);
+    Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
     ASSERT_EQ(outRepo.getRecordCount(), 2);
     ASSERT_THROW(pdr_utils::readJson("./pdr_jsons/state_effecter/malformed"),
                  std::exception);
 
+    pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }

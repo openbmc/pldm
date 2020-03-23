@@ -42,6 +42,8 @@ struct PdrEntry
         uint32_t nextRecordHandle;
     } handle;
 };
+
+using ObjectPath = std::string;
 using Type = uint8_t;
 using Json = nlohmann::json;
 using RecordHandle = uint32_t;
@@ -99,7 +101,8 @@ StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
 class RepoInterface
 {
   public:
-    RepoInterface(pldm_pdr* repo) : repo(repo)
+    RepoInterface(pldm_pdr* repo, pldm_entity_association_tree* entityTree) :
+        repo(repo), entityTree(entityTree)
     {
     }
 
@@ -111,6 +114,13 @@ class RepoInterface
      */
     virtual pldm_pdr* getPdr() const = 0;
 
+    /** @brief Get an opaque pldm_entity_association_tree structure
+     *
+     *  @return pldm_entity_association_tree - pldm_entity_association_tree
+     *          structure
+     */
+    virtual pldm_entity_association_tree* getEntityAssociationTree() const = 0;
+
     /** @brief Add a PDR record to a PDR repository
      *
      *  @param[in] pdrEntry - PDR records entry(data, size, recordHandle)
@@ -118,6 +128,24 @@ class RepoInterface
      *  @return uint32_t - record handle assigned to PDR record
      */
     virtual RecordHandle addRecord(const PdrEntry& pdrEntry) = 0;
+
+    /** @brief Add an entity into the entity association tree
+     *
+     *  @param[in] path - D-Bus object
+     *  @param[in,out] entity - pointer to the entity to be added. Input has the
+     *                          entity type. On output, instance number and the
+     *                          container id are populated.
+     *  @param[in] type - relation with the parent : logical(0) or physical(1)
+     *
+     */
+    virtual void addToEntityAssociationTree(ObjectPath path,
+                                            pldm_entity* entity,
+                                            Type type = 0) = 0;
+
+    /** @brief Add entity association tree to PDR
+     *
+     */
+    virtual void addPdrEntityAssociation() = 0;
 
     /** @brief Get the first PDR record from a PDR repository
      *
@@ -163,6 +191,7 @@ class RepoInterface
 
   protected:
     pldm_pdr* repo;
+    pldm_entity_association_tree* entityTree;
 };
 
 /**
@@ -175,13 +204,21 @@ class RepoInterface
 class Repo : public RepoInterface
 {
   public:
-    Repo(pldm_pdr* repo) : RepoInterface(repo)
+    Repo(pldm_pdr* repo, pldm_entity_association_tree* entityTree) :
+        RepoInterface(repo, entityTree)
     {
     }
 
     pldm_pdr* getPdr() const override;
 
+    pldm_entity_association_tree* getEntityAssociationTree() const override;
+
     RecordHandle addRecord(const PdrEntry& pdrEntry) override;
+
+    void addToEntityAssociationTree(ObjectPath path, pldm_entity* entity,
+                                    Type type = 0) override;
+
+    void addPdrEntityAssociation() override;
 
     const pldm_pdr_record* getFirstRecord(PdrEntry& pdrEntry) override;
 
@@ -193,6 +230,9 @@ class Repo : public RepoInterface
     uint32_t getRecordCount() override;
 
     bool empty() override;
+
+  private:
+    std::map<ObjectPath, pldm_entity_node*> objToEntityNodeMap{};
 };
 
 } // namespace pdr_utils
