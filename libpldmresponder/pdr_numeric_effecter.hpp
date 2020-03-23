@@ -44,11 +44,21 @@ void generateNumericEffecterPDR(const Json& json, Handler& handler,
         pdr->hdr.length =
             sizeof(pldm_numeric_effecter_value_pdr) - sizeof(pldm_pdr_hdr);
 
+        pdr->entity_type = e.value("type", 0);
+        pdr->parent_entity_type = e.value("parentEntityType", 0);
+        pdr->parent_entity_instance = e.value("parentEntityInstanceNum", 0);
+        pldm_entity entity{};
+        entity.entity_type = pdr->entity_type;
+
+        pldm_entity parentEntity{};
+        parentEntity.entity_type = pdr->parent_entity_type;
+        parentEntity.entity_instance_num = pdr->parent_entity_instance;
+        repo.addToEntityAssociationTree(&entity, &parentEntity);
+        pdr->entity_instance = entity.entity_instance_num;
+        pdr->container_id = entity.entity_container_id;
+
         pdr->terminus_handle = e.value("terminus_handle", 0);
         pdr->effecter_id = handler.getNextEffecterId();
-        pdr->entity_type = e.value("entity_type", 0);
-        pdr->entity_instance = e.value("entity_instance", 0);
-        pdr->container_id = e.value("container_id", 0);
         pdr->effecter_semantic_id = e.value("effecter_semantic_id", 0);
         pdr->effecter_init = e.value("effecter_init", PLDM_NO_INIT);
         pdr->effecter_auxiliary_names = e.value("effecter_init", false);

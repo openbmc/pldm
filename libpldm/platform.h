@@ -306,6 +306,8 @@ struct pldm_state_effecter_pdr {
 	uint16_t effecter_id;
 	uint16_t entity_type;
 	uint16_t entity_instance;
+	uint16_t parent_entity_type;
+	uint16_t parent_entity_instance;
 	uint16_t container_id;
 	uint16_t effecter_semantic_id;
 	uint8_t effecter_init;
@@ -355,6 +357,8 @@ struct pldm_numeric_effecter_value_pdr {
 	uint16_t effecter_id;
 	uint16_t entity_type;
 	uint16_t entity_instance;
+	uint16_t parent_entity_type;
+	uint16_t parent_entity_instance;
 	uint16_t container_id;
 	uint16_t effecter_semantic_id;
 	uint8_t effecter_init;
