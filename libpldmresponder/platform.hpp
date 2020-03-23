@@ -11,6 +11,7 @@
 
 #include <map>
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
@@ -35,7 +36,9 @@ using DbusObjMaps = std::map<EffecterId, std::tuple<DbusMappings, DbusValMaps>>;
 class Handler : public CmdHandler
 {
   public:
-    Handler(const std::string& dir, pldm_pdr* repo) : pdrRepo(repo)
+    Handler(const std::string& dir, pldm_pdr* repo,
+            pldm_entity_association_tree* entityTree) :
+        pdrRepo(repo, entityTree)
     {
         generate(dir, pdrRepo);
 
@@ -135,7 +138,7 @@ class Handler : public CmdHandler
 
         std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
             stateEffecterPdrRepo(pldm_pdr_init(), pldm_pdr_destroy);
-        Repo stateEffecterPDRs(stateEffecterPdrRepo.get());
+        Repo stateEffecterPDRs(stateEffecterPdrRepo.get(), NULL);
         getRepoByType(pdrRepo, stateEffecterPDRs, PLDM_STATE_EFFECTER_PDR);
         if (stateEffecterPDRs.empty())
         {
