@@ -11,6 +11,7 @@
 
 #include <map>
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
@@ -53,8 +54,9 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const std::string& dir, pldm_pdr* repo,
+            pldm_entity_association_tree* entityTree,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
-        pdrRepo(repo)
+        pdrRepo(repo, entityTree)
     {
         generate(dir, pdrRepo);
 
