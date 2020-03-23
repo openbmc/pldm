@@ -18,7 +18,8 @@ sources = [
   'pdr.cpp',
   'platform.cpp',
   'fru_parser.cpp',
-  'fru.cpp'
+  'fru.cpp',
+  'event_handler.cpp'
 ]
 
 if get_option('oem-ibm').enabled()
