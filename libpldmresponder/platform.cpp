@@ -330,12 +330,53 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         rc = decode_state_sensor_data(&eventClass, eventClassDataOffset,
                                       &sensorOffset, &eventState,
                                       &previousEventState);
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
+
+        rc = setSensorDbusProperty(eventState, sensorOffset, sensorId);
+
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
     }
     else
     {
         return PLDM_ERROR_INVALID_DATA;
     }
 
+    return PLDM_SUCCESS;
+}
+
+int Handler::setSensorDbusProperty(uint8_t eventState, uint8_t sensorOffset,
+                                   uint16_t sensorId)
+{
+    uint32_t eventEntry = (eventState << 24) + (sensorOffset << 16) + sensorId;
+    EventEntryMap::const_iterator it = eventEntryMap.find(eventEntry);
+    if (it == eventEntryMap.end())
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+
+    const DBusInfo dBusInfo = it->second;
+    try
+    {
+        pldm::utils::DBusMapping dbusMapping{
+            dBusInfo.ObjectPath, dBusInfo.Interface, dBusInfo.Property,
+            dBusInfo.PropertyType};
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                   dBusInfo.PropertyValue);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr << "Error Setting dbus property,SensorID=" << eventEntry
+                  << "DBusInfo=" << dBusInfo.ObjectPath << dBusInfo.Interface
+                  << dBusInfo.Property << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
     return PLDM_SUCCESS;
 }
 
