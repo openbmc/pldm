@@ -175,6 +175,11 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
         std::variant<std::string> v = std::get<std::string>(value);
         setDbusValue(v);
     }
+    else if (dBusMap.propertyType == "bool")
+    {
+        std::variant<bool> v = std::get<bool>(value);
+        setDbusValue(v);
+    }
     else
     {
         throw std::invalid_argument("UnSpported Dbus Type");
