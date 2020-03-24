@@ -70,4 +70,17 @@ typedef union {
 
 typedef float real32_t;
 
+/* Timestamp104 datatype format */
+typedef struct timestamp104 {
+	int16_t utc_offset; // UTC offset in minutes
+	uint8_t microsecond[3];
+	uint8_t seconds;
+	uint8_t minute;
+	uint8_t hour;
+	uint8_t day;
+	uint8_t month;
+	uint16_t year;
+	uint8_t utc_and_time_resolution;
+} __attribute__((packed)) timestamp104_t;
+
 #endif /* PLDM_TYPES_H */
