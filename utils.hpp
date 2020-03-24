@@ -281,6 +281,19 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
                                                      uint16_t entityID,
                                                      uint16_t stateSetId,
                                                      const pldm_pdr* repo);
+/** @brief convert timestamp104 to date
+ *
+ *  @param[in] ts- timestamp data
+ *
+ *  @return std::string - return in YYYYMMDD format
+ */
+inline std::string timestamp104ToDate(const timestamp104_t* ts)
+{
+    char buffer[9];
+    snprintf(buffer, 9, "%04d%02d%02d", ts->year, ts->month, ts->day);
+    std::string tsdate(buffer, 9);
+    return tsdate;
+}
 
 } // namespace utils
 } // namespace pldm
