@@ -30,6 +30,39 @@ using EventHandler = std::function<int(
 using EventHandlers = std::vector<EventHandler>;
 using EventMap = std::map<EventType, EventHandlers>;
 
+// EventEntry = <uint8_t - EventState> <uint8_t - SensorOffset> <uint16_t -
+// SensorID>
+using EventEntry = uint32_t;
+struct DBusInfo
+{
+    std::string ObjectPath;
+    std::string Interface;
+    std::string Property;
+    std::string PropertyType;
+    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
+                 uint64_t, double, std::string>
+        PropertyValue;
+};
+
+using EventEntryMap = std::map<EventEntry, DBusInfo>;
+const EventEntryMap eventEntryMap = {
+    {
+        0x0100000A,
+        {"/xyz/o_p/1", "xyz.o_p.abc", "prop1", "bool", true},
+    },
+    {
+        0x0200000A,
+        {"/xyz/o_p/1", "xyz.o_p.abc", "prop1", "bool", false},
+    },
+    {
+        0x0101000A,
+        {"/xyz/o_p/2", "xyz.o_p.def", "prop2", "string", "Enabled"},
+    },
+    {
+        0x0201000A,
+        {"/xyz/o_p/2", "xyz.o_p.def", "prop2", "string", "Disabled"},
+    }};
+
 class Handler : public CmdHandler
 {
   public:
@@ -157,6 +190,18 @@ class Handler : public CmdHandler
      */
     int sensorEvent(const pldm_msg* request, size_t payloadLength,
                     uint8_t formatVersion, uint8_t tid, size_t eventDataOffset);
+
+    /** @brief Handler for event class Sensor event
+     *
+     *  @param[in] eventState - The event state value from the state change that
+     * triggered the event message
+     *  @param[in] sensorOffset - Identifies which state sensor within a
+     * composite state sensor the event is being returned for
+     *  @param[in] sensorId - sensorID value of the sensor
+     *  @return PLDM completion code
+     */
+    int setSensorDbusProperty(uint8_t eventState, uint8_t sensorOffset,
+                              uint16_t sensorId);
 
     /** @brief Function to set the effecter requested by pldm requester
      *  @param[in] dBusIntf - The interface object
