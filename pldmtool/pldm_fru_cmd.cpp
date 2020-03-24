@@ -93,21 +93,24 @@ class FRUTablePrint
         {
             auto record =
                 reinterpret_cast<const pldm_fru_record_data_format*>(p);
-            std::cout << "FRU Record Set Identifier: "
-                      << (int)le16toh(record->record_set_id) << std::endl;
-            std::cout << "FRU Record Type: "
-                      << typeToString(fruRecordTypes, record->record_type)
-                      << std::endl;
-            std::cout << "Number of FRU fields: " << (int)record->num_fru_fields
-                      << std::endl;
-            std::cout << "Encoding Type for FRU fields: "
-                      << typeToString(fruEncodingType, record->encoding_type)
-                      << std::endl;
-
+ 
             auto isGeneralRec = true;
             if (record->record_type != PLDM_FRU_RECORD_TYPE_GENERAL)
             {
                 isGeneralRec = false;
+            }
+            if (isGeneralRec)
+            {
+                std::cout << "FRU Record Set Identifier: "
+                          << (int)le16toh(record->record_set_id) << std::endl;
+                std::cout << "FRU Record Type: "
+                          << typeToString(fruRecordTypes, record->record_type)
+                          << std::endl;
+                std::cout << "Number of FRU fields: " << (int)record->num_fru_fields
+                          << std::endl;
+                std::cout << "Encoding Type for FRU fields: "
+                          << typeToString(fruEncodingType, record->encoding_type)
+                          << std::endl;
             }
 
             p += sizeof(pldm_fru_record_data_format) -
@@ -176,9 +179,10 @@ class FRUTablePrint
         return std::string(reinterpret_cast<const char*>(value), length);
     }
 
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
+    static std::string fruFieldParserTimestamp(const uint8_t* value, uint8_t)
     {
-        return std::string("TODO");
+        const auto ts = reinterpret_cast<const timestamp104_t*>(value);
+        return timestamp104ToDate(ts);
     }
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
@@ -312,6 +316,79 @@ class GetFRURecordByOption : public CommandInterface
     uint8_t fieldType;
 };
 
+
+class GetFruRecordTable : public CommandInterface
+{
+  public:
+    ~GetFruRecordTable() = default;
+    GetFruRecordTable() = delete;
+    GetFruRecordTable(const GetFruRecordTable&) = delete;
+    GetFruRecordTable(GetFruRecordTable&&) = default;
+    GetFruRecordTable& operator=(const GetFruRecordTable&) = delete;
+    GetFruRecordTable& operator=(GetFruRecordTable&&) = default;
+
+    using CommandInterface::CommandInterface;
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        return {PLDM_ERROR, {}};
+    }
+
+    void parseResponseMsg(pldm_msg*, size_t) override
+    {
+    }
+
+    void exec()
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                        PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto rc = encode_get_fru_record_table_req(
+            instanceId, 0, PLDM_START_AND_END, request,
+            requestMsg.size() - sizeof(pldm_msg_hdr));
+
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "PLDM: Request Message Error, rc =" << rc << std::endl;
+            return;
+        }
+
+        std::vector<uint8_t> responseMsg;
+        rc = pldmSendRecv(requestMsg, responseMsg);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "PLDM: Communication Error, rc =" << rc << std::endl;
+            return;
+        }
+
+        uint8_t cc = 0;
+        uint32_t next_data_transfer_handle = 0;
+        uint8_t transfer_flag = 0;
+        size_t fru_record_table_length = 0;
+        auto responsePtr =
+            reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+        auto payloadLength = responseMsg.size() - sizeof(pldm_msg_hdr);
+        std::vector<uint8_t> fru_record_table_data(payloadLength);
+	
+        rc = decode_get_fru_record_table_resp(
+            responsePtr, payloadLength, &cc, &next_data_transfer_handle,
+            &transfer_flag, fru_record_table_data.data(),
+            &fru_record_table_length);
+
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            return;
+        }
+//        printFRUTable(fru_record_table_data.data(), fru_record_table_length,
+//                      (int)total_record_set_identifiers);
+
+        FRUTablePrint tablePrint(fru_record_table_data.data(), fru_record_table_length);
+        tablePrint.print();
+
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fru = app.add_subcommand("fru", "FRU type command");
@@ -325,6 +402,11 @@ void registerCommand(CLI::App& app)
         fru->add_subcommand("GetFRURecordByOption", "get FRU Record By Option");
     commands.push_back(std::make_unique<GetFRURecordByOption>(
         "fru", "GetFRURecordByOption", getFRURecordByOption));
+
+    auto getFruRecordTable =
+        fru->add_subcommand("GetFruRecordTable", "get FRU Record Table");
+    commands.push_back(std::make_unique<GetFruRecordTable>(
+        "fru", "GetFruRecordTable", getFruRecordTable));
 }
 
 } // namespace fru
