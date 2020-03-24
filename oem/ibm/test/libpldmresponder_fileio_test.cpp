@@ -1,5 +1,6 @@
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/file_io_by_type.hpp"
+#include "libpldmresponder/file_io_type_cert.hpp"
 #include "libpldmresponder/file_io_type_dump.hpp"
 #include "libpldmresponder/file_io_type_lid.hpp"
 #include "libpldmresponder/file_io_type_pel.hpp"
@@ -799,6 +800,18 @@ TEST(getHandlerByType, allPaths)
     handler = getHandlerByType(PLDM_FILE_TYPE_DUMP, fileHandle);
     auto dumpType = dynamic_cast<DumpHandler*>(handler.get());
     ASSERT_TRUE(dumpType != nullptr);
+
+    handler = getHandlerByType(PLDM_FILE_TYPE_CERT_SIGNING_REQUEST, fileHandle);
+    auto certType = dynamic_cast<CertHandler*>(handler.get());
+    ASSERT_TRUE(certType != nullptr);
+
+    handler = getHandlerByType(PLDM_FILE_TYPE_SIGNED_CERT, fileHandle);
+    certType = dynamic_cast<CertHandler*>(handler.get());
+    ASSERT_TRUE(certType != nullptr);
+
+    handler = getHandlerByType(PLDM_FILE_TYPE_ROOT_CERT, fileHandle);
+    certType = dynamic_cast<CertHandler*>(handler.get());
+    ASSERT_TRUE(certType != nullptr);
 
     using namespace sdbusplus::xyz::openbmc_project::Common::Error;
     ASSERT_THROW(getHandlerByType(0xFFFF, fileHandle), InternalFailure);
