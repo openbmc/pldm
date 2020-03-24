@@ -73,6 +73,54 @@ class GetFruRecordTableMetadata : public CommandInterface
     }
 };
 
+
+class GetFruRecordTable : public CommandInterface
+{
+  public:
+    ~GetFruRecordTable() = default;
+    GetFruRecordTable() = delete;
+    GetFruRecordTable(const GetFruRecordTable&) = delete;
+    GetFruRecordTable(GetFruRecordTable&&) = default;
+    GetFruRecordTable&
+        operator=(const GetFruRecordTable&) = delete;
+    GetFruRecordTable& operator=(GetFruRecordTable&&) = default;
+
+    using CommandInterface::CommandInterface;
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        auto rc = encode_get_fru_record_table_req(instanceId, 0, PLDM_START_AND_END, request, requestMsg.size() - sizeof(pldm_msg_hdr));
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        uint32_t next_data_transfer_handle = 0;
+        uint8_t transfer_flag = 0;
+        uint8_t fru_record_table_data;
+        size_t fru_record_table_length = 0;
+
+        auto rc = decode_get_fru_record_table_resp(
+            responsePtr, payloadLength, &cc, &next_data_transfer_handle,
+            &transfer_flag, &fru_record_table_data, &fru_record_table_length);
+
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            return;
+        }
+        std::cout << "payloadLength: " << payloadLength << std::endl;
+        std::cout << "fru_record_table_data: " << fru_record_table_data  << std::endl;
+        std::cout << "FRURecordTablelength: "
+                  << fru_record_table_length << std::endl;
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fru = app.add_subcommand("fru", "FRU type command");
@@ -81,6 +129,12 @@ void registerCommand(CLI::App& app)
         "GetFruRecordTableMetadata", "get FRU record table metadata");
     commands.push_back(std::make_unique<GetFruRecordTableMetadata>(
         "fru", "GetFruRecordTableMetadata", getFruRecordTableMetadata));
+
+    auto getFruRecordTable = fru->add_subcommand(
+        "GetFruRecordTable", "get FRU record table");
+    commands.push_back(std::make_unique<GetFruRecordTable>(
+        "fru", "GetFruRecordTable", getFruRecordTable));
+
 }
 
 } // namespace fru
