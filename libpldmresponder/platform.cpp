@@ -16,6 +16,38 @@ using InternalFailure =
 
 static const Json empty{};
 
+using EventEntryMap = std::map<EventEntry, DBusInfo>;
+
+const EventEntryMap eventEntryMap = {
+    {
+        0x01010007, // SensorID for VMI Port 0 ipv4 = 7, SensorOffset for the
+                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 1
+                    // (Valid Configuration)
+        {"/xyz/openbmc_project/network/vmi/intf0/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
+    },
+    {
+        0x02010007, // SensorID for VMI Port 0 ipv4 = 7, SensorOffset for the
+                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 2
+                    // (Invalid Configuration)
+        {"/xyz/openbmc_project/network/vmi/intf0/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
+    },
+    {
+        0x01010008, // SensorID for VMI Port 1 ipv4 = 8, SensorOffset for the
+                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 1
+                    // (Valid Configuration)
+        {"/xyz/openbmc_project/network/vmi/intf1/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
+    },
+    {
+        0x02010008, // SensorID for VMI Port 1 ipv4 = 8, SensorOffset for the
+                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 2
+                    // (Invalid Configuration)
+        {"/xyz/openbmc_project/network/vmi/intf1/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
+    }};
+
 void Handler::addDbusObjMaps(
     uint16_t effecterId,
     std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> dbusObj)
@@ -269,12 +301,57 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         rc = decode_state_sensor_data(&eventClass, eventClassDataOffset,
                                       &sensorOffset, &eventState,
                                       &previousEventState);
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
+
+        rc = setSensorEventData(sensorId, sensorOffset, eventState);
+
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
     }
     else
     {
         return PLDM_ERROR_INVALID_DATA;
     }
 
+    return PLDM_SUCCESS;
+}
+
+int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
+                                uint8_t eventState)
+{
+    EventEntry eventEntry = ((static_cast<uint32_t>(eventState)) << 24) +
+                            ((static_cast<uint32_t>(sensorOffset)) << 16) +
+                            sensorId;
+    auto iter = eventEntryMap.find(eventEntry);
+    if (iter == eventEntryMap.end())
+    {
+        return PLDM_SUCCESS;
+    }
+
+    const auto& dBusInfo = iter->second;
+    try
+    {
+        pldm::utils::DBusMapping dbusMapping{
+            dBusInfo.dBusValues.objectPath, dBusInfo.dBusValues.interface,
+            dBusInfo.dBusValues.propertyName, dBusInfo.dBusValues.propertyType};
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                   dBusInfo.dBusPropertyValue);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr
+            << "Error Setting dbus property,SensorID=" << eventEntry
+            << "DBusInfo=" << dBusInfo.dBusValues.objectPath
+            << dBusInfo.dBusValues.interface << dBusInfo.dBusValues.propertyName
+            << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
     return PLDM_SUCCESS;
 }
 
