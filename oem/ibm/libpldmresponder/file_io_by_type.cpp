@@ -2,6 +2,7 @@
 
 #include "file_io_by_type.hpp"
 
+#include "file_io_type_cert.hpp"
 #include "file_io_type_dump.hpp"
 #include "file_io_type_lid.hpp"
 #include "file_io_type_pel.hpp"
@@ -124,6 +125,13 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         case PLDM_FILE_TYPE_DUMP:
         {
             return std::make_unique<DumpHandler>(fileHandle);
+            break;
+        }
+        case PLDM_FILE_TYPE_CERT_SIGNING_REQUEST:
+        case PLDM_FILE_TYPE_SIGNED_CERT:
+        case PLDM_FILE_TYPE_ROOT_CERT:
+        {
+            return std::make_unique<CertHandler>(fileHandle, fileType);
             break;
         }
         default:
