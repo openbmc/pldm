@@ -616,7 +616,7 @@ Response Handler::writeFileByType(const pldm_msg* request, size_t payloadLength)
     Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_RESP_BYTES);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
-    if (payloadLength != PLDM_RW_FILE_BY_TYPE_REQ_BYTES)
+    if (payloadLength < PLDM_RW_FILE_BY_TYPE_REQ_BYTES)
     {
         encode_rw_file_by_type_resp(request->hdr.instance_id,
                                     PLDM_WRITE_FILE_BY_TYPE,
@@ -653,7 +653,7 @@ Response Handler::writeFileByType(const pldm_msg* request, size_t payloadLength)
     }
 
     rc = handler->write(reinterpret_cast<const char*>(
-                            request->payload + PLDM_RW_FILE_BY_TYPE_RESP_BYTES),
+                            request->payload + PLDM_RW_FILE_BY_TYPE_REQ_BYTES),
                         offset, length);
     encode_rw_file_by_type_resp(request->hdr.instance_id,
                                 PLDM_WRITE_FILE_BY_TYPE, rc, length,
