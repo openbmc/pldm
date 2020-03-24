@@ -13,6 +13,29 @@ namespace platform
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
+using EventEntryMap = std::map<EventEntry, DBusInfo>;
+const EventEntryMap eventEntryMap = {
+    {
+        0x01010007,
+        {"/xyz/openbmc_project/network/vmi/intf0/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
+    },
+    {
+        0x02010007,
+        {"/xyz/openbmc_project/network/vmi/intf0/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
+    },
+    {
+        0x01010008,
+        {"/xyz/openbmc_project/network/vmi/intf1/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
+    },
+    {
+        0x02010008,
+        {"/xyz/openbmc_project/network/vmi/intf1/ipv4/addr0",
+         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
+    }};
+
 void Handler::generateStateEffecterRepo(const Json& json, Repo& repo)
 {
     static const std::vector<Json> emptyList{};
@@ -330,12 +353,57 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         rc = decode_state_sensor_data(&eventClass, eventClassDataOffset,
                                       &sensorOffset, &eventState,
                                       &previousEventState);
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
+
+        rc = setSensorEventData(sensorId, sensorOffset, eventState);
+
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
     }
     else
     {
         return PLDM_ERROR_INVALID_DATA;
     }
 
+    return PLDM_SUCCESS;
+}
+
+int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
+                                uint8_t eventState)
+{
+    EventEntry eventEntry = ((static_cast<uint32_t>(eventState)) << 24) +
+                            ((static_cast<uint32_t>(sensorOffset)) << 16) +
+                            sensorId;
+    auto iter = eventEntryMap.find(eventEntry);
+    if (iter == eventEntryMap.end())
+    {
+        return PLDM_SUCCESS;
+    }
+
+    const auto& dBusInfo = iter->second;
+    try
+    {
+        pldm::utils::DBusMapping dbusMapping{
+            dBusInfo.DBusValues.objectPath, dBusInfo.DBusValues.interface,
+            dBusInfo.DBusValues.propertyName, dBusInfo.DBusValues.propertyType};
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                   dBusInfo.DBusPropertyValue);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr
+            << "Error Setting dbus property,SensorID=" << eventEntry
+            << "DBusInfo=" << dBusInfo.DBusValues.objectPath
+            << dBusInfo.DBusValues.interface << dBusInfo.DBusValues.propertyName
+            << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
     return PLDM_SUCCESS;
 }
 
