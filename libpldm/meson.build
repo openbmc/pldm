@@ -7,6 +7,7 @@ headers = [
   'states.h',
   'fru.h',
   'utils.h'
+  'pdr.h'
 ]
 
 sources = [
