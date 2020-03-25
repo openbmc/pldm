@@ -6,7 +6,8 @@ headers = [
   'bios_table.h',
   'states.h',
   'fru.h',
-  'utils.h'
+  'utils.h',
+  'pdr.h'
 ]
 
 sources = [
