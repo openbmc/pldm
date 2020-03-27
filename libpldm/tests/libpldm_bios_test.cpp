@@ -54,7 +54,7 @@ TEST(GetDateTime, testEncodeResponse)
                             sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
                             sizeof(day),
                         &month, sizeof(month)));
-    uint16_t yearLe = htole16(year);
+    uint16_t yearLe = year;
     EXPECT_EQ(0, memcmp(response->payload + sizeof(response->payload[0]) +
                             sizeof(seconds) + sizeof(minutes) + sizeof(hours) +
                             sizeof(day) + sizeof(month),
