@@ -3,6 +3,7 @@
 
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
+#include "platform_state_effecter.hpp"
 #include "utils.hpp"
 
 namespace pldm
@@ -184,8 +185,9 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
 
     stateField.resize(compEffecterCnt);
     const pldm::utils::DBusHandler dBusIntf;
-    rc = setStateEffecterStatesHandler<pldm::utils::DBusHandler>(
-        dBusIntf, effecterId, stateField);
+    rc = platform_state_effecter::setStateEffecterStatesHandler<
+        pldm::utils::DBusHandler, Handler>(dBusIntf, *this, effecterId,
+                                           stateField);
     if (rc != PLDM_SUCCESS)
     {
         return CmdHandler::ccOnlyResponse(request, rc);
