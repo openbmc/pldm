@@ -587,3 +587,76 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 
 	entity_association_pdr_add(tree->root, repo);
 }
+
+void entity_association_tree_find(pldm_entity_node *node, pldm_entity *entity,
+				  pldm_entity_node **out)
+{
+	if (node == NULL) {
+		return;
+	}
+
+	if (node->entity.entity_type == entity->entity_type &&
+	    node->entity.entity_instance_num == entity->entity_instance_num) {
+		entity->entity_container_id = node->entity.entity_container_id;
+		*out = node;
+		return;
+	}
+
+	entity_association_tree_find(node->next_sibling, entity, out);
+	entity_association_tree_find(node->first_child, entity, out);
+}
+
+pldm_entity_node *
+pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
+				  pldm_entity *entity)
+{
+	assert(tree != NULL);
+
+	pldm_entity_node *node = NULL;
+	entity_association_tree_find(tree->root, entity, &node);
+	return node;
+}
+
+void pldm_entity_association_pdr_extract(const uint8_t *pdr, uint16_t pdr_len,
+					 size_t *num_entities,
+					 pldm_entity **entities)
+{
+	assert(pdr != NULL);
+	assert(pdr_len >= sizeof(struct pldm_pdr_hdr) +
+			      sizeof(struct pldm_pdr_entity_association));
+
+	struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)pdr;
+	assert(hdr->type == PLDM_PDR_ENTITY_ASSOCIATION);
+
+	const uint8_t *start = (uint8_t *)pdr;
+	const uint8_t *end =
+	    start + sizeof(struct pldm_pdr_hdr) + le16toh(hdr->length);
+	start += sizeof(struct pldm_pdr_hdr);
+	struct pldm_pdr_entity_association *entity_association_pdr =
+	    (struct pldm_pdr_entity_association *)start;
+	*num_entities = entity_association_pdr->num_children + 1;
+	assert(*num_entities >= 2);
+	*entities = malloc(sizeof(pldm_entity) * *num_entities);
+	assert(*entities != NULL);
+	assert(start + sizeof(struct pldm_pdr_entity_association) +
+		   sizeof(pldm_entity) * (*num_entities - 2) ==
+	       end);
+	(*entities)->entity_type =
+	    le16toh(entity_association_pdr->container.entity_type);
+	(*entities)->entity_instance_num =
+	    le16toh(entity_association_pdr->container.entity_instance_num);
+	(*entities)->entity_container_id =
+	    le16toh(entity_association_pdr->container.entity_container_id);
+	pldm_entity *curr_entity = entity_association_pdr->children;
+	size_t i = 1;
+	while (i < *num_entities) {
+		(*entities + i)->entity_type =
+		    le16toh(curr_entity->entity_type);
+		(*entities + i)->entity_instance_num =
+		    le16toh(curr_entity->entity_instance_num);
+		(*entities + i)->entity_container_id =
+		    le16toh(curr_entity->entity_container_id);
+		++curr_entity;
+		++i;
+	}
+}
