@@ -267,6 +267,30 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
 				     uint8_t association_type);
 
+/** @brief Find an entity in the entity association tree
+ *
+ *  @param[in] tree - pointer to entity association tree
+ *  @param[in/out] entity - entity type and instance id set on input, container
+ *                 id set on output
+ *
+ *  @return pldm_entity_node* pointer to entity if found, NULL otherwise
+ */
+pldm_entity_node *
+pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
+				  pldm_entity *entity);
+
+/** @brief Extract entities from entity association PDR
+ *
+ *  @param[in] pdr - entity association PDR
+ *  @param[in] pdr_len - size of entity association PDR in bytes
+ *  @param[out] num_entities - number of entities found, including the container
+ *  @param[out] entities - extracted entities, container is *entities[0]. Caller
+ *              must free *entities
+ */
+void pldm_entity_association_pdr_extract(const uint8_t *pdr, uint16_t pdr_len,
+					 size_t *num_entities,
+					 pldm_entity **entities);
+
 #ifdef __cplusplus
 }
 #endif
