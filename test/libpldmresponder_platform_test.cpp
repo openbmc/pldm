@@ -1,3 +1,4 @@
+#include "libpldmresponder/event_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
@@ -253,4 +254,81 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
+}
+
+TEST(EventHandler, allScenarios)
+{
+    using namespace pldm::responder::events;
+
+    ASSERT_THROW(EventHandler("./event_jsons/malformed1"), std::exception);
+    ASSERT_THROW(EventHandler("./event_jsons/malformed2"), std::exception);
+
+    EventHandler handler{"./event_jsons/good"};
+    constexpr uint8_t eventState0 = 0;
+    constexpr uint8_t eventState1 = 1;
+    constexpr uint8_t eventState2 = 2;
+    constexpr uint8_t eventState3 = 3;
+
+    // Event Entry 1
+    {
+        EventEntry entry{1, 64, 1, 1};
+        const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
+        DBusMapping mapping{"/xyz/abc/def",
+                            "xyz.openbmc_project.example1.value", "value1",
+                            "string"};
+        ASSERT_EQ(mapping == dbusMapping, true);
+
+        const auto& propValue0 = eventStateMap.at(eventState0);
+        const auto& propValue1 = eventStateMap.at(eventState1);
+        const auto& propValue2 = eventStateMap.at(eventState2);
+        PropertyValue value0{std::in_place_type<std::string>,
+                             "xyz.openbmc_project.State.Normal"};
+        PropertyValue value1{std::in_place_type<std::string>,
+                             "xyz.openbmc_project.State.Critical"};
+        PropertyValue value2{std::in_place_type<std::string>,
+                             "xyz.openbmc_project.State.Fatal"};
+        ASSERT_EQ(value0 == propValue0, true);
+        ASSERT_EQ(value1 == propValue1, true);
+        ASSERT_EQ(value2 == propValue2, true);
+    }
+
+    // Event Entry 2
+    {
+        EventEntry entry{1, 64, 1, 2};
+        const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
+        DBusMapping mapping{"/xyz/abc/def",
+                            "xyz.openbmc_project.example2.value", "value2",
+                            "uint8_t"};
+        ASSERT_EQ(mapping == dbusMapping, true);
+
+        const auto& propValue0 = eventStateMap.at(eventState2);
+        const auto& propValue1 = eventStateMap.at(eventState3);
+        PropertyValue value0{std::in_place_type<uint8_t>, 9};
+        PropertyValue value1{std::in_place_type<uint8_t>, 10};
+        ASSERT_EQ(value0 == propValue0, true);
+        ASSERT_EQ(value1 == propValue1, true);
+    }
+
+    // Event Entry 3
+    {
+        EventEntry entry{2, 67, 2, 1};
+        const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
+        DBusMapping mapping{"/xyz/abc/ghi",
+                            "xyz.openbmc_project.example3.value", "value3",
+                            "bool"};
+        ASSERT_EQ(mapping == dbusMapping, true);
+
+        const auto& propValue0 = eventStateMap.at(eventState0);
+        const auto& propValue1 = eventStateMap.at(eventState1);
+        PropertyValue value0{std::in_place_type<bool>, false};
+        PropertyValue value1{std::in_place_type<bool>, true};
+        ASSERT_EQ(value0 == propValue0, true);
+        ASSERT_EQ(value1 == propValue1, true);
+    }
+
+    // Invalid Entry
+    {
+        EventEntry entry{0, 0, 0, 0};
+        ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
+    }
 }

@@ -19,6 +19,18 @@
 
 namespace pldm
 {
+
+namespace dbus
+{
+
+using ObjectPath = std::string;
+using Interface = std::string;
+using Interfaces = std::vector<std::string>;
+using Property = std::string;
+using PropertyType = std::string;
+
+} // namespace dbus
+
 namespace utils
 {
 
