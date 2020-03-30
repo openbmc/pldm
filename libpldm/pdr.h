@@ -267,6 +267,14 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
 				     uint8_t association_type);
 
+pldm_entity_node *
+pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
+				  pldm_entity *entity);
+
+void pldm_entity_association_pdr_extract(const uint8_t *pdr, uint16_t pdr_len,
+					 size_t *num_entities,
+					 pldm_entity **entities);
+
 #ifdef __cplusplus
 }
 #endif
