@@ -682,7 +682,8 @@ int encode_get_pdr_req(uint8_t instance_id, uint32_t record_hndl,
  *        transferred
  *  @param[out] resp_cnt - The number of recordData bytes returned in this
  *        response
- *  @param[out] record_data - PDR data bytes of length resp_cnt
+ *  @param[out] record_data - PDR data bytes of length resp_cnt, or NULL to
+ *        skip the copy and place the actual length in resp_cnt.
  *  @param[in] record_data_length - Length of record_data
  *  @param[out] transfer_crc - A CRC-8 for the overall PDR. This is present only
  *        in the last part of a PDR being transferred
