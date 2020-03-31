@@ -674,8 +674,9 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
             return;
         }
 
-        auto tableEntry = reinterpret_cast<const struct pldm_bios_attr_val_table_entry*>(
-            attributeData.ptr);
+        auto tableEntry =
+            reinterpret_cast<const struct pldm_bios_attr_val_table_entry*>(
+                attributeData.ptr);
 
         displayAttributeValueEntry(tableEntry, attrTable, stringTable);
     }
@@ -704,7 +705,8 @@ void registerCommand(CLI::App& app)
         bios->add_subcommand("GetBIOSAttributeCurrentValueByHandle",
                              "get bios attribute current value by handle");
     commands.push_back(std::make_unique<GetBIOSAttributeCurrentValueByHandle>(
-        "bios", "GetBIOSAttributeCurrentValueByHandle", getBIOSAttributeCurrentValueByHandle));
+        "bios", "GetBIOSAttributeCurrentValueByHandle",
+        getBIOSAttributeCurrentValueByHandle));
 }
 
 } // namespace bios

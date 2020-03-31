@@ -350,7 +350,7 @@ int decode_get_bios_table_resp(const struct pldm_msg *msg,
 /* GetBIOSAttributeCurrentValueByHandle */
 
 /** @brief Decode GetBIOSAttributeCurrentValueByHandle request packet
- * 
+ *
  *  @param[in] instance_id - Message's instance id
  *  @param[in] transfer_handle - Handle to identify a BIOS table transfer
  *  @param[in] transfer_op_flag - Flag to indicate the start of a multipart
@@ -359,15 +359,14 @@ int decode_get_bios_table_resp(const struct pldm_msg *msg,
  *  @param[out] msg - Message will be written to this
  *  @return pldm_completion_codes
  */
-int encode_get_bios_current_value_by_handle_req(
-				   uint8_t instance_id,
-				   uint32_t transfer_handle,
-				   uint8_t transfer_op_flag,
-				   uint16_t attribute_handle,
-				   struct pldm_msg *msg);
+int encode_get_bios_current_value_by_handle_req(uint8_t instance_id,
+						uint32_t transfer_handle,
+						uint8_t transfer_op_flag,
+						uint16_t attribute_handle,
+						struct pldm_msg *msg);
 
 /** @brief Decode GetBIOSAttributeCurrentValueByHandle response packet
- * 
+ *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[in] completion_code - PLDM completion code
@@ -379,12 +378,9 @@ int encode_get_bios_current_value_by_handle_req(
  *  @return pldm_completion_codes
  */
 int decode_get_bios_attribute_current_value_resp(
-    			   const struct pldm_msg *msg, 
-				   size_t payload_length, 
-				   uint8_t *completion_code,
-    			   uint32_t *next_transfer_handle, 
-				   uint8_t *transfer_flag,
-    			   struct variable_field *attribute_data);
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint32_t *next_transfer_handle, uint8_t *transfer_flag,
+    struct variable_field *attribute_data);
 
 /** @brief Decode GetBIOSAttributeCurrentValueByHandle request packet
  *
