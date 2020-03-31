@@ -15,6 +15,7 @@ extern "C" {
 #define PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES 19
 #define PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES 4
 #define PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES 2
+#define PLDM_GET_SENSOR_READING_REQ_BYTES 4
 /* Response lengths are inclusive of completion code */
 #define PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES 1
 #define PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES 34
@@ -26,6 +27,7 @@ extern "C" {
 /* Minimum response length */
 #define PLDM_GET_PDR_MIN_RESP_BYTES 12
 #define PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES 5
+#define PLDM_GET_SENSOR_READING_MIN_RESP_BYTES 8
 
 /* Minimum length for PLDM PlatformEventMessage request */
 #define PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES 3
@@ -79,6 +81,14 @@ enum present_state {
 	UPPERFATAL = 0x0a
 };
 
+enum sensor_event_message_enable {
+	NOEVENTGENERATION,
+	EVENTSDISABLED,
+	EVENTSENABLED,
+	OPEVENTSONLYENABLED,
+	STATEEVENTSONLYENABLED
+};
+
 enum pldm_effecter_oper_state {
 	EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING,
 	EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
@@ -92,6 +102,7 @@ enum pldm_effecter_oper_state {
 };
 
 enum pldm_platform_commands {
+	PLDM_GET_SENSOR_READING = 0x11,
 	PLDM_GET_STATE_SENSOR_READINGS = 0x21,
 	PLDM_SET_NUMERIC_EFFECTER_VALUE = 0x31,
 	PLDM_GET_NUMERIC_EFFECTER_VALUE = 0x32,
@@ -432,6 +443,30 @@ struct pldm_get_numeric_effecter_value_resp {
 	uint8_t pending_and_present_values[1];
 } __attribute__((packed));
 
+/** @struct pldm_get_sensor_reading_req
+ *
+ *  Structure representing PLDM get sensor reading request
+ */
+struct pldm_get_sensor_reading_req {
+	uint16_t sensor_id;
+	uint8_t rearm_event_state;
+} __attribute__((packed));
+
+/** @struct pldm_get_sensor_reading_resp
+ *
+ *  Structure representing PLDM get sensor reading response
+ */
+struct pldm_get_sensor_reading_resp {
+	uint8_t completion_code;
+	uint8_t sensor_data_size;
+	uint8_t sensor_operational_state;
+	uint8_t sensor_event_message_enable;
+	uint8_t present_state;
+	uint8_t previous_state;
+	uint8_t event_state;
+	uint8_t present_reading[1];
+} __attribute__((packed));
+
 /* Responder */
 
 /* SetNumericEffecterValue */
@@ -636,6 +671,51 @@ int encode_get_numeric_effecter_value_resp(
     uint8_t instance_id, uint8_t completion_code, uint8_t effecter_data_size,
     uint8_t effecter_oper_state, uint8_t *pending_value, uint8_t *present_value,
     struct pldm_msg *msg, size_t payload_length);
+
+/* GetSensorReading */
+
+/** @brief Decode GetSensorReading request data
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] sensor_id - A handle that is used to identify and access
+ *         the sensor
+ *  @param[out] rearm_event_state - true =  manually re-arm EventState after
+ *         responding to this request, false = no manual re-arm
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_sensor_reading_req(const struct pldm_msg *msg,
+				  size_t payload_length, uint16_t *sensor_id,
+				  uint8_t *rearm_event_state);
+
+/** @brief Encode GetSensorReading response data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[out] sensor_data_size - The bit width and format of reading and
+ *         threshold values
+ *  @param[out] sensor_operational_state - The state of the sensor itself
+ *  @param[out] sensor_event_message_enable - value: { noEventGeneration,
+ *         eventsDisabled, eventsEnabled, opEventsOnlyEnabled,
+ *         stateEventsOnlyEnabled }
+ *  @param[out] present_state - The most recently assessed state value monitored
+ *         by the sensor
+ *  @param[out] previous_state - The state that the presentState was entered
+ *         from
+ *  @param[out] event_state - Indicates which threshold crossing assertion
+ *         events have been detected
+ *  @param[out] present_reading - The present value indicated by the sensor
+ *  @param[out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @return pldm_completion_codes
+ */
+
+int encode_get_sensor_reading_resp(
+    uint8_t instance_id, uint8_t completion_code, uint8_t sensor_data_size,
+    uint8_t sensor_operational_state, uint8_t sensor_event_message_enable,
+    uint8_t present_state, uint8_t previous_state, uint8_t event_state,
+    uint8_t *present_reading, struct pldm_msg *msg, size_t payload_length);
 
 /* Requester */
 
@@ -954,6 +1034,51 @@ int decode_get_numeric_effecter_value_resp(
     const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
     uint8_t *effecter_data_size, uint8_t *effecter_oper_state,
     uint8_t *pending_value, uint8_t *present_value);
+
+/* GetSensorReading */
+
+/** @brief Encode GetSensorReading request data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] sensor_id - A handle that is used to identify and access the
+ *         sensor
+ *  @param[in] rearm_event_state - true =  manually re-arm EventState after
+ *         responding to this request, false = no manual re-arm
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note	Caller is responsible for memory alloc and dealloc of param
+ * 		'msg.payload'
+ */
+int encode_get_sensor_reading_req(uint8_t instance_id, uint16_t sensor_id,
+				  uint8_t rearm_event_state,
+				  struct pldm_msg *msg);
+
+/** @brief Decode GetSensorReading response data
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] sensor_data_size - The bit width and format of reading and
+ *         threshold values
+ *  @param[out] sensor_operational_state - The state of the sensor itself
+ *  @param[out] sensor_event_message_enable - value: { noEventGeneration,
+ *         eventsDisabled, eventsEnabled, opEventsOnlyEnabled,
+ *         stateEventsOnlyEnabled }
+ *  @param[out] present_state - The most recently assessed state value monitored
+ *         by the sensor
+ *  @param[out] previous_state - The state that the presentState was entered
+ *         from
+ *  @param[out] event_state - Indicates which threshold crossing assertion
+ *         events have been detected
+ *  @param[out] present_reading - The present value indicated by the sensor
+ *  @return pldm_completion_codes
+ */
+
+int decode_get_sensor_reading_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint8_t *sensor_data_size, uint8_t *sensor_operational_state,
+    uint8_t *sensor_event_message_enable, uint8_t *present_state,
+    uint8_t *previous_state, uint8_t *event_state, uint8_t *present_reading);
 
 #ifdef __cplusplus
 }

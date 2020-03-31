@@ -939,3 +939,183 @@ int decode_get_numeric_effecter_value_resp(
 	}
 	return PLDM_SUCCESS;
 }
+
+int encode_get_sensor_reading_req(uint8_t instance_id, uint16_t sensor_id,
+				  uint8_t rearm_event_state,
+				  struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_GET_SENSOR_READING;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_get_sensor_reading_req *request =
+	    (struct pldm_get_sensor_reading_req *)msg->payload;
+
+	request->sensor_id = htole16(sensor_id);
+	request->rearm_event_state = rearm_event_state;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_sensor_reading_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint8_t *sensor_data_size, uint8_t *sensor_operational_state,
+    uint8_t *sensor_event_message_enable, uint8_t *present_state,
+    uint8_t *previous_state, uint8_t *event_state, uint8_t *present_reading)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    sensor_data_size == NULL || sensor_operational_state == NULL ||
+	    sensor_event_message_enable == NULL || present_state == NULL ||
+	    previous_state == NULL || event_state == NULL ||
+	    present_reading == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length < PLDM_GET_SENSOR_READING_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_sensor_reading_resp *response =
+	    (struct pldm_get_sensor_reading_resp *)msg->payload;
+
+	*sensor_data_size = response->sensor_data_size;
+	*sensor_operational_state = response->sensor_operational_state;
+	*sensor_event_message_enable = response->sensor_event_message_enable;
+	*present_state = response->present_state;
+	*previous_state = response->previous_state;
+	*event_state = response->event_state;
+
+	if (*sensor_data_size == PLDM_EFFECTER_DATA_SIZE_UINT8 ||
+	    *sensor_data_size == PLDM_EFFECTER_DATA_SIZE_SINT8) {
+		if (payload_length != PLDM_GET_SENSOR_READING_MIN_RESP_BYTES) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		present_reading = response->present_reading;
+
+	} else if (*sensor_data_size == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
+		   *sensor_data_size == PLDM_EFFECTER_DATA_SIZE_SINT16) {
+		if (payload_length !=
+		    PLDM_GET_SENSOR_READING_MIN_RESP_BYTES + 2) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(present_reading, response->present_reading, 2);
+		*present_reading = le16toh(*present_reading);
+
+	} else if (*sensor_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+		   *sensor_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		if (payload_length !=
+		    PLDM_GET_SENSOR_READING_MIN_RESP_BYTES + 6) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(present_reading, response->present_reading, 4);
+		*present_reading = le32toh(*present_reading);
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int encode_get_sensor_reading_resp(
+    uint8_t instance_id, uint8_t completion_code, uint8_t sensor_data_size,
+    uint8_t sensor_operational_state, uint8_t sensor_event_message_enable,
+    uint8_t present_state, uint8_t previous_state, uint8_t event_state,
+    uint8_t *present_reading, struct pldm_msg *msg, size_t payload_length)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL || present_reading == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (sensor_data_size > PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_GET_SENSOR_READING;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_get_sensor_reading_resp *response =
+	    (struct pldm_get_sensor_reading_resp *)msg->payload;
+
+	response->completion_code = completion_code;
+	response->sensor_data_size = sensor_data_size;
+	response->sensor_operational_state = sensor_operational_state;
+	response->sensor_event_message_enable = sensor_event_message_enable;
+	response->present_state = present_state;
+	response->previous_state = previous_state;
+	response->event_state = event_state;
+
+	if (sensor_data_size == PLDM_EFFECTER_DATA_SIZE_UINT8 ||
+	    sensor_data_size == PLDM_EFFECTER_DATA_SIZE_SINT8) {
+		if (payload_length != PLDM_GET_SENSOR_READING_MIN_RESP_BYTES) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		response->present_reading[0] = *present_reading;
+
+	} else if (sensor_data_size == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
+		   sensor_data_size == PLDM_EFFECTER_DATA_SIZE_SINT16) {
+		if (payload_length !=
+		    PLDM_GET_SENSOR_READING_MIN_RESP_BYTES + 2) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(response->present_reading, present_reading, 2);
+		*response->present_reading =
+		    htole16(*response->present_reading);
+
+	} else if (sensor_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+		   sensor_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
+		if (payload_length !=
+		    PLDM_GET_SENSOR_READING_MIN_RESP_BYTES + 6) {
+			return PLDM_ERROR_INVALID_LENGTH;
+		}
+		memcpy(response->present_reading, present_reading, 4);
+		*response->present_reading =
+		    htole32(*response->present_reading);
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_sensor_reading_req(const struct pldm_msg *msg,
+				  size_t payload_length, uint16_t *sensor_id,
+				  uint8_t *rearm_event_state)
+{
+	if (msg == NULL || sensor_id == NULL || rearm_event_state == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_SENSOR_READING_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_sensor_reading_req *request =
+	    (struct pldm_get_sensor_reading_req *)msg->payload;
+
+	*sensor_id = le16toh(request->sensor_id);
+	*rearm_event_state = request->rearm_event_state;
+
+	return PLDM_SUCCESS;
+}
