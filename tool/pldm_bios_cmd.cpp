@@ -634,7 +634,50 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
             return;
         }
 
-        auto handle = findAttrHandleByName(attrName);
+        auto handle = findAttrHandleByName(attrName, *attrTable, *stringTable);
+
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) +
+            PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        auto rc = encode_get_bios_current_value_by_handle_req(
+            instanceId, 0, PLDM_GET_FIRSTPART, *handle, request);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "PLDM: Request Message Error, rc =" << rc << std::endl;
+            return;
+        }
+
+        std::vector<uint8_t> responseMsg;
+        rc = pldmSendRecv(requestMsg, responseMsg);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "PLDM: Communication Error, rc =" << rc << std::endl;
+            return;
+        }
+
+        uint8_t cc = 0, transferFlag = 0;
+        uint32_t nextTransferHandle = 0;
+        struct variable_field attributeData;
+        auto responsePtr =
+            reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+        auto payloadLength = responseMsg.size() - sizeof(pldm_msg_hdr);
+
+        rc = decode_get_bios_attribute_current_value_resp(
+            responsePtr, payloadLength, &cc, &nextTransferHandle, &transferFlag,
+            &attributeData);
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            return;
+        }
+
+        auto tableEntry = reinterpret_cast<const struct pldm_bios_attr_val_table_entry*>(
+            attributeData.ptr);
+
+        displayAttributeValueEntry(tableEntry, attrTable, stringTable);
     }
 
   private:
@@ -657,6 +700,11 @@ void registerCommand(CLI::App& app)
     auto getBIOSTable = bios->add_subcommand("GetBIOSTable", "get bios table");
     commands.push_back(
         std::make_unique<GetBIOSTable>("bios", "GetBIOSTable", getBIOSTable));
+    auto getBIOSAttributeCurrentValueByHandle =
+        bios->add_subcommand("GetBIOSAttributeCurrentValueByHandle",
+                             "get bios attribute current value by handle");
+    commands.push_back(std::make_unique<GetBIOSAttributeCurrentValueByHandle>(
+        "bios", "GetBIOSAttributeCurrentValueByHandle", getBIOSAttributeCurrentValueByHandle));
 }
 
 } // namespace bios
