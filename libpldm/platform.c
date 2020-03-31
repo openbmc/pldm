@@ -216,8 +216,7 @@ int decode_get_pdr_resp(const struct pldm_msg *msg, size_t payload_length,
 {
 	if (msg == NULL || completion_code == NULL ||
 	    next_record_hndl == NULL || next_data_transfer_hndl == NULL ||
-	    transfer_flag == NULL || resp_cnt == NULL || record_data == NULL ||
-	    transfer_crc == NULL) {
+	    transfer_flag == NULL || resp_cnt == NULL || transfer_crc == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
@@ -249,7 +248,7 @@ int decode_get_pdr_resp(const struct pldm_msg *msg, size_t payload_length,
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	if (*resp_cnt > 0) {
+	if (*resp_cnt > 0 && record_data != NULL) {
 		if (record_data_length < *resp_cnt) {
 			return PLDM_ERROR_INVALID_LENGTH;
 		}
