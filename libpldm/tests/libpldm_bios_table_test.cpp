@@ -491,7 +491,7 @@ TEST(AttrTable, FindTest)
     std::vector<uint8_t> stringEntry{
         1,   0,       /* attr handle */
         1,            /* attr type */
-        12,  0,       /* attr name handle */
+        2,   0,       /* attr name handle */
         1,            /* string type */
         1,   0,       /* minimum length of the string in bytes */
         100, 0,       /* maximum length of the string in bytes */
@@ -501,7 +501,7 @@ TEST(AttrTable, FindTest)
     std::vector<uint8_t> integerEntry{
         0,  0,                   /* attr handle */
         3,                       /* attr type */
-        1,  0,                   /* attr name handle */
+        3,  0,                   /* attr name handle */
         1,  0, 0, 0, 0, 0, 0, 0, /* lower bound */
         10, 0, 0, 0, 0, 0, 0, 0, /* upper bound */
         2,  0, 0, 0,             /* scalar increment */
@@ -519,6 +519,17 @@ TEST(AttrTable, FindTest)
                 ElementsAreArray(stringEntry));
 
     entry = pldm_bios_table_attr_find_by_handle(table.data(), table.size(), 3);
+    EXPECT_EQ(entry, nullptr);
+
+    entry = pldm_bios_table_attr_find_by_string_handle(table.data(),
+                                                       table.size(), 2);
+    EXPECT_NE(entry, nullptr);
+    p = reinterpret_cast<const uint8_t*>(entry);
+    EXPECT_THAT(std::vector<uint8_t>(p, p + stringEntry.size()),
+                ElementsAreArray(stringEntry));
+
+    entry = pldm_bios_table_attr_find_by_string_handle(table.data(),
+                                                       table.size(), 4);
     EXPECT_EQ(entry, nullptr);
 }
 
