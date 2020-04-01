@@ -196,6 +196,16 @@ const struct pldm_bios_attr_table_entry *
 pldm_bios_table_attr_find_by_handle(const void *table, size_t length,
 				    uint16_t handle);
 
+/** @brief Find an entry in attribute table by string handle
+ *  @param[in] table - The BIOS Attribute Table
+ *  @param[in] length - Length of the BIOS Attribute Table
+ *  @param[in] handle - The string handle
+ *  @return Pointer to the entry
+ */
+const struct pldm_bios_attr_table_entry *
+pldm_bios_table_attr_find_by_string_handle(const void *table, size_t length,
+					   uint16_t handle);
+
 /** @struct pldm_bios_table_attr_entry_enum_info
  *
  *  An auxiliary structure for passing parameters to @ref

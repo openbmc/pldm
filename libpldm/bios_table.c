@@ -1036,6 +1036,21 @@ pldm_bios_table_attr_find_by_handle(const void *table, size_t length,
 	    &handle);
 }
 
+static bool attr_table_string_handle_equal(const void *entry, const void *key)
+{
+	uint16_t handle = *(uint16_t *)key;
+	return pldm_bios_table_attr_entry_decode_string_handle(entry) == handle;
+}
+
+const struct pldm_bios_attr_table_entry *
+pldm_bios_table_attr_find_by_string_handle(const void *table, size_t length,
+					   uint16_t handle)
+{
+	return pldm_bios_table_entry_find_from_table(
+	    table, length, PLDM_BIOS_ATTR_TABLE, attr_table_string_handle_equal,
+	    &handle);
+}
+
 static bool attr_value_table_handle_equal(const void *entry, const void *key)
 {
 	uint16_t handle = *(uint16_t *)key;
