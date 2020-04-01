@@ -197,6 +197,14 @@ TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry);
 const pldm_bios_attr_table_entry* findByHandle(const Table& table,
                                                uint16_t handle);
 
+/** @brief Find attribute entry by string handle
+ *  @param[in] table - attribute table
+ *  @param[in] handle - string handle
+ *  @return Pointer to the attribute table entry
+ */
+const pldm_bios_attr_table_entry* findByStringHandle(const Table& table,
+                                                     uint16_t handle);
+
 /** @struct StringField
  *  @brief String field of attribute table
  */
