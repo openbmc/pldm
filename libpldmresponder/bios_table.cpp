@@ -140,6 +140,13 @@ const pldm_bios_attr_table_entry* findByHandle(const Table& table,
                                                handle);
 }
 
+const pldm_bios_attr_table_entry* findByStringHandle(const Table& table,
+                                                     uint16_t handle)
+{
+    return pldm_bios_table_attr_find_by_string_handle(table.data(),
+                                                      table.size(), handle);
+}
+
 const pldm_bios_attr_table_entry*
     constructStringEntry(Table& table,
                          pldm_bios_table_attr_entry_string_info* info)
