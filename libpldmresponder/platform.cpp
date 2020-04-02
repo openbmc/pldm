@@ -195,6 +195,241 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     return response;
 }
 
+Response Handler::platformEventMessage(const pldm_msg* request,
+                                       size_t payloadLength)
+{
+    uint8_t formatVersion{};
+    uint8_t tid{};
+    uint8_t eventClass{};
+    size_t offset{};
+
+    auto rc = decode_platform_event_message_req(
+        request, payloadLength, &formatVersion, &tid, &eventClass, &offset);
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
+
+    try
+    {
+        const auto& handlers = eventHandlers.at(eventClass);
+        for (const auto& handler : handlers)
+        {
+            auto rc =
+                handler(request, payloadLength, formatVersion, tid, offset);
+            if (rc != PLDM_SUCCESS)
+            {
+                return CmdHandler::ccOnlyResponse(request, rc);
+            }
+        }
+    }
+    catch (const std::out_of_range& e)
+    {
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_DATA);
+    }
+
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = encode_platform_event_message_resp(request->hdr.instance_id, rc,
+                                            NO_LOGGING, responsePtr);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    return response;
+}
+
+int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
+                         uint8_t /*formatVersion*/, uint8_t /*tid*/,
+                         size_t eventDataOffset)
+{
+    uint16_t sensorId{};
+    uint8_t eventClass{};
+    size_t eventClassDataOffset{};
+    auto eventData =
+        reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
+    auto eventDataSize = payloadLength - eventDataOffset;
+
+    auto rc = decode_sensor_event_data(eventData, eventDataSize, &sensorId,
+                                       &eventClass, &eventClassDataOffset);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
+
+    auto eventClassData = reinterpret_cast<const uint8_t*>(request->payload) +
+                          eventDataOffset + eventClassDataOffset;
+    auto eventClassDataSize =
+        payloadLength - eventDataOffset - eventClassDataOffset;
+
+    if (eventClass == PLDM_STATE_SENSOR_STATE)
+    {
+        uint8_t sensorOffset{};
+        uint8_t eventState{};
+        uint8_t previousEventState{};
+
+        rc = decode_state_sensor_data(eventClassData, eventClassDataSize,
+                                      &sensorOffset, &eventState,
+                                      &previousEventState);
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
+
+        rc = setSensorEventData(sensorId, sensorOffset, eventState);
+
+        if (rc != PLDM_SUCCESS)
+        {
+            return PLDM_ERROR;
+        }
+    }
+    else
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+
+    return PLDM_SUCCESS;
+}
+
+int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
+                                uint8_t eventState)
+{
+    EventEntry eventEntry = ((static_cast<uint32_t>(eventState)) << 24) +
+                            ((static_cast<uint32_t>(sensorOffset)) << 16) +
+                            sensorId;
+    auto iter = eventEntryMap.find(eventEntry);
+    if (iter == eventEntryMap.end())
+    {
+        return PLDM_SUCCESS;
+    }
+
+    const auto& dBusInfo = iter->second;
+    try
+    {
+        pldm::utils::DBusMapping dbusMapping{
+            dBusInfo.dBusValues.objectPath, dBusInfo.dBusValues.interface,
+            dBusInfo.dBusValues.propertyName, dBusInfo.dBusValues.propertyType};
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                   dBusInfo.dBusPropertyValue);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr
+            << "Error Setting dbus property,SensorID=" << eventEntry
+            << "DBusInfo=" << dBusInfo.dBusValues.objectPath
+            << dBusInfo.dBusValues.interface << dBusInfo.dBusValues.propertyName
+            << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
+}
+
+int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
+                                       size_t payloadLength,
+                                       uint8_t /*formatVersion*/,
+                                       uint8_t /*tid*/, size_t eventDataOffset)
+{
+    uint8_t eventDataFormat{};
+    uint8_t numberOfChangeRecords{};
+    size_t changeRecordDataOffset{};
+
+    auto eventData =
+        reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
+    auto eventDataSize = payloadLength - eventDataOffset;
+
+    auto rc = decode_pldm_pdr_repository_chg_event_data(
+        eventData, eventDataSize, &eventDataFormat, &numberOfChangeRecords,
+        &changeRecordDataOffset);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
+
+    if (eventDataFormat == FORMAT_IS_PDR_HANDLES)
+    {
+        uint8_t eventDataOperation{};
+        uint8_t numberOfChangeEntries{};
+        size_t changeEntryDataOffset{};
+        uint8_t changeEntryLoop{0};
+
+        auto changeRecordData =
+            reinterpret_cast<const uint8_t*>(request->payload) +
+            eventDataOffset + changeRecordDataOffset;
+        auto changeRecordDataSize =
+            payloadLength - eventDataOffset - changeRecordDataOffset;
+        PDRRecordHandle pdrRecordHandle;
+        auto changeEntryData = changeRecordData + changeEntryDataOffset;
+        auto changeEntryDataSize = changeRecordDataSize - changeEntryDataOffset;
+
+        do
+        {
+            if (changeEntryLoop != 0)
+            {
+                changeRecordData +=
+                    changeEntryDataOffset +
+                    (numberOfChangeEntries * sizeof(ChangeEntry));
+                changeRecordDataSize -=
+                    changeEntryDataOffset -
+                    (numberOfChangeEntries * sizeof(ChangeEntry));
+            }
+
+            rc = decode_pldm_pdr_repository_change_record_data(
+                changeRecordData, changeRecordDataSize, &eventDataOperation,
+                &numberOfChangeEntries, &changeEntryDataOffset);
+
+            if (rc != PLDM_SUCCESS)
+            {
+                return rc;
+            }
+
+            if (changeEntryLoop != 0)
+            {
+                changeEntryData +=
+                    changeEntryDataOffset +
+                    (sizeof(ChangeEntry) * numberOfChangeEntries);
+                changeEntryDataSize -=
+                    changeEntryDataOffset -
+                    (sizeof(ChangeEntry) * numberOfChangeEntries);
+            }
+
+            if (eventDataOperation == RECORDS_ADDED)
+            {
+                rc = getPDRRecordHandles(
+                    reinterpret_cast<const ChangeEntry*>(changeEntryData),
+                    changeEntryDataSize, numberOfChangeEntries,
+                    pdrRecordHandle);
+
+                if (rc != PLDM_SUCCESS)
+                {
+                    return rc;
+                }
+            }
+            changeEntryLoop++;
+        } while (changeEntryLoop < numberOfChangeRecords);
+    }
+    return PLDM_SUCCESS;
+}
+
+int Handler::getPDRRecordHandles(const ChangeEntry* changeEntryData,
+                                 size_t changeEntryDataSize,
+                                 uint8_t numberOfChangeEntries,
+                                 PDRRecordHandle& pdrRecordHandle)
+{
+    if (numberOfChangeEntries != (changeEntryDataSize / sizeof(ChangeEntry)))
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+    for (auto i = 0; i < numberOfChangeEntries; i++)
+    {
+        pdrRecordHandle.push_back(changeEntryData[i]);
+    }
+    return PLDM_SUCCESS;
+}
+
 } // namespace platform
 } // namespace responder
 } // namespace pldm

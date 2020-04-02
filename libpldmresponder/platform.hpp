@@ -32,6 +32,11 @@ using DbusObjMaps =
     std::map<EffecterId,
              std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>>;
 
+// vector which would hold the PDR record handle data returned by
+// pldmPDRRepositoryChgEvent evend data
+using ChangeEntry = uint32_t;
+using PDRRecordHandle = std::vector<ChangeEntry>;
+
 class Handler : public CmdHandler
 {
   public:
@@ -48,6 +53,49 @@ class Handler : public CmdHandler
                              return this->setStateEffecterStates(request,
                                                                  payloadLength);
                          });
+
+        handlers.emplace(PLDM_PLATFORM_EVENT_MESSAGE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->platformEventMessage(request,
+                                                               payloadLength);
+                         });
+
+        // Default handler for PLDM Events
+        eventHandlers[PLDM_SENSOR_EVENT].emplace_back(
+            [this](const pldm_msg* request, size_t payloadLength,
+                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset) {
+                return this->sensorEvent(request, payloadLength, formatVersion,
+                                         tid, eventDataOffset);
+            });
+        eventHandlers[PLDM_PDR_REPOSITORY_CHG_EVENT].emplace_back(
+            [this](const pldm_msg* request, size_t payloadLength,
+                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset) {
+                return this->pldmPDRRepositoryChgEvent(request, payloadLength,
+                                                       formatVersion, tid,
+                                                       eventDataOffset);
+            });
+
+        // Additional OEM event handlers for PLDM events, append it to the
+        // standard handlers
+        if (addOnHandlersMap)
+        {
+            auto addOnHandlers = addOnHandlersMap.value();
+            for (EventMap::iterator iter = addOnHandlers.begin();
+                 iter != addOnHandlers.end(); ++iter)
+            {
+                auto search = eventHandlers.find(iter->first);
+                if (search != eventHandlers.end())
+                {
+                    search->second.insert(std::end(search->second),
+                                          std::begin(iter->second),
+                                          std::end(iter->second));
+                }
+                else
+                {
+                    eventHandlers.emplace(iter->first, iter->second);
+                }
+            }
+        }
     }
 
     pdr_utils::Repo& getRepo()
@@ -113,6 +161,69 @@ class Handler : public CmdHandler
      */
     Response setStateEffecterStates(const pldm_msg* request,
                                     size_t payloadLength);
+
+    /** @brief Handler for PlatformEventMessage
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @return Response - PLDM Response message
+     */
+    Response platformEventMessage(const pldm_msg* request,
+                                  size_t payloadLength);
+
+    /** @brief Handler for event class Sensor event
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @param[in] formatVersion - Version of the event format
+     *  @param[in] tid - Terminus ID of the event's originator
+     *  @param[in] eventDataOffset - Offset of the event data in the request
+     *                               message
+     *  @return PLDM completion code
+     */
+    int sensorEvent(const pldm_msg* request, size_t payloadLength,
+                    uint8_t formatVersion, uint8_t tid, size_t eventDataOffset);
+
+    /** @brief Handler for pldmPDRRepositoryChgEvent
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @param[in] formatVersion - Version of the event format
+     *  @param[in] tid - Terminus ID of the event's originator
+     *  @param[in] eventDataOffset - Offset of the event data in the request
+     *                               message
+     *  @return PLDM completion code
+     */
+    int pldmPDRRepositoryChgEvent(const pldm_msg* request, size_t payloadLength,
+                                  uint8_t formatVersion, uint8_t tid,
+                                  size_t eventDataOffset);
+
+    /** @brief Handler for extracting the PRDHandles from changeEntries
+     *
+     *  @param[in] changeEntryData - ChangeEntry data from changeRecord
+     *  @param[in] changeEntryDataSize - total size of changeEntryData
+     *  @param[in] numberOfChangeEntries - total number of changeEntries to
+     * extract
+     *  @param[out] pdrRecordHandle - std::vector where the extracted PDR
+     * Handles are placed
+     *  @return PLDM completion code
+     */
+    int getPDRRecordHandles(const ChangeEntry* changeEntryData,
+                            size_t changeEntryDataSize,
+                            uint8_t numberOfChangeEntries,
+                            PDRRecordHandle& pdrRecordHandle);
+
+    /** @brief Handler for setting Sensor event data
+     *
+     *  @param[in] sensorId - sensorID value of the sensor
+     *  @param[in] sensorOffset - Identifies which state sensor within a
+     * composite state sensor the event is being returned for
+     *  @param[in] eventState - The event state value from the state change that
+     * triggered the event message
+     *  @return PLDM completion code
+     */
+    int setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
+                           uint8_t eventState);
 
     /** @brief Function to set the effecter requested by pldm requester
      *  @param[in] dBusIntf - The interface object

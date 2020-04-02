@@ -41,6 +41,10 @@ extern "C" {
 #define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_16BIT_DATA_LENGTH 5
 #define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_32BIT_DATA_LENGTH 7
 
+/* Minumum length of data for pldmPDRRepositoryChgEvent */
+#define PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH 2
+#define PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH 2
+
 enum pldm_effecter_data_size {
 	PLDM_EFFECTER_DATA_SIZE_UINT8,
 	PLDM_EFFECTER_DATA_SIZE_SINT8,
@@ -171,6 +175,16 @@ enum pldm_pdr_repository_chg_event_data_format {
 	REFRESH_ENTIRE_REPOSITORY,
 	FORMAT_IS_PDR_TYPES,
 	FORMAT_IS_PDR_HANDLES
+};
+
+/** @brief PLDM pldmPDRRepositoryChgEvent class changeRecord format
+ * eventDataOperation
+ */
+enum pldm_pdr_repository_chg_event_change_record_event_data_operation {
+	REFRESH_ALL_RECORDS,
+	RECORDS_DELETED,
+	RECORDS_ADDED,
+	RECORDS_MODIFIED
 };
 
 /** @brief PLDM NumericSensorStatePresentReading data type
@@ -961,6 +975,45 @@ int decode_get_numeric_effecter_value_resp(
     const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
     uint8_t *effecter_data_size, uint8_t *effecter_oper_state,
     uint8_t *pending_value, uint8_t *present_value);
+
+/** @brief Decode pldmPDRRepositoryChgEvent response data
+ *
+ *  @param[in] event_data - eventData for pldmPDRRepositoryChgEvent
+ *  @param[in] event_data_size - Length of event_data
+ *  @param[out] event_data_format - This field indicates if the changedRecords
+ * are of PDR Types or PDR Record Handles
+ *  @param[out] number_of_change_records - The number of changeRecords following
+ * this field
+ *  @param[out] change_record_data_offset - Identifies where changeRecord data
+ * is located within event_data
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'event_data'
+ */
+int decode_pldm_pdr_repository_chg_event_data(
+    const uint8_t *event_data, size_t event_data_size,
+    uint8_t *event_data_format, uint8_t *number_of_change_records,
+    size_t *change_record_data_offset);
+
+/** @brief Decode PldmPDRRepositoryChangeRecord response data
+ *
+ *  @param[in] change_record_data - changeRecordData for
+ * pldmPDRRepositoryChgEvent
+ *  @param[in] change_record_data_size - Length of change_record_data
+ *  @param[out] event_data_operation - This field indicates the changeEntries
+ * operation types
+ *  @param[out] number_of_change_entries - The number of changeEntries following
+ * this field
+ *  @param[out] change_entry_data_offset - Identifies where changeEntries data
+ * is located within change_record_data
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'change_record_data'
+ */
+int decode_pldm_pdr_repository_change_record_data(
+    const uint8_t *change_record_data, size_t change_record_data_size,
+    uint8_t *event_data_operation, uint8_t *number_of_change_entries,
+    size_t *change_entry_data_offset);
 
 #ifdef __cplusplus
 }
