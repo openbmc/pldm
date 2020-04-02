@@ -1,4 +1,5 @@
 #include "dbus_impl_requester.hpp"
+#include "host_pdr_handler.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
@@ -17,6 +18,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <iterator>
@@ -38,11 +40,39 @@
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
+constexpr auto eidPath = "/usr/share/pldm/host_eid";
 
 using namespace pldm::responder;
 using namespace pldm;
 using namespace sdeventplus;
 using namespace sdeventplus::source;
+
+static uint8_t readHostEID()
+{
+    uint8_t eid{};
+    std::ifstream eidFile{eidPath};
+    if (!eidFile.good())
+    {
+        std::cerr << "Could not open host EID file"
+                  << "\n";
+    }
+    else
+    {
+        std::string seid;
+        eidFile >> seid;
+        if (!seid.empty())
+        {
+            eid = atoi(seid.c_str());
+        }
+        else
+        {
+            std::cerr << "Host EID file was empty"
+                      << "\n";
+        }
+    }
+
+    return eid;
+}
 
 static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
                              Invoker& invoker, dbus_api::Requester& requester)
@@ -146,26 +176,6 @@ int main(int argc, char** argv)
             break;
     }
 
-    std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
-        pldm_pdr_init(), pldm_pdr_destroy);
-    std::unique_ptr<pldm_entity_association_tree,
-                    decltype(&pldm_entity_association_tree_destroy)>
-        entityTree(pldm_entity_association_tree_init(),
-                   pldm_entity_association_tree_destroy);
-
-    Invoker invoker{};
-    invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
-    invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
-    invoker.registerHandler(PLDM_PLATFORM, std::make_unique<platform::Handler>(
-                                               PDR_JSONS_DIR, pdrRepo.get()));
-    invoker.registerHandler(
-        PLDM_FRU, std::make_unique<fru::Handler>(FRU_JSONS_DIR, pdrRepo.get(),
-                                                 entityTree.get()));
-
-#ifdef OEM_IBM
-    invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
-#endif
-
     /* Create local socket. */
     int returnCode = 0;
     int sockfd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
@@ -175,6 +185,37 @@ int main(int argc, char** argv)
         std::cerr << "Failed to create the socket, RC= " << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
+
+    auto event = Event::get_default();
+    std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
+        pldm_pdr_init(), pldm_pdr_destroy);
+    std::unique_ptr<pldm_entity_association_tree,
+                    decltype(&pldm_entity_association_tree_destroy)>
+        entityTree(pldm_entity_association_tree_init(),
+                   pldm_entity_association_tree_destroy);
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
+    std::unique_ptr<HostPDRHandler> hostPDRHandler;
+    auto hostEID = readHostEID();
+    if (hostEID)
+    {
+        hostPDRHandler = std::make_unique<HostPDRHandler>(
+            sockfd, hostEID, event, pdrRepo.get(), dbusImplReq);
+    }
+
+    Invoker invoker{};
+    invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
+    invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
+    invoker.registerHandler(
+        PLDM_PLATFORM, std::make_unique<platform::Handler>(
+                           PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get()));
+    invoker.registerHandler(
+        PLDM_FRU, std::make_unique<fru::Handler>(FRU_JSONS_DIR, pdrRepo.get(),
+                                                 entityTree.get()));
+
+#ifdef OEM_IBM
+    invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
+#endif
 
     pldm::utils::CustomFD socketFd(sockfd);
 
@@ -203,8 +244,6 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
     auto callback = [verbose, &invoker, &dbusImplReq](IO& /*io*/, int fd,
                                                       uint32_t revents) {
         if (!(revents & EPOLLIN))
@@ -292,7 +331,6 @@ int main(int argc, char** argv)
         }
     };
 
-    auto event = Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
