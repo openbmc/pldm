@@ -23,15 +23,55 @@ namespace pldm
 namespace responder
 {
 
-static constexpr auto nbdInterface = "/dev/nbd1";
+static constexpr auto nbdInterfaceDefault = "/dev/nbd1";
+static constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
+static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump";
 
 int DumpHandler::fd = -1;
 
+static std::string findDumpObjPath(uint32_t fileHandle)
+{
+    static constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+    static constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto systemDumpEntry =
+        "xyz.openbmc_project.Dump.Entry.System";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+
+    try
+    {
+        std::vector<std::string> paths;
+        auto method = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                          MAPPER_INTERFACE, "GetSubTreePaths");
+        method.append(dumpObjPath);
+        method.append(0);
+        method.append(std::vector<std::string>({systemDumpEntry}));
+        auto reply = bus.call(method);
+        reply.read(paths);
+        for (const auto& path : paths)
+        {
+            auto dumpId = pldm::utils::DBusHandler().getDbusProperty<uint32_t>(
+                path.c_str(), "SourceDumpId", systemDumpEntry);
+            if (dumpId == fileHandle)
+            {
+                return path;
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
+                  << e.what() << "\n";
+    }
+
+    std::cerr << "failed to find dump object for dump id " << fileHandle
+              << "\n";
+    return {};
+}
+
 int DumpHandler::newFileAvailable(uint64_t length)
 {
-    static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump";
     static constexpr auto dumpInterface = "xyz.openbmc_project.Dump.NewDump";
-
     auto& bus = pldm::utils::DBusHandler::getBus();
 
     try
@@ -57,14 +97,47 @@ int DumpHandler::newFileAvailable(uint64_t length)
     return PLDM_SUCCESS;
 }
 
+static std::string getOffloadUri(uint32_t fileHandle)
+{
+    auto path = findDumpObjPath(fileHandle);
+    if (path.empty())
+    {
+        return {};
+    }
+
+    std::string nbdInterface{};
+    try
+    {
+        nbdInterface = pldm::utils::DBusHandler().getDbusProperty<std::string>(
+            path.c_str(), "OffloadUri", dumpEntry);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
+                  << e.what() << "\n";
+    }
+
+    if (nbdInterface == "")
+    {
+        nbdInterface = nbdInterfaceDefault;
+    }
+
+    return nbdInterface;
+}
+
 int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                  uint64_t address)
 {
-    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
+    auto nbdInterface = getOffloadUri(fileHandle);
+    if (nbdInterface.empty())
+    {
+        return PLDM_ERROR;
+    }
 
+    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
     if (DumpHandler::fd == -1)
     {
-        DumpHandler::fd = open(nbdInterface, flags);
+        DumpHandler::fd = open(nbdInterface.c_str(), flags);
         if (DumpHandler::fd == -1)
         {
             std::cerr << "NBD file does not exist at " << nbdInterface
@@ -72,15 +145,22 @@ int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
             return PLDM_ERROR;
         }
     }
+
     return transferFileData(DumpHandler::fd, false, offset, length, address);
 }
 
 int DumpHandler::write(const char* buffer, uint32_t offset, uint32_t& length)
 {
+    auto nbdInterface = getOffloadUri(fileHandle);
+    if (nbdInterface.empty())
+    {
+        return PLDM_ERROR;
+    }
+
     int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
     if (DumpHandler::fd == -1)
     {
-        DumpHandler::fd = open(nbdInterface, flags);
+        DumpHandler::fd = open(nbdInterface.c_str(), flags);
         if (DumpHandler::fd == -1)
         {
             std::cerr << "NBD file does not exist at " << nbdInterface
@@ -112,51 +192,24 @@ int DumpHandler::fileAck(uint8_t /*fileStatus*/)
 {
     if (DumpHandler::fd >= 0)
     {
-        static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump";
-        static constexpr auto MAPPER_BUSNAME =
-            "xyz.openbmc_project.ObjectMapper";
-        static constexpr auto MAPPER_PATH =
-            "/xyz/openbmc_project/object_mapper";
-        static constexpr auto MAPPER_INTERFACE =
-            "xyz.openbmc_project.ObjectMapper";
-        static constexpr auto systemDumpEntry =
-            "xyz.openbmc_project.Dump.Entry.System";
-        static constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
-        auto& bus = pldm::utils::DBusHandler::getBus();
-
-        try
+        auto path = findDumpObjPath(fileHandle);
+        if (!path.empty())
         {
-            std::vector<std::string> paths;
-            auto method =
-                bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                    MAPPER_INTERFACE, "GetSubTreePaths");
-            method.append(dumpObjPath);
-            method.append(0);
-            method.append(std::vector<std::string>({systemDumpEntry}));
-            auto reply = bus.call(method);
-            reply.read(paths);
-            for (auto path : paths)
+            PropertyValue value{true};
+            DBusMapping dbusMapping{path, dumpEntry, "Offloaded", "bool"};
+            try
             {
-                uint32_t dumpId =
-                    pldm::utils::DBusHandler().getDbusProperty<uint32_t>(
-                        path.c_str(), "SourceDumpId", systemDumpEntry);
-                if (dumpId == fileHandle)
-                {
-                    PropertyValue value{true};
-                    DBusMapping dbusMapping{path, dumpEntry, "Offloaded",
-                                            "bool"};
-                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
-                                                               value);
-                    close(DumpHandler::fd);
-                    DumpHandler::fd = -1;
-                    return PLDM_SUCCESS;
-                }
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
             }
-        }
-        catch (const std::exception& e)
-        {
-            std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
-                      << e.what() << "\n";
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "failed to make a d-bus call to DUMP manager, ERROR="
+                    << e.what() << "\n";
+            }
+            close(DumpHandler::fd);
+            DumpHandler::fd = -1;
+            return PLDM_SUCCESS;
         }
     }
 
