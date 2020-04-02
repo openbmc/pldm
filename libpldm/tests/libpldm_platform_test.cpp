@@ -1361,3 +1361,120 @@ TEST(GetNumericEffecterValue, testBadDecodeResponse)
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(PldmPDRRepositoryChgEventEvent, testGoodDecodeRequest)
+{
+    const uint8_t eventDataFormat = FORMAT_IS_PDR_HANDLES;
+    const uint8_t numberOfChangeRecords = 2;
+    uint8_t eventDataOperation1 = PLDM_RECORDS_DELETED;
+    const uint8_t numberOfChangeEntries1 = 2;
+    std::array<uint32_t, numberOfChangeEntries1> changeRecordArr1{
+        {0x00000000, 0x12345678}};
+    uint8_t eventDataOperation2 = PLDM_RECORDS_ADDED;
+    const uint8_t numberOfChangeEntries2 = 5;
+    std::array<uint32_t, numberOfChangeEntries2> changeRecordArr2{
+        {0x01234567, 0x11223344, 0x45678901, 0x21222324, 0x98765432}};
+    std::array<uint8_t, PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH +
+                            PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH *
+                                numberOfChangeRecords +
+                            (numberOfChangeEntries2 + numberOfChangeEntries2) *
+                                sizeof(uint32_t)>
+        eventDataArr{};
+
+    struct pldm_pdr_repository_chg_event_data* eventData =
+        reinterpret_cast<struct pldm_pdr_repository_chg_event_data*>(
+            eventDataArr.data());
+    eventData->event_data_format = eventDataFormat;
+    eventData->number_of_change_records = numberOfChangeRecords;
+    struct pldm_pdr_repository_change_record_data* changeRecord1 =
+        reinterpret_cast<struct pldm_pdr_repository_change_record_data*>(
+            eventData->change_records);
+    changeRecord1->event_data_operation = eventDataOperation1;
+    changeRecord1->number_of_change_entries = numberOfChangeEntries1;
+    memcpy(changeRecord1->change_entry, &changeRecordArr1[0],
+           changeRecordArr1.size() * sizeof(uint32_t));
+    struct pldm_pdr_repository_change_record_data* changeRecord2 =
+        reinterpret_cast<struct pldm_pdr_repository_change_record_data*>(
+            eventData->change_records +
+            PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH +
+            (changeRecordArr1.size() * sizeof(uint32_t)));
+    changeRecord2->event_data_operation = eventDataOperation2;
+    changeRecord2->number_of_change_entries = numberOfChangeEntries2;
+    memcpy(changeRecord2->change_entry, &changeRecordArr2[0],
+           changeRecordArr2.size() * sizeof(uint32_t));
+
+    uint8_t retEventDataFormat{};
+    uint8_t retNumberOfChangeRecords{};
+    size_t retChangeRecordDataOffset{0};
+    auto rc = decode_pldm_pdr_repository_chg_event_data(
+        reinterpret_cast<const uint8_t*>(eventData), eventDataArr.size(),
+        &retEventDataFormat, &retNumberOfChangeRecords,
+        &retChangeRecordDataOffset);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retEventDataFormat, FORMAT_IS_PDR_HANDLES);
+    EXPECT_EQ(retNumberOfChangeRecords, numberOfChangeRecords);
+
+    const uint8_t* changeRecordData =
+        reinterpret_cast<const uint8_t*>(changeRecord1);
+    size_t changeRecordDataSize =
+        eventDataArr.size() - PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH;
+    uint8_t retEventDataOperation;
+    uint8_t retNumberOfChangeEntries;
+    size_t retChangeEntryDataOffset;
+
+    rc = decode_pldm_pdr_repository_change_record_data(
+        reinterpret_cast<const uint8_t*>(changeRecordData),
+        changeRecordDataSize, &retEventDataOperation, &retNumberOfChangeEntries,
+        &retChangeEntryDataOffset);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retEventDataOperation, eventDataOperation1);
+    EXPECT_EQ(retNumberOfChangeEntries, numberOfChangeEntries1);
+    changeRecordData += retChangeEntryDataOffset;
+    EXPECT_EQ(0, memcmp(changeRecordData, &changeRecordArr1[0],
+                        sizeof(uint32_t) * retNumberOfChangeEntries));
+
+    changeRecordData += sizeof(uint32_t) * retNumberOfChangeEntries;
+    changeRecordDataSize -= sizeof(uint32_t) * retNumberOfChangeEntries -
+                            PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH;
+    rc = decode_pldm_pdr_repository_change_record_data(
+        reinterpret_cast<const uint8_t*>(changeRecordData),
+        changeRecordDataSize, &retEventDataOperation, &retNumberOfChangeEntries,
+        &retChangeEntryDataOffset);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retEventDataOperation, eventDataOperation2);
+    EXPECT_EQ(retNumberOfChangeEntries, numberOfChangeEntries2);
+    changeRecordData += retChangeEntryDataOffset;
+    EXPECT_EQ(0, memcmp(changeRecordData, &changeRecordArr2[0],
+                        sizeof(uint32_t) * retNumberOfChangeEntries));
+}
+
+TEST(PldmPDRRepositoryChgEventEvent, testBadDecodeRequest)
+{
+    uint8_t eventDataFormat{};
+    uint8_t numberOfChangeRecords{};
+    size_t changeRecordDataOffset{};
+    auto rc = decode_pldm_pdr_repository_chg_event_data(
+        NULL, 0, &eventDataFormat, &numberOfChangeRecords,
+        &changeRecordDataOffset);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t, 2> eventData{};
+    rc = decode_pldm_pdr_repository_chg_event_data(
+        reinterpret_cast<const uint8_t*>(eventData.data()), 0, &eventDataFormat,
+        &numberOfChangeRecords, &changeRecordDataOffset);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    uint8_t eventDataOperation{};
+    uint8_t numberOfChangeEntries{};
+    size_t changeEntryDataOffset{};
+    rc = decode_pldm_pdr_repository_change_record_data(
+        NULL, 0, &eventDataOperation, &numberOfChangeEntries,
+        &changeEntryDataOffset);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t, 2> changeRecord{};
+    rc = decode_pldm_pdr_repository_change_record_data(
+        reinterpret_cast<const uint8_t*>(changeRecord.data()), 0,
+        &eventDataOperation, &numberOfChangeEntries, &changeEntryDataOffset);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
