@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "handler.hpp"
+#include "host_pdr_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "utils.hpp"
@@ -53,8 +54,10 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const std::string& dir, pldm_pdr* repo,
+            HostPDRHandler* hostPDRHandler,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
-        pdrRepo(repo)
+        pdrRepo(repo),
+        hostPDRHandler(hostPDRHandler)
     {
         generate(dir, pdrRepo);
 
@@ -340,6 +343,7 @@ class Handler : public CmdHandler
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
     DbusObjMaps dbusObjMaps{};
+    HostPDRHandler* hostPDRHandler;
 };
 
 } // namespace platform
