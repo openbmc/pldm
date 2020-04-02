@@ -1,0 +1,9 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+2: Deepak Kodihalli <dkodihal@in.ibm.com>
+Verified+1: John Wang <wangzq.jn@gmail.com>
+Submitted-by: John Wang <wangzq.jn@gmail.com>
+Submitted-at: Thu, 02 Apr 2020 09:48:17 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/30625
+Project: openbmc/pldm
+Branch: refs/heads/master
