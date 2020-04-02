@@ -2,6 +2,7 @@
 
 #include <array>
 #include <ctime>
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -17,6 +18,34 @@ namespace utils
 constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
+constexpr auto eidPath = "/usr/share/pldm/host_eid";
+
+uint8_t readHostEID()
+{
+    uint8_t eid{};
+    std::ifstream eidFile{eidPath};
+    if (!eidFile.good())
+    {
+        std::cerr << "Could not open host EID file"
+                  << "\n";
+    }
+    else
+    {
+        std::string eidStr;
+        eidFile >> eidStr;
+        if (!eidStr.empty())
+        {
+            eid = atoi(eidStr.c_str());
+        }
+        else
+        {
+            std::cerr << "Host EID file was empty"
+                      << "\n";
+        }
+    }
+
+    return eid;
+}
 
 uint8_t getNumPadBytes(uint32_t data)
 {
