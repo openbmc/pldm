@@ -24,7 +24,7 @@ TEST(getPDR, testGoodPath)
     request->request_count = 100;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -55,7 +55,7 @@ TEST(getPDR, testShortRead)
     request->request_count = 1;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -80,7 +80,7 @@ TEST(getPDR, testBadRecordHandle)
     request->request_count = 1;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -103,7 +103,7 @@ TEST(getPDR, testNoNextRecord)
     request->record_handle = 1;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -128,7 +128,7 @@ TEST(getPDR, testFindPDR)
     request->request_count = 100;
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", pdrRepo, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -179,7 +179,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;
@@ -214,7 +214,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;

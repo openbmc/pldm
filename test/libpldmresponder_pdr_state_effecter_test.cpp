@@ -15,7 +15,7 @@ TEST(GeneratePDR, testGoodJson)
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
@@ -107,7 +107,8 @@ TEST(GeneratePDR, testNoJson)
 {
     auto pdrRepo = pldm_pdr_init();
 
-    ASSERT_THROW(Handler("./pdr_jsons/not_there", pdrRepo), std::exception);
+    ASSERT_THROW(Handler("./pdr_jsons/not_there", pdrRepo, nullptr),
+                 std::exception);
 
     pldm_pdr_destroy(pdrRepo);
 }
@@ -117,7 +118,7 @@ TEST(GeneratePDR, testMalformedJson)
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", inPDRRepo, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 

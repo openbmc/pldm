@@ -241,5 +241,11 @@ inline std::string findParent(const std::string& dbusObj)
     return p.parent_path().string();
 }
 
+/** @brief Read (static) MCTP EID of host firmware from a file
+ *
+ *  @return uint8_t - MCTP EID
+ */
+uint8_t readHostEID();
+
 } // namespace utils
 } // namespace pldm
