@@ -407,7 +407,7 @@ struct pldm_platform_event_message_req {
  */
 struct pldm_platform_event_message_resp {
 	uint8_t completion_code;
-	uint8_t status;
+	uint8_t platform_event_status;
 } __attribute__((packed));
 
 /** @struct pldm_pdr_repository_chg_event_data
@@ -853,14 +853,16 @@ int decode_platform_event_message_req(const struct pldm_msg *msg,
 /** @brief Encode PlatformEventMessage response data
  *  @param[in] instance_id - Message's instance id
  *  @param[in] completion_code - PLDM completion code
- *  @param[in] status - Response status of the event message command
+ *  @param[in] platform_event_status - Response status of the event message
+ * command
  *  @param[out] msg - Message will be written to this
  *  @return pldm_completion_codes
  *  @note  Caller is responsible for memory alloc and dealloc of param
  *         'msg.payload'
  */
 int encode_platform_event_message_resp(uint8_t instance_id,
-				       uint8_t completion_code, uint8_t status,
+				       uint8_t completion_code,
+				       uint8_t platform_event_status,
 				       struct pldm_msg *msg);
 
 /** @brief Decode sensorEventData response data
