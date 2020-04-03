@@ -1,5 +1,6 @@
 #include "pldm_base_cmd.hpp"
 
+#include "libpldmresponder/file_io.hpp"
 #include "pldm_cmd_helper.hpp"
 
 #include "libpldm/utils.h"
@@ -18,7 +19,7 @@ using namespace pldmtool::helper;
 std::vector<std::unique_ptr<CommandInterface>> commands;
 const std::map<const char*, pldm_supported_types> pldmTypes{
     {"base", PLDM_BASE}, {"platform", PLDM_PLATFORM}, {"bios", PLDM_BIOS},
-    {"fru", PLDM_FRU},   {"oem", PLDM_OEM},
+    {"fru", PLDM_FRU},   {"oem-ibm", PLDM_OEM},
 };
 
 const std::map<const char*, pldm_supported_commands> pldmBaseCmds{
@@ -43,6 +44,9 @@ const std::map<const char*, pldm_platform_commands> pldmPlatformCmds{
 const std::map<const char*, pldm_fru_commands> pldmFruCmds{
     {"GetFRURecordTableMetadata", PLDM_GET_FRU_RECORD_TABLE_METADATA},
     {"GetFRURecordTable", PLDM_GET_FRU_RECORD_TABLE}};
+
+const std::map<const char*, pldm_host_commands> pldmOEMCmds{
+    {"GetAlertStatus", PLDM_HOST_GET_ALERT_STATUS}};
 
 } // namespace
 
@@ -286,6 +290,9 @@ class GetPLDMCommands : public CommandInterface
                         break;
                     case PLDM_FRU:
                         printCommand(pldmFruCmds, i);
+                        break;
+                    case PLDM_OEM:
+                        printCommand(pldmOEMCmds, i);
                         break;
                     default:
                         break;
