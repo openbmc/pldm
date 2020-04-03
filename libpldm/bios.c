@@ -345,7 +345,7 @@ int encode_get_bios_current_value_by_handle_req(uint8_t instance_id,
 
 	request->transfer_handle = htole32(transfer_handle);
 	request->transfer_op_flag = transfer_op_flag;
-	request->attribute_handle = attribute_handle;
+	request->attribute_handle = htole16(attribute_handle);
 	return PLDM_SUCCESS;
 }
 
@@ -358,10 +358,6 @@ int decode_get_bios_attribute_current_value_resp(
 	    next_transfer_handle == NULL || completion_code == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-	if (payload_length <=
-	    PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_MIN_RESP_BYTES) {
-		return PLDM_ERROR_INVALID_LENGTH;
-	}
 
 	struct pldm_get_bios_attribute_current_value_by_handle_resp *response =
 	    (struct pldm_get_bios_attribute_current_value_by_handle_resp *)
@@ -372,6 +368,12 @@ int decode_get_bios_attribute_current_value_resp(
 	if (PLDM_SUCCESS != *completion_code) {
 		return PLDM_SUCCESS;
 	}
+
+	if (payload_length <=
+	    PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
 	*next_transfer_handle = le32toh(response->next_transfer_handle);
 	*transfer_flag = response->transfer_flag;
 

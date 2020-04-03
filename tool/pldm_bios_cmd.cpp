@@ -260,10 +260,10 @@ class GetBIOSTableHandler : public CommandInterface
                                                              attrTable.size()))
         {
             auto attrNameHandle =
-                pldm_bios_table_attr_entry_decode_attribute_handle(attr);
+                pldm_bios_table_attr_entry_decode_string_handle(attr);
             if (attrNameHandle == nameHandle)
             {
-                return pldm_bios_table_attr_entry_decode_string_handle(attr);
+                return pldm_bios_table_attr_entry_decode_attribute_handle(attr);
             }
         }
         return std::nullopt;
