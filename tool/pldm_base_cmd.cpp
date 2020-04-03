@@ -4,6 +4,11 @@
 
 #include "libpldm/utils.h"
 
+#ifdef OEM_IBM
+#include "libpldm/file_io.h"
+#include "libpldm/host.h"
+#endif
+
 namespace pldmtool
 {
 
@@ -17,8 +22,11 @@ using namespace pldmtool::helper;
 
 std::vector<std::unique_ptr<CommandInterface>> commands;
 const std::map<const char*, pldm_supported_types> pldmTypes{
-    {"base", PLDM_BASE}, {"platform", PLDM_PLATFORM}, {"bios", PLDM_BIOS},
-    {"fru", PLDM_FRU},   {"oem", PLDM_OEM},
+    {"base", PLDM_BASE},   {"platform", PLDM_PLATFORM},
+    {"bios", PLDM_BIOS},   {"fru", PLDM_FRU},
+#ifdef OEM_IBM
+    {"oem-ibm", PLDM_OEM},
+#endif
 };
 
 const std::map<const char*, pldm_supported_commands> pldmBaseCmds{
@@ -43,6 +51,24 @@ const std::map<const char*, pldm_platform_commands> pldmPlatformCmds{
 const std::map<const char*, pldm_fru_commands> pldmFruCmds{
     {"GetFRURecordTableMetadata", PLDM_GET_FRU_RECORD_TABLE_METADATA},
     {"GetFRURecordTable", PLDM_GET_FRU_RECORD_TABLE}};
+
+#ifdef OEM_IBM
+const std::map<const char*, pldm_host_commands> pldmIBMHostCmds{
+    {"GetAlertStatus", PLDM_HOST_GET_ALERT_STATUS}};
+
+const std::map<const char*, pldm_fileio_commands> pldmIBMFileIOCmds{
+    {"GetFileTable", PLDM_GET_FILE_TABLE},
+    {"ReadFile", PLDM_READ_FILE},
+    {"WriteFile", PLDM_WRITE_FILE},
+    {"ReadFileInToMemory", PLDM_READ_FILE_INTO_MEMORY},
+    {"WriteFileFromMemory", PLDM_WRITE_FILE_FROM_MEMORY},
+    {"ReadFileByTypeIntoMemory", PLDM_READ_FILE_BY_TYPE_INTO_MEMORY},
+    {"WriteFileByTypeFromMemory", PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY},
+    {"NewFileAvailable", PLDM_NEW_FILE_AVAILABLE},
+    {"ReadFileByType", PLDM_READ_FILE_BY_TYPE},
+    {"WriteFileByType", PLDM_WRITE_FILE_BY_TYPE},
+    {"FileAck", PLDM_FILE_ACK}};
+#endif
 
 } // namespace
 
@@ -286,6 +312,10 @@ class GetPLDMCommands : public CommandInterface
                         break;
                     case PLDM_FRU:
                         printCommand(pldmFruCmds, i);
+                        break;
+                    case PLDM_OEM:
+                        printCommand(pldmIBMHostCmds, i);
+                        printCommand(pldmIBMFileIOCmds, i);
                         break;
                     default:
                         break;
