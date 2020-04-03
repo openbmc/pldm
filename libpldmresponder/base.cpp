@@ -1,6 +1,7 @@
 #include "libpldm/base.h"
 
 #include "base.hpp"
+#include "libpldmresponder/file_io.hpp"
 
 #include <array>
 #include <cstring>
@@ -31,14 +32,25 @@ static const std::map<Type, Cmd> capabilities{
      {PLDM_GET_DATE_TIME, PLDM_SET_DATE_TIME, PLDM_GET_BIOS_TABLE,
       PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE,
       PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE}},
-    {PLDM_FRU,
-     {PLDM_GET_FRU_RECORD_TABLE_METADATA, PLDM_GET_FRU_RECORD_TABLE}}};
+    {PLDM_FRU, {PLDM_GET_FRU_RECORD_TABLE_METADATA, PLDM_GET_FRU_RECORD_TABLE}},
+#ifdef OEM_IBM
+    {PLDM_OEM,
+     {PLDM_HOST_GET_ALERT_STATUS, PLDM_GET_FILE_TABLE, PLDM_READ_FILE,
+      PLDM_WRITE_FILE, PLDM_READ_FILE_INTO_MEMORY, PLDM_WRITE_FILE_FROM_MEMORY,
+      PLDM_READ_FILE_BY_TYPE_INTO_MEMORY, PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
+      PLDM_NEW_FILE_AVAILABLE, PLDM_READ_FILE_BY_TYPE, PLDM_WRITE_FILE_BY_TYPE,
+      PLDM_FILE_ACK}},
+#endif
+};
 
 static const std::map<Type, ver32_t> versions{
     {PLDM_BASE, {0xF1, 0xF0, 0xF0, 0x00}},
     {PLDM_PLATFORM, {0xF1, 0xF2, 0xF0, 0x00}},
     {PLDM_BIOS, {0xF1, 0xF0, 0xF0, 0x00}},
     {PLDM_FRU, {0xF1, 0xF0, 0xF0, 0x00}},
+#ifdef OEM_IBM
+    {PLDM_OEM, {0xF1, 0xF0, 0xF0, 0x00}},
+#endif
 };
 
 namespace base
