@@ -7,8 +7,13 @@ sources = [
   'pldm_bios_cmd.cpp',
   'pldm_fru_cmd.cpp',
   'pldmtool.cpp',
-  'oem/ibm/pldm_host_cmd.cpp'
 ]
+
+if get_option('oem-ibm').enabled()
+sources += [
+    'oem/ibm/pldm_host_cmd.cpp'
+  ]
+endif
 
 executable(
   'pldmtool',

@@ -73,7 +73,10 @@ int main(int argc, char** argv)
     pldmtool::bios::registerCommand(app);
     pldmtool::platform::registerCommand(app);
     pldmtool::fru::registerCommand(app);
+
+#ifdef OEM_IBM
     pldmtool::oem_ibm::power_host::registerCommand(app);
+#endif
 
     CLI11_PARSE(app, argc, argv);
     return 0;
