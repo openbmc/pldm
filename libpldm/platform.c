@@ -583,7 +583,8 @@ int decode_platform_event_message_req(const struct pldm_msg *msg,
 }
 
 int encode_platform_event_message_resp(uint8_t instance_id,
-				       uint8_t completion_code, uint8_t status,
+				       uint8_t completion_code,
+				       uint8_t platform_event_status,
 				       struct pldm_msg *msg)
 {
 	int rc = PLDM_SUCCESS;
@@ -592,10 +593,14 @@ int encode_platform_event_message_resp(uint8_t instance_id,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	if (platform_event_status > PLDM_EVENT_LOGGING_REJECTED) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
 	struct pldm_platform_event_message_resp *response =
 	    (struct pldm_platform_event_message_resp *)msg->payload;
 	response->completion_code = completion_code;
-	response->status = status;
+	response->platform_event_status = platform_event_status;
 
 	struct pldm_header_info header = {0};
 	header.msg_type = PLDM_RESPONSE;

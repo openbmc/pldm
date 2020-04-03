@@ -1,0 +1,11 @@
+Build started at 2020-04-03T13:33:13.750480
+Main binary: /esw/san5/pavi798b/sdk/arm/sysroots/x86_64-oesdk-linux/usr/bin/python3
+Build Options: -Dtests=disabled -Doem-ibm=enabled '--cross-file /esw/san5/pavi798b/sdk/arm/sysroots/x86_64-oesdk-linux/usr/share/meson/arm-openbmc-linux-gnueabi-meson.cross'
+Python system: Linux
+The Meson build system
+Version: 0.52.0
+Source dir: /esw/san5/pavi798b/obmc/pldm/libpldm
+Build dir: /esw/san5/pavi798b/obmc/pldm/libpldm/build
+Build type: cross build
+
+ERROR: First statement must be a call to project

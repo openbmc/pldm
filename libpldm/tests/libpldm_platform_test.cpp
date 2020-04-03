@@ -839,14 +839,14 @@ TEST(PlatformEventMessage, testGoodEncodeResponse)
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
     uint8_t completionCode = 0;
     uint8_t instanceId = 0x01;
-    uint8_t status = 1;
+    uint8_t platform_event_status = 0x01;
 
-    auto rc = encode_platform_event_message_resp(instanceId, PLDM_SUCCESS,
-                                                 status, response);
+    auto rc = encode_platform_event_message_resp(
+        instanceId, PLDM_SUCCESS, platform_event_status, response);
 
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(completionCode, response->payload[0]);
-    EXPECT_EQ(status, response->payload[1]);
+    EXPECT_EQ(platform_event_status, response->payload[1]);
 }
 
 TEST(PlatformEventMessage, testBadEncodeResponse)
