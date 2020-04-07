@@ -132,7 +132,7 @@ class BIOSStringTable : public BIOSStringTableInterface
     uint16_t findHandle(const std::string& name) const override;
 
   private:
-    Table stringTable;
+    const Table& stringTable;
 };
 
 namespace table
