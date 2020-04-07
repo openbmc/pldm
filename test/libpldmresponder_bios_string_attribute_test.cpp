@@ -34,7 +34,10 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
             "default_string_length" : 2,
             "default_string" : "ef"
         })"_json;
-    BIOSStringAttribute stringReadOnly{jsonStringReadOnly, nullptr};
+    MockBIOSStringTable stringTable;
+
+    BIOSStringAttribute stringReadOnly{jsonStringReadOnly, stringTable,
+                                       nullptr};
     EXPECT_EQ(stringReadOnly.name, "str_example3");
     EXPECT_TRUE(stringReadOnly.readOnly);
 
@@ -54,8 +57,9 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
             "default_string" : "ef"
         })"_json; // missing default_string_length
 
-    EXPECT_THROW((BIOSStringAttribute{jsonStringReadOnlyError, nullptr}),
-                 Json::exception);
+    EXPECT_THROW(
+        (BIOSStringAttribute{jsonStringReadOnlyError, stringTable, nullptr}),
+        Json::exception);
 
     auto jsonStringReadWrite = R"({
             "attribute_name" : "str_example1",
@@ -71,7 +75,8 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
                 "property_type" : "string"
             }
         })"_json;
-    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, nullptr};
+    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, stringTable,
+                                        nullptr};
 
     EXPECT_EQ(stringReadWrite.name, "str_example1");
     EXPECT_TRUE(!stringReadWrite.readOnly);
@@ -91,6 +96,9 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
             "default_string" : "abc"
         })"_json;
 
+    ON_CALL(biosStringTable, findHandle(StrEq("str_example1")))
+        .WillByDefault(Return(5));
+
     std::vector<uint8_t> expectedAttrEntry{
         0,    0,       /* attr handle */
         0x81,          /* attr type string read-only */
@@ -109,9 +117,8 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
         'a',  'b', 'c', /* defaut value string handle index */
     };
 
-    ON_CALL(biosStringTable, findHandle(StrEq("str_example1")))
-        .WillByDefault(Return(5));
-    BIOSStringAttribute stringReadOnly{jsonStringReadOnly, nullptr};
+    BIOSStringAttribute stringReadOnly{jsonStringReadOnly, biosStringTable,
+                                       nullptr};
 
     checkConstructEntry(stringReadOnly, biosStringTable, expectedAttrEntry,
                         expectedAttrValueEntry);
@@ -130,7 +137,8 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
                 "property_type" : "string"
             }
         })"_json;
-    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, &dbusHandler};
+    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, biosStringTable,
+                                        &dbusHandler};
 
     /* Set expected attr type to read-write */
     expectedAttrEntry[2] = PLDM_BIOS_STRING;
@@ -182,7 +190,8 @@ TEST_F(TestBIOSStringAttribute, setAttrValueOnDbus)
     MockdBusHandler dbusHandler;
     MockBIOSStringTable biosStringTable;
 
-    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, &dbusHandler};
+    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, biosStringTable,
+                                        &dbusHandler};
     DBusMapping dbusMapping{"/xyz/abc/def",
                             "xyz.openbmc_project.str_example1.value",
                             "Str_example1", "string"};

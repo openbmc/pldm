@@ -32,7 +32,6 @@ BIOSConfig::BIOSConfig(const char* jsonDir, const char* tableDir,
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler)
 {
-    constructAttributes();
 }
 
 void BIOSConfig::buildTables()
@@ -41,6 +40,7 @@ void BIOSConfig::buildTables()
     auto stringTable = buildAndStoreStringTable();
     if (stringTable)
     {
+        constructAttributes(*stringTable);
         buildAndStoreAttrTables(*stringTable);
     }
 }
@@ -63,16 +63,16 @@ std::optional<Table> BIOSConfig::getBIOSTable(pldm_bios_table_types tableType)
     return loadTable(tablePath);
 }
 
-void BIOSConfig::constructAttributes()
+void BIOSConfig::constructAttributes(const BIOSStringTable& stringTable)
 {
-    load(jsonDir / stringJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSStringAttribute>(entry);
+    load(jsonDir / stringJsonFile, [this, &stringTable](const Json& entry) {
+        constructAttribute<BIOSStringAttribute>(entry, stringTable);
     });
-    load(jsonDir / integerJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSIntegerAttribute>(entry);
+    load(jsonDir / integerJsonFile, [this, &stringTable](const Json& entry) {
+        constructAttribute<BIOSIntegerAttribute>(entry, stringTable);
     });
-    load(jsonDir / enumJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSEnumAttribute>(entry);
+    load(jsonDir / enumJsonFile, [this, &stringTable](const Json& entry) {
+        constructAttribute<BIOSEnumAttribute>(entry, stringTable);
     });
 }
 
@@ -225,7 +225,7 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
     {
         auto iter = std::find_if(biosAttributes.begin(), biosAttributes.end(),
                                  [&attrHandle](const auto& attr) {
-                                     return attr->handle == attrHandle;
+                                     return attr->attrHandle == attrHandle;
                                  });
 
         if (iter == biosAttributes.end())

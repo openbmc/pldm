@@ -14,8 +14,9 @@ namespace bios
 {
 
 BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
+                                         const BIOSStringTable& stringTable,
                                          DBusHandler* const dbusHandler) :
-    BIOSAttribute(entry, dbusHandler)
+    BIOSAttribute(entry, stringTable, dbusHandler)
 {
     std::string strTypeTmp = entry.at("string_type");
     auto iter = strTypeMap.find(strTypeTmp);
@@ -33,9 +34,9 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
     stringInfo.defString = entry.at("default_string");
 
     pldm_bios_table_attr_entry_string_info info = {
-        handle,
-        0,
-        readOnly,
+        attrHandle,
+        attrNameHandle,
+        attrType,
         stringInfo.stringType,
         stringInfo.minLength,
         stringInfo.maxLength,
@@ -55,6 +56,8 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
                   << " DEFAULT_STRING=" << stringInfo.defString << "\n";
         throw std::invalid_argument("Wrong field for string attribute");
     }
+
+    attrType = readOnly ? PLDM_BIOS_STRING_READ_ONLY : PLDM_BIOS_STRING;
 }
 
 void BIOSStringAttribute::setAttrValueOnDbus(
@@ -91,14 +94,14 @@ std::string BIOSStringAttribute::getAttrValue()
     }
 }
 
-void BIOSStringAttribute::constructEntry(const BIOSStringTable& stringTable,
+void BIOSStringAttribute::constructEntry(const BIOSStringTable&,
                                          Table& attrTable,
                                          Table& attrValueTable)
 {
     pldm_bios_table_attr_entry_string_info info = {
-        handle,
-        stringTable.findHandle(name),
-        readOnly,
+        attrHandle,
+        attrNameHandle,
+        attrType,
         stringInfo.stringType,
         stringInfo.minLength,
         stringInfo.maxLength,
@@ -106,10 +109,8 @@ void BIOSStringAttribute::constructEntry(const BIOSStringTable& stringTable,
         stringInfo.defString.data(),
     };
 
-    auto attrTableEntry =
-        table::attribute::constructStringEntry(attrTable, &info);
-    auto [attrHandle, attrType, _] =
-        table::attribute::decodeHeader(attrTableEntry);
+    table::attribute::constructStringEntry(attrTable, &info);
+
     auto currStr = getAttrValue();
     table::attribute_value::constructStringEntry(attrValueTable, attrHandle,
                                                  attrType, currStr);
