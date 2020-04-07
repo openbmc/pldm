@@ -51,11 +51,6 @@ BIOSStringTable::BIOSStringTable(const Table& stringTable) :
 {
 }
 
-BIOSStringTable::BIOSStringTable(const BIOSTable& biosTable)
-{
-    biosTable.load(stringTable);
-}
-
 std::string BIOSStringTable::findString(uint16_t handle) const
 {
     auto stringEntry = pldm_bios_table_string_find_by_handle(
