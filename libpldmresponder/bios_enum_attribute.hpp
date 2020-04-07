@@ -56,6 +56,8 @@ class BIOSEnumAttribute : public BIOSAttribute
                       const PropertyValue& newPropVal);
 
   private:
+    /** @brief Map of stringHandles and strings */
+    std::map<std::string, uint16_t> strings;
     std::vector<std::string> possibleValues;
     std::string defaultValue;
 
@@ -64,17 +66,14 @@ class BIOSEnumAttribute : public BIOSAttribute
      *  @param[in] pVs - The possible values
      *  @return Index of the given value in possible values
      */
-    uint8_t getValueIndex(const std::string& value,
-                          const std::vector<std::string>& pVs);
+    uint8_t getValueIndex(const std::string& value);
 
     /** @brief Get handles of possible values
      *  @param[in] stringTable - The bios string table
      *  @param[in] pVs - The possible values
      *  @return The handles
      */
-    std::vector<uint16_t>
-        getPossibleValuesHandle(const BIOSStringTable& stringTable,
-                                const std::vector<std::string>& pVs);
+    std::vector<uint16_t> getPossibleValuesHandle();
 
     using ValMap = std::map<PropertyValue, std::string>;
 
