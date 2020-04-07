@@ -155,8 +155,7 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
 }
 
 void BIOSEnumAttribute::setAttrValueOnDbus(
-    const pldm_bios_attr_val_table_entry* attrValueEntry,
-    const pldm_bios_attr_table_entry*, const BIOSStringTable&)
+    const pldm_bios_attr_val_table_entry* attrValueEntry)
 {
     if (readOnly)
     {
@@ -180,8 +179,7 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
     dbusHandler->setDbusProperty(*dBusMap, it->first);
 }
 
-void BIOSEnumAttribute::constructEntry(const BIOSStringTable&, Table& attrTable,
-                                       Table& attrValueTable)
+void BIOSEnumAttribute::constructEntry(Table& attrTable, Table& attrValueTable)
 {
     auto possibleValuesHandle = getPossibleValuesHandle();
     std::vector<uint8_t> defaultIndices(1, 0);
@@ -206,8 +204,7 @@ void BIOSEnumAttribute::constructEntry(const BIOSStringTable&, Table& attrTable,
                                                attrType, currValueIndices);
 }
 
-int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
-                                     uint8_t attrType,
+int BIOSEnumAttribute::updateAttrVal(Table& newValue,
                                      const PropertyValue& newPropVal)
 {
     auto iter = valMap.find(newPropVal);
@@ -219,7 +216,7 @@ int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
     }
     auto currentValue = iter->second;
     std::vector<uint8_t> handleIndices{getValueIndex(currentValue)};
-    table::attribute_value::constructEnumEntry(newValue, attrHdl, attrType,
+    table::attribute_value::constructEnumEntry(newValue, attrHandle, attrType,
                                                handleIndices);
     return PLDM_SUCCESS;
 }
