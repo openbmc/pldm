@@ -61,8 +61,7 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
 }
 
 void BIOSStringAttribute::setAttrValueOnDbus(
-    const pldm_bios_attr_val_table_entry* attrValueEntry,
-    const pldm_bios_attr_table_entry*, const BIOSStringTable&)
+    const pldm_bios_attr_val_table_entry* attrValueEntry)
 {
     if (readOnly)
     {
@@ -94,8 +93,7 @@ std::string BIOSStringAttribute::getAttrValue()
     }
 }
 
-void BIOSStringAttribute::constructEntry(const BIOSStringTable&,
-                                         Table& attrTable,
+void BIOSStringAttribute::constructEntry(Table& attrTable,
                                          Table& attrValueTable)
 {
     pldm_bios_table_attr_entry_string_info info = {
@@ -116,14 +114,13 @@ void BIOSStringAttribute::constructEntry(const BIOSStringTable&,
                                                  attrType, currStr);
 }
 
-int BIOSStringAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
-                                       uint8_t attrType,
+int BIOSStringAttribute::updateAttrVal(Table& newValue,
                                        const PropertyValue& newPropVal)
 {
     try
     {
         const auto& newStringValue = std::get<std::string>(newPropVal);
-        table::attribute_value::constructStringEntry(newValue, attrHdl,
+        table::attribute_value::constructStringEntry(newValue, attrHandle,
                                                      attrType, newStringValue);
     }
     catch (const std::bad_variant_access& e)

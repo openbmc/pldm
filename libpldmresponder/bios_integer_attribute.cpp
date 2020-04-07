@@ -46,8 +46,7 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
 }
 
 void BIOSIntegerAttribute::setAttrValueOnDbus(
-    const pldm_bios_attr_val_table_entry* attrValueEntry,
-    const pldm_bios_attr_table_entry*, const BIOSStringTable&)
+    const pldm_bios_attr_val_table_entry* attrValueEntry)
 {
     if (readOnly)
     {
@@ -96,8 +95,7 @@ void BIOSIntegerAttribute::setAttrValueOnDbus(
     throw std::invalid_argument("dbus type error");
 }
 
-void BIOSIntegerAttribute::constructEntry(const BIOSStringTable&,
-                                          Table& attrTable,
+void BIOSIntegerAttribute::constructEntry(Table& attrTable,
                                           Table& attrValueTable)
 {
 
@@ -175,13 +173,12 @@ uint64_t BIOSIntegerAttribute::getAttrValue()
     }
 }
 
-int BIOSIntegerAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
-                                        uint8_t attrType,
+int BIOSIntegerAttribute::updateAttrVal(Table& newValue,
                                         const PropertyValue& newPropVal)
 {
     auto newVal = getAttrValue(newPropVal);
-    table::attribute_value::constructIntegerEntry(newValue, attrHdl, attrType,
-                                                  newVal);
+    table::attribute_value::constructIntegerEntry(newValue, attrHandle,
+                                                  attrType, newVal);
     return PLDM_SUCCESS;
 }
 
