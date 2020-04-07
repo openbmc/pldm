@@ -151,13 +151,13 @@ TEST(AttrTable, EnumEntryEncodeTest)
     std::vector<uint8_t> defs{0};
 
     struct pldm_bios_table_attr_entry_enum_info info = {
-        0,              /* attribute handle */
-        1,              /* name handle */
-        false,          /* read only */
-        2,              /* pv number */
-        pv_hdls.data(), /* pv handle */
-        1,              /*def number */
-        defs.data()     /*def index*/
+        0,                     /* attribute handle */
+        1,                     /* name handle */
+        PLDM_BIOS_ENUMERATION, /* read only */
+        2,                     /* pv number */
+        pv_hdls.data(),        /* pv handle */
+        1,                     /*def number */
+        defs.data()            /*def index*/
     };
     auto encodeLength = pldm_bios_table_attr_entry_enum_encode_length(2, 1);
     EXPECT_EQ(encodeLength, enumEntry.size());
@@ -253,14 +253,14 @@ TEST(AttrTable, StringEntryEncodeTest)
     };
 
     struct pldm_bios_table_attr_entry_string_info info = {
-        0,     /* attribute handle */
-        3,     /* name handle */
-        false, /* read only */
-        1,     /* string type ascii */
-        1,     /* min length */
-        100,   /* max length */
-        3,     /* def length */
-        "abc", /* def string */
+        0,                /* attribute handle */
+        3,                /* name handle */
+        PLDM_BIOS_STRING, /* read only */
+        1,                /* string type ascii */
+        1,                /* min length */
+        100,              /* max length */
+        3,                /* def length */
+        "abc",            /* def string */
     };
     auto encodeLength = pldm_bios_table_attr_entry_string_encode_length(3);
     EXPECT_EQ(encodeLength, stringEntry.size());
@@ -336,13 +336,13 @@ TEST(AttrTable, integerEntryEncodeTest)
     std::vector<uint8_t> defs{0};
 
     struct pldm_bios_table_attr_entry_integer_info info = {
-        0,     /* attribute handle */
-        1,     /* name handle */
-        false, /* read only */
-        1,     /* lower bound */
-        10,    /* upper bound */
-        2,     /* sacalar increment */
-        3      /* default value */
+        0,                 /* attribute handle */
+        1,                 /* name handle */
+        PLDM_BIOS_INTEGER, /* read only */
+        1,                 /* lower bound */
+        10,                /* upper bound */
+        2,                 /* sacalar increment */
+        3                  /* default value */
     };
     auto encodeLength = pldm_bios_table_attr_entry_integer_encode_length();
     EXPECT_EQ(encodeLength, integerEntry.size());

@@ -16,10 +16,12 @@ namespace bios
 {
 
 BIOSAttribute::BIOSAttribute(const Json& entry,
+                             const BIOSStringTable& stringTable,
                              DBusHandler* const dbusHandler) :
     name(entry.at("attribute_name")),
+    attrNameHandle(stringTable.findHandle(name)),
     readOnly(!entry.contains("dbus")),
-    handle(pldm_bios_table_get_attr_handle()), dbusHandler(dbusHandler)
+    attrHandle(pldm_bios_table_get_attr_handle()), dbusHandler(dbusHandler)
 {
     if (!readOnly)
     {

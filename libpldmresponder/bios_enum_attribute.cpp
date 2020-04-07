@@ -14,8 +14,9 @@ namespace bios
 {
 
 BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
+                                     const BIOSStringTable& stringTable,
                                      DBusHandler* const dbusHandler) :
-    BIOSAttribute(entry, dbusHandler)
+    BIOSAttribute(entry, stringTable, dbusHandler)
 {
     std::string attrName = entry.at("attribute_name");
     Json pv = entry.at("possible_values");
@@ -37,6 +38,9 @@ BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
         auto dbusValues = entry.at("dbus").at("property_values");
         buildValMap(dbusValues);
     }
+
+    attrType =
+        readOnly ? PLDM_BIOS_ENUMERATION_READ_ONLY : PLDM_BIOS_ENUMERATION;
 }
 
 uint8_t BIOSEnumAttribute::getValueIndex(const std::string& value,
@@ -184,19 +188,16 @@ void BIOSEnumAttribute::constructEntry(const BIOSStringTable& stringTable,
     defaultIndices[0] = getValueIndex(defaultValue, possibleValues);
 
     pldm_bios_table_attr_entry_enum_info info = {
-        handle,
-        stringTable.findHandle(name),
-        readOnly,
+        attrHandle,
+        attrNameHandle,
+        attrType,
         (uint8_t)possibleValuesHandle.size(),
         possibleValuesHandle.data(),
         (uint8_t)defaultIndices.size(),
         defaultIndices.data(),
     };
 
-    auto attrTableEntry =
-        table::attribute::constructEnumEntry(attrTable, &info);
-    auto [attrHandle, attrType, _] =
-        table::attribute::decodeHeader(attrTableEntry);
+    table::attribute::constructEnumEntry(attrTable, &info);
 
     std::vector<uint8_t> currValueIndices(1, 0);
     currValueIndices[0] = getAttrValueIndex();

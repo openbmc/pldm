@@ -24,7 +24,8 @@ class BIOSIntegerAttribute : public BIOSAttribute
      *  @param[in] entry - Json Object
      *  @param[in] dbusHandler - Dbus Handler
      */
-    BIOSIntegerAttribute(const Json& entry, DBusHandler* const dbusHandler);
+    BIOSIntegerAttribute(const Json& entry, const BIOSStringTable& stringTable,
+                         DBusHandler* const dbusHandler);
 
     /** @brief Set Attribute value On Dbus according to the attribute value
      *         entry

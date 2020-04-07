@@ -10,8 +10,9 @@ namespace bios
 {
 
 BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
+                                           const BIOSStringTable& stringTable,
                                            DBusHandler* const dbusHandler) :
-    BIOSAttribute(entry, dbusHandler)
+    BIOSAttribute(entry, stringTable, dbusHandler)
 {
     std::string attr = entry.at("attribute_name");
 
@@ -19,10 +20,11 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     integerInfo.upperBound = entry.at("upper_bound");
     integerInfo.scalarIncrement = entry.at("scalar_increment");
     integerInfo.defaultValue = entry.at("default_value");
+    attrType = readOnly ? PLDM_BIOS_INTEGER_READ_ONLY : PLDM_BIOS_INTEGER;
     pldm_bios_table_attr_entry_integer_info info = {
-        handle,
-        0,
-        readOnly,
+        attrHandle,
+        attrNameHandle,
+        attrType,
         integerInfo.lowerBound,
         integerInfo.upperBound,
         integerInfo.scalarIncrement,
@@ -33,7 +35,7 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Wrong filed for integer attribute, ATTRIBUTE_NAME="
-                  << attr.c_str() << " ERRMSG=" << errmsg
+                  << attr << " ERRMSG=" << errmsg
                   << " LOWER_BOUND=" << integerInfo.lowerBound
                   << " UPPER_BOUND=" << integerInfo.upperBound
                   << " DEFAULT_VALUE=" << integerInfo.defaultValue
@@ -94,26 +96,22 @@ void BIOSIntegerAttribute::setAttrValueOnDbus(
     throw std::invalid_argument("dbus type error");
 }
 
-void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
+void BIOSIntegerAttribute::constructEntry(const BIOSStringTable&,
                                           Table& attrTable,
                                           Table& attrValueTable)
 {
 
     pldm_bios_table_attr_entry_integer_info info = {
-        handle,
-        stringTable.findHandle(name),
-        readOnly,
+        attrHandle,
+        attrNameHandle,
+        attrType,
         integerInfo.lowerBound,
         integerInfo.upperBound,
         integerInfo.scalarIncrement,
         integerInfo.defaultValue,
     };
 
-    auto attrTableEntry =
-        table::attribute::constructIntegerEntry(attrTable, &info);
-
-    auto [attrHandle, attrType, _] =
-        table::attribute::decodeHeader(attrTableEntry);
+    table::attribute::constructIntegerEntry(attrTable, &info);
 
     auto currentValue = getAttrValue();
     table::attribute_value::constructIntegerEntry(attrValueTable, attrHandle,
