@@ -57,10 +57,8 @@ class BIOSStringAttribute : public BIOSAttribute
      *                         attribute value entry
      *  @param[in] stringTable - The string table
      */
-    void
-        setAttrValueOnDbus(const pldm_bios_attr_val_table_entry* attrValueEntry,
-                           const pldm_bios_attr_table_entry* attrEntry,
-                           const BIOSStringTable& stringTable) override;
+    void setAttrValueOnDbus(
+        const pldm_bios_attr_val_table_entry* attrValueEntry) override;
 
     /** @brief Construct corresponding entries at the end of the attribute table
      *         and attribute value tables
@@ -68,11 +66,9 @@ class BIOSStringAttribute : public BIOSAttribute
      *  @param[in,out] attrTable - The attribute table
      *  @param[in,out] attrValueTable - The attribute value table
      */
-    void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
-                        Table& attrValueTable) override;
+    void constructEntry(Table& attrTable, Table& attrValueTable) override;
 
-    int updateAttrVal(Table& newValue, uint16_t attrHdl, uint8_t attrType,
-                      const PropertyValue& newPropVal);
+    int updateAttrVal(Table& newValue, const PropertyValue& newPropVal);
 
   private:
     /** @brief string field from json */

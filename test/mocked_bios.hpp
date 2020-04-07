@@ -46,12 +46,11 @@ void checkEntry(Table& entry, Table& expectedEntry)
     entry[1] = attr1, expectedEntry[1] = eAttr1;
 }
 
-void checkConstructEntry(BIOSAttribute& attribute, BIOSStringTable& stringTable,
-                         Table& expectedAttrEntry,
+void checkConstructEntry(BIOSAttribute& attribute, Table& expectedAttrEntry,
                          Table& expectedAttrValueEntry)
 {
     Table attrEntry, attrValueEntry;
-    attribute.constructEntry(stringTable, attrEntry, attrValueEntry);
+    attribute.constructEntry(attrEntry, attrValueEntry);
 
     checkHeader(attrEntry, attrValueEntry);
     checkEntry(attrEntry, expectedAttrEntry);
