@@ -91,11 +91,13 @@ class BIOSConfig
      *  @param[in] entry - json entry
      */
     template <typename T>
-    void constructAttribute(const Json& entry)
+    void constructAttribute(const Json& entry,
+                            const BIOSStringTable& stringTable)
     {
         try
         {
-            biosAttributes.push_back(std::make_unique<T>(entry, dbusHandler));
+            biosAttributes.push_back(
+                std::make_unique<T>(entry, stringTable, dbusHandler));
             auto biosAttrIndex = biosAttributes.size() - 1;
             auto dBusMap = biosAttributes[biosAttrIndex]->getDBusMap();
 
@@ -125,7 +127,7 @@ class BIOSConfig
     }
 
     /** Construct attributes and persist them */
-    void constructAttributes();
+    void constructAttributes(const BIOSStringTable& stringTable);
 
     using ParseHandler = std::function<void(const Json& entry)>;
 

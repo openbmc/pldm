@@ -175,10 +175,8 @@ void pldm_bios_table_attr_entry_enum_encode(
 	size_t length = pldm_bios_table_attr_entry_enum_encode_length(
 	    info->pv_num, info->def_num);
 	assert(length <= entry_length);
-	uint8_t attr_type = info->read_only ? PLDM_BIOS_ENUMERATION_READ_ONLY
-					    : PLDM_BIOS_ENUMERATION;
 	attr_table_entry_encode_header(entry, entry_length, info->attr_handle,
-				       attr_type, info->name_handle);
+				       info->attr_type, info->name_handle);
 	struct pldm_bios_attr_table_entry *attr_entry = entry;
 	attr_entry->metadata[0] = info->pv_num;
 	uint16_t *pv_hdls =
@@ -323,10 +321,8 @@ void pldm_bios_table_attr_entry_string_encode(
 	size_t length =
 	    pldm_bios_table_attr_entry_string_encode_length(info->def_length);
 	assert(length <= entry_length);
-	uint8_t attr_type =
-	    info->read_only ? PLDM_BIOS_STRING_READ_ONLY : PLDM_BIOS_STRING;
 	attr_table_entry_encode_header(entry, entry_length, info->attr_handle,
-				       attr_type, info->name_handle);
+				       info->attr_type, info->name_handle);
 	struct pldm_bios_attr_table_entry *attr_entry = entry;
 	struct attr_table_string_entry_fields *attr_fields =
 	    (struct attr_table_string_entry_fields *)attr_entry->metadata;
@@ -475,10 +471,8 @@ void pldm_bios_table_attr_entry_integer_encode(
 {
 	size_t length = pldm_bios_table_attr_entry_integer_encode_length();
 	assert(length <= entry_length);
-	uint8_t attr_type =
-	    info->read_only ? PLDM_BIOS_INTEGER_READ_ONLY : PLDM_BIOS_INTEGER;
 	attr_table_entry_encode_header(entry, entry_length, info->attr_handle,
-				       attr_type, info->name_handle);
+				       info->attr_type, info->name_handle);
 	struct pldm_bios_attr_table_entry *attr_entry = entry;
 	struct attr_table_integer_entry_fields *attr_fields =
 	    (struct attr_table_integer_entry_fields *)attr_entry->metadata;

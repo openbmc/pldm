@@ -1,16 +1,21 @@
 #include "libpldmresponder/bios_attribute.hpp"
+#include "mocked_bios.hpp"
 
 #include <nlohmann/json.hpp>
 
 #include <gtest/gtest.h>
 
 using namespace pldm::responder::bios;
+using ::testing::Return;
+using ::testing::StrEq;
+using ::testing::Throw;
 
 class TestAttribute : public BIOSAttribute
 {
   public:
-    TestAttribute(const Json& entry, DBusHandler* const dbusHandler) :
-        BIOSAttribute(entry, dbusHandler)
+    TestAttribute(const Json& entry, const BIOSStringTable& stringTable,
+                  DBusHandler* const dbusHandler) :
+        BIOSAttribute(entry, stringTable, dbusHandler)
     {
     }
 
@@ -39,12 +44,15 @@ class TestAttribute : public BIOSAttribute
 
 TEST(BIOSAttribute, CtorTest)
 {
+    MockBIOSStringTable stringTable;
     auto jsonReadOnly = R"({
       "attribute_name" : "ReadOnly"
     })"_json;
 
-    TestAttribute readOnly{jsonReadOnly, nullptr};
+    EXPECT_CALL(stringTable, findHandle(StrEq("ReadOnly"))).WillOnce(Return(5));
+    TestAttribute readOnly{jsonReadOnly, stringTable, nullptr};
     EXPECT_EQ(readOnly.name, "ReadOnly");
+    EXPECT_EQ(readOnly.attrNameHandle, 5);
     EXPECT_EQ(readOnly.readOnly, true);
 
     auto jsonReadOnlyError = R"({
@@ -52,7 +60,8 @@ TEST(BIOSAttribute, CtorTest)
     })"_json;
     using Json = nlohmann::json;
 
-    EXPECT_THROW((TestAttribute{jsonReadOnlyError, nullptr}), Json::exception);
+    EXPECT_THROW((TestAttribute{jsonReadOnlyError, stringTable, nullptr}),
+                 Json::exception);
 
     auto jsonReadWrite = R"({
       "attribute_name":"ReadWrite",
@@ -65,8 +74,11 @@ TEST(BIOSAttribute, CtorTest)
            }
     })"_json;
 
-    TestAttribute readWrite{jsonReadWrite, nullptr};
+    EXPECT_CALL(stringTable, findHandle(StrEq("ReadWrite")))
+        .WillOnce(Return(6));
+    TestAttribute readWrite{jsonReadWrite, stringTable, nullptr};
     EXPECT_EQ(readWrite.name, "ReadWrite");
+    EXPECT_EQ(readWrite.attrNameHandle, 6);
     EXPECT_EQ(readWrite.readOnly, false);
     auto dbusMap = readWrite.getDbusMap();
     EXPECT_NE(dbusMap, std::nullopt);
@@ -85,5 +97,8 @@ TEST(BIOSAttribute, CtorTest)
            }
     })"_json; // missing property_type.
 
-    EXPECT_THROW((TestAttribute{jsonReadWriteError, nullptr}), Json::exception);
+    EXPECT_CALL(stringTable, findHandle(StrEq("ReadWrite")))
+        .WillOnce(Return(6));
+    EXPECT_THROW((TestAttribute{jsonReadWriteError, stringTable, nullptr}),
+                 Json::exception);
 }

@@ -35,8 +35,9 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
          "possible_values" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Concurrent" ]
       })"_json;
+    MockBIOSStringTable stringTable;
 
-    BIOSEnumAttribute enumReadOnly{jsonEnumReadOnly, nullptr};
+    BIOSEnumAttribute enumReadOnly{jsonEnumReadOnly, stringTable, nullptr};
     EXPECT_EQ(enumReadOnly.name, "CodeUpdatePolicy");
     EXPECT_TRUE(enumReadOnly.readOnly);
     EXPECT_THAT(getPossibleValues(enumReadOnly),
@@ -48,8 +49,9 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
          "possible_value" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Concurrent" ]
       })"_json; // possible_value -> possible_values
-    EXPECT_THROW((BIOSEnumAttribute{jsonEnumReadOnlyError, nullptr}),
-                 Json::exception);
+    EXPECT_THROW(
+        (BIOSEnumAttribute{jsonEnumReadOnlyError, stringTable, nullptr}),
+        Json::exception);
 
     auto jsonEnumReadWrite = R"({
          "attribute_name" : "FWBootSide",
@@ -65,7 +67,7 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
             }
       })"_json;
 
-    BIOSEnumAttribute enumReadWrite{jsonEnumReadWrite, nullptr};
+    BIOSEnumAttribute enumReadWrite{jsonEnumReadWrite, stringTable, nullptr};
     EXPECT_EQ(enumReadWrite.name, "FWBootSide");
     EXPECT_TRUE(!enumReadWrite.readOnly);
 }
@@ -80,6 +82,13 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
          "possible_values" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Disruptive" ]
       })"_json;
+
+    ON_CALL(biosStringTable, findHandle(StrEq("Concurrent")))
+        .WillByDefault(Return(2));
+    ON_CALL(biosStringTable, findHandle(StrEq("Disruptive")))
+        .WillByDefault(Return(3));
+    ON_CALL(biosStringTable, findHandle(StrEq("CodeUpdatePolicy")))
+        .WillByDefault(Return(4));
 
     std::vector<uint8_t> expectedAttrEntry{
         0,    0, /* attr handle */
@@ -99,14 +108,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
         1     /* current value string handle index */
     };
 
-    BIOSEnumAttribute enumReadOnly{jsonEnumReadOnly, nullptr};
-
-    ON_CALL(biosStringTable, findHandle(StrEq("Concurrent")))
-        .WillByDefault(Return(2));
-    ON_CALL(biosStringTable, findHandle(StrEq("Disruptive")))
-        .WillByDefault(Return(3));
-    ON_CALL(biosStringTable, findHandle(StrEq("CodeUpdatePolicy")))
-        .WillByDefault(Return(4));
+    BIOSEnumAttribute enumReadOnly{jsonEnumReadOnly, biosStringTable, nullptr};
 
     checkConstructEntry(enumReadOnly, biosStringTable, expectedAttrEntry,
                         expectedAttrValueEntry);
@@ -125,7 +127,8 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
           }
       })"_json;
 
-    BIOSEnumAttribute enumReadWrite{jsonEnumReadWrite, &dbusHandler};
+    BIOSEnumAttribute enumReadWrite{jsonEnumReadWrite, biosStringTable,
+                                    &dbusHandler};
 
     EXPECT_CALL(dbusHandler,
                 getDbusPropertyVariant(StrEq("/xyz/abc/def"), StrEq("Policy"),
@@ -176,7 +179,8 @@ TEST_F(TestBIOSEnumAttribute, setAttrValueOnDbus)
     DBusMapping dbusMapping{"/xyz/abc/def", "xyz.openbmc.abc.def", "Policy",
                             "bool"};
 
-    BIOSEnumAttribute enumReadWrite{jsonEnumReadWrite, &dbusHandler};
+    BIOSEnumAttribute enumReadWrite{jsonEnumReadWrite, biosStringTable,
+                                    &dbusHandler};
 
     std::vector<uint8_t> attrEntry{
         0, 0, /* attr handle */

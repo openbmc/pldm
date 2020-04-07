@@ -33,7 +33,8 @@ class BIOSAttribute
      *  @param[in] entry - Json Object
      *  @param[in] dbusHandler - Dbus Handler
      */
-    BIOSAttribute(const Json& entry, DBusHandler* const dbusHandler);
+    BIOSAttribute(const Json& entry, const BIOSStringTable& stringTable,
+                  DBusHandler* const dbusHandler);
 
     /** Virtual destructor
      */
@@ -78,11 +79,14 @@ class BIOSAttribute
     /** @brief Name of this attribute */
     const std::string name;
 
+    /** @brief Handle to identify the name of the the attribute */
+    const uint16_t attrNameHandle;
+
     /** @brief Weather this attribute is read-only */
     const bool readOnly;
 
     /** @brief Handle to identify the attribute */
-    const uint16_t handle;
+    const uint16_t attrHandle;
 
   protected:
     /** @brief dbus backend, nullopt if this attribute is read-only*/
@@ -91,7 +95,7 @@ class BIOSAttribute
     /** @brief dbus handler */
     DBusHandler* const dbusHandler;
 
-    uint8_t type;
+    uint8_t attrType;
 };
 
 } // namespace bios

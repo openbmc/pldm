@@ -32,8 +32,10 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "scalar_increment" : 1,
          "default_value" : 2
       })"_json;
+    MockBIOSStringTable stringTable;
 
-    BIOSIntegerAttribute integerReadOnly{jsonIntegerReadOnly, nullptr};
+    BIOSIntegerAttribute integerReadOnly{jsonIntegerReadOnly, stringTable,
+                                         nullptr};
     EXPECT_EQ(integerReadOnly.name, "SBE_IMAGE_MINIMUM_VALID_ECS");
     EXPECT_TRUE(integerReadOnly.readOnly);
     auto& integerInfo = getIntegerInfo(integerReadOnly);
@@ -49,8 +51,9 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "scalar_increment" : 1,
          "default_valu" : 2
       })"_json; // default_valu -> default_value
-    EXPECT_THROW((BIOSIntegerAttribute{jsonIntegerReadOnlyError, nullptr}),
-                 Json::exception);
+    EXPECT_THROW(
+        (BIOSIntegerAttribute{jsonIntegerReadOnlyError, stringTable, nullptr}),
+        Json::exception);
 
     auto jsonIntegerReadWrite = R"({
          "attribute_name" : "VDD_AVSBUS_RAIL",
@@ -66,7 +69,8 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          }
       })"_json;
 
-    BIOSIntegerAttribute integerReadWrite{jsonIntegerReadWrite, nullptr};
+    BIOSIntegerAttribute integerReadWrite{jsonIntegerReadWrite, stringTable,
+                                          nullptr};
     EXPECT_EQ(integerReadWrite.name, "VDD_AVSBUS_RAIL");
     EXPECT_TRUE(!integerReadWrite.readOnly);
 }
@@ -84,6 +88,9 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
          "default_value" : 2
       })"_json;
 
+    ON_CALL(biosStringTable, findHandle(StrEq("VDD_AVSBUS_RAIL")))
+        .WillByDefault(Return(5));
+
     std::vector<uint8_t> expectedAttrEntry{
         0,    0,                   /* attr handle */
         0x83,                      /* attr type integer read-only*/
@@ -99,10 +106,8 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
         2,    0, 0, 0, 0, 0, 0, 0, /* current value */
     };
 
-    BIOSIntegerAttribute integerReadOnly{jsonIntegerReadOnly, nullptr};
-
-    ON_CALL(biosStringTable, findHandle(StrEq("VDD_AVSBUS_RAIL")))
-        .WillByDefault(Return(5));
+    BIOSIntegerAttribute integerReadOnly{jsonIntegerReadOnly, biosStringTable,
+                                         nullptr};
 
     checkConstructEntry(integerReadOnly, biosStringTable, expectedAttrEntry,
                         expectedAttrValueEntry);
@@ -120,7 +125,8 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
             "property_name" : "Rail"
          }
       })"_json;
-    BIOSIntegerAttribute integerReadWrite{jsonIntegerReadWrite, &dbusHandler};
+    BIOSIntegerAttribute integerReadWrite{jsonIntegerReadWrite, biosStringTable,
+                                          &dbusHandler};
 
     EXPECT_CALL(dbusHandler,
                 getDbusPropertyVariant(StrEq("/xyz/openbmc_project/avsbus"),
@@ -169,7 +175,8 @@ TEST_F(TestBIOSIntegerAttribute, setAttrValueOnDbus)
             "property_name" : "Rail"
          }
       })"_json;
-    BIOSIntegerAttribute integerReadWrite{jsonIntegerReadWrite, &dbusHandler};
+    BIOSIntegerAttribute integerReadWrite{jsonIntegerReadWrite, biosStringTable,
+                                          &dbusHandler};
     DBusMapping dbusMapping{"/xyz/openbmc_project/avsbus",
                             "xyz.openbmc.AvsBus.Manager", "Rail", "uint8_t"};
     std::vector<uint8_t> attrValueEntry = {
