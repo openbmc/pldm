@@ -120,7 +120,7 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
     BIOSStringAttribute stringReadOnly{jsonStringReadOnly, biosStringTable,
                                        nullptr};
 
-    checkConstructEntry(stringReadOnly, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(stringReadOnly, expectedAttrEntry,
                         expectedAttrValueEntry);
 
     auto jsonStringReadWrite = R"({
@@ -150,7 +150,7 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
                                StrEq("xyz.openbmc_project.str_example1.value")))
         .WillOnce(Throw(std::exception()));
 
-    checkConstructEntry(stringReadWrite, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(stringReadWrite, expectedAttrEntry,
                         expectedAttrValueEntry);
 
     EXPECT_CALL(
@@ -166,7 +166,7 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
         'a', 'b', 'c', 'd', /* defaut value string handle index */
     };
 
-    checkConstructEntry(stringReadWrite, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(stringReadWrite, expectedAttrEntry,
                         expectedAttrValueEntry);
 }
 
@@ -205,5 +205,5 @@ TEST_F(TestBIOSStringAttribute, setAttrValueOnDbus)
         attrValueEntry.data());
     PropertyValue value = std::string("abcd");
     EXPECT_CALL(dbusHandler, setDbusProperty(dbusMapping, value)).Times(1);
-    stringReadWrite.setAttrValueOnDbus(entry, nullptr, biosStringTable);
+    stringReadWrite.setAttrValueOnDbus(entry);
 }

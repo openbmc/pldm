@@ -91,7 +91,7 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
     {
         try
         {
-            attr->constructEntry(biosStringTable, attrTable, attrValueTable);
+            attr->constructEntry(attrTable, attrValueTable);
         }
         catch (const std::exception& e)
         {
@@ -196,9 +196,8 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
 int BIOSConfig::setAttrValue(const void* entry, size_t size)
 {
     auto attrValueTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
-    auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
-    auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
-    if (!attrValueTable || !attrTable || !stringTable)
+
+    if (!attrValueTable)
     {
         return PLDM_BIOS_TABLE_UNAVAILABLE;
     }
@@ -215,12 +214,6 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
 
     auto [attrHandle, _] = table::attribute_value::decodeHeader(attrValueEntry);
 
-    auto attrEntry = table::attribute::findByHandle(*attrTable, attrHandle);
-    if (!attrEntry)
-    {
-        return PLDM_ERROR;
-    }
-
     try
     {
         auto iter = std::find_if(biosAttributes.begin(), biosAttributes.end(),
@@ -232,8 +225,8 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
         {
             return PLDM_ERROR;
         }
-        BIOSStringTable biosStringTable(*stringTable);
-        (*iter)->setAttrValueOnDbus(attrValueEntry, attrEntry, biosStringTable);
+
+        (*iter)->setAttrValueOnDbus(attrValueEntry);
     }
     catch (const std::exception& e)
     {
@@ -274,42 +267,6 @@ void BIOSConfig::processBiosAttrChangeNotification(
     }
 
     PropertyValue newPropVal = it->second;
-    auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
-    if (!stringTable.has_value())
-    {
-        std::cerr << "BIOS string table unavailable\n";
-        return;
-    }
-    BIOSStringTable biosStringTable(*stringTable);
-    uint16_t attrNameHdl{};
-    try
-    {
-        attrNameHdl = biosStringTable.findHandle(attrName);
-    }
-    catch (std::invalid_argument& e)
-    {
-        std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
-                  << attrName.c_str() << "\n";
-        return;
-    }
-
-    auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
-    if (!attrTable.has_value())
-    {
-        std::cerr << "Attribute table not present\n";
-        return;
-    }
-    const struct pldm_bios_attr_table_entry* tableEntry =
-        table::attribute::findByStringHandle(*attrTable, attrNameHdl);
-    if (tableEntry == nullptr)
-    {
-        std::cerr << "Attribute not found in attribute table, name= "
-                  << attrName.c_str() << "name handle=" << attrNameHdl << "\n";
-        return;
-    }
-
-    auto [attrHdl, attrType, stringHdl] =
-        table::attribute::decodeHeader(tableEntry);
 
     auto attrValueSrcTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
 
@@ -320,13 +277,14 @@ void BIOSConfig::processBiosAttrChangeNotification(
     }
 
     Table newValue;
-    auto rc = biosAttributes[biosAttrIndex]->updateAttrVal(
-        newValue, attrHdl, attrType, newPropVal);
+    auto rc =
+        biosAttributes[biosAttrIndex]->updateAttrVal(newValue, newPropVal);
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Could not update the attribute value table for attribute "
-                     "handle="
-                  << attrHdl << " and type=" << (uint32_t)attrType << "\n";
+                     "name="
+                  << attrName << "\n";
+
         return;
     }
     auto destTable = table::attribute_value::updateTable(

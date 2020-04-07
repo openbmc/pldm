@@ -110,7 +110,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
 
     BIOSEnumAttribute enumReadOnly{jsonEnumReadOnly, biosStringTable, nullptr};
 
-    checkConstructEntry(enumReadOnly, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(enumReadOnly, expectedAttrEntry,
                         expectedAttrValueEntry);
 
     auto jsonEnumReadWrite = R"({
@@ -139,7 +139,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
     expectedAttrEntry[2] = PLDM_BIOS_ENUMERATION;
     expectedAttrValueEntry[2] = PLDM_BIOS_ENUMERATION;
 
-    checkConstructEntry(enumReadWrite, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(enumReadWrite, expectedAttrEntry,
                         expectedAttrValueEntry);
 
     EXPECT_CALL(dbusHandler,
@@ -154,7 +154,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
         0     /* current value string handle index */
     };
 
-    checkConstructEntry(enumReadWrite, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(enumReadWrite, expectedAttrEntry,
                         expectedAttrValueEntry);
 }
 
@@ -209,8 +209,7 @@ TEST_F(TestBIOSEnumAttribute, setAttrValueOnDbus)
                 setDbusProperty(dbusMapping, PropertyValue{bool(true)}))
         .Times(1);
     enumReadWrite.setAttrValueOnDbus(
-        reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-            attrValueEntry.data()),
-        reinterpret_cast<pldm_bios_attr_table_entry*>(attrEntry.data()),
-        biosStringTable);
+        reinterpret_cast<pldm_bios_attr_val_table_entry*>(attrValueEntry.data())
+
+    );
 }
