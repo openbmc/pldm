@@ -109,12 +109,6 @@ class BIOSStringTable : public BIOSStringTableInterface
      */
     BIOSStringTable(const Table& stringTable);
 
-    /** @brief Constructs BIOSStringTable
-     *
-     *  @param[in] biosTable - The BIOSTable
-     */
-    BIOSStringTable(const BIOSTable& biosTable);
-
     /** @brief Find the string name from the BIOS string table for a string
      * handle
      *  @param[in] handle - string handle
@@ -132,7 +126,7 @@ class BIOSStringTable : public BIOSStringTableInterface
     uint16_t findHandle(const std::string& name) const override;
 
   private:
-    Table stringTable;
+    const Table& stringTable;
 };
 
 namespace table
