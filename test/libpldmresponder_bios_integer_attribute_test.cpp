@@ -109,7 +109,7 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
     BIOSIntegerAttribute integerReadOnly{jsonIntegerReadOnly, biosStringTable,
                                          nullptr};
 
-    checkConstructEntry(integerReadOnly, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(integerReadOnly, expectedAttrEntry,
                         expectedAttrValueEntry);
 
     auto jsonIntegerReadWrite = R"({
@@ -138,7 +138,7 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
     expectedAttrEntry[2] = PLDM_BIOS_INTEGER;
     expectedAttrValueEntry[2] = PLDM_BIOS_INTEGER;
 
-    checkConstructEntry(integerReadWrite, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(integerReadWrite, expectedAttrEntry,
                         expectedAttrValueEntry);
 
     EXPECT_CALL(dbusHandler,
@@ -153,7 +153,7 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
         7, 0, 0, 0, 0, 0, 0, 0, /* current value */
     };
 
-    checkConstructEntry(integerReadWrite, biosStringTable, expectedAttrEntry,
+    checkConstructEntry(integerReadWrite, expectedAttrEntry,
                         expectedAttrValueEntry);
 }
 
@@ -190,5 +190,5 @@ TEST_F(TestBIOSIntegerAttribute, setAttrValueOnDbus)
     EXPECT_CALL(dbusHandler,
                 setDbusProperty(dbusMapping, PropertyValue{uint8_t(7)}))
         .Times(1);
-    integerReadWrite.setAttrValueOnDbus(entry, nullptr, biosStringTable);
+    integerReadWrite.setAttrValueOnDbus(entry);
 }

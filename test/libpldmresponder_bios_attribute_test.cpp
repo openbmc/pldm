@@ -19,13 +19,11 @@ class TestAttribute : public BIOSAttribute
     {
     }
 
-    void setAttrValueOnDbus(const pldm_bios_attr_val_table_entry*,
-                            const pldm_bios_attr_table_entry*,
-                            const BIOSStringTable&) override
+    void setAttrValueOnDbus(const pldm_bios_attr_val_table_entry*) override
     {
     }
 
-    void constructEntry(const BIOSStringTable&, Table&, Table&) override
+    void constructEntry(Table&, Table&) override
     {
     }
 
@@ -34,8 +32,7 @@ class TestAttribute : public BIOSAttribute
         return dBusMap;
     }
 
-    int updateAttrVal(Table& /*newValue*/, uint16_t /*attrHdl*/,
-                      uint8_t /*attrType*/,
+    int updateAttrVal(Table& /*newValue*/,
                       const PropertyValue& /*newPropVal*/) override
     {
         return PLDM_SUCCESS;
