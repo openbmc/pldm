@@ -25,6 +25,11 @@ BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
         possibleValues.emplace_back(val);
     }
 
+    for (auto str : possibleValues)
+    {
+        strings.emplace(str, stringTable.findHandle(str));
+    }
+
     std::vector<std::string> defaultValues;
     Json dv = entry.at("default_values");
     for (auto& val : dv)
@@ -43,25 +48,23 @@ BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
         readOnly ? PLDM_BIOS_ENUMERATION_READ_ONLY : PLDM_BIOS_ENUMERATION;
 }
 
-uint8_t BIOSEnumAttribute::getValueIndex(const std::string& value,
-                                         const std::vector<std::string>& pVs)
+uint8_t BIOSEnumAttribute::getValueIndex(const std::string& value)
 {
-    auto iter = std::find_if(pVs.begin(), pVs.end(),
+    auto iter = std::find_if(possibleValues.begin(), possibleValues.end(),
                              [&value](const auto& v) { return v == value; });
-    if (iter == pVs.end())
+    if (iter == possibleValues.end())
     {
         throw std::invalid_argument("value must be one of possible value");
     }
-    return iter - pVs.begin();
+    return iter - possibleValues.begin();
 }
 
-std::vector<uint16_t> BIOSEnumAttribute::getPossibleValuesHandle(
-    const BIOSStringTable& stringTable, const std::vector<std::string>& pVs)
+std::vector<uint16_t> BIOSEnumAttribute::getPossibleValuesHandle()
 {
     std::vector<uint16_t> possibleValuesHandle;
-    for (const auto& pv : pVs)
+    for (const auto& pv : possibleValues)
     {
-        auto handle = stringTable.findHandle(pv);
+        auto handle = strings[pv];
         possibleValuesHandle.push_back(handle);
     }
 
@@ -126,7 +129,7 @@ void BIOSEnumAttribute::buildValMap(const Json& dbusVals)
 
 uint8_t BIOSEnumAttribute::getAttrValueIndex()
 {
-    auto defaultValueIndex = getValueIndex(defaultValue, possibleValues);
+    auto defaultValueIndex = getValueIndex(defaultValue);
     if (readOnly)
     {
         return defaultValueIndex;
@@ -143,7 +146,7 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
             return defaultValueIndex;
         }
         auto currentValue = iter->second;
-        return getValueIndex(currentValue, possibleValues);
+        return getValueIndex(currentValue);
     }
     catch (const std::exception& e)
     {
@@ -153,19 +156,17 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
 
 void BIOSEnumAttribute::setAttrValueOnDbus(
     const pldm_bios_attr_val_table_entry* attrValueEntry,
-    const pldm_bios_attr_table_entry* attrEntry,
-    const BIOSStringTable& stringTable)
+    const pldm_bios_attr_table_entry*, const BIOSStringTable&)
 {
     if (readOnly)
     {
         return;
     }
-    auto [pvHdls, _] = table::attribute::decodeEnumEntry(attrEntry);
     auto currHdls = table::attribute_value::decodeEnumEntry(attrValueEntry);
 
     assert(currHdls.size() == 1);
 
-    auto valueString = stringTable.findString(pvHdls[currHdls[0]]);
+    auto valueString = possibleValues[currHdls[0]];
 
     auto it = std::find_if(valMap.begin(), valMap.end(),
                            [&valueString](const auto& typePair) {
@@ -179,13 +180,12 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
     dbusHandler->setDbusProperty(*dBusMap, it->first);
 }
 
-void BIOSEnumAttribute::constructEntry(const BIOSStringTable& stringTable,
-                                       Table& attrTable, Table& attrValueTable)
+void BIOSEnumAttribute::constructEntry(const BIOSStringTable&, Table& attrTable,
+                                       Table& attrValueTable)
 {
-    auto possibleValuesHandle =
-        getPossibleValuesHandle(stringTable, possibleValues);
+    auto possibleValuesHandle = getPossibleValuesHandle();
     std::vector<uint8_t> defaultIndices(1, 0);
-    defaultIndices[0] = getValueIndex(defaultValue, possibleValues);
+    defaultIndices[0] = getValueIndex(defaultValue);
 
     pldm_bios_table_attr_entry_enum_info info = {
         attrHandle,
@@ -218,8 +218,7 @@ int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
         return PLDM_ERROR;
     }
     auto currentValue = iter->second;
-    std::vector<uint8_t> handleIndices{
-        getValueIndex(currentValue, possibleValues)};
+    std::vector<uint8_t> handleIndices{getValueIndex(currentValue)};
     table::attribute_value::constructEnumEntry(newValue, attrHdl, attrType,
                                                handleIndices);
     return PLDM_SUCCESS;
