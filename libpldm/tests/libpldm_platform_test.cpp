@@ -855,6 +855,85 @@ TEST(PlatformEventMessage, testBadEncodeResponse)
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
+TEST(PlatformEventMessage, testGoodEncodeRequest)
+{
+    uint8_t formatVersion = 0x01;
+    uint8_t Tid = 0x03;
+    uint8_t eventClass = 0x00;
+    uint8_t eventData = 34;
+
+    std::array<uint8_t, hdrSize + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                            sizeof(eventData)>
+        requestMsg{};
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_platform_event_message_req(
+        0, formatVersion, Tid, eventClass,
+        reinterpret_cast<uint8_t*>(&eventData), sizeof(eventData), request);
+
+    struct pldm_platform_event_message_req* req =
+        reinterpret_cast<struct pldm_platform_event_message_req*>(
+            request->payload);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(formatVersion, req->format_version);
+    EXPECT_EQ(Tid, req->tid);
+    EXPECT_EQ(eventClass, req->event_class);
+    EXPECT_EQ(0, memcmp(&eventData, req->event_data, sizeof(eventData)));
+}
+
+TEST(PlatformEventMessage, testBadEncodeRequest)
+{
+    uint8_t Tid = 0x03;
+    uint8_t eventClass = 0x00;
+    uint8_t eventData = 34;
+
+    auto rc = encode_platform_event_message_req(
+        0, 0, Tid, eventClass, reinterpret_cast<uint8_t*>(&eventData),
+        sizeof(eventData), nullptr);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(PlatformEventMessage, testGoodDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES>
+        responseMsg{};
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint8_t platformEventStatus = 0x01;
+
+    uint8_t retcompletionCode;
+    uint8_t retplatformEventStatus;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    struct pldm_platform_event_message_resp* resp =
+        reinterpret_cast<struct pldm_platform_event_message_resp*>(
+            response->payload);
+
+    resp->completion_code = completionCode;
+    resp->platform_event_status = platformEventStatus;
+
+    auto rc = decode_platform_event_message_resp(
+        response, responseMsg.size() - hdrSize, &retcompletionCode,
+        &retplatformEventStatus);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, retcompletionCode);
+    EXPECT_EQ(platformEventStatus, retplatformEventStatus);
+}
+
+TEST(PlatformEventMessage, testBadDecodeResponse)
+{
+    std::array<uint8_t, hdrSize + PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES>
+        responseMsg{};
+
+    auto rc = decode_platform_event_message_resp(
+        nullptr, responseMsg.size() - hdrSize, nullptr, nullptr);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
 TEST(PlatformEventMessage, testGoodSensorEventDataDecodeRequest)
 {
     std::array<uint8_t, PLDM_SENSOR_EVENT_SENSOR_OP_STATE_DATA_LENGTH +
