@@ -20,6 +20,6 @@ executable(
   sources,
   implicit_include_directories: false,
   include_directories: include_directories(libpldm_headers),
-  dependencies: [libpldm, libpldmutils, dependency('sdbusplus')],
+  dependencies: [libpldm, libpldmutils, dependency('sdbusplus'),dependency('CLI11')],
   install: true,
   install_dir: get_option('bindir'))
