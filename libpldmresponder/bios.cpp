@@ -6,7 +6,6 @@
 #include <time.h>
 
 #include <array>
-#include <boost/crc.hpp>
 #include <chrono>
 #include <ctime>
 #include <filesystem>

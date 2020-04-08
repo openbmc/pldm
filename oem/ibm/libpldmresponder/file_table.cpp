@@ -1,8 +1,9 @@
 #include "file_table.hpp"
 
-#include <boost/crc.hpp>
 #include <fstream>
 #include <iostream>
+
+#include "libpldm/utils.h"
 
 namespace pldm
 {
@@ -99,9 +100,7 @@ FileTable::FileTable(const std::string& fileTableConfigPath)
     }
 
     // Calculate the checksum
-    boost::crc_32_type result;
-    result.process_bytes(fileTable.data(), fileTable.size());
-    checkSum = result.checksum();
+    checkSum = crc32(fileTable.data(), fileTable.size());
 }
 
 Table FileTable::operator()() const
