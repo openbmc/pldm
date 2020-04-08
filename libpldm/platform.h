@@ -865,6 +865,39 @@ int encode_platform_event_message_resp(uint8_t instance_id,
 				       uint8_t platform_event_status,
 				       struct pldm_msg *msg);
 
+/** @brief Encode PlatformEventMessage request data
+ * @param[in] instance_id - Message's instance id
+ * @param[in] format_version - Version of the event format
+ * @param[in] tid - Terminus ID for the terminus that originated the event
+ * message
+ * @param[in] event_class - The class of event being sent
+ * @param[in] event_data - the event data should be read from pldm msg
+ * @param[in] event_data_length - Length of the event data
+ * @param[out] msg - Request message
+ * @return pldm_completion_codes
+ * @note Caller is responsible for memory alloc and dealloc of param
+ * 'msg.payload'
+ */
+int encode_platform_event_message_req(uint8_t instance_id,
+				      uint8_t format_version, uint8_t tid,
+				      uint8_t event_class,
+				      const uint8_t *event_data,
+				      size_t event_data_length,
+				      struct pldm_msg *msg);
+
+/** @brief Decode PlatformEventMessage response data
+ * @param[in] msg - Request message
+ * @param[in] payload_length - Length of Response message payload
+ * @param[out] completion_code - PLDM completion code
+ * @param[out] platform_event_status - Response status of the event message
+ * command
+ * @return pldm_completion_codes
+ */
+int decode_platform_event_message_resp(const struct pldm_msg *msg,
+				       size_t payload_length,
+				       uint8_t *completion_code,
+				       uint8_t *platform_event_status);
+
 /** @brief Decode sensorEventData response data
  *
  *  @param[in] event_data - event data from the response message
