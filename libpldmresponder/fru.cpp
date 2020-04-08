@@ -4,10 +4,11 @@
 
 #include <systemd/sd-journal.h>
 
-#include <boost/crc.hpp>
 #include <iostream>
 #include <sdbusplus/bus.hpp>
 #include <set>
+
+#include "libpldm/utils.h"
 
 namespace pldm
 {
@@ -111,9 +112,7 @@ FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
         table.resize(table.size() + padBytes, 0);
 
         // Calculate the checksum
-        boost::crc_32_type result;
-        result.process_bytes(table.data(), table.size());
-        checksum = result.checksum();
+        checksum = crc32(table.data(), table.size());
     }
 }
 
