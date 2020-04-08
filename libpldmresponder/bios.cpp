@@ -1,18 +1,13 @@
 #include "bios.hpp"
 
 #include "utils.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <time.h>
 
 #include <array>
-#include <boost/crc.hpp>
 #include <chrono>
 #include <ctime>
-#include <filesystem>
 #include <iostream>
-#include <memory>
-#include <numeric>
 #include <stdexcept>
 #include <string>
 #include <variant>
