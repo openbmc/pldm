@@ -614,6 +614,82 @@ int encode_platform_event_message_resp(uint8_t instance_id,
 	return PLDM_SUCCESS;
 }
 
+int encode_platform_event_message_req(uint8_t instance_id,
+				      uint8_t format_version, uint8_t tid,
+				      uint8_t event_class,
+				      const uint8_t *event_data,
+				      size_t event_data_length,
+				      struct pldm_msg *msg)
+
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_PLATFORM_EVENT_MESSAGE;
+
+	if (format_version != 1) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (msg == NULL || event_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (event_data_length == 0) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (event_class > PLDM_HEARTBEAT_TIMER_ELAPSED_EVENT &&
+	    event_class >= 0xF0 && event_class <= 0xFE) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_platform_event_message_req *request =
+	    (struct pldm_platform_event_message_req *)msg->payload;
+	request->format_version = format_version;
+	request->tid = tid;
+	request->event_class = event_class;
+	memcpy(request->event_data, event_data, event_data_length);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_platform_event_message_resp(const struct pldm_msg *msg,
+				       size_t payload_length,
+				       uint8_t *completion_code,
+				       uint8_t *platform_event_status)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    platform_event_status == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+	if (payload_length != PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_platform_event_message_resp *response =
+	    (struct pldm_platform_event_message_resp *)msg->payload;
+	*platform_event_status = response->platform_event_status;
+
+	if (*platform_event_status > PLDM_EVENT_LOGGING_REJECTED) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	return PLDM_SUCCESS;
+}
+
 int decode_sensor_event_data(const uint8_t *event_data,
 			     size_t event_data_length, uint16_t *sensor_id,
 			     uint8_t *sensor_event_class_type,
