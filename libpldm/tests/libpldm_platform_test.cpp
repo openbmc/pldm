@@ -410,7 +410,7 @@ TEST(SetNumericEffecterValue, testGoodDecodeRequest)
         req, requestMsg.size() - hdrSize, &reteffecter_id,
         &reteffecter_data_size, reteffecter_value);
 
-    uint32_t value = le32toh(*(reinterpret_cast<uint32_t*>(reteffecter_value)));
+    uint32_t value = *(reinterpret_cast<uint32_t*>(reteffecter_value));
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(reteffecter_id, effecter_id);
     EXPECT_EQ(reteffecter_data_size, effecter_data_size);
