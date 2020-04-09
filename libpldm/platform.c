@@ -307,7 +307,8 @@ int decode_set_numeric_effecter_value_req(const struct pldm_msg *msg,
 		}
 
 		memcpy(effecter_value, request->effecter_value, 2);
-		*effecter_value = le16toh(*effecter_value);
+		uint16_t *val = (uint16_t *)(effecter_value);
+		*val = le16toh(*val);
 	}
 
 	if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
@@ -319,6 +320,8 @@ int decode_set_numeric_effecter_value_req(const struct pldm_msg *msg,
 		}
 
 		memcpy(effecter_value, request->effecter_value, 4);
+		uint32_t *val = (uint32_t *)(effecter_value);
+		*val = le32toh(*val);
 	}
 
 	return PLDM_SUCCESS;
