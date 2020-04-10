@@ -3,7 +3,9 @@
 #include "dbus_impl_requester.hpp"
 #include "utils.hpp"
 
+#include <memory>
 #include <sdeventplus/event.hpp>
+#include <sdeventplus/source/event.hpp>
 #include <vector>
 
 #include "libpldm/base.h"
@@ -13,6 +15,11 @@ using namespace pldm::dbus_api;
 
 namespace pldm
 {
+
+// vector which would hold the PDR record handle data returned by
+// pldmPDRRepositoryChgEvent event data
+using ChangeEntry = uint32_t;
+using PDRRecordHandles = std::vector<ChangeEntry>;
 
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
@@ -52,9 +59,15 @@ class HostPDRHandler
      *  @param[in] recordHandles - list of record handles pointing to host's
      *             PDRs that need to be fetched.
      */
-    void fetchPDR(const std::vector<uint32_t>& recordHandles);
+    void fetchPDR(std::vector<uint32_t>&& recordHandles);
 
   private:
+    /** @brief fetchPDR schedules work on the event loop, this method does the
+     *  actual work. This is so that the PDR exchg with the host is async.
+     *  @param[in] source - sdeventplus event source
+     */
+    void _fetchPDR(sdeventplus::source::EventBase& source);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -69,6 +82,10 @@ class HostPDRHandler
      *  obtain PLDM instance id.
      */
     Requester& requester;
+    /** @brief sdeventplus event source */
+    std::unique_ptr<sdeventplus::source::Defer> pdrFetchEvent;
+    /** @brief list of PDR record handles pointing to host's PDRs */
+    PDRRecordHandles pdrRecordHandles;
 };
 
 } // namespace pldm

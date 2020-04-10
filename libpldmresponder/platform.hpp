@@ -83,6 +83,13 @@ class Handler : public CmdHandler
                 return this->sensorEvent(request, payloadLength, formatVersion,
                                          tid, eventDataOffset);
             });
+        eventHandlers[PLDM_PDR_REPOSITORY_CHG_EVENT].emplace_back(
+            [this](const pldm_msg* request, size_t payloadLength,
+                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset) {
+                return this->pldmPDRRepositoryChgEvent(request, payloadLength,
+                                                       formatVersion, tid,
+                                                       eventDataOffset);
+            });
 
         // Additional OEM event handlers for PLDM events, append it to the
         // standard handlers
@@ -197,6 +204,35 @@ class Handler : public CmdHandler
      */
     int sensorEvent(const pldm_msg* request, size_t payloadLength,
                     uint8_t formatVersion, uint8_t tid, size_t eventDataOffset);
+
+    /** @brief Handler for pldmPDRRepositoryChgEvent
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @param[in] formatVersion - Version of the event format
+     *  @param[in] tid - Terminus ID of the event's originator
+     *  @param[in] eventDataOffset - Offset of the event data in the request
+     *                               message
+     *  @return PLDM completion code
+     */
+    int pldmPDRRepositoryChgEvent(const pldm_msg* request, size_t payloadLength,
+                                  uint8_t formatVersion, uint8_t tid,
+                                  size_t eventDataOffset);
+
+    /** @brief Handler for extracting the PDR handles from changeEntries
+     *
+     *  @param[in] changeEntryData - ChangeEntry data from changeRecord
+     *  @param[in] changeEntryDataSize - total size of changeEntryData
+     *  @param[in] numberOfChangeEntries - total number of changeEntries to
+     *                                     extract
+     *  @param[out] pdrRecordHandles - std::vector where the extracted PDR
+     *                                 handles are placed
+     *  @return PLDM completion code
+     */
+    int getPDRRecordHandles(const ChangeEntry* changeEntryData,
+                            size_t changeEntryDataSize,
+                            size_t numberOfChangeEntries,
+                            PDRRecordHandles& pdrRecordHandles);
 
     /** @brief Handler for setting Sensor event data
      *
