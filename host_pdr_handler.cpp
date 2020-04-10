@@ -5,8 +5,20 @@
 namespace pldm
 {
 
-void HostPDRHandler::fetchPDR(const std::vector<uint32_t>& recordHandles)
+void HostPDRHandler::fetchPDR(std::vector<uint32_t>&& recordHandles)
 {
+    pdrRecordHandles.clear();
+    pdrRecordHandles = std::move(recordHandles);
+
+    pdrFetcherEventSrc = std::make_unique<sdeventplus::source::Defer>(
+        event, std::bind(std::mem_fn(&HostPDRHandler::_fetchPDR), this,
+                         std::placeholders::_1));
+}
+
+void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
+{
+    pdrFetcherEventSrc.reset();
+
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_GET_PDR_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
@@ -17,7 +29,7 @@ void HostPDRHandler::fetchPDR(const std::vector<uint32_t>& recordHandles)
     uint16_t respCount{};
     uint8_t transferCRC{};
 
-    for (auto recordHandle : recordHandles)
+    for (auto recordHandle : pdrRecordHandles)
     {
         auto instanceId = requester.getInstanceId(mctp_eid);
 
@@ -27,12 +39,19 @@ void HostPDRHandler::fetchPDR(const std::vector<uint32_t>& recordHandles)
         if (rc != PLDM_SUCCESS)
         {
             requester.markFree(mctp_eid, instanceId);
-            std::cerr << "Failed to encode_get_pdr_req, rc = " << rc << "\n";
+            std::cerr << "Failed to encode_get_pdr_req, rc = " << rc
+                      << std::endl;
             return;
         }
 
         uint8_t* responseMessage = nullptr;
         size_t responseMessageSize{};
+        for (auto b : requestMsg)
+        {
+            std::cerr << std::setfill('0') << std::setw(2) << std::hex
+                      << (unsigned)b << " ";
+        }
+        std::cerr << std::endl;
         auto requesterRc = pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(),
                                           requestMsg.size(), &responseMessage,
                                           &responseMessageSize);
@@ -40,7 +59,7 @@ void HostPDRHandler::fetchPDR(const std::vector<uint32_t>& recordHandles)
         if (requesterRc != PLDM_REQUESTER_SUCCESS)
         {
             std::cerr << "Failed to send msg to fetch pdrs, rc = "
-                      << requesterRc << "\n";
+                      << requesterRc << std::endl;
             return;
         }
 
@@ -52,7 +71,8 @@ void HostPDRHandler::fetchPDR(const std::vector<uint32_t>& recordHandles)
             &transferFlag, &respCount, nullptr, 0, &transferCRC);
         if (rc != PLDM_SUCCESS)
         {
-            std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc << "\n";
+            std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc
+                      << std::endl;
         }
         else
         {
@@ -66,8 +86,8 @@ void HostPDRHandler::fetchPDR(const std::vector<uint32_t>& recordHandles)
             {
                 std::cerr << "Failed to decode_get_pdr_resp: "
                           << "rc=" << rc
-                          << ", cc=" << static_cast<int>(completionCode)
-                          << "\n";
+                          << ", cc=" << static_cast<unsigned>(completionCode)
+                          << std::endl;
             }
             else
             {

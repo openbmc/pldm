@@ -3,13 +3,20 @@
 #include "dbus_impl_requester.hpp"
 #include "utils.hpp"
 
+#include <memory>
 #include <sdeventplus/event.hpp>
+#include <sdeventplus/source/event.hpp>
 #include <vector>
 
 #include "libpldm/base.h"
 #include "libpldm/platform.h"
 
 using namespace pldm::dbus_api;
+
+// vector which would hold the PDR record handle data returned by
+// pldmPDRRepositoryChgEvent evend data
+using ChangeEntry = uint32_t;
+using PDRRecordHandles = std::vector<ChangeEntry>;
 
 namespace pldm
 {
@@ -34,14 +41,18 @@ class HostPDRHandler
     /**@brief fetch remote PDRs based on the recordHandles
      *@param[in] recordHandles - a vector of recordHandles
      */
-    void fetchPDR(const std::vector<uint32_t>& recordHandles);
+    void fetchPDR(std::vector<uint32_t>&& recordHandles);
 
   private:
+    void _fetchPDR(sdeventplus::source::EventBase& source);
+
     int mctp_fd;
     uint8_t mctp_eid;
     sdeventplus::Event& event;
     pldm_pdr* repo;
     Requester& requester;
+    std::unique_ptr<sdeventplus::source::Defer> pdrFetcherEventSrc;
+    PDRRecordHandles pdrRecordHandles;
 };
 
 } // namespace pldm

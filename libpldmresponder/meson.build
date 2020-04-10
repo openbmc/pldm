@@ -1,6 +1,7 @@
 deps = [
   dependency('phosphor-dbus-interfaces'),
   dependency('sdbusplus'),
+  dependency('sdeventplus'),
   libpldm,
   libpldmutils
 ]
