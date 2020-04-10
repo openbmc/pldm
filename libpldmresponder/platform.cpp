@@ -360,6 +360,97 @@ int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
     return PLDM_SUCCESS;
 }
 
+int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
+                                       size_t payloadLength,
+                                       uint8_t /*formatVersion*/,
+                                       uint8_t /*tid*/, size_t eventDataOffset)
+{
+    uint8_t eventDataFormat{};
+    uint8_t numberOfChangeRecords{};
+    size_t dataOffset{};
+
+    auto eventData =
+        reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
+    auto eventDataSize = payloadLength - eventDataOffset;
+
+    auto rc = decode_pldm_pdr_repository_chg_event_data(
+        eventData, eventDataSize, &eventDataFormat, &numberOfChangeRecords,
+        &dataOffset);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
+
+    PDRRecordHandles pdrRecordHandles;
+    if (eventDataFormat == FORMAT_IS_PDR_HANDLES)
+    {
+        uint8_t eventDataOperation{};
+        uint8_t numberOfChangeEntries{};
+
+        auto changeRecordData = eventData + dataOffset;
+        auto changeRecordDataSize = eventDataSize - dataOffset;
+
+        while (changeRecordDataSize)
+        {
+            rc = decode_pldm_pdr_repository_change_record_data(
+                changeRecordData, changeRecordDataSize, &eventDataOperation,
+                &numberOfChangeEntries, &dataOffset);
+
+            if (rc != PLDM_SUCCESS)
+            {
+                return rc;
+            }
+
+            if (eventDataOperation == PLDM_RECORDS_ADDED)
+            {
+                rc = getPDRRecordHandles(
+                    reinterpret_cast<const ChangeEntry*>(changeRecordData +
+                                                         dataOffset),
+                    changeRecordDataSize - dataOffset,
+                    static_cast<size_t>(numberOfChangeEntries),
+                    pdrRecordHandles);
+
+                if (rc != PLDM_SUCCESS)
+                {
+                    return rc;
+                }
+            }
+
+            changeRecordData +=
+                dataOffset + (numberOfChangeEntries * sizeof(ChangeEntry));
+            changeRecordDataSize -=
+                dataOffset + (numberOfChangeEntries * sizeof(ChangeEntry));
+        }
+
+        if (hostPDRHandler && !pdrRecordHandles.empty())
+        {
+            hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
+        }
+    }
+    else
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+
+    return PLDM_SUCCESS;
+}
+
+int Handler::getPDRRecordHandles(const ChangeEntry* changeEntryData,
+                                 size_t changeEntryDataSize,
+                                 size_t numberOfChangeEntries,
+                                 PDRRecordHandles& pdrRecordHandles)
+{
+    if (numberOfChangeEntries > (changeEntryDataSize / sizeof(ChangeEntry)))
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+    for (size_t i = 0; i < numberOfChangeEntries; i++)
+    {
+        pdrRecordHandles.push_back(changeEntryData[i]);
+    }
+    return PLDM_SUCCESS;
+}
+
 } // namespace platform
 } // namespace responder
 } // namespace pldm
