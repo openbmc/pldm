@@ -1,6 +1,7 @@
 deps = [
   dependency('phosphor-dbus-interfaces'),
   dependency('sdbusplus'),
+  dependency('sdeventplus'),
   libpldm,
   libpldmutils
 ]
@@ -18,7 +19,8 @@ sources = [
   'pdr.cpp',
   'platform.cpp',
   'fru_parser.cpp',
-  'fru.cpp'
+  'fru.cpp',
+  '../host_pdr_handler.cpp'
 ]
 
 if get_option('oem-ibm').enabled()
