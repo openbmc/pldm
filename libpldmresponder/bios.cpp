@@ -106,7 +106,7 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     uint16_t year = 0;
 
     constexpr auto timeInterface = "xyz.openbmc_project.Time.EpochTime";
-    constexpr auto hostTimePath = "/xyz/openbmc_project/time/host";
+    constexpr auto bmcTimePath = "/xyz/openbmc_project/time/bmc";
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     EpochTimeUS timeUsec;
@@ -114,11 +114,11 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     try
     {
         timeUsec = pldm::utils::DBusHandler().getDbusProperty<EpochTimeUS>(
-            hostTimePath, "Elapsed", timeInterface);
+            bmcTimePath, "Elapsed", timeInterface);
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
-        std::cerr << "Error getting time, PATH=" << hostTimePath
+        std::cerr << "Error getting time, PATH=" << bmcTimePath
                   << " TIME INTERACE=" << timeInterface << "\n";
 
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
@@ -153,7 +153,7 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     std::time_t timeSec;
 
     constexpr auto setTimeInterface = "xyz.openbmc_project.Time.EpochTime";
-    constexpr auto setTimePath = "/xyz/openbmc_project/time/host";
+    constexpr auto setTimePath = "/xyz/openbmc_project/time/bmc";
     constexpr auto timeSetPro = "Elapsed";
 
     auto rc = decode_set_date_time_req(request, payloadLength, &seconds,
