@@ -1122,6 +1122,45 @@ int decode_pldm_pdr_repository_chg_event_data(
     uint8_t *event_data_format, uint8_t *number_of_change_records,
     size_t *change_record_data_offset);
 
+/** @brief Encode PLDM PDR Repository Change eventData
+ *  @param[in] event_data_format - Format of this event data (e.g.
+ * FORMAT_IS_PDR_HANDLES)
+ *  @param[in] number_of_change_records - Number of changeRecords in this
+ * eventData
+ *  @param[in] event_data_operations - Array of eventDataOperations
+ *      (e.g. RECORDS_ADDED) for each changeRecord in this eventData. This array
+ * should contain number_of_change_records elements.
+ *  @param[in] numbers_of_change_entries - Array of numbers of changeEntrys
+ *      for each changeRecord in this eventData. This array should contain
+ *      number_of_change_records elements.
+ *  @param[in] change_entries - 2-dimensional array of arrays of changeEntrys,
+ *      one array per changeRecord in this eventData. The toplevel array should
+ *      contain number_of_change_records elements. Each subarray [i] should
+ *      contain numbers_of_change_entries[i] elements.
+ *  @param[in] event_data - The eventData will be encoded into this. This entire
+ *      structure must be max_change_records_size long. It must be large enough
+ *      to accomodate the data to be encoded. The caller is responsible for
+ *      allocating and deallocating it, including the variable-size
+ *      'event_data.change_records' field. If this parameter is NULL,
+ *      PLDM_SUCCESS will be returned and actual_change_records_size will be set
+ *      to reflect the required size of the structure.
+ *  @param[out] actual_change_records_size - The actual number of meaningful
+ *      encoded bytes in event_data. The caller can over-allocate memory and use
+ *      this output to determine the real size of the structure.
+ *  @param[in] max_change_records_size - The size of event_data in bytes. If the
+ *      encoded message would be larger than this value, an error is returned.
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ * 'event_data.change_records'
+ */
+int encode_pldm_pdr_repository_chg_event_data(
+    uint8_t event_data_format, uint8_t number_of_change_records,
+    const uint8_t *event_data_operations,
+    const uint8_t *numbers_of_change_entries,
+    const uint32_t *const *change_entries,
+    struct pldm_pdr_repository_chg_event_data *event_data,
+    size_t *actual_change_records_size, size_t max_change_records_size);
+
 /** @brief Decode PldmPDRRepositoryChangeRecord response data
  *
  *  @param[in] change_record_data - changeRecordData for
