@@ -947,6 +947,60 @@ int decode_get_numeric_effecter_value_resp(
 	return PLDM_SUCCESS;
 }
 
+int encode_pldm_pdr_repository_chg_event_data(uint8_t event_data_format,
+                                              uint8_t number_of_change_records,
+                                              const uint8_t *event_data_operations,
+                                              const uint8_t *numbers_of_change_entries,
+                                              const uint32_t *const *change_entries,
+                                              struct pldm_pdr_repository_chg_event_data *event_data,
+                                              size_t *actual_change_records_size,
+                                              size_t max_change_records_size)
+{
+    if (event_data_operations == NULL || numbers_of_change_entries == NULL || change_entries == NULL) {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+
+    size_t expected_size = sizeof(event_data_format) + sizeof(number_of_change_records);
+
+    expected_size += sizeof(*event_data_operations) * number_of_change_records;
+    expected_size += sizeof(*numbers_of_change_entries) * number_of_change_records;
+
+    for (uint8_t i = 0; i < number_of_change_records; ++i) {
+        expected_size += sizeof(*change_entries[0]) * numbers_of_change_entries[i];
+    }
+
+    *actual_change_records_size = expected_size;
+
+    if (event_data == NULL) {
+        return PLDM_SUCCESS;
+    }
+
+    if (max_change_records_size < expected_size) {
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    event_data->event_data_format = event_data_format;
+    event_data->number_of_change_records = number_of_change_records;
+
+    struct pldm_pdr_repository_change_record_data* record_data =
+        (struct pldm_pdr_repository_change_record_data *)event_data->change_records;
+
+    for (uint8_t i = 0; i < number_of_change_records; ++i) {
+        record_data->event_data_operation = event_data_operations[i];
+        record_data->number_of_change_entries = numbers_of_change_entries[i];
+
+        for (uint8_t j = 0; j < record_data->number_of_change_entries; ++j) {
+            record_data->change_entry[j] = htole32(change_entries[i][j]);
+        }
+
+        record_data =
+            (struct pldm_pdr_repository_change_record_data *)(record_data->change_entry
+                                                              + record_data->number_of_change_entries);
+    }
+
+    return PLDM_SUCCESS;
+}
+
 int decode_pldm_pdr_repository_chg_event_data(const uint8_t *event_data,
 					      size_t event_data_size,
 					      uint8_t *event_data_format,
