@@ -22,7 +22,7 @@ using Interface = std::string;
 using Interfaces = std::set<Interface>;
 using Property = std::string;
 using PropertyType = std::string;
-using EntityType = uint8_t;
+using EntityType = uint16_t;
 
 } // namespace dbus
 

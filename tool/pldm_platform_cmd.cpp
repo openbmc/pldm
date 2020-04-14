@@ -89,7 +89,7 @@ class GetPDR : public CommandInterface
         {11521, "System (logical)"},
     };
 
-    std::string getEntityName(uint8_t type)
+    std::string getEntityName(uint16_t type)
     {
         try
         {
