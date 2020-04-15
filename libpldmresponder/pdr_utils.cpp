@@ -135,6 +135,37 @@ StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
     return valueMap;
 }
 
+uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
+                             uint16_t entityInstance, uint16_t containerId,
+                             uint16_t stateSetId)
+{
+    uint8_t* pdrData = nullptr;
+    uint32_t pdrSize{};
+    const pldm_pdr_record* record{};
+    do
+    {
+        record = pldm_pdr_find_record_by_type(pdrRepo, PLDM_STATE_EFFECTER_PDR,
+                                              record, &pdrData, &pdrSize);
+        if (record)
+        {
+            auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrData);
+            auto states = reinterpret_cast<state_effecter_possible_states*>(
+                pdr->possible_states);
+            if (entityType == pdr->entity_type &&
+                entityInstance == pdr->entity_instance &&
+                containerId == pdr->container_id &&
+                stateSetId == states->state_set_id)
+            {
+                return pdr->effecter_id;
+            }
+        }
+        pdrData = nullptr;
+        pdrSize = 0;
+
+    } while (record);
+    return PLDM_INVALID_EFFECTER_ID;
+}
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
