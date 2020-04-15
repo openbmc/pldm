@@ -393,5 +393,46 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
     return propValue;
 }
 
+uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
+                             uint16_t entityInstance, uint16_t containerId,
+                             uint16_t stateSetId)
+{
+    uint8_t* pdrData = nullptr;
+    uint32_t pdrSize{};
+    const pldm_pdr_record* record{};
+    do
+    {
+        record = pldm_pdr_find_record_by_type(pdrRepo, PLDM_STATE_EFFECTER_PDR,
+                                              record, &pdrData, &pdrSize);
+        if (record)
+        {
+            auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrData);
+            auto compositeEffecterCount = pdr->composite_effecter_count;
+            auto possible_states_start = pdr->possible_states;
+
+            for (auto effecters = 0x00; effecters < compositeEffecterCount;
+                 effecters++)
+            {
+                auto possibleStates =
+                    reinterpret_cast<state_effecter_possible_states*>(
+                        possible_states_start);
+                auto setId = possibleStates->state_set_id;
+                auto possibleStateSize = possibleStates->possible_states_size;
+
+                if (entityType == pdr->entity_type &&
+                    entityInstance == pdr->entity_instance &&
+                    containerId == pdr->container_id && stateSetId == setId)
+                {
+                    return pdr->effecter_id;
+                }
+                possible_states_start += possibleStateSize + sizeof(setId) +
+                                         sizeof(possibleStateSize);
+            }
+        }
+    } while (record);
+
+    return PLDM_INVALID_EFFECTER_ID;
+}
+
 } // namespace utils
 } // namespace pldm

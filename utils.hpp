@@ -25,6 +25,7 @@ namespace utils
 {
 
 namespace fs = std::filesystem;
+using Json = nlohmann::json;
 
 /** @struct CustomFD
  *
@@ -249,6 +250,7 @@ inline std::string findParent(const std::string& dbusObj)
  *  @return uint8_t - MCTP EID
  */
 uint8_t readHostEID();
+
 /** @brief Convert a value in the JSON to a D-Bus property value
  *
  *  @param[in] type - type of the D-Bus property
@@ -281,6 +283,19 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
                                                      uint16_t entityID,
                                                      uint16_t stateSetId,
                                                      const pldm_pdr* repo);
+
+/** @brief Find effecter id from a state effecter pdr
+ *  @param[in] pdrRepo - PDR repository
+ *  @param[in] entityType - entity type
+ *  @param[in] entityInstance - entity instance number
+ *  @param[in] containerId - container id
+ *  @param[in] stateSetId - state set id
+ *
+ *  @return uint16_t - the effecter id
+ */
+uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
+                             uint16_t entityInstance, uint16_t containerId,
+                             uint16_t stateSetId);
 
 } // namespace utils
 } // namespace pldm
