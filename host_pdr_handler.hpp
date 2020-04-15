@@ -59,7 +59,17 @@ class HostPDRHandler
      *  @param[in] recordHandles - list of record handles pointing to host's
      *             PDRs that need to be fetched.
      */
+
     void fetchPDR(std::vector<uint32_t>&& recordHandles);
+
+    /** @brief Send a PLDM event to host firmware containing a list of record
+     *  handles of PDRs that the host firmware has to fetch.
+     *  @param[in] pdrTypes - list of PDR types that need to be looked up in the
+     *                        BMC repo
+     *  @param[in] eventDataFormat - format for PDRRepositoryChgEvent in DSP0248
+     */
+    void sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
+                                   uint8_t eventDataFormat);
 
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
