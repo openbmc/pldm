@@ -82,6 +82,8 @@ class GetPDR : public CommandInterface
   private:
     const std::map<uint16_t, std::string> entityType = {
         {64, "System Board"},
+        {66, "Memory Module"},
+        {67, "Processor Module"},
         {137, "Management Controller"},
         {69, "Chassis front panel board (control panel)"},
         {123, "Power converter"},

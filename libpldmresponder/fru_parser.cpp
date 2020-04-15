@@ -94,45 +94,54 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
             throw InternalFailure();
         }
 
-        auto record = data.value("record_details", emptyJson);
-        auto recordType =
-            static_cast<uint8_t>(record.value("fru_record_type", 0));
-        auto encType =
-            static_cast<uint8_t>(record.value("fru_encoding_type", 0));
-        auto dbusIntfName = record.value("dbus_interface_name", "");
-        auto entries = data.value("fru_fields", emptyJsonList);
-        std::vector<FieldInfo> fieldInfo;
-
-        for (const auto& entry : entries)
+        try
         {
-            auto fieldType =
-                static_cast<uint8_t>(entry.value("fru_field_type", 0));
-            auto dbus = entry.value("dbus", emptyJson);
-            auto interface = dbus.value("interface", "");
-            auto property = dbus.value("property_name", "");
-            auto propType = dbus.value("property_type", "");
-            fieldInfo.emplace_back(
-                std::make_tuple(std::move(interface), std::move(property),
-                                std::move(propType), std::move(fieldType)));
+            auto record = data.value("record_details", emptyJson);
+            auto recordType =
+                static_cast<uint8_t>(record.value("fru_record_type", 0));
+            auto encType =
+                static_cast<uint8_t>(record.value("fru_encoding_type", 0));
+            auto dbusIntfName = record.value("dbus_interface_name", "");
+            auto entries = data.value("fru_fields", emptyJsonList);
+            std::vector<FieldInfo> fieldInfo;
+
+            for (const auto& entry : entries)
+            {
+                auto fieldType =
+                    static_cast<uint8_t>(entry.value("fru_field_type", 0));
+                auto dbus = entry.value("dbus", emptyJson);
+                auto interface = dbus.value("interface", "");
+                auto property = dbus.value("property_name", "");
+                auto propType = dbus.value("property_type", "");
+                fieldInfo.emplace_back(
+                    std::make_tuple(std::move(interface), std::move(property),
+                                    std::move(propType), std::move(fieldType)));
+            }
+
+            FruRecordInfo fruInfo;
+            fruInfo =
+                std::make_tuple(recordType, encType, std::move(fieldInfo));
+
+            auto search = recordMap.find(dbusIntfName);
+
+            // PLDM FRU can have multiple records for the same FRU like General
+            // FRU record and multiple OEM FRU records. If the FRU item
+            // interface name is already in the map, that indicates a record
+            // info is already added for the FRU, so append the new record info
+            // to the same data.
+            if (search != recordMap.end())
+            {
+                search->second.emplace_back(std::move(fruInfo));
+            }
+            else
+            {
+                FruRecordInfos recordInfos{fruInfo};
+                recordMap.emplace(dbusIntfName, recordInfos);
+            }
         }
-
-        FruRecordInfo fruInfo;
-        fruInfo = std::make_tuple(recordType, encType, std::move(fieldInfo));
-
-        auto search = recordMap.find(dbusIntfName);
-
-        // PLDM FRU can have multiple records for the same FRU like General FRU
-        // record and multiple OEM FRU records. If the FRU item interface name
-        // is already in the map, that indicates a record info is already added
-        // for the FRU, so append the new record info to the same data.
-        if (search != recordMap.end())
+        catch (const std::exception& e)
         {
-            search->second.emplace_back(std::move(fruInfo));
-        }
-        else
-        {
-            FruRecordInfos recordInfos{fruInfo};
-            recordMap.emplace(dbusIntfName, recordInfos);
+            continue;
         }
     }
 }
