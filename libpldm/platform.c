@@ -395,8 +395,10 @@ int encode_set_numeric_effecter_value_req(
 			return PLDM_ERROR_INVALID_LENGTH;
 		}
 
-		memcpy(request->effecter_value, effecter_value, 2);
-		*request->effecter_value = htole16(*request->effecter_value);
+		uint16_t *val = (uint16_t *)(effecter_value);
+		*val = htole16(*val);
+		memcpy(request->effecter_value, val, 2);
+
 	} else if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
 		   effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
 		if (payload_length !=
@@ -404,8 +406,9 @@ int encode_set_numeric_effecter_value_req(
 			return PLDM_ERROR_INVALID_LENGTH;
 		}
 
-		memcpy(request->effecter_value, effecter_value, 4);
-		*request->effecter_value = htole32(*request->effecter_value);
+		uint32_t *val = (uint32_t *)(effecter_value);
+		*val = htole32(*val);
+		memcpy(request->effecter_value, val, 4);
 	}
 
 	request->effecter_id = htole16(effecter_id);
