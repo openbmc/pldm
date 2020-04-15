@@ -1,5 +1,6 @@
 #include "dbus_impl_pdr.hpp"
 #include "dbus_impl_requester.hpp"
+#include "dbus_to_host_effecters.hpp"
 #include "host_pdr_handler.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
@@ -175,6 +176,10 @@ int main(int argc, char** argv)
         hostPDRHandler = std::make_unique<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), entityTree.get(),
             dbusImplReq);
+        DBusHandler dbusHandler;
+        pldm::host_effecters::HostEffecterParser hostEffecterParser(
+            &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler, HOST_JSONS_DIR,
+            verbose);
     }
 
     Invoker invoker{};
