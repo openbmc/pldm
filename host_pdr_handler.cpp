@@ -1,5 +1,10 @@
 #include "host_pdr_handler.hpp"
 
+#include <assert.h>
+
+#include <vector>
+
+#include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
 
 namespace pldm
@@ -54,4 +59,54 @@ void HostPDRHandler::fetchPDR(const std::vector<uint32_t>& recordHandles,
         }
     }
 }
+
+std::vector<uint8_t> HostPDRHandler::preparepldmPDRRepositoryChgEventData(
+    const std::vector<uint8_t>& pdrTypes, uint8_t eventDataFormat,
+    const pldm_pdr* repo)
+{
+    assert(eventDataFormat == FORMAT_IS_PDR_HANDLES);
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    std::vector<uint32_t> recordHandles;
+    const uint8_t numberofChangeRecords = 1;
+    const uint8_t eventDataOperation = PLDM_RECORDS_ADDED;
+    size_t* actual_change_record_size = nullptr;
+    for (auto pdrType : pdrTypes)
+    {
+        auto record = pldm_pdr_find_record_by_type(repo, pdrType, nullptr,
+                                                   &outData, &size);
+        if (record)
+        {
+            struct pldm_pdr_hdr* hdr = reinterpret_cast<pldm_pdr_hdr*>(outData);
+            recordHandles.push_back(hdr->record_handle);
+        }
+    }
+    const uint8_t numberofChangeEntries = recordHandles.size();
+
+    size_t max_change_record_size =
+        PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH +
+        PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH * numberofChangeRecords +
+        numberofChangeEntries * (sizeof(uint32_t));
+    std::vector<uint8_t> eventDataVec(
+        PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH +
+        PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH * numberofChangeRecords +
+        numberofChangeEntries * (sizeof(uint32_t)));
+    const uint32_t* recHandl = &recordHandles[0];
+
+    struct pldm_pdr_repository_chg_event_data* eventData =
+        reinterpret_cast<struct pldm_pdr_repository_chg_event_data*>(
+            eventDataVec.data());
+
+    auto rc = encode_pldm_pdr_repository_chg_event_data(
+        eventDataFormat, numberofChangeRecords, &eventDataOperation,
+        &numberofChangeEntries, &recHandl, eventData, actual_change_record_size,
+        max_change_record_size);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Response Message Error: "
+                  << "rc=" << rc << std::endl;
+    }
+    return eventDataVec;
+}
+
 } // namespace pldm

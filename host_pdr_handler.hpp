@@ -25,6 +25,14 @@ class HostPDRHandler
      */
     void fetchPDR(const std::vector<uint32_t>& recordHandle, uint8_t mctp_eid,
                   int fd, Requester&);
+    /**brief preparepldmPDRRepositoryChgEventData based on the pdrTypes
+     *@param[in] pdrTypes - a vector of PDR Types
+     *@param[in] eventDataFormat - format of this eventData
+     *@param[in] repo - opaque pointer acting as PDR repo handle
+     */
+    std::vector<uint8_t> preparepldmPDRRepositoryChgEventData(
+        const std::vector<uint8_t>& pdrTypes, uint8_t eventDataFormat,
+        const pldm_pdr* repo);
 
   private:
     std::vector<std::vector<uint8_t>> pdrs;
