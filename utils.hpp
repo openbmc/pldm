@@ -24,6 +24,7 @@ namespace utils
 {
 
 namespace fs = std::filesystem;
+using Json = nlohmann::json;
 
 /** @struct CustomFD
  *
@@ -249,6 +250,7 @@ inline std::string findParent(const std::string& dbusObj)
  *  @return uint8_t - MCTP EID
  */
 uint8_t readHostEID();
+
 /** @brief Convert a value in the JSON to a D-Bus property value
  *
  *  @param[in] type - type of the D-Bus property
@@ -258,6 +260,10 @@ uint8_t readHostEID();
  */
 PropertyValue jsonEntryToDbusVal(std::string_view type,
                                  const nlohmann::json& value);
+
+/** @brief Method to parse and serialize JSON file
+ */
+Json parseJson(const fs::path& jsonFilePath);
 
 } // namespace utils
 } // namespace pldm

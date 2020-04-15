@@ -91,6 +91,19 @@ inline Json readJson(const std::string& path)
 StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
                                 const PossibleValues& pv);
 
+/** @brief Find effecter id from a state effecter pdr
+ *  @param[in] pdrRepo - PDR repository
+ *  @param[in] entityType - entity type
+ *  @param[in] entityInstance - entity instance number
+ *  @param[in] containerId - container id
+ *  @param[in] stateSetId - state set id
+ *
+ *  @return uint16_t - the effecter id
+ */
+uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
+                             uint16_t entityInstance, uint16_t containerId,
+                             uint16_t stateSetId);
+
 /**
  *  @class RepoInterface
  *
