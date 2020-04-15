@@ -40,7 +40,11 @@ class HostPDRHandler
     /**@brief fetch remote PDRs based on the recordHandles
      *@param[in] recordHandles - a vector of recordHandles
      */
+
     void fetchPDR(std::vector<uint32_t>&& recordHandles);
+
+    void sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
+                                   uint8_t eventDataFormat);
 
   private:
     void _fetchPDR(sdeventplus::source::EventBase& source);

@@ -125,8 +125,8 @@ pldm_pdr_get_next_record(const pldm_pdr *repo,
  *  @param[in] curr_record - opaque pointer acting as a PDR record handle; if
  *  not NULL, then search will begin from this record's next record
  *  @param[in/out] data - will point to PDR record data (as per DSP0248) on
- *                        return
- *  @param[out] size - *size will be size of PDR record
+ *                        return, if input is not NULL
+ *  @param[out] size - *size will be size of PDR record, if input is not NULL
  *
  *  @return opaque pointer acting as PDR record handle, will be NULL if record
  *  was not found
