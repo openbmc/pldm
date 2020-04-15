@@ -7,6 +7,7 @@
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <sdbusplus/server.hpp>
 #include <string>
 #include <variant>
@@ -249,5 +250,28 @@ inline std::string findParent(const std::string& dbusObj)
  */
 uint8_t readHostEID();
 
+/** @brief Convert a value in the JSON to a D-Bus property value
+ *
+ *  @param[in] type - type of the D-Bus property
+ *  @param[in] value - value in the JSON file
+ *
+ *  @return PropertyValue - the D-Bus property value
+ *
+ */
+PropertyValue jsonEntryToDbusVal(std::string_view type,
+                                 const nlohmann::json& value);
+
+/** @brief Find effecter id from a state effecter pdr
+ *  @param[in] pdrRepo - PDR repository
+ *  @param[in] entityType - entity type
+ *  @param[in] entityInstance - entity instance number
+ *  @param[in] containerId - container id
+ *  @param[in] compEffecterCnt - composite effecter count
+ *
+ *  @return uint16_t - the effecter id
+ */
+uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
+                             uint16_t entityInstance, uint16_t containerId,
+                             uint8_t compEffecterCnt);
 } // namespace utils
 } // namespace pldm
