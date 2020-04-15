@@ -452,17 +452,17 @@ TEST(SetNumericEffecterValue, testBadDecodeRequest)
 TEST(SetNumericEffecterValue, testGoodEncodeRequest)
 {
     uint16_t effecter_id = 0;
-    uint8_t effecter_data_size = PLDM_EFFECTER_DATA_SIZE_UINT8;
-    uint8_t effecter_value = 1;
+    uint8_t effecter_data_size = PLDM_EFFECTER_DATA_SIZE_UINT16;
+    uint16_t effecter_value = 65534;
 
     std::vector<uint8_t> requestMsg(
-        hdrSize + PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES);
+        hdrSize + PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 1);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
     auto rc = encode_set_numeric_effecter_value_req(
         0, effecter_id, effecter_data_size,
         reinterpret_cast<uint8_t*>(&effecter_value), request,
-        PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES);
+        PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 1);
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     struct pldm_set_numeric_effecter_value_req* req =
@@ -470,8 +470,9 @@ TEST(SetNumericEffecterValue, testGoodEncodeRequest)
             request->payload);
     EXPECT_EQ(effecter_id, req->effecter_id);
     EXPECT_EQ(effecter_data_size, req->effecter_data_size);
-    EXPECT_EQ(effecter_value,
-              *(reinterpret_cast<uint8_t*>(&req->effecter_value[0])));
+    uint16_t* val = (uint16_t*)req->effecter_value;
+    *val = le16toh(*val);
+    EXPECT_EQ(effecter_value, *val);
 }
 
 TEST(SetNumericEffecterValue, testBadEncodeRequest)
