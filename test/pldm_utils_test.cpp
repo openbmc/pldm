@@ -77,3 +77,14 @@ TEST(parseEffecterData, testBadDecodeEffecterData)
 
     EXPECT_EQ(effecterField, std::nullopt);
 }
+
+TEST(validateJson, errorPaths)
+{
+    // no host effecter json
+    fs::path jsonFilePath("./host_effecter_jsons/no_json");
+    ASSERT_THROW(validateJson(jsonFilePath), std::exception);
+
+    // malformed host effecter json
+    fs::path jsonFilePath1("./host_effecter_jsons/malformed");
+    ASSERT_THROW(validateJson(jsonFilePath1), std::exception);
+}
