@@ -195,8 +195,6 @@ pldm_pdr_find_record_by_type(const pldm_pdr *repo, uint8_t pdr_type,
 			     uint32_t *size)
 {
 	assert(repo != NULL);
-	assert(data != NULL);
-	assert(size != NULL);
 
 	pldm_pdr_record *record = repo->first;
 	if (curr_record != NULL) {
@@ -205,14 +203,18 @@ pldm_pdr_find_record_by_type(const pldm_pdr *repo, uint8_t pdr_type,
 	while (record != NULL) {
 		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
 		if (hdr->type == pdr_type) {
-			*size = record->size;
-			*data = record->data;
+			if (data && size) {
+				*size = record->size;
+				*data = record->data;
+			}
 			return record;
 		}
 		record = record->next;
 	}
 
-	*size = 0;
+	if (size) {
+		*size = 0;
+	}
 	return NULL;
 }
 
