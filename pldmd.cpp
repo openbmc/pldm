@@ -1,5 +1,6 @@
 #include "dbus_impl_requester.hpp"
 #include "host_pdr_handler.hpp"
+#include "dbus_to_host_effecters.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
@@ -304,6 +305,11 @@ int main(int argc, char** argv)
         }
     };
 
+    pldm::host_effecters::HostEffecterParser hostEffecterParser(
+        dbusImplReq, sockfd, pdrRepo.get());
+    hostEffecterParser.parseEffecterJson(HOST_EFFECTER_JSONS_DIR);
+
+    auto event = Event::get_default();
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
