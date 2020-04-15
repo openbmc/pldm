@@ -40,7 +40,8 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 		return rc;
 	}
 
-	if (comp_effecter_count < 0x1 || comp_effecter_count > 0x8) {
+	if (comp_effecter_count < 0x1 || comp_effecter_count > 0x8 ||
+	    field == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
