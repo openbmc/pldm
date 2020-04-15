@@ -15,6 +15,9 @@ namespace pldm
 namespace utils
 {
 
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+
 constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
@@ -279,6 +282,23 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
     }
 
     return propValue;
+}
+
+Json parseJson(const fs::path& jsonFilePath)
+{
+    if (!fs::exists(jsonFilePath))
+    {
+        std::cerr << "json does not exist, PATH=" << jsonFilePath << "\n";
+        throw InternalFailure();
+    }
+    std::ifstream jsonFile(jsonFilePath);
+    auto data = Json::parse(jsonFile, nullptr, false);
+    if (data.is_discarded())
+    {
+        std::cerr << "Parsing json file failed, FILE=" << jsonFilePath << "\n";
+        throw InternalFailure();
+    }
+    return data;
 }
 
 } // namespace utils
