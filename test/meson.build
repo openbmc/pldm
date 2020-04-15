@@ -18,7 +18,8 @@ pldmd = declare_dependency(
           sources: [
             '../instance_id.cpp',
             '../dbus_impl_requester.cpp',
-            '../host_pdr_handler.cpp'])
+            '../host_pdr_handler.cpp',
+            '../dbus_to_host_effecters.cpp'])
 
 tests = [
   'libpldmresponder_base_test',
@@ -35,6 +36,7 @@ tests = [
   'pldmd_registration_test',
   'pldm_utils_test',
   'libpldmresponder_fru_test',
+  'libpldmresponder_dbus_to_host_effecter_test',
 ]
 
 if get_option('oem-ibm').enabled()
