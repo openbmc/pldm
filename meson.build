@@ -56,6 +56,7 @@ subdir('libpldmresponder')
 
 deps = [
   libpldm,
+  libpldmutils,
   libpldmresponder,
   libpldmutils,
   dependency('sdbusplus'),
@@ -68,6 +69,7 @@ executable(
   'pldmd.cpp',
   'dbus_impl_requester.cpp',
   'instance_id.cpp',
+  'dbus_to_host_effecters.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
