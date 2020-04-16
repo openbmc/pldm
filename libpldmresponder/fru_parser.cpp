@@ -31,6 +31,28 @@ const std::map<Interface, EntityType> generalIntfToEntityType = {
     {"xyz.openbmc_project.Inventory.Item.Cpu", 135},
 };
 
+constexpr uint8_t generalRecordType = 1;
+constexpr uint8_t encodeingTypeAscii = 1;
+
+const FruRecordInfo generalRecordInfo = {
+    generalRecordType,
+    encodeingTypeAscii,
+    {
+        {"xyz.openbmc_project.Inventory.Decorator.Asset", "Model", "string", 2},
+        {"xyz.openbmc_project.Inventory.Decorator.Asset", "PartNumber",
+         "string", 3},
+        {"xyz.openbmc_project.Inventory.Decorator.Asset", "SerialNumber",
+         "string", 4},
+        {"xyz.openbmc_project.Inventory.Decorator.Asset", "Manufacturer",
+         "string", 5},
+        {"xyz.openbmc_project.Inventory.Decorator.Asset", "BuildDate",
+         "timestamp104", 6}, // Manufacture Date
+        {"xyz.openbmc_project.Inventory.Decorator.AssetTag", "AssetTag",
+         "string", 11},
+        {"xyz.openbmc_project.Inventory.Decorator.Revision", "Version",
+         "string", 10},
+    }};
+
 FruParser::FruParser(const std::string& dirPath)
 {
     fs::path dir(dirPath);
@@ -52,6 +74,7 @@ FruParser::FruParser(const std::string& dirPath)
     setupDBusLookup(masterFilePath);
     setupFruRecordMap(dirPath);
     setupGeneralEntityType();
+    setupGeneralRecord();
 }
 
 void FruParser::setupDBusLookup(const fs::path& filePath)
@@ -153,6 +176,31 @@ void FruParser::setupGeneralEntityType()
         {
             intfToEntityType[intf] = entityType;
         }
+    }
+}
+
+void FruParser::setupGeneralRecord()
+{
+    for (const auto& [intf, entityType] : generalIntfToEntityType)
+    {
+        auto it = recordMap.find(intf);
+        if (it != recordMap.end())
+        {
+            auto& records = it->second;
+            auto record =
+                std::find_if(records.begin(), records.end(), [](const auto& r) {
+                    return std::get<0>(r) == generalRecordType;
+                });
+            if (record != records.end())
+            {
+                // The general record is already added.
+                continue;
+            }
+
+            records.emplace_back(generalRecordInfo);
+            continue;
+        }
+        recordMap[intf] = {generalRecordInfo};
     }
 }
 
