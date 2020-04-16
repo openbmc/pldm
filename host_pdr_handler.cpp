@@ -109,4 +109,24 @@ std::vector<uint8_t> HostPDRHandler::preparepldmPDRRepositoryChgEventData(
     return eventDataVec;
 }
 
+int HostPDRHandler::sendpldmPDRRepositoryChgEventData(
+    const std::vector<uint8_t> eventData, uint8_t mctp_eid, int fd,
+    Requester& requester)
+{
+    uint8_t format_version = 0x01;
+    uint8_t tid = 1;
+    uint8_t event_class = 0x04;
+    auto size = eventData.size();
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_platform_event_message_req(
+        requester.getInstanceId(mctp_eid), format_version, tid, event_class,
+        eventData.data(), size, request);
+    uint8_t* responseMessage = nullptr;
+    size_t responseMessageSize{};
+    rc = pldm_send_recv(mctp_eid, fd, requestMsg.data(), requestMsg.size(),
+                        &responseMessage, &responseMessageSize);
+    free(responseMessage);
+    return rc;
+}
 } // namespace pldm

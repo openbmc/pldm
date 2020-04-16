@@ -34,6 +34,14 @@ class HostPDRHandler
         const std::vector<uint8_t>& pdrTypes, uint8_t eventDataFormat,
         const pldm_pdr* repo);
 
+    /**brief sendpldmPDRRepositoryChgEventData based on the eventData
+     *@param[in] eventData - The event data
+     *@param[in] mctp_eid - MCTP endpoint id
+     *@param[in] fd - MCTP socket fd
+     */
+    int sendpldmPDRRepositoryChgEventData(const std::vector<uint8_t> eventData,
+                                          uint8_t mctp_eid, int fd, Requester&);
+
   private:
     std::vector<std::vector<uint8_t>> pdrs;
 };
