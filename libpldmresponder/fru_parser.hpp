@@ -123,6 +123,9 @@ class FruParser
      */
     void setupFruRecordMap(const std::string& dirPath);
 
+    /** set up general record */
+    void setupGeneralRecord();
+
     std::optional<DBusLookupInfo> lookupInfo;
     FruRecordMap recordMap;
     std::map<Interface, EntityType> intfToEntityType;
