@@ -18,16 +18,17 @@ TEST(PDRUpdate, testAdd)
     auto repo = pldm_pdr_init();
 
     std::array<uint8_t, 10> data{};
-    auto handle = pldm_pdr_add(repo, data.data(), data.size(), 0);
+    auto handle = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
     EXPECT_EQ(handle, 1);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), data.size());
 
-    handle = pldm_pdr_add(repo, data.data(), data.size(), 0);
+    handle = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
     EXPECT_EQ(handle, 2);
-    handle = pldm_pdr_add(repo, data.data(), data.size(), 0);
+    handle = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
     EXPECT_EQ(handle, 3);
-    handle = pldm_pdr_add(repo, data.data(), data.size(), htole32(0xdeeddeed));
+    handle = pldm_pdr_add(repo, data.data(), data.size(), htole32(0xdeeddeed),
+                          false);
     EXPECT_EQ(handle, htole32(0xdeeddeed));
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), data.size() * 4);
@@ -40,7 +41,8 @@ TEST(PDRAccess, testGet)
     auto repo = pldm_pdr_init();
 
     std::array<uint32_t, 10> in{100, 345, 3, 6, 89, 0, 11, 45, 23434, 123123};
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in.data()), sizeof(in), 1);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in.data()), sizeof(in), 1,
+                 false);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), sizeof(in));
     uint32_t size{};
@@ -71,9 +73,12 @@ TEST(PDRAccess, testGet)
 
     std::array<uint32_t, 10> in2{1000, 3450, 30,  60,     890,
                                  0,    110,  450, 234034, 123123};
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 2);
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 3);
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 4);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 2,
+                 false);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 3,
+                 false);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 4,
+                 true);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), sizeof(in2) * 4);
     hdl = pldm_pdr_find_record(repo, 0, &outData, &size, &nextRecHdl);
@@ -97,12 +102,14 @@ TEST(PDRAccess, testGet)
     outData = nullptr;
     hdl = pldm_pdr_find_record(repo, 3, &outData, &size, &nextRecHdl);
     EXPECT_NE(hdl, nullptr);
+    EXPECT_EQ(pldm_pdr_record_is_remote(hdl), false);
     EXPECT_EQ(size, sizeof(in2));
     EXPECT_EQ(nextRecHdl, 4);
     EXPECT_EQ(memcmp(outData, in2.data(), sizeof(in2)), 0);
     outData = nullptr;
     hdl = pldm_pdr_find_record(repo, 4, &outData, &size, &nextRecHdl);
     EXPECT_NE(hdl, nullptr);
+    EXPECT_EQ(pldm_pdr_record_is_remote(hdl), true);
     EXPECT_EQ(size, sizeof(in2));
     EXPECT_EQ(nextRecHdl, 0);
     EXPECT_EQ(memcmp(outData, in2.data(), sizeof(in2)), 0);
@@ -116,7 +123,8 @@ TEST(PDRAccess, testGetNext)
     auto repo = pldm_pdr_init();
 
     std::array<uint32_t, 10> in{100, 345, 3, 6, 89, 0, 11, 45, 23434, 123123};
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in.data()), sizeof(in), 1);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in.data()), sizeof(in), 1,
+                 false);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), sizeof(in));
     uint32_t size{};
@@ -131,9 +139,12 @@ TEST(PDRAccess, testGetNext)
 
     std::array<uint32_t, 10> in2{1000, 3450, 30,  60,     890,
                                  0,    110,  450, 234034, 123123};
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 2);
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 3);
-    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 4);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 2,
+                 false);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 3,
+                 false);
+    pldm_pdr_add(repo, reinterpret_cast<uint8_t*>(in2.data()), sizeof(in2), 4,
+                 false);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo), sizeof(in2) * 4);
     hdl = pldm_pdr_get_next_record(repo, hdl, &outData, &size, &nextRecHdl);
@@ -165,13 +176,13 @@ TEST(PDRAccess, testFindByType)
     std::array<uint8_t, sizeof(pldm_pdr_hdr)> data{};
     pldm_pdr_hdr* hdr = reinterpret_cast<pldm_pdr_hdr*>(data.data());
     hdr->type = 1;
-    auto first = pldm_pdr_add(repo, data.data(), data.size(), 0);
+    auto first = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
     hdr->type = 2;
-    auto second = pldm_pdr_add(repo, data.data(), data.size(), 0);
+    auto second = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
     hdr->type = 3;
-    auto third = pldm_pdr_add(repo, data.data(), data.size(), 0);
+    auto third = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
     hdr->type = 4;
-    auto fourth = pldm_pdr_add(repo, data.data(), data.size(), 0);
+    auto fourth = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
 
     uint8_t* outData = nullptr;
     uint32_t size{};
@@ -629,7 +640,7 @@ TEST(EntityAssociationPDR, testPDR)
               1);
 
     auto repo = pldm_pdr_init();
-    pldm_entity_association_pdr_add(tree, repo);
+    pldm_entity_association_pdr_add(tree, repo, false);
 
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 6);
 

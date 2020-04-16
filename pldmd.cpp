@@ -172,7 +172,8 @@ int main(int argc, char** argv)
     if (hostEID)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
-            sockfd, hostEID, event, pdrRepo.get(), dbusImplReq);
+            sockfd, hostEID, event, pdrRepo.get(), entityTree.get(),
+            dbusImplReq);
     }
 
     Invoker invoker{};
