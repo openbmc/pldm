@@ -46,6 +46,11 @@ const EventEntryMap eventEntryMap = {
                     // (Invalid Configuration)
         {"/xyz/openbmc_project/network/vmi/intf1/ipv4/addr0",
          "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
+    },
+    {
+        0xffffffff, // This is an example. PLDM Soft Power Off dbus path need to be creat.
+        {"/xyz/openbmc_project/pldm/softoff",
+         "xyz.openbmc_project.Pldm.Softoff", "RequestedHostTransition", "string", false},
     }};
 
 void Handler::addDbusObjMaps(

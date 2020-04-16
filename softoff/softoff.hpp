@@ -4,7 +4,6 @@
 #include <systemd/sd-event.h>
 #include <unistd.h>
 
-#include <CLI/CLI.hpp>
 #include <array>
 #include <chrono>
 #include <cstdlib>
@@ -14,8 +13,8 @@
 #include <iostream>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
-#include <sdbusplus/timer.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <sdbusplus/timer.hpp>
 
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
@@ -38,25 +37,29 @@ namespace fs = std::filesystem;
 class PldmSoftPowerOff
 {
   public:
-
     /** @brief Constructs SoftPowerOff object.
      *
      *  @param[in] bus       - system dbus handler
      *  @param[in] event     - sd_event handler
      */
     PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event);
-    
+
     /** @brief Set the mctpEid/effecterId/state value.
      *
      *  @param[in] mctpEid        - PLDM command parameter mctpEid
      *  @param[in] effecterId     - PLDM command parameter effecterId
      *  @param[in] state          - PLDM command parameter state
      */
-    int set_mctpEid_effecterId_state(uint8_t mctpEid, uint16_t effecterId,uint8_t state);
+    int set_mctpEid_effecterId_state(uint8_t mctpEid, uint16_t effecterId,
+                                     uint8_t state);
 
     /** @brief Send PLDM Set State Effecter States command.
      */
     int setStateEffecterStates();
+
+    /** @brief Send chassis off command.
+     */
+    int sendChassisOffcommand();
 
     /** @brief Is the host soft off completed.
      */
@@ -79,6 +82,11 @@ class PldmSoftPowerOff
         return timer.stop();
     }
 
+    /** @brief Guard the obmc-chassis-poweroff@.target.
+     *         Prevent hard power off during host soft off.
+     */
+    int guardChassisOff(uint8_t guardState);
+
     /** @brief Start the timer.
      */
     int startTimer(const std::chrono::microseconds& usec);
@@ -87,20 +95,19 @@ class PldmSoftPowerOff
      */
     int parserJsonFile();
 
-    /** @brief When host soft off completed, stop the timer and 
+    /** @brief When host soft off completed, stop the timer and
      *         set the completed to true.
      */
     void setHostSoftOffCompleteFlag(sdbusplus::message::message& msg);
 
   private:
-
-    /** @brief Host soft off completed flag. 
+    /** @brief Host soft off completed flag.
      */
     bool completed = false;
 
     /* @brief sdbusplus handle */
     sdbusplus::bus::bus& bus;
-    
+
     /** @brief Reference to Timer object */
     phosphor::Timer timer;
 
@@ -109,11 +116,12 @@ class PldmSoftPowerOff
 
     /** @brief Subscribe to pldm host soft off property transition
      *
-     *  When the host soft off is complete, it sends an pldm event Msg to BMC to chassis off, 
-     *  this application will wait for this event and send chassis off command.
+     *  When the host soft off is complete, it sends an pldm event Msg to BMC to
+     *chassis off, this application will wait for this event and send chassis
+     *off command.
      **/
     sdbusplus::bus::match_t hostTransitionMatch;
-    
+
     /** @brief PLDM command parameter.
      *
      *  @param[in] mctpEid        - PLDM command parameter mctpEid
@@ -126,4 +134,3 @@ class PldmSoftPowerOff
 };
 
 } // namespace pldm
-
