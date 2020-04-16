@@ -58,6 +58,10 @@ class PldmSoftPowerOff
      */
     int setStateEffecterStates();
 
+    /** @brief Parser the json file to get timeout seconds.
+     */
+    int parserJsonFile();
+
     /** @brief When host soft off completed, stop the timer and 
      *         set the completed to true.
      */

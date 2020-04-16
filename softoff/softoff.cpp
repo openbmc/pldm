@@ -59,6 +59,9 @@ hostTransitionMatch(
         completed = true; 
     }
 
+    // Load json file get Timeout seconds
+    this->parserJsonFile();
+
 }
 
 void PldmSoftPowerOff::setHostSoftOffCompleteFlag(sdbusplus::message::message& msg)
@@ -159,6 +162,35 @@ int PldmSoftPowerOff::setStateEffecterStates()
     return 0;
 }
 
+int PldmSoftPowerOff::parserJsonFile()
+{
+    fs::path dir(timeOutJsonPath);
+    if (!fs::exists(dir) || fs::is_empty(dir))
+    {
+        std::cerr << "PLDM soft off time out JSON does not exist, PATH="
+                  << timeOutJsonPath << "\n";
+    }
+
+    std::ifstream jsonFilePath(timeOutJsonPath);
+    if (!jsonFilePath.is_open())
+    {
+        std::cerr << "Error opening PLDM soft off time out JSON file, PATH=" << timeOutJsonPath
+                  << "\n";
+        return {};
+    }
+
+    // std::ifstream jsonFile(filePath);
+    auto data = Json::parse(jsonFilePath);
+    if (data.empty())
+    {
+        std::cerr << "Parsing PLDM soft off time out JSON file failed, FILE="
+                  << timeOutJsonPath << "\n";
+    }
+
+    timeOutSeconds = data.value("softoff_timeout_secs", 0);
+
+    return 0;
+}
 
 
  } // namespace pldm
