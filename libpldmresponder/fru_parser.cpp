@@ -25,6 +25,12 @@ const std::vector<std::string> emptyStringVec{};
 
 constexpr auto fruMasterJson = "FRU_Master.json";
 
+const std::map<Interface, EntityType> generalIntfToEntityType = {
+    {"xyz.openbmc_project.Inventory.Item.Board", 64},
+    {"xyz.openbmc_project.Inventory.Item.PowerSupply", 120},
+    {"xyz.openbmc_project.Inventory.Item.Cpu", 135},
+};
+
 FruParser::FruParser(const std::string& dirPath)
 {
     fs::path dir(dirPath);
@@ -45,6 +51,7 @@ FruParser::FruParser(const std::string& dirPath)
 
     setupDBusLookup(masterFilePath);
     setupFruRecordMap(dirPath);
+    setupGeneralEntityType();
 }
 
 void FruParser::setupDBusLookup(const fs::path& filePath)
@@ -133,6 +140,18 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
         {
             FruRecordInfos recordInfos{fruInfo};
             recordMap.emplace(dbusIntfName, recordInfos);
+        }
+    }
+}
+
+void FruParser::setupGeneralEntityType()
+{
+    for (const auto& [intf, entityType] : generalIntfToEntityType)
+    {
+        auto it = intfToEntityType.find(intf);
+        if (it == intfToEntityType.end())
+        {
+            intfToEntityType[intf] = entityType;
         }
     }
 }

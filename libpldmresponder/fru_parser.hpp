@@ -97,6 +97,10 @@ class FruParser
         return recordMap.at(intf);
     }
 
+    /** @brief Add intf->entityType if it's not in the FRU_Master.json
+     */
+    void setupGeneralEntityType();
+
     EntityType getEntityType(const Interface& intf) const
     {
         return intfToEntityType.at(intf);
