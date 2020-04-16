@@ -104,7 +104,7 @@ FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
         }
     }
 
-    pldm_entity_association_pdr_add(entityTree, pdrRepo);
+    pldm_entity_association_pdr_add(entityTree, pdrRepo, false);
 
     if (table.size())
     {

@@ -1,9 +1,61 @@
+#include "config.h"
+
 #include "host_pdr_handler.hpp"
+
+#include <fstream>
+#include <nlohmann/json.hpp>
 
 #include "libpldm/requester/pldm.h"
 
 namespace pldm
 {
+
+using Json = nlohmann::json;
+namespace fs = std::filesystem;
+constexpr auto fruJson = "host_frus.json";
+const Json emptyJson{};
+const std::vector<Json> emptyJsonList{};
+
+HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
+                               sdeventplus::Event& event, pldm_pdr* repo,
+                               pldm_entity_association_tree* entityTree,
+                               Requester& requester) :
+    mctp_fd(mctp_fd),
+    mctp_eid(mctp_eid), event(event), repo(repo), entityTree(entityTree),
+    requester(requester)
+{
+    fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
+    if (fs::exists(hostFruJson))
+    {
+        try
+        {
+            std::ifstream jsonFile(hostFruJson);
+            auto data = Json::parse(jsonFile, nullptr, false);
+            if (data.is_discarded())
+            {
+                std::cerr << "Parsing Host FRU json file failed" << std::endl;
+            }
+            else
+            {
+                auto entities = data.value("entities", emptyJsonList);
+                for (auto& entity : entities)
+                {
+                    EntityType entityType = entity.value("entity_type", 0);
+                    auto parent = entity.value("parent", emptyJson);
+                    pldm_entity p{};
+                    p.entity_type = parent.value("entity_type", 0);
+                    p.entity_instance_num = parent.value("entity_instance", 0);
+                    parents.emplace(entityType, std::move(p));
+                }
+            }
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Parsing Host FRU json file failed, exception = "
+                      << e.what() << std::endl;
+        }
+    }
+}
 
 void HostPDRHandler::fetchPDR(std::vector<uint32_t>&& recordHandles)
 {
@@ -89,9 +141,62 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             }
             else
             {
-                pldm_pdr_add(repo, pdr.data(), respCount, 0);
+                auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+                if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
+                {
+                    mergeEntityAssociations(pdr);
+                }
+                else
+                {
+                    pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
+                }
             }
         }
+    }
+}
+
+bool HostPDRHandler::getParent(EntityType type, pldm_entity& parent)
+{
+    auto found = parents.find(type);
+    if (found != parents.end())
+    {
+        parent.entity_type = found->second.entity_type;
+        parent.entity_instance_num = found->second.entity_instance_num;
+        return true;
+    }
+
+    return false;
+}
+
+void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
+{
+    size_t numEntities{};
+    pldm_entity* entities = nullptr;
+    bool merged = false;
+    auto entityPdr = reinterpret_cast<pldm_pdr_entity_association*>(
+        const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
+
+    pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
+                                        &entities);
+    for (size_t i = 0; i < numEntities; ++i)
+    {
+        pldm_entity parent{};
+        if (getParent(entities[i].entity_type, parent))
+        {
+            auto node = pldm_entity_association_tree_find(entityTree, &parent);
+            if (node)
+            {
+                pldm_entity_association_tree_add(entityTree, &entities[i], node,
+                                                 entityPdr->association_type);
+                merged = true;
+            }
+        }
+    }
+    free(entities);
+
+    if (merged)
+    {
+        pldm_entity_association_pdr_add(entityTree, repo, true);
     }
 }
 
