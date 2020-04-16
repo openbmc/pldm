@@ -17,7 +17,7 @@ pldm_pdr* Repo::getPdr() const
 RecordHandle Repo::addRecord(const PdrEntry& pdrEntry)
 {
     return pldm_pdr_add(repo, pdrEntry.data, pdrEntry.size,
-                        pdrEntry.handle.recordHandle);
+                        pdrEntry.handle.recordHandle, false);
 }
 
 const pldm_pdr_record* Repo::getFirstRecord(PdrEntry& pdrEntry)

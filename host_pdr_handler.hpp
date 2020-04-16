@@ -3,6 +3,7 @@
 #include "dbus_impl_requester.hpp"
 #include "utils.hpp"
 
+#include <map>
 #include <memory>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
@@ -13,6 +14,7 @@
 
 using namespace pldm::dbus_api;
 
+using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent evend data
 using ChangeEntry = uint32_t;
@@ -32,11 +34,8 @@ class HostPDRHandler
     ~HostPDRHandler() = default;
 
     HostPDRHandler(int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event,
-                   pldm_pdr* repo, Requester& requester) :
-        mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), event(event), repo(repo), requester(requester)
-    {
-    }
+                   pldm_pdr* repo, pldm_entity_association_tree* entityTree,
+                   Requester& requester);
 
     /**@brief fetch remote PDRs based on the recordHandles
      *@param[in] recordHandles - a vector of recordHandles
@@ -46,13 +45,19 @@ class HostPDRHandler
   private:
     void _fetchPDR(sdeventplus::source::EventBase& source);
 
+    void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
+
+    bool getParent(EntityType type, pldm_entity& parent);
+
     int mctp_fd;
     uint8_t mctp_eid;
     sdeventplus::Event& event;
     pldm_pdr* repo;
+    pldm_entity_association_tree* entityTree;
     Requester& requester;
     std::unique_ptr<sdeventplus::source::Defer> pdrFetcherEventSrc;
     PDRRecordHandles pdrRecordHandles;
+    std::map<EntityType, pldm_entity> parents;
 };
 
 } // namespace pldm
