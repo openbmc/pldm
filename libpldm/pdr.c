@@ -9,6 +9,7 @@ typedef struct pldm_pdr_record {
 	uint32_t size;
 	uint8_t *data;
 	struct pldm_pdr_record *next;
+	bool is_remote;
 } pldm_pdr_record;
 
 typedef struct pldm_pdr {
@@ -59,7 +60,7 @@ static inline uint32_t get_new_record_handle(const pldm_pdr *repo)
 
 static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
 					const uint8_t *data, uint32_t size,
-					uint32_t record_handle)
+					uint32_t record_handle, bool is_remote)
 {
 	assert(repo != NULL);
 	assert(size != 0);
@@ -69,6 +70,7 @@ static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
 	record->record_handle =
 	    record_handle == 0 ? get_new_record_handle(repo) : record_handle;
 	record->size = size;
+	record->is_remote = is_remote;
 	if (data != NULL) {
 		record->data = malloc(size);
 		assert(record->data != NULL);
@@ -91,13 +93,13 @@ static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
 }
 
 uint32_t pldm_pdr_add(pldm_pdr *repo, const uint8_t *data, uint32_t size,
-		      uint32_t record_handle)
+		      uint32_t record_handle, bool is_remote)
 {
 	assert(size != 0);
 	assert(data != NULL);
 
 	pldm_pdr_record *record =
-	    make_new_record(repo, data, size, record_handle);
+	    make_new_record(repo, data, size, record_handle, is_remote);
 	add_record(repo, record);
 
 	return record->record_handle;
@@ -237,6 +239,13 @@ uint32_t pldm_pdr_get_record_handle(const pldm_pdr *repo,
 	return record->record_handle;
 }
 
+inline bool pldm_pdr_record_is_remote(const pldm_pdr_record *record)
+{
+	assert(record != NULL);
+
+	return record->is_remote;
+}
+
 uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 				     uint16_t fru_rsi, uint16_t entity_type,
 				     uint16_t entity_instance_num,
@@ -261,7 +270,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 	fru->entity_instance_num = htole16(entity_instance_num);
 	fru->container_id = htole16(container_id);
 
-	return pldm_pdr_add(repo, data, size, 0);
+	return pldm_pdr_add(repo, data, size, 0, false);
 }
 
 const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
@@ -495,7 +504,8 @@ uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
 static void _entity_association_pdr_add_entry(pldm_entity_node *curr,
 					      pldm_pdr *repo, uint16_t size,
 					      uint8_t contained_count,
-					      uint8_t association_type)
+					      uint8_t association_type,
+					      bool is_remote)
 {
 	uint8_t pdr[size];
 	uint8_t *start = pdr;
@@ -537,11 +547,11 @@ static void _entity_association_pdr_add_entry(pldm_entity_node *curr,
 		node = node->next_sibling;
 	}
 
-	pldm_pdr_add(repo, pdr, size, 0);
+	pldm_pdr_add(repo, pdr, size, 0, is_remote);
 }
 
 static void entity_association_pdr_add_entry(pldm_entity_node *curr,
-					     pldm_pdr *repo)
+					     pldm_pdr *repo, bool is_remote)
 {
 	uint8_t num_logical_children =
 	    pldm_entity_get_num_children(curr, PLDM_ENTITY_ASSOCIAION_LOGICAL);
@@ -555,7 +565,7 @@ static void entity_association_pdr_add_entry(pldm_entity_node *curr,
 		    (num_logical_children * sizeof(pldm_entity));
 		_entity_association_pdr_add_entry(
 		    curr, repo, logical_pdr_size, num_logical_children,
-		    PLDM_ENTITY_ASSOCIAION_LOGICAL);
+		    PLDM_ENTITY_ASSOCIAION_LOGICAL, is_remote);
 	}
 
 	if (num_physical_children) {
@@ -565,27 +575,28 @@ static void entity_association_pdr_add_entry(pldm_entity_node *curr,
 		    (num_physical_children * sizeof(pldm_entity));
 		_entity_association_pdr_add_entry(
 		    curr, repo, physical_pdr_size, num_physical_children,
-		    PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+		    PLDM_ENTITY_ASSOCIAION_PHYSICAL, is_remote);
 	}
 }
 
-static void entity_association_pdr_add(pldm_entity_node *curr, pldm_pdr *repo)
+static void entity_association_pdr_add(pldm_entity_node *curr, pldm_pdr *repo,
+				       bool is_remote)
 {
 	if (curr == NULL) {
 		return;
 	}
-	entity_association_pdr_add_entry(curr, repo);
-	entity_association_pdr_add(curr->next_sibling, repo);
-	entity_association_pdr_add(curr->first_child, repo);
+	entity_association_pdr_add_entry(curr, repo, is_remote);
+	entity_association_pdr_add(curr->next_sibling, repo, is_remote);
+	entity_association_pdr_add(curr->first_child, repo, is_remote);
 }
 
 void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
-				     pldm_pdr *repo)
+				     pldm_pdr *repo, bool is_remote)
 {
 	assert(tree != NULL);
 	assert(repo != NULL);
 
-	entity_association_pdr_add(tree->root, repo);
+	entity_association_pdr_add(tree->root, repo, is_remote);
 }
 
 void entity_association_tree_find(pldm_entity_node *node, pldm_entity *entity,
