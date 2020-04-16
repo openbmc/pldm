@@ -2,23 +2,23 @@
 
 #include "softoff.hpp"
 
+#include "utils.hpp"
+
 #include <unistd.h>
 
-#include <CLI/CLI.hpp>
 #include <array>
 #include <chrono>
 #include <cstdlib>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/State/Chassis/server.hpp>
+#include <xyz/openbmc_project/State/Host/server.hpp>
 
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
-#include <sdbusplus/bus.hpp>
-#include <xyz/openbmc_project/State/Chassis/server.hpp>
-#include <xyz/openbmc_project/State/Host/server.hpp>
-#include "utils.hpp"
 
 constexpr auto timeOutJsonPath = "/usr/share/pldm/softoff/softoff.json";
 namespace pldm
@@ -35,28 +35,37 @@ namespace sdbusRule = sdbusplus::bus::match::rules;
 constexpr auto SYSTEMD_BUSNAME = "org.freedesktop.systemd1";
 constexpr auto SYSTEMD_PATH = "/org/freedesktop/systemd1";
 constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
-constexpr auto GUARD_CHASSIS_OFF_TARGET_SERVICE = "guardChassisOffTarget@.service";
+constexpr auto GUARD_CHASSIS_OFF_TARGET_SERVICE =
+    "guardChassisOffTarget@.service";
 
-constexpr auto PLDM_POWER_OFF_PATH = "/xyz/openbmc_project/pldm/softoff"; //This path is just an example. The PLDM_POWER_OFF_PATH need to be creat.
-constexpr auto PLDM_POWER_OFF_INTERFACE = "xyz.openbmc_project.Pldm.Softoff"; //This interface is just an example. The PLDM_POWER_OFF_INTERFACE need to be creat.
+constexpr auto PLDM_POWER_OFF_PATH =
+    "/xyz/openbmc_project/pldm/softoff"; // This path is just an example. The
+                                         // PLDM_POWER_OFF_PATH need to be creat.
+constexpr auto PLDM_POWER_OFF_INTERFACE =
+    "xyz.openbmc_project.Pldm.Softoff"; // This interface is just an example.
+                                        // The PLDM_POWER_OFF_INTERFACE need to
+                                        // be creat.
 
-PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) : bus(bus), timer(event),
-hostTransitionMatch(
-        bus,
-        sdbusRule::propertiesChanged(PLDM_POWER_OFF_PATH, PLDM_POWER_OFF_INTERFACE),
-        std::bind(&PldmSoftPowerOff::setHostSoftOffCompleteFlag, this, std::placeholders::_1))
+PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
+    bus(bus), timer(event),
+    hostTransitionMatch(bus,
+                        sdbusRule::propertiesChanged(PLDM_POWER_OFF_PATH,
+                                                     PLDM_POWER_OFF_INTERFACE),
+                        std::bind(&PldmSoftPowerOff::setHostSoftOffCompleteFlag,
+                                  this, std::placeholders::_1))
 {
     // Send soft off to host
-    this->set_mctpEid_effecterId_state(BMC_CHASSISOFF_MCTP_ID, BMC_CHASSISOFF_EFFECTER_ID, BMC_CHASSISOFF_STATE);
+    this->set_mctpEid_effecterId_state(
+        HOST_SOFTOFF_MCTP_ID, HOST_SOFTOFF_EFFECTER_ID, HOST_SOFTOFF_STATE);
     auto rc = this->setStateEffecterStates();
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Message setStateEffecterStates to host failure. PLDM "
                      "error code = "
                   << std::hex << std::showbase << rc << "\n";
-                
+
         // This marks the completion of pldm soft power off.
-        completed = true; 
+        completed = true;
     }
 
     // Load json file get Timeout seconds
@@ -74,24 +83,25 @@ hostTransitionMatch(
     }
     else
     {
-        log<level::INFO>("Timer started waiting for host soft off",
-                         entry("TIMEOUT_IN_MSEC=%llu",
-                               (duration_cast<milliseconds>(
-                                    seconds(timeOutSeconds)))
-                                   .count()));
+        log<level::INFO>(
+            "Timer started waiting for host soft off",
+            entry("TIMEOUT_IN_MSEC=%llu",
+                  (duration_cast<milliseconds>(seconds(timeOutSeconds)))
+                      .count()));
     }
-
 }
 
-void PldmSoftPowerOff::setHostSoftOffCompleteFlag(sdbusplus::message::message& msg)
+void PldmSoftPowerOff::setHostSoftOffCompleteFlag(
+    sdbusplus::message::message& msg)
 {
 
     namespace server = sdbusplus::xyz::openbmc_project::State::server;
 
     using DbusProperty = std::string;
 
-    using Value = std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
-                           int64_t, uint64_t, double, std::string>;
+    using Value =
+        std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
+                     int64_t, uint64_t, double, std::string>;
 
     std::string interface;
     std::map<DbusProperty, Value> properties;
@@ -109,7 +119,7 @@ void PldmSoftPowerOff::setHostSoftOffCompleteFlag(sdbusplus::message::message& m
     if (server::Host::convertTransitionFromString(requestedState) ==
         server::Host::Transition::Off)
     {
-        // Disable the timer 
+        // Disable the timer
         auto r = timer.stop();
         if (r < 0)
         {
@@ -118,15 +128,36 @@ void PldmSoftPowerOff::setHostSoftOffCompleteFlag(sdbusplus::message::message& m
         }
 
         // This marks the completion of pldm soft power off.
-        completed = true; 
-
+        completed = true;
     }
-
 }
 
+int PldmSoftPowerOff::sendChassisOffcommand()
+{
+    try
+    {
+        pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/state/host0",
+                                             "xyz.openbmc_project.State.Host",
+                                             "RequestedHostTransition",
+                                             "string"};
+        pldm::utils::PropertyValue value =
+            std::string("xyz.openbmc_project.State.Host.Transition.Off");
 
-int PldmSoftPowerOff::set_mctpEid_effecterId_state(uint8_t mctpEid, uint16_t effecterId,
-                                   uint8_t state)
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr << "Error Setting dbus property,ERROR=" << e.what() << "\n";
+        return -1;
+    }
+
+    return 0;
+}
+
+int PldmSoftPowerOff::set_mctpEid_effecterId_state(uint8_t mctpEid,
+                                                   uint16_t effecterId,
+                                                   uint8_t state)
 {
     this->mctpEid = mctpEid;
     this->effecterId = effecterId;
@@ -134,7 +165,44 @@ int PldmSoftPowerOff::set_mctpEid_effecterId_state(uint8_t mctpEid, uint16_t eff
 
     return 0;
 }
+int PldmSoftPowerOff::guardChassisOff(uint8_t guardState)
+{
+    std::string service = GUARD_CHASSIS_OFF_TARGET_SERVICE;
+    auto p = service.find('@');
+    assert(p != std::string::npos);
+    if (guardState == ENABLE_GUARD)
+    {
+        service.insert(p + 1, "enable");
+    }
+    else if (guardState == DISABLE_GUARD)
+    {
+        service.insert(p + 1, "disable");
+    }
+    else
+    {
+        std::cerr << "Guard Chassis Off argument is wrong. Argument :  "
+                  << guardState << "\n";
+        return -1;
+    }
 
+    auto bus = sdbusplus::bus::new_default();
+    try
+    {
+        auto method = bus.new_method_call(SYSTEMD_BUSNAME, SYSTEMD_PATH,
+                                          SYSTEMD_INTERFACE, "StartUnit");
+        method.append(service, "replace");
+
+        bus.call(method);
+        return 0;
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error staring service", entry("ERROR=%s", e.what()));
+        return -1;
+    }
+
+    return 0;
+}
 int PldmSoftPowerOff::setStateEffecterStates()
 {
     uint8_t effecterCount = 1;
@@ -181,6 +249,11 @@ int PldmSoftPowerOff::setStateEffecterStates()
     return 0;
 }
 
+int PldmSoftPowerOff::startTimer(const std::chrono::microseconds& usec)
+{
+    return timer.start(usec);
+}
+
 int PldmSoftPowerOff::parserJsonFile()
 {
     fs::path dir(timeOutJsonPath);
@@ -193,8 +266,8 @@ int PldmSoftPowerOff::parserJsonFile()
     std::ifstream jsonFilePath(timeOutJsonPath);
     if (!jsonFilePath.is_open())
     {
-        std::cerr << "Error opening PLDM soft off time out JSON file, PATH=" << timeOutJsonPath
-                  << "\n";
+        std::cerr << "Error opening PLDM soft off time out JSON file, PATH="
+                  << timeOutJsonPath << "\n";
         return {};
     }
 
@@ -211,6 +284,4 @@ int PldmSoftPowerOff::parserJsonFile()
     return 0;
 }
 
-
- } // namespace pldm
-
+} // namespace pldm
