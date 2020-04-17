@@ -22,7 +22,8 @@ namespace fs = std::filesystem;
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
-PldmSoftPowerOff::PldmSoftPowerOff()
+PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
+    bus(bus), timer(event)
 {
 
     try
@@ -86,6 +87,23 @@ PldmSoftPowerOff::PldmSoftPowerOff()
         std::cerr << "Parsing PLDM soft off time out JSON file failed,,Use the "
                      "default timeout seconds 7200s."
                   << " ERROR=" << e.what() << "\n";
+    }
+
+    // Start Timer
+    using namespace std::chrono;
+    auto time = duration_cast<microseconds>(seconds(timeOutSeconds));
+
+    auto r = startTimer(time);
+    if (r < 0)
+    {
+        std::cerr << "Failure to start Host soft off wait timer, ERRNO = " << r
+                  << "\n";
+    }
+    else
+    {
+        std::cerr
+            << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+            << timeOutSeconds << "\n";
     }
 }
 
@@ -233,6 +251,11 @@ int PldmSoftPowerOff::setStateEffecterStates()
     free(responseMsg);
 
     return PLDM_SUCCESS;
+}
+
+int PldmSoftPowerOff::startTimer(const std::chrono::microseconds& usec)
+{
+    return timer.start(usec);
 }
 
 Json PldmSoftPowerOff::parserJsonFile()
