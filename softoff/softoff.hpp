@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/timer.hpp>
 
 #include "libpldm/requester/pldm.h"
 
@@ -18,11 +20,15 @@ class PldmSoftPowerOff
      *  @param[in] bus       - system dbus handler
      *  @param[in] event     - sd_event handler
      */
-    PldmSoftPowerOff();
+    PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event);
 
     /** @brief Send PLDM Set State Effecter States command.
      */
     int setStateEffecterStates();
+
+    /** @brief Start the timer.
+     */
+    int startTimer(const std::chrono::microseconds& usec);
 
     /** @brief Get effecterID from PDRs.
      */
@@ -68,6 +74,12 @@ class PldmSoftPowerOff
     /** @brief Failed to send host soft off command flag.
      */
     bool hasError = false;
+
+    /* @brief sdbusplus handle */
+    sdbusplus::bus::bus& bus;
+
+    /** @brief Reference to Timer object */
+    phosphor::Timer timer;
 
     /** @brief Timeout seconds
      * The default is 30 min
