@@ -3,6 +3,7 @@ deps = [
     libpldmutils,
     dependency('sdeventplus'),
     dependency('sdbusplus'),
+    dependency('sdeventplus'),
     dependency('phosphor-dbus-interfaces'),
     ]
 
@@ -13,4 +14,5 @@ executable('pldm-softpoweroff',source,
            dependencies: deps,
            install: true,
            install_dir: get_option('bindir'))
+
 
