@@ -1,0 +1,14 @@
+# This service shall be started with one arguments:
+#  * enable or disable
+
+[Unit]
+Description= %i blocks host chassis off
+Wants=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
+After=mapper-wait@-xyz-openbmc_project-state-chassis%i.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/guardChassisOffTarget.sh %i
+
+

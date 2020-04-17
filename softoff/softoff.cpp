@@ -2,9 +2,13 @@
 
 #include "softoff.hpp"
 
+#include "utils.hpp"
+
 #include <array>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/State/Host/server.hpp>
 
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
@@ -19,9 +23,33 @@ constexpr auto HOST_SOFTOFF_STATE = 0;
 
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
+using sdbusplus::exception::SdBusError;
+
+using namespace sdbusplus::xyz::openbmc_project::State::server;
+namespace sdbusRule = sdbusplus::bus::match::rules;
+
+constexpr auto SYSTEMD_BUSNAME = "org.freedesktop.systemd1";
+constexpr auto SYSTEMD_PATH = "/org/freedesktop/systemd1";
+constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
+constexpr auto GUARD_CHASSIS_OFF_TARGET_SERVICE =
+    "guardChassisOffTarget@.service";
+
+constexpr auto PLDM_POWER_OFF_PATH =
+    "/xyz/openbmc_project/pldm/softoff"; // This path is just an example. The
+                                         // PLDM_POWER_OFF_PATH need to be
+                                         // creat.
+constexpr auto PLDM_POWER_OFF_INTERFACE =
+    "xyz.openbmc_project.Pldm.Softoff"; // This interface is just an example.
+                                        // The PLDM_POWER_OFF_INTERFACE need to
+                                        // be creat.
 
 PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
-    bus(bus), timer(event)
+    bus(bus), timer(event),
+    hostTransitionMatch(bus,
+                        sdbusRule::propertiesChanged(PLDM_POWER_OFF_PATH,
+                                                     PLDM_POWER_OFF_INTERFACE),
+                        std::bind(&PldmSoftPowerOff::setHostSoftOffCompleteFlag,
+                                  this, std::placeholders::_1))
 {
     auto rc = setStateEffecterStates();
     if (rc != PLDM_SUCCESS)
@@ -50,6 +78,110 @@ PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
             << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
             << timeOutSeconds << "\n";
     }
+}
+
+void PldmSoftPowerOff::setHostSoftOffCompleteFlag(
+    sdbusplus::message::message& msg)
+{
+
+    namespace server = sdbusplus::xyz::openbmc_project::State::server;
+
+    using DbusProperty = std::string;
+
+    using Value =
+        std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
+                     int64_t, uint64_t, double, std::string>;
+
+    std::string interface;
+    std::map<DbusProperty, Value> properties;
+
+    msg.read(interface, properties);
+
+    if (properties.find("RequestedHostTransition") == properties.end())
+    {
+        return;
+    }
+
+    auto& requestedState =
+        std::get<std::string>(properties.at("RequestedHostTransition"));
+
+    if (server::Host::convertTransitionFromString(requestedState) ==
+        server::Host::Transition::Off)
+    {
+        // Disable the timer
+        auto r = timer.stop();
+        if (r < 0)
+        {
+            std::cerr << "PLDM soft off: Failure to STOP the timer. ERRNO=" << r
+                      << "\n";
+        }
+
+        // This marks the completion of pldm soft power off.
+        completed = true;
+    }
+}
+
+int PldmSoftPowerOff::sendChassisOffcommand()
+{
+    try
+    {
+        pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/state/host0",
+                                             "xyz.openbmc_project.State.Host",
+                                             "RequestedHostTransition",
+                                             "string"};
+        pldm::utils::PropertyValue value =
+            std::string("xyz.openbmc_project.State.Host.Transition.Off");
+
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr << "Error Setting dbus property,ERROR=" << e.what() << "\n";
+        return -1;
+    }
+
+    return 0;
+}
+
+int PldmSoftPowerOff::guardChassisOff(uint8_t guardState)
+{
+    std::string service = GUARD_CHASSIS_OFF_TARGET_SERVICE;
+    auto p = service.find('@');
+    assert(p != std::string::npos);
+    if (guardState == ENABLE_GUARD)
+    {
+        service.insert(p + 1, "enable");
+    }
+    else if (guardState == DISABLE_GUARD)
+    {
+        service.insert(p + 1, "disable");
+    }
+    else
+    {
+        std::cerr << "Guard Chassis Off argument is wrong. Argument :  "
+                  << guardState << "\n";
+        return -1;
+    }
+
+    auto bus = sdbusplus::bus::new_default();
+    try
+    {
+        auto method = bus.new_method_call(SYSTEMD_BUSNAME, SYSTEMD_PATH,
+                                          SYSTEMD_INTERFACE, "StartUnit");
+        method.append(service, "replace");
+
+        bus.call(method);
+        return 0;
+    }
+    catch (const SdBusError& e)
+    {
+        std::cerr << "PLDM soft off: Error staring service,ERROR=" << e.what()
+                  << "\n";
+        return -1;
+    }
+
+    return 0;
 }
 
 int PldmSoftPowerOff::setStateEffecterStates()
