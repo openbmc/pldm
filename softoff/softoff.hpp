@@ -2,6 +2,8 @@
 
 #include "libpldm/requester/pldm.h"
 
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/timer.hpp>
 #include <sdeventplus/event.hpp>
 namespace pldm
 {
@@ -13,8 +15,11 @@ class SoftPowerOff
 {
   public:
     /** @brief Constructs SoftPowerOff object.
+     *
+     *  @param[in] bus       - system D-Bus handler
+     *  @param[in] event     - sd_event handler
      */
-    SoftPowerOff();
+    SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event);
 
     /** @brief Is the pldm-softpoweroff has error.
      * if hasError is true, that means the pldm-softpoweroff failed to
@@ -25,11 +30,25 @@ class SoftPowerOff
         return hasError;
     }
 
+    /** @brief Is the timer expired.
+     */
+    inline auto isTimerExpired()
+    {
+        return timer.isExpired();
+    }
+
     /** @brief Is the host soft off completed.
      */
     inline auto isCompleted()
     {
         return completed;
+    }
+
+    /** @brief Is receive the response for the PLDM request msg.
+     */
+    inline auto isReceiveResponse()
+    {
+        return responseReceived;
     }
 
     /** @brief Send PLDM Set State Effecter States command and
@@ -41,6 +60,10 @@ class SoftPowerOff
     /** @brief Getting the host current state.
      */
     int getHostState();
+
+    /** @brief Start the timer.
+     */
+    int startTimer(const std::chrono::microseconds& usec);
 
     /** @brief Get effecterID from PDRs.
      */
@@ -65,6 +88,12 @@ class SoftPowerOff
     /** @brief Is the Virtual Machine Manager/VMM state effecter available.
      */
     bool VMMPdrExist = true;
+
+    /* @brief sdbusplus handle */
+    sdbusplus::bus::bus& bus;
+
+    /** @brief Reference to Timer object */
+    phosphor::Timer timer;
 };
 
 } // namespace pldm
