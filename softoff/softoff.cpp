@@ -250,5 +250,4 @@ int SoftPowerOff::setStateEffecterStates()
 
     return event.loop();
 }
-
 } // namespace pldm
