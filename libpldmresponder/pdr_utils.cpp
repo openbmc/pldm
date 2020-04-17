@@ -1,5 +1,9 @@
 #include "pdr.hpp"
 
+#include <climits>
+
+#include "libpldm/platform.h"
+
 namespace pldm
 {
 
@@ -133,6 +137,54 @@ StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
     }
 
     return valueMap;
+}
+
+std::tuple<TerminusHandle, SensorID, SensorInfo>
+    parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr)
+{
+    auto pdr =
+        reinterpret_cast<const pldm_state_sensor_pdr*>(stateSensorPdr.data());
+    CompositeSensorStates sensors{};
+    auto statesPtr = pdr->possible_states;
+    auto compositeSensorCount = pdr->composite_sensor_count;
+
+    while (compositeSensorCount--)
+    {
+        auto state =
+            reinterpret_cast<const state_sensor_possible_states*>(statesPtr);
+        PossibleStates possibleStates{};
+        uint8_t possibleStatesPos{};
+        auto updateStates = [&possibleStates,
+                             &possibleStatesPos](const bitfield8_t& val) {
+            for (int i = 0; i < CHAR_BIT; i++)
+            {
+                if (val.byte & (1 << i))
+                {
+                    possibleStates.insert(possibleStatesPos * CHAR_BIT + i);
+                }
+            }
+            possibleStatesPos++;
+        };
+        std::for_each(&state->states[0],
+                      &state->states[state->possible_states_size],
+                      updateStates);
+
+        sensors.emplace_back(std::move(possibleStates));
+        if (compositeSensorCount)
+        {
+            statesPtr += sizeof(state_sensor_possible_states) +
+                         state->possible_states_size - 1;
+        }
+    }
+
+    auto entityInfo =
+        std::make_tuple(static_cast<ContainerID>(pdr->container_id),
+                        static_cast<EntityType>(pdr->entity_type),
+                        static_cast<EntityInstance>(pdr->entity_instance));
+    auto sensorInfo =
+        std::make_tuple(std::move(entityInfo), std::move(sensors));
+    return std::make_tuple(pdr->terminus_handle, pdr->sensor_id,
+                           std::move(sensorInfo));
 }
 
 } // namespace pdr_utils
