@@ -10,7 +10,9 @@
 #include "common/utils.hpp"
 
 #include <sdbusplus/bus.hpp>
+#include <sdeventplus/clock.hpp>
 #include <sdeventplus/source/io.hpp>
+#include <sdeventplus/source/time.hpp>
 
 #include <array>
 #include <iostream>
@@ -20,11 +22,15 @@ namespace pldm
 
 using namespace sdeventplus;
 using namespace sdeventplus::source;
+constexpr auto clockId = sdeventplus::ClockId::RealTime;
+using Clock = Clock<clockId>;
+using Timer = Time<clockId>;
 
 using sdbusplus::exception::SdBusError;
 constexpr pldm::pdr::TerminusID TID = 0; // TID will be implemented later.
 
-SoftPowerOff::SoftPowerOff()
+SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
+    bus(bus), timer(event)
 {
     auto rc = getHostState();
     if (hasError || completed)
@@ -37,6 +43,25 @@ SoftPowerOff::SoftPowerOff()
     {
         hasError = true;
         return;
+    }
+
+    // Start Timer
+    using namespace std::chrono;
+    auto time = duration_cast<microseconds>(seconds(SOFTOFF_TIMEOUT_SECONDS));
+
+    rc = startTimer(time);
+    if (rc < 0)
+    {
+        std::cerr << "Failure to start Host soft off wait timer, ERRNO = " << rc
+                  << "\n";
+        hasError = true;
+        return;
+    }
+    else
+    {
+        std::cerr
+            << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+            << SOFTOFF_TIMEOUT_SECONDS << "\n";
     }
 }
 
@@ -69,7 +94,7 @@ int SoftPowerOff::getHostState()
 
 int SoftPowerOff::getEffecterID()
 {
-    auto bus = sdbusplus::bus::new_default();
+    auto& bus = pldm::utils::DBusHandler::getBus();
 
     try
     {
@@ -157,7 +182,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     // Get instanceID
     try
     {
-        auto bus = sdbusplus::bus::new_default();
+        auto& bus = pldm::utils::DBusHandler::getBus();
         auto method = bus.new_method_call(
             "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
             "xyz.openbmc_project.PLDM.Requester", "GetInstanceId");
@@ -199,9 +224,28 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         return PLDM_ERROR;
     }
 
-    // Add a callback to handle EPOLLIN on fd
+    // Create event loop and add a callback to handle EPOLLIN on fd
+    auto timerCallback = [=](Timer& /*source*/, Timer::TimePoint /*time*/) {
+        if (!responseReceived)
+        {
+            std::cerr << "PLDM soft off: ERROR! Can't get the response for the "
+                         "PLDM request msg. Time out!\n"
+                      << "Exit the pldm-softpoweroff\n";
+            exit(-1);
+        }
+        return;
+    };
+    // Add a timer to the event loop, default 30s.
+    Timer time(event, (Clock(event).now() + std::chrono::seconds{30}),
+               std::chrono::seconds{1}, std::move(timerCallback));
+
     auto callback = [=](IO& io, int fd, uint32_t revents) {
         if (!(revents & EPOLLIN))
+        {
+            return;
+        }
+
+        if (responseReceived)
         {
             return;
         }
@@ -238,7 +282,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     }
 
     // Time out or soft off complete
-    while (!isCompleted())
+    while (!isCompleted() && !isTimerExpired())
     {
         try
         {
@@ -256,4 +300,8 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     return PLDM_SUCCESS;
 }
 
+int SoftPowerOff::startTimer(const std::chrono::microseconds& usec)
+{
+    return timer.start(usec);
+}
 } // namespace pldm
