@@ -66,7 +66,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
                           "xyz.openbmc_project.State.Host"),
-        [repo](sdbusplus::message::message& msg) {
+        [this, repo](sdbusplus::message::message& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
@@ -78,6 +78,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                 if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
                 {
                     pldm_pdr_remove_remote_pdrs(repo);
+                    this->sensorMap.clear();
                 }
             }
         });
@@ -178,6 +179,17 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 }
                 else
                 {
+                    if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+                    {
+                        const auto& [terminusHandle, sensorID, sensorInfo] =
+                            responder::pdr_utils::parseStateSensorPDR(pdr);
+                        SensorEntry sensorEntry{};
+                        // TODO: Lookup Terminus ID from the Terminus Locator
+                        // PDR with terminusHandle
+                        sensorEntry.terminusID = 0;
+                        sensorEntry.sensorID = sensorID;
+                        sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+                    }
                     pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
                 }
             }

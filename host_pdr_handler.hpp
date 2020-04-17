@@ -1,6 +1,8 @@
 #pragma once
 
 #include "dbus_impl_requester.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
+#include "types.hpp"
 #include "utils.hpp"
 
 #include <map>
@@ -22,6 +24,31 @@ using EntityType = uint16_t;
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
 using PDRRecordHandles = std::vector<ChangeEntry>;
+
+/** @struct SensorEntry
+ *
+ *  SensorEntry is a unique key which maps a sensorEventType request in the
+ *  PlatformEventMessage command to a host sensor PDR. This struct is a key
+ *  in a std::map, so implemented operator==and operator<.
+ */
+struct SensorEntry
+{
+    pdr::TerminusID terminusID;
+    pdr::SensorID sensorID;
+
+    bool operator==(const SensorEntry& e) const
+    {
+        return ((terminusID == e.terminusID) && (sensorID == e.sensorID));
+    }
+
+    bool operator<(const SensorEntry& e) const
+    {
+        return ((terminusID < e.terminusID) ||
+                ((terminusID == e.terminusID) && (sensorID < e.sensorID)));
+    }
+};
+
+using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
 
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
@@ -71,6 +98,18 @@ class HostPDRHandler
     void sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                                    uint8_t eventDataFormat);
 
+    /** @brief Lookup host sensor info corresponding to requested SensorEntry
+     *
+     *  @param[in] entry - TerminusID and SensorID
+     *
+     *  @return SensorInfo corresponding to the input paramter SensorEntry
+     *          throw std::out_of_range exception if not found
+     */
+    const pdr::SensorInfo& lookupSensorInfo(const SensorEntry& entry) const
+    {
+        return sensorMap.at(entry);
+    }
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -119,6 +158,12 @@ class HostPDRHandler
     std::map<EntityType, pldm_entity> parents;
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+
+    /** @brief sensorMap is a lookup data structure that is build from the
+     *         hostPDR that speeds up the lookup of <TerminusID, SensorID> in
+     *         PlatformEventMessage command request.
+     */
+    HostStateSensorMap sensorMap;
 };
 
 } // namespace pldm

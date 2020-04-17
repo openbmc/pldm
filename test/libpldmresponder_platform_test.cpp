@@ -316,3 +316,71 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(numericEffecterPdrRepo);
 }
+
+TEST(parseStateSensor, allScenarios)
+{
+    // Sample state sensor with SensorID - 1, EntityType - Processor Module(67)
+    // State Set ID - Operational Running Status(11), Supported States - 3,4
+    std::vector<uint8_t> sample1PDR{0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00,
+                                    0x00, 0x17, 0x00, 0x00, 0x00, 0x01, 0x00,
+                                    0x43, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x01, 0x0b, 0x00, 0x01, 0x18};
+
+    const auto& [terminusHandle1, sensorID1, sensorInfo1] =
+        parseStateSensorPDR(sample1PDR);
+    const auto& [containerID1, entityType1, entityInstance1] =
+        std::get<0>(sensorInfo1);
+    const auto& states1 = std::get<1>(sensorInfo1);
+    CompositeSensorStates statesCmp1{{3u, 4u}};
+
+    ASSERT_EQ(le16toh(terminusHandle1), 0u);
+    ASSERT_EQ(le16toh(sensorID1), 1u);
+    ASSERT_EQ(le16toh(containerID1), 0u);
+    ASSERT_EQ(le16toh(entityType1), 67u);
+    ASSERT_EQ(le16toh(entityInstance1), 1u);
+    ASSERT_EQ(states1, statesCmp1);
+
+    // Sample state sensor with SensorID - 2, EntityType - System Firmware(31)
+    // State Set ID - Availability(2), Supported States - 3,4,9,10,11,13
+    std::vector<uint8_t> sample2PDR{0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00,
+                                    0x00, 0x17, 0x00, 0x00, 0x00, 0x02, 0x00,
+                                    0x1F, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x01, 0x02, 0x00, 0x02, 0x18, 0x2E};
+
+    const auto& [terminusHandle2, sensorID2, sensorInfo2] =
+        parseStateSensorPDR(sample2PDR);
+    const auto& [containerID2, entityType2, entityInstance2] =
+        std::get<0>(sensorInfo2);
+    const auto& states2 = std::get<1>(sensorInfo2);
+    CompositeSensorStates statesCmp2{{3u, 4u, 9u, 10u, 11u, 13u}};
+
+    ASSERT_EQ(le16toh(terminusHandle2), 0u);
+    ASSERT_EQ(le16toh(sensorID2), 2u);
+    ASSERT_EQ(le16toh(containerID2), 0u);
+    ASSERT_EQ(le16toh(entityType2), 31u);
+    ASSERT_EQ(le16toh(entityInstance2), 1u);
+    ASSERT_EQ(states2, statesCmp2);
+
+    // Sample state sensor with SensorID - 3, EntityType - Virtual Machine
+    // Manager(33), Composite State Sensor -2 , State Set ID - Link State(33),
+    // Supported States - 1,2, State Set ID - Configuration State(15),
+    // Supported States - 1,2,3,4
+    std::vector<uint8_t> sample3PDR{
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00, 0x00, 0x17, 0x00, 0x00,
+        0x00, 0x03, 0x00, 0x21, 0x00, 0x02, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x02, 0x21, 0x00, 0x01, 0x06, 0x0F, 0x00, 0x01, 0x1E};
+
+    const auto& [terminusHandle3, sensorID3, sensorInfo3] =
+        parseStateSensorPDR(sample3PDR);
+    const auto& [containerID3, entityType3, entityInstance3] =
+        std::get<0>(sensorInfo3);
+    const auto& states3 = std::get<1>(sensorInfo3);
+    CompositeSensorStates statesCmp3{{1u, 2u}, {1u, 2u, 3u, 4u}};
+
+    ASSERT_EQ(le16toh(terminusHandle3), 0u);
+    ASSERT_EQ(le16toh(sensorID3), 3u);
+    ASSERT_EQ(le16toh(containerID3), 1u);
+    ASSERT_EQ(le16toh(entityType3), 33u);
+    ASSERT_EQ(le16toh(entityInstance3), 2u);
+    ASSERT_EQ(states3, statesCmp3);
+}

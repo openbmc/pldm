@@ -129,6 +129,7 @@ enum pldm_platform_commands {
 /** @brief PLDM PDR types
  */
 enum pldm_pdr_types {
+	PLDM_STATE_SENSOR_PDR = 4,
 	PLDM_NUMERIC_EFFECTER_PDR = 9,
 	PLDM_STATE_EFFECTER_PDR = 11,
 	PLDM_PDR_ENTITY_ASSOCIATION = 15,
@@ -266,6 +267,33 @@ struct pldm_pdr_fru_record_set {
 	uint16_t entity_type;
 	uint16_t entity_instance_num;
 	uint16_t container_id;
+} __attribute__((packed));
+
+/** @struct pldm_state_sensor_pdr
+ *
+ *  Structure representing PLDM state sensor PDR
+ */
+struct pldm_state_sensor_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t sensor_id;
+	uint16_t entity_type;
+	uint16_t entity_instance;
+	uint16_t container_id;
+	uint8_t sensor_init;
+	bool8_t sensor_auxiliary_names_pdr;
+	uint8_t composite_sensor_count;
+	uint8_t possible_states[1];
+} __attribute__((packed));
+
+/** @struct state_sensor_possible_states
+ *
+ *  Structure representing state enums for state sensor
+ */
+struct state_sensor_possible_states {
+	uint16_t state_set_id;
+	uint8_t possible_states_size;
+	bitfield8_t states[1];
 } __attribute__((packed));
 
 /** @struct pldm_state_effecter_pdr
