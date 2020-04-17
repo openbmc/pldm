@@ -2,18 +2,17 @@
 
 #include "softoff.hpp"
 
-#include <iostream>
+#include <nlohmann/json.hpp>
 
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
 
+constexpr auto timeOutJsonPath = "/usr/share/pldm/softoff/softoff.json";
 namespace pldm
 {
 
-constexpr auto HOST_SOFTOFF_MCTP_ID = 0;
-constexpr auto HOST_SOFTOFF_EFFECTER_ID = 0;
-constexpr auto HOST_SOFTOFF_STATE = 0;
-
+using Json = nlohmann::json;
+namespace fs = std::filesystem;
 PldmSoftPowerOff::PldmSoftPowerOff()
 {
     auto rc = setStateEffecterStates();
@@ -22,7 +21,11 @@ PldmSoftPowerOff::PldmSoftPowerOff()
         std::cerr << "Message setStateEffecterStates to host failure. PLDM "
                      "error code = "
                   << std::hex << std::showbase << rc << "\n";
+
     }
+
+    // Load json file get Timeout seconds
+    parserJsonFile();
 }
 
 int PldmSoftPowerOff::setStateEffecterStates()
@@ -69,6 +72,34 @@ int PldmSoftPowerOff::setStateEffecterStates()
     free(responseMsg);
 
     return 0;
+}
+
+void PldmSoftPowerOff::parserJsonFile()
+{
+    fs::path dir(timeOutJsonPath);
+    if (!fs::exists(dir) || fs::is_empty(dir))
+    {
+        std::cerr << "PLDM soft off time out JSON does not exist, PATH="
+                  << timeOutJsonPath << "\n";
+    }
+
+    std::ifstream jsonFilePath(timeOutJsonPath);
+    if (!jsonFilePath.is_open())
+    {
+        std::cerr << "Error opening PLDM soft off time out JSON file, PATH="
+                  << timeOutJsonPath << "\n";
+    }
+
+    auto data = Json::parse(jsonFilePath);
+    if (data.empty())
+    {
+        std::cerr << "Parsing PLDM soft off time out JSON file failed, FILE="
+                  << timeOutJsonPath << "\n";
+    }
+    else
+    {
+        timeOutSeconds = data.value("softoff_timeout_secs", 0);
+    }
 }
 
 } // namespace pldm
