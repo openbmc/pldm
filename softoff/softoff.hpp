@@ -58,6 +58,31 @@ class PldmSoftPowerOff
      */
     int setStateEffecterStates();
 
+    /** @brief Is the host soft off completed.
+     */
+    inline auto iscompleted()
+    {
+        return completed;
+    }
+
+    /** @brief Is the timer timed out.
+     */
+    inline auto isTimerExpired()
+    {
+        return timer.isExpired();
+    }
+
+    /** @brief Stop the timer.
+     */
+    inline auto stopTimer()
+    {
+        return timer.stop();
+    }
+
+    /** @brief Start the timer.
+     */
+    int startTimer(const std::chrono::microseconds& usec);
+
     /** @brief Parser the json file to get timeout seconds.
      */
     int parserJsonFile();
