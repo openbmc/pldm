@@ -15,9 +15,17 @@ namespace pldm
 {
 using sdbusplus::exception::SdBusError;
 constexpr auto TID = 0; // TID will be implemented later.
+namespace sdbusRule = sdbusplus::bus::match::rules;
 
 SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
-    bus(bus), timer(event)
+    bus(bus), timer(event),
+    pldmEventSignal(bus,
+                    sdbusRule::type::signal() +
+                        sdbusRule::member("StateSensorEvent") +
+                        sdbusRule::path("/xyz/openbmc_project/pldm") +
+                        sdbusRule::interface("xyz.openbmc_project.PLDM.Event"),
+                    std::bind(std::mem_fn(&SoftPowerOff::hostSoftOffComplete),
+                              this, std::placeholders::_1))
 {
     auto rc = getHostState();
     if (rc != PLDM_SUCCESS)
@@ -38,6 +46,17 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
         hasError = true;
         return;
     }
+
+    rc = getSensorInfo();
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Message get Sensor PDRs error. PLDM "
+                     "error code = "
+                  << std::hex << std::showbase << rc << "\n";
+        hasError = true;
+        return;
+    }
+
     rc = setStateEffecterStates();
     if (rc != PLDM_SUCCESS)
     {
@@ -95,6 +114,34 @@ int SoftPowerOff::getHostState()
     }
 
     return PLDM_SUCCESS;
+}
+
+void SoftPowerOff::hostSoftOffComplete(sdbusplus::message::message& msg)
+{
+    uint8_t msgTID;
+    uint16_t msgSensorID;
+    uint8_t msgSensorOffset;
+    uint8_t msgEventState;
+    uint8_t msgPreviousEventState;
+
+    // Read the msg and populate each variable
+    msg.read(msgTID, msgSensorID, msgSensorOffset, msgEventState,
+             msgPreviousEventState);
+
+    if (msgTID == TID && msgSensorID == sensorID &&
+        msgSensorOffset == sensorOffset && msgEventState == eventState)
+    {
+        // Receive Graceful shutdown completion event message. Disable the timer
+        auto rc = timer.stop();
+        if (rc < 0)
+        {
+            std::cerr << "PLDM soft off: Failure to STOP the timer. ERRNO="
+                      << rc << "\n";
+        }
+
+        // This marks the completion of pldm soft power off.
+        completed = true;
+    }
 }
 
 int SoftPowerOff::getEffecterID()
@@ -167,6 +214,73 @@ int SoftPowerOff::getEffecterID()
                       << e.what() << "\n";
             return PLDM_ERROR;
         }
+    }
+
+    return PLDM_SUCCESS;
+}
+
+int SoftPowerOff::getSensorInfo()
+{
+    uint16_t entityType;
+    uint16_t stateSetID;
+
+    if (VMMPdrExist == true)
+    {
+        entityType = VMMEntityType;
+        stateSetID = VMMStateSetID;
+    }
+    else
+    {
+        entityType = systemFirmwareEntityType;
+        stateSetID = systemFirmwareStateSetID;
+    }
+
+    try
+    {
+        auto bus = sdbusplus::bus::new_default();
+        std::vector<std::vector<uint8_t>> Response{};
+        auto method = bus.new_method_call(
+            "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
+            "xyz.openbmc_project.PLDM.PDR", "FindStateSensorPDR");
+        method.append(TID, entityType, stateSetID);
+
+        auto ResponseMsg = bus.call(method);
+
+        ResponseMsg.read(Response);
+
+        pldm_state_sensor_pdr* pdr;
+        for (auto& rep : Response)
+        {
+            pdr = reinterpret_cast<pldm_state_sensor_pdr*>(rep.data());
+        }
+
+        sensorID = pdr->sensor_id;
+
+        auto compositeSensorCount = pdr->composite_sensor_count;
+        auto possible_states_start = pdr->possible_states;
+
+        for (auto sensors = 0x00; sensors < compositeSensorCount; sensors++)
+        {
+            auto possibleStates =
+                reinterpret_cast<state_sensor_possible_states*>(
+                    possible_states_start);
+            auto setId = possibleStates->state_set_id;
+            auto possibleStateSize = possibleStates->possible_states_size;
+
+            if (setId == stateSetID)
+            {
+                sensorOffset = sensors;
+                break;
+            }
+            possible_states_start +=
+                possibleStateSize + sizeof(setId) + sizeof(possibleStateSize);
+        }
+    }
+    catch (const SdBusError& e)
+    {
+        std::cerr << "PLDM soft off: Error get State Sensor PDR,ERROR="
+                  << e.what() << "\n";
+        return PLDM_ERROR;
     }
 
     return PLDM_SUCCESS;

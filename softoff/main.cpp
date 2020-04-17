@@ -25,5 +25,30 @@ int main()
         return -1;
     }
 
+    // Time out or soft off complete
+    while (!softPower.iscompleted() && !softPower.isTimerExpired())
+    {
+        try
+        {
+            event.run(std::nullopt);
+        }
+        catch (const sdeventplus::SdEventError& e)
+        {
+            std::cerr
+                << "PLDM host soft off: Failure in processing request.ERROR= "
+                << e.what() << "\n";
+            return -1;
+        }
+    }
+
+    if (softPower.isTimerExpired())
+    {
+        std::cerr
+            << "PLDM host soft off: ERROR! Wait for the host soft off timeout."
+            << "Exit the pldm-softpoweroff "
+            << "\n";
+        return -1;
+    }
+
     return 0;
 }

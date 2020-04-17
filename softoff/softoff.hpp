@@ -1,6 +1,8 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/server.hpp>
+#include <sdbusplus/server/object.hpp>
 #include <sdbusplus/timer.hpp>
 
 #include "libpldm/requester/pldm.h"
@@ -30,6 +32,20 @@ class SoftPowerOff
         return hasError;
     }
 
+    /** @brief Is the host soft off completed.
+     */
+    inline auto iscompleted()
+    {
+        return completed;
+    }
+
+    /** @brief Is the timer timed out.
+     */
+    inline auto isTimerExpired()
+    {
+        return timer.isExpired();
+    }
+
   private:
     /** @brief Getting the host current state.
      */
@@ -50,13 +66,29 @@ class SoftPowerOff
      */
     int setStateEffecterStates();
 
+    /** @brief Get effecterID from PDRs.
+     */
+    int getEffecterID();
+
+    /** @brief Stop the timer.
+     */
+    inline auto stopTimer()
+    {
+        return timer.stop();
+    }
+
+    /** @brief When host soft off completed, stop the timer and
+     *         set the completed to true.
+     */
+    void hostSoftOffComplete(sdbusplus::message::message& msg);
+
     /** @brief Start the timer.
      */
     int startTimer(const std::chrono::microseconds& usec);
 
-    /** @brief Get effecterID from PDRs.
+    /** @brief Get VMM/SystemFirmware Sensor info from PDRs.
      */
-    int getEffecterID();
+    int getSensorInfo();
 
     /** @brief System firmware EntityType and State set id
      */
@@ -74,9 +106,21 @@ class SoftPowerOff
     constexpr static uint8_t gracefulShutdown = 5;
     uint8_t mctpEID;
 
+    /** @brief eventState and sensorID and sensorOffset.
+     * eventState = 7 : Graceful Shutdown - The software entity has been shut
+     * down gracefully
+     */
+    constexpr static uint8_t eventState = 7;
+    uint16_t sensorID;
+    uint8_t sensorOffset;
+
     /** @brief Failed to send host soft off command flag.
      */
     bool hasError = false;
+
+    /** @brief Host soft off completed flag.
+     */
+    bool completed = false;
 
     /** @brief Is the Virtual Machine Manager/VMM state effecter available.
      */
@@ -92,6 +136,12 @@ class SoftPowerOff
      * The default is 120 min
      */
     int timeOutSeconds = 7200;
+
+    /** @brief Used to subscribe to dbus pldm StateSensorEvent signal
+     * When the host soft off is complete, it sends an pldm event Msg to BMC's
+     * pldmd, and the pldmd will emit the StateSensorEvent signal.
+     **/
+    sdbusplus::bus::match_t pldmEventSignal;
 };
 
 } // namespace pldm
