@@ -6,7 +6,9 @@
 
 #include <array>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
@@ -15,6 +17,10 @@ namespace pldm
 {
 using sdbusplus::exception::SdBusError;
 constexpr auto TID = 1;
+using Json = nlohmann::json;
+namespace fs = std::filesystem;
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 PldmSoftPowerOff::PldmSoftPowerOff()
 {
@@ -58,6 +64,28 @@ PldmSoftPowerOff::PldmSoftPowerOff()
                   << std::hex << std::showbase << rc << "\n";
         hasError = true;
         return;
+    }
+
+    // Load json file get Timeout seconds
+    try
+    {
+        auto json = parserJsonFile();
+        if (json.empty())
+        {
+            std::cerr << "Parsing PLDM soft off time out JSON file failed,,Use "
+                         "the default timeout seconds 7200s, FILE="
+                      << SOFT_OFF_TIMEOUT_JSON << "\n";
+        }
+        else
+        {
+            timeOutSeconds = json.value("softoff_timeout_secs", 0);
+        }
+    }
+    catch (const InternalFailure& e)
+    {
+        std::cerr << "Parsing PLDM soft off time out JSON file failed,,Use the "
+                     "default timeout seconds 7200s."
+                  << " ERROR=" << e.what() << "\n";
     }
 }
 
@@ -207,4 +235,26 @@ int PldmSoftPowerOff::setStateEffecterStates()
     return PLDM_SUCCESS;
 }
 
+Json PldmSoftPowerOff::parserJsonFile()
+{
+    fs::path dir(SOFT_OFF_TIMEOUT_JSON);
+    if (!fs::exists(dir) || fs::is_empty(dir))
+    {
+        std::cerr << "PLDM soft off time out JSON does not exist,Use the "
+                     "default timeout seconds 7200s, PATH="
+                  << SOFT_OFF_TIMEOUT_JSON << "\n";
+        throw InternalFailure();
+    }
+
+    std::ifstream jsonFilePath(SOFT_OFF_TIMEOUT_JSON);
+    if (!jsonFilePath.is_open())
+    {
+        std::cerr << "Error opening PLDM soft off time out JSON file,Use the "
+                     "default timeout seconds 7200s, PATH="
+                  << SOFT_OFF_TIMEOUT_JSON << "\n";
+        return {};
+    }
+
+    return Json::parse(jsonFilePath);
+}
 } // namespace pldm

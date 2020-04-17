@@ -1,11 +1,15 @@
 #pragma once
 
+#include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 #include "libpldm/requester/pldm.h"
 
 namespace pldm
 {
+using Json = nlohmann::json;
 
 /** @class SoftPowerOff
  *  @brief Responsible for coordinating Host SoftPowerOff operation
@@ -24,11 +28,17 @@ class PldmSoftPowerOff
      */
     int setStateEffecterStates();
 
+    /** @brief Parser the json file to get timeout seconds.
+     */
+    Json parserJsonFile();
+
     /** @brief Get effecterID from PDRs.
      */
     int getEffecterID();
 
-    /** @brief Is the host soft off completed.
+    /** @brief Is the pldm-softpoweroff has error.
+     *if hasError is true, that means the pldm-softpoweroff
+     *can't trigger the host soft off,so the pldm-softpoweroff will exit.
      */
     inline auto isHasError()
     {
@@ -66,6 +76,11 @@ class PldmSoftPowerOff
     /** @brief Failed to send host soft off command flag.
      */
     bool hasError = false;
+
+    /** @brief Timeout seconds
+     * The default is 30 min
+     */
+    int timeOutSeconds = 7200;
 };
 
 } // namespace pldm
