@@ -1,5 +1,6 @@
 #pragma once
 
+#include "types.hpp"
 #include "utils.hpp"
 
 #include <stdint.h>
@@ -194,6 +195,18 @@ class Repo : public RepoInterface
 
     bool empty() override;
 };
+
+using namespace pldm::pdr;
+/** @brief Parse the State Sensor PDR and return the parsed sensor info which
+ *         will be used to lookup the sensor info in the PlatformEventMessage
+ *         command of sensorEvent type.
+ *
+ *  @param[in] stateSensorPdr - state sensor PDR
+ *
+ *  @return terminus handle, sensor ID and parsed sensor info
+ */
+std::tuple<TerminusHandle, SensorID, SensorInfo>
+    parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr);
 
 } // namespace pdr_utils
 } // namespace responder
