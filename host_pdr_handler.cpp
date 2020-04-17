@@ -4,8 +4,10 @@
 
 #include <assert.h>
 
+#include <climits>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <vector>
 
 #include "libpldm/requester/pldm.h"
 
@@ -178,6 +180,10 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 }
                 else
                 {
+                    if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+                    {
+                        parseStateSensorPDR(pdr);
+                    }
                     pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
                 }
             }
@@ -335,6 +341,59 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                   << ", cc=" << static_cast<unsigned>(completionCode)
                   << std::endl;
     }
+}
+
+void HostPDRHandler::parseStateSensorPDR(
+    const std::vector<uint8_t>& stateSensorPdr)
+{
+    auto pdr =
+        reinterpret_cast<const pldm_state_sensor_pdr*>(stateSensorPdr.data());
+    CompositeSensorStates sensors{};
+    auto statesPtr = pdr->possible_states;
+    auto compositeSensorCount = pdr->composite_sensor_count;
+
+    while (compositeSensorCount--)
+    {
+        auto state =
+            reinterpret_cast<const state_sensor_possible_states*>(statesPtr);
+        PossibleStates possibleStates{};
+        uint8_t possibleStatesPos{};
+        auto updateStates = [&possibleStates,
+                             &possibleStatesPos](const bitfield8_t& val) {
+            for (int i = 0; i < CHAR_BIT; i++)
+            {
+                if (val.byte & (1 << i))
+                {
+                    possibleStates.insert(possibleStatesPos * CHAR_BIT + i);
+                }
+            }
+            possibleStatesPos++;
+        };
+        std::for_each(&state->states[0],
+                      &state->states[state->possible_states_size + 1],
+                      updateStates);
+
+        sensors.emplace_back(std::move(possibleStates));
+        if (compositeSensorCount)
+        {
+            statesPtr += sizeof(state_sensor_possible_states) +
+                         state->possible_states_size - 1;
+        }
+    }
+
+    auto entityInfo =
+        std::make_tuple(static_cast<uint16_t>(pdr->container_id),
+                        static_cast<uint16_t>(pdr->entity_type),
+                        static_cast<uint16_t>(pdr->entity_instance));
+    auto sensorInfo =
+        std::make_tuple(std::move(entityInfo), std::move(sensors));
+    SensorEntry sensorEntry{};
+    // TODO: Lookup Terminus ID from the Terminus Locator PDR with
+    // pdr->terminus_handle
+    sensorEntry.terminusID = 0;
+    sensorEntry.sensorID = pdr->sensor_id;
+    sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+    return;
 }
 
 } // namespace pldm

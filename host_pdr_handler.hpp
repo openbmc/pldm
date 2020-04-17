@@ -1,12 +1,14 @@
 #pragma once
 
 #include "dbus_impl_requester.hpp"
+#include "types.hpp"
 #include "utils.hpp"
 
 #include <map>
 #include <memory>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <set>
 #include <vector>
 
 #include "libpldm/base.h"
@@ -22,6 +24,39 @@ using EntityType = uint16_t;
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
 using PDRRecordHandles = std::vector<ChangeEntry>;
+
+/** @struct sensorEntry
+ *
+ *  SensorEntry is a unique key which maps a request in the PlatformEventMessage
+ *  command to the host sensor PDR. This struct is a key in a std::map, so
+ *  implemented operator==and operator<.
+ */
+struct SensorEntry
+{
+    pdr::TerminusID terminusID;
+    pdr::SensorID sensorID;
+
+    bool operator==(const SensorEntry& e) const
+    {
+        return ((terminusID == e.terminusID) && (sensorID == e.sensorID));
+    }
+
+    bool operator<(const SensorEntry& e) const
+    {
+        return ((terminusID < e.terminusID) ||
+                ((terminusID == e.terminusID) && (sensorID < e.sensorID)));
+    }
+};
+
+//!< Subset of the State Set that is supported by the state sensor
+using PossibleStates = std::set<uint8_t>;
+//!< Subset of the State Set that is supported by each sensor in a composite
+//!< sensor
+using CompositeSensorStates = std::vector<PossibleStates>;
+using EntityInfo =
+    std::tuple<pdr::ContainerID, pdr::EntityType, pdr::EntityInstance>;
+using SensorInfo = std::tuple<EntityInfo, CompositeSensorStates>;
+using HostStateSensorMap = std::map<SensorEntry, SensorInfo>;
 
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
@@ -71,6 +106,18 @@ class HostPDRHandler
     void sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                                    uint8_t eventDataFormat);
 
+    /** @brief Lookup host sensor info corresponding to requested SensorEntry
+     *
+     *  @param[in] entry - TerminusID and SensorID
+     *
+     *  @return SensorInfo corresponding to the input paramter SensorEntry
+     *          throw std::out_of_range exception if not found
+     */
+    const SensorInfo& lookupSensorInfo(const SensorEntry& entry) const
+    {
+        return sensorMap.at(entry);
+    }
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -92,6 +139,14 @@ class HostPDRHandler
      *  @return bool - true if parent found, false otherwise
      */
     bool getParent(EntityType type, pldm_entity& parent);
+
+    /** @brief Parse the State Sensor PDR and update the HostStateSensorMap
+     *         data structure which will be used to lookup the sensor info
+     *         in the PlatformEventMessage command.
+     *
+     *  @param[in] pdr - state sensor PDR
+     */
+    void parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr);
 
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
@@ -119,6 +174,12 @@ class HostPDRHandler
     std::map<EntityType, pldm_entity> parents;
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+
+    /** @brief sensorMap is a lookup data structure that is build from the
+     *         hostPDR that speeds up the lookup of <TerminusID, SensorID> in
+     *         PlatformEventMessage command request.
+     */
+    HostStateSensorMap sensorMap;
 };
 
 } // namespace pldm
