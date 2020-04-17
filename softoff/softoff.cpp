@@ -134,6 +134,29 @@ void PldmSoftPowerOff::setHostSoftOffCompleteFlag(
     }
 }
 
+int PldmSoftPowerOff::sendChassisOffcommand()
+{
+    try
+    {
+        pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/state/host0",
+                                             "xyz.openbmc_project.State.Host",
+                                             "RequestedHostTransition",
+                                             "string"};
+        pldm::utils::PropertyValue value =
+            std::string("xyz.openbmc_project.State.Host.Transition.Off");
+
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (std::exception& e)
+    {
+
+        std::cerr << "Error Setting dbus property,ERROR=" << e.what() << "\n";
+        return -1;
+    }
+
+    return 0;
+}
+
 int PldmSoftPowerOff::set_mctpEid_effecterId_state(uint8_t mctpEid,
                                                    uint16_t effecterId,
                                                    uint8_t state)
@@ -141,6 +164,45 @@ int PldmSoftPowerOff::set_mctpEid_effecterId_state(uint8_t mctpEid,
     this->mctpEid = mctpEid;
     this->effecterId = effecterId;
     this->state = state;
+
+    return 0;
+}
+
+int PldmSoftPowerOff::guardChassisOff(uint8_t guardState)
+{
+    std::string service = GUARD_CHASSIS_OFF_TARGET_SERVICE;
+    auto p = service.find('@');
+    assert(p != std::string::npos);
+    if (guardState == ENABLE_GUARD)
+    {
+        service.insert(p + 1, "enable");
+    }
+    else if (guardState == DISABLE_GUARD)
+    {
+        service.insert(p + 1, "disable");
+    }
+    else
+    {
+        std::cerr << "Guard Chassis Off argument is wrong. Argument :  "
+                  << guardState << "\n";
+        return -1;
+    }
+
+    auto bus = sdbusplus::bus::new_default();
+    try
+    {
+        auto method = bus.new_method_call(SYSTEMD_BUSNAME, SYSTEMD_PATH,
+                                          SYSTEMD_INTERFACE, "StartUnit");
+        method.append(service, "replace");
+
+        bus.call(method);
+        return 0;
+    }
+    catch (const SdBusError& e)
+    {
+        log<level::ERR>("Error staring service", entry("ERROR=%s", e.what()));
+        return -1;
+    }
 
     return 0;
 }

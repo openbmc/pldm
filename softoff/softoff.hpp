@@ -58,6 +58,10 @@ class PldmSoftPowerOff
      */
     int setStateEffecterStates();
 
+    /** @brief Send chassis off command.
+     */
+    int sendChassisOffcommand();
+
     /** @brief Is the host soft off completed.
      */
     inline auto iscompleted()
@@ -78,6 +82,11 @@ class PldmSoftPowerOff
     {
         return timer.stop();
     }
+
+    /** @brief Guard the obmc-chassis-poweroff@.target.
+     *         Prevent hard power off during host soft off.
+     */
+    int guardChassisOff(uint8_t guardState);
 
     /** @brief Start the timer.
      */
