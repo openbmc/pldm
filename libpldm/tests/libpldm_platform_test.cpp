@@ -1318,33 +1318,33 @@ TEST(GetNumericEffecterValue, testGoodEncodeResponse)
     uint8_t effecter_dataSize = PLDM_EFFECTER_DATA_SIZE_UINT32;
     uint8_t effecter_operState = EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING;
     uint32_t pendingValue = 0x12345678;
-    uint32_t presentValue = 0xABCDEF00;
+    uint32_t presentValue = 0xABCDEF11;
 
     std::array<uint8_t,
                hdrSize + PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES + 6>
         responseMsg{};
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
 
-    uint32_t pendingValue_le = htole32(pendingValue);
-    uint32_t presentValue_le = htole32(presentValue);
-
     auto rc = encode_get_numeric_effecter_value_resp(
         0, completionCode, effecter_dataSize, effecter_operState,
-        reinterpret_cast<uint8_t*>(&pendingValue_le),
-        reinterpret_cast<uint8_t*>(&presentValue_le), response,
+        reinterpret_cast<uint8_t*>(&pendingValue),
+        reinterpret_cast<uint8_t*>(&presentValue), response,
         responseMsg.size() - hdrSize);
 
     struct pldm_get_numeric_effecter_value_resp* resp =
         reinterpret_cast<struct pldm_get_numeric_effecter_value_resp*>(
             response->payload);
 
+    uint32_t* val_pending = (uint32_t*)(&resp->pending_and_present_values[0]);
+    *val_pending = le32toh(*val_pending);
+    uint32_t* val_present = (uint32_t*)(&resp->pending_and_present_values[4]);
+    *val_present = le32toh(*val_present);
+
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(effecter_dataSize, resp->effecter_data_size);
     EXPECT_EQ(effecter_operState, resp->effecter_oper_state);
-    EXPECT_EQ(pendingValue, le32toh(*(reinterpret_cast<uint32_t*>(
-                                &resp->pending_and_present_values[0]))));
-    EXPECT_EQ(presentValue, le32toh(*(reinterpret_cast<uint32_t*>(
-                                &resp->pending_and_present_values[4]))));
+    EXPECT_EQ(pendingValue, *val_pending);
+    EXPECT_EQ(presentValue, *val_present);
 }
 
 TEST(GetNumericEffecterValue, testBadEncodeResponse)
@@ -1418,17 +1418,12 @@ TEST(GetNumericEffecterValue, testGoodDecodeResponse)
         &reteffecter_dataSize, &reteffecter_operState, retpendingValue,
         retpresentValue);
 
-    uint16_t retpending_value =
-        le16toh(*(reinterpret_cast<uint16_t*>(retpendingValue)));
-    uint16_t retpresent_value =
-        le16toh(*(reinterpret_cast<uint16_t*>(retpresentValue)));
-
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(completionCode, retcompletionCode);
     EXPECT_EQ(effecter_dataSize, reteffecter_dataSize);
     EXPECT_EQ(effecter_operState, reteffecter_operState);
-    EXPECT_EQ(pendingValue, retpending_value);
-    EXPECT_EQ(presentValue, retpresent_value);
+    EXPECT_EQ(pendingValue, *(reinterpret_cast<uint16_t*>(retpendingValue)));
+    EXPECT_EQ(presentValue, *(reinterpret_cast<uint16_t*>(retpresentValue)));
 }
 
 TEST(GetNumericEffecterValue, testBadDecodeResponse)
