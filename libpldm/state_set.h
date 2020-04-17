@@ -150,6 +150,18 @@ enum pldm_state_set_operational_running_status_values {
 	PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_DORMANT = 6
 };
 
+/* @brief List of states for the Software-related state set (ID 129).
+ */
+enum pldm_software_termination_status_values {
+	PLDM_SW_TERM_NORMAL = 1,
+	PLDM_SW_TERM_SOFTWARE_TERMINATION_DETECTED = 2,
+	PLDM_SW_TERM_CRITICAL_STOP_DURING_LOAD_INITIALIZATION = 3,
+	PLDM_SW_TERM_RUN_TIME_CRITICAL_STOP = 4,
+	PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED = 5,
+	PLDM_SW_TERM_GRACEFUL_RESTART_REQUESTED = 6,
+	PLDM_SW_TERM_GRACEFUL_SHUTDOWN = 7,
+	PLDM_SW_TERM_TERMINATION_REQUEST_FAILED = 8,
+};
 #ifdef __cplusplus
 }
 #endif
