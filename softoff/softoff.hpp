@@ -3,6 +3,8 @@
 #include "libpldm/requester/pldm.h"
 
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/server.hpp>
+#include <sdbusplus/server/object.hpp>
 #include <sdbusplus/timer.hpp>
 
 namespace pldm
@@ -37,6 +39,13 @@ class SoftPowerOff
         return completed;
     }
 
+    /** @brief Is the timer expired.
+     */
+    inline auto isTimerExpired()
+    {
+        return timer.isExpired();
+    }
+
   private:
     /** @brief Getting the host current state.
      */
@@ -46,6 +55,18 @@ class SoftPowerOff
      */
     int setStateEffecterStates();
 
+    /** @brief Stop the timer.
+     */
+    inline auto stopTimer()
+    {
+        return timer.stop();
+    }
+
+    /** @brief When host soft off completed, stop the timer and
+     *         set the completed to true.
+     */
+    void hostSoftOffComplete(sdbusplus::message::message& msg);
+
     /** @brief Start the timer.
      */
     int startTimer(const std::chrono::microseconds& usec);
@@ -54,10 +75,19 @@ class SoftPowerOff
      */
     int getEffecterID();
 
+    /** @brief Get VMM/SystemFirmware Sensor info from PDRs.
+     */
+    int getSensorInfo();
+
     /** @brief effecterID and mctpEID
      */
     uint16_t effecterID;
     uint8_t mctpEID;
+
+    /** @brief eventState and sensorID and sensorOffset.
+     */
+    uint16_t sensorID;
+    uint8_t sensorOffset;
 
     /** @brief Failed to send host soft off command flag.
      */
@@ -76,6 +106,12 @@ class SoftPowerOff
 
     /** @brief Reference to Timer object */
     phosphor::Timer timer;
+
+    /** @brief Used to subscribe to dbus pldm StateSensorEvent signal
+     * When the host soft off is complete, it sends an platform event message
+     * to BMC's pldmd, and the pldmd will emit the StateSensorEvent signal.
+     **/
+    sdbusplus::bus::match_t pldmEventSignal;
 };
 
 } // namespace pldm
