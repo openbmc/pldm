@@ -16,7 +16,8 @@ namespace pldm
 using sdbusplus::exception::SdBusError;
 constexpr auto TID = 1;
 
-PldmSoftPowerOff::PldmSoftPowerOff()
+PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
+    bus(bus), timer(event)
 {
 
     try
@@ -64,6 +65,23 @@ PldmSoftPowerOff::PldmSoftPowerOff()
     if (TIME_OUT_SECONDS > 0 && TIME_OUT_SECONDS <= 32767)
     {
         timeOutSeconds = TIME_OUT_SECONDS;
+    }
+
+    // Start Timer
+    using namespace std::chrono;
+    auto time = duration_cast<microseconds>(seconds(timeOutSeconds));
+
+    auto r = startTimer(time);
+    if (r < 0)
+    {
+        std::cerr << "Failure to start Host soft off wait timer, ERRNO = " << r
+                  << "\n";
+    }
+    else
+    {
+        std::cerr
+            << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+            << timeOutSeconds << "\n";
     }
 }
 
@@ -211,5 +229,10 @@ int PldmSoftPowerOff::setStateEffecterStates()
     free(responseMsg);
 
     return PLDM_SUCCESS;
+}
+
+int PldmSoftPowerOff::startTimer(const std::chrono::microseconds& usec)
+{
+    return timer.start(usec);
 }
 } // namespace pldm
