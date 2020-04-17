@@ -46,6 +46,12 @@ SoftPowerOff::SoftPowerOff()
         hasError = true;
         return;
     }
+
+    // Get Timeout seconds
+    if (SOFTOFF_TIMEOUT_SECONDS > 0 && SOFTOFF_TIMEOUT_SECONDS <= 32767)
+    {
+        timeOutSeconds = SOFTOFF_TIMEOUT_SECONDS;
+    }
 }
 
 int SoftPowerOff::getHostState()
@@ -236,5 +242,4 @@ int SoftPowerOff::setStateEffecterStates()
 
     return PLDM_SUCCESS;
 }
-
 } // namespace pldm

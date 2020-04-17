@@ -71,6 +71,11 @@ class SoftPowerOff
     /** @brief Is the Virtual Machine Manager/VMM state effecter available.
      */
     bool VMMPdrExist = true;
+
+    /** @brief Timeout seconds
+     * The default is 120 min
+     */
+    int timeOutSeconds = 7200;
 };
 
 } // namespace pldm
