@@ -72,6 +72,25 @@ PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
 
     // Load json file get Timeout seconds
     this->parserJsonFile();
+
+    // Start Timer
+    using namespace std::chrono;
+    auto time = duration_cast<microseconds>(seconds(timeOutSeconds));
+
+    auto r = this->startTimer(time);
+    if (r < 0)
+    {
+        log<level::ERR>("Failure to start Host soft off wait timer",
+                        entry("ERRNO=0x%X", -r));
+    }
+    else
+    {
+        log<level::INFO>(
+            "Timer started waiting for host soft off",
+            entry("TIMEOUT_IN_MSEC=%llu",
+                  (duration_cast<milliseconds>(seconds(timeOutSeconds)))
+                      .count()));
+    }
 }
 
 void PldmSoftPowerOff::setHostSoftOffCompleteFlag(
