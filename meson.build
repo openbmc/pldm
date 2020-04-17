@@ -20,6 +20,7 @@ conf_data.set_quoted('PDR_JSONS_DIR', '/usr/share/pldm/pdr')
 conf_data.set_quoted('FRU_JSONS_DIR', '/usr/share/pldm/fru')
 conf_data.set_quoted('HOST_JSONS_DIR', '/usr/share/pldm/host')
 conf_data.set_quoted('EVENTS_JSONS_DIR', '/usr/share/pldm/events')
+conf_data.set_quoted('SOFT_OFF_TIMEOUT_JSON', '/usr/share/pldm/softoff/softoff.json')
 if get_option('oem-ibm').enabled()
   conf_data.set_quoted('FILE_TABLE_JSON', '/usr/share/pldm/fileTable.json')
   conf_data.set_quoted('LID_PERM_DIR', '/usr/share/host-fw')
@@ -70,6 +71,7 @@ executable(
   'dbus_impl_requester.cpp',
   'instance_id.cpp',
   'dbus_impl_pdr.cpp',
+  'dbus_impl_event.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,

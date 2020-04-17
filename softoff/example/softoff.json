@@ -1,3 +1,4 @@
 {
-    "softoff_timeout_secs": 2700 // 45 * 60
+    "softoff_timeout_secs": 7200
 }
+
