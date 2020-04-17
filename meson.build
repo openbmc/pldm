@@ -11,7 +11,7 @@ project('pldm', ['c', 'cpp'],
 # stuff for ARM. See https://stackoverflow.com/questions/48149323/strange-gcc-warning-when-compiling-qt-project
 # Basically, gcc 6 and gcc 7 are not ABI compatible, but since the whole OpenBMC
 # project uses the same compiler, we can safely ignmore these info notes.
-add_project_arguments('-Wno-psabi', '-Wno-unused', language: 'cpp')
+add_project_arguments('-Wno-psabi', language: 'cpp')
 
 conf_data = configuration_data()
 conf_data.set_quoted('BIOS_JSONS_DIR', '/usr/share/pldm/bios')
