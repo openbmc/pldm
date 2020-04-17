@@ -20,7 +20,8 @@ constexpr auto HOST_SOFTOFF_STATE = 0;
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 
-PldmSoftPowerOff::PldmSoftPowerOff()
+PldmSoftPowerOff::PldmSoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
+    bus(bus), timer(event)
 {
     auto rc = setStateEffecterStates();
     if (rc != PLDM_SUCCESS)
@@ -32,6 +33,23 @@ PldmSoftPowerOff::PldmSoftPowerOff()
 
     // Load json file get Timeout seconds
     parserJsonFile();
+
+    // Start Timer
+    using namespace std::chrono;
+    auto time = duration_cast<microseconds>(seconds(timeOutSeconds));
+
+    auto r = startTimer(time);
+    if (r < 0)
+    {
+        std::cerr << "Failure to start Host soft off wait timer, ERRNO = " << r
+                  << "\n";
+    }
+    else
+    {
+        std::cerr
+            << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+            << timeOutSeconds << "\n";
+    }
 }
 
 int PldmSoftPowerOff::setStateEffecterStates()
@@ -80,6 +98,11 @@ int PldmSoftPowerOff::setStateEffecterStates()
     return 0;
 }
 
+int PldmSoftPowerOff::startTimer(const std::chrono::microseconds& usec)
+{
+    return timer.start(usec);
+}
+
 void PldmSoftPowerOff::parserJsonFile()
 {
     fs::path dir(timeOutJsonPath);
@@ -107,4 +130,5 @@ void PldmSoftPowerOff::parserJsonFile()
         timeOutSeconds = data.value("softoff_timeout_secs", 0);
     }
 }
+
 } // namespace pldm
