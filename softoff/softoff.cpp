@@ -59,6 +59,9 @@ PldmSoftPowerOff::PldmSoftPowerOff()
         hasError = true;
         return;
     }
+
+    // Get Timeout seconds
+    timeOutSeconds = TIME_OUT_SECONDS;
 }
 
 int PldmSoftPowerOff::getEffecterID()
@@ -206,5 +209,4 @@ int PldmSoftPowerOff::setStateEffecterStates()
 
     return PLDM_SUCCESS;
 }
-
 } // namespace pldm
