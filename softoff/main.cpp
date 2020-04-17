@@ -1,8 +1,10 @@
-#include <iostream>
+#include "config.h"
 
-#include "libpldm/platform.h"
+#include "softoff.hpp"
 
-int main(int argc, char** argv)
+int main()
 {
+    pldm::PldmSoftPowerOff softPower = pldm::PldmSoftPowerOff();
+
     return 0;
 }
