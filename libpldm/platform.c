@@ -922,8 +922,12 @@ int encode_get_numeric_effecter_value_resp(
 		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES + 2) {
 			return PLDM_ERROR_INVALID_LENGTH;
 		}
-		memcpy(response->pending_and_present_values, pending_value, 2);
-		memcpy(&response->pending_and_present_values[2], present_value,
+		uint16_t val_pending = *(uint16_t *)pending_value;
+		val_pending = htole16(val_pending);
+		memcpy(response->pending_and_present_values, &val_pending, 2);
+		uint16_t val_present = *(uint16_t *)present_value;
+		val_present = htole16(val_present);
+		memcpy(&response->pending_and_present_values[2], &val_present,
 		       2);
 
 	} else if (effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
@@ -932,8 +936,12 @@ int encode_get_numeric_effecter_value_resp(
 		    PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES + 6) {
 			return PLDM_ERROR_INVALID_LENGTH;
 		}
-		memcpy(response->pending_and_present_values, pending_value, 4);
-		memcpy(&response->pending_and_present_values[4], present_value,
+		uint32_t val_pending = *(uint32_t *)pending_value;
+		val_pending = htole32(val_pending);
+		memcpy(response->pending_and_present_values, &val_pending, 4);
+		uint32_t val_present = *(uint32_t *)present_value;
+		val_present = htole32(val_present);
+		memcpy(&response->pending_and_present_values[4], &val_present,
 		       4);
 	}
 	return PLDM_SUCCESS;
@@ -1010,8 +1018,12 @@ int decode_get_numeric_effecter_value_resp(
 			return PLDM_ERROR_INVALID_LENGTH;
 		}
 		memcpy(pending_value, response->pending_and_present_values, 2);
+		uint16_t *val_pending = (uint16_t *)pending_value;
+		*val_pending = le16toh(*val_pending);
 		memcpy(present_value, &response->pending_and_present_values[2],
 		       2);
+		uint16_t *val_present = (uint16_t *)present_value;
+		*val_present = le16toh(*val_present);
 
 	} else if (*effecter_data_size == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
 		   *effecter_data_size == PLDM_EFFECTER_DATA_SIZE_SINT32) {
@@ -1020,8 +1032,12 @@ int decode_get_numeric_effecter_value_resp(
 			return PLDM_ERROR_INVALID_LENGTH;
 		}
 		memcpy(pending_value, response->pending_and_present_values, 4);
+		uint32_t *val_pending = (uint32_t *)pending_value;
+		*val_pending = le32toh(*val_pending);
 		memcpy(present_value, &response->pending_and_present_values[4],
 		       4);
+		uint32_t *val_present = (uint32_t *)present_value;
+		*val_present = le32toh(*val_present);
 	}
 	return PLDM_SUCCESS;
 }
