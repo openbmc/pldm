@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "common/utils.hpp"
 #include "softoff.hpp"
 
 #include <sdeventplus/event.hpp>
@@ -26,9 +27,30 @@ int main()
         return -1;
     }
 
-    if (softPower.isCompleted() == true)
+    // Time out or soft off complete
+    while (!softPower.isCompleted() && !softPower.isTimerExpired())
     {
-        return 0;
+        try
+        {
+            event.run(std::nullopt);
+        }
+        catch (const sdeventplus::SdEventError& e)
+        {
+            std::cerr
+                << "PLDM host soft off: Failure in processing request.ERROR= "
+                << e.what() << "\n";
+            return -1;
+        }
+    }
+
+    if (softPower.isTimerExpired())
+    {
+        pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.SoftOffTimeout");
+        std::cerr
+            << "PLDM host soft off: ERROR! Wait for the host soft off timeout."
+            << "Exit the pldm-softpoweroff "
+            << "\n";
+        return -1;
     }
 
     return 0;
