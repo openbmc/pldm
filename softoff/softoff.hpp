@@ -2,6 +2,9 @@
 
 #include "libpldm/requester/pldm.h"
 
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/timer.hpp>
+
 namespace pldm
 {
 
@@ -12,8 +15,11 @@ class SoftPowerOff
 {
   public:
     /** @brief Constructs SoftPowerOff object.
+     *
+     *  @param[in] bus       - system D-Bus handler
+     *  @param[in] event     - sd_event handler
      */
-    SoftPowerOff();
+    SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event);
 
     /** @brief Is the pldm-softpoweroff has error.
      * if hasError is true, that means the pldm-softpoweroff
@@ -40,6 +46,10 @@ class SoftPowerOff
      */
     int setStateEffecterStates();
 
+    /** @brief Start the timer.
+     */
+    int startTimer(const std::chrono::microseconds& usec);
+
     /** @brief Get effecterID from PDRs.
      */
     int getEffecterID();
@@ -60,6 +70,12 @@ class SoftPowerOff
     /** @brief Is the Virtual Machine Manager/VMM state effecter available.
      */
     bool VMMPdrExist = true;
+
+    /* @brief sdbusplus handle */
+    sdbusplus::bus::bus& bus;
+
+    /** @brief Reference to Timer object */
+    phosphor::Timer timer;
 };
 
 } // namespace pldm

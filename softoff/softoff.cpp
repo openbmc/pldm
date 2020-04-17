@@ -30,7 +30,8 @@ using namespace sdeventplus::source;
 using sdbusplus::exception::SdBusError;
 constexpr auto TID = 0; // TID will be implemented later.
 
-SoftPowerOff::SoftPowerOff()
+SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
+    bus(bus), timer(event)
 {
     auto rc = getHostState();
     if (rc == -1)
@@ -63,6 +64,23 @@ SoftPowerOff::SoftPowerOff()
                   << std::hex << std::showbase << rc << "\n";
         hasError = true;
         return;
+    }
+
+    // Start Timer
+    using namespace std::chrono;
+    auto time = duration_cast<microseconds>(seconds(SOFTOFF_TIMEOUT_SECONDS));
+
+    rc = startTimer(time);
+    if (rc < 0)
+    {
+        std::cerr << "Failure to start Host soft off wait timer, ERRNO = " << rc
+                  << "\n";
+    }
+    else
+    {
+        std::cerr
+            << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+            << SOFTOFF_TIMEOUT_SECONDS << "\n";
     }
 }
 
@@ -249,5 +267,10 @@ int SoftPowerOff::setStateEffecterStates()
     }
 
     return event.loop();
+}
+
+int SoftPowerOff::startTimer(const std::chrono::microseconds& usec)
+{
+    return timer.start(usec);
 }
 } // namespace pldm
