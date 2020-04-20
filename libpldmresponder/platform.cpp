@@ -1,6 +1,7 @@
 
 #include "platform.hpp"
 
+#include "event_parser.hpp"
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
 #include "platform_numeric_effecter.hpp"
@@ -284,7 +285,7 @@ Response Handler::platformEventMessage(const pldm_msg* request,
 }
 
 int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
-                         uint8_t /*formatVersion*/, uint8_t /*tid*/,
+                         uint8_t /*formatVersion*/, uint8_t tid,
                          size_t eventDataOffset)
 {
     uint16_t sensorId{};
@@ -320,11 +321,47 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
             return PLDM_ERROR;
         }
 
+        // Handle PLDM events for which PDR is not available, setSensorEventData
+        // will return PLDM_ERROR_INVALID_DATA if the sensorID is not found in
+        // the hardcoded sensor list.
         rc = setSensorEventData(sensorId, sensorOffset, eventState);
-
-        if (rc != PLDM_SUCCESS)
+        if (rc != PLDM_ERROR_INVALID_DATA)
         {
-            return PLDM_ERROR;
+            return rc;
+        }
+
+        // If there are no HOST PDR's, there is no further action
+        if (hostPDRHandler == NULL)
+        {
+            return PLDM_SUCCESS;
+        }
+
+        // Handle PLDM events for which PDR is available
+        SensorEntry sensorEntry{tid, sensorId};
+        try
+        {
+            const auto& [entityInfo, compositeSensorStates] =
+                hostPDRHandler->lookupSensorInfo(sensorEntry);
+            if (sensorOffset >= compositeSensorStates.size())
+            {
+                return PLDM_ERROR_INVALID_DATA;
+            }
+
+            const auto& possibleStates = compositeSensorStates[sensorOffset];
+            if (possibleStates.find(eventState) == possibleStates.end())
+            {
+                return PLDM_ERROR_INVALID_DATA;
+            }
+
+            const auto& [containerId, entityType, entityInstance] = entityInfo;
+            events::StateSensorEntry stateSensorEntry{
+                containerId, entityType, entityInstance, sensorOffset};
+            return stateSensorHandler.eventAction(stateSensorEntry, eventState);
+        }
+        // If there is no mapping for events return PLDM_SUCCESS
+        catch (const std::out_of_range& e)
+        {
+            return PLDM_SUCCESS;
         }
     }
     else
@@ -344,7 +381,7 @@ int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
     auto iter = eventEntryMap.find(eventEntry);
     if (iter == eventEntryMap.end())
     {
-        return PLDM_SUCCESS;
+        return PLDM_ERROR_INVALID_DATA;
     }
 
     const auto& dBusInfo = iter->second;
@@ -358,7 +395,6 @@ int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
     }
     catch (std::exception& e)
     {
-
         std::cerr
             << "Error Setting dbus property,SensorID=" << eventEntry
             << "DBusInfo=" << dBusInfo.dBusValues.objectPath
