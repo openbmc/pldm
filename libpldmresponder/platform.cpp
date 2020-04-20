@@ -360,6 +360,43 @@ int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
     return PLDM_SUCCESS;
 }
 
+int Handler::occResetEvent(const pldm_msg* request, size_t payloadLength)
+{
+    auto response = getPDR(request, payloadLength);
+    pldm_state_effecter_pdr* pdr =
+            reinterpret_cast<pldm_state_effecter_pdr*>(response.data());
+
+    uint8_t Handle{};
+    uint16_t effecterID{};
+    uint16_t entityType{};
+    uint16_t entityInstanceNumbe{};
+    uint16_t containerID{};
+    uint16_t effecterSemanticID{};
+    uint8_t effecterInit;
+    bool effecterDescriptionPDR;
+    uint8_t compositeEffecterCount;
+
+    if (pdr->hdr.type == PLDM_STATE_EFFECTER_PDR)
+    {
+        uint8_t* start = sizeof(pldm_state_effecter_pdr)-(sizeof(uint8_t)*2 + sizeof(uint16_t)*5 + sizeof(bool));
+        state_effecter_possible_states* possibleStates = reinterpret_cast<state_effecter_possible_states*>(start);
+        uint16_t state_set_id = possibleStates->state_set_id;
+
+        if(state_set_id == /*defined state set id*/) {
+            uint16_t effecterID = pdr->effecter_id;
+            //set effecter call to HBRT
+        }
+        else
+        {   
+            return PLDM_ERROR_INVALID_DATA;
+        }
+    }
+    else
+    {   
+        return PLDM_ERROR_INVALID_DATA;
+    }
+    return PLDM_SUCCESS;
+
 } // namespace platform
 } // namespace responder
 } // namespace pldm
