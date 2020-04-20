@@ -670,7 +670,7 @@ TEST(ReadWriteFile, testBadEncodeRequest)
     // ReadFile check invalid file length
     auto rc = encode_read_file_req(0, fileHandle, offset, length, requestPtr);
 
-    ASSERT_EQ(rc, PLDM_INVALID_READ_LENGTH);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 
     // Bad encode request for write file
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_WRITE_FILE_REQ_BYTES>
@@ -680,7 +680,7 @@ TEST(ReadWriteFile, testBadEncodeRequest)
     // WriteFile check for invalid file length
     rc = encode_write_file_req(0, fileHandle, offset, length, requestWr);
 
-    ASSERT_EQ(rc, PLDM_INVALID_WRITE_LENGTH);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(ReadWriteFile, testBadEncodeResponse)

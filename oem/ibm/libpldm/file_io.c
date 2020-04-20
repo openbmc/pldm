@@ -195,7 +195,7 @@ int encode_read_file_req(uint8_t instance_id, uint32_t file_handle,
 	}
 
 	if (length == 0) {
-		return PLDM_INVALID_READ_LENGTH;
+		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
@@ -317,7 +317,7 @@ int encode_write_file_req(uint8_t instance_id, uint32_t file_handle,
 	}
 
 	if (length == 0) {
-		return PLDM_INVALID_WRITE_LENGTH;
+		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	struct pldm_write_file_req *request =

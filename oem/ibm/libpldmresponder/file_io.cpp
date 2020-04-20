@@ -238,7 +238,7 @@ Response Handler::readFileIntoMemory(const pldm_msg* request,
                   << length << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_READ_FILE_INTO_MEMORY,
-                                   PLDM_INVALID_READ_LENGTH, 0, responsePtr);
+                                   PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
         return response;
     }
 
@@ -277,7 +277,7 @@ Response Handler::writeFileFromMemory(const pldm_msg* request,
                   << length << "\n";
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_WRITE_FILE_FROM_MEMORY,
-                                   PLDM_INVALID_WRITE_LENGTH, 0, responsePtr);
+                                   PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
         return response;
     }
 
@@ -570,7 +570,7 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
         std::cerr << "Length is not a multiple of DMA minSize, LENGTH="
                   << length << "\n";
         encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
-                                           PLDM_INVALID_WRITE_LENGTH, 0,
+                                           PLDM_ERROR_INVALID_LENGTH, 0,
                                            responsePtr);
         return response;
     }

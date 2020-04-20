@@ -316,7 +316,7 @@ TEST_F(TestFileTable, ReadFileInvalidLength)
     oem_ibm::Handler handler;
     auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-    ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_READ_LENGTH);
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
     // Clear the file table contents.
     table.clear();
 }
@@ -350,7 +350,7 @@ TEST_F(TestFileTable, ReadFileInvalidEffectiveLength)
     oem_ibm::Handler handler;
     auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-    ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_READ_LENGTH);
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
     // Clear the file table contents.
     table.clear();
 }
@@ -383,7 +383,7 @@ TEST(WriteFileFromMemory, BadPath)
     // The length field is not a multiple of DMA minsize
     response = handler.writeFileFromMemory(request, requestPayloadLength);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-    ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_WRITE_LENGTH);
+    ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST_F(TestFileTable, WriteFileInvalidFileHandle)
@@ -778,7 +778,7 @@ TEST(writeFileByTypeFromMemory, testBadPath)
 
     resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
         responsePtr->payload);
-    ASSERT_EQ(PLDM_INVALID_WRITE_LENGTH, resp->completion_code);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
 }
 
 TEST(getHandlerByType, allPaths)
@@ -845,7 +845,7 @@ TEST(readFileByTypeIntoMemory, testBadPath)
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     resp = reinterpret_cast<struct pldm_read_write_file_by_type_memory_resp*>(
         responsePtr->payload);
-    ASSERT_EQ(PLDM_INVALID_WRITE_LENGTH, resp->completion_code);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
 
     request->length = 16;
     response = handler.readFileByTypeIntoMemory(
