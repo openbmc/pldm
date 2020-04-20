@@ -207,6 +207,8 @@ class Handler : public CmdHandler
     int setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
                            uint8_t eventState);
 
+    int occResetEvent(const pldm_msg* request, size_t payloadLength);
+
     /** @brief Function to set the effecter requested by pldm requester
      *  @param[in] dBusIntf - The interface object
      *  @param[in] effecterId - Effecter ID sent by the requester to act on

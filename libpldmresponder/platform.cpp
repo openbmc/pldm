@@ -360,6 +360,91 @@ int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
     return PLDM_SUCCESS;
 }
 
+int Handler::occResetEvent(const pldm_msg* request, size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    response = getPDR(request, payloadLength);
+
+    uint8_t completionCode{};
+    uint32_t nextRecordHndl{};
+    uint32_t nextDataTransferHandle{};
+    uint8_t transferFlag{};
+    uint16_t respCnt{};
+    uint8_t recordData{};
+    size_t recordDataLength;
+    uint8_t transferCrc{};
+
+    auto rc = decode_get_pdr_resp(responsePtr, response.size(), &completionCode, &nextRecordHndl, &nextDataTransferHandle, &transferFlag, &respCnt, &recordData, recordDataLength, &transferCrc);
+
+    if (rc != PLDM_SUCCESS)
+    {   
+        return rc;
+    }
+
+    pldm_state_effecter_pdr* pdr =
+            reinterpret_cast<pldm_state_effecter_pdr*>(response.data());
+
+    std::vector<uint8_t> pdrRequestMsg(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
+    auto pdrRequest = reinterpret_cast<pldm_msg*>(pdrRequestMsg.data());
+    uint8_t* pdrResponseMsg = nullptr;
+    size_t pdrResponseMsgSize{};
+    std::vector<uint8_t> responseMsg;
+
+    if (pdr->hdr.type == PLDM_STATE_EFFECTER_PDR)
+    {
+        uint16_t effecterID = pdr->effecter_id;;
+        uint8_t compositeEffecterCount = pdr->composite_effecter_count;
+        uint16_t entityType = pdr->entity_type;
+        uint16_t entityID = 0x7F & entityType; // the 15th bit of entity type identities physical/logical designation, and 0-14 bits is the entity ID.
+        state_effecter_possible_states* possibleStates = reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states);
+        uint16_t stateSetID = possibleStates->state_set_id;
+        uint8_t possibleStatesSize = possibleStates->possible_states_size;
+
+        for(uint8_t effecters=0x01; effecters <= compositeEffecterCount; effecters++)
+        {
+            if(possibleStatesSize != 0x00 && stateSetID == 0x192)
+            {
+                auto rc = encode_get_pdr_req(0, nextRecordHndl, nextDataTransferHandle, transferFlag,  respCnt, 0, pdrRequest, PLDM_GET_PDR_REQ_BYTES);
+                
+                if (rc != PLDM_SUCCESS)
+                {
+                    return rc;
+                }
+                
+                pdrRequestMsg.insert(pdrRequestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+                pdrRequestMsg.insert(pdrRequestMsg.begin(), entityID);
+
+                int fd = pldm_open();
+                if (-1 == fd)
+                {
+                    std::cerr << "failed to init mctp "<< "\n";
+                    return -1;
+                }
+
+                pldm_send_recv(entityID, fd, pdrRequestMsg.data() + 2, pdrRequestMsg.size() - 2, &pdrResponseMsg, &pdrResponseMsgSize);
+                Logger(pldmVerbose, "Response Message:", "");
+                responseMsg.resize(pdrResponseMsgSize);
+                memcpy(responseMsg.data(), pdrResponseMsg, responseMsg.size());
+
+                free(pdrResponseMsg);
+                printBuffer(responseMsg, pldmVerbose);
+
+                this->resetOCC();
+            }
+            state_effecter_possible_states* possibleStates = reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states + possibleStatesSize + sizeof(stateSetID) + sizeof(possibleStatesSize));
+            stateSetID = possibleStates->state_set_id;
+            possibleStatesSize = possibleStates->possible_states_size;
+        }
+    }
+    else
+    {   
+        return PLDM_ERROR_INVALID_DATA;
+    }
+    return PLDM_SUCCESS;
+}
+
 } // namespace platform
 } // namespace responder
 } // namespace pldm
