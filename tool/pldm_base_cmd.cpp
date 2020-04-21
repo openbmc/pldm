@@ -313,10 +313,12 @@ class GetPLDMCommands : public CommandInterface
                     case PLDM_FRU:
                         printCommand(pldmFruCmds, i);
                         break;
+#ifdef OEM_IBM
                     case PLDM_OEM:
                         printCommand(pldmIBMHostCmds, i);
                         printCommand(pldmIBMFileIOCmds, i);
                         break;
+#endif
                     default:
                         break;
                 }
