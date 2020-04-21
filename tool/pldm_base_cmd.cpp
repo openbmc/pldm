@@ -314,8 +314,10 @@ class GetPLDMCommands : public CommandInterface
                         printCommand(pldmFruCmds, i);
                         break;
                     case PLDM_OEM:
+#ifdef OEM_IBM
                         printCommand(pldmIBMHostCmds, i);
                         printCommand(pldmIBMFileIOCmds, i);
+#endif
                         break;
                     default:
                         break;
