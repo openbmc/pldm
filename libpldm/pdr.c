@@ -15,7 +15,6 @@ typedef struct pldm_pdr_record {
 typedef struct pldm_pdr {
 	uint32_t record_count;
 	uint32_t size;
-	uint32_t last_used_record_handle;
 	pldm_pdr_record *first;
 	pldm_pdr_record *last;
 } pldm_pdr;
@@ -46,16 +45,17 @@ static void add_record(pldm_pdr *repo, pldm_pdr_record *record)
 		repo->last = record;
 	}
 	repo->size += record->size;
-	repo->last_used_record_handle = record->record_handle;
 	++repo->record_count;
 }
 
 static inline uint32_t get_new_record_handle(const pldm_pdr *repo)
 {
 	assert(repo != NULL);
-	assert(repo->last_used_record_handle != UINT32_MAX);
+	uint32_t last_used_hdl =
+	    repo->last != NULL ? repo->last->record_handle : 0;
+	assert(last_used_hdl != UINT32_MAX);
 
-	return repo->last_used_record_handle + 1;
+	return last_used_hdl + 1;
 }
 
 static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
@@ -111,7 +111,6 @@ pldm_pdr *pldm_pdr_init()
 	assert(repo != NULL);
 	repo->record_count = 0;
 	repo->size = 0;
-	repo->last_used_record_handle = 0;
 	repo->first = NULL;
 	repo->last = NULL;
 
