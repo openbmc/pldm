@@ -138,6 +138,12 @@ pldm_pdr_find_record_by_type(const pldm_pdr *repo, uint8_t pdr_type,
 
 bool pldm_pdr_record_is_remote(const pldm_pdr_record *record);
 
+/** @brief Remove all PDR records that belong to a remote terminus
+ *
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ */
+void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
+
 /* ======================= */
 /* FRU Record Set PDR APIs */
 /* ======================= */

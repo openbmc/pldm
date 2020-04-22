@@ -600,6 +600,53 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 	entity_association_pdr_add(tree->root, repo, is_remote);
 }
 
+void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo)
+{
+	assert(repo != NULL);
+	bool removed = false;
+
+	pldm_pdr_record *record = repo->first;
+	pldm_pdr_record *prev = NULL;
+	while (record != NULL) {
+		pldm_pdr_record *next = record->next;
+		if (record->is_remote == true) {
+			if (repo->first == record) {
+				repo->first = next;
+			} else {
+				prev->next = next;
+			}
+			if (repo->last == record) {
+				repo->last = prev;
+			}
+			if (record->data) {
+				free(record->data);
+			}
+			--repo->record_count;
+			repo->size -= record->size;
+			free(record);
+			removed = true;
+		} else {
+			prev = record;
+		}
+		record = next;
+	}
+
+	if (removed == true) {
+		record = repo->first;
+		uint32_t record_handle = 0;
+		while (record != NULL) {
+			record->record_handle = ++record_handle;
+			if (record->data != NULL) {
+				struct pldm_pdr_hdr *hdr =
+				    (struct pldm_pdr_hdr *)(record->data);
+				hdr->record_handle =
+				    htole32(record->record_handle);
+			}
+			record = record->next;
+		}
+	}
+}
+
 void entity_association_tree_find(pldm_entity_node *node, pldm_entity *entity,
 				  pldm_entity_node **out)
 {
