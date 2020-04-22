@@ -36,6 +36,176 @@ TEST(PDRUpdate, testAdd)
     pldm_pdr_destroy(repo);
 }
 
+TEST(PDRUpdate, testRemove)
+{
+    std::array<uint8_t, 10> data{};
+
+    auto repo = pldm_pdr_init();
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 0);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 0);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 0);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 2);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 6);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 3);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 5);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 3);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 5);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 2);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 3);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 5);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 2);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 3);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 1);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 3);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 2);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
+    pldm_pdr_destroy(repo);
+
+    repo = pldm_pdr_init();
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    pldm_pdr_remove_remote_pdrs(repo);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 2);
+    auto handle = pldm_pdr_add(repo, data.data(), data.size(), 0, false);
+    EXPECT_EQ(handle, 3);
+    handle = pldm_pdr_add(repo, data.data(), data.size(), 0, true);
+    EXPECT_EQ(handle, 4);
+    EXPECT_EQ(pldm_pdr_get_record_count(repo), 4);
+    pldm_pdr_destroy(repo);
+}
+
 TEST(PDRAccess, testGet)
 {
     auto repo = pldm_pdr_init();
