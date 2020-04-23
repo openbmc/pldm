@@ -200,5 +200,92 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     return value;
 }
 
+PropertyValue jsonEntryToDbusVal(std::string_view type,
+
+                                 const nlohmann::json& value)
+
+{
+
+    PropertyValue propValue{};
+
+    if (type == "uint8_t")
+
+    {
+
+        propValue = static_cast<uint8_t>(value);
+    }
+
+    else if (type == "uint16_t")
+
+    {
+
+        propValue = static_cast<uint16_t>(value);
+    }
+
+    else if (type == "uint32_t")
+
+    {
+
+        propValue = static_cast<uint32_t>(value);
+    }
+
+    else if (type == "uint64_t")
+
+    {
+
+        propValue = static_cast<uint64_t>(value);
+    }
+
+    else if (type == "int16_t")
+
+    {
+
+        propValue = static_cast<int16_t>(value);
+    }
+
+    else if (type == "int32_t")
+
+    {
+
+        propValue = static_cast<int32_t>(value);
+    }
+
+    else if (type == "int64_t")
+
+    {
+
+        propValue = static_cast<int64_t>(value);
+    }
+
+    else if (type == "bool")
+
+    {
+
+        propValue = static_cast<bool>(value);
+    }
+
+    else if (type == "double")
+
+    {
+
+        propValue = static_cast<double>(value);
+    }
+
+    else if (type == "string")
+
+    {
+
+        propValue = static_cast<std::string>(value);
+    }
+
+    else
+
+    {
+
+        std::cerr << "Unknown D-Bus property type, TYPE=" << type << "\n";
+    }
+
+    return propValue;
+}
 } // namespace utils
 } // namespace pldm
