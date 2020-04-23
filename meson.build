@@ -18,6 +18,7 @@ conf_data.set_quoted('BIOS_JSONS_DIR', '/usr/share/pldm/bios')
 conf_data.set_quoted('BIOS_TABLES_DIR', '/var/lib/pldm/bios')
 conf_data.set_quoted('PDR_JSONS_DIR', '/usr/share/pldm/pdr')
 conf_data.set_quoted('FRU_JSONS_DIR', '/usr/share/pldm/fru')
+conf_data.set_quoted('HOST_EFFECTER_JSONS_DIR', '/usr/share/pldm/effecter')
 if get_option('oem-ibm').enabled()
   conf_data.set_quoted('FILE_TABLE_JSON', '/usr/share/pldm/fileTable.json')
   conf_data.set_quoted('LID_PERM_DIR', '/usr/share/host-fw')
@@ -55,6 +56,7 @@ subdir('libpldmresponder')
 
 deps = [
   libpldm,
+  libpldmutils,
   libpldmresponder,
   dependency('sdbusplus'),
   dependency('sdeventplus'),
@@ -66,6 +68,7 @@ executable(
   'pldmd.cpp',
   'dbus_impl_requester.cpp',
   'instance_id.cpp',
+  'dbus_to_host_effecters.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
