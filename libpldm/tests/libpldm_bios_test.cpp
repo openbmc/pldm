@@ -553,6 +553,42 @@ TEST(GetBIOSAttributeCurrentValueByHandle, testBadDecodeRequest)
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
+TEST(GetBIOSAttributeCurrentValueByHandle, testGoodEncodeRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_REQ_BYTES>
+        requestMsg{};
+    uint32_t transferHandle = 45;
+    uint8_t transferOpFlag = PLDM_GET_FIRSTPART;
+    uint8_t attributeHandle = 10;
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_get_bios_attribute_current_value_by_handle_req(
+        0, transferHandle, transferOpFlag, attributeHandle, request);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_get_bios_attribute_current_value_by_handle_req* req =
+        reinterpret_cast<
+            struct pldm_get_bios_attribute_current_value_by_handle_req*>(
+            request->payload);
+    EXPECT_EQ(transferHandle, le32toh(req->transfer_handle));
+    EXPECT_EQ(transferOpFlag, req->transfer_op_flag);
+    EXPECT_EQ(attributeHandle, le16toh(req->attribute_handle));
+}
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testBadEncodeRequest)
+{
+    uint32_t transferHandle = 0;
+    uint8_t transferOpFlag = PLDM_GET_FIRSTPART;
+    uint8_t attributeHandle = 0;
+
+    auto rc = encode_get_bios_attribute_current_value_by_handle_req(
+        0, transferHandle, transferOpFlag, attributeHandle, nullptr);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
 TEST(GetBIOSAttributeCurrentValueByHandle, testGoodEncodeResponse)
 {
 
@@ -820,4 +856,45 @@ TEST(GetBIOSTable, testDecodeResponse)
     ASSERT_EQ(nextTransferHandle, retNextTransferHandle);
     ASSERT_EQ(transfer_flag, retransfer_flag);
     ASSERT_EQ(biosTableOffset, rebiosTableOffset);
+}
+
+TEST(GetBIOSAttributeCurrentValueByHandle, testDecodeResponse)
+{
+    uint32_t nextTransferHandle = 32;
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint8_t transfer_flag = PLDM_START_AND_END;
+    uint32_t attributeData = 44;
+
+    std::array<uint8_t,
+               hdrSize + PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_MIN_RESP_BYTES +
+                   sizeof(attributeData)>
+        responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+
+    struct pldm_get_bios_attribute_current_value_by_handle_resp* resp =
+        reinterpret_cast<
+            struct pldm_get_bios_attribute_current_value_by_handle_resp*>(
+            response->payload);
+
+    resp->completion_code = completionCode;
+    resp->next_transfer_handle = htole32(nextTransferHandle);
+    resp->transfer_flag = transfer_flag;
+    memcpy(resp->attribute_data, &attributeData, sizeof(attributeData));
+
+    uint8_t retCompletionCode;
+    uint32_t retNextTransferHandle;
+    uint8_t retransfer_flag;
+    struct variable_field retAttributeData;
+    auto rc = decode_get_bios_attribute_current_value_by_handle_resp(
+        response, responseMsg.size() - hdrSize, &retCompletionCode,
+        &retNextTransferHandle, &retransfer_flag, &retAttributeData);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, retCompletionCode);
+    EXPECT_EQ(nextTransferHandle, retNextTransferHandle);
+    EXPECT_EQ(transfer_flag, retransfer_flag);
+    EXPECT_EQ(sizeof(attributeData), retAttributeData.length);
+    EXPECT_EQ(
+        0, memcmp(retAttributeData.ptr, &attributeData, sizeof(attributeData)));
 }
