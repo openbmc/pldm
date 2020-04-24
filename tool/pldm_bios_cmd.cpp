@@ -160,31 +160,38 @@ class SetDateTime : public CommandInterface
     uint64_t tmData;
 };
 
-class GetBIOSTable : public CommandInterface
+class GetBIOSTableHandler : public CommandInterface
 {
   public:
-    ~GetBIOSTable() = default;
-    GetBIOSTable() = delete;
-    GetBIOSTable(const GetBIOSTable&) = delete;
-    GetBIOSTable(GetBIOSTable&&) = default;
-    GetBIOSTable& operator=(const GetBIOSTable&) = delete;
-    GetBIOSTable& operator=(GetBIOSTable&&) = default;
+    ~GetBIOSTableHandler() = default;
+    GetBIOSTableHandler() = delete;
+    GetBIOSTableHandler(const GetBIOSTableHandler&) = delete;
+    GetBIOSTableHandler(GetBIOSTableHandler&&) = delete;
+    GetBIOSTableHandler& operator=(const GetBIOSTableHandler&) = delete;
+    GetBIOSTableHandler& operator=(GetBIOSTableHandler&&) = delete;
 
     using Table = std::vector<uint8_t>;
 
-    explicit GetBIOSTable(const char* type, const char* name, CLI::App* app) :
-        CommandInterface(type, name, app)
-    {
-        app->add_option("-t,--type", pldmBIOSTableType, "pldm bios table type")
-            ->required()
-            ->transform(
-                CLI::CheckedTransformer(pldmBIOSTableTypes, CLI::ignore_case));
-    }
+    using CommandInterface::CommandInterface;
+
+    static inline const std::map<pldm_bios_attribute_type, const char*>
+        attrTypeMap = {
+            {PLDM_BIOS_ENUMERATION, "BIOSEnumeration"},
+            {PLDM_BIOS_ENUMERATION_READ_ONLY, "BIOSEnumerationReadOnly"},
+            {PLDM_BIOS_STRING, "BIOSString"},
+            {PLDM_BIOS_STRING_READ_ONLY, "BIOSStringReadOnly"},
+            {PLDM_BIOS_PASSWORD, "BIOSPassword"},
+            {PLDM_BIOS_PASSWORD_READ_ONLY, "BIOSPasswordReadOnly"},
+            {PLDM_BIOS_INTEGER, "BIOSInteger"},
+            {PLDM_BIOS_INTEGER_READ_ONLY, "BIOSIntegerReadOnly"},
+
+        };
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
         return {PLDM_ERROR, {}};
     }
+
     void parseResponseMsg(pldm_msg*, size_t) override
     {
     }
@@ -235,52 +242,32 @@ class GetBIOSTable : public CommandInterface
         return std::make_optional<Table>(tableData, tableData + tableSize);
     }
 
-    void exec() override
+    std::optional<uint16_t> findAttrHandleByName(const std::string& name,
+                                                 const Table& attrTable,
+                                                 const Table& stringTable)
     {
-
-        switch (pldmBIOSTableType)
+        auto stringEntry = pldm_bios_table_string_find_by_string(
+            stringTable.data(), stringTable.size(), name.c_str());
+        if (stringEntry == nullptr)
         {
-            case PLDM_BIOS_STRING_TABLE:
-            {
-                auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
-                decodeStringTable(stringTable);
-                break;
-            }
-            case PLDM_BIOS_ATTR_TABLE:
-            {
-                auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
-                auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
+            return std::nullopt;
+        }
 
-                decodeAttributeTable(attrTable, stringTable);
-            }
-            break;
-            case PLDM_BIOS_ATTR_VAL_TABLE:
-            {
-                auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
-                auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
-                auto attrValTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
+        auto nameHandle =
+            pldm_bios_table_string_entry_decode_handle(stringEntry);
 
-                decodeAttributeValueTable(attrValTable, attrTable, stringTable);
-                break;
+        for (auto attr : BIOSTableIter<PLDM_BIOS_ATTR_TABLE>(attrTable.data(),
+                                                             attrTable.size()))
+        {
+            auto attrNameHandle =
+                pldm_bios_table_attr_entry_decode_string_handle(attr);
+            if (attrNameHandle == nameHandle)
+            {
+                return pldm_bios_table_attr_entry_decode_attribute_handle(attr);
             }
         }
+        return std::nullopt;
     }
-
-  private:
-    pldm_bios_table_types pldmBIOSTableType;
-
-    static inline const std::map<pldm_bios_attribute_type, const char*>
-        attrTypeMap = {
-            {PLDM_BIOS_ENUMERATION, "BIOSEnumeration"},
-            {PLDM_BIOS_ENUMERATION_READ_ONLY, "BIOSEnumerationReadOnly"},
-            {PLDM_BIOS_STRING, "BIOSString"},
-            {PLDM_BIOS_STRING_READ_ONLY, "BIOSStringReadOnly"},
-            {PLDM_BIOS_PASSWORD, "BIOSPassword"},
-            {PLDM_BIOS_PASSWORD_READ_ONLY, "BIOSPasswordReadOnly"},
-            {PLDM_BIOS_INTEGER, "BIOSInteger"},
-            {PLDM_BIOS_INTEGER_READ_ONLY, "BIOSIntegerReadOnly"},
-
-        };
 
     std::string decodeStringFromStringEntry(
         const pldm_bios_string_table_entry* stringEntry)
@@ -335,6 +322,134 @@ class GetBIOSTable : public CommandInterface
             attrEntry, pvHandls.data(), pvHandls.size());
         return displayStringHandle(pvHandls[index], stringTable);
     }
+
+    void displayAttributeValueEntry(
+        const pldm_bios_attr_val_table_entry* tableEntry,
+        const std::optional<Table>& attrTable,
+        const std::optional<Table>& stringTable)
+    {
+        auto attrHandle =
+            pldm_bios_table_attr_value_entry_decode_attribute_handle(
+                tableEntry);
+        auto attrType = static_cast<pldm_bios_attribute_type>(
+            pldm_bios_table_attr_value_entry_decode_attribute_type(tableEntry));
+        std::cout << "AttributeHandle: " << attrHandle << std::endl;
+        std::cout << "\tAttributeType: " << attrTypeMap.at(attrType)
+                  << std::endl;
+        switch (attrType)
+        {
+            case PLDM_BIOS_ENUMERATION:
+            case PLDM_BIOS_ENUMERATION_READ_ONLY:
+            {
+                auto count =
+                    pldm_bios_table_attr_value_entry_enum_decode_number(
+                        tableEntry);
+                std::vector<uint8_t> handles(count);
+                pldm_bios_table_attr_value_entry_enum_decode_handles(
+                    tableEntry, handles.data(), handles.size());
+                std::cout << "\tNumberOfCurrentValues: " << (int)count
+                          << std::endl;
+                for (size_t i = 0; i < handles.size(); i++)
+                {
+                    std::cout << "\tCurrentValueStringHandleIndex[" << i
+                              << "] = " << (int)handles[i]
+                              << ", StringHandle = "
+                              << displayEnumValueByIndex(attrHandle, handles[i],
+                                                         attrTable, stringTable)
+                              << std::endl;
+                }
+                break;
+            }
+            case PLDM_BIOS_INTEGER:
+            case PLDM_BIOS_INTEGER_READ_ONLY:
+            {
+                auto cv = pldm_bios_table_attr_value_entry_integer_decode_cv(
+                    tableEntry);
+                std::cout << "\tCurrentValue: " << cv << std::endl;
+                break;
+            }
+            case PLDM_BIOS_STRING:
+            case PLDM_BIOS_STRING_READ_ONLY:
+            {
+                auto stringLength =
+                    pldm_bios_table_attr_value_entry_string_decode_length(
+                        tableEntry);
+                variable_field currentString;
+                pldm_bios_table_attr_value_entry_string_decode_string(
+                    tableEntry, &currentString);
+                std::cout << "\tCurrentStringLength: " << stringLength
+                          << std::endl
+                          << "\tCurrentString: "
+                          << std::string(reinterpret_cast<const char*>(
+                                             currentString.ptr),
+                                         currentString.length)
+                          << std::endl;
+
+                break;
+            }
+            case PLDM_BIOS_PASSWORD:
+            case PLDM_BIOS_PASSWORD_READ_ONLY:
+            {
+                std::cout << "Password attribute: Not Supported" << std::endl;
+                break;
+            }
+        }
+    }
+};
+
+class GetBIOSTable : public GetBIOSTableHandler
+{
+  public:
+    ~GetBIOSTable() = default;
+    GetBIOSTable() = delete;
+    GetBIOSTable(const GetBIOSTable&) = delete;
+    GetBIOSTable(GetBIOSTable&&) = default;
+    GetBIOSTable& operator=(const GetBIOSTable&) = delete;
+    GetBIOSTable& operator=(GetBIOSTable&&) = default;
+
+    using Table = std::vector<uint8_t>;
+
+    explicit GetBIOSTable(const char* type, const char* name, CLI::App* app) :
+        GetBIOSTableHandler(type, name, app)
+    {
+        app->add_option("-t,--type", pldmBIOSTableType, "pldm bios table type")
+            ->required()
+            ->transform(
+                CLI::CheckedTransformer(pldmBIOSTableTypes, CLI::ignore_case));
+    }
+
+    void exec() override
+    {
+        switch (pldmBIOSTableType)
+        {
+            case PLDM_BIOS_STRING_TABLE:
+            {
+                auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
+                decodeStringTable(stringTable);
+                break;
+            }
+            case PLDM_BIOS_ATTR_TABLE:
+            {
+                auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
+                auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
+
+                decodeAttributeTable(attrTable, stringTable);
+                break;
+            }
+            case PLDM_BIOS_ATTR_VAL_TABLE:
+            {
+                auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
+                auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
+                auto attrValTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
+
+                decodeAttributeValueTable(attrValTable, attrTable, stringTable);
+                break;
+            }
+        }
+    }
+
+  private:
+    pldm_bios_table_types pldmBIOSTableType;
 
     void decodeStringTable(const std::optional<Table>& stringTable)
     {
@@ -479,75 +594,93 @@ class GetBIOSTable : public CommandInterface
         for (auto tableEntry : BIOSTableIter<PLDM_BIOS_ATTR_VAL_TABLE>(
                  attrValTable->data(), attrValTable->size()))
         {
-            auto attrHandle =
-                pldm_bios_table_attr_value_entry_decode_attribute_handle(
-                    tableEntry);
-            auto attrType = static_cast<pldm_bios_attribute_type>(
-                pldm_bios_table_attr_value_entry_decode_attribute_type(
-                    tableEntry));
-            std::cout << "AttributeHandle: " << attrHandle << std::endl;
-            std::cout << "\tAttributeType: " << attrTypeMap.at(attrType)
-                      << std::endl;
-            switch (attrType)
-            {
-                case PLDM_BIOS_ENUMERATION:
-                case PLDM_BIOS_ENUMERATION_READ_ONLY:
-                {
-
-                    auto count =
-                        pldm_bios_table_attr_value_entry_enum_decode_number(
-                            tableEntry);
-                    std::vector<uint8_t> handles(count);
-                    pldm_bios_table_attr_value_entry_enum_decode_handles(
-                        tableEntry, handles.data(), handles.size());
-                    std::cout << "\tNumberOfCurrentValues: " << (int)count
-                              << std::endl;
-                    for (size_t i = 0; i < handles.size(); i++)
-                    {
-                        std::cout
-                            << "\tCurrentValueStringHandleIndex[" << i
-                            << "] = " << (int)handles[i] << ", StringHandle = "
-                            << displayEnumValueByIndex(attrHandle, handles[i],
-                                                       attrTable, stringTable)
-                            << std::endl;
-                    }
-                    break;
-                }
-                case PLDM_BIOS_INTEGER:
-                case PLDM_BIOS_INTEGER_READ_ONLY:
-                {
-                    auto cv =
-                        pldm_bios_table_attr_value_entry_integer_decode_cv(
-                            tableEntry);
-                    std::cout << "\tCurrentValue: " << cv << std::endl;
-                    break;
-                }
-                case PLDM_BIOS_STRING:
-                case PLDM_BIOS_STRING_READ_ONLY:
-                {
-                    auto stringLength =
-                        pldm_bios_table_attr_value_entry_string_decode_length(
-                            tableEntry);
-                    variable_field currentString;
-                    pldm_bios_table_attr_value_entry_string_decode_string(
-                        tableEntry, &currentString);
-                    std::cout << "\tCurrentStringLength: " << stringLength
-                              << std::endl
-                              << "\tCurrentString: "
-                              << std::string(reinterpret_cast<const char*>(
-                                                 currentString.ptr),
-                                             currentString.length)
-                              << std::endl;
-
-                    break;
-                }
-                case PLDM_BIOS_PASSWORD:
-                case PLDM_BIOS_PASSWORD_READ_ONLY:
-                    std::cout << "Password attribute: Not Supported"
-                              << std::endl;
-            }
+            displayAttributeValueEntry(tableEntry, attrTable, stringTable);
         }
     }
+};
+
+class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
+{
+  public:
+    ~GetBIOSAttributeCurrentValueByHandle() = default;
+    GetBIOSAttributeCurrentValueByHandle(
+        const GetBIOSAttributeCurrentValueByHandle&) = delete;
+    GetBIOSAttributeCurrentValueByHandle(
+        GetBIOSAttributeCurrentValueByHandle&&) = delete;
+    GetBIOSAttributeCurrentValueByHandle&
+        operator=(const GetBIOSAttributeCurrentValueByHandle&) = delete;
+    GetBIOSAttributeCurrentValueByHandle&
+        operator=(GetBIOSAttributeCurrentValueByHandle&&) = delete;
+
+    explicit GetBIOSAttributeCurrentValueByHandle(const char* type,
+                                                  const char* name,
+                                                  CLI::App* app) :
+        GetBIOSTableHandler(type, name, app)
+    {
+        app->add_option("-a, --attribute", attrName, "pldm attribute name")
+            ->required();
+    }
+
+    void exec()
+    {
+        auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
+        auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
+
+        if (!stringTable || !attrTable)
+        {
+            std::cout << "StringTable/AttrTable Unavaliable" << std::endl;
+            return;
+        }
+
+        auto handle = findAttrHandleByName(attrName, *attrTable, *stringTable);
+
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) +
+            PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        auto rc = encode_get_bios_attribute_current_value_by_handle_req(
+            instanceId, 0, PLDM_GET_FIRSTPART, *handle, request);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "PLDM: Request Message Error, rc =" << rc << std::endl;
+            return;
+        }
+
+        std::vector<uint8_t> responseMsg;
+        rc = pldmSendRecv(requestMsg, responseMsg);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "PLDM: Communication Error, rc =" << rc << std::endl;
+            return;
+        }
+
+        uint8_t cc = 0, transferFlag = 0;
+        uint32_t nextTransferHandle = 0;
+        struct variable_field attributeData;
+        auto responsePtr =
+            reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+        auto payloadLength = responseMsg.size() - sizeof(pldm_msg_hdr);
+
+        rc = decode_get_bios_attribute_current_value_by_handle_resp(
+            responsePtr, payloadLength, &cc, &nextTransferHandle, &transferFlag,
+            &attributeData);
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            return;
+        }
+
+        auto tableEntry =
+            reinterpret_cast<const struct pldm_bios_attr_val_table_entry*>(
+                attributeData.ptr);
+
+        displayAttributeValueEntry(tableEntry, attrTable, stringTable);
+    }
+
+  private:
+    std::string attrName;
 };
 
 void registerCommand(CLI::App& app)
@@ -566,6 +699,13 @@ void registerCommand(CLI::App& app)
     auto getBIOSTable = bios->add_subcommand("GetBIOSTable", "get bios table");
     commands.push_back(
         std::make_unique<GetBIOSTable>("bios", "GetBIOSTable", getBIOSTable));
+
+    auto getBIOSAttributeCurrentValueByHandle =
+        bios->add_subcommand("GetBIOSAttributeCurrentValueByHandle",
+                             "get bios attribute current value by handle");
+    commands.push_back(std::make_unique<GetBIOSAttributeCurrentValueByHandle>(
+        "bios", "GetBIOSAttributeCurrentValueByHandle",
+        getBIOSAttributeCurrentValueByHandle));
 }
 
 } // namespace bios
