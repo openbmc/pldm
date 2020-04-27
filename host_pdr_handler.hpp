@@ -117,6 +117,7 @@ class HostPDRHandler
      *  association tree
      */
     std::map<EntityType, pldm_entity> parents;
+    std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
 };
 
 } // namespace pldm

@@ -12,6 +12,8 @@
 namespace pldm
 {
 
+using namespace pldm::utils;
+using namespace sdbusplus::bus::match::rules;
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 constexpr auto fruJson = "host_frus.json";
@@ -59,6 +61,26 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                       << e.what() << std::endl;
         }
     }
+
+    hostOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+        pldm::utils::DBusHandler::getBus(),
+        propertiesChanged("/xyz/openbmc_project/state/host0",
+                          "xyz.openbmc_project.State.Host"),
+        [repo](sdbusplus::message::message& msg) {
+            DbusChangedProps props{};
+            std::string intf;
+            msg.read(intf, props);
+            const auto itr = props.find("CurrentHostState");
+            if (itr != props.end())
+            {
+                PropertyValue value = itr->second;
+                auto propVal = std::get<std::string>(value);
+                if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
+                {
+                    pldm_pdr_remove_remote_pdrs(repo);
+                }
+            }
+        });
 }
 
 void HostPDRHandler::fetchPDR(std::vector<uint32_t>&& recordHandles)
