@@ -66,6 +66,7 @@ executable(
   'pldmd.cpp',
   'dbus_impl_requester.cpp',
   'instance_id.cpp',
+  'dbus_impl_pdr.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
