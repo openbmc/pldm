@@ -1,3 +1,4 @@
+#include "dbus_impl_pdr.hpp"
 #include "dbus_impl_requester.hpp"
 #include "host_pdr_handler.hpp"
 #include "invoker.hpp"
@@ -217,6 +218,9 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
+    dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
     auto callback = [verbose, &invoker, &dbusImplReq](IO& /*io*/, int fd,
                                                       uint32_t revents) {
         if (!(revents & EPOLLIN))
