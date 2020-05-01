@@ -34,7 +34,7 @@ int pack_pldm_header(const struct pldm_header_info *hdr,
 	msg->datagram = datagram;
 	msg->reserved = 0;
 	msg->instance_id = hdr->instance;
-	msg->header_ver = 0;
+	msg->header_ver = PLDM_CURRENT_VERSION;
 	msg->type = hdr->pldm_type;
 	msg->command = hdr->command;
 

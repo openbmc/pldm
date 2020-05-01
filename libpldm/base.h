@@ -80,6 +80,9 @@ typedef enum {
 /* Response data has only one version and does not contain the checksum */
 #define PLDM_GET_VERSION_RESP_BYTES 10
 
+#define PLDM_VERSION_0 0
+#define PLDM_CURRENT_VERSION PLDM_VERSION_0
+
 /** @struct pldm_msg_hdr
  *
  * Structure representing PLDM message header fields
@@ -203,6 +206,8 @@ struct pldm_get_tid_resp {
  * @param[out] msg - Pointer to PLDM message header
  *
  * @return 0 on success, otherwise PLDM error codes.
+ * @note   Caller is responsible for alloc and dealloc of msg
+ *         and hdr params
  */
 int pack_pldm_header(const struct pldm_header_info *hdr,
 		     struct pldm_msg_hdr *msg);
@@ -214,6 +219,8 @@ int pack_pldm_header(const struct pldm_header_info *hdr,
  * @param[out] hdr - Pointer to the PLDM header information
  *
  * @return 0 on success, otherwise PLDM error codes.
+ * @note   Caller is responsible for alloc and dealloc of msg
+ *         and hdr params
  */
 int unpack_pldm_header(const struct pldm_msg_hdr *msg,
 		       struct pldm_header_info *hdr);
