@@ -620,12 +620,10 @@ int encode_platform_event_message_resp(uint8_t instance_id,
 	return PLDM_SUCCESS;
 }
 
-int encode_platform_event_message_req(uint8_t instance_id,
-				      uint8_t format_version, uint8_t tid,
-				      uint8_t event_class,
-				      const uint8_t *event_data,
-				      size_t event_data_length,
-				      struct pldm_msg *msg)
+int encode_platform_event_message_req(
+    uint8_t instance_id, uint8_t format_version, uint8_t tid,
+    uint8_t event_class, const uint8_t *event_data, size_t event_data_length,
+    struct pldm_msg *msg, size_t payload_length)
 
 {
 	struct pldm_header_info header = {0};
@@ -646,6 +644,11 @@ int encode_platform_event_message_req(uint8_t instance_id,
 
 	if (event_data_length == 0) {
 		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length !=
+	    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES + event_data_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	if (event_class > PLDM_HEARTBEAT_TIMER_ELAPSED_EVENT &&
