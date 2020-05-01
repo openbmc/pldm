@@ -870,7 +870,8 @@ TEST(PlatformEventMessage, testGoodEncodeRequest)
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     auto rc = encode_platform_event_message_req(
         0, formatVersion, Tid, eventClass,
-        reinterpret_cast<uint8_t*>(&eventData), sizeof(eventData), request);
+        reinterpret_cast<uint8_t*>(&eventData), sizeof(eventData), request,
+        sizeof(eventData) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
 
     struct pldm_platform_event_message_req* req =
         reinterpret_cast<struct pldm_platform_event_message_req*>(
@@ -888,24 +889,34 @@ TEST(PlatformEventMessage, testBadEncodeRequest)
     uint8_t Tid = 0x03;
     uint8_t eventClass = 0x00;
     uint8_t eventData = 34;
+    size_t  sz_eventData = sizeof(eventData);
+    size_t  payloadLen =
+                    sz_eventData + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES;
     uint8_t formatVersion = 0x01;
 
     std::array<uint8_t, hdrSize + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
                             sizeof(eventData)>
         requestMsg{};
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
     auto rc = encode_platform_event_message_req(
         0, formatVersion, Tid, eventClass,
-        reinterpret_cast<uint8_t*>(&eventData), sizeof(eventData), nullptr);
-
+        reinterpret_cast<uint8_t*>(&eventData), sz_eventData, nullptr,
+        payloadLen);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     rc = encode_platform_event_message_req(
         0, 0, Tid, eventClass, reinterpret_cast<uint8_t*>(&eventData),
-        sizeof(eventData), request);
+        sz_eventData, request, payloadLen);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
-    rc = encode_platform_event_message_req(0, formatVersion, Tid, eventClass,
-                                           nullptr, 0, request);
+    rc = encode_platform_event_message_req(
+        0, formatVersion, Tid, eventClass,
+        nullptr, 0, request, payloadLen);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = encode_platform_event_message_req(
+        0, formatVersion, Tid, eventClass,
+        reinterpret_cast<uint8_t*>(&eventData),
+        sz_eventData, request, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(PlatformEventMessage, testGoodDecodeResponse)

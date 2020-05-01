@@ -11,7 +11,10 @@ TEST(GetFruRecordTableMetadata, testGoodEncodeRequest)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr)> requestMsg{};
     auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
-    auto rc = encode_get_fru_record_table_metadata_req(0, requestPtr);
+    auto rc = encode_get_fru_record_table_metadata_req(
+                                0,
+                                requestPtr,
+                                PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(requestPtr->hdr.request, PLDM_REQUEST);
     ASSERT_EQ(requestPtr->hdr.instance_id, 0u);
@@ -21,8 +24,12 @@ TEST(GetFruRecordTableMetadata, testGoodEncodeRequest)
 
 TEST(GetFruRecordTableMetadata, testBadEncodeRequest)
 {
-    auto rc = encode_get_fru_record_table_metadata_req(0, NULL);
+    auto rc = encode_get_fru_record_table_metadata_req(0, NULL, 0);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    std::array<uint8_t, sizeof(pldm_msg_hdr)> requestMsg{};
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    rc = encode_get_fru_record_table_metadata_req(0, requestPtr , 1);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(GetFruRecordTableMetadata, testGoodDecodeResponse)
