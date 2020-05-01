@@ -11,9 +11,12 @@ extern "C" {
 
 #include "base.h"
 
+#define PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES 0
 #define PLDM_GET_FRU_RECORD_TABLE_METADATA_RESP_BYTES 19
 #define PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES 5
 #define PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES 6
+
+#define FRU_TABLE_CHECKSUM_SIZE 4
 
 /** @brief PLDM FRU commands
  */
@@ -131,12 +134,14 @@ struct pldm_fru_record_data_format {
  *
  *  @param[in] instance_id - Message's instance id
  *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of the request message payload
  *  @return pldm_completion_codes
  *  @note  Caller is responsible for memory alloc and dealloc of param
  *         'msg.payload'
  */
 int encode_get_fru_record_table_metadata_req(uint8_t instance_id,
-					     struct pldm_msg *msg);
+               struct pldm_msg *msg,
+               size_t payload_length);
 
 /** @brief Decode GetFruRecordTable response data
  *
