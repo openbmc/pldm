@@ -972,12 +972,10 @@ int encode_platform_event_message_resp(uint8_t instance_id,
  * @note Caller is responsible for memory alloc and dealloc of param
  * 'msg.payload'
  */
-int encode_platform_event_message_req(uint8_t instance_id,
-				      uint8_t format_version, uint8_t tid,
-				      uint8_t event_class,
-				      const uint8_t *event_data,
-				      size_t event_data_length,
-				      struct pldm_msg *msg);
+int encode_platform_event_message_req(
+    uint8_t instance_id, uint8_t format_version, uint8_t tid,
+    uint8_t event_class, const uint8_t *event_data, size_t event_data_length,
+    struct pldm_msg *msg, size_t payload_length);
 
 /** @brief Decode PlatformEventMessage response data
  * @param[in] msg - Request message
