@@ -16,6 +16,7 @@
 #include "libpldm/base.h"
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
+#include "libpldm/pldm_types.h"
 
 namespace pldm
 {
@@ -239,6 +240,20 @@ inline std::string findParent(const std::string& dbusObj)
 {
     fs::path p(dbusObj);
     return p.parent_path().string();
+}
+
+/** @brief convert timestamp104_t to string
+ *
+ * @param[in] timestamp - timestamp data
+ *
+ * @return std::string - return in YYYYMMDD format
+ */
+inline std::string timestamp104DateToString(const timestamp104_t* ts)
+{
+    char buffer[9];
+    snprintf(buffer, 9, "%04d%02d%02d", ts->year, ts->month, ts->day);
+    std::string tsdate(buffer, 9);
+    return tsdate;
 }
 
 } // namespace utils
