@@ -410,10 +410,10 @@ TEST(AttrTable, integerEntryDecodeTest)
         integerEntry.data());
     pldm_bios_table_attr_entry_integer_decode(entry, &lower, &upper, &scalar,
                                               &def);
-    EXPECT_EQ(lower, 1);
-    EXPECT_EQ(upper, 10);
-    EXPECT_EQ(scalar, 2);
-    EXPECT_EQ(def, 3);
+    EXPECT_EQ(lower, 1u);
+    EXPECT_EQ(upper, 10u);
+    EXPECT_EQ(scalar, 2u);
+    EXPECT_EQ(def, 3u);
 }
 
 TEST(AttrTable, ItearatorTest)
@@ -745,7 +745,7 @@ TEST(AttrValTable, integerEntryDecodeTest)
     auto entry = reinterpret_cast<struct pldm_bios_attr_val_table_entry*>(
         integerEntry.data());
     auto cv = pldm_bios_table_attr_value_entry_integer_decode_cv(entry);
-    EXPECT_EQ(cv, 10);
+    EXPECT_EQ(cv, 10u);
 }
 
 TEST(AttrValTable, IteratorTest)
@@ -1101,11 +1101,11 @@ TEST(Itearator, DeathTest)
 
 TEST(PadAndChecksum, PadAndChecksum)
 {
-    EXPECT_EQ(4, pldm_bios_table_pad_checksum_size(0));
-    EXPECT_EQ(7, pldm_bios_table_pad_checksum_size(1));
-    EXPECT_EQ(6, pldm_bios_table_pad_checksum_size(2));
-    EXPECT_EQ(5, pldm_bios_table_pad_checksum_size(3));
-    EXPECT_EQ(4, pldm_bios_table_pad_checksum_size(4));
+    EXPECT_EQ(4u, pldm_bios_table_pad_checksum_size(0));
+    EXPECT_EQ(7u, pldm_bios_table_pad_checksum_size(1));
+    EXPECT_EQ(6u, pldm_bios_table_pad_checksum_size(2));
+    EXPECT_EQ(5u, pldm_bios_table_pad_checksum_size(3));
+    EXPECT_EQ(4u, pldm_bios_table_pad_checksum_size(4));
 
     // The table is borrowed from
     // https://github.com/openbmc/pldm/commit/69d3e7fb2d9935773f4fbf44326c33f3fc0a3c38
