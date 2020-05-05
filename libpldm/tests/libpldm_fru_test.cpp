@@ -14,7 +14,7 @@ TEST(GetFruRecordTableMetadata, testGoodEncodeRequest)
     auto rc = encode_get_fru_record_table_metadata_req(0, requestPtr);
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(requestPtr->hdr.request, PLDM_REQUEST);
-    ASSERT_EQ(requestPtr->hdr.instance_id, 0);
+    ASSERT_EQ(requestPtr->hdr.instance_id, 0u);
     ASSERT_EQ(requestPtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(requestPtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE_METADATA);
 }
@@ -63,13 +63,13 @@ TEST(GetFruRecordTableMetadata, testGoodDecodeResponse)
         &total_record_set_identifiers, &total_table_records, &checksum);
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(fru_data_major_version, 0x12);
-    ASSERT_EQ(fru_data_minor_version, 0x21);
-    ASSERT_EQ(fru_table_maximum_size, 0x1234ABCD);
-    ASSERT_EQ(fru_table_length, 0x56781234);
-    ASSERT_EQ(total_record_set_identifiers, 0x34EF);
-    ASSERT_EQ(total_table_records, 0xEEEF);
-    ASSERT_EQ(checksum, 0x6543FA71);
+    ASSERT_EQ(fru_data_major_version, 0x12u);
+    ASSERT_EQ(fru_data_minor_version, 0x21u);
+    ASSERT_EQ(fru_table_maximum_size, 0x1234ABCDu);
+    ASSERT_EQ(fru_table_length, 0x56781234u);
+    ASSERT_EQ(total_record_set_identifiers, 0x34EFu);
+    ASSERT_EQ(total_table_records, 0xEEEFu);
+    ASSERT_EQ(checksum, 0x6543FA71u);
 
     response->fru_data_major_version = 0x00;
     response->fru_data_minor_version = 0x00;
@@ -92,17 +92,17 @@ TEST(GetFruRecordTableMetadata, testGoodDecodeResponse)
         &total_record_set_identifiers, &total_table_records, &checksum);
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
-    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0u);
     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE_METADATA);
     ASSERT_EQ(completion_code, PLDM_ERROR_INVALID_LENGTH);
-    ASSERT_EQ(fru_data_major_version, 0x00);
-    ASSERT_EQ(fru_data_minor_version, 0x00);
-    ASSERT_EQ(fru_table_maximum_size, 0x00000000);
-    ASSERT_EQ(fru_table_length, 0x00000000);
-    ASSERT_EQ(total_record_set_identifiers, 0x0000);
-    ASSERT_EQ(total_table_records, 0x0000);
-    ASSERT_EQ(checksum, 0x00000000);
+    ASSERT_EQ(fru_data_major_version, 0x00u);
+    ASSERT_EQ(fru_data_minor_version, 0x00u);
+    ASSERT_EQ(fru_table_maximum_size, 0x00000000u);
+    ASSERT_EQ(fru_table_length, 0x00000000u);
+    ASSERT_EQ(total_record_set_identifiers, 0x0000u);
+    ASSERT_EQ(total_table_records, 0x0000u);
+    ASSERT_EQ(checksum, 0x00000000u);
 }
 
 TEST(GetFruRecordTableMetadata, testBadDecodeResponse)
@@ -214,17 +214,17 @@ TEST(GetFruRecordTableMetadata, testGoodEncodeResponse)
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
-    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0u);
     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE_METADATA);
     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(response->fru_data_major_version, 0x12);
-    ASSERT_EQ(response->fru_data_minor_version, 0x21);
-    ASSERT_EQ(response->fru_table_maximum_size, 0x1234ABCD);
-    ASSERT_EQ(response->fru_table_length, 0x56781234);
-    ASSERT_EQ(response->total_record_set_identifiers, 0x34EF);
-    ASSERT_EQ(response->total_table_records, 0xEEEF);
-    ASSERT_EQ(response->checksum, 0x6543FA71);
+    ASSERT_EQ(response->fru_data_major_version, 0x12u);
+    ASSERT_EQ(response->fru_data_minor_version, 0x21u);
+    ASSERT_EQ(response->fru_table_maximum_size, 0x1234ABCDu);
+    ASSERT_EQ(response->fru_table_length, 0x56781234u);
+    ASSERT_EQ(response->total_record_set_identifiers, 0x34EFu);
+    ASSERT_EQ(response->total_table_records, 0xEEEFu);
+    ASSERT_EQ(response->checksum, 0x6543FA71u);
 
     response->fru_data_major_version = 0;
     response->fru_data_major_version = 0x00;
@@ -242,17 +242,17 @@ TEST(GetFruRecordTableMetadata, testGoodEncodeResponse)
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
-    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0u);
     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE_METADATA);
     ASSERT_EQ(completion_code, PLDM_ERROR_INVALID_DATA);
-    ASSERT_EQ(response->fru_data_major_version, 0x00);
-    ASSERT_EQ(response->fru_data_minor_version, 0x00);
-    ASSERT_EQ(response->fru_table_maximum_size, 0x00000000);
-    ASSERT_EQ(response->fru_table_length, 0x00000000);
-    ASSERT_EQ(response->total_record_set_identifiers, 0x0000);
-    ASSERT_EQ(response->total_table_records, 0x0000);
-    ASSERT_EQ(response->checksum, 0x00000000);
+    ASSERT_EQ(response->fru_data_major_version, 0x00u);
+    ASSERT_EQ(response->fru_data_minor_version, 0x00u);
+    ASSERT_EQ(response->fru_table_maximum_size, 0x00000000u);
+    ASSERT_EQ(response->fru_table_length, 0x00000000u);
+    ASSERT_EQ(response->total_record_set_identifiers, 0x0000u);
+    ASSERT_EQ(response->total_table_records, 0x0000u);
+    ASSERT_EQ(response->checksum, 0x00000000u);
 }
 
 TEST(GetFruRecordTableMetadata, testBadEncodeResponse)
@@ -281,13 +281,13 @@ TEST(GetFruRecordTableMetadata, testBadEncodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
     ASSERT_EQ(completion_code, PLDM_SUCCESS);
-    ASSERT_EQ(response->fru_data_major_version, 0x00);
-    ASSERT_EQ(response->fru_data_minor_version, 0x00);
-    ASSERT_EQ(response->fru_table_maximum_size, 0x00000000);
-    ASSERT_EQ(response->fru_table_length, 0x00000000);
-    ASSERT_EQ(response->total_record_set_identifiers, 0x0000);
-    ASSERT_EQ(response->total_table_records, 0x0000);
-    ASSERT_EQ(response->checksum, 0x00000000);
+    ASSERT_EQ(response->fru_data_major_version, 0x00u);
+    ASSERT_EQ(response->fru_data_minor_version, 0x00u);
+    ASSERT_EQ(response->fru_table_maximum_size, 0x00000000u);
+    ASSERT_EQ(response->fru_table_length, 0x00000000u);
+    ASSERT_EQ(response->total_record_set_identifiers, 0x0000u);
+    ASSERT_EQ(response->total_table_records, 0x0000u);
+    ASSERT_EQ(response->checksum, 0x00000000u);
 }
 
 TEST(GetFruRecordTable, testGoodDecodeRequest)
@@ -359,7 +359,7 @@ TEST(GetFruRecordTable, testGoodEncodeResponse)
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
-    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0u);
     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
     ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
@@ -382,7 +382,7 @@ TEST(GetFruRecordTable, testBadEncodeResponse)
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
-    ASSERT_EQ(responsePtr->hdr.instance_id, 0);
+    ASSERT_EQ(responsePtr->hdr.instance_id, 0u);
     ASSERT_EQ(responsePtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(responsePtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
@@ -415,7 +415,7 @@ TEST(GetFruRecordTable, testGoodEncodeRequest)
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(requestPtr->hdr.request, PLDM_REQUEST);
-    ASSERT_EQ(requestPtr->hdr.instance_id, 0);
+    ASSERT_EQ(requestPtr->hdr.instance_id, 0u);
     ASSERT_EQ(requestPtr->hdr.type, PLDM_FRU);
     ASSERT_EQ(requestPtr->hdr.command, PLDM_GET_FRU_RECORD_TABLE);
     ASSERT_EQ(le32toh(data_transfer_handle), request->data_transfer_handle);

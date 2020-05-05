@@ -25,25 +25,25 @@ TEST(Ver2string, Ver2string)
     const char* vstr = "3.7.10a";
     char buffer[1024];
     auto rc = ver2str(&version, buffer, sizeof(buffer));
-    EXPECT_EQ(rc, std::strlen(vstr));
+    EXPECT_EQ(rc, (signed)std::strlen(vstr));
     EXPECT_STREQ(vstr, buffer);
 
     version = {0x10, 0x01, 0xf7, 0x00};
     vstr = "10.01.7";
     rc = ver2str(&version, buffer, sizeof(buffer));
-    EXPECT_EQ(rc, std::strlen(vstr));
+    EXPECT_EQ(rc, (signed)std::strlen(vstr));
     EXPECT_STREQ(vstr, buffer);
 
     version = {0xf3, 0xf1, 0xff, 0x00};
     vstr = "3.1";
     rc = ver2str(&version, buffer, sizeof(buffer));
-    EXPECT_EQ(rc, std::strlen(vstr));
+    EXPECT_EQ(rc, (signed)std::strlen(vstr));
     EXPECT_STREQ(vstr, buffer);
 
     version = {0xf1, 0xf0, 0xff, 0x61};
     vstr = "1.0a";
     rc = ver2str(&version, buffer, sizeof(buffer));
-    EXPECT_EQ(rc, std::strlen(vstr));
+    EXPECT_EQ(rc, (signed)std::strlen(vstr));
     EXPECT_STREQ(vstr, buffer);
 
     rc = ver2str(&version, buffer, 3);
@@ -59,19 +59,19 @@ TEST(Ver2string, Ver2string)
 
 TEST(BcdConversion, BcdCoversion)
 {
-    EXPECT_EQ(12, bcd2dec8(0x12));
-    EXPECT_EQ(99, bcd2dec8(0x99));
-    EXPECT_EQ(1234, bcd2dec16(0x1234));
-    EXPECT_EQ(9999, bcd2dec16(0x9999));
-    EXPECT_EQ(12345678, bcd2dec32(0x12345678));
-    EXPECT_EQ(99999999, bcd2dec32(0x99999999));
+    EXPECT_EQ(12u, bcd2dec8(0x12));
+    EXPECT_EQ(99u, bcd2dec8(0x99));
+    EXPECT_EQ(1234u, bcd2dec16(0x1234));
+    EXPECT_EQ(9999u, bcd2dec16(0x9999));
+    EXPECT_EQ(12345678u, bcd2dec32(0x12345678));
+    EXPECT_EQ(99999999u, bcd2dec32(0x99999999));
 
-    EXPECT_EQ(0x12, dec2bcd8(12));
-    EXPECT_EQ(0x99, dec2bcd8(99));
-    EXPECT_EQ(0x1234, dec2bcd16(1234));
-    EXPECT_EQ(0x9999, dec2bcd16(9999));
-    EXPECT_EQ(0x12345678, dec2bcd32(12345678));
-    EXPECT_EQ(0x99999999, dec2bcd32(99999999));
+    EXPECT_EQ(0x12u, dec2bcd8(12));
+    EXPECT_EQ(0x99u, dec2bcd8(99));
+    EXPECT_EQ(0x1234u, dec2bcd16(1234));
+    EXPECT_EQ(0x9999u, dec2bcd16(9999));
+    EXPECT_EQ(0x12345678u, dec2bcd32(12345678));
+    EXPECT_EQ(0x99999999u, dec2bcd32(99999999));
 }
 
 TEST(TimeLegal, TimeLegal)
