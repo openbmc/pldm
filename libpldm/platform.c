@@ -26,7 +26,7 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 					 uint16_t effecter_id,
 					 uint8_t comp_effecter_count,
 					 set_effecter_state_field *field,
-					 struct pldm_msg *msg)
+					 struct pldm_msg *msg, size_t payload_length)
 {
 	struct pldm_header_info header = {0};
 	int rc = PLDM_SUCCESS;
@@ -44,6 +44,9 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
+	if (payload_length != PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
 	struct pldm_set_state_effecter_states_req *request =
 	    (struct pldm_set_state_effecter_states_req *)msg->payload;
 	effecter_id = htole16(effecter_id);
