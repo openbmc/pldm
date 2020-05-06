@@ -37,7 +37,8 @@ TEST(SetStateEffecterStates, testEncodeRequest)
     stateField[1] = {PLDM_REQUEST_SET, 3};
 
     auto rc = encode_set_state_effecter_states_req(
-        0, effecterId, compEffecterCnt, stateField.data(), request);
+        0, effecterId, compEffecterCnt, stateField.data(), request,
+        PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
 
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(effecterId, request->payload[0]);
