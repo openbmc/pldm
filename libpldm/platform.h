@@ -290,7 +290,7 @@ struct state_effecter_possible_states {
  *  Structure representing a stateField in SetStateEffecterStates command */
 
 typedef struct state_field_for_state_effecter_set {
-	uint8_t set_request;    //!< Whether to change the state
+	uint8_t set_request;	//!< Whether to change the state
 	uint8_t effecter_state; //!< Expected state of the effecter
 } __attribute__((packed)) set_effecter_state_field;
 
@@ -300,11 +300,11 @@ typedef struct state_field_for_state_effecter_set {
 
 typedef struct state_field_for_get_state_sensor_readings {
 	uint8_t sensor_op_state; //!< The state of the sensor itself
-	uint8_t present_state;   //!< Return a state value
+	uint8_t present_state;	 //!< Return a state value
 	uint8_t previous_state; //!< The state that the presentState was entered
 				//! from. This must be different from the
 				//! present state
-	uint8_t event_state;    //!< Return a state value from a PLDM State Set
+	uint8_t event_state;	//!< Return a state value from a PLDM State Set
 			     //! that is associated with the sensor
 } __attribute__((packed)) get_sensor_state_field;
 
@@ -825,6 +825,7 @@ int decode_get_pdr_resp(const struct pldm_msg *msg, size_t payload_length,
  *         field parameter as sizeof(set_effecter_state_field) *
  *         comp_effecter_count
  *  @param[out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
  *  @return pldm_completion_codes
  *  @note  Caller is responsible for memory alloc and dealloc of param
  *         'msg.payload'
@@ -834,7 +835,8 @@ int encode_set_state_effecter_states_req(uint8_t instance_id,
 					 uint16_t effecter_id,
 					 uint8_t comp_effecter_count,
 					 set_effecter_state_field *field,
-					 struct pldm_msg *msg);
+					 struct pldm_msg *msg,
+					 size_t payload_length);
 
 /** @brief Decode SetStateEffecterStates response data
  *
