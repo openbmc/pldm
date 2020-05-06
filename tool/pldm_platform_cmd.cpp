@@ -317,7 +317,8 @@ class SetStateEffecter : public CommandInterface
         }
 
         auto rc = encode_set_state_effecter_states_req(
-            instanceId, effecterId, effecterCount, stateField->data(), request);
+            instanceId, effecterId, effecterCount, stateField->data(), request,
+            PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
         return {rc, requestMsg};
     }
 

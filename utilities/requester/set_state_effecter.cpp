@@ -24,8 +24,9 @@ int main(int argc, char** argv)
         requestMsg{};
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     set_effecter_state_field stateField{PLDM_REQUEST_SET, state};
-    auto rc = encode_set_state_effecter_states_req(0, effecterId, effecterCount,
-                                                   &stateField, request);
+    auto rc = encode_set_state_effecter_states_req(
+        0, effecterId, effecterCount, &stateField, request,
+        PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Message encode failure. PLDM error code = " << std::hex
