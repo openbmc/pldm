@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3cd1597c_a0d0da53",
+        "filename": "pldm_fru_parser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-08T04:56:36Z",
+      "side": 1,
+      "message": "Can you write a FRU parser in libpldm?\n\nIt should take in fru_table_pointer, record_start_offset, total_table_length. Initially the caller will pass record_start_offset \u003d 0 (first record).\n\nThe API should return the pldm_fru_record_data_format struct defined in fru.h, plus it should return a offset to the start of the next record in the table, so that the caller can call the API for the next record. Caller is done when the next_record_offset \u003d\u003d total_table_length.\n\nOnce the caller has the pldm_fru_record_data_format for a certain record, something similar to parseFruFeildData below can be done to process each TLV in the record.",
+      "revId": "3a4ac8853b6e6fcff84c9c3b8bcec47c39f4cb9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5ba7ee0_27979d93",
+        "filename": "pldm_fru_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-05-08T04:56:36Z",
+      "side": 1,
+      "message": "I think this should take a pointer to the entire FRU table, and table length.",
+      "range": {
+        "startLine": 39,
+        "startChar": 37,
+        "endLine": 39,
+        "endChar": 46
+      },
+      "revId": "3a4ac8853b6e6fcff84c9c3b8bcec47c39f4cb9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
