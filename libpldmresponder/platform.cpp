@@ -3,6 +3,7 @@
 
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
+#include "pdr_state_sensor.hpp"
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
 #include "utils.hpp"
@@ -81,6 +82,10 @@ void Handler::generate(const std::string& dir, Repo& repo)
          [this](const auto& json, RepoInterface& repo) {
              pdr_numeric_effecter::generateNumericEffecterPDR<Handler>(
                  json, *this, repo);
+         }},
+        {PLDM_STATE_SENSOR_PDR, [this](const auto& json, RepoInterface& repo) {
+             pdr_state_sensor::generateStateSensorPDR<Handler>(json, *this,
+                                                               repo);
          }}};
 
     Type pdrType{};
@@ -96,6 +101,13 @@ void Handler::generate(const std::string& dir, Repo& repo)
                 {
                     pdrType = effecter.value("pdrType", 0);
                     generateHandlers.at(pdrType)(effecter, repo);
+                }
+
+                auto sensorPDRs = json.value("sensorPDRs", empty);
+                for (const auto& sensor : sensorPDRs)
+                {
+                    pdrType = sensor.value("pdrType", 0);
+                    generateHandlers.at(pdrType)(sensor, repo);
                 }
             }
         }

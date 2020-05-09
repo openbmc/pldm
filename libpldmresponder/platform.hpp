@@ -152,6 +152,11 @@ class Handler : public CmdHandler
         return ++nextEffecterId;
     }
 
+    uint16_t getNextSensorId()
+    {
+        return ++nextSensorId;
+    }
+
     /** @brief Parse PDR JSONs and build PDR repository
      *
      *  @param[in] dir - directory housing platform specific PDR JSON files
@@ -392,6 +397,7 @@ class Handler : public CmdHandler
   private:
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
+    uint16_t nextSensorId{};
     DbusObjMaps dbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
 };
