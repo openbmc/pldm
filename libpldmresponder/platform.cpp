@@ -4,6 +4,7 @@
 #include "event_parser.hpp"
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
+#include "pdr_state_sensor.hpp"
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
 #include "utils.hpp"
@@ -53,16 +54,31 @@ const EventEntryMap eventEntryMap = {
     }};
 
 void Handler::addDbusObjMaps(
-    uint16_t effecterId,
-    std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> dbusObj)
+    uint16_t id,
+    std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> dbusObj,
+    TypeId typeId)
 {
-    dbusObjMaps.emplace(effecterId, dbusObj);
+    if (typeId == TypeId::PLDM_SENSOR_ID)
+    {
+        sensorDbusObjMaps.emplace(id, dbusObj);
+    }
+    else
+    {
+        effecterDbusObjMaps.emplace(id, dbusObj);
+    }
 }
 
 const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
-    Handler::getDbusObjMaps(uint16_t effecterId) const
+    Handler::getDbusObjMaps(uint16_t id, TypeId typeId) const
 {
-    return dbusObjMaps.at(effecterId);
+    if (typeId == TypeId::PLDM_SENSOR_ID)
+    {
+        return sensorDbusObjMaps.at(id);
+    }
+    else
+    {
+        return effecterDbusObjMaps.at(id);
+    }
 }
 
 void Handler::generate(const std::string& dir, Repo& repo)
@@ -82,6 +98,10 @@ void Handler::generate(const std::string& dir, Repo& repo)
          [this](const auto& json, RepoInterface& repo) {
              pdr_numeric_effecter::generateNumericEffecterPDR<Handler>(
                  json, *this, repo);
+         }},
+        {PLDM_STATE_SENSOR_PDR, [this](const auto& json, RepoInterface& repo) {
+             pdr_state_sensor::generateStateSensorPDR<Handler>(json, *this,
+                                                               repo);
          }}};
 
     Type pdrType{};
@@ -97,6 +117,13 @@ void Handler::generate(const std::string& dir, Repo& repo)
                 {
                     pdrType = effecter.value("pdrType", 0);
                     generateHandlers.at(pdrType)(effecter, repo);
+                }
+
+                auto sensorPDRs = json.value("sensorPDRs", empty);
+                for (const auto& sensor : sensorPDRs)
+                {
+                    pdrType = sensor.value("pdrType", 0);
+                    generateHandlers.at(pdrType)(sensor, repo);
                 }
             }
         }

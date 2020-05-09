@@ -1,8 +1,8 @@
 #pragma once
 
-#include "libpldm/platform.h"
-
 #include "libpldmresponder/pdr_utils.hpp"
+
+#include "libpldm/platform.h"
 
 namespace pldm
 {
@@ -10,77 +10,81 @@ namespace pldm
 namespace responder
 {
 
-namespace pdr_state_effecter
+namespace pdr_state_sensor
 {
 
 using Json = nlohmann::json;
 
 static const Json empty{};
 
-/** @brief Parse PDR JSON file and generate state effecter PDR structure
+/** @brief Parse PDR JSON file and generate state sensor PDR structure
  *
- *  @param[in] json - the JSON Object with the state effecter PDR
+ *  @param[in] json - the JSON Object with the state sensor PDR
  *  @param[out] handler - the Parser of PLDM command handler
  *  @param[out] repo - pdr::RepoInterface
  *
  */
 template <class Handler>
-void generateStateEffecterPDR(const Json& json, Handler& handler,
-                              pdr_utils::RepoInterface& repo)
+void generateStateSensorPDR(const Json& json, Handler& handler,
+                            pdr_utils::RepoInterface& repo)
 {
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
     for (const auto& e : entries)
     {
         size_t pdrSize = 0;
-        auto effecters = e.value("effecters", emptyList);
-        for (const auto& effecter : effecters)
+        auto sensors = e.value("sensors", emptyList);
+        for (const auto& sensor : sensors)
         {
-            auto set = effecter.value("set", empty);
+            auto set = sensor.value("set", empty);
             auto statesSize = set.value("size", 0);
             if (!statesSize)
             {
                 std::cerr << "Malformed PDR JSON return "
                              "pdrEntry;- no state set "
                              "info, TYPE="
-                          << PLDM_STATE_EFFECTER_PDR << "\n";
+                          << PLDM_STATE_SENSOR_PDR << "\n";
                 throw InternalFailure();
             }
-            pdrSize += sizeof(state_effecter_possible_states) -
+            pdrSize += sizeof(state_sensor_possible_states) -
                        sizeof(bitfield8_t) + (sizeof(bitfield8_t) * statesSize);
         }
-        pdrSize += sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
+        pdrSize += sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
 
         std::vector<uint8_t> entry{};
         entry.resize(pdrSize);
 
-        pldm_state_effecter_pdr* pdr =
-            reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+        pldm_state_sensor_pdr* pdr =
+            reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
         pdr->hdr.record_handle = 0;
         pdr->hdr.version = 1;
-        pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
+        pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
         pdr->hdr.record_change_num = 0;
         pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
 
         pdr->terminus_handle = 0;
-        pdr->effecter_id = handler.getNextEffecterId();
+        pdr->sensor_id = handler.getNextSensorId();
         pdr->entity_type = e.value("type", 0);
         pdr->entity_instance = e.value("instance", 0);
         pdr->container_id = e.value("container", 0);
-        pdr->effecter_semantic_id = 0;
-        pdr->effecter_init = PLDM_NO_INIT;
-        pdr->has_description_pdr = false;
-        pdr->composite_effecter_count = effecters.size();
+        pdr->sensor_init = PLDM_NO_INIT;
+        pdr->sensor_auxiliary_names_pdr = false;
+        if (sensors.size() > 8)
+        {
+            throw std::runtime_error("sensor size must be less than 8");
+        }
+
+        pdr->composite_sensor_count = sensors.size();
 
         DbusMappings dbusMappings{};
         DbusValMaps dbusValMaps{};
         uint8_t* start =
-            entry.data() + sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
-        for (const auto& effecter : effecters)
+            entry.data() + sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
+        for (const auto& sensor : sensors)
         {
-            auto set = effecter.value("set", empty);
-            state_effecter_possible_states* possibleStates =
-                reinterpret_cast<state_effecter_possible_states*>(start);
+            auto set = sensor.value("set", empty);
+            state_sensor_possible_states* possibleStates =
+                reinterpret_cast<state_sensor_possible_states*>(start);
             possibleStates->state_set_id = set.value("id", 0);
             possibleStates->possible_states_size = set.value("size", 0);
 
@@ -98,8 +102,7 @@ void generateStateEffecterPDR(const Json& json, Handler& handler,
                 stateValues.emplace_back(state);
             }
             start += possibleStates->possible_states_size;
-
-            auto dbusEntry = effecter.value("dbus", empty);
+            auto dbusEntry = sensor.value("dbus", empty);
             auto objectPath = dbusEntry.value("path", "");
             auto interface = dbusEntry.value("interface", "");
             auto propertyName = dbusEntry.value("property_name", "");
@@ -116,9 +119,11 @@ void generateStateEffecterPDR(const Json& json, Handler& handler,
                 dbusValMaps.emplace_back(std::move(dbusIdToValMap));
             }
         }
+
         handler.addDbusObjMaps(
-            pdr->effecter_id,
-            std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)));
+            pdr->sensor_id,
+            std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)),
+            TypeId::PLDM_SENSOR_ID);
         PdrEntry pdrEntry{};
         pdrEntry.data = entry.data();
         pdrEntry.size = pdrSize;
@@ -126,6 +131,6 @@ void generateStateEffecterPDR(const Json& json, Handler& handler,
     }
 }
 
-} // namespace pdr_state_effecter
+} // namespace pdr_state_sensor
 } // namespace responder
 } // namespace pldm
