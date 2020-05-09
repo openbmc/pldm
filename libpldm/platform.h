@@ -279,6 +279,8 @@ struct pldm_state_sensor_pdr {
 	uint16_t sensor_id;
 	uint16_t entity_type;
 	uint16_t entity_instance;
+	uint16_t parent_entity_type;
+	uint16_t parent_entity_instance;
 	uint16_t container_id;
 	uint8_t sensor_init;
 	bool8_t sensor_auxiliary_names_pdr;
