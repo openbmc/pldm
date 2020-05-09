@@ -1,0 +1,39 @@
+{
+  "sensorPDRs": [
+    {
+      "pdrType": 4,
+      "entries": [
+        {
+          "type": 5,
+          "instance": 0,
+          "sensors": [
+            {
+              "set": {
+                "id": 1,
+                "size": 1,
+                "states": [
+                  1,
+                  5
+                ]
+              },
+              "dbus": {
+                "path": "/foo/bar",
+                "interface": "xyz.openbmc_project.Foo.Bar",
+                "property": [
+                  {
+                    "type": "string",
+                    "name": "propertyName"
+                  },
+                  {
+                    "type": "uing32_t",
+                    "name": "propertyName"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
