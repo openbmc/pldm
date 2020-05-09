@@ -30,6 +30,7 @@ tests = [
   'libpldmresponder_bios_integer_attribute_test',
   'libpldmresponder_bios_enum_attribute_test',
   'libpldmresponder_pdr_effecter_test',
+  'libpldmresponder_pdr_sensor_test',
   'libpldmresponder_bios_table_test',
   'libpldmresponder_platform_test',
   'pldmd_instanceid_test',
