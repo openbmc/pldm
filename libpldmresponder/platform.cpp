@@ -3,6 +3,7 @@
 
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
+#include "pdr_state_sensor.hpp"
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
 #include "utils.hpp"
@@ -58,10 +59,22 @@ void Handler::addDbusObjMaps(
     dbusObjMaps.emplace(effecterId, dbusObj);
 }
 
+void Handler::addDbusObjPropertyMaps(uint16_t sensorId,
+                                     pdr_utils::DbusPropertyMaps dbusObj)
+{
+    dbusObjPropertyMaps.emplace(sensorId, dbusObj);
+}
+
 const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
     Handler::getDbusObjMaps(uint16_t effecterId) const
 {
     return dbusObjMaps.at(effecterId);
+}
+
+const pdr_utils::DbusPropertyMaps&
+    Handler::getDbusObjPropertyMaps(uint16_t sensorId) const
+{
+    return dbusObjPropertyMaps.at(sensorId);
 }
 
 void Handler::generate(const std::string& dir, Repo& repo)
@@ -81,6 +94,10 @@ void Handler::generate(const std::string& dir, Repo& repo)
          [this](const auto& json, RepoInterface& repo) {
              pdr_numeric_effecter::generateNumericEffecterPDR<Handler>(
                  json, *this, repo);
+         }},
+        {PLDM_STATE_SENSOR_PDR, [this](const auto& json, RepoInterface& repo) {
+             pdr_state_sensor::generateStateSensorPDR<Handler>(json, *this,
+                                                               repo);
          }}};
 
     Type pdrType{};

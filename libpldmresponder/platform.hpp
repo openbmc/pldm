@@ -29,9 +29,11 @@ using generatePDR =
     std::function<void(const Json& json, pdr_utils::RepoInterface& repo)>;
 
 using EffecterId = uint16_t;
+using SensorId = uint16_t;
 using DbusObjMaps =
     std::map<EffecterId,
              std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>>;
+using DbusObjPropertyMaps = std::map<SensorId, pdr_utils::DbusPropertyMaps>;
 using DbusPath = std::string;
 using EffecterObjs = std::vector<DbusPath>;
 using EventType = uint8_t;
@@ -136,6 +138,16 @@ class Handler : public CmdHandler
         uint16_t effecterId,
         std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> dbusObj);
 
+    /** @brief Add D-Bus mapping for the sensorId. If the same id is added, the
+     *         previous dbusObjs will be "over-written".
+     *
+     *  @param[in] sensorId - sensor id
+     *  @param[in] dbusObj - list of D-Bus object structure and list of D-Bus
+     *                       property
+     */
+    void addDbusObjPropertyMaps(uint16_t sensorId,
+                                pdr_utils::DbusPropertyMaps dbusObj);
+
     /** @brief Retrieve an effecter id -> D-Bus objects mapping
      *
      *  @param[in] effecterId - effecter id
@@ -146,6 +158,16 @@ class Handler : public CmdHandler
      */
     const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
         getDbusObjMaps(uint16_t effecterId) const;
+
+    /** @brief Retrieve an effecter id -> D-Bus objects mapping
+     *
+     *  @param[in] effecterId - effecter id
+     *
+     *  @return pdr_utils::DbusPropertyMaps - list of D-Bus object structure and
+     *          list of D-Bus property
+     */
+    const pdr_utils::DbusPropertyMaps&
+        getDbusObjPropertyMaps(uint16_t sensorId) const;
 
     uint16_t getNextEffecterId()
     {
@@ -393,6 +415,7 @@ class Handler : public CmdHandler
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
     DbusObjMaps dbusObjMaps{};
+    DbusObjPropertyMaps dbusObjPropertyMaps{};
     HostPDRHandler* hostPDRHandler;
 };
 
