@@ -30,6 +30,15 @@ namespace responder
 namespace pdr_utils
 {
 
+/** @struct Type ID associated with pdr
+ *
+ */
+enum class TypeId
+{
+    PLDM_EFFECTER_ID,
+    PLDM_SENSOR_ID
+};
+
 /** @struct PdrEntry
  *  PDR entry structure that acts as a PDR record structure in the PDR
  *  repository to handle PDR APIs.
