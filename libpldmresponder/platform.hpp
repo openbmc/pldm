@@ -126,31 +126,39 @@ class Handler : public CmdHandler
     }
 
     /** @brief Add D-Bus mapping and value mapping(stateId to D-Bus) for the
-     *         effecterId. If the same id is added, the previous dbusObjs will
+     *         Id. If the same id is added, the previous dbusObjs will
      *         be "over-written".
      *
-     *  @param[in] effecterId - effecter id
+     *  @param[in] Id - effecter/sensor id
      *  @param[in] dbusObj - list of D-Bus object structure and list of D-Bus
      *                       property value to attribute value
+     *  @param[in] typeId - the type id of enum
      */
     void addDbusObjMaps(
-        uint16_t effecterId,
-        std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> dbusObj);
+        uint16_t id,
+        std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> dbusObj,
+        uint8_t typeId = 0);
 
-    /** @brief Retrieve an effecter id -> D-Bus objects mapping
+    /** @brief Retrieve an id -> D-Bus objects mapping
      *
-     *  @param[in] effecterId - effecter id
+     *  @param[in] Id - id
+     *  @param[in] typeId - the type id of enum
      *
      *  @return std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps> -
      *          list of D-Bus object structure and list of D-Bus property value
      *          to attribute value
      */
     const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
-        getDbusObjMaps(uint16_t effecterId) const;
+        getDbusObjMaps(uint16_t id, uint8_t typeId = 0) const;
 
     uint16_t getNextEffecterId()
     {
         return ++nextEffecterId;
+    }
+
+    uint16_t getNextSensorId()
+    {
+        return ++nextSensorId;
     }
 
     /** @brief Parse PDR JSONs and build PDR repository
@@ -327,7 +335,7 @@ class Handler : public CmdHandler
         try
         {
             const auto& [dbusMappings, dbusValMaps] =
-                dbusObjMaps.at(effecterId);
+                effecterDbusObjMaps.at(effecterId);
             for (uint8_t currState = 0; currState < compEffecterCnt;
                  ++currState)
             {
@@ -393,7 +401,9 @@ class Handler : public CmdHandler
   private:
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
-    DbusObjMaps dbusObjMaps{};
+    uint16_t nextSensorId{};
+    DbusObjMaps effecterDbusObjMaps{};
+    DbusObjMaps sensorDbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
     events::StateSensorHandler stateSensorHandler;
 };
