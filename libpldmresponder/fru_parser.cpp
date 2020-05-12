@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <nlohmann/json.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
 namespace pldm
@@ -15,7 +14,6 @@ namespace responder
 namespace fru_parser
 {
 
-using Json = nlohmann::json;
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
@@ -24,6 +22,7 @@ const std::vector<Json> emptyJsonList{};
 const std::vector<std::string> emptyStringVec{};
 
 constexpr auto fruMasterJson = "FRU_Master.json";
+constexpr auto fruGeneralJson = "FRU_General.json";
 
 FruParser::FruParser(const std::string& dirPath)
 {
@@ -74,12 +73,39 @@ void FruParser::setupDBusLookup(const fs::path& filePath)
                                        std::move(interfaces)));
 }
 
+std::pair<FruRecordInfo, std::string>
+    FruParser::getFruRecordInfoFromJson(const Json& recordInfoJson)
+{
+    auto record = recordInfoJson.value("record_details", emptyJson);
+    auto recordType = static_cast<uint8_t>(record.value("fru_record_type", 0));
+    auto encType = static_cast<uint8_t>(record.value("fru_encoding_type", 0));
+    auto dbusIntfName = record.value("dbus_interface_name", "");
+    auto entries = recordInfoJson.value("fru_fields", emptyJsonList);
+    std::vector<FieldInfo> fieldInfo;
+
+    for (const auto& entry : entries)
+    {
+        auto fieldType = static_cast<uint8_t>(entry.value("fru_field_type", 0));
+        auto dbus = entry.value("dbus", emptyJson);
+        auto interface = dbus.value("interface", "");
+        auto property = dbus.value("property_name", "");
+        auto propType = dbus.value("property_type", "");
+        fieldInfo.emplace_back(
+            std::make_tuple(std::move(interface), std::move(property),
+                            std::move(propType), std::move(fieldType)));
+    }
+
+    FruRecordInfo fruInfo;
+    fruInfo = std::make_tuple(recordType, encType, std::move(fieldInfo));
+    return {fruInfo, dbusIntfName};
+}
+
 void FruParser::setupFruRecordMap(const std::string& dirPath)
 {
     for (auto& file : fs::directory_iterator(dirPath))
     {
         auto fileName = file.path().filename().string();
-        if (fruMasterJson == fileName)
+        if (fruMasterJson == fileName || fruGeneralJson == fileName)
         {
             continue;
         }
@@ -96,31 +122,7 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
 
         try
         {
-            auto record = data.value("record_details", emptyJson);
-            auto recordType =
-                static_cast<uint8_t>(record.value("fru_record_type", 0));
-            auto encType =
-                static_cast<uint8_t>(record.value("fru_encoding_type", 0));
-            auto dbusIntfName = record.value("dbus_interface_name", "");
-            auto entries = data.value("fru_fields", emptyJsonList);
-            std::vector<FieldInfo> fieldInfo;
-
-            for (const auto& entry : entries)
-            {
-                auto fieldType =
-                    static_cast<uint8_t>(entry.value("fru_field_type", 0));
-                auto dbus = entry.value("dbus", emptyJson);
-                auto interface = dbus.value("interface", "");
-                auto property = dbus.value("property_name", "");
-                auto propType = dbus.value("property_type", "");
-                fieldInfo.emplace_back(
-                    std::make_tuple(std::move(interface), std::move(property),
-                                    std::move(propType), std::move(fieldType)));
-            }
-
-            FruRecordInfo fruInfo;
-            fruInfo =
-                std::make_tuple(recordType, encType, std::move(fieldInfo));
+            auto [fruInfo, dbusIntfName] = getFruRecordInfoFromJson(data);
 
             auto search = recordMap.find(dbusIntfName);
 

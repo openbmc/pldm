@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <map>
+#include <nlohmann/json.hpp>
 #include <set>
 #include <string>
 #include <tuple>
@@ -41,7 +42,7 @@ namespace fru_parser
 namespace fs = std::filesystem;
 using namespace dbus;
 using namespace fru;
-
+using Json = nlohmann::json;
 // DBusLookupInfo contains info to lookup in the D-Bus inventory, D-Bus
 // inventory service bus name, root path of the inventory D-Bus objects and list
 //  of xyz.openbmc_project.Inventory.Item.* interface names.
@@ -118,6 +119,9 @@ class FruParser
      *                       files exist
      */
     void setupFruRecordMap(const std::string& dirPath);
+
+    std::pair<FruRecordInfo, std::string>
+        getFruRecordInfoFromJson(const Json& recordInfoJson);
 
     std::optional<DBusLookupInfo> lookupInfo;
     FruRecordMap recordMap;
