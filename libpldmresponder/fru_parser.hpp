@@ -120,6 +120,8 @@ class FruParser
      */
     void setupFruRecordMap(const std::string& dirPath);
 
+    void setupGeneralFruRecord(const fs::path& filePath);
+
     std::pair<FruRecordInfo, std::string>
         getFruRecordInfoFromJson(const Json& recordInfoJson);
 

@@ -42,7 +42,16 @@ FruParser::FruParser(const std::string& dirPath)
         throw InternalFailure();
     }
 
+    fs::path generalInfoFilePath = dir / fruGeneralJson;
+    if (!fs::exists(generalInfoFilePath))
+    {
+        std::cerr << "FRU D-Bus lookup JSON does not exist, PATH="
+                  << generalInfoFilePath << "\n";
+        throw InternalFailure();
+    }
+
     setupDBusLookup(masterFilePath);
+    setupGeneralFruRecord(generalInfoFilePath);
     setupFruRecordMap(dirPath);
 }
 
@@ -98,6 +107,26 @@ std::pair<FruRecordInfo, std::string>
     FruRecordInfo fruInfo;
     fruInfo = std::make_tuple(recordType, encType, std::move(fieldInfo));
     return {fruInfo, dbusIntfName};
+}
+
+void FruParser::setupGeneralFruRecord(const fs::path& filePath)
+{
+    std::ifstream jsonFile(filePath);
+
+    auto data = Json::parse(jsonFile, nullptr, false);
+    if (data.is_discarded())
+    {
+        std::cerr << "Parsing FRU master config file failed, FILE=" << filePath;
+        throw InternalFailure();
+    }
+
+    auto [fruInfo, dbusIntfName] = getFruRecordInfoFromJson(data);
+
+    for (const auto& [intf, entityType] : intfToEntityType)
+    {
+        FruRecordInfos recordInfos{fruInfo};
+        recordMap.emplace(intf, recordInfos);
+    }
 }
 
 void FruParser::setupFruRecordMap(const std::string& dirPath)
