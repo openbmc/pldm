@@ -156,6 +156,65 @@ int encode_get_file_table_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
+int encode_get_file_table_req(uint8_t instance_id, uint32_t transfer_handle,
+			      uint8_t transfer_opflag, uint8_t table_type,
+			      struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_OEM;
+	header.command = PLDM_GET_FILE_TABLE;
+	pack_pldm_header(&header, &(msg->hdr));
+
+	struct pldm_get_file_table_req *request =
+	    (struct pldm_get_file_table_req *)msg->payload;
+
+	request->transfer_handle = htole32(transfer_handle);
+	request->operation_flag = transfer_opflag;
+	request->table_type = table_type;
+	return PLDM_SUCCESS;
+}
+
+int decode_get_file_table_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint32_t *next_transfer_handle,
+			       uint8_t *transfer_flag, uint8_t *file_table_data,
+			       size_t *file_table_length)
+{
+	if (msg == NULL || transfer_flag == NULL ||
+	    next_transfer_handle == NULL || completion_code == NULL ||
+	    file_table_data == NULL || file_table_length == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length <= PLDM_GET_FILE_TABLE_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*completion_code = msg->payload[0];
+	struct pldm_get_file_table_resp *response =
+	    (struct pldm_get_file_table_resp *)msg->payload;
+
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
+	*next_transfer_handle = le32toh(response->next_transfer_handle);
+	*transfer_flag = response->transfer_flag;
+	memcpy(file_table_data, response->table_data,
+	       payload_length - PLDM_GET_FILE_TABLE_MIN_RESP_BYTES);
+	*file_table_length =
+	    payload_length - PLDM_GET_FILE_TABLE_MIN_RESP_BYTES;
+
+	return PLDM_SUCCESS;
+}
+
 int decode_read_file_req(const struct pldm_msg *msg, size_t payload_length,
 			 uint32_t *file_handle, uint32_t *offset,
 			 uint32_t *length)
