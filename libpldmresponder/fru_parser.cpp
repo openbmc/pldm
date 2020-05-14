@@ -30,8 +30,12 @@ FruParser::FruParser(const std::string& dirPath)
     fs::path dir(dirPath);
     if (!fs::exists(dir) || fs::is_empty(dir))
     {
-        std::cerr << "FRU config directory does not exist or empty, DIR="
+        std::cerr << "FRU config directory does not exist or empty use the "
+                     "default config! DIR="
                   << dirPath << "\n";
+
+        setupDefaultDBusLookup();
+        setupDefaultFruRecordMap();
         return;
     }
 
@@ -45,6 +49,29 @@ FruParser::FruParser(const std::string& dirPath)
 
     setupDBusLookup(masterFilePath);
     setupFruRecordMap(dirPath);
+}
+
+void FruParser::setupDefaultDBusLookup()
+{
+    constexpr auto service = "xyz.openbmc_project.Inventory.Manager";
+    constexpr auto rootPath = "/xyz/openbmc_project/inventory";
+
+    // DSP0249 1.0.0    Table 15 Entity ID Codes
+    const std::map<Interface, EntityType> defIntfToEntityType = {
+        {"xyz.openbmc_project.Inventory.Item.Board", 64},
+        {"xyz.openbmc_project.Inventory.Item.PowerSupply", 120},
+        {"xyz.openbmc_project.Inventory.Item.Cpu", 135},
+        {"xyz.openbmc_project.Inventory.Item.Dimm", 142},
+    };
+
+    Interfaces interfaces{};
+    for (auto [intf, entityType] : defIntfToEntityType)
+    {
+        intfToEntityType[intf] = entityType;
+        interfaces.emplace(intf);
+    }
+
+    lookupInfo.emplace(service, rootPath, std::move(interfaces));
 }
 
 void FruParser::setupDBusLookup(const fs::path& filePath)
@@ -72,6 +99,35 @@ void FruParser::setupDBusLookup(const fs::path& filePath)
     }
     lookupInfo.emplace(std::make_tuple(std::move(service), std::move(rootPath),
                                        std::move(interfaces)));
+}
+
+void FruParser::setupDefaultFruRecordMap()
+{
+    const FruRecordInfo generalRecordInfo = {
+        1, // generalRecordType
+        1, // encodeingTypeAscii
+        {
+            // DSP0257 Table 5 General FRU Record Field Type Definitions
+            {"xyz.openbmc_project.Inventory.Decorator.Asset", "Model", "string",
+             2},
+            {"xyz.openbmc_project.Inventory.Decorator.Asset", "PartNumber",
+             "string", 3},
+            {"xyz.openbmc_project.Inventory.Decorator.Asset", "SerialNumber",
+             "string", 4},
+            {"xyz.openbmc_project.Inventory.Decorator.Asset", "Manufacturer",
+             "string", 5},
+            {"xyz.openbmc_project.Inventory.Decorator.Asset", "BuildDate",
+             "timestamp104", 6}, // Manufacture Date
+            {"xyz.openbmc_project.Inventory.Decorator.AssetTag", "AssetTag",
+             "string", 11},
+            {"xyz.openbmc_project.Inventory.Decorator.Revision", "Version",
+             "string", 10},
+        }};
+
+    for (auto [intf, entityType] : intfToEntityType)
+    {
+        recordMap[intf] = {generalRecordInfo};
+    }
 }
 
 void FruParser::setupFruRecordMap(const std::string& dirPath)
