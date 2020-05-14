@@ -59,6 +59,8 @@ FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
                 // not have corresponding config jsons
                 try
                 {
+                    std::cout << "InterfacesFirst: " << interface.first
+                              << std::endl;
                     pldm_entity entity{};
                     entity.entity_type = handle.getEntityType(interface.first);
                     pldm_entity_node* parent = nullptr;
@@ -134,6 +136,7 @@ void FruImpl::populateRecords(
             try
             {
                 auto propValue = interfaces.at(intf).at(prop);
+                std::cout << "prop: " << prop << std::endl;
                 if (propType == "bytearray")
                 {
                     auto byteArray = std::get<std::vector<uint8_t>>(propValue);
@@ -151,6 +154,7 @@ void FruImpl::populateRecords(
                 else if (propType == "string")
                 {
                     auto str = std::get<std::string>(propValue);
+                    std::cout << "value: " << str;
                     if (!str.size())
                     {
                         continue;
