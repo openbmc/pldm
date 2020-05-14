@@ -150,6 +150,9 @@ enum pldm_effecter_init {
 /** @brief PLDM Platform M&C completion codes
  */
 enum pldm_platform_completion_codes {
+	PLDM_PLATFORM_INVALID_SENSOR_ID = 0x80,
+	PLDM_PLATFORM_REARM_UNAVAILABLE_IN_PRESENT_STATE = 0x81,
+
 	PLDM_PLATFORM_INVALID_EFFECTER_ID = 0x80,
 	PLDM_PLATFORM_INVALID_STATE_VALUE = 0x81,
 
