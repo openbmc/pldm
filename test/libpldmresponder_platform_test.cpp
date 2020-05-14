@@ -3,6 +3,7 @@
 #include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/platform_numeric_effecter.hpp"
 #include "libpldmresponder/platform_state_effecter.hpp"
+#include "libpldmresponder/platform_state_sensor.hpp"
 #include "mocked_utils.hpp"
 #include "utils.hpp"
 
@@ -13,6 +14,10 @@ using namespace pldm::responder;
 using namespace pldm::responder::platform;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
+
+using ::testing::_;
+using ::testing::Return;
+using ::testing::StrEq;
 
 TEST(getPDR, testGoodPath)
 {
@@ -315,4 +320,46 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(numericEffecterPdrRepo);
+}
+
+TEST(getStateSensorReadingsHandler, testGoodRequest)
+{
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    Handler handler("./pdr_jsons/state_sensor/good", inPDRRepo, nullptr);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
+    pdr_utils::PdrEntry e;
+    auto record = pdr::getRecordByHandle(outRepo, 1, e);
+    ASSERT_NE(record, nullptr);
+    pldm_state_sensor_pdr* pdr =
+        reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
+
+    std::vector<get_sensor_state_field> stateField;
+    uint8_t compSensorCnt{};
+    bitfield8_t sensorRearm;
+    sensorRearm.byte = 0x01;
+
+    MockdBusHandler handlerObj;
+    EXPECT_CALL(handlerObj,
+                getDbusPropertyVariant(
+                    _, StrEq("CriticalAlarmLow"),
+                    StrEq("xyz.openbmc_project.Sensor.Threshold.Critical")))
+        .WillOnce(Return(PropertyValue(bool(true))));
+
+    auto rc =
+        platform_state_sensor::getStateSensorReadingsHandler<MockdBusHandler,
+                                                             Handler>(
+            handlerObj, handler, 0x1, sensorRearm, compSensorCnt, stateField);
+    ASSERT_EQ(rc, 0);
+    ASSERT_EQ(compSensorCnt, 1);
+    ASSERT_EQ(stateField[0].sensor_op_state, ENABLED);
+    ASSERT_EQ(stateField[0].present_state, LOWERCRITICAL);
+    ASSERT_EQ(stateField[0].previous_state, UNKNOWN);
+    ASSERT_EQ(stateField[0].event_state, UNKNOWN);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
 }
