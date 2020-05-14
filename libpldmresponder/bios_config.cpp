@@ -32,12 +32,20 @@ BIOSConfig::BIOSConfig(const char* jsonDir, const char* tableDir,
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler)
 {
+    createDir(tableDir);
     constructAttributes();
+}
+
+void BIOSConfig::createDir(const fs::path dir)
+{
+    if (!fs::exists(dir))
+    {
+        fs::create_directories(dir);
+    }
 }
 
 void BIOSConfig::buildTables()
 {
-    fs::create_directory(tableDir);
     auto stringTable = buildAndStoreStringTable();
     if (stringTable)
     {
