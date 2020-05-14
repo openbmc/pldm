@@ -1,7 +1,7 @@
+#include "libpldm/platform.h"
+
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
-
-#include "libpldm/platform.h"
 
 #include <gtest/gtest.h>
 

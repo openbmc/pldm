@@ -1,8 +1,8 @@
 #pragma once
 
-#include "libpldmresponder/pdr_utils.hpp"
-
 #include "libpldm/platform.h"
+
+#include "libpldmresponder/pdr_utils.hpp"
 
 namespace pldm
 {
