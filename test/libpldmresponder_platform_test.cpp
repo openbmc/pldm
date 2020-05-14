@@ -5,6 +5,7 @@
 #include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/platform_numeric_effecter.hpp"
 #include "libpldmresponder/platform_state_effecter.hpp"
+#include "libpldmresponder/platform_state_sensor.hpp"
 #include "mocked_utils.hpp"
 
 #include <sdbusplus/test/sdbus_mock.hpp>
@@ -215,6 +216,11 @@ TEST(getPDR, testFindPDR)
 
 TEST(setStateEffecterStatesHandler, testGoodRequest)
 {
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES>
+        requestPayload{};
+    auto req = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
         .Times(5)
@@ -225,6 +231,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", inPDRRepo, nullptr, nullptr);
+    handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;
@@ -255,6 +262,11 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
 
 TEST(setStateEffecterStatesHandler, testBadRequest)
 {
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES>
+        requestPayload{};
+    auto req = reinterpret_cast<pldm_msg*>(requestPayload.data());
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
         .Times(5)
@@ -265,6 +277,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", inPDRRepo, nullptr, nullptr);
+    handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;
@@ -556,6 +569,86 @@ TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
         reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
             pdr->terminus_locator_value);
     EXPECT_EQ(locatorValue->eid, BmcMctpEid);
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
+}
+
+TEST(getStateSensorReadingsHandler, testGoodRequest)
+{
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(1)
+        .WillRepeatedly(Return("foo.bar"));
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", "",
+                    inPDRRepo, nullptr, nullptr);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
+    pdr_utils::PdrEntry e;
+    auto record = pdr::getRecordByHandle(outRepo, 1, e);
+    ASSERT_NE(record, nullptr);
+    pldm_state_sensor_pdr* pdr =
+        reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
+
+    std::vector<get_sensor_state_field> stateField;
+    uint8_t compSensorCnt{};
+    uint8_t sensorRearmCnt = 1;
+
+    MockdBusHandler handlerObj;
+    EXPECT_CALL(handlerObj,
+                getDbusPropertyVariant(StrEq("/foo/bar"), StrEq("propertyName"),
+                                       StrEq("xyz.openbmc_project.Foo.Bar")))
+        .WillOnce(Return(
+            PropertyValue(std::string("xyz.openbmc_project.Foo.Bar.V0"))));
+
+    auto rc = platform_state_sensor::getStateSensorReadingsHandler<
+        MockdBusHandler, Handler>(handlerObj, handler, 0x1, sensorRearmCnt,
+                                  compSensorCnt, stateField);
+    ASSERT_EQ(rc, 0);
+    ASSERT_EQ(compSensorCnt, 1);
+    ASSERT_EQ(stateField[0].sensor_op_state, PLDM_SENSOR_ENABLED);
+    ASSERT_EQ(stateField[0].present_state, PLDM_SENSOR_UNKNOWN);
+    ASSERT_EQ(stateField[0].previous_state, PLDM_SENSOR_UNKNOWN);
+    ASSERT_EQ(stateField[0].event_state, PLDM_SENSOR_ENABLED);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
+}
+
+TEST(getStateSensorReadingsHandler, testBadRequest)
+{
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(1)
+        .WillRepeatedly(Return("foo.bar"));
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", "",
+                    inPDRRepo, nullptr, nullptr);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
+    pdr_utils::PdrEntry e;
+    auto record = pdr::getRecordByHandle(outRepo, 1, e);
+    ASSERT_NE(record, nullptr);
+    pldm_state_sensor_pdr* pdr =
+        reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
+
+    std::vector<get_sensor_state_field> stateField;
+    uint8_t compSensorCnt{};
+    uint8_t sensorRearmCnt = 3;
+
+    MockdBusHandler handlerObj;
+    auto rc = platform_state_sensor::getStateSensorReadingsHandler<
+        MockdBusHandler, Handler>(handlerObj, handler, 0x1, sensorRearmCnt,
+                                  compSensorCnt, stateField);
+    ASSERT_EQ(rc, PLDM_PLATFORM_REARM_UNAVAILABLE_IN_PRESENT_STATE);
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
