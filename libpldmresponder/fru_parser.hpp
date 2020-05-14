@@ -119,6 +119,14 @@ class FruParser
      */
     void setupFruRecordMap(const std::string& dirPath);
 
+    /** @brief Set the default service root D-Bus path and the item interfaces.
+     */
+    void setupDefaultDBusLookup();
+
+    /** @brief Build the default FRU record informations
+     */
+    void setupDefaultFruRecordMap();
+
     std::optional<DBusLookupInfo> lookupInfo;
     FruRecordMap recordMap;
     std::map<Interface, EntityType> intfToEntityType;
