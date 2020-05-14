@@ -8,6 +8,7 @@
 #include "pdr_state_sensor.hpp"
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
+#include "platform_state_sensor.hpp"
 
 namespace pldm
 {
@@ -553,6 +554,55 @@ Response Handler::setNumericEffecterValue(const pldm_msg* request,
     }
 
     return ccOnlyResponse(request, rc);
+}
+
+Response Handler::getStateSensorReadings(const pldm_msg* request,
+                                         size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    uint16_t sensorId{};
+    bitfield8_t sensorRearm{};
+    uint8_t reserved{};
+
+    if (payloadLength != PLDM_GET_SENSOR_READING_REQ_BYTES)
+    {
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+
+    int rc = decode_get_state_sensor_readings_req(
+        request, payloadLength, &sensorId, &sensorRearm, &reserved);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    // The value of 8 is described the maximum value of the compositeSensorCount
+    // attribute, 0x01 to 0x08
+    std::vector<get_sensor_state_field> stateField(8);
+    uint8_t comSensorCnt{};
+    const pldm::utils::DBusHandler dBusIntf;
+    rc = platform_state_sensor::getStateSensorReadingsHandler<
+        pldm::utils::DBusHandler, Handler>(
+        dBusIntf, *this, sensorId, sensorRearm, comSensorCnt, stateField);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    rc = encode_get_state_sensor_readings_resp(request->hdr.instance_id, rc,
+                                               comSensorCnt, stateField.data(),
+                                               responsePtr);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    return response;
 }
 
 } // namespace platform
