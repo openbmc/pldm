@@ -49,6 +49,12 @@ class BIOSConfig
      */
     int setAttrValue(const void* entry, size_t size);
 
+    /** @brief Create file path if does not exist
+     *  @param[in] dir - file path
+     *
+     */
+    void createDir(const fs::path dir);
+
     /** @brief Remove the persistent tables */
     void removeTables();
 
