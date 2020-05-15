@@ -2,12 +2,14 @@
 
 #include "config.h"
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
 #include "common/utils.hpp"
 #include "event_parser.hpp"
 #include "fru.hpp"
+#include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -59,13 +61,18 @@ class Handler : public CmdHandler
     Handler(const pldm::utils::DBusHandler& dBusIntf,
             const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
+            DbusToSensorEventHandler* dbusToEventHandler,
             fru::Handler* fruHandler,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
-        fruHandler(fruHandler)
+        dbusToEventHandler(dbusToEventHandler), fruHandler(fruHandler)
     {
         generate(dBusIntf, pdrJsonsDir, pdrRepo);
+        if (dbusToEventHandler)
+        {
+            dbusToEventHandler->listenSensorEvent(pdrRepo, sensorDbusObjMaps);
+        }
 
         handlers.emplace(PLDM_GET_PDR,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -174,12 +181,10 @@ class Handler : public CmdHandler
 
     /** @brief Parse PDR JSONs and build PDR repository
      *
-     *  @param[in] dBusIntf - The interface object
      *  @param[in] dir - directory housing platform specific PDR JSON files
      *  @param[in] repo - instance of concrete implementation of Repo
      */
-    void generate(const pldm::utils::DBusHandler& dBusIntf,
-                  const std::string& dir, Repo& repo);
+    void generate(const std::string& dir, Repo& repo);
 
     /** @brief Parse PDR JSONs and build state effecter PDR repository
      *
@@ -428,6 +433,7 @@ class Handler : public CmdHandler
     DbusObjMaps sensorDbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
     events::StateSensorHandler stateSensorHandler;
+    DbusToSensorEventHandler* dbusToEventHandler;
     fru::Handler* fruHandler;
 };
 
