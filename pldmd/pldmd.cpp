@@ -6,6 +6,7 @@
 #include "common/utils.hpp"
 #include "dbus_impl_pdr.hpp"
 #include "dbus_impl_requester.hpp"
+#include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/dbus_to_host_effecters.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "invoker.hpp"
@@ -173,6 +174,7 @@ int main(int argc, char** argv)
     std::unique_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
+    std::unique_ptr<DbusToSensorEventHandler> dbusToEventHandler;
     DBusHandler dbusHandler;
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
@@ -180,10 +182,11 @@ int main(int argc, char** argv)
         hostPDRHandler = std::make_unique<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), entityTree.get(),
             dbusImplReq);
-        hostEffecterParser =
-            std::make_unique<pldm::host_effecters::HostEffecterParser>(
-                &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
-                HOST_JSONS_DIR, verbose);
+        pldm::host_effecters::HostEffecterParser hostEffecterParser(
+            &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler, HOST_JSONS_DIR,
+            verbose);
+        dbusToEventHandler = std::make_unique<DbusToSensorEventHandler>(
+            sockfd, hostEID, dbusImplReq);
     }
 
     Invoker invoker{};
@@ -197,7 +200,8 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>(
                                 PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
-                                hostPDRHandler.get(), fruHandler.get()));
+                                hostPDRHandler.get(), dbusToEventHandler.get(),
+                                fruHandler.get()));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
 #ifdef OEM_IBM
