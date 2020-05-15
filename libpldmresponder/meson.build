@@ -21,7 +21,8 @@ sources = [
   'fru_parser.cpp',
   'fru.cpp',
   '../host_pdr_handler.cpp',
-  'event_parser.cpp'
+  'event_parser.cpp',
+  '../dbus_to_event_handler.cpp'
 ]
 
 if get_option('oem-ibm').enabled()
