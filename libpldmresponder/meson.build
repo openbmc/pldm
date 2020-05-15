@@ -21,6 +21,7 @@ sources = [
   'fru_parser.cpp',
   'fru.cpp',
   '../host-bmc/host_pdr_handler.cpp',
+  '../host-bmc/dbus_to_event_handler.cpp',
   'event_parser.cpp'
 ]
 
