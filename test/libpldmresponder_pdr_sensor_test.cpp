@@ -17,7 +17,7 @@ TEST(GeneratePDRByStateSensor, testGoodJson)
     auto entityTree = pldm_entity_association_tree_init();
     Repo outRepo(outPDRRepo, entityTree);
     Handler handler("./pdr_jsons/state_sensor/good", "", inPDRRepo, entityTree,
-                    nullptr);
+                    nullptr, nullptr);
     Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
 
@@ -56,9 +56,9 @@ TEST(GeneratePDR, testNoJson)
     auto pdrRepo = pldm_pdr_init();
     auto entityTree = pldm_entity_association_tree_init();
 
-    ASSERT_THROW(
-        Handler("./pdr_jsons/not_there", "", pdrRepo, entityTree, nullptr),
-        std::exception);
+    ASSERT_THROW(Handler("./pdr_jsons/not_there", "", pdrRepo, entityTree,
+                         nullptr, nullptr),
+                 std::exception);
 
     pldm_entity_association_tree_destroy(entityTree);
     pldm_pdr_destroy(pdrRepo);
@@ -71,7 +71,7 @@ TEST(GeneratePDR, testMalformedJson)
     auto entityTree = pldm_entity_association_tree_init();
     Repo outRepo(outPDRRepo, entityTree);
     Handler handler("./pdr_jsons/state_sensor/good", "", inPDRRepo, entityTree,
-                    nullptr);
+                    nullptr, nullptr);
     Repo inRepo(inPDRRepo, entityTree);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
 
