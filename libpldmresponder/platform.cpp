@@ -174,6 +174,12 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
         pdrCreated = true;
     }
 
+    if (dbusToPLDMEventHandler)
+    {
+        dbusToPLDMEventHandler->listenSensorEvent(pdrRepo,
+                                                  std::move(sensorDbusObjMaps));
+    }
+
     // Build FRU table if not built, since entity association PDR's are built
     // when the FRU table is constructed.
     if (fruHandler)
