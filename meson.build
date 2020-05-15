@@ -69,6 +69,7 @@ executable(
   'pldmd',
   'pldmd/pldmd.cpp',
   'pldmd/dbus_impl_requester.cpp',
+  'pldmd/dbus_to_event_handler.cpp',
   'pldmd/instance_id.cpp',
   'pldmd/dbus_impl_pdr.cpp',
   'host-bmc/dbus_to_host_effecters.cpp',
