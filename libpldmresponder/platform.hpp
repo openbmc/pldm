@@ -2,12 +2,14 @@
 
 #include "config.h"
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
 #include "common/utils.hpp"
 #include "event_parser.hpp"
 #include "fru.hpp"
+#include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -26,6 +28,7 @@ namespace platform
 
 using namespace pldm::utils;
 using namespace pldm::responder::pdr_utils;
+using namespace pldm::state_sensor;
 
 using generatePDR =
     std::function<void(const pldm::utils::DBusHandler& dBusIntf,
@@ -59,12 +62,13 @@ class Handler : public CmdHandler
     Handler(const pldm::utils::DBusHandler* dBusIntf,
             const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
-            fru::Handler* fruHandler, bool buildPDRLazily = false,
+            DbusToPLDMEvent* dbusToPLDMEventHandler, fru::Handler* fruHandler,
+            bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
-        fruHandler(fruHandler), dBusIntf(dBusIntf), pdrJsonsDir(pdrJsonsDir),
-        pdrCreated(false)
+        dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
+        dBusIntf(dBusIntf), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
     {
         if (!buildPDRLazily)
         {
@@ -440,6 +444,7 @@ class Handler : public CmdHandler
     DbusObjMaps sensorDbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
     events::StateSensorHandler stateSensorHandler;
+    DbusToPLDMEvent* dbusToPLDMEventHandler;
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;
     std::string pdrJsonsDir;
