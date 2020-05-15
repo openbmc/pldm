@@ -172,6 +172,12 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
         generateTerminusLocatorPDR(pdrRepo);
         generate(*dBusIntf, pdrJsonsDir, pdrRepo);
         pdrCreated = true;
+
+        if (dbusToPLDMEventHandler)
+        {
+            dbusToPLDMEventHandler->listenSensorEvent(pdrRepo,
+                                                      sensorDbusObjMaps);
+        }
     }
 
     // Build FRU table if not built, since entity association PDR's are built
