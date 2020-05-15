@@ -6,6 +6,7 @@
 #include "common/utils.hpp"
 #include "dbus_impl_pdr.hpp"
 #include "dbus_impl_requester.hpp"
+#include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/dbus_to_host_effecters.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "invoker.hpp"
@@ -49,6 +50,7 @@ using namespace pldm::responder;
 using namespace pldm;
 using namespace sdeventplus;
 using namespace sdeventplus::source;
+using namespace pldm::state_sensor;
 
 static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
                              Invoker& invoker, dbus_api::Requester& requester)
@@ -174,6 +176,7 @@ int main(int argc, char** argv)
     std::unique_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
+    std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     auto dbusHandler = std::make_unique<DBusHandler>();
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
@@ -185,6 +188,8 @@ int main(int argc, char** argv)
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
                 HOST_JSONS_DIR, verbose);
+        dbusToPLDMEventHandler =
+            std::make_unique<DbusToPLDMEvent>(sockfd, hostEID, dbusImplReq);
     }
 
     Invoker invoker{};
@@ -195,11 +200,12 @@ int main(int argc, char** argv)
     // FRU table is built lazily when a FRU command or Get PDR command is
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
-    invoker.registerHandler(PLDM_PLATFORM,
-                            std::make_unique<platform::Handler>(
-                                dbusHandler.get(), PDR_JSONS_DIR,
-                                EVENTS_JSONS_DIR, pdrRepo.get(),
-                                hostPDRHandler.get(), fruHandler.get(), true));
+    invoker.registerHandler(PLDM_PLATFORM, std::make_unique<platform::Handler>(
+                                               dbusHandler.get(), PDR_JSONS_DIR,
+                                               EVENTS_JSONS_DIR, pdrRepo.get(),
+                                               hostPDRHandler.get(),
+                                               dbusToPLDMEventHandler.get(),
+                                               fruHandler.get(), true));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
 #ifdef OEM_IBM
