@@ -2,6 +2,7 @@
 
 #include "config.h"
 
+#include "dbus_to_event_handler.hpp"
 #include "event_parser.hpp"
 #include "handler.hpp"
 #include "host_pdr_handler.hpp"
@@ -13,6 +14,7 @@
 
 #include <map>
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
@@ -56,11 +58,17 @@ class Handler : public CmdHandler
   public:
     Handler(const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
+            DbusToSensorEventHandler* dbusToEventHandler,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
-        hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir)
+        hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
+        dbusToEventHandler(dbusToEventHandler)
     {
         generate(pdrJsonsDir, pdrRepo);
+        if (dbusToEventHandler)
+        {
+            dbusToEventHandler->listenSensorEvent(pdrRepo, sensorDbusObjMaps);
+        }
 
         handlers.emplace(PLDM_GET_PDR,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -421,6 +429,7 @@ class Handler : public CmdHandler
     DbusObjMaps sensorDbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
     events::StateSensorHandler stateSensorHandler;
+    DbusToSensorEventHandler* dbusToEventHandler;
 };
 
 } // namespace platform
