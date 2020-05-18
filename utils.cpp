@@ -10,6 +10,9 @@
 #include <vector>
 #include <xyz/openbmc_project/Common/error.hpp>
 
+#include "libpldm/pdr.h"
+#include "libpldm/pldm_types.h"
+
 namespace pldm
 {
 namespace utils
@@ -19,6 +22,63 @@ constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
 constexpr auto eidPath = "/usr/share/pldm/host_eid";
+
+std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
+                                                       uint16_t entityID,
+                                                       uint16_t stateSetId,
+                                                       const pldm_pdr* repo)
+{
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record{};
+    std::vector<std::vector<uint8_t>> pdrs;
+    try
+    {
+        do
+        {
+            record = pldm_pdr_find_record_by_type(repo, PLDM_STATE_EFFECTER_PDR,
+                                                  record, &outData, &size);
+            if (record)
+            {
+                auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(outData);
+                auto compositeEffecterCount = pdr->composite_effecter_count;
+
+                for (auto effecters = 0x00; effecters <= compositeEffecterCount;
+                     effecters++)
+                {
+                    auto possibleStates =
+                        reinterpret_cast<state_effecter_possible_states*>(
+                            pdr->possible_states);
+                    auto setId = possibleStates->state_set_id;
+                    auto possibleStateSize =
+                        possibleStates->possible_states_size;
+
+                    if (pdr->entity_type == entityID && setId == stateSetId)
+                    {
+                        std::vector<uint8_t> effecter_pdr(&outData[0],
+                                                          &outData[size]);
+                        pdrs.emplace_back(std::move(effecter_pdr));
+                        break;
+                    }
+                    possibleStates += possibleStateSize + sizeof(setId) +
+                                      sizeof(possibleStateSize);
+                }
+            }
+
+        } while (record);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << " Failed to obtain a record. ERROR =" << e.what()
+                  << std::endl;
+    }
+    if (pdrs.empty())
+    {
+        std::cerr << "Empty vector" << std::endl;
+    }
+
+    return pdrs;
+}
 
 uint8_t readHostEID()
 {
