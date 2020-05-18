@@ -249,5 +249,14 @@ inline std::string findParent(const std::string& dbusObj)
  */
 uint8_t readHostEID();
 
+/** @brief Find State Effecter PDR
+ *
+ *  @return array[array[uint8_t]] - StateEffecterPDRs
+ */
+std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t tid,
+                                                       uint16_t entityID,
+                                                       uint16_t stateSetId,
+                                                       const pldm_pdr* repo);
+
 } // namespace utils
 } // namespace pldm
