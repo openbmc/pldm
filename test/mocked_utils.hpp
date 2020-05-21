@@ -34,3 +34,11 @@ class MockdBusHandler : public DBusHandler
     MOCK_METHOD(PropertyValue, getDbusPropertyVariant,
                 (const char*, const char*, const char*), (const override));
 };
+
+class MockPldmSendRecv : public sendRecv
+{
+  public:
+    MOCK_METHOD(pldm_requester_rc_t, pldm_send_recv,
+                (uint8_t, int, const uint8_t*, size_t, uint8_t**, size_t),
+                (const override));
+};
