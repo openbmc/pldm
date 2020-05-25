@@ -228,7 +228,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;
-    auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
+    auto record1 = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record1, nullptr);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
@@ -268,7 +268,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
     pdr_utils::PdrEntry e;
-    auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
+    auto record1 = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record1, nullptr);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
@@ -313,8 +313,8 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
     pdr_utils::PdrEntry e;
-    auto record3 = pdr::getRecordByHandle(numericEffecterPDRs, 3, e);
-    ASSERT_NE(record3, nullptr);
+    auto record4 = pdr::getRecordByHandle(numericEffecterPDRs, 4, e);
+    ASSERT_NE(record4, nullptr);
 
     pldm_numeric_effecter_value_pdr* pdr =
         reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
@@ -355,8 +355,8 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
     pdr_utils::PdrEntry e;
-    auto record3 = pdr::getRecordByHandle(numericEffecterPDRs, 3, e);
-    ASSERT_NE(record3, nullptr);
+    auto record4 = pdr::getRecordByHandle(numericEffecterPDRs, 4, e);
+    ASSERT_NE(record4, nullptr);
 
     pldm_numeric_effecter_value_pdr* pdr =
         reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
@@ -519,4 +519,44 @@ TEST(StateSensorHandler, allScenarios)
         StateSensorEntry entry{0, 0, 0, 0};
         ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
     }
+}
+
+TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
+{
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    MockdBusHandler mockedUtils;
+    Handler handler(mockedUtils, "", "", inPDRRepo, nullptr, nullptr);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_TERMINUS_LOCATOR_PDR);
+
+    // 1 BMC terminus locator PDR in the PDR repository
+    ASSERT_EQ(outRepo.getRecordCount(), 1);
+
+    pdr_utils::PdrEntry entry;
+    auto record = pdr::getRecordByHandle(outRepo, 1, entry);
+    ASSERT_NE(record, nullptr);
+
+    auto pdr = reinterpret_cast<const pldm_terminus_locator_pdr*>(entry.data);
+    EXPECT_EQ(pdr->hdr.record_handle, 1);
+    EXPECT_EQ(pdr->hdr.version, 1);
+    EXPECT_EQ(pdr->hdr.type, PLDM_TERMINUS_LOCATOR_PDR);
+    EXPECT_EQ(pdr->hdr.record_change_num, 0);
+    EXPECT_EQ(pdr->hdr.length,
+              sizeof(pldm_terminus_locator_pdr) - sizeof(pldm_pdr_hdr));
+    EXPECT_EQ(pdr->terminus_handle, BmcPldmTerminusHandle);
+    EXPECT_EQ(pdr->validity, PLDM_TL_PDR_VALID);
+    EXPECT_EQ(pdr->tid, BmcTerminusId);
+    EXPECT_EQ(pdr->container_id, 0);
+    EXPECT_EQ(pdr->terminus_locator_type, PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID);
+    EXPECT_EQ(pdr->terminus_locator_value_size,
+              sizeof(pldm_terminus_locator_type_mctp_eid));
+    auto locatorValue =
+        reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
+            pdr->terminus_locator_value);
+    EXPECT_EQ(locatorValue->eid, BmcMctpEid);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
 }

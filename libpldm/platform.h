@@ -120,6 +120,7 @@ enum pldm_platform_commands {
 /** @brief PLDM PDR types
  */
 enum pldm_pdr_types {
+	PLDM_TERMINUS_LOCATOR_PDR = 1,
 	PLDM_STATE_SENSOR_PDR = 4,
 	PLDM_NUMERIC_EFFECTER_PDR = 9,
 	PLDM_STATE_EFFECTER_PDR = 11,
@@ -224,6 +225,22 @@ enum pldm_platform_event_status {
 	PLDM_EVENT_LOGGING_REJECTED = 0x05
 };
 
+/** @brief PLDM Terminus Locator PDR validity
+ */
+enum pldm_terminus_locator_pdr_validity {
+	PLDM_TL_PDR_NOT_VALID,
+	PLDM_TL_PDR_VALID
+};
+
+/** @brief PLDM Terminus Locator type
+ */
+enum pldm_terminus_locator_type {
+	PLDM_TERMINUS_LOCATOR_TYPE_UID,
+	PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID,
+	PLDM_TERMINUS_LOCATOR_TYPE_SMBUS_RELATIVE,
+	PLDM_TERMINUS_LOCATOR_TYPE_SYS_SW
+};
+
 /** @struct pldm_pdr_hdr
  *
  *  Structure representing PLDM common PDR header
@@ -234,6 +251,30 @@ struct pldm_pdr_hdr {
 	uint8_t type;
 	uint16_t record_change_num;
 	uint16_t length;
+} __attribute__((packed));
+
+/** @struct pldm_terminus_locator_pdr
+ *
+ *  Structure representing PLDM terminus locator PDR
+ */
+struct pldm_terminus_locator_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint8_t validity;
+	uint8_t tid;
+	uint16_t container_id;
+	uint8_t terminus_locator_type;
+	uint8_t terminus_locator_value_size;
+	uint8_t terminus_locator_value[1];
+} __attribute__((packed));
+
+/** @struct pldm_terminus_locator_type_mctp_eid
+ *
+ *  Structure representing terminus locator value for
+ *  terminus locator type MCTP_EID
+ */
+struct pldm_terminus_locator_type_mctp_eid {
+	uint8_t eid;
 } __attribute__((packed));
 
 /** @struct pldm_pdr_entity_association

@@ -68,6 +68,7 @@ class Handler : public CmdHandler
     {
         if (!buildPDRLazily)
         {
+            generateTerminusLocatorPDR(pdrRepo);
             generate(*dBusIntf, pdrJsonsDir, pdrRepo);
             pdrCreated = true;
         }
@@ -401,6 +402,12 @@ class Handler : public CmdHandler
 
         return rc;
     }
+
+    /** @brief Build BMC Terminus Locator PDR
+     *
+     *  @param[in] repo - instance of concrete implementation of Repo
+     */
+    void generateTerminusLocatorPDR(Repo& repo);
 
   private:
     pdr_utils::Repo pdrRepo;
