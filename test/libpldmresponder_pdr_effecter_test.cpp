@@ -37,18 +37,18 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
 
     // Check first PDR
     pdr_utils::PdrEntry e;
-    auto record1 = pdr::getRecordByHandle(outRepo, 1, e);
-    ASSERT_NE(record1, nullptr);
+    auto record2 = pdr::getRecordByHandle(outRepo, 2, e);
+    ASSERT_NE(record2, nullptr);
     pldm_state_effecter_pdr* pdr =
         reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 1);
+    ASSERT_EQ(pdr->hdr.record_handle, 2);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 23);
 
-    ASSERT_EQ(pdr->terminus_handle, 0);
+    ASSERT_EQ(pdr->terminus_handle, BmcPldmTerminusHandle);
     ASSERT_EQ(pdr->effecter_id, 1);
     ASSERT_EQ(pdr->entity_type, 33);
     ASSERT_EQ(pdr->entity_instance, 0);
@@ -70,17 +70,17 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     ASSERT_EQ(dbusMappings1[0].objectPath, "/foo/bar");
 
     // Check second PDR
-    auto record2 = pdr::getRecordByHandle(outRepo, 2, e);
-    ASSERT_NE(record2, nullptr);
+    auto record3 = pdr::getRecordByHandle(outRepo, 3, e);
+    ASSERT_NE(record3, nullptr);
     pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 2);
+    ASSERT_EQ(pdr->hdr.record_handle, 3);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 24);
 
-    ASSERT_EQ(pdr->terminus_handle, 0);
+    ASSERT_EQ(pdr->terminus_handle, BmcPldmTerminusHandle);
     ASSERT_EQ(pdr->effecter_id, 2);
     ASSERT_EQ(pdr->entity_type, 100);
     ASSERT_EQ(pdr->entity_instance, 0);
@@ -136,12 +136,12 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
 
     // Check first PDR
     pdr_utils::PdrEntry e;
-    auto record = pdr::getRecordByHandle(outRepo, 3, e);
+    auto record = pdr::getRecordByHandle(outRepo, 4, e);
     ASSERT_NE(record, nullptr);
 
     pldm_numeric_effecter_value_pdr* pdr =
         reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
-    EXPECT_EQ(pdr->hdr.record_handle, 3);
+    EXPECT_EQ(pdr->hdr.record_handle, 4);
     EXPECT_EQ(pdr->hdr.version, 1);
     EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
     EXPECT_EQ(pdr->hdr.record_change_num, 0);

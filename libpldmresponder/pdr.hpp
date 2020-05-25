@@ -16,6 +16,10 @@ namespace responder
 namespace pdr
 {
 
+constexpr uint8_t BmcMctpEid = 8;
+constexpr uint8_t BmcPldmTerminusHandle = 1;
+constexpr uint8_t BmcTerminusId = 1;
+
 /** @brief Build (if not built already) and retrieve PDR by the PDR types
  *
  *  @param[in] dir - directory housing platform specific PDR JSON files
