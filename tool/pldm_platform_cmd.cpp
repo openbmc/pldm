@@ -407,6 +407,42 @@ class GetPDR : public CommandInterface
         }
     }
 
+    void printTerminusLocatorPDR(uint8_t* data)
+    {
+        if (data == NULL)
+        {
+            return;
+        }
+        auto pdr = reinterpret_cast<pldm_terminus_locator_pdr*>(data);
+        printEffecterHdrPDR(&pdr->hdr);
+
+        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
+                  << std::endl;
+        std::string validity = pdr->validity ? "Valid" : "Not valid";
+        std::cout << "Validity: " << validity << std::endl;
+        std::cout << "Terminus Id: " << (uint32_t)pdr->tid << std::endl;
+        std::cout << "containerID: " << pdr->container_id << std::endl;
+        std::string locatorType("other");
+        switch (pdr->terminus_locator_type)
+        {
+            case PLDM_TERMINUS_MCTP_EID:
+                locatorType = "MCTP_EID";
+                break;
+        }
+        std::cout << "Terminus Locator Type: " << locatorType << std::endl;
+        std::cout << "Terminus Locator Value Size: "
+                  << (uint32_t)pdr->terminus_loactor_value_size << std::endl;
+
+        if (pdr->terminus_locator_type == PLDM_TERMINUS_MCTP_EID)
+        {
+            auto locatorValue =
+                reinterpret_cast<pldm_terminus_locator_value_for_mctp*>(
+                    pdr->terminus_locator_value);
+            std::cout << "MCTP EID: " << (uint32_t)locatorValue->eid
+                      << std::endl;
+        }
+    }
+
     void printPDRMsg(const uint32_t nextRecordHndl, const uint16_t respCnt,
                      uint8_t* data)
     {
@@ -441,6 +477,8 @@ class GetPDR : public CommandInterface
             case PLDM_PDR_FRU_RECORD_SET:
                 printPDRFruRecordSet(data);
                 break;
+            case PLDM_TERMINUS_LOACTOR_PDR:
+                printTerminusLocatorPDR(data);
             default:
                 break;
         }

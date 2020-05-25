@@ -48,6 +48,9 @@ extern "C" {
 #define PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH 2
 #define PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH 2
 
+#define PLDM_BMC_MCTP_EID 8
+#define PLDM_BMC_TERMINUS_ID 1
+
 enum pldm_effecter_data_size {
 	PLDM_EFFECTER_DATA_SIZE_UINT8,
 	PLDM_EFFECTER_DATA_SIZE_SINT8,
@@ -129,6 +132,7 @@ enum pldm_platform_commands {
 /** @brief PLDM PDR types
  */
 enum pldm_pdr_types {
+	PLDM_TERMINUS_LOACTOR_PDR = 1,
 	PLDM_STATE_SENSOR_PDR = 4,
 	PLDM_NUMERIC_EFFECTER_PDR = 9,
 	PLDM_STATE_EFFECTER_PDR = 11,
@@ -233,6 +237,17 @@ enum pldm_platform_event_status {
 	PLDM_EVENT_LOGGING_REJECTED = 0x05
 };
 
+/** @brief PLDM Terminus Locator PDR validity
+ */
+enum pldm_terminus_locator_pdr_validity {
+	PLDM_TL_PDR_NOT_VALID = 0x00,
+	PLDM_TL_PDR_VALID = 0x01
+};
+
+/** @brief PLDM Terminus Locator type
+ */
+enum pldm_terminus_locator_type { PLDM_TERMINUS_MCTP_EID = 0x01 };
+
 /** @struct pldm_pdr_hdr
  *
  *  Structure representing PLDM common PDR header
@@ -312,6 +327,30 @@ struct pldm_state_effecter_pdr {
 	bool8_t has_description_pdr;
 	uint8_t composite_effecter_count;
 	uint8_t possible_states[1];
+} __attribute__((packed));
+
+/** @struct pldm_terminus_locator_pdr
+ *
+ *  Structure representing PLDM terminus locator PDR
+ */
+struct pldm_terminus_locator_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint8_t validity;
+	uint8_t tid;
+	uint16_t container_id;
+	uint8_t terminus_locator_type;
+	uint8_t terminus_loactor_value_size;
+	uint8_t terminus_locator_value[1];
+} __attribute__((packed));
+
+/** @struct pldm_terminus_locator_value_for_mctp
+ *
+ *  Structure representing terminus locator value for
+ *  pdr type mctp
+ */
+struct pldm_terminus_locator_value_for_mctp {
+	uint8_t eid;
 } __attribute__((packed));
 
 /** @union union_effecter_data_size

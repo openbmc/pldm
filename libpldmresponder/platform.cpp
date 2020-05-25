@@ -121,6 +121,7 @@ void Handler::generate(const std::string& dir, Repo& repo)
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }
     }
+    generateTerminusLocatorPDRRepo(repo);
 }
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
@@ -528,6 +529,38 @@ Response Handler::setNumericEffecterValue(const pldm_msg* request,
     return ccOnlyResponse(request, rc);
 }
 
+void Handler::generateTerminusLocatorPDRRepo(Repo& repo)
+{
+    size_t pdrSize = sizeof(pldm_terminus_locator_pdr);
+    std::vector<uint8_t> entry{};
+    entry.resize(pdrSize);
+
+    auto pdr = reinterpret_cast<pldm_terminus_locator_pdr*>(entry.data());
+
+    pdr->hdr.record_handle = 0;
+    pdr->hdr.version = 1;
+    pdr->hdr.type = PLDM_TERMINUS_LOACTOR_PDR;
+    pdr->hdr.record_change_num = 0;
+    pdr->hdr.length = pdrSize;
+    pdr->terminus_handle = 0;
+    pdr->validity = PLDM_TL_PDR_VALID;
+    pdr->tid = PLDM_BMC_TERMINUS_ID;
+    pdr->container_id = 0x0;
+    pdr->terminus_locator_type = PLDM_TERMINUS_MCTP_EID;
+    pdr->terminus_loactor_value_size =
+        sizeof(pldm_terminus_locator_value_for_mctp);
+
+    uint8_t* start =
+        entry.data() + sizeof(pldm_terminus_locator_pdr) - sizeof(uint8_t);
+    auto locatorValue =
+        reinterpret_cast<pldm_terminus_locator_value_for_mctp*>(start);
+    locatorValue->eid = PLDM_BMC_MCTP_EID;
+
+    PdrEntry pdrEntry{};
+    pdrEntry.data = entry.data();
+    pdrEntry.size = pdrSize;
+    repo.addRecord(pdrEntry);
+}
 } // namespace platform
 } // namespace responder
 } // namespace pldm

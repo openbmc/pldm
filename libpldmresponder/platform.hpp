@@ -390,6 +390,12 @@ class Handler : public CmdHandler
         return rc;
     }
 
+    /** @brief Build Terminus Locator PDR repository
+     *
+     *  @param[in] repo - instance of concrete implementation of Repo
+     */
+    void generateTerminusLocatorPDRRepo(Repo& repo);
+
   private:
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};

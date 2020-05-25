@@ -1,3 +1,4 @@
+#include "host_pdr_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
 
@@ -171,4 +172,49 @@ TEST(GeneratePDR, testMalformedJson)
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
+}
+
+TEST(TestTerminusLocatorPDR, bmcPDR)
+{
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    Handler handler("./pdr_jsons/state_effecter/good", "", inPDRRepo, nullptr);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_TERMINUS_LOACTOR_PDR);
+
+    // 1 entry
+    ASSERT_EQ(outRepo.getRecordCount(), 1);
+
+    pdr_utils::PdrEntry e;
+    auto record = pdr::getRecordByHandle(outRepo, 4, e);
+    ASSERT_NE(record, nullptr);
+
+    pldm_terminus_locator_pdr* pdr =
+        reinterpret_cast<pldm_terminus_locator_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.record_handle, 4);
+    EXPECT_EQ(pdr->hdr.version, 1);
+    EXPECT_EQ(pdr->hdr.type, PLDM_TERMINUS_LOACTOR_PDR);
+    EXPECT_EQ(pdr->hdr.record_change_num, 0);
+    EXPECT_EQ(pdr->hdr.length, sizeof(pldm_terminus_locator_pdr));
+    EXPECT_EQ(pdr->terminus_handle, 0);
+    EXPECT_EQ(pdr->validity, PLDM_TL_PDR_VALID);
+    EXPECT_EQ(pdr->tid, PLDM_BMC_TERMINUS_ID);
+    EXPECT_EQ(pdr->container_id, 0x0);
+    EXPECT_EQ(pdr->terminus_locator_type, PLDM_TERMINUS_MCTP_EID);
+    EXPECT_EQ(pdr->terminus_loactor_value_size,
+              sizeof(pldm_terminus_locator_value_for_mctp));
+    pldm_terminus_locator_value_for_mctp* locatorValue =
+        reinterpret_cast<pldm_terminus_locator_value_for_mctp*>(
+            pdr->terminus_locator_value);
+    EXPECT_EQ(locatorValue->eid, PLDM_BMC_MCTP_EID);
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
+}
+
+TEST(getTLPDR, allCases)
+{
+    uint16_t terminusHandle{};
+    ASSERT_THROW(pldm::HostPDRHandler::getTLPDR(terminusHandle),
+                 std::exception);
 }
