@@ -24,6 +24,10 @@ using EntityType = uint16_t;
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
 using PDRRecordHandles = std::vector<ChangeEntry>;
+// map to maintain host's TL PDR
+using TerminusHandle = uint16_t;
+using TLPDRData = std::vector<uint8_t>;
+using TLPDRMap = std::map<TerminusHandle, TLPDRData>;
 
 /** @struct SensorEntry
  *
@@ -110,6 +114,10 @@ class HostPDRHandler
         return sensorMap.at(entry);
     }
 
+    /** @brief Get a reference of Host TL PDR
+     */
+    static const TLPDRData& getTLPDR(uint16_t terminusHandle);
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -164,6 +172,9 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+
+    /** @brief map to keep a copy of host's TL PDR */
+    static TLPDRMap TLPDR;
 };
 
 } // namespace pldm
