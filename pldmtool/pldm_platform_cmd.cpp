@@ -553,6 +553,34 @@ class GetPDR : public CommandInterface
         }
     }
 
+    void printTerminusLocatorPDR(const uint8_t* data)
+    {
+        const std::array<std::string_view, 4> terminusLocatorType = {
+            "UID", "MCTP_EID", "SMBusRelative", "systemSoftware"};
+
+        auto pdr = reinterpret_cast<const pldm_terminus_locator_pdr*>(data);
+
+        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
+                  << std::endl;
+        std::cout << "validity: " << (pdr->validity ? "valid" : "notValid")
+                  << std::endl;
+        std::cout << "TID: " << unsigned(pdr->tid) << std::endl;
+        std::cout << "containerID: " << pdr->container_id << std::endl;
+        std::cout << "terminusLocatorType: "
+                  << terminusLocatorType[pdr->terminus_locator_type]
+                  << std::endl;
+        std::cout << "terminusLocatorValueSize: "
+                  << unsigned(pdr->terminus_locator_value_size) << std::endl;
+
+        if (pdr->terminus_locator_type == PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID)
+        {
+            auto locatorValue =
+                reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
+                    pdr->terminus_locator_value);
+            std::cout << "EID: " << unsigned(locatorValue->eid) << std::endl;
+        }
+    }
+
     void printPDRMsg(const uint32_t nextRecordHndl, const uint16_t respCnt,
                      uint8_t* data)
     {
@@ -568,6 +596,9 @@ class GetPDR : public CommandInterface
         printCommonPDRHeader(pdr);
         switch (pdr->type)
         {
+            case PLDM_TERMINUS_LOCATOR_PDR:
+                printTerminusLocatorPDR(data);
+                break;
             case PLDM_STATE_SENSOR_PDR:
                 printStateSensorPDR(data);
                 break;
