@@ -177,19 +177,28 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                     mergeEntityAssociations(pdr);
                     merged = true;
                 }
+                else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+                {
+                    const auto& [terminusHandle, sensorID, sensorInfo] =
+                        responder::pdr_utils::parseStateSensorPDR(pdr);
+                    SensorEntry sensorEntry{};
+                    // TODO: Lookup Terminus ID from the Terminus Locator
+                    // PDR with terminusHandle
+                    sensorEntry.terminusID = 0;
+                    sensorEntry.sensorID = sensorID;
+                    sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+                }
+                else if (pdrHdr->type == PLDM_TERMINUS_LOACTOR_PDR)
+                {
+                    auto terminusPDR =
+                        reinterpret_cast<pldm_terminus_locator_pdr*>(
+                            pdr.data());
+                    auto terminusHandle = terminusPDR->terminus_handle;
+                    TLPDR.emplace(terminusHandle, pdr);
+                    pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
+                }
                 else
                 {
-                    if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
-                    {
-                        const auto& [terminusHandle, sensorID, sensorInfo] =
-                            responder::pdr_utils::parseStateSensorPDR(pdr);
-                        SensorEntry sensorEntry{};
-                        // TODO: Lookup Terminus ID from the Terminus Locator
-                        // PDR with terminusHandle
-                        sensorEntry.terminusID = 0;
-                        sensorEntry.sensorID = sensorID;
-                        sensorMap.emplace(sensorEntry, std::move(sensorInfo));
-                    }
                     pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
                 }
             }
@@ -348,6 +357,11 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                   << ", cc=" << static_cast<unsigned>(completionCode)
                   << std::endl;
     }
+}
+
+const TLPDRData& HostPDRHandler::getTLPDR(uint16_t terminusHandle)
+{
+    return TLPDR.at(terminusHandle);
 }
 
 } // namespace pldm
