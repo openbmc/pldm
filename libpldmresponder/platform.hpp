@@ -65,6 +65,7 @@ class Handler : public CmdHandler
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
         fruHandler(fruHandler)
     {
+        generateTerminusLocatorPDR(pdrRepo);
         generate(dBusIntf, pdrJsonsDir, pdrRepo);
 
         handlers.emplace(PLDM_GET_PDR,
@@ -396,6 +397,12 @@ class Handler : public CmdHandler
 
         return rc;
     }
+
+    /** @brief Build BMC Terminus Locator PDR
+     *
+     *  @param[in] repo - instance of concrete implementation of Repo
+     */
+    void generateTerminusLocatorPDR(Repo& repo);
 
   private:
     pdr_utils::Repo pdrRepo;

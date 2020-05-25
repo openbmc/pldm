@@ -3,6 +3,7 @@
 
 #include "common/utils.hpp"
 #include "event_parser.hpp"
+#include "pdr.hpp"
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
 #include "platform_numeric_effecter.hpp"
@@ -549,6 +550,33 @@ Response Handler::setNumericEffecterValue(const pldm_msg* request,
     return ccOnlyResponse(request, rc);
 }
 
+void Handler::generateTerminusLocatorPDR(Repo& repo)
+{
+    std::vector<uint8_t> pdrBuffer(sizeof(pldm_terminus_locator_pdr));
+
+    auto pdr = reinterpret_cast<pldm_terminus_locator_pdr*>(pdrBuffer.data());
+
+    pdr->hdr.record_handle = 0;
+    pdr->hdr.version = 1;
+    pdr->hdr.type = PLDM_TERMINUS_LOCATOR_PDR;
+    pdr->hdr.record_change_num = 0;
+    pdr->hdr.length = sizeof(pldm_terminus_locator_pdr) - sizeof(pldm_pdr_hdr);
+    pdr->terminus_handle = BmcPldmTerminusHandle;
+    pdr->validity = PLDM_TL_PDR_VALID;
+    pdr->tid = BmcTerminusId;
+    pdr->container_id = 0x0;
+    pdr->terminus_locator_type = PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID;
+    pdr->terminus_locator_value_size =
+        sizeof(pldm_terminus_locator_type_mctp_eid);
+    auto locatorValue = reinterpret_cast<pldm_terminus_locator_type_mctp_eid*>(
+        pdr->terminus_locator_value);
+    locatorValue->eid = BmcMctpEid;
+
+    PdrEntry pdrEntry{};
+    pdrEntry.data = pdrBuffer.data();
+    pdrEntry.size = pdrBuffer.size();
+    repo.addRecord(pdrEntry);
+}
 } // namespace platform
 } // namespace responder
 } // namespace pldm
