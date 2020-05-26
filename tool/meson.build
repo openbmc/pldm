@@ -11,7 +11,7 @@ sources = [
 
 if get_option('oem-ibm').enabled()
 sources += [
-    'oem/ibm/pldm_host_cmd.cpp'
+    'oem/ibm/pldm_oem_ibm.cpp'
   ]
 endif
 
