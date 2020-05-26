@@ -27,8 +27,9 @@ using Value = std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
 namespace pdr
 {
 
+using EID = uint8_t;
 using TerminusHandle = uint16_t;
-using TerminusID = uint16_t;
+using TerminusID = uint8_t;
 using SensorID = uint16_t;
 using EntityType = uint16_t;
 using EntityInstance = uint16_t;
