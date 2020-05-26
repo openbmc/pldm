@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "base.h"
+#include "pldm_types.h"
 
 /** @brief PLDM Commands in IBM OEM type
  */
@@ -42,6 +43,11 @@ enum pldm_fileio_table_type {
 	PLDM_FILE_ATTRIBUTE_TABLE = 0,
 	PLDM_OEM_FILE_ATTRIBUTE_TABLE = 1,
 };
+struct pldm_file_attr_table_entry {
+	uint32_t file_handle;
+	uint16_t file_name_length;
+	uint8_t rest_params[1];
+} __attribute__((packed));
 
 /** @brief PLDM File I/O table types
  */
@@ -229,15 +235,16 @@ int encode_get_file_table_req(uint8_t instance_id, uint32_t transfer_handle,
  * @param[out] next_transfer_handle -  Handle to identify next portion of data
  * transfer
  * @param[out] transfer_flag - Represents the part of transfer
- * @param[out] file_table_offset - Offset where file table data should be read
- * in pldm msg
+ * @param[out] file_table_data - This data is a portion of the overall
+ * File Table
+ * @param[out] file_table_length - Length of the File table data
  * @return pldm_completion_codes
  */
 int decode_get_file_table_resp(const struct pldm_msg *msg,
 			       size_t payload_length, uint8_t *completion_code,
 			       uint32_t *next_transfer_handle,
-			       uint8_t *transfer_flag,
-			       size_t *file_table_offset);
+			       uint8_t *transfer_flag, uint8_t *file_table_data,
+			       size_t *file_table_length);
 
 /** @struct pldm_read_file_req
  *
