@@ -51,6 +51,8 @@ struct SensorEntry
 };
 
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
+using TLPDRMap = std::map<pdr::TerminusHandle, pdr::TLInfo>;
+using PDRList = std::vector<std::vector<uint8_t>>;
 
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
@@ -112,6 +114,26 @@ class HostPDRHandler
         return sensorMap.at(entry);
     }
 
+    /** @brief Lookup terminus locator info corresponding to the terminus handle
+     *
+     *  @param[in] terminusHandle - PLDMTerminusHandle
+     *
+     *  @return TLInfo corresponding to the input paramter terminusHandle
+     *          throw std::out_of_range exception if not found
+     */
+    const pdr::TLInfo& getTLPDR(pdr::TerminusHandle terminusHandle) const
+    {
+        return tlpdrMap.at(terminusHandle);
+    }
+
+    /** @brief Parse state sensor PDRs and populate the sensorMap lookup data
+     *         structure
+     *
+     *  @param[in] stateSensorPDRs - host state sensor PDRs
+     *
+     */
+    void parseStateSensorPDRs(const PDRList& stateSensorPDRs);
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -166,6 +188,9 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+
+    /** @brief tlpdrMap is to keep a copy of host's TL PDR information */
+    TLPDRMap tlpdrMap;
 };
 
 } // namespace pldm

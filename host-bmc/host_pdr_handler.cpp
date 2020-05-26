@@ -80,6 +80,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                 {
                     pldm_pdr_remove_remote_pdrs(repo);
                     this->sensorMap.clear();
+                    this->tlpdrMap.clear();
                 }
             }
         });
@@ -106,6 +107,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                                     PLDM_GET_PDR_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     bool merged = false;
+    PDRList stateSensorPDRs{};
 
     uint32_t nextRecordHandle{};
     uint32_t recordHandle{};
@@ -189,16 +191,28 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 }
                 else
                 {
-                    if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+                    if (pdrHdr->type == PLDM_TERMINUS_LOCATOR_PDR)
                     {
-                        const auto& [terminusHandle, sensorID, sensorInfo] =
-                            responder::pdr_utils::parseStateSensorPDR(pdr);
-                        SensorEntry sensorEntry{};
-                        // TODO: Lookup Terminus ID from the Terminus Locator
-                        // PDR with terminusHandle
-                        sensorEntry.terminusID = 0;
-                        sensorEntry.sensorID = sensorID;
-                        sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+                        auto tlpdr =
+                            reinterpret_cast<const pldm_terminus_locator_pdr*>(
+                                pdr.data());
+                        if (tlpdr->terminus_locator_type ==
+                            PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID)
+                        {
+                            auto locatorValue = reinterpret_cast<
+                                const pldm_terminus_locator_type_mctp_eid*>(
+                                tlpdr->terminus_locator_value);
+                            tlpdrMap.emplace(
+                                static_cast<pdr::TerminusHandle>(
+                                    tlpdr->terminus_handle),
+                                std::make_tuple(
+                                    static_cast<pdr::TerminusID>(tlpdr->tid),
+                                    static_cast<pdr::EID>(locatorValue->eid)));
+                        }
+                    }
+                    else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+                    {
+                        stateSensorPDRs.emplace_back(pdr);
                     }
                     pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
                 }
@@ -216,6 +230,8 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             }
         }
     } while (recordHandle);
+
+    parseStateSensorPDRs(stateSensorPDRs);
 
     if (merged)
     {
@@ -368,6 +384,28 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                   << "rc=" << rc
                   << ", cc=" << static_cast<unsigned>(completionCode)
                   << std::endl;
+    }
+}
+
+void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs)
+{
+    for (const auto& pdr : stateSensorPDRs)
+    {
+        SensorEntry sensorEntry{};
+        const auto& [terminusHandle, sensorID, sensorInfo] =
+            responder::pdr_utils::parseStateSensorPDR(pdr);
+        sensorEntry.sensorID = sensorID;
+        try
+        {
+            const auto& [tid, eid] = getTLPDR(terminusHandle);
+            sensorEntry.terminusID = tid;
+        }
+        // If there is no mapping for terminusHandle use hardcoded TID of 2.
+        catch (const std::out_of_range& e)
+        {
+            sensorEntry.terminusID = 2;
+        }
+        sensorMap.emplace(sensorEntry, std::move(sensorInfo));
     }
 }
 
