@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "base.h"
+#include "pldm_types.h"
 
 /** @brief PLDM Commands in IBM OEM type
  */
@@ -176,6 +177,16 @@ struct pldm_get_file_table_resp {
 	uint32_t next_transfer_handle; //!< Next data transfer handle
 	uint8_t transfer_flag;	       //!< Transfer flag
 	uint8_t table_data[1];	       //!< Table Data
+} __attribute__((packed));
+
+/** @struct pldm_file_attr_table_entry
+ *
+ * Structure representing File attribute table entry
+ */
+struct pldm_file_attr_table_entry {
+	uint32_t file_handle;		//!< File Handle
+	uint16_t file_name_length;	//!< File name length
+	uint8_t file_attr_table_nst[1]; //!< File name size traits
 } __attribute__((packed));
 
 /** @brief Decode GetFileTable command request data
