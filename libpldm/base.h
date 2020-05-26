@@ -90,22 +90,22 @@ typedef enum {
 struct pldm_msg_hdr {
 #if defined(__LITTLE_ENDIAN_BITFIELD)
 	uint8_t instance_id : 5; //!< Instance ID
-	uint8_t reserved : 1;    //!< Reserved
-	uint8_t datagram : 1;    //!< Datagram bit
-	uint8_t request : 1;     //!< Request bit
+	uint8_t reserved : 1;	 //!< Reserved
+	uint8_t datagram : 1;	 //!< Datagram bit
+	uint8_t request : 1;	 //!< Request bit
 #elif defined(__BIG_ENDIAN_BITFIELD)
-	uint8_t request : 1;     //!< Request bit
-	uint8_t datagram : 1;    //!< Datagram bit
-	uint8_t reserved : 1;    //!< Reserved
+	uint8_t request : 1;	 //!< Request bit
+	uint8_t datagram : 1;	 //!< Datagram bit
+	uint8_t reserved : 1;	 //!< Reserved
 	uint8_t instance_id : 5; //!< Instance ID
 #endif
 
 #if defined(__LITTLE_ENDIAN_BITFIELD)
-	uint8_t type : 6;       //!< PLDM type
+	uint8_t type : 6;	//!< PLDM type
 	uint8_t header_ver : 2; //!< Header version
 #elif defined(__BIG_ENDIAN_BITFIELD)
-	uint8_t header_ver : 2;  //!< Header version
-	uint8_t type : 6;	//!< PLDM type
+	uint8_t header_ver : 2;	 //!< Header version
+	uint8_t type : 6;	 //!< PLDM type
 #endif
 	uint8_t command; //!< PLDM command code
 } __attribute__((packed));
@@ -125,9 +125,9 @@ struct pldm_msg {
  *  pack_pldm_header and unpack_pldm_header API.
  */
 struct pldm_header_info {
-	MessageType msg_type;    //!< PLDM message type
-	uint8_t instance;	//!< PLDM instance id
-	uint8_t pldm_type;       //!< PLDM type
+	MessageType msg_type;	 //!< PLDM message type
+	uint8_t instance;	 //!< PLDM instance id
+	uint8_t pldm_type;	 //!< PLDM type
 	uint8_t command;	 //!< PLDM command code
 	uint8_t completion_code; //!< PLDM completion code, applies for response
 };
@@ -147,7 +147,7 @@ struct pldm_get_types_resp {
  *  Structure representing PLDM get commands request.
  */
 struct pldm_get_commands_req {
-	uint8_t type;    //!< PLDM Type for which command support information is
+	uint8_t type;	 //!< PLDM Type for which command support information is
 			 //!< being requested
 	ver32_t version; //!< version for the specified PLDM Type
 } __attribute__((packed));
@@ -183,7 +183,7 @@ struct pldm_get_version_resp {
 	uint8_t completion_code;       //!< completion code
 	uint32_t next_transfer_handle; //!< next portion of PLDM version data
 				       //!< transfer
-	uint8_t transfer_flag;	 //!< PLDM GetVersion transfer flag
+	uint8_t transfer_flag;	       //!< PLDM GetVersion transfer flag
 	uint8_t version_data[1];       //!< PLDM GetVersion version field
 } __attribute__((packed));
 

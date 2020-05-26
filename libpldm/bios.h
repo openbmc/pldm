@@ -120,10 +120,10 @@ struct pldm_get_date_time_resp {
 struct pldm_set_date_time_req {
 	uint8_t seconds; //!< Seconds in BCD format
 	uint8_t minutes; //!< Minutes in BCD format
-	uint8_t hours;   //!< Hours in BCD format
-	uint8_t day;     //!< Day of the month in BCD format
-	uint8_t month;   //!< Month in BCD format
-	uint16_t year;   //!< Year in BCD format
+	uint8_t hours;	 //!< Hours in BCD format
+	uint8_t day;	 //!< Day of the month in BCD format
+	uint8_t month;	 //!< Month in BCD format
+	uint16_t year;	 //!< Year in BCD format
 } __attribute__((packed));
 
 /** @struct pldm_only_cc_resp

@@ -163,8 +163,8 @@ int decode_rw_file_memory_resp(const struct pldm_msg *msg,
  */
 struct pldm_get_file_table_req {
 	uint32_t transfer_handle; //!< Data transfer handle
-	uint8_t operation_flag;   //!< Transfer operation flag
-	uint8_t table_type;       //!< Table type
+	uint8_t operation_flag;	  //!< Transfer operation flag
+	uint8_t table_type;	  //!< Table type
 } __attribute__((packed));
 
 /** @struct pldm_get_file_table_resp
@@ -174,8 +174,8 @@ struct pldm_get_file_table_req {
 struct pldm_get_file_table_resp {
 	uint8_t completion_code;       //!< Completion code
 	uint32_t next_transfer_handle; //!< Next data transfer handle
-	uint8_t transfer_flag;	 //!< Transfer flag
-	uint8_t table_data[1];	 //!< Table Data
+	uint8_t transfer_flag;	       //!< Transfer flag
+	uint8_t table_data[1];	       //!< Table Data
 } __attribute__((packed));
 
 /** @brief Decode GetFileTable command request data
@@ -226,7 +226,7 @@ struct pldm_read_file_req {
 struct pldm_read_file_resp {
 	uint8_t completion_code; //!< Completion code
 	uint32_t length;	 //!< Number of bytes read
-	uint8_t file_data[1];    //!< Address of this is where file data starts
+	uint8_t file_data[1];	 //!< Address of this is where file data starts
 } __attribute__((packed));
 
 /** @struct pldm_write_file_req

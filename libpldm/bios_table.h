@@ -214,8 +214,8 @@ pldm_bios_table_attr_find_by_string_handle(const void *table, size_t length,
  */
 struct pldm_bios_table_attr_entry_enum_info {
 	uint16_t name_handle; //!< attribute name handle
-	bool read_only;       //!< indicate whether the attribute is read-only
-	uint8_t pv_num;       //!< number of possible values
+	bool read_only;	      //!< indicate whether the attribute is read-only
+	uint8_t pv_num;	      //!< number of possible values
 	const uint16_t *pv_handle; //!< handles of possible values
 	uint8_t def_num;	   //!< nnumber of default values
 	const uint8_t *def_index;  //!< indices of default values.
@@ -326,12 +326,12 @@ uint8_t pldm_bios_table_attr_entry_enum_decode_def_indices(
  *
  */
 struct pldm_bios_table_attr_entry_string_info {
-	uint16_t name_handle;   //!< attribute name handle
+	uint16_t name_handle;	//!< attribute name handle
 	bool read_only;		//!< indicate whether the attribute is read-only
-	uint8_t string_type;    //!< The type of the string
-	uint16_t min_length;    //!< The minimum length of the string in bytes
-	uint16_t max_length;    //!< The maximum length of the string in bytes
-	uint16_t def_length;    //!< The length of the defaut string in bytes
+	uint8_t string_type;	//!< The type of the string
+	uint16_t min_length;	//!< The minimum length of the string in bytes
+	uint16_t max_length;	//!< The maximum length of the string in bytes
+	uint16_t def_length;	//!< The length of the defaut string in bytes
 	const char *def_string; //!< The default string itself
 };
 
@@ -429,12 +429,12 @@ uint16_t pldm_bios_table_attr_entry_string_decode_def_string(
  */
 struct pldm_bios_table_attr_entry_integer_info {
 	uint16_t name_handle; //!< attribute name handle
-	bool read_only;       //!< indicate whether the attribute is read-only
+	bool read_only;	      //!< indicate whether the attribute is read-only
 	uint64_t lower_bound; //!< The lower bound on the integer value
 	uint64_t upper_bound; //!< The upper bound on the integer value
 	uint32_t scalar_increment; //!< The scalar value that is used for the
 				   //!< increments to this integer
-	uint64_t default_value;    //!< The default value of the integer
+	uint64_t default_value;	   //!< The default value of the integer
 };
 
 /** @brief Check fields in @ref pldm_bios_table_attr_entry_integer_info

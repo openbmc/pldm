@@ -402,7 +402,7 @@ struct state_effecter_possible_states {
  *  Structure representing a stateField in SetStateEffecterStates command */
 
 typedef struct state_field_for_state_effecter_set {
-	uint8_t set_request;    //!< Whether to change the state
+	uint8_t set_request;	//!< Whether to change the state
 	uint8_t effecter_state; //!< Expected state of the effecter
 } __attribute__((packed)) set_effecter_state_field;
 
@@ -412,11 +412,11 @@ typedef struct state_field_for_state_effecter_set {
 
 typedef struct state_field_for_get_state_sensor_readings {
 	uint8_t sensor_op_state; //!< The state of the sensor itself
-	uint8_t present_state;   //!< Return a state value
+	uint8_t present_state;	 //!< Return a state value
 	uint8_t previous_state; //!< The state that the presentState was entered
 				//! from. This must be different from the
 				//! present state
-	uint8_t event_state;    //!< Return a state value from a PLDM State Set
+	uint8_t event_state;	//!< Return a state value from a PLDM State Set
 			     //! that is associated with the sensor
 } __attribute__((packed)) get_sensor_state_field;
 
