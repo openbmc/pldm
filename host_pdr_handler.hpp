@@ -28,6 +28,7 @@ using PDRRecordHandles = std::vector<ChangeEntry>;
 using TerminusHandle = uint16_t;
 using TLPDRData = std::vector<uint8_t>;
 using TLPDRMap = std::map<TerminusHandle, TLPDRData>;
+using UnProcessedPDR = std::vector<std::vector<uint8_t>>;
 
 /** @struct SensorEntry
  *
@@ -175,6 +176,10 @@ class HostPDRHandler
 
     /** @brief map to keep a copy of host's TL PDR */
     static TLPDRMap TLPDR;
+
+    /** @brief keeping a list of PDRs which come before TL PDR and
+     *  need a processing based on TL PDR*/
+    UnProcessedPDR unprocessedPDR;
 };
 
 } // namespace pldm
