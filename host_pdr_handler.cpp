@@ -105,6 +105,8 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                                     PLDM_GET_PDR_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     bool merged = false;
+    bool receivedTLPDR = false;
+    uint8_t terminusID{};
 
     for (auto recordHandle : pdrRecordHandles)
     {
@@ -174,19 +176,31 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
                 if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
                 {
-                    mergeEntityAssociations(pdr);
-                    merged = true;
+                    if (receivedTLPDR)
+                    {
+                        mergeEntityAssociations(pdr);
+                        merged = true;
+                    }
+                    else
+                    {
+                        unprocessedPDR.emplace_back(std::move(pdr));
+                    }
                 }
                 else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
                 {
-                    const auto& [terminusHandle, sensorID, sensorInfo] =
-                        responder::pdr_utils::parseStateSensorPDR(pdr);
-                    SensorEntry sensorEntry{};
-                    // TODO: Lookup Terminus ID from the Terminus Locator
-                    // PDR with terminusHandle
-                    sensorEntry.terminusID = 0;
-                    sensorEntry.sensorID = sensorID;
-                    sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+                    if (receivedTLPDR)
+                    {
+                        const auto& [terminusHandle, sensorID, sensorInfo] =
+                            responder::pdr_utils::parseStateSensorPDR(pdr);
+                        SensorEntry sensorEntry{};
+                        sensorEntry.terminusID = terminusID;
+                        sensorEntry.sensorID = sensorID;
+                        sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+                    }
+                    else
+                    {
+                        unprocessedPDR.emplace_back(std::move(pdr));
+                    }
                 }
                 else if (pdrHdr->type == PLDM_TERMINUS_LOACTOR_PDR)
                 {
@@ -194,8 +208,10 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                         reinterpret_cast<pldm_terminus_locator_pdr*>(
                             pdr.data());
                     auto terminusHandle = terminusPDR->terminus_handle;
+                    terminusID = terminusPDR->tid;
                     TLPDR.emplace(terminusHandle, pdr);
                     pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
+                    receivedTLPDR = true;
                 }
                 else
                 {
@@ -203,6 +219,35 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 }
             }
         }
+    }
+
+    if (receivedTLPDR)
+    {
+        for (auto it = unprocessedPDR.begin(); it != unprocessedPDR.end();)
+        {
+            auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>((*it).data());
+            if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
+            {
+                mergeEntityAssociations(*it);
+                merged = true;
+            }
+            else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+            {
+                const auto& [terminusHandle, sensorID, sensorInfo] =
+                    responder::pdr_utils::parseStateSensorPDR(*it);
+                SensorEntry sensorEntry{};
+                sensorEntry.terminusID = terminusID;
+                sensorEntry.sensorID = sensorID;
+                sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+            }
+            it = unprocessedPDR.erase(it);
+        }
+    }
+    else
+    {
+        std::ostringstream errMsg;
+        errMsg << "Did not receive TL PDR from host \n";
+        pldm::utils::reportError(errMsg.str().c_str());
     }
 
     if (merged)
