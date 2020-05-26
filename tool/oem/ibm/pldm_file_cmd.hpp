@@ -7,7 +7,7 @@ namespace pldmtool
 
 namespace oem_ibm
 {
-namespace power_host
+namespace file_io
 {
 
 void registerCommand(CLI::App& app);
