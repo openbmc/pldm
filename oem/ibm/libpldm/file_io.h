@@ -9,6 +9,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "base.h"
+#include "pldm_types.h"
 
 /** @brief PLDM Commands in IBM OEM type
  */
@@ -42,6 +43,11 @@ enum pldm_fileio_table_type {
 	PLDM_FILE_ATTRIBUTE_TABLE = 0,
 	PLDM_OEM_FILE_ATTRIBUTE_TABLE = 1,
 };
+struct pldm_file_attr_table_entry {
+	uint32_t file_handle;
+	uint16_t file_name_length;
+	uint8_t rest_params[1];
+} __attribute__((packed));
 
 /** @brief PLDM File I/O table types
  */
