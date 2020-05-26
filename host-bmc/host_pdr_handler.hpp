@@ -51,6 +51,7 @@ struct SensorEntry
 };
 
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
+using PDRList = std::vector<std::vector<uint8_t>>;
 
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
@@ -70,6 +71,8 @@ class HostPDRHandler
     HostPDRHandler& operator=(const HostPDRHandler&) = delete;
     HostPDRHandler& operator=(HostPDRHandler&&) = delete;
     ~HostPDRHandler() = default;
+
+    using TLPDRMap = std::map<pdr::TerminusHandle, pdr::TerminusID>;
 
     /** @brief Constructor
      *  @param[in] mctp_fd - fd of MCTP communications socket
@@ -111,6 +114,16 @@ class HostPDRHandler
     {
         return sensorMap.at(entry);
     }
+
+    /** @brief Parse state sensor PDRs and populate the sensorMap lookup data
+     *         structure
+     *
+     *  @param[in] stateSensorPDRs - host state sensor PDRs
+     *  @param[in] tlpdrInfo - terminus locator PDRs info
+     *
+     */
+    void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
+                              const TLPDRMap& tlpdrInfo);
 
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
