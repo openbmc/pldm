@@ -262,3 +262,41 @@ int decode_get_fru_record_table_resp(
 
 	return PLDM_SUCCESS;
 }
+
+int fru_record_data_size_calc(const uint8_t *fru_table,
+			      const size_t record_start_offset,
+			      size_t fru_table_length, size_t *record_data_size)
+{
+	const struct pldm_fru_record_data_format *fru_record_data =
+	    (struct pldm_fru_record_data_format *)fru_table;
+	int iter;
+	int tlv_offset = 0;
+	struct pldm_fru_record_tlv *fru_record_tlv;
+
+	if (fru_table == NULL || record_data_size == NULL) {
+		return PLDM_ERROR;
+	}
+
+	if (fru_table_length <= record_start_offset) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	for (iter = 0; iter < fru_record_data->num_fru_fields; iter++) {
+		fru_record_tlv =
+		    (struct pldm_fru_record_tlv
+			 *)(&fru_record_data->tlvs->type + tlv_offset);
+		tlv_offset += fru_record_tlv->length +
+			      sizeof(fru_record_tlv->type) +
+			      sizeof(fru_record_tlv->length);
+	}
+	*record_data_size = sizeof(fru_record_data->record_set_id) +
+			    sizeof(fru_record_data->record_type) +
+			    sizeof(fru_record_data->num_fru_fields) +
+			    sizeof(fru_record_data->encoding_type) + tlv_offset;
+
+	if (*record_data_size + record_start_offset > fru_table_length) {
+		return PLDM_ERROR_INVALID_LENGTH + 1;
+	}
+
+	return PLDM_SUCCESS;
+}

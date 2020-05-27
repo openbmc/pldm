@@ -514,3 +514,103 @@ TEST(GetFruRecordTable, testBadDecodeResponse)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(FruRecordTableCalc, testGoodTable)
+{
+    uint16_t recordSetIdA = 10;
+    uint8_t recordTypeA = PLDM_FRU_RECORD_TYPE_GENERAL;
+    uint8_t numberFruFeildA = 2;
+    uint8_t encodingTypeA = PLDM_FRU_ENCODING_ASCII;
+    uint8_t typeA1 = PLDM_FRU_FIELD_TYPE_CHASSIS;
+    const std::string valueA1("E980");
+    uint8_t lengthA1 = valueA1.size();
+    uint8_t typeA2 = PLDM_FRU_FIELD_TYPE_MODEL;
+    const std::string valueA2("007");
+    uint8_t lengthA2 = valueA2.size();
+    uint16_t recordSetIdB = 11;
+    uint8_t recordTypeB = PLDM_FRU_RECORD_TYPE_GENERAL;
+    uint8_t numberFruFeildB = 2;
+    uint8_t encodingTypeB = PLDM_FRU_ENCODING_ASCII;
+    uint8_t typeB1 = PLDM_FRU_FIELD_TYPE_MANUFAC;
+    const std::string valueB1("IBM");
+    uint8_t lengthB1 = valueB1.size();
+    uint8_t typeB2 = PLDM_FRU_FIELD_TYPE_VENDOR;
+    const std::string valueB2("ISDL");
+    uint8_t lengthB2 = valueB2.size();
+    size_t fruTableSize =
+        sizeof(recordSetIdA) + sizeof(recordTypeA) + sizeof(numberFruFeildA) +
+        sizeof(encodingTypeA) + sizeof(typeA1) + valueA1.size() +
+        sizeof(lengthA1) + sizeof(typeA2) + valueA2.size() + sizeof(lengthA2) +
+        sizeof(recordSetIdB) + sizeof(recordTypeB) + sizeof(numberFruFeildB) +
+        sizeof(encodingTypeB) + sizeof(typeB1) + valueB1.size() +
+        sizeof(lengthB1) + sizeof(typeB2) + valueB2.size() + sizeof(lengthB2);
+    std::array<uint8_t, 100> fruRecordTable{};
+    auto fruRecordTableData1 =
+        reinterpret_cast<struct pldm_fru_record_data_format*>(
+            fruRecordTable.data());
+    fruRecordTableData1->record_set_id = recordSetIdA;
+    fruRecordTableData1->record_type = recordTypeA;
+    fruRecordTableData1->num_fru_fields = numberFruFeildA;
+    fruRecordTableData1->encoding_type = encodingTypeA;
+    auto tlvs1 = reinterpret_cast<struct pldm_fru_record_tlv*>(
+        fruRecordTableData1->tlvs);
+    tlvs1->type = typeA1;
+    tlvs1->length = lengthA1;
+    memcpy(tlvs1->value, &valueA1, lengthA1);
+    auto tlvs2 =
+        reinterpret_cast<struct pldm_fru_record_tlv*>(tlvs1->value + lengthA1);
+    tlvs2->type = typeA2;
+    tlvs2->length = lengthA2;
+    memcpy(tlvs2->value, &valueA2, lengthA2);
+
+    auto fruRecordTableData2 =
+        reinterpret_cast<struct pldm_fru_record_data_format*>(tlvs2->value +
+                                                              lengthA2);
+    fruRecordTableData2->record_set_id = recordSetIdB;
+    fruRecordTableData2->record_type = recordTypeB;
+    fruRecordTableData2->num_fru_fields = numberFruFeildB;
+    fruRecordTableData2->encoding_type = encodingTypeB;
+    auto tlvs3 = reinterpret_cast<struct pldm_fru_record_tlv*>(
+        fruRecordTableData2->tlvs);
+    tlvs3->type = typeB1;
+    tlvs3->length = lengthB1;
+    memcpy(tlvs3->value, &valueB1, lengthB1);
+    auto tlvs4 =
+        reinterpret_cast<struct pldm_fru_record_tlv*>(tlvs3->value + lengthB1);
+    tlvs4->type = typeB2;
+    tlvs4->length = lengthB2;
+    memcpy(tlvs4->value, &valueB2, lengthB2);
+
+    size_t recordDataSize{0};
+    auto rc = fru_record_data_size_calc(
+        reinterpret_cast<const uint8_t*>(fruRecordTable.data()), 0,
+        fruTableSize, &recordDataSize);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(recordDataSize,
+              sizeof(recordSetIdA) + sizeof(recordTypeA) +
+                  sizeof(numberFruFeildA) + sizeof(encodingTypeA) +
+                  sizeof(typeA1) + valueA1.size() + sizeof(lengthA1) +
+                  sizeof(typeA2) + valueA2.size() + sizeof(lengthA2));
+    auto nextFruRecord = reinterpret_cast<struct pldm_fru_record_data_format*>(
+        fruRecordTable.data() + recordDataSize);
+    ASSERT_EQ(nextFruRecord->record_set_id, recordSetIdB);
+    size_t newRecordDataSize{0};
+    rc = fru_record_data_size_calc(
+        reinterpret_cast<const uint8_t*>(fruRecordTable.data()), recordDataSize,
+        fruTableSize, &newRecordDataSize);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(newRecordDataSize + recordDataSize, fruTableSize);
+}
+
+TEST(FruRecordTableCalc, testBadTable)
+{
+    size_t recordDataSize{0};
+    auto rc = fru_record_data_size_calc(nullptr, 0, 10, &recordDataSize);
+    ASSERT_EQ(rc, PLDM_ERROR);
+
+    std::array<uint8_t, 10> fruTable{};
+    rc = fru_record_data_size_calc(
+        reinterpret_cast<const uint8_t*>(fruTable.data()), fruTable.size(),
+        fruTable.size(), &recordDataSize);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
