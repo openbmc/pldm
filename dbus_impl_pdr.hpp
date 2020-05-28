@@ -57,11 +57,8 @@ class Pdr : public PdrIntf
      *  @param[in] stateSetId - value that identifies PLDM State set.
      */
     std::vector<std::vector<uint8_t>>
-        findStateSensorPDR(uint8_t /*tid*/, uint16_t /*entityID*/,
-                           uint16_t /*stateSetId*/) override
-    {
-        return {};
-    }
+        findStateSensorPDR(uint8_t tid, uint16_t entityID,
+                           uint16_t stateSetId) override;
 
   private:
     /** @brief pointer to BMC's primary PDR repo */

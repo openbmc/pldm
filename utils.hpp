@@ -270,6 +270,17 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t tid,
                                                        uint16_t entityID,
                                                        uint16_t stateSetId,
                                                        const pldm_pdr* repo);
+/** @brief Find State Sensor PDR
+ *  @param[in] tid - PLDM terminus ID.
+ *  @param[in] entityID - entity that can be associated with PLDM State set.
+ *  @param[in] stateSetId - value that identifies PLDM State set.
+ *  @param[in] repo - pointer to BMC's primary PDR repo.
+ *  @return array[array[uint8_t]] - StateSensorPDRs
+ */
+std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
+                                                     uint16_t entityID,
+                                                     uint16_t stateSetId,
+                                                     const pldm_pdr* repo);
 
 } // namespace utils
 } // namespace pldm
