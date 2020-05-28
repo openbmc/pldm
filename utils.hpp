@@ -18,10 +18,8 @@
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
 
-namespace pldm
-{
-namespace utils
-{
+namespace pldm {
+namespace utils {
 
 namespace fs = std::filesystem;
 
@@ -29,32 +27,24 @@ namespace fs = std::filesystem;
  *
  *  RAII wrapper for file descriptor.
  */
-struct CustomFD
-{
-    CustomFD(const CustomFD&) = delete;
-    CustomFD& operator=(const CustomFD&) = delete;
-    CustomFD(CustomFD&&) = delete;
-    CustomFD& operator=(CustomFD&&) = delete;
+struct CustomFD {
+  CustomFD(const CustomFD &) = delete;
+  CustomFD &operator=(const CustomFD &) = delete;
+  CustomFD(CustomFD &&) = delete;
+  CustomFD &operator=(CustomFD &&) = delete;
 
-    CustomFD(int fd) : fd(fd)
-    {
+  CustomFD(int fd) : fd(fd) {}
+
+  ~CustomFD() {
+    if (fd >= 0) {
+      close(fd);
     }
+  }
 
-    ~CustomFD()
-    {
-        if (fd >= 0)
-        {
-            close(fd);
-        }
-    }
+  int operator()() const { return fd; }
 
-    int operator()() const
-    {
-        return fd;
-    }
-
-  private:
-    int fd = -1;
+private:
+  int fd = -1;
 };
 
 /** @brief Calculate the pad for PLDM data
@@ -75,8 +65,8 @@ uint8_t getNumPadBytes(uint32_t data);
  *  @param[out] sec - number of seconds in dec
  *  @return true if decode success, false if decode faild
  */
-bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
-                uint8_t* hour, uint8_t* min, uint8_t* sec);
+bool uintToDate(uint64_t data, uint16_t *year, uint8_t *month, uint8_t *day,
+                uint8_t *hour, uint8_t *min, uint8_t *sec);
 
 /** @brief Convert effecter data to structure of set_effecter_state_field
  *
@@ -87,46 +77,42 @@ bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
  *               structure, return nullopt means parse failed
  */
 std::optional<std::vector<set_effecter_state_field>>
-    parseEffecterData(const std::vector<uint8_t>& effecterData,
-                      uint8_t effecterCount);
+parseEffecterData(const std::vector<uint8_t> &effecterData,
+                  uint8_t effecterCount);
 
 /**
  *  @brief creates an error log
  *  @param[in] errorMsg - the error message
  */
-void reportError(const char* errorMsg);
+void reportError(const char *errorMsg);
 
 /** @brief Convert any Decimal number to BCD
  *
  *  @tparam[in] decimal - Decimal number
  *  @return Corresponding BCD number
  */
-template <typename T>
-T decimalToBcd(T decimal)
-{
-    T bcd = 0;
-    T rem = 0;
-    auto cnt = 0;
+template <typename T> T decimalToBcd(T decimal) {
+  T bcd = 0;
+  T rem = 0;
+  auto cnt = 0;
 
-    while (decimal)
-    {
-        rem = decimal % 10;
-        bcd = bcd + (rem << cnt);
-        decimal = decimal / 10;
-        cnt += 4;
-    }
+  while (decimal) {
+    rem = decimal % 10;
+    bcd = bcd + (rem << cnt);
+    decimal = decimal / 10;
+    cnt += 4;
+  }
 
-    return bcd;
+  return bcd;
 }
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 
-struct DBusMapping
-{
-    std::string objectPath;   //!< D-Bus object path
-    std::string interface;    //!< D-Bus interface
-    std::string propertyName; //!< D-Bus property name
-    std::string propertyType; //!< D-Bus property type
+struct DBusMapping {
+  std::string objectPath;   //!< D-Bus object path
+  std::string interface;    //!< D-Bus interface
+  std::string propertyName; //!< D-Bus property name
+  std::string propertyType; //!< D-Bus property type
 };
 
 using PropertyValue =
@@ -138,17 +124,16 @@ using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 /**
  * @brief The interface for DBusHandler
  */
-class DBusHandlerInterface
-{
-  public:
-    virtual ~DBusHandlerInterface() = default;
+class DBusHandlerInterface {
+public:
+  virtual ~DBusHandlerInterface() = default;
 
-    virtual void setDbusProperty(const DBusMapping& dBusMap,
-                                 const PropertyValue& value) const = 0;
+  virtual void setDbusProperty(const DBusMapping &dBusMap,
+                               const PropertyValue &value) const = 0;
 
-    virtual PropertyValue
-        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                               const char* dbusInterface) const = 0;
+  virtual PropertyValue
+  getDbusPropertyVariant(const char *objPath, const char *dbusProp,
+                         const char *dbusInterface) const = 0;
 };
 
 /**
@@ -160,76 +145,73 @@ class DBusHandlerInterface
  *  to cater the request from pldm requester.
  *  A class is created to mock the apis in the test cases
  */
-class DBusHandler : public DBusHandlerInterface
-{
-  public:
-    /** @brief Get the bus connection. */
-    static auto& getBus()
-    {
-        static auto bus = sdbusplus::bus::new_default();
-        return bus;
-    }
+class DBusHandler : public DBusHandlerInterface {
+public:
+  /** @brief Get the bus connection. */
+  static auto &getBus() {
+    static auto bus = sdbusplus::bus::new_default();
+    return bus;
+  }
 
-    /**
-     *  @brief Get the DBUS Service name for the input dbus path
-     *
-     *  @param[in] path - DBUS object path
-     *  @param[in] interface - DBUS Interface
-     *
-     *  @return std::string - the dbus service name
-     *
-     *  @throw sdbusplus::exception::SdBusError when it fails
-     */
-    std::string getService(const char* path, const char* interface) const;
+  /**
+   *  @brief Get the DBUS Service name for the input dbus path
+   *
+   *  @param[in] path - DBUS object path
+   *  @param[in] interface - DBUS Interface
+   *
+   *  @return std::string - the dbus service name
+   *
+   *  @throw sdbusplus::exception::SdBusError when it fails
+   */
+  std::string getService(const char *path, const char *interface) const;
 
-    /** @brief Get property(type: variant) from the requested dbus
-     *
-     *  @param[in] objPath - The Dbus object path
-     *  @param[in] dbusProp - The property name to get
-     *  @param[in] dbusInterface - The Dbus interface
-     *
-     *  @return The value of the property(type: variant)
-     *
-     *  @throw sdbusplus::exception::SdBusError when it fails
-     */
-    PropertyValue
-        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                               const char* dbusInterface) const override;
+  /** @brief Get property(type: variant) from the requested dbus
+   *
+   *  @param[in] objPath - The Dbus object path
+   *  @param[in] dbusProp - The property name to get
+   *  @param[in] dbusInterface - The Dbus interface
+   *
+   *  @return The value of the property(type: variant)
+   *
+   *  @throw sdbusplus::exception::SdBusError when it fails
+   */
+  PropertyValue
+  getDbusPropertyVariant(const char *objPath, const char *dbusProp,
+                         const char *dbusInterface) const override;
 
-    /** @brief The template function to get property from the requested dbus
-     *         path
-     *
-     *  @tparam Property - Excepted type of the property on dbus
-     *
-     *  @param[in] objPath - The Dbus object path
-     *  @param[in] dbusProp - The property name to get
-     *  @param[in] dbusInterface - The Dbus interface
-     *
-     *  @return The value of the property
-     *
-     *  @throw sdbusplus::exception::SdBusError when dbus request fails
-     *         std::bad_variant_access when \p Property and property on dbus do
-     *         not match
-     */
-    template <typename Property>
-    auto getDbusProperty(const char* objPath, const char* dbusProp,
-                         const char* dbusInterface)
-    {
-        auto VariantValue =
-            getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
-        return std::get<Property>(VariantValue);
-    }
+  /** @brief The template function to get property from the requested dbus
+   *         path
+   *
+   *  @tparam Property - Excepted type of the property on dbus
+   *
+   *  @param[in] objPath - The Dbus object path
+   *  @param[in] dbusProp - The property name to get
+   *  @param[in] dbusInterface - The Dbus interface
+   *
+   *  @return The value of the property
+   *
+   *  @throw sdbusplus::exception::SdBusError when dbus request fails
+   *         std::bad_variant_access when \p Property and property on dbus do
+   *         not match
+   */
+  template <typename Property>
+  auto getDbusProperty(const char *objPath, const char *dbusProp,
+                       const char *dbusInterface) {
+    auto VariantValue =
+        getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
+    return std::get<Property>(VariantValue);
+  }
 
-    /** @brief Set Dbus property
-     *
-     *  @param[in] dBusMap - Object path, property name, interface and property
-     *                       type for the D-Bus object
-     *  @param[in] value - The value to be set
-     *
-     *  @throw sdbusplus::exception::SdBusError when it fails
-     */
-    void setDbusProperty(const DBusMapping& dBusMap,
-                         const PropertyValue& value) const override;
+  /** @brief Set Dbus property
+   *
+   *  @param[in] dBusMap - Object path, property name, interface and property
+   *                       type for the D-Bus object
+   *  @param[in] value - The value to be set
+   *
+   *  @throw sdbusplus::exception::SdBusError when it fails
+   */
+  void setDbusProperty(const DBusMapping &dBusMap,
+                       const PropertyValue &value) const override;
 };
 
 /** @brief Fetch parent D-Bus object based on pathname
@@ -238,10 +220,9 @@ class DBusHandler : public DBusHandlerInterface
  *
  *  @return std::string - the parent D-Bus object path
  */
-inline std::string findParent(const std::string& dbusObj)
-{
-    fs::path p(dbusObj);
-    return p.parent_path().string();
+inline std::string findParent(const std::string &dbusObj) {
+  fs::path p(dbusObj);
+  return p.parent_path().string();
 }
 
 /** @brief Read (static) MCTP EID of host firmware from a file
@@ -257,7 +238,7 @@ uint8_t readHostEID();
  *  @return PropertyValue - the D-Bus property value
  */
 PropertyValue jsonEntryToDbusVal(std::string_view type,
-                                 const nlohmann::json& value);
+                                 const nlohmann::json &value);
 
 /** @brief Find State Effecter PDR
  *  @param[in] tid - PLDM terminus ID.
@@ -269,7 +250,18 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
 std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t tid,
                                                        uint16_t entityID,
                                                        uint16_t stateSetId,
-                                                       const pldm_pdr* repo);
+                                                       const pldm_pdr *repo);
+/** @brief Find State Sensor PDR
+ *  @param[in] tid - PLDM terminus ID.
+ *  @param[in] entityID - entity that can be associated with PLDM State set.
+ *  @param[in] stateSetId - value that identifies PLDM State set.
+ *  @param[in] repo - pointer to BMC's primary PDR repo.
+ *  @return array[array[uint8_t]] - StateSensorPDRs
+ */
+std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
+                                                     uint16_t entityID,
+                                                     uint16_t stateSetId,
+                                                     const pldm_pdr *repo);
 
 } // namespace utils
 } // namespace pldm
