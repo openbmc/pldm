@@ -76,6 +76,59 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
     return pdrs;
 }
 
+std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t /*tid*/,
+                                                     uint16_t entityID,
+                                                     uint16_t stateSetId,
+                                                     const pldm_pdr* repo)
+{
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record{};
+    std::vector<std::vector<uint8_t>> pdrs;
+    try
+    {
+        do
+        {
+            record = pldm_pdr_find_record_by_type(repo, PLDM_STATE_SENSOR_PDR,
+                                                  record, &outData, &size);
+            if (record)
+            {
+                auto pdr = reinterpret_cast<pldm_state_sensor_pdr*>(outData);
+                auto compositeSensorCount = pdr->composite_sensor_count;
+
+                for (auto sensors = 0x00; sensors < compositeSensorCount;
+                     sensors++)
+                {
+                    auto possibleStates =
+                        reinterpret_cast<state_sensor_possible_states*>(
+                            pdr->possible_states);
+                    auto setId = possibleStates->state_set_id;
+                    auto possibleStateSize =
+                        possibleStates->possible_states_size;
+
+                    if (pdr->entity_type == entityID && setId == stateSetId)
+                    {
+                        std::vector<uint8_t> sensor_pdr(&outData[0],
+                                                        &outData[size]);
+                        pdrs.emplace_back(std::move(sensor_pdr));
+                        break;
+                    }
+                    possibleStates += possibleStateSize + sizeof(setId) +
+                                      sizeof(possibleStateSize);
+                }
+            }
+
+        } while (record);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << " Failed to obtain a record. ERROR =" << e.what()
+                  << std::endl;
+    }
+
+    return pdrs;
+}
+
 uint8_t readHostEID()
 {
     uint8_t eid{};
