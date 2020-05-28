@@ -774,7 +774,7 @@ TEST(SetBiosAttributeCurrentValue, testGoodDecodeResponse)
 {
     uint32_t nextTransferHandle = 32;
     uint8_t completionCode = PLDM_SUCCESS;
-    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES>
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_only_cc_resp)>
         responseMsg{};
     struct pldm_msg* response =
         reinterpret_cast<struct pldm_msg*>(responseMsg.data());
