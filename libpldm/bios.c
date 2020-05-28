@@ -483,7 +483,7 @@ int decode_set_bios_attribute_current_value_resp(const struct pldm_msg *msg,
 		return PLDM_SUCCESS;
 	}
 
-	if (payload_length != PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES) {
+	if (payload_length != sizeof(struct pldm_only_cc_resp)) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
