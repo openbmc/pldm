@@ -284,7 +284,14 @@ Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
 
     rc = biosConfig.setAttrValue(attributeField.ptr, attributeField.length);
 
-    return ccOnlyResponse(request, rc);
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    encode_set_bios_attribute_current_value_resp(request->hdr.instance_id, rc,
+                                                 0, responsePtr);
+
+    return response;
 }
 
 } // namespace bios
