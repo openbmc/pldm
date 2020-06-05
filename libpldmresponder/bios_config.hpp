@@ -156,6 +156,16 @@ class BIOSConfig
      *  @return The table, std::nullopt if loading fails
      */
     std::optional<Table> loadTable(const fs::path& path);
+
+    /** @brief Check the attribute value to update
+     *  @param[in] attrValueEntry - The attribute value entry to update
+     *  @param[in] attrEntry - The attribute table entry
+     *  @param[in] stringTable - The string  table
+     *  @return pldm_completion_codes
+     */
+    int checkAttrValueToUpdate(
+        const pldm_bios_attr_val_table_entry* attrValueEntry,
+        const pldm_bios_attr_table_entry* attrEntry, Table& stringTable);
 };
 
 } // namespace bios
