@@ -58,7 +58,7 @@ class Pdr : public PdrIntf
      */
     std::vector<std::vector<uint8_t>>
         findStateSensorPDR(uint8_t /*tid*/, uint16_t /*entityID*/,
-                             uint16_t /*stateSetId*/) override
+                           uint16_t /*stateSetId*/) override
     {
         return {};
     }
