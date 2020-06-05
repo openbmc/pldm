@@ -13,7 +13,7 @@
 # For all instances of the same FRU, the same config JSON will apply.
 {
     "service":"xyz.openbmc_project.Inventory.Manager",
-    "root_path":"/xyz/openbmc_project/inventory/system/",
+    "root_path":"/xyz/openbmc_project/inventory",
     "entities":[
         {
             "interface" : "xyz.openbmc_project.Inventory.Item.Board",
