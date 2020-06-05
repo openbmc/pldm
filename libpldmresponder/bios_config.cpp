@@ -193,6 +193,68 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
     }
 }
 
+int BIOSConfig::checkAttrValueToUpdate(
+    const pldm_bios_attr_val_table_entry* attrValueEntry,
+    const pldm_bios_attr_table_entry* attrEntry, Table&)
+
+{
+    auto [attrHandle, attrType] =
+        table::attribute_value::decodeHeader(attrValueEntry);
+
+    switch (attrType)
+    {
+        case PLDM_BIOS_ENUMERATION:
+        {
+            auto value =
+                table::attribute_value::decodeEnumEntry(attrValueEntry);
+            auto [pvHdls, defIndex] =
+                table::attribute::decodeEnumEntry(attrEntry);
+            assert(value.size() == 1);
+            if (value[0] >= pvHdls.size())
+            {
+                std::cerr << "Enum: Illgeal index, Index = " << (int)value[0]
+                          << std::endl;
+                return PLDM_ERROR_INVALID_DATA;
+            }
+
+            return PLDM_SUCCESS;
+        }
+        case PLDM_BIOS_INTEGER:
+        {
+            auto value =
+                table::attribute_value::decodeIntegerEntry(attrValueEntry);
+            auto [lower, upper, scalar, def] =
+                table::attribute::decodeIntegerEntry(attrEntry);
+
+            if (value < lower || value > upper)
+            {
+                std::cerr << "Integer: out of bound, value = " << value
+                          << std::endl;
+                return PLDM_ERROR_INVALID_DATA;
+            }
+            return PLDM_SUCCESS;
+        }
+        case PLDM_BIOS_STRING:
+        {
+            auto stringConf = table::attribute::decodeStringEntry(attrEntry);
+            auto value =
+                table::attribute_value::decodeStringEntry(attrValueEntry);
+            if (value.size() < stringConf.minLength ||
+                value.size() > stringConf.maxLength)
+            {
+                std::cerr << "String: Length error, string = " << value
+                          << " length = " << value.size() << std::endl;
+                return PLDM_ERROR_INVALID_LENGTH;
+            }
+            return PLDM_SUCCESS;
+        }
+        default:
+            std::cerr << "ReadOnly or Unspported type, type = " << attrType
+                      << std::endl;
+            return PLDM_ERROR;
+    };
+}
+
 int BIOSConfig::setAttrValue(const void* entry, size_t size)
 {
     auto attrValueTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
@@ -203,13 +265,6 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
         return PLDM_BIOS_TABLE_UNAVAILABLE;
     }
 
-    auto destTable =
-        table::attribute_value::updateTable(*attrValueTable, entry, size);
-
-    if (!destTable)
-    {
-        return PLDM_ERROR;
-    }
     auto attrValueEntry =
         reinterpret_cast<const pldm_bios_attr_val_table_entry*>(entry);
 
@@ -218,6 +273,20 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
     auto attrEntry =
         table::attribute::findByHandle(*attrTable, attrValHeader.attrHandle);
     if (!attrEntry)
+    {
+        return PLDM_ERROR;
+    }
+
+    auto rc = checkAttrValueToUpdate(attrValueEntry, attrEntry, *stringTable);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
+
+    auto destTable =
+        table::attribute_value::updateTable(*attrValueTable, entry, size);
+
+    if (!destTable)
     {
         return PLDM_ERROR;
     }
