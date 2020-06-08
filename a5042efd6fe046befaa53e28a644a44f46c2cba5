@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "61ce92fb_796dea2a",
+        "filename": "libpldm/fru.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-06-08T11:06:45Z",
+      "side": 1,
+      "message": "alignment",
+      "revId": "a5042efd6fe046befaa53e28a644a44f46c2cba5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af9f36fe_7548c032",
+        "filename": "libpldm/tests/libpldm_fru_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1000577
+      },
+      "writtenOn": "2020-06-08T11:06:45Z",
+      "side": 1,
+      "message": "Can this be nummberOfFruFieldA?",
+      "range": {
+        "startLine": 522,
+        "startChar": 12,
+        "endLine": 522,
+        "endChar": 28
+      },
+      "revId": "a5042efd6fe046befaa53e28a644a44f46c2cba5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
