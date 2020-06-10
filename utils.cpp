@@ -42,13 +42,14 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
             {
                 auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(outData);
                 auto compositeEffecterCount = pdr->composite_effecter_count;
+                uint8_t* possible_states_start = pdr->possible_states;
 
                 for (auto effecters = 0x00; effecters < compositeEffecterCount;
                      effecters++)
                 {
                     auto possibleStates =
                         reinterpret_cast<state_effecter_possible_states*>(
-                            pdr->possible_states);
+                            possible_states_start);
                     auto setId = possibleStates->state_set_id;
                     auto possibleStateSize =
                         possibleStates->possible_states_size;
@@ -60,8 +61,8 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
                         pdrs.emplace_back(std::move(effecter_pdr));
                         break;
                     }
-                    possibleStates += possibleStateSize + sizeof(setId) +
-                                      sizeof(possibleStateSize);
+                    possible_states_start += possibleStateSize + sizeof(setId) +
+                                             sizeof(possibleStateSize);
                 }
             }
 
@@ -95,13 +96,14 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t /*tid*/,
             {
                 auto pdr = reinterpret_cast<pldm_state_sensor_pdr*>(outData);
                 auto compositeSensorCount = pdr->composite_sensor_count;
+                uint8_t* possible_states_start = pdr->possible_states;
 
                 for (auto sensors = 0x00; sensors < compositeSensorCount;
                      sensors++)
                 {
                     auto possibleStates =
                         reinterpret_cast<state_sensor_possible_states*>(
-                            pdr->possible_states);
+                            possible_states_start);
                     auto setId = possibleStates->state_set_id;
                     auto possibleStateSize =
                         possibleStates->possible_states_size;
@@ -113,8 +115,8 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t /*tid*/,
                         pdrs.emplace_back(std::move(sensor_pdr));
                         break;
                     }
-                    possibleStates += possibleStateSize + sizeof(setId) +
-                                      sizeof(possibleStateSize);
+                    possible_states_start += possibleStateSize + sizeof(setId) +
+                                             sizeof(possibleStateSize);
                 }
             }
 
