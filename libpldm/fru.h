@@ -15,6 +15,7 @@ extern "C" {
 #define PLDM_GET_FRU_RECORD_TABLE_METADATA_RESP_BYTES 19
 #define PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES 5
 #define PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES 6
+#define PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES 6
 
 #define FRU_TABLE_CHECKSUM_SIZE 4
 
@@ -102,6 +103,22 @@ struct pldm_get_fru_record_table_resp {
 	uint32_t next_data_transfer_handle;
 	uint8_t transfer_flag;
 	uint8_t fru_record_table_data[1];
+} __attribute__((packed));
+
+struct pldm_get_fru_record_by_option_req {
+	uint32_t data_transfer_handle;
+	uint16_t fru_table_handle;
+	uint16_t record_set_identifier;
+	uint8_t record_type;
+	uint8_t field_type;
+	uint8_t transfer_op_flag;
+} __attribute__((packed));
+
+struct pldm_get_fru_record_by_option_resp {
+	uint8_t completion_code;
+	uint32_t next_data_transfer_handle;
+	uint8_t transfer_flag;
+	uint8_t fru_structure_data[1];
 } __attribute__((packed));
 
 /** @struct pldm_fru_record_tlv
@@ -299,6 +316,10 @@ int encode_fru_record(uint8_t *fru_table, size_t total_size, size_t *curr_size,
 		      uint16_t record_set_id, uint8_t record_type,
 		      uint8_t num_frus, uint8_t encoding, uint8_t *tlvs,
 		      size_t tlvs_size);
+
+void get_fru_record_by_option(const uint8_t *table, size_t table_size,
+			      uint8_t *record_table, size_t *record_size,
+			      uint16_t rsi, uint8_t rt, uint8_t ft);
 
 #ifdef __cplusplus
 }
