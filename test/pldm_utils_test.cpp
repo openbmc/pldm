@@ -412,12 +412,12 @@ TEST(FindStateEffecterPDR, testCompositeEffecter)
 
     std::vector<uint8_t> pdr(sizeof(struct pldm_state_effecter_pdr) -
                              sizeof(uint8_t) +
-                             sizeof(struct state_effecter_possible_states));
+                             sizeof(struct state_effecter_possible_states) * 3);
 
     auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto state_start = rec->possible_states;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = reinterpret_cast<state_effecter_possible_states*>(state_start);
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -427,9 +427,15 @@ TEST(FindStateEffecterPDR, testCompositeEffecter)
     state->state_set_id = 198;
     state->possible_states_size = 1;
 
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
     state->state_set_id = 193;
     state->possible_states_size = 1;
 
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
     state->state_set_id = 192;
     state->possible_states_size = 1;
 
@@ -451,12 +457,12 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
 
     std::vector<uint8_t> pdr(sizeof(struct pldm_state_effecter_pdr) -
                              sizeof(uint8_t) +
-                             sizeof(struct state_effecter_possible_states));
+                             sizeof(struct state_effecter_possible_states) * 3);
 
     auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto state_start = rec->possible_states;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = reinterpret_cast<state_effecter_possible_states*>(state_start);
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -466,9 +472,15 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
     state->state_set_id = 198;
     state->possible_states_size = 1;
 
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
     state->state_set_id = 193;
     state->possible_states_size = 1;
 
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
     state->state_set_id = 123;
     state->possible_states_size = 1;
 
@@ -812,12 +824,12 @@ TEST(FindStateSensorPDR, testCompositeSensor)
 
     std::vector<uint8_t> pdr(sizeof(struct pldm_state_sensor_pdr) -
                              sizeof(uint8_t) +
-                             sizeof(struct state_sensor_possible_states));
+                             sizeof(struct state_sensor_possible_states) * 3);
 
     auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto state_start = rec->possible_states;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = reinterpret_cast<state_sensor_possible_states*>(state_start);
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -827,8 +839,16 @@ TEST(FindStateSensorPDR, testCompositeSensor)
     state->state_set_id = 2;
     state->possible_states_size = 1;
 
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
+
     state->state_set_id = 7;
     state->possible_states_size = 1;
+
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
 
     state->state_set_id = 1;
     state->possible_states_size = 1;
@@ -851,12 +871,12 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
 
     std::vector<uint8_t> pdr(sizeof(struct pldm_state_sensor_pdr) -
                              sizeof(uint8_t) +
-                             sizeof(struct state_sensor_possible_states));
+                             sizeof(struct state_sensor_possible_states) * 3);
 
     auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto state_start = rec->possible_states;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = reinterpret_cast<state_sensor_possible_states*>(state_start);
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -866,9 +886,15 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
     state->state_set_id = 15;
     state->possible_states_size = 1;
 
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
     state->state_set_id = 19;
     state->possible_states_size = 1;
 
+    state_start += state->possible_states_size + sizeof(state->state_set_id) +
+                   sizeof(state->possible_states_size);
+    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
     state->state_set_id = 39;
     state->possible_states_size = 1;
 
