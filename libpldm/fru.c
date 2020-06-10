@@ -1,4 +1,6 @@
+#include <assert.h>
 #include <endian.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "fru.h"
@@ -196,6 +198,143 @@ int encode_fru_record(uint8_t *fru_table, size_t total_size, size_t *curr_size,
 		*curr_size += tlvs_size;
 	}
 
+	return PLDM_SUCCESS;
+}
+
+int encode_get_fru_record_by_option_req(
+    uint8_t instance_id, uint32_t data_transfer_handle,
+    uint16_t fru_table_handle, uint16_t record_set_identifier,
+    uint8_t record_type, uint8_t field_type, uint8_t transfer_op_flag,
+    struct pldm_msg *msg, size_t payload_length)
+{
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length !=
+	    sizeof(struct pldm_get_fru_record_by_option_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_FRU;
+	header.command = PLDM_GET_FRU_RECORD_BY_OPTION;
+	pack_pldm_header(&header, &(msg->hdr));
+
+	struct pldm_get_fru_record_by_option_req *req =
+	    (struct pldm_get_fru_record_by_option_req *)msg->payload;
+
+	req->data_transfer_handle = htole32(data_transfer_handle);
+	req->fru_table_handle = htole16(fru_table_handle);
+	req->record_set_identifier = htole16(record_set_identifier);
+	req->record_type = record_type;
+	req->field_type = field_type;
+	req->transfer_op_flag = transfer_op_flag;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_fru_record_by_option_req(
+    const struct pldm_msg *msg, size_t payload_length,
+    uint32_t *data_transfer_handle, uint16_t *fru_table_handle,
+    uint16_t *record_set_identifier, uint8_t *record_type, uint8_t *field_type,
+    uint8_t *transfer_op_flag)
+{
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    fru_table_handle == NULL || record_set_identifier == NULL ||
+	    record_type == NULL || field_type == NULL ||
+	    transfer_op_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length !=
+	    sizeof(struct pldm_get_fru_record_by_option_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_fru_record_by_option_req *req =
+	    (struct pldm_get_fru_record_by_option_req *)msg->payload;
+
+	*data_transfer_handle = le32toh(req->data_transfer_handle);
+	*fru_table_handle = le16toh(req->fru_table_handle);
+	*record_set_identifier = le16toh(req->record_set_identifier);
+	*record_type = req->record_type;
+	*field_type = req->field_type;
+	*transfer_op_flag = req->transfer_op_flag;
+	return PLDM_SUCCESS;
+}
+
+int encode_get_fru_record_by_option_resp(
+    uint8_t instance_id, uint8_t completion_code, uint32_t data_transfer_handle,
+    uint8_t transfer_flag, const void *fru_structure_data, size_t data_size,
+    struct pldm_msg *msg, size_t payload_length)
+{
+	if (msg == NULL || fru_structure_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length < PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_FRU;
+	header.command = PLDM_GET_FRU_RECORD_BY_OPTION;
+	pack_pldm_header(&header, &(msg->hdr));
+
+	struct pldm_get_fru_record_by_option_resp *resp =
+	    (struct pldm_get_fru_record_by_option_resp *)msg->payload;
+
+	resp->completion_code = completion_code;
+	resp->next_data_transfer_handle = htole32(data_transfer_handle);
+	resp->transfer_flag = transfer_flag;
+
+	if (completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length !=
+	    PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES + data_size) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	memcpy(resp->fru_structure_data, fru_structure_data, data_size);
+	return PLDM_SUCCESS;
+}
+
+int decode_get_fru_record_by_option_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint32_t *next_transfer_handle, uint8_t *transfer_flag,
+    struct variable_field *fru_structure_data)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    next_transfer_handle == NULL || transfer_flag == NULL ||
+	    fru_structure_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length < PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_get_fru_record_by_option_resp *resp =
+	    (struct pldm_get_fru_record_by_option_resp *)msg->payload;
+
+	*next_transfer_handle = le32toh(resp->next_data_transfer_handle);
+	*transfer_flag = resp->transfer_flag;
+	fru_structure_data->ptr = resp->fru_structure_data;
+	fru_structure_data->length =
+	    payload_length - PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES;
 	return PLDM_SUCCESS;
 }
 
