@@ -49,15 +49,19 @@ class FruImpl
         sizeof(struct pldm_fru_record_data_format) -
         sizeof(struct pldm_fru_record_tlv);
 
-    /** @brief The FRU table is populated by processing the D-Bus inventory
-     *         namespace, based on the config files for FRU. The configPath is
-     *         consumed to build the FruParser object.
+    /** @brief Constructor for FruImpl, the configPath is consumed to build the
+     *         FruParser object.
      *
      *  @param[in] configPath - path to the directory containing config files
-     * for PLDM FRU
+     *                          for PLDM FRU
+     *  @param[in] pdrRepo - opaque pointer to PDR repository
+     *  @param[in] entityTree - opaque pointer to the entity association tree
      */
     FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
-            pldm_entity_association_tree* entityTree);
+            pldm_entity_association_tree* entityTree) :
+        parser(configPath),
+        pdrRepo(pdrRepo), entityTree(entityTree)
+    {}
 
     /** @brief Total length of the FRU table in bytes, this excludes the pad
      *         bytes and the checksum.
@@ -102,6 +106,12 @@ class FruImpl
      */
     void getFRUTable(Response& response);
 
+    /** @brief FRU table is built by processing the D-Bus inventory namespace
+     *         based on the config files for FRU. The table is populated based
+     *         on the isBuilt flag.
+     */
+    void buildFRUTable();
+
   private:
     uint16_t nextRSI()
     {
@@ -113,7 +123,9 @@ class FruImpl
     uint8_t padBytes = 0;
     std::vector<uint8_t> table;
     uint32_t checksum = 0;
+    bool isBuilt = false;
 
+    fru_parser::FruParser parser;
     pldm_pdr* pdrRepo;
     pldm_entity_association_tree* entityTree;
 
@@ -174,6 +186,14 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response getFRURecordTable(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Build FRU table is bnot already built
+     *
+     */
+    void buildFRUTable()
+    {
+        impl.buildFRUTable();
+    }
 
   private:
     FruImpl impl;
