@@ -17,12 +17,13 @@ namespace pldm
 namespace responder
 {
 
-FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
-                 pldm_entity_association_tree* entityTree) :
-    pdrRepo(pdrRepo),
-    entityTree(entityTree)
+void FruImpl::buildFRUTable()
 {
-    fru_parser::FruParser handle(configPath);
+
+    if (isBuilt)
+    {
+        return;
+    }
 
     fru_parser::DBusLookupInfo dbusInfo;
     // Read the all the inventory D-Bus objects
@@ -31,7 +32,7 @@ FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
 
     try
     {
-        dbusInfo = handle.inventoryLookup();
+        dbusInfo = parser.inventoryLookup();
         auto method = bus.new_method_call(
             std::get<0>(dbusInfo).c_str(), std::get<1>(dbusInfo).c_str(),
             "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
@@ -61,7 +62,7 @@ FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
                 try
                 {
                     pldm_entity entity{};
-                    entity.entity_type = handle.getEntityType(interface.first);
+                    entity.entity_type = parser.getEntityType(interface.first);
                     pldm_entity_node* parent = nullptr;
                     auto parentObj = pldm::utils::findParent(object.first.str);
                     // To add a FRU to the entity association tree, we need to
@@ -90,7 +91,7 @@ FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
                         PLDM_ENTITY_ASSOCIAION_PHYSICAL);
                     objToEntityNode[object.first.str] = node;
 
-                    auto recordInfos = handle.getRecordInfo(interface.first);
+                    auto recordInfos = parser.getRecordInfo(interface.first);
                     populateRecords(interfaces, recordInfos, entity);
                     break;
                 }
@@ -115,6 +116,7 @@ FruImpl::FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
     }
+    isBuilt = true;
 }
 
 void FruImpl::populateRecords(
@@ -208,6 +210,9 @@ namespace fru
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
                                             size_t /*payloadLength*/)
 {
+    // FRU table is built lazily, build if not done.
+    buildFRUTable();
+
     constexpr uint8_t major = 0x01;
     constexpr uint8_t minor = 0x00;
     constexpr uint32_t maxSize = 0xFFFFFFFF;
@@ -232,6 +237,9 @@ Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
 Response Handler::getFRURecordTable(const pldm_msg* request,
                                     size_t payloadLength)
 {
+    // FRU table is built lazily, build if not done.
+    buildFRUTable();
+
     if (payloadLength != PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES)
     {
         return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
