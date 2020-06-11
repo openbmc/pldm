@@ -125,6 +125,10 @@ void Handler::generate(const std::string& dir, Repo& repo)
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
+    // Build FRU table if not built, since entity association PDR's are built
+    // when the FRU table is constructed.
+    fruHandler->buildFRUTable();
+
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 

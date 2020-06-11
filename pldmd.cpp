@@ -179,13 +179,16 @@ int main(int argc, char** argv)
     Invoker invoker{};
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>());
+    auto fruHandler = std::make_unique<fru::Handler>(
+        FRU_JSONS_DIR, pdrRepo.get(), entityTree.get());
+    // FRU table is built lazily when a FRU command or Get PDR command is
+    // handled. To enable building FRU table, the FRU handler is passed to the
+    // Platform handler.
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>(
                                 PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
-                                hostPDRHandler.get()));
-    invoker.registerHandler(
-        PLDM_FRU, std::make_unique<fru::Handler>(FRU_JSONS_DIR, pdrRepo.get(),
-                                                 entityTree.get()));
+                                hostPDRHandler.get(), fruHandler.get()));
+    invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
 #ifdef OEM_IBM
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
