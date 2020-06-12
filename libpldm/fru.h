@@ -20,6 +20,10 @@ extern "C" {
 
 #define FRU_TABLE_CHECKSUM_SIZE 4
 
+enum pldm_fru_completion_codes {
+	PLDM_FRU_DATA_STRUCTURE_TABLE_UNAVAILABLE=0x85,
+};
+
 /** @brief PLDM FRU commands
  */
 enum pldm_fru_commands {
@@ -402,6 +406,10 @@ int decode_get_fru_record_by_option_resp(
     const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
     uint32_t *next_transfer_handle, uint8_t *transfer_flag,
     struct variable_field *fru_structure_data);
+
+void get_fru_record_by_option(const uint8_t *table, size_t table_size,
+			      uint8_t *record_table, size_t *record_size,
+			      uint16_t rsi, uint8_t rt, uint8_t ft);
 
 #ifdef __cplusplus
 }
