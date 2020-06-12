@@ -284,6 +284,38 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     return response;
 }
 
+int Handler::emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
+                                        uint8_t sensorOffset,
+                                        uint8_t eventState,
+                                        uint8_t previousEventState)
+{
+    try
+    {
+        auto bus = sdbusplus::bus::new_default();
+        auto msg = bus.new_signal("/xyz/openbmc_project/pldm",
+                                  "xyz.openbmc_project.PLDM.Event",
+                                  "StateSensorEvent");
+        msg.append(tid, sensorId, sensorOffset, eventState, previousEventState);
+
+        msg.signal_send();
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "Error emitting pldm event signal:"
+                  << "\n"
+                  << "TID=" << (unsigned)tid << "\n"
+                  << "sensorId=" << sensorId << "\n"
+                  << "sensorOffset=" << (unsigned)sensorOffset << "\n"
+                  << "eventState=" << (unsigned)eventState << "\n"
+                  << "previousEventState=" << (unsigned)previousEventState
+                  << "\n"
+                  << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
 int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
                          uint8_t /*formatVersion*/, uint8_t tid,
                          size_t eventDataOffset)
@@ -319,6 +351,15 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         if (rc != PLDM_SUCCESS)
         {
             return PLDM_ERROR;
+        }
+
+        // Emitting state sensor event signal
+        rc = emitStateSensorEventSignal(tid, sensorId, sensorOffset, eventState,
+                                        previousEventState);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Emitting pldm state sensor event signal failed!"
+                      << "\n";
         }
 
         // Handle PLDM events for which PDR is not available, setSensorEventData
