@@ -202,6 +202,39 @@ void FruImpl::getFRUTable(Response& response)
                 iter);
 }
 
+int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
+                                  uint16_t /* fruTableHandle */,
+                                  uint16_t recordSetIdentifer,
+                                  uint8_t recordType, uint8_t fieldType)
+{
+    /* 7 is sizeof(checksum,4) + padBytesMax(3)
+     * We can not know size of the record table got by options in advance, but
+     * it must less than the source table. So it's safe to use sizeof the
+     * source table + 7 as the buffer length
+     */
+    size_t recordTableSize = table.size() - padBytes + 7;
+    fruData.resize(recordTableSize, 0);
+
+    get_fru_record_by_option(table.data(), table.size() - padBytes,
+                             fruData.data(), &recordTableSize,
+                             recordSetIdentifer, recordType, fieldType);
+
+    if (recordTableSize == 0)
+    {
+        return PLDM_FRU_DATA_STRUCTURE_TABLE_UNAVAILABLE;
+    }
+
+    auto pads = utils::getNumPadBytes(recordTableSize);
+    auto sum = crc32(fruData.data(), recordTableSize + pads);
+
+    auto iter = fruData.begin() + recordTableSize + pads;
+    std::copy_n(reinterpret_cast<const uint8_t*>(&checksum), sizeof(checksum),
+                iter);
+    fruData.resize(recordTableSize + pads + sizeof(sum));
+
+    return PLDM_SUCCESS;
+}
+
 namespace fru
 {
 
@@ -250,6 +283,57 @@ Response Handler::getFRURecordTable(const pldm_msg* request,
     }
 
     impl.getFRUTable(response);
+
+    return response;
+}
+
+Response Handler::getFRURecordByOption(const pldm_msg* request,
+                                       size_t payloadLength)
+{
+    if (payloadLength != sizeof(pldm_get_fru_record_by_option_req))
+    {
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+
+    uint32_t retDataTransferHandle{};
+    uint16_t retFruTableHandle{};
+    uint16_t retRecordSetIdentifier{};
+    uint8_t retRecordType{};
+    uint8_t retFieldType{};
+    uint8_t retTransferOpFlag{};
+
+    auto rc = decode_get_fru_record_by_option_req(
+        request, payloadLength, &retDataTransferHandle, &retFruTableHandle,
+        &retRecordSetIdentifier, &retRecordType, &retFieldType,
+        &retTransferOpFlag);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    std::vector<uint8_t> fruData;
+    rc = impl.getFRURecordByOption(fruData, retFruTableHandle,
+                                   retRecordSetIdentifier, retRecordType,
+                                   retFieldType);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    auto respPayloadLength =
+        PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES + fruData.size();
+    Response response(sizeof(pldm_msg_hdr) + respPayloadLength, 0);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = encode_get_fru_record_by_option_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END,
+        fruData.data(), fruData.size(), responsePtr, respPayloadLength);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
 
     return response;
 }
