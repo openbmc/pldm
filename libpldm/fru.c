@@ -201,6 +201,72 @@ int encode_fru_record(uint8_t *fru_table, size_t total_size, size_t *curr_size,
 	return PLDM_SUCCESS;
 }
 
+static bool is_table_end(const struct pldm_fru_record_data_format *p,
+			 const void *table, size_t table_size)
+{
+	return p ==
+	       (const struct pldm_fru_record_data_format *)((uint8_t *)table +
+							    table_size);
+}
+
+void get_fru_record_by_option(const uint8_t *table, size_t table_size,
+			      uint8_t *record_table, size_t *record_size,
+			      uint16_t rsi, uint8_t rt, uint8_t ft)
+{
+	const struct pldm_fru_record_data_format *record_data_src =
+	    (const struct pldm_fru_record_data_format *)table;
+	struct pldm_fru_record_data_format *record_data_dest;
+	int count = 0;
+
+	const struct pldm_fru_record_tlv *tlv;
+	size_t len;
+	uint8_t *pos = record_table;
+
+	while (!is_table_end(record_data_src, table, table_size)) {
+		if ((record_data_src->record_set_id != htole16(rsi) &&
+		     rsi != 0) ||
+		    (record_data_src->record_type != rt && rt != 0)) {
+			tlv = record_data_src->tlvs;
+			for (int i = 0; i < record_data_src->num_fru_fields;
+			     i++) {
+				len = sizeof(*tlv) - 1 + tlv->length;
+				tlv = (const struct pldm_fru_record_tlv
+					   *)((char *)tlv + len);
+			}
+			record_data_src =
+			    (const struct pldm_fru_record_data_format *)(tlv);
+			continue;
+		}
+
+		len = sizeof(struct pldm_fru_record_data_format) -
+		      sizeof(struct pldm_fru_record_tlv);
+
+		assert(pos - record_table + len < *record_size);
+		memcpy(pos, record_data_src, len);
+
+		record_data_dest = (struct pldm_fru_record_data_format *)pos;
+		pos += len;
+
+		tlv = record_data_src->tlvs;
+		for (int i = 0; i < record_data_src->num_fru_fields; i++) {
+			len = sizeof(*tlv) - 1 + tlv->length;
+			if (tlv->type == ft || ft == 0) {
+				assert(pos - record_table + len < *record_size);
+				memcpy(pos, tlv, len);
+				pos += len;
+				count++;
+			}
+			tlv = (const struct pldm_fru_record_tlv *)((char *)tlv +
+								   len);
+		}
+		record_data_dest->num_fru_fields = count;
+		record_data_src =
+		    (const struct pldm_fru_record_data_format *)(tlv);
+	}
+
+	*record_size = pos - record_table;
+}
+
 int encode_get_fru_record_by_option_req(
     uint8_t instance_id, uint32_t data_transfer_handle,
     uint16_t fru_table_handle, uint16_t record_set_identifier,
