@@ -328,6 +328,10 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
             return PLDM_ERROR;
         }
 
+        // Emitting state sensor event signal
+        emitStateSensorEventSignal(tid, sensorId, sensorOffset, eventState,
+                                   previousEventState);
+
         // Handle PLDM events for which PDR is not available, setSensorEventData
         // will return PLDM_ERROR_INVALID_DATA if the sensorID is not found in
         // the hardcoded sensor list.
