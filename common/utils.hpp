@@ -1,23 +1,22 @@
 #pragma once
 
-#include "libpldm/base.h"
-#include "libpldm/bios.h"
-#include "libpldm/platform.h"
-
 #include <stdint.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
-#include <nlohmann/json.hpp>
-#include <sdbusplus/server.hpp>
-#include <xyz/openbmc_project/Logging/Entry/server.hpp>
-
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <nlohmann/json.hpp>
+#include <sdbusplus/server.hpp>
 #include <string>
 #include <variant>
 #include <vector>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+
+#include "libpldm/base.h"
+#include "libpldm/bios.h"
+#include "libpldm/platform.h"
 
 namespace pldm
 {
@@ -39,7 +38,8 @@ struct CustomFD
     CustomFD& operator=(CustomFD&&) = delete;
 
     CustomFD(int fd) : fd(fd)
-    {}
+    {
+    }
 
     ~CustomFD()
     {
@@ -296,6 +296,22 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
 uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                              uint16_t entityInstance, uint16_t containerId,
                              uint16_t stateSetId);
+
+/** @brief Emit the sensor event signal
+ *
+ *	@param[in] tid - the terminus id
+ *  @param[in] sensorId - sensorID value of the sensor
+ *  @param[in] sensorOffset - Identifies which state sensor within a
+ * composite state sensor the event is being returned for
+ *  @param[in] eventState - The event state value from the state change that
+ * triggered the event message
+ *  @param[in] previousEventState - The event state value for the state from
+ * which the present event state was entered.
+ *  @return PLDM completion code
+ */
+int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
+                               uint8_t sensorOffset, uint8_t eventState,
+                               uint8_t previousEventState);
 
 } // namespace utils
 } // namespace pldm

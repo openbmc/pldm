@@ -1,10 +1,5 @@
 #include "utils.hpp"
 
-#include "libpldm/pdr.h"
-#include "libpldm/pldm_types.h"
-
-#include <xyz/openbmc_project/Common/error.hpp>
-
 #include <array>
 #include <ctime>
 #include <fstream>
@@ -13,6 +8,10 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <xyz/openbmc_project/Common/error.hpp>
+
+#include "libpldm/pdr.h"
+#include "libpldm/pldm_types.h"
 
 namespace pldm
 {
@@ -432,6 +431,30 @@ uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
     } while (record);
 
     return PLDM_INVALID_EFFECTER_ID;
+}
+
+int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
+                               uint8_t sensorOffset, uint8_t eventState,
+                               uint8_t previousEventState)
+{
+    try
+    {
+        auto bus = sdbusplus::bus::new_default();
+        auto msg = bus.new_signal("/xyz/openbmc_project/pldm",
+                                  "xyz.openbmc_project.PLDM.Event",
+                                  "StateSensorEvent");
+        msg.append(tid, sensorId, sensorOffset, eventState, previousEventState);
+
+        msg.signal_send();
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "Error emitting pldm event signal:"
+                  << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace utils
