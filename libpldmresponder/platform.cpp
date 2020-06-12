@@ -284,6 +284,38 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     return response;
 }
 
+int Handler::emitSensorEventMsgSignal(uint8_t tid, uint16_t sensorId,
+                                      uint8_t sensorOffset, uint8_t eventState,
+                                      uint8_t previousEventState)
+{
+    try
+    {
+        auto bus = sdbusplus::bus::new_default();
+        std::vector<std::vector<uint8_t>> Response{};
+        auto msg = bus.new_signal("/xyz/openbmc_project/pldm",
+                                  "xyz.openbmc_project.PLDM.Event",
+                                  "StateSensorEvent");
+        msg.append(tid, sensorId, sensorOffset, eventState, previousEventState);
+
+        msg.signal_send();
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "Error emitting pldm event signal:"
+                  << "\n"
+                  << "TID=" << (unsigned)tid << "\n"
+                  << "sensorId=" << sensorId << "\n"
+                  << "sensorOffset=" << (unsigned)sensorOffset << "\n"
+                  << "eventState=" << (unsigned)eventState << "\n"
+                  << "previousEventState=" << (unsigned)previousEventState
+                  << "\n"
+                  << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
 int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
                          uint8_t /*formatVersion*/, uint8_t tid,
                          size_t eventDataOffset)
@@ -327,6 +359,11 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         rc = setSensorEventData(sensorId, sensorOffset, eventState);
         if (rc != PLDM_ERROR_INVALID_DATA)
         {
+            if (rc == PLDM_SUCCESS)
+            {
+                emitSensorEventMsgSignal(tid, sensorId, sensorOffset,
+                                         eventState, previousEventState);
+            }
             return rc;
         }
 
@@ -356,7 +393,14 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
             const auto& [containerId, entityType, entityInstance] = entityInfo;
             events::StateSensorEntry stateSensorEntry{
                 containerId, entityType, entityInstance, sensorOffset};
-            return stateSensorHandler.eventAction(stateSensorEntry, eventState);
+            auto rc =
+                stateSensorHandler.eventAction(stateSensorEntry, eventState);
+            if (rc == PLDM_SUCCESS)
+            {
+                emitSensorEventMsgSignal(tid, sensorId, sensorOffset,
+                                         eventState, previousEventState);
+            }
+            return rc;
         }
         // If there is no mapping for events return PLDM_SUCCESS
         catch (const std::out_of_range& e)

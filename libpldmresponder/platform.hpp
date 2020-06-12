@@ -261,6 +261,22 @@ class Handler : public CmdHandler
     int setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
                            uint8_t eventState);
 
+    /** @brief Emit the sensor event signal
+     *
+     *	@param[in] tid - the terminus id
+     *  @param[in] sensorId - sensorID value of the sensor
+     *  @param[in] sensorOffset - Identifies which state sensor within a
+     * composite state sensor the event is being returned for
+     *  @param[in] eventState - The event state value from the state change that
+     * triggered the event message
+     *  @param[in] previousEventState - The event state value for the state from
+     * which the present event state was entered.
+     *  @return PLDM completion code
+     */
+    int emitSensorEventMsgSignal(uint8_t tid, uint16_t sensorId,
+                                 uint8_t sensorOffset, uint8_t eventState,
+                                 uint8_t previousEventState);
+
     /** @brief Function to set the effecter requested by pldm requester
      *  @param[in] dBusIntf - The interface object
      *  @param[in] effecterId - Effecter ID sent by the requester to act on
