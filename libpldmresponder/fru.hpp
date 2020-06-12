@@ -101,6 +101,18 @@ class FruImpl
      */
     void getFRUTable(Response& response);
 
+    /** @brief Get FRU Record Table By Option
+     *  @param[out] response - Populate response with the FRU table got by
+     *                         options
+     *  @param[in] fruTableHandle - The fru table handle
+     *  @param[in] recordSetIdentifer - The record set identifier
+     *  @param[in] recordType - The record type
+     *  @param[in] fieldType - The field type
+     */
+    int getFRURecordByOption(Response& response, uint16_t fruTableHandle,
+                             uint16_t recordSetIdentifer, uint8_t recordType,
+                             uint8_t fieldType);
+
   private:
     uint16_t nextRSI()
     {
@@ -118,7 +130,8 @@ class FruImpl
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
-    /** @brief populateRecord builds the FRU records for an instance of FRU and
+    /** @brief populateRecord builds the FRU records for an instance of FRU
+ and
      *         updates the FRU table with the FRU records.
      *
      *  @param[in] interfaces - D-Bus interfaces and the associated property
@@ -153,6 +166,11 @@ class Handler : public CmdHandler
                              return this->getFRURecordTable(request,
                                                             payloadLength);
                          });
+        handlers.emplace(PLDM_GET_FRU_RECORD_BY_OPTION,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->getFRURecordByOption(request,
+                                                               payloadLength);
+                         });
     }
 
     /** @brief Handler for Get FRURecordTableMetadata
@@ -173,6 +191,16 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response getFRURecordTable(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handler for GetFRURecordByOption
+     *
+     *  @param[in] request - Request message payload
+     *  @param[in] payloadLength - Request payload length
+     *
+     *  @return PLDM response message
+     */
+    Response getFRURecordByOption(const pldm_msg* request,
+                                  size_t payloadLength);
 
   private:
     FruImpl impl;
