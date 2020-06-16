@@ -67,10 +67,10 @@ deps = [
 
 executable(
   'pldmd',
-  'pldmd.cpp',
-  'dbus_impl_requester.cpp',
-  'instance_id.cpp',
-  'dbus_impl_pdr.cpp',
+  'pldmd/pldmd.cpp',
+  'pldmd/dbus_impl_requester.cpp',
+  'pldmd/instance_id.cpp',
+  'pldmd/dbus_impl_pdr.cpp',
   'host-bmc/dbus_to_host_effecters.cpp',
   implicit_include_directories: false,
   dependencies: deps,
@@ -83,7 +83,7 @@ systemd_system_unit_dir = systemd.get_pkgconfig_variable(
     define_variable: ['prefix', get_option('prefix')])
 configure_file(
   copy: true,
-  input: 'pldmd.service',
+  input: 'pldmd/pldmd.service',
   install: true,
   install_dir: systemd_system_unit_dir,
   output: 'pldmd.service',

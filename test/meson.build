@@ -16,8 +16,8 @@ gtest = dependency('gtest', main: true, disabler: true, required: true)
 gmock = dependency('gmock', disabler: true, required: true)
 pldmd = declare_dependency(
           sources: [
-            '../instance_id.cpp',
-            '../dbus_impl_requester.cpp',
+            '../pldmd/instance_id.cpp',
+            '../pldmd/dbus_impl_requester.cpp',
             '../host-bmc/host_pdr_handler.cpp',
             '../host-bmc/dbus_to_host_effecters.cpp'])
 

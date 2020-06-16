@@ -6,7 +6,7 @@
 #include "libpldm/pdr.h"
 
 #include "fru_parser.hpp"
-#include "handler.hpp"
+#include "pldmd/handler.hpp"
 
 #include <sdbusplus/message.hpp>
 
