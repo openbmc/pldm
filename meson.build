@@ -77,6 +77,18 @@ executable(
   install: true,
   install_dir: get_option('bindir'))
 
+systemd = dependency('systemd')
+systemd_system_unit_dir = systemd.get_pkgconfig_variable(
+    'systemdsystemunitdir',
+    define_variable: ['prefix', get_option('prefix')])
+configure_file(
+  copy: true,
+  input: 'pldmd.service',
+  install: true,
+  install_dir: systemd_system_unit_dir,
+  output: 'pldmd.service',
+)
+
 subdir('tool')
 
 if get_option('tests').enabled()
