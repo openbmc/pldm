@@ -7,7 +7,7 @@
 
 #include "event_parser.hpp"
 #include "handler.hpp"
-#include "host_pdr_handler.hpp"
+#include "host-bmc/host_pdr_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "utils.hpp"
