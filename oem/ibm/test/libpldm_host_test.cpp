@@ -1,8 +1,8 @@
+#include "oem/ibm/libpldm/host.h"
+
 #include <string.h>
 
 #include <array>
-
-#include "oem/ibm/libpldm/host.h"
 
 #include <gtest/gtest.h>
 

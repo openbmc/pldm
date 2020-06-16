@@ -1,10 +1,11 @@
 #include "event_parser.hpp"
 
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <set>
-#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace pldm::responder::events
 {

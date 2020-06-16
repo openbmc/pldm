@@ -1,8 +1,8 @@
 #include "pldm_host_cmd.hpp"
 
-#include "../../pldm_cmd_helper.hpp"
-
 #include "oem/ibm/libpldm/host.h"
+
+#include "../../pldm_cmd_helper.hpp"
 
 namespace pldmtool
 {

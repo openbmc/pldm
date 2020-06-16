@@ -2,6 +2,9 @@
 
 #include "config.h"
 
+#include "libpldm/platform.h"
+#include "libpldm/states.h"
+
 #include "event_parser.hpp"
 #include "handler.hpp"
 #include "host_pdr_handler.hpp"
@@ -12,9 +15,6 @@
 #include <stdint.h>
 
 #include <map>
-
-#include "libpldm/platform.h"
-#include "libpldm/states.h"
 
 namespace pldm
 {

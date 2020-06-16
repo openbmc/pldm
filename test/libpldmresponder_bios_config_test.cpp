@@ -4,9 +4,10 @@
 #include "mocked_bios.hpp"
 #include "mocked_utils.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include <fstream>
 #include <memory>
-#include <nlohmann/json.hpp>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

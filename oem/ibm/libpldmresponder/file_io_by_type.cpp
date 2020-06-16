@@ -2,6 +2,9 @@
 
 #include "file_io_by_type.hpp"
 
+#include "libpldm/base.h"
+#include "oem/ibm/libpldm/file_io.h"
+
 #include "file_io_type_cert.hpp"
 #include "file_io_type_dump.hpp"
 #include "file_io_type_lid.hpp"
@@ -12,15 +15,13 @@
 #include <stdint.h>
 #include <unistd.h>
 
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <xyz/openbmc_project/Logging/Entry/server.hpp>
-
-#include "libpldm/base.h"
-#include "oem/ibm/libpldm/file_io.h"
 
 namespace pldm
 {

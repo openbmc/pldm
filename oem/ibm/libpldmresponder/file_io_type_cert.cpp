@@ -1,13 +1,13 @@
 #include "file_io_type_cert.hpp"
 
+#include "libpldm/base.h"
+#include "oem/ibm/libpldm/file_io.h"
+
 #include "utils.hpp"
 
 #include <stdint.h>
 
 #include <iostream>
-
-#include "libpldm/base.h"
-#include "oem/ibm/libpldm/file_io.h"
 
 namespace pldm
 {

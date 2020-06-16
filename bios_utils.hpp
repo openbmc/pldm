@@ -1,11 +1,11 @@
 #pragma once
 
+#include "libpldm/bios_table.h"
+
 #include <cstring>
 #include <memory>
 #include <type_traits>
 #include <vector>
-
-#include "libpldm/bios_table.h"
 
 namespace pldm
 {
@@ -27,8 +27,7 @@ class BIOSTableIter
      *  @brief Auxiliary struct to delimit a range
      */
     struct EndSentinel
-    {
-    };
+    {};
 
     /** @struct iterator
      *  @brief iterator owns the BIOS table
@@ -55,8 +54,7 @@ class BIOSTableIter
         explicit iterator(const void* data, size_t length) noexcept :
             iter(pldm_bios_table_iter_create(data, length, tableType),
                  pldm_bios_table_iter_free)
-        {
-        }
+        {}
 
         /** @brief Get the entry pointed by the iterator
          *
@@ -109,8 +107,7 @@ class BIOSTableIter
      */
     BIOSTableIter(const void* data, size_t length) noexcept :
         tableData(data), tableSize(length)
-    {
-    }
+    {}
 
     /** @brief Get the iterator to the beginning
      *

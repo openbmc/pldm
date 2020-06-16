@@ -1,9 +1,9 @@
 #include "file_table.hpp"
 
+#include "libpldm/utils.h"
+
 #include <fstream>
 #include <iostream>
-
-#include "libpldm/utils.h"
 
 namespace pldm
 {

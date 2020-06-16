@@ -1,11 +1,11 @@
 #pragma once
 
+#include "libpldm/base.h"
+
 #include <cassert>
 #include <functional>
 #include <map>
 #include <vector>
-
-#include "libpldm/base.h"
 
 namespace pldm
 {

@@ -27,8 +27,7 @@ class CertHandler : public FileHandler
      */
     CertHandler(uint32_t fileHandle, uint16_t fileType) :
         FileHandler(fileHandle), certType(fileType)
-    {
-    }
+    {}
 
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address);
@@ -48,8 +47,7 @@ class CertHandler : public FileHandler
     /** @brief CertHandler destructor
      */
     ~CertHandler()
-    {
-    }
+    {}
 
   private:
     uint16_t certType;      //!< type of the certificate

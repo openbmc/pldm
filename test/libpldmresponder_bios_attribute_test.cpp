@@ -11,18 +11,15 @@ class TestAttribute : public BIOSAttribute
   public:
     TestAttribute(const Json& entry, DBusHandler* const dbusHandler) :
         BIOSAttribute(entry, dbusHandler)
-    {
-    }
+    {}
 
     void setAttrValueOnDbus(const pldm_bios_attr_val_table_entry*,
                             const pldm_bios_attr_table_entry*,
                             const BIOSStringTable&) override
-    {
-    }
+    {}
 
     void constructEntry(const BIOSStringTable&, Table&, Table&) override
-    {
-    }
+    {}
 
     const std::optional<DBusMapping>& getDbusMap()
     {

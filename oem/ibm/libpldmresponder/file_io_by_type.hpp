@@ -101,14 +101,12 @@ class FileHandler
     /** @brief Constructor to create a FileHandler object
      */
     FileHandler(uint32_t fileHandle) : fileHandle(fileHandle)
-    {
-    }
+    {}
 
     /** FileHandler destructor
      */
     virtual ~FileHandler()
-    {
-    }
+    {}
 
   protected:
     uint32_t fileHandle; //!< file handle indicating name of file or invalid

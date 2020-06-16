@@ -1,10 +1,10 @@
+#include "libpldm/base.h"
+
 #include "libpldmresponder/base.hpp"
 
 #include <string.h>
 
 #include <array>
-
-#include "libpldm/base.h"
 
 #include <gtest/gtest.h>
 

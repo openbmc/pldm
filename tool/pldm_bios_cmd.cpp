@@ -1,14 +1,14 @@
 #include "pldm_bios_cmd.hpp"
 
+#include "libpldm/bios_table.h"
+#include "libpldm/utils.h"
+
 #include "bios_utils.hpp"
 #include "pldm_cmd_helper.hpp"
 #include "utils.hpp"
 
 #include <map>
 #include <optional>
-
-#include "libpldm/bios_table.h"
-#include "libpldm/utils.h"
 
 namespace pldmtool
 {
@@ -193,8 +193,7 @@ class GetBIOSTableHandler : public CommandInterface
     }
 
     void parseResponseMsg(pldm_msg*, size_t) override
-    {
-    }
+    {}
 
     std::optional<Table> getBIOSTable(pldm_bios_table_types tableType)
     {

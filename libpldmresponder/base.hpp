@@ -1,12 +1,12 @@
 #pragma once
 
+#include "libpldm/base.h"
+
 #include "handler.hpp"
 
 #include <stdint.h>
 
 #include <vector>
-
-#include "libpldm/base.h"
 
 namespace pldm
 {

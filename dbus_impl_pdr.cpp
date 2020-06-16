@@ -1,12 +1,12 @@
 #include "dbus_impl_pdr.hpp"
 
+#include "libpldm/pdr.h"
+#include "libpldm/pldm_types.h"
+
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <iostream>
-
-#include "libpldm/pdr.h"
-#include "libpldm/pldm_types.h"
 
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 

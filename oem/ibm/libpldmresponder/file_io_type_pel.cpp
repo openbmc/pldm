@@ -2,6 +2,9 @@
 
 #include "file_io_type_pel.hpp"
 
+#include "libpldm/base.h"
+#include "oem/ibm/libpldm/file_io.h"
+
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
@@ -9,16 +12,14 @@
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
+#include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <sdbusplus/server.hpp>
 #include <vector>
-#include <xyz/openbmc_project/Logging/Entry/server.hpp>
-
-#include "libpldm/base.h"
-#include "oem/ibm/libpldm/file_io.h"
 
 namespace pldm
 {

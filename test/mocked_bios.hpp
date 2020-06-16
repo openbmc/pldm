@@ -10,8 +10,7 @@ class MockBIOSStringTable : public BIOSStringTable
 {
   public:
     MockBIOSStringTable() : BIOSStringTable({})
-    {
-    }
+    {}
 
     MOCK_METHOD(uint16_t, findHandle, (const std::string&), (const override));
 

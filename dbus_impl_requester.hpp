@@ -3,9 +3,10 @@
 #include "instance_id.hpp"
 #include "xyz/openbmc_project/PLDM/Requester/server.hpp"
 
-#include <map>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
+
+#include <map>
 
 namespace pldm
 {

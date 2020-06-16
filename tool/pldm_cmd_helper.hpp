@@ -1,5 +1,10 @@
 #pragma once
 
+#include "libpldm/base.h"
+#include "libpldm/bios.h"
+#include "libpldm/fru.h"
+#include "libpldm/platform.h"
+
 #include "utils.hpp"
 
 #include <err.h>
@@ -8,15 +13,11 @@
 #include <unistd.h>
 
 #include <CLI/CLI.hpp>
+
 #include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <utility>
-
-#include "libpldm/base.h"
-#include "libpldm/bios.h"
-#include "libpldm/fru.h"
-#include "libpldm/platform.h"
 
 namespace pldmtool
 {

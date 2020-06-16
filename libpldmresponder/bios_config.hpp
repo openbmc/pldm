@@ -1,18 +1,19 @@
 #pragma once
 
+#include "bios_table.h"
+
 #include "bios_attribute.hpp"
 #include "bios_table.hpp"
+
+#include <nlohmann/json.hpp>
 
 #include <functional>
 #include <iostream>
 #include <memory>
-#include <nlohmann/json.hpp>
 #include <optional>
 #include <set>
 #include <string>
 #include <vector>
-
-#include "bios_table.h"
 
 namespace pldm
 {

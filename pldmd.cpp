@@ -1,3 +1,8 @@
+#include "libpldm/base.h"
+#include "libpldm/bios.h"
+#include "libpldm/pdr.h"
+#include "libpldm/platform.h"
+
 #include "dbus_impl_pdr.hpp"
 #include "dbus_impl_requester.hpp"
 #include "host_pdr_handler.hpp"
@@ -17,6 +22,9 @@
 #include <sys/un.h>
 #include <unistd.h>
 
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/source/io.hpp>
+
 #include <cstdio>
 #include <cstring>
 #include <fstream>
@@ -24,17 +32,10 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
-#include <sdeventplus/event.hpp>
-#include <sdeventplus/source/io.hpp>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-#include "libpldm/base.h"
-#include "libpldm/bios.h"
-#include "libpldm/pdr.h"
-#include "libpldm/platform.h"
 
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
@@ -195,8 +196,7 @@ int main(int argc, char** argv)
     pldm::utils::CustomFD socketFd(sockfd);
 
     struct sockaddr_un addr
-    {
-    };
+    {};
     addr.sun_family = AF_UNIX;
     const char path[] = "\0mctp-mux";
     memcpy(addr.sun_path, path, sizeof(path) - 1);
@@ -233,8 +233,7 @@ int main(int argc, char** argv)
         // This structure contains the parameter information for the response
         // message.
         struct msghdr msg
-        {
-        };
+        {};
 
         int returnCode = 0;
         ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);

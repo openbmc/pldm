@@ -1,3 +1,6 @@
+#include "libpldm/base.h"
+#include "libpldm/bios.h"
+
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/bios_table.hpp"
 
@@ -7,9 +10,6 @@
 #include <cstring>
 #include <ctime>
 #include <filesystem>
-
-#include "libpldm/base.h"
-#include "libpldm/bios.h"
 
 #include <gtest/gtest.h>
 
@@ -21,8 +21,7 @@ using namespace pldm::responder::utils;
 TEST(epochToBCDTime, testTime)
 {
     struct tm time
-    {
-    };
+    {};
     time.tm_year = 119;
     time.tm_mon = 3;
     time.tm_mday = 13;

@@ -1,10 +1,11 @@
 #include "fru_parser.hpp"
 
+#include <nlohmann/json.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <nlohmann/json.hpp>
-#include <xyz/openbmc_project/Common/error.hpp>
 
 namespace pldm
 {

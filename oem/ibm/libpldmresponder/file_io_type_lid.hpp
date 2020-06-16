@@ -69,8 +69,7 @@ class LidHandler : public FileHandler
     /** @brief LidHandler destructor
      */
     ~LidHandler()
-    {
-    }
+    {}
 
   protected:
     std::string lidPath;

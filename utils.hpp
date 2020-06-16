@@ -1,22 +1,23 @@
 #pragma once
 
+#include "libpldm/base.h"
+#include "libpldm/bios.h"
+#include "libpldm/platform.h"
+
 #include <stdint.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
+#include <nlohmann/json.hpp>
+#include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+
 #include <exception>
 #include <filesystem>
 #include <iostream>
-#include <nlohmann/json.hpp>
-#include <sdbusplus/server.hpp>
 #include <string>
 #include <variant>
 #include <vector>
-#include <xyz/openbmc_project/Logging/Entry/server.hpp>
-
-#include "libpldm/base.h"
-#include "libpldm/bios.h"
-#include "libpldm/platform.h"
 
 namespace pldm
 {
@@ -37,8 +38,7 @@ struct CustomFD
     CustomFD& operator=(CustomFD&&) = delete;
 
     CustomFD(int fd) : fd(fd)
-    {
-    }
+    {}
 
     ~CustomFD()
     {

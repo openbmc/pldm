@@ -3,9 +3,10 @@
 #include "types.hpp"
 #include "utils.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include <filesystem>
 #include <map>
-#include <nlohmann/json.hpp>
 #include <string>
 #include <tuple>
 #include <vector>

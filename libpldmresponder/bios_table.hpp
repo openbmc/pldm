@@ -1,14 +1,14 @@
 #pragma once
 
+#include "libpldm/bios.h"
+#include "libpldm/bios_table.h"
+
 #include <stdint.h>
 
 #include <filesystem>
 #include <optional>
 #include <string>
 #include <vector>
-
-#include "libpldm/bios.h"
-#include "libpldm/bios_table.h"
 
 namespace pldm
 {

@@ -2,6 +2,9 @@
 
 #include "config.h"
 
+#include "libpldm/platform.h"
+#include "libpldm/states.h"
+
 #include "handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "pdr_utils.hpp"
@@ -9,9 +12,6 @@
 
 #include <cstdint>
 #include <map>
-
-#include "libpldm/platform.h"
-#include "libpldm/states.h"
 
 using namespace pldm::responder::pdr;
 

@@ -18,8 +18,7 @@ class DumpHandler : public FileHandler
     /** @brief DumpHandler constructor
      */
     DumpHandler(uint32_t fileHandle) : FileHandler(fileHandle)
-    {
-    }
+    {}
 
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address);
@@ -44,8 +43,7 @@ class DumpHandler : public FileHandler
     /** @brief DumpHandler destructor
      */
     ~DumpHandler()
-    {
-    }
+    {}
 
   private:
     static int fd; //!< fd to manage the dump offload to bmc

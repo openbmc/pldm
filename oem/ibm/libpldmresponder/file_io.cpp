@@ -2,6 +2,8 @@
 
 #include "file_io.hpp"
 
+#include "libpldm/base.h"
+
 #include "file_io_by_type.hpp"
 #include "file_table.hpp"
 #include "utils.hpp"
@@ -17,8 +19,6 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
-
-#include "libpldm/base.h"
 
 namespace pldm
 {
