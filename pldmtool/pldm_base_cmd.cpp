@@ -50,7 +50,8 @@ const std::map<const char*, pldm_platform_commands> pldmPlatformCmds{
 
 const std::map<const char*, pldm_fru_commands> pldmFruCmds{
     {"GetFRURecordTableMetadata", PLDM_GET_FRU_RECORD_TABLE_METADATA},
-    {"GetFRURecordTable", PLDM_GET_FRU_RECORD_TABLE}};
+    {"GetFRURecordTable", PLDM_GET_FRU_RECORD_TABLE},
+    {"GetFRURecordByOption", PLDM_GET_FRU_RECORD_BY_OPTION}};
 
 #ifdef OEM_IBM
 const std::map<const char*, pldm_host_commands> pldmIBMHostCmds{
