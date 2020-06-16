@@ -1,13 +1,14 @@
 #pragma once
 
+#include "libpldm/pdr.h"
+#include "libpldm/platform.h"
+
 #include "xyz/openbmc_project/PLDM/PDR/server.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
-#include <vector>
 
-#include "libpldm/pdr.h"
-#include "libpldm/platform.h"
+#include <vector>
 
 namespace pldm
 {

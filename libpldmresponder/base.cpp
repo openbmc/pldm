@@ -1,5 +1,9 @@
 #include "libpldm/base.h"
 
+#include "libpldm/bios.h"
+#include "libpldm/fru.h"
+#include "libpldm/platform.h"
+
 #include "base.hpp"
 
 #include <array>
@@ -7,10 +11,6 @@
 #include <map>
 #include <stdexcept>
 #include <vector>
-
-#include "libpldm/bios.h"
-#include "libpldm/fru.h"
-#include "libpldm/platform.h"
 
 #ifdef OEM_IBM
 #include "libpldm/file_io.h"

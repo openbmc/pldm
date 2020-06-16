@@ -2,17 +2,18 @@
 
 #include "config.h"
 
+#include "libpldm/fru.h"
+#include "libpldm/pdr.h"
+
 #include "fru_parser.hpp"
 #include "handler.hpp"
 
-#include <map>
 #include <sdbusplus/message.hpp>
+
+#include <map>
 #include <string>
 #include <variant>
 #include <vector>
-
-#include "libpldm/fru.h"
-#include "libpldm/pdr.h"
 
 namespace pldm
 {

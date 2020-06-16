@@ -2,6 +2,10 @@
 
 #include "config.h"
 
+#include "libpldm/base.h"
+#include "oem/ibm/libpldm/file_io.h"
+#include "oem/ibm/libpldm/host.h"
+
 #include "handler.hpp"
 #include "utils.hpp"
 
@@ -14,10 +18,6 @@
 #include <filesystem>
 #include <iostream>
 #include <vector>
-
-#include "libpldm/base.h"
-#include "oem/ibm/libpldm/file_io.h"
-#include "oem/ibm/libpldm/host.h"
 
 namespace pldm
 {

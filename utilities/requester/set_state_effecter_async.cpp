@@ -1,12 +1,13 @@
-#include <CLI/CLI.hpp>
-#include <array>
-#include <iostream>
-#include <sdeventplus/event.hpp>
-#include <sdeventplus/source/io.hpp>
-
 #include "libpldm/base.h"
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
+
+#include <CLI/CLI.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/source/io.hpp>
+
+#include <array>
+#include <iostream>
 
 using namespace sdeventplus;
 using namespace sdeventplus::source;

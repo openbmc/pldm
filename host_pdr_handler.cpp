@@ -2,12 +2,13 @@
 
 #include "host_pdr_handler.hpp"
 
+#include "libpldm/requester/pldm.h"
+
 #include <assert.h>
 
-#include <fstream>
 #include <nlohmann/json.hpp>
 
-#include "libpldm/requester/pldm.h"
+#include <fstream>
 
 namespace pldm
 {

@@ -1,14 +1,15 @@
 #include "pldm_cmd_helper.hpp"
 
+#include "libpldm/requester/pldm.h"
+
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <systemd/sd-bus.h>
 
-#include <exception>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
-#include "libpldm/requester/pldm.h"
+#include <exception>
 
 namespace pldmtool
 {
@@ -53,8 +54,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     Logger(pldmVerbose, "Success in creating the socket : RC = ", sockFd);
 
     struct sockaddr_un addr
-    {
-    };
+    {};
     addr.sun_family = AF_UNIX;
 
     memcpy(addr.sun_path, devPath, sizeof(devPath) - 1);

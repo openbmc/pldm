@@ -1,14 +1,15 @@
 #include "fru.hpp"
 
+#include "libpldm/utils.h"
+
 #include "utils.hpp"
 
 #include <systemd/sd-journal.h>
 
-#include <iostream>
 #include <sdbusplus/bus.hpp>
-#include <set>
 
-#include "libpldm/utils.h"
+#include <iostream>
+#include <set>
 
 namespace pldm
 {

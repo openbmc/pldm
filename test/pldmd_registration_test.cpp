@@ -1,8 +1,8 @@
+#include "libpldm/base.h"
+
 #include "invoker.hpp"
 
 #include <stdexcept>
-
-#include "libpldm/base.h"
 
 #include <gtest/gtest.h>
 

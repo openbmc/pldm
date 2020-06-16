@@ -1,11 +1,11 @@
 #pragma once
 
+#include "libpldm/base.h"
+
 #include "handler.hpp"
 
 #include <map>
 #include <memory>
-
-#include "libpldm/base.h"
 
 namespace pldm
 {

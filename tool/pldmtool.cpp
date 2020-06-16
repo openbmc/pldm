@@ -45,8 +45,7 @@ class RawOp : public CommandInterface
 
     void parseResponseMsg(pldm_msg* /* responsePtr */,
                           size_t /* payloadLength */) override
-    {
-    }
+    {}
 
   private:
     std::vector<uint8_t> rawData;

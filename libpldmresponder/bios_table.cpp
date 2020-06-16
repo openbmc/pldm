@@ -1,8 +1,8 @@
 #include "bios_table.hpp"
 
-#include <fstream>
-
 #include "bios_table.h"
+
+#include <fstream>
 
 namespace pldm
 {
@@ -14,8 +14,7 @@ namespace bios
 {
 
 BIOSTable::BIOSTable(const char* filePath) : filePath(filePath)
-{
-}
+{}
 
 bool BIOSTable::isEmpty() const noexcept
 {
@@ -48,8 +47,7 @@ void BIOSTable::load(Response& response) const
 
 BIOSStringTable::BIOSStringTable(const Table& stringTable) :
     stringTable(stringTable)
-{
-}
+{}
 
 BIOSStringTable::BIOSStringTable(const BIOSTable& biosTable)
 {

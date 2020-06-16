@@ -1,9 +1,9 @@
+#include "libpldm/base.h"
+#include "libpldm/file_io.h"
+
 #include <string.h>
 
 #include <array>
-
-#include "libpldm/base.h"
-#include "libpldm/file_io.h"
 
 #include <gtest/gtest.h>
 

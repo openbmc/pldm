@@ -1,8 +1,8 @@
+#include "libpldm/platform.h"
+
 #include "pdr.hpp"
 
 #include <climits>
-
-#include "libpldm/platform.h"
 
 namespace pldm
 {

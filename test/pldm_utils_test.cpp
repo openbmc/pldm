@@ -1,6 +1,6 @@
-#include "utils.hpp"
-
 #include "libpldm/platform.h"
+
+#include "utils.hpp"
 
 #include <gtest/gtest.h>
 

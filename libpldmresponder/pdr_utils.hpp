@@ -1,19 +1,20 @@
 #pragma once
 
+#include "libpldm/pdr.h"
+
 #include "types.hpp"
 #include "utils.hpp"
 
 #include <stdint.h>
 
+#include <nlohmann/json.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <nlohmann/json.hpp>
 #include <string>
-#include <xyz/openbmc_project/Common/error.hpp>
-
-#include "libpldm/pdr.h"
 
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
@@ -101,8 +102,7 @@ class RepoInterface
 {
   public:
     RepoInterface(pldm_pdr* repo) : repo(repo)
-    {
-    }
+    {}
 
     virtual ~RepoInterface() = default;
 
@@ -177,8 +177,7 @@ class Repo : public RepoInterface
 {
   public:
     Repo(pldm_pdr* repo) : RepoInterface(repo)
-    {
-    }
+    {}
 
     pldm_pdr* getPdr() const override;
 

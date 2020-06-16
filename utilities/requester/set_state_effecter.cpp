@@ -1,9 +1,10 @@
-#include <CLI/CLI.hpp>
-#include <array>
-#include <iostream>
-
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
+
+#include <CLI/CLI.hpp>
+
+#include <array>
+#include <iostream>
 
 int main(int argc, char** argv)
 {

@@ -2,6 +2,9 @@
 
 #include "config.h"
 
+#include "libpldm/bios.h"
+#include "libpldm/bios_table.h"
+
 #include "bios_config.hpp"
 #include "bios_table.hpp"
 #include "handler.hpp"
@@ -12,9 +15,6 @@
 #include <functional>
 #include <map>
 #include <vector>
-
-#include "libpldm/bios.h"
-#include "libpldm/bios_table.h"
 
 namespace pldm
 {

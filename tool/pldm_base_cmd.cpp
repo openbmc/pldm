@@ -1,8 +1,8 @@
 #include "pldm_base_cmd.hpp"
 
-#include "pldm_cmd_helper.hpp"
-
 #include "libpldm/utils.h"
+
+#include "pldm_cmd_helper.hpp"
 
 #ifdef OEM_IBM
 #include "libpldm/file_io.h"
