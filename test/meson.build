@@ -18,8 +18,8 @@ pldmd = declare_dependency(
           sources: [
             '../instance_id.cpp',
             '../dbus_impl_requester.cpp',
-            '../host_pdr_handler.cpp',
-            '../dbus_to_host_effecters.cpp'])
+            '../host-bmc/host_pdr_handler.cpp',
+            '../host-bmc/dbus_to_host_effecters.cpp'])
 
 tests = [
   'libpldmresponder_base_test',

@@ -71,7 +71,7 @@ executable(
   'dbus_impl_requester.cpp',
   'instance_id.cpp',
   'dbus_impl_pdr.cpp',
-  'dbus_to_host_effecters.cpp',
+  'host-bmc/dbus_to_host_effecters.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
