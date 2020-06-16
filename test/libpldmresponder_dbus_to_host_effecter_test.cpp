@@ -1,9 +1,10 @@
-#include "dbus_to_host_effecters.hpp"
+#include "host-bmc/dbus_to_host_effecters.hpp"
 #include "mocked_utils.hpp"
 #include "utils.hpp"
 
-#include <iostream>
 #include <nlohmann/json.hpp>
+
+#include <iostream>
 
 #include <gtest/gtest.h>
 
@@ -18,8 +19,7 @@ class MockHostEffecterParser : public HostEffecterParser
                            DBusHandler* const dbusHandler,
                            const std::string& jsonPath) :
         HostEffecterParser(nullptr, fd, repo, dbusHandler, jsonPath)
-    {
-    }
+    {}
 
     MOCK_METHOD(void, setHostStateEffecter,
                 (size_t, std::vector<set_effecter_state_field>&, uint16_t),

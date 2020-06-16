@@ -5,8 +5,8 @@
 
 #include "dbus_impl_pdr.hpp"
 #include "dbus_impl_requester.hpp"
-#include "dbus_to_host_effecters.hpp"
-#include "host_pdr_handler.hpp"
+#include "host-bmc/dbus_to_host_effecters.hpp"
+#include "host-bmc/host_pdr_handler.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
