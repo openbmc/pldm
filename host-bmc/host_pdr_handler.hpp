@@ -3,10 +3,10 @@
 #include "libpldm/base.h"
 #include "libpldm/platform.h"
 
+#include "common/types.hpp"
+#include "common/utils.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
-#include "types.hpp"
-#include "utils.hpp"
 
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>

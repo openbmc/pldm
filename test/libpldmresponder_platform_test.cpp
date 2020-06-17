@@ -1,3 +1,4 @@
+#include "common/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -5,7 +6,6 @@
 #include "libpldmresponder/platform_numeric_effecter.hpp"
 #include "libpldmresponder/platform_state_effecter.hpp"
 #include "mocked_utils.hpp"
-#include "utils.hpp"
 
 #include <iostream>
 

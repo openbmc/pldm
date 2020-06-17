@@ -56,7 +56,6 @@ Makefile
 /aminclude_static.am
 /m4
 /tool/pldmtool
-pldmd
 
 # Code Coverage
 *.gcda

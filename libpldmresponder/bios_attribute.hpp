@@ -3,7 +3,7 @@
 #include "bios_table.h"
 
 #include "bios_table.hpp"
-#include "utils.hpp"
+#include "common/utils.hpp"
 
 #include <nlohmann/json.hpp>
 

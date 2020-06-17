@@ -1,12 +1,12 @@
 
 #include "platform.hpp"
 
+#include "common/utils.hpp"
 #include "event_parser.hpp"
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
-#include "utils.hpp"
 
 namespace pldm
 {
