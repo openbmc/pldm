@@ -39,7 +39,7 @@ if get_option('libpldm-only').disabled()
 libpldmutils_headers = ['.']
 libpldmutils = library(
   'pldmutils',
-  'utils.cpp',
+  'common/utils.cpp',
   version: meson.project_version(),
   dependencies: [
       libpldm,

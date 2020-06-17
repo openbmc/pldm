@@ -5,12 +5,12 @@
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
+#include "common/utils.hpp"
 #include "event_parser.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/handler.hpp"
-#include "utils.hpp"
 
 #include <stdint.h>
 
