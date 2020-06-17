@@ -89,7 +89,7 @@ configure_file(
   output: 'pldmd.service',
 )
 
-subdir('tool')
+subdir('pldmtool')
 
 if get_option('tests').enabled()
   subdir('test')
