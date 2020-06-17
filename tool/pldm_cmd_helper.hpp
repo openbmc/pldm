@@ -5,7 +5,7 @@
 #include "libpldm/fru.h"
 #include "libpldm/platform.h"
 
-#include "utils.hpp"
+#include "common/utils.hpp"
 
 #include <err.h>
 #include <sys/socket.h>

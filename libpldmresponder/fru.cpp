@@ -2,7 +2,7 @@
 
 #include "libpldm/utils.h"
 
-#include "utils.hpp"
+#include "common/utils.hpp"
 
 #include <systemd/sd-journal.h>
 

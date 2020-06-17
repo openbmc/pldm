@@ -3,6 +3,7 @@
 #include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 
+#include "common/utils.hpp"
 #include "dbus_impl_pdr.hpp"
 #include "dbus_impl_requester.hpp"
 #include "host-bmc/dbus_to_host_effecters.hpp"
@@ -12,7 +13,6 @@
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/platform.hpp"
-#include "utils.hpp"
 
 #include <err.h>
 #include <getopt.h>
