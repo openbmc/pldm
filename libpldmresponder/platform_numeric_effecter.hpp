@@ -5,10 +5,10 @@
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 
+#include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "pdr_utils.hpp"
 #include "pldmd/handler.hpp"
-#include "utils.hpp"
 
 #include <math.h>
 #include <stdint.h>

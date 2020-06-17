@@ -1,8 +1,8 @@
 #pragma once
 
+#include "common/types.hpp"
+#include "common/utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
-#include "types.hpp"
-#include "utils.hpp"
 
 #include <string>
 #include <utility>

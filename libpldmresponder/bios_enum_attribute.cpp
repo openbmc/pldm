@@ -2,7 +2,7 @@
 
 #include "bios_enum_attribute.hpp"
 
-#include "utils.hpp"
+#include "common/utils.hpp"
 
 #include <iostream>
 

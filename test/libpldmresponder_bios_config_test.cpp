@@ -1,4 +1,4 @@
-#include "bios_utils.hpp"
+#include "common/bios_utils.hpp"
 #include "libpldmresponder/bios_config.hpp"
 #include "libpldmresponder/bios_string_attribute.hpp"
 #include "mocked_bios.hpp"
