@@ -3,7 +3,7 @@
 #include "pldm_cmd_helper.hpp"
 #include "pldm_fru_cmd.hpp"
 #include "pldm_platform_cmd.hpp"
-#include "tool/oem/ibm/pldm_host_cmd.hpp"
+#include "pldmtool/oem/ibm/pldm_host_cmd.hpp"
 
 #include <CLI/CLI.hpp>
 
