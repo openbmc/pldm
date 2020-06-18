@@ -110,6 +110,10 @@ struct pldm_msg_hdr {
 	uint8_t command; //!< PLDM command code
 } __attribute__((packed));
 
+// Macros for byte-swapping variables in-place
+#define HTOLE32(X) (X = htole32(X))
+#define HTOLE16(X) (X = htole16(X))
+
 /** @struct pldm_msg
  *
  * Structure representing PLDM message
