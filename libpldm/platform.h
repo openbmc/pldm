@@ -298,6 +298,54 @@ struct state_sensor_possible_states {
 	bitfield8_t states[1];
 } __attribute__((packed));
 
+/* @brief List of PLDM State Set types
+ */
+enum pldm_state_set_enumeration {
+    pldm_state_set_operational_running_status = 11,
+    pldm_state_set_boot_restart_cause = 192
+};
+
+/* @brief List of states for the Boot Restart Cause state set.
+ */
+enum pldm_state_set_boot_restart_cause_values {
+    pldm_state_set_boot_restart_cause_powered_up = 1,
+    pldm_state_set_boot_restart_cause_hard_reset = 2,
+    pldm_state_set_boot_restart_cause_warm_reset = 3,
+    pldm_state_set_boot_restart_cause_manual_hard_reset = 4,
+    pldm_state_set_boot_restart_cause_manual_warm_reset = 5,
+    pldm_state_set_boot_restart_cause_system_restart = 6,
+    pldm_state_set_boot_restart_cause_watchdog_timeout = 7
+};
+
+/* @brief List of states for the Operational Running Status state set.
+ */
+enum pldm_state_set_operational_running_status_values {
+    pldm_state_set_operational_running_status_starting = 1,
+    pldm_state_set_operational_running_status_stopping = 2,
+    pldm_state_set_operational_running_status_stopped = 3,
+    pldm_state_set_operational_running_status_in_service = 4,
+    pldm_state_set_operational_running_status_aborted = 5,
+    pldm_state_set_operational_running_status_dormant = 6
+};
+
+/* @brief Types of initialization for state effecters.
+ */
+enum pldm_state_effecter_init {
+    state_effecter_noInit = 0,
+    state_effecter_useInitPDR = 1,
+    state_effecter_enableEffecter = 2,
+    state_effecter_disableEffecter = 3
+};
+
+/* @brief Types of initialization for state sensors.
+ */
+enum pldm_state_sensor_init {
+    state_sensor_noInit = 0,
+    state_sensor_useInitPDR = 1,
+    state_sensor_enableSensor = 2,
+    state_sensor_disableSensor = 3
+};
+
 /** @struct pldm_state_effecter_pdr
  *
  *  Structure representing PLDM state effecter PDR
@@ -315,6 +363,29 @@ struct pldm_state_effecter_pdr {
 	uint8_t composite_effecter_count;
 	uint8_t possible_states[1];
 } __attribute__((packed));
+
+/** @brief Encode PLDM state sensor PDR
+ *
+ * @param[in/out] sensor                 Structure to encode. All members of sensor,
+ *                                       except those mentioned in the @note below, should
+ *                                       be initialized by the caller.
+ * @param[in]     allocation_size        Size of sensor allocation in bytes
+ * @param[in]     possible_states        Possible sensor states
+ * @param[in]     num_possible_states    Size of possible sensor states in bytes
+ * @param[out]    actual_size            Size of sensor PDR. Set to 0 on error.
+ * @return int    pldm_completion_codes  PLDM_SUCCESS if successful, PLDM_ERROR otherwise
+ *
+ * @note The sensor parameter will be encoded in place.
+ * @note Caller is responsible for allocation of the sensor parameter. Caller
+ *       must allocate enough space for the base structure and the
+ *       sensor->possible_states array, otherwise the function will fail.
+ * @note sensor->hdr.length, .type, and .version will be set appropriately.
+ */
+int encode_pldm_state_sensor_pdr(struct pldm_state_sensor_pdr* sensor,
+                                 size_t allocation_size,
+                                 const struct state_sensor_possible_states* possible_states,
+                                 size_t num_possible_states,
+                                 size_t* actual_size);
 
 /** @union union_effecter_data_size
  *
@@ -398,6 +469,29 @@ struct state_effecter_possible_states {
 	uint8_t possible_states_size;
 	bitfield8_t states[1];
 } __attribute__((packed));
+
+/** @brief Encode PLDM state effecter PDR
+ *
+ * @param[in/out] effecter               Structure to encode. All members of effecter,
+ *                                       except those mentioned in the @note below, should
+ *                                       be initialized by the caller.
+ * @param[in]     allocation_size        Size of effecter allocation in bytes
+ * @param[in]     possible_states        Possible effecter states
+ * @param[in]     num_possible_states    Size of possible effecter states in bytes
+ * @param[out]    actual_size            Size of effecter PDR. Set to 0 on error.
+ * @return int    pldm_completion_codes  PLDM_SUCCESS if successful, PLDM_ERROR otherwise
+ *
+ * @note The effecter parameter will be encoded in place.
+ * @note Caller is responsible for allocation of the effecter parameter. Caller
+ *       must allocate enough space for the base structure and the
+ *       effecter->possible_states array, otherwise the function will fail.
+ * @note effecter->hdr.length, .type, and .version will be set appropriately.
+ */
+int encode_pldm_state_effecter_pdr(struct pldm_state_effecter_pdr* effecter,
+                                   size_t allocation_size,
+                                   const struct state_effecter_possible_states* possible_states,
+                                   size_t possible_states_size,
+                                   size_t* actual_size);
 
 /** @struct set_effecter_state_field
  *
@@ -1272,6 +1366,28 @@ int encode_pldm_pdr_repository_chg_event_data(
     const uint32_t *const *change_entries,
     struct pldm_pdr_repository_chg_event_data *event_data,
     size_t *actual_change_records_size, size_t max_change_records_size);
+
+/** @brief Encode event data for a PLDM Sensor Event
+ *  @param[out] event_data              The object to store the encoded event in
+ *  @param[in] event_data_size          Size of the allocation for event_data
+ *  @param[in] sensor_id                Sensor ID
+ *  @param[in] sensor_event_class       Sensor event class
+ *  @param[in] sensor_offset            Offset
+ *  @param[in] event_state              Event state
+ *  @param[in] previous_event_state     Previous event state
+ *  @param[out] actual_event_data_size  The real size in bytes of the event_data
+ *  @return int                         pldm_completion_codes
+ *  @note If event_data is NULL, then *actual_event_data_size will be set to
+ *        reflect the size of the event data, and PLDM_SUCCESS will be returned.
+ */
+int encode_pldm_sensor_event_data(struct pldm_sensor_event_data* event_data,
+                                  size_t event_data_size,
+                                  uint16_t sensor_id,
+                                  enum sensor_event_class_states sensor_event_class,
+                                  uint8_t sensor_offset,
+                                  uint8_t event_state,
+                                  uint8_t previous_event_state,
+                                  size_t* actual_event_data_size);
 
 /** @brief Decode PldmPDRRepositoryChangeRecord response data
  *

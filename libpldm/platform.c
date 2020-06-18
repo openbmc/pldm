@@ -3,6 +3,153 @@
 
 #include "platform.h"
 
+#define CONVERT32(X) (X = htole32(X))
+#define CONVERT16(X) (X = htole16(X))
+
+int encode_pldm_state_effecter_pdr(struct pldm_state_effecter_pdr* const effecter,
+                                   const size_t allocation_size,
+                                   const struct state_effecter_possible_states* const possible_states,
+                                   const size_t possible_states_size,
+                                   size_t* const actual_size)
+{
+    // Encode possible states
+
+    size_t calculated_possible_states_size = 0;
+
+    {
+        char* states_ptr = (char*)possible_states,
+            * const begin_states_ptr = states_ptr;
+
+        for (int i = 0; i < effecter->composite_effecter_count; ++i) {
+            struct state_effecter_possible_states* states
+                = (struct state_effecter_possible_states*)states_ptr;
+
+            CONVERT16(states->state_set_id);
+
+            states_ptr += (sizeof(*states)
+                           - sizeof(states->states)
+                           + states->possible_states_size);
+        }
+
+        calculated_possible_states_size = states_ptr - begin_states_ptr;
+    }
+
+    // Check lengths
+
+    if (possible_states_size != calculated_possible_states_size)
+    {
+        *actual_size = 0;
+        return PLDM_ERROR;
+    }
+
+    *actual_size = (sizeof(struct pldm_state_effecter_pdr)
+                    + possible_states_size
+                    - sizeof(effecter->possible_states));
+
+    if (allocation_size < *actual_size) {
+        *actual_size = 0;
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    // Encode rest of PDR
+
+    effecter->hdr.version = 1;
+    effecter->hdr.type = PLDM_STATE_EFFECTER_PDR;
+    effecter->hdr.length = *actual_size;
+
+    memcpy(effecter->possible_states,
+           possible_states,
+           possible_states_size);
+
+    // Convert effecter PDR body
+    CONVERT16(effecter->terminus_handle);
+    CONVERT16(effecter->effecter_id);
+    CONVERT16(effecter->entity_type);
+    CONVERT16(effecter->entity_instance);
+    CONVERT16(effecter->container_id);
+    CONVERT16(effecter->effecter_semantic_id);
+
+    // Convert header
+    CONVERT32(effecter->hdr.record_handle);
+    CONVERT16(effecter->hdr.record_change_num);
+    CONVERT16(effecter->hdr.length);
+
+    return PLDM_SUCCESS;
+}
+
+int encode_pldm_state_sensor_pdr(struct pldm_state_sensor_pdr* const sensor,
+                                 const size_t allocation_size,
+                                 const struct state_sensor_possible_states* const possible_states,
+                                 const size_t possible_states_size,
+                                 size_t* const actual_size)
+{
+    // Encode possible states
+
+    size_t calculated_possible_states_size = 0;
+
+    {
+        char* states_ptr = (char*)possible_states,
+            * const begin_states_ptr = states_ptr;
+
+        for (int i = 0; i < sensor->composite_sensor_count; ++i) {
+            struct state_sensor_possible_states* states
+                = (struct state_sensor_possible_states*)states_ptr;
+
+            CONVERT16(states->state_set_id);
+
+            states_ptr += (sizeof(*states)
+                           - sizeof(states->states)
+                           + states->possible_states_size);
+        }
+
+        calculated_possible_states_size = states_ptr - begin_states_ptr;
+    }
+
+    // Check lengths
+
+    if (possible_states_size != calculated_possible_states_size)
+    {
+        *actual_size = 0;
+        return PLDM_ERROR;
+    }
+
+    *actual_size = (sizeof(struct pldm_state_sensor_pdr)
+                    + possible_states_size
+                    - sizeof(sensor->possible_states));
+
+    if (allocation_size < *actual_size) {
+        *actual_size = 0;
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    // Encode rest of PDR
+
+    sensor->hdr.version = 1;
+    sensor->hdr.type = PLDM_STATE_SENSOR_PDR;
+    sensor->hdr.length = *actual_size;
+
+    memcpy(sensor->possible_states,
+           possible_states,
+           possible_states_size);
+
+    // Convert sensor PDR body
+    CONVERT16(sensor->terminus_handle);
+    CONVERT16(sensor->sensor_id);
+    CONVERT16(sensor->entity_type);
+    CONVERT16(sensor->entity_instance);
+    CONVERT16(sensor->container_id);
+
+    // Convert header
+    CONVERT32(sensor->hdr.record_handle);
+    CONVERT16(sensor->hdr.record_change_num);
+    CONVERT16(sensor->hdr.length);
+
+    return PLDM_SUCCESS;
+}
+
+#undef CONVERT32
+#undef CONVERT16
+
 int encode_set_state_effecter_states_resp(uint8_t instance_id,
 					  uint8_t completion_code,
 					  struct pldm_msg *msg)
@@ -560,6 +707,42 @@ int decode_get_state_sensor_readings_req(const struct pldm_msg *msg,
 	       sizeof(request->sensor_rearm.byte));
 
 	return PLDM_SUCCESS;
+}
+
+int encode_pldm_sensor_event_data(struct pldm_sensor_event_data* const event_data,
+                                  const size_t event_data_size,
+                                  const uint16_t sensor_id,
+                                  const enum sensor_event_class_states sensor_event_class,
+                                  const uint8_t sensor_offset,
+                                  const uint8_t event_state,
+                                  const uint8_t previous_event_state,
+                                  size_t* const actual_event_data_size)
+{
+    *actual_event_data_size = (sizeof(*event_data)
+                               - sizeof(event_data->event_class)
+                               + sizeof(struct pldm_sensor_event_state_sensor_state));
+
+    if (!event_data) {
+        return PLDM_SUCCESS;
+    }
+
+    if (event_data_size < *actual_event_data_size)
+    {
+        *actual_event_data_size = 0;
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    event_data->sensor_id = htole32(sensor_id);
+    event_data->sensor_event_class_type = sensor_event_class;
+
+    struct pldm_sensor_event_state_sensor_state* const state_data
+        = (struct pldm_sensor_event_state_sensor_state*)event_data->event_class;
+
+    state_data->sensor_offset = sensor_offset;
+    state_data->event_state = event_state;
+    state_data->previous_event_state = previous_event_state;
+
+    return PLDM_SUCCESS;
 }
 
 int decode_platform_event_message_req(const struct pldm_msg *msg,
