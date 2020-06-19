@@ -685,11 +685,6 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
         }
 
         auto handle = findAttrHandleByName(attrName, *attrTable, *stringTable);
-        if (!handle)
-        {
-            std::cerr << "Can not find the attribute " << attrName << std::endl;
-            return;
-        }
 
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) +
