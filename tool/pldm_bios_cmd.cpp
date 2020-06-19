@@ -249,7 +249,6 @@ class GetBIOSTableHandler : public CommandInterface
             stringTable.data(), stringTable.size(), name.c_str());
         if (stringEntry == nullptr)
         {
-            std::cout << "StringTable initialize failed" << std::endl;
             return nullptr;
         }
 
@@ -352,6 +351,9 @@ class GetBIOSTableHandler : public CommandInterface
                 tableEntry);
         auto attrType = static_cast<pldm_bios_attribute_type>(
             pldm_bios_table_attr_value_entry_decode_attribute_type(tableEntry));
+        std::cout << "AttributeHandle: " << attrHandle << std::endl;
+        std::cout << "\tAttributeType: " << attrTypeMap.at(attrType)
+                  << std::endl;
         switch (attrType)
         {
             case PLDM_BIOS_ENUMERATION:
@@ -363,9 +365,13 @@ class GetBIOSTableHandler : public CommandInterface
                 std::vector<uint8_t> handles(count);
                 pldm_bios_table_attr_value_entry_enum_decode_handles(
                     tableEntry, handles.data(), handles.size());
+                std::cout << "\tNumberOfCurrentValues: " << (int)count
+                          << std::endl;
                 for (size_t i = 0; i < handles.size(); i++)
                 {
-                    std::cout << "CurrentValue: "
+                    std::cout << "\tCurrentValueStringHandleIndex[" << i
+                              << "] = " << (int)handles[i]
+                              << ", StringHandle = "
                               << displayEnumValueByIndex(attrHandle, handles[i],
                                                          attrTable, stringTable)
                               << std::endl;
@@ -377,7 +383,7 @@ class GetBIOSTableHandler : public CommandInterface
             {
                 auto cv = pldm_bios_table_attr_value_entry_integer_decode_cv(
                     tableEntry);
-                std::cout << "CurrentValue: " << cv << std::endl;
+                std::cout << "\tCurrentValue: " << cv << std::endl;
                 break;
             }
             case PLDM_BIOS_STRING:
@@ -386,7 +392,9 @@ class GetBIOSTableHandler : public CommandInterface
                 variable_field currentString;
                 pldm_bios_table_attr_value_entry_string_decode_string(
                     tableEntry, &currentString);
-                std::cout << "CurrentValue: "
+                std::cout << "\tCurrentStringLength: " << currentString.length
+                          << std::endl
+                          << "\tCurrentString: "
                           << std::string(reinterpret_cast<const char*>(
                                              currentString.ptr),
                                          currentString.length)
