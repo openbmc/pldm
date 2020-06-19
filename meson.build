@@ -91,6 +91,8 @@ configure_file(
 
 subdir('pldmtool')
 
+subdir('configurations')
+
 if get_option('tests').enabled()
   subdir('test')
 endif
