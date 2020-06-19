@@ -249,7 +249,6 @@ class GetBIOSTableHandler : public CommandInterface
             stringTable.data(), stringTable.size(), name.c_str());
         if (stringEntry == nullptr)
         {
-            std::cout << "StringTable initialize failed" << std::endl;
             return nullptr;
         }
 
@@ -345,13 +344,19 @@ class GetBIOSTableHandler : public CommandInterface
     void displayAttributeValueEntry(
         const pldm_bios_attr_val_table_entry* tableEntry,
         const std::optional<Table>& attrTable,
-        const std::optional<Table>& stringTable)
+        const std::optional<Table>& stringTable, bool verbose)
     {
         auto attrHandle =
             pldm_bios_table_attr_value_entry_decode_attribute_handle(
                 tableEntry);
         auto attrType = static_cast<pldm_bios_attribute_type>(
             pldm_bios_table_attr_value_entry_decode_attribute_type(tableEntry));
+        if (verbose)
+        {
+            std::cout << "AttributeHandle: " << attrHandle << std::endl;
+            std::cout << "\tAttributeType: " << attrTypeMap.at(attrType)
+                      << std::endl;
+        }
         switch (attrType)
         {
             case PLDM_BIOS_ENUMERATION:
@@ -363,12 +368,30 @@ class GetBIOSTableHandler : public CommandInterface
                 std::vector<uint8_t> handles(count);
                 pldm_bios_table_attr_value_entry_enum_decode_handles(
                     tableEntry, handles.data(), handles.size());
+                if (verbose)
+                {
+                    std::cout << "\tNumberOfCurrentValues: " << (int)count
+                              << std::endl;
+                }
                 for (size_t i = 0; i < handles.size(); i++)
                 {
-                    std::cout << "CurrentValue: "
-                              << displayEnumValueByIndex(attrHandle, handles[i],
-                                                         attrTable, stringTable)
-                              << std::endl;
+                    if (verbose)
+                    {
+                        std::cout
+                            << "\tCurrentValueStringHandleIndex[" << i
+                            << "] = " << (int)handles[i] << ", StringHandle = "
+                            << displayEnumValueByIndex(attrHandle, handles[i],
+                                                       attrTable, stringTable)
+                            << std::endl;
+                    }
+                    else
+                    {
+                        std::cout
+                            << "CurrentValue: "
+                            << displayEnumValueByIndex(attrHandle, handles[i],
+                                                       attrTable, stringTable)
+                            << std::endl;
+                    }
                 }
                 break;
             }
@@ -377,7 +400,14 @@ class GetBIOSTableHandler : public CommandInterface
             {
                 auto cv = pldm_bios_table_attr_value_entry_integer_decode_cv(
                     tableEntry);
-                std::cout << "CurrentValue: " << cv << std::endl;
+                if (verbose)
+                {
+                    std::cout << "\tCurrentValue: " << cv << std::endl;
+                }
+                else
+                {
+                    std::cout << "CurrentValue: " << cv << std::endl;
+                }
                 break;
             }
             case PLDM_BIOS_STRING:
@@ -386,11 +416,25 @@ class GetBIOSTableHandler : public CommandInterface
                 variable_field currentString;
                 pldm_bios_table_attr_value_entry_string_decode_string(
                     tableEntry, &currentString);
-                std::cout << "CurrentValue: "
-                          << std::string(reinterpret_cast<const char*>(
-                                             currentString.ptr),
-                                         currentString.length)
-                          << std::endl;
+                if (verbose)
+                {
+                    std::cout
+                        << "\tCurrentStringLength: " << currentString.length
+                        << std::endl
+                        << "\tCurrentString: "
+                        << std::string(
+                               reinterpret_cast<const char*>(currentString.ptr),
+                               currentString.length)
+                        << std::endl;
+                }
+                else
+                {
+                    std::cout << "CurrentValue: "
+                              << std::string(reinterpret_cast<const char*>(
+                                                 currentString.ptr),
+                                             currentString.length)
+                              << std::endl;
+                }
 
                 break;
             }
@@ -601,7 +645,8 @@ class GetBIOSTable : public GetBIOSTableHandler
         for (auto tableEntry : BIOSTableIter<PLDM_BIOS_ATTR_VAL_TABLE>(
                  attrValTable->data(), attrValTable->size()))
         {
-            displayAttributeValueEntry(tableEntry, attrTable, stringTable);
+            displayAttributeValueEntry(tableEntry, attrTable, stringTable,
+                                       true);
         }
     }
 };
@@ -640,6 +685,11 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
         }
 
         auto handle = findAttrHandleByName(attrName, *attrTable, *stringTable);
+        if (!handle)
+        {
+            std::cerr << "Can not find the attribute " << attrName << std::endl;
+            return;
+        }
 
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) +
@@ -683,7 +733,7 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
             reinterpret_cast<const struct pldm_bios_attr_val_table_entry*>(
                 attributeData.ptr);
 
-        displayAttributeValueEntry(tableEntry, attrTable, stringTable);
+        displayAttributeValueEntry(tableEntry, attrTable, stringTable, false);
     }
 
   private:
