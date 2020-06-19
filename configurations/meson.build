@@ -14,3 +14,4 @@ if get_option('oem-ibm').enabled()
 endif
 
 install_subdir('pdr', install_dir: packagedir)
+install_subdir('host', install_dir: packagedir)
