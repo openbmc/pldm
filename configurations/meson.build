@@ -11,8 +11,13 @@ packagedir = join_paths(
 install_subdir('fru', install_dir: packagedir)
 if get_option('oem-ibm').enabled()
     install_subdir('../oem/ibm/configurations/fru', install_dir: packagedir)
+    install_data('../oem/ibm/configurations/fileTable.json',
+        install_dir: packagedir)
+    install_data('../oem/ibm/configurations/host_eid', install_dir: packagedir)
 endif
 
 install_subdir('pdr', install_dir: packagedir)
 
 install_subdir('host', install_dir: packagedir)
+
+install_subdir('events', install_dir: packagedir)
