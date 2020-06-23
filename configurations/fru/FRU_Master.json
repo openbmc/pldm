@@ -29,6 +29,10 @@
         {
             "interface" : "xyz.openbmc_project.Inventory.Item.Chassis",
             "entity_type" : 45
+        },
+	{
+            "interface" : "xyz.openbmc_project.Inventory.Item.PowerSupply",
+            "entity_type" : 120
         }
     ]
 }
