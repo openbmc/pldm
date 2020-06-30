@@ -27,28 +27,28 @@ const EventEntryMap eventEntryMap = {
         0x01010007, // SensorID for VMI Port 0 ipv4 = 7, SensorOffset for the
                     // State Set ID 15 = 1 & PLDM State Set Enumeration List = 1
                     // (Valid Configuration)
-        {"/xyz/openbmc_project/network/vmi/intf0/ipv4/addr0",
+        {"/xyz/openbmc_project/network/hypervisor/intf0/ipv4/addr0",
          "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
     },
     {
         0x02010007, // SensorID for VMI Port 0 ipv4 = 7, SensorOffset for the
                     // State Set ID 15 = 1 & PLDM State Set Enumeration List = 2
                     // (Invalid Configuration)
-        {"/xyz/openbmc_project/network/vmi/intf0/ipv4/addr0",
+        {"/xyz/openbmc_project/network/hypervisor/intf0/ipv4/addr0",
          "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
     },
     {
         0x01010008, // SensorID for VMI Port 1 ipv4 = 8, SensorOffset for the
                     // State Set ID 15 = 1 & PLDM State Set Enumeration List = 1
                     // (Valid Configuration)
-        {"/xyz/openbmc_project/network/vmi/intf1/ipv4/addr0",
+        {"/xyz/openbmc_project/network/hypervisor/intf1/ipv4/addr0",
          "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
     },
     {
         0x02010008, // SensorID for VMI Port 1 ipv4 = 8, SensorOffset for the
                     // State Set ID 15 = 1 & PLDM State Set Enumeration List = 2
                     // (Invalid Configuration)
-        {"/xyz/openbmc_project/network/vmi/intf1/ipv4/addr0",
+        {"/xyz/openbmc_project/network/hypervisor/intf1/ipv4/addr0",
          "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
     }};
 
