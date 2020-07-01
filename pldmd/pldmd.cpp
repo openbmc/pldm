@@ -171,16 +171,19 @@ int main(int argc, char** argv)
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
     std::unique_ptr<HostPDRHandler> hostPDRHandler;
+    std::unique_ptr<pldm::host_effecters::HostEffecterParser>
+        hostEffecterParser;
+    DBusHandler dbusHandler;
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), entityTree.get(),
             dbusImplReq);
-        DBusHandler dbusHandler;
-        pldm::host_effecters::HostEffecterParser hostEffecterParser(
-            &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler, HOST_JSONS_DIR,
-            verbose);
+        hostEffecterParser =
+            std::make_unique<pldm::host_effecters::HostEffecterParser>(
+                &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
+                HOST_JSONS_DIR, verbose);
     }
 
     Invoker invoker{};
