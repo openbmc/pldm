@@ -144,6 +144,9 @@ class DBusHandlerInterface
   public:
     virtual ~DBusHandlerInterface() = default;
 
+    virtual std::string getService(const char* path,
+                                   const char* interface) const = 0;
+
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
 
@@ -181,7 +184,8 @@ class DBusHandler : public DBusHandlerInterface
      *
      *  @throw sdbusplus::exception::SdBusError when it fails
      */
-    std::string getService(const char* path, const char* interface) const;
+    std::string getService(const char* path,
+                           const char* interface) const override;
 
     /** @brief Get property(type: variant) from the requested dbus
      *
