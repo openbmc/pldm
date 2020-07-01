@@ -104,6 +104,19 @@ void generateStateEffecterPDR(const Json& json, Handler& handler,
             auto interface = dbusEntry.value("interface", "");
             auto propertyName = dbusEntry.value("property_name", "");
             auto propertyType = dbusEntry.value("property_type", "");
+
+            try
+            {
+                auto service = pldm::utils::DBusHandler().getService(
+                    objectPath.c_str(), interface.c_str());
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "object path does not exist, objectPath= "
+                          << objectPath << ", ERROR= " << e.what() << "\n";
+                continue;
+            }
+
             pldm::utils::DBusMapping dbusMapping{objectPath, interface,
                                                  propertyName, propertyType};
             dbusMappings.emplace_back(std::move(dbusMapping));

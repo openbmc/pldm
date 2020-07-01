@@ -83,7 +83,7 @@
                                 ]
                             },
                             "dbus": {
-                                "path": "/foo/bar/baz",
+                                "path": "/foo/bar",
                                 "interface": "xyz.openbmc_project.Foo.Bar.Baz",
                                 "property_name": "propertyName",
                                 "property_type": "string",
