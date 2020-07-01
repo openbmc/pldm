@@ -185,6 +185,7 @@ int main(int argc, char** argv)
                 &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
                 HOST_JSONS_DIR, verbose);
     }
+    const pldm::utils::DBusHandler dBusIntf;
 
     Invoker invoker{};
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
@@ -196,8 +197,9 @@ int main(int argc, char** argv)
     // Platform handler.
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>(
-                                PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
-                                hostPDRHandler.get(), fruHandler.get()));
+                                dBusIntf, PDR_JSONS_DIR, EVENTS_JSONS_DIR,
+                                pdrRepo.get(), hostPDRHandler.get(),
+                                fruHandler.get()));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
 #ifdef OEM_IBM

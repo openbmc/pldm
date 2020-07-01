@@ -24,8 +24,9 @@ static const Json empty{};
  *  @param[out] repo - pdr::RepoInterface
  *
  */
-template <class Handler>
-void generateNumericEffecterPDR(const Json& json, Handler& handler,
+template <class DBusInterface, class Handler>
+void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
+                                Handler& handler,
                                 pdr_utils::RepoInterface& repo)
 {
     static const std::vector<Json> emptyList{};
@@ -164,6 +165,19 @@ void generateNumericEffecterPDR(const Json& json, Handler& handler,
         auto interface = dbusEntry.value("interface", "");
         auto propertyName = dbusEntry.value("property_name", "");
         auto propertyType = dbusEntry.value("property_type", "");
+
+        try
+        {
+            auto service =
+                dBusIntf.getService(objectPath.c_str(), interface.c_str());
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "object path does not exist, objectPath= "
+                      << objectPath << ", ERROR= " << e.what() << "\n";
+            continue;
+        }
+
         pldm::utils::DBusMapping dbusMapping{objectPath, interface,
                                              propertyName, propertyType};
         DbusMappings dbusMappings{};

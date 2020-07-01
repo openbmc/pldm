@@ -28,7 +28,8 @@ using namespace pldm::utils;
 using namespace pldm::responder::pdr_utils;
 
 using generatePDR =
-    std::function<void(const Json& json, pdr_utils::RepoInterface& repo)>;
+    std::function<void(const pldm::utils::DBusHandler& dBusIntf,
+                       const Json& json, pdr_utils::RepoInterface& repo)>;
 
 using EffecterId = uint16_t;
 using DbusObjMaps =
@@ -55,7 +56,8 @@ struct DBusInfo
 class Handler : public CmdHandler
 {
   public:
-    Handler(const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
+    Handler(const pldm::utils::DBusHandler& dBusIntf,
+            const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             fru::Handler* fruHandler,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
@@ -63,7 +65,7 @@ class Handler : public CmdHandler
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
         fruHandler(fruHandler)
     {
-        generate(pdrJsonsDir, pdrRepo);
+        generate(dBusIntf, pdrJsonsDir, pdrRepo);
 
         handlers.emplace(PLDM_GET_PDR,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -158,10 +160,12 @@ class Handler : public CmdHandler
 
     /** @brief Parse PDR JSONs and build PDR repository
      *
+     *  @param[in] dBusIntf - The interface object
      *  @param[in] dir - directory housing platform specific PDR JSON files
      *  @param[in] repo - instance of concrete implementation of Repo
      */
-    void generate(const std::string& dir, Repo& repo);
+    void generate(const pldm::utils::DBusHandler& dBusIntf,
+                  const std::string& dir, Repo& repo);
 
     /** @brief Parse PDR JSONs and build state effecter PDR repository
      *

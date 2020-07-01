@@ -2,6 +2,9 @@
 
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "mocked_utils.hpp"
+
+#include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <gtest/gtest.h>
 
@@ -10,13 +13,22 @@ using namespace pldm::responder::platform;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
 
+using ::testing::_;
+using ::testing::Return;
+using ::testing::StrEq;
+
 TEST(GeneratePDRByStateEffecter, testGoodJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillRepeatedly(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", "./event_jsons/good",
-                    inPDRRepo, nullptr, nullptr);
+    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+                    "./event_jsons/good", inPDRRepo, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
@@ -96,7 +108,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     const auto& [dbusMappings2, dbusValMaps2] =
         handler.getDbusObjMaps(pdr->effecter_id);
     ASSERT_EQ(dbusMappings2[0].objectPath, "/foo/bar");
-    ASSERT_EQ(dbusMappings2[1].objectPath, "/foo/bar/baz");
+    ASSERT_EQ(dbusMappings2[1].objectPath, "/foo/bar");
 
     ASSERT_THROW(handler.getDbusObjMaps(0xDEAD), std::exception);
 
@@ -106,11 +118,16 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
 
 TEST(GeneratePDRByNumericEffecter, testGoodJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillRepeatedly(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", "", inPDRRepo, nullptr,
-                    nullptr);
+    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good", "",
+                    inPDRRepo, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_NUMERIC_EFFECTER_PDR);
 
@@ -147,11 +164,16 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
 
 TEST(GeneratePDR, testMalformedJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillRepeatedly(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler("./pdr_jsons/state_effecter/good", "./event_jsons/good",
-                    inPDRRepo, nullptr, nullptr);
+    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+                    "./event_jsons/good", inPDRRepo, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
@@ -165,9 +187,14 @@ TEST(GeneratePDR, testMalformedJson)
 
 TEST(findStateEffecterId, goodJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillRepeatedly(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
-    Handler handler("./pdr_jsons/state_effecter/good", "", inPDRRepo, nullptr,
-                    nullptr);
+    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good", "",
+                    inPDRRepo, nullptr, nullptr);
     uint16_t entityType = 33;
     uint16_t entityInstance = 0;
     uint16_t containerId = 0;
