@@ -196,8 +196,9 @@ int main(int argc, char** argv)
     // Platform handler.
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>(
-                                PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
-                                hostPDRHandler.get(), fruHandler.get()));
+                                dbusHandler, PDR_JSONS_DIR, EVENTS_JSONS_DIR,
+                                pdrRepo.get(), hostPDRHandler.get(),
+                                fruHandler.get()));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
 #ifdef OEM_IBM

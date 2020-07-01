@@ -65,7 +65,8 @@ const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
     return dbusObjMaps.at(effecterId);
 }
 
-void Handler::generate(const std::string& dir, Repo& repo)
+void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
+                       const std::string& dir, Repo& repo)
 {
     if (!fs::exists(dir))
     {
@@ -79,14 +80,18 @@ void Handler::generate(const std::string& dir, Repo& repo)
 
     const std::map<Type, generatePDR> generateHandlers = {
         {PLDM_STATE_EFFECTER_PDR,
-         [this](const auto& json, RepoInterface& repo) {
-             pdr_state_effecter::generateStateEffecterPDR<Handler>(json, *this,
-                                                                   repo);
+         [this](const DBusHandler& dBusIntf, const auto& json,
+                RepoInterface& repo) {
+             pdr_state_effecter::generateStateEffecterPDR<
+                 pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this,
+                                                    repo);
          }},
         {PLDM_NUMERIC_EFFECTER_PDR,
-         [this](const auto& json, RepoInterface& repo) {
-             pdr_numeric_effecter::generateNumericEffecterPDR<Handler>(
-                 json, *this, repo);
+         [this](const DBusHandler& dBusIntf, const auto& json,
+                RepoInterface& repo) {
+             pdr_numeric_effecter::generateNumericEffecterPDR<
+                 pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this,
+                                                    repo);
          }}};
 
     Type pdrType{};
@@ -101,7 +106,7 @@ void Handler::generate(const std::string& dir, Repo& repo)
                 for (const auto& effecter : effecterPDRs)
                 {
                     pdrType = effecter.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(effecter, repo);
+                    generateHandlers.at(pdrType)(dBusIntf, effecter, repo);
                 }
             }
         }
