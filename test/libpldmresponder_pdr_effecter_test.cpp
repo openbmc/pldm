@@ -2,16 +2,26 @@
 
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "mocked_utils.hpp"
 
-#include <gtest/gtest.h>
+#include <sdbusplus/test/sdbus_mock.hpp>
 
 using namespace pldm::responder;
 using namespace pldm::responder::platform;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
 
+using ::testing::_;
+using ::testing::Return;
+using ::testing::StrEq;
+
 TEST(GeneratePDRByStateEffecter, testGoodJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillOnce(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
@@ -106,6 +116,11 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
 
 TEST(GeneratePDRByNumericEffecter, testGoodJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillOnce(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
@@ -158,6 +173,11 @@ TEST(GeneratePDR, testNoJson)
 
 TEST(GeneratePDR, testMalformedJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillOnce(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
@@ -176,6 +196,11 @@ TEST(GeneratePDR, testMalformedJson)
 
 TEST(findStateEffecterId, goodJson)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillOnce(Return("foo.bar"));
+
     auto inPDRRepo = pldm_pdr_init();
     Handler handler("./pdr_jsons/state_effecter/good", "", inPDRRepo, nullptr,
                     nullptr);
