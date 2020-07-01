@@ -145,17 +145,6 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
     pldm_pdr_destroy(outPDRRepo);
 }
 
-TEST(GeneratePDR, testNoJson)
-{
-    auto pdrRepo = pldm_pdr_init();
-
-    ASSERT_THROW(Handler("./pdr_jsons/not_there", "./event_jsons/not_there",
-                         pdrRepo, nullptr, nullptr),
-                 std::exception);
-
-    pldm_pdr_destroy(pdrRepo);
-}
-
 TEST(GeneratePDR, testMalformedJson)
 {
     auto inPDRRepo = pldm_pdr_init();
