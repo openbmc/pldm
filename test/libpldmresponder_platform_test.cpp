@@ -7,6 +7,8 @@
 #include "libpldmresponder/platform_state_effecter.hpp"
 #include "mocked_utils.hpp"
 
+#include <sdbusplus/test/sdbus_mock.hpp>
+
 #include <iostream>
 
 using namespace pldm::utils;
@@ -14,6 +16,10 @@ using namespace pldm::responder;
 using namespace pldm::responder::platform;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
+
+using ::testing::_;
+using ::testing::Return;
+using ::testing::StrEq;
 
 TEST(getPDR, testGoodPath)
 {
@@ -25,6 +31,9 @@ TEST(getPDR, testGoodPath)
     struct pldm_get_pdr_req* request =
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->request_count = 100;
+
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler("./pdr_jsons/state_effecter/good", "./event_jsons/good",
@@ -58,6 +67,9 @@ TEST(getPDR, testShortRead)
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->request_count = 1;
 
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
+
     auto pdrRepo = pldm_pdr_init();
     Handler handler("./pdr_jsons/state_effecter/good", "./event_jsons/good",
                     pdrRepo, nullptr, nullptr);
@@ -84,6 +96,9 @@ TEST(getPDR, testBadRecordHandle)
     request->record_handle = 100000;
     request->request_count = 1;
 
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
+
     auto pdrRepo = pldm_pdr_init();
     Handler handler("./pdr_jsons/state_effecter/good", "./event_jsons/good",
                     pdrRepo, nullptr, nullptr);
@@ -107,6 +122,9 @@ TEST(getPDR, testNoNextRecord)
     struct pldm_get_pdr_req* request =
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->record_handle = 1;
+
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler("./pdr_jsons/state_effecter/good", "./event_jsons/good",
@@ -133,6 +151,9 @@ TEST(getPDR, testFindPDR)
     struct pldm_get_pdr_req* request =
         reinterpret_cast<struct pldm_get_pdr_req*>(req->payload);
     request->request_count = 100;
+
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler("./pdr_jsons/state_effecter/good", "./event_jsons/good",
@@ -184,6 +205,9 @@ TEST(getPDR, testFindPDR)
 
 TEST(setStateEffecterStatesHandler, testGoodRequest)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
@@ -220,6 +244,9 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
 
 TEST(setStateEffecterStatesHandler, testBadRequest)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
+
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
@@ -260,6 +287,9 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
 
 TEST(setNumericEffecterValueHandler, testGoodRequest)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
+
     auto inPDRRepo = pldm_pdr_init();
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
@@ -298,6 +328,9 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
 
 TEST(setNumericEffecterValueHandler, testBadRequest)
 {
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _)).Times(5);
+
     auto inPDRRepo = pldm_pdr_init();
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
