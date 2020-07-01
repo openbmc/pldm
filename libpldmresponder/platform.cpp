@@ -67,6 +67,11 @@ const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
 
 void Handler::generate(const std::string& dir, Repo& repo)
 {
+    if (!fs::exists(dir))
+    {
+        return;
+    }
+
     // A map of PDR type to a lambda that handles creation of that PDR type.
     // The lambda essentially would parse the platform specific PDR JSONs to
     // generate the PDR structures. This function iterates through the map to
