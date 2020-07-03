@@ -81,15 +81,23 @@ class GetPDR : public CommandInterface
 
   private:
     const std::map<uint16_t, std::string> entityType = {
+        {6, "Communication Channel"},
+        {31, "System Firmware"},
+        {33, "Virtual Machine Manager"},
+        {45, "System chassis (main enclosure)"},
         {64, "System Board"},
         {66, "Memory Module"},
         {67, "Processor Module"},
-        {137, "Management Controller"},
         {69, "Chassis front panel board (control panel)"},
         {123, "Power converter"},
-        {45, "System chassis (main enclosure)"},
+        {135, "Processor"},
+        {137, "Management Controller"},
+        {185, "Connector"},
         {11521, "System (logical)"},
     };
+
+    const std::array<std::string_view, 4> sensorInit = {
+        "noInit", "useInitPDR", "enableSensor", "disableSensor"};
 
     std::string getEntityName(uint16_t type)
     {
@@ -112,6 +120,66 @@ class GetPDR : public CommandInterface
         std::cout << "recordChangeNumber: " << hdr->record_change_num
                   << std::endl;
         std::cout << "dataLength: " << hdr->length << std::endl << std::endl;
+    }
+
+    void printPossibleStates(uint8_t possibleStatesSize,
+                             const bitfield8_t* states)
+    {
+        uint8_t possibleStatesPos{};
+        auto printStates = [&possibleStatesPos](const bitfield8_t& val) {
+            for (int i = 0; i < CHAR_BIT; i++)
+            {
+                if (val.byte & (1 << i))
+                {
+                    std::cout << " " << (possibleStatesPos * CHAR_BIT + i);
+                }
+            }
+            possibleStatesPos++;
+        };
+        std::for_each(states, states + possibleStatesSize, printStates);
+    }
+
+    void printStateSensorPDR(const uint8_t* data)
+    {
+        auto pdr = (const pldm_state_sensor_pdr*)data;
+
+        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
+                  << std::endl;
+        std::cout << "sensorID: " << pdr->sensor_id << std::endl;
+        std::cout << "entityType: " << getEntityName(pdr->entity_type)
+                  << std::endl;
+        std::cout << "entityInstanceNumber: " << pdr->entity_instance
+                  << std::endl;
+        std::cout << "containerID: " << pdr->container_id << std::endl;
+        std::cout << "sensorInit: " << sensorInit[unsigned(pdr->sensor_init)]
+                  << std::endl;
+        std::cout << "sensorAuxiliaryNamesPDR: "
+                  << (unsigned(pdr->sensor_auxiliary_names_pdr) ? "true"
+                                                                : "false")
+                  << std::endl;
+        std::cout << "compositeSensorCount: "
+                  << unsigned(pdr->composite_sensor_count) << std::endl;
+
+        auto statesPtr = pdr->possible_states;
+        auto compositeSensorCount = pdr->composite_sensor_count;
+
+        while (compositeSensorCount--)
+        {
+            auto state = reinterpret_cast<const state_sensor_possible_states*>(
+                statesPtr);
+            std::cout << "stateSetID: " << state->state_set_id << std::endl;
+            std::cout << "possibleStatesSize: "
+                      << unsigned(state->possible_states_size) << std::endl;
+            std::cout << "possibleStates:";
+            printPossibleStates(state->possible_states_size, state->states);
+            std::cout << std::endl;
+
+            if (compositeSensorCount)
+            {
+                statesPtr += sizeof(state_sensor_possible_states) +
+                             state->possible_states_size - 1;
+            }
+        }
     }
 
     void printPDRFruRecordSet(uint8_t* data)
@@ -420,6 +488,9 @@ class GetPDR : public CommandInterface
         printCommonPDRHeader(pdr);
         switch (pdr->type)
         {
+            case PLDM_STATE_SENSOR_PDR:
+                printStateSensorPDR(data);
+                break;
             case PLDM_NUMERIC_EFFECTER_PDR:
                 printNumericEffecterPDR(data);
                 break;
