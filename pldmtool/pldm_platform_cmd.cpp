@@ -1,3 +1,7 @@
+#include "libpldm/entity.h"
+#include "libpldm/state_set.h"
+
+#include "common/types.hpp"
 #include "pldm_cmd_helper.hpp"
 
 namespace pldmtool
@@ -80,18 +84,41 @@ class GetPDR : public CommandInterface
     }
 
   private:
-    const std::map<uint16_t, std::string> entityType = {
-        {64, "System Board"},
-        {66, "Memory Module"},
-        {67, "Processor Module"},
-        {137, "Management Controller"},
-        {69, "Chassis front panel board (control panel)"},
-        {123, "Power converter"},
-        {45, "System chassis (main enclosure)"},
+    const std::map<pldm::pdr::EntityType, std::string> entityType = {
+        {PLDM_ENTITY_COMM_CHANNEL, "Communication Channel"},
+        {PLDM_ENTITY_SYS_FIRMWARE, "System Firmware"},
+        {PLDM_ENTITY_VIRTUAL_MACHINE_MANAGER, "Virtual Machine Manager"},
+        {PLDM_ENTITY_SYSTEM_CHASSIS, "System chassis (main enclosure)"},
+        {PLDM_ENTITY_SYS_BOARD, "System Board"},
+        {PLDM_ENTITY_MEMORY_MODULE, "Memory Module"},
+        {PLDM_ENTITY_PROC_MODULE, "Processor Module"},
+        {PLDM_ENTITY_CHASSIS_FRONT_PANEL_BOARD,
+         "Chassis front panel board (control panel)"},
+        {PLDM_ENTITY_POWER_CONVERTER, "Power converter"},
+        {PLDM_ENTITY_PROC, "Processor"},
+        {PLDM_ENTITY_MGMT_CONTROLLER, "Management Controller"},
+        {PLDM_ENTITY_CONNECTOR, "Connector"},
         {11521, "System (logical)"},
     };
 
-    std::string getEntityName(uint16_t type)
+    const std::map<uint16_t, std::string> stateSet = {
+        {PLDM_STATE_SET_HEALTH_STATE, "Health State"},
+        {PLDM_STATE_SET_AVAILABILITY, "Availability"},
+        {PLDM_STATE_SET_OPERATIONAL_STATUS, "Operational Status"},
+        {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS,
+         "Operational Running Status"},
+        {PLDM_STATE_SET_PRESENCE, "Presence"},
+        {PLDM_STATE_SET_CONFIGURATION_STATE, "Configuration State"},
+        {PLDM_STATE_SET_LINK_STATE, "Link State"},
+        {PLDM_STATE_SET_SW_TERMINATION_STATUS, "Software Termination Status"},
+        {PLDM_STATE_SET_BOOT_RESTART_CAUSE, "Boot/Restart Cause"},
+        {PLDM_STATE_SET_BOOT_PROGRESS, "Boot Progress"},
+    };
+
+    const std::array<std::string_view, 4> sensorInit = {
+        "noInit", "useInitPDR", "enableSensor", "disableSensor"};
+
+    std::string getEntityName(pldm::pdr::EntityType type)
     {
         try
         {
@@ -100,6 +127,18 @@ class GetPDR : public CommandInterface
         catch (const std::out_of_range& e)
         {
             return std::to_string(static_cast<unsigned>(type)) + "(OEM)";
+        }
+    }
+
+    std::string getStateSetName(uint16_t id)
+    {
+        try
+        {
+            return stateSet.at(id);
+        }
+        catch (const std::out_of_range& e)
+        {
+            return std::to_string(id);
         }
     }
 
@@ -112,6 +151,66 @@ class GetPDR : public CommandInterface
         std::cout << "recordChangeNumber: " << hdr->record_change_num
                   << std::endl;
         std::cout << "dataLength: " << hdr->length << std::endl << std::endl;
+    }
+
+    void printPossibleStates(uint8_t possibleStatesSize,
+                             const bitfield8_t* states)
+    {
+        uint8_t possibleStatesPos{};
+        auto printStates = [&possibleStatesPos](const bitfield8_t& val) {
+            for (int i = 0; i < CHAR_BIT; i++)
+            {
+                if (val.byte & (1 << i))
+                {
+                    std::cout << " " << (possibleStatesPos * CHAR_BIT + i);
+                }
+            }
+            possibleStatesPos++;
+        };
+        std::for_each(states, states + possibleStatesSize, printStates);
+    }
+
+    void printStateSensorPDR(const uint8_t* data)
+    {
+        auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
+
+        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
+                  << std::endl;
+        std::cout << "sensorID: " << pdr->sensor_id << std::endl;
+        std::cout << "entityType: " << getEntityName(pdr->entity_type)
+                  << std::endl;
+        std::cout << "entityInstanceNumber: " << pdr->entity_instance
+                  << std::endl;
+        std::cout << "containerID: " << pdr->container_id << std::endl;
+        std::cout << "sensorInit: " << sensorInit[pdr->sensor_init]
+                  << std::endl;
+        std::cout << "sensorAuxiliaryNamesPDR: "
+                  << (pdr->sensor_auxiliary_names_pdr ? "true" : "false")
+                  << std::endl;
+        std::cout << "compositeSensorCount: "
+                  << unsigned(pdr->composite_sensor_count) << std::endl;
+
+        auto statesPtr = pdr->possible_states;
+        auto compositeSensorCount = pdr->composite_sensor_count;
+
+        while (compositeSensorCount--)
+        {
+            auto state = reinterpret_cast<const state_sensor_possible_states*>(
+                statesPtr);
+            std::cout << "stateSetID: " << getStateSetName(state->state_set_id)
+                      << std::endl;
+            std::cout << "possibleStatesSize: "
+                      << unsigned(state->possible_states_size) << std::endl;
+            std::cout << "possibleStates:";
+            printPossibleStates(state->possible_states_size, state->states);
+            std::cout << std::endl;
+
+            if (compositeSensorCount)
+            {
+                statesPtr += sizeof(state_sensor_possible_states) +
+                             state->possible_states_size - 1;
+            }
+        }
     }
 
     void printPDRFruRecordSet(uint8_t* data)
@@ -420,6 +519,9 @@ class GetPDR : public CommandInterface
         printCommonPDRHeader(pdr);
         switch (pdr->type)
         {
+            case PLDM_STATE_SENSOR_PDR:
+                printStateSensorPDR(data);
+                break;
             case PLDM_NUMERIC_EFFECTER_PDR:
                 printNumericEffecterPDR(data);
                 break;
