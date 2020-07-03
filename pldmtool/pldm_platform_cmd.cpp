@@ -103,6 +103,17 @@ class GetPDR : public CommandInterface
         }
     }
 
+    void printCommonPDRHeader(const pldm_pdr_hdr* hdr)
+    {
+        std::cout << "recordHandle: " << hdr->record_handle << std::endl;
+        std::cout << "PDRHeaderVersion: " << unsigned(hdr->version)
+                  << std::endl;
+        std::cout << "PDRType: " << unsigned(hdr->type) << std::endl;
+        std::cout << "recordChangeNumber: " << hdr->record_change_num
+                  << std::endl;
+        std::cout << "dataLength: " << hdr->length << std::endl << std::endl;
+    }
+
     void printPDRFruRecordSet(uint8_t* data)
     {
         if (data == NULL)
@@ -171,22 +182,10 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printEffecterHdrPDR(pldm_pdr_hdr* hdr)
-    {
-        std::cout << "recordHandle: " << hdr->record_handle << std::endl;
-        std::cout << "PDRHeaderVersion: " << unsigned(hdr->version)
-                  << std::endl;
-        std::cout << "PDRType: " << unsigned(hdr->type) << std::endl;
-        std::cout << "recordChangeNumber: " << hdr->record_change_num
-                  << std::endl;
-        std::cout << "dataLength: " << hdr->length << std::endl;
-    }
-
     void printNumericEffecterPDR(uint8_t* data)
     {
         struct pldm_numeric_effecter_value_pdr* pdr =
             (struct pldm_numeric_effecter_value_pdr*)data;
-        printEffecterHdrPDR(&pdr->hdr);
         std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
                   << std::endl;
         std::cout << "effecterID: " << pdr->effecter_id << std::endl;
@@ -375,7 +374,6 @@ class GetPDR : public CommandInterface
 
         struct pldm_state_effecter_pdr* pdr =
             (struct pldm_state_effecter_pdr*)data;
-        printEffecterHdrPDR(&pdr->hdr);
 
         std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
                   << std::endl;
@@ -419,14 +417,7 @@ class GetPDR : public CommandInterface
         std::cout << "responseCount: " << respCnt << std::endl;
 
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
-        std::cout << "recordHandle: " << pdr->record_handle << std::endl;
-        std::cout << "PDRHeaderVersion: " << unsigned(pdr->version)
-                  << std::endl;
-        std::cout << "PDRType: " << unsigned(pdr->type) << std::endl;
-        std::cout << "recordChangeNumber: " << pdr->record_change_num
-                  << std::endl;
-        std::cout << "dataLength: " << pdr->length << std::endl << std::endl;
-
+        printCommonPDRHeader(pdr);
         switch (pdr->type)
         {
             case PLDM_NUMERIC_EFFECTER_PDR:
