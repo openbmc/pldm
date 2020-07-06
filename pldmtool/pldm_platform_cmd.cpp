@@ -118,6 +118,9 @@ class GetPDR : public CommandInterface
     const std::array<std::string_view, 4> sensorInit = {
         "noInit", "useInitPDR", "enableSensor", "disableSensor"};
 
+    const std::array<std::string_view, 4> effecterInit = {
+        "noInit", "useInitPDR", "enableEffecter", "disableEffecter"};
+
     std::string getEntityName(uint16_t type)
     {
         try
@@ -464,43 +467,48 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printStateEffecterPDR(uint8_t* data)
+    void printStateEffecterPDR(const uint8_t* data)
     {
-        if (data == NULL)
-        {
-            return;
-        }
-
-        struct pldm_state_effecter_pdr* pdr =
-            (struct pldm_state_effecter_pdr*)data;
+        auto pdr = reinterpret_cast<const pldm_state_effecter_pdr*>(data);
 
         std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
                   << std::endl;
         std::cout << "effecterID: " << pdr->effecter_id << std::endl;
-        std::cout << "entityType: " << pdr->entity_type << std::endl;
+        std::cout << "entityType: " << getEntityName(pdr->entity_type)
+                  << std::endl;
         std::cout << "entityInstanceNumber: " << pdr->entity_instance
                   << std::endl;
         std::cout << "containerID: " << pdr->container_id << std::endl;
         std::cout << "effecterSemanticID: " << pdr->effecter_semantic_id
                   << std::endl;
-        std::cout << "effecterInit: " << unsigned(pdr->effecter_init)
+        std::cout << "effecterInit: " << effecterInit[pdr->effecter_init]
                   << std::endl;
         std::cout << "effecterDescriptionPDR: "
-                  << (unsigned(pdr->has_description_pdr) ? "true" : "false")
-                  << std::endl;
+                  << (pdr->has_description_pdr ? "true" : "false") << std::endl;
         std::cout << "compositeEffecterCount: "
                   << unsigned(pdr->composite_effecter_count) << std::endl;
 
-        for (size_t i = 0; i < pdr->composite_effecter_count; ++i)
+        auto statesPtr = pdr->possible_states;
+        auto compositeEffecterCount = pdr->composite_effecter_count;
+
+        while (compositeEffecterCount--)
         {
-            struct state_effecter_possible_states* state =
-                (struct state_effecter_possible_states*)pdr->possible_states +
-                i * sizeof(state_effecter_possible_states);
-            std::cout << "stateSetID: " << state->state_set_id << std::endl;
+            auto state =
+                reinterpret_cast<const state_effecter_possible_states*>(
+                    statesPtr);
+            std::cout << "stateSetID: " << getStateSetName(state->state_set_id)
+                      << std::endl;
             std::cout << "possibleStatesSize: "
                       << unsigned(state->possible_states_size) << std::endl;
-            bitfield8_t* bf = reinterpret_cast<bitfield8_t*>(state->states);
-            std::cout << "possibleStates: " << unsigned(bf->byte) << std::endl;
+            std::cout << "possibleStates:";
+            printPossibleStates(state->possible_states_size, state->states);
+            std::cout << std::endl;
+
+            if (compositeEffecterCount)
+            {
+                statesPtr += sizeof(state_effecter_possible_states) +
+                             state->possible_states_size - 1;
+            }
         }
     }
 
