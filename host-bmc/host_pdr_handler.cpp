@@ -85,7 +85,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
         });
 }
 
-void HostPDRHandler::fetchPDR(std::vector<uint32_t>&& recordHandles)
+void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 {
     pdrRecordHandles.clear();
     pdrRecordHandles = std::move(recordHandles);
@@ -107,7 +107,17 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     bool merged = false;
 
-    for (auto recordHandle : pdrRecordHandles)
+    uint32_t nextRecordHandle{};
+    uint32_t recordHandle{};
+    bool isFormatRecHandles = false;
+    if (!pdrRecordHandles.empty())
+    {
+        recordHandle = pdrRecordHandles.front();
+        pdrRecordHandles.pop_front();
+        isFormatRecHandles = true;
+    }
+
+    do
     {
         auto instanceId = requester.getInstanceId(mctp_eid);
 
@@ -138,7 +148,6 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
 
         uint8_t completionCode{};
-        uint32_t nextRecordHandle{};
         uint32_t nextDataTransferHandle{};
         uint8_t transferFlag{};
         uint16_t respCount{};
@@ -194,8 +203,19 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                     pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
                 }
             }
+
+            recordHandle = nextRecordHandle;
+            if (!pdrRecordHandles.empty())
+            {
+                recordHandle = pdrRecordHandles.front();
+                pdrRecordHandles.pop_front();
+            }
+            else if (isFormatRecHandles)
+            {
+                break;
+            }
         }
-    }
+    } while (recordHandle);
 
     if (merged)
     {

@@ -11,6 +11,7 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <deque>
 #include <map>
 #include <memory>
 #include <vector>
@@ -24,7 +25,7 @@ using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
-using PDRRecordHandles = std::vector<ChangeEntry>;
+using PDRRecordHandles = std::deque<ChangeEntry>;
 
 /** @struct SensorEntry
  *
@@ -88,7 +89,7 @@ class HostPDRHandler
      *             PDRs that need to be fetched.
      */
 
-    void fetchPDR(std::vector<uint32_t>&& recordHandles);
+    void fetchPDR(PDRRecordHandles&& recordHandles);
 
     /** @brief Send a PLDM event to host firmware containing a list of record
      *  handles of PDRs that the host firmware has to fetch.
