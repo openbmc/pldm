@@ -448,6 +448,12 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
 
     PDRRecordHandles pdrRecordHandles;
+
+    if (eventDataFormat == FORMAT_IS_PDR_TYPES)
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+
     if (eventDataFormat == FORMAT_IS_PDR_HANDLES)
     {
         uint8_t eventDataOperation{};
@@ -487,15 +493,10 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
             changeRecordDataSize -=
                 dataOffset + (numberOfChangeEntries * sizeof(ChangeEntry));
         }
-
-        if (hostPDRHandler && !pdrRecordHandles.empty())
-        {
-            hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
-        }
     }
-    else
+    if (hostPDRHandler)
     {
-        return PLDM_ERROR_INVALID_DATA;
+        hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
     }
 
     return PLDM_SUCCESS;
