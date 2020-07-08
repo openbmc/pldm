@@ -13,6 +13,7 @@
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "xyz/openbmc_project/PLDM/Event/server.hpp"
 
 #include <err.h>
 #include <getopt.h>
@@ -228,6 +229,8 @@ int main(int argc, char** argv)
     }
 
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
+    sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
+        bus, "/xyz/openbmc_project/pldm");
     auto callback = [verbose, &invoker, &dbusImplReq](IO& /*io*/, int fd,
                                                       uint32_t revents) {
         if (!(revents & EPOLLIN))
