@@ -550,7 +550,9 @@ TEST(SetNumericEffecterValue, testBadEncodeResponse)
 
 TEST(GetStateSensorReadings, testGoodEncodeResponse)
 {
-    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES>
+    std::array<uint8_t, hdrSize +
+                            PLDM_GET_STATE_SENSOR_READINGS_MIN_RESP_BYTES +
+                            sizeof(get_sensor_state_field) * 2>
         responseMsg{};
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
@@ -593,7 +595,9 @@ TEST(GetStateSensorReadings, testBadEncodeResponse)
 
 TEST(GetStateSensorReadings, testGoodDecodeResponse)
 {
-    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES>
+    std::array<uint8_t, hdrSize +
+                            PLDM_GET_STATE_SENSOR_READINGS_MIN_RESP_BYTES +
+                            sizeof(get_sensor_state_field) * 2>
         responseMsg{};
 
     uint8_t completionCode = 0;
@@ -638,7 +642,9 @@ TEST(GetStateSensorReadings, testGoodDecodeResponse)
 
 TEST(GetStateSensorReadings, testBadDecodeResponse)
 {
-    std::array<uint8_t, hdrSize + PLDM_GET_STATE_SENSOR_READINGS_RESP_BYTES>
+    std::array<uint8_t, hdrSize +
+                            PLDM_GET_STATE_SENSOR_READINGS_MIN_RESP_BYTES +
+                            sizeof(get_sensor_state_field) * 2>
         responseMsg{};
 
     auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
