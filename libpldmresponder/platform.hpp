@@ -44,15 +44,6 @@ using EventHandler = std::function<int(
 using EventHandlers = std::vector<EventHandler>;
 using EventMap = std::map<EventType, EventHandlers>;
 
-// EventEntry = <uint8_t> - EventState <uint8_t> - SensorOffset <uint16_t> -
-// SensorID
-using EventEntry = uint32_t;
-struct DBusInfo
-{
-    pldm::utils::DBusMapping dBusValues;
-    pldm::utils::PropertyValue dBusPropertyValue;
-};
-
 class Handler : public CmdHandler
 {
   public:
@@ -261,18 +252,6 @@ class Handler : public CmdHandler
                             size_t changeEntryDataSize,
                             size_t numberOfChangeEntries,
                             PDRRecordHandles& pdrRecordHandles);
-
-    /** @brief Handler for setting Sensor event data
-     *
-     *  @param[in] sensorId - sensorID value of the sensor
-     *  @param[in] sensorOffset - Identifies which state sensor within a
-     * composite state sensor the event is being returned for
-     *  @param[in] eventState - The event state value from the state change that
-     * triggered the event message
-     *  @return PLDM completion code
-     */
-    int setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
-                           uint8_t eventState);
 
     /** @brief Function to set the effecter requested by pldm requester
      *  @param[in] dBusIntf - The interface object
