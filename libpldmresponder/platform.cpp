@@ -135,6 +135,12 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
+    if (!pdrCreated)
+    {
+        generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+        pdrCreated = true;
+    }
+
     // Build FRU table if not built, since entity association PDR's are built
     // when the FRU table is constructed.
     if (fruHandler)
