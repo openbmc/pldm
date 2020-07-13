@@ -1,6 +1,7 @@
 
 #include "platform.hpp"
 
+#include "common/types.hpp"
 #include "common/utils.hpp"
 #include "event_parser.hpp"
 #include "pdr.hpp"
@@ -20,38 +21,6 @@ using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 static const Json empty{};
-
-using EventEntryMap = std::map<EventEntry, DBusInfo>;
-
-const EventEntryMap eventEntryMap = {
-    {
-        0x01010007, // SensorID for VMI Port 0 ipv4 = 7, SensorOffset for the
-                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 1
-                    // (Valid Configuration)
-        {"/xyz/openbmc_project/network/hypervisor/eth0/ipv4/addr0",
-         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
-    },
-    {
-        0x02010007, // SensorID for VMI Port 0 ipv4 = 7, SensorOffset for the
-                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 2
-                    // (Invalid Configuration)
-        {"/xyz/openbmc_project/network/hypervisor/eth0/ipv4/addr0",
-         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
-    },
-    {
-        0x01010008, // SensorID for VMI Port 1 ipv4 = 8, SensorOffset for the
-                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 1
-                    // (Valid Configuration)
-        {"/xyz/openbmc_project/network/hypervisor/eth1/ipv4/addr0",
-         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", true},
-    },
-    {
-        0x02010008, // SensorID for VMI Port 1 ipv4 = 8, SensorOffset for the
-                    // State Set ID 15 = 1 & PLDM State Set Enumeration List = 2
-                    // (Invalid Configuration)
-        {"/xyz/openbmc_project/network/hypervisor/eth1/ipv4/addr0",
-         "xyz.openbmc_project.Object.Enable", "Enabled", "bool", false},
-    }};
 
 void Handler::addDbusObjMaps(
     uint16_t effecterId,
@@ -350,15 +319,6 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         emitStateSensorEventSignal(tid, sensorId, sensorOffset, eventState,
                                    previousEventState);
 
-        // Handle PLDM events for which PDR is not available, setSensorEventData
-        // will return PLDM_ERROR_INVALID_DATA if the sensorID is not found in
-        // the hardcoded sensor list.
-        rc = setSensorEventData(sensorId, sensorOffset, eventState);
-        if (rc != PLDM_ERROR_INVALID_DATA)
-        {
-            return rc;
-        }
-
         // If there are no HOST PDR's, there is no further action
         if (hostPDRHandler == NULL)
         {
@@ -367,70 +327,54 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
 
         // Handle PLDM events for which PDR is available
         SensorEntry sensorEntry{tid, sensorId};
+
+        pldm::pdr::EntityInfo entityInfo{};
+        pldm::pdr::CompositeSensorStates compositeSensorStates{};
+
         try
         {
-            const auto& [entityInfo, compositeSensorStates] =
+            std::tie(entityInfo, compositeSensorStates) =
                 hostPDRHandler->lookupSensorInfo(sensorEntry);
-            if (sensorOffset >= compositeSensorStates.size())
-            {
-                return PLDM_ERROR_INVALID_DATA;
-            }
-
-            const auto& possibleStates = compositeSensorStates[sensorOffset];
-            if (possibleStates.find(eventState) == possibleStates.end())
-            {
-                return PLDM_ERROR_INVALID_DATA;
-            }
-
-            const auto& [containerId, entityType, entityInstance] = entityInfo;
-            events::StateSensorEntry stateSensorEntry{
-                containerId, entityType, entityInstance, sensorOffset};
-            return stateSensorHandler.eventAction(stateSensorEntry, eventState);
         }
-        // If there is no mapping for events return PLDM_SUCCESS
         catch (const std::out_of_range& e)
         {
-            return PLDM_SUCCESS;
+            // If there is no mapping for tid, sensorId combination, try
+            // PLDM_TID_RESERVED, sensorId for terminus that is yet to
+            // implement TL PDR.
+            try
+            {
+                sensorEntry.terminusID = PLDM_TID_RESERVED;
+                std::tie(entityInfo, compositeSensorStates) =
+                    hostPDRHandler->lookupSensorInfo(sensorEntry);
+            }
+            // If there is no mapping for events return PLDM_SUCCESS
+            catch (const std::out_of_range& e)
+            {
+                return PLDM_SUCCESS;
+            }
         }
+
+        if (sensorOffset >= compositeSensorStates.size())
+        {
+            return PLDM_ERROR_INVALID_DATA;
+        }
+
+        const auto& possibleStates = compositeSensorStates[sensorOffset];
+        if (possibleStates.find(eventState) == possibleStates.end())
+        {
+            return PLDM_ERROR_INVALID_DATA;
+        }
+
+        const auto& [containerId, entityType, entityInstance] = entityInfo;
+        events::StateSensorEntry stateSensorEntry{containerId, entityType,
+                                                  entityInstance, sensorOffset};
+        return stateSensorHandler.eventAction(stateSensorEntry, eventState);
     }
     else
     {
         return PLDM_ERROR_INVALID_DATA;
     }
 
-    return PLDM_SUCCESS;
-}
-
-int Handler::setSensorEventData(uint16_t sensorId, uint8_t sensorOffset,
-                                uint8_t eventState)
-{
-    EventEntry eventEntry = ((static_cast<uint32_t>(eventState)) << 24) +
-                            ((static_cast<uint32_t>(sensorOffset)) << 16) +
-                            sensorId;
-    auto iter = eventEntryMap.find(eventEntry);
-    if (iter == eventEntryMap.end())
-    {
-        return PLDM_ERROR_INVALID_DATA;
-    }
-
-    const auto& dBusInfo = iter->second;
-    try
-    {
-        pldm::utils::DBusMapping dbusMapping{
-            dBusInfo.dBusValues.objectPath, dBusInfo.dBusValues.interface,
-            dBusInfo.dBusValues.propertyName, dBusInfo.dBusValues.propertyType};
-        pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
-                                                   dBusInfo.dBusPropertyValue);
-    }
-    catch (std::exception& e)
-    {
-        std::cerr
-            << "Error Setting dbus property,SensorID=" << eventEntry
-            << "DBusInfo=" << dBusInfo.dBusValues.objectPath
-            << dBusInfo.dBusValues.interface << dBusInfo.dBusValues.propertyName
-            << "ERROR=" << e.what() << "\n";
-        return PLDM_ERROR;
-    }
     return PLDM_SUCCESS;
 }
 
