@@ -174,7 +174,7 @@ int main(int argc, char** argv)
     std::unique_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
-    DBusHandler dbusHandler;
+    auto dbusHandler = std::make_unique<DBusHandler>();
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
@@ -183,7 +183,7 @@ int main(int argc, char** argv)
             dbusImplReq);
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
-                &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
+                &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
                 HOST_JSONS_DIR, verbose);
     }
 
@@ -197,9 +197,9 @@ int main(int argc, char** argv)
     // Platform handler.
     invoker.registerHandler(PLDM_PLATFORM,
                             std::make_unique<platform::Handler>(
-                                dbusHandler, PDR_JSONS_DIR, EVENTS_JSONS_DIR,
-                                pdrRepo.get(), hostPDRHandler.get(),
-                                fruHandler.get()));
+                                dbusHandler.get(), PDR_JSONS_DIR,
+                                EVENTS_JSONS_DIR, pdrRepo.get(),
+                                hostPDRHandler.get(), fruHandler.get()));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
 #ifdef OEM_IBM
