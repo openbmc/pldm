@@ -38,7 +38,7 @@ TEST(getPDR, testGoodPath)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", pdrRepo, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -75,7 +75,7 @@ TEST(getPDR, testShortRead)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", pdrRepo, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -106,7 +106,7 @@ TEST(getPDR, testBadRecordHandle)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", pdrRepo, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -135,7 +135,7 @@ TEST(getPDR, testNoNextRecord)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", pdrRepo, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -166,7 +166,7 @@ TEST(getPDR, testFindPDR)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", pdrRepo, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -223,7 +223,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", inPDRRepo, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
@@ -263,7 +263,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     auto inPDRRepo = pldm_pdr_init();
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good",
                     "./event_jsons/good", inPDRRepo, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
@@ -307,7 +307,7 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
     auto inPDRRepo = pldm_pdr_init();
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good", "",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", "",
                     inPDRRepo, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
@@ -349,7 +349,7 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
     auto inPDRRepo = pldm_pdr_init();
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
-    Handler handler(mockedUtils, "./pdr_jsons/state_effecter/good", "",
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", "",
                     inPDRRepo, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);

@@ -56,16 +56,21 @@ struct DBusInfo
 class Handler : public CmdHandler
 {
   public:
-    Handler(const pldm::utils::DBusHandler& dBusIntf,
+    Handler(const pldm::utils::DBusHandler* dBusIntf,
             const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
-            fru::Handler* fruHandler,
+            fru::Handler* fruHandler, bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
-        fruHandler(fruHandler)
+        fruHandler(fruHandler), dBusIntf(dBusIntf), pdrJsonsDir(pdrJsonsDir),
+        pdrCreated(false)
     {
-        generate(dBusIntf, pdrJsonsDir, pdrRepo);
+        if (!buildPDRLazily)
+        {
+            generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+            pdrCreated = true;
+        }
 
         handlers.emplace(PLDM_GET_PDR,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -404,6 +409,9 @@ class Handler : public CmdHandler
     HostPDRHandler* hostPDRHandler;
     events::StateSensorHandler stateSensorHandler;
     fru::Handler* fruHandler;
+    const pldm::utils::DBusHandler* dBusIntf;
+    std::string pdrJsonsDir;
+    bool pdrCreated;
 };
 
 } // namespace platform
