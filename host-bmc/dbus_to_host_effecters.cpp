@@ -141,7 +141,8 @@ void HostEffecterParser::processHostEffecterChangeNotification(
             hostEffecterInfo[effecterInfoIndex].containerId,
             hostEffecterInfo[effecterInfoIndex]
                 .dbusInfo[dbusInfoIndex]
-                .state.stateSetId);
+                .state.stateSetId,
+            PDRType::REMOTE_ONLY);
         if (effecterId == PLDM_INVALID_EFFECTER_ID)
         {
             std::cerr << "Effecter id not found in pdr repo \n";

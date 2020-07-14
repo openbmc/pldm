@@ -395,16 +395,17 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
 
 uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                              uint16_t entityInstance, uint16_t containerId,
-                             uint16_t stateSetId)
+                             uint16_t stateSetId, PDRType pdrType)
 {
     uint8_t* pdrData = nullptr;
     uint32_t pdrSize{};
     const pldm_pdr_record* record{};
+    auto fetchPdrType = static_cast<bool>(pdrType);
     do
     {
         record = pldm_pdr_find_record_by_type(pdrRepo, PLDM_STATE_EFFECTER_PDR,
                                               record, &pdrData, &pdrSize);
-        if (record)
+        if (record && (fetchPdrType ^ pldm_pdr_record_is_remote(record)))
         {
             auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrData);
             auto compositeEffecterCount = pdr->composite_effecter_count;

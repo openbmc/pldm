@@ -27,6 +27,11 @@ namespace utils
 namespace fs = std::filesystem;
 using Json = nlohmann::json;
 
+enum class PDRType : bool
+{
+    REMOTE_ONLY = 0x00,
+    LOCAL_ONLY = 0x01
+};
 /** @struct CustomFD
  *
  *  RAII wrapper for file descriptor.
@@ -294,12 +299,13 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
  *  @param[in] entityInstance - entity instance number
  *  @param[in] containerId - container id
  *  @param[in] stateSetId - state set id
+ *  @param[in] pdrType - whether to fetch local or remote PDR
  *
  *  @return uint16_t - the effecter id
  */
 uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                              uint16_t entityInstance, uint16_t containerId,
-                             uint16_t stateSetId);
+                             uint16_t stateSetId, PDRType pdrType);
 
 /** @brief Emit the sensor event signal
  *
