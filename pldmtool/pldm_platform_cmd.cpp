@@ -113,6 +113,7 @@ class GetPDR : public CommandInterface
         {PLDM_STATE_SET_SW_TERMINATION_STATUS, "Software Termination Status"},
         {PLDM_STATE_SET_BOOT_RESTART_CAUSE, "Boot/Restart Cause"},
         {PLDM_STATE_SET_BOOT_PROGRESS, "Boot Progress"},
+        {PLDM_STATE_SET_SYSTEM_POWER_STATE, "System Power State"},
     };
 
     const std::array<std::string_view, 4> sensorInit = {
@@ -120,6 +121,35 @@ class GetPDR : public CommandInterface
 
     const std::array<std::string_view, 4> effecterInit = {
         "noInit", "useInitPDR", "enableEffecter", "disableEffecter"};
+
+    const std::map<uint8_t, std::string> pdrType = {
+        {PLDM_TERMINUS_LOCATOR_PDR, "Terminus Locator PDR"},
+        {PLDM_NUMERIC_SENSOR_PDR, "Numeric Sensor PDR"},
+        {PLDM_NUMERIC_SENSOR_INITIALIZATION_PDR,
+         "Numeric Sensor Initialization PDR"},
+        {PLDM_STATE_SENSOR_PDR, "State Sensor PDR"},
+        {PLDM_STATE_SENSOR_INITIALIZATION_PDR,
+         "State Sensor Initialization PDR"},
+        {PLDM_SENSOR_AUXILIARY_NAMES_PDR, "Sensor Auxiliary Names PDR"},
+        {PLDM_OEM_UNIT_PDR, "OEM Unit PDR"},
+        {PLDM_OEM_STATE_SET_PDR, "OEM State Set PDR"},
+        {PLDM_NUMERIC_EFFECTER_PDR, "Numeric Effecter PDR"},
+        {PLDM_NUMERIC_EFFECTER_INITIALIZATION_PDR,
+         "Numeric Effecter Initialization PDR"},
+        {PLDM_STATE_EFFECTER_PDR, "State Effecter PDR"},
+        {PLDM_STATE_EFFECTER_INITIALIZATION_PDR,
+         "State Effecter Initialization PDR"},
+        {PLDM_EFFECTER_AUXILIARY_NAMES_PDR, "Effecter Auxiliary Names PDR"},
+        {PLDM_EFFECTER_OEM_SEMANTIC_PDR, "Effecter OEM Semantic PDR"},
+        {PLDM_PDR_ENTITY_ASSOCIATION, "Entity Association PDR"},
+        {PLDM_ENTITY_AUXILIARY_NAMES_PDR, "Entity Auxiliary Names PDR"},
+        {PLDM_OEM_ENTITY_ID_PDR, "OEM Entity ID PDR"},
+        {PLDM_INTERRUPT_ASSOCIATION_PDR, "Interrupt Association PDR"},
+        {PLDM_EVENT_LOG_PDR, "PLDM Event Log PDR"},
+        {PLDM_PDR_FRU_RECORD_SET, "FRU Record Set PDR"},
+        {PLDM_OEM_DEVICE_PDR, "OEM Device PDR"},
+        {PLDM_OEM_PDR, "OEM PDR"},
+    };
 
     std::string getEntityName(pldm::pdr::EntityType type)
     {
@@ -135,13 +165,27 @@ class GetPDR : public CommandInterface
 
     std::string getStateSetName(uint16_t id)
     {
+        auto typeString = std::to_string(id);
         try
         {
-            return stateSet.at(id);
+            return stateSet.at(id) + "(" + typeString + ")";
         }
         catch (const std::out_of_range& e)
         {
-            return std::to_string(id);
+            return typeString;
+        }
+    }
+
+    std::string getPDRType(uint8_t type)
+    {
+        auto typeString = std::to_string(type);
+        try
+        {
+            return pdrType.at(type) + "(" + typeString + ")";
+        }
+        catch (const std::out_of_range& e)
+        {
+            return typeString;
         }
     }
 
@@ -150,7 +194,7 @@ class GetPDR : public CommandInterface
         std::cout << "recordHandle: " << hdr->record_handle << std::endl;
         std::cout << "PDRHeaderVersion: " << unsigned(hdr->version)
                   << std::endl;
-        std::cout << "PDRType: " << unsigned(hdr->type) << std::endl;
+        std::cout << "PDRType: " << getPDRType(hdr->type) << std::endl;
         std::cout << "recordChangeNumber: " << hdr->record_change_num
                   << std::endl;
         std::cout << "dataLength: " << hdr->length << std::endl << std::endl;
