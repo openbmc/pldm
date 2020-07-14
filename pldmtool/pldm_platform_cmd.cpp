@@ -30,10 +30,6 @@ class GetPDR : public CommandInterface
 
     using CommandInterface::CommandInterface;
 
-    // The maximum number of record bytes requested to be returned in the
-    // response to this instance of the GetPDR command.
-    static constexpr uint16_t requestCount = 128;
-
     explicit GetPDR(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
     {
@@ -51,16 +47,16 @@ class GetPDR : public CommandInterface
                                         PLDM_GET_PDR_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
-        auto rc = encode_get_pdr_req(instanceId, recordHandle, 0,
-                                     PLDM_GET_FIRSTPART, requestCount, 0,
-                                     request, PLDM_GET_PDR_REQ_BYTES);
+        auto rc =
+            encode_get_pdr_req(instanceId, recordHandle, 0, PLDM_GET_FIRSTPART,
+                               UINT16_MAX, 0, request, PLDM_GET_PDR_REQ_BYTES);
         return {rc, requestMsg};
     }
 
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
         uint8_t completionCode = 0;
-        uint8_t recordData[65535] = {0};
+        uint8_t recordData[UINT16_MAX] = {0};
         uint32_t nextRecordHndl = 0;
         uint32_t nextDataTransferHndl = 0;
         uint8_t transferFlag = 0;
