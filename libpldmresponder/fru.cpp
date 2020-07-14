@@ -17,6 +17,12 @@ namespace pldm
 namespace responder
 {
 
+const pldm::responder::dbus::AssociateEntityMap&
+    FruImpl::getAssociateEntityMap() const
+{
+    return associateEntityMap;
+}
+
 void FruImpl::buildFRUTable()
 {
 
@@ -93,6 +99,8 @@ void FruImpl::buildFRUTable()
 
                     auto recordInfos = parser.getRecordInfo(interface.first);
                     populateRecords(interfaces, recordInfos, entity);
+
+                    associateEntityMap.emplace(object.first, entity);
                     break;
                 }
                 catch (const std::exception& e)

@@ -31,6 +31,7 @@ using PropertyMap = std::map<Property, Value>;
 using InterfaceMap = std::map<Interface, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 using ObjectPath = std::string;
+using AssociateEntityMap = std::map<ObjectPath, pldm_entity>;
 
 } // namespace dbus
 
@@ -124,6 +125,9 @@ class FruImpl
      */
     void buildFRUTable();
 
+    const pldm::responder::dbus::AssociateEntityMap&
+        getAssociateEntityMap() const;
+
   private:
     uint16_t nextRSI()
     {
@@ -154,6 +158,10 @@ class FruImpl
     void populateRecords(const pldm::responder::dbus::InterfaceMap& interfaces,
                          const fru_parser::FruRecordInfos& recordInfos,
                          const pldm_entity& entity);
+
+    /** @brief Associate sensor/effecter to FRU entity
+     */
+    pldm::responder::dbus::AssociateEntityMap associateEntityMap;
 };
 
 namespace fru
@@ -210,6 +218,12 @@ class Handler : public CmdHandler
     void buildFRUTable()
     {
         impl.buildFRUTable();
+    }
+
+    const pldm::responder::dbus::AssociateEntityMap&
+        getAssociateEntityMap() const
+    {
+        return impl.getAssociateEntityMap();
     }
 
     /** @brief Handler for GetFRURecordByOption
