@@ -68,9 +68,23 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
 
         pdr->terminus_handle = 0;
         pdr->sensor_id = handler.getNextSensorId();
-        pdr->entity_type = e.value("type", 0);
-        pdr->entity_instance = e.value("instance", 0);
-        pdr->container_id = e.value("container", 0);
+        std::string entity_path = e.value("entity_path", "");
+        auto& associatedEntityMap = handler.getAssociateEntityMap();
+        if (entity_path != "" &&
+            associatedEntityMap.find(entity_path) != associatedEntityMap.end())
+        {
+            pdr->entity_type = associatedEntityMap.at(entity_path).entity_type;
+            pdr->entity_instance =
+                associatedEntityMap.at(entity_path).entity_instance_num;
+            pdr->container_id =
+                associatedEntityMap.at(entity_path).entity_container_id;
+        }
+        else
+        {
+            pdr->entity_type = e.value("type", 0);
+            pdr->entity_instance = e.value("instance", 0);
+            pdr->container_id = e.value("container", 0);
+        }
         pdr->sensor_init = PLDM_NO_INIT;
         pdr->sensor_auxiliary_names_pdr = false;
         if (sensors.size() > 8)
