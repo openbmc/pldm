@@ -404,7 +404,7 @@ uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
     {
         record = pldm_pdr_find_record_by_type(pdrRepo, PLDM_STATE_EFFECTER_PDR,
                                               record, &pdrData, &pdrSize);
-        if (record)
+        if (record && pldm_pdr_record_is_remote(record))
         {
             auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrData);
             auto compositeEffecterCount = pdr->composite_effecter_count;
