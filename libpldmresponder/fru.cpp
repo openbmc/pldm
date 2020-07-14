@@ -93,6 +93,8 @@ void FruImpl::buildFRUTable()
 
                     auto recordInfos = parser.getRecordInfo(interface.first);
                     populateRecords(interfaces, recordInfos, entity);
+
+                    associatedEntityMap.emplace(object.first, entity);
                     break;
                 }
                 catch (const std::exception& e)
