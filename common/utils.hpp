@@ -294,12 +294,14 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
  *  @param[in] entityInstance - entity instance number
  *  @param[in] containerId - container id
  *  @param[in] stateSetId - state set id
+ *  @param[in] localOrRemote - true for checking local repo and false for remote
+ *                             repo
  *
  *  @return uint16_t - the effecter id
  */
 uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                              uint16_t entityInstance, uint16_t containerId,
-                             uint16_t stateSetId);
+                             uint16_t stateSetId, bool localOrRemote);
 
 /** @brief Emit the sensor event signal
  *

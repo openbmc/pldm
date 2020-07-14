@@ -200,11 +200,11 @@ TEST(findStateEffecterId, goodJson)
     uint16_t containerId = 0;
     uint16_t stateSetId = 196;
     auto effecterId = findStateEffecterId(inPDRRepo, entityType, entityInstance,
-                                          containerId, stateSetId);
+                                          containerId, stateSetId, true);
     ASSERT_EQ(effecterId, 1);
     stateSetId = 300;
     effecterId = findStateEffecterId(inPDRRepo, entityType, entityInstance,
-                                     containerId, stateSetId);
+                                     containerId, stateSetId, true);
     ASSERT_EQ(effecterId, PLDM_INVALID_EFFECTER_ID);
     pldm_pdr_destroy(inPDRRepo);
 }
