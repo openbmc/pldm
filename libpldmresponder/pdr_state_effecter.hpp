@@ -64,9 +64,25 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
 
         pdr->terminus_handle = 0;
         pdr->effecter_id = handler.getNextEffecterId();
-        pdr->entity_type = e.value("type", 0);
-        pdr->entity_instance = e.value("instance", 0);
-        pdr->container_id = e.value("container", 0);
+
+        std::string entity_path = e.value("entity_path", "");
+        if (handler.associateEntityMap.find(entity_path) !=
+            handler.associateEntityMap.end())
+        {
+            pdr->entity_type =
+                handler.associateEntityMap.at(entity_path).entity_type;
+            pdr->entity_instance =
+                handler.associateEntityMap.at(entity_path).entity_instance_num;
+            pdr->container_id =
+                handler.associateEntityMap.at(entity_path).entity_container_id;
+        }
+        else
+        {
+            pdr->entity_type = e.value("type", 0);
+            pdr->entity_instance = e.value("instance", 0);
+            pdr->container_id = e.value("container", 0);
+        }
+
         pdr->effecter_semantic_id = 0;
         pdr->effecter_init = PLDM_NO_INIT;
         pdr->has_description_pdr = false;

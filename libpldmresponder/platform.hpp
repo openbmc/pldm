@@ -4,6 +4,7 @@
 
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
+#include "pdr.h"
 
 #include "common/utils.hpp"
 #include "event_parser.hpp"
@@ -43,6 +44,7 @@ using EventHandler = std::function<int(
     uint8_t tid, size_t eventDataOffset)>;
 using EventHandlers = std::vector<EventHandler>;
 using EventMap = std::map<EventType, EventHandlers>;
+using AssociateEntityMap = std::map<DbusPath, pldm_entity>;
 
 // EventEntry = <uint8_t> - EventState <uint8_t> - SensorOffset <uint16_t> -
 // SensorID
@@ -65,11 +67,17 @@ class Handler : public CmdHandler
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
         fruHandler(fruHandler), dBusIntf(dBusIntf), pdrJsonsDir(pdrJsonsDir),
         pdrCreated(false)
+
     {
         if (!buildPDRLazily)
         {
             generate(*dBusIntf, pdrJsonsDir, pdrRepo);
             pdrCreated = true;
+        }
+
+        if (fruHandler)
+        {
+            associateEntityMap = fruHandler->getAssociateEntityMap();
         }
 
         handlers.emplace(PLDM_GET_PDR,
@@ -167,6 +175,7 @@ class Handler : public CmdHandler
      *
      *  @param[in] dBusIntf - The interface object
      *  @param[in] dir - directory housing platform specific PDR JSON files
+     *  @param[in] associateEntityMap - associate sensor/effecter to FRU entity
      *  @param[in] repo - instance of concrete implementation of Repo
      */
     void generate(const pldm::utils::DBusHandler& dBusIntf,
@@ -401,6 +410,8 @@ class Handler : public CmdHandler
 
         return rc;
     }
+
+    AssociateEntityMap associateEntityMap;
 
   private:
     pdr_utils::Repo pdrRepo;
