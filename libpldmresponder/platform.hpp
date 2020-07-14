@@ -4,6 +4,7 @@
 
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
+#include "pdr.h"
 
 #include "common/utils.hpp"
 #include "event_parser.hpp"
@@ -43,6 +44,7 @@ using EventHandler = std::function<int(
     uint8_t tid, size_t eventDataOffset)>;
 using EventHandlers = std::vector<EventHandler>;
 using EventMap = std::map<EventType, EventHandlers>;
+using AssociatedEntityMap = std::map<DbusPath, pldm_entity>;
 
 // EventEntry = <uint8_t> - EventState <uint8_t> - SensorOffset <uint16_t> -
 // SensorID
@@ -65,6 +67,7 @@ class Handler : public CmdHandler
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
         fruHandler(fruHandler), dBusIntf(dBusIntf), pdrJsonsDir(pdrJsonsDir),
         pdrCreated(false)
+
     {
         if (!buildPDRLazily)
         {
@@ -432,6 +435,17 @@ class Handler : public CmdHandler
      */
     void generateTerminusLocatorPDR(Repo& repo);
 
+    /** @brief Get std::map associated with the entity
+     *         key: object path
+     *         value: pldm_entity
+     *
+     *  @return std::map<ObjectPath, pldm_entity>
+     */
+    inline const AssociatedEntityMap& getAssociateEntityMap() const
+    {
+        return associatedEntityMap;
+    }
+
   private:
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
@@ -444,6 +458,7 @@ class Handler : public CmdHandler
     const pldm::utils::DBusHandler* dBusIntf;
     std::string pdrJsonsDir;
     bool pdrCreated;
+    AssociatedEntityMap associatedEntityMap;
 };
 
 } // namespace platform
