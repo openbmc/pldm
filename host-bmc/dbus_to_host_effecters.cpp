@@ -135,13 +135,15 @@ void HostEffecterParser::processHostEffecterChangeNotification(
 
     if (effecterId == PLDM_INVALID_EFFECTER_ID)
     {
+        constexpr auto localOrRemote = false;
         effecterId = findStateEffecterId(
             pdrRepo, hostEffecterInfo[effecterInfoIndex].entityType,
             hostEffecterInfo[effecterInfoIndex].entityInstance,
             hostEffecterInfo[effecterInfoIndex].containerId,
             hostEffecterInfo[effecterInfoIndex]
                 .dbusInfo[dbusInfoIndex]
-                .state.stateSetId);
+                .state.stateSetId,
+            localOrRemote);
         if (effecterId == PLDM_INVALID_EFFECTER_ID)
         {
             std::cerr << "Effecter id not found in pdr repo \n";

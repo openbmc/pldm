@@ -3,7 +3,6 @@
         {
             "mctp_eid": 9,
             "effecter_info": {
-                "effecterID": 4,
                 "containerID": 0,
                 "entityType": 33,
                 "entityInstance": 0,
