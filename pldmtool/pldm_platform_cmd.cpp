@@ -94,6 +94,7 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_PROC, "Processor"},
         {PLDM_ENTITY_MGMT_CONTROLLER, "Management Controller"},
         {PLDM_ENTITY_CONNECTOR, "Connector"},
+        {PLDM_ENTITY_POWER_SUPPLY, "Power Supply"},
         {11521, "System (logical)"},
     };
 
