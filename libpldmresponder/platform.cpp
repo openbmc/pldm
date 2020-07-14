@@ -141,6 +141,7 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     if (fruHandler)
     {
         fruHandler->buildFRUTable();
+        associatedEntityMap = fruHandler->getAssociateEntityMap();
     }
 
     if (!pdrCreated)
