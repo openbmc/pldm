@@ -998,3 +998,98 @@ TEST(SetBIOSTable, testBadDecodeResponse)
                                     &retCompletionCode, &retNextTransferHandle);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(SetBIOSTable, testGoodEncodeResponse)
+{
+    uint8_t instanceId = 10;
+    uint32_t nextTransferHandle = 32;
+    uint8_t completionCode = PLDM_SUCCESS;
+
+    std::array<uint8_t, hdrSize + PLDM_SET_BIOS_TABLE_RESP_BYTES> responseMsg{};
+    struct pldm_msg* response =
+        reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    auto rc = encode_set_bios_table_resp(instanceId, completionCode,
+                                         nextTransferHandle, response);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    struct pldm_set_bios_table_resp* resp =
+        reinterpret_cast<struct pldm_set_bios_table_resp*>(response->payload);
+    EXPECT_EQ(completionCode, resp->completion_code);
+    EXPECT_EQ(htole32(nextTransferHandle), resp->next_transfer_handle);
+}
+
+TEST(SetBIOSTable, testBadEncodeResponse)
+{
+    uint8_t instanceId = 10;
+    uint32_t nextTransferHandle = 32;
+    uint8_t completionCode = PLDM_SUCCESS;
+
+    auto rc = encode_set_bios_table_resp(instanceId, completionCode,
+                                         nextTransferHandle, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(SetBIOSTable, testGoodDecodeRequest)
+{
+    uint32_t transferHandle = 32;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t tableType = PLDM_BIOS_STRING_TABLE;
+    uint32_t tableData = 44;
+
+    std::array<uint8_t,
+               hdrSize + PLDM_SET_BIOS_TABLE_MIN_REQ_BYTES + sizeof(tableData)>
+        requestMsg{};
+    auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
+    struct pldm_set_bios_table_req* req =
+        reinterpret_cast<struct pldm_set_bios_table_req*>(request->payload);
+    req->transfer_handle = htole32(transferHandle);
+    req->transfer_flag = transferFlag;
+    req->table_type = tableType;
+    memcpy(req->table_data, &tableData, sizeof(tableData));
+
+    uint32_t retTransferHandle;
+    uint8_t retTransferFlag;
+    uint8_t retTableType;
+    struct variable_field table;
+    auto rc = decode_set_bios_table_req(request, requestMsg.size() - hdrSize,
+                                        &retTransferHandle, &retTransferFlag,
+                                        &retTableType, &table);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(retTransferHandle, transferHandle);
+    EXPECT_EQ(retTransferFlag, transferFlag);
+    EXPECT_EQ(retTableType, tableType);
+    EXPECT_EQ(table.length, sizeof(tableData));
+    EXPECT_EQ(0, memcmp(table.ptr, &tableData, sizeof(tableData)));
+}
+
+TEST(SetBIOSTable, testBadDecodeRequest)
+{
+    uint32_t transferHandle = 32;
+    uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t tableType = PLDM_BIOS_STRING_TABLE;
+    uint32_t tableData = 44;
+
+    std::array<uint8_t, hdrSize + sizeof(tableData)> requestMsg{};
+    auto request = reinterpret_cast<struct pldm_msg*>(requestMsg.data());
+    struct pldm_set_bios_table_req* req =
+        reinterpret_cast<struct pldm_set_bios_table_req*>(request->payload);
+    req->transfer_handle = htole32(transferHandle);
+    req->transfer_flag = transferFlag;
+    req->table_type = tableType;
+    memcpy(req->table_data, &tableData, sizeof(tableData));
+
+    uint32_t retTransferHandle;
+    uint8_t retTransferFlag;
+    uint8_t retTableType;
+    struct variable_field table;
+    auto rc = decode_set_bios_table_req(request, requestMsg.size() - hdrSize,
+                                        &retTransferHandle, &retTransferFlag,
+                                        &retTableType, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_set_bios_table_req(request, requestMsg.size() - hdrSize,
+                                   &retTransferHandle, &retTransferFlag,
+                                   &retTableType, &table);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
