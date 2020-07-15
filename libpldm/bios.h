@@ -578,6 +578,39 @@ int encode_set_date_time_resp(uint8_t instance_id, uint8_t completion_code,
 int decode_set_date_time_resp(const struct pldm_msg *msg, size_t payload_length,
 			      uint8_t *completion_code);
 
+/* SetBIOSTable */
+
+/** @brief Create a PLDM response message for SetBIOSTable
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in] next_transfer_handle - handle to identify the next portion of the
+ *             transfer
+ *  @param[out] msg - Message will be written to this
+ */
+int encode_set_bios_table_resp(uint8_t instance_id, uint8_t completion_code,
+			       uint32_t next_transfer_handle,
+			       struct pldm_msg *msg);
+
+/** @brief Decode SetBIOSTable request packet
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] transfer_handle - Handle to identify a BIOS table transfer
+ *  @param[out] transfer_flag - Flag to indicate what part of the transfer
+ *                              this request represents
+ *  @param[out] table_type - Indicates what table is being transferred
+ *             {BIOSStringTable=0x0, BIOSAttributeTable=0x1,
+ *              BIOSAttributeValueTable=0x2}
+ *  @param[out] table - Struct variable_field, contains data specific to the
+ * 				table type and the length of table data.
+ *  @return pldm_completion_codes
+ */
+int decode_set_bios_table_req(const struct pldm_msg *msg, size_t payload_length,
+			      uint32_t *transfer_handle, uint8_t *transfer_flag,
+			      uint8_t *table_type,
+			      struct variable_field *table);
+
 #ifdef __cplusplus
 }
 #endif
