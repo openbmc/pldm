@@ -28,7 +28,7 @@ class LidHandler : public FileHandler
      */
     LidHandler(uint32_t fileHandle, bool permSide) : FileHandler(fileHandle)
     {
-        std::string dir = permSide ? LID_PERM_DIR : LID_TEMP_DIR;
+        std::string dir = permSide ? LID_ALTERNATE_DIR : LID_RUNNING_DIR;
         std::stringstream stream;
         stream << std::hex << fileHandle;
         auto lidName = stream.str() + ".lid";
