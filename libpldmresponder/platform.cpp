@@ -136,18 +136,18 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
-    if (!pdrCreated)
-    {
-        generateTerminusLocatorPDR(pdrRepo);
-        generate(*dBusIntf, pdrJsonsDir, pdrRepo);
-        pdrCreated = true;
-    }
-
     // Build FRU table if not built, since entity association PDR's are built
     // when the FRU table is constructed.
     if (fruHandler)
     {
         fruHandler->buildFRUTable();
+    }
+
+    if (!pdrCreated)
+    {
+        generateTerminusLocatorPDR(pdrRepo);
+        generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+        pdrCreated = true;
     }
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES, 0);
