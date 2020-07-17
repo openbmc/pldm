@@ -30,8 +30,8 @@ class TestFileTable : public testing::Test
   public:
     void SetUp() override
     {
-        // Create a temporary directory to hold the config file and files to
-        // populate the file table.
+        // Create a temporary directory to hold the files to populate the file
+        // table.
         char tmppldm[] = "/tmp/pldm_fileio_table.XXXXXX";
         dir = fs::path(mkdtemp(tmppldm));
 
@@ -39,19 +39,19 @@ class TestFileTable : public testing::Test
         fs::copy("./files", dir);
 
         imageFile = dir / "NVRAM-IMAGE";
+        cksumFile = dir / "NVRAM-IMAGE-CKSUM";
+
         auto jsonObjects = Json::array();
         auto obj = Json::object();
-        obj["path"] = imageFile.c_str();
-        obj["file_traits"] = 1;
-
-        jsonObjects.push_back(obj);
-        obj.clear();
-        cksumFile = dir / "NVRAM-IMAGE-CKSUM";
-        obj["path"] = cksumFile.c_str();
+        obj["path"] = dir.c_str();
         obj["file_traits"] = 4;
         jsonObjects.push_back(obj);
 
-        fileTableConfig = dir / "configFile.json";
+        // Create a temporary directory to hold the config file
+        char tmppldmConfig[] = "/tmp/pldm_config_file.XXXXXX";
+        config = fs::path(mkdtemp(tmppldmConfig));
+        fileTableConfig = config / "configFile.json";
+
         std::ofstream file(fileTableConfig.c_str());
         file << std::setw(4) << jsonObjects << std::endl;
     }
@@ -62,29 +62,30 @@ class TestFileTable : public testing::Test
     }
 
     fs::path dir;
+    fs::path config;
     fs::path imageFile;
     fs::path cksumFile;
     fs::path fileTableConfig;
 
     // <4 bytes - File handle - 0 (0x00 0x00 0x00 0x00)>,
-    // <2 bytes - Filename length - 11 (0x0b 0x00>
-    // <11 bytes - Filename - ASCII for NVRAM-IMAGE>
-    // <4 bytes - File size - 1024 (0x00 0x04 0x00 0x00)>
-    // <4 bytes - File traits - 1 (0x01 0x00 0x00 0x00)>
-    // <4 bytes - File handle - 1 (0x01 0x00 0x00 0x00)>,
     // <2 bytes - Filename length - 17 (0x11 0x00>
     // <17 bytes - Filename - ASCII for NVRAM-IMAGE-CKSUM>
     // <4 bytes - File size - 16 (0x0f 0x00 0x00 0x00)>
     // <4 bytes - File traits - 4 (0x04 0x00 0x00 0x00)>
+    // <4 bytes - File handle - 1 (0x01 0x00 0x00 0x00)>,
+    // <2 bytes - Filename length - 11 (0x0b 0x00>
+    // <11 bytes - Filename - ASCII for NVRAM-IMAGE>
+    // <4 bytes - File size - 1024 (0x00 0x04 0x00 0x00)>
+    // <4 bytes - File traits - 4 (0x04 0x00 0x00 0x00)>
     // No pad bytes added since the length for both the file entries in the
     // table is 56, which is a multiple of 4.
-    // <4 bytes - Checksum - 2088303182(0x4e 0xfa 0x78 0x7c)>
+    // <4 bytes - Checksum - 1993618290(0x72 0x33 0xd4 0x76)>
     Table attrTable = {
-        0x00, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x4e, 0x56, 0x52, 0x41, 0x4d, 0x2d,
-        0x49, 0x4d, 0x41, 0x47, 0x45, 0x00, 0x04, 0x00, 0x00, 0x01, 0x00, 0x00,
-        0x00, 0x01, 0x00, 0x00, 0x00, 0x11, 0x00, 0x4e, 0x56, 0x52, 0x41, 0x4d,
-        0x2d, 0x49, 0x4d, 0x41, 0x47, 0x45, 0x2d, 0x43, 0x4b, 0x53, 0x55, 0x4d,
-        0x10, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x4e, 0xfa, 0x78, 0x7c};
+        0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x4e, 0x56, 0x52, 0x41, 0x4d, 0x2d,
+        0x49, 0x4d, 0x41, 0x47, 0x45, 0x2d, 0x43, 0x4b, 0x53, 0x55, 0x4d, 0x10,
+        0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x0b,
+        0x00, 0x4e, 0x56, 0x52, 0x41, 0x4d, 0x2d, 0x49, 0x4d, 0x41, 0x47, 0x45,
+        0x00, 0x04, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x72, 0x33, 0xd4, 0x76};
 };
 
 namespace pldm
@@ -293,7 +294,7 @@ TEST_F(TestFileTable, ReadFileInvalidOffset)
 
 TEST_F(TestFileTable, ReadFileInvalidLength)
 {
-    uint32_t fileHandle = 0;
+    uint32_t fileHandle = 1;
     uint32_t offset = 100;
     // Length should be a multiple of dma min size(16)
     uint32_t length = 10;
@@ -324,7 +325,7 @@ TEST_F(TestFileTable, ReadFileInvalidLength)
 
 TEST_F(TestFileTable, ReadFileInvalidEffectiveLength)
 {
-    uint32_t fileHandle = 0;
+    uint32_t fileHandle = 1;
     // valid offset
     uint32_t offset = 100;
     // length + offset exceeds the size, so effective length is
@@ -461,19 +462,19 @@ TEST_F(TestFileTable, ValidateFileEntry)
 {
     FileTable tableObj(fileTableConfig.c_str());
 
-    // Test file handle 0, the file size is 1K bytes.
+    // Test file handle 0, the file size is 16 bytes.
     auto value = tableObj.at(0);
     ASSERT_EQ(value.handle, 0);
-    ASSERT_EQ(strcmp(value.fsPath.c_str(), imageFile.c_str()), 0);
-    ASSERT_EQ(static_cast<uint32_t>(fs::file_size(value.fsPath)), 1024);
-    ASSERT_EQ(value.traits.value, 1);
+    ASSERT_EQ(strcmp(value.fsPath.c_str(), cksumFile.c_str()), 0);
+    ASSERT_EQ(static_cast<uint32_t>(fs::file_size(value.fsPath)), 16);
+    ASSERT_EQ(value.traits.value, 4);
     ASSERT_EQ(true, fs::exists(value.fsPath));
 
-    // Test file handle 1, the file size is 16 bytes
+    // Test file handle 1, the file size is 1K bytes
     auto value1 = tableObj.at(1);
     ASSERT_EQ(value1.handle, 1);
-    ASSERT_EQ(strcmp(value1.fsPath.c_str(), cksumFile.c_str()), 0);
-    ASSERT_EQ(static_cast<uint32_t>(fs::file_size(value1.fsPath)), 16);
+    ASSERT_EQ(strcmp(value1.fsPath.c_str(), imageFile.c_str()), 0);
+    ASSERT_EQ(static_cast<uint32_t>(fs::file_size(value1.fsPath)), 1024);
     ASSERT_EQ(value1.traits.value, 4);
     ASSERT_EQ(true, fs::exists(value1.fsPath));
 
@@ -565,7 +566,7 @@ TEST_F(TestFileTable, GetFileTableCommandOEMAttrTable)
 
 TEST_F(TestFileTable, ReadFileBadPath)
 {
-    uint32_t fileHandle = 1;
+    uint32_t fileHandle = 0;
     uint32_t offset = 0;
     uint32_t length = 0x4;
 
@@ -609,7 +610,7 @@ TEST_F(TestFileTable, ReadFileBadPath)
 
 TEST_F(TestFileTable, ReadFileGoodPath)
 {
-    uint32_t fileHandle = 0;
+    uint32_t fileHandle = 1;
     uint32_t offset = 0;
     uint32_t length = 0x4;
 
@@ -665,7 +666,7 @@ TEST_F(TestFileTable, ReadFileGoodPath)
 
 TEST_F(TestFileTable, WriteFileBadPath)
 {
-    uint32_t fileHandle = 0;
+    uint32_t fileHandle = 1;
     uint32_t offset = 0;
     uint32_t length = 0x10;
 
@@ -709,7 +710,7 @@ TEST_F(TestFileTable, WriteFileBadPath)
 
 TEST_F(TestFileTable, WriteFileGoodPath)
 {
-    uint32_t fileHandle = 1;
+    uint32_t fileHandle = 0;
     uint32_t offset = 0;
     std::array<uint8_t, 4> fileData = {0x41, 0x42, 0x43, 0x44};
     uint32_t length = fileData.size();
