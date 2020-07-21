@@ -5,6 +5,7 @@ headers = [
   'bios.h',
   'bios_table.h',
   'entity.h',
+  'states.h',
   'state_set.h',
   'fru.h',
   'utils.h',
