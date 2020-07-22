@@ -104,26 +104,96 @@ class FRUTablePrint
                       << typeToString(fruEncodingType, record->encoding_type)
                       << std::endl;
 
-            auto isGeneralRec = true;
-            if (record->record_type != PLDM_FRU_RECORD_TYPE_GENERAL)
-            {
-                isGeneralRec = false;
-            }
-
             p += sizeof(pldm_fru_record_data_format) -
                  sizeof(pldm_fru_record_tlv);
+
+            auto isIPZ = false;
+            std::map<uint8_t, const char*> FruFieldTypeMap;
+            std::string fruFieldValue;
+
             for (int i = 0; i < record->num_fru_fields; i++)
             {
                 auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(p);
-                if (isGeneralRec)
+                if (record->record_type == PLDM_FRU_RECORD_TYPE_GENERAL)
                 {
-                    fruFieldPrint(record->record_type, tlv->type, tlv->length,
-                                  tlv->value);
+                    FruFieldTypeMap.insert(fruGeneralFieldTypes.begin(),
+                                           fruGeneralFieldTypes.end());
+                    if (tlv->type == 15)
+                    {
+                        fruFieldValue = fruFieldParserU32(tlv->value, tlv->length);
+                    }
                 }
-                p += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                else
+                {
+                    if (tlv->type == 2)
+                    {
+                        std::string OemIPZValue;
+                        OemIPZValue =
+                            fruFieldValuestring(tlv->value, tlv->length);
+
+                        if (OemIPZValue == "VINI")
+                        {
+                            isIPZ = true;
+                            FruFieldTypeMap.insert(IPZVINIRecordTypes.begin(),
+                                                   IPZVINIRecordTypes.end());
+                        }
+                        else if (OemIPZValue == "VSYS")
+                        {
+                            isIPZ = true;
+                            FruFieldTypeMap.insert(IPZVSYSRecordTypes.begin(),
+                                                   IPZVSYSRecordTypes.end());
+                        }
+                        else if (OemIPZValue == "LXR0")
+                        {
+                            isIPZ = true;
+                            FruFieldTypeMap.insert(IPZLXR0RecordTypes.begin(),
+                                                   IPZLXR0RecordTypes.end());
+                        }
+                        else if (OemIPZValue == "VWX10")
+                        {
+                            isIPZ = true;
+                            FruFieldTypeMap.insert(IPZVW10RecordTypes.begin(),
+                                                   IPZVW10RecordTypes.end());
+                        }
+                        else if (OemIPZValue == "VR10")
+                        {
+                            isIPZ = true;
+                            FruFieldTypeMap.insert(IPZVR10RecordTypes.begin(),
+                                                   IPZVR10RecordTypes.end());
+                        }
+                    }
+                    else
+                    {
+                        FruFieldTypeMap.insert(fruOemFieldTypes.begin(),
+                                               fruOemFieldTypes.end());
+                    }
+                    if (tlv->type == 1)
+                    {
+                        fruFieldValue = fruFieldParserU32(tlv->value, tlv->length);
+                    }
+                }
+            
+            if ((isIPZ == true) && (tlv->type != 2))
+            {
+                 fruFieldValue = fruFieldIPZParser(tlv->value, tlv->length);
+            }
+            else
+            {
+                fruFieldValue = fruFieldValuestring(tlv->value, tlv->length);
+            }
+
+            std::cout << "\tFRU Field Type: "
+                      << typeToString(FruFieldTypeMap, tlv->type) << std::endl;
+            std::cout << "\tFRU Field Length: " << (int)(tlv->length)
+                      << std::endl;
+            std::cout << "\tFRU Field Value: " << fruFieldValue << std::endl;
+
+            p += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+
             }
         }
     }
+
 
   private:
     const uint8_t* table;
@@ -143,12 +213,50 @@ class FRUTablePrint
         {PLDM_FRU_ENCODING_UTF16LE, "UTF16LE"},
         {PLDM_FRU_ENCODING_UTF16BE, "UTF16BE"}};
 
+    static inline const std::map<uint8_t, const char*> fruGeneralFieldTypes{
+        {PLDM_FRU_FIELD_TYPE_CHASSIS, "Chassis"},
+        {PLDM_FRU_FIELD_TYPE_MODEL, "Model"},
+        {PLDM_FRU_FIELD_TYPE_PN, "Part Number"},
+        {PLDM_FRU_FIELD_TYPE_SN, "Serial Number"},
+        {PLDM_FRU_FIELD_TYPE_MANUFAC, "Manufacturer"},
+        {PLDM_FRU_FIELD_TYPE_MANUFAC_DATE, "Manufacture Date"},
+        {PLDM_FRU_FIELD_TYPE_VENDOR, "Vendor"},
+        {PLDM_FRU_FIELD_TYPE_NAME, "Name"},
+        {PLDM_FRU_FIELD_TYPE_SKU, "SKU"},
+        {PLDM_FRU_FIELD_TYPE_VERSION, "Version"},
+        {PLDM_FRU_FIELD_TYPE_ASSET_TAG, "Asset Tag"},
+        {PLDM_FRU_FIELD_TYPE_DESC, "Description"},
+        {PLDM_FRU_FIELD_TYPE_EC_LVL, "Engineering Change Level"},
+        {PLDM_FRU_FIELD_TYPE_OTHER, "Other Information"},
+        {PLDM_FRU_FIELD_TYPE_IANA, "Vendor IANA"}};
+
     static inline const std::map<uint8_t, const char*> fruRecordTypes{
         {PLDM_FRU_RECORD_TYPE_GENERAL, "General"},
         {PLDM_FRU_RECORD_TYPE_OEM, "OEM"}};
 
-    std::string typeToString(std::map<uint8_t, const char*> typeMap,
-                             uint8_t type)
+    static inline const std::map<uint8_t, const char*> fruOemFieldTypes{
+        {1, "Vendor IANA"}, {2, "RT"}, {254, "Location Code"}};
+
+    static inline const std::map<uint8_t, const char*> IPZVINIRecordTypes{
+        {2, "RT"},  {3, "B3"},  {4, "B4"},  {5, "B7"},  {6, "CC"},  {7, "CE"},
+        {8, "CT"},  {9, "DR"},  {10, "FG"}, {11, "FN"}, {12, "HE"}, {13, "HW"},
+        {14, "HX"}, {15, "PN"}, {16, "SN"}, {17, "TS"}, {18, "VZ"}};
+
+    static inline const std::map<uint8_t, const char*> IPZVSYSRecordTypes{
+        {2, "RT"},  {3, "BR"},  {4, "DR"},  {5, "FV"},  {6, "ID"},
+        {7, "MN"},  {8, "NN"},  {9, "RB"},  {10, "RG"}, {11, "SE"},
+        {12, "SG"}, {13, "SU"}, {14, "TM"}, {15, "TN"}, {16, "WN"}};
+
+    static inline const std::map<uint8_t, const char*> IPZLXR0RecordTypes{
+        {2, "RT"}, {3, "LX"}, {4, "VZ"}};
+
+    static inline const std::map<uint8_t, const char*> IPZVW10RecordTypes{
+        {2, "RT"}, {3, "DR"}, {4, "GD"}};
+
+    static inline const std::map<uint8_t, const char*> IPZVR10RecordTypes{
+        {2, "RT"}, {3, "DC"}, {4, "DR"}, {5, "FL"}, {6, "WA"}};
+
+    std::string typeToString(std::map<uint8_t, const char*> typeMap, uint8_t type)
     {
         auto typeString = std::to_string(type);
         try
@@ -161,24 +269,9 @@ class FRUTablePrint
         }
     }
 
-    using FruFieldParser =
-        std::function<std::string(const uint8_t* value, uint8_t length)>;
-
-    using FieldType = uint8_t;
-    using RecordType = uint8_t;
-    using FieldName = std::string;
-    using FruFieldTypes =
-        std::map<FieldType, std::tuple<FieldName, FruFieldParser>>;
-
-    static std::string fruFieldParserString(const uint8_t* value,
-                                            uint8_t length)
+    std::string fruFieldValuestring(const uint8_t* value, uint8_t length)
     {
         return std::string(reinterpret_cast<const char*>(value), length);
-    }
-
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
-    {
-        return std::string("TODO");
     }
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
@@ -189,45 +282,14 @@ class FRUTablePrint
         return std::to_string(le32toh(v));
     }
 
-    static inline const FruFieldTypes fruGeneralFieldTypes = {
-        {PLDM_FRU_FIELD_TYPE_CHASSIS, {"Chassis", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_MODEL, {"Model", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_PN, {"Part Number", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_SN, {"Serial Number", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_MANUFAC, {"Manufacturer", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_MANUFAC_DATE,
-         {"Manufacture Date", fruFieldParserTimestamp}},
-        {PLDM_FRU_FIELD_TYPE_VENDOR, {"Vendor", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_NAME, {"Name", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_SKU, {"SKU", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_VERSION, {"Version", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_ASSET_TAG, {"Asset Tag", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_DESC, {"Description", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_EC_LVL,
-         {"Engineering Change Level", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_OTHER,
-         {"Other Information", fruFieldParserString}},
-        {PLDM_FRU_FIELD_TYPE_IANA, {"Vendor IANA", fruFieldParserU32}},
-    };
-
-    static inline const FruFieldTypes fruOEMFieldTypes = {
-        {1, {"Vendor IANA", fruFieldParserU32}},
-
-    };
-
-    static inline const std::map<RecordType, FruFieldTypes> fruFieldTypes{
-        {PLDM_FRU_RECORD_TYPE_GENERAL, fruGeneralFieldTypes},
-        {PLDM_FRU_RECORD_TYPE_OEM, fruOEMFieldTypes}};
-
-    void fruFieldPrint(uint8_t recordType, uint8_t type, uint8_t length,
-                       const uint8_t* value)
+    static std::string fruFieldIPZParser(const uint8_t* value, uint8_t length)
     {
-        auto& [typeString, parser] = fruFieldTypes.at(recordType).at(type);
-
-        std::cout << "\tFRU Field Type: " << typeString << std::endl;
-        std::cout << "\tFRU Field Length: " << (int)(length) << std::endl;
-        std::cout << "\tFRU Field Value: " << parser(value, length)
-                  << std::endl;
+        std::ostringstream tempStream;
+        for (int i = 0; i < int(length); ++i)
+        {
+            tempStream << std::hex << value[i];
+        }
+        return tempStream.str();
     }
 };
 
@@ -380,6 +442,6 @@ void registerCommand(CLI::App& app)
         "fru", "GetFruRecordTable", getFruRecordTable));
 }
 
-} // namespace fru
+} // namespace pldmtool
 
 } // namespace pldmtool
