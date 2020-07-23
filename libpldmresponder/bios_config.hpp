@@ -22,6 +22,32 @@ namespace responder
 namespace bios
 {
 
+enum class BoundType
+{
+    LowerBound,
+    UpperBound,
+    ScalarIncrement,
+    MinStringLength,
+    MaxStringLength,
+    OneOf
+};
+
+using AttributeName = std::string;
+using AttributeType = std::string;
+using ReadonlyStatus = bool;
+using DisplayName = std::string;
+using Description = std::string;
+using MenuPath = std::string;
+using CurrentValue = std::variant<int64_t, std::string>;
+using DefaultValue = std::variant<int64_t, std::string>;
+using OptionString = std::string;
+using OptionValue = std::variant<int64_t, std::string>;
+using Option = std::vector<std::tuple<OptionString, OptionValue>>;
+using BIOSTableObj =
+    std::tuple<AttributeType, ReadonlyStatus, DisplayName, Description,
+               MenuPath, CurrentValue, DefaultValue, Option>;
+using BaseBIOSTable = std::map<AttributeName, BIOSTableObj>;
+
 /** @class BIOSConfig
  *  @brief Manager BIOS Attributes
  */
@@ -62,10 +88,21 @@ class BIOSConfig
      */
     std::optional<Table> getBIOSTable(pldm_bios_table_types tableType);
 
+    /** @brief set BIOS table
+     *  @param[in] tableType - Indicates what table is being transferred
+     *             {BIOSStringTable=0x0, BIOSAttributeTable=0x1,
+     *              BIOSAttributeValueTable=0x2}
+     *  @param[in] table - table data
+     *  @return pldm_completion_codes
+     */
+    int setBIOSTable(uint8_t tableType, const Table& table);
+
   private:
     const fs::path jsonDir;
     const fs::path tableDir;
     DBusHandler* const dbusHandler;
+    bool isUpdateProperty;
+    BaseBIOSTable baseBIOSTableMaps;
 
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
@@ -167,6 +204,22 @@ class BIOSConfig
     int checkAttrValueToUpdate(
         const pldm_bios_attr_val_table_entry* attrValueEntry,
         const pldm_bios_attr_table_entry* attrEntry, Table& stringTable);
+
+    /** @brief Check the attribute table
+     *  @param[in] table - The table
+     *  @return pldm_completion_codes
+     */
+    int checkAttributeTable(const Table& table);
+
+    /** @brief Check the attribute value table
+     *  @param[in] table - The table
+     *  @return pldm_completion_codes
+     */
+    int checkAttributeValueTable(const Table& table);
+
+    /** @brief Update the BaseBIOSTable property of the D-Bus interface
+     */
+    void updateBaseBIOSTableProperty();
 };
 
 } // namespace bios
