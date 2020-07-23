@@ -63,6 +63,15 @@ std::optional<Table> BIOSConfig::getBIOSTable(pldm_bios_table_types tableType)
     return loadTable(tablePath);
 }
 
+int BIOSConfig::setBIOSTable(uint32_t /*transferHandle*/,
+                             uint8_t /*transferOpFlag*/, uint8_t /*tableType*/,
+                             const void* /*entry*/, size_t /*size*/)
+{
+    auto rc = PLDM_SUCCESS;
+
+    return rc;
+}
+
 void BIOSConfig::constructAttributes()
 {
     load(jsonDir / stringJsonFile, [this](const Json& entry) {

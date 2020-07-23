@@ -62,6 +62,21 @@ class BIOSConfig
      */
     std::optional<Table> getBIOSTable(pldm_bios_table_types tableType);
 
+    /** @brief set BIOS table
+     *  @param[in] transferHandle - handle to identify the next portion of the
+     *             transfer
+     *  @param[in] transferOpFlag - Flag to indicate what part of the transfer
+     *             this request represents
+     *  @param[in] tableType - Indicates what table is being transferred
+     *             {BIOSStringTable=0x0, BIOSAttributeTable=0x1,
+     *              BIOSAttributeValueTable=0x2}
+     *  @param[in] entry - table data entry
+     *  @param[in] size - size of the table data entry
+     *  @return pldm_completion_codes
+     */
+    int setBIOSTable(uint32_t transferHandle, uint8_t transferOpFlag,
+                     uint8_t tableType, const void* entry, size_t size);
+
   private:
     const fs::path jsonDir;
     const fs::path tableDir;

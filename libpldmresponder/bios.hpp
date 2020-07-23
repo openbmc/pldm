@@ -45,6 +45,14 @@ class Handler : public CmdHandler
      */
     Response getBIOSTable(const pldm_msg* request, size_t payloadLength);
 
+    /** @brief Handler for SetBIOSTable
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payload_length - Request message payload length
+     *  @return Response - PLDM Response message
+     */
+    Response setBIOSTable(const pldm_msg* request, size_t payloadLength);
+
     /** @brief Handler for GetBIOSAttributeCurrentValueByHandle
      *
      *  @param[in] request - Request message
