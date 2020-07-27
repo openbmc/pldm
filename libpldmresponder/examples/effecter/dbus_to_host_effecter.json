@@ -8,7 +8,10 @@
                 #fetched from the PDR
                 "effecterID": 0xFFFF,
                 "containerID": 1,
-                "entityType": 67,
+                "entityType": 32801,
+                # entity type 33 means Phyp will set value 32801 
+                # this is because the MSB is set to indicate
+                #virtual entity
                 "entityInstance": 1,
                 "compositeEffecterCount": 3
             },
