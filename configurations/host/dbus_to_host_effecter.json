@@ -4,7 +4,7 @@
             "mctp_eid": 9,
             "effecter_info": {
                 "containerID": 0,
-                "entityType": 33,
+                "entityType": 32801,
                 "entityInstance": 0,
                 "compositeEffecterCount": 1
             },
