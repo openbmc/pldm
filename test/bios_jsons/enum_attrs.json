@@ -4,9 +4,9 @@
          "attribute_name" : "HMCManagedState",
          "possible_values" : [ "On", "Off" ],
          "default_values" : [ "On" ],
-         "object_path" : "/xyz/abc/def",
          "dbus":
             {
+               "object_path" : "/xyz/abc/def",
                "interface" : "xyz.openbmc_project.HMCManaged.State",
                "property_name" : "State",
                "property_type" : "string",
