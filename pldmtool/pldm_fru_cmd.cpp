@@ -176,8 +176,12 @@ class FRUTablePrint
         return std::string(reinterpret_cast<const char*>(value), length);
     }
 
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
+    static std::string fruFieldParserTimestamp(const uint8_t* value, uint8_t)
     {
+        std::cout << "value=" << value << " " << std::endl;
+        const auto ts = reinterpret_cast<const timestamp104_t*>(value);
+        std::cout << "ts=" << ts->utc_offset << " " << ts->microsecond << " "
+                  << ts->seconds << " " << ts->minute << " " << ts->hour;
         return std::string("TODO");
     }
 

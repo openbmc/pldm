@@ -118,6 +118,8 @@ void FruParser::setupDefaultFruRecordMap()
              "string", 4},
             {"xyz.openbmc_project.Inventory.Decorator.Asset", "Manufacturer",
              "string", 5},
+            {"xyz.openbmc_project.Inventory.Decorator.Asset", "BuildDate",
+             "string", 6},
             {"xyz.openbmc_project.Inventory.Item", "PrettyName", "string", 8},
             {"xyz.openbmc_project.Inventory.Decorator.AssetTag", "AssetTag",
              "string", 11},
