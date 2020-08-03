@@ -5,6 +5,7 @@
 #include <endian.h>
 
 #include <functional>
+#include <regex>
 #include <tuple>
 
 namespace pldmtool
@@ -176,9 +177,30 @@ class FRUTablePrint
         return std::string(reinterpret_cast<const char*>(value), length);
     }
 
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
+    static std::string fruFieldParserTimestamp(const uint8_t* value, uint8_t)
     {
-        return std::string("TODO");
+        const std::string* val = reinterpret_cast<const std::string*>(value);
+        std::string vl = (const char*)val;
+        timestamp104_t* ts = (timestamp104_t*)malloc(sizeof(timestamp104_t));
+        std::regex datTim_regex("[^\\W_]+(?:\\-['_-][^\\W_]+)*");
+        std::vector<std::string> timstamp;
+        std::smatch m;
+
+        for (std::sregex_iterator i =
+                 std::sregex_iterator(vl.begin(), vl.end(), datTim_regex);
+             i != std::sregex_iterator(); ++i)
+        {
+            m = *i;
+            timstamp.push_back(m.str());
+        }
+
+        ts->year = (uint16_t)std::atoi(timstamp[0].c_str());
+        ts->month = (uint8_t)std::atoi(timstamp[1].c_str());
+        ;
+        ts->day = (uint8_t)std::atoi(timstamp[2].c_str());
+        ts->hour = (uint8_t)std::atoi(timstamp[3].c_str());
+        ts->minute = (uint8_t)std::atoi(timstamp[4].c_str());
+        return timestamp104ToDate(ts);
     }
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
