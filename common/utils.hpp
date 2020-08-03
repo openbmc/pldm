@@ -288,6 +288,21 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
                                                      uint16_t stateSetId,
                                                      const pldm_pdr* repo);
 
+inline std::string timestamp104ToDate(const timestamp104_t* ts)
+{
+    char buffer[17];
+<<<<<<< HEAD
+    snprintf(buffer, 17, "%04d-%02d-%02d %02d:%02d", bcd2dec16(ts->utc_offset),
+             bcd2dec8(ts->month), bcd2dec8(ts->day), bcd2dec8(ts->hour),
+             bcd2dec8(ts->minute));
+=======
+    snprintf(buffer, 17, "%04d-%02d-%02d %02d:%02d", ts->year, ts->month,
+             ts->day, ts->hour, ts->minute);
+>>>>>>> 0f77889... FRU Table: add Manufacturer date
+    std::string tsdate(buffer, 17);
+    return tsdate;
+}
+
 /** @brief Find effecter id from a state effecter pdr
  *  @param[in] pdrRepo - PDR repository
  *  @param[in] entityType - entity type

@@ -70,4 +70,48 @@ typedef union {
 
 typedef float real32_t;
 
+typedef enum {
+	PLDM_TS104__UTCR_UTC_UNSPECIFIED,
+	PLDM_TS104_UTCR_MINUTE,
+	PLDM_TS104_UTCR_TEN_MINUTE,
+	PLDM_TS104_UTCR_HOUR
+} utc_resolution;
+
+typedef enum {
+	PLDM_TS104_TR_MICROSECOND,
+	PLDM_TS104_TR_TEN_MICROSECOND,
+	PLDM_TS104_TR_HUNDRED_MICROSECOND,
+	PLDM_TS104_TR_MILLISECOND,
+	PLDM_TS104_TR_TEN_MILLISECOND,
+	PLDM_TS104_TR_HUNDRED_MILLISECOND,
+	PLDM_TS104_TR_SECOND,
+	PLDM_TS104_TR_TEN_SECOND,
+	PLDM_TS104_TR_MINUTE,
+	PLDM_TS104_TR_TEN_MINUTE_TR,
+	PLDM_TS104_TR_HOUR,
+	PLDM_TS104_TR_DAY,
+	PLDM_TS104_TR_MONTH,
+	PLDM_TS104_TR_YEAR
+} time_resolution;
+
+/* Timestamp104 datatype format */
+typedef struct timestamp104 {
+	int16_t utc_offset; // UTC offset in minutes
+	uint8_t microsecond[3];
+	uint8_t seconds;
+	uint8_t minute;
+	uint8_t hour;
+	uint8_t day;
+	uint8_t month;
+	uint16_t year;
+#if defined(__LITTLE_ENDIAN_BITFIELD)
+	utc_resolution ur : 4;
+	time_resolution tr : 4;
+#elif defined(__BIG_ENDIAN_BITFIELD)
+	time_resolution tr : 4;
+	utc_resolution ur : 4;
+#endif
+
+} __attribute__((packed)) timestamp104_t;
+
 #endif /* PLDM_TYPES_H */
