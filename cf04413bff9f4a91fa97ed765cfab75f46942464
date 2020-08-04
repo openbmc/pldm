@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "8bba66bc_b319d422",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2020-08-04T18:41:04Z",
+      "side": 1,
+      "message": "Can you use your full name?\nFrom https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md\n\nAll commit messages must include a \"Signed-off-by\" line, which indicates that you the contributor have agreed to the Developer Certificate of Origin (see below). This line must include the full name you commonly use, often a given name and a family name or surname. (ok: Sam Samuelsson, Robert A. Heinlein; not ok: xXthorXx, Sam, RAH)\n\nCould also change your Gerrit profile \n\nThanks!",
+      "revId": "cf04413bff9f4a91fa97ed765cfab75f46942464",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "227020b3_b3b6e172",
         "filename": "common/utils.hpp",
         "patchSetId": 1
