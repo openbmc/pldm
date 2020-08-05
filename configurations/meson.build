@@ -8,7 +8,6 @@ packagedir = join_paths(
     meson.project_name(),
 )
 
-install_subdir('fru', install_dir: packagedir)
 
 install_subdir('pdr', install_dir: packagedir)
 
