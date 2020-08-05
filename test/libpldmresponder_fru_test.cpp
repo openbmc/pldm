@@ -6,13 +6,6 @@ TEST(FruParser, allScenarios)
 {
     using namespace pldm::responder::fru_parser;
 
-    // No master FRU JSON
-    ASSERT_THROW(FruParser("./fru_jsons/malformed1"), std::exception);
-    // Malformed master FRU JSON
-    ASSERT_THROW(FruParser("./fru_jsons/malformed2"), std::exception);
-    // Malformed FRU JSON
-    ASSERT_THROW(FruParser("./fru_jsons/malformed3"), std::exception);
-
     FruParser parser{"./fru_jsons/good"};
 
     // Get an item with a single PLDM FRU record
