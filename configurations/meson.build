@@ -8,7 +8,6 @@ packagedir = join_paths(
     meson.project_name(),
 )
 
-install_subdir('fru', install_dir: packagedir)
 if get_option('oem-ibm').enabled()
     install_subdir('../oem/ibm/configurations/fru', install_dir: packagedir)
     install_data('../oem/ibm/configurations/fileTable.json',
