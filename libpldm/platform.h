@@ -462,6 +462,55 @@ struct pldm_numeric_effecter_value_pdr {
 	union_range_field_format rated_min;
 } __attribute__((packed));
 
+/** @struct pldm_numeric_sensor_value_pdr
+ *
+ *  Structure representing PLDM numeric sensor value PDR
+ */
+struct pldm_numeric_sensor_value_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t sensor_id;
+	uint16_t entity_type;
+	uint16_t entity_instance;
+	uint16_t container_id;
+	uint8_t sensor_init;
+	bool8_t sensor_auxiliary_names;
+	uint8_t base_unit;
+	int8_t unit_modifier;
+	uint8_t rate_unit;
+	uint8_t base_oem_unit_handle;
+	uint8_t aux_unit;
+	int8_t aux_unit_modifier;
+	uint8_t aux_rate_unit;
+	uint8_t rel;
+	uint8_t aux_oem_unit_handle;
+	bool8_t is_linear;
+	uint8_t sensor_data_size;
+	real32_t resolution;
+	real32_t offset;
+	uint16_t accuracy;
+	uint8_t plus_tolerance;
+	uint8_t minus_tolerance;
+	union_effecter_data_size hysteresis;
+	bitfield8_t supported_thresholds;
+	bitfield8_t threshold_hysteresis_volatility;
+	real32_t state_transition_interval;
+	real32_t update_interval;
+	union_effecter_data_size max_readable;
+	union_effecter_data_size min_readable;
+	uint8_t range_field_format;
+	bitfield8_t range_field_support;
+	union_range_field_format nominal_value;
+	union_range_field_format normal_max;
+	union_range_field_format normal_min;
+	union_range_field_format warning_high;
+	union_range_field_format warning_low;
+	union_range_field_format critical_high;
+	union_range_field_format critical_low;
+	union_range_field_format fatal_high;
+	union_range_field_format fatal_low;
+} __attribute__((packed));
+
 /** @struct state_effecter_possible_states
  *
  *  Structure representing state enums for state effecter

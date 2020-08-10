@@ -232,6 +232,11 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
             FORMAT_IS_PDR_HANDLES);
     }
+
+    const std::vector<uint8_t> pdrTypes{
+        PLDM_STATE_SENSOR_PDR, PLDM_STATE_EFFECTER_PDR, PLDM_NUMERIC_SENSOR_PDR,
+        PLDM_NUMERIC_EFFECTER_PDR, PLDM_PDR_FRU_RECORD_SET};
+    responder::pdr_utils::normalizeHostPDR(entityTree, pdrTypes, repo);
 }
 
 bool HostPDRHandler::getParent(EntityType type, pldm_entity& parent)

@@ -187,6 +187,115 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
                            std::move(sensorInfo));
 }
 
+void normalizeHostPDR(pldm_entity_association_tree* entityTree,
+                      const std::vector<uint8_t>& pdrTypes, pldm_pdr* repo)
+{
+    uint8_t* pdrData = nullptr;
+    uint32_t pdrSize{};
+    uint32_t nextRecHdl{};
+
+    auto record =
+        pldm_pdr_find_record(repo, 0, &pdrData, &pdrSize, &nextRecHdl);
+
+    if (!record)
+    {
+        std::cerr << "no pdr in the repo to normalize \n";
+        return;
+    }
+    do
+    {
+        auto pdrHdr = reinterpret_cast<const pldm_pdr_hdr*>(pdrData);
+        auto pdrType = pdrHdr->type;
+        if (pldm_pdr_record_is_remote(record) &&
+            std::find(pdrTypes.begin(), pdrTypes.end(), pdrType) !=
+                pdrTypes.end())
+        {
+            pldm_entity entity{};
+            switch (pdrType)
+            {
+                case PLDM_NUMERIC_SENSOR_PDR:
+                {
+                    auto pdr = reinterpret_cast<pldm_numeric_sensor_value_pdr*>(
+                        pdrData);
+                    entity.entity_type = pdr->entity_type;
+                    entity.entity_instance_num = pdr->entity_instance;
+                    if (fetchContainerId(entityTree, entity))
+                    {
+                        pdr->container_id = entity.entity_container_id;
+                    }
+                }
+                break;
+                case PLDM_STATE_SENSOR_PDR:
+                {
+                    auto pdr =
+                        reinterpret_cast<pldm_state_sensor_pdr*>(pdrData);
+                    entity.entity_type = pdr->entity_type;
+                    entity.entity_instance_num = pdr->entity_instance;
+                    if (fetchContainerId(entityTree, entity))
+                    {
+                        pdr->container_id = entity.entity_container_id;
+                    }
+                }
+                break;
+                case PLDM_NUMERIC_EFFECTER_PDR:
+                {
+                    auto pdr =
+                        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(
+                            pdrData);
+                    entity.entity_type = pdr->entity_type;
+                    entity.entity_instance_num = pdr->entity_instance;
+                    if (fetchContainerId(entityTree, entity))
+                    {
+                        pdr->container_id = entity.entity_container_id;
+                    }
+                }
+                break;
+                case PLDM_STATE_EFFECTER_PDR:
+                {
+                    auto pdr =
+                        reinterpret_cast<pldm_state_effecter_pdr*>(pdrData);
+                    entity.entity_type = pdr->entity_type;
+                    entity.entity_instance_num = pdr->entity_instance;
+                    if (fetchContainerId(entityTree, entity))
+                    {
+                        pdr->container_id = entity.entity_container_id;
+                    }
+                }
+                break;
+                case PLDM_PDR_FRU_RECORD_SET:
+                {
+                    auto pdr =
+                        reinterpret_cast<pldm_pdr_fru_record_set*>(pdrData);
+                    entity.entity_type = pdr->entity_type;
+                    entity.entity_instance_num = pdr->entity_instance_num;
+                    if (fetchContainerId(entityTree, entity))
+                    {
+                        pdr->container_id = entity.entity_container_id;
+                    }
+                }
+                break;
+                default:
+                    break;
+            }
+        }
+        pdrData = nullptr;
+        record = pldm_pdr_get_next_record(repo, record, &pdrData, &pdrSize,
+                                          &nextRecHdl);
+    } while (record);
+}
+
+bool fetchContainerId(pldm_entity_association_tree* entityTree,
+                      pldm_entity& entity)
+{
+    auto node = pldm_entity_association_tree_find(entityTree, &entity);
+
+    if (node)
+    {
+        return true;
+    }
+    return false;
+}
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
