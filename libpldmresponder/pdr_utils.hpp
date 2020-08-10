@@ -236,6 +236,28 @@ using namespace pldm::pdr;
 std::tuple<TerminusHandle, SensorID, SensorInfo>
     parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr);
 
+/** @brief Normalizes the host PDRs as per the entity association tree
+ *
+ *  @param[in] repo - pointer to PDR repo
+ *  @param[in] entityTree - pointer to the entity association tree
+ *  @param[in] pdrTypes - PDR types that are supposed to change
+ *
+ *  @returns none
+ */
+void normalizeHostPDR(pldm_pdr* repo, pldm_entity_association_tree* entityTree,
+                      const std::vector<uint8_t>& pdrTypes);
+
+/** @brief Updates the container id of a pldm_entity based on the passed entity
+ *         association tree
+ *
+ *  @param[in] entityTree - pointer to the entity association tree
+ *  @param[in/out] entity - the entity which is supposed to change
+ *
+ *  @returns true if the container id is changed
+ */
+bool updateContainerId(pldm_entity_association_tree* entityTree,
+                       pldm_entity& entity);
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
