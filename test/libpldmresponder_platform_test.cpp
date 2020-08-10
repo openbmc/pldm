@@ -653,3 +653,42 @@ TEST(getStateSensorReadingsHandler, testBadRequest)
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }
+
+TEST(hostpdrhandler, normalizeHostPDR)
+{
+    pldm_entity entities[2]{};
+    entities[0].entity_type = 0x43;
+    entities[1].entity_type = 0x4;
+
+    auto repo = pldm_pdr_init();
+    auto entityTree = pldm_entity_association_tree_init();
+    const std::vector<uint8_t> pdrTypes{PLDM_STATE_SENSOR_PDR};
+
+    auto tree = pldm_entity_association_tree_add(
+        entityTree, &entities[0], nullptr, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+    auto tree1 = pldm_entity_association_tree_add(
+        entityTree, &entities[1], nullptr, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+    EXPECT_NE(tree, nullptr);
+    EXPECT_NE(tree1, nullptr);
+    // Sample state sensor with EntityType - 0x43 and container id - 0x03
+    std::vector<uint8_t> stateSensorPDR{
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00, 0x00, 0x17,
+        0x00, 0x00, 0x00, 0x01, 0x00, 0x43, 0x00, 0x01, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0x01, 0x0b, 0x00, 0x01, 0x18};
+
+    pldm_pdr_add(repo, stateSensorPDR.data(), stateSensorPDR.size(), 0, true);
+    normalizeHostPDR(repo, entityTree, pdrTypes);
+
+    uint8_t* pdrData = nullptr;
+    uint32_t pdrSize{};
+    uint32_t nextRecHdl{};
+
+    auto record =
+        pldm_pdr_find_record(repo, 0, &pdrData, &pdrSize, &nextRecHdl);
+    EXPECT_NE(record, nullptr);
+    auto pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrData);
+    EXPECT_EQ(pdr->container_id, entities[0].entity_container_id);
+
+    pldm_entity_association_tree_destroy(entityTree);
+    pldm_pdr_destroy(repo);
+}
