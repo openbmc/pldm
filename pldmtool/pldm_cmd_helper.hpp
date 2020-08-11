@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include <CLI/CLI.hpp>
+#include <nlohmann/json.hpp>
 
 #include <cstring>
 #include <iomanip>
@@ -28,6 +29,7 @@ namespace helper
 using namespace pldm::utils;
 constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
+using json = nlohmann::json;
 
 /** @brief Print the buffer
  *
@@ -57,6 +59,15 @@ void Logger(bool pldmverbose, const char* msg, const T& data)
         std::cout << msg << s.str() << std::endl;
     }
 }
+
+/** @brief Display in JSON format.
+ *
+ *  @param[in]  json - data to print in json
+ *
+ *  @return - None
+ */
+void DisplayInJson(json data);
+
 /** @brief MCTP socket read/recieve
  *
  *  @param[in]  requestMsg - Request message to compare against loopback

@@ -33,6 +33,16 @@ void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose)
         std::cout << tempStream.str() << std::endl;
     }
 }
+
+/*
+ * print the given input data in to json format.
+ *
+ */
+void DisplayInJson(json data)
+{
+    std::cout << data.dump(4) << std::endl;
+}
+
 /*
  * Initialize the socket, send pldm command & recieve response from socket
  *
