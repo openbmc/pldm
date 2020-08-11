@@ -33,6 +33,7 @@ void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose)
         std::cout << tempStream.str() << std::endl;
     }
 }
+
 /*
  * Initialize the socket, send pldm command & recieve response from socket
  *

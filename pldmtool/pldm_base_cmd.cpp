@@ -9,6 +9,8 @@
 #include "libpldm/host.h"
 #endif
 
+#include <string>
+
 namespace pldmtool
 {
 
@@ -112,25 +114,25 @@ class GetPLDMTypes : public CommandInterface
   private:
     void printPldmTypes(std::vector<bitfield8_t>& types)
     {
-        std::cout << "Supported types:";
+        json data;
+        json jarray;
         for (int i = 0; i < PLDM_MAX_TYPES; i++)
         {
             bitfield8_t b = types[i / 8];
             if (b.byte & (1 << i % 8))
             {
-                std::cout << " " << i;
                 auto it = std::find_if(
                     pldmTypes.begin(), pldmTypes.end(),
                     [i](const auto& typePair) { return typePair.second == i; });
                 if (it != pldmTypes.end())
                 {
-
-                    std::cout << "(" << it->first << ")";
+                    jarray["PLDM Type"] = it->first;
+                    jarray["PLDM Type Code"] = i;
+                    data.emplace_back(jarray);
                 }
             }
         }
-
-        std::cout << std::endl;
+        pldmtool::helper::DisplayInJson(data);
     }
 };
 
@@ -178,16 +180,16 @@ class GetPLDMVersion : public CommandInterface
         }
         char buffer[16] = {0};
         ver2str(&version, buffer, sizeof(buffer));
-        std::cout << "Type " << pldmType;
+        json data;
         auto it = std::find_if(
             pldmTypes.begin(), pldmTypes.end(),
             [&](const auto& typePair) { return typePair.second == pldmType; });
 
         if (it != pldmTypes.end())
         {
-            std::cout << "(" << it->first << ")";
+            data["Response"] = buffer;
         }
-        std::cout << ": " << buffer << std::endl;
+        pldmtool::helper::DisplayInJson(data);
     }
 
   private:
@@ -226,7 +228,9 @@ class GetTID : public CommandInterface
                       << "rc=" << rc << ",cc=" << (int)cc << "\n";
             return;
         }
-        std::cout << "TID : " << static_cast<uint32_t>(tid) << std::endl;
+        json data;
+        data["Response"] = static_cast<uint32_t>(tid);
+        pldmtool::helper::DisplayInJson(data);
     }
 };
 
@@ -279,45 +283,47 @@ class GetPLDMCommands : public CommandInterface
     pldm_supported_types pldmType;
 
     template <typename CommandMap>
-    void printCommand(CommandMap& commandMap, int i)
+    void printCommand(CommandMap& commandMap, int i, json cmdinfo)
     {
+        json jarray;
         auto it = std::find_if(
             commandMap.begin(), commandMap.end(),
             [i](const auto& typePair) { return typePair.second == i; });
         if (it != commandMap.end())
         {
-            std::cout << "(" << it->first << ")";
+            jarray["PLDM Command Code"] = i;
+            jarray["PLDM Command"] = it->first;
+            cmdinfo.emplace_back(jarray);
         }
     }
 
     void printPldmCommands(std::vector<bitfield8_t>& cmdTypes,
                            pldm_supported_types pldmType)
     {
-        std::cout << "Supported Commands :";
+        json cmdinfo;
         for (int i = 0; i < PLDM_MAX_CMDS_PER_TYPE; i++)
         {
             bitfield8_t b = cmdTypes[i / 8];
             if (b.byte & (1 << i % 8))
             {
-                std::cout << " " << i;
                 switch (pldmType)
                 {
                     case PLDM_BASE:
-                        printCommand(pldmBaseCmds, i);
+                        printCommand(pldmBaseCmds, i, cmdinfo);
                         break;
                     case PLDM_PLATFORM:
-                        printCommand(pldmPlatformCmds, i);
+                        printCommand(pldmPlatformCmds, i, cmdinfo);
                         break;
                     case PLDM_BIOS:
-                        printCommand(pldmBiosCmds, i);
+                        printCommand(pldmBiosCmds, i, cmdinfo);
                         break;
                     case PLDM_FRU:
-                        printCommand(pldmFruCmds, i);
+                        printCommand(pldmFruCmds, i, cmdinfo);
                         break;
                     case PLDM_OEM:
 #ifdef OEM_IBM
-                        printCommand(pldmIBMHostCmds, i);
-                        printCommand(pldmIBMFileIOCmds, i);
+                        printCommand(pldmIBMHostCmds, i, cmdinfo);
+                        printCommand(pldmIBMFileIOCmds, i, cmdinfo);
 #endif
                         break;
                     default:
@@ -325,7 +331,7 @@ class GetPLDMCommands : public CommandInterface
                 }
             }
         }
-        std::cout << std::endl;
+        pldmtool::helper::DisplayInJson(cmdinfo);
     }
 };
 
