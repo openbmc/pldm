@@ -63,19 +63,19 @@ class GetFruRecordTableMetadata : public CommandInterface
                       << "rc=" << rc << ",cc=" << (int)cc << std::endl;
             return;
         }
-        std::cout << "FRUDATAMajorVersion : "
-                  << static_cast<uint32_t>(fru_data_major_version) << std::endl;
-        std::cout << "FRUDATAMinorVersion : "
-                  << static_cast<uint32_t>(fru_data_minor_version) << std::endl;
-        std::cout << "FRUTableMaximumSize : " << fru_table_maximum_size
-                  << std::endl;
-        std::cout << "FRUTableLength : " << fru_table_length << std::endl;
-        std::cout << "Total number of Record Set Identifiers in table : "
-                  << total_record_set_identifiers << std::endl;
-        std::cout << "Total number of records in table :  "
-                  << total_table_records << std::endl;
-        std::cout << "FRU DATAStructureTableIntegrityChecksum :  " << checksum
-                  << std::endl;
+
+        json data;
+        data["FRUDATAMajorVersion"] =
+            static_cast<uint32_t>(fru_data_major_version);
+        data["FRUDATAMinorVersion"] =
+            static_cast<uint32_t>(fru_data_minor_version);
+        data["FRUTableMaximumSize"] = fru_table_maximum_size;
+        data["FRUTableLength"] = fru_table_length;
+        data["Total number of Record Set Identifiers in table"] =
+            total_record_set_identifiers;
+        data["Total number of records in table"] = total_table_records;
+        data["FRU DATAStructureTableIntegrityChecksum"] = checksum;
+        pldmtool::helper::DisplayInJson(data);
     }
 };
 
