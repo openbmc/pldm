@@ -459,11 +459,6 @@ TEST(StateSensorHandler, allScenarios)
 {
     using namespace pldm::responder::events;
 
-    ASSERT_THROW(StateSensorHandler("./event_jsons/malformed1"),
-                 std::exception);
-    ASSERT_THROW(StateSensorHandler("./event_jsons/malformed2"),
-                 std::exception);
-
     StateSensorHandler handler{"./event_jsons/good"};
     constexpr uint8_t eventState0 = 0;
     constexpr uint8_t eventState1 = 1;
