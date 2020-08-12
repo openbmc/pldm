@@ -18,6 +18,8 @@ std::vector<std::unique_ptr<CommandInterface>> commands;
 
 } // namespace
 
+using ordered_json = nlohmann::ordered_json;
+
 class GetPDR : public CommandInterface
 {
   public:
@@ -178,7 +180,7 @@ class GetPDR : public CommandInterface
         auto typeString = std::to_string(type);
         try
         {
-            return pdrType.at(type) + "(" + typeString + ")";
+            return pdrType.at(type);
         }
         catch (const std::out_of_range& e)
         {
@@ -186,53 +188,48 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printCommonPDRHeader(const pldm_pdr_hdr* hdr)
+    void printCommonPDRHeader(const pldm_pdr_hdr* hdr, ordered_json& output)
     {
-        std::cout << "recordHandle: " << hdr->record_handle << std::endl;
-        std::cout << "PDRHeaderVersion: " << unsigned(hdr->version)
-                  << std::endl;
-        std::cout << "PDRType: " << getPDRType(hdr->type) << std::endl;
-        std::cout << "recordChangeNumber: " << hdr->record_change_num
-                  << std::endl;
-        std::cout << "dataLength: " << hdr->length << std::endl << std::endl;
+        output["recordHandle"] = hdr->record_handle;
+        output["PDRHeaderVersion"] = unsigned(hdr->version);
+        output["PDRType"] = getPDRType(hdr->type);
+        output["recordChangeNumber"] = hdr->record_change_num;
+        output["dataLength"] = hdr->length;
     }
 
-    void printPossibleStates(uint8_t possibleStatesSize,
-                             const bitfield8_t* states)
+    std::string printPossibleStates(uint8_t possibleStatesSize,
+                                    const bitfield8_t* states)
     {
         uint8_t possibleStatesPos{};
-        auto printStates = [&possibleStatesPos](const bitfield8_t& val) {
+        std::string data;
+        auto printStates = [&possibleStatesPos, &data](const bitfield8_t& val) {
+            std::stringstream pstates;
             for (int i = 0; i < CHAR_BIT; i++)
             {
                 if (val.byte & (1 << i))
                 {
-                    std::cout << " " << (possibleStatesPos * CHAR_BIT + i);
+                    pstates << " " << (possibleStatesPos * CHAR_BIT + i);
+                    data.append(pstates.str());
                 }
             }
             possibleStatesPos++;
         };
         std::for_each(states, states + possibleStatesSize, printStates);
+        return data;
     }
 
-    void printStateSensorPDR(const uint8_t* data)
+    void printStateSensorPDR(const uint8_t* data, ordered_json& output)
     {
         auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
-
-        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
-                  << std::endl;
-        std::cout << "sensorID: " << pdr->sensor_id << std::endl;
-        std::cout << "entityType: " << getEntityName(pdr->entity_type)
-                  << std::endl;
-        std::cout << "entityInstanceNumber: " << pdr->entity_instance
-                  << std::endl;
-        std::cout << "containerID: " << pdr->container_id << std::endl;
-        std::cout << "sensorInit: " << sensorInit[pdr->sensor_init]
-                  << std::endl;
-        std::cout << "sensorAuxiliaryNamesPDR: "
-                  << (pdr->sensor_auxiliary_names_pdr ? "true" : "false")
-                  << std::endl;
-        std::cout << "compositeSensorCount: "
-                  << unsigned(pdr->composite_sensor_count) << std::endl;
+        output["PLDMTerminusHandle"] = pdr->terminus_handle;
+        output["sensorID"] = pdr->sensor_id;
+        output["entityType"] = getEntityName(pdr->entity_type);
+        output["entityInstanceNumber"] = pdr->entity_instance;
+        output["containerID"] = pdr->container_id;
+        output["sensorInit"] = sensorInit[pdr->sensor_init];
+        output["sensorAuxiliaryNamesPDR"] =
+            (pdr->sensor_auxiliary_names_pdr ? true : false);
+        output["compositeSensorCount"] = unsigned(pdr->composite_sensor_count);
 
         auto statesPtr = pdr->possible_states;
         auto compositeSensorCount = pdr->composite_sensor_count;
@@ -241,13 +238,10 @@ class GetPDR : public CommandInterface
         {
             auto state = reinterpret_cast<const state_sensor_possible_states*>(
                 statesPtr);
-            std::cout << "stateSetID: " << getStateSetName(state->state_set_id)
-                      << std::endl;
-            std::cout << "possibleStatesSize: "
-                      << unsigned(state->possible_states_size) << std::endl;
-            std::cout << "possibleStates:";
-            printPossibleStates(state->possible_states_size, state->states);
-            std::cout << std::endl;
+            output["stateSetID"] = getStateSetName(state->state_set_id);
+            output["possibleStatesSize"] = getStateSetName(state->state_set_id);
+            output["possibleStates"] =
+                printPossibleStates(state->possible_states_size, state->states);
 
             if (compositeSensorCount)
             {
@@ -257,7 +251,7 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printPDRFruRecordSet(uint8_t* data)
+    void printPDRFruRecordSet(uint8_t* data, ordered_json& output)
     {
         if (data == NULL)
         {
@@ -268,17 +262,14 @@ class GetPDR : public CommandInterface
         pldm_pdr_fru_record_set* pdr =
             reinterpret_cast<pldm_pdr_fru_record_set*>(data);
 
-        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
-                  << std::endl;
-        std::cout << "FRURecordSetIdentifier: " << pdr->fru_rsi << std::endl;
-        std::cout << "entityType: " << getEntityName(pdr->entity_type)
-                  << std::endl;
-        std::cout << "entityInstanceNumber: " << pdr->entity_instance_num
-                  << std::endl;
-        std::cout << "containerID: " << pdr->container_id << std::endl;
+        output["PLDMTerminusHandle"] = unsigned(pdr->terminus_handle);
+        output["FRURecordSetIdentifier"] = unsigned(pdr->fru_rsi);
+        output["entityType"] = getEntityName(pdr->entity_type);
+        output["entityInstanceNumber"] = unsigned(pdr->entity_instance_num);
+        output["containerID"] = unsigned(pdr->container_id);
     }
 
-    void printPDREntityAssociation(uint8_t* data)
+    void printPDREntityAssociation(uint8_t* data, ordered_json& output)
     {
         const std::map<uint8_t, const char*> assocationType = {
             {PLDM_ENTITY_ASSOCIAION_PHYSICAL, "Physical"},
@@ -294,240 +285,170 @@ class GetPDR : public CommandInterface
         pldm_pdr_entity_association* pdr =
             reinterpret_cast<pldm_pdr_entity_association*>(data);
 
-        std::cout << "containerID: " << pdr->container_id << std::endl;
-        std::cout << "associationType: "
-                  << assocationType.at(pdr->association_type) << std::endl
-                  << std::endl;
-
-        std::cout << "containerEntityType: "
-                  << getEntityName(pdr->container.entity_type) << std::endl;
-        std::cout << "containerEntityInstanceNumber: "
-                  << pdr->container.entity_instance_num << std::endl;
-        std::cout << "containerEntityContainerID: "
-                  << pdr->container.entity_container_id << std::endl;
-
-        std::cout << "containedEntityCount: "
-                  << static_cast<unsigned>(pdr->num_children) << std::endl
-                  << std::endl;
+        output["containerID"] = int(pdr->container_id);
+        output["associationType"] = assocationType.at(pdr->association_type);
+        output["containerEntityType"] =
+            getEntityName(pdr->container.entity_type);
+        output["containerEntityInstanceNumber"] =
+            int(pdr->container.entity_instance_num);
+        output["containerEntityContainerID"] =
+            int(pdr->container.entity_container_id);
+        output["containedEntityCount"] =
+            static_cast<unsigned>(pdr->num_children);
 
         auto child = reinterpret_cast<pldm_entity*>(&pdr->children[0]);
         for (int i = 0; i < pdr->num_children; ++i)
         {
-            std::cout << "containedEntityType[" << i + 1
-                      << "]: " << getEntityName(child->entity_type)
-                      << std::endl;
-            std::cout << "containedEntityInstanceNumber[" << i + 1
-                      << "]: " << child->entity_instance_num << std::endl;
-            std::cout << "containedEntityContainerID[" << i + 1
-                      << "]: " << child->entity_container_id << std::endl
-                      << std::endl;
+            output.emplace("containedEntityType[" + std::to_string(i + 1) + "]",
+                           getEntityName(child->entity_type));
+            output.emplace("containedEntityInstanceNumber[" +
+                               std::to_string(i + 1) + "]",
+                           unsigned(child->entity_instance_num));
+            output.emplace("containedEntityContainerID[" +
+                               std::to_string(i + 1) + "]",
+                           unsigned(child->entity_container_id));
+
             ++child;
         }
     }
 
-    void printNumericEffecterPDR(uint8_t* data)
+    void printNumericEffecterPDR(uint8_t* data, ordered_json& output)
     {
         struct pldm_numeric_effecter_value_pdr* pdr =
             (struct pldm_numeric_effecter_value_pdr*)data;
-        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
-                  << std::endl;
-        std::cout << "effecterID: " << pdr->effecter_id << std::endl;
-        std::cout << "entityType: " << pdr->entity_type << std::endl;
-        std::cout << "entityInstanceNumber: " << pdr->entity_instance
-                  << std::endl;
-        std::cout << "containerID: " << pdr->container_id << std::endl;
-        std::cout << "effecterSemanticID: " << pdr->effecter_semantic_id
-                  << std::endl;
-        std::cout << "effecterInit: " << unsigned(pdr->effecter_init)
-                  << std::endl;
-        std::cout << "effecterAuxiliaryNames: "
-                  << (unsigned(pdr->effecter_auxiliary_names) ? "true"
-                                                              : "false")
-                  << std::endl;
-        std::cout << "baseUnit: " << unsigned(pdr->base_unit) << std::endl;
-        std::cout << "unitModifier: " << unsigned(pdr->unit_modifier)
-                  << std::endl;
-        std::cout << "rateUnit: " << unsigned(pdr->rate_unit) << std::endl;
-        std::cout << "baseOEMUnitHandle: "
-                  << unsigned(pdr->base_oem_unit_handle) << std::endl;
-        std::cout << "auxUnit: " << unsigned(pdr->aux_unit) << std::endl;
-        std::cout << "auxUnitModifier: " << unsigned(pdr->aux_unit_modifier)
-                  << std::endl;
-        std::cout << "auxrateUnit: " << unsigned(pdr->aux_rate_unit)
-                  << std::endl;
-        std::cout << "auxOEMUnitHandle: " << unsigned(pdr->aux_oem_unit_handle)
-                  << std::endl;
-        std::cout << "isLinear: "
-                  << (unsigned(pdr->is_linear) ? "true" : "false") << std::endl;
-        std::cout << "effecterDataSize: " << unsigned(pdr->effecter_data_size)
-                  << std::endl;
-        std::cout << "resolution: " << pdr->resolution << std::endl;
-        std::cout << "offset: " << pdr->offset << std::endl;
-        std::cout << "accuracy: " << pdr->accuracy << std::endl;
-        std::cout << "plusTolerance: " << unsigned(pdr->plus_tolerance)
-                  << std::endl;
-        std::cout << "minusTolerance: " << unsigned(pdr->minus_tolerance)
-                  << std::endl;
-        std::cout << "stateTransitionInterval: "
-                  << pdr->state_transition_interval << std::endl;
-        std::cout << "TransitionInterval: " << pdr->transition_interval
-                  << std::endl;
+
+        output["PLDMTerminusHandle"] = int(pdr->terminus_handle);
+        output["effecterID"] = int(pdr->effecter_id);
+        output["entityType"] = int(pdr->entity_type);
+        output["entityInstanceNumber"] = int(pdr->entity_instance);
+        output["containerID"] = int(pdr->container_id);
+        output["effecterSemanticID"] = int(pdr->effecter_semantic_id);
+        output["effecterInit"] = unsigned(pdr->effecter_init);
+        output["effecterAuxiliaryNames"] =
+            (unsigned(pdr->effecter_auxiliary_names) ? true : false);
+        output["baseUnit"] = unsigned(pdr->base_unit);
+        output["unitModifier"] = unsigned(pdr->unit_modifier);
+        output["rateUnit"] = unsigned(pdr->rate_unit);
+        output["baseOEMUnitHandle"] = unsigned(pdr->base_oem_unit_handle);
+        output["auxUnit"] = unsigned(pdr->aux_unit);
+        output["auxUnitModifier"] = unsigned(pdr->aux_unit_modifier);
+        output["auxrateUnit"] = unsigned(pdr->aux_rate_unit);
+        output["auxOEMUnitHandle"] = unsigned(pdr->aux_oem_unit_handle);
+        output["isLinear"] = (unsigned(pdr->is_linear) ? true : false);
+        output["effecterDataSize"] = unsigned(pdr->effecter_data_size);
+        output["resolution"] = unsigned(pdr->resolution);
+        output["offset"] = unsigned(pdr->offset);
+        output["accuracy"] = unsigned(pdr->accuracy);
+        output["plusTolerance"] = unsigned(pdr->plus_tolerance);
+        output["minusTolerance"] = unsigned(pdr->minus_tolerance);
+        output["stateTransitionInterval"] =
+            unsigned(pdr->state_transition_interval);
+        output["TransitionInterval"] = unsigned(pdr->transition_interval);
+
         switch (pdr->effecter_data_size)
         {
             case PLDM_EFFECTER_DATA_SIZE_UINT8:
-                std::cout << "maxSettable: "
-                          << unsigned(pdr->max_set_table.value_u8) << std::endl;
-                std::cout << "minSettable: "
-                          << unsigned(pdr->min_set_table.value_u8) << std::endl;
+                output["maxSettable"] = unsigned(pdr->max_set_table.value_u8);
+                output["minSettable"] = unsigned(pdr->min_set_table.value_u8);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT8:
-                std::cout << "maxSettable: "
-                          << unsigned(pdr->max_set_table.value_s8) << std::endl;
-                std::cout << "minSettable: "
-                          << unsigned(pdr->min_set_table.value_s8) << std::endl;
+                output["maxSettable"] = unsigned(pdr->max_set_table.value_s8);
+                output["minSettable"] = unsigned(pdr->min_set_table.value_s8);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT16:
-                std::cout << "maxSettable: " << pdr->max_set_table.value_u16
-                          << std::endl;
-                std::cout << "minSettable: " << pdr->min_set_table.value_u16
-                          << std::endl;
+                output["maxSettable"] = unsigned(pdr->max_set_table.value_u16);
+                output["minSettable"] = unsigned(pdr->min_set_table.value_u16);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT16:
-                std::cout << "maxSettable: " << pdr->max_set_table.value_s16
-                          << std::endl;
-                std::cout << "minSettable: " << pdr->min_set_table.value_s16
-                          << std::endl;
+                output["maxSettable"] = unsigned(pdr->max_set_table.value_s16);
+                output["minSettable"] = unsigned(pdr->min_set_table.value_s16);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT32:
-                std::cout << "maxSettable: " << pdr->max_set_table.value_u32
-                          << std::endl;
-                std::cout << "minSettable: " << pdr->min_set_table.value_u32
-                          << std::endl;
+                output["maxSettable"] = unsigned(pdr->max_set_table.value_u32);
+                output["minSettable"] = unsigned(pdr->min_set_table.value_u32);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT32:
-                std::cout << "maxSettable: " << pdr->max_set_table.value_s32
-                          << std::endl;
-                std::cout << "minSettable: " << pdr->min_set_table.value_s32
-                          << std::endl;
+                output["maxSettable"] = unsigned(pdr->max_set_table.value_s32);
+                output["minSettable"] = unsigned(pdr->min_set_table.value_s32);
                 break;
             default:
                 break;
         }
-        std::cout << "rangeFieldFormat: " << unsigned(pdr->range_field_format)
-                  << std::endl;
-        std::cout << "rangeFieldSupport: "
-                  << unsigned(pdr->range_field_support.byte) << std::endl;
+
+        output["rangeFieldFormat"] = unsigned(pdr->range_field_format);
+        output["rangeFieldSupport"] = unsigned(pdr->range_field_support.byte);
+
         switch (pdr->range_field_format)
         {
             case PLDM_RANGE_FIELD_FORMAT_UINT8:
-                std::cout << "nominalValue: "
-                          << unsigned(pdr->nominal_value.value_u8) << std::endl;
-                std::cout << "normalMax: " << unsigned(pdr->normal_max.value_u8)
-                          << std::endl;
-                std::cout << "normalMin: " << unsigned(pdr->normal_min.value_u8)
-                          << std::endl;
-                std::cout << "ratedMax: " << unsigned(pdr->rated_max.value_u8)
-                          << std::endl;
-                std::cout << "ratedMin: " << unsigned(pdr->rated_min.value_u8)
-                          << std::endl;
+                output["nominalValue"] = unsigned(pdr->nominal_value.value_u8);
+                output["normalMax"] = unsigned(pdr->normal_max.value_u8);
+                output["normalMin"] = unsigned(pdr->normal_min.value_u8);
+                output["ratedMax"] = unsigned(pdr->rated_max.value_u8);
+                output["ratedMin"] = unsigned(pdr->rated_min.value_u8);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                std::cout << "nominalValue: "
-                          << unsigned(pdr->nominal_value.value_s8) << std::endl;
-                std::cout << "normalMax: " << unsigned(pdr->normal_max.value_s8)
-                          << std::endl;
-                std::cout << "normalMin: " << unsigned(pdr->normal_min.value_s8)
-                          << std::endl;
-                std::cout << "ratedMax: " << unsigned(pdr->rated_max.value_s8)
-                          << std::endl;
-                std::cout << "ratedMin: " << unsigned(pdr->rated_min.value_s8)
-                          << std::endl;
+                output["nominalValue"] = unsigned(pdr->nominal_value.value_s8);
+                output["normalMax"] = unsigned(pdr->normal_max.value_s8);
+                output["normalMin"] = unsigned(pdr->normal_min.value_s8);
+                output["ratedMax"] = unsigned(pdr->rated_max.value_s8);
+                output["ratedMin"] = unsigned(pdr->rated_min.value_s8);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_UINT16:
-                std::cout << "nominalValue: " << pdr->nominal_value.value_u16
-                          << std::endl;
-                std::cout << "normalMax: " << pdr->normal_max.value_u16
-                          << std::endl;
-                std::cout << "normalMin: " << pdr->normal_min.value_u16
-                          << std::endl;
-                std::cout << "ratedMax: " << pdr->rated_max.value_u16
-                          << std::endl;
-                std::cout << "ratedMin: " << pdr->rated_min.value_u16
-                          << std::endl;
+                output["nominalValue"] = unsigned(pdr->nominal_value.value_u16);
+                output["normalMax"] = unsigned(pdr->normal_max.value_u16);
+                output["normalMin"] = unsigned(pdr->normal_min.value_u16);
+                output["ratedMax"] = unsigned(pdr->rated_max.value_u16);
+                output["ratedMin"] = unsigned(pdr->rated_min.value_u16);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                std::cout << "nominalValue: " << pdr->nominal_value.value_s16
-                          << std::endl;
-                std::cout << "normalMax: " << pdr->normal_max.value_s16
-                          << std::endl;
-                std::cout << "normalMin: " << pdr->normal_min.value_s16
-                          << std::endl;
-                std::cout << "ratedMax: " << pdr->rated_max.value_s16
-                          << std::endl;
-                std::cout << "ratedMin: " << pdr->rated_min.value_s16
-                          << std::endl;
+                output["nominalValue"] = unsigned(pdr->nominal_value.value_s16);
+                output["normalMax"] = unsigned(pdr->normal_max.value_s16);
+                output["normalMin"] = unsigned(pdr->normal_min.value_s16);
+                output["ratedMax"] = unsigned(pdr->rated_max.value_s16);
+                output["ratedMin"] = unsigned(pdr->rated_min.value_s16);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_UINT32:
-                std::cout << "nominalValue: " << pdr->nominal_value.value_u32
-                          << std::endl;
-                std::cout << "normalMax: " << pdr->normal_max.value_u32
-                          << std::endl;
-                std::cout << "normalMin: " << pdr->normal_min.value_u32
-                          << std::endl;
-                std::cout << "ratedMax: " << pdr->rated_max.value_u32
-                          << std::endl;
-                std::cout << "ratedMin: " << pdr->rated_min.value_u32
-                          << std::endl;
+                output["nominalValue"] = unsigned(pdr->nominal_value.value_u32);
+                output["normalMax"] = unsigned(pdr->normal_max.value_u32);
+                output["normalMin"] = unsigned(pdr->normal_min.value_u32);
+                output["ratedMax"] = unsigned(pdr->rated_max.value_u32);
+                output["ratedMin"] = unsigned(pdr->rated_min.value_u32);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                std::cout << "nominalValue: " << pdr->nominal_value.value_s32
-                          << std::endl;
-                std::cout << "normalMax: " << pdr->normal_max.value_s32
-                          << std::endl;
-                std::cout << "normalMin: " << pdr->normal_min.value_s32
-                          << std::endl;
-                std::cout << "ratedMax: " << pdr->rated_max.value_s32
-                          << std::endl;
-                std::cout << "ratedMin: " << pdr->rated_min.value_s32
-                          << std::endl;
+                output["nominalValue"] = unsigned(pdr->nominal_value.value_s32);
+                output["normalMax"] = unsigned(pdr->normal_max.value_s32);
+                output["normalMin"] = unsigned(pdr->normal_min.value_s32);
+                output["ratedMax"] = unsigned(pdr->rated_max.value_s32);
+                output["ratedMin"] = unsigned(pdr->rated_min.value_s32);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                std::cout << "nominalValue: " << pdr->nominal_value.value_f32
-                          << std::endl;
-                std::cout << "normalMax: " << pdr->normal_max.value_f32
-                          << std::endl;
-                std::cout << "normalMin: " << pdr->normal_min.value_f32
-                          << std::endl;
-                std::cout << "ratedMax: " << pdr->rated_max.value_f32
-                          << std::endl;
-                std::cout << "ratedMin: " << pdr->rated_min.value_f32
-                          << std::endl;
+                output["nominalValue"] = unsigned(pdr->nominal_value.value_f32);
+                output["normalMax"] = unsigned(pdr->normal_max.value_f32);
+                output["normalMin"] = unsigned(pdr->normal_min.value_f32);
+                output["ratedMax"] = unsigned(pdr->rated_max.value_f32);
+                output["ratedMin"] = unsigned(pdr->rated_min.value_f32);
                 break;
             default:
                 break;
         }
     }
 
-    void printStateEffecterPDR(const uint8_t* data)
+    void printStateEffecterPDR(const uint8_t* data, ordered_json& output)
     {
         auto pdr = reinterpret_cast<const pldm_state_effecter_pdr*>(data);
 
-        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
-                  << std::endl;
-        std::cout << "effecterID: " << pdr->effecter_id << std::endl;
-        std::cout << "entityType: " << getEntityName(pdr->entity_type)
-                  << std::endl;
-        std::cout << "entityInstanceNumber: " << pdr->entity_instance
-                  << std::endl;
-        std::cout << "containerID: " << pdr->container_id << std::endl;
-        std::cout << "effecterSemanticID: " << pdr->effecter_semantic_id
-                  << std::endl;
-        std::cout << "effecterInit: " << effecterInit[pdr->effecter_init]
-                  << std::endl;
-        std::cout << "effecterDescriptionPDR: "
-                  << (pdr->has_description_pdr ? "true" : "false") << std::endl;
-        std::cout << "compositeEffecterCount: "
-                  << unsigned(pdr->composite_effecter_count) << std::endl;
+        output["PLDMTerminusHandle"] = pdr->terminus_handle;
+        output["effecterID"] = pdr->effecter_id;
+        output["entityType"] = getEntityName(pdr->entity_type);
+        output["entityInstanceNumber"] = pdr->entity_instance;
+        output["containerID"] = pdr->container_id;
+        output["effecterSemanticID"] = pdr->effecter_semantic_id;
+        output["effecterInit"] = effecterInit[pdr->effecter_init];
+        output["effecterDescriptionPDR"] =
+            (pdr->has_description_pdr ? true : false);
+        output["compositeEffecterCount"] =
+            unsigned(pdr->composite_effecter_count);
 
         auto statesPtr = pdr->possible_states;
         auto compositeEffecterCount = pdr->composite_effecter_count;
@@ -537,13 +458,11 @@ class GetPDR : public CommandInterface
             auto state =
                 reinterpret_cast<const state_effecter_possible_states*>(
                     statesPtr);
-            std::cout << "stateSetID: " << getStateSetName(state->state_set_id)
-                      << std::endl;
-            std::cout << "possibleStatesSize: "
-                      << unsigned(state->possible_states_size) << std::endl;
-            std::cout << "possibleStates:";
-            printPossibleStates(state->possible_states_size, state->states);
-            std::cout << std::endl;
+
+            output["stateSetID"] = getStateSetName(state->state_set_id);
+            output["possibleStatesSize"] = (state->possible_states_size);
+            output["possibleStates"] =
+                printPossibleStates(state->possible_states_size, state->states);
 
             if (compositeEffecterCount)
             {
@@ -553,31 +472,28 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printTerminusLocatorPDR(const uint8_t* data)
+    void printTerminusLocatorPDR(const uint8_t* data, ordered_json& output)
     {
         const std::array<std::string_view, 4> terminusLocatorType = {
             "UID", "MCTP_EID", "SMBusRelative", "systemSoftware"};
 
         auto pdr = reinterpret_cast<const pldm_terminus_locator_pdr*>(data);
 
-        std::cout << "PLDMTerminusHandle: " << pdr->terminus_handle
-                  << std::endl;
-        std::cout << "validity: " << (pdr->validity ? "valid" : "notValid")
-                  << std::endl;
-        std::cout << "TID: " << unsigned(pdr->tid) << std::endl;
-        std::cout << "containerID: " << pdr->container_id << std::endl;
-        std::cout << "terminusLocatorType: "
-                  << terminusLocatorType[pdr->terminus_locator_type]
-                  << std::endl;
-        std::cout << "terminusLocatorValueSize: "
-                  << unsigned(pdr->terminus_locator_value_size) << std::endl;
+        output["PLDMTerminusHandle"] = pdr->terminus_handle;
+        output["validity"] = (pdr->validity ? "valid" : "notValid");
+        output["TID"] = unsigned(pdr->tid);
+        output["containerID"] = pdr->container_id;
+        output["terminusLocatorType"] =
+            terminusLocatorType[pdr->terminus_locator_type];
+        output["terminusLocatorValueSize"] =
+            unsigned(pdr->terminus_locator_value_size);
 
         if (pdr->terminus_locator_type == PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID)
         {
             auto locatorValue =
                 reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
                     pdr->terminus_locator_value);
-            std::cout << "EID: " << unsigned(locatorValue->eid) << std::endl;
+            output["EID"] = unsigned(locatorValue->eid);
         }
     }
 
@@ -589,34 +505,37 @@ class GetPDR : public CommandInterface
             return;
         }
 
-        std::cout << "nextRecordHandle: " << nextRecordHndl << std::endl;
-        std::cout << "responseCount: " << respCnt << std::endl;
+        ordered_json output;
+        output["nextRecordHandle"] = nextRecordHndl;
+        output["responseCount"] = respCnt;
 
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
-        printCommonPDRHeader(pdr);
+        printCommonPDRHeader(pdr, output);
+
         switch (pdr->type)
         {
             case PLDM_TERMINUS_LOCATOR_PDR:
-                printTerminusLocatorPDR(data);
+                printTerminusLocatorPDR(data, output);
                 break;
             case PLDM_STATE_SENSOR_PDR:
-                printStateSensorPDR(data);
+                printStateSensorPDR(data, output);
                 break;
             case PLDM_NUMERIC_EFFECTER_PDR:
-                printNumericEffecterPDR(data);
+                printNumericEffecterPDR(data, output);
                 break;
             case PLDM_STATE_EFFECTER_PDR:
-                printStateEffecterPDR(data);
+                printStateEffecterPDR(data, output);
                 break;
             case PLDM_PDR_ENTITY_ASSOCIATION:
-                printPDREntityAssociation(data);
+                printPDREntityAssociation(data, output);
                 break;
             case PLDM_PDR_FRU_RECORD_SET:
-                printPDRFruRecordSet(data);
+                printPDRFruRecordSet(data, output);
                 break;
             default:
                 break;
         }
+        pldmtool::helper::DisplayInJson(output);
     }
 
   private:
@@ -707,7 +626,9 @@ class SetStateEffecter : public CommandInterface
             return;
         }
 
-        std::cout << "SetStateEffecterStates: SUCCESS" << std::endl;
+        ordered_json data;
+        data["Response"] = "SUCCESS";
+        pldmtool::helper::DisplayInJson(data);
     }
 
   private:
@@ -787,7 +708,9 @@ class SetNumericEffecterValue : public CommandInterface
             return;
         }
 
-        std::cout << "SetNumericEffecterValue: SUCCESS" << std::endl;
+        ordered_json data;
+        data["Response"] = "SUCCESS";
+        pldmtool::helper::DisplayInJson(data);
     }
 
   private:
