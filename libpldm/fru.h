@@ -423,6 +423,20 @@ int decode_get_fru_record_by_option_resp(
 void get_fru_record_by_option(const uint8_t *table, size_t table_size,
 			      uint8_t *record_table, size_t *record_size,
 			      uint16_t rsi, uint8_t rt, uint8_t ft);
+/** @brief Extract individual FRU record data from the FRU table
+ *
+ *  @param[in] fru_table - Pointer to the FRU table
+ *  @param[in] record_start_offset - Offset from where the record data starts in
+ * fru_table
+ *  @param[in] fru_table_tength - Total length of the FRU table
+ *  @param[out] record_data_size - offset from where the next record data starts
+ *
+ *  @return pldm_completion_codes
+ */
+int fru_record_data_size_calc(const uint8_t *fru_table,
+			      const size_t record_start_offset,
+			      size_t fru_table_length,
+			      size_t *record_data_size);
 
 #ifdef __cplusplus
 }
