@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c07c387e_f4556f0f",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "const pldm_pdr_hdr?",
+      "range": {
+        "startLine": 207,
+        "startChar": 39,
+        "endLine": 207,
+        "endChar": 52
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4539555_bbcc0a5a",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "A temporary is needed?",
+      "range": {
+        "startLine": 208,
+        "startChar": 7,
+        "endLine": 208,
+        "endChar": 36
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18194c2a_cae3a343",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "Why is the container ID not updated?",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 26
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2baca640_5f833fb3",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "repo",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 34
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d1d1bd8_7d7633d4",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "entity association tree\n\nJust make it clear with [in/out] which parameters are changing after the function is run.",
+      "range": {
+        "startLine": 243,
+        "startChar": 28,
+        "endLine": 243,
+        "endChar": 54
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1448e63_aa1e22c7",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "nit",
+      "range": {
+        "startLine": 251,
+        "startChar": 39,
+        "endLine": 251,
+        "endChar": 43
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e3b2366_f010af3f",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "align with Updates",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 20
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87531ae0_421d21ff",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "[in/out]",
+      "range": {
+        "startLine": 254,
+        "startChar": 10,
+        "endLine": 254,
+        "endChar": 14
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe09f025_f9c28bc9",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "reference to",
+      "range": {
+        "startLine": 255,
+        "startChar": 28,
+        "endLine": 255,
+        "endChar": 42
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d383b8e0_66bd238b",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "This function name is a misnomer, it does not update the containerId rather reads the containerId from the PDR repo.\n\nSwitch the parameters, it is easy to understand if the order of parameters are [in], [in/out], [out]",
+      "range": {
+        "startLine": 259,
+        "startChar": 5,
+        "endLine": 259,
+        "endChar": 22
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daff39b0_4af52ea8",
+        "filename": "test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-13T03:31:38Z",
+      "side": 1,
+      "message": "Do we need to init the entity instance number?",
+      "range": {
+        "startLine": 660,
+        "startChar": 0,
+        "endLine": 661,
+        "endChar": 34
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
