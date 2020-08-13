@@ -686,8 +686,8 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
         return PLDM_ERROR;
     }
 
-    BIOSTable biosAttrValueTable((tableDir / attrValueTableFile).c_str());
-    biosAttrValueTable.store(*destTable);
+    setBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE, *destTable);
+
     return PLDM_SUCCESS;
 }
 
