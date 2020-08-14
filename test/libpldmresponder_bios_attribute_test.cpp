@@ -32,6 +32,11 @@ class TestAttribute : public BIOSAttribute
     {
         return PLDM_SUCCESS;
     }
+
+    void generateAttributeEntry(
+        const std::variant<int64_t, std::string>& /*attributevalue*/,
+        Table& /*attrValueEntry*/)
+    {}
 };
 
 TEST(BIOSAttribute, CtorTest)
