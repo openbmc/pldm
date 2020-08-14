@@ -191,6 +191,21 @@ int BIOSIntegerAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
     return PLDM_SUCCESS;
 }
 
+void BIOSIntegerAttribute::generateAttributeEntry(
+    const std::variant<int64_t, std::string>& attributevalue,
+    Table& attrValueEntry)
+{
+    attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) +
+                          sizeof(int64_t) - 1);
+
+    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
+        attrValueEntry.data());
+
+    int64_t value = std::get<int64_t>(attributevalue);
+    entry->attr_type = 3;
+    memcpy(entry->value, &value, sizeof(int64_t));
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm
