@@ -129,6 +129,24 @@ int BIOSStringAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
     return PLDM_SUCCESS;
 }
 
+void BIOSStringAttribute::generateAttributeEntry(
+    const std::variant<int64_t, std::string>& attributevalue,
+    Table& attrValueEntry)
+{
+    std::string value = std::get<std::string>(attributevalue);
+    uint16_t len = value.size();
+
+    attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) +
+                          sizeof(uint16_t) + len - 1);
+
+    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
+        attrValueEntry.data());
+
+    entry->attr_type = 1;
+    memcpy(entry->value, &len, sizeof(uint16_t));
+    memcpy(entry->value + sizeof(uint16_t), value.c_str(), value.size());
+}
+
 } // namespace bios
 } // namespace responder
 } // namespace pldm

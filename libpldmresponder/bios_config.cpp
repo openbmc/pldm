@@ -6,6 +6,8 @@
 #include "bios_table.hpp"
 #include "common/bios_utils.hpp"
 
+#include <xyz/openbmc_project/BIOSConfig/Manager/server.hpp>
+
 #include <fstream>
 #include <iostream>
 
@@ -17,6 +19,9 @@ namespace bios
 {
 namespace
 {
+
+using BIOSConfigManager =
+    sdbusplus::xyz::openbmc_project::BIOSConfig::server::Manager;
 
 constexpr auto enumJsonFile = "enum_attrs.json";
 constexpr auto stringJsonFile = "string_attrs.json";
@@ -35,6 +40,7 @@ BIOSConfig::BIOSConfig(const char* jsonDir, const char* tableDir,
 {
     fs::create_directories(tableDir);
     constructAttributes();
+    listenPendingAttributes();
 }
 
 void BIOSConfig::buildTables()
@@ -780,6 +786,107 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         storeTable(tableDir / attrValueTableFile, *destTable);
     }
+}
+
+uint16_t BIOSConfig::findAttrHandle(const std::string& attrName)
+{
+    auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
+    auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
+
+    BIOSStringTable biosStringTable(*stringTable);
+    pldm::bios::utils::BIOSTableIter<PLDM_BIOS_ATTR_TABLE> attrTableIter(
+        attrTable->data(), attrTable->size());
+    auto stringHandle = biosStringTable.findHandle(attrName);
+
+    for (auto entry : pldm::bios::utils::BIOSTableIter<PLDM_BIOS_ATTR_TABLE>(
+             attrTable->data(), attrTable->size()))
+    {
+        auto header = table::attribute::decodeHeader(entry);
+        if (header.stringHandle == stringHandle)
+        {
+            return header.attrHandle;
+        }
+    }
+
+    throw std::invalid_argument("Unknow attribute Name");
+}
+
+void BIOSConfig::constructPendingAttribute(
+    const PendingAttributes& pendingAttributes)
+{
+    for (auto& attribute : pendingAttributes)
+    {
+        std::string attributeName = attribute.first;
+        auto& [attributeType, attributevalue] = attribute.second;
+
+        auto iter = std::find_if(biosAttributes.begin(), biosAttributes.end(),
+                                 [&attributeName](const auto& attr) {
+                                     return attr->name == attributeName;
+                                 });
+
+        if (iter == biosAttributes.end())
+        {
+            std::cerr << "Wrong attribute name, attributeName = "
+                      << attributeName << std::endl;
+            continue;
+        }
+
+        Table attrValueEntry(sizeof(pldm_bios_attr_val_table_entry), 0);
+        auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
+            attrValueEntry.data());
+
+        auto handler = findAttrHandle(attributeName);
+        auto type =
+            BIOSConfigManager::convertAttributeTypeFromString(attributeType);
+
+        if (type != BIOSConfigManager::AttributeType::Enumeration &&
+            type != BIOSConfigManager::AttributeType::String &&
+            type != BIOSConfigManager::AttributeType::Integer)
+        {
+            std::cerr << "Attribute type not supported, attributeType = "
+                      << attributeType << std::endl;
+            continue;
+        }
+
+        entry->attr_handle = htole16(handler);
+        (*iter)->generateAttributeEntry(attributevalue, attrValueEntry);
+
+        setAttrValue(attrValueEntry.data(), attrValueEntry.size());
+    }
+}
+
+void BIOSConfig::listenPendingAttributes()
+{
+    constexpr auto objPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto objInterface = "xyz.openbmc_project.BIOSConfig.Manager";
+
+    using namespace sdbusplus::bus::match::rules;
+    auto updateBIOSMatch = std::make_unique<sdbusplus::bus::match::match>(
+        pldm::utils::DBusHandler::getBus(),
+        propertiesChanged(objPath, objInterface),
+        [this](sdbusplus::message::message& msg) {
+            constexpr auto propertyName = "PendingAttributes";
+
+            using Value =
+                std::variant<std::string, PendingAttributes, BaseBIOSTable>;
+            using Properties = std::map<DbusProp, Value>;
+
+            Properties props{};
+            std::string intf;
+            msg.read(intf, props);
+
+            auto valPropMap = props.find(propertyName);
+            if (valPropMap == props.end())
+            {
+                return;
+            }
+
+            PendingAttributes pendingAttributes =
+                std::get<PendingAttributes>(valPropMap->second);
+            this->constructPendingAttribute(pendingAttributes);
+        });
+
+    biosAttrMatch.emplace_back(std::move(updateBIOSMatch));
 }
 
 } // namespace bios

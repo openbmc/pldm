@@ -48,6 +48,9 @@ using BIOSTableObj =
                MenuPath, CurrentValue, DefaultValue, Option>;
 using BaseBIOSTable = std::map<AttributeName, BIOSTableObj>;
 
+using PendingObj = std::tuple<AttributeType, CurrentValue>;
+using PendingAttributes = std::map<AttributeName, PendingObj>;
+
 /** @class BIOSConfig
  *  @brief Manager BIOS Attributes
  */
@@ -220,6 +223,23 @@ class BIOSConfig
     /** @brief Update the BaseBIOSTable property of the D-Bus interface
      */
     void updateBaseBIOSTableProperty();
+
+    /** @brief Listen the PendingAttributes property of the D-Bus interface and
+     *         update BaseBIOSTable
+     */
+    void listenPendingAttributes();
+
+    /** @brief Find attribute handle from bios attribute table
+     *  @param[in] attrName - attribute name
+     *  @return attribute handle
+     */
+    uint16_t findAttrHandle(const std::string& attrName);
+
+    /** @brief Listen the PendingAttributes property of the D-Bus interface
+     * and update BaseBIOSTable
+     *  @param[in] msg - Data associated with subscribed signal
+     */
+    void constructPendingAttribute(const PendingAttributes& pendingAttributes);
 };
 
 } // namespace bios
