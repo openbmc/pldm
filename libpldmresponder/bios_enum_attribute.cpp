@@ -147,6 +147,30 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
     }
 }
 
+uint8_t BIOSEnumAttribute::getAttrValueIndex(const PropertyValue& propValue)
+{
+    auto defaultValueIndex = getValueIndex(defaultValue, possibleValues);
+    if (readOnly)
+    {
+        return defaultValueIndex;
+    }
+
+    try
+    {
+        auto iter = valMap.find(propValue);
+        if (iter == valMap.end())
+        {
+            return defaultValueIndex;
+        }
+        auto currentValue = iter->second;
+        return getValueIndex(currentValue, possibleValues);
+    }
+    catch (const std::exception& e)
+    {
+        return defaultValueIndex;
+    }
+}
+
 void BIOSEnumAttribute::setAttrValueOnDbus(
     const pldm_bios_attr_val_table_entry* attrValueEntry,
     const pldm_bios_attr_table_entry* attrEntry,
@@ -218,6 +242,21 @@ int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
     table::attribute_value::constructEnumEntry(newValue, attrHdl, attrType,
                                                handleIndices);
     return PLDM_SUCCESS;
+}
+
+void BIOSEnumAttribute::generateAttributeEntry(
+    const std::variant<int64_t, std::string>& attributevalue,
+    Table& attrValueEntry)
+{
+    attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) + 1);
+
+    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
+        attrValueEntry.data());
+
+    std::string value = std::get<std::string>(attributevalue);
+    entry->attr_type = 0;
+    entry->value[0] = 1; // number of current values, default 1
+    entry->value[1] = getAttrValueIndex(value);
 }
 
 } // namespace bios
