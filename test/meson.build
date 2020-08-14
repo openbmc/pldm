@@ -35,6 +35,7 @@ tests = [
   'libpldmresponder_platform_test',
   'pldmd_instanceid_test',
   'pldmd_registration_test',
+  'pldm_fru_parser_test',
   'pldm_utils_test',
   'libpldmresponder_fru_test',
   'libpldmresponder_dbus_to_host_effecter_test',

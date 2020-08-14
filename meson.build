@@ -72,6 +72,7 @@ executable(
   'pldmd/dbus_impl_requester.cpp',
   'pldmd/instance_id.cpp',
   'pldmd/dbus_impl_pdr.cpp',
+  'pldmd/pldm_fru_parser.cpp',
   'host-bmc/dbus_to_host_effecters.cpp',
   implicit_include_directories: false,
   dependencies: deps,
