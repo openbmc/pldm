@@ -87,6 +87,11 @@ void BIOSIntegerAttribute::setAttrValueOnDbus(
         return dbusHandler->setDbusProperty(*dBusMap,
                                             static_cast<int64_t>(currentValue));
     }
+    else if (dBusMap->propertyType == "double")
+    {
+        return dbusHandler->setDbusProperty(*dBusMap,
+                                            static_cast<double>(currentValue));
+    }
 
     std::cerr << "Unsupported property type on dbus: " << dBusMap->propertyType
               << std::endl;
@@ -145,6 +150,10 @@ uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
     else if (dBusMap->propertyType == "int64_t")
     {
         value = std::get<int64_t>(propertyValue);
+    }
+    else if (dBusMap->propertyType == "double")
+    {
+        value = std::get<double>(propertyValue);
     }
     return value;
 }
