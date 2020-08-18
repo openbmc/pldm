@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7bccddbb_f71f352e",
+        "filename": "pldmd/pldm_fru_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-08-18T04:44:59Z",
+      "side": 1,
+      "message": "is this correct? I want to store the T objects as mentioned in the story . I am storing the template class objects in a vector of PLDMFRUPARSER* type",
+      "revId": "772d030a287be0a1dcb41dcb602324aba95b7eaf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6e78a52_f5c7a446",
+        "filename": "test/pldm_fru_parser_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-08-18T04:44:59Z",
+      "side": 1,
+      "message": "how do i send the dbushandler as an input to the template class method? I cannot use the mockdbushandler class to call set dbus property in pldmfruparser method",
+      "revId": "772d030a287be0a1dcb41dcb602324aba95b7eaf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
