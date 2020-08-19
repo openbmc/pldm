@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0ed52807_2b23d654",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "testing this as per the instructions you provided",
+      "parentUuid": "7a07be45_ca64f006",
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c07c387e_f4556f0f",
         "filename": "libpldmresponder/pdr_utils.cpp",
         "patchSetId": 1
@@ -65,6 +83,30 @@
     },
     {
       "key": {
+        "uuid": "4a7e94e3_2c0c4e29",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "this is used twice. can remove temporary if needed",
+      "parentUuid": "b4539555_bbcc0a5a",
+      "range": {
+        "startLine": 208,
+        "startChar": 7,
+        "endLine": 208,
+        "endChar": 36
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "18194c2a_cae3a343",
         "filename": "libpldmresponder/pdr_utils.cpp",
         "patchSetId": 1
@@ -76,6 +118,30 @@
       "writtenOn": "2020-08-13T03:31:38Z",
       "side": 1,
       "message": "Why is the container ID not updated?",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 26
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69bb2484_e33ed8d4",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "no pdr structure is defined yet for numeric sensor",
+      "parentUuid": "18194c2a_cae3a343",
       "range": {
         "startLine": 216,
         "startChar": 0,
@@ -111,6 +177,30 @@
     },
     {
       "key": {
+        "uuid": "0c4d4425_95ed3af3",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2baca640_5f833fb3",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 34
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0d1d1bd8_7d7633d4",
         "filename": "libpldmresponder/pdr_utils.hpp",
         "patchSetId": 1
@@ -131,6 +221,30 @@
       "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5be24f2_3f9e3046",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d1d1bd8_7d7633d4",
+      "range": {
+        "startLine": 243,
+        "startChar": 28,
+        "endLine": 243,
+        "endChar": 54
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -157,6 +271,30 @@
     },
     {
       "key": {
+        "uuid": "e1c30349_faa7e7c8",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1448e63_aa1e22c7",
+      "range": {
+        "startLine": 251,
+        "startChar": 39,
+        "endLine": 251,
+        "endChar": 43
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e3b2366_f010af3f",
         "filename": "libpldmresponder/pdr_utils.hpp",
         "patchSetId": 1
@@ -177,6 +315,30 @@
       "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b4b0540_e1d493aa",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e3b2366_f010af3f",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 20
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -203,6 +365,30 @@
     },
     {
       "key": {
+        "uuid": "85508957_73f6bf02",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87531ae0_421d21ff",
+      "range": {
+        "startLine": 254,
+        "startChar": 10,
+        "endLine": 254,
+        "endChar": 14
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe09f025_f9c28bc9",
         "filename": "libpldmresponder/pdr_utils.hpp",
         "patchSetId": 1
@@ -223,6 +409,30 @@
       "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52d92986_eede6505",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe09f025_f9c28bc9",
+      "range": {
+        "startLine": 255,
+        "startChar": 28,
+        "endLine": 255,
+        "endChar": 42
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -249,6 +459,30 @@
     },
     {
       "key": {
+        "uuid": "eea59202_eacbc897",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d383b8e0_66bd238b",
+      "range": {
+        "startLine": 259,
+        "startChar": 5,
+        "endLine": 259,
+        "endChar": 22
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "daff39b0_4af52ea8",
         "filename": "test/libpldmresponder_platform_test.cpp",
         "patchSetId": 1
@@ -260,6 +494,30 @@
       "writtenOn": "2020-08-13T03:31:38Z",
       "side": 1,
       "message": "Do we need to init the entity instance number?",
+      "range": {
+        "startLine": 660,
+        "startChar": 0,
+        "endLine": 661,
+        "endChar": 34
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24b3398f_a95d78c8",
+        "filename": "test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-19T04:58:52Z",
+      "side": 1,
+      "message": "no i guess",
+      "parentUuid": "daff39b0_4af52ea8",
       "range": {
         "startLine": 660,
         "startChar": 0,
