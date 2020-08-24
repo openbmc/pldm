@@ -154,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "021319c1_557d36f6",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-24T15:11:03Z",
+      "side": 1,
+      "message": "Can we just add it when the support is added for the numeric sensor, since some code needs to be added at that point of time.",
+      "parentUuid": "69bb2484_e33ed8d4",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 26
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2baca640_5f833fb3",
         "filename": "libpldmresponder/pdr_utils.hpp",
         "patchSetId": 1
@@ -471,6 +495,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "d383b8e0_66bd238b",
+      "range": {
+        "startLine": 259,
+        "startChar": 5,
+        "endLine": 259,
+        "endChar": 22
+      },
+      "revId": "cc6dc267e9bbd00f64fa09dc5b7f02acf6ae6340",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "63968a4f_985ac8aa",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-08-24T15:11:03Z",
+      "side": 1,
+      "message": "Rename the function since it is a misnomer?",
+      "parentUuid": "eea59202_eacbc897",
       "range": {
         "startLine": 259,
         "startChar": 5,
