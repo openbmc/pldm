@@ -166,6 +166,5 @@ class LidHandler : public FileHandler
     std::string lidPath;
     std::string sideToRead;
 };
-
 } // namespace responder
 } // namespace pldm
