@@ -1,5 +1,7 @@
 #include "inband_code_update.hpp"
 
+#include "libpldmresponder/pdr.hpp"
+#include "oem_ibm_handler.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <sdbusplus/server.hpp>
@@ -207,6 +209,122 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
         rc = PLDM_PLATFORM_INVALID_STATE_VALUE;
     }
     return rc;
+}
+
+void generateStateEffecterOEMPDR(platform::Handler* platformHandler,
+                                 uint16_t entityInstance, uint16_t stateSetID,
+                                 pdr_utils::RepoInterface& repo)
+{
+
+    size_t pdrSize = 0;
+    pdrSize = sizeof(pldm_state_effecter_pdr) +
+              sizeof(state_effecter_possible_states);
+    std::vector<uint8_t> entry{};
+    entry.resize(pdrSize);
+    pldm_state_effecter_pdr* pdr =
+        reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+
+    pdr->hdr.record_handle = 0;
+    pdr->hdr.version = 1;
+    pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
+    pdr->hdr.record_change_num = 0;
+    pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
+    pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
+    pdr->effecter_id = platformHandler->getNextEffecterId();
+    pdr->entity_type = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    pdr->entity_instance = entityInstance;
+    pdr->container_id = 0;
+    pdr->effecter_semantic_id = 0;
+    pdr->effecter_init = PLDM_NO_INIT;
+    pdr->has_description_pdr = false;
+    pdr->composite_effecter_count = 1;
+
+    auto* possibleStatesPtr = pdr->possible_states;
+    auto possibleStates =
+        reinterpret_cast<state_effecter_possible_states*>(possibleStatesPtr);
+    possibleStates->state_set_id = stateSetID;
+    possibleStates->possible_states_size = 2;
+    auto state =
+        reinterpret_cast<state_effecter_possible_states*>(possibleStates);
+    if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE)
+        state->states[0].byte = 6;
+    else if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
+        state->states[0].byte = 126;
+    pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+    pdrEntry.data = entry.data();
+    pdrEntry.size = pdrSize;
+    repo.addRecord(pdrEntry);
+}
+
+void generateStateSensorOEMPDR(platform::Handler* platformHandler,
+                               uint16_t entityInstance, uint16_t stateSetID,
+                               pdr_utils::RepoInterface& repo)
+{
+    size_t pdrSize = 0;
+    pdrSize =
+        sizeof(pldm_state_sensor_pdr) + sizeof(state_sensor_possible_states);
+    std::vector<uint8_t> entry{};
+    entry.resize(pdrSize);
+    pldm_state_sensor_pdr* pdr =
+        reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
+
+    pdr->hdr.record_handle = 0;
+    pdr->hdr.version = 1;
+    pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
+    pdr->hdr.record_change_num = 0;
+    pdr->hdr.length = sizeof(pldm_state_sensor_pdr) - sizeof(pldm_pdr_hdr);
+    pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
+    pdr->sensor_id = platformHandler->getNextSensorId();
+    pdr->entity_type = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    pdr->entity_instance = entityInstance;
+    pdr->container_id = 0;
+    pdr->sensor_init = PLDM_NO_INIT;
+    pdr->sensor_auxiliary_names_pdr = false;
+    pdr->composite_sensor_count = 1;
+
+    auto* possibleStatesPtr = pdr->possible_states;
+    auto possibleStates =
+        reinterpret_cast<state_sensor_possible_states*>(possibleStatesPtr);
+    possibleStates->state_set_id = stateSetID;
+    possibleStates->possible_states_size = 2;
+    auto state =
+        reinterpret_cast<state_sensor_possible_states*>(possibleStates);
+    if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE)
+        state->states[0].byte = 6;
+    else if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
+        state->states[0].byte = 126;
+    pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+    pdrEntry.data = entry.data();
+    pdrEntry.size = pdrSize;
+    repo.addRecord(pdrEntry);
+}
+
+void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
+                                   pdr_utils::RepoInterface& repo)
+{
+    generateStateEffecterOEMPDR(
+        platformHandler, oem_ibm_platform::ENTITY_INSTANCE_0,
+        oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
+    generateStateEffecterOEMPDR(
+        platformHandler, oem_ibm_platform::ENTITY_INSTANCE_1,
+        oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
+    generateStateEffecterOEMPDR(
+        platformHandler, oem_ibm_platform::ENTITY_INSTANCE_0,
+        oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+}
+
+void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
+                                 pdr_utils::RepoInterface& repo)
+{
+    generateStateSensorOEMPDR(platformHandler,
+                              oem_ibm_platform::ENTITY_INSTANCE_0,
+                              oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
+    generateStateSensorOEMPDR(platformHandler,
+                              oem_ibm_platform::ENTITY_INSTANCE_1,
+                              oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
+    generateStateSensorOEMPDR(
+        platformHandler, oem_ibm_platform::ENTITY_INSTANCE_0,
+        oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
 }
 
 } // namespace responder
