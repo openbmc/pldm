@@ -27,7 +27,7 @@ class MockCodeUpdate : public CodeUpdate
 
 TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
 {
-    uint16_t entityID_ = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    uint16_t entityID_ = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
     uint16_t stateSetId_ = PLDM_OEM_IBM_BOOT_STATE;
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
@@ -71,7 +71,7 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
         entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField1);
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_STATE_VALUE);
 
-    entityID_ = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    entityID_ = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
     entityInstance_ = 0;
     stateSetId_ = PLDM_OEM_IBM_BOOT_STATE;
     compSensorCnt_ = 1;
