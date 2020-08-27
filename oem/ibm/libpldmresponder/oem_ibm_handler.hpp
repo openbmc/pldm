@@ -3,7 +3,7 @@
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/platform.hpp"
-
+#include "libpldmresponder/pdr_utils.hpp"
 namespace pldm
 {
 
@@ -32,10 +32,21 @@ class Handler : public oem_platform::Handler
         const std::vector<set_effecter_state_field>& stateField);
     void setPlatformHandler(pldm::responder::platform::Handler* handler);
 
+    uint16_t getNextEffecterId()
+    {
+       return platformHandler->getNextEffecterId();
+    }
+
+    uint16_t getNextSensorId()
+    {
+       return platformHandler->getNextSensorId();
+    }
+
+    void buildOEMPDR(pdr_utils::RepoInterface& repo);
     ~Handler()
     {}
 
-  private:
+  //private:
     pldm::responder::CodeUpdate codeUpdate;
     pldm::responder::platform::Handler* platformHandler;
 };
