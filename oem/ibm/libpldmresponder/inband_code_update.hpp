@@ -1,7 +1,7 @@
 #pragma once
-
 #include "common/utils.hpp"
-
+#include "libpldmresponder/pdr_utils.hpp"
+#include "libpldmresponder/platform.hpp"
 #include <string>
 
 namespace pldm
@@ -21,7 +21,7 @@ class CodeUpdate
         nextBootSide = "T";
         runningVersion = "";
         nonRunningVersion = "";
-        setVersions();
+        //setVersions();
     }
 
     std::string fetchCurrentBootSide();
@@ -43,5 +43,9 @@ class CodeUpdate
     const pldm::utils::DBusHandler* dBusIntf;
 };
 
+  void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
+                                     pdr_utils::RepoInterface& repo);
+  void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
+                                   pdr_utils::RepoInterface& repo);
 } // namespace responder
 } // namespace pldm

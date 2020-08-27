@@ -1,4 +1,10 @@
 #include "oem_ibm_handler.hpp"
+//#include "libpldmresponder/oem_handler.hpp"
+#include "../../../libpldmresponder/pdr_utils.hpp"
+//#include "../../../libpldm/pdr.h"
+//#include "../../../libpldm/platform.h"
+//#include "libpldmresponder/platform.hpp"
+//#include "libpldmresponder/pdr.hpp"
 
 namespace pldm
 {
@@ -98,6 +104,15 @@ int pldm::responder::oem_ibm_platform::Handler::
         }
     }
     return rc;
+}
+
+void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
+                                                 pdr_utils::RepoInterface& repo)
+{
+    buildAllCodeUpdateEffecterPDR(platformHandler,repo);
+      
+    buildAllCodeUpdateSensorPDR(platformHandler,repo);
+
 }
 
 void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
