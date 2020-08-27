@@ -1,6 +1,6 @@
 #pragma once
-
 #include "common/utils.hpp"
+//#include "libpldmresponder/pdr_utils.hpp"
 
 #include <string>
 
@@ -43,5 +43,12 @@ class CodeUpdate
     const pldm::utils::DBusHandler* dBusIntf;
 };
 
+//void buildAllCodeUpdateEffecterPDR(uint16_t nextEffecterId, 
+  //                                 pdr_utils::RepoInterface& repo);
+  void buildAllCodeUpdateEffecterPDR(pldm::responder::oem_platform::Handler* oemPlatformHandler,
+                                     pdr_utils::RepoInterface& repo);
+//void buildAllCodeUpdateSensorPDR(uint16_t nextSensorId, 
+  //                               pdr_utils::RepoInterface& repo);
+  //void buildAllCodeUpdateSensorPDR(pdr_utils::RepoInterface& repo);
 } // namespace responder
 } // namespace pldm
