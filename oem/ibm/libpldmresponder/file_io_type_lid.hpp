@@ -85,6 +85,5 @@ class LidHandler : public FileHandler
   protected:
     std::string lidPath;
 };
-
 } // namespace responder
 } // namespace pldm
