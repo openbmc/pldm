@@ -6,16 +6,16 @@
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace oem_ibm_platform
 {
 
 static constexpr auto PLDM_OEM_IBM_BOOT_STATE = 32769;
 static constexpr auto PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE = 32768;
-
+static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
+constexpr uint16_t ENTITY_INSTANCE_0 = 0;
+constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 class Handler : public oem_platform::Handler
 {
   public:
@@ -41,6 +41,22 @@ class Handler : public oem_platform::Handler
      *  @param[in] handler - pointer to PLDM platform handler
      */
     void setPlatformHandler(pldm::responder::platform::Handler* handler);
+
+    uint16_t getNextEffecterId()
+    {
+        return platformHandler->getNextEffecterId();
+    }
+
+    uint16_t getNextSensorId()
+    {
+        return platformHandler->getNextSensorId();
+    }
+
+    /** @brief Method to Generate the OEM PDRs if OEM_IBM is defined
+     *
+     * @param[in] repo - instance of concrete implementation of Repo
+     */
+    void buildOEMPDR(pdr_utils::Repo& repo);
 
     ~Handler()
     {}
