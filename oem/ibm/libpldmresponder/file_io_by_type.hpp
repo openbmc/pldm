@@ -131,6 +131,5 @@ class FileHandler
 
 std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
                                               uint32_t fileHandle);
-
 } // namespace responder
 } // namespace pldm
