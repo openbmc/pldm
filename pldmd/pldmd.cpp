@@ -221,8 +221,8 @@ int main(int argc, char** argv)
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
 #endif
 
-    invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
-    /* invoker.registerHandler(
+   /*invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
+     invoker.registerHandler(
          PLDM_PLATFORM,
          std::make_unique<platform::Handler>(
              dbusHandler.get(), PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
