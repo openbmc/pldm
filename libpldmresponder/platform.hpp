@@ -5,7 +5,7 @@
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
 #include "pdr.h"
-
+#include "oem/ibm/libpldmresponder/file_io_by_type.hpp"
 #include "common/utils.hpp"
 #include "event_parser.hpp"
 #include "fru.hpp"
@@ -415,6 +415,9 @@ class Handler : public CmdHandler
      *  @param[in] repo - instance of concrete implementation of Repo
      */
     void generateTerminusLocatorPDR(Repo& repo);
+
+    void buildOEMPDR(Repo& repo);
+
 
     /** @brief Get std::map associated with the entity
      *         key: object path
