@@ -3,7 +3,7 @@
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/platform.hpp"
-
+#include "libpldmresponder/pdr_utils.hpp"
 namespace pldm
 {
 
@@ -44,10 +44,23 @@ class Handler : public oem_platform::Handler
 
  //   std::string fetchCurrentBootSide();
 
+
+    uint16_t getNextEffecterId()
+    {
+       return platformHandler->getNextEffecterId();
+    }
+
+    uint16_t getNextSensorId()
+    {
+       return platformHandler->getNextSensorId();
+    }
+
+    void buildOEMPDR(pdr_utils::RepoInterface& repo);
     ~Handler()
     {}
 
-    pldm::responder::CodeUpdate* codeUpdate;
+  //private:
+    pldm::responder::CodeUpdate codeUpdate;
     pldm::responder::platform::Handler* platformHandler;
 };
 

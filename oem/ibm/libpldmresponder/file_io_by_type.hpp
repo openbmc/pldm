@@ -1,7 +1,7 @@
 #pragma once
-
+#include "../../../libpldmresponder/pdr_utils.hpp"
 #include "file_io.hpp"
-
+#include "libpldmresponder/platform.hpp"
 namespace pldm
 {
 
@@ -124,5 +124,6 @@ class FileHandler
 std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
                                               uint32_t fileHandle);
 
+void buildIbmOEMPDR(pdr_utils::RepoInterface& repo);
 } // namespace responder
 } // namespace pldm
