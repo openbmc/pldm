@@ -1,5 +1,7 @@
 #include "oem_ibm_handler.hpp"
 
+#include "libpldmresponder/pdr_utils.hpp"
+
 namespace pldm
 {
 
@@ -20,7 +22,7 @@ int pldm::responder::oem_ibm_platform::Handler::
     for (size_t i = 0; i < compSensorCnt; i++)
     {
         uint8_t sensorOpState{};
-        if (entityType == PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY &&
+        if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
             stateSetId == PLDM_OEM_IBM_BOOT_STATE)
         {
             sensorOpState = fetchBootSide(entityInstance, codeUpdate);
@@ -48,7 +50,7 @@ int pldm::responder::oem_ibm_platform::Handler::
     {
         if (stateField[currState].set_request == PLDM_REQUEST_SET)
         {
-            if (entityType == PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY &&
+            if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
                 stateSetId == PLDM_OEM_IBM_BOOT_STATE)
             {
                 rc = setBootSide(entityInstance, currState, stateField,
@@ -65,6 +67,14 @@ int pldm::responder::oem_ibm_platform::Handler::
         }
     }
     return rc;
+}
+
+void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
+    pdr_utils::Repo& repo)
+{
+    buildAllCodeUpdateEffecterPDR(platformHandler, repo);
+
+    buildAllCodeUpdateSensorPDR(platformHandler, repo);
 }
 
 void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
