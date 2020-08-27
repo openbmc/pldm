@@ -15,6 +15,7 @@ sources = [
   'bios_integer_attribute.cpp',
   'bios_enum_attribute.cpp',
   'bios_config.cpp',
+  '../oem/ibm/libpldmresponder/file_io_type_lid.cpp',
   'pdr_utils.cpp',
   'pdr.cpp',
   'platform.cpp',
@@ -30,6 +31,7 @@ if get_option('oem-ibm').enabled()
     '../oem/ibm/libpldmresponder/file_io.cpp',
     '../oem/ibm/libpldmresponder/file_table.cpp',
     '../oem/ibm/libpldmresponder/file_io_by_type.cpp',
+    '../oem/ibm/libpldmresponder/file_io_type_lid.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_pel.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_dump.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_cert.cpp'
