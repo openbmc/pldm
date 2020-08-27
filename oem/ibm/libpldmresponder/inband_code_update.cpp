@@ -1,5 +1,8 @@
 #include "inband_code_update.hpp"
 
+#include "libpldm/entity.h"
+
+#include "libpldmresponder/pdr.hpp"
 #include "oem_ibm_handler.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
@@ -10,7 +13,6 @@
 
 namespace pldm
 {
-
 namespace responder
 {
 using namespace oem_ibm_platform;

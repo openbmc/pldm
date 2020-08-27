@@ -150,6 +150,11 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     {
         generateTerminusLocatorPDR(pdrRepo);
         generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+        if (oemPlatformHandler != nullptr)
+        {
+            oemPlatformHandler->buildOEMPDR(pdrRepo);
+        }
+
         pdrCreated = true;
     }
 
