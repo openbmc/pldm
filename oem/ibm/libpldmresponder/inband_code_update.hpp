@@ -1,6 +1,8 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
+#include "libpldmresponder/platform.hpp"
 
 #include <string>
 
@@ -136,5 +138,20 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
                 const std::vector<set_effecter_state_field>& stateField,
                 CodeUpdate* codeUpdate);
 
+/* @brief Method to generate the state effecter PDRs for Code Update
+ *
+ * @param[in] platformHandler - the platform handler
+ * @param[in] - instance of concrete implementation of Repo
+ */
+void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
+                                   pdr_utils::RepoInterface& repo);
+
+/* @brief Method to generate the state sensor PDRs for Code Update
+ *
+ * @param[in] platformHandler - the platform handler
+ * @param[in] - instance of concrete implementation of Repo
+ */
+void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
+                                 pdr_utils::RepoInterface& repo);
 } // namespace responder
 } // namespace pldm
