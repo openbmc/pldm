@@ -3,6 +3,7 @@
 
 #include "common/utils.hpp"
 #include "event_parser.hpp"
+#include "oem/ibm/libpldmresponder/file_io_by_type.hpp"
 #include "pdr.hpp"
 #include "pdr_numeric_effecter.hpp"
 #include "pdr_state_effecter.hpp"
@@ -164,6 +165,10 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
         }
     }
 }
+void Handler::buildOEMPDR(Repo& repo)
+{
+    buildIbmOEMPDR(repo);
+}
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
@@ -178,6 +183,9 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     {
         generateTerminusLocatorPDR(pdrRepo);
         generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+        //#ifdef OEM_IBM
+        buildOEMPDR(pdrRepo);
+        //#endif
         pdrCreated = true;
     }
 
