@@ -1,7 +1,7 @@
 #pragma once
-
 #include "common/utils.hpp"
-
+#include "libpldmresponder/pdr_utils.hpp"
+#include "libpldmresponder/platform.hpp"
 #include <string>
 
 using namespace pldm::utils;
@@ -123,5 +123,9 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
                 const std::vector<set_effecter_state_field>& stateField,
                 CodeUpdate* codeUpdate);
 
+void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
+                                   pdr_utils::RepoInterface& repo);
+void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
+                                 pdr_utils::RepoInterface& repo);
 } // namespace responder
 } // namespace pldm

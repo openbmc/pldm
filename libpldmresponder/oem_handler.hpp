@@ -2,7 +2,7 @@
 
 #include "common/utils.hpp"
 #include "pldmd/handler.hpp"
-
+#include "libpldmresponder/pdr_utils.hpp"
 namespace pldm
 {
 
@@ -55,6 +55,8 @@ class Handler : public CmdHandler
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
         const std::vector<set_effecter_state_field>& stateField) = 0;
+
+    virtual void buildOEMPDR(pdr_utils::RepoInterface& repo) = 0;
 
     virtual ~Handler()
     {}
