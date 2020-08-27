@@ -56,6 +56,11 @@ class Handler : public CmdHandler
         uint8_t compEffecterCnt,
         const std::vector<set_effecter_state_field>& stateField) = 0;
 
+    /** @brief Interface to generate the OEM PDRs if OEM_IBM is defined
+     * 
+     * @param[in] repo - instance of concrete implementation of Repo
+     */
+    virtual void buildOEMPDR(pdr_utils::RepoInterface& repo) = 0;
     virtual ~Handler()
     {}
 
