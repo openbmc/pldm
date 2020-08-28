@@ -22,6 +22,30 @@
       "revId": "70b8cf7c41db611ead266bcdc1760a02b14edbde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "265019f2_cdb93670",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-08-28T07:01:52Z",
+      "side": 1,
+      "message": "entityTree is the reference which is providing the new container Id. this is still an inout parameter. in that sense some of the PDRs in repo is going through change. Marking that in/out",
+      "parentUuid": "c1a29e9c_bc9cea46",
+      "range": {
+        "startLine": 242,
+        "startChar": 10,
+        "endLine": 242,
+        "endChar": 14
+      },
+      "revId": "70b8cf7c41db611ead266bcdc1760a02b14edbde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
