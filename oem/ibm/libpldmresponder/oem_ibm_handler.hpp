@@ -1,0 +1,54 @@
+#pragma once
+
+#include "inband_code_update.hpp"
+#include "libpldmresponder/oem_handler.hpp"
+#include "libpldmresponder/platform.hpp"
+
+namespace pldm
+{
+
+namespace responder
+{
+
+namespace oem_ibm_platform
+{
+
+class Handler : public oem_platform::Handler
+{
+  public:
+    Handler(const pldm::utils::DBusHandler* dBusIntf,
+            pldm::responder::CodeUpdate* codeUpdate) :
+        oem_platform::Handler(dBusIntf),
+        codeUpdate(codeUpdate), platformHandler(nullptr)
+    {
+        std::cout
+            << "oem_ibm_platform Handler constructor before setVersions \n";
+        codeUpdate->setVersions();
+        std::cout
+            << "oem_ibm_platform Handler constructor after setVersions \n";
+    }
+
+    int getOemStateSensorReadingsHandler(
+        /*uint16_t sensorId,*/ /*uint8_t sensorRearmCnt,*/ uint16_t entityType,
+        uint16_t entityInstance, uint16_t stateSetId, uint8_t compSensorCnt,
+        std::vector<get_sensor_state_field>& stateField);
+
+    int OemSetStateEffecterStatesHandler(
+        /*uint16_t effecterId,*/ uint16_t entityType, uint16_t entityInstance,
+        uint16_t stateSetId, uint8_t compEffecterCnt,
+        const std::vector<set_effecter_state_field>& stateField);
+
+    void setPlatformHandler(pldm::responder::platform::Handler* handler);
+
+    ~Handler()
+    {}
+
+    pldm::responder::CodeUpdate* codeUpdate;
+    pldm::responder::platform::Handler* platformHandler;
+};
+
+} // namespace oem_ibm_platform
+
+} // namespace responder
+
+} // namespace pldm
