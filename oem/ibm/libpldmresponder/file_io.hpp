@@ -7,6 +7,7 @@
 #include "oem/ibm/libpldm/host.h"
 
 #include "common/utils.hpp"
+#include "oem_ibm_handler.hpp"
 #include "pldmd/handler.hpp"
 
 #include <fcntl.h>
@@ -157,7 +158,8 @@ namespace oem_ibm
 class Handler : public CmdHandler
 {
   public:
-    Handler()
+    Handler(oem_platform::Handler* oemPlatformHandler) :
+        oemPlatformHandler(oemPlatformHandler)
     {
         handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -312,6 +314,9 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response newFileAvailable(const pldm_msg* request, size_t payloadLength);
+
+  private:
+    oem_platform::Handler* oemPlatformHandler;
 };
 
 } // namespace oem_ibm
