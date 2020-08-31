@@ -139,6 +139,10 @@ enum pldm_entity_id_codes {
 
 	/* Logical */
 	PLDM_ENTITY_SYSTEM_LOGICAL = 11521,
+
+	/* OEM ranges */
+	PLDM_OEM_ENTITY_TYPE_START = 24576,
+	PLDM_OEM_ENTITY_TYPE_END = 32767,
 };
 
 #ifdef __cplusplus
