@@ -40,7 +40,7 @@ TEST(getPDR, testGoodPath)
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -77,7 +77,7 @@ TEST(getPDR, testShortRead)
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -108,7 +108,7 @@ TEST(getPDR, testBadRecordHandle)
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -137,7 +137,7 @@ TEST(getPDR, testNoNextRecord)
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -168,7 +168,7 @@ TEST(getPDR, testFindPDR)
 
     auto pdrRepo = pldm_pdr_init();
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
     auto response = handler.getPDR(req, requestPayloadLength);
@@ -230,7 +230,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
@@ -276,7 +276,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
@@ -321,7 +321,7 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
@@ -363,7 +363,7 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
@@ -535,7 +535,8 @@ TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     MockdBusHandler mockedUtils;
-    Handler handler(&mockedUtils, "", inPDRRepo, nullptr, nullptr, nullptr);
+    Handler handler(&mockedUtils, "", inPDRRepo, nullptr, nullptr, nullptr,
+                    nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_TERMINUS_LOCATOR_PDR);
 
@@ -579,7 +580,7 @@ TEST(getStateSensorReadingsHandler, testGoodRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
     pdr_utils::PdrEntry e;
@@ -625,7 +626,7 @@ TEST(getStateSensorReadingsHandler, testBadRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
     pdr_utils::PdrEntry e;

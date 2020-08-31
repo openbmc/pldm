@@ -33,7 +33,7 @@ TEST(GeneratePDRByStateSensor, testGoodJson)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
@@ -83,7 +83,7 @@ TEST(GeneratePDR, testMalformedJson)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", inPDRRepo,
-                    nullptr, nullptr, nullptr);
+                    nullptr, nullptr, nullptr, nullptr);
     handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
