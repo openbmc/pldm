@@ -13,6 +13,7 @@
 #include "host-bmc/host_pdr_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
+#include "oem_handler.hpp"
 #include "pldmd/handler.hpp"
 
 #include <stdint.h>
@@ -55,12 +56,14 @@ class Handler : public CmdHandler
             const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             DbusToPLDMEvent* dbusToPLDMEventHandler, fru::Handler* fruHandler,
+            pldm::responder::oem_platform::Handler* oemPlatformHandler,
             bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
-        dBusIntf(dBusIntf), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
+        dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
+        pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
     {
         if (!buildPDRLazily)
         {
@@ -442,9 +445,42 @@ class Handler : public CmdHandler
     DbusToPLDMEvent* dbusToPLDMEventHandler;
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;
+    pldm::responder::oem_platform::Handler* oemPlatformHandler;
     std::string pdrJsonsDir;
     bool pdrCreated;
 };
+
+/** @brief Function to check if a sensor falls in OEM range
+ *
+ *  @param[in] handler - the interface object
+ *  @param[in] sersorId - sensor id
+ *  @param[in] sensorRearmCout - sensor rearm count
+ *  @param[out] compSensorCnt - composite sensor count
+ *  @param[out] entityType - entity type
+ *  @param[out] entityInstance - entity instance number
+ *  @param[out] stateSetId - state set id
+ *  @return true if the sensor is OEM. All out parameters are invalid
+ *               for a non OEM sensor
+ */
+bool isOemStateSensor(Handler& handler, uint16_t sersorId,
+                      uint8_t sensorRearmCout, uint8_t& compSensorCnt,
+                      uint16_t& entityType, uint16_t& entityInstance,
+                      uint16_t& stateSetId);
+
+/** @brief Function to check if an effecter falls in OEM range
+ *
+ *  @param[in] handler - the interface object
+ *  @param[in] effecterId - effecter id
+ *  @param[in] compEffecterCnt - composite effecter count
+ *  @param[out] entityType - entity type
+ *  @param[out] entityInstance - entity instance number
+ *  @param[out] stateSetId - state set id
+ *  @return true if the effecter is OEM. All out parameters are invalid
+ *               for a non OEM effecter
+ */
+bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
+                        uint8_t compEffecterCnt, uint16_t& entityType,
+                        uint16_t& entityInstance, uint16_t& stateSetId);
 
 } // namespace platform
 } // namespace responder
