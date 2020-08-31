@@ -136,6 +136,9 @@ using PropertyValue =
                  uint64_t, double, std::string>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
+using DBusInterfaceAdded = std::vector<
+    std::pair<std::string,
+              std::vector<std::pair<std::string, std::variant<std::string>>>>>;
 
 /**
  * @brief The interface for DBusHandler
