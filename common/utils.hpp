@@ -4,6 +4,8 @@
 #include "libpldm/bios.h"
 #include "libpldm/platform.h"
 
+#include "types.hpp"
+
 #include <stdint.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
@@ -136,6 +138,10 @@ using PropertyValue =
                  uint64_t, double, std::string>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
+using DBusInterfaceAdded = std::vector<
+    std::pair<pldm::dbus::Interface,
+              std::vector<std::pair<pldm::dbus::Property,
+                                    std::variant<pldm::dbus::Property>>>>>;
 
 /**
  * @brief The interface for DBusHandler
