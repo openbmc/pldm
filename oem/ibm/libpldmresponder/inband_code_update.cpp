@@ -4,10 +4,13 @@
 #include "oem_ibm_handler.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
+#include <arpa/inet.h>
+
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Dump/NewDump/server.hpp>
 
 #include <exception>
+#include <fstream>
 
 namespace pldm
 {
@@ -325,6 +328,34 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
     generateStateSensorOEMPDR(
         platformHandler, oem_ibm_platform::ENTITY_INSTANCE_0,
         oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+}
+
+int processCodeUpdateLid(const std::string& filePath)
+{
+    struct lidHeader
+    {
+        uint16_t magicNumber;
+    };
+    lidHeader header;
+
+    std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
+    if (!ifs)
+    {
+        std::cerr << "ifstream open error: " << filePath << "\n";
+        return PLDM_ERROR;
+    }
+    ifs.seekg(0);
+    ifs.read(reinterpret_cast<char*>(&header), sizeof(header));
+    ifs.close();
+
+    constexpr auto magicNumber = 0x0222;
+    if (htons(header.magicNumber) != magicNumber)
+    {
+        std::cerr << "Invalid magic number: " << filePath << "\n";
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace responder
