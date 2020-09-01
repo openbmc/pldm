@@ -180,6 +180,22 @@ class LidHandler : public FileHandler
   protected:
     std::string lidPath;
     std::string sideToRead;
+
+  private:
+    /** @brief Method to assemble code update images from LID files.
+     *  @param[in] filePath - Path to the file to use for the image creation.
+     *  @return PLDM status code
+     */
+    int assembleImage(const std::string& filePath);
+
+    /** @brief Directory where the image files are stored as they are built */
+    std::string imageDirPath = fs::path(LID_STAGING_DIR) / "image";
+
+    /** @brief The file name of the hostfw image */
+    std::string hostfwImageName = "image-host-fw";
+
+    /** @brief The path to the hostfw image */
+    std::string hostfwImagePath = fs::path(imageDirPath) / hostfwImageName;
 };
 
 } // namespace responder
