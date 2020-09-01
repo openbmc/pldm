@@ -180,6 +180,32 @@ class LidHandler : public FileHandler
   protected:
     std::string lidPath;
     std::string sideToRead;
+
+  private:
+    /** @brief Method to assemble code update images from LID files.
+     *         It calls additional methods to assemble the different images such
+     *         as host firmware and BMC.
+     *  @param[in] lidPath - Path to the LID file to add to the image
+     *  @return PLDM status code
+     */
+    int assembleImage(const std::string& lidPath);
+
+    /** @brief Method to assemble a host firmware image from LID files.
+     *  @param[in] lidPath - Path to the host fw LID file
+     *  @return PLDM status code
+     */
+    int assembleHostFWImage(const std::string& lidPath);
+
+    /** @brief Method to add a file to a squashfs image. It creates the squashfs
+     *         image if it doesn't exist, otherwise it adds the file to existing
+     *         image.
+     *  @param[in] imagePath - Path to the squashfs image file to be created
+     *  @param[in] filePath - Path to the file to be added to the squashfs image
+     *  @return 0 if successful
+     */
+    int createSquashFSImage(const std::string& imagePath,
+                            const std::string& filePath);
 };
+
 } // namespace responder
 } // namespace pldm
