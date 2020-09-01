@@ -158,5 +158,12 @@ void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
  */
 void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
                                  pdr_utils::Repo& repo);
+
+/* @brief Method to process LIDs during inband update, such as verifying and
+ *        removing the header to get them ready to be written to flash
+ * @param[in] filePath - Path to the LID file
+ * @return - PLDM_SUCCESS codes
+ */
+int processCodeUpdateLid(const std::string& filePath);
 } // namespace responder
 } // namespace pldm
