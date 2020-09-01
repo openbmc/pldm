@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "865f0893_077ccb73",
+        "filename": "common/utils.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "this function should not be needed, see comment elsewhere",
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ce92bcf7_5cb71b37",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "extra underscore",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 74,
+        "endChar": 33
+      },
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f531b168_ebe5e1ec",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "since these fields are supposed to be a nibble wide, it\u0027s good to explicitly set the values :\n\nPLDM_TS104_UTCR_MINUTE \u003d 0x1;\nPLDM_TS104_UTCR_TEN_MINUTE \u003d 0x2;\n\nEtc. Same applies to the one below as well.",
+      "range": {
+        "startLine": 75,
+        "startChar": 1,
+        "endLine": 75,
+        "endChar": 23
+      },
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab38d0d6_3df282c5",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "pls check pldm/base.h to see how we\u0027re naming enums",
+      "range": {
+        "startLine": 78,
+        "startChar": 2,
+        "endLine": 78,
+        "endChar": 16
+      },
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "32aa0df8_da6297d6",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 90,
+        "startChar": 25,
+        "endLine": 90,
+        "endChar": 28
+      },
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1885289_3fbe56de",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "pls check pldm/base.h to see how we\u0027re naming enums",
+      "range": {
+        "startLine": 95,
+        "startChar": 2,
+        "endLine": 95,
+        "endChar": 17
+      },
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba11d862_0535f26d",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "you have to reverse the order of the fields in the struct, in order to lay them according to the spec definition.",
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72761b90_b8d7b907",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "these have to be reverse (endianness ordering is incorrect)",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 23
+      },
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "733bbc80_5fb88e81",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-01T11:48:38Z",
+      "side": 1,
+      "message": "This function should be processing a timestamp104, not a string. What this function gets is a value from the FRU table, right? The date time as per FRU spec will be in ts104 format.\n\nAlso missing is actually filling up the FRU table with the build date in ts104 format. That change should happen in FruImpl::populateRecords, where you should specially handle the BuildDate property under the propType \u003d\u003d \"string\" case. Here you should convert the YYYYMMDD string to a ts104, and then store it in the FRU table (multi byte fields should be in LE).",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 61
+      },
+      "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
