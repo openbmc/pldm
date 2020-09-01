@@ -241,7 +241,7 @@ int main(int argc, char** argv)
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
         bus, "/xyz/openbmc_project/pldm");
-    auto callback = [verbose, &invoker, &dbusImplReq](IO& /*io*/, int fd,
+    auto callback = [verbose, &invoker, &dbusImplReq](IO& io, int fd,
                                                       uint32_t revents) {
         if (!(revents & EPOLLIN))
         {
@@ -260,7 +260,12 @@ int main(int argc, char** argv)
         ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);
         if (0 == peekedLength)
         {
-            std::cerr << "Socket has been closed \n";
+            // MCTP daemon has closed the socket this daemon is connected to.
+            // This may or may not be an error scenario, in either case the
+            // recovery mechanism for this daemon is to restart, and hence exit
+            // the event loop, that will cause this daemon to exit with a
+            // failure code.
+            io.get_event().exit(0);
         }
         else if (peekedLength <= -1)
         {
