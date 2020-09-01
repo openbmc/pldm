@@ -143,5 +143,11 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
                 const std::vector<set_effecter_state_field>& stateField,
                 CodeUpdate* codeUpdate);
 
+/* @brief Method to process LIDs during inband update, such as verifying and
+ *        removing the header to get them ready to be written to flash
+ * @param[in] filePath - Path to the LID file
+ * @return - PLDM_SUCCESS codes
+ */
+int processCodeUpdateLid(const std::string& filePath);
 } // namespace responder
 } // namespace pldm
