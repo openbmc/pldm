@@ -886,7 +886,7 @@ TEST(readFileByType, testBadPath)
     ASSERT_EQ(PLDM_INVALID_FILE_TYPE, resp->completion_code);
 }
 
-TEST(readFileByType, testReadFile)
+TEST(testFileByType, testReadAndWrite)
 {
     LidHandler handler(0, true);
     Response response;
@@ -897,13 +897,34 @@ TEST(readFileByType, testReadFile)
 
     char tmplt[] = "/tmp/lid.XXXXXX";
     auto fd = mkstemp(tmplt);
-    std::vector<uint8_t> in = {100, 10, 56, 78, 34, 56, 79, 235, 111};
-    write(fd, in.data(), in.size());
     close(fd);
-    length = in.size() + 1000;
+
+    std::vector<uint8_t> inOne = {100, 10, 56, 78, 34, 56, 79, 235, 111};
+    std::vector<uint8_t> inTwo = {48, 0, 85, 222, 99, 1, 107, 132};
+
+    length = inOne.size();
+    rc = handler.write(tmplt, reinterpret_cast<const char*>(inOne.data()), 0,
+                       length);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    length = inOne.size() + 1000;
     rc = handler.readFile(tmplt, 0, length, response);
     ASSERT_EQ(rc, PLDM_SUCCESS);
-    ASSERT_EQ(length, in.size());
-    ASSERT_EQ(response.size(), in.size());
-    ASSERT_EQ(std::equal(in.begin(), in.end(), response.begin()), true);
+    ASSERT_EQ(length, inOne.size());
+    ASSERT_EQ(response.size(), inOne.size());
+    ASSERT_EQ(std::equal(inOne.begin(), inOne.end(), response.begin()), true);
+
+    length = inTwo.size();
+    rc = handler.write(tmplt, reinterpret_cast<const char*>(inTwo.data()),
+                       inOne.size(), length);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    length = inTwo.size() + 1000;
+    rc = handler.readFile(tmplt, inOne.size(), length, response);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(length, inTwo.size());
+    ASSERT_EQ(response.size(), inOne.size() + inTwo.size());
+    ASSERT_EQ(
+        std::equal(inTwo.begin(), inTwo.end(), response.begin() + inOne.size()),
+        true);
 }
