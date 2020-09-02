@@ -18,8 +18,17 @@ namespace bios
 BIOSAttribute::BIOSAttribute(const Json& entry,
                              DBusHandler* const dbusHandler) :
     name(entry.at("attribute_name")),
-    readOnly(!entry.contains("dbus")), dbusHandler(dbusHandler)
+    readOnly(true), dbusHandler(dbusHandler)
 {
+    try
+    {
+        readOnly = entry.at("readOnly");
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "get readOnly property error..." << '\n';
+    }
+
     if (!readOnly)
     {
         std::string objectPath = entry.at("dbus").at("object_path");
