@@ -34,7 +34,8 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
     auto jsonEnumReadOnly = R"({
          "attribute_name" : "CodeUpdatePolicy",
          "possible_values" : [ "Concurrent", "Disruptive" ],
-         "default_values" : [ "Concurrent" ]
+         "default_values" : [ "Concurrent" ],
+         "readOnly" : true
       })"_json;
 
     BIOSEnumAttribute enumReadOnly{jsonEnumReadOnly, nullptr};
@@ -56,6 +57,7 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
          "attribute_name" : "FWBootSide",
          "possible_values" : [ "Perm", "Temp" ],
          "default_values" : [ "Perm" ],
+         "readOnly" : false,
          "dbus":
             {
                "object_path" : "/xyz/abc/def",

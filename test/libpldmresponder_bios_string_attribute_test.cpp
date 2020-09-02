@@ -33,7 +33,8 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
             "minimum_string_length" : 1,
             "maximum_string_length" : 100,
             "default_string_length" : 2,
-            "default_string" : "ef"
+            "default_string" : "ef",
+            "readOnly" : true
         })"_json;
     BIOSStringAttribute stringReadOnly{jsonStringReadOnly, nullptr};
     EXPECT_EQ(stringReadOnly.name, "str_example3");
@@ -65,6 +66,7 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
             "maximum_string_length" : 100,
             "default_string_length" : 3,
             "default_string" : "abc",
+            "readOnly" : false,
             "dbus" : {
                 "object_path" : "/xyz/abc/def",
                 "interface" : "xyz.openbmc_project.str_example1.value",

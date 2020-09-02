@@ -37,7 +37,8 @@ class TestAttribute : public BIOSAttribute
 TEST(BIOSAttribute, CtorTest)
 {
     auto jsonReadOnly = R"({
-      "attribute_name" : "ReadOnly"
+      "attribute_name" : "ReadOnly",
+      "readOnly" : true
     })"_json;
 
     TestAttribute readOnly{jsonReadOnly, nullptr};
@@ -53,6 +54,7 @@ TEST(BIOSAttribute, CtorTest)
 
     auto jsonReadWrite = R"({
       "attribute_name":"ReadWrite",
+      "readOnly : false,
       "dbus":
            {
                "object_path" : "/xyz/abc/def",

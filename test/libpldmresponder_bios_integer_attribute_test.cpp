@@ -31,7 +31,8 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "lower_bound" : 1,
          "upper_bound" : 15,
          "scalar_increment" : 1,
-         "default_value" : 2
+         "default_value" : 2,
+         "readOnly" : true
       })"_json;
 
     BIOSIntegerAttribute integerReadOnly{jsonIntegerReadOnly, nullptr};
@@ -59,6 +60,7 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "upper_bound" : 15,
          "scalar_increment" : 1,
          "default_value" : 0,
+         "readOnly" : false,
          "dbus":{
             "object_path" : "/xyz/openbmc_project/avsbus",
             "interface" : "xyz.openbmc.AvsBus.Manager",
