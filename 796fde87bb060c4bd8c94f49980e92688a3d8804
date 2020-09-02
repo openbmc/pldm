@@ -1,0 +1,233 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6a983d25_382a6e5a",
+        "filename": "pldmd/pldm_fru_parser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "dont see why we have to copy the input FRU table all over again.",
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0bf9b991_9d6c5d30",
+        "filename": "pldmd/pldm_fru_parser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "Instead of having so many branches, you can make a table/map",
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04056be8_547deb47",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "nit: fru_parser",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 19
+      },
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5b1aeb9_029027f9",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "don\u0027t really need this, pass the string literal directly on line 44",
+      "range": {
+        "startLine": 18,
+        "startChar": 12,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "562bf396_4fb454ff",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "unexpected",
+      "range": {
+        "startLine": 24,
+        "startChar": 22,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab4a5e37_478cf24b",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "Don\u0027t expect T to be constructed at this stage.",
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5969db28_8f8ba620",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dc11650b_df4b7844",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "not following what this is for",
+      "range": {
+        "startLine": 56,
+        "startChar": 29,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "22579150_ec836ecf",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "why is this needed?",
+      "range": {
+        "startLine": 56,
+        "startChar": 67,
+        "endLine": 56,
+        "endChar": 78
+      },
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2efe0d21_34e7c40f",
+        "filename": "pldmd/pldm_fru_parser.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "We dont want the PLDMFRUParser to clone several instances of itself. It should create instances of \u0027T\u0027.",
+      "range": {
+        "startLine": 61,
+        "startChar": 32,
+        "endLine": 61,
+        "endChar": 45
+      },
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "edd6deed_be46043a",
+        "filename": "test/pldm_fru_parser_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-02T09:16:43Z",
+      "side": 1,
+      "message": "we dont expect this, rather construct the PLDMFRUParser with T \u003d a non-dbus based test type, which you can unit test (check how many are constructed, with what values, etc)",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 23
+      },
+      "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
