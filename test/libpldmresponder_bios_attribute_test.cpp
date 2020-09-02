@@ -42,7 +42,8 @@ class TestAttribute : public BIOSAttribute
 TEST(BIOSAttribute, CtorTest)
 {
     auto jsonReadOnly = R"({
-      "attribute_name" : "ReadOnly"
+      "attribute_name" : "ReadOnly",
+      "readOnly" : true
     })"_json;
 
     TestAttribute readOnly{jsonReadOnly, nullptr};
@@ -58,6 +59,7 @@ TEST(BIOSAttribute, CtorTest)
 
     auto jsonReadWrite = R"({
       "attribute_name":"ReadWrite",
+      "readOnly" : false,
       "dbus":
            {
                "object_path" : "/xyz/abc/def",
@@ -76,16 +78,4 @@ TEST(BIOSAttribute, CtorTest)
     EXPECT_EQ(dbusMap->interface, "xyz.openbmc.FWBoot.Side");
     EXPECT_EQ(dbusMap->propertyName, "Side");
     EXPECT_EQ(dbusMap->propertyType, "bool");
-
-    auto jsonReadWriteError = R"({
-      "attribute_name":"ReadWrite",
-      "dbus":
-           {
-               "object_path" : "/xyz/abc/def",
-               "interface" : "xyz.openbmc.FWBoot.Side",
-               "property_name" : "Side"
-           }
-    })"_json; // missing property_type.
-
-    EXPECT_THROW((TestAttribute{jsonReadWriteError, nullptr}), Json::exception);
 }
