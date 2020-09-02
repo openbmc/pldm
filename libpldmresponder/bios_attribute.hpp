@@ -89,7 +89,7 @@ class BIOSAttribute
     const std::string name;
 
     /** Weather this attribute is read-only */
-    const bool readOnly;
+    bool readOnly;
 
   protected:
     /** @brief dbus backend, nullopt if this attribute is read-only*/
