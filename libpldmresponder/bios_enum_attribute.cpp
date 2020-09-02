@@ -32,7 +32,7 @@ BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
     }
     assert(defaultValues.size() == 1);
     defaultValue = defaultValues[0];
-    if (!readOnly)
+    if (dBusMap.has_value())
     {
         auto dbusValues = entry.at("dbus").at("property_values");
         buildValMap(dbusValues);
@@ -123,7 +123,7 @@ void BIOSEnumAttribute::buildValMap(const Json& dbusVals)
 uint8_t BIOSEnumAttribute::getAttrValueIndex()
 {
     auto defaultValueIndex = getValueIndex(defaultValue, possibleValues);
-    if (readOnly)
+    if (readOnly || !dBusMap.has_value())
     {
         return defaultValueIndex;
     }
@@ -150,10 +150,6 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
 uint8_t BIOSEnumAttribute::getAttrValueIndex(const PropertyValue& propValue)
 {
     auto defaultValueIndex = getValueIndex(defaultValue, possibleValues);
-    if (readOnly)
-    {
-        return defaultValueIndex;
-    }
 
     try
     {
@@ -176,7 +172,7 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
     const pldm_bios_attr_table_entry* attrEntry,
     const BIOSStringTable& stringTable)
 {
-    if (readOnly)
+    if (readOnly || !dBusMap.has_value())
     {
         return;
     }
@@ -256,7 +252,19 @@ void BIOSEnumAttribute::generateAttributeEntry(
     std::string value = std::get<std::string>(attributevalue);
     entry->attr_type = 0;
     entry->value[0] = 1; // number of current values, default 1
-    entry->value[1] = getAttrValueIndex(value);
+
+    if (readOnly)
+    {
+        entry->value[1] = getValueIndex(defaultValue, possibleValues);
+    }
+    else if (!dBusMap.has_value())
+    {
+        entry->value[1] = getValueIndex(value, possibleValues);
+    }
+    else
+    {
+        entry->value[1] = getAttrValueIndex(value);
+    }
 }
 
 } // namespace bios

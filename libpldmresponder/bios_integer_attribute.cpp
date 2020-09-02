@@ -46,7 +46,7 @@ void BIOSIntegerAttribute::setAttrValueOnDbus(
     const pldm_bios_attr_val_table_entry* attrValueEntry,
     const pldm_bios_attr_table_entry*, const BIOSStringTable&)
 {
-    if (readOnly)
+    if (readOnly || !dBusMap.has_value())
     {
         return;
     }
@@ -160,7 +160,7 @@ uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
 
 uint64_t BIOSIntegerAttribute::getAttrValue()
 {
-    if (readOnly)
+    if (readOnly || !dBusMap.has_value())
     {
         return integerInfo.defaultValue;
     }
