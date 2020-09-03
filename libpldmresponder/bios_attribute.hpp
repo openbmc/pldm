@@ -91,6 +91,10 @@ class BIOSAttribute
     /** Weather this attribute is read-only */
     bool readOnly;
 
+    const std::string displayName;
+
+    const std::string helpText;
+
   protected:
     /** @brief dbus backend, nullopt if this attribute is read-only*/
     std::optional<DBusMapping> dBusMap;
