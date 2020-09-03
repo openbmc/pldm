@@ -18,7 +18,8 @@ namespace bios
 BIOSAttribute::BIOSAttribute(const Json& entry,
                              DBusHandler* const dbusHandler) :
     name(entry.at("attribute_name")),
-    readOnly(!entry.contains("dbus")), dbusHandler(dbusHandler)
+    readOnly(!entry.contains("dbus")), displayName(entry.at("displayName")),
+    helpText(entry.at("helpText")), dbusHandler(dbusHandler)
 {
     if (!readOnly)
     {
