@@ -269,6 +269,10 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
         {
             readonlyStatus =
                 biosAttributes[attrHandle % biosAttributes.size()]->readOnly;
+            description =
+                biosAttributes[attrHandle % biosAttributes.size()]->helpText;
+            displayName =
+                biosAttributes[attrHandle % biosAttributes.size()]->displayName;
         }
 
         switch (attrType)
