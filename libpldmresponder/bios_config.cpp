@@ -254,7 +254,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
         if (!biosAttributes.empty())
         {
             readonlyStatus =
-                biosAttributes[attrHandle / biosAttributes.size()]->readOnly;
+                biosAttributes[attrHandle % biosAttributes.size()]->readOnly;
         }
 
         switch (attrType)
