@@ -71,6 +71,24 @@ class CodeUpdate
         return newImageId;
     }
 
+    /* @brief Method to check whether code update is
+     *        going on
+     *  @return - bool
+     */
+    bool isCodeUpdateInProgress()
+    {
+        return codeUpdateInProgress;
+    }
+
+    /* @brief Method to indicate whether code update
+     *        is going on
+     * @param[in] progress - yes/no
+     */
+    void setCodeUpdateProgress(bool progress)
+    {
+        codeUpdateInProgress = progress;
+    }
+
     virtual ~CodeUpdate()
     {}
 
