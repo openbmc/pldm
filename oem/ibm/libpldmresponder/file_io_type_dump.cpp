@@ -127,7 +127,8 @@ static std::string getOffloadUri(uint32_t fileHandle)
 }
 
 int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
-                                 uint64_t address)
+                                 uint64_t address,
+                                 oem_platform::Handler* /*oemPlatformHandler*/)
 {
     auto nbdInterface = getOffloadUri(fileHandle);
     if (nbdInterface.empty())
@@ -150,7 +151,8 @@ int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
     return transferFileData(DumpHandler::fd, false, offset, length, address);
 }
 
-int DumpHandler::write(const char* buffer, uint32_t offset, uint32_t& length)
+int DumpHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
+                       oem_platform::Handler* /*oemPlatformHandler*/)
 {
     auto nbdInterface = getOffloadUri(fileHandle);
     if (nbdInterface.empty())
