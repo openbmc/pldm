@@ -76,7 +76,6 @@ void CodeUpdate::setVersions()
     static constexpr auto propIntf = "org.freedesktop.DBus.Properties";
 
     auto& bus = dBusIntf->getBus();
-
     try
     {
         auto method = bus.new_method_call(mapperService, functionalObjPath,
@@ -166,7 +165,6 @@ void CodeUpdate::setOemPlatformHandler(
 uint8_t fetchBootSide(uint16_t entityInstance, CodeUpdate* codeUpdate)
 {
     uint8_t sensorOpState = tSideNum;
-
     if (entityInstance == 0)
     {
         auto currSide = codeUpdate->fetchCurrentBootSide();
