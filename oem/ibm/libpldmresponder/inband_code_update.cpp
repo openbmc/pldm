@@ -78,7 +78,6 @@ void CodeUpdate::setVersions()
     static constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
 
     auto& bus = dBusIntf->getBus();
-
     try
     {
         auto method = bus.new_method_call(MAPPER_SERVICE, FUNCTIONAL_OBJ_PATH,
@@ -164,7 +163,6 @@ void CodeUpdate::processPriorityChangeNotification(
 uint8_t fetchBootSide(uint16_t entityInstance, CodeUpdate* codeUpdate)
 {
     uint8_t sensorOpState = T_SIDE;
-
     if (entityInstance == 0)
     {
         auto currSide = codeUpdate->fetchCurrentBootSide();
