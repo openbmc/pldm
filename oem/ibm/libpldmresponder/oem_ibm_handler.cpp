@@ -109,6 +109,16 @@ void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
        std::cout << "generated effecter id " << effecterId << "\n";*/
 }
 
+bool pldm::responder::oem_ibm_platform::Handler::isCodeUpdateInProgress()
+{
+    return codeUpdate.isCodeUpdateInProgress();
+}
+
+std::string pldm::responder::oem_ibm_platform::Handler::fetchCurrentBootSide()
+{
+    return codeUpdate.fetchCurrentBootSide();
+}
+
 } // namespace oem_ibm_platform
 
 } // namespace responder
