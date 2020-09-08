@@ -121,7 +121,9 @@ static std::string getOffloadUri(uint32_t fileHandle)
     return socketInterface;
 }
 
-int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address)
+int DumpHandler::writeFromMemory(uint32_t /*offset*/, uint32_t length,
+                                 uint64_t address,
+                                 oem_platform::Handler* /*oemPlatformHandler*/)
 {
     if (DumpHandler::fd == -1)
     {
@@ -143,7 +145,9 @@ int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address)
     return transferFileDataToSocket(DumpHandler::fd, length, address);
 }
 
-int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length)
+int DumpHandler::write(const char* buffer, uint32_t /*offset*/,
+                       uint32_t& length,
+                       oem_platform::Handler* /*oemPlatformHandler*/)
 {
     int rc = writeToUnixSocket(DumpHandler::fd, buffer, length);
     if (rc < 0)
