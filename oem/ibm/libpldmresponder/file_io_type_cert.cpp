@@ -46,7 +46,8 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
 }
 
 int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
-                                uint64_t address)
+                                uint64_t address,
+                                oem_platform::Handler* /*oemPlatformHandler*/)
 {
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {
@@ -55,7 +56,8 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
     return transferFileData(csrFilePath, true, offset, length, address);
 }
 
-int CertHandler::read(uint32_t offset, uint32_t& length, Response& response)
+int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
+                      oem_platform::Handler* /*oemPlatformHandler*/)
 {
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {

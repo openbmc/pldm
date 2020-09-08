@@ -38,7 +38,8 @@ class FileHandler
      *  @return PLDM status code
      */
     virtual int readIntoMemory(uint32_t offset, uint32_t& length,
-                               uint64_t address) = 0;
+                               uint64_t address,
+                               oem_platform::Handler* oemPlatformHandler) = 0;
 
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] offset - offset to read
@@ -46,7 +47,8 @@ class FileHandler
      *  @param[in] response - PLDM response
      *  @return PLDM status code
      */
-    virtual int read(uint32_t offset, uint32_t& length, Response& response) = 0;
+    virtual int read(uint32_t offset, uint32_t& length, Response& response,
+                     oem_platform::Handler* oemPlatformHandler) = 0;
 
     /** @brief Method to write an oem file by type
      *  @param[in] buffer - buffer to be written to file

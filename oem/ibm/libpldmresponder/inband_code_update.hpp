@@ -34,6 +34,16 @@ class CodeUpdate
     int setCurrentBootSide(std::string currSide);
     int setNextBootSide(std::string nextSide);
 
+    bool isCodeUpdateInProgress()
+    {
+        return codeUpdateInProgress;
+    }
+
+    void setCodeUpdateProgress(bool progress)
+    {
+        codeUpdateInProgress = progress;
+    }
+
     // subscribe here for dbus prop change notification for nonRunningVersion
     // for next boot side when set via gui or redfish
     //
@@ -50,7 +60,7 @@ class CodeUpdate
     std::string nextBootSide;
     std::string runningVersion; // verify whether really needed to be maintained
     std::string nonRunningVersion; // empty means single image is installed
-    inline static bool codeUpdateInProgress = false;
+    bool codeUpdateInProgress = false;
     const pldm::utils::DBusHandler* dBusIntf;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
         captureNextBootSideChange;

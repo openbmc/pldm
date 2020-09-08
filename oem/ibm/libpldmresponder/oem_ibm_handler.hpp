@@ -32,6 +32,10 @@ class Handler : public oem_platform::Handler
         const std::vector<set_effecter_state_field>& stateField);
     void setPlatformHandler(pldm::responder::platform::Handler* handler);
 
+    bool isCodeUpdateInProgress();
+
+    std::string fetchCurrentBootSide();
+
     ~Handler()
     {}
 

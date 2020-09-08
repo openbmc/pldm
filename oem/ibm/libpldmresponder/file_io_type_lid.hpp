@@ -28,6 +28,7 @@ class LidHandler : public FileHandler
      */
     LidHandler(uint32_t fileHandle, bool permSide) : FileHandler(fileHandle)
     {
+        sideToRead = permSide ? Pside : Tside;
         std::string dir = permSide ? LID_ALTERNATE_DIR : LID_RUNNING_DIR;
         std::stringstream stream;
         stream << std::hex << fileHandle;
@@ -43,6 +44,26 @@ class LidHandler : public FileHandler
         }
     }
 
+    void constructLIDPath(oem_platform::Handler* oemPlatformHandler)
+    {
+        if (oemPlatformHandler != nullptr)
+        {
+            pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+                dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+                    oemPlatformHandler);
+            std::string dir = LID_ALTERNATE_DIR;
+            if (oemIbmPlatformHandler->fetchCurrentBootSide() == sideToRead)
+            {
+                dir = LID_RUNNING_DIR;
+            }
+
+            std::stringstream stream;
+            stream << std::hex << fileHandle;
+            auto lidName = stream.str() + ".lid";
+            lidPath = std::move(dir) + '/' + lidName;
+        }
+    }
+
     virtual int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
                                 uint64_t /*address*/)
     {
@@ -50,8 +71,22 @@ class LidHandler : public FileHandler
     }
 
     virtual int readIntoMemory(uint32_t offset, uint32_t& length,
-                               uint64_t address)
+                               uint64_t address,
+                               oem_platform::Handler* oemPlatformHandler)
     {
+        if (oemPlatformHandler != nullptr)
+        {
+            pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+                dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+                    oemPlatformHandler);
+            if (oemIbmPlatformHandler->isCodeUpdateInProgress())
+            {
+                // static constexpr auto imagePath = lidPath; //change thsi path
+                // based on Adriana's api return transferFileData(imagePath,
+                // true, offset, length, address);
+            }
+        }
+        constructLIDPath(oemPlatformHandler);
         return transferFileData(lidPath, true, offset, length, address);
     }
 
@@ -61,8 +96,10 @@ class LidHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
-    virtual int read(uint32_t offset, uint32_t& length, Response& response)
+    virtual int read(uint32_t offset, uint32_t& length, Response& response,
+                     oem_platform::Handler* oemPlatformHandler)
     {
+        constructLIDPath(oemPlatformHandler);
         return readFile(lidPath, offset, length, response);
     }
 
@@ -84,6 +121,7 @@ class LidHandler : public FileHandler
 
   protected:
     std::string lidPath;
+    std::string sideToRead;
 };
 
 } // namespace responder

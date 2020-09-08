@@ -537,7 +537,8 @@ Response Handler::writeFile(const pldm_msg* request, size_t payloadLength)
 }
 
 Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
-                                size_t payloadLength)
+                                size_t payloadLength,
+                                oem_platform::Handler* oemPlatformHandler)
 {
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_RW_FILE_BY_TYPE_MEM_RESP_BYTES, 0);
@@ -591,7 +592,8 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
 
     rc = cmd == PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY
              ? handler->writeFromMemory(offset, length, address)
-             : handler->readIntoMemory(offset, length, address);
+             : handler->readIntoMemory(offset, length, address,
+                                       oemPlatformHandler);
     encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd, rc,
                                        length, responsePtr);
     return response;
@@ -601,14 +603,14 @@ Response Handler::writeFileByTypeFromMemory(const pldm_msg* request,
                                             size_t payloadLength)
 {
     return rwFileByTypeIntoMemory(PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY, request,
-                                  payloadLength);
+                                  payloadLength, oemPlatformHandler);
 }
 
 Response Handler::readFileByTypeIntoMemory(const pldm_msg* request,
                                            size_t payloadLength)
 {
     return rwFileByTypeIntoMemory(PLDM_READ_FILE_BY_TYPE_INTO_MEMORY, request,
-                                  payloadLength);
+                                  payloadLength, oemPlatformHandler);
 }
 
 Response Handler::writeFileByType(const pldm_msg* request, size_t payloadLength)
@@ -701,7 +703,7 @@ Response Handler::readFileByType(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    rc = handler->read(offset, length, response);
+    rc = handler->read(offset, length, response, oemPlatformHandler);
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     encode_rw_file_by_type_resp(request->hdr.instance_id,
                                 PLDM_READ_FILE_BY_TYPE, rc, length,

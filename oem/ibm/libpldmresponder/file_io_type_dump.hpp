@@ -24,12 +24,14 @@ class DumpHandler : public FileHandler
                                 uint64_t address);
 
     virtual int readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
-                               uint64_t /*address*/)
+                               uint64_t /*address*/,
+                               oem_platform::Handler* /*oemPlatformHandler*/)
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
     virtual int read(uint32_t /*offset*/, uint32_t& /*length*/,
-                     Response& /*response*/)
+                     Response& /*response*/,
+                     oem_platform::Handler* /*oemPlatformHandler*/)
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
