@@ -31,6 +31,8 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t stateSetId_ = PLDM_OEM_IBM_BOOT_STATE;
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
 
     std::vector<get_sensor_state_field> stateField;
 
@@ -40,7 +42,7 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        mockDbusHandler.get(), mockCodeUpdate.get());
+        mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester);
 
     auto rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField);
@@ -98,4 +100,39 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
         setEffecterStateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
+}
+
+TEST(SetStateEffecterStates, testEncodeRequest)
+{
+    uint16_t effecterId = 0xA;
+    uint8_t compEffecterCnt = 0x2;
+    std::vector<set_effecter_state_field> stateField{};
+    stateField.push_back({PLDM_REQUEST_SET, 2});
+    stateField.push_back({PLDM_NO_CHANGE, 3});
+
+    std::vector<uint8_t> requestMsg(
+        sizeof(pldm_msg_hdr) + sizeof(effecterId) + sizeof(compEffecterCnt) +
+            sizeof(set_effecter_state_field) * compEffecterCnt,
+        0);
+
+    auto rc =
+        encodeEventMsg(effecterId, compEffecterCnt, stateField, requestMsg, 1);
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(effecterId, request->payload[0]);
+    EXPECT_EQ(compEffecterCnt, request->payload[sizeof(effecterId)]);
+    EXPECT_EQ(stateField[0].set_request,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt)]);
+    EXPECT_EQ(stateField[0].effecter_state,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+                               sizeof(stateField[0].set_request)]);
+    EXPECT_EQ(stateField[1].set_request,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+                               sizeof(stateField[0])]);
+    EXPECT_EQ(stateField[1].effecter_state,
+              request->payload[sizeof(effecterId) + sizeof(compEffecterCnt) +
+                               sizeof(stateField[0]) +
+                               sizeof(stateField[1].set_request)]);
 }
