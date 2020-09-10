@@ -1,5 +1,7 @@
 #include "oem_ibm_handler.hpp"
 
+#include "libpldm/requester/pldm.h"
+
 #include "libpldmresponder/pdr_utils.hpp"
 
 namespace pldm
@@ -81,6 +83,118 @@ void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
     pldm::responder::platform::Handler* handler)
 {
     platformHandler = handler;
+}
+
+int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
+    std::vector<uint8_t>& requestMsg)
+{
+    uint8_t* responseMsg = nullptr;
+    size_t responseMsgSize{};
+    std::cout << "sendEventToHost \n\n";
+    if (requestMsg.size())
+    {
+        std::ostringstream tempStream;
+        for (int byte : requestMsg)
+        {
+            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
+               << " ";
+        }
+        std::cout << tempStream.str() << std::endl;
+    }
+
+    auto requesterRc =
+        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
+                       &responseMsg, &responseMsgSize);
+    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
+                                                                  std::free};
+    if (requesterRc != PLDM_REQUESTER_SUCCESS)
+    {
+                std::cerr << "Failed to send message/receive response. RC = "
+                    
+                                      << requesterRc << ", errno = " << errno
+                                        
+                                                          << "for sending event to host \n";
+        return requesterRc;
+    }
+    uint8_t completionCode{};
+    uint8_t status{};
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
+    auto rc = decode_platform_event_message_resp(
+        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
+        &status);
+
+    if (rc != PLDM_SUCCESS ||completionCode != PLDM_SUCCESS)
+    {
+        std::cerr << "Failure in decode platform event message response, rc= "
+                          << rc << " cc=" << static_cast<unsigned>(completionCode)
+                            
+                                              << "\n";
+        return rc;
+    }
+    std::cout << "returning rc= " << rc << " from sendEventToHost \n";
+
+    return rc;
+}
+
+void pldm::responder::oem_ibm_platform::Handler::sendCodeUpdateEvent(
+    EffecterId effecterId, codeUpdateStateValues opState,
+    codeUpdateStateValues previousOpState)
+{
+    std::vector<uint8_t> effecterEventDataVec{};
+    size_t effecterEventSize = PLDM_EFFECTER_EVENT_DATA_MIN_LENGTH + 1;
+    effecterEventDataVec.resize(effecterEventSize);
+
+    auto eventData = reinterpret_cast<struct pldm_effecter_event_data*>(
+        effecterEventDataVec.data());
+    eventData->effecter_id = effecterId;
+    eventData->effecter_event_class_type = PLDM_EFFECTER_OP_STATE;
+
+    auto opStateEffecterEventData =
+        reinterpret_cast<struct pldm_effecter_event_effecter_op_state*>(
+            effecterEventDataVec.data());
+    opStateEffecterEventData->present_op_state = opState;
+    opStateEffecterEventData->previous_op_state = previousOpState;
+
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                                    effecterEventDataVec.size());
+
+    auto instanceId = requester.getInstanceId(mctp_eid);
+
+    auto rc = encodeEventMsg(PLDM_EFFECTER_EVENT, effecterEventDataVec,
+                             requestMsg, instanceId);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to encode state effecter event, rc = " << rc
+                  << std::endl;
+        return;
+    }
+
+    rc = sendEventToHost(requestMsg);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to send event to host: "
+                  << "rc=" << rc << std::endl;
+    }
+
+    requester.markFree(mctp_eid, instanceId);
+
+    return;
+}
+
+int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
+                   std::vector<uint8_t>& requestMsg, uint8_t instanceId)
+{
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_platform_event_message_req(
+        instanceId, 1 /*formatVersion*/, 0 /*tId*/, eventType,
+        eventDataVec.data(), eventDataVec.size(), request,
+        eventDataVec.size() + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
+
+    return rc;
 }
 
 } // namespace oem_ibm_platform
