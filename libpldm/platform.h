@@ -37,6 +37,7 @@ extern "C" {
 
 /* Minumum length of senson event data */
 #define PLDM_SENSOR_EVENT_DATA_MIN_LENGTH 5
+#define PLDM_EFFECTER_EVENT_DATA_MIN_LENGTH 5
 #define PLDM_SENSOR_EVENT_SENSOR_OP_STATE_DATA_LENGTH 2
 #define PLDM_SENSOR_EVENT_STATE_SENSOR_STATE_DATA_LENGTH 3
 #define PLDM_SENSOR_EVENT_NUMERIC_SENSOR_STATE_MIN_DATA_LENGTH 4
@@ -199,6 +200,10 @@ enum sensor_event_class_states {
 	PLDM_STATE_SENSOR_STATE,
 	PLDM_NUMERIC_SENSOR_STATE
 };
+
+/** @brief PLDM effecterEventClass states
+ */
+enum effecter_event_class_states { PLDM_EFFECTER_OP_STATE };
 
 /** @brief PLDM sensor supported states
  */
@@ -632,6 +637,25 @@ struct pldm_sensor_event_numeric_sensor_state {
  *  structure representing sensorEventClass for SensorOpState
  */
 struct pldm_sensor_event_sensor_op_state {
+	uint8_t present_op_state;
+	uint8_t previous_op_state;
+} __attribute__((packed));
+
+/** @struct pldm_effecter_event
+ *
+ *  structure representing effecterEventClass
+ */
+struct pldm_effecter_event_data {
+	uint16_t effecter_id;
+	uint8_t effecter_event_class_type;
+	uint8_t event_class[1];
+} __attribute__((packed));
+
+/** @struct pldm_effecter_event_effecter_op_state
+ *
+ *  structure representing effecterEventClass for EffecterOpState
+ */
+struct pldm_effecter_event_effecter_op_state {
 	uint8_t present_op_state;
 	uint8_t previous_op_state;
 } __attribute__((packed));
