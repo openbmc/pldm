@@ -33,6 +33,8 @@ TEST(oemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t stateSetId_ = PLDM_OEM_IBM_BOOT_STATE;
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
 
     std::vector<get_sensor_state_field> stateField;
 
@@ -42,7 +44,7 @@ TEST(oemSetStateEffecterStatesHandler, testGoodRequest)
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        mockDbusHandler.get(), mockCodeUpdate.get());
+        mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester);
 
     auto rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField);
@@ -100,4 +102,43 @@ TEST(oemSetStateEffecterStatesHandler, testGoodRequest)
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
         setEffecterStateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
+}
+
+TEST(EncodeCodeUpdateEvent, testGoodRequest)
+{
+    size_t sensorEventSize = PLDM_SENSOR_EVENT_DATA_MIN_LENGTH + 1;
+    std::vector<uint8_t> sensorEventDataVec{};
+    sensorEventDataVec.resize(sensorEventSize);
+
+    auto eventData = reinterpret_cast<struct pldm_sensor_event_data*>(
+        sensorEventDataVec.data());
+    uint16_t sensorId = 0xA;
+    eventData->sensor_id = htole32(sensorId);
+    eventData->sensor_event_class_type = PLDM_SENSOR_OP_STATE;
+
+    auto opStateSensorEventData =
+        reinterpret_cast<struct pldm_sensor_event_sensor_op_state*>(
+            sensorEventDataVec.data());
+    opStateSensorEventData->present_op_state = uint8_t(CodeUpdateState::START);
+    opStateSensorEventData->previous_op_state = uint8_t(CodeUpdateState::END);
+
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                                    sensorEventDataVec.size());
+
+    auto rc =
+        encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg, 0x1);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(EncodeCodeUpdate, testBadRequest)
+{
+    std::vector<uint8_t> requestMsg;
+    std::vector<uint8_t> sensorEventDataVec{};
+
+    auto rc =
+        encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg, 0x1);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
