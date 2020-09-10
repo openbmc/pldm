@@ -12,27 +12,19 @@ namespace oem_ibm_platform
 
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
-        /*uint16_t sensorId,*/
-        /* uint8_t sensorRearmCnt,*/ uint16_t entityType, // sensorId and
-                                                          // sensorRearmCnt not
-                                                          // needed
-        uint16_t entityInstance, uint16_t stateSetId, uint8_t compSensorCnt,
-        std::vector<get_sensor_state_field>&
-            stateField) // fill up the data before sending
+        uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
+        uint8_t compSensorCnt, std::vector<get_sensor_state_field>& stateField)
 {
     int rc = PLDM_SUCCESS;
-    std::cout << "getOemStateSensorReadingsHandler enter \n";
-
     stateField.clear();
 
     for (size_t i = 0; i < compSensorCnt; i++)
     {
         uint8_t sensorOpState{};
-        if (entityType == 33 && stateSetId == 32769)
+        if (entityType == PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY &&
+            stateSetId == PLDM_OEM_IBM_BOOT_STATE)
         {
             sensorOpState = fetchBootSide(entityInstance, codeUpdate);
-            std::cout << "fetched sensorOpState " << (uint16_t)sensorOpState
-                      << "\n";
         }
         else
         {
@@ -41,46 +33,31 @@ int pldm::responder::oem_ibm_platform::Handler::
         }
         stateField.push_back({PLDM_SENSOR_ENABLED, PLDM_SENSOR_UNKNOWN,
                               PLDM_SENSOR_UNKNOWN, sensorOpState});
-        std::cout << "stateField[0].sensor_op_state "
-                  << (uint16_t)stateField[0].sensor_op_state << "\n";
-        std::cout << "stateField[0].present_state "
-                  << (uint16_t)stateField[0].present_state << "\n";
-        std::cout << "stateField[0].previous_state "
-                  << (uint16_t)stateField[0].previous_state << "\n";
-        std::cout << "stateField[0].event_state "
-                  << (uint16_t)stateField[0].event_state << "\n";
     }
-    std::cout << "getOemStateSensorReadingsHandler exit \n";
     return rc;
 }
 
 int pldm::responder::oem_ibm_platform::Handler::
     OemSetStateEffecterStatesHandler(
-        /*uint16_t effecterId,*/ uint16_t entityType, uint16_t entityInstance,
-        uint16_t stateSetId, uint8_t compEffecterCnt,
+        uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
+        uint8_t compEffecterCnt,
         const std::vector<set_effecter_state_field>& stateField)
 {
     int rc = PLDM_SUCCESS;
-
-    std::cout << "OemSetStateEffecterStatesHandler enter \n";
 
     for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
     {
         if (stateField[currState].set_request == PLDM_REQUEST_SET)
         {
-            if (entityType == 33 && stateSetId == 32769)
+            if (entityType == PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY &&
+                stateSetId == PLDM_OEM_IBM_BOOT_STATE)
             {
-                std::cout << "calling setBootSide \n";
                 rc = setBootSide(entityInstance, currState, stateField,
                                  codeUpdate);
-                std::cout << "after setBootSide \n";
             }
             else
             {
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
-                std::cout
-                    << "returning "
-                       "PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE \n";
             }
         }
         if (rc != PLDM_SUCCESS)
@@ -104,20 +81,92 @@ void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
     pldm::responder::platform::Handler* handler)
 {
     platformHandler = handler;
-    // example to call getNextEffecterId()
-    /*   auto effecterId = platformHandler->getNextEffecterId();
-       std::cout << "generated effecter id " << effecterId << "\n";*/
 }
 
-/*bool pldm::responder::oem_ibm_platform::Handler::isCodeUpdateInProgress()
+int pldm::responder::oem_ibm_platform::Handler::encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec, std::vector<uint8_t>& requestMsg, uint8_t instanceId)
 {
-    return codeUpdate.isCodeUpdateInProgress();
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_platform_event_message_req(
+        instanceId, 1 /*formatVersion*/, 0 /*tId*/, eventType,
+        eventDataVec.data(), eventDataVec.size(), request,
+        eventDataVec.size() + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
+
+    return rc;
 }
 
-std::string pldm::responder::oem_ibm_platform::Handler::fetchCurrentBootSide()
+int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(std::vector<uint8_t>& requestMsg)
 {
-    return codeUpdate.fetchCurrentBootSide();
-}*/
+    uint8_t* responseMsg = nullptr;
+    size_t responseMsgSize{};
+
+    auto requesterRc =
+        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
+                       &responseMsg, &responseMsgSize);
+    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
+                                                                  std::free};
+    requester.markFree(mctpEid, instanceId);
+
+    if (requesterRc != PLDM_REQUESTER_SUCCESS)
+    {
+        return requesterRc;
+    }
+    uint8_t completionCode{};
+    uint8_t status{};
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
+    auto rc = decode_platform_event_message_resp(
+        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
+        &status);
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        return PLDM_ERROR;
+    }
+
+    return rc;
+}
+
+void pldm::responder::oem_ibm_platform::Handler::sendCodeUpdateEvent(SensorId sensorId, codeUpdateStateValues eventState, codeUpdateStateValues previousEventState, uint8_t stateSenserEventPtr)
+{
+    std::vector<uint8_t> sensorEventDataVec{};
+    size_t sensorEventSize = PLDM_SENSOR_EVENT_DATA_MIN_LENGTH + 1;
+    sensorEventDataVec.resize(sensorEventSize);
+
+    auto eventData = reinterpret_cast<struct pldm_sensor_event_data*>(
+        sensorEventDataVec.data());
+    eventData->sensor_id = sensorId;
+    eventData->sensor_event_class_type = PLDM_STATE_SENSOR_STATE;
+
+    auto stateSensorEventData =
+        reinterpret_cast<struct pldm_sensor_event_state_sensor_state*>(
+            sensorEventDataVec.data());
+    stateSensorEventData->sensor_offset = stateSenserEventPtr;
+    stateSensorEventData->event_state = eventState;
+    stateSensorEventData->previous_event_state = previousEventState;
+
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                                    sensorEventDataVec.size());
+
+    auto instanceId = requester.getInstanceId(mctp_eid);    
+
+    auto rc = encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg,
+                             instanceId);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to encode state sensor event, rc = " << rc
+                  << std::endl;
+        return;
+    }
+
+    rc = sendEventToHost(requestMsg);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to send event to host: "
+                  << "rc=" << rc << std::endl;
+    }
+    return;
+}
 
 } // namespace oem_ibm_platform
 

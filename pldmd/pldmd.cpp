@@ -201,7 +201,7 @@ int main(int argc, char** argv)
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
         std::make_unique<pldm::responder::CodeUpdate>(dbusHandler.get());
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        dbusHandler.get(), codeUpdate.get());
+        dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq);
     invoker.registerHandler(
         PLDM_OEM, std::make_unique<oem_ibm::Handler>(oemPlatformHandler.get()));
 #endif
@@ -223,13 +223,7 @@ int main(int argc, char** argv)
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
 #endif
 
-   invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
-     /*invoker.registerHandler(
-         PLDM_PLATFORM,
-         std::make_unique<platform::Handler>(
-             dbusHandler.get(), PDR_JSONS_DIR, EVENTS_JSONS_DIR, pdrRepo.get(),
-             hostPDRHandler.get(), dbusToPLDMEventHandler.get(),
-             fruHandler.get(), oemPlatformHandler.get(), true));*/
+    invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
     pldm::utils::CustomFD socketFd(sockfd);
