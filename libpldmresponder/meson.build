@@ -34,7 +34,8 @@ if get_option('oem-ibm').enabled()
     '../oem/ibm/libpldmresponder/file_io_type_dump.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_cert.cpp',
     '../oem/ibm/libpldmresponder/oem_ibm_handler.cpp',
-    '../oem/ibm/libpldmresponder/inband_code_update.cpp'
+    '../oem/ibm/libpldmresponder/inband_code_update.cpp',
+    '../oem/ibm/libpldmresponder/code_update_event.cpp'
   ]
 endif
 
