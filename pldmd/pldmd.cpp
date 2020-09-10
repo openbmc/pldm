@@ -201,8 +201,7 @@ int main(int argc, char** argv)
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
         std::make_unique<pldm::responder::CodeUpdate>(dbusHandler.get());
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        dbusHandler.get(), codeUpdate.get());
-
+        dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(
         PLDM_OEM, std::make_unique<oem_ibm::Handler>(oemPlatformHandler.get()));
