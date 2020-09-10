@@ -1,7 +1,10 @@
 #pragma once
 
+#include "libpldm/platform.h"
+
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
 
 namespace pldm
@@ -18,13 +21,25 @@ static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
+enum class CodeUpdateState : uint8_t
+{
+    START,
+    END,
+    FAIL,
+    ABORT,
+    ACCEPT,
+    REJECT
+};
+
 class Handler : public oem_platform::Handler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
-            pldm::responder::CodeUpdate* codeUpdate) :
+            pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
+            uint8_t mctp_eid, Requester& requester) :
         oem_platform::Handler(dBusIntf),
-        codeUpdate(codeUpdate), platformHandler(nullptr)
+        codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
+        mctp_eid(mctp_eid), requester(requester)
     {
         codeUpdate->setVersions();
     }
@@ -71,12 +86,52 @@ class Handler : public oem_platform::Handler
      */
     void buildOEMPDR(pdr_utils::Repo& repo);
 
+    /** @brief Method to send code update event to host
+     * @param[in] sensorId - sendor ID
+     * @param[in] sensorEventClass - event class of sensor
+     * @param[in] sensorOffset - sensor offset
+     * @param[in] eventState - new code update event state
+     * @param[in] prevEventState - previous code update event state
+     * @return none
+     */
+    void sendStateSensorEvent(uint16_t sensorId,
+                              enum sensor_event_class_states sensorEventClass,
+                              uint8_t sensorOffset, uint8_t eventState,
+                              uint8_t prevEventState);
+
+    /** @brief Method to send encoded request msg of code update event to host
+     *  @param[in] requestMsg - encoded request msg
+     *  @return PLDM status code
+     */
+    int sendEventToHost(std::vector<uint8_t>& requestMsg);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
     pldm::responder::platform::Handler*
         platformHandler; //!< pointer to PLDM platform handler
+
+    /** @brief fd of MCTP communications socket */
+    int mctp_fd;
+
+    /** @brief MCTP EID of host firmware */
+    uint8_t mctp_eid;
+
+    /** @brief reference to Requester object, primarily used to access API to
+     *  obtain PLDM instance id.
+     */
+    Requester& requester;
 };
+
+/** @brief Method to encode code update event msg
+ *  @param[in] eventType - type of event
+ *  @param[in] eventDataVec - vector of event data to be sent to host
+ *  @param[in/out] requestMsg - request msg to be encoded
+ *  @param[in] instanceId - instance ID
+ *  @return PLDM status code
+ */
+int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
+                   std::vector<uint8_t>& requestMsg, uint8_t instanceId);
 
 } // namespace oem_ibm_platform
 
