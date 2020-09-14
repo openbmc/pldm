@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf0a7a72_fd5efd4e",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-09-14T11:04:16Z",
+      "side": 1,
+      "message": "add code update input parameter description",
+      "revId": "1b923cb5d70bacdc73d58141b9cb0ffa52d6ab3b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
