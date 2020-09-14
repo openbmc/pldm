@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "609b2611_7c4a1f73",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-09-14T08:21:05Z",
+      "side": 1,
+      "message": "add input parameter oemPlatformHandler description here",
+      "revId": "389ecb9c7488d3181c8dd51e365c019b51b21899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66f19655_403fdc05",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-09-14T08:21:05Z",
+      "side": 1,
+      "message": "add input parameter oemPlatformHandler description here",
+      "revId": "389ecb9c7488d3181c8dd51e365c019b51b21899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "387310ac_b4ae1453",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-09-14T08:21:05Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "389ecb9c7488d3181c8dd51e365c019b51b21899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df2748c7_913295ec",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-09-14T08:21:05Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "389ecb9c7488d3181c8dd51e365c019b51b21899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
