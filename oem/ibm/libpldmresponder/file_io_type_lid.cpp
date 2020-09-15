@@ -1,5 +1,10 @@
 #include "file_io_type_lid.hpp"
 
+#include <arpa/inet.h>
+
+#include <filesystem>
+#include <fstream>
+
 namespace pldm
 {
 namespace responder
@@ -53,7 +58,51 @@ int LidHandler::assembleHostFWImage(const std::string& lidPath)
 
 int LidHandler::assembleImage(const std::string& lidPath)
 {
-    return assembleHostFWImage(lidPath);
+    std::ifstream lid(lidPath, std::ios::in | std::ios::binary);
+    if (!lid)
+    {
+        return PLDM_ERROR;
+    }
+
+    constexpr auto magicNumber = 0x0222;
+    constexpr auto magicOffset = 0;
+    uint16_t magic;
+    lid.seekg(magicOffset);
+    lid.read(reinterpret_cast<char*>(&magic), sizeof(magic));
+    magic = htons(magic);
+    if (magic != magicNumber)
+    {
+        return PLDM_ERROR;
+    }
+
+    constexpr auto lidSizeOffset = 0x14;
+    uint32_t lidSize;
+    lid.seekg(lidSizeOffset);
+    lid.read(reinterpret_cast<char*>(&lidSize), sizeof(lidSize));
+    lidSize = htonl(lidSize);
+
+    constexpr auto headerSizeOffset = 0x18;
+    uint32_t headerSize;
+    lid.seekg(headerSizeOffset);
+    lid.read(reinterpret_cast<char*>(&headerSize), sizeof(headerSize));
+    headerSize = htonl(headerSize);
+
+    auto fileSize = std::filesystem::file_size(lidPath);
+
+    // File size should be the value of lid size minus the header size
+    fileSize -= headerSize;
+    if (fileSize < lidSize)
+    {
+        // File is not completely written yet
+        return PLDM_SUCCESS;
+    }
+    if (fileSize == lidSize)
+    {
+        // File is completely written, add it to the image
+        return assembleHostFWImage(lidPath);
+    }
+    // Error, file too big
+    return PLDM_ERROR;
 }
 
 } // namespace responder
