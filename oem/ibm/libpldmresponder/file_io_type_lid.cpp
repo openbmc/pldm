@@ -1,5 +1,7 @@
 #include "file_io_type_lid.hpp"
 
+#include <fstream>
+
 namespace pldm
 {
 namespace responder
@@ -53,7 +55,27 @@ int LidHandler::assembleHostFWImage(const std::string& lidPath)
 
 int LidHandler::assembleImage(const std::string& lidPath)
 {
-    return assembleHostFWImage(lidPath);
+    std::ifstream lid(lidPath, std::ios::in | std::ios::binary);
+    if (!lid)
+    {
+        return PLDM_ERROR;
+    }
+
+    // Read the lid class from the lid header.
+    constexpr auto lidClassOffset = 0xE;
+    uint8_t lidClass;
+    lid.seekg(lidClassOffset);
+    lid.read(reinterpret_cast<char*>(&lidClass), sizeof(lidClass));
+
+    // The BMC lids have a lid class value of 0x2-.
+    // If the lid is not a BMC one, use it to assemble the host fw image.
+    constexpr auto bmcLidClassMask = 0x20;
+    if (!(bmcLidClassMask & lidClass))
+    {
+        return assembleHostFWImage(lidPath);
+    }
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace responder
