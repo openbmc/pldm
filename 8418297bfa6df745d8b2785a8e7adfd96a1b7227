@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "711787f2_c26ba4e6",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-16T06:38:47Z",
+      "side": 1,
+      "message": "no need to check for OEM_IBM\ncheck if  oemPlatformHandler !\u003d nullptr then call buildOEMPDR(pdrRepo)",
+      "range": {
+        "startLine": 151,
+        "startChar": 7,
+        "endLine": 151,
+        "endChar": 14
+      },
+      "revId": "8418297bfa6df745d8b2785a8e7adfd96a1b7227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ead7fce1_5e2d8dba",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-16T06:38:47Z",
+      "side": 1,
+      "message": "not needed here",
+      "range": {
+        "startLine": 421,
+        "startChar": 9,
+        "endLine": 421,
+        "endChar": 20
+      },
+      "revId": "8418297bfa6df745d8b2785a8e7adfd96a1b7227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8e8e31c_abbe8c93",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-16T06:38:47Z",
+      "side": 1,
+      "message": "i guess it is not needed here",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 19
+      },
+      "revId": "8418297bfa6df745d8b2785a8e7adfd96a1b7227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f31a2f15_2d4f9927",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-16T06:38:47Z",
+      "side": 1,
+      "message": "this is defined in oem_ibm_handler.hpp. pls use that\nalso define the entity instance there itself",
+      "range": {
+        "startLine": 14,
+        "startChar": 19,
+        "endLine": 14,
+        "endChar": 32
+      },
+      "revId": "8418297bfa6df745d8b2785a8e7adfd96a1b7227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b53e272d_59ecd248",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-16T06:38:47Z",
+      "side": 1,
+      "message": "use constant defined in platform.h",
+      "range": {
+        "startLine": 217,
+        "startChar": 23,
+        "endLine": 217,
+        "endChar": 25
+      },
+      "revId": "8418297bfa6df745d8b2785a8e7adfd96a1b7227",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
