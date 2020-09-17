@@ -105,10 +105,13 @@ void printBuffer(const std::vector<uint8_t>& buffer)
 {
     std::ostringstream tempStream;
     tempStream << "Buffer Data: ";
+    static constexpr size_t BUFFER_MAX_SIZE = 4096;
     if (!buffer.empty())
     {
-        for (int byte : buffer)
+        auto bufSize = std::min(buffer.size(), BUFFER_MAX_SIZE);
+        for (size_t i = 0; i < bufSize; ++i)
         {
+            int byte = buffer[i];
             tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
                        << " ";
         }
