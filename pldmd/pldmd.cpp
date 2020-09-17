@@ -101,16 +101,24 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
     return response;
 }
 
-void printBuffer(const std::vector<uint8_t>& buffer)
+void printBuffer(std::vector<uint8_t>& buffer)
 {
     std::ostringstream tempStream;
     tempStream << "Buffer Data: ";
+    static constexpr auto BUFFER_MAX_SIZE = 4096;
     if (!buffer.empty())
     {
+        if (buffer.size() > BUFFER_MAX_SIZE)
+        {
+            buffer.resize(BUFFER_MAX_SIZE);
+        }
         for (int byte : buffer)
         {
-            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
-                       << " ";
+            if (tempStream.str().size() <= buffer.size())
+            {
+                tempStream << std::setfill('0') << std::setw(2) << std::hex
+                           << byte << " ";
+            }
         }
     }
     std::cout << tempStream.str().c_str() << std::endl;
