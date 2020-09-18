@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "797fdc08_230385c3",
+        "filename": "oem/ibm/libpldmresponder/code_update_event.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-18T13:28:34Z",
+      "side": 1,
+      "message": "where is this function declared?\ni guess this is the function that Sagar has to call?",
+      "range": {
+        "startLine": 58,
+        "startChar": 5,
+        "endLine": 58,
+        "endChar": 25
+      },
+      "revId": "499441486c1710b4b41a347902a462e7225ad3bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9363080b_8748bd25",
+        "filename": "oem/ibm/libpldmresponder/code_update_event.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-18T13:28:34Z",
+      "side": 1,
+      "message": "i guess the whole code can be placed in oem_ibm_handler.hpp and cpp since this is oem platform specific",
+      "range": {
+        "startLine": 6,
+        "startChar": 10,
+        "endLine": 6,
+        "endChar": 14
+      },
+      "revId": "499441486c1710b4b41a347902a462e7225ad3bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9090fa77_bbb0c95d",
+        "filename": "oem/ibm/libpldmresponder/code_update_event.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-18T13:28:34Z",
+      "side": 1,
+      "message": "this name space is not needed. you can create a namespace oem_ibm_platform_event",
+      "range": {
+        "startLine": 9,
+        "startChar": 10,
+        "endLine": 9,
+        "endChar": 27
+      },
+      "revId": "499441486c1710b4b41a347902a462e7225ad3bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ad3db85_33d387ce",
+        "filename": "oem/ibm/libpldmresponder/code_update_event.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-09-18T13:28:34Z",
+      "side": 1,
+      "message": "where is this function defined?",
+      "range": {
+        "startLine": 44,
+        "startChar": 5,
+        "endLine": 44,
+        "endChar": 24
+      },
+      "revId": "499441486c1710b4b41a347902a462e7225ad3bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
