@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c5f6b9d_ad351c1a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-18T04:12:40Z",
+      "side": 1,
+      "message": "The buffer is used after calling printBuffer as well, so resizing it here will cause a problem.",
+      "range": {
+        "startLine": 104,
+        "startChar": 17,
+        "endLine": 104,
+        "endChar": 45
+      },
+      "revId": "f46235f471ae9237b551300f818547e6ff06b445",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
