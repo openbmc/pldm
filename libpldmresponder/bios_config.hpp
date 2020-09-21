@@ -4,6 +4,7 @@
 
 #include "bios_attribute.hpp"
 #include "bios_table.hpp"
+#include "pldmd/dbus_impl_requester.hpp"
 
 #include <nlohmann/json.hpp>
 
@@ -68,9 +69,13 @@ class BIOSConfig
      *  @param[in] jsonDir - The directory where json file exists
      *  @param[in] tableDir - The directory where the persistent table is placed
      *  @param[in] dbusHandler - Dbus Handler
+     *  @param[in] fd - socket descriptor to communicate to host
+     *  @param[in] eid - MCTP EID of host firmware
+     *  @param[in] requester - pointer to Requester object
      */
     explicit BIOSConfig(const char* jsonDir, const char* tableDir,
-                        DBusHandler* const dbusHandler);
+                        DBusHandler* const dbusHandler, int fd, uint8_t eid,
+                        dbus_api::Requester* requester);
 
     /** @brief Set attribute value on dbus and attribute value table
      *  @param[in] entry - attribute value entry
@@ -96,16 +101,29 @@ class BIOSConfig
      *             {BIOSStringTable=0x0, BIOSAttributeTable=0x1,
      *              BIOSAttributeValueTable=0x2}
      *  @param[in] table - table data
+     *  @param[in] updateProperty - update BaseBIOSTable D-Bus property is this
+     *                              is set to true
      *  @return pldm_completion_codes
      */
-    int setBIOSTable(uint8_t tableType, const Table& table);
+    int setBIOSTable(uint8_t tableType, const Table& table,
+                     bool updateProperty = true);
 
   private:
     const fs::path jsonDir;
     const fs::path tableDir;
     DBusHandler* const dbusHandler;
-    bool isUpdateProperty;
     BaseBIOSTable baseBIOSTableMaps;
+
+    /** @brief socket descriptor to communicate to host */
+    int fd;
+
+    /** @brief MCTP EID of host firmware */
+    uint8_t eid;
+
+    /** @brief pointer to Requester object, primarily used to access API to
+     *  obtain PLDM instance id.
+     */
+    dbus_api::Requester* requester;
 
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
