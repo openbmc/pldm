@@ -11,6 +11,10 @@
 #include <fstream>
 #include <iostream>
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/platform_oem_ibm.hpp"
+#endif
+
 namespace pldm
 {
 namespace responder
@@ -34,9 +38,12 @@ constexpr auto attrValueTableFile = "attributeValueTable";
 } // namespace
 
 BIOSConfig::BIOSConfig(const char* jsonDir, const char* tableDir,
-                       DBusHandler* const dbusHandler) :
+                       DBusHandler* const dbusHandler, int fd, uint8_t eid,
+                       dbus_api::Requester* requester) :
     jsonDir(jsonDir),
-    tableDir(tableDir), dbusHandler(dbusHandler), isUpdateProperty(false)
+    tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
+    requester(requester)
+
 {
     fs::create_directories(tableDir);
     constructAttributes();
@@ -70,7 +77,8 @@ std::optional<Table> BIOSConfig::getBIOSTable(pldm_bios_table_types tableType)
     return loadTable(tablePath);
 }
 
-int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table)
+int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table,
+                             bool updateBaseBIOSTable)
 {
     fs::path stringTablePath(tableDir / stringTableFile);
     fs::path attrTablePath(tableDir / attrTableFile);
@@ -117,16 +125,16 @@ int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table)
         }
 
         storeTable(attrValueTablePath, table);
-        isUpdateProperty = true;
     }
     else
     {
         return PLDM_INVALID_BIOS_TABLE_TYPE;
     }
 
-    if (isUpdateProperty)
+    if ((tableType == PLDM_BIOS_ATTR_VAL_TABLE) && updateBaseBIOSTable)
     {
-        isUpdateProperty = false;
+        std::cout << "setBIOSTable:: updateBaseBIOSTableProperty() "
+                  << "\n";
         updateBaseBIOSTableProperty();
     }
 
@@ -633,7 +641,8 @@ int BIOSConfig::checkAttrValueToUpdate(
     };
 }
 
-int BIOSConfig::setAttrValue(const void* entry, size_t size)
+int BIOSConfig::setAttrValue(const void* entry, size_t size,
+                             bool updateBaseBIOSTable)
 {
     auto attrValueTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
     auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
@@ -692,7 +701,7 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size)
         return PLDM_ERROR;
     }
 
-    setBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE, *destTable);
+    setBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE, *destTable, updateBaseBIOSTable);
 
     return PLDM_SUCCESS;
 }
@@ -814,6 +823,8 @@ uint16_t BIOSConfig::findAttrHandle(const std::string& attrName)
 void BIOSConfig::constructPendingAttribute(
     const PendingAttributes& pendingAttributes)
 {
+    std::vector<uint16_t> listOfHandles{};
+
     for (auto& attribute : pendingAttributes)
     {
         std::string attributeName = attribute.first;
@@ -849,9 +860,24 @@ void BIOSConfig::constructPendingAttribute(
         }
 
         entry->attr_handle = htole16(handler);
+        listOfHandles.emplace_back(htole16(handler));
+
         (*iter)->generateAttributeEntry(attributevalue, attrValueEntry);
 
-        setAttrValue(attrValueEntry.data(), attrValueEntry.size());
+        setAttrValue(attrValueEntry.data(), attrValueEntry.size(), false);
+    }
+
+    if (listOfHandles.size())
+    {
+#ifdef OEM_IBM
+        auto rc = pldm::responder::platform::sendBiosAttributeUpdateEvent(
+            fd, eid, requester, listOfHandles);
+        if (rc != PLDM_SUCCESS)
+        {
+            return;
+        }
+#endif
+        updateBaseBIOSTableProperty();
     }
 }
 

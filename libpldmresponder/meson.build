@@ -32,7 +32,8 @@ if get_option('oem-ibm').enabled()
     '../oem/ibm/libpldmresponder/file_io_by_type.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_pel.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_dump.cpp',
-    '../oem/ibm/libpldmresponder/file_io_type_cert.cpp'
+    '../oem/ibm/libpldmresponder/file_io_type_cert.cpp',
+    '../oem/ibm/libpldmresponder/platform_oem_ibm.cpp'
   ]
 endif
 
