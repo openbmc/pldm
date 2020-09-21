@@ -7,6 +7,7 @@
 
 #include "bios_config.hpp"
 #include "bios_table.hpp"
+#include "pldmd/dbus_impl_requester.hpp"
 #include "pldmd/handler.hpp"
 
 #include <stdint.h>
@@ -28,7 +29,13 @@ namespace bios
 class Handler : public CmdHandler
 {
   public:
-    Handler();
+    /** @brief Constructor
+     *
+     *  @param[in] fd - socket descriptor to communicate to host
+     *  @param[in] eid - MCTP EID of host firmware
+     *  @param[in] requester - pointer to Requester object
+     */
+    Handler(int fd, uint8_t eid, dbus_api::Requester* requester);
 
     /** @brief Handler for GetDateTime
      *
