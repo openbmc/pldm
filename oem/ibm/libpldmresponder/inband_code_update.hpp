@@ -82,6 +82,9 @@ class CodeUpdate
         codeUpdateInProgress = progress;
     }
 
+    int setRequestedApplyTime();
+    int setRequestedActivation();
+
     virtual ~CodeUpdate()
     {}
 
