@@ -2,8 +2,9 @@
 
 #include "libpldm/requester/pldm.h"
 
+#include "file_io_type_lid.hpp"
+#include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-
 namespace pldm
 {
 
@@ -57,6 +58,46 @@ int pldm::responder::oem_ibm_platform::Handler::
             {
                 rc = setBootSide(entityInstance, currState, stateField,
                                  codeUpdate);
+            }
+            else if (entityType == 33 && stateSetId == 32768)
+            {
+                if (stateField[currState].effecter_state == START)
+                {
+                    codeUpdate->setCodeUpdateProgress(true);
+                    rc = codeUpdate->setRequestedApplyTime();
+                }
+                else if (stateField[currState].effecter_state == END)
+                {
+                    codeUpdate->setCodeUpdateProgress(false);
+                    std::unique_ptr<LidHandler> lidHandler{};
+                    int retc = lidHandler->assembleFinalImage();
+                    if (retc == PLDM_SUCCESS)
+                    {
+                        rc = codeUpdate->setRequestedActivation(codeUpdate);
+                    }
+                    else
+                    {
+                        std::cerr << "Image assembly Failed ERROR:" << retc
+                                  << "\n";
+                    }
+                }
+                else if (stateField[currState].effecter_state == ABORT)
+                {
+                    codeUpdate->setCodeUpdateProgress(false);
+                    std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+                    oem_ibm::Handler handler(oemPlatformHandler.get());
+                    rc = handler.clearDirPath(LID_STAGING_DIR);
+                    std::cout << "Property Set" << std::endl;
+                    // rc = codeUpdate->clearLids(platformHandler);
+                }
+                else if (stateField[currState].effecter_state == ACCEPT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
+                else if (stateField[currState].effecter_state == REJECT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
             }
             else
             {
