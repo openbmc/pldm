@@ -1,5 +1,4 @@
 #pragma once
-
 #include "libpldm/platform.h"
 
 #include "inband_code_update.hpp"
@@ -61,6 +60,10 @@ class Handler : public oem_platform::Handler
      *  @param[in] handler - pointer to PLDM platform handler
      */
     void setPlatformHandler(pldm::responder::platform::Handler* handler);
+
+    //  bool isCodeUpdateInProgress();
+
+    //   std::string fetchCurrentBootSide();
 
     uint16_t getNextEffecterId()
     {
