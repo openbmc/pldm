@@ -61,6 +61,10 @@ class Handler : public oem_platform::Handler
      */
     void setPlatformHandler(pldm::responder::platform::Handler* handler);
 
+    //  bool isCodeUpdateInProgress();
+
+    //   std::string fetchCurrentBootSide();
+
     uint16_t getNextEffecterId()
     {
         return platformHandler->getNextEffecterId();
