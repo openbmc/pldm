@@ -82,6 +82,19 @@ class CodeUpdate
         codeUpdateInProgress = progress;
     }
 
+    /* @brief Method to set the RequestApplyTime Dbus property
+     * on start update
+     * @return - PLDM_SUCCESS codes
+     */
+    int setRequestedApplyTime();
+
+    /* @brief Methos to set the RequestedActivation Dbus property
+     * on end update
+     * @param[in] codeUpdate - codeUpdate pointer
+     * @return - PLDM_SUCCESS codes
+     */
+    int setRequestedActivation(CodeUpdate* codeUpdate);
+
     virtual ~CodeUpdate()
     {}
 
