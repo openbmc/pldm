@@ -2,6 +2,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
+
 #include <string>
 
 using namespace pldm::utils;
@@ -80,6 +81,9 @@ class CodeUpdate
         codeUpdateInProgress = progress;
     }
 
+    int setRequestedApplyTime();
+    int setRequestedActivation();
+
     virtual ~CodeUpdate()
     {}
 
@@ -122,7 +126,8 @@ uint8_t fetchBootSide(uint16_t entityInstance, CodeUpdate* codeUpdate);
 int setBootSide(uint16_t entityInstance, uint8_t currState,
                 const std::vector<set_effecter_state_field>& stateField,
                 CodeUpdate* codeUpdate);
-
+// int setRequestedApplyTime(CodeUpdate* codeUpdate);
+// int setRequestedActivation(CodeUpdate* codeUpdate);
 void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
                                    pdr_utils::RepoInterface& repo);
 void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
