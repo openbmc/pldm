@@ -101,6 +101,20 @@ class CodeUpdate
      */
     void clearDirPath(const std::string& dirPath);
 
+    /* @brief Method to set the RequestApplyTime D-Bus property
+     *        on start update to OnReset
+     * @return - Completion codes
+     */
+    int setRequestedApplyTime();
+
+    /* @brief Method to set the RequestedActivation D-Bus property
+     *        on end update to Active by fetching the newImageID and
+     *        clearning it once RequestedActivation is set or on error
+     * @param[in] codeUpdate - codeUpdate pointer
+     * @return - Completion codes
+     */
+    int setRequestedActivation();
+
     virtual ~CodeUpdate()
     {}
 
