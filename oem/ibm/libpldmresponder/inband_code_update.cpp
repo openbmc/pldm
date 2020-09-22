@@ -13,7 +13,6 @@
 
 #include <exception>
 #include <fstream>
-
 namespace pldm
 {
 namespace responder
@@ -94,6 +93,53 @@ int CodeUpdate::setNextBootSide(const std::string& nextSide)
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
+}
+
+int CodeUpdate::setRequestedApplyTime()
+{
+    int rc = PLDM_SUCCESS;
+    pldm::utils::PropertyValue value =
+        "xyz.openbmc_project.Software.ApplyTime.RequestedApplyTimes.OnReset";
+    DBusMapping dbusMapping;
+    dbusMapping.objectPath = "/xyz/openbmc_project/software/apply_time";
+    dbusMapping.interface = "xyz.openbmc_project.Software.ApplyTime";
+    dbusMapping.propertyName = "RequestedApplyTime";
+    dbusMapping.propertyType = "string";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To set RequestedApplyTime property "
+                  << "ERROR=" << e.what() << std::endl;
+        rc = PLDM_ERROR;
+    }
+    return rc;
+}
+
+int CodeUpdate::setRequestedActivation()
+{
+    int rc = PLDM_SUCCESS;
+    pldm::utils::PropertyValue value =
+        "xyz.openbmc_project.Software.Activation.RequestedActivations.Active";
+    DBusMapping dbusMapping;
+    dbusMapping.objectPath = newImageId;
+    dbusMapping.interface = "xyz.openbmc_project.Software.Activation";
+    dbusMapping.propertyName = "RequestedActivation";
+    dbusMapping.propertyType = "string";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To set RequestedActivation property"
+                  << "ERROR=" << e.what() << std::endl;
+        rc = PLDM_ERROR;
+    }
+    newImageId.clear();
+    return rc;
 }
 
 void CodeUpdate::setVersions()
