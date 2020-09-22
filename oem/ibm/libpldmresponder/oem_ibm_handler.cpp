@@ -1,7 +1,6 @@
 #include "oem_ibm_handler.hpp"
 
 #include "libpldm/requester/pldm.h"
-
 #include "libpldmresponder/pdr_utils.hpp"
 
 namespace pldm
@@ -57,6 +56,36 @@ int pldm::responder::oem_ibm_platform::Handler::
             {
                 rc = setBootSide(entityInstance, currState, stateField,
                                  codeUpdate);
+            }
+            else if (entityType == 33 && stateSetId == 32768)
+            {
+                if (stateField[currState].effecter_state == START)
+                {
+                    rc = codeUpdate->setRequestedApplyTime();
+                }
+                else if (stateField[currState].effecter_state == END)
+                {
+                    // int  retc = assembleImage(LID_STAGING_DIR);
+                    // if (retc == PLDM_SUCCESS)
+                    rc = codeUpdate->setRequestedActivation();
+                    // else
+                    // std::cerr << "Image assembly Failed ERROR:" << retc
+                    //        << "\n";
+                }
+                else if (stateField[currState].effecter_state == FAIL)
+                {}
+                else if (stateField[currState].effecter_state == ABORT)
+                {
+                    // Call API to clear lids
+                }
+                else if (stateField[currState].effecter_state == ACCEPT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
+                else if (stateField[currState].effecter_state == REJECT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
             }
             else
             {
