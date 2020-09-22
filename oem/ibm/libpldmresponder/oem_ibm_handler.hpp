@@ -1,5 +1,4 @@
 #pragma once
-
 #include "libpldm/platform.h"
 
 #include "inband_code_update.hpp"
@@ -55,13 +54,17 @@ class Handler : public oem_platform::Handler
     int OemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField);
+        std::vector<set_effecter_state_field>& stateField);
 
     /** @brief Method to set the platform handler in the
      *         oem_ibm_handler class
      *  @param[in] handler - pointer to PLDM platform handler
      */
     void setPlatformHandler(pldm::responder::platform::Handler* handler);
+
+    //  bool isCodeUpdateInProgress();
+
+    //   std::string fetchCurrentBootSide();
 
     uint16_t getNextEffecterId()
     {
