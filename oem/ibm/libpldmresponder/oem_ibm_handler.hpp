@@ -1,5 +1,4 @@
 #pragma once
-
 #include "libpldm/platform.h"
 
 #include "inband_code_update.hpp"

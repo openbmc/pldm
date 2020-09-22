@@ -3,8 +3,9 @@
 #include "libpldm/entity.h"
 #include "libpldm/requester/pldm.h"
 
+#include "file_io_type_lid.hpp"
+#include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-
 namespace pldm
 {
 namespace responder
@@ -57,6 +58,32 @@ int pldm::responder::oem_ibm_platform::Handler::
             {
                 rc = setBootSide(entityInstance, currState, stateField,
                                  codeUpdate);
+            }
+            else if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
+                     stateSetId == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
+            {
+                if (stateField[currState].effecter_state == START)
+                {
+                    codeUpdate->setCodeUpdateProgress(true);
+                    rc = codeUpdate->setRequestedApplyTime();
+                }
+                else if (stateField[currState].effecter_state == END)
+                {
+                    codeUpdate->setCodeUpdateProgress(false);
+                }
+                else if (stateField[currState].effecter_state == ABORT)
+                {
+                    codeUpdate->setCodeUpdateProgress(false);
+                    pldm::responder::oem_ibm::clearDirPath(LID_STAGING_DIR);
+                }
+                else if (stateField[currState].effecter_state == ACCEPT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
+                else if (stateField[currState].effecter_state == REJECT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
             }
             else
             {
