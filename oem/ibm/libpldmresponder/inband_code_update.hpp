@@ -82,6 +82,10 @@ class CodeUpdate
         codeUpdateInProgress = progress;
     }
 
+    int setRequestedApplyTime();
+    int setRequestedActivation();
+    // int clearLids(platform::Handler* platformHandler);
+
     virtual ~CodeUpdate()
     {}
 
