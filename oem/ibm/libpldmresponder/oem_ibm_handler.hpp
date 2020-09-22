@@ -2,8 +2,8 @@
 
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
-#include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
+#include "libpldmresponder/platform.hpp"
 namespace pldm
 {
 
@@ -15,6 +15,15 @@ namespace oem_ibm_platform
 
 static constexpr auto PLDM_OEM_IBM_BOOT_STATE = 32769;
 static constexpr auto PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE = 32768;
+enum codeUpdateStateValues
+{
+    START = 0x1,
+    END = 0x2,
+    FAIL = 0x3,
+    ABORT = 0x4,
+    ACCEPT = 0x5,
+    REJECT = 0x6,
+};
 
 class Handler : public oem_platform::Handler
 {
@@ -44,12 +53,12 @@ class Handler : public oem_platform::Handler
 
     uint16_t getNextEffecterId()
     {
-       return platformHandler->getNextEffecterId();
+        return platformHandler->getNextEffecterId();
     }
 
     uint16_t getNextSensorId()
     {
-       return platformHandler->getNextSensorId();
+        return platformHandler->getNextSensorId();
     }
 
     void buildOEMPDR(pdr_utils::RepoInterface& repo);
