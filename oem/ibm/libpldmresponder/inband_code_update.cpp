@@ -11,7 +11,7 @@
 
 #include <exception>
 #include <fstream>
-
+#include <regex>
 namespace pldm
 {
 
@@ -93,6 +93,64 @@ int CodeUpdate::setNextBootSide(const std::string& nextSide)
     {
         std::cerr << "failed to set the next boot side to " << obj_path.c_str()
                   << " ERROR=" << e.what() << "\n";
+        rc = PLDM_ERROR;
+    }
+    return rc;
+}
+
+int CodeUpdate::setRequestedApplyTime()
+{
+    int rc = PLDM_SUCCESS;
+    static constexpr auto SETTINGS_SERVICE = "xyz.openbmc_project.Settings";
+    static constexpr auto APPLY_TIME_OBJ_PATH =
+        "/xyz/openbmc_project/software/apply_time";
+    static constexpr auto APPLY_TIME_INTF =
+        "xyz.openbmc_project.Software.ApplyTime";
+    static constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
+    auto& bus = dBusIntf->getBus();
+    pldm::utils::PropertyValue value =
+        "xyz.openbmc_project.Software.ApplyTime.RequestedApplyTimes.OnReset";
+    try
+    {
+        auto method = bus.new_method_call(SETTINGS_SERVICE, APPLY_TIME_OBJ_PATH,
+                                          PROP_INTF, "Set");
+        method.append(APPLY_TIME_INTF, "RequestedApplyTime", value);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To set RequestedApplyTime property "
+                  << "ERROR=" << e.what() << std::endl;
+        rc = PLDM_ERROR;
+    }
+    return rc;
+}
+
+int CodeUpdate::setRequestedActivation(CodeUpdate* codeUpdate)
+{
+    int rc = PLDM_SUCCESS;
+    std::string img = codeUpdate->fetchnewImageId();
+    static constexpr auto UPDATE_SERVICE =
+        "xyz.openbmc_project.Software.BMC.Updater";
+    const std::string objPath(img);
+    static constexpr auto REQUESTED_ACTIVATION_INTF =
+        "xyz.openbmc_project.Software.Activation";
+    static constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
+    auto& bus = dBusIntf->getBus();
+    pldm::utils::PropertyValue value =
+        "xyz.openbmc_project.Software.Activation.RequestedActivations.Active";
+    try
+    {
+        auto method = bus.new_method_call(UPDATE_SERVICE, objPath.c_str(),
+                                          PROP_INTF, "Set");
+        method.append(REQUESTED_ACTIVATION_INTF, "RequestedActivation", value);
+
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To set RequestedActivation property"
+                  << "ERROR=" << e.what() << std::endl;
         rc = PLDM_ERROR;
     }
     return rc;
