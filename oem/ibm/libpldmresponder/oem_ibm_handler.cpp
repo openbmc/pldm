@@ -2,85 +2,84 @@
 
 #include "libpldm/requester/pldm.h"
 
+#include "file_io_type_lid.hpp"
+#include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-
-namespace pldm
-{
-namespace responder
-{
-namespace oem_ibm_platform
-{
+namespace pldm {
+namespace responder {
+namespace oem_ibm_platform {
 
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
-        uint8_t compSensorCnt, std::vector<get_sensor_state_field>& stateField)
-{
-    int rc = PLDM_SUCCESS;
-    stateField.clear();
+        uint8_t compSensorCnt,
+        std::vector<get_sensor_state_field> &stateField) {
+  int rc = PLDM_SUCCESS;
+  stateField.clear();
 
-    for (size_t i = 0; i < compSensorCnt; i++)
-    {
-        uint8_t sensorOpState{};
-        if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
-            stateSetId == PLDM_OEM_IBM_BOOT_STATE)
-        {
-            sensorOpState = fetchBootSide(entityInstance, codeUpdate);
-        }
-        else
-        {
-            rc = PLDM_PLATFORM_INVALID_STATE_VALUE;
-            break;
-        }
-        stateField.push_back({PLDM_SENSOR_ENABLED, PLDM_SENSOR_UNKNOWN,
-                              PLDM_SENSOR_UNKNOWN, sensorOpState});
+  for (size_t i = 0; i < compSensorCnt; i++) {
+    uint8_t sensorOpState{};
+    if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
+        stateSetId == PLDM_OEM_IBM_BOOT_STATE) {
+      sensorOpState = fetchBootSide(entityInstance, codeUpdate);
+    } else {
+      rc = PLDM_PLATFORM_INVALID_STATE_VALUE;
+      break;
     }
-    return rc;
+    stateField.push_back({PLDM_SENSOR_ENABLED, PLDM_SENSOR_UNKNOWN,
+                          PLDM_SENSOR_UNKNOWN, sensorOpState});
+  }
+  return rc;
 }
 
 int pldm::responder::oem_ibm_platform::Handler::
     OemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField)
-{
-    int rc = PLDM_SUCCESS;
+        const std::vector<set_effecter_state_field> &stateField) {
+  int rc = PLDM_SUCCESS;
 
-    for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
-    {
-        if (stateField[currState].set_request == PLDM_REQUEST_SET)
-        {
-            if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
-                stateSetId == PLDM_OEM_IBM_BOOT_STATE)
-            {
-                rc = setBootSide(entityInstance, currState, stateField,
-                                 codeUpdate);
-            }
-            else
-            {
-                rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
-            }
+  for (uint8_t currState = 0; currState < compEffecterCnt; ++currState) {
+    if (stateField[currState].set_request == PLDM_REQUEST_SET) {
+      if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
+          stateSetId == PLDM_OEM_IBM_BOOT_STATE) {
+        rc = setBootSide(entityInstance, currState, stateField, codeUpdate);
+      } else if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
+                 stateSetId == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE) {
+        if (stateField[currState].effecter_state == START) {
+          codeUpdate->setCodeUpdateProgress(true);
+          rc = codeUpdate->setRequestedApplyTime();
+        } else if (stateField[currState].effecter_state == END) {
+          codeUpdate->setCodeUpdateProgress(false);
+        } else if (stateField[currState].effecter_state == ABORT) {
+          codeUpdate->setCodeUpdateProgress(false);
+          rc = pldm::responder::oem_ibm::clearDirPath(LID_STAGING_DIR);
+        } else if (stateField[currState].effecter_state == ACCEPT) {
+          // TODO Set new Dbus property provided by code update app
+        } else if (stateField[currState].effecter_state == REJECT) {
+          // TODO Set new Dbus property provided by code update app
         }
-        if (rc != PLDM_SUCCESS)
-        {
-            break;
-        }
+      } else {
+        rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
+      }
     }
-    return rc;
+    if (rc != PLDM_SUCCESS) {
+      break;
+    }
+  }
+  return rc;
 }
 
 void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
-    pdr_utils::Repo& repo)
-{
-    buildAllCodeUpdateEffecterPDR(platformHandler, repo);
+    pdr_utils::Repo &repo) {
+  buildAllCodeUpdateEffecterPDR(platformHandler, repo);
 
-    buildAllCodeUpdateSensorPDR(platformHandler, repo);
+  buildAllCodeUpdateSensorPDR(platformHandler, repo);
 }
 
 void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
-    pldm::responder::platform::Handler* handler)
-{
-    platformHandler = handler;
+    pldm::responder::platform::Handler *handler) {
+  platformHandler = handler;
 }
 
 int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
@@ -171,17 +170,16 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
     return;
 }
 
-int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
-                   std::vector<uint8_t>& requestMsg, uint8_t instanceId)
-{
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t> &eventDataVec,
+                   std::vector<uint8_t> &requestMsg, uint8_t instanceId) {
+  auto request = reinterpret_cast<pldm_msg *>(requestMsg.data());
 
-    auto rc = encode_platform_event_message_req(
-        instanceId, 1 /*formatVersion*/, 0 /*tId*/, eventType,
-        eventDataVec.data(), eventDataVec.size(), request,
-        eventDataVec.size() + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
+  auto rc = encode_platform_event_message_req(
+      instanceId, 1 /*formatVersion*/, 0 /*tId*/, eventType,
+      eventDataVec.data(), eventDataVec.size(), request,
+      eventDataVec.size() + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
 
-    return rc;
+  return rc;
 }
 
 } // namespace oem_ibm_platform
