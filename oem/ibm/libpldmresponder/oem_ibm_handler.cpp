@@ -2,8 +2,9 @@
 
 #include "libpldm/requester/pldm.h"
 
+#include "file_io_type_lid.hpp"
+#include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-
 namespace pldm
 {
 
@@ -58,6 +59,31 @@ int pldm::responder::oem_ibm_platform::Handler::
                 rc = setBootSide(entityInstance, currState, stateField,
                                  codeUpdate);
             }
+            else if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
+                     stateSetId == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
+            {
+                if (stateField[currState].effecter_state == START)
+                {
+                    codeUpdate->setCodeUpdateProgress(true);
+                    rc = codeUpdate->setRequestedApplyTime();
+                }
+                else if (stateField[currState].effecter_state == END)
+                {
+                    codeUpdate->setCodeUpdateProgress(false);
+                }
+                else if (stateField[currState].effecter_state == ABORT)
+                {
+                    codeUpdate->setCodeUpdateProgress(false);
+                }
+                else if (stateField[currState].effecter_state == ACCEPT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
+                else if (stateField[currState].effecter_state == REJECT)
+                {
+                    // TODO Set new Dbus property provided by code update app
+                }
+            }
             else
             {
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
@@ -97,7 +123,7 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         for (int byte : requestMsg)
         {
             tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
-               << " ";
+                       << " ";
         }
         std::cout << tempStream.str() << std::endl;
     }
@@ -109,11 +135,11 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
                                                                   std::free};
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
-                std::cerr << "Failed to send message/receive response. RC = "
-                    
-                                      << requesterRc << ", errno = " << errno
-                                        
-                                                          << "for sending event to host \n";
+        std::cerr << "Failed to send message/receive response. RC = "
+
+                  << requesterRc << ", errno = " << errno
+
+                  << "for sending event to host \n";
         return requesterRc;
     }
     uint8_t completionCode{};
@@ -123,12 +149,12 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
         &status);
 
-    if (rc != PLDM_SUCCESS ||completionCode != PLDM_SUCCESS)
+    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
     {
         std::cerr << "Failure in decode platform event message response, rc= "
-                          << rc << " cc=" << static_cast<unsigned>(completionCode)
-                            
-                                              << "\n";
+                  << rc << " cc=" << static_cast<unsigned>(completionCode)
+
+                  << "\n";
         return rc;
     }
     std::cout << "returning rc= " << rc << " from sendEventToHost \n";
