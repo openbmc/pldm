@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6cb58fd4_f4cfcffa",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-09-23T12:17:35Z",
+      "side": 1,
+      "message": "add constexpr",
+      "revId": "d7d2dd653f4e5f62d931e9d45cb73b3416aa2883",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
