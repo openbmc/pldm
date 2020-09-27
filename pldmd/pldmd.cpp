@@ -196,6 +196,7 @@ int main(int argc, char** argv)
 
     Invoker invoker{};
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+    pldm::responder::oem_ibm::clearDirPath(LID_STAGING_DIR);
 
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
