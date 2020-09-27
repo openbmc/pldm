@@ -200,6 +200,7 @@ int main(int argc, char** argv)
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
         std::make_unique<pldm::responder::CodeUpdate>(dbusHandler.get());
+    codeUpdate->clearDirPath(LID_STAGING_DIR);
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
