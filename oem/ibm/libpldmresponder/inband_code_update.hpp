@@ -94,6 +94,13 @@ class CodeUpdate
         codeUpdateInProgress = progress;
     }
 
+    /** @brief Method to clear contents the LID staging directory that contains
+     *  images such as host firmware and BMC.
+     *  @param[in] dirPath - directory system path that has to be cleared
+     *  @return none
+     */
+    void clearDirPath(const std::string& dirPath);
+
     virtual ~CodeUpdate()
     {}
 
