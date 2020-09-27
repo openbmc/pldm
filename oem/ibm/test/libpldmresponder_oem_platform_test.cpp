@@ -141,3 +141,23 @@ TEST(EncodeCodeUpdate, testBadRequest)
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(clearDirPath, testClearDirPath)
+{
+    char dirPath[] = "/tmp/testClearDir/";
+    fs::path dir(dirPath);
+    fs::create_directories(dir);
+    struct stat buffer;
+    ASSERT_EQ(stat(dirPath, &buffer), 0);
+    char filePath[] = "/tmp/testClearDir/file.txt";
+    std::ofstream file(filePath);
+    ASSERT_EQ(stat(filePath, &buffer), 0);
+
+    auto mockDbusHandler = std::make_unique<MockdBusHandler>();
+    std::unique_ptr<CodeUpdate> mockCodeUpdate =
+        std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
+
+    mockCodeUpdate->clearDirPath(dirPath);
+    ASSERT_EQ(stat(filePath, &buffer), -1);
+    ASSERT_EQ(stat(dirPath, &buffer), 0);
+}
