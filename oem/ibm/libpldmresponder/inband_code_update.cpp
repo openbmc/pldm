@@ -192,6 +192,15 @@ void CodeUpdate::setOemPlatformHandler(
     oemPlatformHandler = handler;
 }
 
+void CodeUpdate::clearDirPath(const std::string& dirPath)
+{
+    for (auto& path : fs::directory_iterator(dirPath.c_str()))
+    {
+        fs::remove_all(path);
+    }
+    return;
+}
+
 uint8_t fetchBootSide(uint16_t entityInstance, CodeUpdate* codeUpdate)
 {
     uint8_t sensorOpState = tSideNum;
