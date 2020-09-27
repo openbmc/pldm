@@ -305,6 +305,13 @@ class Handler : public CmdHandler
      */
     Response newFileAvailable(const pldm_msg* request, size_t payloadLength);
 
+    /** @brief Method to clear contents the LID staging directory that contains
+     *  images such as host firmware and BMC.
+     *  @param[in] dirPath - directory system path that has to be cleared
+     *  @return PLDM status code
+     */
+    int clearDirPath(const std::string& dirPath);
+
   private:
     oem_platform::Handler* oemPlatformHandler;
 };
