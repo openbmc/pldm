@@ -10,6 +10,8 @@
 #include "libpldmresponder/file_table.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
+#include <sys/stat.h>
+
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/elog-errors.hpp>
 
@@ -924,4 +926,21 @@ TEST(readFileByType, testReadFile)
     ASSERT_EQ(length, in.size());
     ASSERT_EQ(response.size(), in.size());
     ASSERT_EQ(std::equal(in.begin(), in.end(), response.begin()), true);
+}
+
+TEST(clearDirPath, testClearDirPath)
+{
+    char dirPath[] = "/tmp/testClearDir/";
+    fs::path dir(dirPath);
+    fs::create_directories(dir);
+    struct stat buffer;
+    ASSERT_EQ(stat(dirPath, &buffer), 0);
+    char filePath[] = "/tmp/testClearDir/file.txt";
+    std::ofstream file(filePath);
+    ASSERT_EQ(stat(filePath, &buffer), 0);
+
+    auto rc = pldm::responder::oem_ibm::clearDirPath(dirPath);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(stat(filePath, &buffer), -1);
+    ASSERT_EQ(stat(dirPath, &buffer), 0);
 }
