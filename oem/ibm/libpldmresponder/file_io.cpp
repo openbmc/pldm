@@ -827,6 +827,15 @@ Response Handler::newFileAvailable(const pldm_msg* request,
     return response;
 }
 
+void clearDirPath(const std::string& dirPath)
+{
+    for (auto& path : fs::directory_iterator(dirPath.c_str()))
+    {
+        fs::remove_all(path);
+    }
+    return;
+}
+
 } // namespace oem_ibm
 } // namespace responder
 } // namespace pldm
