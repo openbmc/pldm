@@ -33,6 +33,7 @@ TEST(oemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t stateSetId_ = PLDM_OEM_IBM_BOOT_STATE;
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
+    uint16_t effecterId = 0xA;
     sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
     Requester requester(bus, "/abc/def");
 
@@ -83,24 +84,24 @@ TEST(oemSetStateEffecterStatesHandler, testGoodRequest)
     std::vector<set_effecter_state_field> setEffecterStateField;
     setEffecterStateField.push_back({PLDM_REQUEST_SET, pSideNum});
 
-    rc = oemPlatformHandler->oemSetStateEffecterStatesHandler(
+    rc = oemPlatformHandler->OemSetStateEffecterStatesHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
-        setEffecterStateField);
+        setEffecterStateField, effecterId);
     ASSERT_EQ(rc, PLDM_SUCCESS);
 
     entityInstance_ = 2;
-    rc = oemPlatformHandler->oemSetStateEffecterStatesHandler(
+    rc = oemPlatformHandler->OemSetStateEffecterStatesHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
-        setEffecterStateField);
+        setEffecterStateField, effecterId);
 
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_STATE_VALUE);
 
     entityID_ = 34;
     stateSetId_ = 99;
     entityInstance_ = 0;
-    rc = oemPlatformHandler->oemSetStateEffecterStatesHandler(
+    rc = oemPlatformHandler->OemSetStateEffecterStatesHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
-        setEffecterStateField);
+        setEffecterStateField, effecterId);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
 }
 
