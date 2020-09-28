@@ -48,10 +48,10 @@ class Handler : public oem_platform::Handler
         StateSetId stateSetId, CompositeCount compSensorCnt,
         std::vector<get_sensor_state_field>& stateField);
 
-    int oemSetStateEffecterStatesHandler(
-        EntityType entityType, EntityInstance entityInstance,
-        StateSetId stateSetId, CompositeCount compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField);
+    int OemSetStateEffecterStatesHandler(
+        uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
+        uint8_t compEffecterCnt,
+        std::vector<set_effecter_state_field>& stateField, uint16_t effecterId);
 
     /** @brief Method to set the platform handler in the
      *         oem_ibm_handler class

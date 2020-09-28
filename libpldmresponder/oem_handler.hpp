@@ -49,18 +49,19 @@ class Handler : public CmdHandler
      *  @param[in] entityInstance - entity instance
      *  @param[in] stateSetId - state set id
      *  @param[in] compEffecterCnt - composite effecter count
-     *  param[in] stateField - The state field data for each of the states,
+     *  @param[in] stateField - The state field data for each of the states,
      *                         equal to compEffecterCnt in number
+     *  @param[in] effecterId - Effecter id
      *
      *  @return - Success or failure in setting the states.Returns failure in
      *            terms of PLDM completion codes if atleast one state fails to
      *            be set
      */
-
-    virtual int oemSetStateEffecterStatesHandler(
-        EntityType entityType, EntityInstance entityInstance,
-        StateSetId stateSetId, CompositeCount compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField) = 0;
+    virtual int OemSetStateEffecterStatesHandler(
+        uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
+        uint8_t compEffecterCnt,
+        std::vector<set_effecter_state_field>& stateField,
+        uint16_t effecterId) = 0;
 
     /** @brief Interface to generate the OEM PDRs
      *
