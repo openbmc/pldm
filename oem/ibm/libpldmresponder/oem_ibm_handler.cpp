@@ -45,7 +45,7 @@ int pldm::responder::oem_ibm_platform::Handler::
     OemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField)
+        std::vector<set_effecter_state_field>& stateField)
 {
     int rc = PLDM_SUCCESS;
 
@@ -75,6 +75,11 @@ int pldm::responder::oem_ibm_platform::Handler::
                     // else
                     // std::cerr << "Image assembly Failed ERROR:" << retc
                     //        << "\n";
+                    /*auto return = call adriana API here << to be added by
+                    varsha /if(return = A)
+                    {
+                        stateField[currState].effecter_state = ABORT;
+                    }*/
                 }
                 else if (stateField[currState].effecter_state == ABORT)
                 {
@@ -82,7 +87,6 @@ int pldm::responder::oem_ibm_platform::Handler::
                     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
                     oem_ibm::Handler handler(oemPlatformHandler.get());
                     rc = handler.clearDirPath(LID_STAGING_DIR);
-                    std::cout << "Property Set" << std::endl;
                     // rc = codeUpdate->clearLids(platformHandler);
                 }
                 else if (stateField[currState].effecter_state == ACCEPT)
@@ -93,6 +97,8 @@ int pldm::responder::oem_ibm_platform::Handler::
                 {
                     // TODO Set new Dbus property provided by code update app
                 }
+                auto effecterId = getNextEffecterId();
+                sendCodeUpdateEvent(effecterId, stateField, compEffecterCnt);
             }
             else
             {
