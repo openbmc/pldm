@@ -32,8 +32,6 @@ enum codeUpdateStateValues
     REJECT = 0x6,
 };
 
-using EffecterId = uint16_t;
-
 class Handler : public oem_platform::Handler
 {
   public:
@@ -54,7 +52,7 @@ class Handler : public oem_platform::Handler
     int OemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField);
+        std::vector<set_effecter_state_field>& stateField, uint16_t effecterId);
 
     /** @brief Method to set the platform handler in the
      *         oem_ibm_handler class
@@ -88,8 +86,7 @@ class Handler : public oem_platform::Handler
      *  @param[in] previousOpState - previous code update operational state
      *  @return void
      */
-    void sendCodeUpdateEvent(EffecterId effecterId,
-                             codeUpdateStateValues opState,
+    void sendCodeUpdateEvent(uint16_t effecterId, codeUpdateStateValues opState,
                              codeUpdateStateValues previousOpState);
 
     /** @brief Method to send encoded request msg of code update event to host
