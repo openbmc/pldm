@@ -54,7 +54,7 @@ class Handler : public CmdHandler
     virtual int OemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField) = 0;
+        std::vector<set_effecter_state_field>& stateField) = 0;
 
     /** @brief Interface to generate the OEM PDRs if OEM_IBM is defined
      *
