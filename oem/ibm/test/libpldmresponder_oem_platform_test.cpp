@@ -31,6 +31,7 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t stateSetId_ = PLDM_OEM_IBM_BOOT_STATE;
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
+    uint16_t effecterId = 0xA;
     sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
     Requester requester(bus, "/abc/def");
 
@@ -83,13 +84,13 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
 
     rc = oemPlatformHandler->OemSetStateEffecterStatesHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
-        setEffecterStateField);
+        setEffecterStateField, effecterId);
     ASSERT_EQ(rc, PLDM_SUCCESS);
 
     entityInstance_ = 2;
     rc = oemPlatformHandler->OemSetStateEffecterStatesHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
-        setEffecterStateField);
+        setEffecterStateField, effecterId);
 
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_STATE_VALUE);
 
@@ -98,7 +99,7 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     entityInstance_ = 0;
     rc = oemPlatformHandler->OemSetStateEffecterStatesHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
-        setEffecterStateField);
+        setEffecterStateField, effecterId);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
 }
 
