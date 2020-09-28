@@ -257,8 +257,8 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
         oemPlatformHandler != nullptr)
     {
         rc = oemPlatformHandler->OemSetStateEffecterStatesHandler(
-            entityType, entityInstance, stateSetId, compEffecterCnt,
-            stateField);
+            entityType, entityInstance, stateSetId, compEffecterCnt, stateField,
+            effecterId);
     }
     else
     {
