@@ -86,6 +86,7 @@ int pldm::responder::oem_ibm_platform::Handler::
                 {
                     // TODO Set new Dbus property provided by code update app
                 }
+                sendCodeUpdateEvent(stateSetId, stateField.data(), currState);
             }
             else
             {
