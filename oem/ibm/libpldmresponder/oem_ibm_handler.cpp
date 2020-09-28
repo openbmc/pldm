@@ -42,10 +42,11 @@ int pldm::responder::oem_ibm_platform::Handler::
 }
 
 int pldm::responder::oem_ibm_platform::Handler::
-    oemSetStateEffecterStatesHandler(
-        EntityType entityType, EntityInstance entityInstance,
-        StateSetId stateSetId, CompositeCount compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField)
+    OemSetStateEffecterStatesHandler(
+        uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
+        uint8_t compEffecterCnt,
+        std::vector<set_effecter_state_field>& stateField,
+        uint16_t /*effecterId*/)
 {
     int rc = PLDM_SUCCESS;
 
