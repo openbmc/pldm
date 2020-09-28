@@ -42,10 +42,11 @@ int pldm::responder::oem_ibm_platform::Handler::
 }
 
 int pldm::responder::oem_ibm_platform::Handler::
-    oemSetStateEffecterStatesHandler(
-        EntityType entityType, EntityInstance entityInstance,
-        StateSetId stateSetId, CompositeCount compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField)
+    OemSetStateEffecterStatesHandler(
+        uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
+        uint8_t compEffecterCnt,
+        std::vector<set_effecter_state_field>& stateField,
+        uint16_t /*effecterId*/)
 {
     int rc = PLDM_SUCCESS;
 
@@ -62,25 +63,30 @@ int pldm::responder::oem_ibm_platform::Handler::
             else if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
                      stateSetId == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
             {
-                if (stateField[currState].effecter_state == START)
+                if (stateField[currState].effecter_state ==
+                    uint8_t(CodeUpdateState::START))
                 {
                     codeUpdate->setCodeUpdateProgress(true);
                     rc = codeUpdate->setRequestedApplyTime();
                 }
-                else if (stateField[currState].effecter_state == END)
+                else if (stateField[currState].effecter_state ==
+                         uint8_t(CodeUpdateState::END))
                 {
                     codeUpdate->setCodeUpdateProgress(false);
                 }
-                else if (stateField[currState].effecter_state == ABORT)
+                else if (stateField[currState].effecter_state ==
+                         uint8_t(CodeUpdateState::ABORT))
                 {
                     codeUpdate->setCodeUpdateProgress(false);
                     pldm::responder::oem_ibm::clearDirPath(LID_STAGING_DIR);
                 }
-                else if (stateField[currState].effecter_state == ACCEPT)
+                else if (stateField[currState].effecter_state ==
+                         uint8_t(CodeUpdateState::ACCEPT))
                 {
                     // TODO Set new Dbus property provided by code update app
                 }
-                else if (stateField[currState].effecter_state == REJECT)
+                else if (stateField[currState].effecter_state ==
+                         uint8_t(CodeUpdateState::REJECT))
                 {
                     // TODO Set new Dbus property provided by code update app
                 }
