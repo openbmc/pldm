@@ -45,7 +45,8 @@ int pldm::responder::oem_ibm_platform::Handler::
     OemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
-        const std::vector<set_effecter_state_field>& stateField)
+        std::vector<set_effecter_state_field>& stateField,
+        uint16_t /*effecterId*/)
 {
     int rc = PLDM_SUCCESS;
 
@@ -66,22 +67,27 @@ int pldm::responder::oem_ibm_platform::Handler::
                 {
                     codeUpdate->setCodeUpdateProgress(true);
                     rc = codeUpdate->setRequestedApplyTime();
+                    // sendCodeUpdateEvent(effecterId, START, END);
                 }
                 else if (stateField[currState].effecter_state == END)
                 {
                     codeUpdate->setCodeUpdateProgress(false);
+                    // sendCodeUpdateEvent(effecterId, END, START);
                 }
                 else if (stateField[currState].effecter_state == ABORT)
                 {
                     codeUpdate->setCodeUpdateProgress(false);
+                    // sendCodeUpdateEvent(effecterId, ABORT, END);
                 }
                 else if (stateField[currState].effecter_state == ACCEPT)
                 {
                     // TODO Set new Dbus property provided by code update app
+                    // sendCodeUpdateEvent(effecterId, ACCEPT, END);
                 }
                 else if (stateField[currState].effecter_state == REJECT)
                 {
                     // TODO Set new Dbus property provided by code update app
+                    // sendCodeUpdateEvent(effecterId, REJECT, END);
                 }
             }
             else
@@ -163,7 +169,7 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
 }
 
 void pldm::responder::oem_ibm_platform::Handler::sendCodeUpdateEvent(
-    EffecterId effecterId, codeUpdateStateValues opState,
+    uint16_t effecterId, codeUpdateStateValues opState,
     codeUpdateStateValues previousOpState)
 {
     std::vector<uint8_t> effecterEventDataVec{};
