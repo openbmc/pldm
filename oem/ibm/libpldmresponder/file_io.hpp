@@ -58,6 +58,9 @@ class DMA
      */
     int transferDataHost(int fd, uint32_t offset, uint32_t length,
                          uint64_t address, bool upstream);
+    int transferDataHostToSocket(int fd, uint32_t offset, uint32_t length,
+                         uint64_t address, bool upstream);
+
 };
 
 /** @brief Transfer the data between BMC and host using DMA.

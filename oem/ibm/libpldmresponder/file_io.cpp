@@ -49,6 +49,156 @@ struct AspeedXdmaOp
 
 constexpr auto xdmaDev = "/dev/aspeed-xdma";
 
+bool writeonfd(const int sock,const char* buf,const uint64_t blockSize)
+{
+    uint64_t i;
+    int nwrite=0;
+
+    for(i =0; i< blockSize; i = i + nwrite)
+    {
+
+    fd_set wfd;
+    struct timeval tv;
+    tv.tv_sec = 1;
+    tv.tv_usec = 0;
+
+    FD_ZERO(&wfd);
+    FD_SET(sock, &wfd);
+    int nfd = sock + 1;
+
+        int retval = select(nfd, NULL, &wfd, NULL, &tv);
+        if((retval < 0) && (errno!=EINTR))
+        {
+            std::cout << "\nselect call failed "<< errno << std::endl;
+            return true;
+        }
+        if(retval == 0)
+        {
+           //std::cout << "\nno fd is ready";
+           nwrite=0;
+           continue;
+        }
+        if ((retval > 0) && (FD_ISSET(sock, &wfd)))
+        {
+            nwrite = write(sock, buf+i,blockSize-i);
+
+            if (nwrite<0)
+            {
+                if (errno == EAGAIN || errno == EWOULDBLOCK || errno== EINTR)
+                {
+                  std::cout << "Write call failed with EAGAIN or EWOULDBLOCK or EINTR";
+                  nwrite=0;
+                  continue;
+                }
+                   std::cout << "Failed to write";
+                   return true;
+            }
+         }
+         else {
+              nwrite = 0;
+              std::cout << "fd is not ready for write";
+
+         }
+     }
+     return false;
+}
+
+int DMA::transferDataHostToSocket(int fd, uint32_t offset, uint32_t length,
+                          uint64_t address, bool upstream)
+{
+    static const size_t pageSize = getpagesize();
+    uint32_t numPages = length / pageSize;
+    uint32_t pageAlignedLength = numPages * pageSize;
+
+    if (length > pageAlignedLength)
+    {
+        pageAlignedLength += pageSize;
+    }
+
+    auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
+        munmap(vgaMem, pageAlignedLength);
+    };
+
+    int dmaFd = -1;
+    int rc = 0;
+    dmaFd = open(xdmaDev, O_RDWR);
+    if (dmaFd < 0)
+    {
+        rc = -errno;
+        std::cerr << "Failed to open the XDMA device, RC=" << rc << "\n";
+        return rc;
+    }
+
+    pldm::utils::CustomFD xdmaFd(dmaFd);
+
+    void* vgaMem;
+    vgaMem = mmap(nullptr, pageAlignedLength, upstream ? PROT_WRITE : PROT_READ,
+                  MAP_SHARED, xdmaFd(), 0);
+    if (MAP_FAILED == vgaMem)
+    {
+        rc = -errno;
+        std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
+        return rc;
+    }
+
+    std::unique_ptr<void, decltype(mmapCleanup)> vgaMemPtr(vgaMem, mmapCleanup);
+
+    if (upstream)
+    {
+
+        // Writing to the VGA memory should be aligned at page boundary,
+        // otherwise write data into a buffer aligned at page boundary and
+        // then write to the VGA memory.
+        std::vector<char> buffer{};
+        buffer.resize(pageAlignedLength);
+        rc = read(fd, buffer.data(), length);
+        if (rc == -1)
+        {
+            std::cerr << "file read failed, ERROR=" << errno
+                      << ", UPSTREAM=" << upstream << ", LENGTH=" << length
+                      << ", OFFSET=" << offset << "\n";
+            return rc;
+        }
+        if (rc != static_cast<int>(length))
+        {
+            std::cerr << "mismatch between number of characters to read and "
+                      << "the length read, LENGTH=" << length << " COUNT=" << rc
+                      << "\n";
+            return -1;
+        }
+        memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
+               pageAlignedLength);
+    }
+
+    AspeedXdmaOp xdmaOp;
+    xdmaOp.upstream = upstream ? 1 : 0;
+    xdmaOp.hostAddr = address;
+    xdmaOp.len = length;
+
+    rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    if (rc < 0)
+    {
+        rc = -errno;
+        std::cerr << "Failed to execute the DMA operation, RC=" << rc
+                  << " UPSTREAM=" << upstream << " ADDRESS=" << address
+                  << " LENGTH=" << length << "\n";
+        return rc;
+    }
+
+    if (!upstream)
+    {
+      bool status = writeonfd(fd,  static_cast<const char*>(vgaMemPtr.get()), length);
+      if(status)
+      {
+         close(fd);
+         std::cerr << "closing socket" << std::endl;
+         return PLDM_ERROR;
+      }
+     }
+    return 0;
+}
+
+
 int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
                           uint64_t address, bool upstream)
 {
