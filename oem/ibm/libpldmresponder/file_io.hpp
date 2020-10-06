@@ -58,6 +58,16 @@ class DMA
      */
     int transferDataHost(int fd, uint32_t offset, uint32_t length,
                          uint64_t address, bool upstream);
+
+    /** @brief API to transfer data on to unix socket from host using DMA
+     *
+     * @param[in] path     - pathname of the file to transfer data from or to
+     * @param[in] length   - length of the data to transfer
+     * @param[in] address  - DMA address on the host
+     *
+     * @return returns 0 on success, negative errno on failure
+     */
+    int transferHostDataToSocket(int fd, uint32_t length, uint64_t address);
 };
 
 /** @brief Transfer the data between BMC and host using DMA.
