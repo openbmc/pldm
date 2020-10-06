@@ -7,6 +7,9 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <stdint.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/un.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
@@ -24,10 +27,8 @@ namespace pldm
 namespace responder
 {
 
-static constexpr auto nbdInterfaceDefault = "/dev/nbd1";
 static constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump/system";
-
 int DumpHandler::fd = -1;
 
 static std::string findDumpObjPath(uint32_t fileHandle)
@@ -101,16 +102,19 @@ int DumpHandler::newFileAvailable(uint64_t length)
 static std::string getOffloadUri(uint32_t fileHandle)
 {
     auto path = findDumpObjPath(fileHandle);
+    std::cout << path << std::endl;
     if (path.empty())
     {
         return {};
     }
 
-    std::string nbdInterface{};
+    std::string socketInterface{};
+
     try
     {
-        nbdInterface = pldm::utils::DBusHandler().getDbusProperty<std::string>(
-            path.c_str(), "OffloadUri", dumpEntry);
+        socketInterface =
+            pldm::utils::DBusHandler().getDbusProperty<std::string>(
+                path.c_str(), "OffloadUri", dumpEntry);
     }
     catch (const std::exception& e)
     {
@@ -118,73 +122,149 @@ static std::string getOffloadUri(uint32_t fileHandle)
                   << e.what() << "\n";
     }
 
-    if (nbdInterface == "")
-    {
-        nbdInterface = nbdInterfaceDefault;
-    }
-
-    return nbdInterface;
+    return socketInterface;
 }
 
 int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                  uint64_t address)
 {
-    auto nbdInterface = getOffloadUri(fileHandle);
-    if (nbdInterface.empty())
-    {
-        return PLDM_ERROR;
-    }
-
-    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
     if (DumpHandler::fd == -1)
     {
-        DumpHandler::fd = open(nbdInterface.c_str(), flags);
-        if (DumpHandler::fd == -1)
+        auto socketInterface = getOffloadUri(fileHandle);
+        std::cout << socketInterface << std::endl;
+
+        int sock;
+        struct sockaddr_un addr;
+        memset(&addr, 0, sizeof(addr));
+        addr.sun_family = AF_UNIX;
+        if (strnlen(socketInterface.c_str(), sizeof(addr.sun_path)) ==
+            sizeof(addr.sun_path))
         {
-            std::cerr << "NBD file does not exist at " << nbdInterface
-                      << " ERROR=" << errno << "\n";
+            std::cerr << "UNIX socket path too long" << std::endl;
             return PLDM_ERROR;
         }
+
+        strncpy(addr.sun_path, socketInterface.c_str(),
+                sizeof(addr.sun_path) - 1);
+
+        if ((sock = socket(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0)) == -1)
+        {
+            std::cerr << "SOCKET failed" << std::endl;
+            return PLDM_ERROR;
+        }
+
+        if (connect(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1)
+        {
+            std::cerr << "CONNECT failed" << std::endl;
+            close(sock);
+            return PLDM_ERROR;
+        }
+        DumpHandler::fd = sock;
     }
 
-    return transferFileData(DumpHandler::fd, false, offset, length, address);
+    return transferFileDataToSocket(DumpHandler::fd, false, offset, length,
+                                    address);
 }
 
-int DumpHandler::write(const char* buffer, uint32_t offset, uint32_t& length)
+bool writeonfd(const int sock, const char* buf, const uint64_t blockSize)
 {
-    auto nbdInterface = getOffloadUri(fileHandle);
-    if (nbdInterface.empty())
-    {
-        return PLDM_ERROR;
-    }
+    uint64_t i;
+    int nwrite = 0;
 
-    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
-    if (DumpHandler::fd == -1)
+    for (i = 0; i < blockSize; i = i + nwrite)
     {
-        DumpHandler::fd = open(nbdInterface.c_str(), flags);
-        if (DumpHandler::fd == -1)
+
+        fd_set wfd;
+        struct timeval tv;
+        tv.tv_sec = 1;
+        tv.tv_usec = 0;
+
+        FD_ZERO(&wfd);
+        FD_SET(sock, &wfd);
+        int nfd = sock + 1;
+
+        int retval = select(nfd, NULL, &wfd, NULL, &tv);
+        if ((retval < 0) && (errno != EINTR))
         {
-            std::cerr << "NBD file does not exist at " << nbdInterface
-                      << " ERROR=" << errno << "\n";
-            return PLDM_ERROR;
+            std::cout << "\nselect call failed " << errno << std::endl;
+            return true;
+        }
+        if (retval == 0)
+        {
+            nwrite = 0;
+            continue;
+        }
+        if ((retval > 0) && (FD_ISSET(sock, &wfd)))
+        {
+            nwrite = write(sock, buf + i, blockSize - i);
+
+            if (nwrite < 0)
+            {
+                if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)
+                {
+                    std::cout << "Write call failed with EAGAIN or EWOULDBLOCK "
+                                 "or EINTR";
+                    nwrite = 0;
+                    continue;
+                }
+                std::cout << "Failed to write";
+                return true;
+            }
+        }
+        else
+        {
+            nwrite = 0;
+            std::cout << "fd is not ready for write";
         }
     }
+    return false;
+}
 
-    int rc = lseek(DumpHandler::fd, offset, SEEK_SET);
-    if (rc == -1)
+int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length)
+{
+
+    if (DumpHandler::fd == -1)
     {
-        std::cerr << "lseek failed, ERROR=" << errno << ", OFFSET=" << offset
-                  << "\n";
+        auto socketInterface = getOffloadUri(fileHandle);
+        std::cout << socketInterface << std::endl;
+
+        int sock;
+        struct sockaddr_un addr;
+        memset(&addr, 0, sizeof(addr));
+        addr.sun_family = AF_UNIX;
+        if (strnlen(socketInterface.c_str(), sizeof(addr.sun_path)) ==
+            sizeof(addr.sun_path))
+        {
+            std::cerr << "UNIX socket path too long" << std::endl;
+            return PLDM_ERROR;
+        }
+
+        strncpy(addr.sun_path, socketInterface.c_str(),
+                sizeof(addr.sun_path) - 1);
+
+        if ((sock = socket(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0)) == -1)
+        {
+            std::cerr << "SOCKET failed" << std::endl;
+            return PLDM_ERROR;
+        }
+
+        if (connect(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1)
+        {
+            std::cerr << "CONNECT failed" << std::endl;
+            close(sock);
+            return PLDM_ERROR;
+        }
+
+        DumpHandler::fd = sock;
+    }
+
+    bool status = writeonfd(DumpHandler::fd, buffer, length);
+    if (status)
+    {
+        close(fd);
+        std::cerr << "closing socket" << std::endl;
         return PLDM_ERROR;
     }
-    rc = ::write(DumpHandler::fd, buffer, length);
-    if (rc == -1)
-    {
-        std::cerr << "file write failed, ERROR=" << errno
-                  << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
-        return PLDM_ERROR;
-    }
-    length = rc;
 
     return PLDM_SUCCESS;
 }
