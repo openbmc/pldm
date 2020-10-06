@@ -98,6 +98,9 @@ class FileHandler
     virtual int transferFileData(int fd, bool upstream, uint32_t offset,
                                  uint32_t& length, uint64_t address);
 
+    virtual int transferFileDataToSocket(int fd, bool upstream, uint32_t offset,
+                                         uint32_t& length, uint64_t address);
+
     /** @brief Constructor to create a FileHandler object
      */
     FileHandler(uint32_t fileHandle) : fileHandle(fileHandle)
