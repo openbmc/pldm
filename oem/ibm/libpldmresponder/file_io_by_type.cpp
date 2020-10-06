@@ -51,6 +51,27 @@ int FileHandler::transferFileData(int32_t fd, bool upstream, uint32_t offset,
     return rc < 0 ? PLDM_ERROR : PLDM_SUCCESS;
 }
 
+int FileHandler::transferFileDataToSocket(int32_t fd, bool upstream, uint32_t offset,
+                                  uint32_t& length, uint64_t address)
+{
+    dma::DMA xdmaInterface;
+    while (length > dma::maxSize)
+    {
+        auto rc = xdmaInterface.transferDataHostToSocket(fd, offset, dma::maxSize,
+                                                 address, upstream);
+        if (rc < 0)
+        {
+            return PLDM_ERROR;
+        }
+        offset += dma::maxSize;
+        length -= dma::maxSize;
+        address += dma::maxSize;
+    }
+    auto rc =
+        xdmaInterface.transferDataHostToSocket(fd, offset, length, address, upstream);
+    return rc < 0 ? PLDM_ERROR : PLDM_SUCCESS;
+}
+
 int FileHandler::transferFileData(const fs::path& path, bool upstream,
                                   uint32_t offset, uint32_t& length,
                                   uint64_t address)

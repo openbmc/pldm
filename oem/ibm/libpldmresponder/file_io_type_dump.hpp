@@ -44,9 +44,10 @@ class DumpHandler : public FileHandler
      */
     ~DumpHandler()
     {}
-
   private:
     static int fd; //!< fd to manage the dump offload to bmc
+
+
 };
 
 } // namespace responder
