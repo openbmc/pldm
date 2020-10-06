@@ -121,7 +121,6 @@ T decimalToBcd(T decimal)
 }
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
-constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 
 struct DBusMapping
 {

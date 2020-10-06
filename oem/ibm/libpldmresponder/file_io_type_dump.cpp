@@ -4,6 +4,7 @@
 #include "oem/ibm/libpldm/file_io.h"
 
 #include "common/utils.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <stdint.h>
@@ -17,6 +18,7 @@
 #include <filesystem>
 #include <iostream>
 
+using namespace pldm::responder::utils;
 using namespace pldm::utils;
 
 namespace pldm
@@ -24,10 +26,8 @@ namespace pldm
 namespace responder
 {
 
-static constexpr auto nbdInterfaceDefault = "/dev/nbd1";
 static constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump/system";
-
 int DumpHandler::fd = -1;
 
 static std::string findDumpObjPath(uint32_t fileHandle)
@@ -106,11 +106,13 @@ static std::string getOffloadUri(uint32_t fileHandle)
         return {};
     }
 
-    std::string nbdInterface{};
+    std::string socketInterface{};
+
     try
     {
-        nbdInterface = pldm::utils::DBusHandler().getDbusProperty<std::string>(
-            path.c_str(), "OffloadUri", dumpEntry);
+        socketInterface =
+            pldm::utils::DBusHandler().getDbusProperty<std::string>(
+                path.c_str(), "OffloadUri", dumpEntry);
     }
     catch (const std::exception& e)
     {
@@ -118,73 +120,46 @@ static std::string getOffloadUri(uint32_t fileHandle)
                   << e.what() << "\n";
     }
 
-    if (nbdInterface == "")
-    {
-        nbdInterface = nbdInterfaceDefault;
-    }
-
-    return nbdInterface;
+    return socketInterface;
 }
 
 int DumpHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                  uint64_t address)
 {
-    auto nbdInterface = getOffloadUri(fileHandle);
-    if (nbdInterface.empty())
-    {
-        return PLDM_ERROR;
-    }
-
-    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
     if (DumpHandler::fd == -1)
     {
-        DumpHandler::fd = open(nbdInterface.c_str(), flags);
-        if (DumpHandler::fd == -1)
+        auto socketInterface = getOffloadUri(fileHandle);
+        int sock = setupUnixSocket(socketInterface);
+        if (sock < 0)
         {
-            std::cerr << "NBD file does not exist at " << nbdInterface
-                      << " ERROR=" << errno << "\n";
-            return PLDM_ERROR;
+            sock = -errno;
+            close(DumpHandler::fd);
+            std::cerr
+                << "DumpHandler::writeFromMemory: setupUnixSocket() failed"
+                << std::endl;
+            std::remove(socketInterface.c_str());
+            return sock;
         }
-    }
 
-    return transferFileData(DumpHandler::fd, false, offset, length, address);
+        DumpHandler::fd = sock;
+    }
+    return transferFileDataToSocket(DumpHandler::fd, false, offset, length,
+                                    address);
 }
 
-int DumpHandler::write(const char* buffer, uint32_t offset, uint32_t& length)
+int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length)
 {
-    auto nbdInterface = getOffloadUri(fileHandle);
-    if (nbdInterface.empty())
+    int rc = writeOnUnixSocket(DumpHandler::fd, buffer, length);
+    if (rc < 0)
     {
-        return PLDM_ERROR;
+        rc = -errno;
+        close(DumpHandler::fd);
+        auto socketInterface = getOffloadUri(fileHandle);
+        std::remove(socketInterface.c_str());
+        std::cerr << "DumpHandler::write: writeOnUnixSocket() failed"
+                  << std::endl;
+        return rc;
     }
-
-    int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
-    if (DumpHandler::fd == -1)
-    {
-        DumpHandler::fd = open(nbdInterface.c_str(), flags);
-        if (DumpHandler::fd == -1)
-        {
-            std::cerr << "NBD file does not exist at " << nbdInterface
-                      << " ERROR=" << errno << "\n";
-            return PLDM_ERROR;
-        }
-    }
-
-    int rc = lseek(DumpHandler::fd, offset, SEEK_SET);
-    if (rc == -1)
-    {
-        std::cerr << "lseek failed, ERROR=" << errno << ", OFFSET=" << offset
-                  << "\n";
-        return PLDM_ERROR;
-    }
-    rc = ::write(DumpHandler::fd, buffer, length);
-    if (rc == -1)
-    {
-        std::cerr << "file write failed, ERROR=" << errno
-                  << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
-        return PLDM_ERROR;
-    }
-    length = rc;
 
     return PLDM_SUCCESS;
 }
@@ -208,7 +183,10 @@ int DumpHandler::fileAck(uint8_t /*fileStatus*/)
                     << "failed to make a d-bus call to DUMP manager, ERROR="
                     << e.what() << "\n";
             }
+
             close(DumpHandler::fd);
+            auto socketInterface = getOffloadUri(fileHandle);
+            std::remove(socketInterface.c_str());
             DumpHandler::fd = -1;
             return PLDM_SUCCESS;
         }
