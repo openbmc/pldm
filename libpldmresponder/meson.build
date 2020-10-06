@@ -27,6 +27,7 @@ sources = [
 
 if get_option('oem-ibm').enabled()
   sources += [
+    '../oem/ibm/libpldmresponder/utils.cpp',
     '../oem/ibm/libpldmresponder/file_io.cpp',
     '../oem/ibm/libpldmresponder/file_table.cpp',
     '../oem/ibm/libpldmresponder/file_io_by_type.cpp',
