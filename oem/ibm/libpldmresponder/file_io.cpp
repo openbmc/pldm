@@ -4,9 +4,9 @@
 
 #include "libpldm/base.h"
 
-#include "common/utils.hpp"
 #include "file_io_by_type.hpp"
 #include "file_table.hpp"
+#include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <fcntl.h>
@@ -22,7 +22,7 @@
 
 namespace pldm
 {
-
+using namespace pldm::responder::utils;
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 namespace responder
@@ -48,6 +48,71 @@ struct AspeedXdmaOp
 };
 
 constexpr auto xdmaDev = "/dev/aspeed-xdma";
+
+int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
+{
+    static const size_t pageSize = getpagesize();
+    uint32_t numPages = length / pageSize;
+    uint32_t pageAlignedLength = numPages * pageSize;
+
+    if (length > pageAlignedLength)
+    {
+        pageAlignedLength += pageSize;
+    }
+
+    auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
+        munmap(vgaMem, pageAlignedLength);
+    };
+
+    int dmaFd = -1;
+    int rc = 0;
+    dmaFd = open(xdmaDev, O_RDWR);
+    if (dmaFd < 0)
+    {
+        rc = -errno;
+        std::cerr << "Failed to open the XDMA device, RC=" << rc << "\n";
+        return rc;
+    }
+
+    pldm::utils::CustomFD xdmaFd(dmaFd);
+
+    void* vgaMem;
+    vgaMem =
+        mmap(nullptr, pageAlignedLength, PROT_READ, MAP_SHARED, xdmaFd(), 0);
+    if (MAP_FAILED == vgaMem)
+    {
+        rc = -errno;
+        std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
+        return rc;
+    }
+
+    std::unique_ptr<void, decltype(mmapCleanup)> vgaMemPtr(vgaMem, mmapCleanup);
+
+    AspeedXdmaOp xdmaOp;
+    xdmaOp.upstream = 0;
+    xdmaOp.hostAddr = address;
+    xdmaOp.len = length;
+
+    rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    if (rc < 0)
+    {
+        rc = -errno;
+        std::cerr << "Failed to execute the DMA operation, RC=" << rc
+                  << " ADDRESS=" << address << " LENGTH=" << length << "\n";
+        return rc;
+    }
+
+    rc = writeToUnixSocket(fd, static_cast<const char*>(vgaMemPtr.get()),
+                           length);
+    if (rc < 0)
+    {
+        rc = -errno;
+        close(fd);
+        std::cerr << "closing socket" << std::endl;
+        return rc;
+    }
+    return 0;
+}
 
 int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
                           uint64_t address, bool upstream)
