@@ -25,6 +25,27 @@ class MockCodeUpdate : public CodeUpdate
     MOCK_METHOD(void, setVersions, (), (override));
 };
 
+class MockOemPlatformHandler : public oem_platform::Handler
+{
+  public:
+    MockOemPlatformHandler(const pldm::utils::DBusHandler* dBusIntf) :
+        oem_platform::Handler(dBusIntf)
+    {}
+    MOCK_METHOD(int, getOemStateSensorReadingsHandler,
+                (uint16_t entityType, uint16_t entityInstance,
+                 uint16_t stateSetId, uint8_t compSensorCnt,
+                 std::vector<get_sensor_state_field>& stateField),
+                (override));
+    MOCK_METHOD(int, OemSetStateEffecterStatesHandler,
+                (uint16_t entityType, uint16_t entityInstance,
+                 uint16_t stateSetId, uint8_t compEffecterCnt,
+                 std::vector<set_effecter_state_field>& stateField,
+                 uint16_t effecterId),
+                (override));
+    MOCK_METHOD(void, buildOEMPDR, (pdr_utils::Repo & repo), (override));
+    MOCK_METHOD(uint16_t, getNextEffecterId, ());
+};
+
 TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
 {
     uint16_t entityID_ = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
@@ -139,4 +160,37 @@ TEST(EncodeCodeUpdate, testBadRequest)
                              requestMsg, 0x1);
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(generateStateEffecterOEMPDR, testGoodRequest)
+{
+    auto inPDRRepo = pldm_pdr_init();
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+
+    auto mockDbusHandler = std::make_unique<MockdBusHandler>();
+    std::unique_ptr<MockOemPlatformHandler> mockoemPlatformHandler{};
+    mockoemPlatformHandler =
+        std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get());
+
+    std::unique_ptr<CodeUpdate> mockCodeUpdate =
+        std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
+
+    std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+    oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
+        mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester);
+
+    pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+        dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+            oemPlatformHandler.get());
+    pldm::responder::platform::Handler* mckPltHandler =
+        reinterpret_cast<pldm::responder::platform::Handler*>(
+            mockoemPlatformHandler.get());
+    oemIbmPlatformHandler->setPlatformHandler(mckPltHandler);
+
+    Repo inRepo(inPDRRepo);
+    oemPlatformHandler->buildOEMPDR(inRepo);
+
+    ASSERT_EQ(inRepo.empty(), false);
+    pldm_pdr_destroy(inPDRRepo);
 }
