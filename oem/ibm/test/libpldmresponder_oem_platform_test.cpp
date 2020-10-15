@@ -140,3 +140,24 @@ TEST(EncodeCodeUpdate, testBadRequest)
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(generateStateEffecterOEMPDR, testGoodRequest)
+{
+    auto inPDRRepo = pldm_pdr_init();
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+
+    auto mockDbusHandler = std::make_unique<MockdBusHandler>();
+    std::unique_ptr<CodeUpdate> mockCodeUpdate =
+        std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
+    std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+
+    oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
+        mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester);
+
+    Repo inRepo(inPDRRepo);
+    oemPlatformHandler->buildOEMPDR(inRepo);
+
+    ASSERT_EQ(inRepo.empty(), false);
+    pldm_pdr_destroy(inPDRRepo);
+}
