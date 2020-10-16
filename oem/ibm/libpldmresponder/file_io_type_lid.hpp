@@ -100,6 +100,12 @@ class LidHandler : public FileHandler
     /** @brief Directory where the lid files without a header are stored */
     std::string lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
 
+    /** @brief The file name of the code update tarball */
+    std::string tarImageName = "image.tar";
+
+    /** @brief The path to the code update tarball file */
+    std::string tarImagePath = fs::path(imageDirPath) / tarImageName;
+
     /** @brief The file name of the hostfw image */
     std::string hostfwImageName = "image-host-fw";
 
