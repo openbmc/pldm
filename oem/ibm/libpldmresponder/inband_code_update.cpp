@@ -24,11 +24,24 @@ auto lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
 /** @brief Directory where the image files are stored as they are built */
 auto imageDirPath = fs::path(LID_STAGING_DIR) / "image";
 
+/** @brief Directory where the code update tarball files are stored */
+auto updateDirPath = fs::path(LID_STAGING_DIR) / "update";
+
 /** @brief The file name of the code update tarball */
 constexpr auto tarImageName = "image.tar";
 
+/** @brief The file name of the hostfw image */
+constexpr auto hostfwImageName = "image-host-fw";
+
 /** @brief The path to the code update tarball file */
 auto tarImagePath = fs::path(imageDirPath) / tarImageName;
+
+/** @brief The path to the hostfw image */
+auto hostfwImagePath = fs::path(imageDirPath) / hostfwImageName;
+
+/** @brief The path to the tarball file expected by the phosphor software
+ *         manager */
+auto updateImagePath = fs::path("/tmp/images") / tarImageName;
 
 std::string CodeUpdate::fetchCurrentBootSide()
 {
@@ -348,6 +361,28 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
         oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
 }
 
+template <typename... T>
+int executeCmd(T const&... t)
+{
+    std::stringstream cmd;
+    ((cmd << t << " "), ...) << std::endl;
+    FILE* pipe = popen(cmd.str().c_str(), "r");
+    if (!pipe)
+    {
+        throw std::runtime_error("popen() failed!");
+    }
+    int rc = pclose(pipe);
+    if (WEXITSTATUS(rc))
+    {
+        std::cerr << "Error executing: ";
+        ((std::cerr << " " << t), ...);
+        std::cerr << "\n";
+        return -1;
+    }
+
+    return 0;
+}
+
 int processCodeUpdateLid(const std::string& filePath)
 {
     struct lidHeader
@@ -420,6 +455,52 @@ int processCodeUpdateLid(const std::string& filePath)
 
     ifs.close();
     fs::remove(filePath);
+    return PLDM_SUCCESS;
+}
+
+int assembleCodeUpdateImage()
+{
+    // Create the hostfw squashfs image from the LID files without header
+    auto rc = executeCmd("/usr/sbin/mksquashfs", lidDirPath.c_str(),
+                         hostfwImagePath.c_str(), "-all-root", "-no-recovery");
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    fs::create_directories(updateDirPath);
+
+    // Extract the BMC tarball content
+    rc = executeCmd("/bin/tar", "-xf", tarImagePath.c_str(), "-C",
+                    updateDirPath);
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    // Add the hostfw image to the directory where the contents were extracted
+    fs::copy_file(hostfwImagePath, fs::path(updateDirPath) / hostfwImageName,
+                  fs::copy_options::overwrite_existing);
+
+    // Remove the tarball file, then re-generate it with so that the hostfw
+    // image becomes part of the tarball
+    fs::remove(tarImagePath);
+    rc = executeCmd("/bin/tar", "-cf", tarImagePath, ".", "-C", updateDirPath);
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    // Copy the tarball to the update directory to trigger the phosphor software
+    // manager to create a version interface
+    fs::copy_file(tarImagePath, updateImagePath,
+                  fs::copy_options::overwrite_existing);
+
+    // Cleanup
+    fs::remove_all(updateDirPath);
+    fs::remove_all(lidDirPath);
+    fs::remove_all(imageDirPath);
+
     return PLDM_SUCCESS;
 }
 
