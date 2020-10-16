@@ -341,6 +341,14 @@ int processCodeUpdateLid(const std::string& filePath)
     struct lidHeader
     {
         uint16_t magicNumber;
+        uint16_t headerVersion;
+        uint32_t lidNumber;
+        uint32_t lidDate;
+        uint16_t lidTime;
+        uint16_t lidClass;
+        uint32_t lidCrc;
+        uint32_t lidSize;
+        uint32_t headerSize;
     };
     lidHeader header;
 
@@ -353,6 +361,15 @@ int processCodeUpdateLid(const std::string& filePath)
     ifs.seekg(0);
     ifs.read(reinterpret_cast<char*>(&header), sizeof(header));
     ifs.close();
+
+    // File size should be the value of lid size minus the header size
+    auto fileSize = fs::file_size(filePath);
+    fileSize -= htonl(header.headerSize);
+    if (fileSize < htonl(header.lidSize))
+    {
+        // File is not completely written yet
+        return PLDM_SUCCESS;
+    }
 
     constexpr auto magicNumber = 0x0222;
     if (htons(header.magicNumber) != magicNumber)
