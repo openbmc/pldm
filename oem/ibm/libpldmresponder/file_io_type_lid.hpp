@@ -79,6 +79,12 @@ class LidHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
+    /** @brief Method to assemble the code update tarball and trigger the
+     *         phosphor software manager to create a version interface.
+     *  @return PLDM status code
+     */
+    int assembleFinalImage();
+
     /** @brief LidHandler destructor
      */
     ~LidHandler()
@@ -100,6 +106,9 @@ class LidHandler : public FileHandler
     /** @brief Directory where the lid files without a header are stored */
     std::string lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
 
+    /** @brief Directory where the code update tarball files are stored */
+    std::string updateDirPath = fs::path(LID_STAGING_DIR) / "update";
+
     /** @brief The file name of the code update tarball */
     std::string tarImageName = "image.tar";
 
@@ -111,6 +120,10 @@ class LidHandler : public FileHandler
 
     /** @brief The path to the hostfw image */
     std::string hostfwImagePath = fs::path(imageDirPath) / hostfwImageName;
+
+    /** @brief The path to the tarball file expected by the phosphor software
+     *         manager */
+    std::string updateImagePath = fs::path("/tmp/images") / tarImageName;
 
     /** @struct lidHeader
      *  @brief LID header structure
