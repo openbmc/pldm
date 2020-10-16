@@ -19,6 +19,9 @@ namespace responder
 {
 using namespace oem_ibm_platform;
 
+/** @brief Directory where the lid files without a header are stored */
+auto lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
+
 std::string CodeUpdate::fetchCurrentBootSide()
 {
     return currBootSide;
@@ -361,7 +364,6 @@ int processCodeUpdateLid(const std::string& filePath)
     }
     ifs.seekg(0);
     ifs.read(reinterpret_cast<char*>(&header), sizeof(header));
-    ifs.close();
 
     // File size should be the value of lid size minus the header size
     auto fileSize = fs::file_size(filePath);
@@ -369,6 +371,7 @@ int processCodeUpdateLid(const std::string& filePath)
     if (fileSize < htonl(header.lidSize))
     {
         // File is not completely written yet
+        ifs.close();
         return PLDM_SUCCESS;
     }
 
@@ -376,9 +379,24 @@ int processCodeUpdateLid(const std::string& filePath)
     if (htons(header.magicNumber) != magicNumber)
     {
         std::cerr << "Invalid magic number: " << filePath << "\n";
+        ifs.close();
         return PLDM_ERROR;
     }
 
+    fs::create_directories(lidDirPath);
+
+    std::stringstream lidFileName;
+    lidFileName << std::hex << htonl(header.lidNumber) << ".lid";
+    auto lidNoHeaderPath = fs::path(lidDirPath) / lidFileName.str();
+    std::ofstream ofs(lidNoHeaderPath,
+                      std::ios::out | std::ios::binary | std::ios::trunc);
+    ifs.seekg(htonl(header.headerSize));
+    ofs << ifs.rdbuf();
+    ofs.flush();
+    ofs.close();
+
+    ifs.close();
+    fs::remove(filePath);
     return PLDM_SUCCESS;
 }
 
