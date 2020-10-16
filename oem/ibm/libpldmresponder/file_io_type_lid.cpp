@@ -97,5 +97,38 @@ int LidHandler::assembleImage(const std::string& filePath)
     }
 }
 
+int LidHandler::assembleFinalImage()
+{
+    fs::create_directories(updateDirPath);
+
+    // Extract the BMC tarball content
+    auto rc = executeCmd("/bin/tar", "-xf", tarImagePath.c_str(), "-C",
+                         updateDirPath);
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    // Add the hostfw image to the directory where the contents were extracted
+    fs::copy_file(hostfwImagePath, fs::path(updateDirPath) / hostfwImageName,
+                  fs::copy_options::overwrite_existing);
+
+    // Remove the tarball file, then re-generate it with so that the hostfw
+    // image becomes part of the tarball
+    fs::remove(tarImagePath);
+    rc = executeCmd("/bin/tar", "-cf", tarImagePath, updateDirPath);
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    // Copy the tarball to the update directory to trigger the phosphor software
+    // manager to create a version interface
+    fs::copy_file(tarImagePath, updateImagePath,
+                  fs::copy_options::overwrite_existing);
+
+    return PLDM_SUCCESS;
+}
+
 } // namespace responder
 } // namespace pldm
