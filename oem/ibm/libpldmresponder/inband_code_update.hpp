@@ -149,5 +149,12 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
  * @return - PLDM_SUCCESS codes
  */
 int processCodeUpdateLid(const std::string& filePath);
+
+/** @brief Method to assemble the code update tarball and trigger the
+ *         phosphor software manager to create a version interface
+ *  @return - PLDM_SUCCESS codes
+ */
+int assembleCodeUpdateImage();
+
 } // namespace responder
 } // namespace pldm
