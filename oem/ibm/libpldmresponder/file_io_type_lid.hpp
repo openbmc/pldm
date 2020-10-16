@@ -196,6 +196,22 @@ class LidHandler : public FileHandler
 
     /** @brief The path to the hostfw image */
     std::string hostfwImagePath = fs::path(imageDirPath) / hostfwImageName;
+
+    /** @struct lidHeader
+     *  @brief LID header structure
+     */
+    struct lidHeader
+    {
+        uint16_t magicNumber;
+        uint16_t headerVersion;
+        uint32_t lidNumber;
+        uint32_t lidDate;
+        uint16_t lidTime;
+        uint16_t lidClass;
+        uint32_t lidCrc;
+        uint32_t lidSize;
+        uint32_t headerSize;
+    };
 };
 
 } // namespace responder

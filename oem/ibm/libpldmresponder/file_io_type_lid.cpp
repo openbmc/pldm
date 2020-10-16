@@ -1,5 +1,9 @@
 #include "file_io_type_lid.hpp"
 
+#include <arpa/inet.h>
+
+#include <fstream>
+
 namespace pldm
 {
 namespace responder
@@ -29,6 +33,31 @@ int executeCmd(T const&... t)
 
 int LidHandler::assembleImage(const std::string& filePath)
 {
+    std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
+    if (!ifs)
+    {
+        return PLDM_ERROR;
+    }
+
+    lidHeader header;
+    ifs.seekg(0);
+    ifs.read(reinterpret_cast<char*>(&header), sizeof(header));
+
+    constexpr auto magicNumber = 0x0222;
+    if (htons(header.magicNumber) != magicNumber)
+    {
+        return PLDM_ERROR;
+    }
+
+    // File size should be the value of lid size minus the header size
+    auto fileSize = fs::file_size(filePath);
+    fileSize -= htonl(header.headerSize);
+    if (fileSize < htonl(header.lidSize))
+    {
+        // File is not completely written yet
+        return PLDM_SUCCESS;
+    }
+
     fs::create_directories(imageDirPath);
 
     // Create the hostfw squashfs image from the LID file
