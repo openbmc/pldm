@@ -59,10 +59,23 @@ int LidHandler::assembleImage(const std::string& filePath)
     }
 
     fs::create_directories(imageDirPath);
+    fs::create_directories(lidDirPath);
 
-    // Create the hostfw squashfs image from the LID file
-    auto rc = executeCmd("/usr/sbin/mksquashfs", filePath.c_str(),
+    // Create a copy of the lid file without the header
+    std::stringstream lidFileName;
+    lidFileName << std::hex << htonl(header.lidNumber) << ".lid";
+    auto lidNoHeaderPath = fs::path(lidDirPath) / lidFileName.str();
+    std::ofstream ofs(lidNoHeaderPath,
+                      std::ios::out | std::ios::binary | std::ios::trunc);
+    ifs.seekg(htonl(header.headerSize));
+    ofs << ifs.rdbuf();
+    ofs.flush();
+    ofs.close();
+
+    // Create the hostfw squashfs image from the LID file without header
+    auto rc = executeCmd("/usr/sbin/mksquashfs", lidNoHeaderPath.c_str(),
                          hostfwImagePath.c_str(), "-all-root", "-no-recovery");
+    fs::remove(lidNoHeaderPath);
     fs::remove(filePath);
     return rc < 0 ? PLDM_ERROR : PLDM_SUCCESS;
 }
