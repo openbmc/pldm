@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e98bc947_c60f745e",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lid.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-10-17T16:08:41Z",
+      "side": 1,
+      "message": "Turns out that execl() seems to have a char limit and long commands that had the STAGING path were failing. Changing to popen().",
+      "revId": "3c9510a1c3e835b2267edaf1f6a42eba3dab968c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
