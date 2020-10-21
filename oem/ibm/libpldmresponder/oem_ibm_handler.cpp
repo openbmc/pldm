@@ -25,7 +25,7 @@ int pldm::responder::oem_ibm_platform::Handler::
     for (size_t i = 0; i < compSensorCnt; i++)
     {
         uint8_t sensorOpState{};
-        if (entityType == PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY &&
+        if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
             stateSetId == PLDM_OEM_IBM_BOOT_STATE)
         {
             sensorOpState = fetchBootSide(entityInstance, codeUpdate);
@@ -53,22 +53,26 @@ int pldm::responder::oem_ibm_platform::Handler::
     {
         if (stateField[currState].set_request == PLDM_REQUEST_SET)
         {
-            if (entityType == PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY &&
+            if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
                 stateSetId == PLDM_OEM_IBM_BOOT_STATE)
             {
                 rc = setBootSide(entityInstance, currState, stateField,
                                  codeUpdate);
             }
-            else if (entityType == 33 && stateSetId == 32768)
+            else if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
+                     stateSetId == 32768)
             {
                 if (stateField[currState].effecter_state == START)
                 {
+                    std::cout << "received start update \n";
                     codeUpdate->setCodeUpdateProgress(true);
                     rc = codeUpdate->setRequestedApplyTime();
+                    std::cout << "after setRequestedApplyTime \n";
                     sendCodeUpdateEvent(effecterId, START, END);
                 }
                 else if (stateField[currState].effecter_state == END)
                 {
+                    std::cout << "received endupdate \n";
                     std::unique_ptr<LidHandler> lidHandler{};
                     int retc = lidHandler->assembleFinalImage();
                     if (retc == PLDM_SUCCESS)
@@ -86,9 +90,10 @@ int pldm::responder::oem_ibm_platform::Handler::
                 else if (stateField[currState].effecter_state == ABORT)
                 {
                     codeUpdate->setCodeUpdateProgress(false);
-                    std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-                    oem_ibm::Handler handler(oemPlatformHandler.get());
-                    rc = handler.clearDirPath(LID_STAGING_DIR);
+                    /*std::unique_ptr<oem_platform::Handler>
+                    oemPlatformHandler{}; oem_ibm::Handler
+                    handler(oemPlatformHandler.get()); rc =
+                    handler.clearDirPath(LID_STAGING_DIR);*/
                     // rc = codeUpdate->clearLids(platformHandler);
                     sendCodeUpdateEvent(effecterId, ABORT, END);
                 }
@@ -141,6 +146,19 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
     uint8_t* responseMsg = nullptr;
     size_t responseMsgSize{};
 
+    std::cout << "sendEventToHost \n";
+
+    if (requestMsg.size())
+    {
+        std::ostringstream tempStream;
+        for (int byte : requestMsg)
+        {
+            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
+                       << " ";
+        }
+        std::cout << tempStream.str() << std::endl;
+    }
+
     auto requesterRc =
         pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
                        &responseMsg, &responseMsgSize);
@@ -169,6 +187,7 @@ void pldm::responder::oem_ibm_platform::Handler::sendCodeUpdateEvent(
     uint16_t effecterId, codeUpdateStateValues opState,
     codeUpdateStateValues previousOpState)
 {
+    std::cout << "enter sendCodeUpdateEvent \n";
     std::vector<uint8_t> effecterEventDataVec{};
     size_t effecterEventSize = PLDM_EFFECTER_EVENT_DATA_MIN_LENGTH + 1;
     effecterEventDataVec.resize(effecterEventSize);
@@ -212,6 +231,7 @@ void pldm::responder::oem_ibm_platform::Handler::sendCodeUpdateEvent(
 
     requester.markFree(mctp_eid, instanceId);
 
+    std::cout << "exit sendCodeUpdateEvent \n";
     return;
 }
 
