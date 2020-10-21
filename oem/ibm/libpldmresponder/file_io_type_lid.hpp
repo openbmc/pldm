@@ -32,6 +32,7 @@ class LidHandler : public FileHandler
         FileHandler(fileHandle), lidType(lidType)
     {
         sideToRead = permSide ? Pside : Tside;
+        isPatchDir = false;
         std::string dir = permSide ? LID_ALTERNATE_DIR : LID_RUNNING_DIR;
         std::stringstream stream;
         stream << std::hex << fileHandle;
@@ -42,6 +43,7 @@ class LidHandler : public FileHandler
         if (fs::is_regular_file(patch))
         {
             lidPath = patch;
+            isPatchDir = true;
         }
         else
         {
@@ -61,10 +63,22 @@ class LidHandler : public FileHandler
                 dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
                     oemPlatformHandler);
             std::string dir = LID_ALTERNATE_DIR;
+            if(isPatchDir)
+            {
+                dir = LID_ALTERNATE_PATCH_DIR;
+            }
+
             if (oemIbmPlatformHandler->codeUpdate->fetchCurrentBootSide() ==
                 sideToRead)
             {
-                dir = LID_RUNNING_DIR;
+                if(isPatchDir)
+                {
+                    dir = LID_RUNNING_PATCH_DIR;
+                }
+                else
+                {
+                    dir = LID_RUNNING_DIR;
+                }
             }
             else if (oemIbmPlatformHandler->codeUpdate
                          ->isCodeUpdateInProgress())
@@ -252,6 +266,7 @@ class LidHandler : public FileHandler
     std::string sideToRead;
     static inline MarkerLIDremainingSize markerLIDremainingSize;
     uint8_t lidType;
+    bool isPatchDir;
 
   private:
     /** @brief Method to assemble code update images from LID files.
