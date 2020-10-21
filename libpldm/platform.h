@@ -60,6 +60,7 @@ extern "C" {
 #define PLDM_OEM_STATE_SET_ID_END 65535
 
 #define PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY 33
+#define PLDM_SYSTEM_FIRMWARE 31
 
 enum pldm_effecter_data_size {
 	PLDM_EFFECTER_DATA_SIZE_UINT8,
