@@ -18,6 +18,7 @@ namespace oem_ibm_platform
 static constexpr auto PLDM_OEM_IBM_BOOT_STATE = 32769;
 static constexpr auto PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE = 32768;
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
+static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -31,15 +32,23 @@ enum codeUpdateStateValues
     REJECT = 0x6,
 };
 
+enum VerificationStateValues
+{
+    VALID = 0x0,
+    ENTITLEMENT_FAIL = 0x1,
+    BANNED_PLATFORM_FAIL = 0x2,
+    MIN_MIF_FAIL = 0x4,
+};
+
 class Handler : public oem_platform::Handler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
             pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
-            uint8_t mctp_eid, Requester& requester) :
+            uint8_t mctp_eid, Requester& requester, sdeventplus::Event& event) :
         oem_platform::Handler(dBusIntf),
         codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), requester(requester)
+        mctp_eid(mctp_eid), requester(requester), event(event)
     {
         codeUpdate->setVersions();
     }
@@ -98,6 +107,8 @@ class Handler : public oem_platform::Handler
      */
     int sendEventToHost(std::vector<uint8_t>& requestMsg);
 
+    void _processEndUpdate(sdeventplus::source::EventBase& source);
+
     ~Handler()
     {}
 
@@ -115,6 +126,9 @@ class Handler : public oem_platform::Handler
      *  obtain PLDM instance id.
      */
     Requester& requester;
+    /** @brief sdeventplus event source */
+    std::unique_ptr<sdeventplus::source::Defer> assembleImageEvent;
+    sdeventplus::Event& event;
 };
 
 /** @brief Method to encode code update event msg
