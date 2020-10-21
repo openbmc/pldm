@@ -7,13 +7,45 @@
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Dump/NewDump/server.hpp>
 
+#include <arpa/inet.h>
+
 #include <exception>
+#include <fstream>
+#include <list>
 #include <regex>
+#include <thread>
+
 namespace pldm
 {
 
 namespace responder
 {
+using namespace oem_ibm_platform;
+
+/** @brief Directory where the image files are stored as they are built */
+auto imageDirPath = fs::path(LID_STAGING_DIR) / "image";
+
+/** @brief Directory where the lid files without a header are stored */
+auto lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
+
+/** @brief Directory where the code update tarball files are stored */
+auto updateDirPath = fs::path(LID_STAGING_DIR) / "update";
+
+/** @brief The file name of the code update tarball */
+constexpr auto tarImageName = "image.tar";
+
+/** @brief The path to the code update tarball file */
+auto tarImagePath = fs::path(imageDirPath) / tarImageName;
+
+/** @brief The file name of the hostfw image */
+constexpr auto hostfwImageName = "image-host-fw";
+
+/** @brief The path to the hostfw image */
+auto hostfwImagePath = fs::path(imageDirPath) / hostfwImageName;
+
+/** @brief The path to the tarball file expected by the phosphor software
+ *         manager */
+auto updateImagePath = fs::path("/tmp/images") / tarImageName;
 
 std::string CodeUpdate::fetchCurrentBootSide()
 {
@@ -98,26 +130,37 @@ int CodeUpdate::setRequestedApplyTime()
     return rc;
 }
 
-int CodeUpdate::setRequestedActivation(CodeUpdate* codeUpdate)
+int CodeUpdate::setRequestedActivation(/*CodeUpdate* codeUpdate*/)
 {
     int rc = PLDM_SUCCESS;
-    std::string img = codeUpdate->fetchnewImageId();
+  /*  std::string img = codeUpdate->fetchnewImageId();
     static constexpr auto UPDATE_SERVICE =
         "xyz.openbmc_project.Software.BMC.Updater";
     const std::string objPath(img);
     static constexpr auto REQUESTED_ACTIVATION_INTF =
         "xyz.openbmc_project.Software.Activation";
     static constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
-    auto& bus = dBusIntf->getBus();
+    auto& bus = dBusIntf->getBus();*/
     pldm::utils::PropertyValue value =
         "xyz.openbmc_project.Software.Activation.RequestedActivations.Active";
+    DBusMapping dbusMapping;
+    dbusMapping.objectPath = newImageId;
+    dbusMapping.interface = "xyz.openbmc_project.Software.Activation";
+    dbusMapping.propertyName = "RequestedActivation";
+    dbusMapping.propertyType = "string";    
+    std::cout << "dbusMapping.objectPath " << dbusMapping.objectPath.c_str() << "\n";
+    std::cout << "dbusMapping.interface " << dbusMapping.interface.c_str() << "\n";
+    std::cout << "dbusMapping.propertyName " << dbusMapping.propertyName.c_str() << "\n";
+    std::cout << "dbusMapping.propertyType " << dbusMapping.propertyType.c_str() << "\n";
+    std::cout << "new value " << std::get<std::string>(value).c_str() << "\n";
     try
     {
-        auto method = bus.new_method_call(UPDATE_SERVICE, objPath.c_str(),
+      /*  auto method = bus.new_method_call(UPDATE_SERVICE, objPath.c_str(),
                                           PROP_INTF, "Set");
         method.append(REQUESTED_ACTIVATION_INTF, "RequestedActivation", value);
 
-        bus.call_noreply(method);
+        bus.call_noreply(method);*/
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
     }
     catch (const std::exception& e)
     {
@@ -125,6 +168,7 @@ int CodeUpdate::setRequestedActivation(CodeUpdate* codeUpdate)
                   << "ERROR=" << e.what() << std::endl;
         rc = PLDM_ERROR;
     }
+    newImageId.clear();
     return rc;
 }
 
@@ -194,13 +238,41 @@ void CodeUpdate::setVersions()
             DBusInterfaceAdded interfaces;
             sdbusplus::message::object_path path;
             msg.read(path, interfaces);
+            std::cout << "fwUpdateMatcher fetched image path " << path.str.c_str() << "\n";
             for (auto& interface : interfaces)
             {
                 if (interface.first ==
-                    "xyz.openbmc_project.Software.Activation")
+                    "xyz.openbmc_project.Software.Activation" )
                 {
-                    newImageId = path.str;
-                    break;
+                    auto imageInterface = "xyz.openbmc_project.Software.Activation";
+                    auto imageObjPath = path.str.c_str();
+                    try
+                    {
+                        auto propVal = dBusIntf->getDbusPropertyVariant(
+                            imageObjPath,"Activation",imageInterface);
+                        const auto& imageProp = std::get<std::string>(propVal);
+                        if(imageProp == "xyz.openbmc_project.Software.Activation.Activations.Ready")
+                        {
+                            newImageId = path.str;
+                            std::cout << "got new image " << newImageId.c_str() << "\n";
+                            auto rc = setRequestedActivation();
+                            codeUpdateStateValues state = END;
+                            if(rc != PLDM_SUCCESS)
+                            {
+                                state = FAIL;
+                                std::cerr << "could not set RequestedActivation \n";
+                            }
+                            setCodeUpdateProgress(false);
+                            auto sensorId = getFirmwareUpdateSensor();
+                            std::cout << "sending codeUpdat sendStateSensorEvent \n";
+                            sendStateSensorEvent(sensorId,PLDM_STATE_SENSOR_STATE, 0,state, START);
+                            break;
+                        }
+                    }
+                    catch (const sdbusplus::exception::SdBusError& e)
+                    {
+                        std::cerr << "Error in getting Activation status \n";
+                    }
                 }
             }
         });
@@ -218,6 +290,24 @@ void CodeUpdate::processPriorityChangeNotification(
     uint8_t newVal = std::get<uint8_t>(it->second);
     nextBootSide = (newVal == 0) ? currBootSide
                                  : ((currBootSide == Tside) ? Pside : Tside);
+}
+
+void CodeUpdate::setOemPlatformHandler(pldm::responder::oem_platform::Handler* handler)
+{
+    oemPlatformHandler = handler;
+}
+
+void CodeUpdate::sendStateSensorEvent(uint16_t sensorId,
+                                enum sensor_event_class_states sensorEventClass,
+                                uint8_t sensorOffset, uint8_t eventState, 
+                                uint8_t prevEventState)
+{
+    std::cout << "sending CodeUpdate::sendStateSensorEvent \n";
+    pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+        dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+            oemPlatformHandler);
+    oemIbmPlatformHandler->sendStateSensorEvent(sensorId,sensorEventClass,
+                                        sensorOffset,eventState,prevEventState);
 }
 
 uint8_t fetchBootSide(uint16_t entityInstance, CodeUpdate* codeUpdate)
@@ -256,10 +346,12 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
 
     if (entityInstance == 0)
     {
+        std::cout << "setting current boot side \n";
         rc = codeUpdate->setCurrentBootSide(side);
     }
     else if (entityInstance == 1)
     {
+        std::cout << "setting next boot side \n";
         rc = codeUpdate->setNextBootSide(side);
     }
     else
@@ -289,7 +381,7 @@ void generateStateEffecterOEMPDR(platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
     pdr->effecter_id = platformHandler->getNextEffecterId();
-    pdr->entity_type = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    pdr->entity_type = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
     pdr->entity_instance = entityInstance;
     pdr->container_id = 0;
     pdr->effecter_semantic_id = 0;
@@ -376,22 +468,166 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
                                  pdr_utils::Repo& repo)
 {
     generateStateSensorOEMPDR(platformHandler,
-                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(platformHandler,
-                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_1,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(
-        platformHandler, PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         oem_ibm_platform::ENTITY_INSTANCE_0,
         oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
 
-    generateStateSensorOEMPDR(platformHandler, PLDM_SYSTEM_FIRMWARE,
+    generateStateSensorOEMPDR(platformHandler,PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE,
                               repo);
+}
+
+template <typename... T>
+int executeCmd(T const&... t)
+{
+    std::stringstream cmd;
+    ((cmd << t << " "), ...) << std::endl;
+    FILE* pipe = popen(cmd.str().c_str(), "r");
+    if (!pipe)
+    {
+        throw std::runtime_error("popen() failed!");
+    }
+    int rc = pclose(pipe);
+    if (WEXITSTATUS(rc))
+    {
+        std::cerr << "Error executing: ";
+        ((std::cerr << " " << t), ...);
+        std::cerr << "\n";
+        return -1;
+    }
+
+    return 0;
+}
+
+int processCodeUpdateLid(const std::string& filePath)
+{
+    struct lidHeader
+    {
+        uint16_t magicNumber;
+        uint16_t headerVersion;
+        uint32_t lidNumber;
+        uint32_t lidDate;
+        uint16_t lidTime;
+        uint16_t lidClass;
+        uint32_t lidCrc;
+        uint32_t lidSize;
+        uint32_t headerSize;
+    };
+
+    std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
+    if (!ifs)
+    {
+        std::cerr << "ifstream open error: " << filePath << "\n";
+        return PLDM_ERROR;
+    }
+
+    lidHeader header;
+    ifs.seekg(0);
+    ifs.read(reinterpret_cast<char*>(&header), sizeof(header));
+
+    // File size should be the value of lid size minus the header size
+    auto fileSize = fs::file_size(filePath);
+    fileSize -= htonl(header.headerSize);
+    if (fileSize < htonl(header.lidSize))
+    {
+        // File is not completely written yet
+        return PLDM_SUCCESS;
+    }
+
+    constexpr auto magicNumber = 0x0222;
+    if (htons(header.magicNumber) != magicNumber)
+    {
+        ifs.close();
+        std::cout << "LID magic number did not match\n";
+        // return PLDM_ERROR;
+    }
+
+    fs::create_directories(imageDirPath);
+    fs::create_directories(lidDirPath);
+
+    constexpr auto bmcClass = 0x2000;
+    if (htons(header.lidClass) == bmcClass)
+    {
+        // Skip the header and concatenate the BMC LIDs into a tar file
+        std::ofstream ofs(tarImagePath,
+                          std::ios::out | std::ios::binary | std::ios::app);
+        ifs.seekg(htonl(header.headerSize));
+        ofs << ifs.rdbuf();
+        ofs.flush();
+        ofs.close();
+    }
+    else
+    {
+        std::stringstream lidFileName;
+        lidFileName << std::hex << htonl(header.lidNumber) << ".lid";
+        auto lidNoHeaderPath = fs::path(lidDirPath) / lidFileName.str();
+        std::ofstream ofs(lidNoHeaderPath,
+                          std::ios::out | std::ios::binary | std::ios::trunc);
+        ifs.seekg(htonl(header.headerSize));
+        ofs << ifs.rdbuf();
+        ofs.flush();
+        ofs.close();
+    }
+
+    ifs.close();
+    fs::remove(filePath);
+    return PLDM_SUCCESS;
+}
+
+int assembleCodeUpdateImage()
+{
+    // Create the hostfw squashfs image from the LID file without header
+    auto rc =
+            executeCmd("/usr/sbin/mksquashfs", lidDirPath.c_str(),
+                       hostfwImagePath.c_str(), "-all-root", "-no-recovery");
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    fs::create_directories(updateDirPath);
+
+    // Extract the BMC tarball content
+    rc = executeCmd("/bin/tar", "-xf", tarImagePath.c_str(), "-C",
+                         updateDirPath);
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    // Add the hostfw image to the directory where the contents were extracted
+    fs::copy_file(hostfwImagePath, fs::path(updateDirPath) / hostfwImageName,
+                  fs::copy_options::overwrite_existing);
+
+    // Remove the tarball file, then re-generate it with so that the hostfw
+    // image becomes part of the tarball
+    fs::remove(tarImagePath);
+    rc = executeCmd("/bin/tar", "-cf", tarImagePath, ".", "-C", updateDirPath);
+    if (rc < 0)
+    {
+        return PLDM_ERROR;
+    }
+
+    // Copy the tarball to the update directory to trigger the phosphor software
+    // manager to create a version interface
+    fs::copy_file(tarImagePath, updateImagePath,
+                  fs::copy_options::overwrite_existing);
+
+    // cleanup
+    fs::remove_all(updateDirPath);
+    fs::remove_all(lidDirPath);
+    fs::remove_all(imageDirPath);
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace responder
