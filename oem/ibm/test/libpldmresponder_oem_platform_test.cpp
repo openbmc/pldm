@@ -7,6 +7,8 @@
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 #include "test/mocked_utils.hpp"
 
+#include <sdeventplus/event.hpp>
+
 #include <iostream>
 
 using namespace pldm::utils;
@@ -34,7 +36,7 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t effecterId = 0xA;
     sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
     Requester requester(bus, "/abc/def");
-
+    auto event = sdeventplus::Event::get_default();
     std::vector<get_sensor_state_field> stateField;
 
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
@@ -43,7 +45,8 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester);
+        mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester,
+        event);
 
     auto rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField);
