@@ -16,6 +16,8 @@ namespace responder
 using namespace pldm::responder::dma;
 namespace fs = std::filesystem;
 
+using MarkerLIDremainingSize = uint64_t;
+
 /** @class LidHandler
  *
  *  @brief Inherits and implements FileHandler. This class is used
@@ -26,7 +28,8 @@ class LidHandler : public FileHandler
   public:
     /** @brief LidHandler constructor
      */
-    LidHandler(uint32_t fileHandle, bool permSide) : FileHandler(fileHandle)
+    LidHandler(uint32_t fileHandle, bool permSide, uint8_t lidType = 0) :
+        FileHandler(fileHandle), lidType(lidType)
     {
         sideToRead = permSide ? Pside : Tside;
         std::string dir = permSide ? LID_ALTERNATE_DIR : LID_RUNNING_DIR;
@@ -81,12 +84,16 @@ class LidHandler : public FileHandler
                                 uint64_t address,
                                 oem_platform::Handler* oemPlatformHandler)
     {
+        int rc = PLDM_SUCCESS;
+        bool codeUpdateInProgress = false;
         if (oemPlatformHandler != nullptr)
         {
             pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
                 dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
                     oemPlatformHandler);
-            if (oemIbmPlatformHandler->codeUpdate->isCodeUpdateInProgress())
+            codeUpdateInProgress =
+                oemIbmPlatformHandler->codeUpdate->isCodeUpdateInProgress();
+            if (codeUpdateInProgress || lidType == PLDM_FILE_TYPE_LID_MARKER)
             {
                 std::string dir = LID_STAGING_DIR;
                 std::stringstream stream;
@@ -95,7 +102,33 @@ class LidHandler : public FileHandler
                 lidPath = std::move(dir) + '/' + lidName;
             }
         }
-        return transferFileData(lidPath, false, offset, length, address);
+        rc = transferFileData(lidPath, false, offset, length, address);
+        if (rc != PLDM_SUCCESS)
+        {
+            return rc;
+        }
+        if (lidType == PLDM_FILE_TYPE_LID_MARKER)
+        {
+            markerLIDremainingSize -= length;
+            if (markerLIDremainingSize == 0)
+            {
+                pldm::responder::oem_ibm_platform::Handler*
+                    oemIbmPlatformHandler = dynamic_cast<
+                        pldm::responder::oem_ibm_platform::Handler*>(
+                        oemPlatformHandler);
+                auto sensorId =
+                    oemIbmPlatformHandler->codeUpdate->getMarkerLidSensor();
+                using namespace pldm::responder::oem_ibm_platform;
+                oemIbmPlatformHandler->sendStateSensorEvent(
+                    sensorId, PLDM_STATE_SENSOR_STATE, 0, VALID, VALID);
+                // rc = validate api;
+            }
+        }
+        else if (codeUpdateInProgress)
+        {
+            rc = processCodeUpdateLid(lidPath);
+        }
+        return rc;
     }
 
     virtual int readIntoMemory(uint32_t offset, uint32_t& length,
@@ -112,12 +145,16 @@ class LidHandler : public FileHandler
     virtual int write(const char* buffer, uint32_t offset, uint32_t& length,
                       oem_platform::Handler* oemPlatformHandler)
     {
+        int rc = PLDM_SUCCESS;
+        bool codeUpdateInProgress = false;
         if (oemPlatformHandler != nullptr)
         {
             pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
                 dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
                     oemPlatformHandler);
-            if (oemIbmPlatformHandler->codeUpdate->isCodeUpdateInProgress())
+            codeUpdateInProgress =
+                oemIbmPlatformHandler->codeUpdate->isCodeUpdateInProgress();
+            if (codeUpdateInProgress || lidType == PLDM_FILE_TYPE_LID_MARKER)
             {
                 std::string dir = LID_STAGING_DIR;
                 std::stringstream stream;
@@ -148,7 +185,29 @@ class LidHandler : public FileHandler
         stream.write(buffer, length);
         stream.close();
 
-        return PLDM_SUCCESS;
+        if (lidType == PLDM_FILE_TYPE_LID_MARKER)
+        {
+            markerLIDremainingSize -= length;
+            if (markerLIDremainingSize == 0)
+            {
+                pldm::responder::oem_ibm_platform::Handler*
+                    oemIbmPlatformHandler = dynamic_cast<
+                        pldm::responder::oem_ibm_platform::Handler*>(
+                        oemPlatformHandler);
+                auto sensorId =
+                    oemIbmPlatformHandler->codeUpdate->getMarkerLidSensor();
+                using namespace pldm::responder::oem_ibm_platform;
+                oemIbmPlatformHandler->sendStateSensorEvent(
+                    sensorId, PLDM_STATE_SENSOR_STATE, 0, VALID, VALID);
+                // validate api
+            }
+        }
+        else if (codeUpdateInProgress)
+        {
+            rc = processCodeUpdateLid(lidPath);
+        }
+
+        return rc;
     }
 
     virtual int read(uint32_t offset, uint32_t& length, Response& response,
@@ -166,9 +225,14 @@ class LidHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
-    virtual int newFileAvailable(uint64_t /*length*/)
+    virtual int newFileAvailable(uint64_t length)
 
     {
+        if (lidType == PLDM_FILE_TYPE_LID_MARKER)
+        {
+            markerLIDremainingSize = length;
+            return PLDM_SUCCESS;
+        }
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
@@ -180,6 +244,8 @@ class LidHandler : public FileHandler
   protected:
     std::string lidPath;
     std::string sideToRead;
+    static inline MarkerLIDremainingSize markerLIDremainingSize;
+    uint8_t lidType;
 };
 
 } // namespace responder

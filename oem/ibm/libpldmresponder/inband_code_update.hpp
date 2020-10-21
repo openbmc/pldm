@@ -37,6 +37,7 @@ class CodeUpdate
         runningVersion = "";
         nonRunningVersion = "";
         newImageId = "";
+        markerLidSensorId = PLDM_INVALID_EFFECTER_ID;
     }
 
     /* @brief Method to return the current boot side
@@ -104,6 +105,16 @@ class CodeUpdate
      */
     int setRequestedActivation(CodeUpdate* codeUpdate);
 
+    uint16_t getMarkerLidSensor()
+    {
+        return markerLidSensorId;
+    }
+
+    void setMarkerLidSensor(uint16_t sensorId)
+    {
+        markerLidSensorId = sensorId;
+    }
+
     virtual ~CodeUpdate()
     {}
 
@@ -122,6 +133,7 @@ class CodeUpdate
     std::unique_ptr<sdbusplus::bus::match::match>
         fwUpdateMatcher; //!< pointer to capture the interface added signal for
                          //!< new image
+    uint16_t markerLidSensorId;
 
     /* @brief Method to take action when the subscribed D-Bus property is
      *        changed
