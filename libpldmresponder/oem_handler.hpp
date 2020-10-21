@@ -57,7 +57,7 @@ class Handler : public CmdHandler
      *            terms of PLDM completion codes if atleast one state fails to
      *            be set
      */
-    virtual int OemSetStateEffecterStatesHandler(
+    virtual int oemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
         std::vector<set_effecter_state_field>& stateField,

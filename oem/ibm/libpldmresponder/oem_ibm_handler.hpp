@@ -19,6 +19,7 @@ namespace oem_ibm_platform
 #define PLDM_OEM_IBM_BOOT_STATE 32769
 
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
+static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -32,15 +33,23 @@ enum codeUpdateStateValues
     REJECT = 0x6,
 };
 
+enum VerificationStateValues
+{
+    VALID = 0x0,
+    ENTITLEMENT_FAIL = 0x1,
+    BANNED_PLATFORM_FAIL = 0x2,
+    MIN_MIF_FAIL = 0x4,
+};
+
 class Handler : public oem_platform::Handler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
             pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
-            uint8_t mctp_eid, Requester& requester) :
+            uint8_t mctp_eid, Requester& requester, sdeventplus::Event& event) :
         oem_platform::Handler(dBusIntf),
         codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), requester(requester)
+        mctp_eid(mctp_eid), requester(requester), event(event)
     {
         codeUpdate->setVersions();
     }
@@ -50,7 +59,7 @@ class Handler : public oem_platform::Handler
         StateSetId stateSetId, CompositeCount compSensorCnt,
         std::vector<get_sensor_state_field>& stateField);
 
-    int OemSetStateEffecterStatesHandler(
+    int oemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
         std::vector<set_effecter_state_field>& stateField, uint16_t effecterId);
@@ -106,6 +115,20 @@ class Handler : public oem_platform::Handler
      */
     int sendEventToHost(std::vector<uint8_t>& requestMsg);
 
+    /** @brief _processEndUpdate processes the actual work that needs
+     *  to be carried out after EndUpdate effecter is set. This is done async
+     *  after sending response for EndUpdate set effecter
+     *  @param[in] source - sdeventplus event source
+     */
+    void _processEndUpdate(sdeventplus::source::EventBase& source);
+
+    /** @brief _processStartUpdate processes the actual work that needs
+     *  to be carried out after StartUpdate effecter is set. This is done async
+     *  after sending response for StartUpdate set effecter
+     *  @param[in] source - sdeventplus event source
+     */
+    void _processStartUpdate(sdeventplus::source::EventBase& source);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
@@ -122,6 +145,14 @@ class Handler : public oem_platform::Handler
      *  obtain PLDM instance id.
      */
     Requester& requester;
+    /** @brief sdeventplus event source */
+    std::unique_ptr<sdeventplus::source::Defer> assembleImageEvent;
+    std::unique_ptr<sdeventplus::source::Defer> startUpdateEvent;
+
+    /** @brief reference of main event loop of pldmd, primarily used to schedule
+     *  work
+     */
+    sdeventplus::Event& event;
 };
 
 /** @brief Method to encode code update event msg
