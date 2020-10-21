@@ -19,6 +19,7 @@ namespace oem_ibm_platform
 
 static constexpr auto PLDM_OEM_IBM_BOOT_STATE = 32769;
 static constexpr auto PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE = 32768;
+static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -30,6 +31,14 @@ enum codeUpdateStateValues
     ABORT = 0x4,
     ACCEPT = 0x5,
     REJECT = 0x6,
+};
+
+enum VerificationStateValues
+{
+    VALID = 0x0,
+    ENTITLEMENT_FAIL = 0x1,
+    BANNED_PLATFORM_FAIL = 0x2,
+    MIN_MIF_FAIL = 0x4,
 };
 
 class Handler : public oem_platform::Handler
@@ -88,6 +97,10 @@ class Handler : public oem_platform::Handler
      */
     void sendCodeUpdateEvent(uint16_t effecterId, codeUpdateStateValues opState,
                              codeUpdateStateValues previousOpState);
+    void sendStateSensorEvent(uint16_t sensorId,
+                              enum sensor_event_class_states sensorEventClass,
+                              uint8_t sensorOffset, uint8_t eventState,
+                              uint8_t prevEventState);
 
     /** @brief Method to send encoded request msg of code update event to host
      *  @param[in] requestMsg - encoded request msg

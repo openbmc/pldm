@@ -69,7 +69,6 @@ int pldm::responder::oem_ibm_platform::Handler::
                 }
                 else if (stateField[currState].effecter_state == END)
                 {
-                    codeUpdate->setCodeUpdateProgress(false);
                     std::unique_ptr<LidHandler> lidHandler{};
                     int retc = lidHandler->assembleFinalImage();
                     if (retc == PLDM_SUCCESS)
@@ -81,6 +80,7 @@ int pldm::responder::oem_ibm_platform::Handler::
                         std::cerr << "Image assembly Failed ERROR:" << retc
                                   << "\n";
                     }
+                    codeUpdate->setCodeUpdateProgress(false);
                     sendCodeUpdateEvent(effecterId, END, START);
                 }
                 else if (stateField[currState].effecter_state == ABORT)
@@ -122,6 +122,11 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     buildAllCodeUpdateEffecterPDR(platformHandler, repo);
 
     buildAllCodeUpdateSensorPDR(platformHandler, repo);
+
+    auto sensorId = findStateSensorId(repo.getPdr(), 0, PLDM_SYSTEM_FIRMWARE,
+                                      ENTITY_INSTANCE_0, 0,
+                                      PLDM_OEM_IBM_VERIFICATION_STATE);
+    codeUpdate->setMarkerLidSensor(sensorId);
 }
 
 void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
@@ -172,10 +177,12 @@ void pldm::responder::oem_ibm_platform::Handler::sendCodeUpdateEvent(
         effecterEventDataVec.data());
     eventData->effecter_id = effecterId;
     eventData->effecter_event_class_type = PLDM_EFFECTER_OP_STATE;
+    auto eventClassStart = eventData->event_class;
 
     auto opStateEffecterEventData =
         reinterpret_cast<struct pldm_effecter_event_effecter_op_state*>(
-            effecterEventDataVec.data());
+            eventClassStart);
+    // effecterEventDataVec.data());
     opStateEffecterEventData->present_op_state = opState;
     opStateEffecterEventData->previous_op_state = previousOpState;
 
@@ -219,6 +226,52 @@ int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
         eventDataVec.size() + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
 
     return rc;
+}
+
+void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
+    uint16_t sensorId, enum sensor_event_class_states sensorEventClass,
+    uint8_t sensorOffset, uint8_t eventState, uint8_t prevEventState)
+{
+    std::vector<uint8_t> sensorEventDataVec{};
+    size_t sensorEventSize = PLDM_SENSOR_EVENT_DATA_MIN_LENGTH + 1;
+    sensorEventDataVec.resize(sensorEventSize);
+
+    auto eventData = reinterpret_cast<struct pldm_sensor_event_data*>(
+        sensorEventDataVec.data());
+    eventData->sensor_id = sensorId;
+    eventData->sensor_event_class_type =
+        sensorEventClass; // PLDM_STATE_SENSOR_STATE;
+    auto eventClassStart = eventData->event_class;
+
+    auto eventClass =
+        reinterpret_cast<struct pldm_sensor_event_state_sensor_state*>(
+            eventClassStart);
+    eventClass->sensor_offset = sensorOffset;
+    eventClass->event_state = eventState;
+    eventClass->previous_event_state = prevEventState;
+
+    auto instanceId = requester.getInstanceId(mctp_eid);
+
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                                    sensorEventDataVec.size());
+    auto rc = encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg,
+                             instanceId);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to encode state sensor event, rc = " << rc
+                  << std::endl;
+        return;
+    }
+    rc = sendEventToHost(requestMsg);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to send event to host: "
+                  << "rc=" << rc << std::endl;
+    }
+    requester.markFree(mctp_eid, instanceId);
+    return;
 }
 
 } // namespace oem_ibm_platform
