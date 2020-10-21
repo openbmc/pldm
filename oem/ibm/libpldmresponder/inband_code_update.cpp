@@ -14,6 +14,7 @@ namespace pldm
 
 namespace responder
 {
+using namespace oem_ibm_platform;
 
 std::string CodeUpdate::fetchCurrentBootSide()
 {
@@ -256,10 +257,12 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
 
     if (entityInstance == 0)
     {
+        std::cout << "setting current boot side \n";
         rc = codeUpdate->setCurrentBootSide(side);
     }
     else if (entityInstance == 1)
     {
+        std::cout << "setting next boot side \n";
         rc = codeUpdate->setNextBootSide(side);
     }
     else
@@ -289,7 +292,7 @@ void generateStateEffecterOEMPDR(platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
     pdr->effecter_id = platformHandler->getNextEffecterId();
-    pdr->entity_type = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    pdr->entity_type = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
     pdr->entity_instance = entityInstance;
     pdr->container_id = 0;
     pdr->effecter_semantic_id = 0;
@@ -376,19 +379,19 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
                                  pdr_utils::Repo& repo)
 {
     generateStateSensorOEMPDR(platformHandler,
-                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(platformHandler,
-                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_1,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(
-        platformHandler, PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         oem_ibm_platform::ENTITY_INSTANCE_0,
         oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
 
-    generateStateSensorOEMPDR(platformHandler, PLDM_SYSTEM_FIRMWARE,
+    generateStateSensorOEMPDR(platformHandler,PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE,
                               repo);
