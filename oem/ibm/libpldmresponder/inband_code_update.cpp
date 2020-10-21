@@ -14,6 +14,7 @@ namespace pldm
 
 namespace responder
 {
+using namespace oem_ibm_platform;
 
 std::string CodeUpdate::fetchCurrentBootSide()
 {
@@ -101,23 +102,34 @@ int CodeUpdate::setRequestedApplyTime()
 int CodeUpdate::setRequestedActivation(CodeUpdate* codeUpdate)
 {
     int rc = PLDM_SUCCESS;
-    std::string img = codeUpdate->fetchnewImageId();
+  /*  std::string img = codeUpdate->fetchnewImageId();
     static constexpr auto UPDATE_SERVICE =
         "xyz.openbmc_project.Software.BMC.Updater";
     const std::string objPath(img);
     static constexpr auto REQUESTED_ACTIVATION_INTF =
         "xyz.openbmc_project.Software.Activation";
     static constexpr auto PROP_INTF = "org.freedesktop.DBus.Properties";
-    auto& bus = dBusIntf->getBus();
+    auto& bus = dBusIntf->getBus();*/
     pldm::utils::PropertyValue value =
         "xyz.openbmc_project.Software.Activation.RequestedActivations.Active";
+    DBusMapping dbusMapping;
+    dbusMapping.objectPath = codeUpdate->fetchnewImageId();;
+    dbusMapping.interface = "xyz.openbmc_project.Software.Activation";
+    dbusMapping.propertyName = "RequestedActivation";
+    dbusMapping.propertyType = "string";    
+    std::cout << "dbusMapping.objectPath " << dbusMapping.objectPath.c_str() << "\n";
+    std::cout << "dbusMapping.interface " << dbusMapping.interface.c_str() << "\n";
+    std::cout << "dbusMapping.propertyName " << dbusMapping.propertyName.c_str() << "\n";
+    std::cout << "dbusMapping.propertyType " << dbusMapping.propertyType.c_str() << "\n";
+    std::cout << "new value " << std::get<std::string>(value).c_str() << "\n";
     try
     {
-        auto method = bus.new_method_call(UPDATE_SERVICE, objPath.c_str(),
+      /*  auto method = bus.new_method_call(UPDATE_SERVICE, objPath.c_str(),
                                           PROP_INTF, "Set");
         method.append(REQUESTED_ACTIVATION_INTF, "RequestedActivation", value);
 
-        bus.call_noreply(method);
+        bus.call_noreply(method);*/
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
     }
     catch (const std::exception& e)
     {
@@ -194,11 +206,13 @@ void CodeUpdate::setVersions()
             DBusInterfaceAdded interfaces;
             sdbusplus::message::object_path path;
             msg.read(path, interfaces);
+            std::cout << "fwUpdateMatcher fetched image path " << path.str.c_str() << "\n";
             for (auto& interface : interfaces)
             {
                 if (interface.first ==
                     "xyz.openbmc_project.Software.Activation")
                 {
+                    std::cout << "got new image " << newImageId.c_str() << "\n";
                     newImageId = path.str;
                     break;
                 }
@@ -256,10 +270,12 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
 
     if (entityInstance == 0)
     {
+        std::cout << "setting current boot side \n";
         rc = codeUpdate->setCurrentBootSide(side);
     }
     else if (entityInstance == 1)
     {
+        std::cout << "setting next boot side \n";
         rc = codeUpdate->setNextBootSide(side);
     }
     else
@@ -289,7 +305,7 @@ void generateStateEffecterOEMPDR(platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
     pdr->effecter_id = platformHandler->getNextEffecterId();
-    pdr->entity_type = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    pdr->entity_type = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
     pdr->entity_instance = entityInstance;
     pdr->container_id = 0;
     pdr->effecter_semantic_id = 0;
@@ -376,19 +392,19 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
                                  pdr_utils::Repo& repo)
 {
     generateStateSensorOEMPDR(platformHandler,
-                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(platformHandler,
-                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_1,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(
-        platformHandler, PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         oem_ibm_platform::ENTITY_INSTANCE_0,
         oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
 
-    generateStateSensorOEMPDR(platformHandler, PLDM_SYSTEM_FIRMWARE,
+    generateStateSensorOEMPDR(platformHandler,PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE,
                               repo);

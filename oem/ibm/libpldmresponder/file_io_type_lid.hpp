@@ -32,6 +32,7 @@ class LidHandler : public FileHandler
         FileHandler(fileHandle), lidType(lidType)
     {
         sideToRead = permSide ? Pside : Tside;
+        isPatchDir = false;
         std::string dir = permSide ? LID_ALTERNATE_DIR : LID_RUNNING_DIR;
         std::stringstream stream;
         stream << std::hex << fileHandle;
@@ -42,6 +43,7 @@ class LidHandler : public FileHandler
         if (fs::is_regular_file(patch))
         {
             lidPath = patch;
+            isPatchDir = true;
         }
         else
         {
@@ -61,10 +63,22 @@ class LidHandler : public FileHandler
                 dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
                     oemPlatformHandler);
             std::string dir = LID_ALTERNATE_DIR;
+            if(isPatchDir)
+            {
+                dir = LID_ALTERNATE_PATCH_DIR;
+            }
+
             if (oemIbmPlatformHandler->codeUpdate->fetchCurrentBootSide() ==
                 sideToRead)
             {
-                dir = LID_RUNNING_DIR;
+                if(isPatchDir)
+                {
+                    dir = LID_RUNNING_PATCH_DIR;
+                }
+                else
+                {
+                    dir = LID_RUNNING_DIR;
+                }
             }
             else if (oemIbmPlatformHandler->codeUpdate
                          ->isCodeUpdateInProgress())
@@ -102,7 +116,19 @@ class LidHandler : public FileHandler
                 lidPath = std::move(dir) + '/' + lidName;
             }
         }
-        rc = transferFileData(lidPath, false, offset, length, address);
+        std::cout << "got writeFromMemory() for LID " << lidPath.c_str() 
+                  << "\n";
+        int flags = O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE;
+        auto fd = open(lidPath.c_str(),flags);
+        if (fd == -1)
+        {
+            std::cerr << "Could not open file for writing  " 
+                      << lidPath.c_str() << "\n";
+            return PLDM_ERROR;
+        }
+        //rc = transferFileData(lidPath, false, offset, length, address);
+        rc = transferFileData(fd,false, offset, length, address);
+        close(fd);
         if (rc != PLDM_SUCCESS)
         {
             return rc;
@@ -126,7 +152,9 @@ class LidHandler : public FileHandler
         }
         else if (codeUpdateInProgress)
         {
+            std::cout << "calling assembleImage from writeFromMemory \n";
             rc = assembleImage(lidPath);
+            std::cout << "assembleImage returned " << (uint32_t)rc << "\n";
         }
         return rc;
     }
@@ -163,6 +191,7 @@ class LidHandler : public FileHandler
                 lidPath = std::move(dir) + '/' + lidName;
             }
         }
+        std::cout << "got write() call for LID " << lidPath.c_str() << "\n";
         std::ios_base::openmode flags =
             std::ios::in | std::ios::out | std::ios::binary;
         if (!fs::exists(lidPath))
@@ -172,6 +201,7 @@ class LidHandler : public FileHandler
         else
         {
             size_t fileSize = fs::file_size(lidPath);
+        
             if (offset > fileSize)
             {
                 std::cerr << "Offset exceeds file size, OFFSET=" << offset
@@ -204,7 +234,9 @@ class LidHandler : public FileHandler
         }
         else if (codeUpdateInProgress)
         {
+            std::cout << "calling assembleImage from write \n";
             rc = assembleImage(lidPath);
+            std::cout << "assembleImage returned " << (uint32_t)rc << "\n";
         }
 
         return rc;
@@ -252,6 +284,7 @@ class LidHandler : public FileHandler
     std::string sideToRead;
     static inline MarkerLIDremainingSize markerLIDremainingSize;
     uint8_t lidType;
+    bool isPatchDir;
 
   private:
     /** @brief Method to assemble code update images from LID files.

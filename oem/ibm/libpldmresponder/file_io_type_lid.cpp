@@ -33,11 +33,21 @@ int executeCmd(T const&... t)
 
 int LidHandler::assembleImage(const std::string& filePath)
 {
-    std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
+   // std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
+   std::ifstream ifs;
+   try
+   {
+    ifs.open(filePath, std::ios::in | std::ios::binary);
     if (!ifs)
     {
+        std::cerr << "ifstream open error\n";
         return PLDM_ERROR;
     }
+   }
+   catch(const std::exception &e)
+   {
+       std::cerr << "ifstream exception: " << e.what() << "\n";
+   }
 
     lidHeader header;
     ifs.seekg(0);
@@ -46,6 +56,7 @@ int LidHandler::assembleImage(const std::string& filePath)
     constexpr auto magicNumber = 0x0222;
     if (htons(header.magicNumber) != magicNumber)
     {
+        std::cout << "magic number did not match \n";
         return PLDM_ERROR;
     }
 
@@ -116,7 +127,8 @@ int LidHandler::assembleFinalImage()
     // Remove the tarball file, then re-generate it with so that the hostfw
     // image becomes part of the tarball
     fs::remove(tarImagePath);
-    rc = executeCmd("/bin/tar", "-cf", tarImagePath, updateDirPath);
+   // rc = executeCmd("/bin/tar", "-cf", tarImagePath, updateDirPath);
+    rc = executeCmd("/bin/tar", "-cf", tarImagePath, ".", "-C", updateDirPath);
     if (rc < 0)
     {
         return PLDM_ERROR;
