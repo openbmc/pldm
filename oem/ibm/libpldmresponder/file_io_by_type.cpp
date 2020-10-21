@@ -142,6 +142,12 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
             return std::make_unique<LidHandler>(fileHandle, false);
             break;
         }
+        case PLDM_FILE_TYPE_LID_MARKER:
+        {
+            return std::make_unique<LidHandler>(fileHandle, false,
+                                                PLDM_FILE_TYPE_LID_MARKER);
+            break;
+        }
         case PLDM_FILE_TYPE_DUMP:
         {
             return std::make_unique<DumpHandler>(fileHandle);
