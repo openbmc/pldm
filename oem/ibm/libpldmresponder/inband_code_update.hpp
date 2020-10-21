@@ -37,6 +37,8 @@ class CodeUpdate
     {
         currBootSide = Tside;
         nextBootSide = Tside;
+        markerLidSensorId = PLDM_INVALID_EFFECTER_ID;
+        firmwareUpdateSensorId = PLDM_INVALID_EFFECTER_ID;
     }
 
     /* @brief Method to return the current boot side
@@ -108,6 +110,57 @@ class CodeUpdate
      */
     int setRequestedActivation();
 
+    /* @brief Method to fetch the sensor id for marker lid
+     * validation PDR
+     * @return - sensor id
+     */
+    uint16_t getMarkerLidSensor()
+    {
+        return markerLidSensorId;
+    }
+
+    /* @brief Method to set the sensor id for marker lid
+     * validation
+     * @param[in] sensorId - sensor id for marker lid validation
+     */
+    void setMarkerLidSensor(uint16_t sensorId)
+    {
+        markerLidSensorId = sensorId;
+    }
+
+    /* @brief Method to set the sensor id for firmware update state
+     * @param[in] sensorId - sensor id for firmware update state
+     */
+    void setFirmwareUpdateSensor(uint16_t sensorId)
+    {
+        firmwareUpdateSensorId = sensorId;
+    }
+
+    /* @brief Method to fetch the sensor id for firmware update state
+     * @return - sensor id
+     */
+    uint16_t getFirmwareUpdateSensor()
+    {
+        return firmwareUpdateSensorId;
+    }
+
+    /* @brief Method to send a state sensor event to Host from CodeUpdate class
+     * @param[in] sensorId - sensor id for the event
+     * @param[in] sensorEventClass - sensor event class wrt DSP0248
+     * @param[in] sensorOffset - sensor offset
+     * @param[in] eventState - new event state
+     * @param[in] prevEventState - previous state
+     */
+    void sendStateSensorEvent(uint16_t sensorId,
+                              enum sensor_event_class_states sensorEventClass,
+                              uint8_t sensorOffset, uint8_t eventState,
+                              uint8_t prevEventState);
+
+    /* @brief Method to delete the image from non running side prior to
+     * an inband code update
+     */
+    void deleteImage();
+
     virtual ~CodeUpdate()
     {}
 
@@ -128,13 +181,14 @@ class CodeUpdate
                          //!< new image
     pldm::responder::oem_platform::Handler*
         oemPlatformHandler; //!< oem platform handler
+    uint16_t markerLidSensorId;
+    uint16_t firmwareUpdateSensorId;
 
     /* @brief Method to take action when the subscribed D-Bus property is
      *        changed
      * @param[in] chProperties - list of properties which have changed
      * @return - none
      */
-
     void
         processPriorityChangeNotification(const DbusChangedProps& chProperties);
 };
