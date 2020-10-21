@@ -37,6 +37,8 @@ class CodeUpdate
         runningVersion = "";
         nonRunningVersion = "";
         newImageId = "";
+        markerLidSensorId = PLDM_INVALID_EFFECTER_ID;
+        firmwareUpdateSensorId = PLDM_INVALID_EFFECTER_ID;
     }
 
     /* @brief Method to return the current boot side
@@ -105,6 +107,31 @@ class CodeUpdate
      */
     int setRequestedActivation(/*CodeUpdate* codeUpdate*/);
 
+    uint16_t getMarkerLidSensor()
+    {
+        return markerLidSensorId;
+    }
+
+    void setMarkerLidSensor(uint16_t sensorId)
+    {
+        markerLidSensorId = sensorId;
+    }
+
+    void setFirmwareUpdateSensor(uint16_t sensorId)
+    {
+        firmwareUpdateSensorId = sensorId;
+    }
+
+    uint16_t getFirmwareUpdateSensor()
+    {
+        return firmwareUpdateSensorId;
+    }
+
+    void sendStateSensorEvent(uint16_t sensorId,
+                              enum sensor_event_class_states sensorEventClass,
+                              uint8_t sensorOffset, uint8_t eventState,
+                              uint8_t prevEventState);
+
     virtual ~CodeUpdate()
     {}
 
@@ -124,6 +151,8 @@ class CodeUpdate
         fwUpdateMatcher; //!< pointer to capture the interface added signal for
                          //!< new image
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+    uint16_t markerLidSensorId;
+    uint16_t firmwareUpdateSensorId;
 
     /* @brief Method to take action when the subscribed D-Bus property is
      *        changed
