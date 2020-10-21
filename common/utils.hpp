@@ -292,6 +292,10 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
                                                      uint16_t stateSetId,
                                                      const pldm_pdr* repo);
 
+uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
+                           uint16_t entityType, uint16_t entityInstance,
+                           uint16_t containerId, uint16_t stateSetId);
+
 /** @brief Find effecter id from a state effecter pdr
  *  @param[in] pdrRepo - PDR repository
  *  @param[in] entityType - entity type
