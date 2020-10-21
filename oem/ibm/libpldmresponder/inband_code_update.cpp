@@ -315,8 +315,8 @@ void generateStateEffecterOEMPDR(platform::Handler* platformHandler,
 }
 
 void generateStateSensorOEMPDR(platform::Handler* platformHandler,
-                               uint16_t entityInstance, uint16_t stateSetID,
-                               pdr_utils::Repo& repo)
+                               uint16_t entityType, uint16_t entityInstance,
+                               uint16_t stateSetID, pdr_utils::Repo& repo)
 {
     size_t pdrSize = 0;
     pdrSize =
@@ -333,7 +333,7 @@ void generateStateSensorOEMPDR(platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_sensor_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
     pdr->sensor_id = platformHandler->getNextSensorId();
-    pdr->entity_type = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
     pdr->container_id = 0;
     pdr->sensor_init = PLDM_NO_INIT;
@@ -347,7 +347,8 @@ void generateStateSensorOEMPDR(platform::Handler* platformHandler,
     possibleStates->possible_states_size = 2;
     auto state =
         reinterpret_cast<state_sensor_possible_states*>(possibleStates);
-    if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE)
+    if ((stateSetID == oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE) ||
+        (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE))
         state->states[0].byte = 6;
     else if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
         state->states[0].byte = 126;
@@ -375,14 +376,22 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
                                  pdr_utils::Repo& repo)
 {
     generateStateSensorOEMPDR(platformHandler,
+                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(platformHandler,
+                              PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
                               oem_ibm_platform::ENTITY_INSTANCE_1,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(
-        platformHandler, oem_ibm_platform::ENTITY_INSTANCE_0,
+        platformHandler, PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY,
+        oem_ibm_platform::ENTITY_INSTANCE_0,
         oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+
+    generateStateSensorOEMPDR(platformHandler, PLDM_SYSTEM_FIRMWARE,
+                              oem_ibm_platform::ENTITY_INSTANCE_0,
+                              oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE,
+                              repo);
 }
 
 } // namespace responder
