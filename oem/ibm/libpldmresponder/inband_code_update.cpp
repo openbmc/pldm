@@ -230,13 +230,49 @@ void CodeUpdate::setVersions()
             DBusInterfaceAdded interfaces;
             sdbusplus::message::object_path path;
             msg.read(path, interfaces);
+            std::cout << "fwUpdateMatcher fetched image path "
+                      << path.str.c_str() << "\n";
             for (auto& interface : interfaces)
             {
                 if (interface.first ==
                     "xyz.openbmc_project.Software.Activation")
                 {
-                    newImageId = path.str;
-                    break;
+                    auto imageInterface =
+                        "xyz.openbmc_project.Software.Activation";
+                    auto imageObjPath = path.str.c_str();
+                    try
+                    {
+                        auto propVal = dBusIntf->getDbusPropertyVariant(
+                            imageObjPath, "Activation", imageInterface);
+                        const auto& imageProp = std::get<std::string>(propVal);
+                        if (imageProp == "xyz.openbmc_project.Software."
+                                         "Activation.Activations.Ready")
+                        {
+                            newImageId = path.str;
+                            std::cout << "got new image " << newImageId.c_str()
+                                      << "\n";
+                            auto rc = setRequestedActivation();
+                            codeUpdateStateValues state = END;
+                            if (rc != PLDM_SUCCESS)
+                            {
+                                state = FAIL;
+                                std::cerr
+                                    << "could not set RequestedActivation \n";
+                            }
+                            setCodeUpdateProgress(false);
+                            auto sensorId = getFirmwareUpdateSensor();
+                            std::cout
+                                << "sending codeUpdat sendStateSensorEvent \n";
+                            sendStateSensorEvent(sensorId,
+                                                 PLDM_STATE_SENSOR_STATE, 0,
+                                                 state, START);
+                            break;
+                        }
+                    }
+                    catch (const sdbusplus::exception::SdBusError& e)
+                    {
+                        std::cerr << "Error in getting Activation status \n";
+                    }
                 }
             }
         });
@@ -260,6 +296,18 @@ void CodeUpdate::setOemPlatformHandler(
     pldm::responder::oem_platform::Handler* handler)
 {
     oemPlatformHandler = handler;
+}
+
+void CodeUpdate::sendStateSensorEvent(
+    uint16_t sensorId, enum sensor_event_class_states sensorEventClass,
+    uint8_t sensorOffset, uint8_t eventState, uint8_t prevEventState)
+{
+    std::cout << "sending CodeUpdate::sendStateSensorEvent \n";
+    pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+        dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+            oemPlatformHandler);
+    oemIbmPlatformHandler->sendStateSensorEvent(
+        sensorId, sensorEventClass, sensorOffset, eventState, prevEventState);
 }
 
 uint8_t fetchBootSide(uint16_t entityInstance, CodeUpdate* codeUpdate)
@@ -357,8 +405,8 @@ void generateStateEffecterOEMPDR(platform::Handler* platformHandler,
 }
 
 void generateStateSensorOEMPDR(platform::Handler* platformHandler,
-                               uint16_t entityInstance, uint16_t stateSetID,
-                               pdr_utils::Repo& repo)
+                               uint16_t entityType, uint16_t entityInstance,
+                               uint16_t stateSetID, pdr_utils::Repo& repo)
 {
     size_t pdrSize = 0;
     pdrSize =
@@ -375,7 +423,7 @@ void generateStateSensorOEMPDR(platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_sensor_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
     pdr->sensor_id = platformHandler->getNextSensorId();
-    pdr->entity_type = PLDM_VIRTUAL_MACHINE_MANAGER_ENTITY;
+    pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
     pdr->container_id = 0;
     pdr->sensor_init = PLDM_NO_INIT;
@@ -389,7 +437,8 @@ void generateStateSensorOEMPDR(platform::Handler* platformHandler,
     possibleStates->possible_states_size = 2;
     auto state =
         reinterpret_cast<state_sensor_possible_states*>(possibleStates);
-    if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE)
+    if ((stateSetID == oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE) ||
+        (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE))
         state->states[0].byte = 6;
     else if (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
         state->states[0].byte = 126;
@@ -417,14 +466,22 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
                                  pdr_utils::Repo& repo)
 {
     generateStateSensorOEMPDR(platformHandler,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_0,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(platformHandler,
+                              PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                               oem_ibm_platform::ENTITY_INSTANCE_1,
                               oem_ibm_platform::PLDM_OEM_IBM_BOOT_STATE, repo);
     generateStateSensorOEMPDR(
-        platformHandler, oem_ibm_platform::ENTITY_INSTANCE_0,
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
+        oem_ibm_platform::ENTITY_INSTANCE_0,
         oem_ibm_platform::PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+
+    generateStateSensorOEMPDR(
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
+        oem_ibm_platform::ENTITY_INSTANCE_0,
+        oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE, repo);
 }
 
 template <typename... T>
