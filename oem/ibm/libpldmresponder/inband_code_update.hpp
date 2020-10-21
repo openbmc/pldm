@@ -38,6 +38,7 @@ class CodeUpdate
         nonRunningVersion = "";
         newImageId = "";
         markerLidSensorId = PLDM_INVALID_EFFECTER_ID;
+        firmwareUpdateSensorId = PLDM_INVALID_EFFECTER_ID;
     }
 
     /* @brief Method to return the current boot side
@@ -115,6 +116,16 @@ class CodeUpdate
         markerLidSensorId = sensorId;
     }
 
+    void setFirmwareUpdateSensor(uint16_t sensorId)
+    {
+        firmwareUpdateSensorId = sensorId;
+    }
+
+    uint16_t getFirmwareUpdateSensor()
+    {
+        return firmwareUpdateSensorId;
+    }
+
     virtual ~CodeUpdate()
     {}
 
@@ -134,6 +145,7 @@ class CodeUpdate
         fwUpdateMatcher; //!< pointer to capture the interface added signal for
                          //!< new image
     uint16_t markerLidSensorId;
+    uint16_t firmwareUpdateSensorId;
 
     /* @brief Method to take action when the subscribed D-Bus property is
      *        changed
@@ -178,5 +190,18 @@ void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
  */
 void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
                                  pdr_utils::Repo& repo);
+
+/* @brief Method to process LIDs such as verifying and removing the header
+ * @param[in] filePath - Path to the LID file
+ * @return - PLDM_SUCCESS codes
+ */
+int processCodeUpdateLid(const std::string& filePath);
+
+/** @brief Method to assemble the code update tarball and trigger the
+ *         phosphor software manager to create a version interface
+ *  @return - PLDM_SUCCESS codes
+ */
+int assembleCodeUpdateImage();
+
 } // namespace responder
 } // namespace pldm

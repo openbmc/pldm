@@ -56,9 +56,10 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
                                   uint64_t address)
 {
     bool fileExists = false;
+    fileExists = fs::exists(path);
     if (upstream)
     {
-        fileExists = fs::exists(path);
+     //   fileExists = fs::exists(path);
         if (!fileExists)
         {
             std::cerr << "File does not exist. PATH=" << path.c_str() << "\n";
@@ -89,7 +90,7 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
     }
     else
     {
-        flags = O_WRONLY;
+        flags = O_WRONLY | O_CREAT | O_TRUNC;
     }
     int file = open(path.string().c_str(), flags);
     if (file == -1)
