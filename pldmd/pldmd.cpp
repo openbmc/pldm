@@ -196,8 +196,8 @@ int main(int argc, char** argv)
 
     Invoker invoker{};
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
-    handler.clearDirPath(LID_STAGING_DIR);
+ //   oem_ibm::Handler handler(oemPlatformHandler.get());
+   // handler.clearDirPath(LID_STAGING_DIR);
 
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =

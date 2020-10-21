@@ -701,6 +701,10 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
             compSensorCnt = tmpCompSensorCnt;
             return true;
         }
+        else
+        {
+            return false;
+        }
     }
     return false;
 }
@@ -727,6 +731,7 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
     while (pdrRecord)
     {
         pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
+        assert(pdr != NULL);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;
@@ -758,6 +763,10 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
             entityInstance = tmpEntityInstance;
             stateSetId = tmpstateSetId;
             return true;
+        }
+        else
+        {
+            return false;
         }
     }
     return false;
