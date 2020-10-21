@@ -211,8 +211,40 @@ void CodeUpdate::setVersions()
                 if (interface.first ==
                     "xyz.openbmc_project.Software.Activation")
                 {
-                    newImageId = path.str;
-                    break;
+                    auto imageInterface =
+                        "xyz.openbmc_project.Software.Activation";
+                    auto imageObjPath = path.str.c_str();
+                    try
+                    {
+                        auto propVal = dBusIntf->getDbusPropertyVariant(
+                            imageObjPath, "Activation", imageInterface);
+                        const auto& imageProp = std::get<std::string>(propVal);
+                        if (imageProp == "xyz.openbmc_project.Software."
+                                         "Activation.Activations.Ready" &&
+                            isCodeUpdateInProgress())
+                        {
+                            newImageId = path.str;
+                            auto rc = setRequestedActivation();
+                            CodeUpdateState state = CodeUpdateState::END;
+                            if (rc != PLDM_SUCCESS)
+                            {
+                                state = CodeUpdateState::FAIL;
+                                std::cerr
+                                    << "could not set RequestedActivation \n";
+                            }
+                            setCodeUpdateProgress(false);
+                            auto sensorId = getFirmwareUpdateSensor();
+                            sendStateSensorEvent(
+                                sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                                uint8_t(state),
+                                uint8_t(CodeUpdateState::START));
+                            break;
+                        }
+                    }
+                    catch (const sdbusplus::exception::SdBusError& e)
+                    {
+                        std::cerr << "Error in getting Activation status \n";
+                    }
                 }
             }
         });
@@ -245,6 +277,39 @@ void CodeUpdate::clearDirPath(const std::string& dirPath)
         fs::remove_all(path);
     }
     return;
+}
+
+void CodeUpdate::sendStateSensorEvent(
+    uint16_t sensorId, enum sensor_event_class_states sensorEventClass,
+    uint8_t sensorOffset, uint8_t eventState, uint8_t prevEventState)
+{
+    pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+        dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+            oemPlatformHandler);
+    oemIbmPlatformHandler->sendStateSensorEvent(
+        sensorId, sensorEventClass, sensorOffset, eventState, prevEventState);
+}
+
+void CodeUpdate::deleteImage()
+{
+    static constexpr auto UPDATER_SERVICE =
+        "xyz.openbmc_project.Software.BMC.Updater";
+    static constexpr auto SW_OBJ_PATH = "/xyz/openbmc_project/software";
+    static constexpr auto DELETE_INTF =
+        "xyz.openbmc_project.Collection.DeleteAll";
+
+    auto& bus = dBusIntf->getBus();
+    try
+    {
+        auto method = bus.new_method_call(UPDATER_SERVICE, SW_OBJ_PATH,
+                                          DELETE_INTF, "DeleteAll");
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to delete image, ERROR=" << e.what() << "\n";
+        return;
+    }
 }
 
 uint8_t fetchBootSide(uint16_t entityInstance, CodeUpdate* codeUpdate)
