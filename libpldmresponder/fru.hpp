@@ -137,6 +137,10 @@ class FruImpl
         return associatedEntityMap;
     }
 
+    /* @brief Method to populate the firmware version ID
+     */
+    std::string populatefwVersion();
+
   private:
     uint16_t nextRSI()
     {
@@ -171,6 +175,7 @@ class FruImpl
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
+    std::string currentBmcVersion; //!< current version id
 };
 
 namespace fru

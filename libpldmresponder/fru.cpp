@@ -17,6 +17,8 @@ namespace pldm
 namespace responder
 {
 
+constexpr uint16_t SYSTEM_ENTITY_TYPE = 11521;
+
 void FruImpl::buildFRUTable()
 {
 
@@ -120,7 +122,35 @@ void FruImpl::buildFRUTable()
     }
     isBuilt = true;
 }
-
+std::string FruImpl::populatefwVersion()
+{
+    static constexpr auto fwFunctionalObjPath =
+        "/xyz/openbmc_project/software/functional";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto method =
+            bus.new_method_call(pldm::utils::fwService, fwFunctionalObjPath,
+                                pldm::utils::dbusProperties, "Get");
+        method.append("xyz.openbmc_project.Association", "endpoints");
+        std::variant<std::vector<std::string>> paths;
+        auto reply = bus.call(method);
+        reply.read(paths);
+        std::string fwRunningVersion =
+            std::get<std::vector<std::string>>(paths)[0];
+        constexpr auto versionIntf = "xyz.openbmc_project.Software.Version";
+        auto version = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            fwRunningVersion.c_str(), "Version", versionIntf);
+        currentBmcVersion = std::get<std::string>(version);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a d-bus call "
+                     "Asociation, ERROR= "
+                  << e.what() << "\n";
+    }
+    return currentBmcVersion;
+}
 void FruImpl::populateRecords(
     const pldm::responder::dbus::InterfaceMap& interfaces,
     const fru_parser::FruRecordInfos& recordInfos, const pldm_entity& entity)
@@ -136,9 +166,19 @@ void FruImpl::populateRecords(
         uint8_t numFRUFields = 0;
         for (auto const& [intf, prop, propType, fieldTypeNum] : fieldInfos)
         {
+
             try
             {
-                auto propValue = interfaces.at(intf).at(prop);
+                pldm::responder::dbus::Value propValue;
+                if (entity.entity_type == SYSTEM_ENTITY_TYPE &&
+                    prop == "Version")
+                {
+                    propValue = currentBmcVersion;
+                }
+                else
+                {
+                    propValue = interfaces.at(intf).at(prop);
+                }
                 if (propType == "bytearray")
                 {
                     auto byteArray = std::get<std::vector<uint8_t>>(propValue);
@@ -155,12 +195,19 @@ void FruImpl::populateRecords(
                 }
                 else if (propType == "string")
                 {
-                    auto str = std::get<std::string>(propValue);
+                    std::string str;
+                    if (entity.entity_type == 11521 && prop == "Version")
+                    {
+                        str = populatefwVersion();
+                    }
+                    else
+                    {
+                        str = std::get<std::string>(propValue);
+                    }
                     if (!str.size())
                     {
                         continue;
                     }
-
                     numFRUFields++;
                     tlvs.emplace_back(fieldTypeNum);
                     tlvs.emplace_back(str.size());
@@ -244,7 +291,6 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
 
 namespace fru
 {
-
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
                                             size_t /*payloadLength*/)
 {
