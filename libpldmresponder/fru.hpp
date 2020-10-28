@@ -137,6 +137,13 @@ class FruImpl
         return associatedEntityMap;
     }
 
+    void populatefwVersion();
+
+    std::string fetchnewImageId()
+    {
+        return fwImageId;
+    }
+
   private:
     uint16_t nextRSI()
     {
@@ -171,6 +178,8 @@ class FruImpl
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
+    std::string fwImageId;
+    std::string fwRunningVersion;
 };
 
 namespace fru

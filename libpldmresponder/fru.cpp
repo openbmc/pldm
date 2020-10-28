@@ -9,6 +9,7 @@
 #include <sdbusplus/bus.hpp>
 
 #include <iostream>
+#include <regex>
 #include <set>
 
 namespace pldm
@@ -120,6 +121,37 @@ void FruImpl::buildFRUTable()
     }
     isBuilt = true;
 }
+void FruImpl::populatefwVersion()
+{
+    static constexpr auto fwFunctionalObjPath =
+        "/xyz/openbmc_project/software/functional";
+    static constexpr auto fwInterface = "org.freedesktop.DBus.Properties";
+    static constexpr auto fwService = "xyz.openbmc_project.ObjectMapper";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto method = bus.new_method_call(fwService, fwFunctionalObjPath,
+                                          fwInterface, "Get");
+        method.append("xyz.openbmc_project.Association", "endpoints");
+        std::variant<std::vector<std::string>> paths;
+        auto reply = bus.call(method);
+        reply.read(paths);
+        fwRunningVersion = std::get<std::vector<std::string>>(paths)[0];
+        std::cout << " Version:" << fwRunningVersion << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a d-bus call "
+                     "Asociation, ERROR= "
+                  << e.what() << "\n";
+        return;
+    }
+    std::regex version_regex("([^/]+)$");
+    std::sregex_iterator i = std::sregex_iterator(
+        fwRunningVersion.begin(), fwRunningVersion.end(), version_regex);
+    auto image = *i;
+    fwImageId = image.str();
+}
 
 void FruImpl::populateRecords(
     const pldm::responder::dbus::InterfaceMap& interfaces,
@@ -155,17 +187,34 @@ void FruImpl::populateRecords(
                 }
                 else if (propType == "string")
                 {
-                    auto str = std::get<std::string>(propValue);
-                    if (!str.size())
+                    if (fieldTypeNum == 10)
                     {
-                        continue;
+                        populatefwVersion();
+                        auto str = fetchnewImageId();
+                        if (!str.size())
+                        {
+                            continue;
+                        }
+                        numFRUFields++;
+                        tlvs.emplace_back(fieldTypeNum);
+                        tlvs.emplace_back(str.size());
+                        std::move(std::begin(str), std::end(str),
+                                  std::back_inserter(tlvs));
                     }
+                    else
+                    {
+                        auto str = std::get<std::string>(propValue);
+                        if (!str.size())
+                        {
+                            continue;
+                        }
 
-                    numFRUFields++;
-                    tlvs.emplace_back(fieldTypeNum);
-                    tlvs.emplace_back(str.size());
-                    std::move(std::begin(str), std::end(str),
-                              std::back_inserter(tlvs));
+                        numFRUFields++;
+                        tlvs.emplace_back(fieldTypeNum);
+                        tlvs.emplace_back(str.size());
+                        std::move(std::begin(str), std::end(str),
+                                  std::back_inserter(tlvs));
+                    }
                 }
             }
             catch (const std::out_of_range& e)
