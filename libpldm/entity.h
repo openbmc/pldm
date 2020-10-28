@@ -136,6 +136,9 @@ enum pldm_entity_id_codes {
 	PLDM_ENTITY_INTERCONNECT = 188,
 	PLDM_ENTITY_PLUG = 189,
 	PLDM_ENTITY_SOCKET = 190,
+
+	/* Logical */
+	PLDM_ENTITY_SYSTEM_LOGICAL = 11521,
 };
 
 #ifdef __cplusplus
