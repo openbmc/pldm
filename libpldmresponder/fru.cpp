@@ -92,6 +92,7 @@ void FruImpl::buildFRUTable()
                     objToEntityNode[object.first.str] = node;
 
                     auto recordInfos = parser.getRecordInfo(interface.first);
+
                     populateRecords(interfaces, recordInfos, entity);
 
                     associatedEntityMap.emplace(object.first, entity);
@@ -120,7 +121,36 @@ void FruImpl::buildFRUTable()
     }
     isBuilt = true;
 }
-
+void FruImpl::populatefwVersion()
+{
+    static constexpr auto fwFunctionalObjPath =
+        "/xyz/openbmc_project/software/functional";
+    static constexpr auto fwInterface = "org.freedesktop.DBus.Properties";
+    static constexpr auto fwService = "xyz.openbmc_project.ObjectMapper";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto method = bus.new_method_call(fwService, fwFunctionalObjPath,
+                                          fwInterface, "Get");
+        method.append("xyz.openbmc_project.Association", "endpoints");
+        std::variant<std::vector<std::string>> paths;
+        auto reply = bus.call(method);
+        reply.read(paths);
+        fwRunningVersion = std::get<std::vector<std::string>>(paths)[0];
+        constexpr auto versionIntf = "xyz.openbmc_project.Software.Version";
+        auto version = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            fwRunningVersion.c_str(), "Version", versionIntf);
+        const auto& currentBmcVersion = std::get<std::string>(version);
+        fwImageId = currentBmcVersion;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a d-bus call "
+                     "Asociation, ERROR= "
+                  << e.what() << "\n";
+        return;
+    }
+}
 void FruImpl::populateRecords(
     const pldm::responder::dbus::InterfaceMap& interfaces,
     const fru_parser::FruRecordInfos& recordInfos, const pldm_entity& entity)
@@ -136,9 +166,18 @@ void FruImpl::populateRecords(
         uint8_t numFRUFields = 0;
         for (auto const& [intf, prop, propType, fieldTypeNum] : fieldInfos)
         {
+
             try
             {
-                auto propValue = interfaces.at(intf).at(prop);
+                pldm::responder::dbus::Value propValue;
+                if (propType == "string" && entity.entity_type == 11521 &&
+                    prop == "Version")
+                {
+                }
+                else
+                {
+                    propValue = interfaces.at(intf).at(prop);
+                }
                 if (propType == "bytearray")
                 {
                     auto byteArray = std::get<std::vector<uint8_t>>(propValue);
@@ -155,17 +194,34 @@ void FruImpl::populateRecords(
                 }
                 else if (propType == "string")
                 {
-                    auto str = std::get<std::string>(propValue);
-                    if (!str.size())
+                    if (entity.entity_type == 11521 && prop == "Version")
                     {
-                        continue;
+                        populatefwVersion();
+                        auto str = fetchnewImageId();
+                        if (!str.size())
+                        {
+                            continue;
+                        }
+                        numFRUFields++;
+                        tlvs.emplace_back(fieldTypeNum);
+                        tlvs.emplace_back(str.size());
+                        std::move(std::begin(str), std::end(str),
+                                  std::back_inserter(tlvs));
                     }
+                    else
+                    {
+                        auto str = std::get<std::string>(propValue);
+                        if (!str.size())
+                        {
+                            continue;
+                        }
 
-                    numFRUFields++;
-                    tlvs.emplace_back(fieldTypeNum);
-                    tlvs.emplace_back(str.size());
-                    std::move(std::begin(str), std::end(str),
-                              std::back_inserter(tlvs));
+                        numFRUFields++;
+                        tlvs.emplace_back(fieldTypeNum);
+                        tlvs.emplace_back(str.size());
+                        std::move(std::begin(str), std::end(str),
+                                  std::back_inserter(tlvs));
+                    }
                 }
             }
             catch (const std::out_of_range& e)
@@ -244,7 +300,6 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
 
 namespace fru
 {
-
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
                                             size_t /*payloadLength*/)
 {
