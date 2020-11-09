@@ -196,14 +196,16 @@ int main(int argc, char** argv)
 
     Invoker invoker{};
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
-    handler.clearDirPath(LID_STAGING_DIR);
+    //   oem_ibm::Handler handler(oemPlatformHandler.get());
+    // handler.clearDirPath(LID_STAGING_DIR);
 
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
         std::make_unique<pldm::responder::CodeUpdate>(dbusHandler.get());
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq);
+        dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq,
+        event);
+    codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(
         PLDM_OEM, std::make_unique<oem_ibm::Handler>(oemPlatformHandler.get()));
 #endif
