@@ -22,6 +22,15 @@ using namespace oem_ibm_platform;
 /** @brief Directory where the lid files without a header are stored */
 auto lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
 
+/** @brief Directory where the image files are stored as they are built */
+auto imageDirPath = fs::path(LID_STAGING_DIR) / "image";
+
+/** @brief The file name of the code update tarball */
+constexpr auto tarImageName = "image.tar";
+
+/** @brief The path to the code update tarball file */
+auto tarImagePath = fs::path(imageDirPath) / tarImageName;
+
 std::string CodeUpdate::fetchCurrentBootSide()
 {
     return currBootSide;
@@ -383,17 +392,32 @@ int processCodeUpdateLid(const std::string& filePath)
         return PLDM_ERROR;
     }
 
+    fs::create_directories(imageDirPath);
     fs::create_directories(lidDirPath);
 
-    std::stringstream lidFileName;
-    lidFileName << std::hex << htonl(header.lidNumber) << ".lid";
-    auto lidNoHeaderPath = fs::path(lidDirPath) / lidFileName.str();
-    std::ofstream ofs(lidNoHeaderPath,
-                      std::ios::out | std::ios::binary | std::ios::trunc);
-    ifs.seekg(htonl(header.headerSize));
-    ofs << ifs.rdbuf();
-    ofs.flush();
-    ofs.close();
+    constexpr auto bmcClass = 0x2000;
+    if (htons(header.lidClass) == bmcClass)
+    {
+        // Skip the header and concatenate the BMC LIDs into a tar file
+        std::ofstream ofs(tarImagePath,
+                          std::ios::out | std::ios::binary | std::ios::app);
+        ifs.seekg(htonl(header.headerSize));
+        ofs << ifs.rdbuf();
+        ofs.flush();
+        ofs.close();
+    }
+    else
+    {
+        std::stringstream lidFileName;
+        lidFileName << std::hex << htonl(header.lidNumber) << ".lid";
+        auto lidNoHeaderPath = fs::path(lidDirPath) / lidFileName.str();
+        std::ofstream ofs(lidNoHeaderPath,
+                          std::ios::out | std::ios::binary | std::ios::trunc);
+        ifs.seekg(htonl(header.headerSize));
+        ofs << ifs.rdbuf();
+        ofs.flush();
+        ofs.close();
+    }
 
     ifs.close();
     fs::remove(filePath);
