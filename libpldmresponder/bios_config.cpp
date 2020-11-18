@@ -476,13 +476,51 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
         return;
     }
 
+    BaseBIOSTable biosTable{};
+    constexpr auto biosObjPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosInterface = "xyz.openbmc_project.BIOSConfig.Manager";
+
+    try
+    {
+        auto& bus = dbusHandler->getBus();
+        auto service = dbusHandler->getService(biosObjPath, biosInterface);
+        auto method =
+            bus.new_method_call(service.c_str(), biosObjPath,
+                                "org.freedesktop.DBus.Properties", "Get");
+        method.append(biosInterface, "BaseBIOSTable");
+        auto reply = bus.call(method);
+        std::variant<BaseBIOSTable> varBiosTable{};
+        reply.read(varBiosTable);
+        biosTable = std::get<BaseBIOSTable>(varBiosTable);
+    }
+    // Failed to read the BaseBIOSTable, so update the BaseBIOSTable with the
+    // default values populated from the BIOS JSONs to keep PLDM and
+    // bios-settings-manager in sync
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to read BaseBIOSTable property, ERROR=" << e.what()
+                  << "\n";
+    }
+
     Table attrTable, attrValueTable;
 
     for (auto& attr : biosAttributes)
     {
         try
         {
-            attr->constructEntry(biosStringTable, attrTable, attrValueTable);
+            auto iter = biosTable.find(attr->name);
+            if (iter == biosTable.end())
+            {
+                attr->constructEntry(biosStringTable, attrTable, attrValueTable,
+                                     std::nullopt);
+            }
+            else
+            {
+                attr->constructEntry(
+                    biosStringTable, attrTable, attrValueTable,
+                    std::get<static_cast<uint8_t>(Index::currentValue)>(
+                        iter->second));
+            }
         }
         catch (const std::exception& e)
         {

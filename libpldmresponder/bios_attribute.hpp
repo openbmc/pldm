@@ -57,9 +57,13 @@ class BIOSAttribute
      *  @param[in] stringTable - The string Table
      *  @param[in,out] attrTable - The attribute table
      *  @param[in,out] attrValueTable - The attribute value table
+     * @param[in,out] optAttributeValue - init value of the attribute
      */
-    virtual void constructEntry(const BIOSStringTable& stringTable,
-                                Table& attrTable, Table& attrValueTable) = 0;
+    virtual void
+        constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
+                       Table& attrValueTable,
+                       std::optional<std::variant<int64_t, std::string>>
+                           optAttributeValue) = 0;
 
     /** @brief Method to update the value for an attribute
      *  @param[in,out] newValue - An attribute value table row with the new

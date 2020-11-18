@@ -50,7 +50,8 @@ void checkConstructEntry(BIOSAttribute& attribute, BIOSStringTable& stringTable,
                          Table& expectedAttrValueEntry)
 {
     Table attrEntry, attrValueEntry;
-    attribute.constructEntry(stringTable, attrEntry, attrValueEntry);
+    attribute.constructEntry(stringTable, attrEntry, attrValueEntry,
+                             std::nullopt);
 
     checkHeader(attrEntry, attrValueEntry);
     checkEntry(attrEntry, expectedAttrEntry);
