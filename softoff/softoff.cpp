@@ -41,7 +41,13 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
     }
 
     rc = getEffecterID();
-    if (rc != PLDM_SUCCESS)
+    if (completed)
+    {
+        std::cerr
+            << "pldm-softpoweroff: effecter to initiate softoff not found \n";
+        return;
+    }
+    else if (rc != PLDM_SUCCESS)
     {
         hasError = true;
         return;
@@ -203,6 +209,7 @@ int SoftPowerOff::getEffecterID()
     {
         std::cerr << "PLDM soft off: Error get system firmware PDR,ERROR="
                   << e.what() << "\n";
+        completed = true;
         return PLDM_ERROR;
     }
 
