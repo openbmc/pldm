@@ -80,6 +80,7 @@ std::optional<Table> BIOSConfig::getBIOSTable(pldm_bios_table_types tableType)
 int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table,
                              bool updateBaseBIOSTable)
 {
+    std::cout<<">>setBIOSTable"<<"\n";
     fs::path stringTablePath(tableDir / stringTableFile);
     fs::path attrTablePath(tableDir / attrTableFile);
     fs::path attrValueTablePath(tableDir / attrValueTableFile);
@@ -137,6 +138,7 @@ int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table,
                   << "\n";
         updateBaseBIOSTableProperty();
     }
+    std::cout<<"<<setBIOSTable"<<"\n";
 
     return PLDM_SUCCESS;
 }
@@ -494,7 +496,91 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
     table::appendPadAndChecksum(attrTable);
     table::appendPadAndChecksum(attrValueTable);
     setBIOSTable(PLDM_BIOS_ATTR_TABLE, attrTable);
-    setBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE, attrValueTable);
+    setBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE, attrValueTable, false);
+
+    std::variant<BaseBIOSTable> varBiosTable{};
+    constexpr auto biosObjPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosInterface = "xyz.openbmc_project.BIOSConfig.Manager";
+
+    try
+    {
+        auto& bus = dbusHandler->getBus();
+        auto service = dbusHandler->getService(biosObjPath, biosInterface);
+        auto method =
+            bus.new_method_call(service.c_str(), biosObjPath,
+                                "org.freedesktop.DBus.Properties", "Get");
+        method.append(biosInterface, "BaseBIOSTable");
+        auto reply = bus.call(method);
+        reply.read(varBiosTable);
+    }
+    // Failed to read the BaseBIOSTable, so update the BaseBIOSTable with the
+    // default values populated from the BIOS JSONs to keep PLDM and
+    // bios-settings-manager in sync
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to read BaseBIOSTable property, ERROR=" << e.what()
+                  << "\n";
+        updateBaseBIOSTableProperty();
+        return;
+    }
+
+    auto biosTable = std::get<BaseBIOSTable>(varBiosTable);
+
+    // For example in the case of a genesis scenario, the BaseBIOSTable is
+    // empty. So the BaseBIOSTable is populated with the default values
+    // populated from the BIOS JSONs.
+    if (biosTable.empty())
+    {
+        updateBaseBIOSTableProperty();
+        return;
+    }
+
+    for (const auto& pair : baseBIOSTableMaps)
+    {
+        std::cout<<"pair.first = "<<pair.first<<"\n";
+        auto iter = biosTable.find(pair.first);
+        // If the entry is not in BaseBIOSTable, then no action.
+        if (iter == biosTable.end())
+        {
+            continue;
+        }
+
+        auto attributeValue = std::get<static_cast<uint8_t>(Index::currentValue)>(iter->second);
+
+        // If the current value in the BaseBIOSTable matches the default value,
+        // then no action.
+        if (std::get<static_cast<uint8_t>(Index::currentValue)>(iter->second) ==
+            std::get<static_cast<uint8_t>(Index::currentValue)>(pair.second))
+        {
+            continue;
+        }
+
+        auto attributeName = pair.first;
+        auto attrIter =
+            std::find_if(biosAttributes.begin(), biosAttributes.end(),
+                         [&attributeName](const auto& attr) {
+                             return attr->name == attributeName;
+                         });
+        if (attrIter == biosAttributes.end())
+        {
+            std::cerr << "Wrong attribute name, attributeName = "
+                      << attributeName << std::endl;
+            continue;
+        }
+
+        // Update the BIOS attribute value table and baseBIOSTableMaps
+        // with the current value read from the bios-settings-manager app
+        Table attrValueEntry(sizeof(pldm_bios_attr_val_table_entry), 0);
+        auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
+            attrValueEntry.data());
+        auto handler = findAttrHandle(attributeName);
+        entry->attr_handle = htole16(handler);
+        (*attrIter)->generateAttributeEntry(attributeValue, attrValueEntry);
+        setAttrValue(attrValueEntry.data(), attrValueEntry.size(), false);
+    }
+
+    // Update the BaseBIOSTable property with the baseBIOSTableMaps
+    updateBaseBIOSTableProperty();
 }
 
 std::optional<Table> BIOSConfig::buildAndStoreStringTable()
@@ -648,6 +734,7 @@ int BIOSConfig::checkAttrValueToUpdate(
 int BIOSConfig::setAttrValue(const void* entry, size_t size,
                              bool updateBaseBIOSTable)
 {
+    std::cout<<">>setAttrValue"<<"\n";
     auto attrValueTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
     auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
     auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
@@ -706,6 +793,7 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size,
     }
 
     setBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE, *destTable, updateBaseBIOSTable);
+    std::cout<<"<<setAttrValue"<<"\n";
 
     return PLDM_SUCCESS;
 }
