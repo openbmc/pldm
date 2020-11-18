@@ -18,7 +18,7 @@ class TestAttribute : public BIOSAttribute
                             const BIOSStringTable&) override
     {}
 
-    void constructEntry(const BIOSStringTable&, Table&, Table&) override
+    void constructEntry(const BIOSStringTable&, Table&, Table&, std::optional<std::variant<int64_t, std::string>>) override
     {}
 
     const std::optional<DBusMapping>& getDbusMap()

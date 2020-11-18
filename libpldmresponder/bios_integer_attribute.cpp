@@ -98,9 +98,9 @@ void BIOSIntegerAttribute::setAttrValueOnDbus(
     throw std::invalid_argument("dbus type error");
 }
 
-void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
-                                          Table& attrTable,
-                                          Table& attrValueTable)
+void BIOSIntegerAttribute::constructEntry(
+    const BIOSStringTable& stringTable, Table& attrTable, Table& attrValueTable,
+    std::optional<std::variant<int64_t, std::string>> optAttributeValue)
 {
 
     pldm_bios_table_attr_entry_integer_info info = {
@@ -115,7 +115,24 @@ void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
     auto [attrHandle, attrType, _] =
         table::attribute::decodeHeader(attrTableEntry);
 
-    auto currentValue = getAttrValue();
+    int64_t currentValue{};
+    if (optAttributeValue.has_value())
+    {
+        auto attributeValue = optAttributeValue.value();
+        if (attributeValue.index() == 0)
+        {
+            currentValue = std::get<int64_t>(attributeValue);
+        }
+        else
+        {
+            currentValue = getAttrValue();
+        }
+    }
+    else
+    {
+        currentValue = getAttrValue();
+    }
+
     table::attribute_value::constructIntegerEntry(attrValueTable, attrHandle,
                                                   attrType, currentValue);
 }

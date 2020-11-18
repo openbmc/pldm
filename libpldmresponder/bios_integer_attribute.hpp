@@ -45,7 +45,9 @@ class BIOSIntegerAttribute : public BIOSAttribute
      *  @param[in,out] attrValueTable - The attribute value table
      */
     void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
-                        Table& attrValueTable) override;
+                        Table& attrValueTable,
+                        std::optional<std::variant<int64_t, std::string>>
+                            optAttributeValue) override;
 
     /** @brief Generate attribute entry by the spec DSP0247_1.0.0 Table 14
      *  @param[in] attributevalue - attribute value(Enumeration, String and
