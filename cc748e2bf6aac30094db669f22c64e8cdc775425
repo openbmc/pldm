@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec0d396c_40d4a89b",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-11-21T19:28:35Z",
+      "side": 1,
+      "message": "why the return value is needed?",
+      "range": {
+        "startLine": 317,
+        "startChar": 5,
+        "endLine": 317,
+        "endChar": 16
+      },
+      "revId": "cc748e2bf6aac30094db669f22c64e8cdc775425",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb7c10e1_fe2b4830",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-11-21T19:28:35Z",
+      "side": 1,
+      "message": "enable this. need to ask Adriana whether we should delete all the contents under STAGING_DIR or only specific ones",
+      "range": {
+        "startLine": 199,
+        "startChar": 9,
+        "endLine": 199,
+        "endChar": 29
+      },
+      "revId": "cc748e2bf6aac30094db669f22c64e8cdc775425",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
