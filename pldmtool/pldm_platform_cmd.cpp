@@ -210,6 +210,7 @@ class GetPDR : public CommandInterface
                 {
                     pstates << " " << (possibleStatesPos * CHAR_BIT + i);
                     data.append(pstates.str());
+                    pstates.str("");
                 }
             }
             possibleStatesPos++;
