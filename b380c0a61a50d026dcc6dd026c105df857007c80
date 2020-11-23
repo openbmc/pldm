@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6094010e_5f03ace3",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2020-11-23T15:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dbe5b22_b231aa1d",
+      "range": {
+        "startLine": 59,
+        "startChar": 50,
+        "endLine": 59,
+        "endChar": 71
+      },
+      "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "00fecc70_191055e8",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 36
@@ -45,6 +69,30 @@
       "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "826a6a44_cb883136",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2020-11-23T15:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00fecc70_191055e8",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 56
+      },
+      "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -82,6 +130,30 @@
       "writtenOn": "2020-11-21T19:21:38Z",
       "side": 1,
       "message": "is is always 2? can we avoid hard coding?",
+      "range": {
+        "startLine": 252,
+        "startChar": 43,
+        "endLine": 252,
+        "endChar": 45
+      },
+      "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42b2194b_8a332af2",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2020-11-23T15:35:34Z",
+      "side": 1,
+      "message": "should I leave it blank?",
+      "parentUuid": "c6b924b6_9df85ca4",
       "range": {
         "startLine": 252,
         "startChar": 43,
@@ -163,6 +235,30 @@
     },
     {
       "key": {
+        "uuid": "d8da15f8_9460c48b",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2020-11-23T15:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abaf3785_16b21f5e",
+      "range": {
+        "startLine": 45,
+        "startChar": 13,
+        "endLine": 45,
+        "endChar": 30
+      },
+      "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5fb50dbd_8b577fd2",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 36
@@ -186,6 +282,30 @@
     },
     {
       "key": {
+        "uuid": "b2f7e880_32d40a39",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2020-11-23T15:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fb50dbd_8b577fd2",
+      "range": {
+        "startLine": 50,
+        "startChar": 13,
+        "endLine": 50,
+        "endChar": 28
+      },
+      "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3402aae7_d45f09bc",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 36
@@ -206,6 +326,30 @@
       "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "369e68cf_60a8a453",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2020-11-23T15:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3402aae7_d45f09bc",
+      "range": {
+        "startLine": 55,
+        "startChar": 47,
+        "endLine": 55,
+        "endChar": 68
+      },
+      "revId": "b380c0a61a50d026dcc6dd026c105df857007c80",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
