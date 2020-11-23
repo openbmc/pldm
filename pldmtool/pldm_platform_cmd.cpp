@@ -210,6 +210,7 @@ class GetPDR : public CommandInterface
                 {
                     pstates << " " << (possibleStatesPos * CHAR_BIT + i);
                     data.append(pstates.str());
+                    pstates.str("");
                 }
             }
             possibleStatesPos++;
@@ -232,18 +233,23 @@ class GetPDR : public CommandInterface
         output["compositeSensorCount"] = unsigned(pdr->composite_sensor_count);
 
         auto statesPtr = pdr->possible_states;
-        auto compositeSensorCount = pdr->composite_sensor_count;
+        auto compCount = pdr->composite_sensor_count;
 
-        while (compositeSensorCount--)
+        while (compCount--)
         {
             auto state = reinterpret_cast<const state_sensor_possible_states*>(
                 statesPtr);
-            output["stateSetID"] = getStateSetName(state->state_set_id);
-            output["possibleStatesSize"] = getStateSetName(state->state_set_id);
-            output["possibleStates"] =
-                printPossibleStates(state->possible_states_size, state->states);
+            output.emplace(("stateSetID[" + std::to_string(compCount) + "]"),
+                           getStateSetName(state->state_set_id));
+            output.emplace(
+                ("possibleStatesSize[" + std::to_string(compCount) + "]"),
+                state->possible_states_size);
+            output.emplace(
+                ("possibleStates[" + std::to_string(compCount) + "]"),
+                printPossibleStates(state->possible_states_size,
+                                    state->states));
 
-            if (compositeSensorCount)
+            if (compCount)
             {
                 statesPtr += sizeof(state_sensor_possible_states) +
                              state->possible_states_size - 1;
@@ -451,20 +457,24 @@ class GetPDR : public CommandInterface
             unsigned(pdr->composite_effecter_count);
 
         auto statesPtr = pdr->possible_states;
-        auto compositeEffecterCount = pdr->composite_effecter_count;
+        auto compEffCount = pdr->composite_effecter_count;
 
-        while (compositeEffecterCount--)
+        while (compEffCount--)
         {
             auto state =
                 reinterpret_cast<const state_effecter_possible_states*>(
                     statesPtr);
+            output.emplace(("stateSetID[" + std::to_string(compEffCount) + "]"),
+                           getStateSetName(state->state_set_id));
+            output.emplace(
+                ("possibleStatesSize[" + std::to_string(compEffCount) + "]"),
+                state->possible_states_size);
+            output.emplace(
+                ("possibleStates[" + std::to_string(compEffCount) + "]"),
+                printPossibleStates(state->possible_states_size,
+                                    state->states));
 
-            output["stateSetID"] = getStateSetName(state->state_set_id);
-            output["possibleStatesSize"] = (state->possible_states_size);
-            output["possibleStates"] =
-                printPossibleStates(state->possible_states_size, state->states);
-
-            if (compositeEffecterCount)
+            if (compEffCount)
             {
                 statesPtr += sizeof(state_effecter_possible_states) +
                              state->possible_states_size - 1;
