@@ -82,10 +82,7 @@ int DumpHandler::newFileAvailable(uint64_t length)
         using namespace sdbusplus::xyz::openbmc_project::Dump::server;
         auto method = bus.new_method_call(service.c_str(), dumpObjPath,
                                           dumpInterface, "Notify");
-        method.append(
-            sdbusplus::xyz::openbmc_project::Dump::server::convertForMessage(
-                NewDump::DumpType::System),
-            fileHandle, length);
+        method.append(fileHandle, length);
         bus.call_noreply(method);
     }
     catch (const std::exception& e)
