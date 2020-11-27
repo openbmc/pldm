@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "22670adc_a5ac20e3",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "sensorRearmCnt",
+      "range": {
+        "startLine": 645,
+        "startChar": 30,
+        "endLine": 645,
+        "endChar": 45
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed08548a_0ec43282",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "tempStateSetId",
+      "range": {
+        "startLine": 697,
+        "startChar": 26,
+        "endLine": 697,
+        "endChar": 39
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "220620a5_10c7e3df",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "make this camel case tmpStateSetId",
+      "range": {
+        "startLine": 761,
+        "startChar": 26,
+        "endLine": 761,
+        "endChar": 38
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59c6e12f_d8b7f248",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "please correct this",
+      "range": {
+        "startLine": 456,
+        "startChar": 15,
+        "endLine": 456,
+        "endChar": 23
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0bfdb4f_f9f09dd5",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "correct this",
+      "range": {
+        "startLine": 465,
+        "startChar": 49,
+        "endLine": 465,
+        "endChar": 57
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d82b960_3a2fb1f4",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "I think this can be named sensorRearmCnt",
+      "range": {
+        "startLine": 466,
+        "startChar": 31,
+        "endLine": 466,
+        "endChar": 45
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9de52965_b585fcb1",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "is it necessary to leave an empty line here",
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52c2a809_e4f6dd43",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "This can be declared as it is without initializing to empty string",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4d28917_996b9698",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:16:14Z",
+      "side": 1,
+      "message": "can we change this to fetchNewImageId?",
+      "range": {
+        "startLine": 70,
+        "startChar": 17,
+        "endLine": 70,
+        "endChar": 31
+      },
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
