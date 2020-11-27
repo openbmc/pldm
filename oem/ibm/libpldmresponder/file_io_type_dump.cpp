@@ -83,8 +83,6 @@ int DumpHandler::newFileAvailable(uint64_t length)
         auto method = bus.new_method_call(service.c_str(), dumpObjPath,
                                           dumpInterface, "Notify");
         method.append(
-            sdbusplus::xyz::openbmc_project::Dump::server::convertForMessage(
-                NewDump::DumpType::System),
             fileHandle, length);
         bus.call_noreply(method);
     }
