@@ -157,6 +157,24 @@
     },
     {
       "key": {
+        "uuid": "b65a983f_8e7863de",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:18:04Z",
+      "side": 1,
+      "message": "Please remove extra line in every place",
+      "parentUuid": "9de52965_b585fcb1",
+      "revId": "b087c0338e840da17ca3fe2af16fa98b65cade00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "52c2a809_e4f6dd43",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 24
