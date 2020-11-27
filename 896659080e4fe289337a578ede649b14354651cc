@@ -22,6 +22,57 @@
       "revId": "896659080e4fe289337a578ede649b14354651cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dec468b9_a1a92c95",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:22:19Z",
+      "side": 1,
+      "message": "please leave one empty line between function definitions",
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b83c0eb_38429d9a",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:22:19Z",
+      "side": 1,
+      "message": "add what is returned and not just return type",
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e64e5b2b_a3b3c5bf",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-11-27T03:22:19Z",
+      "side": 1,
+      "message": "add little more detail",
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
