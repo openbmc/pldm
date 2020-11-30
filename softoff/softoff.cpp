@@ -63,6 +63,20 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
         return;
     }
 
+    rc = getHostPowerOffStatus(event);
+    if (completed)
+    {
+        std::cerr << "pldm-softpoweroff:Graceful shutdown not sent to host"
+                  << "\n"
+                  << "Host Termination already initiated/completed \n";
+        return;
+    }
+    else if (rc != PLDM_SUCCESS)
+    {
+        hasError = true;
+        return;
+    }
+
     // Matches on the pldm StateSensorEvent signal
     pldmEventSignal = std::make_unique<sdbusplus::bus::match_t>(
         bus,
@@ -71,6 +85,148 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
             sdbusRule::interface("xyz.openbmc_project.PLDM.Event"),
         std::bind(std::mem_fn(&SoftPowerOff::hostSoftOffComplete), this,
                   std::placeholders::_1));
+}
+
+int SoftPowerOff::getHostPowerOffStatus(sd_event* event)
+{
+    uint8_t mctpEID;
+    uint8_t instanceID;
+
+    mctpEID = pldm::utils::readHostEID();
+    // Get instanceID
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto method = bus.new_method_call(
+            "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
+            "xyz.openbmc_project.PLDM.Requester", "GetInstanceId");
+        method.append(mctpEID);
+
+        auto ResponseMsg = bus.call(method);
+
+        ResponseMsg.read(instanceID);
+    }
+    catch (const SdBusError& e)
+    {
+        std::cerr << "PLDM soft off: Error get instanceID,ERROR=" << e.what()
+                  << "\n";
+        return PLDM_ERROR;
+    }
+
+    bitfield8_t sensor_rearm;
+    sensor_rearm.byte = 0x01;
+    uint8_t reserved = 0;
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES>
+        requestMsg{};
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto retc = encode_get_state_sensor_readings_req(
+        instanceID, sensorID, sensor_rearm, reserved, request);
+    if (retc != PLDM_SUCCESS)
+    {
+        std::cerr << "Message encode failure. PLDM error code = " << std::hex
+                  << std::showbase << retc << "\n";
+        return PLDM_ERROR;
+    }
+
+    // Open connection to MCTP socket
+    int fd = pldm_open();
+    if (-1 == fd)
+    {
+        std::cerr << "Failed to connect to mctp demux daemon"
+                  << "\n";
+        return PLDM_ERROR;
+    }
+
+    auto rc = pldm_send(mctpEID, fd, requestMsg.data(), requestMsg.size());
+    std::cout << "After pldm_send"
+              << "\n";
+    if (0 > rc)
+    {
+        std::cerr << "Failed to send message/receive response. RC = " << rc
+                  << ", errno = " << errno << "\n";
+        return PLDM_ERROR;
+    }
+
+    // Add a timer to the event loop, default 30s.
+    auto timerCallback = [=](Timer& /*source*/, Timer::TimePoint /*time*/) {
+        if (!responseReceived)
+        {
+            std::cerr << "PLDM soft off: ERROR! Can't get the response for the "
+                         "PLDM request msg. Time out!\n"
+                      << "Exit the pldm-softpoweroff\n";
+            exit(-1);
+        }
+        return;
+    };
+    Timer time(event, (Clock(event).now() + std::chrono::seconds{30}),
+               std::chrono::seconds{1}, std::move(timerCallback));
+
+    std::cout << "Before Event loop"
+              << "\n";
+    // Add a callback to handle EPOLLIN on fd
+    auto callback = [=](IO& io, int fd, uint32_t revents) {
+        std::cout << "inside event loop"
+                  << "\n";
+        if (!(revents & EPOLLIN))
+        {
+            return;
+        }
+
+        uint8_t* responseMsg = nullptr;
+        size_t responseMsgSize{};
+
+        auto rc = pldm_recv(mctpEID, fd, request->hdr.instance_id, &responseMsg,
+                            &responseMsgSize);
+        std::cout << "after pldm_recv"
+                  << "\n";
+        if (rc)
+        {
+            return;
+        }
+
+        std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
+            responseMsg, std::free};
+
+        // We've got the response meant for the PLDM request msg that was
+        // sent out
+        io.set_enabled(Enabled::Off);
+        auto response = reinterpret_cast<pldm_msg*>(responseMsgPtr.get());
+        std::cerr << "Getting the response. PLDM RC = " << std::hex
+                  << std::showbase
+                  << static_cast<uint16_t>(response->payload[0]) << "\n";
+
+        responseReceived = true;
+
+        uint8_t retcompletion_code;
+        uint8_t retcomp_sensorCnt;
+        auto payloadLength = responseMsgSize - sizeof(pldm_msg_hdr);
+        std::array<get_sensor_state_field, 1> retstateField{};
+        int retco = decode_get_state_sensor_readings_resp(
+            response, payloadLength, &retcompletion_code, &retcomp_sensorCnt,
+            retstateField.data());
+        std::cout << "after decode_get_state_sensor_readings_resp"
+                  << "\n";
+        if (retco != PLDM_SUCCESS)
+        {
+            std::cerr << "Message decode failure. PLDM error code = "
+                      << std::hex << std::showbase << retc << "\n";
+            return;
+        }
+
+        if (retstateField[0].present_state ==
+                PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED ||
+            retstateField[0].present_state == PLDM_SW_TERM_GRACEFUL_SHUTDOWN)
+        {
+            std::cout << "inside main condition"
+                      << "\n";
+            completed = true;
+            return;
+        }
+    };
+    IO io(event, fd, EPOLLIN, std::move(callback));
+
+    return PLDM_SUCCESS;
 }
 
 int SoftPowerOff::getHostState()
