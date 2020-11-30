@@ -104,6 +104,16 @@ class SoftPowerOff
      */
     int getSensorInfo();
 
+    /** @brief Get State Sensor readings for the Software Termination
+     *         of the host. If the present_state is
+     *         PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED or
+     *         PLDM_SW_TERM_GRACEFUL_SHUTDOWN, then do not send the
+     *         soft power off request to host
+     *
+     *  @return PLDM_SUCCESS or PLDM_ERROR
+     */
+    int getHostTerminationStatus();
+
     /** @brief effecterID
      */
     uint16_t effecterID;
