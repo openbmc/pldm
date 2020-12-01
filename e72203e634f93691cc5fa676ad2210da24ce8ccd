@@ -65,6 +65,30 @@
     },
     {
       "key": {
+        "uuid": "d7ccd6f6_ce6bafc7",
+        "filename": "common/utils.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5f686c1_9732dc10",
+      "range": {
+        "startLine": 139,
+        "startChar": 14,
+        "endLine": 139,
+        "endChar": 25
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7240f07c_704ac35e",
         "filename": "common/utils.hpp",
         "patchSetId": 22
@@ -111,6 +135,54 @@
     },
     {
       "key": {
+        "uuid": "4fba3b82_865e5666",
+        "filename": "common/utils.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "this is always std::string checked other examples",
+      "parentUuid": "c413e184_e197df13",
+      "range": {
+        "startLine": 140,
+        "startChar": 62,
+        "endLine": 140,
+        "endChar": 73
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5331922a_e35e161e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7240f07c_704ac35e",
+      "range": {
+        "startLine": 140,
+        "startChar": 36,
+        "endLine": 140,
+        "endChar": 47
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "839f2f4a_163cc61a",
         "filename": "libpldm/platform.h",
         "patchSetId": 22
@@ -131,6 +203,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fff9506_c9bc2af5",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "839f2f4a_163cc61a",
+      "range": {
+        "startLine": 55,
+        "startChar": 7,
+        "endLine": 55,
+        "endChar": 14
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -157,6 +253,30 @@
     },
     {
       "key": {
+        "uuid": "1c0c6f3e_31317bec",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3da2941_189c6c9e",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 37
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ea0cfea_076f0c97",
         "filename": "libpldm/platform.h",
         "patchSetId": 22
@@ -177,6 +297,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e77a14f5_81d1fba1",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ea0cfea_076f0c97",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 39
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -203,6 +347,30 @@
     },
     {
       "key": {
+        "uuid": "418e6ba3_9498413e",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80334bb5_afbdee42",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 46
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bedd3272_ee40392b",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 22
@@ -223,6 +391,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7031b45a_56ae59bc",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bedd3272_ee40392b",
+      "range": {
+        "startLine": 30,
+        "startChar": 5,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -249,6 +441,30 @@
     },
     {
       "key": {
+        "uuid": "e403ab38_e7afc008",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7e2fb6a_07359d11",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 16
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ac7d69d5_3f321ecb",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 22
@@ -266,6 +482,24 @@
     },
     {
       "key": {
+        "uuid": "f588b393_2d6f097c",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac7d69d5_3f321ecb",
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d1eb6071_4360c25b",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 22
@@ -280,6 +514,24 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ce5127c_4a01be4f",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1eb6071_4360c25b",
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -306,6 +558,30 @@
     },
     {
       "key": {
+        "uuid": "eb89e378_b551123f",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4060ec0_68a69542",
+      "range": {
+        "startLine": 54,
+        "startChar": 16,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c08aa671_7294dc84",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 22
@@ -317,6 +593,30 @@
       "writtenOn": "2020-11-24T16:00:08Z",
       "side": 1,
       "message": "\u003d default?\n\nWhat is the action in the destructor free dBusIntf?",
+      "range": {
+        "startLine": 59,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 6
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b622a67_b53c928c",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "made default. dBusIntf is coming from pldmd.",
+      "parentUuid": "c08aa671_7294dc84",
       "range": {
         "startLine": 59,
         "startChar": 1,
@@ -352,6 +652,30 @@
     },
     {
       "key": {
+        "uuid": "8c0600f0_21563d9c",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "yeah if any one of the state set or entity type or both are in oem range then this function will return true. to my understanding if any one of them falls in oem range then we have a possibility of having some oem specific code which needs to be implemented in pldm/oem. thus this implementation",
+      "parentUuid": "ee466de7_f6e3e9c4",
+      "range": {
+        "startLine": 453,
+        "startChar": 11,
+        "endLine": 453,
+        "endChar": 59
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ed86ebe_c66cb18b",
         "filename": "libpldmresponder/platform.hpp",
         "patchSetId": 22
@@ -372,6 +696,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1e72dd3_3378d130",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ed86ebe_c66cb18b",
+      "range": {
+        "startLine": 456,
+        "startChar": 15,
+        "endLine": 456,
+        "endChar": 23
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -398,6 +746,30 @@
     },
     {
       "key": {
+        "uuid": "ce6607f5_2317df10",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f66efcc_f29c8a26",
+      "range": {
+        "startLine": 457,
+        "startChar": 26,
+        "endLine": 457,
+        "endChar": 30
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "199faec1_f31b13f7",
         "filename": "libpldmresponder/platform.hpp",
         "patchSetId": 22
@@ -412,6 +784,24 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d07f99c6_663342af",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "199faec1_f31b13f7",
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -432,6 +822,24 @@
     },
     {
       "key": {
+        "uuid": "d4722cfc_d6456fda",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaf1feb2_41b83601",
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "472317a9_34ce23af",
         "filename": "oem/ibm/libpldmresponder/file_io.hpp",
         "patchSetId": 22
@@ -443,6 +851,24 @@
       "writtenOn": "2020-11-24T16:00:08Z",
       "side": 1,
       "message": "Can the changes to file_io move to the appropriate patch, i don\u0027t see any changes to consume it.",
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dc982b7_6cf573c5",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "actually i had done this so that Sagar and Varsha can consume in their patches in the subsequent commits. this provides the infrastructure to them",
+      "parentUuid": "472317a9_34ce23af",
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -472,6 +898,30 @@
     },
     {
       "key": {
+        "uuid": "b3acb705_3263e09b",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9646185_6e00d934",
+      "range": {
+        "startLine": 14,
+        "startChar": 22,
+        "endLine": 14,
+        "endChar": 28
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "43a74baa_0212c6d6",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 22
@@ -492,6 +942,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dafd2da_d0b7d0d0",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-01T05:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43a74baa_0212c6d6",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
