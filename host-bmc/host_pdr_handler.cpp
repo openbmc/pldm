@@ -31,6 +31,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     requester(requester)
 {
+    isHostUp = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -82,6 +83,13 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                 {
                     pldm_pdr_remove_remote_pdrs(repo);
                     this->sensorMap.clear();
+                    isHostUp = false;
+                    std::cout << "inside hostOffMatch changing HostState off \n";
+                }
+                else
+                {
+                    isHostUp = true;
+                    std::cout << "inside hostOffMatch setting isHostUp true \n";
                 }
             }
         });
@@ -102,6 +110,13 @@ void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 
 void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 {
+    fetchPDRsOnStart();
+}
+
+void HostPDRHandler::fetchPDRsOnStart()
+//void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
+{
+    std::cout << "enter fetchPDRsOnStart \n";
     pdrFetchEvent.reset();
 
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
@@ -138,9 +153,24 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 
         uint8_t* responseMsg = nullptr;
         size_t responseMsgSize{};
-        auto requesterRc =
+        std::cout << "sending pldm_send_recv with mctp_eid " << (uint32_t)mctp_eid
+                  << " mctp_fd " << (uint32_t)mctp_fd << "\n";
+       /* auto requesterRc =
             pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(),
-                           requestMsg.size(), &responseMsg, &responseMsgSize);
+                           requestMsg.size(), &responseMsg, &responseMsgSize);*/
+        std::cout << "trying the tool way \n";
+        int fd = pldm_open();
+        if (-1 == fd)
+        {
+            std::cerr << "failed to init mctp " ;
+            return;
+        }
+        std::cout << "trying fd " << (uint32_t)fd << "\n";
+         auto requesterRc =
+                     pldm_send_recv(mctp_eid, fd, requestMsg.data(),
+                   requestMsg.size(), &responseMsg, &responseMsgSize);
+        std::cout << "after pldm_send_recv \n";             
+
         std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
             responseMsg, std::free};
         requester.markFree(mctp_eid, instanceId);
@@ -148,6 +178,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         {
             std::cerr << "Failed to send msg to fetch pdrs, rc = "
                       << requesterRc << std::endl;
+            isHostUp = false;
             return;
         }
 
@@ -166,6 +197,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         {
             std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc
                       << std::endl;
+            isHostUp = false;          
         }
         else
         {
@@ -180,9 +212,11 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                           << "rc=" << rc
                           << ", cc=" << static_cast<unsigned>(completionCode)
                           << std::endl;
+                isHostUp = false;          
             }
             else
             {
+                isHostUp = true;
                 // Process the PDR host firmware sent us. The most common action
                 // is to add the PDR to the the BMC's PDR repo.
                 auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
@@ -234,6 +268,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
             FORMAT_IS_PDR_HANDLES);
     }
+    std::cout << "exit fetchPDRsOnStart \n";
 }
 
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
@@ -413,6 +448,13 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,
         }
         sensorMap.emplace(sensorEntry, std::move(sensorInfo));
     }
+}
+
+void HostPDRHandler::setHostState()
+{
+    std::cout << "enter setHostState \n";
+
+    std::cout << "exit setHostState \n";
 }
 
 } // namespace pldm
