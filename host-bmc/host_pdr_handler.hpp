@@ -5,6 +5,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 
@@ -124,6 +125,10 @@ class HostPDRHandler
      */
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
+
+    void sendGetStateSensorReadings();
+
+    int chgDBusProp(uint8_t tid, uint16_t sensorId);
 
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
