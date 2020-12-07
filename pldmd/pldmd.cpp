@@ -164,6 +164,8 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
+    std::cout << " Start" << std::endl;
+
     auto event = Event::get_default();
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
@@ -179,6 +181,7 @@ int main(int argc, char** argv)
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     auto dbusHandler = std::make_unique<DBusHandler>();
     auto hostEID = pldm::utils::readHostEID();
+    std::cout << " Before the event " << std::endl;
     if (hostEID)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
@@ -193,6 +196,9 @@ int main(int argc, char** argv)
     }
 
     Invoker invoker{};
+    std::cout << "Before my function:" << std::endl;
+
+    hostPDRHandler->sendGetStateSensorReadings();
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>(
                                            sockfd, hostEID, &dbusImplReq));
