@@ -163,6 +163,7 @@ int main(int argc, char** argv)
         std::cerr << "Failed to create the socket, RC= " << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
+    std::cout << "pldmd created sockfd " << (uint32_t)sockfd << "\n";
 
     auto event = Event::get_default();
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
@@ -208,6 +209,11 @@ int main(int argc, char** argv)
                                                dbusToPLDMEventHandler.get(),
                                                fruHandler.get(), true));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
+    std::cout << "pldmd before fetchPDRsOnStart \n";
+    hostPDRHandler->fetchPDRsOnStart();
+    std::cout << "pldmd after fetchPDRsOnStart \n";
+    hostPDRHandler->setHostState();
+    std::cout << "pldmd after setHostState \n";
 
 #ifdef OEM_IBM
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>());
@@ -222,6 +228,7 @@ int main(int argc, char** argv)
     memcpy(addr.sun_path, path, sizeof(path) - 1);
     int result = connect(socketFd(), reinterpret_cast<struct sockaddr*>(&addr),
                          sizeof(path) + sizeof(addr.sun_family) - 1);
+    std::cout << "pldmd after connect \n";
     if (-1 == result)
     {
         returnCode = -errno;
@@ -231,6 +238,8 @@ int main(int argc, char** argv)
     }
 
     result = write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
+
+    std::cout << "pldmd after write \n";
     if (-1 == result)
     {
         returnCode = -errno;
@@ -239,6 +248,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
+    std::cout << "pldmd before callback \n";
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
         bus, "/xyz/openbmc_project/pldm");
@@ -332,6 +342,8 @@ int main(int argc, char** argv)
             }
         }
     };
+
+    std::cout << "pldmd outside the callback \n";
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
