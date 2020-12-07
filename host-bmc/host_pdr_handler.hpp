@@ -52,6 +52,8 @@ struct SensorEntry
     }
 };
 
+void printBuffer(std::vector<uint8_t>& buffer);
+
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
 using PDRList = std::vector<std::vector<uint8_t>>;
 
@@ -141,7 +143,8 @@ class HostPDRHandler
 
     void fetchPDRsOnStart();
 
-    void setHostState();
+    void setHostState(const PDRList& stateSensorPDRs,
+                      const TLPDRMap& tlpdrInfo);
 
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
