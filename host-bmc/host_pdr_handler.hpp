@@ -139,6 +139,10 @@ class HostPDRHandler
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
 
+    void fetchPDRsOnStart();
+
+    void setHostState();
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -195,6 +199,8 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+
+    inline static bool isHostUp;
 };
 
 } // namespace pldm
