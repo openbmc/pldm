@@ -917,6 +917,167 @@
     },
     {
       "key": {
+        "uuid": "da6c3f41_c228de3e",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "Instead of a local variable, return PLDM_SUCCESS \u0026 return PLDM_ERROR",
+      "range": {
+        "startLine": 35,
+        "startChar": 1,
+        "endLine": 36,
+        "endChar": 26
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1b56844_0c70f910",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "lowerCamelCase",
+      "range": {
+        "startLine": 39,
+        "startChar": 26,
+        "endLine": 39,
+        "endChar": 35
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da72ff46_ff716793",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "lowerCamelCase",
+      "range": {
+        "startLine": 41,
+        "startChar": 16,
+        "endLine": 41,
+        "endChar": 24
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccc8d8c1_8938efd9",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "This condition will never be hit, based on the if() else() condition above.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fae70f54_5ba4e4a8",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "lowerCamelCase",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 72
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10b848e8_fb54058c",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "I see this used multiple times in this source file, move it to hpp...?",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 58
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c62018a_096c8aca",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "Why this needs to be a separate member function? It can be done in the constructor.",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 1
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f9646185_6e00d934",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 22
@@ -964,6 +1125,52 @@
     },
     {
       "key": {
+        "uuid": "89a43c8e_c4f4ea3a",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "If we want the boot side to be uint8_t we need to be explicit. auto is gonna take the type as int.",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 21
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b8ab260_18bc28aa",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "phosphor-software-manager?",
+      "range": {
+        "startLine": 24,
+        "startChar": 27,
+        "endLine": 24,
+        "endChar": 38
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "43a74baa_0212c6d6",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 22
@@ -1008,6 +1215,75 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b87314b2_e79b041c",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "Why do we have these functions as stand-alone? It seems more logically fit to have it in the CodeUpdate class.These 2 functions can be the public apis for the CodeUpdate class.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 40
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54ea856e_083b6819",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "Can this be initialized in the constructor?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 1
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23c5b9c4_c504010a",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-07T06:36:20Z",
+      "side": 1,
+      "message": "\u003ddefault",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 6
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
