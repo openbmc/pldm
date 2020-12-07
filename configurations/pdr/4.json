@@ -1,41 +1,13 @@
 {
- "effecterPDRs": [
+ "sensorPDRs": [
    {
-    "pdrType" : 11,
+    "pdrType" : 4,
     "entries" : [{
-        "type" : 33,
-        "instance" : 0,
-        "container" : 0,
-        "effecters" : [{
-            "set" : {
-                "id" : 196,
-                "size" : 4,
-                "states" : [1,2,3,5,9,21,22,26]
-            },
-            "dbus" : {
-                "path": "/xyz/openbmc_project/state/host0",
-                "interface": "xyz.openbmc_project.State.Boot.Progress",
-                "property_name": "BootProgress",
-                "property_type": "string",
-                "property_values": [
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.Unspecified",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.SystemInitComplete",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.MemoryInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.SecondaryProcInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.PCIInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.OSRunning",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.BusInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.PrimaryProcInit"
-                ]
-             }
-        }]
-    },
-    {
         "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/base_op_panel_blyth",
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -55,7 +27,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -74,7 +46,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -93,7 +65,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -112,7 +84,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -131,7 +103,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -150,7 +122,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -169,7 +141,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -188,7 +160,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -207,7 +179,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -227,7 +199,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -247,7 +219,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -267,7 +239,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -287,7 +259,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -306,7 +278,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -325,7 +297,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -344,7 +316,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -364,7 +336,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -384,7 +356,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -404,7 +376,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -424,7 +396,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -444,7 +416,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -464,7 +436,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -484,7 +456,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -503,7 +475,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -522,7 +494,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -541,7 +513,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -560,7 +532,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -580,7 +552,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -599,7 +571,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -618,7 +590,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -637,7 +609,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -656,7 +628,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -675,7 +647,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -694,7 +666,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -713,7 +685,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -732,7 +704,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -751,7 +723,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -770,7 +742,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -790,7 +762,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -809,7 +781,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -828,7 +800,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -848,7 +820,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -868,7 +840,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -888,7 +860,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -908,7 +880,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -928,7 +900,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -948,7 +920,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -964,11 +936,11 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm9",
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0",
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -987,7 +959,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1007,7 +979,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1027,7 +999,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1047,7 +1019,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1067,7 +1039,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1087,7 +1059,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1107,7 +1079,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1127,7 +1099,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1146,7 +1118,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1165,7 +1137,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1184,7 +1156,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1203,7 +1175,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1222,7 +1194,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1241,7 +1213,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1260,7 +1232,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1279,7 +1251,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1298,7 +1270,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1317,7 +1289,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1336,7 +1308,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1355,7 +1327,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1374,7 +1346,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1393,7 +1365,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1412,7 +1384,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1431,7 +1403,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1450,7 +1422,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1469,7 +1441,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1488,7 +1460,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1507,7 +1479,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1526,7 +1498,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1545,7 +1517,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1564,7 +1536,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1583,7 +1555,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1603,7 +1575,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1623,7 +1595,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1643,7 +1615,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1663,7 +1635,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1683,7 +1655,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1703,7 +1675,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1723,7 +1695,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1743,7 +1715,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1763,7 +1735,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1783,7 +1755,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1803,7 +1775,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1822,7 +1794,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1842,7 +1814,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1862,7 +1834,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1881,7 +1853,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1901,7 +1873,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 17,
                 "size" : 1,
@@ -1921,7 +1893,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -1941,7 +1913,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -1960,7 +1932,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -1979,7 +1951,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -1998,7 +1970,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2017,7 +1989,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2036,7 +2008,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2055,7 +2027,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2074,7 +2046,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2093,7 +2065,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2113,7 +2085,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2133,7 +2105,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2153,7 +2125,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2173,7 +2145,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2192,7 +2164,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2211,7 +2183,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2230,7 +2202,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2250,7 +2222,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2270,7 +2242,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2290,7 +2262,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2310,7 +2282,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2330,7 +2302,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2350,7 +2322,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2370,7 +2342,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2389,7 +2361,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2408,7 +2380,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2427,7 +2399,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2446,7 +2418,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2466,7 +2438,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2485,7 +2457,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2504,7 +2476,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2523,7 +2495,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2542,7 +2514,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2561,7 +2533,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2580,7 +2552,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2599,7 +2571,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2618,7 +2590,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2637,7 +2609,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2656,7 +2628,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2676,7 +2648,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2695,7 +2667,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2714,7 +2686,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2734,7 +2706,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2754,7 +2726,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2774,7 +2746,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2794,7 +2766,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2814,7 +2786,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2834,7 +2806,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2854,7 +2826,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2873,7 +2845,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2893,7 +2865,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2913,7 +2885,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2933,7 +2905,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2953,7 +2925,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2973,7 +2945,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -2993,7 +2965,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3013,7 +2985,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3032,7 +3004,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3051,7 +3023,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3070,7 +3042,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3089,7 +3061,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3108,7 +3080,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3127,7 +3099,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3146,7 +3118,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3165,7 +3137,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3184,7 +3156,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3203,7 +3175,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3222,7 +3194,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3241,7 +3213,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3260,7 +3232,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3279,7 +3251,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3298,7 +3270,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3317,7 +3289,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3336,7 +3308,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3355,7 +3327,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3374,7 +3346,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3393,7 +3365,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3412,7 +3384,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3431,7 +3403,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3450,7 +3422,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3469,7 +3441,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3489,7 +3461,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3509,7 +3481,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3529,7 +3501,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3549,7 +3521,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3569,7 +3541,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3589,7 +3561,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3609,7 +3581,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3629,7 +3601,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3649,7 +3621,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3669,7 +3641,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3689,7 +3661,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3708,7 +3680,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3728,7 +3700,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3748,7 +3720,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3767,7 +3739,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3787,7 +3759,7 @@
         "type" : 19,
         "instance" : 0,
         "container" : 0,
-        "effecters" : [{
+        "sensors" : [{
             "set" : {
                 "id" : 10,
                 "size" : 1,
@@ -3801,82 +3773,7 @@
                 "property_values" : [true, false]
              }
         }]
-    },
-    {
-       "type" : 45,
-       "instance" : 0,
-       "container" : 0,
-       "effecters" : [{
-           "set" : {
-               "id" : 260,
-               "size" : 2,
-               "states" : [9]
-           },
-           "dbus" : {
-                "path": "/xyz/openbmc_project/state/chassis0",
-                "interface": "xyz.openbmc_project.State.Chassis",
-                "property_name": "RequestedPowerTransition",
-                "property_type": "string",
-                "property_values":[
-                        "xyz.openbmc_project.State.Chassis.Transition.Off"
-  ]
-           }
-       }]
-    },
-    {
-        "type" : 31,
-        "instance" : 0,
-        "container" : 0,
-        "effecters" : [{
-            "set" : {
-                "id" : 129,
-                "size" : 1,
-                "states" : [6]
-            },
-            "dbus" : {
-                "path": "/xyz/openbmc_project/state/host0",
-                "interface": "xyz.openbmc_project.State.Host",
-                "property_name": "RequestedHostTransition",
-                "property_type": "string",
-                "property_values": [
-                        "xyz.openbmc_project.State.Host.Transition.ForceWarmReboot"
-                ]
-            }
-        }]
-     }]
-  },
-  {
-    "pdrType" : 9,
-    "entries" : [{
-        "type" : 193,
-        "instance" : 0,
-        "base_unit":72,
-        "rate_unit":0,
-        "effecter_resolutioninit":1,
-        "effecter_data_size":4,
-        "range_field_format":3,
-        "dbus" : {
-                "path": "/xyz/openbmc_project/state/host0",
-                "interface": "xyz.openbmc_project.Control.Boot.RebootAttempts",
-                "property_name": "AttemptsLeft",
-                "property_type": "uint32_t"
-        }
-    },
-    {
-      "type": 31,
-      "instance": 0,
-      "base_unit": 21,
-      "rate_unit": 3,
-      "effecter_resolution_init": 1,
-      "effecter_data_size": 4,
-      "range_field_format": 4,
-      "dbus" : {
-              "path":"/xyz/openbmc_project/state/scheduledHostTransition",
-              "interface":"xyz.openbmc_project.State.ScheduledHostTransition",
-              "property_name":"ScheduledTime",
-              "property_type":"uint64_t"
-      }
     }]
-   }]
+  }]
 }
 
