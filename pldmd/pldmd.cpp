@@ -167,6 +167,8 @@ int main(int argc, char** argv)
     }
     std::cout << "pldmd created sockfd " << (uint32_t)sockfd << "\n";
 
+    std::cout << " Start" << std::endl;
+
     auto event = Event::get_default();
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
@@ -182,6 +184,7 @@ int main(int argc, char** argv)
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     auto dbusHandler = std::make_unique<DBusHandler>();
     auto hostEID = pldm::utils::readHostEID();
+    std::cout << " Before the event " << std::endl;
     if (hostEID)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
@@ -209,6 +212,8 @@ int main(int argc, char** argv)
     invoker.registerHandler(
         PLDM_OEM, std::make_unique<oem_ibm::Handler>(oemPlatformHandler.get()));
 #endif
+    std::cout << "Before my function:" << std::endl;
+
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>(
                                            sockfd, hostEID, &dbusImplReq));
@@ -263,8 +268,6 @@ int main(int argc, char** argv)
     std::cout << "pldmd before fetchPDRsOnStart \n";
     hostPDRHandler->fetchPDRsOnStart();
     std::cout << "pldmd after fetchPDRsOnStart \n";
-    hostPDRHandler->setHostState();
-    std::cout << "pldmd after setHostState \n";
 
     std::cout << "pldmd before callback \n";
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
