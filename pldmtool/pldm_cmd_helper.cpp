@@ -194,6 +194,7 @@ void CommandInterface::exec()
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
+    std::cout << "into tool pldmSendRecv \n";
 
     // Insert the PLDM message type and EID at the beginning of the
     // msg.
