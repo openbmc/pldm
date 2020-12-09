@@ -1218,6 +1218,29 @@
     },
     {
       "key": {
+        "uuid": "2324d4a4_9b91d174",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:18:33Z",
+      "side": 1,
+      "message": "I see somehow the abstraction as broken with this cyclic dependency.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 53
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b87314b2_e79b041c",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 22
