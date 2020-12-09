@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0d527d0_ee2b37de",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T03:14:58Z",
+      "side": 1,
+      "message": "I guess ifstream takes care of closing when going out of scope.",
+      "range": {
+        "startLine": 373,
+        "startChar": 8,
+        "endLine": 373,
+        "endChar": 20
+      },
+      "revId": "de7fd1744eb52ebf1a4ba13e6801de846d1dc6bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
