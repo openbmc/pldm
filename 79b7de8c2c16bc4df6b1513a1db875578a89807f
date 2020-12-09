@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "46cd5471_ce8576dc",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 0,
+      "message": "This change can be removed.",
+      "revId": "79b7de8c2c16bc4df6b1513a1db875578a89807f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a170f5fa_6dd3264c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 0,
+      "message": "Remove this change",
+      "revId": "79b7de8c2c16bc4df6b1513a1db875578a89807f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}

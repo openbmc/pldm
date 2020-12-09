@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ffc6c8cc_0217d5f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "oem-ibm",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 9
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc7a0d23_e045d585",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "Please update the commit message to cover the details of the patch.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 14
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "716d14f9_5b1ab3da",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "lowerCamelCase for all constants",
+      "range": {
+        "startLine": 103,
+        "startChar": 26,
+        "endLine": 103,
+        "endChar": 42
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4261986_7e5ce993",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "Use this\n\ncommon/utils.hpp:constexpr auto dbusProperties \u003d \"org.freedesktop.DBus.Properties\";",
+      "range": {
+        "startLine": 108,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 72
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a0879f9_4be230ee",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value); - This has wrapped up lines",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 33
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86cff786_c7c1921d",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "Add this in the documentation of the function, it does more that setting the D-Bus property.",
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "512164fc_8b7cee87",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "In the documentation we can mention the Reset type also, like OnReset",
+      "range": {
+        "startLine": 97,
+        "startChar": 14,
+        "endLine": 97,
+        "endChar": 62
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d0dcbd6_b5fd5896",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "D-Bus",
+      "range": {
+        "startLine": 97,
+        "startChar": 49,
+        "endLine": 97,
+        "endChar": 53
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7dc0062d_e760a9c8",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "Align it to the first line.",
+      "range": {
+        "startLine": 98,
+        "startChar": 7,
+        "endLine": 98,
+        "endChar": 22
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e45a6ed9_b2f562bb",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "PLDM completion codes",
+      "range": {
+        "startLine": 99,
+        "startChar": 17,
+        "endLine": 99,
+        "endChar": 35
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "205fada1_7f21df2f",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "A line-break between each section helps in reading this",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 35
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7dd08d0e_8c6fcd3a",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:45:14Z",
+      "side": 1,
+      "message": "If there is a story needed for this work, let\u0027s create so that it is easy to track.",
+      "range": {
+        "startLine": 79,
+        "startChar": 20,
+        "endLine": 79,
+        "endChar": 77
+      },
+      "revId": "cfd999201ba3e39b23a42b368e70804f18a5931a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
