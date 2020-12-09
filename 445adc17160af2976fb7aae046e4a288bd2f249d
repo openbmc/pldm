@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "159555fd_f33ac9c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:57:41Z",
+      "side": 1,
+      "message": "oem-ibm",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8e501d1b_0279a5a5",
         "filename": "/COMMIT_MSG",
         "patchSetId": 29
@@ -18,6 +41,144 @@
         "startChar": 12,
         "endLine": 9,
         "endChar": 19
+      },
+      "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0d971df_9b2738d3",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:57:41Z",
+      "side": 1,
+      "message": "Used in this patch?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 45
+      },
+      "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50e7d4d3_9597fb2c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:57:41Z",
+      "side": 1,
+      "message": "Add BMC TID, it is already available in the code",
+      "range": {
+        "startLine": 180,
+        "startChar": 41,
+        "endLine": 180,
+        "endChar": 50
+      },
+      "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ef06e35_4ca02527",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:57:41Z",
+      "side": 1,
+      "message": "Why is this wrapper needed?",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 1
+      },
+      "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29e4945e_3f4c7c6e",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:57:41Z",
+      "side": 1,
+      "message": "needed?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 17
+      },
+      "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "365379b2_6552e381",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:57:41Z",
+      "side": 1,
+      "message": "UpperCamelCase, probably name it CodeUpdateState.\n\nThis looks more aligned to be part of inband_code_update class.",
+      "range": {
+        "startLine": 25,
+        "startChar": 5,
+        "endLine": 25,
+        "endChar": 26
+      },
+      "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59aa8d54_0869202e",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:57:41Z",
+      "side": 1,
+      "message": "enum class",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 4
       },
       "revId": "445adc17160af2976fb7aae046e4a288bd2f249d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
