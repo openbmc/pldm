@@ -22,6 +22,30 @@
       "revId": "580177790c71f8326990ebd77907b39ef9f28108",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d359f966_d2f5ac1f",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-12-09T21:44:17Z",
+      "side": 1,
+      "message": "It\u0027s my understanding that pldm doesn\u0027t know if an additional write will be done for the same file, so maybe there\u0027s no need for a different completion code since pldm can\u0027t do anything about it, it still has to return success to the hypervisor, and then a 2nd write to the same file may or may not be requested afterwards.",
+      "parentUuid": "b67d5e1b_58e57fbc",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 28
+      },
+      "revId": "580177790c71f8326990ebd77907b39ef9f28108",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
