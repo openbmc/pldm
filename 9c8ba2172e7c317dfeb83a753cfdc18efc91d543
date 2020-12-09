@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "469b8321_87241229",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:49:58Z",
+      "side": 1,
+      "message": "I don\u0027t see this commit message implemented in this patch.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "9c8ba2172e7c317dfeb83a753cfdc18efc91d543",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37d5599c_8a69eb3e",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T09:49:58Z",
+      "side": 1,
+      "message": "If it is not consumed why add the parameter?",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 31
+      },
+      "revId": "9c8ba2172e7c317dfeb83a753cfdc18efc91d543",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
