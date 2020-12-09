@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "2ce5db0f_8a32768b",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-09T02:27:08Z",
+      "side": 1,
+      "message": "Why oemPlatformHandler added as a parameter for file i/o commands? If it is needed for any particular command, add it as a member of Handler class so that the command implementation can use it.",
+      "range": {
+        "startLine": 541,
+        "startChar": 32,
+        "endLine": 541,
+        "endChar": 73
+      },
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dec468b9_a1a92c95",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.hpp",
         "patchSetId": 23
