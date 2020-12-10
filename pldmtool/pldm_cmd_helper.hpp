@@ -31,15 +31,6 @@ constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 using ordered_json = nlohmann::ordered_json;
 
-/** @brief Print the buffer
- *
- *  @param[in]  buffer  - Buffer to print
- *  @param[in]  pldmVerbose -verbosity flag - true/false
- *
- *  @return - None
- */
-void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose);
-
 /** @brief print the input message if pldmverbose is enabled
  *
  *  @param[in]  pldmVerbose - verbosity flag - true/false

@@ -458,5 +458,19 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
     return PLDM_SUCCESS;
 }
 
+void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose)
+{
+    if (pldmVerbose && !buffer.empty())
+    {
+        std::ostringstream tempStream;
+        for (int byte : buffer)
+        {
+            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
+                       << " ";
+        }
+        std::cout << tempStream.str() << std::endl;
+    }
+}
+
 } // namespace utils
 } // namespace pldm
