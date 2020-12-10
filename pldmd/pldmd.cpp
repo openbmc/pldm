@@ -101,21 +101,6 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
     return response;
 }
 
-void printBuffer(const std::vector<uint8_t>& buffer)
-{
-    std::ostringstream tempStream;
-    tempStream << "Buffer Data: ";
-    if (!buffer.empty())
-    {
-        for (int byte : buffer)
-        {
-            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
-                       << " ";
-        }
-    }
-    std::cout << tempStream.str().c_str() << std::endl;
-}
-
 void optionUsage(void)
 {
     std::cerr << "Usage: pldmd [options]\n";
@@ -183,7 +168,7 @@ int main(int argc, char** argv)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), dbusImplReq);
+            entityTree.get(), dbusImplReq, verbose);
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
@@ -282,7 +267,7 @@ int main(int argc, char** argv)
                 if (verbose)
                 {
                     std::cout << "Received Msg" << std::endl;
-                    printBuffer(requestMsg);
+                    printBuffer(requestMsg, verbose);
                 }
                 if (MCTP_MSG_TYPE_PLDM != requestMsg[1])
                 {
@@ -300,7 +285,7 @@ int main(int argc, char** argv)
                         if (verbose)
                         {
                             std::cout << "Sending Msg" << std::endl;
-                            printBuffer(response);
+                            printBuffer(response, verbose);
                         }
 
                         iov[0].iov_base = &requestMsg[0];

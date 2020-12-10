@@ -25,11 +25,11 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                                sdeventplus::Event& event, pldm_pdr* repo,
                                const std::string& eventsJsonsDir,
                                pldm_entity_association_tree* entityTree,
-                               Requester& requester) :
+                               Requester& requester, bool verbose) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    requester(requester)
+    requester(requester), verbose(verbose)
 {
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
@@ -135,6 +135,11 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                       << std::endl;
             return;
         }
+        if (verbose)
+        {
+            std::cout << "Sending Msg:" << std::endl;
+            printBuffer(requestMsg, verbose);
+        }
 
         uint8_t* responseMsg = nullptr;
         size_t responseMsgSize{};
@@ -162,6 +167,15 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             responsePtr, responseMsgSize - sizeof(pldm_msg_hdr),
             &completionCode, &nextRecordHandle, &nextDataTransferHandle,
             &transferFlag, &respCount, nullptr, 0, &transferCRC);
+
+        std::vector<uint8_t> responsePDRMsg;
+        responsePDRMsg.resize(responseMsgSize);
+        memcpy(responsePDRMsg.data(), responsePtr, responsePDRMsg.size());
+        if (verbose)
+        {
+            std::cout << "Receiving Msg:" << std::endl;
+            printBuffer(responsePDRMsg, verbose);
+        }
         if (rc != PLDM_SUCCESS)
         {
             std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc
