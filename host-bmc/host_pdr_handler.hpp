@@ -85,7 +85,7 @@ class HostPDRHandler
     explicit HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                             sdeventplus::Event& event, pldm_pdr* repo,
                             pldm_entity_association_tree* entityTree,
-                            Requester& requester);
+                            Requester& requester, bool verbose = false);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -154,6 +154,7 @@ class HostPDRHandler
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work.
      */
+
     sdeventplus::Event& event;
     /** @brief pointer to BMC's primary PDR repo, host PDRs are added here */
     pldm_pdr* repo;
@@ -179,6 +180,7 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+    bool verbose;
 };
 
 } // namespace pldm
