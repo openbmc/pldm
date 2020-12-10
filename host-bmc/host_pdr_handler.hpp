@@ -89,7 +89,7 @@ class HostPDRHandler
                             sdeventplus::Event& event, pldm_pdr* repo,
                             const std::string& eventsJsonsDir,
                             pldm_entity_association_tree* entityTree,
-                            Requester& requester);
+                            Requester& requester, bool verbose = false);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -195,6 +195,7 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+    bool verbose;
 };
 
 } // namespace pldm
