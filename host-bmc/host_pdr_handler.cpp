@@ -21,13 +21,28 @@ constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
 const std::vector<Json> emptyJsonList{};
 
+void printBuffer(const std::vector<uint8_t>& buffer)
+{
+    std::ostringstream tempStream;
+    tempStream << "Buffer Host PDR Data: ";
+    if (!buffer.empty())
+    {
+        for (int byte : buffer)
+        {
+            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
+                       << " ";
+        }
+    }
+    std::cout << tempStream.str().c_str() << std::endl;
+}
+
 HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                                sdeventplus::Event& event, pldm_pdr* repo,
                                pldm_entity_association_tree* entityTree,
-                               Requester& requester) :
+                               Requester& requester, bool verbose) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo), entityTree(entityTree),
-    requester(requester)
+    requester(requester), verbose(verbose)
 {
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
@@ -139,6 +154,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         auto requesterRc =
             pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(),
                            requestMsg.size(), &responseMsg, &responseMsgSize);
+
         std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
             responseMsg, std::free};
         requester.markFree(mctp_eid, instanceId);
@@ -147,6 +163,11 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             std::cerr << "Failed to send msg to fetch pdrs, rc = "
                       << requesterRc << std::endl;
             return;
+        }
+        if (verbose)
+        {
+            std::cout << "Requested Msg......" << std::endl;
+            printBuffer(requestMsg);
         }
 
         uint8_t completionCode{};
@@ -160,6 +181,17 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             responsePtr, responseMsgSize - sizeof(pldm_msg_hdr),
             &completionCode, &nextRecordHandle, &nextDataTransferHandle,
             &transferFlag, &respCount, nullptr, 0, &transferCRC);
+
+        std::vector<uint8_t> responsePDRMsg;
+        responsePDRMsg.resize(responseMsgSize);
+        memcpy(responsePDRMsg.data(), responsePtr, responsePDRMsg.size());
+        if (verbose)
+        {
+            std::cout << "Response PDR Msg ......." << std::endl;
+            printBuffer(responsePDRMsg);
+        }
+
+        
         if (rc != PLDM_SUCCESS)
         {
             std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc
@@ -172,6 +204,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 responsePtr, responseMsgSize - sizeof(pldm_msg_hdr),
                 &completionCode, &nextRecordHandle, &nextDataTransferHandle,
                 &transferFlag, &respCount, pdr.data(), respCount, &transferCRC);
+
             if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
             {
                 std::cerr << "Failed to decode_get_pdr_resp: "
@@ -356,6 +389,7 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
                        &responseMsg, &responseMsgSize);
     requester.markFree(mctp_eid, instanceId);
+
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr << "Failed to send msg to report pdrs, rc = " << requesterRc
@@ -400,5 +434,7 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,
         sensorMap.emplace(sensorEntry, std::move(sensorInfo));
     }
 }
+
+
 
 } // namespace pldm
