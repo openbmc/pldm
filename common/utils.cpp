@@ -489,5 +489,19 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
     return PLDM_INVALID_EFFECTER_ID;
 }
 
+void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose)
+{
+    if (pldmVerbose && !buffer.empty())
+    {
+        std::ostringstream tempStream;
+        for (int byte : buffer)
+        {
+            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
+                       << " ";
+        }
+        std::cout << tempStream.str() << std::endl;
+    }
+}
+
 } // namespace utils
 } // namespace pldm
