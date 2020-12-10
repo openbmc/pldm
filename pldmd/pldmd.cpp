@@ -182,8 +182,8 @@ int main(int argc, char** argv)
     if (hostEID)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
-            sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), dbusImplReq);
+            sockfd, hostEID, event, pdrRepo.get(), entityTree.get(),
+            dbusImplReq, verbose);
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
