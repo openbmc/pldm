@@ -671,6 +671,30 @@
     },
     {
       "key": {
+        "uuid": "5a76170e_c1606345",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b622a67_b53c928c",
+      "range": {
+        "startLine": 59,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 6
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ee466de7_f6e3e9c4",
         "filename": "libpldmresponder/platform.hpp",
         "patchSetId": 22
@@ -715,6 +739,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "405e0780_a47b5d49",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c0600f0_21563d9c",
+      "range": {
+        "startLine": 453,
+        "startChar": 11,
+        "endLine": 453,
+        "endChar": 59
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -940,6 +988,30 @@
     },
     {
       "key": {
+        "uuid": "ce6173a5_fef7de81",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da6c3f41_c228de3e",
+      "range": {
+        "startLine": 35,
+        "startChar": 1,
+        "endLine": 36,
+        "endChar": 26
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f1b56844_0c70f910",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
         "patchSetId": 22
@@ -960,6 +1032,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd436b26_1f0f9072",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1b56844_0c70f910",
+      "range": {
+        "startLine": 39,
+        "startChar": 26,
+        "endLine": 39,
+        "endChar": 35
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -986,6 +1082,30 @@
     },
     {
       "key": {
+        "uuid": "85577f54_b0f94859",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da72ff46_ff716793",
+      "range": {
+        "startLine": 41,
+        "startChar": 16,
+        "endLine": 41,
+        "endChar": 24
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ccc8d8c1_8938efd9",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
         "patchSetId": 22
@@ -1006,6 +1126,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48e5b6c6_fe344b25",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "nonRunningVersion might be empty if the system is having only one side",
+      "parentUuid": "ccc8d8c1_8938efd9",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -1032,6 +1176,30 @@
     },
     {
       "key": {
+        "uuid": "e4bd3b94_4faff1ed",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fae70f54_5ba4e4a8",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 72
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "10b848e8_fb54058c",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
         "patchSetId": 22
@@ -1055,6 +1223,30 @@
     },
     {
       "key": {
+        "uuid": "de3d3961_b67fb6bd",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10b848e8_fb54058c",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 58
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c62018a_096c8aca",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
         "patchSetId": 22
@@ -1075,6 +1267,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2110f1bf_6ba26421",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "this is because of the order in pldmd. code update class is created first and then oemPlatformHandler is created which needs a ref of codeupdate. after that code update class can hold a ref of oem platformhandler",
+      "parentUuid": "5c62018a_096c8aca",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 1
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -1148,6 +1364,30 @@
     },
     {
       "key": {
+        "uuid": "9f193c49_ffbb187d",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89a43c8e_c4f4ea3a",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 21
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b8ab260_18bc28aa",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 22
@@ -1168,6 +1408,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b33704a6_d7e02bbc",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b8ab260_18bc28aa",
+      "range": {
+        "startLine": 24,
+        "startChar": 27,
+        "endLine": 24,
+        "endChar": 38
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -1241,6 +1505,30 @@
     },
     {
       "key": {
+        "uuid": "92be01ca_861a9897",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "the oem platform handler is needed here to send the deferred sensor event. i could not avoid this",
+      "parentUuid": "2324d4a4_9b91d174",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 53
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b87314b2_e79b041c",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 22
@@ -1252,6 +1540,30 @@
       "writtenOn": "2020-12-07T06:36:20Z",
       "side": 1,
       "message": "Why do we have these functions as stand-alone? It seems more logically fit to have it in the CodeUpdate class.These 2 functions can be the public apis for the CodeUpdate class.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 40
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95c45a45_0a89de02",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "the code update class has it\u0027s own fetchCurrentBootSide() and fetchNextBootSide() function. these two functions fetchBootSide and setBootSide are platform specific. and will be called when a get sensor reading happens. that is why i kept this two as stand alone. from these two the actual code update functions are called\ncan change if you still feel it should go inside code update class",
+      "parentUuid": "b87314b2_e79b041c",
       "range": {
         "startLine": 109,
         "startChar": 0,
@@ -1287,6 +1599,30 @@
     },
     {
       "key": {
+        "uuid": "45a71448_d15b7be9",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "no. the oemPlatformHandler is created before the pldm platform handler. so i had to set this later",
+      "parentUuid": "54ea856e_083b6819",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 1
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "23c5b9c4_c504010a",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 22
@@ -1307,6 +1643,30 @@
       "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7206a5a1_94d27d14",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23c5b9c4_c504010a",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 6
+      },
+      "revId": "e72203e634f93691cc5fa676ad2210da24ce8ccd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
