@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f043249d_e81ab2dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2baf9d4_711b6fc9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f2342580_2cc151a2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 23
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "8c0b0432_8b913abf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2342580_2cc151a2",
+      "range": {
+        "startLine": 13,
+        "startChar": 28,
+        "endLine": 13,
+        "endChar": 34
+      },
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2ce5db0f_8a32768b",
         "filename": "oem/ibm/libpldmresponder/file_io.cpp",
         "patchSetId": 23
@@ -59,6 +107,30 @@
       "writtenOn": "2020-12-09T02:27:08Z",
       "side": 1,
       "message": "Why oemPlatformHandler added as a parameter for file i/o commands? If it is needed for any particular command, add it as a member of Handler class so that the command implementation can use it.",
+      "range": {
+        "startLine": 541,
+        "startChar": 32,
+        "endLine": 541,
+        "endChar": 73
+      },
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb344892_1321c085",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:34Z",
+      "side": 1,
+      "message": "the handler is needed in all the read write requests for the lid type. there is probably no other suitable way of making the handler available to the lid class. the read write commands are initiated from file_io.cpp irrespective of file types",
+      "parentUuid": "2ce5db0f_8a32768b",
       "range": {
         "startLine": 541,
         "startChar": 32,
@@ -88,6 +160,24 @@
     },
     {
       "key": {
+        "uuid": "22405386_5b212e0a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dec468b9_a1a92c95",
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9b83c0eb_38429d9a",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 23
@@ -99,6 +189,24 @@
       "writtenOn": "2020-11-27T03:22:19Z",
       "side": 1,
       "message": "add what is returned and not just return type",
+      "revId": "896659080e4fe289337a578ede649b14354651cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05fc3c29_cab98289",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2020-12-10T11:27:34Z",
+      "side": 1,
+      "message": "that is already there in the description",
+      "parentUuid": "9b83c0eb_38429d9a",
       "revId": "896659080e4fe289337a578ede649b14354651cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
