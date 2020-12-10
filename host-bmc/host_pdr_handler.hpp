@@ -85,7 +85,7 @@ class HostPDRHandler
     explicit HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                             sdeventplus::Event& event, pldm_pdr* repo,
                             pldm_entity_association_tree* entityTree,
-                            Requester& requester);
+                            Requester& requester, bool verbose = false);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -179,6 +179,7 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+    bool verbose;
 };
 
 } // namespace pldm

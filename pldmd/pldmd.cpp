@@ -183,7 +183,7 @@ int main(int argc, char** argv)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), entityTree.get(),
-            dbusImplReq);
+            dbusImplReq, verbose);
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
