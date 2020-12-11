@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c338aec7_5bddc040",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-11T07:09:32Z",
+      "side": 1,
+      "message": "I prefer to judge whether it is empty first\n\nif (buffer.empty())\n{\n    return;\n}\n\nstd::ostringstream tempStream;\ntempStream \u003c\u003c \"Buffer Data: \";\nfor (int byte : buffer)\n{\n    tempStream \u003c\u003c std::setfill(\u00270\u0027) \u003c\u003c std::setw(2) \u003c\u003c std::hex \u003c\u003c byte \u003c\u003c \" \";\n}",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 5
+      },
+      "revId": "d3f891c5e0f653508b16cdc742cf7b4cfc3a0800",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f47088b_34f27e14",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-11T07:09:32Z",
+      "side": 1,
+      "message": "remove it",
+      "revId": "d3f891c5e0f653508b16cdc742cf7b4cfc3a0800",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73cfbbdd_51d892ca",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-11T07:09:32Z",
+      "side": 1,
+      "message": "remove it",
+      "revId": "d3f891c5e0f653508b16cdc742cf7b4cfc3a0800",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2d197f8_29089f02",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-11T07:09:32Z",
+      "side": 1,
+      "message": "remove it",
+      "revId": "d3f891c5e0f653508b16cdc742cf7b4cfc3a0800",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2606326_5638ddd7",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-11T07:09:32Z",
+      "side": 1,
+      "message": "remove it.",
+      "revId": "d3f891c5e0f653508b16cdc742cf7b4cfc3a0800",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
