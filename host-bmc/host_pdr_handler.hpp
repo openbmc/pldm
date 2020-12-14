@@ -5,6 +5,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 
@@ -17,6 +18,7 @@
 #include <vector>
 
 using namespace pldm::dbus_api;
+using namespace pldm::responder::events;
 
 namespace pldm
 {
@@ -79,11 +81,13 @@ class HostPDRHandler
      *  @param[in] mctp_eid - MCTP EID of host firmware
      *  @param[in] event - reference of main event loop of pldmd
      *  @param[in] repo - pointer to BMC's primary PDR repo
+     *  @param[in] eventsJsonDir - directory path which has the config JSONs
      *  @param[in] tree - pointer to BMC's entity association tree
      *  @param[in] requester - reference to Requester object
      */
     explicit HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                             sdeventplus::Event& event, pldm_pdr* repo,
+                            const std::string& eventsJsonsDir,
                             pldm_entity_association_tree* entityTree,
                             Requester& requester);
 
@@ -114,6 +118,16 @@ class HostPDRHandler
     {
         return sensorMap.at(entry);
     }
+
+    /** @brief Handles state sensor event
+     *
+     *  @param[in] entry - state sensor entry
+     *  @param[in] state - event state
+     *
+     *  @return PLDM completion code
+     */
+    int handleStateSensorEvent(const StateSensorEntry& entry,
+                               pdr::EventState state);
 
     /** @brief Parse state sensor PDRs and populate the sensorMap lookup data
      *         structure
@@ -157,6 +171,8 @@ class HostPDRHandler
     sdeventplus::Event& event;
     /** @brief pointer to BMC's primary PDR repo, host PDRs are added here */
     pldm_pdr* repo;
+
+    StateSensorHandler stateSensorHandler;
     /** @brief Pointer to BMC's entity association tree */
     pldm_entity_association_tree* entityTree;
     /** @brief reference to Requester object, primarily used to access API to
