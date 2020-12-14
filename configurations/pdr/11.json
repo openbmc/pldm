@@ -18,8 +18,8 @@
                 "property_name": "BootProgress",
                 "property_type": "string",
                 "property_values": [
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.Unspecified",
                          "xyz.openbmc_project.State.Boot.Progress.ProgressStages.SystemInitComplete",
+                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.Unspecified",
                          "xyz.openbmc_project.State.Boot.Progress.ProgressStages.MemoryInit",
                          "xyz.openbmc_project.State.Boot.Progress.ProgressStages.SecondaryProcInit",
                          "xyz.openbmc_project.State.Boot.Progress.ProgressStages.PCIInit",
@@ -28,7 +28,7 @@
                          "xyz.openbmc_project.State.Boot.Progress.ProgressStages.PrimaryProcInit"
                 ]
              }
-        }]
+	   }]
     },
     {
        "type" : 45,
