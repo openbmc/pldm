@@ -5,6 +5,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 
@@ -17,6 +18,7 @@
 #include <vector>
 
 using namespace pldm::dbus_api;
+using namespace pldm::responder::events;
 
 namespace pldm
 {
@@ -84,6 +86,7 @@ class HostPDRHandler
      */
     explicit HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                             sdeventplus::Event& event, pldm_pdr* repo,
+                            const std::string& eventsJsonsDir,
                             pldm_entity_association_tree* entityTree,
                             Requester& requester);
 
@@ -112,8 +115,12 @@ class HostPDRHandler
      */
     const pdr::SensorInfo& lookupSensorInfo(const SensorEntry& entry) const
     {
+        std::cout << " Lookupsensorinfo" << std::endl;
         return sensorMap.at(entry);
     }
+
+    int fetchStateSensorPDR(const StateSensorEntry& entry,
+                            pdr::EventState state);
 
     /** @brief Parse state sensor PDRs and populate the sensorMap lookup data
      *         structure
@@ -157,6 +164,9 @@ class HostPDRHandler
     sdeventplus::Event& event;
     /** @brief pointer to BMC's primary PDR repo, host PDRs are added here */
     pldm_pdr* repo;
+
+    StateSensorHandler stateSensorHandler;
+    //    std::string eventsJsonsDir;
     /** @brief Pointer to BMC's entity association tree */
     pldm_entity_association_tree* entityTree;
     /** @brief reference to Requester object, primarily used to access API to

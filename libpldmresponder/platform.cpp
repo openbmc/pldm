@@ -353,6 +353,7 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         // If there are no HOST PDR's, there is no further action
         if (hostPDRHandler == NULL)
         {
+            std::cout << " hostpdrHandler == NULL " << std::endl;
             return PLDM_SUCCESS;
         }
 
@@ -364,6 +365,7 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
 
         try
         {
+            std::cout << " inside try " << std::endl;
             std::tie(entityInfo, compositeSensorStates) =
                 hostPDRHandler->lookupSensorInfo(sensorEntry);
         }
@@ -374,9 +376,11 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
             // implement TL PDR.
             try
             {
+                std::cout << " Inside Another try " << std::endl;
                 sensorEntry.terminusID = PLDM_TID_RESERVED;
                 std::tie(entityInfo, compositeSensorStates) =
                     hostPDRHandler->lookupSensorInfo(sensorEntry);
+                std::cout << " Done " << std::endl;
             }
             // If there is no mapping for events return PLDM_SUCCESS
             catch (const std::out_of_range& e)
@@ -390,6 +394,7 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
             return PLDM_ERROR_INVALID_DATA;
         }
 
+        std::cout << " entry" << std::endl;
         const auto& possibleStates = compositeSensorStates[sensorOffset];
         if (possibleStates.find(eventState) == possibleStates.end())
         {
@@ -397,9 +402,13 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         }
 
         const auto& [containerId, entityType, entityInstance] = entityInfo;
+        std::cout << " call the function" << std::endl;
         events::StateSensorEntry stateSensorEntry{containerId, entityType,
                                                   entityInstance, sensorOffset};
-        return stateSensorHandler.eventAction(stateSensorEntry, eventState);
+        std::cout << "Before fetching" << std::endl;
+        return hostPDRHandler->fetchStateSensorPDR(stateSensorEntry,
+                                                   eventState);
+        std::cout << " After fetching " << std::endl;
     }
     else
     {

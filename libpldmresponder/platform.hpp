@@ -51,14 +51,15 @@ using AssociatedEntityMap = std::map<DbusPath, pldm_entity>;
 class Handler : public CmdHandler
 {
   public:
-    Handler(const pldm::utils::DBusHandler* dBusIntf,
-            const std::string& pdrJsonsDir, const std::string& eventsJsonsDir,
-            pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
-            DbusToPLDMEvent* dbusToPLDMEventHandler, fru::Handler* fruHandler,
-            bool buildPDRLazily = false,
-            const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
+    Handler(
+        const pldm::utils::DBusHandler* dBusIntf,
+        const std::string& pdrJsonsDir, /* const std::string& eventsJsonsDir,*/
+        pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
+        DbusToPLDMEvent* dbusToPLDMEventHandler, fru::Handler* fruHandler,
+        bool buildPDRLazily = false,
+        const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
-        hostPDRHandler(hostPDRHandler), stateSensorHandler(eventsJsonsDir),
+        hostPDRHandler(hostPDRHandler), /*stateSensorHandler(eventsJsonsDir),*/
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
     {
@@ -438,7 +439,7 @@ class Handler : public CmdHandler
     DbusObjMaps effecterDbusObjMaps{};
     DbusObjMaps sensorDbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
-    events::StateSensorHandler stateSensorHandler;
+    // events::StateSensorHandler stateSensorHandler;
     DbusToPLDMEvent* dbusToPLDMEventHandler;
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;

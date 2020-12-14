@@ -181,9 +181,11 @@ int main(int argc, char** argv)
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
+        std::cout << " HostPDRHAndler" << std::endl;
         hostPDRHandler = std::make_unique<HostPDRHandler>(
-            sockfd, hostEID, event, pdrRepo.get(), entityTree.get(),
-            dbusImplReq);
+            sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
+            entityTree.get(), dbusImplReq);
+        std::cout << " After HostPDRHandler " << std::endl;
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
@@ -201,12 +203,11 @@ int main(int argc, char** argv)
     // FRU table is built lazily when a FRU command or Get PDR command is
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
-    invoker.registerHandler(PLDM_PLATFORM, std::make_unique<platform::Handler>(
-                                               dbusHandler.get(), PDR_JSONS_DIR,
-                                               EVENTS_JSONS_DIR, pdrRepo.get(),
-                                               hostPDRHandler.get(),
-                                               dbusToPLDMEventHandler.get(),
-                                               fruHandler.get(), true));
+    invoker.registerHandler(
+        PLDM_PLATFORM, std::make_unique<platform::Handler>(
+                           dbusHandler.get(), PDR_JSONS_DIR, pdrRepo.get(),
+                           hostPDRHandler.get(), dbusToPLDMEventHandler.get(),
+                           fruHandler.get(), true));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
 
 #ifdef OEM_IBM

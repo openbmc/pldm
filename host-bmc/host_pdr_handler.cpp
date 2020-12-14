@@ -23,12 +23,16 @@ const std::vector<Json> emptyJsonList{};
 
 HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                                sdeventplus::Event& event, pldm_pdr* repo,
+                               const std::string& eventsJsonsDir,
                                pldm_entity_association_tree* entityTree,
                                Requester& requester) :
     mctp_fd(mctp_fd),
-    mctp_eid(mctp_eid), event(event), repo(repo), entityTree(entityTree),
+    mctp_eid(mctp_eid), event(event), repo(repo),
+    stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     requester(requester)
 {
+    std::cout << " Inside the constructor " << std::endl;
+
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -234,6 +238,20 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
     }
 }
 
+int HostPDRHandler::fetchStateSensorPDR(const StateSensorEntry& entry,
+                                        pdr::EventState state)
+{
+    std::cout << "Entered the function " << std::endl;
+
+    auto rc = stateSensorHandler.eventAction(entry, state);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to fetch and update Dbus property, rc = " << rc
+                  << std::endl;
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
+}
 bool HostPDRHandler::getParent(EntityType type, pldm_entity& parent)
 {
     auto found = parents.find(type);
