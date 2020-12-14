@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b1e81b8_157881af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-12-14T07:31:06Z",
+      "side": 1,
+      "message": "Pls make it clear that this is in the BMC as a PLDM responder flow.",
+      "revId": "dee045d9081bd866dcc05fadbc0440a03e7e362d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fb10f75e_9a01288a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-12-14T07:31:06Z",
+      "side": 1,
+      "message": "Add A tested section",
+      "revId": "dee045d9081bd866dcc05fadbc0440a03e7e362d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ed379b6d_4f8b7b1c",
+        "filename": "configurations/events/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-12-14T07:31:06Z",
+      "side": 1,
+      "message": "We can name this file better now (\u003cPDRType\u003e.json)",
+      "revId": "dee045d9081bd866dcc05fadbc0440a03e7e362d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
