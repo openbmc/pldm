@@ -122,7 +122,7 @@ void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
 
 uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
 {
-    uint64_t value;
+    uint64_t value = -1;
     if (dBusMap->propertyType == "uint8_t")
     {
         value = std::get<uint8_t>(propertyValue);
