@@ -59,7 +59,7 @@ int setupUnixSocket(const std::string& socketInterface)
     FD_ZERO(&rfd);
     FD_SET(sock, &rfd);
     int nfd = sock + 1;
-    int fd;
+    int fd = -1;
 
     int retval = select(nfd, &rfd, NULL, NULL, &tv);
     if (retval < 0)
