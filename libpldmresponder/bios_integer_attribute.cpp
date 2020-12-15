@@ -122,7 +122,7 @@ void BIOSIntegerAttribute::constructEntry(const BIOSStringTable& stringTable,
 
 uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
 {
-    uint64_t value;
+    uint64_t value = 0;
     if (dBusMap->propertyType == "uint8_t")
     {
         value = std::get<uint8_t>(propertyValue);
@@ -154,6 +154,12 @@ uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
     else if (dBusMap->propertyType == "double")
     {
         value = std::get<double>(propertyValue);
+    }
+    else
+    {
+        std::cerr << "Unsupported property type for getAttrValue: "
+                  << dBusMap->propertyType << std::endl;
+        throw std::invalid_argument("dbus type error");
     }
     return value;
 }
