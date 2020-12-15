@@ -16,6 +16,24 @@
       "revId": "5dad5f4ca475d5b8848b2925a51353d1619739a2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "06adce63_47887c81",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2020-12-15T06:00:13Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "ca3614ae_550592ee",
+      "revId": "5dad5f4ca475d5b8848b2925a51353d1619739a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
