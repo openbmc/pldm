@@ -45,6 +45,30 @@
       "revId": "9c8ba2172e7c317dfeb83a753cfdc18efc91d543",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3870ba25_2f01e57e",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2020-12-16T04:45:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37d5599c_8a69eb3e",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 31
+      },
+      "revId": "9c8ba2172e7c317dfeb83a753cfdc18efc91d543",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
