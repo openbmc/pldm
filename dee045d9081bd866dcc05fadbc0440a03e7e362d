@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "ea709f88_986bc760",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2020-12-16T11:10:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb10f75e_9a01288a",
+      "revId": "dee045d9081bd866dcc05fadbc0440a03e7e362d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ed379b6d_4f8b7b1c",
         "filename": "configurations/events/4.json",
         "patchSetId": 1
