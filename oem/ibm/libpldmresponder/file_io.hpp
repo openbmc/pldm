@@ -7,6 +7,7 @@
 #include "oem/ibm/libpldm/host.h"
 
 #include "common/utils.hpp"
+#include "oem/ibm/requester/dbus_to_file_handler.hpp"
 #include "pldmd/handler.hpp"
 
 #include <fcntl.h>
@@ -214,6 +215,26 @@ class Handler : public CmdHandler
                              return this->newFileAvailable(request,
                                                            payloadLength);
                          });
+
+        resDumpMatcher = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            "interface='org.freedesktop.DBus.ObjectManager',type='signal',"
+            "member='InterfacesAdded',path='/xyz/openbmc_project/dump/"
+            "resource'",
+            [this](sdbusplus::message::message& msg) {
+                DBusInterfaceAdded interfaces;
+                sdbusplus::message::object_path path;
+                msg.read(path, interfaces);
+                std::cout << "resDumpMatcher fetched the res dump params path "
+                          << path.str.c_str() << "\n";
+                auto resDumpHandler = std::make_unique<
+                    pldm::requester::oem_ibm::DbusToFileHandler>();
+                auto rc = resDumpHandler->processNewResourceDump();
+                if (rc != PLDM_SUCCESS)
+                {
+                    std::cerr << "processNewResourceDump failed \n";
+                }
+            });
     }
 
     /** @brief Handler for readFileIntoMemory command
@@ -312,6 +333,15 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response newFileAvailable(const pldm_msg* request, size_t payloadLength);
+
+  private:
+    using DBusInterfaceAdded = std::vector<std::pair<
+        std::string,
+        std::vector<std::pair<std::string, std::variant<std::string>>>>>;
+    const pldm::utils::DBusHandler* dBusIntf; //!< D-Bus handler
+    std::unique_ptr<sdbusplus::bus::match::match>
+        resDumpMatcher; //!< pointer to capture the interface added signal for
+                        //!< new resource dump
 };
 
 } // namespace oem_ibm

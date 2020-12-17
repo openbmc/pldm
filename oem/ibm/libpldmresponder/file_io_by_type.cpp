@@ -143,8 +143,10 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
             break;
         }
         case PLDM_FILE_TYPE_DUMP:
+        case PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS:
+        case PLDM_FILE_TYPE_RESOURCE_DUMP:
         {
-            return std::make_unique<DumpHandler>(fileHandle);
+            return std::make_unique<DumpHandler>(fileHandle, fileType);
             break;
         }
         case PLDM_FILE_TYPE_CERT_SIGNING_REQUEST:
