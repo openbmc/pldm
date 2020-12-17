@@ -17,22 +17,17 @@ class DumpHandler : public FileHandler
   public:
     /** @brief DumpHandler constructor
      */
-    DumpHandler(uint32_t fileHandle) : FileHandler(fileHandle)
+    DumpHandler(uint32_t fileHandle, uint16_t fileType) :
+        FileHandler(fileHandle), dumpType(fileType)
     {}
 
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address);
 
-    virtual int readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
-                               uint64_t /*address*/)
-    {
-        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
-    }
-    virtual int read(uint32_t /*offset*/, uint32_t& /*length*/,
-                     Response& /*response*/)
-    {
-        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
-    }
+    virtual int readIntoMemory(uint32_t offset, uint32_t& length,
+                               uint64_t address);
+
+    virtual int read(uint32_t offset, uint32_t& length, Response& response);
 
     virtual int write(const char* buffer, uint32_t offset, uint32_t& length);
 
@@ -40,13 +35,17 @@ class DumpHandler : public FileHandler
 
     virtual int fileAck(uint8_t /*fileStatus*/);
 
+    std::string findDumpObjPath(uint32_t fileHandle);
+    std::string getOffloadUri(uint32_t fileHandle);
+
     /** @brief DumpHandler destructor
      */
     ~DumpHandler()
     {}
 
   private:
-    static int fd; //!< fd to manage the dump offload to bmc
+    static int fd;    //!< fd to manage the dump offload to bmc
+    uint8_t dumpType; //!< type of the dump
 };
 
 } // namespace responder
