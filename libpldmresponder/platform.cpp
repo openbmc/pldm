@@ -156,6 +156,12 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
         }
 
         pdrCreated = true;
+
+        if (dbusToPLDMEventHandler)
+        {
+            dbusToPLDMEventHandler->listenSensorEvent(pdrRepo,
+                                                      sensorDbusObjMaps);
+        }
     }
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES, 0);
