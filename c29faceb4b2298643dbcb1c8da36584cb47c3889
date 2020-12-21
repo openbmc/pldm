@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc72e05f_7e9f2fd3",
+        "filename": "MAINTAINERS",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2020-12-21T11:57:04Z",
+      "side": 1,
+      "message": "Sampa - do you intend to review and maintain all of the code or specific to OEM-IBM, libpldmresponder, etc? I\u0027m not suggesting either way, just want to get your thoughts.",
+      "revId": "c29faceb4b2298643dbcb1c8da36584cb47c3889",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
