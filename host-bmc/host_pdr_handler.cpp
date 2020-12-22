@@ -238,6 +238,15 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
     } while (recordHandle);
 
+    const fs::path path{"/xyz/openbmc_project/inventory/system"};
+    std::vector<pldm_entity> parentsEntity =
+        getParentEntites(entityAssociations);
+    for (auto& entity : parentsEntity)
+    {
+        addObjectPathEntityAssociations(entityAssociations, entity, path,
+                                        objPathMap);
+    }
+
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
     if (merged)
@@ -296,12 +305,20 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                 auto pNode = pldm_entity_association_tree_add(
                     entityTree, &entities[0], node,
                     entityPdr->association_type);
+                Entities entityAssoc;
+                entityAssoc.push_back(entities[0]);
                 for (size_t i = 1; i < numEntities; ++i)
                 {
                     pldm_entity_association_tree_add(
                         entityTree, &entities[i], pNode,
                         entityPdr->association_type);
+                    entityAssoc.push_back(entities[i]);
                     merged = true;
+                }
+
+                if (merged)
+                {
+                    entityAssociations.push_back(entityAssoc);
                 }
             }
         }
