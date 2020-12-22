@@ -6,6 +6,7 @@
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
+#include "utils.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/platform.h>
@@ -14,6 +15,7 @@
 #include <sdeventplus/source/event.hpp>
 
 #include <deque>
+#include <filesystem>
 #include <map>
 #include <memory>
 #include <vector>
@@ -267,6 +269,15 @@ class HostPDRHandler
 
     /** @brief request message instance id */
     uint8_t insId;
+
+    /** @brief maps an object path to pldm_entity from the BMC's entity
+     *         association tree
+     */
+    ObjectPathMaps objPathMap;
+
+    /** @brief maps an entity name to map, maps to entity name to pldm_entity
+     */
+    EntityAssociations entityAssociations;
 };
 
 } // namespace pldm
