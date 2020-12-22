@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90eaf1bb_ea206239",
+        "filename": "libpldmresponder/bios_attribute.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-22T06:35:33Z",
+      "side": 1,
+      "message": "indentation",
+      "range": {
+        "startLine": 60,
+        "startChar": 6,
+        "endLine": 60,
+        "endChar": 7
+      },
+      "revId": "bbf6b55c76ead09432ddce4cd3efaaeeca75aeb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c3a779e_a8975e14",
+        "filename": "libpldmresponder/bios_attribute.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-22T06:35:33Z",
+      "side": 1,
+      "message": "I think we can add a default value.\nstd::optional\u003cstd::variant\u003cint64_t, std::string\u003e\u003e optAttributeValue \u003d std::nullopt?",
+      "range": {
+        "startLine": 66,
+        "startChar": 27,
+        "endLine": 66,
+        "endChar": 44
+      },
+      "revId": "bbf6b55c76ead09432ddce4cd3efaaeeca75aeb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23bb1fdd_93676d32",
+        "filename": "test/mocked_bios.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2020-12-22T06:35:33Z",
+      "side": 1,
+      "message": "we can recover this if we define a default value `std::nullopt`",
+      "range": {
+        "startLine": 54,
+        "startChar": 29,
+        "endLine": 54,
+        "endChar": 41
+      },
+      "revId": "bbf6b55c76ead09432ddce4cd3efaaeeca75aeb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
