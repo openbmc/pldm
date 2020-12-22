@@ -243,6 +243,54 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
     } while (recordHandle);
 
+    fs::path path{"/xyz/openbmc_project/inventory"};
+    std::vector<pldm_entity> parentsEntity =
+        getParentEntites(entityAssociations);
+    for (auto& entity : parentsEntity)
+    {
+        std::vector<std::string> paths{};
+        auto node = pldm_entity_association_tree_find(entityTree, &entity);
+        if (!node)
+        {
+            continue;
+        }
+
+        while (node)
+        {
+            auto pNode = pldm_entity_get_parent(node);
+            if (!pNode)
+            {
+                break;
+            }
+
+            pldm_entity parent = pldm_entity_extract(pNode);
+            try
+            {
+                paths.push_back(
+                    entityMaps.at(parent.entity_type) +
+                    std::to_string(parent.entity_instance_num > 0
+                                       ? parent.entity_instance_num - 1
+                                       : 0));
+                node = pldm_entity_association_tree_find(entityTree, &parent);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "No found entity type, type = "
+                          << parent.entity_type << '\n';
+                break;
+            }
+        }
+
+        size_t i = paths.size();
+        while (i--)
+        {
+            path = path / fs::path{paths[i]};
+        }
+
+        addObjectPathEntityAssociations(entityAssociations, entity, path,
+                                        objPathMap);
+    }
+
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
     if (merged)
@@ -287,6 +335,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             return;
         }
 
+        Entities entityAssoc;
+        entityAssoc.push_back(pldm_entity_extract(pNode));
         for (size_t i = 1; i < numEntities; ++i)
         {
             auto cNode =
@@ -298,6 +348,12 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                     entityPdr->association_type);
                 merged = true;
             }
+            entityAssoc.push_back(pldm_entity_extract(cNode));
+        }
+
+        if (merged)
+        {
+            entityAssociations.push_back(entityAssoc);
         }
     }
     free(entities);
