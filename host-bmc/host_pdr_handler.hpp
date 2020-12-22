@@ -8,26 +8,34 @@
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
+#include "utils.hpp"
 
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
 #include <deque>
+#include <filesystem>
 #include <map>
 #include <memory>
 #include <vector>
 
 using namespace pldm::dbus_api;
 using namespace pldm::responder::events;
+using namespace pldm::hostbmc::utils;
+
+namespace fs = std::filesystem;
 
 namespace pldm
 {
 
-using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
 using PDRRecordHandles = std::deque<ChangeEntry>;
+
+const std::map<EntityType, EntityName> entityMap = {
+    {45, "chassis"}, {60, "io_board"}, {64, "motherboard"},
+    {66, "dimm"},    {67, "cpu"},      {120, "powersupply"}};
 
 /** @struct SensorEntry
  *
@@ -196,6 +204,19 @@ class HostPDRHandler
      */
     HostStateSensorMap sensorMap;
     bool verbose;
+
+    /** @brief maps an object path to pldm_entity from the BMC's entity
+     *         association tree
+     */
+    ObjectPathMaps objPathMap;
+
+    /** @brief maps an entity name to map, maps to entity name to pldm_entity
+     */
+    EntityAssociationMaps entityAssociationMap;
+
+    /** @brief Object path and entity association and is only loaded once
+     */
+    bool objPathEntityAssociation;
 };
 
 } // namespace pldm
