@@ -14,6 +14,7 @@
 #include <sdeventplus/source/event.hpp>
 
 #include <deque>
+#include <filesystem>
 #include <map>
 #include <memory>
 #include <vector>
@@ -267,6 +268,15 @@ class HostPDRHandler
 
     /** @brief request message instance id */
     uint8_t insId;
+
+    /** @brief maps an object path to pldm_entity from the BMC's entity
+     *         association tree
+     */
+    utils::ObjectPathMaps objPathMap;
+
+    /** @brief maps an entity name to map, maps to entity name to pldm_entity
+     */
+    utils::EntityAssociations entityAssociations;
 };
 
 } // namespace pldm
