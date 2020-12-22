@@ -224,7 +224,15 @@ std::string DBusHandler::getService(const char* path,
 
     auto mapper = bus.new_method_call(mapperBusName, mapperPath,
                                       mapperInterface, "GetObject");
-    mapper.append(path, DbusInterfaceList({interface}));
+
+    if (interface)
+    {
+        mapper.append(path, DbusInterfaceList({interface}));
+    }
+    else
+    {
+        mapper.append(path, DbusInterfaceList({}));
+    }
 
     auto mapperResponseMsg = bus.call(
         mapper,
