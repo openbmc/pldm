@@ -228,17 +228,36 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                                         &entities);
     for (size_t i = 0; i < numEntities; ++i)
     {
-        pldm_entity parent{};
-        if (getParent(entities[i].entity_type, parent))
+        pldm_entity_node* pNode = nullptr;
+        if (!mergedHostParents)
         {
-            auto node = pldm_entity_association_tree_find(entityTree, &parent);
-            if (node)
-            {
-                pldm_entity_association_tree_add(entityTree, &entities[i],
-                                                 0xFFFF, node,
-                                                 entityPdr->association_type);
-                merged = true;
-            }
+            pNode = pldm_entity_association_tree_find(entityTree, &entities[0],
+                                                      false);
+        }
+        else
+        {
+            pNode = pldm_entity_association_tree_find(entityTree, &entities[0],
+                                                      true);
+        }
+        if (!pNode)
+        {
+            return;
+        }
+
+        Entities entityAssoc;
+        entityAssoc.push_back(pNode);
+        for (size_t i = 1; i < numEntities; ++i)
+        {
+            auto node = pldm_entity_association_tree_add(
+                entityTree, &entities[i], entities[i].entity_instance_num,
+                pNode, entityPdr->association_type, true);
+            merged = true;
+            entityAssoc.push_back(node);
+        }
+        mergedHostParents = true;
+        if (merged)
+        {
+            entityAssociations.push_back(entityAssoc);
         }
     }
 
@@ -542,6 +561,9 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
+        pldm::hostbmc::utils::updateEntityAssociation(entityAssociations,
+                                                      entityTree, objPathMap);
+
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);
         if (isHostUp())
@@ -549,6 +571,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
             this->setHostSensorState(stateSensorPDRs);
         }
         stateSensorPDRs.clear();
+        entityAssociations.clear();
+
         if (merged)
         {
             merged = false;
