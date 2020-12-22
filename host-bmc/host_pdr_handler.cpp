@@ -16,7 +16,6 @@ namespace pldm
 using namespace pldm::utils;
 using namespace sdbusplus::bus::match::rules;
 using Json = nlohmann::json;
-namespace fs = std::filesystem;
 constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
 const std::vector<Json> emptyJsonList{};
@@ -238,6 +237,15 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
     } while (recordHandle);
 
+    const fs::path path{"/xyz/openbmc_project/system"};
+    std::vector<pldm_entity> parentsEntity =
+        getParentEntites(entityAssociations);
+    for (auto& entity : parentsEntity)
+    {
+        addObjectPathEntityAssociations(entityAssociations, entity, path,
+                                        objPathMap);
+    }
+
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
     if (merged)
@@ -285,6 +293,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
+
+    Entities entityAssoc;
     for (size_t i = 0; i < numEntities; ++i)
     {
         pldm_entity parent{};
@@ -298,7 +308,12 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                 merged = true;
             }
         }
+
+        entityAssoc.push_back(entities[i]);
     }
+
+    entityAssociations.push_back(entityAssoc);
+
     free(entities);
 
     if (merged)
