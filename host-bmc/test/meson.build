@@ -5,12 +5,18 @@ host_bmc_test_src = declare_dependency(
             '../../pldmd/instance_id.cpp'],
             include_directories: '../../requester')
 
+test_sources = [
+  '../utils.cpp',
+]
+
 tests = [
   'dbus_to_host_effecter_test',
+  'utils_test',
 ]
 
 foreach t : tests
   test(t, executable(t.underscorify(), t + '.cpp',
+                     test_sources,
                      implicit_include_directories: false,
                      link_args: dynamic_linker,
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
