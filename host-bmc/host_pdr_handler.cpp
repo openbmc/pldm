@@ -32,6 +32,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), requester(requester), verbose(verbose)
 {
+    generateDbusPath = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -243,6 +244,11 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
     } while (recordHandle);
 
+    if (!generateDbusPath)
+    {
+        updateEntityAssociation(entityAssociations, entityTree, objPathMap);
+        generateDbusPath = true;
+    }
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
     if (merged)
@@ -287,6 +293,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             return;
         }
 
+        Entities entityAssoc;
+        entityAssoc.push_back(pldm_entity_extract(pNode));
         for (size_t i = 1; i < numEntities; ++i)
         {
             auto cNode =
@@ -298,6 +306,12 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                     entityPdr->association_type);
                 merged = true;
             }
+            entityAssoc.push_back(pldm_entity_extract(cNode));
+        }
+
+        if (merged)
+        {
+            entityAssociations.push_back(entityAssoc);
         }
     }
     free(entities);
