@@ -24,6 +24,7 @@ sources = [
   '../host-bmc/host_pdr_handler.cpp',
   '../host-bmc/dbus_to_event_handler.cpp',
   '../host-bmc/dbus_to_host_effecters.cpp',
+  '../host-bmc/utils.cpp',
   'event_parser.cpp'
 ]
 
@@ -53,7 +54,3 @@ libpldmresponder = library(
 
 libpldmresponder = declare_dependency(
   link_with: libpldmresponder)
-
-if get_option('tests').enabled()
-  subdir('test')
-endif
