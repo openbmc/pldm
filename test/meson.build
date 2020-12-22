@@ -57,6 +57,7 @@ tests = [
   'pldm_utils_test',
   'libpldmresponder_fru_test',
   'libpldmresponder_dbus_to_host_effecter_test',
+  '../host-bmc/test/utils_test',
 ]
 
 if get_option('oem-ibm').enabled()
