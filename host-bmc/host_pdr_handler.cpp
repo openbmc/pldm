@@ -243,6 +243,9 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
     } while (recordHandle);
 
+    updateEntityAssociation(entityAssociations, entityTree, objPathMap);
+    entityAssociations.clear();
+
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
     if (merged)
@@ -287,6 +290,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             return;
         }
 
+        Entities entityAssoc;
+        entityAssoc.push_back(pldm_entity_extract(pNode));
         for (size_t i = 1; i < numEntities; ++i)
         {
             auto cNode =
@@ -305,6 +310,12 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                     merged = true;
                 }
             }
+            entityAssoc.push_back(pldm_entity_extract(cNode));
+        }
+
+        if (merged)
+        {
+            entityAssociations.push_back(entityAssoc);
         }
     }
     free(entities);
