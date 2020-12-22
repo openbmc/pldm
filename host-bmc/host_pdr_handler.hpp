@@ -21,11 +21,17 @@ using namespace pldm::dbus_api;
 namespace pldm
 {
 
+using ObjectPath = std::string;
+using EntityName = std::string;
 using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
 using PDRRecordHandles = std::deque<ChangeEntry>;
+
+const std::map<EntityType, EntityName> entityMap = {
+    {45, "chassis"}, {60, "io_board"}, {64, "motherboard"},
+    {66, "dimm"},    {67, "cpu"},      {120, "powersupply"}};
 
 /** @struct SensorEntry
  *
@@ -147,6 +153,17 @@ class HostPDRHandler
      */
     bool getParent(EntityType type, pldm_entity& parent);
 
+    /** @brief Find parent of input entity type, from the entity association
+     *  tree
+     *  @param[in] entityMaps       - maps an entity name to pldm_entity
+     *  @param[in] path             - object path of D-Bus
+     *  @param[in] objectPathMaps   - maps an object path to pldm_entity
+     *  @return
+     */
+    void addObjectPathEntityAssociationMap(
+        const std::map<std::string, pldm_entity>& entityMaps, std::string& path,
+        std::map<std::string, pldm_entity>& objectPathMaps);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -179,6 +196,20 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+
+    /** @brief maps an object path to pldm_entity from the BMC's entity
+     *         association tree
+     */
+    std::map<ObjectPath, pldm_entity> objPathMap;
+
+    /** @brief maps an entity name to map, maps to entity name to pldm_entity
+     */
+    std::map<std::string, std::map<std::string, pldm_entity>>
+        entityAssociationMap;
+
+    /** @brief Object path and entity association and is only loaded once
+     */
+    bool objPathEntityAssociation;
 };
 
 } // namespace pldm
