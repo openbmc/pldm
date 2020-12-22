@@ -206,14 +206,21 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             return;
         }
 
+        Entities entityAssoc;
+        entityAssoc.push_back(pNode);
         for (size_t i = 1; i < numEntities; ++i)
         {
-            pldm_entity_association_tree_add(
+            auto node = pldm_entity_association_tree_add(
                 entityTree, &entities[i], entities[i].entity_instance_num,
                 pNode, entityPdr->association_type, true);
             merged = true;
+            entityAssoc.push_back(node);
         }
         mergedHostParents = true;
+        if (merged)
+        {
+            entityAssociations.push_back(entityAssoc);
+        }
     }
 
     if (merged)
@@ -497,6 +504,9 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
+        pldm::hostbmc::utils::updateEntityAssociation(entityAssociations,
+                                                      entityTree, objPathMap);
+
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
         if (isHostUp())
@@ -505,6 +515,9 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
         }
         stateSensorPDRs.clear();
         tlpdrInfo.clear();
+
+        entityAssociations.clear();
+
         if (merged)
         {
             merged = false;
