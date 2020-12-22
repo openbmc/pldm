@@ -24,6 +24,8 @@ sources = [
   '../host-bmc/host_pdr_handler.cpp',
   '../host-bmc/dbus_to_event_handler.cpp',
   '../host-bmc/dbus_to_host_effecters.cpp',
+  '../host-bmc/host_condition.cpp',
+  '../host-bmc/utils.cpp',
   'event_parser.cpp'
 ]
 
