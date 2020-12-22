@@ -257,6 +257,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
+
+    std::string objPathRoot{};
     for (size_t i = 0; i < numEntities; ++i)
     {
         pldm_entity parent{};
@@ -269,6 +271,26 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                                                  entityPdr->association_type);
                 merged = true;
             }
+        }
+
+        auto iter = entityObjPathMap.find(entities[i].entity_type);
+        if (iter == entityObjPathMap.end())
+        {
+            continue;
+        }
+
+        if (i == 0)
+        {
+            objPathRoot = "/xyz/openbmc_project/inventory/system/" +
+                          iter->second +
+                          std::to_string(entities[i].entity_instance_num);
+            objPathMap[objPathRoot] = entities[i];
+        }
+        else
+        {
+            auto objPath = objPathRoot + "/" + iter->second +
+                           std::to_string(entities[i].entity_instance_num);
+            objPathMap[objPath] = entities[i];
         }
     }
     free(entities);

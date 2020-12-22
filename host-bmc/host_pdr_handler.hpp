@@ -21,11 +21,16 @@ using namespace pldm::dbus_api;
 namespace pldm
 {
 
+using ObjectPath = std::string;
 using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
 using PDRRecordHandles = std::deque<ChangeEntry>;
+
+const std::map<EntityType, ObjectPath> entityObjPathMap = {
+    {45, "chassis"}, {60, "io_board"},     {66, "dimm"},
+    {93, "fan"},     {120, "powersupply"}, {135, "cpu"}};
 
 /** @struct SensorEntry
  *
@@ -179,6 +184,8 @@ class HostPDRHandler
      *         PlatformEventMessage command request.
      */
     HostStateSensorMap sensorMap;
+
+    std::map<ObjectPath, pldm_entity> objPathMap;
 };
 
 } // namespace pldm
