@@ -36,7 +36,6 @@ HostPDRHandler::HostPDRHandler(
     bmcEntityTree(bmcEntityTree), requester(requester), handler(handler),
     verbose(verbose)
 {
-    mergedHostParents = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -204,14 +203,21 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             return;
         }
 
+        Entities entityAssoc;
+        entityAssoc.push_back(pldm_entity_extract(pNode));
         for (size_t i = 1; i < numEntities; ++i)
         {
             pldm_entity_association_tree_add(
                 entityTree, &entities[i], entities[i].entity_instance_num,
                 pNode, entityPdr->association_type, true);
             merged = true;
+            entityAssoc.push_back(pldm_entity_extract(cNode));
         }
         mergedHostParents = true;
+        if (merged)
+        {
+            entityAssociations.push_back(entityAssoc);
+        }
     }
 
     if (merged)
@@ -490,6 +496,9 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
+        updateEntityAssociation(entityAssociations, entityTree, objPathMap);
+        entityAssociations.clear();
+
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
         if (isHostUp())
