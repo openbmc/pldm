@@ -31,6 +31,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     requester(requester)
 {
+    objPathEntityAssociation = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -234,6 +235,16 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
             FORMAT_IS_PDR_HANDLES);
     }
+
+    if (!objPathEntityAssociation && !objPathMap.empty() &&
+        entityAssociationMap.find("system") != entityAssociationMap.end())
+    {
+        std::string path = "/xyz/openbmc_project/system";
+        addObjectPathEntityAssociationMap(entityAssociationMap.at("system"),
+                                          path);
+
+        objPathEntityAssociation = true;
+    }
 }
 
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
@@ -261,6 +272,29 @@ bool HostPDRHandler::getParent(EntityType type, pldm_entity& parent)
     return false;
 }
 
+void HostPDRHandler::addObjectPathEntityAssociationMap(
+    const std::map<std::string, pldm_entity>& entityMaps, std::string& path)
+{
+    for (const auto& entity : entityMaps)
+    {
+        if (entityAssociationMap.find(entity.first) ==
+            entityAssociationMap.end())
+        {
+            objPathMap.emplace(
+                path + "/" + entity.first +
+                    std::to_string(entity.second.entity_instance_num),
+                entity.second);
+        }
+        else
+        {
+            std::string p = path + "/" + entity.first +
+                            std::to_string(entity.second.entity_instance_num);
+            addObjectPathEntityAssociationMap(
+                entityAssociationMap.at(entity.first), p);
+        }
+    }
+}
+
 void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 {
     size_t numEntities{};
@@ -271,6 +305,9 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
+
+    std::string containerType{};
+    std::map<std::string, pldm_entity> containedType;
     for (size_t i = 0; i < numEntities; ++i)
     {
         pldm_entity parent{};
@@ -284,7 +321,33 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                 merged = true;
             }
         }
+
+        try
+        {
+            pldm_entity entity{entities[i].entity_type,
+                               entities[i].entity_instance_num,
+                               entities[i].entity_container_id};
+            if (i == 0)
+            {
+                containerType = entityMap.at(entity.entity_type);
+            }
+            else
+            {
+                containedType.emplace(entityMap.at(entity.entity_type), entity);
+            }
+        }
+        catch (const std::out_of_range& e)
+        {
+            std::cerr << "get entity type error. e = " << e.what() << '\n';
+        }
     }
+
+    if (!objPathEntityAssociation && !containerType.empty() &&
+        !containedType.empty())
+    {
+        entityAssociationMap.emplace(containerType, containedType);
+    }
+
     free(entities);
 
     if (merged)
