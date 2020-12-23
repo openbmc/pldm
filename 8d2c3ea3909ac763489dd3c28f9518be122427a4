@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "43217314_bdd22ae2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-12-23T04:38:46Z",
+      "side": 1,
+      "message": "Why is the possible states missing for Link State?\n\nThe Configuration State(15) the second state set is also missing.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "8d2c3ea3909ac763489dd3c28f9518be122427a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
