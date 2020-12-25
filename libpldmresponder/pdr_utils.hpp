@@ -39,6 +39,22 @@ enum class TypeId
     PLDM_SENSOR_ID
 };
 
+struct FruTLV
+{
+    uint8_t fruFieldType;
+    uint8_t fruFieldLen;
+    std::vector<uint8_t> fruFieldValue;
+};
+
+struct FruRecordDataFormat
+{
+    uint16_t fruRSI;
+    uint8_t fruRecType;
+    uint8_t fruNum;
+    uint8_t fruEncodeType;
+    std::vector<FruTLV> fruTLV;
+};
+
 /** @struct PdrEntry
  *  PDR entry structure that acts as a PDR record structure in the PDR
  *  repository to handle PDR APIs.
@@ -215,6 +231,18 @@ class Repo : public RepoInterface
 std::tuple<pldm::pdr::TerminusHandle, pldm::pdr::SensorID,
            pldm::pdr::SensorInfo>
     parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr);
+
+/** @brief Parse FRU record table and return the vector of the FRU record data
+ *         format structure
+ *
+ *  @param[in] fruData - fru data
+ *  @param[in] fruLen  - fru len
+ *
+ *  @return std::vector<FruRecordDataFormat> - the vector of the FRU record data
+ *          format structure
+ */
+std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
+                                                     size_t fruLen);
 
 } // namespace pdr_utils
 } // namespace responder
