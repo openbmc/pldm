@@ -1,3 +1,5 @@
+#include "libpldm/fru.h"
+
 #include "pdr.hpp"
 
 #include <libpldm/platform.h>
@@ -163,8 +165,8 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
             reinterpret_cast<const state_sensor_possible_states*>(statesPtr);
         PossibleStates possibleStates{};
         uint8_t possibleStatesPos{};
-        auto updateStates =
-            [&possibleStates, &possibleStatesPos](const bitfield8_t& val) {
+        auto updateStates = [&possibleStates,
+                             &possibleStatesPos](const bitfield8_t& val) {
             for (int i = 0; i < CHAR_BIT; i++)
             {
                 if (val.byte & (1 << i))
@@ -196,6 +198,56 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
                            std::move(sensorInfo));
 }
 
+std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
+                                                     size_t fruLen)
+{
+    // Refer: DSP0257_1.0.0 Table 2
+    // 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),
+    // uint8_t(Number of FRU fields), uint8_t(Encoding Type for FRU fields),
+    // uint8_t(FRU Field Type), uint8_t(FRU Field Length)
+    if (fruLen < 7)
+    {
+        lg2::error("Invalid fru len: {FRULEN}", "FRULEN", fruLen);
+        return {};
+    }
+
+    std::vector<FruRecordDataFormat> frus;
+
+    size_t index = 0;
+    while (index < fruLen)
+    {
+        FruRecordDataFormat fru;
+
+        auto record = reinterpret_cast<const pldm_fru_record_data_format*>(
+            fruData + index);
+        fru.fruRSI = (int)le16toh(record->record_set_id);
+        fru.fruRecType = record->record_type;
+        fru.fruNum = record->num_fru_fields;
+        fru.fruEncodeType = record->encoding_type;
+
+        index += 5;
+
+        for (int i = 0; i < record->num_fru_fields; i++)
+        {
+            auto tlv =
+                reinterpret_cast<const pldm_fru_record_tlv*>(fruData + index);
+            FruTLV frutlv;
+            frutlv.fruFieldType = tlv->type;
+            frutlv.fruFieldLen = tlv->length;
+            frutlv.fruFieldValue.resize(tlv->length);
+            memcpy(frutlv.fruFieldValue.data(), tlv->value, tlv->length);
+
+            fru.fruTLV.push_back(frutlv);
+
+            // 2: 1byte FRU Field Type, 1byte FRU Field Length
+            index += 2 + (unsigned)tlv->length;
+        }
+
+        frus.push_back(fru);
+    }
+
+    return frus;
+}
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
