@@ -175,6 +175,8 @@ int main(int argc, char** argv)
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
+    sdbusplus::server::manager::manager objManager(
+        bus, "/xyz/openbmc_project/inventory");
     dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
