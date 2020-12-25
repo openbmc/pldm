@@ -7,6 +7,8 @@ host_bmc_test_src = declare_dependency(
 
 tests = [
   'dbus_to_host_effecter_test',
+  'utils_test',
+  'custom_dbus_test',
 ]
 
 foreach t : tests
