@@ -202,6 +202,8 @@ int main(int argc, char** argv)
     InstanceIdDb instanceIdDb;
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm",
                                     instanceIdDb);
+    sdbusplus::server::manager::manager inventoryManager(
+        bus, "/xyz/openbmc_project/inventory");
 
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(
