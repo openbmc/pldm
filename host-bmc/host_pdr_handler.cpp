@@ -2,7 +2,11 @@
 
 #include "host_pdr_handler.hpp"
 
+#include "libpldm/fru.h"
 #include "libpldm/requester/pldm.h"
+#include "oem/ibm/libpldm/fru.h"
+
+#include "custom_dbus.hpp"
 
 #include <assert.h>
 
@@ -23,6 +27,7 @@ using namespace pldm::utils;
 using namespace sdbusplus::bus::match::rules;
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
+using namespace pldm::dbus;
 constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
 const std::vector<Json> emptyJsonList{};
@@ -376,6 +381,7 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
 {
     static bool merged = false;
     static PDRList stateSensorPDRs{};
+    static PDRList fruRecordSetPDRs{};
     static TLPDRMap tlpdrInfo{};
     uint32_t nextRecordHandle{};
     std::vector<TlInfo> tlInfo;
@@ -488,6 +494,10 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 {
                     stateSensorPDRs.emplace_back(pdr);
                 }
+                else if (pdrHdr->type == PLDM_PDR_FRU_RECORD_SET)
+                {
+                    fruRecordSetPDRs.emplace_back(pdr);
+                }
 
                 // if the TLPDR is invalid update the repo accordingly
                 if (!tlValid)
@@ -509,13 +519,14 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
 
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+        this->parseFruRecordSetPDRs(fruRecordSetPDRs);
         if (isHostUp())
         {
             this->setHostSensorState(stateSensorPDRs, tlInfo);
         }
         stateSensorPDRs.clear();
         tlpdrInfo.clear();
-
+        fruRecordSetPDRs.clear();
         entityAssociations.clear();
 
         if (merged)
@@ -771,4 +782,212 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
         }
     }
 }
+
+void HostPDRHandler::getFRURecordTableMetadataByHost(
+    const PDRList& fruRecordSetPDRs)
+{
+    auto instanceId = requester.getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
+
+    // GetFruRecordTableMetadata
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_get_fru_record_table_metadata_req(
+        instanceId, request, requestMsg.size() - sizeof(pldm_msg_hdr));
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(mctp_eid, instanceId);
+        std::cerr << "Failed to encode_get_fru_record_table_metadata_req, rc = "
+                  << rc << std::endl;
+        return;
+    }
+
+    auto getFruRecordTableMetadataResponseHandler = [this, fruRecordSetPDRs](
+                                                        mctp_eid_t /*eid*/,
+                                                        const pldm_msg*
+                                                            response,
+                                                        size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            std::cerr << "Failed to receive response for the Get FRU Record "
+                         "Table Metadata\n";
+            return;
+        }
+
+        uint8_t cc = 0;
+        uint8_t fru_data_major_version, fru_data_minor_version;
+        uint32_t fru_table_maximum_size, fru_table_length;
+        uint16_t total_record_set_identifiers;
+        uint16_t total;
+        uint32_t checksum;
+
+        auto rc = decode_get_fru_record_table_metadata_resp(
+            response, respMsgLen, &cc, &fru_data_major_version,
+            &fru_data_minor_version, &fru_table_maximum_size, &fru_table_length,
+            &total_record_set_identifiers, &total, &checksum);
+
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Faile to decode get fru record table metadata resp, "
+                         "Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            return;
+        }
+
+        // pass total to getFRURecordTableByHost
+        this->getFRURecordTableByHost(total, fruRecordSetPDRs);
+    };
+
+    rc = handler->registerRequest(
+        mctp_eid, instanceId, PLDM_FRU, PLDM_GET_FRU_RECORD_TABLE_METADATA,
+        std::move(requestMsg),
+        std::move(getFruRecordTableMetadataResponseHandler));
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr
+            << "Failed to send the the Set State Effecter States request\n";
+    }
+
+    return;
+}
+
+void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
+                                             const PDRList& fruRecordSetPDRs)
+{
+    fruRecordData.clear();
+
+    if (!total_table_records)
+    {
+        std::cerr << "Failed to get fru record table." << std::endl;
+        return;
+    }
+
+    auto instanceId = requester.getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
+
+    // send the getFruRecordTable command
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_get_fru_record_table_req(
+        instanceId, 0, PLDM_GET_FIRSTPART, request,
+        requestMsg.size() - sizeof(pldm_msg_hdr));
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(mctp_eid, instanceId);
+        std::cerr << "Failed to encode_get_fru_record_table_req, rc = " << rc
+                  << std::endl;
+        return;
+    }
+
+    auto getFruRecordTableResponseHandler = [total_table_records, this,
+                                             fruRecordSetPDRs](
+                                                mctp_eid_t /*eid*/,
+                                                const pldm_msg* response,
+                                                size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            std::cerr << "Failed to receive response for the Get FRU Record "
+                         "Table\n";
+            return;
+        }
+
+        uint8_t cc = 0;
+        uint32_t next_data_transfer_handle = 0;
+        uint8_t transfer_flag = 0;
+        size_t fru_record_table_length = 0;
+        std::vector<uint8_t> fru_record_table_data(respMsgLen -
+                                                   sizeof(pldm_msg_hdr));
+        auto responsePtr = reinterpret_cast<const struct pldm_msg*>(response);
+        auto rc = decode_get_fru_record_table_resp(
+            responsePtr, respMsgLen - sizeof(pldm_msg_hdr), &cc,
+            &next_data_transfer_handle, &transfer_flag,
+            fru_record_table_data.data(), &fru_record_table_length);
+
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr
+                << "Faile to decode get fru record table resp, Message Error: "
+                << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            return;
+        }
+
+        fruRecordData = responder::pdr_utils::parseFruRecordTable(
+            fru_record_table_data.data(), fru_record_table_length);
+
+        if (total_table_records != fruRecordData.size())
+        {
+            fruRecordData.clear();
+
+            std::cerr << "failed to parse fru recrod data format.\n";
+            return;
+        }
+
+        for (auto& entity : objPathMap)
+        {
+            pldm_entity node = pldm_entity_extract(entity.second);
+            auto fruRSI = getRSI(fruRecordSetPDRs, node);
+
+            for (auto& data : fruRecordData)
+            {
+                if (fruRSI != data.fruRSI)
+                {
+                    continue;
+                }
+
+                if (data.fruRecType == PLDM_FRU_RECORD_TYPE_OEM)
+                {
+                    for (auto& tlv : data.fruTLV)
+                    {
+                        if (tlv.fruFieldType ==
+                            PLDM_OEM_FRU_FIELD_TYPE_LOCATION_CODE)
+                        {
+                            CustomDBus::getCustomDBus().setLocationCode(
+                                entity.first,
+                                std::string(reinterpret_cast<const char*>(
+                                                tlv.fruFieldValue.data()),
+                                            tlv.fruFieldLen));
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    rc = handler->registerRequest(
+        mctp_eid, instanceId, PLDM_FRU, PLDM_GET_FRU_RECORD_TABLE,
+        std::move(requestMsg), std::move(getFruRecordTableResponseHandler));
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr
+            << "Failed to send the the Set State Effecter States request\n";
+    }
+}
+
+uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
+                                const pldm_entity& entity)
+{
+    uint16_t fruRSI = 0;
+
+    for (const auto& pdr : fruRecordSetPDRs)
+    {
+        auto fruPdr = reinterpret_cast<const pldm_pdr_fru_record_set*>(
+            const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
+
+        if (fruPdr->entity_type == entity.entity_type &&
+            fruPdr->entity_instance_num == entity.entity_instance_num)
+        {
+            fruRSI = fruPdr->fru_rsi;
+            break;
+        }
+    }
+
+    return fruRSI;
+}
+
+void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
+{
+
+    getFRURecordTableMetadataByHost(fruRecordSetPDRs);
+}
+
 } // namespace pldm
