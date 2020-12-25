@@ -202,6 +202,43 @@ class HostPDRHandler
     void _processFetchPDREvent(uint32_t nextRecordHandle,
                                sdeventplus::source::EventBase& source);
 
+    /** @brief Get FRU record table metadata by host
+     *
+     *  @param[out] uint16_t    - total table records
+     */
+    void getFRURecordTableMetadataByHost(const PDRList& fruRecordSetPDRs);
+
+    /** @brief Set Location Code in the dbus objects
+     *
+     *  @param[in] fruRecordSetPDRs - the Fru Record set PDR's
+     *  @param[in] fruRecordData - the Fru Record Data
+     */
+
+    void setLocationCode(
+        const PDRList& fruRecordSetPDRs,
+        const std::vector<responder::pdr_utils::FruRecordDataFormat>&
+            fruRecordData);
+
+    /** @brief Get FRU record table by host
+     *
+     *  @return
+     */
+    void getFRURecordTableByHost(uint16_t& total,
+                                 const PDRList& fruRecordSetPDRs);
+
+    /** @brief Create DBUS objects
+     *
+     * @ return
+     */
+    void createDbusObjects(const PDRList& fruRecordSetPDRs);
+
+    /** @brief Get FRU Record Set Identifier from FRU Record data Format
+     *  @param[in] fruRecordSetPDRs - fru record set pdr
+     *  @param[in] entity           - PLDM entity information
+     *  @return
+     */
+    uint16_t getRSI(const PDRList& fruRecordSetPDRs, const pldm_entity& entity);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -269,6 +306,14 @@ class HostPDRHandler
     /** @brief maps an entity name to map, maps to entity name to pldm_entity
      */
     EntityAssociations entityAssociations;
+
+    /** @brief the vector of FRU Record Data Format
+     */
+    std::vector<responder::pdr_utils::FruRecordDataFormat> fruRecordData;
+
+    /** @brief Object path and entity association and is only loaded once
+     */
+    bool objPathEntityAssociation;
 };
 
 } // namespace pldm
