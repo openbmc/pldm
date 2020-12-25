@@ -1,3 +1,5 @@
+#include "libpldm/fru.h"
+
 #include "pdr.hpp"
 
 #include <libpldm/platform.h>
@@ -16,6 +18,15 @@ namespace responder
 {
 namespace pdr_utils
 {
+// Refer: DSP0257_1.0.0 Table 2
+// 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),
+// uint8_t(Number of FRU fields), uint8_t(Encoding Type for FRU fields),
+// uint8_t(FRU Field Type), uint8_t(FRU Field Length)
+static constexpr uint8_t fruRecordDataFormatLength = 7;
+
+// // 2: 1byte FRU Field Type, 1byte FRU Field Length
+static constexpr uint8_t fruFieldTypeLength = 2;
+
 pldm_pdr* Repo::getPdr() const
 {
     return repo;
@@ -196,6 +207,58 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
                            std::move(sensorInfo));
 }
 
+std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
+                                                     size_t fruLen)
+{
+    // Refer: DSP0257_1.0.0 Table 2
+    // 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),
+    // uint8_t(Number of FRU fields), uint8_t(Encoding Type for FRU fields),
+    // uint8_t(FRU Field Type), uint8_t(FRU Field Length)
+    if (fruLen < fruRecordDataFormatLength)
+    {
+        lg2::error("Invalid fru len: {FRULEN}", "FRULEN", fruLen);
+        return {};
+    }
+
+    std::vector<FruRecordDataFormat> frus;
+
+    size_t index = 0;
+    while (index < fruLen)
+    {
+        FruRecordDataFormat fru;
+
+        auto record = reinterpret_cast<const pldm_fru_record_data_format*>(
+            fruData + index);
+        fru.fruRSI = (int)le16toh(record->record_set_id);
+        fru.fruRecType = record->record_type;
+        fru.fruNum = record->num_fru_fields;
+        fru.fruEncodeType = record->encoding_type;
+
+        index += 5;
+
+        std::ranges::for_each(std::views::iota(0, (int)record->num_fru_fields),
+                              [fruData, &fru, &index](int) {
+            auto tlv =
+                reinterpret_cast<const pldm_fru_record_tlv*>(fruData + index);
+            FruTLV frutlv;
+            frutlv.fruFieldType = tlv->type;
+            frutlv.fruFieldLen = tlv->length;
+            frutlv.fruFieldValue.resize(tlv->length);
+            for (const auto& i : std::views::iota(0, (int)tlv->length))
+            {
+                memcpy(frutlv.fruFieldValue.data() + i, tlv->value + i, 1);
+            }
+            fru.fruTLV.push_back(frutlv);
+
+            // 2: 1byte FRU Field Type, 1byte FRU Field Length
+            index += fruFieldTypeLength + (unsigned)tlv->length;
+        });
+
+        frus.push_back(fru);
+    }
+
+    return frus;
+}
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm

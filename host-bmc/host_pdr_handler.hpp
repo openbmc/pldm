@@ -205,6 +205,48 @@ class HostPDRHandler
     void _processFetchPDREvent(uint32_t nextRecordHandle,
                                sdeventplus::source::EventBase& source);
 
+    /** @brief Get FRU record table metadata by remote PLDM terminus
+     *
+     *  @param[out] uint16_t    - total table records
+     */
+    void getFRURecordTableMetadataByRemote(const PDRList& fruRecordSetPDRs);
+
+    /** @brief Set Location Code in the dbus objects
+     *
+     *  @param[in] fruRecordSetPDRs - the Fru Record set PDR's
+     *  @param[in] fruRecordData - the Fru Record Data
+     */
+
+    void setFRUDataOnDBus(
+        const PDRList& fruRecordSetPDRs,
+        const std::vector<responder::pdr_utils::FruRecordDataFormat>&
+            fruRecordData);
+
+    /** @brief Get FRU record table by remote PLDM terminus
+     *
+     *  @param[in] fruRecordSetPDRs  - the Fru Record set PDR's
+     *  @param[in] totalTableRecords - the Number of total table records
+     *  @return
+     */
+    void getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
+                                   uint16_t totalTableRecords);
+
+    /** @brief Create Dbus objects by remote PLDM entity Fru PDRs
+     *
+     *  @param[in] fruRecordSetPDRs - fru record set pdr
+     *
+     * @ return
+     */
+    void createDbusObjects(const PDRList& fruRecordSetPDRs);
+
+    /** @brief Get FRU Record Set Identifier from FRU Record data Format
+     *  @param[in] fruRecordSetPDRs - fru record set pdr
+     *  @param[in] entity           - PLDM entity information
+     *  @return
+     */
+    std::optional<uint16_t> getRSI(const PDRList& fruRecordSetPDRs,
+                                   const pldm_entity& entity);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -277,6 +319,14 @@ class HostPDRHandler
     /** @brief maps an entity name to map, maps to entity name to pldm_entity
      */
     utils::EntityAssociations entityAssociations;
+
+    /** @brief the vector of FRU Record Data Format
+     */
+    std::vector<responder::pdr_utils::FruRecordDataFormat> fruRecordData;
+
+    /** @brief Object path and entity association and is only loaded once
+     */
+    bool objPathEntityAssociation;
 };
 
 } // namespace pldm
