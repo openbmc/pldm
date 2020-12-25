@@ -333,6 +333,7 @@ struct pldm_pdr_entity_association {
  *  Structure representing PLDM FRU record set PDR
  */
 struct pldm_pdr_fru_record_set {
+	struct pldm_pdr_hdr hdr;
 	uint16_t terminus_handle;
 	uint16_t fru_rsi;
 	uint16_t entity_type;
