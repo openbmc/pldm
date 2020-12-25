@@ -1,3 +1,4 @@
+#include "libpldm/fru.h"
 #include "libpldm/platform.h"
 
 #include "pdr.hpp"
@@ -189,6 +190,57 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
                            std::move(sensorInfo));
 }
 
+std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
+                                                     size_t fruLen)
+{
+    // 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),
+    // uint8_t(Number of FRU fields), uint8_t(Encoding Type for FRU fields),
+    // uint8_t(FRU Field Type), uint8_t(FRU Field Length)
+    if (fruLen < 7)
+    {
+        return {};
+    }
+
+    std::vector<FruRecordDataFormat> frus;
+
+    size_t index = 0;
+    do
+    {
+        FruRecordDataFormat fru;
+
+        auto record = reinterpret_cast<const pldm_fru_record_data_format*>(
+            fruData + index);
+        fru.fruRSI = (int)le16toh(record->record_set_id);
+        fru.fruRecType = record->record_type;
+        fru.fruNum = record->num_fru_fields;
+        fru.fruEncodeType = record->encoding_type;
+
+        index += 5;
+
+        for (int i = 0; i < record->num_fru_fields; i++)
+        {
+            auto tlv =
+                reinterpret_cast<const pldm_fru_record_tlv*>(fruData + index);
+            FruTLV frutlv;
+            frutlv.fruFieldType = tlv->type;
+            frutlv.fruFieldLen = tlv->length;
+            frutlv.fruFieldValue.resize(tlv->length);
+            for (int i = 0; i < tlv->length; i++)
+            {
+                memcpy(frutlv.fruFieldValue.data() + i, tlv->value + i, 1);
+            }
+
+            fru.fruTLV.push_back(frutlv);
+
+            index += 2 + (unsigned)tlv->length;
+        }
+
+        frus.push_back(fru);
+
+    } while (index < fruLen);
+
+    return frus;
+}
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
