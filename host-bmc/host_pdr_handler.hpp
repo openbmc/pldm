@@ -148,6 +148,13 @@ class HostPDRHandler
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
 
+    /** @brief Parse FRU record set PDRs
+     *
+     *  @param[in] fruRecordSetPDRs - host fru record set PDRs
+     *
+     */
+    void parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs);
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -161,6 +168,25 @@ class HostPDRHandler
      *  @param[in] pdr - entity association pdr
      */
     void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
+
+    /** @brief Get FRU record table metadata by host
+     *
+     *  @param[out] uint16_t    - total table records
+     */
+    void getFRURecordTableMetadataByHost(uint16_t& total);
+
+    /** @brief Get FRU record table by host
+     *
+     *  @return
+     */
+    void getFRURecordTableByHost();
+
+    /** @brief Get FRU Record Set Identifier from FRU Record data Format
+     *  @param[in] fruRecordSetPDRs - fru record set pdr
+     *  @param[in] entity           - PLDM entity information
+     *  @return
+     */
+    uint16_t getRSI(const PDRList& fruRecordSetPDRs, const pldm_entity& entity);
 
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
@@ -214,6 +240,14 @@ class HostPDRHandler
     /** @brief maps an entity name to map, maps to entity name to pldm_entity
      */
     EntityAssociations entityAssociations;
+
+    /** @brief the vector of FRU Record Data Format
+     */
+    std::vector<responder::pdr_utils::FruRecordDataFormat> fruRecordData;
+
+    /** @brief Object path and entity association and is only loaded once
+     */
+    bool objPathEntityAssociation;
 };
 
 } // namespace pldm
