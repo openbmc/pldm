@@ -80,13 +80,15 @@ Files having the oem functionality for the libpldmresponder library should be
 placed under the folder oem/<oem_name>/libpldmresponder. They must be adhering
 to the rules mentioned under the libpldmresponder section above.
 
-Once the above is done a conditional flag has to be created in the configure.ac
-to enable conditional compilation.
+Once the above is done a meson option has to be created in
+`pldm/meson_options.txt` with its mapped compiler flag to enable conditional
+compilation.
 
-For consistency would recommend using "--enable-oem-<oem_name>".
+For consistency would recommend using "oem-<oem_name>".
 
-The Makefile.am files in libpldm and libpldmresponder will need to be changed
-to allow conditional compilation of the code.
+The `pldm/meson.build` and the corresponding source file(s) will need to
+incorporate the logic of adding its mapped compiler flag to allow conditional
+compilation of the code.
 
 ## TODO
 Consider hosting libpldm above in a repo of its own, probably even outside the
