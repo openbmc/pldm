@@ -37,6 +37,11 @@ configure_file(output: 'config.h',
   configuration: conf_data
 )
 
+phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
+sdbusplus = dependency('sdbusplus')
+sdeventplus = dependency('sdeventplus')
+systemd = dependency('systemd')
+
 subdir('libpldm')
 
 if get_option('libpldm-only').disabled()
@@ -48,8 +53,8 @@ libpldmutils = library(
   version: meson.project_version(),
   dependencies: [
       libpldm,
-      dependency('phosphor-dbus-interfaces'),
-      dependency('sdbusplus'),
+      phosphor_dbus_interfaces,
+      sdbusplus,
   ],
   install: true,
   include_directories: include_directories(libpldmutils_headers),
@@ -65,9 +70,9 @@ deps = [
   libpldmutils,
   libpldmresponder,
   libpldmutils,
-  dependency('sdbusplus'),
-  dependency('sdeventplus'),
-  dependency('phosphor-dbus-interfaces')
+  sdbusplus,
+  sdeventplus,
+  phosphor_dbus_interfaces
 ]
 
 executable(

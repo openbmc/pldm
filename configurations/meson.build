@@ -1,4 +1,3 @@
-systemd = dependency('systemd')
 systemd_system_unit_dir = systemd.get_pkgconfig_variable(
     'systemdsystemunitdir',
     define_variable: ['prefix', get_option('prefix')])

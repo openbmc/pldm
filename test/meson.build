@@ -58,8 +58,8 @@ foreach t : tests
                          gtest,
                          gmock,
                          pldmd,
-                         dependency('phosphor-dbus-interfaces'),
-                         dependency('sdeventplus'),
-                         dependency('sdbusplus')]),
+                         phosphor_dbus_interfaces,
+                         sdeventplus,
+                         sdbusplus]),
        workdir: meson.current_source_dir())
 endforeach
