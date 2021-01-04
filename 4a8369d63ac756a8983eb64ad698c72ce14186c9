@@ -16,6 +16,24 @@
       "revId": "4a8369d63ac756a8983eb64ad698c72ce14186c9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5754e9c_9b584e35",
+        "filename": "configurations/events/sensorPdrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-04T04:57:11Z",
+      "side": 1,
+      "message": "In my patchset 1 the file was 4.json and Deepak had a comment to name it as \u003cPDRType.json\u003e.",
+      "parentUuid": "8411379a_640f423f",
+      "revId": "4a8369d63ac756a8983eb64ad698c72ce14186c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
