@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9fa6c5bb_0f8756c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T10:14:21Z",
+      "side": 1,
+      "message": "A title under 50 characters would look good, also would like to see a better commit message which explains the intent \u0026 background behind the commit.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 8
+      },
+      "revId": "6c28eaf284cbbcc25f78a443fffced846b32725a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66479955_166a8426",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T10:14:21Z",
+      "side": 1,
+      "message": "Traces should not be a part of commit message.\n\nref : https://chris.beams.io/posts/git-commit/",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 13
+      },
+      "revId": "6c28eaf284cbbcc25f78a443fffced846b32725a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02d42709_de697271",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T10:14:21Z",
+      "side": 1,
+      "message": "can this entire logic go inside a function - probably bool hostAlreadyPoweringOff(), that can return a boolean variable inProgress or completed(true/false) if the host is already off or not ? that can simply the code instead of the whole logic sitting inside the constructor ?",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 4
+      },
+      "revId": "6c28eaf284cbbcc25f78a443fffced846b32725a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e547d1b1_364f03bb",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T10:14:21Z",
+      "side": 1,
+      "message": "can be removed ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 1,
+        "endLine": 76,
+        "endChar": 22
+      },
+      "revId": "6c28eaf284cbbcc25f78a443fffced846b32725a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc1b2046_79779da7",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T10:14:21Z",
+      "side": 1,
+      "message": "magic number ?",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 97,
+        "endChar": 29
+      },
+      "revId": "6c28eaf284cbbcc25f78a443fffced846b32725a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fe9122e_74a13b89",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T10:14:21Z",
+      "side": 1,
+      "message": "is there not an enum declared some where ? this looks like a magic number ?",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 17
+      },
+      "revId": "6c28eaf284cbbcc25f78a443fffced846b32725a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
