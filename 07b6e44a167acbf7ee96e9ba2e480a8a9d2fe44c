@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "280750fa_2dd9eee3",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T04:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a2af493_51d933ef",
+      "range": {
+        "startLine": 83,
+        "startChar": 77,
+        "endLine": 83,
+        "endChar": 83
+      },
+      "revId": "07b6e44a167acbf7ee96e9ba2e480a8a9d2fe44c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0fa5fa85_d6c462d5",
         "filename": "README.md",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2021-01-04T15:26:22Z",
       "side": 1,
       "message": "What do you mean by \"mapped\" here?",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 15
+      },
+      "revId": "07b6e44a167acbf7ee96e9ba2e480a8a9d2fe44c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e365a68_08e4984b",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T04:19:29Z",
+      "side": 1,
+      "message": "From the current code, i understood that for every meson oem option, we have a mapped compiler flag.\nExample : oem-ibm(meson option) has mapped OEM_IBM compiler flag.\n\nis my understanding correct ?",
+      "parentUuid": "0fa5fa85_d6c462d5",
       "range": {
         "startLine": 84,
         "startChar": 8,
@@ -94,6 +142,54 @@
     },
     {
       "key": {
+        "uuid": "eee8e390_e3c210b1",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T04:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e14eda2c_6fcf5a64",
+      "range": {
+        "startLine": 88,
+        "startChar": 39,
+        "endLine": 88,
+        "endChar": 45
+      },
+      "revId": "07b6e44a167acbf7ee96e9ba2e480a8a9d2fe44c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2ef8417_deab3cdd",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T04:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7553897_bcf1d14b",
+      "range": {
+        "startLine": 88,
+        "startChar": 23,
+        "endLine": 88,
+        "endChar": 24
+      },
+      "revId": "07b6e44a167acbf7ee96e9ba2e480a8a9d2fe44c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "51f1a764_29cc1991",
         "filename": "README.md",
         "patchSetId": 1
@@ -105,6 +201,30 @@
       "writtenOn": "2021-01-04T15:26:22Z",
       "side": 1,
       "message": "the compiler flag",
+      "range": {
+        "startLine": 89,
+        "startChar": 20,
+        "endLine": 89,
+        "endChar": 44
+      },
+      "revId": "07b6e44a167acbf7ee96e9ba2e480a8a9d2fe44c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "658eee00_3e32cf97",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-01-05T04:19:29Z",
+      "side": 1,
+      "message": "with my reasoning above do you still want this changed ?",
+      "parentUuid": "51f1a764_29cc1991",
       "range": {
         "startLine": 89,
         "startChar": 20,
