@@ -1,0 +1,9 @@
+Code-Review+2: Tom Joseph <tomjoseph@in.ibm.com>
+Code-Review+1: George Liu <liuxiwei1013@outlook.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Tom Joseph <tomjoseph@in.ibm.com>
+Submitted-at: Wed, 06 Jan 2021 05:10:25 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/38523
+Project: openbmc/pldm
+Branch: refs/heads/master
