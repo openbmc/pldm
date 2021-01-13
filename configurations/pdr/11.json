@@ -71,6 +71,27 @@
                 ]
             }
         }]
+     },
+     {
+         "type" : 137,
+         "instance" : 0,
+         "container" : 0,
+         "effecters" : [{
+             "set" : {
+                 "id" : 2,
+                 "size" : 2,
+                 "states" :[8]
+             },
+             "dbus" :{
+                 "path" : "/xyz/openbmc_project/state/bmc0",
+                 "interface" : "xyz.openbmc_project.State.BMC",
+                 "property_name" : "RequestedBMCTransition",
+                 "property_type" : "string",
+                 "property_values" :[
+                     "xyz.openbmc_project.State.BMC.Transition.Reboot"
+                 ]
+             }
+         }]
      }]
   },
   {
