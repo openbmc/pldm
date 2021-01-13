@@ -22,6 +22,30 @@
       "revId": "f225facda786643f0c3de8196fb6d13b919eb473",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5faf6d5_aecb1b78",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-01-13T13:24:05Z",
+      "side": 1,
+      "message": "getDbusPropertyVariant is more a generic API, don\u0027t want to clutter with types like BaseBiosTable.",
+      "parentUuid": "f2ed643d_8a70f453",
+      "range": {
+        "startLine": 485,
+        "startChar": 7,
+        "endLine": 494,
+        "endChar": 58
+      },
+      "revId": "f225facda786643f0c3de8196fb6d13b919eb473",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
