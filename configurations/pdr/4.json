@@ -1,0 +1,26 @@
+{
+ "sensorPDRs": [
+    {
+    "pdrType" : 4,
+    "entries" : [{
+        "type" : 91,
+        "instance" : 0,
+        "container" : 0,
+        "sensors" : [{
+            "set" : {
+                "id" : 21,
+                "size" : 2,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/alerts/thermal_fault_alert",
+                "interface": "xyz.openbmc_project.Object.Enable",
+                "property_name": "Enabled",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    }]
+  }]
+}
+
