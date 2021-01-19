@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a0f748c_a245ab62",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-01-19T02:04:04Z",
+      "side": 1,
+      "message": "Can we re-use printBuffer, there is already a copy of it.",
+      "revId": "54249962aa513848a5e1045f4ee64373c62ec129",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f04981d_f245df09",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-01-19T02:04:04Z",
+      "side": 1,
+      "message": "This should be printed as \"Sending Msg\"?",
+      "revId": "54249962aa513848a5e1045f4ee64373c62ec129",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "341622d6_19dac3a4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-01-19T02:04:04Z",
+      "side": 1,
+      "message": "This should be printed as \"Receiving Msg\"?",
+      "range": {
+        "startLine": 196,
+        "startChar": 26,
+        "endLine": 196,
+        "endChar": 39
+      },
+      "revId": "54249962aa513848a5e1045f4ee64373c62ec129",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
