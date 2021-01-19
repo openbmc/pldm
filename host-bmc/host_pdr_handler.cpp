@@ -273,6 +273,19 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
                                            pdr::EventState state)
 {
+    for (auto& entity : objPathMap)
+    {
+        if (entity.second.entity_type != entry.entityType ||
+            entity.second.entity_instance_num != entry.entityInstance ||
+            entity.second.entity_container_id != entry.containerId)
+        {
+            continue;
+        }
+
+        CustomDBus::getCustomDBus().setOperationalStatus(entity.first, state);
+        break;
+    }
+
     auto rc = stateSensorHandler.eventAction(entry, state);
     if (rc != PLDM_SUCCESS)
     {
@@ -280,6 +293,7 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
                   << std::endl;
         return rc;
     }
+
     return PLDM_SUCCESS;
 }
 
@@ -594,6 +608,66 @@ void HostPDRHandler::getFRURecordTableByHost()
     }
 }
 
+uint8_t HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId)
+{
+    auto instanceId = requester.getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    bitfield8_t bf;
+    bf.byte = 0;
+    auto rc = encode_get_state_sensor_readings_req(instanceId, sensorId, bf, 0,
+                                                   request);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(mctp_eid, instanceId);
+        std::cerr << "Failed to encode_get_state_sensor_readings_req, rc = "
+                  << rc << std::endl;
+        return PLDM_OPERATIONAL_NON_RECOVERABLE_ERROR;
+    }
+
+    uint8_t* responseMsg = nullptr;
+    size_t responseMsgSize{};
+    auto requesterRc =
+        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
+                       &responseMsg, &responseMsgSize);
+    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
+                                                                  std::free};
+    requester.markFree(mctp_eid, instanceId);
+    if (requesterRc != PLDM_REQUESTER_SUCCESS)
+    {
+        std::cerr << "Failed to send msg to get state sensor readings, rc = "
+                  << requesterRc << std::endl;
+        return PLDM_OPERATIONAL_NON_RECOVERABLE_ERROR;
+    }
+
+    uint8_t cc = 0;
+    uint8_t sensorCnt = 0;
+    std::array<get_sensor_state_field, 8> stateField{};
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
+    rc = decode_get_state_sensor_readings_resp(
+        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &cc, &sensorCnt,
+        stateField.data());
+    if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+    {
+        std::cerr
+            << "Faile to decode get state sensor readings resp, Message Error: "
+            << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+        return PLDM_OPERATIONAL_NON_RECOVERABLE_ERROR;
+    }
+
+    for (const auto& filed : stateField)
+    {
+        if (filed.present_state == PLDM_SENSOR_NORMAL)
+        {
+            return PLDM_OPERATIONAL_NORMAL;
+        }
+    }
+
+    return PLDM_OPERATIONAL_ERROR;
+}
+
 uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
                                 const pldm_entity& entity)
 {
@@ -615,6 +689,30 @@ uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
     return fruRSI;
 }
 
+void HostPDRHandler::setOperationStatus(const std::string& path,
+                                        const pldm_entity& entity)
+{
+    for (auto& sensor : sensorMap)
+    {
+        pldm::pdr::EntityInfo entityInfo{};
+        pldm::pdr::CompositeSensorStates compositeSensorStates{};
+        std::tie(entityInfo, compositeSensorStates) = sensor.second;
+
+        const auto& [containerId, entityType, entityInstance] = entityInfo;
+        if (entity.entity_type != entityType ||
+            entity.entity_instance_num != entityInstance)
+        {
+            continue;
+        }
+
+        // Get sensorOpState property by the getStateSensorReadings command.
+        uint8_t operationalStatus =
+            getPresentStateBySensorReadigs(sensor.first.sensorID);
+        CustomDBus::getCustomDBus().setOperationalStatus(path,
+                                                         operationalStatus);
+    }
+}
+
 void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
 {
     getFRURecordTableByHost();
@@ -622,6 +720,9 @@ void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
     for (auto& entity : objPathMap)
     {
         auto fruRSI = getRSI(fruRecordSetPDRs, entity.second);
+
+        // update xyz.openbmc_project.State.Decorator.OperationalStatus
+        setOperationStatus(entity.first, entity.second);
 
         for (auto& data : fruRecordData)
         {
