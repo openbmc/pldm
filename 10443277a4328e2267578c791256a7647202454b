@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bbb30e2e_60132389",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-01-19T06:23:11Z",
+      "side": 1,
+      "message": "size will be 1 since you have states less than 8. follow in the whole json",
+      "range": {
+        "startLine": 41,
+        "startChar": 17,
+        "endLine": 41,
+        "endChar": 27
+      },
+      "revId": "10443277a4328e2267578c791256a7647202454b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
