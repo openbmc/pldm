@@ -245,6 +245,21 @@ class HostPDRHandler
      */
     uint16_t getRSI(const PDRList& fruRecordSetPDRs, const pldm_entity& entity);
 
+    /** @brief Get present state from state sensor readings
+     *  @param[in] sensorId   - state sensor Id
+     *
+     *  @param[out] state     - pldm operational fault status
+     */
+    void getPresentStateBySensorReadigs(uint16_t sensorId, uint8_t state,
+                                        const std::string& path);
+
+    /** @brief Set the OperationalStatus interface
+     *  @param[in] path     - object path
+     *  @param[in] entity   - PLDM entity information
+     *  @return
+     */
+    void setOperationStatus(const std::string& path, const pldm_entity& entity);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
