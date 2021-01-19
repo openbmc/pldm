@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ed743cb_b462e88f",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-01-19T07:33:26Z",
+      "side": 1,
+      "message": "what happens if softoff is issued when host is not up?\nare you issuing \"obmcutil poweroff\" to trigger softoff? probably it will stuck if it is triggered when host is not up",
+      "range": {
+        "startLine": 144,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 22
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
