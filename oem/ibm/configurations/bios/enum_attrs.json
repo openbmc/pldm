@@ -1,0 +1,174 @@
+{
+   "entries":[
+      {
+         "attribute_name":"pvm_fw_boot_side",
+         "possible_values":[
+            "Perm",
+            "Temp"
+         ],
+         "default_values":[
+            "Temp"
+         ],
+         "helpText" : "pvm_fw_boot_side",
+         "displayName" : "pvm_fw_boot_side"
+      },
+      {
+         "attribute_name":"pvm_os_boot_side",
+         "possible_values":[
+            "Perm",
+            "Temp"
+         ],
+         "default_values":[
+            "Temp"
+         ],
+         "helpText" : "pvm_os_boot_side",
+         "displayName" : "pvm_os_boot_side"
+      },
+      {
+         "attribute_name":"pvm_inband_code_update",
+         "possible_values":[
+            "Allowed",
+            "Not Allowed"
+         ],
+         "default_values":[
+            "Allowed"
+         ],
+         "helpText" : "pvm_inband_code_update",
+         "displayName" : "pvm_inband_code_update"
+      },
+      {
+         "attribute_name":"pvm_surveillance",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "pvm_surveillance",
+         "displayName" : "pvm_surveillance"
+      },
+      {
+         "attribute_name":"pvm_pcie_error_inject",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "pvm_pcie_error_inject",
+         "displayName" : "pvm_pcie_error_inject"
+      },
+      {
+         "attribute_name":"vmi_if0_ipv4_method",
+         "possible_values":[
+            "IPv4Static",
+            "IPv4DHCP"
+         ],
+         "default_values":[
+            "IPv4Static"
+         ],
+         "helpText" : "vmi_if0_ipv4_method",
+         "displayName" : "vmi_if0_ipv4_method"
+      },
+      {
+         "attribute_name":"vmi_if1_ipv4_method",
+         "possible_values":[
+            "IPv4Static",
+            "IPv4DHCP"
+         ],
+         "default_values":[
+            "IPv4Static"
+         ],
+         "helpText" : "vmi_if1_ipv4_method",
+         "displayName" : "vmi_if1_ipv4_method"
+      },
+      {
+         "attribute_name":"hb_hyp_switch",
+         "possible_values":[
+            "PowerVM",
+            "OPAL"
+         ],
+         "default_values":[
+            "PowerVM"
+         ],
+         "helpText" : "hb_hyp_switch",
+         "displayName" : "hb_hyp_switch"
+      },
+      {
+         "attribute_name":"pvm_stop_at_standby",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "pvm_stop_at_standby",
+         "displayName" : "pvm_stop_at_standby"
+      },
+      {
+         "attribute_name":"hb_debug_console",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "When set to Enabled Hostboot should emit debug trace information to the VUART2 device.",
+         "displayName" : "hb-debug-console"
+      },
+	  {
+         "attribute_name":"pvm_system_power_off_policy",
+         "possible_values":[
+            "Power Off",
+            "Stay On",
+		    "Automatic"
+         ],
+         "default_values":[
+            "Automatic"
+          ],
+         "helpText" : "The system power off policy flag is a system parameter that controls the system's behavior when the last partition (or only partition in the case of a system that is not managed by an HMC) is powered off.",
+         "displayName" : "System Automatic Power Off Policy"
+      },
+	  {
+         "attribute_name":"pvm_hmc_managed",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "This option enables or disables the system is managed by HMC.",
+         "displayName" : "HMC managed System"
+      },
+	  {
+         "attribute_name":"pvm_rtad",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "This option enables or disables the Remote Trusted Attestation Daemon for host firmware.",
+         "displayName" : "Remote Trusted Attestation Daemon State"
+      },
+	  {
+         "attribute_name":"pvm_default_os_type",
+         "possible_values":[
+            "AIX",
+            "Linux",
+            "IBM I"
+         ],
+         "default_values":[
+            "AIX"
+         ],
+         "helpText" : "CEC Primary OS",
+         "displayName" : "CEC Primary OS"
+      }
+   ]
+}
