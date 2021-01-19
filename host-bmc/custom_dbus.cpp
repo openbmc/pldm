@@ -17,5 +17,17 @@ void CustomDBus::updateLocation(const std::string& path, std::string value)
     location.at(path)->locationCode(value);
 }
 
+void CustomDBus::updateOperationalStatus(const std::string& path, bool value)
+{
+    if (operationalStatus.find(path) == operationalStatus.end())
+    {
+        operationalStatus.emplace(
+            path, std::make_unique<OperationalStatusIntf>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+
+    operationalStatus.at(path)->functional(value);
+}
+
 } // namespace dbus
 } // namespace pldm
