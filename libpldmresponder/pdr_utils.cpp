@@ -18,6 +18,14 @@ namespace responder
 {
 namespace pdr_utils
 {
+// Refer: DSP0257_1.0.0 Table 2
+// 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),
+// uint8_t(Number of FRU fields), uint8_t(Encoding Type for FRU fields),
+// uint8_t(FRU Field Type), uint8_t(FRU Field Length)
+static constexpr uint8_t fruRecordDataFormatLength = 7;
+
+// 2: 1byte FRU Field Type, 1byte FRU Field Length
+static constexpr uint8_t fruFieldTypeLength = 2;
 pldm_pdr* Repo::getPdr() const
 {
     return repo;
@@ -158,6 +166,7 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
     CompositeSensorStates sensors{};
     auto statesPtr = pdr->possible_states;
     auto compositeSensorCount = pdr->composite_sensor_count;
+    std::vector<StateSetId> stateSetIds{};
 
     while (compositeSensorCount--)
     {
@@ -181,6 +190,8 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
                       updateStates);
 
         sensors.emplace_back(std::move(possibleStates));
+        stateSetIds.emplace_back(state->state_set_id);
+
         if (compositeSensorCount)
         {
             statesPtr += sizeof(state_sensor_possible_states) +
@@ -192,8 +203,8 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
         std::make_tuple(static_cast<ContainerID>(pdr->container_id),
                         static_cast<EntityType>(pdr->entity_type),
                         static_cast<EntityInstance>(pdr->entity_instance));
-    auto sensorInfo = std::make_tuple(std::move(entityInfo),
-                                      std::move(sensors));
+    auto sensorInfo = std::make_tuple(std::move(entityInfo), std::move(sensors),
+                                      std::move(stateSetIds));
     return std::make_tuple(pdr->terminus_handle, pdr->sensor_id,
                            std::move(sensorInfo));
 }
@@ -201,11 +212,7 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
 std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
                                                      size_t fruLen)
 {
-    // Refer: DSP0257_1.0.0 Table 2
-    // 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),
-    // uint8_t(Number of FRU fields), uint8_t(Encoding Type for FRU fields),
-    // uint8_t(FRU Field Type), uint8_t(FRU Field Length)
-    if (fruLen < 7)
+    if (fruLen < fruRecordDataFormatLength)
     {
         lg2::error("Invalid fru len: {FRULEN}", "FRULEN", fruLen);
         return {};
@@ -241,8 +248,7 @@ std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
             }
             fru.fruTLV.push_back(frutlv);
 
-            // 2: 1byte FRU Field Type, 1byte FRU Field Length
-            index += 2 + (unsigned)tlv->length;
+            index += fruFieldTypeLength + (unsigned)tlv->length;
         });
 
         frus.push_back(fru);
