@@ -241,6 +241,26 @@ class HostPDRHandler
      */
     uint16_t getRSI(const PDRList& fruRecordSetPDRs, const pldm_entity& entity);
 
+    /** @brief Get present state from state sensor readings
+     *  @param[in] sensorId   - state sensor Id
+     *
+     *  @param[out] state     - pldm operational fault status
+     *  @param[in] path       - object path
+     */
+    void getPresentStateBySensorReadigs(uint16_t sensorId, uint8_t state,
+                                        const std::string& path);
+
+    /** @brief Set the OperationalStatus interface
+     *  @return
+     */
+    void setOperationStatus();
+
+    /** @brief Set the Present dbus Property
+     *  @param[in] path     - object path
+     *  @return
+     */
+    void setPresentPropertyStatus(const std::string& path);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -249,6 +269,10 @@ class HostPDRHandler
      *  work.
      */
     sdeventplus::Event& event;
+
+    /** @brief iterator to track the entries in the objPathMap */
+    ObjectPathMaps::iterator sensorMapIndex;
+
     /** @brief pointer to BMC's primary PDR repo, host PDRs are added here */
     pldm_pdr* repo;
 
