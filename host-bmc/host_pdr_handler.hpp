@@ -202,6 +202,27 @@ class HostPDRHandler
      */
     uint16_t getRSI(const PDRList& fruRecordSetPDRs, const pldm_entity& entity);
 
+    /** @brief Get present state from state sensor readings
+     *  @param[in] sensorId - state sensor Id
+     *
+     *  @return bool        - true: sensor normal
+     *                        false: sensor fatal
+     */
+    bool getPresentStateBySensorReadigs(uint16_t sensorId);
+
+    /** @brief Set the OperationalStatus interface
+     *  @param[in] path     - object path
+     *  @param[in] entity   - PLDM entity information
+     *  @return
+     */
+    void setOperationStatus(const std::string& path, const pldm_entity& entity);
+
+    /** @brief Update the OperationalStatus interface from eventState
+     *  @param[in] msg - Data associated with subscribed signal
+     *  @return
+     */
+    void updateOperationStatus(sdbusplus::message::message& msg);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -254,6 +275,9 @@ class HostPDRHandler
     /** @brief Object path and entity association and is only loaded once
      */
     bool objPathEntityAssociation;
+
+    /** @brief D-Bus signal to update OperationStatus */
+    std::unique_ptr<sdbusplus::bus::match_t> pldmEventSignal;
 };
 
 } // namespace pldm
