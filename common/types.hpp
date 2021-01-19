@@ -48,7 +48,8 @@ using PossibleStates = std::set<uint8_t>;
 //!< composite efffecter/sensor
 using CompositeSensorStates = std::vector<PossibleStates>;
 using EntityInfo = std::tuple<ContainerID, EntityType, EntityInstance>;
-using SensorInfo = std::tuple<EntityInfo, CompositeSensorStates>;
+using SensorInfo =
+    std::tuple<EntityInfo, CompositeSensorStates, std::vector<StateSetId>>;
 
 } // namespace pdr
 
