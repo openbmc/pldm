@@ -14,3 +14,23 @@ TEST(CustomDBus, LocationCode)
     EXPECT_NE(retLocationCode, std::nullopt);
     EXPECT_EQ(locationCode, retLocationCode);
 }
+
+TEST(CustomDBus, OperationalStatus)
+{
+    std::string tmpPath = "/abc/def";
+    bool status = false;
+    bool retStatus = false;
+
+    CustomDBus::getCustomDBus().setOperationalStatus(tmpPath, status);
+    retStatus = CustomDBus::getCustomDBus().getOperationalStatus(tmpPath);
+
+    EXPECT_EQ(status, false);
+    EXPECT_EQ(retStatus, false);
+
+    status = true;
+    CustomDBus::getCustomDBus().setOperationalStatus(tmpPath, status);
+    retStatus = CustomDBus::getCustomDBus().getOperationalStatus(tmpPath);
+
+    EXPECT_EQ(status, true);
+    EXPECT_EQ(retStatus, true);
+}
