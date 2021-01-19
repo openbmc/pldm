@@ -4,6 +4,7 @@
 
 #include "libpldm/fru.h"
 #include "libpldm/requester/pldm.h"
+#include "libpldm/state_set.h"
 #include "oem/ibm/libpldm/fru.h"
 
 #include "custom_dbus.hpp"
@@ -100,6 +101,7 @@ HostPDRHandler::HostPDRHandler(
                     this->sensorMap.clear();
                     this->responseReceived = false;
                     this->mergedHostParents = false;
+                    this->sensorMapIndex = objPathMap.begin();
                 }
             }
         });
@@ -168,6 +170,21 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
                                            pdr::EventState state)
 {
+    for (auto& entity : objPathMap)
+    {
+        pldm_entity node_entity = pldm_entity_extract(entity.second);
+
+        if (node_entity.entity_type != entry.entityType ||
+            node_entity.entity_instance_num != entry.entityInstance ||
+            node_entity.entity_container_id != entry.containerId)
+        {
+            continue;
+        }
+
+        CustomDBus::getCustomDBus().setOperationalStatus(entity.first, state);
+        break;
+    }
+
     auto rc = stateSensorHandler.eventAction(entry, state);
     if (rc != PLDM_SUCCESS)
     {
@@ -175,6 +192,7 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
                   << std::endl;
         return rc;
     }
+
     return PLDM_SUCCESS;
 }
 
@@ -704,10 +722,12 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
                         pldm::pdr::EntityInfo entityInfo{};
                         pldm::pdr::CompositeSensorStates
                             compositeSensorStates{};
+                        std::vector<pldm::pdr::StateSetId> stateSetIds{};
 
                         try
                         {
-                            std::tie(entityInfo, compositeSensorStates) =
+                            std::tie(entityInfo, compositeSensorStates,
+                                     stateSetIds) =
                                 lookupSensorInfo(sensorEntry);
                         }
                         catch (const std::out_of_range& e)
@@ -715,7 +735,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
                             try
                             {
                                 sensorEntry.terminusID = PLDM_TID_RESERVED;
-                                std::tie(entityInfo, compositeSensorStates) =
+                                std::tie(entityInfo, compositeSensorStates,
+                                         stateSetIds) =
                                     lookupSensorInfo(sensorEntry);
                             }
                             catch (const std::out_of_range& e)
@@ -907,6 +928,11 @@ void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
             return;
         }
 
+        sensorMapIndex = objPathMap.begin();
+
+        // update xyz.openbmc_project.State.Decorator.OperationalStatus
+        setOperationStatus();
+
         for (auto& entity : objPathMap)
         {
             pldm_entity node = pldm_entity_extract(entity.second);
@@ -948,6 +974,85 @@ void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
     }
 }
 
+void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
+                                                    uint8_t state,
+                                                    const std::string& path)
+{
+
+    auto instanceId = requester.getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    bitfield8_t bf;
+    bf.byte = 0;
+    auto rc = encode_get_state_sensor_readings_req(instanceId, sensorId, bf, 0,
+                                                   request);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(mctp_eid, instanceId);
+        std::cerr << "Failed to encode_get_state_sensor_readings_req, rc = "
+                  << rc << std::endl;
+        state = PLDM_OPERATIONAL_NON_RECOVERABLE_ERROR;
+        return;
+    }
+
+    state = PLDM_OPERATIONAL_ERROR;
+    auto getStateSensorReadingsResponseHandler = [this, path, &state](
+                                                     mctp_eid_t /*eid*/,
+                                                     const pldm_msg* response,
+                                                     size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            std::cerr << "Failed to receive response for the Get FRU Record "
+                         "Table\n";
+            return;
+        }
+
+        uint8_t cc = 0;
+        uint8_t sensorCnt = 0;
+        std::array<get_sensor_state_field, 8> stateField{};
+        auto responsePtr = reinterpret_cast<const struct pldm_msg*>(response);
+        auto rc = decode_get_state_sensor_readings_resp(
+            responsePtr, respMsgLen - sizeof(pldm_msg_hdr), &cc, &sensorCnt,
+            stateField.data());
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Faile to decode get state sensor readings resp, "
+                         "Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            state = PLDM_OPERATIONAL_NON_RECOVERABLE_ERROR;
+            return;
+        }
+
+        for (const auto& filed : stateField)
+        {
+            if (filed.present_state == PLDM_SENSOR_NORMAL)
+            {
+                state = PLDM_OPERATIONAL_NORMAL;
+                break;
+            }
+        }
+        CustomDBus::getCustomDBus().setOperationalStatus(path, state);
+
+        if (++sensorMapIndex != objPathMap.end())
+        {
+            setOperationStatus();
+        }
+    };
+
+    rc = handler->registerRequest(
+        mctp_eid, instanceId, PLDM_PLATFORM, PLDM_GET_STATE_SENSOR_READINGS,
+        std::move(requestMsg),
+        std::move(getStateSensorReadingsResponseHandler));
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to get the State Sensor Readings request\n";
+    }
+
+    return;
+}
+
 uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
                                 const pldm_entity& entity)
 {
@@ -959,7 +1064,8 @@ uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
             const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
 
         if (fruPdr->entity_type == entity.entity_type &&
-            fruPdr->entity_instance_num == entity.entity_instance_num)
+            fruPdr->entity_instance_num == entity.entity_instance_num &&
+            fruPdr->container_id == entity.entity_container_id)
         {
             fruRSI = fruPdr->fru_rsi;
             break;
@@ -969,9 +1075,45 @@ uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
     return fruRSI;
 }
 
+void HostPDRHandler::setOperationStatus()
+{
+    if (sensorMapIndex != objPathMap.end())
+    {
+
+        pldm_entity node = pldm_entity_extract(sensorMapIndex->second);
+
+        for (auto& sensor : sensorMap)
+        {
+            pldm::pdr::EntityInfo entityInfo{};
+            pldm::pdr::CompositeSensorStates compositeSensorStates{};
+            std::vector<pldm::pdr::StateSetId> stateSetIds{};
+            std::tie(entityInfo, compositeSensorStates, stateSetIds) =
+                sensor.second;
+            const auto& [containerId, entityType, entityInstance] = entityInfo;
+
+            if (node.entity_type != entityType ||
+                node.entity_instance_num != entityInstance ||
+                node.entity_container_id != containerId)
+            {
+                continue;
+            }
+            uint8_t state = 0;
+            if (compositeSensorStates.size() == 1 &&
+                stateSetIds[0] == PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS)
+            {
+                // set the dbus property only when its not a composite sensor
+                // and the state set it PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS
+                // Get sensorOpState property by the getStateSensorReadings
+                // command.
+                getPresentStateBySensorReadigs(sensor.first.sensorID, state,
+                                               sensorMapIndex->first);
+            }
+        }
+    }
+}
+
 void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
 {
-
     getFRURecordTableMetadataByHost(fruRecordSetPDRs);
 }
 
