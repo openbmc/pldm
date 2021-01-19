@@ -420,10 +420,11 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
 
         pldm::pdr::EntityInfo entityInfo{};
         pldm::pdr::CompositeSensorStates compositeSensorStates{};
+        std::vector<pldm::pdr::StateSetId> stateSetIds{};
 
         try
         {
-            std::tie(entityInfo, compositeSensorStates) =
+            std::tie(entityInfo, compositeSensorStates, stateSetIds) =
                 hostPDRHandler->lookupSensorInfo(sensorEntry);
         }
         catch (const std::out_of_range& e)
@@ -434,7 +435,7 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
             try
             {
                 sensorEntry.terminusID = PLDM_TID_RESERVED;
-                std::tie(entityInfo, compositeSensorStates) =
+                std::tie(entityInfo, compositeSensorStates, stateSetIds) =
                     hostPDRHandler->lookupSensorInfo(sensorEntry);
             }
             // If there is no mapping for events return PLDM_SUCCESS
