@@ -127,12 +127,14 @@ class HostPDRHandler
 
     /** @brief Handles state sensor event
      *
+     *  @param[in] stateSetId - state set Id
      *  @param[in] entry - state sensor entry
      *  @param[in] state - event state
      *
      *  @return PLDM completion code
      */
     int handleStateSensorEvent(
+        const std::vector<pldm::pdr::StateSetId>& stateSetId,
         const pldm::responder::events::StateSensorEntry& entry,
         pdr::EventState state);
 
@@ -254,6 +256,38 @@ class HostPDRHandler
     std::optional<uint16_t> getRSI(const PDRList& fruRecordSetPDRs,
                                    const pldm_entity& entity);
 
+    /** @brief Get present state from state sensor readings
+     *  @param[in] sensorId     - state sensor Id
+     *  @param[in] type         - entity type
+     *  @param[in] instance     - entity instance num
+     *  @param[in] containerId  - entity container id
+     *
+     *  @param[out] state     - pldm operational fault status
+     *  @param[in] path       - object path
+     *  @param[in] stateSetId - state set Id
+     */
+    void getPresentStateBySensorReadigs(uint16_t sensorId, uint16_t type,
+                                        uint16_t instance, uint16_t containerId,
+                                        uint8_t state, const std::string& path,
+                                        pldm::pdr::StateSetId stateSetId);
+
+    /** @brief Set the OperationalStatus interface
+     *  @return
+     */
+    void setOperationStatus();
+
+    /** @brief Get the Validity of a Terminus ID
+     *
+     *  @param[out] bool - true if valid, false otherwise
+     */
+    bool getValidity(const pldm::pdr::TerminusID& tid);
+
+    /** @brief Set the Present dbus Property
+     *  @param[in] path     - object path
+     *  @return
+     */
+    void setPresentPropertyStatus(const std::string& path);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -262,6 +296,7 @@ class HostPDRHandler
      *  work.
      */
     sdeventplus::Event& event;
+
     /** @brief pointer to BMC's primary PDR repo, host PDRs are added here */
     pldm_pdr* repo;
 
