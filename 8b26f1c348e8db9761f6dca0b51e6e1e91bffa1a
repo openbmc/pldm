@@ -2,6 +2,69 @@
   "comments": [
     {
       "key": {
+        "uuid": "34a1700f_5897b254",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "Instead of a seperate variable, 0 can be passed directly in the encode function.",
+      "range": {
+        "startLine": 118,
+        "startChar": 12,
+        "endLine": 118,
+        "endChar": 20
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34f52f52_77e2c9ba",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "can be a vector",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 23
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4822e097_40443de4",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "there is a memory leak",
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8ed743cb_b462e88f",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 5
@@ -18,6 +81,121 @@
         "startChar": 8,
         "endLine": 144,
         "endChar": 22
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8e258bd_bad2b2df",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "retCompletionCode",
+      "range": {
+        "startLine": 162,
+        "startChar": 12,
+        "endLine": 162,
+        "endChar": 31
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afd4ca8b_06cfefd5",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "retCompSensorCnt",
+      "range": {
+        "startLine": 163,
+        "startChar": 12,
+        "endLine": 163,
+        "endChar": 30
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ea7097c_1442e817",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "It can be a vector",
+      "range": {
+        "startLine": 165,
+        "startChar": 4,
+        "endLine": 165,
+        "endChar": 58
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6848f639_5a3be1fb",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "retStateField",
+      "range": {
+        "startLine": 165,
+        "startChar": 42,
+        "endLine": 165,
+        "endChar": 58
+      },
+      "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "310ea7da_4a54b4bf",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-01-20T11:26:03Z",
+      "side": 1,
+      "message": "is it always a non-composite_sensor? Just for my understanding, can\u0027t there be retStateField[1]?",
+      "range": {
+        "startLine": 176,
+        "startChar": 8,
+        "endLine": 176,
+        "endChar": 24
       },
       "revId": "8b26f1c348e8db9761f6dca0b51e6e1e91bffa1a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
