@@ -87,17 +87,33 @@ executable(
   install: true,
   install_dir: get_option('bindir'))
 
-systemd = dependency('systemd')
 systemd_system_unit_dir = systemd.get_pkgconfig_variable(
     'systemdsystemunitdir',
     define_variable: ['prefix', get_option('prefix')])
 configure_file(
   copy: true,
-  input: 'pldmd/pldmd.service',
+  input: 'pldmd/service_files/pldmd.service',
   install: true,
   install_dir: systemd_system_unit_dir,
   output: 'pldmd.service',
 )
+
+if get_option('oem-ibm').enabled()
+  configure_file(
+  copy: true,
+  input: 'oem/ibm/service_files/pldm-create-phyp-nvram.service',
+  install: true,
+  install_dir: systemd_system_unit_dir,
+  output: 'pldm-create-phyp-nvram.service',
+)
+  configure_file(
+  copy: true,
+  input: 'oem/ibm/service_files/pldm-create-phyp-nvram-cksum.service',
+  install: true,
+  install_dir: systemd_system_unit_dir,
+  output: 'pldm-create-phyp-nvram-cksum.service',
+)
+endif
 
 subdir('pldmtool')
 
