@@ -89,17 +89,21 @@ executable(
   install: true,
   install_dir: get_option('bindir'))
 
-systemd = dependency('systemd')
 systemd_system_unit_dir = systemd.get_pkgconfig_variable(
     'systemdsystemunitdir',
     define_variable: ['prefix', get_option('prefix')])
+
 configure_file(
   copy: true,
-  input: 'pldmd/pldmd.service',
+  input: 'pldmd/service_files/pldmd.service',
   install: true,
   install_dir: systemd_system_unit_dir,
   output: 'pldmd.service',
 )
+
+if get_option('oem-ibm').enabled()
+  subdir('oem/ibm/service_files')
+endif
 
 subdir('pldmtool')
 

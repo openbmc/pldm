@@ -1,142 +1,6 @@
 {
    "entries":[
       {
-         "attribute_name":"pvm-fw-boot-side",
-         "possible_values":[
-            "Perm",
-            "Temp"
-         ],
-         "default_values":[
-            "Temp"
-         ],
-         "helpText" : "pvm-fw-boot-side",
-         "displayName" : "pvm-fw-boot-side"
-      },
-      {
-         "attribute_name":"pvm-os-boot-side",
-         "possible_values":[
-            "Perm",
-            "Temp"
-         ],
-         "default_values":[
-            "Temp"
-         ],
-         "helpText" : "pvm-os-boot-side",
-         "displayName" : "pvm-os-boot-side"
-      },
-      {
-         "attribute_name":"pvm-inband-code-update",
-         "possible_values":[
-            "Allowed",
-            "Not Allowed"
-         ],
-         "default_values":[
-            "Allowed"
-         ],
-         "helpText" : "pvm-inband-code-update",
-         "displayName" : "pvm-inband-code-update"
-      },
-      {
-         "attribute_name":"pvm-surveillance",
-         "possible_values":[
-            "Disabled",
-            "Enabled"
-         ],
-         "default_values":[
-            "Enabled"
-         ],
-         "helpText" : "pvm-surveillance",
-         "displayName" : "pvm-surveillance"
-      },
-      {
-         "attribute_name":"pvm-pcie-error-inject",
-         "possible_values":[
-            "Disabled",
-            "Enabled"
-         ],
-         "default_values":[
-            "Enabled"
-         ],
-         "helpText" : "pvm-pcie-error-inject",
-         "displayName" : "pvm-pcie-error-inject"
-      },
-      {
-         "attribute_name":"vmi-if0-ipv4-method",
-         "possible_values":[
-            "IPv4Static",
-            "IPv4DHCP"
-         ],
-         "default_values":[
-            "IPv4Static"
-         ],
-         "helpText" : "vmi-if0-ipv4-method",
-         "displayName" : "vmi-if0-ipv4-method"
-      },
-      {
-         "attribute_name":"vmi-if1-ipv4-method",
-         "possible_values":[
-            "IPv4Static",
-            "IPv4DHCP"
-         ],
-         "default_values":[
-            "IPv4Static"
-         ],
-         "helpText" : "vmi-if1-ipv4-method",
-         "displayName" : "vmi-if1-ipv4-method"
-      },
-      {
-        "attribute_name":"hb-hyp-switch",
-        "possible_values":[
-            "PowerVM",
-            "OPAL"
-        ],
-        "default_values":[
-            "PowerVM"
-        ],
-        "helpText" : "hb-hyp-switch",
-        "displayName" : "hb-hyp-switch",
-        "dbus":
-            {
-             "object_path" : "/com/ibm/host0/hypervisor",
-             "interface" : "com.ibm.Host.Target",
-             "property_name" : "Target",
-             "property_type" : "string",
-             "property_values" : ["com.ibm.Host.Target.Hypervisor.PowerVM" , "com.ibm.Host.Target.Hypervisor.OPAL"]
-            }
-      },
-      {
-         "attribute_name":"pvm-stop-at-standby",
-         "possible_values":[
-            "Disabled",
-            "Enabled"
-         ],
-         "default_values":[
-            "Enabled"
-         ],
-         "helpText" : "pvm-stop-at-standby",
-         "displayName" : "pvm-stop-at-standby",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/control/host0/boot",
-               "interface" : "xyz.openbmc_project.Control.Boot.Mode",
-               "property_name" : "BootMode",
-               "property_type" : "string",
-               "property_values" : ["xyz.openbmc_project.Control.Boot.Mode.Modes.Regular", "xyz.openbmc_project.Control.Boot.Mode.Modes.Setup"]
-            }
-      },
-      {
-          "attribute_name":"hb-debug-console",
-          "possible_values":[
-             "Disabled",
-             "Enabled"
-          ],
-          "default_values":[
-             "Disabled"
-          ],
-          "helpText" : "When set to Enabled Hostboot should emit debug trace information to the VUART2 device.",
-          "displayName" : "hb-debug-console"
-      },
-      {
          "attribute_name":"pvm_fw_boot_side",
          "possible_values":[
             "Perm",
@@ -230,15 +94,7 @@
             "PowerVM"
          ],
          "helpText" : "hb_hyp_switch",
-         "displayName" : "hb_hyp_switch",
-         "dbus":
-            {
-             "object_path" : "/com/ibm/host0/hypervisor",
-             "interface" : "com.ibm.Host.Target",
-             "property_name" : "Target",
-             "property_type" : "string",
-             "property_values" : ["com.ibm.Host.Target.Hypervisor.PowerVM" , "com.ibm.Host.Target.Hypervisor.OPAL"]
-            }
+         "displayName" : "hb_hyp_switch"
       },
       {
          "attribute_name":"pvm_stop_at_standby",
@@ -250,15 +106,7 @@
             "Enabled"
          ],
          "helpText" : "pvm_stop_at_standby",
-         "displayName" : "pvm_stop_at_standby",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/control/host0/boot",
-               "interface" : "xyz.openbmc_project.Control.Boot.Mode",
-               "property_name" : "BootMode",
-               "property_type" : "string",
-               "property_values" : ["xyz.openbmc_project.Control.Boot.Mode.Modes.Regular", "xyz.openbmc_project.Control.Boot.Mode.Modes.Setup"]
-            }
+         "displayName" : "pvm_stop_at_standby"
       },
       {
          "attribute_name":"hb_debug_console",

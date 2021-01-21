@@ -1,84 +1,6 @@
 {
    "entries":[
       {
-         "attribute_name" : "pvm-system-name",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 0,
-         "maximum_string_length" : 100,
-         "default_string_length" : 0,
-         "default_string" : "",
-         "helpText" : "pvm-system-name",
-         "displayName" : "pvm-system-name"
-      },
-      {
-         "attribute_name" : "vmi-hostname",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 0,
-         "maximum_string_length" : 255,
-         "default_string_length" : 0,
-         "default_string" : "",
-         "helpText" : "vmi-hostname",
-         "displayName" : "vmi-hostname",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor",
-               "interface" : "xyz.openbmc_project.Network.SystemConfiguration",
-               "property_name" : "HostName",
-               "property_type" : "string"
-            }
-      },
-      {
-         "attribute_name" : "vmi-ipv4-gateway",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 7,
-         "maximum_string_length" : 15,
-         "default_string_length" : 7,
-         "default_string" : "0.0.0.0",
-         "helpText" : "vmi-ipv4-gateway",
-         "displayName" : "vmi-ipv4-gateway",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor",
-               "interface" : "xyz.openbmc_project.Network.SystemConfiguration",
-               "property_name" : "DefaultGateway",
-               "property_type" : "string"
-            }
-      },
-      {
-         "attribute_name" : "vmi-if0-ipv4-ipaddr",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 7,
-         "maximum_string_length" : 15,
-         "default_string_length" : 7,
-         "default_string" : "0.0.0.0",
-         "helpText" : "vmi-if0-ipv4-ipaddr",
-         "displayName" : "vmi-if0-ipv4-ipaddr",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor/eth0/ipv4/addr0",
-               "interface" : "xyz.openbmc_project.Network.IP",
-               "property_name" : "Address",
-               "property_type" : "string"
-            }
-      },
-      {
-         "attribute_name" : "vmi-if1-ipv4-ipaddr",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 7,
-         "maximum_string_length" : 15,
-         "default_string_length" : 7,
-         "default_string" : "0.0.0.0",
-         "helpText" : "vmi-if1-ipv4-ipaddr",
-         "displayName" : "vmi-if1-ipv4-ipaddr",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor/eth1/ipv4/addr0",
-               "interface" : "xyz.openbmc_project.Network.IP",
-               "property_name" : "Address",
-               "property_type" : "string"
-            }
-      },
-      {
          "attribute_name" : "pvm_system_name",
          "string_type" : "ASCII",
          "minimum_string_length" : 0,
@@ -96,31 +18,27 @@
          "default_string_length" : 0,
          "default_string" : "",
          "helpText" : "vmi_hostname",
-         "displayName" : "vmi_hostname",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor",
-               "interface" : "xyz.openbmc_project.Network.SystemConfiguration",
-               "property_name" : "HostName",
-               "property_type" : "string"
-            }
+         "displayName" : "vmi_hostname"
       },
       {
-         "attribute_name" : "vmi_ipv4_gateway",
+         "attribute_name" : "vmi_if0_ipv4_gateway",
          "string_type" : "ASCII",
          "minimum_string_length" : 7,
          "maximum_string_length" : 15,
          "default_string_length" : 7,
          "default_string" : "0.0.0.0",
-         "helpText" : "vmi_ipv4_gateway",
-         "displayName" : "vmi_ipv4_gateway",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor",
-               "interface" : "xyz.openbmc_project.Network.SystemConfiguration",
-               "property_name" : "DefaultGateway",
-               "property_type" : "string"
-            }
+         "helpText" : "vmi_if0_ipv4_gateway",
+         "displayName" : "vmi_if0_ipv4_gateway"
+      },
+	  {
+         "attribute_name" : "vmi_if1_ipv4_gateway",
+         "string_type" : "ASCII",
+         "minimum_string_length" : 7,
+         "maximum_string_length" : 15,
+         "default_string_length" : 7,
+         "default_string" : "0.0.0.0",
+         "helpText" : "vmi_if1_ipv4_gateway",
+         "displayName" : "vmi_if1_ipv4_gateway"
       },
       {
          "attribute_name" : "vmi_if0_ipv4_ipaddr",
@@ -130,14 +48,7 @@
          "default_string_length" : 7,
          "default_string" : "0.0.0.0",
          "helpText" : "vmi_if0_ipv4_ipaddr",
-         "displayName" : "vmi_if0_ipv4_ipaddr",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor/eth0/ipv4/addr0",
-               "interface" : "xyz.openbmc_project.Network.IP",
-               "property_name" : "Address",
-               "property_type" : "string"
-            }
+         "displayName" : "vmi_if0_ipv4_ipaddr"
       },
       {
          "attribute_name" : "vmi_if1_ipv4_ipaddr",
@@ -147,14 +58,7 @@
          "default_string_length" : 7,
          "default_string" : "0.0.0.0",
          "helpText" : "vmi_if1_ipv4_ipaddr",
-         "displayName" : "vmi_if1_ipv4_ipaddr",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/network/hypervisor/eth1/ipv4/addr0",
-               "interface" : "xyz.openbmc_project.Network.IP",
-               "property_name" : "Address",
-               "property_type" : "string"
-            }
+         "displayName" : "vmi_if1_ipv4_ipaddr"
       }
     ]
 }
