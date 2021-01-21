@@ -649,12 +649,6 @@ int decode_get_state_sensor_readings_resp(const struct pldm_msg *msg,
 		return PLDM_SUCCESS;
 	}
 
-	if (payload_length >
-	    PLDM_GET_STATE_SENSOR_READINGS_MIN_RESP_BYTES +
-		sizeof(get_sensor_state_field) * *comp_sensor_count) {
-		return PLDM_ERROR_INVALID_LENGTH;
-	}
-
 	struct pldm_get_state_sensor_readings_resp *response =
 	    (struct pldm_get_state_sensor_readings_resp *)msg->payload;
 
@@ -662,9 +656,13 @@ int decode_get_state_sensor_readings_resp(const struct pldm_msg *msg,
 	    response->comp_sensor_count > 0x8) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-	if (response->comp_sensor_count > *comp_sensor_count) {
+
+	if (payload_length >
+	    PLDM_GET_STATE_SENSOR_READINGS_MIN_RESP_BYTES +
+		sizeof(get_sensor_state_field) * response->comp_sensor_count) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
+
 	*comp_sensor_count = response->comp_sensor_count;
 
 	memcpy(field, response->field,
