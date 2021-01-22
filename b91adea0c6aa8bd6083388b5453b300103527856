@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1d015c7_b3091cfe",
+        "filename": "pldmd/service_files/pldm-create-phyp-nvram.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-22T05:37:49Z",
+      "side": 1,
+      "message": "Could we move the services to the relevant OEM subdirs?",
+      "revId": "b91adea0c6aa8bd6083388b5453b300103527856",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
