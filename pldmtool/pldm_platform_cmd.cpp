@@ -14,6 +14,30 @@ namespace
 {
 
 using namespace pldmtool::helper;
+
+const std::map<uint8_t, std::string> sensorPresState{
+    {PLDM_SENSOR_UNKNOWN, "Sensor Unknown"},
+    {PLDM_SENSOR_NORMAL, "Sensor Normal"},
+    {PLDM_SENSOR_WARNING, "Sensor Warning"},
+    {PLDM_SENSOR_CRITICAL, "Sensor Critical"},
+    {PLDM_SENSOR_FATAL, "Sensor Fatal"},
+    {PLDM_SENSOR_LOWERWARNING, "Sensor Lower Warning"},
+    {PLDM_SENSOR_LOWERCRITICAL, "Sensor Lower Critical"},
+    {PLDM_SENSOR_LOWERFATAL, "Sensor Lower Fatal"},
+    {PLDM_SENSOR_UPPERWARNING, "Sensor Upper Warning"},
+    {PLDM_SENSOR_UPPERCRITICAL, "Sensor Upper Critical"},
+    {PLDM_SENSOR_UPPERFATAL, "Sensor Upper Fatal"}};
+
+const std::map<uint8_t, std::string> sensorOpState{
+    {PLDM_SENSOR_ENABLED, "Sensor Enabled"},
+    {PLDM_SENSOR_DISABLED, "Sensor Disabled"},
+    {PLDM_SENSOR_UNAVAILABLE, "Sensor Unavailable"},
+    {PLDM_SENSOR_STATUSUNKOWN, "Sensor Status Unknown"},
+    {PLDM_SENSOR_FAILED, "Sensor Failed"},
+    {PLDM_SENSOR_INITIALIZING, "Sensor Sensor Intializing"},
+    {PLDM_SENSOR_SHUTTINGDOWN, "Sensor Shutting down"},
+    {PLDM_SENSOR_INTEST, "Sensor Intest"}};
+
 std::vector<std::unique_ptr<CommandInterface>> commands;
 
 } // namespace
@@ -729,6 +753,85 @@ class SetNumericEffecterValue : public CommandInterface
     uint64_t maxEffecterValue;
 };
 
+class GetStateSensorReadings : public CommandInterface
+{
+  public:
+    ~GetStateSensorReadings() = default;
+    GetStateSensorReadings() = delete;
+    GetStateSensorReadings(const GetStateSensorReadings&) = delete;
+    GetStateSensorReadings(GetStateSensorReadings&&) = default;
+    GetStateSensorReadings& operator=(const GetStateSensorReadings&) = delete;
+    GetStateSensorReadings& operator=(GetStateSensorReadings&&) = default;
+
+    explicit GetStateSensorReadings(const char* type, const char* name,
+                                    CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-i, --id", sensorId,
+               "A handle that is used to identify and access the sensor")
+            ->required();
+        app->add_option("-r, --rearm", sensorRearm,
+                        "Each bit location in this field corresponds to a "
+                        "particular sensor")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        uint8_t reserved = 0;
+        bitfield8_t bf;
+        bf.byte = sensorRearm;
+        auto rc = encode_get_state_sensor_readings_req(instanceId, sensorId, bf,
+                                                       reserved, request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = 0;
+        uint8_t compSensorCount = 0;
+        std::array<get_sensor_state_field, 8> stateField{};
+        auto rc = decode_get_state_sensor_readings_resp(
+            responsePtr, payloadLength, &completionCode, &compSensorCount,
+            stateField.data());
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)completionCode
+                      << std::endl;
+            return;
+        }
+        ordered_json output;
+        output["compositeSensorCount"] = (uint16_t)compSensorCount;
+
+        for (size_t i = 0; i < compSensorCount; i++)
+        {
+
+            output.emplace(("sensorOpState[" + std::to_string(i) + "]"),
+                           sensorOpState.at(stateField[i].sensor_op_state));
+            output.emplace(("presentState[" + std::to_string(i) + "]"),
+                           sensorPresState.at(stateField[i].present_state));
+            output.emplace(("previousState[" + std::to_string(i) + "]"),
+                           sensorPresState.at(stateField[i].previous_state));
+            output.emplace(("eventState[" + std::to_string(i) + "]"),
+                           sensorPresState.at(stateField[i].event_state));
+        }
+
+        pldmtool::helper::DisplayInJson(output);
+    }
+
+  private:
+    uint16_t sensorId;
+    uint8_t sensorRearm;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
@@ -747,6 +850,11 @@ void registerCommand(CLI::App& app)
         "SetNumericEffecterValue", "set the value for a PLDM Numeric Effecter");
     commands.push_back(std::make_unique<SetNumericEffecterValue>(
         "platform", "setNumericEffecterValue", setNumericEffecterValue));
+
+    auto getStateSensorReadings = platform->add_subcommand(
+        "GetStateSensorReadings", "get the state sensor reading");
+    commands.push_back(std::make_unique<GetStateSensorReadings>(
+        "platform", "getStateSensorReadings", getStateSensorReadings));
 }
 
 } // namespace platform
