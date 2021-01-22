@@ -729,6 +729,70 @@ class SetNumericEffecterValue : public CommandInterface
     uint64_t maxEffecterValue;
 };
 
+class GetStateSensorReadings: public CommandInterface
+{
+  public:
+    ~GetStateSensorReadings() = default;
+    GetStateSensorReadings() = delete;
+    GetStateSensorReadings(const GetStateSensorReadings&) = delete;
+    GetStateSensorReadings(GetStateSensorReadings&&) = default;
+    GetStateSensorReadings& operator=(const GetStateSensorReadings&) = delete;
+    GetStateSensorReadings& operator=(GetStateSensorReadings&&) = default;
+
+    explicit GetStateSensorReadings(const char* type, const char* name,
+                                     CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-i, --id", sensorId,
+               "A handle that is used to identify and access the sensor")
+            ->required();
+        /*app->add_option("-r, --rearm", sensorRearm,
+               "Each bit location in this field corresponds to a particular")
+            ->required();*/
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+            PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        uint8_t reserved = 0;
+        bitfield8_t sensorRearm;
+        sensorRearm.byte = 0;
+        auto rc = encode_get_state_sensor_readings_req(
+            instanceId, sensorId, sensorRearm, reserved, request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = 0;
+        uint8_t compSensorCount = 0;
+        std::vector<get_sensor_state_field> stateField{};
+        auto rc = decode_get_state_sensor_readings_resp(
+            responsePtr, payloadLength, &completionCode, &compSensorCount,
+            stateField.data());
+
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)completionCode
+                      << std::endl;
+            return;
+        }
+
+    }
+
+  private:
+    uint16_t sensorId;
+//    bitfield8_t sensorRearm;
+};
+
+
 void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
@@ -747,6 +811,11 @@ void registerCommand(CLI::App& app)
         "SetNumericEffecterValue", "set the value for a PLDM Numeric Effecter");
     commands.push_back(std::make_unique<SetNumericEffecterValue>(
         "platform", "setNumericEffecterValue", setNumericEffecterValue));
+
+    auto getStateSensorReadings = platform->add_subcommand(
+        "GetStateSensorReadings", "get the state sensor reading");
+    commands.push_back(std::make_unique<GetStateSensorReadings>(
+        "platform", "getStateSensorReadings", getStateSensorReadings));
 }
 
 } // namespace platform
