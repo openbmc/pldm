@@ -675,7 +675,7 @@ TEST(GetStateSensorReadings, testBadDecodeResponse)
            (sizeof(get_sensor_state_field) * comp_sensorCnt));
 
     rc = decode_get_state_sensor_readings_resp(
-        response, responseMsg.size() - hdrSize + 1, &retcompletion_code,
+        response, responseMsg.size() - hdrSize + 1, &retcompletion_code, 
         &retcomp_sensorCnt, retstateField.data());
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
