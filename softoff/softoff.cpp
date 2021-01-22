@@ -82,8 +82,10 @@ int SoftPowerOff::getHostState()
                 "/xyz/openbmc_project/state/host0", "CurrentHostState",
                 "xyz.openbmc_project.State.Host");
 
-        if (std::get<std::string>(propertyValue) !=
-            "xyz.openbmc_project.State.Host.HostState.Running")
+        if ((std::get<std::string>(propertyValue) !=
+             "xyz.openbmc_project.State.Host.HostState.Running") &&
+            (std::get<std::string>(propertyValue) !=
+             "xyz.openbmc_project.State.Host.HostState.TransitioningToOff"))
         {
             // Host state is not "Running", this app should return success
             completed = true;
