@@ -112,11 +112,11 @@ int CertHandler::newFileAvailable(uint64_t length)
     }
     if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
     {
-        fileFd = open(clientCertPath, flags);
+        fileFd = open(clientCertPath, flags, S_IRUSR | S_IWUSR);
     }
     else if (certType == PLDM_FILE_TYPE_ROOT_CERT)
     {
-        fileFd = open(rootCertPath, flags);
+        fileFd = open(rootCertPath, flags, S_IRUSR | S_IWUSR);
     }
     if (fileFd == -1)
     {
