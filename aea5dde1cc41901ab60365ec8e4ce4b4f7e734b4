@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e3720bd1_dea9e2a1",
+        "filename": "libpldm/state_set.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-25T12:14:34Z",
+      "side": 1,
+      "message": "Why not have these in an enum as well?",
+      "revId": "aea5dde1cc41901ab60365ec8e4ce4b4f7e734b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28f8480b_a31dadfc",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-25T12:14:34Z",
+      "side": 1,
+      "message": "Any reason this is a separate setter API as opposed to passing the oem handler to the ctor?",
+      "revId": "aea5dde1cc41901ab60365ec8e4ce4b4f7e734b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9868d7c_34e5c1e1",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-25T12:14:34Z",
+      "side": 1,
+      "message": "Why do we really need multiple OEM_ flags and passing around of handlers from OEM to standard and vice versa? Can this be:\n\n#ifdef OEM_IBM\ncreateOEMIBMHandlers(\u003cpointers to standard handlers\u003e)?\n#endif\n\nThat way this file will not bloat up with OEM code.",
+      "revId": "aea5dde1cc41901ab60365ec8e4ce4b4f7e734b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
