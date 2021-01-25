@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c508a08_c3c0eefe",
+        "filename": "meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-25T12:25:24Z",
+      "side": 1,
+      "message": "Should we do a subdir for the OEM stuff?",
+      "revId": "86b03ed9b223147b4f54d9c6bdc7721907eefa39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "872efb05_d780234d",
+        "filename": "meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-01-25T12:25:24Z",
+      "side": 1,
+      "message": "Could this be done in a loop?",
+      "revId": "86b03ed9b223147b4f54d9c6bdc7721907eefa39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
