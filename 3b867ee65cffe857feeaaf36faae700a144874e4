@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8713b197_6cf47728",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-26T02:30:58Z",
+      "side": 1,
+      "message": "The size of the vector should be initialized, otherwise stateField.data() \u003d null (L:777), and rc \u003d 2.",
+      "range": {
+        "startLine": 774,
+        "startChar": 44,
+        "endLine": 774,
+        "endChar": 57
+      },
+      "revId": "3b867ee65cffe857feeaaf36faae700a144874e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
