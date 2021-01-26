@@ -11,6 +11,7 @@
 
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <sdbusplus/timer.hpp>
 
 #include <deque>
 #include <map>
@@ -143,6 +144,8 @@ class HostPDRHandler
 
     void setHostState();
 
+    bool isHostUp();
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -200,7 +203,10 @@ class HostPDRHandler
      */
     HostStateSensorMap sensorMap;
 
-    inline static bool isHostUp;
+    //inline static bool isHostUp;
+    bool responseReceived;
+    bool timeOut;
+    uint8_t insId;
 };
 
 } // namespace pldm

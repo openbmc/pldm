@@ -242,11 +242,20 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "pldmd before fetchPDRsOnStart \n";
-    hostPDRHandler->fetchPDRsOnStart();
-    std::cout << "pldmd after fetchPDRsOnStart \n";
+    /*std::cout << "before setHostState \n";
     hostPDRHandler->setHostState();
     std::cout << "pldmd after setHostState \n";
+    if(hostPDRHandler->isHostUp())
+    {
+        std::cout << "Host is up fetching pdr \n";
+        std::cout << "pldmd before fetchPDRsOnStart \n";
+        hostPDRHandler->fetchPDRsOnStart();
+        std::cout << "pldmd after fetchPDRsOnStart \n";
+    }
+    else
+    {
+        std::cout << "Host is not up will not do pdr exchange \n";
+    }*/
 
     std::cout << "pldmd before callback \n";
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
@@ -254,6 +263,7 @@ int main(int argc, char** argv)
         bus, "/xyz/openbmc_project/pldm");
     auto callback = [verbose, &invoker, &dbusImplReq](IO& io, int fd,
                                                       uint32_t revents) {
+        std::cout << "entered pldmd callback with revents " << revents << "\n";
         if (!(revents & EPOLLIN))
         {
             return;
@@ -269,8 +279,10 @@ int main(int argc, char** argv)
 
         int returnCode = 0;
         ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);
+        std::cout << "after recv \n";
         if (0 == peekedLength)
         {
+            std::cout << "peekedLength 0 \n";
             // MCTP daemon has closed the socket this daemon is connected to.
             // This may or may not be an error scenario, in either case the
             // recovery mechanism for this daemon is to restart, and hence exit
@@ -285,6 +297,7 @@ int main(int argc, char** argv)
         }
         else
         {
+            std::cout << "going to peekedLength \n";
             std::vector<uint8_t> requestMsg(peekedLength);
             auto recvDataLength = recv(
                 fd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
@@ -348,7 +361,26 @@ int main(int argc, char** argv)
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
+    std::cout << "created IO object in pldmd \n";
+
+    std::cout << "before setHostState \n";
+    hostPDRHandler->setHostState();
+    std::cout << "pldmd after setHostState \n";
+    if(hostPDRHandler->isHostUp())
+    {
+        std::cout << "Host is up fetching pdr \n";
+        std::cout << "pldmd before fetchPDRsOnStart \n";
+        hostPDRHandler->fetchPDRsOnStart();
+        std::cout << "pldmd after fetchPDRsOnStart \n";
+    }
+    else
+    {
+        std::cout << "Host is not up will not do pdr exchange \n";
+    }
+    std::cout << "before event loop pldmd \n";
+
     event.loop();
+    std::cout << "after event loop pldmd \n";
 
     result = shutdown(sockfd, SHUT_RDWR);
     if (-1 == result)

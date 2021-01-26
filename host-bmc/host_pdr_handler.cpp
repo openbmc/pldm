@@ -4,6 +4,10 @@
 
 #include "libpldm/requester/pldm.h"
 
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/source/io.hpp>
+#include <sdeventplus/source/time.hpp>
+
 #include <assert.h>
 
 #include <nlohmann/json.hpp>
@@ -31,7 +35,7 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     requester(requester)
 {
-    isHostUp = false;
+    //isHostUp = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -83,13 +87,13 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                 {
                     pldm_pdr_remove_remote_pdrs(repo);
                     this->sensorMap.clear();
-                    isHostUp = false;
+                    //isHostUp = false;
                     std::cout
                         << "inside hostOffMatch changing HostState off \n";
                 }
                 else
                 {
-                    isHostUp = true;
+                   // isHostUp = true;
                     std::cout << "inside hostOffMatch setting isHostUp true \n";
                 }
             }
@@ -160,18 +164,6 @@ void HostPDRHandler::fetchPDRsOnStart()
         auto requesterRc =
             pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(),
                            requestMsg.size(), &responseMsg, &responseMsgSize);
-        // std::cout << "trying the tool way \n";
-        // int fd = pldm_open();
-        // if (-1 == fd)
-        // {
-        //     std::cerr << "failed to init mctp " ;
-        //     return;
-        // }
-        // std::cout << "trying fd " << (uint32_t)fd << "\n";
-        //  auto requesterRc =
-        //              pldm_send_recv(mctp_eid, fd, requestMsg.data(),
-        //            requestMsg.size(), &responseMsg, &responseMsgSize);
-        // std::cout << "after pldm_send_recv \n";
 
         std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
             responseMsg, std::free};
@@ -180,7 +172,7 @@ void HostPDRHandler::fetchPDRsOnStart()
         {
             std::cerr << "Failed to send msg to fetch pdrs, rc = "
                       << requesterRc << std::endl;
-            isHostUp = false;
+            //isHostUp = false;
             return;
         }
 
@@ -199,7 +191,7 @@ void HostPDRHandler::fetchPDRsOnStart()
         {
             std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc
                       << std::endl;
-            isHostUp = false;
+           // isHostUp = false;
         }
         else
         {
@@ -214,11 +206,11 @@ void HostPDRHandler::fetchPDRsOnStart()
                           << "rc=" << rc
                           << ", cc=" << static_cast<unsigned>(completionCode)
                           << std::endl;
-                isHostUp = false;
+               // isHostUp = false;
             }
             else
             {
-                isHostUp = true;
+               // isHostUp = true;
                 // Process the PDR host firmware sent us. The most common action
                 // is to add the PDR to the the BMC's PDR repo.
                 auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
@@ -454,9 +446,127 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,
 
 void HostPDRHandler::setHostState()
 {
-    std::cout << "enter setHostState \n";
+    using namespace sdeventplus;
+    using namespace sdeventplus::source;
+    constexpr auto clockId = sdeventplus::ClockId::RealTime;
+    using Clock = Clock<clockId>;
+    using Timer = Time<clockId>;
 
+    std::cout << "enter setHostState \n";
+    auto event1 = sdeventplus::Event::get_default();
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    bus.attach_event(event1.get(), SD_EVENT_PRIORITY_NORMAL);
+    std::cout << "created event \n";
+
+    responseReceived = false;
+    timeOut = false; 
+
+    int fd = pldm_open();
+    if (-1 == fd)
+    {
+        std::cerr << "Failed to connect to mctp demux daemon \n";
+        return;
+    }
+    std::cout << "created new socket " << (uint32_t)fd << "\n";
+
+    auto timerCallback = [=](Timer& /*source*/, Timer::TimePoint /*time*/) {
+        timeOut = true;
+        if (!responseReceived)
+        {
+            std::cerr << "PLDM did not get response from host"
+                         " Host seems to be off set host state here \n";
+           // isHostUp = false;             
+        }
+        return;
+    };
+    Timer time(event1, (Clock(event1).now() + std::chrono::seconds{5}),
+               std::chrono::seconds{1}, std::move(timerCallback));
+
+    auto callback = [=](IO& /*io*/, int fd, uint32_t revents) {
+        std::cout << "entering host_pdr callback \n";
+        if (!(revents & EPOLLIN))
+        {
+            return;
+        }
+        uint8_t* responseMsg = nullptr;
+        size_t responseMsgSize{};
+
+        auto rc = pldm_recv(mctp_eid, fd, insId, &responseMsg,
+                            &responseMsgSize);
+        if(rc != PLDM_REQUESTER_SUCCESS)
+        {
+            std::cout << "pldm_recv returned " << rc << "\n";
+            return;
+        }
+        std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
+                       responseMsg, std::free};
+        auto response = reinterpret_cast<pldm_msg*>(responseMsgPtr.get());
+        std::cerr << "Getting the response. PLDM RC = " << std::hex
+                  << std::showbase
+                  << static_cast<uint16_t>(response->payload[0]) << "\n";
+        responseReceived = true;
+       // isHostUp = true;
+        return;
+    };
+    IO io(event1,fd /* mctp_fd*/, EPOLLIN, std::move(callback));
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                   PLDM_GET_PDR_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    uint32_t recordHandle{};
+    insId = requester.getInstanceId(mctp_eid);
+    auto rc = encode_get_pdr_req(insId,recordHandle, 0, PLDM_GET_FIRSTPART,
+                  UINT16_MAX, 0, request, PLDM_GET_PDR_REQ_BYTES);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(mctp_eid, insId);
+        std::cerr << "Failed to encode_get_pdr_req, rc = " << rc
+                  << std::endl;
+        return;
+    }
+    std::cout << "before pldm_send \n";
+    rc = pldm_send(mctp_eid,fd /* mctp_fd*/, requestMsg.data(), requestMsg.size());
+    std::cout << "after pldm_send \n";
+
+    if (0 > rc)
+    {
+        std::cerr << "Failed to send message RC = " << rc
+                  << ", errno = " << errno << "\n";
+                  return;
+    }
+    while(1)
+    {
+        if(responseReceived)
+        {
+            requester.markFree(mctp_eid, insId);
+            std::cout << "response received break \n";
+            break;
+        }
+        if(timeOut)
+        {
+            requester.markFree(mctp_eid, insId);
+            std::cout << "timed out break \n";
+            break;
+        }
+        try
+        {
+            std::cout << "before event loop run \n";
+            event1.run(std::nullopt);
+            std::cout << "after event loop run \n";
+        }
+        catch (const sdeventplus::SdEventError& e)
+        {
+            std::cerr << "Failure in processing request.ERROR= "
+                      << e.what() << "\n";
+            return;
+        }
+    }
+                  
     std::cout << "exit setHostState \n";
+}
+
+bool HostPDRHandler::isHostUp()
+{
+    return responseReceived;
 }
 
 } // namespace pldm
