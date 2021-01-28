@@ -199,7 +199,7 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         }
         catch (const std::exception& e)
         {
-            continue;
+            // continue;
         }
 
         pldm::utils::DBusMapping dbusMapping{objectPath, interface,
