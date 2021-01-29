@@ -1,0 +1,216 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b45712f_446f29aa",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "I do not understand why `return` and `break` appear at the same time in switch?\nCould you refactor these code?\nIf so, Maybe you can use `if,else if, else`",
+      "range": {
+        "startLine": 155,
+        "startChar": 12,
+        "endLine": 156,
+        "endChar": 18
+      },
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92477e1f_f52ca36d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "This is a complicated judgment logic, I think you should refactor these.\n\ne.g:\n        if (dumpType \u003d\u003d PLDM_FILE_TYPE_DUMP)\n        {\n            method.append(dumpObjPath);\n            method.append(0);\n            method.append(std::vector\u003cstd::string\u003e({systemDumpEntry}));\n        }\n        else if ((dumpType \u003d\u003d PLDM_FILE_TYPE_RESOURCE_DUMP) ||\n                 (dumpType \u003d\u003d PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS))\n        {\n            method.append(resDumpObjPath);\n            method.append(0);\n            method.append(std::vector\u003cstd::string\u003e({resDumpEntry}));\n        }\n        method.append(0);",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 0
+      },
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b42c3a70_2e220fcc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "move to L:37?",
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29e8c644_66edbbb1",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "Excessive if conditions。\nCould you refactor these?",
+      "range": {
+        "startLine": 277,
+        "startChar": 2,
+        "endLine": 283,
+        "endChar": 13
+      },
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b61a8421_dc2bdb23",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "remove else",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 319,
+        "endChar": 5
+      },
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1be1e3c_73928a60",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 331,
+        "startChar": 4,
+        "endLine": 332,
+        "endChar": 5
+      },
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "581c00ba_f1414599",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "add return;\nand remove else",
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cbf5087_89e13eb5",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 86,
+        "startChar": 9,
+        "endLine": 86,
+        "endChar": 47
+      },
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acef9903_9fe4aa8a",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "add const",
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9f0208e_8c244bda",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-01-29T06:22:32Z",
+      "side": 1,
+      "message": "Maybe you can wrap a lamda?",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 33
+      },
+      "revId": "5106ed8c77db5649ba052fac89014235e869239f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
