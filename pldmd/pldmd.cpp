@@ -15,6 +15,7 @@
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "oem/ibm/requester/dbus_to_file_handler.hpp"
 #include "xyz/openbmc_project/PLDM/Event/server.hpp"
 
 #include <err.h>
@@ -229,6 +230,41 @@ int main(int argc, char** argv)
 
     invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
+
+#ifdef OEM_IBM
+    using DBusInterfaceAdded = std::vector<std::pair<
+        std::string,
+        std::vector<std::pair<std::string, std::variant<std::string>>>>>;
+    // Pointer to capture the interface added signal for new resource dump
+    std::unique_ptr<sdbusplus::bus::match::match> resDumpMatcher;
+    resDumpMatcher = std::make_unique<sdbusplus::bus::match::match>(
+        pldm::utils::DBusHandler::getBus(),
+        "interface='org.freedesktop.DBus.ObjectManager',type='signal',"
+        "member='InterfacesAdded',path='/xyz/openbmc_project/dump'",
+        [&sockfd, &hostEID, &dbusImplReq](sdbusplus::message::message& msg) {
+            DBusInterfaceAdded interfaces;
+            sdbusplus::message::object_path path;
+            msg.read(path, interfaces);
+            std::cout << "resDumpMatcher fetched the dump params path "
+                      << path.str.c_str() << "\n";
+
+            for (auto& interface : interfaces)
+            {
+                if (interface.first == "com.ibm.Dump.Entry.Resource")
+                {
+                    std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>
+                        dbusToFileHandler;
+                    if (hostEID)
+                    {
+                        dbusToFileHandler = std::make_unique<
+                            pldm::requester::oem_ibm::DbusToFileHandler>(
+                            sockfd, hostEID, dbusImplReq);
+                        dbusToFileHandler->processNewResourceDump(path);
+                    }
+                }
+            }
+        });
+#endif
 
     pldm::utils::CustomFD socketFd(sockfd);
 
