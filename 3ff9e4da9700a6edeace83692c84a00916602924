@@ -22,6 +22,30 @@
       "revId": "3ff9e4da9700a6edeace83692c84a00916602924",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c869f8a_04101adb",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-01-29T09:22:43Z",
+      "side": 1,
+      "message": "Hi below two types are the base for the commit https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/40115. Also these are used by dump manager code to carry out the offload path. So I wanted to get this in first so that dump manager code can be unblocked and they could merge their change separately.",
+      "parentUuid": "702df05a_da2d961d",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "3ff9e4da9700a6edeace83692c84a00916602924",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
