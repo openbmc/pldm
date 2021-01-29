@@ -206,7 +206,8 @@ int main(int argc, char** argv)
         event);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(
-        PLDM_OEM, std::make_unique<oem_ibm::Handler>(oemPlatformHandler.get()));
+        PLDM_OEM, std::make_unique<oem_ibm::Handler>(
+                      oemPlatformHandler.get(), sockfd, hostEID, &dbusImplReq));
 #endif
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>(
