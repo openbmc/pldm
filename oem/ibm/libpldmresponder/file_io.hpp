@@ -7,11 +7,13 @@
 #include "oem/ibm/libpldm/host.h"
 
 #include "common/utils.hpp"
+#include "oem/ibm/requester/dbus_to_file_handler.hpp"
 #include "oem_ibm_handler.hpp"
 #include "pldmd/handler.hpp"
 
 #include <fcntl.h>
 #include <stdint.h>
+#include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -216,6 +218,49 @@ class Handler : public CmdHandler
                              return this->newFileAvailable(request,
                                                            payloadLength);
                          });
+
+        resDumpMatcher = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            "interface='org.freedesktop.DBus.ObjectManager',type='signal',"
+            "member='InterfacesAdded',path='/xyz/openbmc_project/dump'",
+            [this](sdbusplus::message::message& msg) {
+                DBusInterfaceAdded interfaces;
+                sdbusplus::message::object_path path;
+                msg.read(path, interfaces);
+                std::cout << "resDumpMatcher fetched the dump params path "
+                          << path.str.c_str() << "\n";
+
+                for (auto& interface : interfaces)
+                {
+                    if (interface.first == "com.ibm.Dump.Entry.Resource")
+                    {
+                        auto rc = 0;
+                        int hostSockFd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
+                        if (-1 == hostSockFd)
+                        {
+                            rc = -errno;
+                            std::cerr
+                                << "Failed to create the host socket, RC= "
+                                << rc << "\n";
+                            exit(EXIT_FAILURE);
+                        }
+                        auto hostEid = pldm::utils::readHostEID();
+                        auto& bus = pldm::utils::DBusHandler::getBus();
+                        dbus_api::Requester dbusImplReq(
+                            bus, "/xyz/openbmc_project/pldm");
+                        std::unique_ptr<
+                            pldm::requester::oem_ibm::DbusToFileHandler>
+                            dbusToFileHandler;
+                        if (hostEid)
+                        {
+                            dbusToFileHandler = std::make_unique<
+                                pldm::requester::oem_ibm::DbusToFileHandler>(
+                                hostSockFd, hostEid, dbusImplReq);
+                            dbusToFileHandler->processNewResourceDump(path);
+                        }
+                    }
+                }
+            });
     }
 
     /** @brief Handler for readFileIntoMemory command
@@ -317,6 +362,12 @@ class Handler : public CmdHandler
 
   private:
     oem_platform::Handler* oemPlatformHandler;
+    using DBusInterfaceAdded = std::vector<std::pair<
+        std::string,
+        std::vector<std::pair<std::string, std::variant<std::string>>>>>;
+    std::unique_ptr<sdbusplus::bus::match::match>
+        resDumpMatcher; //!< Pointer to capture the interface added signal
+                        //!< for new resource dump
 };
 
 } // namespace oem_ibm
