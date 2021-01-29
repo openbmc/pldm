@@ -130,35 +130,31 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         case PLDM_FILE_TYPE_PEL:
         {
             return std::make_unique<PelHandler>(fileHandle);
-            break;
         }
         case PLDM_FILE_TYPE_LID_PERM:
         {
             return std::make_unique<LidHandler>(fileHandle, true);
-            break;
         }
         case PLDM_FILE_TYPE_LID_TEMP:
         {
             return std::make_unique<LidHandler>(fileHandle, false);
-            break;
         }
         case PLDM_FILE_TYPE_LID_MARKER:
         {
             return std::make_unique<LidHandler>(fileHandle, false,
                                                 PLDM_FILE_TYPE_LID_MARKER);
-            break;
         }
         case PLDM_FILE_TYPE_DUMP:
+        case PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS:
+        case PLDM_FILE_TYPE_RESOURCE_DUMP:
         {
-            return std::make_unique<DumpHandler>(fileHandle);
-            break;
+            return std::make_unique<DumpHandler>(fileHandle, fileType);
         }
         case PLDM_FILE_TYPE_CERT_SIGNING_REQUEST:
         case PLDM_FILE_TYPE_SIGNED_CERT:
         case PLDM_FILE_TYPE_ROOT_CERT:
         {
             return std::make_unique<CertHandler>(fileHandle, fileType);
-            break;
         }
         default:
         {
