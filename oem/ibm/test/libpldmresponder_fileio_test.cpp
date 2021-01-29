@@ -818,6 +818,14 @@ TEST(getHandlerByType, allPaths)
     auto dumpType = dynamic_cast<DumpHandler*>(handler.get());
     ASSERT_TRUE(dumpType != nullptr);
 
+    handler = getHandlerByType(PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS, fileHandle);
+    dumpType = dynamic_cast<DumpHandler*>(handler.get());
+    ASSERT_TRUE(dumpType != nullptr);
+
+    handler = getHandlerByType(PLDM_FILE_TYPE_RESOURCE_DUMP, fileHandle);
+    dumpType = dynamic_cast<DumpHandler*>(handler.get());
+    ASSERT_TRUE(dumpType != nullptr);
+
     handler = getHandlerByType(PLDM_FILE_TYPE_CERT_SIGNING_REQUEST, fileHandle);
     auto certType = dynamic_cast<CertHandler*>(handler.get());
     ASSERT_TRUE(certType != nullptr);

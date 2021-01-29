@@ -7,6 +7,7 @@
 #include "oem/ibm/libpldm/host.h"
 
 #include "common/utils.hpp"
+#include "oem/ibm/requester/dbus_to_file_handler.hpp"
 #include "oem_ibm_handler.hpp"
 #include "pldmd/handler.hpp"
 
@@ -155,11 +156,16 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
 
 namespace oem_ibm
 {
+static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump";
+static constexpr auto resDumpEntry = "com.ibm.Dump.Entry.Resource";
 class Handler : public CmdHandler
 {
   public:
-    Handler(oem_platform::Handler* oemPlatformHandler) :
-        oemPlatformHandler(oemPlatformHandler)
+    Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
+            uint8_t hostEid, dbus_api::Requester* dbusImplReqester) :
+        oemPlatformHandler(oemPlatformHandler),
+        hostSockFd(hostSockFd), hostEid(hostEid),
+        dbusImplReqester(dbusImplReqester)
     {
         handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -216,6 +222,29 @@ class Handler : public CmdHandler
                              return this->newFileAvailable(request,
                                                            payloadLength);
                          });
+
+        resDumpMatcher = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            sdbusplus::bus::match::rules::interfacesAdded() +
+                sdbusplus::bus::match::rules::path_namespace(dumpObjPath),
+            [hostSockFd, hostEid,
+             dbusImplReqester](sdbusplus::message::message& msg) {
+                DBusInterfaceAdded interfaces;
+                sdbusplus::message::object_path path;
+                msg.read(path, interfaces);
+
+                for (auto& interface : interfaces)
+                {
+                    if (interface.first == resDumpEntry)
+                    {
+                        auto dbusToFileHandler = std::make_unique<
+                            pldm::requester::oem_ibm::DbusToFileHandler>(
+                            hostSockFd, hostEid, dbusImplReqester, path);
+                        dbusToFileHandler->processNewResourceDump();
+                        break;
+                    }
+                }
+            });
     }
 
     /** @brief Handler for readFileIntoMemory command
@@ -317,6 +346,15 @@ class Handler : public CmdHandler
 
   private:
     oem_platform::Handler* oemPlatformHandler;
+    int hostSockFd;
+    uint8_t hostEid;
+    dbus_api::Requester* dbusImplReqester;
+    using DBusInterfaceAdded = std::vector<std::pair<
+        std::string,
+        std::vector<std::pair<std::string, std::variant<std::string>>>>>;
+    std::unique_ptr<sdbusplus::bus::match::match>
+        resDumpMatcher; //!< Pointer to capture the interface added signal
+                        //!< for new resource dump
 };
 
 } // namespace oem_ibm
