@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45685cef_370322cd",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-01-29T05:12:20Z",
+      "side": 1,
+      "message": "as per Deepak\u0027s comment in the story these entries are not needed in the json. Could yu pls take care of that and then do a testing. First change the first led entry in both the jsons and test",
+      "range": {
+        "startLine": 35,
+        "startChar": 7,
+        "endLine": 37,
+        "endChar": 24
+      },
+      "revId": "249c86098e83acc573dd39e7551d2ff23a90d0a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
