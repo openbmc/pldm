@@ -16,6 +16,24 @@
       "revId": "808d5fb9f485e7e6f26ae88e45a55f33b3b0a8df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b857332c_b350ab48",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-01T09:36:24Z",
+      "side": 1,
+      "message": "The previous logic is that when the D-Bus object does not exist (call get-service fails), the corresponding D-Bus object will not be created.\n\nBut if it is a composite sensor, the SensorID and D-Bus objects cannot correspond one-to-one, so the corresponding D-Bus object will not get by the SensorID, and the array should be out of bounds.\nSo when the D-Bus object does not exist, we should create a default D-Bus object (that is, an empty object).\n\nTherefore, the number of sensors and D-Bus objects must be the same.",
+      "parentUuid": "ca406490_9bc1a466",
+      "revId": "808d5fb9f485e7e6f26ae88e45a55f33b3b0a8df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
