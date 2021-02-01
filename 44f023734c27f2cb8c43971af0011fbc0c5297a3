@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aae1964e_d652aa02",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-01T06:54:26Z",
+      "side": 1,
+      "message": "The size here is number of bytes that can be needed by the \"states\" when represented in bit field representation.\n\nThe states 1 \u0026 2 can be represented with in a byte.\n\nSo size should be 1. Looks good to be otherwise.",
+      "range": {
+        "startLine": 12,
+        "startChar": 17,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "44f023734c27f2cb8c43971af0011fbc0c5297a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
