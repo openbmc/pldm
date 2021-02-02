@@ -22,6 +22,30 @@
       "revId": "d220c12fabb108a59179893e1e747bd7119f9344",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97ed98e9_2626bc74",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-02T07:48:55Z",
+      "side": 1,
+      "message": "These comments correspond to the following commit and added it.\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/39797",
+      "parentUuid": "6b738a1a_f0a5305d",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 7
+      },
+      "revId": "d220c12fabb108a59179893e1e747bd7119f9344",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
