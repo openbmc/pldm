@@ -2,6 +2,397 @@
   "comments": [
     {
       "key": {
+        "uuid": "46dff453_99c135eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "a brief point on the flow would be helpful",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 8
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bcb2b4e_f7ca1063",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "needed?",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 23
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3c3fc6d_90820c08",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "you can remove the trace. keep the error path traces",
+      "range": {
+        "startLine": 230,
+        "startChar": 17,
+        "endLine": 230,
+        "endChar": 74
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d773875d_6ffe60d6",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "why you are creating the socket here? you can pass the socket and dbusImplReq from pldmd into the Handler of fileio. there are examples like bios.cpp",
+      "range": {
+        "startLine": 238,
+        "startChar": 27,
+        "endLine": 238,
+        "endChar": 38
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adba3bbe_f1ccd93f",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "get from pldmd",
+      "range": {
+        "startLine": 247,
+        "startChar": 52,
+        "endLine": 247,
+        "endChar": 63
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db85b33d_67cf0650",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "get from pldmd",
+      "range": {
+        "startLine": 249,
+        "startChar": 44,
+        "endLine": 249,
+        "endChar": 55
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05e51cfc_b97916e5",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "thi smay not be needed since you will get the host eid from pldmd",
+      "range": {
+        "startLine": 254,
+        "startChar": 24,
+        "endLine": 254,
+        "endChar": 36
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27f9744e_394081e9",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "what is this usecase? only for sys dump?",
+      "range": {
+        "startLine": 86,
+        "startChar": 16,
+        "endLine": 86,
+        "endChar": 36
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5a44e20_055d8cb7",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "pls remove debug traces",
+      "range": {
+        "startLine": 88,
+        "startChar": 16,
+        "endLine": 89,
+        "endChar": 75
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a5f6f05_9e2bc657",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "debug traces removal",
+      "range": {
+        "startLine": 100,
+        "startChar": 12,
+        "endLine": 101,
+        "endChar": 73
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ac7678b_8f691d57",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 42
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d5f003c_c1fc8783",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "why it is 1? do you expect this to be 1 later?\nideally the new file available function should have this as a param",
+      "range": {
+        "startLine": 38,
+        "startChar": 13,
+        "endLine": 38,
+        "endChar": 27
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bc07648_8a90cd24",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "isDecodeNewFileRespFailed",
+      "range": {
+        "startLine": 61,
+        "startChar": 9,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a5579aa_909b48e7",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "resDumpCurrentObjPath",
+      "range": {
+        "startLine": 112,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 28
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ccbeb29_66b44dbe",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "std::cerr?",
+      "range": {
+        "startLine": 130,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 17
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "476dd91b_c6705a1b",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "should we return from here or continue?",
+      "range": {
+        "startLine": 157,
+        "startChar": 7,
+        "endLine": 158,
+        "endChar": 38
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24f5fb2d_219b92bf",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "you can go via filehandle and get that as a parameter in the function. may be can be done in multiple dump support",
+      "range": {
+        "startLine": 171,
+        "startChar": 47,
+        "endLine": 171,
+        "endChar": 52
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4fa03e29_3efc325c",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 3
@@ -18,6 +409,52 @@
         "startChar": 0,
         "endLine": 204,
         "endChar": 6
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1a204e4_ebe2c829",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "pls add that this class can be used as a pldm requester in oem-ibm path",
+      "range": {
+        "startLine": 22,
+        "startChar": 29,
+        "endLine": 22,
+        "endChar": 51
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04605bd5_d53b1d00",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-02-02T12:15:44Z",
+      "side": 1,
+      "message": "new file available command",
+      "range": {
+        "startLine": 46,
+        "startChar": 28,
+        "endLine": 46,
+        "endChar": 51
       },
       "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
