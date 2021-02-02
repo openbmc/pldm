@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4fa03e29_3efc325c",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-02T01:45:55Z",
+      "side": 1,
+      "message": "```\nauto fileFunc \u003d [\u0026fileHandle](std::string buf){\n  \n  fileHanlde.write((char*)buf, buf.length());\n  fileHandle \u003c\u003c buf;\n}\n\nfileFunc(vspString);\nfileFunc(resDumpReqPass);\n```\n\nI have no tested it yet.\nPlease check it and test again.",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 6
+      },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
