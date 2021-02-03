@@ -393,6 +393,23 @@
     },
     {
       "key": {
+        "uuid": "72e27d5d_2b935d50",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-02-03T12:28:45Z",
+      "side": 1,
+      "message": "typo, Fill",
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4fa03e29_3efc325c",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 3
@@ -433,6 +450,23 @@
         "endLine": 22,
         "endChar": 51
       },
+      "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78b42bdd_d998a22a",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-02-03T12:28:45Z",
+      "side": 1,
+      "message": "change to D-Bus.\nobject path of?",
       "revId": "95af94dbeff015d9b6c0bfd98c5676c94222c014",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
