@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6fe2077d_2d546f6f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-04T08:35:40Z",
+      "side": 1,
+      "message": "This section keeps growing. Can there be a single entry point to oem-ibm? I had suggested this also here - https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/36104/34/pldmd/pldmd.cpp#222.",
+      "revId": "80cccc21c18e17f035171996e4af2bac03a4ce11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
