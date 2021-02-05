@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "131da767_9e21cb96",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "nit: About this method(switch case), I do not think it need to include return,maybe need to refactor it, @Sampa, what do you think?\nBut I am OK in this commit.",
+      "range": {
+        "startLine": 128,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 21
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cdc3d001_a2850b29",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "std::string curResDumpEntryPath{};",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 40
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33a851a1_c38c7709",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "Remove the inner parentheses, Because \u003d\u003d priority is higher than ||\n\nelse if (dumpType \u003d\u003d PLDM_FILE_TYPE_RESOURCE_DUMP ||\n         dumpType \u003d\u003d PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS)",
+      "range": {
+        "startLine": 79,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 70
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7448e7c_7cb70cb5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "nit: \ncurResDumpEntryPath \u003d path;\nbreak;",
+      "range": {
+        "startLine": 88,
+        "startChar": 16,
+        "endLine": 88,
+        "endChar": 28
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "472adfdf_b4f107b6",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "move to L:81",
+      "range": {
+        "startLine": 90,
+        "startChar": 12,
+        "endLine": 90,
+        "endChar": 39
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7aa66fe_a7e7900a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "remove these codes.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 9
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "065125da_26d4a55d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "return curResDumpEntryPath;",
+      "range": {
+        "startLine": 109,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 13
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c9d2e2d_b301e10f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "as above, remove ()",
+      "range": {
+        "startLine": 261,
+        "startChar": 7,
+        "endLine": 261,
+        "endChar": 50
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3a0de10_3483fecc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "as above.",
+      "range": {
+        "startLine": 263,
+        "startChar": 7,
+        "endLine": 264,
+        "endChar": 55
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbd77ffd_ea49f81b",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-05T08:20:17Z",
+      "side": 1,
+      "message": "What happens if requester\u003dnull?",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 57
+      },
+      "revId": "3b7359191307abd45b117f48c8f318da03b1cbab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
