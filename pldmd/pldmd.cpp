@@ -215,7 +215,7 @@ int main(int argc, char** argv)
         std::make_unique<pldm::oem_ibm::OemIBM>(
             dbusHandler.get(), sockfd, hostEID, pdrRepo.get(), dbusImplReq,
             event, invoker, hostPDRHandler.get(), dbusToPLDMEventHandler.get(),
-            fruHandler.get());
+            fruHandler.get(), reqHandler);
     auto platformHandler = oemIBM->getPlatfromHandler();
 #else
     // FRU table is built lazily when a FRU command or Get PDR command is
