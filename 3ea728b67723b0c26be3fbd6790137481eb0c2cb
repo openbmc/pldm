@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3dc29f75_21cbcb4c",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-08T17:56:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e230d69d_d3a92d81",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c2224733_33a655bc",
         "filename": "oem/ibm/libpldmresponder/file_io.hpp",
         "patchSetId": 8
@@ -30,6 +48,24 @@
       "writtenOn": "2021-02-08T08:35:11Z",
       "side": 1,
       "message": "Break out of the loop when this is found? Do you expect multiple resource dumps to be found?",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9fa48cac_73b033dc",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-08T17:56:53Z",
+      "side": 1,
+      "message": "As of now it expects one entry at a time. So I am adding break.",
+      "parentUuid": "c2224733_33a655bc",
       "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "907c0f29_09f4e3b1",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-08T17:56:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dee35113_df69efb1",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "edaaed6c_6bdb3e7b",
         "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
         "patchSetId": 8
@@ -64,6 +118,30 @@
       "writtenOn": "2021-02-08T08:35:11Z",
       "side": 1,
       "message": "why this?",
+      "range": {
+        "startLine": 34,
+        "startChar": 67,
+        "endLine": 34,
+        "endChar": 68
+      },
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89fd8d86_00f77742",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-08T17:56:53Z",
+      "side": 1,
+      "message": "This is the file generated in requester. This is used to delete the file when hypervisor sends the File Ack command after validating the input parameters. We need to re-look when we support the multiple resource dumps. I shall add a comment here.",
+      "parentUuid": "edaaed6c_6bdb3e7b",
       "range": {
         "startLine": 34,
         "startChar": 67,
@@ -93,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "3c25aea4_3dd747ef",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-08T17:56:53Z",
+      "side": 1,
+      "message": "Yes I am using the same dbus path passed from the InterfacesAdded signal. In the requester code I am using the \"path\" for error handling code also to update the status. Rather than passing through here I am moving this \"path\" variable to the constructor.",
+      "parentUuid": "5de6c5ef_7b11feda",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b5028db_f194d9fd",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 8
@@ -116,6 +212,30 @@
     },
     {
       "key": {
+        "uuid": "b2640a95_f8c1bc72",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-08T17:56:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b5028db_f194d9fd",
+      "range": {
+        "startLine": 207,
+        "startChar": 34,
+        "endLine": 207,
+        "endChar": 54
+      },
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "47463194_bff2a8bc",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 8
@@ -127,6 +247,24 @@
       "writtenOn": "2021-02-08T08:38:54Z",
       "side": 1,
       "message": "when is/is this file deleted?",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d7d8504_56de4e7e",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-08T17:56:53Z",
+      "side": 1,
+      "message": "This file got deleted when hypervisor sends the File Ack command after validating the input parameters.",
+      "parentUuid": "47463194_bff2a8bc",
       "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
