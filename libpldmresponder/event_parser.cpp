@@ -154,3 +154,4 @@ int StateSensorHandler::eventAction(const StateSensorEntry& entry,
 }
 
 } // namespace pldm::responder::events
+

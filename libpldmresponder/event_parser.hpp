@@ -119,3 +119,4 @@ class StateSensorHandler
 };
 
 } // namespace pldm::responder::events
+
