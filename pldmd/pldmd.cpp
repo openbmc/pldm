@@ -51,6 +51,7 @@
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/oem_ibm_handler.hpp"
+#include "oem/ibm/host-bmc/host_lamp_test.hpp"
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
