@@ -127,9 +127,9 @@ int StateSensorHandler::eventAction(const StateSensorEntry& entry,
         }
         catch (const std::out_of_range& e)
         {
-            std::cerr << "Invalid event state" << static_cast<unsigned>(state)
-                      << '\n';
-            return PLDM_ERROR_INVALID_DATA;
+                std::cerr << "Invalid event state"
+                          << static_cast<unsigned>(state) << '\n';
+                return PLDM_ERROR_INVALID_DATA;
         }
 
         try
