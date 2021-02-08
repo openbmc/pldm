@@ -207,8 +207,9 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         {
             std::cerr << "D-Bus object path does not exist, effecter ID: "
                       << pdr->effecter_id << "\n";
+            continue;
         }
-        dbusMappings.emplace_back(std::move(dbusMapping));
+        dbusMappings.emplace(0, std::move(dbusMapping));
 
         handler.addDbusObjMaps(
             pdr->effecter_id,

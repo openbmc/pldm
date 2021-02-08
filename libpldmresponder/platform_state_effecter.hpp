@@ -94,6 +94,15 @@ int setStateEffecterStatesHandler(
             handler.getDbusObjMaps(effecterId);
         for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
         {
+            if (dbusMappings.find(currState) == dbusMappings.end() ||
+                dbusValMaps.find(currState) == dbusValMaps.end())
+            {
+                continue;
+            }
+
+            const DBusMapping& dbusMapping = dbusMappings.at(currState);
+            const StatestoDbusVal& dbusValToMap = dbusValMaps.at(currState);
+
             std::vector<StateSetNum> allowed{};
             // computation is based on table 79 from DSP0248 v1.1.1
             uint8_t bitfieldIndex = stateField[currState].effecter_state / 8;
@@ -106,13 +115,10 @@ int setStateEffecterStatesHandler(
                           << effecterId
                           << " VALUE=" << stateField[currState].effecter_state
                           << " COMPOSITE_EFFECTER_ID=" << currState
-                          << " DBUS_PATH=" << dbusMappings[currState].objectPath
-                          << "\n";
+                          << " DBUS_PATH=" << dbusMapping.objectPath << "\n";
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                 break;
             }
-            const DBusMapping& dbusMapping = dbusMappings[currState];
-            const StatestoDbusVal& dbusValToMap = dbusValMaps[currState];
 
             if (stateField[currState].set_request == PLDM_REQUEST_SET)
             {
