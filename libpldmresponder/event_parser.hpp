@@ -1,5 +1,7 @@
 #pragma once
 
+#include "libpldm/states.h"
+
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
