@@ -141,10 +141,14 @@ int getStateSensorReadingsHandler(
         stateField.clear();
         for (size_t i = 0; i < sensorRearmCnt; i++)
         {
-            auto& dbusMapping = dbusMappings[i];
+            if (dbusMappings.find(i) == dbusMappings.end() ||
+                dbusValMaps.find(i) == dbusValMaps.end())
+            {
+                continue;
+            }
 
             uint8_t sensorEvent = getStateSensorEventState<DBusInterface>(
-                dBusIntf, dbusValMaps[i], dbusMapping);
+                dBusIntf, dbusValMaps.at(i), dbusMappings.at(i));
 
             uint8_t opState = PLDM_SENSOR_ENABLED;
             if (sensorEvent == PLDM_SENSOR_UNKNOWN)
@@ -154,6 +158,10 @@ int getStateSensorReadingsHandler(
 
             stateField.push_back({opState, PLDM_SENSOR_NORMAL,
                                   PLDM_SENSOR_UNKNOWN, sensorEvent});
+        }
+        if (stateField.size() == 0)
+        {
+            rc = PLDM_PLATFORM_INVALID_SENSOR_ID;
         }
     }
     catch (const std::out_of_range& e)
