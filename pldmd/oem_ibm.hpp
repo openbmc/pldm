@@ -1,5 +1,8 @@
 #pragma once
 
+#include "libpldm/pdr.h"
+
+#include "../oem/ibm/host-bmc/host_lamp_test.hpp"
 #include "../oem/ibm/libpldmresponder/file_io.hpp"
 #include "../oem/ibm/libpldmresponder/fru_oem_ibm.hpp"
 #include "../oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
@@ -80,6 +83,8 @@ class OemIBM
         createOemIbmPlatformHandler();
         oemIbmPlatformHandler->setPlatformHandler(platformHandler);
 
+        createHostLampTestHandler();
+
         registerHandler();
     }
 
@@ -122,6 +127,14 @@ class OemIBM
     {
         oemIbmFruHandler = dynamic_cast<pldm::responder::oem_ibm_fru::Handler*>(
             oemFruHandler.get());
+    }
+
+    void createHostLampTestHandler()
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        hostLampTest = std::make_unique<pldm::led::HostLampTest>(
+            bus, "/xyz/openbmc_project/led/groups/host_lamp_test", mctp_fd,
+            mctp_eid, &instanceIdDb, repo, reqHandler);
     }
 
     /** @brief Method for registering PLDM OEM handler */
@@ -176,6 +189,8 @@ class OemIBM
 
     /** @brief oem IBM Fru handler*/
     pldm::responder::oem_ibm_fru::Handler* oemIbmFruHandler = nullptr;
+
+    std::unique_ptr<pldm::led::HostLampTest> hostLampTest;
 };
 
 } // namespace oem_ibm
