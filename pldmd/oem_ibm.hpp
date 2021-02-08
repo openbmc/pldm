@@ -2,6 +2,7 @@
 
 #include "libpldm/pdr.h"
 
+#include "../oem/ibm/host-bmc/host_lamp_test.hpp"
 #include "../oem/ibm/libpldmresponder/file_io.hpp"
 #include "../oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 #include "common/utils.hpp"
@@ -34,17 +35,20 @@ class OemIBM
                     sdeventplus::Event& event, Invoker& invoker,
                     HostPDRHandler* hostPDRHandler,
                     DbusToPLDMEvent* dbusToPLDMEventHandler,
-                    fru::Handler* fruHandler) :
+                    fru::Handler* fruHandler,
+                    requester::Handler<requester::Request>& reqHandler) :
         dBusIntf(dBusIntf),
         mctp_fd(mctp_fd), mctp_eid(mctp_eid), repo(repo), requester(requester),
         event(event), invoker(invoker), hostPDRHandler(hostPDRHandler),
-        dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler)
+        dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
+        reqHandler(reqHandler)
     {
         createCodeUpdate();
         createOemPlatformHandler();
         createPlatformHandler();
         createOemIbmPlatformHandler();
         registerHandler();
+        createHostLampTest();
     }
 
     std::unique_ptr<platform::Handler> getPlatfromHandler()
@@ -90,6 +94,14 @@ class OemIBM
                 oemPlatformHandler.get(), mctp_fd, mctp_eid, &requester));
     }
 
+    void createHostLampTest()
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        hostLampTest = std::make_unique<pldm::led::HostLampTest>(
+            bus, "/xyz/openbmc_project/led/groups/host_lamp_test", mctp_fd,
+            mctp_eid, requester, repo, reqHandler);
+    }
+
   private:
     const pldm::utils::DBusHandler* dBusIntf;
 
@@ -111,11 +123,15 @@ class OemIBM
 
     fru::Handler* fruHandler;
 
+    requester::Handler<requester::Request>& reqHandler;
+
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler;
 
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate;
 
     std::unique_ptr<platform::Handler> platformHandler;
+
+    std::unique_ptr<pldm::led::HostLampTest> hostLampTest;
 };
 
 } // namespace oem_ibm
