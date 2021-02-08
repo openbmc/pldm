@@ -94,8 +94,14 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
         eventData->event_class[1] = PLDM_SENSOR_UNKNOWN;
         eventData->event_class[2] = PLDM_SENSOR_UNKNOWN;
 
-        const auto& dbusMapping = dbusMappings[offset];
-        const auto& dbusValueMapping = dbusValMaps[offset];
+        if (dbusMappings.find(offset) == dbusMappings.end() ||
+            dbusValMaps.find(offset) == dbusValMaps.end())
+        {
+            continue;
+        }
+
+        const auto& dbusMapping = dbusMappings.at(offset);
+        const auto& dbusValueMapping = dbusValMaps.at(offset);
         auto stateSensorMatch = std::make_unique<sdbusplus::bus::match::match>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(dbusMapping.objectPath.c_str(),

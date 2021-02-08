@@ -58,10 +58,10 @@ TEST(GeneratePDRByStateSensor, testGoodJson)
 
     const auto& [dbusMappings, dbusValMaps] =
         handler.getDbusObjMaps(pdr->sensor_id, TypeId::PLDM_SENSOR_ID);
-    ASSERT_EQ(dbusMappings[0].objectPath, "/foo/bar");
-    ASSERT_EQ(dbusMappings[0].interface, "xyz.openbmc_project.Foo.Bar");
-    ASSERT_EQ(dbusMappings[0].propertyName, "propertyName");
-    ASSERT_EQ(dbusMappings[0].propertyType, "string");
+    ASSERT_EQ(dbusMappings.at(0).objectPath, "/foo/bar");
+    ASSERT_EQ(dbusMappings.at(0).interface, "xyz.openbmc_project.Foo.Bar");
+    ASSERT_EQ(dbusMappings.at(0).propertyName, "propertyName");
+    ASSERT_EQ(dbusMappings.at(0).propertyType, "string");
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);

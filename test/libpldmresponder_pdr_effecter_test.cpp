@@ -67,7 +67,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
 
     const auto& [dbusMappings1, dbusValMaps1] =
         handler.getDbusObjMaps(pdr->effecter_id);
-    ASSERT_EQ(dbusMappings1[0].objectPath, "/foo/bar");
+    ASSERT_EQ(dbusMappings1.at(0).objectPath, "/foo/bar");
 
     // Check second PDR
     auto record3 = pdr::getRecordByHandle(outRepo, 3, e);
@@ -107,8 +107,8 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
 
     const auto& [dbusMappings2, dbusValMaps2] =
         handler.getDbusObjMaps(pdr->effecter_id);
-    ASSERT_EQ(dbusMappings2[0].objectPath, "/foo/bar");
-    ASSERT_EQ(dbusMappings2[1].objectPath, "/foo/bar");
+    ASSERT_EQ(dbusMappings2.at(0).objectPath, "/foo/bar");
+    ASSERT_EQ(dbusMappings2.at(1).objectPath, "/foo/bar");
 
     ASSERT_THROW(handler.getDbusObjMaps(0xDEAD), std::exception);
 
@@ -153,10 +153,10 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
 
     const auto& [dbusMappings, dbusValMaps] =
         handler.getDbusObjMaps(pdr->effecter_id);
-    EXPECT_EQ(dbusMappings[0].objectPath, "/foo/bar");
-    EXPECT_EQ(dbusMappings[0].interface, "xyz.openbmc_project.Foo.Bar");
-    EXPECT_EQ(dbusMappings[0].propertyName, "propertyName");
-    EXPECT_EQ(dbusMappings[0].propertyType, "uint64_t");
+    EXPECT_EQ(dbusMappings.at(0).objectPath, "/foo/bar");
+    EXPECT_EQ(dbusMappings.at(0).interface, "xyz.openbmc_project.Foo.Bar");
+    EXPECT_EQ(dbusMappings.at(0).propertyName, "propertyName");
+    EXPECT_EQ(dbusMappings.at(0).propertyType, "uint64_t");
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
