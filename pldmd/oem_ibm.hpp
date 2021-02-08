@@ -2,6 +2,7 @@
 
 #include "libpldm/pdr.h"
 
+#include "../oem/ibm/host-bmc/host_lamp_test.hpp"
 #include "../oem/ibm/libpldmresponder/file_io.hpp"
 #include "../oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 #include "common/utils.hpp"
@@ -47,6 +48,7 @@ class OemIBM
         createPlatformHandler();
         createOemIbmPlatformHandler();
         registerHandler();
+        createHostLampTest();
     }
 
     std::unique_ptr<platform::Handler> getPlatfromHandler()
@@ -93,6 +95,14 @@ class OemIBM
                           &requester, reqHandler));
     }
 
+    void createHostLampTest()
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        hostLampTest = std::make_unique<pldm::led::HostLampTest>(
+            bus, "/xyz/openbmc_project/led/groups/host_lamp_test", mctp_fd,
+            mctp_eid, requester, repo, *reqHandler);
+    }
+
   private:
     const pldm::utils::DBusHandler* dBusIntf;
 
@@ -121,6 +131,8 @@ class OemIBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate;
 
     std::unique_ptr<platform::Handler> platformHandler;
+
+    std::unique_ptr<pldm::led::HostLampTest> hostLampTest;
 };
 
 } // namespace oem_ibm

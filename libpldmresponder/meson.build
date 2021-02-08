@@ -41,6 +41,7 @@ if get_option('oem-ibm').enabled()
     '../oem/ibm/libpldmresponder/inband_code_update.cpp',
     '../oem/ibm/requester/dbus_to_file_handler.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_progress_src.cpp',
+    '../oem/ibm/host-bmc/host_lamp_test.cpp',
   ]
 endif
 

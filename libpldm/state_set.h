@@ -165,6 +165,13 @@ enum pldm_state_set_operational_running_status_values {
 	PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_DORMANT = 6
 };
 
+/* @brief List of states for the Identify state set (ID 17).
+ */
+enum pldm_state_set_identify_state_values {
+	PLDM_STATE_SET_IDENTIFY_STATE_UNASSERTED = 1,
+	PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED = 2
+};
+
 /* @brief List of states for the Software-related state set (ID 129).
  */
 enum pldm_software_termination_status_values {
