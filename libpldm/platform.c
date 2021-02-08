@@ -716,7 +716,7 @@ int encode_sensor_event_data(
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
-	event_data->sensor_id = htole32(sensor_id);
+	event_data->sensor_id = htole16(sensor_id);
 	event_data->sensor_event_class_type = sensor_event_class;
 
 	struct pldm_sensor_event_state_sensor_state *const state_data =
