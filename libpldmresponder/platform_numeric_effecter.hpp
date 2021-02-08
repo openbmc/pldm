@@ -253,9 +253,13 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
 
     const auto& [dbusMappings, dbusValMaps] =
         handler.getDbusObjMaps(effecterId);
-    DBusMapping dbusMapping{
-        dbusMappings[0].objectPath, dbusMappings[0].interface,
-        dbusMappings[0].propertyName, dbusMappings[0].propertyType};
+
+    if (dbusMappings.find(0) == dbusMappings.end())
+    {
+        return PLDM_ERROR;
+    }
+
+    DBusMapping dbusMapping = dbusMappings.at(0);
     try
     {
         dBusIntf.setDbusProperty(dbusMapping, dbusValue.value());

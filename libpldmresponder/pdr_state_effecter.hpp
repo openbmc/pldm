@@ -103,8 +103,30 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         DbusValMaps dbusValMaps{};
         uint8_t* start =
             entry.data() + sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
+        uint8_t index = 0;
         for (const auto& effecter : effecters)
         {
+            index++;
+            auto dbusEntry = effecter.value("dbus", empty);
+            auto objectPath = dbusEntry.value("path", "");
+            auto interface = dbusEntry.value("interface", "");
+            auto propertyName = dbusEntry.value("property_name", "");
+            auto propertyType = dbusEntry.value("property_type", "");
+
+            StatestoDbusVal dbusIdToValMap{};
+            pldm::utils::DBusMapping dbusMapping{};
+            try
+            {
+                auto service =
+                    dBusIntf.getService(objectPath.c_str(), interface.c_str());
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "D-Bus object path does not exist, effecter ID: "
+                          << pdr->effecter_id << "\n";
+                continue;
+            }
+
             auto set = effecter.value("set", empty);
             state_effecter_possible_states* possibleStates =
                 reinterpret_cast<state_effecter_possible_states*>(start);
@@ -126,33 +148,19 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             }
             start += possibleStates->possible_states_size;
 
-            auto dbusEntry = effecter.value("dbus", empty);
-            auto objectPath = dbusEntry.value("path", "");
-            auto interface = dbusEntry.value("interface", "");
-            auto propertyName = dbusEntry.value("property_name", "");
-            auto propertyType = dbusEntry.value("property_type", "");
-
-            StatestoDbusVal dbusIdToValMap{};
-            pldm::utils::DBusMapping dbusMapping{};
-            try
-            {
-                auto service =
-                    dBusIntf.getService(objectPath.c_str(), interface.c_str());
-
-                dbusMapping = pldm::utils::DBusMapping{
-                    objectPath, interface, propertyName, propertyType};
-                dbusIdToValMap = populateMapping(
-                    propertyType, dbusEntry["property_values"], stateValues);
-            }
-            catch (const std::exception& e)
-            {
-                std::cerr << "D-Bus object path does not exist, effecter ID: "
-                          << pdr->effecter_id << "\n";
-            }
-
-            dbusMappings.emplace_back(std::move(dbusMapping));
-            dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            dbusMapping = pldm::utils::DBusMapping{objectPath, interface,
+                                                   propertyName, propertyType};
+            dbusIdToValMap = populateMapping(
+                propertyType, dbusEntry["property_values"], stateValues);
+            dbusMappings.emplace(index - 1, std::move(dbusMapping));
+            dbusValMaps.emplace(index - 1, std::move(dbusIdToValMap));
         }
+
+        if (dbusMappings.empty() || dbusValMaps.empty())
+        {
+            continue;
+        }
+
         handler.addDbusObjMaps(
             pdr->effecter_id,
             std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)));
