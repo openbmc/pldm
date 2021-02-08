@@ -16,7 +16,8 @@ tests = [
 if get_option('oem-ibm').enabled()
   tests += [
     '../../oem/ibm/test/libpldmresponder_fileio_test',
-    '../../oem/ibm/test/libpldmresponder_oem_platform_test'
+    '../../oem/ibm/test/libpldmresponder_oem_platform_test',
+    '../../oem/ibm/test/host_bmc_lamp_test',
   ]
 endif
 
