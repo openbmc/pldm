@@ -39,6 +39,7 @@ class CodeUpdate
         nextBootSide = Tside;
         markerLidSensorId = PLDM_INVALID_EFFECTER_ID;
         firmwareUpdateSensorId = PLDM_INVALID_EFFECTER_ID;
+        imageActivationMatch = nullptr;
     }
 
     /* @brief Method to return the current boot side
@@ -183,13 +184,16 @@ class CodeUpdate
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
         captureNextBootSideChange; //!< vector to catch the D-Bus property
                                    //!< change for next boot side
-    std::unique_ptr<sdbusplus::bus::match::match>
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
         fwUpdateMatcher; //!< pointer to capture the interface added signal for
                          //!< new image
     pldm::responder::oem_platform::Handler*
         oemPlatformHandler; //!< oem platform handler
     uint16_t markerLidSensorId;
     uint16_t firmwareUpdateSensorId;
+
+    /** @brief D-Bus property changed signal match for image activation */
+    std::unique_ptr<sdbusplus::bus::match::match> imageActivationMatch;
 
     /* @brief Method to take action when the subscribed D-Bus property is
      *        changed
