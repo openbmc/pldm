@@ -138,7 +138,28 @@ int CodeUpdate::setRequestedActivation()
                   << "ERROR=" << e.what() << std::endl;
         rc = PLDM_ERROR;
     }
-    newImageId.clear();
+    // newImageId.clear();
+    return rc;
+}
+
+int CodeUpdate::setSystemReboot(const std::string& objectPath,
+                                const std::string& interface,
+                                const std::string& propertyName,
+                                const std::string& value)
+{
+    int rc = PLDM_SUCCESS;
+    pldm::utils::PropertyValue propValue = value;
+    DBusMapping dbusMapping{objectPath, interface, propertyName, "string"};
+    try
+    {
+        dBusIntf->setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To set System Reboot property"
+                  << "ERROR=" << e.what() << std::endl;
+        rc = PLDM_ERROR;
+    }
     return rc;
 }
 
@@ -198,7 +219,7 @@ void CodeUpdate::setVersions()
                 msg.read(iface, props);
                 processPriorityChangeNotification(props);
             }));
-    fwUpdateMatcher = std::make_unique<sdbusplus::bus::match::match>(
+    fwUpdateMatcher.push_back(std::make_unique<sdbusplus::bus::match::match>(
         pldm::utils::DBusHandler::getBus(),
         "interface='org.freedesktop.DBus.ObjectManager',type='signal',"
         "member='InterfacesAdded',path='/xyz/openbmc_project/software'",
@@ -206,38 +227,144 @@ void CodeUpdate::setVersions()
             DBusInterfaceAdded interfaces;
             sdbusplus::message::object_path path;
             msg.read(path, interfaces);
+            std::cout << "inside interface added signal \n";
+
             for (auto& interface : interfaces)
             {
                 if (interface.first ==
                     "xyz.openbmc_project.Software.Activation")
                 {
+                    std::cout << "interface.first " << interface.first << "\n";
                     auto imageInterface =
                         "xyz.openbmc_project.Software.Activation";
                     auto imageObjPath = path.str.c_str();
+
                     try
                     {
                         auto propVal = dBusIntf->getDbusPropertyVariant(
                             imageObjPath, "Activation", imageInterface);
                         const auto& imageProp = std::get<std::string>(propVal);
+                        std::cout << "imageProp " << imageProp << "\n";
                         if (imageProp == "xyz.openbmc_project.Software."
                                          "Activation.Activations.Ready" &&
                             isCodeUpdateInProgress())
                         {
                             newImageId = path.str;
+                            std::cout << "newImageId: " << newImageId << "\n";
+                            if (!imageActivationMatch)
+                            {
+                                std::cout << "creating imageActivationMatch \n";
+                                imageActivationMatch = std::make_unique<
+                                    sdbusplus::bus::match::match>(
+                                    pldm::utils::DBusHandler::getBus(),
+                                    propertiesChanged(newImageId,
+                                                      "xyz.openbmc_project."
+                                                      "Software.Activation"),
+                                    [this](sdbusplus::message::message& msg) {
+                                        std::cout << "imageActivationMatch\n";
+                                        DbusChangedProps props;
+                                        std::string iface;
+                                        msg.read(iface, props);
+                                        const auto itr =
+                                            props.find("Activation");
+                                        std::cout << "inside property change "
+                                                     "signal for "
+                                                     "xyz.openbmc_project."
+                                                     "Software.Activation \n";
+                                        if (itr != props.end())
+                                        {
+                                            PropertyValue value = itr->second;
+                                            auto propVal =
+                                                std::get<std::string>(value);
+                                            if (propVal ==
+                                                "xyz.openbmc_project.Software."
+                                                "Activation.Activations.Active")
+                                            {
+                                                std::cout
+                                                    << "got "
+                                                       "xyz.openbmc_project."
+                                                       "Software.Activation."
+                                                       "Activations.Active \n";
+                                                CodeUpdateState state =
+                                                    CodeUpdateState::END;
+                                                setCodeUpdateProgress(false);
+                                                auto sensorId =
+                                                    getFirmwareUpdateSensor();
+                                                std::cout
+                                                    << "sending END event \n";
+                                                sendStateSensorEvent(
+                                                    sensorId,
+                                                    PLDM_STATE_SENSOR_STATE, 0,
+                                                    uint8_t(state),
+                                                    uint8_t(CodeUpdateState::
+                                                                START));
+                                                newImageId.clear();
+                                            }
+                                            else if (propVal ==
+                                                         "xyz.openbmc_project."
+                                                         "Software.Activation."
+                                                         "Activations.Failed" ||
+                                                     propVal ==
+                                                         "xyz.openbmc_"
+                                                         "project.Software."
+                                                         "Activation."
+                                                         "Activations."
+                                                         "Invalid") // do we
+                                                                    // need
+                                                                    // invalid
+                                                                    // also??
+                                            {
+                                                std::cout
+                                                    << "got "
+                                                       "xyz.openbmc_project."
+                                                       "Software.Activation."
+                                                       "Activations.Failed or "
+                                                       "Invalid \n";
+                                                CodeUpdateState state =
+                                                    CodeUpdateState::FAIL;
+                                                setCodeUpdateProgress(false);
+                                                auto sensorId =
+                                                    getFirmwareUpdateSensor();
+                                                std::cout << "sending Fail "
+                                                             "update event \n";
+                                                sendStateSensorEvent(
+                                                    sensorId,
+                                                    PLDM_STATE_SENSOR_STATE, 0,
+                                                    uint8_t(state),
+                                                    uint8_t(CodeUpdateState::
+                                                                START));
+                                                newImageId.clear();
+                                            }
+                                            else if (propVal ==
+                                                     "xyz.openbmc_project."
+                                                     "Software.Activation."
+                                                     "Activations.Activating")
+                                            {
+                                                std::cout
+                                                    << "got "
+                                                       "xyz.openbmc_project."
+                                                       "Software.Activation."
+                                                       "Activations.Activating "
+                                                       "\n";
+                                            }
+                                        }
+                                    });
+                            }
+                            std::cout << "calling setRequestedActivation\n";
                             auto rc = setRequestedActivation();
-                            CodeUpdateState state = CodeUpdateState::END;
                             if (rc != PLDM_SUCCESS)
                             {
-                                state = CodeUpdateState::FAIL;
+                                CodeUpdateState state = CodeUpdateState::FAIL;
+                                setCodeUpdateProgress(false);
+                                auto sensorId = getFirmwareUpdateSensor();
+                                std::cout << "sending Fail update event \n";
+                                sendStateSensorEvent(
+                                    sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                                    uint8_t(state),
+                                    uint8_t(CodeUpdateState::START));
                                 std::cerr
                                     << "could not set RequestedActivation \n";
                             }
-                            setCodeUpdateProgress(false);
-                            auto sensorId = getFirmwareUpdateSensor();
-                            sendStateSensorEvent(
-                                sensorId, PLDM_STATE_SENSOR_STATE, 0,
-                                uint8_t(state),
-                                uint8_t(CodeUpdateState::START));
                             break;
                         }
                     }
@@ -247,7 +374,7 @@ void CodeUpdate::setVersions()
                     }
                 }
             }
-        });
+        }));
 }
 
 void CodeUpdate::processPriorityChangeNotification(
