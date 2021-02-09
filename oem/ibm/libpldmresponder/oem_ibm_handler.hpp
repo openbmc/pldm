@@ -1,4 +1,5 @@
 #pragma once
+#include "libpldm/entity.h"
 #include "libpldm/platform.h"
 
 #include "inband_code_update.hpp"
@@ -15,6 +16,7 @@ namespace oem_ibm_platform
 
 #define PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE 32768
 #define PLDM_OEM_IBM_BOOT_STATE 32769
+#define PLDM_OEM_IBM_SYSTEM_POWER_STATE 32771
 
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
@@ -37,6 +39,11 @@ enum VerificationStateValues
     ENTITLEMENT_FAIL = 0x1,
     BANNED_PLATFORM_FAIL = 0x2,
     MIN_MIF_FAIL = 0x4,
+};
+
+enum SystemPowerStates
+{
+    POWER_CYCLE_HARD = 0x1,
 };
 
 class Handler : public oem_platform::Handler
@@ -127,6 +134,13 @@ class Handler : public oem_platform::Handler
      */
     void _processStartUpdate(sdeventplus::source::EventBase& source);
 
+    /** @brief _processSystemReboot process the actual work that needs to be
+     *  carried out after the System Power State effecter is set to reboot
+     *  the system
+     *  @param[in] source - sdeventplus event source
+     */
+    void _processSystemReboot(sdeventplus::source::EventBase& source);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
@@ -146,6 +160,7 @@ class Handler : public oem_platform::Handler
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> assembleImageEvent;
     std::unique_ptr<sdeventplus::source::Defer> startUpdateEvent;
+    std::unique_ptr<sdeventplus::source::Defer> systemRebootEvent;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
