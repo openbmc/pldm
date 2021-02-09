@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98ace10e_b3bc00c7",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-09T08:37:25Z",
+      "side": 1,
+      "message": "You might be able to further filter this by looking at the specific resource dumps related path.",
+      "revId": "df63d8e4e2d746fadd0825059446107a79a6807d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
