@@ -117,6 +117,20 @@ class CodeUpdate
      */
     int setRequestedActivation();
 
+    /* @brief Method to set D-Bus properties after Inband Code update
+     *        has completed successfully to poweroff Host and Chassis
+     *        and also reboot the BMC
+     * @param[in] objectPath - D-Bus object path
+     * @param[in] interface - D-Bus interface
+     * @param[in] propertyName - D-Bus property name
+     * @param[in] value - D-Bus property value
+     * @return - Completion codes
+     */
+    int setSystemReboot(const std::string& objectPath,
+                        const std::string& interface,
+                        const std::string& propertyName,
+                        const std::string& value);
+
     /* @brief Method to fetch the sensor id for marker lid
      * validation PDR
      * @return - sensor id
@@ -191,6 +205,7 @@ class CodeUpdate
     uint16_t markerLidSensorId;
     uint16_t firmwareUpdateSensorId;
 
+    // std::unique_ptr<sdbusplus::bus::match::match> imageActivationMatch;
     /* @brief Method to take action when the subscribed D-Bus property is
      *        changed
      * @param[in] chProperties - list of properties which have changed

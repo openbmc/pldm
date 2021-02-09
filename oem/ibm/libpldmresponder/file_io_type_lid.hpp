@@ -125,7 +125,7 @@ class LidHandler : public FileHandler
         {
             flags = O_WRONLY | O_CREAT | O_TRUNC | O_SYNC;
         }
-        auto fd = open(lidPath.c_str(), flags);
+        auto fd = open(lidPath.c_str(), flags, S_IRUSR | S_IWUSR);
         if (fd == -1)
         {
             std::cerr << "Could not open file for writing  " << lidPath.c_str()
@@ -219,7 +219,7 @@ class LidHandler : public FileHandler
                 return PLDM_DATA_OUT_OF_RANGE;
             }
         }
-        auto fd = open(lidPath.c_str(), flags);
+        auto fd = open(lidPath.c_str(), flags, S_IRUSR | S_IWUSR);
         if (fd == -1)
         {
             std::cerr << "could not open file " << lidPath.c_str() << "\n";
