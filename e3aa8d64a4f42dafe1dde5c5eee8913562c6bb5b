@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1b1926b4_bfd12b56",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-02-09T06:56:33Z",
+      "side": 1,
+      "message": "sensor_id",
+      "range": {
+        "startLine": 17,
+        "startChar": 7,
+        "endLine": 17,
+        "endChar": 9
+      },
+      "revId": "e3aa8d64a4f42dafe1dde5c5eee8913562c6bb5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6e80a546_e221c0a2",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 4
