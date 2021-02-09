@@ -120,6 +120,19 @@ int pldm::responder::oem_ibm_platform::Handler::
                     // sendCodeUpdateEvent(effecterId, REJECT, END);
                 }
             }
+            else if (entityType == PLDM_ENTITY_SYSTEM_CHASSIS &&
+                     stateSetId == PLDM_OEM_IBM_SYSTEM_POWER_STATE)
+            {
+                if (stateField[currState].effecter_state == POWER_CYCLE_HARD)
+                {
+                    systemRebootEvent =
+                        std::make_unique<sdeventplus::source::Defer>(
+                            event,
+                            std::bind(std::mem_fn(&oem_ibm_platform::Handler::
+                                                      _processSystemReboot),
+                                      this, std::placeholders::_1));
+                }
+            }
             else
             {
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
@@ -134,8 +147,8 @@ int pldm::responder::oem_ibm_platform::Handler::
 }
 
 void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
-                                   uint16_t entityInstance, uint16_t stateSetID,
-                                   pdr_utils::Repo& repo)
+                                   uint16_t entityType, uint16_t entityInstance,
+                                   uint16_t stateSetID, pdr_utils::Repo& repo)
 {
     size_t pdrSize = 0;
     pdrSize = sizeof(pldm_state_effecter_pdr) +
@@ -156,7 +169,7 @@ void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
     pdr->effecter_id = platformHandler->getNextEffecterId();
-    pdr->entity_type = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
+    pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
     pdr->container_id = 0;
     pdr->effecter_semantic_id = 0;
@@ -175,6 +188,8 @@ void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
         state->states[0].byte = 6;
     else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
         state->states[0].byte = 126;
+    else if (stateSetID == PLDM_OEM_IBM_SYSTEM_POWER_STATE)
+        state->states[0].byte = 2;
     pldm::responder::pdr_utils::PdrEntry pdrEntry{};
     pdrEntry.data = entry.data();
     pdrEntry.size = pdrSize;
@@ -232,12 +247,18 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
 void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     pdr_utils::Repo& repo)
 {
-    buildAllCodeUpdateEffecterPDR(platformHandler, ENTITY_INSTANCE_0,
-                                  PLDM_OEM_IBM_BOOT_STATE, repo);
-    buildAllCodeUpdateEffecterPDR(platformHandler, ENTITY_INSTANCE_1,
-                                  PLDM_OEM_IBM_BOOT_STATE, repo);
-    buildAllCodeUpdateEffecterPDR(platformHandler, ENTITY_INSTANCE_0,
-                                  PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+    buildAllCodeUpdateEffecterPDR(
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+        PLDM_OEM_IBM_BOOT_STATE, repo);
+    buildAllCodeUpdateEffecterPDR(
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_1,
+        PLDM_OEM_IBM_BOOT_STATE, repo);
+    buildAllCodeUpdateEffecterPDR(
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+        PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+    buildAllCodeUpdateEffecterPDR(platformHandler, PLDM_ENTITY_SYSTEM_CHASSIS,
+                                  ENTITY_INSTANCE_0,
+                                  PLDM_OEM_IBM_SYSTEM_POWER_STATE, repo);
 
     buildAllCodeUpdateSensorPDR(
         platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
@@ -395,6 +416,49 @@ void pldm::responder::oem_ibm_platform::Handler::_processStartUpdate(
     auto sensorId = codeUpdate->getFirmwareUpdateSensor();
     sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0, uint8_t(state),
                          uint8_t(CodeUpdateState::END));
+}
+
+void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
+    sdeventplus::source::EventBase& /*source */)
+{
+    std::string objectPath = "/xyz/openbmc_project/state/chassis0";
+    std::string interface = "xyz.openbmc_project.State.Chassis";
+    std::string propertyName = "RequestedPowerTransition";
+    std::string value = "xyz.openbmc_project.State.Chassis.Transition.Off";
+
+    auto rc =
+        codeUpdate->setSystemReboot(objectPath, interface, propertyName, value);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Chassis State transition to Off failed,"
+                  << "unable to set property RequestedPowerTransition \n";
+    }
+
+    objectPath = "/xyz/openbmc_project/state/host0";
+    interface = "xyz.openbmc_project.State.Host";
+    propertyName = "RequestedHostTransition";
+    value = "xyz.openbmc_project.State.Host.Transition.Off";
+
+    rc =
+        codeUpdate->setSystemReboot(objectPath, interface, propertyName, value);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Host State transition to Off failed,"
+                  << "unable to set property RequestedHostTransition \n";
+    }
+
+    objectPath = "/xyz/openbmc_project/state/bmc0";
+    interface = "xyz.openbmc_project.State.BMC";
+    propertyName = "RequestedBMCTransition";
+    value = "xyz.openbmc_project.State.BMC.Transition.Reboot";
+
+    rc =
+        codeUpdate->setSystemReboot(objectPath, interface, propertyName, value);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "BMC state transition to reboot failed,"
+                  << "unable to set property RequestedBMCTransition \n";
+    }
 }
 
 } // namespace oem_ibm_platform

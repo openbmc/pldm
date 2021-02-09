@@ -142,6 +142,27 @@ int CodeUpdate::setRequestedActivation()
     return rc;
 }
 
+int CodeUpdate::setSystemReboot(const std::string& objectPath,
+                                const std::string& interface,
+                                const std::string& propertyName,
+                                const std::string& value)
+{
+    int rc = PLDM_SUCCESS;
+    pldm::utils::PropertyValue propValue = value;
+    DBusMapping dbusMapping{objectPath, interface, propertyName, "string"};
+    try
+    {
+        dBusIntf->setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To set System Reboot property"
+                  << "ERROR=" << e.what() << std::endl;
+        rc = PLDM_ERROR;
+    }
+    return rc;
+}
+
 void CodeUpdate::setVersions()
 {
     static constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
