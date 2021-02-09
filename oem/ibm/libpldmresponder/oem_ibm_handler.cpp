@@ -66,6 +66,7 @@ int pldm::responder::oem_ibm_platform::Handler::
                 if (stateField[currState].effecter_state ==
                     uint8_t(CodeUpdateState::START))
                 {
+                    std::cout << "received start update \n";
                     codeUpdate->setCodeUpdateProgress(true);
                     startUpdateEvent =
                         std::make_unique<sdeventplus::source::Defer>(
@@ -77,6 +78,7 @@ int pldm::responder::oem_ibm_platform::Handler::
                 else if (stateField[currState].effecter_state ==
                          uint8_t(CodeUpdateState::END))
                 {
+                    std::cout << "received endupdate \n";
                     rc = PLDM_SUCCESS;
                     assembleImageEvent = std::make_unique<
                         sdeventplus::source::Defer>(
@@ -91,6 +93,7 @@ int pldm::responder::oem_ibm_platform::Handler::
                 else if (stateField[currState].effecter_state ==
                          uint8_t(CodeUpdateState::ABORT))
                 {
+                    std::cout << "received ABORT update \n";
                     codeUpdate->setCodeUpdateProgress(false);
                     codeUpdate->clearDirPath(LID_STAGING_DIR);
                     auto sensorId = codeUpdate->getFirmwareUpdateSensor();
@@ -120,6 +123,21 @@ int pldm::responder::oem_ibm_platform::Handler::
                     // sendCodeUpdateEvent(effecterId, REJECT, END);
                 }
             }
+            else if (entityType == PLDM_ENTITY_SYSTEM_CHASSIS &&
+                     stateSetId == PLDM_OEM_IBM_SYSTEM_POWER_STATE)
+            {
+                if (stateField[currState].effecter_state == POWER_CYCLE_HARD)
+                {
+                    std::cout
+                        << "received system reboot setStateEffecterState \n";
+                    systemRebootEvent =
+                        std::make_unique<sdeventplus::source::Defer>(
+                            event,
+                            std::bind(std::mem_fn(&oem_ibm_platform::Handler::
+                                                      _processSystemReboot),
+                                      this, std::placeholders::_1));
+                }
+            }
             else
             {
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
@@ -134,8 +152,8 @@ int pldm::responder::oem_ibm_platform::Handler::
 }
 
 void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
-                                   uint16_t entityInstance, uint16_t stateSetID,
-                                   pdr_utils::Repo& repo)
+                                   uint16_t entityType, uint16_t entityInstance,
+                                   uint16_t stateSetID, pdr_utils::Repo& repo)
 {
     size_t pdrSize = 0;
     pdrSize = sizeof(pldm_state_effecter_pdr) +
@@ -156,7 +174,7 @@ void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
     pdr->effecter_id = platformHandler->getNextEffecterId();
-    pdr->entity_type = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
+    pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
     pdr->container_id = 0;
     pdr->effecter_semantic_id = 0;
@@ -175,6 +193,8 @@ void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
         state->states[0].byte = 6;
     else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
         state->states[0].byte = 126;
+    else if (stateSetID == PLDM_OEM_IBM_SYSTEM_POWER_STATE)
+        state->states[0].byte = 2;
     pldm::responder::pdr_utils::PdrEntry pdrEntry{};
     pdrEntry.data = entry.data();
     pdrEntry.size = pdrSize;
@@ -232,12 +252,19 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
 void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     pdr_utils::Repo& repo)
 {
-    buildAllCodeUpdateEffecterPDR(platformHandler, ENTITY_INSTANCE_0,
-                                  PLDM_OEM_IBM_BOOT_STATE, repo);
-    buildAllCodeUpdateEffecterPDR(platformHandler, ENTITY_INSTANCE_1,
-                                  PLDM_OEM_IBM_BOOT_STATE, repo);
-    buildAllCodeUpdateEffecterPDR(platformHandler, ENTITY_INSTANCE_0,
-                                  PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+    std::cout << "Building OEM PDRs \n";
+    buildAllCodeUpdateEffecterPDR(
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+        PLDM_OEM_IBM_BOOT_STATE, repo);
+    buildAllCodeUpdateEffecterPDR(
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_1,
+        PLDM_OEM_IBM_BOOT_STATE, repo);
+    buildAllCodeUpdateEffecterPDR(
+        platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+        PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
+    buildAllCodeUpdateEffecterPDR(platformHandler, PLDM_ENTITY_SYSTEM_CHASSIS,
+                                  ENTITY_INSTANCE_0,
+                                  PLDM_OEM_IBM_SYSTEM_POWER_STATE, repo);
 
     buildAllCodeUpdateSensorPDR(
         platformHandler, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
@@ -329,7 +356,7 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
     uint16_t sensorId, enum sensor_event_class_states sensorEventClass,
     uint8_t sensorOffset, uint8_t eventState, uint8_t prevEventState)
 {
-
+    std::cout << "inside sendStateSensorEvent\n";
     std::vector<uint8_t> sensorEventDataVec{};
     size_t sensorEventSize = PLDM_SENSOR_EVENT_DATA_MIN_LENGTH + 1;
     sensorEventDataVec.resize(sensorEventSize);
@@ -369,12 +396,14 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
 void pldm::responder::oem_ibm_platform::Handler::_processEndUpdate(
     sdeventplus::source::EventBase& /*source */)
 {
+    std::cout << "Inside _processEndUpdate \n";
     assembleImageEvent.reset();
     int retc = assembleCodeUpdateImage();
     if (retc != PLDM_SUCCESS)
     {
         codeUpdate->setCodeUpdateProgress(false);
         auto sensorId = codeUpdate->getFirmwareUpdateSensor();
+        std::cout << "before send state sensor event for end update\n";
         sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0,
                              uint8_t(CodeUpdateState::FAIL),
                              uint8_t(CodeUpdateState::START));
@@ -384,6 +413,7 @@ void pldm::responder::oem_ibm_platform::Handler::_processEndUpdate(
 void pldm::responder::oem_ibm_platform::Handler::_processStartUpdate(
     sdeventplus::source::EventBase& /*source */)
 {
+    std::cout << "Inside _processStartUpdate \n";
     codeUpdate->deleteImage();
     CodeUpdateState state = CodeUpdateState::START;
     auto rc = codeUpdate->setRequestedApplyTime();
@@ -393,8 +423,74 @@ void pldm::responder::oem_ibm_platform::Handler::_processStartUpdate(
         state = CodeUpdateState::FAIL;
     }
     auto sensorId = codeUpdate->getFirmwareUpdateSensor();
+    std::cout << "before send state sensor event for start update\n";
     sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0, uint8_t(state),
                          uint8_t(CodeUpdateState::END));
+}
+
+void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
+    sdeventplus::source::EventBase& /*source */)
+{
+    std::cout << "Inside _processSystemReboot \n";
+
+    static constexpr auto objectPathPR =
+        "/xyz/openbmc_project/control/host0/power_restore_policy/one_time";
+    static constexpr auto interfacePR =
+        "xyz.openbmc_project.Control.Power.RestorePolicy";
+    static constexpr auto propertyNamePR = "PowerRestorePolicy";
+    static constexpr auto valuePR =
+        "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn";
+    auto rc = codeUpdate->setSystemReboot(objectPathPR, interfacePR,
+                                          propertyNamePR, valuePR);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Setting one-time restore policy failed,"
+                  << "unable to set property PowerRestorePolicy \n";
+    }
+
+    static constexpr auto objectPathChassis =
+        "/xyz/openbmc_project/state/chassis0";
+    static constexpr auto interfaceChassis =
+        "xyz.openbmc_project.State.Chassis";
+    static constexpr auto propertyNameChasis = "RequestedPowerTransition";
+    static constexpr auto valueChassis =
+        "xyz.openbmc_project.State.Chassis.Transition.Off";
+
+    rc = codeUpdate->setSystemReboot(objectPathChassis, interfaceChassis,
+                                     propertyNameChasis, valueChassis);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Chassis State transition to Off failed,"
+                  << "unable to set property RequestedPowerTransition \n";
+    }
+
+    static constexpr auto objectPathHost = "/xyz/openbmc_project/state/host0";
+    static constexpr auto interfaceHost = "xyz.openbmc_project.State.Host";
+    static constexpr auto propertyNameHost = "RequestedHostTransition";
+    static constexpr auto valueHost =
+        "xyz.openbmc_project.State.Host.Transition.Off";
+
+    rc = codeUpdate->setSystemReboot(objectPathHost, interfaceHost,
+                                     propertyNameHost, valueHost);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Host State transition to Off failed,"
+                  << "unable to set property RequestedHostTransition \n";
+    }
+
+    static constexpr auto objectPathBmc = "/xyz/openbmc_project/state/bmc0";
+    static constexpr auto interfaceBmc = "xyz.openbmc_project.State.BMC";
+    static constexpr auto propertyNameBmc = "RequestedBMCTransition";
+    static constexpr auto valueBmc =
+        "xyz.openbmc_project.State.BMC.Transition.Reboot";
+
+    rc = codeUpdate->setSystemReboot(objectPathBmc, interfaceBmc,
+                                     propertyNameBmc, valueBmc);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "BMC state transition to reboot failed,"
+                  << "unable to set property RequestedBMCTransition \n";
+    }
 }
 
 } // namespace oem_ibm_platform
