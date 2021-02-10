@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ebd462e8_b39cffab",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-10T02:15:40Z",
+      "side": 1,
+      "message": "how do we know if we are checking the link state or the configuration state here ?\n\nand             if (state \u003d\u003d PLDM_NOT_CONFIGURED || state \u003d\u003d PLDM_MISSING_CONFIG)\n            {\n                std::cerr \u003c\u003c \"The event state is not handled by PLDM\"\n                          \u003c\u003c \"\\n\";\n            }\nthis logic holds good only when wehave the json with 2 entries.Instead it should be like\n\nif(state value is any one of the values from the enum)\n{\n   std::cerr \u003c\u003c \"event not handled by pldm\";\n}\nelse\n{\n  return PLDM_ERROR_INVALID_DATA;\n}",
+      "range": {
+        "startLine": 130,
+        "startChar": 1,
+        "endLine": 140,
+        "endChar": 14
+      },
+      "revId": "670f6b96a5b8780129d859723e14729068234692",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95a35b6b_c9165fb3",
+        "filename": "libpldmresponder/event_parser.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-10T02:15:40Z",
+      "side": 1,
+      "message": "why is this header included alone without any change in the source code",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "670f6b96a5b8780129d859723e14729068234692",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
