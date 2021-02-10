@@ -315,6 +315,24 @@
     },
     {
       "key": {
+        "uuid": "02f3af88_c2e147d1",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-10T13:45:41Z",
+      "side": 1,
+      "message": "I am getting the object path. But at the point of InterfacesAdded signal handling the VSPString property is not populated in that entry and I am getting NULL.\nJust after that I am seeing property changed signal for each of the properties.\n\n\n‣ Type\u003dsignal  Endian\u003dl  Flags\u003d1  Version\u003d1 Cookie\u003d57\n  Sender\u003d:1.108  Path\u003d/xyz/openbmc_project/dump  Interface\u003dorg.freedesktop.DBus.ObjectManager  Member\u003dInterfacesAdded\n  UniqueName\u003d:1.108\n  MESSAGE \"oa{sa{sv}}\" {\n          OBJECT_PATH \"/xyz/openbmc_project/dump/resource/entry/1\";\n          ARRAY \"{sa{sv}}\" {\n\n                  DICT_ENTRY \"sa{sv}\" {\n                          STRING \"com.ibm.Dump.Entry.Resource\";\n                          ARRAY \"{sv}\" {\n                                  DICT_ENTRY \"sv\" {\n                                          STRING \"SourceDumpId\";\n                                          VARIANT \"u\" {\n                                                  UINT32 0;\n                                          };\n                                  };\n                                  DICT_ENTRY \"sv\" {\n                                          STRING \"VSPString\";\n                                          VARIANT \"s\" {\n                                                  STRING \"\";\n                                          };\n                                  };\n                                  DICT_ENTRY \"sv\" {\n                                          STRING \"Password\";\n                                          VARIANT \"s\" {\n                                                  STRING \"\";\n                                          };\n                                  };\n                          };\n                  };\n          };\n  };\n\n‣ Type\u003dsignal  Endian\u003dl  Flags\u003d1  Version\u003d1 Cookie\u003d58\n  Sender\u003d:1.108  Path\u003d/xyz/openbmc_project/dump/resource/entry/1  Interface\u003dorg.freedesktop.DBus.Properties  Member\u003dPropertiesChanged\n  UniqueName\u003d:1.108\n  MESSAGE \"sa{sv}as\" {\n          STRING \"com.ibm.Dump.Entry.Resource\";\n          ARRAY \"{sv}\" {\n                  DICT_ENTRY \"sv\" {\n                          STRING \"SourceDumpId\";\n                          VARIANT \"u\" {\n                                  UINT32 4294967295;\n                          };\n                  };\n          };\n          ARRAY \"s\" {\n          };\n  };\n\n‣ Type\u003dsignal  Endian\u003dl  Flags\u003d1  Version\u003d1 Cookie\u003d59\n  Sender\u003d:1.108  Path\u003d/xyz/openbmc_project/dump/resource/entry/1  Interface\u003dorg.freedesktop.DBus.Properties  Member\u003dPropertiesChanged\n  UniqueName\u003d:1.108\n  MESSAGE \"sa{sv}as\" {\n          STRING \"com.ibm.Dump.Entry.Resource\";\n          ARRAY \"{sv}\" {\n                  DICT_ENTRY \"sv\" {\n                          STRING \"VSPString\";\n                          VARIANT \"s\" {\n                                  STRING \"vsp\";\n                          };\n                  };\n          };\n          ARRAY \"s\" {\n          };\n  };",
+      "parentUuid": "4ccf31d1_6ebbf04b",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b5028db_f194d9fd",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 8
