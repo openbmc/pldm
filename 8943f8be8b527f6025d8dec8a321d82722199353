@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "e171d641_47d8c11e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-10T02:07:28Z",
+      "side": 1,
+      "message": "This is an IBM specific name which is not understood by outside world,\n\nPlease feel free to document the pldm commands that were used to test this commit, that would help for some one who want to test your commit.(if the commands are too long, push them to github \u0026 add the link here)",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "8943f8be8b527f6025d8dec8a321d82722199353",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d4b43fb5_a3dcf11b",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
         "patchSetId": 3
