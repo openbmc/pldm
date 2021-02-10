@@ -297,6 +297,24 @@
     },
     {
       "key": {
+        "uuid": "4ccf31d1_6ebbf04b",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-10T13:30:51Z",
+      "side": 1,
+      "message": "signal time\u003d4373675.071171 sender\u003d:1.11 -\u003e destination\u003d(null destination) serial\u003d59 path\u003d/xyz/openbmc_project/logging; interface\u003dorg.freedesktop.DBus.ObjectManager; member\u003dInterfacesAdded\n   object path \"/xyz/openbmc_project/logging/entry/2\"\n\n@Dhruv, there is the path that sends the signal, but also the path on which the interfaces are added (see above - I created an error log via the Logging.Create API).\n\nEither @Jay did not paste the InterfacesAdded section correctly, or the object path itself is missing, which is odd. There should be an object path set to \"/xyz/openbmc_project/dump/resource/\u003cid\u003e\" and pldm code should be able to filter on that via the argN filter. That way the code here doesn\u0027t have to wake up for every dump type.",
+      "parentUuid": "ab698285_7ff711c1",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b5028db_f194d9fd",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 8
