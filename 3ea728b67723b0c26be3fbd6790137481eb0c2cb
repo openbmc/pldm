@@ -243,6 +243,24 @@
     },
     {
       "key": {
+        "uuid": "03145dae_da306a52",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-10T12:41:36Z",
+      "side": 1,
+      "message": "This looks like a bug in the dump code or code that creates the resource dump d-bus object. I would expect the path to be something like /xyz/openbmc_project/dump/resource/\u003cid\u003e. It also seems like that code is emitting InterfacesAdded before populating the properties, which is another bug. Your call to getDbusProperty() may or may not work with this bug. I think that bug should be addressed and pldm code should watch for InterfacesAdded and consume properties like any other D-Bus client. Additionally, watch for PropertiesChanged if you care about that.",
+      "parentUuid": "e60d9751_d2aa7630",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b5028db_f194d9fd",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 8
