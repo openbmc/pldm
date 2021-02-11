@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9f357e8_b22c5c44",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "groups/cpu0",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43ff5e97_2222a919",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "groups/cpu1\n\nVRMs would have their own Inventory D-Bus",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3db1288b_42a9b473",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "extra space",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "215185f1_056391ad",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "extra space",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fdf41c0_a99a86db",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "groups/cpu0",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77aed51c_a3780433",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "groups/cpu1",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "baea13c0_40888964",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "VRMs would have their own D-Bus object",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f635c66_d2ed5ce5",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "this needs to be \"groups/cpu0\" .. cpu0 and cpu1 are DCM",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04e0bb47_ed473fab",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "groups/cpu1",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "236abb83_a6606506",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "VRMs missing..",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a20615f2_5ae850eb",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "groups/cpu0",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a21b69d_5850cb8c",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "groups/cpu1",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09b1a509_b84ee3b7",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-02-11T18:30:46Z",
+      "side": 1,
+      "message": "VRMs missing",
+      "revId": "8d0f8ddbcd8d542ee6a22ce560a78a745f41882b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
