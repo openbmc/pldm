@@ -22,6 +22,30 @@
       "revId": "2d12c7a404e525ca2eb9560d51509be50209f2e5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d4a8a58_2fd30c89",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-11T04:11:06Z",
+      "side": 1,
+      "message": "min \u0026 max are meson option properties , so if a user sets the option value outside of the range mentioned by min \u0026 max , mean will throw an error.\n\n\u003e these are not being used in code?\ndid not get what you meant? can you explain a bit more ?",
+      "parentUuid": "a15999c9_d12fcd24",
+      "range": {
+        "startLine": 8,
+        "startChar": 47,
+        "endLine": 8,
+        "endChar": 50
+      },
+      "revId": "2d12c7a404e525ca2eb9560d51509be50209f2e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
