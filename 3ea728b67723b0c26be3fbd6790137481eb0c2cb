@@ -405,6 +405,24 @@
     },
     {
       "key": {
+        "uuid": "84f38d19_02eded0a",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2021-02-11T13:35:47Z",
+      "side": 1,
+      "message": "fix pushed https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-debug-collector/+/40518",
+      "parentUuid": "66753292_9abbce83",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b5028db_f194d9fd",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 8
