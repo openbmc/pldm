@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ad2714db_d6fd013e",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-02-12T12:18:58Z",
+      "side": 1,
+      "message": "pass these as const\u0026 or \u0026\u0026",
+      "revId": "740a6397875db434e5ee0637c813435b96635eee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
