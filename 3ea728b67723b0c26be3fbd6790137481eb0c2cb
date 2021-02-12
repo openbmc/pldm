@@ -423,6 +423,24 @@
     },
     {
       "key": {
+        "uuid": "799043bd_62640935",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-02-12T12:07:00Z",
+      "side": 1,
+      "message": "I have changed the code as per review comments and re-tested good with Dhruv\u0027s patch.",
+      "parentUuid": "84f38d19_02eded0a",
+      "revId": "3ea728b67723b0c26be3fbd6790137481eb0c2cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b5028db_f194d9fd",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 8
