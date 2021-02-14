@@ -4,7 +4,8 @@ project('pldm', ['c', 'cpp'],
           'warning_level=3',
           'default_library=shared',
           'werror=true',
-          'cpp_std=c++17'
+          'cpp_std=c++17',
+          'buildtype=debugoptimized'
         ])
 
 # Wno-psabi reduces the number of "Note:" messages when cross-compiling some STL
@@ -12,6 +13,13 @@ project('pldm', ['c', 'cpp'],
 # Basically, gcc 6 and gcc 7 are not ABI compatible, but since the whole OpenBMC
 # project uses the same compiler, we can safely ignmore these info notes.
 add_project_arguments('-Wno-psabi', language: 'cpp')
+
+
+# Disable FORTIFY_SOURCE when compiling with no optimization
+if(get_option('optimization') == '0')
+  add_project_arguments('-U_FORTIFY_SOURCE',language:['cpp','c'])
+  message('Disabling FORTIFY_SOURCE as optimization is set to 0')
+endif
 
 conf_data = configuration_data()
 conf_data.set_quoted('BIOS_JSONS_DIR', '/usr/share/pldm/bios')
