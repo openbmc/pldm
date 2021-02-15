@@ -208,6 +208,7 @@ int BIOSIntegerAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
                                         uint8_t attrType,
                                         const PropertyValue& newPropVal)
 {
+    std::cout << "enter updateAttrVal for integer \n";
     auto newVal = getAttrValue(newPropVal);
     table::attribute_value::constructIntegerEntry(newValue, attrHdl, attrType,
                                                   newVal);

@@ -132,6 +132,7 @@ int BIOSStringAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
                                        uint8_t attrType,
                                        const PropertyValue& newPropVal)
 {
+    std::cout << "enter updateAttrVal for string \n";
     try
     {
         const auto& newStringValue = std::get<std::string>(newPropVal);

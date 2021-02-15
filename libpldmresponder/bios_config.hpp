@@ -169,6 +169,7 @@ class BIOSConfig
     template <typename T>
     void constructAttribute(const Json& entry)
     {
+        std::cout << "enter constructAttribute \n";
         try
         {
             biosAttributes.push_back(std::make_unique<T>(entry, dbusHandler));
@@ -177,6 +178,8 @@ class BIOSConfig
 
             if (dBusMap.has_value())
             {
+                std::cout << "dBusMap->objectPath " << (dBusMap->objectPath).c_str() << "\n";
+                std::cout << "dBusMap->interface " << (dBusMap->interface).c_str() << "\n";
                 using namespace sdbusplus::bus::match::rules;
                 biosAttrMatch.push_back(
                     std::make_unique<sdbusplus::bus::match::match>(

@@ -590,6 +590,7 @@ std::optional<Table> BIOSConfig::loadTable(const fs::path& path)
 
 void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
 {
+    std::cout << "loading file " << filePath.c_str() << "\n";
     std::ifstream file;
     Json jsonConf;
     if (fs::exists(filePath))
@@ -686,6 +687,7 @@ int BIOSConfig::checkAttrValueToUpdate(
 int BIOSConfig::setAttrValue(const void* entry, size_t size,
                              bool updateBaseBIOSTable)
 {
+    std::cout << "enter setAttrValue \n";
     auto attrValueTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
     auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
     auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
@@ -765,13 +767,18 @@ void BIOSConfig::removeTables()
 void BIOSConfig::processBiosAttrChangeNotification(
     const DbusChObjProperties& chProperties, uint32_t biosAttrIndex)
 {
+    std::cout << "enter processBiosAttrChangeNotification \n";
     const auto& dBusMap = biosAttributes[biosAttrIndex]->getDBusMap();
     const auto& propertyName = dBusMap->propertyName;
     const auto& attrName = biosAttributes[biosAttrIndex]->name;
 
+    std::cout << "propertyName " << propertyName.c_str() << "\n";
+    std::cout << "attrName " << attrName.c_str() << "\n";
+
     const auto it = chProperties.find(propertyName);
     if (it == chProperties.end())
     {
+        std::cout << "did not find property returning \n";
         return;
     }
 
@@ -837,6 +844,15 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         storeTable(tableDir / attrValueTableFile, *destTable);
     }
+    std::cout << "calling setAttrValue \n";
+    rc = setAttrValue(newValue.data(), newValue.size());
+    std::cout << "returned " << rc << " from setAttrValue \n";
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "could not setAttrValue on base bios table and dbus \n";
+    }
+        
+
 }
 
 uint16_t BIOSConfig::findAttrHandle(const std::string& attrName)
@@ -865,11 +881,13 @@ uint16_t BIOSConfig::findAttrHandle(const std::string& attrName)
 void BIOSConfig::constructPendingAttribute(
     const PendingAttributes& pendingAttributes)
 {
+    std::cout << "enter constructPendingAttribute \n";
     std::vector<uint16_t> listOfHandles{};
 
     for (auto& attribute : pendingAttributes)
     {
         std::string attributeName = attribute.first;
+        std::cout << "picked attributeName " << attributeName.c_str() << "\n";
         auto& [attributeType, attributevalue] = attribute.second;
 
         auto iter = std::find_if(biosAttributes.begin(), biosAttributes.end(),
@@ -925,6 +943,7 @@ void BIOSConfig::constructPendingAttribute(
 
 void BIOSConfig::listenPendingAttributes()
 {
+    std::cout << "enter listenPendingAttributes \n";
     constexpr auto objPath = "/xyz/openbmc_project/bios_config/manager";
     constexpr auto objInterface = "xyz.openbmc_project.BIOSConfig.Manager";
 

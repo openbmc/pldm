@@ -243,6 +243,7 @@ int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
                                      uint8_t attrType,
                                      const PropertyValue& newPropVal)
 {
+    std::cout << "enter updateAttrVal for enum \n";
     auto iter = valMap.find(newPropVal);
     if (iter == valMap.end())
     {
