@@ -837,6 +837,12 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         storeTable(tableDir / attrValueTableFile, *destTable);
     }
+
+    rc = setAttrValue(newValue.data(), newValue.size());
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "could not setAttrValue on base bios table and dbus \n";
+    }
 }
 
 uint16_t BIOSConfig::findAttrHandle(const std::string& attrName)
