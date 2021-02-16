@@ -149,21 +149,13 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
 
 uint8_t BIOSEnumAttribute::getAttrValueIndex(const PropertyValue& propValue)
 {
-    auto defaultValueIndex = getValueIndex(defaultValue, possibleValues);
-
     try
     {
-        auto iter = valMap.find(propValue);
-        if (iter == valMap.end())
-        {
-            return defaultValueIndex;
-        }
-        auto currentValue = iter->second;
-        return getValueIndex(currentValue, possibleValues);
+        return getValueIndex(std::get<std::string>(propValue), possibleValues);
     }
     catch (const std::exception& e)
     {
-        return defaultValueIndex;
+        return getValueIndex(defaultValue, possibleValues);
     }
 }
 
@@ -180,7 +172,6 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
     auto currHdls = table::attribute_value::decodeEnumEntry(attrValueEntry);
 
     assert(currHdls.size() == 1);
-
     auto valueString = stringTable.findString(pvHdls[currHdls[0]]);
 
     auto it = std::find_if(valMap.begin(), valMap.end(),
@@ -271,13 +262,9 @@ void BIOSEnumAttribute::generateAttributeEntry(
     entry->attr_type = 0;
     entry->value[0] = 1; // number of current values, default 1
 
-    if (readOnly)
+    if (readOnly || !dBusMap.has_value())
     {
         entry->value[1] = getValueIndex(defaultValue, possibleValues);
-    }
-    else if (!dBusMap.has_value())
-    {
-        entry->value[1] = getValueIndex(value, possibleValues);
     }
     else
     {
