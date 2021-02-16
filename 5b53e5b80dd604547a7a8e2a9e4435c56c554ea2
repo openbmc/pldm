@@ -16,6 +16,24 @@
       "revId": "5b53e5b80dd604547a7a8e2a9e4435c56c554ea2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e0954fb_af7ab666",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-16T01:42:01Z",
+      "side": 1,
+      "message": "This problem is present for almost all the repos(except bmcweb) that are in meson build system. But it was  visible incase of pldm because pldm default build type is Debug(-O0), but all the other repos in meson had been using debugoptimized(-O2) buildtype as their default.\n\nFor example, sdbusplus repo,It has default build type - debugoptimized, \u0026 CI \u0026 yocto compilation of sdbusplus always uses debugoptmized, so its not visible untill some one explicitly changes the build type to debug to find out that it does not compile.",
+      "parentUuid": "3cab43a3_b13b525a",
+      "revId": "5b53e5b80dd604547a7a8e2a9e4435c56c554ea2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
