@@ -80,11 +80,13 @@ class BIOSConfig
     /** @brief Set attribute value on dbus and attribute value table
      *  @param[in] entry - attribute value entry
      *  @param[in] size - size of the attribute value entry
+     *  @param[in] updateDBus          - update Attr value D-Bus property
+     *                                   if this is set to true
      *  @param[in] updateBaseBIOSTable - update BaseBIOSTable D-Bus property
      *                                   if this is set to true
      *  @return pldm_completion_codes
      */
-    int setAttrValue(const void* entry, size_t size,
+    int setAttrValue(const void* entry, size_t size, bool updateDBus = true,
                      bool updateBaseBIOSTable = true);
 
     /** @brief Remove the persistent tables */

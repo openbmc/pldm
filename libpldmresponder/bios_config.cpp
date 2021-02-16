@@ -683,7 +683,7 @@ int BIOSConfig::checkAttrValueToUpdate(
     };
 }
 
-int BIOSConfig::setAttrValue(const void* entry, size_t size,
+int BIOSConfig::setAttrValue(const void* entry, size_t size, bool updateDBus,
                              bool updateBaseBIOSTable)
 {
     auto attrValueTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
@@ -735,7 +735,11 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size,
         {
             return PLDM_ERROR;
         }
-        (*iter)->setAttrValueOnDbus(attrValueEntry, attrEntry, biosStringTable);
+        if (updateDBus)
+        {
+            (*iter)->setAttrValueOnDbus(attrValueEntry, attrEntry,
+                                        biosStringTable);
+        }
     }
     catch (const std::exception& e)
     {
@@ -837,6 +841,13 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         storeTable(tableDir / attrValueTableFile, *destTable);
     }
+
+    rc = setAttrValue(newValue.data(), newValue.size(), false);
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "could not setAttrValue on base bios table and dbus, rc = "
+                  << rc << "\n";
+    }
 }
 
 uint16_t BIOSConfig::findAttrHandle(const std::string& attrName)
@@ -906,7 +917,7 @@ void BIOSConfig::constructPendingAttribute(
 
         (*iter)->generateAttributeEntry(attributevalue, attrValueEntry);
 
-        setAttrValue(attrValueEntry.data(), attrValueEntry.size(), false);
+        setAttrValue(attrValueEntry.data(), attrValueEntry.size());
     }
 
     if (listOfHandles.size())
@@ -919,7 +930,6 @@ void BIOSConfig::constructPendingAttribute(
             return;
         }
 #endif
-        updateBaseBIOSTableProperty();
     }
 }
 
