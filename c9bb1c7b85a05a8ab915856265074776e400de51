@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a574180b_854ff418",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-17T09:15:11Z",
+      "side": 1,
+      "message": "Can you please add the test cases on how did you test this commit ?",
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d690e255_cecc12a6",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-17T09:15:11Z",
+      "side": 1,
+      "message": "Are these the only ones that host sends down ? @sampa ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 61
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d20b5b5b_2adfd8a4",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-17T09:15:11Z",
+      "side": 1,
+      "message": "saving EntityName twice ?",
+      "range": {
+        "startLine": 222,
+        "startChar": 13,
+        "endLine": 222,
+        "endChar": 44
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c81642de_e7a0a739",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-17T09:15:11Z",
+      "side": 1,
+      "message": "why is this needed ?",
+      "range": {
+        "startLine": 227,
+        "startChar": 3,
+        "endLine": 227,
+        "endChar": 34
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
