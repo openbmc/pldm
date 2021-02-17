@@ -10,6 +10,8 @@
 #include "file_io_type_dump.hpp"
 #include "file_io_type_lid.hpp"
 #include "file_io_type_pel.hpp"
+#include "file_io_type_progress_src.hpp"
+
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <stdint.h>
@@ -122,6 +124,8 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
     return transferFileData(fd(), upstream, offset, length, address);
 }
 
+
+
 std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
                                               uint32_t fileHandle)
 {
@@ -155,6 +159,10 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         case PLDM_FILE_TYPE_ROOT_CERT:
         {
             return std::make_unique<CertHandler>(fileHandle, fileType);
+        }
+        case PLDM_FILE_TYPE_PROGRESS_SRC:
+        {
+            return std::make_unique<ProgressCodeHandler>(fileHandle);
         }
         default:
         {
