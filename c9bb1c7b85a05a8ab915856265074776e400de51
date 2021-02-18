@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "79baef97_7dfb3564",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-18T06:33:59Z",
+      "side": 1,
+      "message": "Sorry, Since we do not have test environment(all data is sent from the host), Could you help us to test it? Thanks",
+      "parentUuid": "a574180b_854ff418",
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d690e255_cecc12a6",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 9
@@ -30,6 +48,30 @@
       "writtenOn": "2021-02-17T09:15:11Z",
       "side": 1,
       "message": "Are these the only ones that host sends down ? @sampa ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 61
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d0043e2_e1b01da4",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-18T06:33:59Z",
+      "side": 1,
+      "message": "Maybe these are incomplete, we can continue to add later.",
+      "parentUuid": "d690e255_cecc12a6",
       "range": {
         "startLine": 35,
         "startChar": 0,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "90eecb7d_ec852699",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-18T06:33:59Z",
+      "side": 1,
+      "message": "Yes, it is a bit complicated here, because I used the recursive method.\nThe purpose is to get the path of the D-Bus object.\n\n`Entity Association PDR` contains one `Container Entity` and multiple `Contained Entity`.\n\n\u003e std::map\u003cEntityName, std::map\u003cEntityName, pldm_entity\u003e\u003e entityAssociationMap;\n\nThe first EntityName is `Container Entity Type`, and the map inside is multiple `Contained Entity`.\n\nHere is an example:\n```\n#include \u003ciostream\u003e\n#include \u003cmap\u003e\n#include \u003cstring\u003e\n\nstruct entity\n{\n    int type;\n    int num;\n    int con;\n};\n\nstd::map\u003cstd::string, entity\u003e objPathMap;\n\n/* name         type\n * system       1\n * io_board     2\n * chassis      3\n * ps0          4\n * ps1          5\n * mboard       6\n * dimm0        7\n * dimm1        8\n * ps2          9\n */\nstatic std::map\u003cstd::string, std::map\u003cstd::string, entity\u003e\u003e\n    entityAssociationMap \u003d {\n        {\"system\", {{\"io_board\", {2, 0, 1}}, {\"chassis\", {3, 0, 1}}}},\n        {\"io_board\",\n         {{\"ps0\", {4, 0, 1}}, {\"ps1\", {5, 0, 1}}, {\"ps2\", {9, 0, 1}}}},\n        {\"chassis\", {{\"mboard\", {6, 0, 1}}}},\n        {\"mboard\", {{\"dimm0\", {7, 0, 1}}, {\"dimm1\", {8, 0, 1}}}}};\n\nvoid addObjectPathEntityAssociationMap(\n    const std::map\u003cstd::string, entity\u003e\u0026 entityMaps, std::string\u0026 path)\n{\n    for (const auto\u0026 entity : entityMaps)\n    {\n        if (entityAssociationMap.find(entity.first) \u003d\u003d\n            entityAssociationMap.end())\n        {\n            objPathMap.emplace(path + \"/\" + entity.first +\n                                   std::to_string(entity.second.num),\n                               entity.second);\n        }\n        else\n        {\n            std::string p \u003d\n                path + \"/\" + entity.first + std::to_string(entity.second.num);\n            addObjectPathEntityAssociationMap(\n                entityAssociationMap.at(entity.first), p);\n        }\n    }\n}\n\nint main()\n{\n    std::string path \u003d \"/xyz/openbmc_project/system\";\n    addObjectPathEntityAssociationMap(entityAssociationMap.at(\"system\"), path);\n\n    for (auto\u0026 obj : objPathMap)\n    {\n        std::cout \u003c\u003c \"key \u003d \" \u003c\u003c obj.first \u003c\u003c std::endl;\n    }\n\n    return 0;\n}\n```\n\nand the output is:\n\n```\nkey \u003d /xyz/openbmc_project/system/chassis0/mboard0/dimm00\nkey \u003d /xyz/openbmc_project/system/chassis0/mboard0/dimm10\nkey \u003d /xyz/openbmc_project/system/io_board0/ps00\nkey \u003d /xyz/openbmc_project/system/io_board0/ps10\nkey \u003d /xyz/openbmc_project/system/io_board0/ps20\n```",
+      "parentUuid": "d20b5b5b_2adfd8a4",
+      "range": {
+        "startLine": 222,
+        "startChar": 13,
+        "endLine": 222,
+        "endChar": 44
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c81642de_e7a0a739",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 9
@@ -76,6 +142,30 @@
       "writtenOn": "2021-02-17T09:15:11Z",
       "side": 1,
       "message": "why is this needed ?",
+      "range": {
+        "startLine": 227,
+        "startChar": 3,
+        "endLine": 227,
+        "endChar": 34
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecc670bf_86696d2b",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-02-18T06:33:59Z",
+      "side": 1,
+      "message": "The purpose is to generate object path only once.",
+      "parentUuid": "c81642de_e7a0a739",
       "range": {
         "startLine": 227,
         "startChar": 3,
