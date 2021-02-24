@@ -11,6 +11,7 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdeventplus/clock.hpp>
+#include <sdeventplus/exception.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <sdeventplus/source/time.hpp>
 
