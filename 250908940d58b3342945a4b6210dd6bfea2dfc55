@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ccb98c0d_235759d5",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-02-28T05:12:47Z",
+      "side": 1,
+      "message": "States [1,9] - requires 2 bytes in bit-field representation.\n\nSay for example -  State 9 is represented by 1000000000 -\u003e this requires 2 bytes.",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 27
+      },
+      "revId": "250908940d58b3342945a4b6210dd6bfea2dfc55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
