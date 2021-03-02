@@ -350,6 +350,16 @@ int main(int argc, char** argv)
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
+    hostPDRHandler->setHostState();
+    if (hostPDRHandler->isHostUp())
+    {
+        hostPDRHandler->fetchPDRsOnStart();
+    }
+    else
+    {
+        std::cout << "Host is not running\n";
+    }
+
     event.loop();
 
     result = shutdown(sockfd, SHUT_RDWR);
