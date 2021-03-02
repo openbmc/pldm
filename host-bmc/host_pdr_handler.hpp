@@ -144,18 +144,26 @@ class HostPDRHandler
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
 
+    /** @brief fetch PDRs from Host firmware
+     *
+     *  @param[in] - nextRecordHandle - the next record handle to ask for
+     */
+    void fetchPDRsOnStart(uint32_t nextRecordHandle = 0);
+
+    /** @brief set the Host state when pldmd starts
+     */
+    void setHostState();
+
+    /** @brief check whether Host is running when pldmd starts
+     */
+    bool isHostUp();
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
      *  @param[in] source - sdeventplus event source
      */
     void _fetchPDR(sdeventplus::source::EventBase& source);
-
-    /** @brief fetch PDRs from Host firmware
-     *
-     *  @param[in] - nextRecordHandle - the next record handle to ask for
-     */
-    void fetchPDRsOnStart(uint32_t nextRecordHandle = 0);
 
     /** @brief Merge host firmware's entity association PDRs into BMC's
      *  @details A merge operation involves adding a pldm_entity under the
@@ -235,6 +243,13 @@ class HostPDRHandler
      */
     HostStateSensorMap sensorMap;
     bool verbose;
+
+    /** @brief whether response received from Host */
+    bool responseReceived;
+    /** @brief whether timed out waiting for a response from Host */
+    bool timeOut;
+    /** @brief request message instance id */
+    uint8_t insId;
 };
 
 } // namespace pldm
