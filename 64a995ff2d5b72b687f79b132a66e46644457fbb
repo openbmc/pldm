@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec6b2ed4_7ebf65a2",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_progress_src.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-02T12:27:55Z",
+      "side": 1,
+      "message": "nit: I think you can check `buffer \u003d\u003d nullptr` first.\n\ne.g:\n```\nif (buffer \u003d\u003d nullptr)\n{\n    return PLDM_ERROR;\n}\n\ndo something;",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 5
+      },
+      "revId": "64a995ff2d5b72b687f79b132a66e46644457fbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
