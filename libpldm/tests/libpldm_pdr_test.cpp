@@ -396,7 +396,7 @@ TEST(PDRUpdate, testAddFruRecordSet)
 {
     auto repo = pldm_pdr_init();
 
-    auto handle = pldm_pdr_add_fru_record_set(repo, 1, 10, 1, 0, 100);
+    auto handle = pldm_pdr_add_fru_record_set(repo, 1, 10, 1, 0, 100, 0);
     EXPECT_EQ(handle, 1u);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 1u);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo),
@@ -422,7 +422,7 @@ TEST(PDRUpdate, testAddFruRecordSet)
     EXPECT_EQ(fru->container_id, htole16(100));
     outData = nullptr;
 
-    handle = pldm_pdr_add_fru_record_set(repo, 2, 11, 2, 1, 101);
+    handle = pldm_pdr_add_fru_record_set(repo, 2, 11, 2, 1, 101, 0);
     EXPECT_EQ(handle, 2u);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 2u);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo),
@@ -474,9 +474,9 @@ TEST(PDRUpdate, tesFindtFruRecordSet)
     uint16_t entityType{};
     uint16_t entityInstanceNum{};
     uint16_t containerId{};
-    auto first = pldm_pdr_add_fru_record_set(repo, 1, 1, 1, 0, 100);
-    auto second = pldm_pdr_add_fru_record_set(repo, 1, 2, 1, 1, 100);
-    auto third = pldm_pdr_add_fru_record_set(repo, 1, 3, 1, 2, 100);
+    auto first = pldm_pdr_add_fru_record_set(repo, 1, 1, 1, 0, 100, 1);
+    auto second = pldm_pdr_add_fru_record_set(repo, 1, 2, 1, 1, 100, 2);
+    auto third = pldm_pdr_add_fru_record_set(repo, 1, 3, 1, 2, 100, 3);
     EXPECT_EQ(first, pldm_pdr_get_record_handle(
                          repo, pldm_pdr_fru_record_set_find_by_rsi(
                                    repo, 1, &terminusHdl, &entityType,
@@ -1349,7 +1349,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     auto first = pldm_pdr_add_fru_record_set(
         repo, 1, 1, entities[1].entity_type, entities[1].entity_instance_num,
-        entities[1].entity_container_id);
+        entities[1].entity_container_id, 1);
     EXPECT_NE(l1, nullptr);
     EXPECT_EQ(entities[1].entity_instance_num, 63);
     EXPECT_EQ(first, pldm_pdr_get_record_handle(
@@ -1363,7 +1363,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     auto second = pldm_pdr_add_fru_record_set(
         repo, 1, 2, entities[2].entity_type, entities[2].entity_instance_num,
-        entities[2].entity_container_id);
+        entities[2].entity_container_id, 2);
     EXPECT_NE(l2, nullptr);
     EXPECT_EQ(entities[2].entity_instance_num, 37);
     EXPECT_EQ(second, pldm_pdr_get_record_handle(
@@ -1377,7 +1377,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     auto third = pldm_pdr_add_fru_record_set(
         repo, 1, 3, entities[3].entity_type, entities[3].entity_instance_num,
-        entities[3].entity_container_id);
+        entities[3].entity_container_id, 3);
     EXPECT_NE(l3, nullptr);
     EXPECT_EQ(entities[3].entity_instance_num, 44);
     EXPECT_EQ(third, pldm_pdr_get_record_handle(
@@ -1391,7 +1391,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     auto fourth = pldm_pdr_add_fru_record_set(
         repo, 1, 4, entities[4].entity_type, entities[4].entity_instance_num,
-        entities[4].entity_container_id);
+        entities[4].entity_container_id, 4);
     EXPECT_NE(l4, nullptr);
     EXPECT_EQ(entities[4].entity_instance_num, 89);
     EXPECT_EQ(fourth, pldm_pdr_get_record_handle(
@@ -1405,7 +1405,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     auto fifth = pldm_pdr_add_fru_record_set(
         repo, 1, 5, entities[5].entity_type, entities[5].entity_instance_num,
-        entities[5].entity_container_id);
+        entities[5].entity_container_id, 5);
     EXPECT_NE(l5, nullptr);
     EXPECT_EQ(entities[5].entity_instance_num, 90);
     EXPECT_EQ(fifth, pldm_pdr_get_record_handle(
@@ -1423,7 +1423,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     auto seventh = pldm_pdr_add_fru_record_set(
         repo, 1, 7, entities[7].entity_type, entities[7].entity_instance_num,
-        entities[7].entity_container_id);
+        entities[7].entity_container_id, 7);
     EXPECT_NE(l7, nullptr);
     EXPECT_EQ(entities[7].entity_instance_num, 100);
     EXPECT_EQ(seventh, pldm_pdr_get_record_handle(
@@ -1437,7 +1437,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     auto eighth = pldm_pdr_add_fru_record_set(
         repo, 1, 8, entities[8].entity_type, entities[8].entity_instance_num,
-        entities[8].entity_container_id);
+        entities[8].entity_container_id, 8);
     EXPECT_NE(l8, nullptr);
     EXPECT_EQ(entities[8].entity_instance_num, 100);
     EXPECT_EQ(eighth, pldm_pdr_get_record_handle(
