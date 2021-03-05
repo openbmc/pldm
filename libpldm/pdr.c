@@ -313,6 +313,31 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 	return NULL;
 }
 
+void pldm_pdr_updateTlPDR(const pldm_pdr *repo)
+{
+	uint8_t *outData = NULL;
+	uint32_t size = 0;
+	const pldm_pdr_record *record;
+	record = pldm_pdr_find_record_by_type(repo, PLDM_TERMINUS_LOCATOR_PDR,
+					      NULL, &outData, &size);
+
+	do {
+		record = pldm_pdr_find_record_by_type(
+		    repo, PLDM_TERMINUS_LOCATOR_PDR, record, &outData, &size);
+		if (record != NULL) {
+			struct pldm_terminus_locator_pdr *pdr =
+			    (struct pldm_terminus_locator_pdr *)outData;
+			struct pldm_terminus_locator_type_mctp_eid *value =
+			    (struct pldm_terminus_locator_type_mctp_eid *)
+				pdr->terminus_locator_value;
+			if (value->eid == 9) {
+				pdr->validity = 0;
+				break;
+			}
+		}
+	} while (record);
+}
+
 typedef struct pldm_entity_association_tree {
 	pldm_entity_node *root;
 	uint16_t last_used_container_id;
