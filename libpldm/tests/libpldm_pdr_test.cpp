@@ -396,7 +396,7 @@ TEST(PDRUpdate, testAddFruRecordSet)
 {
     auto repo = pldm_pdr_init();
 
-    auto handle = pldm_pdr_add_fru_record_set(repo, 1, 10, 1, 0, 100);
+    auto handle = pldm_pdr_add_fru_record_set(repo, 1, 10, 1, 0, 100, 0);
     EXPECT_EQ(handle, 1u);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 1u);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo),
@@ -422,7 +422,7 @@ TEST(PDRUpdate, testAddFruRecordSet)
     EXPECT_EQ(fru->container_id, htole16(100));
     outData = nullptr;
 
-    handle = pldm_pdr_add_fru_record_set(repo, 2, 11, 2, 1, 101);
+    handle = pldm_pdr_add_fru_record_set(repo, 2, 11, 2, 1, 101, 0);
     EXPECT_EQ(handle, 2u);
     EXPECT_EQ(pldm_pdr_get_record_count(repo), 2u);
     EXPECT_EQ(pldm_pdr_get_repo_size(repo),
@@ -474,9 +474,9 @@ TEST(PDRUpdate, tesFindtFruRecordSet)
     uint16_t entityType{};
     uint16_t entityInstanceNum{};
     uint16_t containerId{};
-    auto first = pldm_pdr_add_fru_record_set(repo, 1, 1, 1, 0, 100);
-    auto second = pldm_pdr_add_fru_record_set(repo, 1, 2, 1, 1, 100);
-    auto third = pldm_pdr_add_fru_record_set(repo, 1, 3, 1, 2, 100);
+    auto first = pldm_pdr_add_fru_record_set(repo, 1, 1, 1, 0, 100, 1);
+    auto second = pldm_pdr_add_fru_record_set(repo, 1, 2, 1, 1, 100, 2);
+    auto third = pldm_pdr_add_fru_record_set(repo, 1, 3, 1, 2, 100, 3);
     EXPECT_EQ(first, pldm_pdr_get_record_handle(
                          repo, pldm_pdr_fru_record_set_find_by_rsi(
                                    repo, 1, &terminusHdl, &entityType,
