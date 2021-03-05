@@ -53,6 +53,18 @@ struct SensorEntry
     }
 };
 
+/* @struct TerminusLocatorInfo
+ * Contains validity, eid, terminus_id and terminus handle
+ * of a terminus locator PDR.
+ */
+struct TlInfo
+{
+    uint8_t valid;
+    uint8_t eid;
+    uint8_t tid;
+    uint16_t terminus_handle;
+};
+
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
 using PDRList = std::vector<std::vector<uint8_t>>;
 
@@ -153,6 +165,14 @@ class HostPDRHandler
     /** @brief set the Host state when pldmd starts
      */
     void setHostState();
+
+    /** @brief set HostSensorStates when pldmd starts or restarts
+     *  and updates the D-Bus property
+     *  @param[in] stateSensorPDRs - host state sensor PDRs
+     *  @param[in] tlinfo - vector of struct TlInfo
+     */
+    void setHostSensorState(const PDRList& stateSensorPDRs,
+                            const std::vector<TlInfo>& tlinfo);
 
     /** @brief check whether Host is running when pldmd starts
      */
