@@ -9,7 +9,7 @@ After=xyz.openbmc_project.biosconfig_manager.service
 
 [Service]
 Restart=always
-EnvironmentFile=/etc/default/pldmd
+EnvironmentFile=/etc/default/pldm_verbosity
 ExecStart=/usr/bin/pldmd --verbose $VERBOSE
 
 [Install]
