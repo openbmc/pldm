@@ -28,6 +28,7 @@ conf_data.set_quoted('PDR_JSONS_DIR', '/usr/share/pldm/pdr')
 conf_data.set_quoted('FRU_JSONS_DIR', '/usr/share/pldm/fru')
 conf_data.set_quoted('HOST_JSONS_DIR', '/usr/share/pldm/host')
 conf_data.set_quoted('EVENTS_JSONS_DIR', '/usr/share/pldm/events')
+conf_data.set('PLDM_VERBOSITY',get_option('verbosity'))
 if get_option('softoff').enabled()
   conf_data.set('SOFTOFF_TIMEOUT_SECONDS', get_option('softoff-timeout-seconds'))
 endif
@@ -108,6 +109,13 @@ configure_file(
   install_dir: systemd_system_unit_dir,
   output: 'pldmd.service',
 )
+
+configure_file(
+  input: 'pldmd/verbosity/verbosity',
+  output: 'verbosity',
+  configuration: conf_data,
+  install: true,
+  install_dir: '/etc/default')
 
 if get_option('oem-ibm').enabled()
   subdir('oem/ibm/service_files')
