@@ -144,6 +144,12 @@ bool pldm_pdr_record_is_remote(const pldm_pdr_record *record);
  */
 void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
 
+/** @brief Update TL PDR
+ *
+ * @param[in] repo - opaque pointer acting as a PDR repo handle
+ */
+void pldm_pdr_updateTlPDR(const pldm_pdr *repo);
+
 /* ======================= */
 /* FRU Record Set PDR APIs */
 /* ======================= */
