@@ -1,21 +1,20 @@
 #pragma once
 
-#include "libpldm/base.h"
-#include "libpldm/platform.h"
-
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 
-#include <sdeventplus/event.hpp>
-#include <sdeventplus/source/event.hpp>
-
 #include <deque>
 #include <map>
 #include <memory>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/source/event.hpp>
 #include <vector>
+
+#include "libpldm/base.h"
+#include "libpldm/platform.h"
 
 using namespace pldm::dbus_api;
 using namespace pldm::responder::events;
@@ -50,6 +49,18 @@ struct SensorEntry
         return ((terminusID < e.terminusID) ||
                 ((terminusID == e.terminusID) && (sensorID < e.sensorID)));
     }
+};
+
+/* @struct TerminusLocatorInfo
+ *  * Contains validity, eid, terminus_id and terminus handle
+ *   * of a terminus loactor PDR.
+ *    */
+struct TlInfo
+{
+    uint8_t valid;
+    uint8_t eid;
+    uint8_t tid;
+    uint16_t terminus_handle;
 };
 
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
@@ -146,6 +157,14 @@ class HostPDRHandler
     /** @brief set the Host state when pldmd starts
      */
     void setHostState();
+
+    /** @brief set HostSensorStates when pldmd starts or restarts
+     *  and updates the DBus property
+     *  @param[in] stateSensorPDRs - host state sensor PDRs
+     *  @param[in] tlinfo - vector of struct TlInfo
+     */
+    void setHostSensorState(const PDRList& stateSensorPDRs,
+                            std::vector<TlInfo>& tlinfo);
 
     /** @brief check whether Host is running when pldmd starts
      */
