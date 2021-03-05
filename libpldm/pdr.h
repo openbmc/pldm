@@ -144,6 +144,12 @@ bool pldm_pdr_record_is_remote(const pldm_pdr_record *record);
  */
 void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
 
+/** @brief Update TL PDR
+ *
+ * @param[in] repo - opaque pointer acting as a PDR repo handle
+ */
+void pldm_pdr_updateTlPDR(const pldm_pdr *repo);
+
 /* ======================= */
 /* FRU Record Set PDR APIs */
 /* ======================= */
@@ -157,13 +163,15 @@ void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
  *  @param[in] entity_type - entity type of FRU
  *  @param[in] entity_instance_num - entity instance number of FRU
  *  @param[in] container_id - container id of FRU
+ *  @param[in] bmc_record_handle - handle used to construct the next record
  *
  *  @return uint32_t - record handle assigned to PDR record
  */
 uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 				     uint16_t fru_rsi, uint16_t entity_type,
 				     uint16_t entity_instance_num,
-				     uint16_t container_id);
+				     uint16_t container_id,
+				     uint32_t bmc_record_handle);
 
 /** @brief Find a FRU record set PDR by FRU record set identifier
  *

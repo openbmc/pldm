@@ -11,6 +11,8 @@ extern "C" {
 #include "base.h"
 #include "pdr.h"
 
+#define HOST_EID 9
+
 /* Maximum size for request */
 #define PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES 19
 #define PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES 4

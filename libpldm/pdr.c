@@ -250,7 +250,8 @@ inline bool pldm_pdr_record_is_remote(const pldm_pdr_record *record)
 uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 				     uint16_t fru_rsi, uint16_t entity_type,
 				     uint16_t entity_instance_num,
-				     uint16_t container_id)
+				     uint16_t container_id,
+				     uint32_t bmc_record_handle)
 {
 	uint32_t size = sizeof(struct pldm_pdr_hdr) +
 			sizeof(struct pldm_pdr_fru_record_set);
@@ -258,7 +259,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 
 	struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)&data;
 	hdr->version = 1;
-	hdr->record_handle = 0;
+	hdr->record_handle = bmc_record_handle;
 	hdr->type = PLDM_PDR_FRU_RECORD_SET;
 	hdr->record_change_num = 0;
 	hdr->length = htole16(sizeof(struct pldm_pdr_fru_record_set));
@@ -271,7 +272,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 	fru->entity_instance_num = htole16(entity_instance_num);
 	fru->container_id = htole16(container_id);
 
-	return pldm_pdr_add(repo, data, size, 0, false);
+	return pldm_pdr_add(repo, data, size, bmc_record_handle, false);
 }
 
 const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
@@ -311,6 +312,32 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 	*container_id = 0;
 
 	return NULL;
+}
+
+void pldm_pdr_updateTlPDR(const pldm_pdr *repo)
+{
+	uint8_t *outData = NULL;
+	uint32_t size = 0;
+	const pldm_pdr_record *record;
+	record = pldm_pdr_find_record_by_type(repo, PLDM_TERMINUS_LOCATOR_PDR,
+					      NULL, &outData, &size);
+
+	do {
+		record = pldm_pdr_find_record_by_type(
+		    repo, PLDM_TERMINUS_LOCATOR_PDR, record, &outData, &size);
+		if (record != NULL) {
+			struct pldm_terminus_locator_pdr *pdr =
+			    (struct pldm_terminus_locator_pdr *)outData;
+			struct pldm_terminus_locator_type_mctp_eid *value =
+			    (struct pldm_terminus_locator_type_mctp_eid *)
+				pdr->terminus_locator_value;
+			// check if its the host EID
+			if (value->eid == HOST_EID) {
+				pdr->validity = PLDM_TL_PDR_NOT_VALID;
+				break;
+			}
+		}
+	} while (record);
 }
 
 typedef struct pldm_entity_association_tree {
