@@ -8,9 +8,9 @@
 
 #include <nlohmann/json.hpp>
 #include <sdeventplus/clock.hpp>
+#include <sdeventplus/exception.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <sdeventplus/source/time.hpp>
-#include <sdeventplus/exception.hpp>
 
 #include <fstream>
 
@@ -119,6 +119,7 @@ void HostPDRHandler::fetchPDRsOnStart()
     bool merged = false;
     PDRList stateSensorPDRs{};
     TLPDRMap tlpdrInfo{};
+    std::vector<TlInfo> tlinfo;
 
     uint32_t nextRecordHandle{};
     uint32_t recordHandle{};
@@ -225,6 +226,13 @@ void HostPDRHandler::fetchPDRsOnStart()
                             static_cast<pdr::TerminusHandle>(
                                 tlpdr->terminus_handle),
                             static_cast<pdr::TerminusID>(tlpdr->tid));
+
+                        auto tlEid = reinterpret_cast<
+                            const pldm_terminus_locator_type_mctp_eid*>(
+                            pdr.data());
+                        tlinfo.emplace_back(TlInfo{tlpdr->validity, tlEid->eid,
+                                                   tlpdr->tid,
+                                                   tlpdr->terminus_handle});
                     }
                     else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
                     {
@@ -248,6 +256,7 @@ void HostPDRHandler::fetchPDRsOnStart()
     } while (recordHandle);
 
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+    setHostSensorState(stateSensorPDRs, tlinfo);
 
     if (merged)
     {
@@ -569,4 +578,140 @@ bool HostPDRHandler::isHostUp()
     return responseReceived;
 }
 
+void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
+                                        std::vector<TlInfo>& tlinfo)
+{
+    for (const auto& stateSensorPDR : stateSensorPDRs)
+    {
+        auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(
+            stateSensorPDR.data());
+
+        uint16_t sensorId = pdr->sensor_id;
+        uint16_t terminusHandle = pdr->terminus_handle;
+
+        for (auto info : tlinfo)
+        {
+            if (info.terminus_handle == terminusHandle)
+            {
+                if (info.valid == 1)
+                {
+                    mctp_eid = info.eid;
+                }
+            }
+
+            bitfield8_t sensorRearm;
+            sensorRearm.byte = 0;
+            auto instanceId = requester.getInstanceId(mctp_eid);
+            std::vector<uint8_t> requestMsg(
+                sizeof(pldm_msg_hdr) +
+                PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+            auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+            auto rc = encode_get_state_sensor_readings_req(
+                instanceId, sensorId, sensorRearm, 0, request);
+
+            if (rc != PLDM_SUCCESS)
+            {
+                requester.markFree(mctp_eid, instanceId);
+                std::cerr
+                    << "Failed to encode_get_state_sensor_reading_req, rc = "
+                    << rc << std::endl;
+                return;
+            }
+            uint8_t* responseMsg = nullptr;
+            size_t responseMsgSize{};
+            auto requesterRc = pldm_send_recv(
+                mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
+                &responseMsg, &responseMsgSize);
+
+            std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
+                responseMsg, std::free};
+            requester.markFree(mctp_eid, instanceId);
+
+            if (requesterRc != PLDM_REQUESTER_SUCCESS)
+            {
+                std::cerr
+                    << "Failed to send msg to get state sensor readings, rc = "
+                    << requesterRc << std::endl;
+                return;
+            }
+
+            uint8_t completionCode = 0;
+            uint8_t comp_sensor_count = 0;
+
+            std::array<get_sensor_state_field, 8> stateField{};
+            auto response =
+                reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
+
+            auto payloadLength = responseMsgSize - sizeof(pldm_msg_hdr);
+
+            rc = decode_get_state_sensor_readings_resp(
+                response, payloadLength, &completionCode, &comp_sensor_count,
+                stateField.data());
+
+            if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+            {
+                std::cerr
+                    << "Failed to decode_get_state_sensor_reading_resp, rc = "
+                    << rc << " cc=" << static_cast<unsigned>(completionCode)
+                    << std::endl;
+            }
+
+            uint8_t eventState;
+            uint8_t previousEventState;
+            uint8_t sensorOffset = comp_sensor_count - 1;
+            uint8_t tid = info.tid;
+
+            for (size_t i = 0; i < comp_sensor_count; i++)
+            {
+                eventState = stateField[i].present_state;
+                previousEventState = stateField[i].previous_state;
+
+                emitStateSensorEventSignal(tid, sensorId, sensorOffset,
+                                           eventState, previousEventState);
+
+                SensorEntry sensorEntry{tid, sensorId};
+
+                pldm::pdr::EntityInfo entityInfo{};
+                pldm::pdr::CompositeSensorStates compositeSensorStates{};
+
+                try
+                {
+                    std::tie(entityInfo, compositeSensorStates) =
+                        lookupSensorInfo(sensorEntry);
+                }
+                catch (const std::out_of_range& e)
+                {
+
+                    try
+                    {
+                        sensorEntry.terminusID = PLDM_TID_RESERVED;
+                        std::tie(entityInfo, compositeSensorStates) =
+                            lookupSensorInfo(sensorEntry);
+                    }
+                    catch (const std::out_of_range& e)
+                    {
+                        std::cout << "No mapping for the events" << std::endl;
+                    }
+                }
+
+                if (sensorOffset > compositeSensorStates.size())
+                {
+                    std::cout << " Error Invalid data" << std::endl;
+                }
+
+                const auto& possibleStates =
+                    compositeSensorStates[sensorOffset];
+                if (possibleStates.find(eventState) == possibleStates.end())
+                {
+                    std::cout << " Error invalid_data" << std::endl;
+                }
+                const auto& [containerId, entityType, entityInstance] =
+                    entityInfo;
+                pldm::responder::events::StateSensorEntry stateSensorEntry{
+                    containerId, entityType, entityInstance, sensorOffset};
+                handleStateSensorEvent(stateSensorEntry, eventState);
+            }
+        }
+    }
+}
 } // namespace pldm
