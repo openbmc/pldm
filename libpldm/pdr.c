@@ -35,16 +35,24 @@ static inline uint32_t get_next_record_handle(const pldm_pdr *repo,
 
 static void add_record(pldm_pdr *repo, pldm_pdr_record *record)
 {
+	printf("\nentered add_record");
 	assert(repo != NULL);
 	assert(record != NULL);
 
 	if (repo->first == NULL) {
+		printf("\nfirst record getting added");
 		assert(repo->last == NULL);
 		repo->first = record;
 		repo->last = record;
 	} else {
+		printf("\ninto the else");
 		repo->last->next = record;
+		printf("\nnow %d points ", repo->last->record_handle);
 		repo->last = record;
+		printf(" to %d ", repo->last->record_handle);
+		struct pldm_pdr_hdr *hdr =
+		    (struct pldm_pdr_hdr *)(record->data);
+		printf("\nrecord handle at header %d", hdr->record_handle);
 	}
 	repo->size += record->size;
 	++repo->record_count;
@@ -67,10 +75,16 @@ static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
 	assert(repo != NULL);
 	assert(size != 0);
 
+	printf(" Record handle inside make_new_record function : %d\n",
+	       record_handle);
 	pldm_pdr_record *record = malloc(sizeof(pldm_pdr_record));
 	assert(record != NULL);
 	record->record_handle =
 	    record_handle == 0 ? get_new_record_handle(repo) : record_handle;
+	printf(
+	    " After assigning record handle in make_new_record function : %d\n",
+	    record->record_handle);
+
 	record->size = size;
 	record->is_remote = is_remote;
 	if (data != NULL) {
@@ -84,9 +98,14 @@ static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
 		 * header already.
 		 */
 		if (!record_handle) {
+			printf("If record handle is 0 inside make_new_record "
+			       "function : %d\n",
+			       record_handle);
 			struct pldm_pdr_hdr *hdr =
 			    (struct pldm_pdr_hdr *)(record->data);
 			hdr->record_handle = htole32(record->record_handle);
+			printf("RECORD HANDLE after hdr->record_handle :%d\n ",
+			       hdr->record_handle);
 		}
 	}
 	record->next = NULL;
@@ -97,6 +116,7 @@ static pldm_pdr_record *make_new_record(const pldm_pdr *repo,
 uint32_t pldm_pdr_add(pldm_pdr *repo, const uint8_t *data, uint32_t size,
 		      uint32_t record_handle, bool is_remote)
 {
+	printf(" Record handle inside pdr add function : %d\n", record_handle);
 	assert(size != 0);
 	assert(data != NULL);
 
@@ -252,7 +272,8 @@ inline bool pldm_pdr_record_is_remote(const pldm_pdr_record *record)
 uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 				     uint16_t fru_rsi, uint16_t entity_type,
 				     uint16_t entity_instance_num,
-				     uint16_t container_id)
+				     uint16_t container_id,
+				     uint32_t bmc_record_handle)
 {
 	uint32_t size = sizeof(struct pldm_pdr_hdr) +
 			sizeof(struct pldm_pdr_fru_record_set);
@@ -260,7 +281,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 
 	struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)&data;
 	hdr->version = 1;
-	hdr->record_handle = 0;
+	hdr->record_handle = bmc_record_handle;
 	hdr->type = PLDM_PDR_FRU_RECORD_SET;
 	hdr->record_change_num = 0;
 	hdr->length = htole16(sizeof(struct pldm_pdr_fru_record_set));
@@ -273,7 +294,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 	fru->entity_instance_num = htole16(entity_instance_num);
 	fru->container_id = htole16(container_id);
 
-	return pldm_pdr_add(repo, data, size, 0, false);
+	return pldm_pdr_add(repo, data, size, bmc_record_handle, false);
 }
 
 const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
@@ -313,6 +334,32 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 	*container_id = 0;
 
 	return NULL;
+}
+
+void pldm_pdr_updateTlPDR(const pldm_pdr *repo)
+{
+	uint8_t *outData = NULL;
+	uint32_t size = 0;
+	const pldm_pdr_record *record;
+	record = pldm_pdr_find_record_by_type(repo, PLDM_TERMINUS_LOCATOR_PDR,
+					      NULL, &outData, &size);
+
+	do {
+		record = pldm_pdr_find_record_by_type(
+		    repo, PLDM_TERMINUS_LOCATOR_PDR, record, &outData, &size);
+		if (record != NULL) {
+			struct pldm_terminus_locator_pdr *pdr =
+			    (struct pldm_terminus_locator_pdr *)outData;
+			struct pldm_terminus_locator_type_mctp_eid *value =
+			    (struct pldm_terminus_locator_type_mctp_eid *)
+				pdr->terminus_locator_value;
+			// check if its the host EID
+			if (value->eid == HOST_EID) {
+				pdr->validity = PLDM_TL_PDR_NOT_VALID;
+				break;
+			}
+		}
+	} while (record);
 }
 
 typedef struct pldm_entity_association_tree {

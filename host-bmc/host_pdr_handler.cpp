@@ -234,7 +234,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         }
         else
         {
-            pldm_entity_association_pdr_add_from_node(node, repo,&entities, numEntities, true);
+            pldm_entity_association_pdr_add_from_node(node, repo, &entities,
+                                                      numEntities, true);
         }
     }
     free(entities);
@@ -375,6 +376,11 @@ void HostPDRHandler::processHostPDRs(const pldm_msg* response,
     static PDRList stateSensorPDRs{};
     static TLPDRMap tlpdrInfo{};
     uint32_t nextRecordHandle{};
+    std::vector<TlInfo> tlInfo;
+    uint8_t tlEid = 0;
+    bool tlNotValid = false;
+    uint32_t rh = 0;
+
     uint8_t completionCode{};
     uint32_t nextDataTransferHandle{};
     uint8_t transferFlag{};
@@ -415,9 +421,33 @@ void HostPDRHandler::processHostPDRs(const pldm_msg* response,
         }
         else
         {
+            // when nextRecordHandle is 0, we need the recordHandle of the last
+            // PDR and not 0-1.
+            if (!nextRecordHandle)
+            {
+                rh = nextRecordHandle;
+                std::cerr << "Record handle when nextrecord handle is 0: " << rh
+                          << std::endl;
+            }
+            else
+            {
+                rh = nextRecordHandle - 1;
+                std::cerr << " Record Handle : " << rh << std ::endl;
+            }
+
             auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+            std::cerr << "Record Handle from pdrHeader : "
+                      << pdrHdr->record_handle << std::endl;
+            if (!rh)
+            {
+                rh = pdrHdr->record_handle;
+                std::cerr << " Record Handle when rh is not 0 : " << rh
+                          << std::endl;
+            }
+
             if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
             {
+                std::cerr << " its a entity association PDR" << std::endl;
                 this->mergeEntityAssociations(pdr);
                 merged = true;
             }
@@ -432,19 +462,58 @@ void HostPDRHandler::processHostPDRs(const pldm_msg* response,
                         static_cast<pldm::pdr::TerminusHandle>(
                             tlpdr->terminus_handle),
                         static_cast<pldm::pdr::TerminusID>(tlpdr->tid));
+
+                    auto terminus_locator_type = tlpdr->terminus_locator_type;
+                    if (terminus_locator_type ==
+                        PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID)
+                    {
+                        auto locatorValue = reinterpret_cast<
+                            const pldm_terminus_locator_type_mctp_eid*>(
+                            tlpdr->terminus_locator_value);
+                        tlEid = static_cast<uint8_t>(locatorValue->eid);
+                        std::cerr << " TL EID: " << (uint16_t)tlEid
+                                  << std::endl;
+                    }
+                    if (tlpdr->validity == 0)
+                    {
+                        tlNotValid = true;
+                    }
+                    tlInfo.emplace_back(
+                        TlInfo{tlpdr->validity, static_cast<uint8_t>(tlEid),
+                               tlpdr->tid, tlpdr->terminus_handle});
                 }
                 else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
                 {
                     stateSensorPDRs.emplace_back(pdr);
                 }
-                pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
+
+                // if the TLPDR is invalid update the repo accordingly
+                if (tlNotValid)
+                {
+                    pldm_pdr_updateTlPDR(repo);
+                }
+                else
+                {
+                    std::cerr
+                        << "Record handle before adding to the repo: " << rh
+                        << std::endl;
+                    std::cerr << " adding to the repo" << std::endl;
+                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true);
+                }
             }
         }
     }
     if (!nextRecordHandle)
     {
+        std::cerr << " Received last record: " << std::endl;
         /*received last record*/
+        std::cerr << " Before parsing teh state sensors" << std::endl;
         this->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+        if (isHostUp())
+        {
+            std::cerr << "before setHostSensor state " << std::endl;
+            this->setHostSensorState(stateSensorPDRs, tlInfo);
+        }
         stateSensorPDRs.clear();
         tlpdrInfo.clear();
         if (merged)
@@ -490,6 +559,7 @@ void HostPDRHandler::_processFetchPDREvent(
 
 void HostPDRHandler::setHostState()
 {
+    std::cerr << " Setting the HOST STATE " << std::endl;
     using namespace sdeventplus;
     using namespace sdeventplus::source;
     constexpr auto clockId = sdeventplus::ClockId::RealTime;
@@ -595,7 +665,184 @@ void HostPDRHandler::setHostState()
 
 bool HostPDRHandler::isHostUp()
 {
+    std::cerr << " Is Host UP" << std::endl;
     return responseReceived;
 }
 
+void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
+                                        const std::vector<TlInfo>& tlinfo)
+{
+    std::cerr << " Set the host sensor state" << std::endl;
+    for (const auto& stateSensorPDR : stateSensorPDRs)
+    {
+        auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(
+            stateSensorPDR.data());
+
+        if (!pdr)
+        {
+            std::cerr << "Failed to get State sensor PDR" << std::endl;
+            pldm::utils::reportError(
+                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            return;
+        }
+
+        uint16_t sensorId = pdr->sensor_id;
+        std::cerr << "Sensor ID: " << sensorId << std::endl;
+
+        for (auto info : tlinfo)
+        {
+            if (info.terminus_handle == pdr->terminus_handle)
+            {
+                if (info.valid == 1)
+                {
+                    mctp_eid = info.eid;
+                }
+
+                bitfield8_t sensorRearm;
+                sensorRearm.byte = 0;
+                uint8_t tid = info.tid;
+                std::cerr << " TID: " << (uint16_t)tid << std::endl;
+
+                auto instanceId = requester.getInstanceId(mctp_eid);
+                std::vector<uint8_t> requestMsg(
+                    sizeof(pldm_msg_hdr) +
+                    PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+                auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+                auto rc = encode_get_state_sensor_readings_req(
+                    instanceId, sensorId, sensorRearm, 0, request);
+
+                if (rc != PLDM_SUCCESS)
+                {
+                    requester.markFree(mctp_eid, instanceId);
+                    std::cerr << "Failed to "
+                                 "encode_get_state_sensor_readings_req, rc = "
+                              << rc << std::endl;
+                    pldm::utils::reportError(
+                        "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                    return;
+                }
+
+                auto getStateSensorReadingRespHandler = [=, this](
+                                                            mctp_eid_t /*eid*/,
+                                                            const pldm_msg*
+                                                                response,
+                                                            size_t respMsgLen) {
+                    if (response == nullptr || !respMsgLen)
+                    {
+                        std::cerr << "Failed to receive response for "
+                                     "getStateSensorReading command \n";
+                        return;
+                    }
+                    std::cerr << "Inside the response handler" << std::endl;
+                    std::array<get_sensor_state_field, 8> stateField{};
+                    uint8_t completionCode = 0;
+                    uint8_t comp_sensor_count = 0;
+
+                    auto rc = decode_get_state_sensor_readings_resp(
+                        response, respMsgLen, &completionCode,
+                        &comp_sensor_count, stateField.data());
+
+                    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+                    {
+                        std::cerr
+                            << "Failed to "
+                               "decode_get_state_sensor_readings_resp, rc = "
+                            << rc
+                            << " cc=" << static_cast<unsigned>(completionCode)
+                            << std::endl;
+                        pldm::utils::reportError(
+                            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                    }
+
+                    uint8_t eventState;
+                    uint8_t previousEventState;
+                    uint8_t sensorOffset = comp_sensor_count - 1;
+
+                    std::cerr << " Beofre the for loop for the comp sensors"
+                              << std::endl;
+                    for (size_t i = 0; i < comp_sensor_count; i++)
+                    {
+                        eventState = stateField[i].present_state;
+                        previousEventState = stateField[i].previous_state;
+
+                        emitStateSensorEventSignal(tid, sensorId, sensorOffset,
+                                                   eventState,
+                                                   previousEventState);
+
+                        SensorEntry sensorEntry{tid, sensorId};
+
+                        pldm::pdr::EntityInfo entityInfo{};
+                        pldm::pdr::CompositeSensorStates
+                            compositeSensorStates{};
+
+                        try
+                        {
+                            std::cerr << " Inside the try" << std::endl;
+                            std::tie(entityInfo, compositeSensorStates) =
+                                lookupSensorInfo(sensorEntry);
+                        }
+                        catch (const std::out_of_range& e)
+                        {
+                            try
+                            {
+                                std::cerr << " Inside the catch try"
+                                          << std::endl;
+                                sensorEntry.terminusID = PLDM_TID_RESERVED;
+                                std::tie(entityInfo, compositeSensorStates) =
+                                    lookupSensorInfo(sensorEntry);
+                            }
+                            catch (const std::out_of_range& e)
+                            {
+                                std::cerr << "No mapping for the events"
+                                          << std::endl;
+                            }
+                        }
+
+                        if (sensorOffset > compositeSensorStates.size())
+                        {
+                            std::cerr
+                                << " Error Invalid data, Invalid sensor offset"
+                                << std::endl;
+                            return;
+                        }
+
+                        const auto& possibleStates =
+                            compositeSensorStates[sensorOffset];
+                        if (possibleStates.find(eventState) ==
+                            possibleStates.end())
+                        {
+                            std::cerr
+                                << " Error invalid_data, Invalid event state"
+                                << std::endl;
+                            return;
+                        }
+                        const auto& [containerId, entityType, entityInstance] =
+                            entityInfo;
+                        pldm::responder::events::StateSensorEntry
+                            stateSensorEntry{containerId, entityType,
+                                             entityInstance, sensorOffset};
+                        handleStateSensorEvent(stateSensorEntry, eventState);
+                        std::cerr << "After the handle state sensor event "
+                                  << std::endl;
+                    }
+                };
+
+                std::cerr << " Before calling the register request"
+                          << std::endl;
+                rc = handler.registerRequest(
+                    mctp_eid, instanceId, PLDM_PLATFORM,
+                    PLDM_GET_STATE_SENSOR_READINGS, std::move(requestMsg),
+                    std::move(getStateSensorReadingRespHandler));
+
+                std::cerr << "afetr registering teh request" << std::endl;
+                if (rc != PLDM_SUCCESS)
+                {
+                    std::cerr << " Failed to send request to get State sensor "
+                                 "reading on Host "
+                              << std::endl;
+                }
+            }
+        }
+    }
+}
 } // namespace pldm
