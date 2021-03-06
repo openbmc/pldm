@@ -120,7 +120,7 @@
       "effecter_data_size": 4,
       "range_field_format": 4,
       "dbus" : {
-              "path":"/xyz/openbmc_project/state/scheduledHostTransition",
+              "path":"/xyz/openbmc_project/state/host0",
               "interface":"xyz.openbmc_project.State.ScheduledHostTransition",
               "property_name":"ScheduledTime",
               "property_type":"uint64_t"
