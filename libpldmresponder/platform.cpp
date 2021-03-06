@@ -159,8 +159,11 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 
         if (dbusToPLDMEventHandler)
         {
-            dbusToPLDMEventHandler->listenSensorEvent(pdrRepo,
-                                                      sensorDbusObjMaps);
+            deferredGetPDREvent = std::make_unique<sdeventplus::source::Defer>(
+                event,
+                std::bind(std::mem_fn(&pldm::responder::platform::Handler::
+                                          _processPostGetPDRActions),
+                          this, std::placeholders::_1));
         }
     }
 
@@ -654,6 +657,13 @@ Response Handler::getStateSensorReadings(const pldm_msg* request,
     }
 
     return response;
+}
+
+void Handler::_processPostGetPDRActions(
+    sdeventplus::source::EventBase& /*source */)
+{
+    deferredGetPDREvent.reset();
+    dbusToPLDMEventHandler->listenSensorEvent(pdrRepo, sensorDbusObjMaps);
 }
 
 bool isOemStateSensor(Handler& handler, uint16_t sensorId,

@@ -57,13 +57,13 @@ class Handler : public CmdHandler
             HostPDRHandler* hostPDRHandler,
             DbusToPLDMEvent* dbusToPLDMEventHandler, fru::Handler* fruHandler,
             pldm::responder::oem_platform::Handler* oemPlatformHandler,
-            bool buildPDRLazily = false,
+            sdeventplus::Event& event, bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
+        event(event), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
     {
         if (!buildPDRLazily)
         {
@@ -434,6 +434,12 @@ class Handler : public CmdHandler
         return fruHandler->getAssociateEntityMap();
     }
 
+    /** @brief process the actions that needs to be performed after a GetPDR
+     *         call is received
+     *  @param[in] source - sdeventplus event source
+     */
+    void _processPostGetPDRActions(sdeventplus::source::EventBase& source);
+
   private:
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
@@ -445,8 +451,10 @@ class Handler : public CmdHandler
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+    sdeventplus::Event& event;
     std::string pdrJsonsDir;
     bool pdrCreated;
+    std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
 };
 
 /** @brief Function to check if a sensor falls in OEM range
