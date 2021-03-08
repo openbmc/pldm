@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a61afe41_15fff980",
+        "filename": "configurations/events/stateSensorPdrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-08T15:26:43Z",
+      "side": 1,
+      "message": "should we also add 7 here ? i see support coming in for 7 coming in ?\n\nhttps://github.com/openbmc/phosphor-dbus-interfaces/commit/d01d1f84191894ad605a9ba5b546280bcfc64f7d",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "acb70302eb91716211d12d04780833f02854ca13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
