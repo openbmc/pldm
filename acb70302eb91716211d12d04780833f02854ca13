@@ -22,6 +22,30 @@
       "revId": "acb70302eb91716211d12d04780833f02854ca13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9452a922_3cdc3907",
+        "filename": "configurations/events/stateSensorPdrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-03-09T04:21:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a61afe41_15fff980",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "acb70302eb91716211d12d04780833f02854ca13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
