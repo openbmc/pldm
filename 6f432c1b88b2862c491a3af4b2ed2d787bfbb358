@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "079fa029_148cca5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-09T10:50:30Z",
+      "side": 1,
+      "message": "oem-ibm: Add new filetype....",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "6f432c1b88b2862c491a3af4b2ed2d787bfbb358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dcb12211_62fe8334",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-09T10:50:30Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 13,
+        "startChar": 39,
+        "endLine": 13,
+        "endChar": 45
+      },
+      "revId": "6f432c1b88b2862c491a3af4b2ed2d787bfbb358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "732d5ac9_5ccedc1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-09T10:50:30Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 15,
+        "startChar": 59,
+        "endLine": 15,
+        "endChar": 63
+      },
+      "revId": "6f432c1b88b2862c491a3af4b2ed2d787bfbb358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d79a95f4_5181833f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-09T10:50:30Z",
+      "side": 1,
+      "message": "set",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 20,
+        "endChar": 6
+      },
+      "revId": "6f432c1b88b2862c491a3af4b2ed2d787bfbb358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6538843_d36d5d4f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_progress_src.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-09T10:50:30Z",
+      "side": 1,
+      "message": "pls use printBuffer()\nalso is it needed to be printed?",
+      "range": {
+        "startLine": 61,
+        "startChar": 12,
+        "endLine": 61,
+        "endChar": 42
+      },
+      "revId": "6f432c1b88b2862c491a3af4b2ed2d787bfbb358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
