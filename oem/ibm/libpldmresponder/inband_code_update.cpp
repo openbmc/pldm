@@ -32,7 +32,7 @@ auto updateDirPath = fs::path(LID_STAGING_DIR) / "update";
 constexpr auto tarImageName = "image.tar";
 
 /** @brief The file name of the hostfw image */
-constexpr auto hostfwImageName = "image-host-fw";
+constexpr auto hostfwImageName = "image-hostfw";
 
 /** @brief The path to the code update tarball file */
 auto tarImagePath = fs::path(imageDirPath) / tarImageName;
