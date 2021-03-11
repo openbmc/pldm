@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "834f30ae_5a6fd840",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-11T10:37:46Z",
+      "side": 1,
+      "message": "This seems like an un-necessary \u0026 additional dbus hop , and i am not sure if PLDM doing a dbus call on PLDM hosted interfaces would ever work ? as far as i understand this should hit an ELOOP \u0026 the dbus call should fail.\n\nhttps://github.com/systemd/systemd/blob/main/src/libsystemd/sd-bus/sd-bus.c#L2429\n\nCan we directly parse the PDR\u0027s and get the effector id , if this dbus object would have been done in a different daemon, then using the dbus call would have been fine , but given that PLDM itself is now creating the lamp test interface, PLDM calling its own interface to get the effecter ID is not correct.",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 68
+      },
+      "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
