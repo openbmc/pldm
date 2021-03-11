@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6161d8d7_df2db446",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:32:07Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 142,
+        "startChar": 61,
+        "endLine": 142,
+        "endChar": 66
+      },
+      "revId": "6bf32c1afd5dea29603047263ddb38d0763fbf60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "153ec1e4_83a55b14",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:32:07Z",
+      "side": 1,
+      "message": "Please remove the debug trace",
+      "revId": "6bf32c1afd5dea29603047263ddb38d0763fbf60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
