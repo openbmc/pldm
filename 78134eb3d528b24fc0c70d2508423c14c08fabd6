@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a9e9c6d2_6e7a4e74",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:14:36Z",
+      "side": 1,
+      "message": "Please change \"encode_get_state_sensor_reading_req\" to \"encode_get_state_sensor_readings_req\" if you intended to mentioned the failed API",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e216bc_2c1fb4c2",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:14:36Z",
+      "side": 1,
+      "message": "Please change \"decode_get_state_sensor_reading_resp\" to \"decode_get_state_sensor_readings_resp\" if you intended to mentioned the failed API",
+      "range": {
+        "startLine": 647,
+        "startChar": 17,
+        "endLine": 647,
+        "endChar": 54
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27828209_24bc0a19",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:14:36Z",
+      "side": 1,
+      "message": "Should this be std::cerr ?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba24c90f_4e2481d2",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:14:36Z",
+      "side": 1,
+      "message": "Should this be std::cerr ?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dc3c7e2_1daa533f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:14:36Z",
+      "side": 1,
+      "message": "Should this be std::cerr ?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b85aa7c_67ea958b",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-11T03:14:36Z",
+      "side": 1,
+      "message": "Please remove the extra comment stars and only keep 2 in the start line",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
