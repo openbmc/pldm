@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9754955d_06f31ad9",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-12T01:10:51Z",
+      "side": 1,
+      "message": "setHostStateEffecter ?",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 92,
+        "endChar": 29
+      },
+      "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "850634f8_bd3bc0fe",
+        "filename": "pldmd/service_files/pldmd.service",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-12T01:10:51Z",
+      "side": 1,
+      "message": "why are we making the pldm to stop till led manager comes up ? \n\nif led manager comes up early than pldm, then led manager will get an interface added signal from pldm that we had added the lamp test interface - so that it can activate the asserted property.\n\nif led manager comes up late than pldm, then led manager can directly call the asserted property.\n\nSo, i believe the code in led manager should be some thing like this:\n\n1. busctl call to check if the lamptest interface is added or  not\n2. if lamptest interface is not found - then register an interface added signal(once received it can activate the asserted property).\n3. if it is found ,then it can directly set the asserted property.\n\nSo, that we can remove this inter service dependency across pldm \u0026 led manager.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
