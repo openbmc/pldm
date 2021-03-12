@@ -262,7 +262,7 @@ void BIOSEnumAttribute::generateAttributeEntry(
     entry->attr_type = 0;
     entry->value[0] = 1; // number of current values, default 1
 
-    if (readOnly || !dBusMap.has_value())
+    if (readOnly)
     {
         entry->value[1] = getValueIndex(defaultValue, possibleValues);
     }
