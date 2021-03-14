@@ -291,6 +291,11 @@ class GetPDR : public CommandInterface
         data += sizeof(pldm_pdr_hdr);
         pldm_pdr_fru_record_set* pdr =
             reinterpret_cast<pldm_pdr_fru_record_set*>(data);
+        if (!pdr)
+        {
+            std::cerr << "Failed to get the FRU record set PDR" << std::endl;
+            return;
+        }
 
         output["PLDMTerminusHandle"] = unsigned(pdr->terminus_handle);
         output["FRURecordSetIdentifier"] = unsigned(pdr->fru_rsi);
@@ -314,6 +319,12 @@ class GetPDR : public CommandInterface
         data += sizeof(pldm_pdr_hdr);
         pldm_pdr_entity_association* pdr =
             reinterpret_cast<pldm_pdr_entity_association*>(data);
+        if (!pdr)
+        {
+            std::cerr << "Failed to get the PDR eneity association"
+                      << std::endl;
+            return;
+        }
 
         output["containerID"] = int(pdr->container_id);
         output["associationType"] = assocationType.at(pdr->association_type);
@@ -346,6 +357,11 @@ class GetPDR : public CommandInterface
     {
         struct pldm_numeric_effecter_value_pdr* pdr =
             (struct pldm_numeric_effecter_value_pdr*)data;
+        if (!pdr)
+        {
+            std::cerr << "Failed to get numeric effecter PDR" << std::endl;
+            return;
+        }
 
         output["PLDMTerminusHandle"] = int(pdr->terminus_handle);
         output["effecterID"] = int(pdr->effecter_id);
@@ -536,6 +552,7 @@ class GetPDR : public CommandInterface
     {
         if (data == NULL)
         {
+            std::cerr << "Failed to get PDR message" << std::endl;
             return;
         }
 
@@ -544,6 +561,10 @@ class GetPDR : public CommandInterface
         output["responseCount"] = respCnt;
 
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
+        if (!pdr)
+        {
+            return;
+        }
         printCommonPDRHeader(pdr, output);
 
         switch (pdr->type)
