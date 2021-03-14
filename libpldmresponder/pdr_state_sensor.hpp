@@ -56,6 +56,11 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
 
         pldm_state_sensor_pdr* pdr =
             reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
+        if (!pdr)
+        {
+            std::cerr << "Failed to get state sensor PDR.\n";
+            return;
+        }
         pdr->hdr.record_handle = 0;
         pdr->hdr.version = 1;
         pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
