@@ -258,6 +258,12 @@ int SoftPowerOff::getSensorInfo()
             pdr = reinterpret_cast<pldm_state_sensor_pdr*>(rep.data());
         }
 
+        if (!pdr)
+        {
+            std::cerr << "Failed to get state sensor PDR.\n";
+            return PLDM_ERROR;
+        }
+
         sensorID = pdr->sensor_id;
 
         auto compositeSensorCount = pdr->composite_sensor_count;

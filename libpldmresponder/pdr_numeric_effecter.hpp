@@ -38,6 +38,11 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
 
         pldm_numeric_effecter_value_pdr* pdr =
             reinterpret_cast<pldm_numeric_effecter_value_pdr*>(entry.data());
+        if (!pdr)
+        {
+            std::cerr << "Failed to get numeric effecter PDR.\n";
+            return;
+        }
         pdr->hdr.record_handle = 0;
         pdr->hdr.version = 1;
         pdr->hdr.type = PLDM_NUMERIC_EFFECTER_PDR;
