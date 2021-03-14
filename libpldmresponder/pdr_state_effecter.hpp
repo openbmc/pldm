@@ -57,6 +57,11 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
 
         pldm_state_effecter_pdr* pdr =
             reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+        if (!pdr)
+        {
+            std::cerr << "Failed to get state effecter PDR.\n";
+            continue;
+        }
         pdr->hdr.record_handle = 0;
         pdr->hdr.version = 1;
         pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;

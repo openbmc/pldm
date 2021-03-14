@@ -161,6 +161,7 @@ void buildAllCodeUpdateEffecterPDR(platform::Handler* platformHandler,
     {
         std::cerr << "Failed to get record by PDR type, ERROR:"
                   << PLDM_PLATFORM_INVALID_EFFECTER_ID << std::endl;
+        return;
     }
     pdr->hdr.record_handle = 0;
     pdr->hdr.version = 1;
@@ -211,6 +212,7 @@ void buildAllCodeUpdateSensorPDR(platform::Handler* platformHandler,
     {
         std::cerr << "Failed to get record by PDR type, ERROR:"
                   << PLDM_PLATFORM_INVALID_SENSOR_ID << std::endl;
+        return;
     }
     pdr->hdr.record_handle = 0;
     pdr->hdr.version = 1;
