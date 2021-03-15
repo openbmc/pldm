@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "441ba9c0_9097811a",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-15T07:08:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9754955d_06f31ad9",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 92,
+        "endChar": 29
+      },
+      "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "850634f8_bd3bc0fe",
         "filename": "pldmd/service_files/pldmd.service",
         "patchSetId": 4
@@ -60,6 +84,30 @@
       "side": 1,
       "message": "Agree.. This change should not be in PLDM.. PLDM is hosting a service that the LED manager uses. So ledmanager service file should be having the Wants\u003dpldm ..",
       "parentUuid": "850634f8_bd3bc0fe",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "601ee85e_204ad302",
+        "filename": "pldmd/service_files/pldmd.service",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-15T07:08:35Z",
+      "side": 1,
+      "message": "Correct.\nsee: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc/+/41277",
+      "parentUuid": "6a519b68_d40f6611",
       "range": {
         "startLine": 9,
         "startChar": 0,
