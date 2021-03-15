@@ -7,6 +7,8 @@
 #include <assert.h>
 
 #include <nlohmann/json.hpp>
+#include <sdeventplus/exception.hpp>
+#include <sdeventplus/source/io.hpp>
 
 #include <fstream>
 
@@ -311,6 +313,7 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                                                uint8_t eventDataFormat)
 {
+    std::cout << "pldmd sending PDRRepositoryChgEvent to Host \n";
     assert(eventDataFormat == FORMAT_IS_PDR_HANDLES);
 
     // Extract from the PDR repo record handles of PDRs we want the host
@@ -360,50 +363,85 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
             << rc << std::endl;
         return;
     }
-    auto instanceId = requester.getInstanceId(mctp_eid);
+    pdrEventInstanceId = requester.getInstanceId(mctp_eid);
+    std::cout << "got instanceId " << (uint32_t)pdrEventInstanceId  << "\n";
+    using namespace sdeventplus;
+    using namespace sdeventplus::source;
+    auto ioRc = sd_event_add_io(event.get(),nullptr, mctp_fd, EPOLLIN, 
+                                callback, this);
+    if (0 > ioRc)
+    {
+        std::cerr << "error occured during the sd_event_add_io call rc=" 
+                  << (int)ioRc << " \n";
+    }
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
                                     actualSize);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     rc = encode_platform_event_message_req(
-        instanceId, 1, 0, PLDM_PDR_REPOSITORY_CHG_EVENT, eventDataVec.data(),
+        pdrEventInstanceId, 1, 0, PLDM_PDR_REPOSITORY_CHG_EVENT, eventDataVec.data(),
         actualSize, request,
         actualSize + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
     if (rc != PLDM_SUCCESS)
     {
-        requester.markFree(mctp_eid, instanceId);
+        requester.markFree(mctp_eid, pdrEventInstanceId);
         std::cerr << "Failed to encode_platform_event_message_req, rc = " << rc
                   << std::endl;
         return;
     }
 
     // Send up the event to host.
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
-    auto requesterRc =
-        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
-                       &responseMsg, &responseMsgSize);
-    requester.markFree(mctp_eid, instanceId);
+    std::cout << "before pldm_send \n";
+    auto requesterRc = pldm_send(mctp_eid, mctp_fd,requestMsg.data(), 
+                                 requestMsg.size());
+    std::cout << "after pldm_send \n";
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr << "Failed to send msg to report pdrs, rc = " << requesterRc
                   << std::endl;
         return;
     }
+    std::cout << "pldmd exiting PDRRepositoryChgEvent \n";
+}
+
+int HostPDRHandler::callback(sd_event_source* /* es */, int /*fd*/,
+                             uint32_t revents ,
+                             void* userdata)
+{
+    std::cout << "into the callback function \n";
+    if(!(revents & EPOLLIN))
+    {
+        return 0;
+    }
+    uint8_t* responseMsg = nullptr;
+    size_t responseMsgSize{};
+    auto userData = static_cast<HostPDRHandler*>(userdata);
+    std::cout << "before pldm_recv \n";
+    auto rspRc = pldm_recv(userData->mctp_eid,userData->mctp_fd,
+                  userData->pdrEventInstanceId,&responseMsg,&responseMsgSize);
+    std::cout << "after pldm_recv \n";
+    if (rspRc != PLDM_REQUESTER_SUCCESS)
+    {
+        return 0;
+    }
     uint8_t completionCode{};
     uint8_t status{};
     auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg);
-    rc = decode_platform_event_message_resp(
+    auto rc = decode_platform_event_message_resp(
         responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
         &status);
     free(responseMsg);
     if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
-    {
-        std::cerr << "Failed to decode_platform_event_message_resp: "
-                  << "rc=" << rc
-                  << ", cc=" << static_cast<unsigned>(completionCode)
-                  << std::endl;
-    }
+     {
+         std::cerr << "Failed to decode_platform_event_message_resp: "
+                   << "rc=" << rc
+                   << ", cc=" << static_cast<unsigned>(completionCode)
+                   << std::endl;
+     }
+     std::cout << "got successful event response \n";
+    userData->requester.markFree(userData->mctp_eid, 
+                                       userData->pdrEventInstanceId);
+    return 0;
 }
 
 void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,

@@ -161,6 +161,9 @@ class HostPDRHandler
      */
     bool getParent(EntityType type, pldm_entity& parent);
 
+    static int callback(sd_event_source* es, int fd, uint32_t revents,
+                        void* userdata);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -196,6 +199,7 @@ class HostPDRHandler
      */
     HostStateSensorMap sensorMap;
     bool verbose;
+    uint8_t pdrEventInstanceId;
 };
 
 } // namespace pldm
