@@ -26,6 +26,24 @@
          "default_value" : 0,
          "helpText" : "vmi_if1_ipv4_prefix_length",
          "displayName" : "vmi_if1_ipv4_prefix_length"
+      },
+      {
+         "attribute_name" : "hb_requested_number_huge_pages",
+         "lower_bound" : 0,
+         "upper_bound" : 65535,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "helpText" : "Specifies the number of huge pages available for memory management, requires a reboot for a change to be applied.",
+         "displayName" : "Requested Number Huge Pages"
+      },
+      {
+         "attribute_name" : "hb_pending_memory_region_size",
+         "lower_bound" : 0,
+         "upper_bound" : 255,
+         "scalar_increment" : 1,
+         "default_value" : 4,
+         "helpText" : "Specifies the size of the logical memory block the system uses to read memory, requires a reboot for a change to be applied.",
+         "displayName" : "Pending Memory Region Size"
       }
    ]
 }
