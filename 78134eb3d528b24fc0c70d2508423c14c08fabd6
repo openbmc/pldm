@@ -42,6 +42,23 @@
     },
     {
       "key": {
+        "uuid": "a8df0ba1_5d4fb609",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-15T12:41:45Z",
+      "side": 1,
+      "message": "decode_get_state_sensor_readings_resp ?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "27828209_24bc0a19",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
@@ -53,6 +70,24 @@
       "writtenOn": "2021-03-11T03:14:36Z",
       "side": 1,
       "message": "Should this be std::cerr ?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45ea8447_24c66d55",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-15T12:41:45Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "27828209_24bc0a19",
       "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -104,6 +139,74 @@
       "writtenOn": "2021-03-11T03:14:36Z",
       "side": 1,
       "message": "Please remove the extra comment stars and only keep 2 in the start line",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7a9d8af_1d1bd7b2",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-15T12:41:45Z",
+      "side": 1,
+      "message": "typo, locator?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a09fd25_d24ccd3f",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-15T12:41:45Z",
+      "side": 1,
+      "message": "correct the doxygen comment format",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15d0a4f0_c8bac7d5",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-15T12:41:45Z",
+      "side": 1,
+      "message": "correction D-Bus",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df48aff0_d3bc6497",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-15T12:41:45Z",
+      "side": 1,
+      "message": "change to camel case \"tlInfo\"?",
       "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
