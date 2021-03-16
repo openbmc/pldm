@@ -84,6 +84,52 @@
     },
     {
       "key": {
+        "uuid": "f27481eb_eec03e2f",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:59:33Z",
+      "side": 1,
+      "message": "can we use the filesystem path object rather than string object ? as we can do path append operations very easily.\n\nand also const reference missing.",
+      "range": {
+        "startLine": 177,
+        "startChar": 8,
+        "endLine": 177,
+        "endChar": 27
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ed26b67_b5d5191a",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:59:33Z",
+      "side": 1,
+      "message": "can we use unordered_maps here ?",
+      "range": {
+        "startLine": 218,
+        "startChar": 3,
+        "endLine": 218,
+        "endChar": 13
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d20b5b5b_2adfd8a4",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 9
@@ -124,6 +170,29 @@
         "startChar": 13,
         "endLine": 222,
         "endChar": 44
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2f02461_269f792a",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:59:33Z",
+      "side": 1,
+      "message": "unordered_map ?",
+      "range": {
+        "startLine": 222,
+        "startChar": 3,
+        "endLine": 222,
+        "endChar": 12
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
