@@ -205,9 +205,15 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         }
         uint8_t* responseMessage = nullptr;
         size_t responseMessageSize{};
-        pldm_send_recv(mctp_eid, fd, requestMsg.data() + 2,
-                       requestMsg.size() - 2, &responseMessage,
-                       &responseMessageSize);
+        auto rc = pldm_send_recv(mctp_eid, fd, requestMsg.data() + 2,
+                                 requestMsg.size() - 2, &responseMessage,
+                                 &responseMessageSize);
+        if (rc != PLDM_REQUESTER_SUCCESS)
+        {
+            std::cerr << "Failed to call pldm_send_recv, rc = " << rc
+                      << std::endl;
+            return rc;
+        }
 
         Logger(pldmVerbose, "Response Message:", "");
         responseMsg.resize(responseMessageSize);

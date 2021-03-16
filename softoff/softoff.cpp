@@ -411,7 +411,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 
     // Send PLDM Request message - pldm_send doesn't wait for response
     rc = pldm_send(mctpEID, fd, requestMsg.data(), requestMsg.size());
-    if (0 > rc)
+    if (rc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr << "Failed to send message/receive response. RC = " << rc
                   << ", errno = " << errno << "\n";
