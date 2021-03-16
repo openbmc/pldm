@@ -2,6 +2,98 @@
   "comments": [
     {
       "key": {
+        "uuid": "2c2b9947_ea5301c1",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "const ?",
+      "range": {
+        "startLine": 582,
+        "startChar": 39,
+        "endLine": 582,
+        "endChar": 59
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fb33fb6_6cf3788c",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "missing null pointer de-reference check.",
+      "range": {
+        "startLine": 589,
+        "startChar": 28,
+        "endLine": 589,
+        "endChar": 42
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5f43ff1_571b5a6b",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "duplicate variables ?\n\ncan\u0027t we directly use pdr-\u003esensor_id directly in encode_get_state_sensor_readings_req() ?",
+      "range": {
+        "startLine": 589,
+        "startChar": 7,
+        "endLine": 589,
+        "endChar": 26
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06217476_d07598f4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "same as above.",
+      "range": {
+        "startLine": 590,
+        "startChar": 8,
+        "endLine": 590,
+        "endChar": 55
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a9e9c6d2_6e7a4e74",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
@@ -53,6 +145,29 @@
       "writtenOn": "2021-03-15T12:41:45Z",
       "side": 1,
       "message": "decode_get_state_sensor_readings_resp ?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb694e30_7886805e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "should we not return here ?",
+      "range": {
+        "startLine": 656,
+        "startChar": 21,
+        "endLine": 656,
+        "endChar": 32
+      },
       "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -111,6 +226,29 @@
     },
     {
       "key": {
+        "uuid": "73f74514_90bd5b3f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "should we not return here ?",
+      "range": {
+        "startLine": 699,
+        "startChar": 20,
+        "endLine": 699,
+        "endChar": 68
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9dc3c7e2_1daa533f",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
@@ -122,6 +260,29 @@
       "writtenOn": "2021-03-11T03:14:36Z",
       "side": 1,
       "message": "Should this be std::cerr ?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e082614f_cb4c3f79",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "should we not return here ?",
+      "range": {
+        "startLine": 706,
+        "startChar": 65,
+        "endLine": 706,
+        "endChar": 68
+      },
       "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -145,6 +306,24 @@
     },
     {
       "key": {
+        "uuid": "e9b236a1_a7082f0c",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "0b85aa7c_67ea958b",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d7a9d8af_1d1bd7b2",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 5
@@ -156,6 +335,24 @@
       "writtenOn": "2021-03-15T12:41:45Z",
       "side": 1,
       "message": "typo, locator?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1566e171_ece714e1",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "d7a9d8af_1d1bd7b2",
       "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -207,6 +404,29 @@
       "writtenOn": "2021-03-15T12:41:45Z",
       "side": 1,
       "message": "change to camel case \"tlInfo\"?",
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54aa141d_d0b50072",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T09:36:13Z",
+      "side": 1,
+      "message": "const reference missing ?",
+      "range": {
+        "startLine": 168,
+        "startChar": 28,
+        "endLine": 168,
+        "endChar": 48
+      },
       "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
