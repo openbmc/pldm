@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fc6397c4_f4a63123",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-03-16T06:33:49Z",
+      "side": 1,
+      "message": "I don\u0027t own this repo.. but I really feel we need a description\n/ comment here since it is specific to a feature. Else, we won\u0027t know why this has been done later..",
+      "revId": "641dae548ca766319a0897579e91f3ca40519a77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
