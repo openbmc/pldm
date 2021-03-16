@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "37ce6ab5_d1881c6e",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T15:05:59Z",
+      "side": 1,
+      "message": "clean up ?",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 187,
+        "endChar": 52
+      },
+      "revId": "af92303291e69a1e4879bda383e55980969252ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
