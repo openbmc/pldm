@@ -52,6 +52,24 @@
       "revId": "641dae548ca766319a0897579e91f3ca40519a77",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bfa7b151_74431f72",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-16T10:48:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "324e051c_347a9085",
+      "revId": "641dae548ca766319a0897579e91f3ca40519a77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
