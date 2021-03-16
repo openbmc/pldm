@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "38ff8d44_b533e669",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-16T02:13:01Z",
+      "side": 1,
+      "message": "you wanna add an \nstd::cerr \u003c\u003c \"Failed to get the FRU record set PDR\" \u003c\u003c std::endl;\n\nBefore we return ?\n?",
+      "range": {
+        "startLine": 296,
+        "startChar": 12,
+        "endLine": 296,
+        "endChar": 19
+      },
+      "revId": "13fe1a89b23efac7e5e73855eb9f156458952dad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
