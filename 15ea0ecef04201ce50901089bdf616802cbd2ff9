@@ -22,6 +22,29 @@
       "revId": "15ea0ecef04201ce50901089bdf616802cbd2ff9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d46f443f_3c3b1d38",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-03-16T10:52:31Z",
+      "side": 1,
+      "message": "Sampa - the pldm daemon has already added this FD to the event loop, and hence the \u0027file exists\u0027 error.\n\nYou need to handle this by fixing - https://github.com/openbmc/pldm/blob/master/pldmd/pldmd.cpp#L71. Currently the main message processing event loop ignores incoming response messages. Instead pldmd should be able to send response messages to a handler based on the PLDM command code - the M\u0026C handler can then consume this response message.",
+      "range": {
+        "startLine": 370,
+        "startChar": 16,
+        "endLine": 370,
+        "endChar": 31
+      },
+      "revId": "15ea0ecef04201ce50901089bdf616802cbd2ff9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
