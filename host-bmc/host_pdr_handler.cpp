@@ -102,6 +102,7 @@ void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 
 void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 {
+    std::cout << "enter _fetchPDR \n";
     pdrFetchEvent.reset();
 
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
@@ -140,12 +141,14 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             std::cout << "Sending Msg:" << std::endl;
             printBuffer(requestMsg, verbose);
         }
+        std::cout << "before pldm_send_recv \n";
 
         uint8_t* responseMsg = nullptr;
         size_t responseMsgSize{};
         auto requesterRc =
             pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(),
                            requestMsg.size(), &responseMsg, &responseMsgSize);
+        std::cout << "after pldm_send_recv \n";    
         std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
             responseMsg, std::free};
         requester.markFree(mctp_eid, instanceId);
@@ -311,6 +314,7 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                                                uint8_t eventDataFormat)
 {
+    std::cout << "enter sendPDRRepositoryChgEvent \n";
     assert(eventDataFormat == FORMAT_IS_PDR_HANDLES);
 
     // Extract from the PDR repo record handles of PDRs we want the host
@@ -377,33 +381,17 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         return;
     }
 
+    std::cout << "before pldm_send \n";
     // Send up the event to host.
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
     auto requesterRc =
-        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
-                       &responseMsg, &responseMsgSize);
-    requester.markFree(mctp_eid, instanceId);
+        pldm_send(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size());
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr << "Failed to send msg to report pdrs, rc = " << requesterRc
                   << std::endl;
         return;
     }
-    uint8_t completionCode{};
-    uint8_t status{};
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg);
-    rc = decode_platform_event_message_resp(
-        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
-        &status);
-    free(responseMsg);
-    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
-    {
-        std::cerr << "Failed to decode_platform_event_message_resp: "
-                  << "rc=" << rc
-                  << ", cc=" << static_cast<unsigned>(completionCode)
-                  << std::endl;
-    }
+    std::cout << "exit sendPDRRepositoryChgEvent \n";
 }
 
 void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,

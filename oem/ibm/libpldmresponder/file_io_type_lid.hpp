@@ -239,6 +239,11 @@ class LidHandler : public FileHandler
                       << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
             return PLDM_ERROR;
         }
+        if(rc == static_cast<int>(length))
+        {
+            rc = PLDM_SUCCESS;
+            std::cout << "making rc PLDM_SUCCESS in lid inband write \n";
+        }
         close(fd);
 
         if (lidType == PLDM_FILE_TYPE_LID_MARKER)

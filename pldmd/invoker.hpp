@@ -34,12 +34,14 @@ class Invoker
      *  @param[in] pldmCommand - PLDM command code
      *  @param[in] request - PLDM request message
      *  @param[in] reqMsgLen - PLDM request message size
+     *  @param[in] isRespMsg - whether it is request msg or response
      *  @return PLDM response message
      */
     Response handle(Type pldmType, Command pldmCommand, const pldm_msg* request,
-                    size_t reqMsgLen)
+                    size_t reqMsgLen, bool isRespMsg)
     {
-        return handlers.at(pldmType)->handle(pldmCommand, request, reqMsgLen);
+        return handlers.at(pldmType)->handle(pldmCommand, request, reqMsgLen,
+                                             isRespMsg);
     }
 
   private:

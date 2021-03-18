@@ -139,6 +139,7 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
+    std::cout << "enter getPDR \n";
     // Build FRU table if not built, since entity association PDR's are built
     // when the FRU table is constructed.
     if (fruHandler)
@@ -228,6 +229,7 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
                   << " ERROR=" << e.what() << "\n";
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
+    std::cout << "exit getPDR \n";
     return response;
 }
 
@@ -291,6 +293,26 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
+    return response;
+}
+
+Response Handler::platformEventMessageResp(const pldm_msg* request,
+                                           size_t payloadLength)
+{
+    std::cout << "enter platformEventMessageResp \n";
+    Response response;
+    uint8_t completionCode{};
+    uint8_t status{};
+    auto rc = decode_platform_event_message_resp(request, payloadLength,
+                                                 &completionCode, &status);
+    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode_platform_event_message_resp: "
+                  << "rc=" << rc
+                  << ", cc=" << static_cast<unsigned>(completionCode)
+                  << std::endl;
+    }
+    std::cout << "exit platformEventMessageResp \n";
     return response;
 }
 
