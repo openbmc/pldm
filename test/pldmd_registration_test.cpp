@@ -43,7 +43,7 @@ TEST(Registration, testSuccess)
 {
     Invoker invoker{};
     invoker.registerHandler(testType, std::make_unique<TestHandler>());
-    auto result = invoker.handle(testType, testCmd, nullptr, 0);
+    auto result = invoker.handle(testType, testCmd, nullptr, 0, false);
     ASSERT_EQ(result[0], 100);
     ASSERT_EQ(result[1], 200);
 }
@@ -51,10 +51,10 @@ TEST(Registration, testSuccess)
 TEST(Registration, testFailure)
 {
     Invoker invoker{};
-    ASSERT_THROW(invoker.handle(testType, testCmd, nullptr, 0),
+    ASSERT_THROW(invoker.handle(testType, testCmd, nullptr, 0, false),
                  std::out_of_range);
     invoker.registerHandler(testType, std::make_unique<TestHandler>());
     uint8_t badCmd = 0xFE;
-    ASSERT_THROW(invoker.handle(testType, badCmd, nullptr, 0),
+    ASSERT_THROW(invoker.handle(testType, badCmd, nullptr, 0, false),
                  std::out_of_range);
 }
