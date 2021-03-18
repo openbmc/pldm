@@ -68,7 +68,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
     {
         std::cerr << "Empty PLDM request header \n";
     }
-    else if (PLDM_RESPONSE != hdrFields.msg_type)
+    else if (PLDM_REQUEST == hdrFields.msg_type)
     {
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
@@ -76,7 +76,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
         try
         {
             response = invoker.handle(hdrFields.pldm_type, hdrFields.command,
-                                      request, requestLen);
+                                      request, requestLen, false);
         }
         catch (const std::out_of_range& e)
         {
@@ -95,6 +95,22 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
             }
             response.insert(response.end(), completion_code);
         }
+    }
+    else if (PLDM_RESPONSE == hdrFields.msg_type)
+    {
+        auto request = reinterpret_cast<const pldm_msg*>(hdr);
+        size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
+                            sizeof(eid) - sizeof(type);
+        try
+        {
+            response = invoker.handle(hdrFields.pldm_type, hdrFields.command,
+                                      request, requestLen, true);
+        }
+        catch (const std::out_of_range& e)
+        {
+            std::cerr << "Could not find a handler for the response msg \n";
+        }
+        requester.markFree(eid, hdr->instance_id);
     }
     else
     {

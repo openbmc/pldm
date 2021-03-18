@@ -96,7 +96,11 @@ class Handler : public CmdHandler
                              return this->getStateSensorReadings(request,
                                                                  payloadLength);
                          });
-
+        respHandlers.emplace(
+            PLDM_PLATFORM_EVENT_MESSAGE,
+            [this](const pldm_msg* request, size_t payloadLength) {
+                return this->platformEventMessageResp(request, payloadLength);
+            });
         // Default handler for PLDM Events
         eventHandlers[PLDM_SENSOR_EVENT].emplace_back(
             [this](const pldm_msg* request, size_t payloadLength,
@@ -241,6 +245,15 @@ class Handler : public CmdHandler
      */
     Response platformEventMessage(const pldm_msg* request,
                                   size_t payloadLength);
+
+    /** @brief Handles the response for PlatformEventMessage
+     *         asynchronously
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Response payload length
+     *  @return Response - PLDM Response message
+     */
+    Response platformEventMessageResp(const pldm_msg* request,
+                                      size_t payloadLength);
 
     /** @brief Handler for event class Sensor event
      *
