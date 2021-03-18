@@ -28,11 +28,16 @@ class CmdHandler
      *  @param[in] pldmCommand - PLDM command code
      *  @param[in] request - PLDM request message
      *  @param[in] reqMsgLen - PLDM request message size
+     *  @param[in] isRespMsg - whether it is a request or response
      *  @return PLDM response message
      */
     Response handle(Command pldmCommand, const pldm_msg* request,
-                    size_t reqMsgLen)
+                    size_t reqMsgLen, bool isRespMsg)
     {
+        if (isRespMsg)
+        {
+            return respHandlers.at(pldmCommand)(request, reqMsgLen);
+        }
         return handlers.at(pldmCommand)(request, reqMsgLen);
     }
 
@@ -54,10 +59,11 @@ class CmdHandler
     }
 
   protected:
-    /** @brief map of PLDM command code to handler - to be populated by derived
-     *         classes.
+    /** @brief maps of PLDM command code to request handler or response handler-
+     *         to be populated by derived classes
      */
     std::map<Command, HandlerFunc> handlers;
+    std::map<Command, HandlerFunc> respHandlers;
 };
 
 } // namespace responder
