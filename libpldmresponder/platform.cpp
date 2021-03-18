@@ -294,6 +294,24 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     return response;
 }
 
+Response Handler::platformEventMessageResp(const pldm_msg* request,
+                                           size_t payloadLength)
+{
+    Response response;
+    uint8_t completionCode{};
+    uint8_t status{};
+    auto rc = decode_platform_event_message_resp(request, payloadLength,
+                                                 &completionCode, &status);
+    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode_platform_event_message_resp: "
+                  << "rc=" << rc
+                  << ", cc=" << static_cast<unsigned>(completionCode)
+                  << std::endl;
+    }
+    return response;
+}
+
 Response Handler::platformEventMessage(const pldm_msg* request,
                                        size_t payloadLength)
 {
