@@ -239,6 +239,14 @@ class LidHandler : public FileHandler
                       << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
             return PLDM_ERROR;
         }
+        else if (rc == static_cast<int>(length))
+        {
+            rc = PLDM_SUCCESS;
+        }
+        else if (rc < static_cast<int>(length))
+        {
+            rc = PLDM_ERROR;
+        }
         close(fd);
 
         if (lidType == PLDM_FILE_TYPE_LID_MARKER)
