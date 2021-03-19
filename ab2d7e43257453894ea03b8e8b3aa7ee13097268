@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02480f7e_04f494dd",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-19T07:06:12Z",
+      "side": 1,
+      "message": "This also will be an ERROR with ELOOP, where the pldm is calling its own interface.",
+      "range": {
+        "startLine": 97,
+        "startChar": 3,
+        "endLine": 103,
+        "endChar": 42
+      },
+      "revId": "ab2d7e43257453894ea03b8e8b3aa7ee13097268",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
