@@ -143,6 +143,54 @@
     },
     {
       "key": {
+        "uuid": "637f341b_95bd2987",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-19T06:34:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1cad94b0_a15e1ef8",
+      "range": {
+        "startLine": 589,
+        "startChar": 7,
+        "endLine": 589,
+        "endChar": 26
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "17b05aa5_0c7cdca4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-19T06:34:32Z",
+      "side": 1,
+      "message": "This is still missing in the latest patch.\n\nbefore accessing pdr pointer.\n\nyou should check for if(!pdr) to make sure we are not accessing a null pointer, which can lead to a pldm crash.",
+      "parentUuid": "c5c209c3_6d3d8d4c",
+      "range": {
+        "startLine": 589,
+        "startChar": 28,
+        "endLine": 589,
+        "endChar": 42
+      },
+      "revId": "78134eb3d528b24fc0c70d2508423c14c08fabd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "06217476_d07598f4",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
