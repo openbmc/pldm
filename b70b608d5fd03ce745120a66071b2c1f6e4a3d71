@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c2725f17_a0c15b65",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-22T16:12:18Z",
+      "side": 1,
+      "message": "need a better help text , this field should capture about what does this attribute do and information like whether this can come in effect concurrently or does it need a host reboot.\n\nThis file does not follow this standard but we plan to strictly follow this for the attrbutes that we add newly.",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 55
+      },
+      "revId": "b70b608d5fd03ce745120a66071b2c1f6e4a3d71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b8b88d0_d17a0143",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-22T16:12:18Z",
+      "side": 1,
+      "message": "same here as well.",
+      "range": {
+        "startLine": 45,
+        "startChar": 9,
+        "endLine": 45,
+        "endChar": 54
+      },
+      "revId": "b70b608d5fd03ce745120a66071b2c1f6e4a3d71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f988528e_b89a40d2",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-22T16:12:18Z",
+      "side": 1,
+      "message": "need a better help text , this field should capture about what does this attribute do and information like whether this can come in effect concurrently or does it need a host reboot.",
+      "range": {
+        "startLine": 70,
+        "startChar": 22,
+        "endLine": 70,
+        "endChar": 35
+      },
+      "revId": "b70b608d5fd03ce745120a66071b2c1f6e4a3d71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
