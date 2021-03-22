@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8bf65154_8c9e3dce",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lid.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-22T06:40:04Z",
+      "side": 1,
+      "message": "i was wondering if rc\u003clength then we should return PLDM_ERROR?",
+      "range": {
+        "startLine": 244,
+        "startChar": 17,
+        "endLine": 244,
+        "endChar": 29
+      },
+      "revId": "2af34f59b06527a4aa71e7a312f499dccd02e2bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
