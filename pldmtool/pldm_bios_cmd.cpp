@@ -564,8 +564,9 @@ class GetBIOSTable : public GetBIOSTableHandler
                     {
                         attrdata["DefaultValueStringHandleIndex[" +
                                  std::to_string(i) + "]"] = (int)defIndices[i];
-                        attrdata["StringHandle"] = displayStringHandle(
-                            pvHandls[defIndices[i]], stringTable);
+                        attrdata["DefaultValueStringHandle"] =
+                            displayStringHandle(pvHandls[defIndices[i]],
+                                                stringTable);
                     }
                     break;
                 }
