@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "74fff72c_ab682654",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-23T03:54:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3e924d0_2daffad9",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 141,
+        "endChar": 25
+      },
+      "revId": "087811905cad4e995c88727490aaf09722b97839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "35674eb2_b60f7f3e",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
         "patchSetId": 10
@@ -68,6 +92,30 @@
       "revId": "087811905cad4e995c88727490aaf09722b97839",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00d66587_3be76fd1",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-23T03:54:52Z",
+      "side": 1,
+      "message": "Function removed and logic moved to oem_ibm_handler",
+      "parentUuid": "35674eb2_b60f7f3e",
+      "range": {
+        "startLine": 159,
+        "startChar": 11,
+        "endLine": 160,
+        "endChar": 55
+      },
+      "revId": "087811905cad4e995c88727490aaf09722b97839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "cb6ad002_37b9e02b",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-23T03:54:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f43949f_f4f1bfa0",
+      "range": {
+        "startLine": 230,
+        "startChar": 2,
+        "endLine": 230,
+        "endChar": 13
+      },
+      "revId": "087811905cad4e995c88727490aaf09722b97839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "45893e05_8494700b",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 10
@@ -114,6 +186,30 @@
       "revId": "087811905cad4e995c88727490aaf09722b97839",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4323930e_c91b3710",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-23T03:54:52Z",
+      "side": 1,
+      "message": "Removed this function from here and moved the changes(setting D-bus properties) to oem_ibm_handler. pldm::common::utils has a similar function setDbusProperty(dbusMapping, value) so utilising it",
+      "parentUuid": "45893e05_8494700b",
+      "range": {
+        "startLine": 130,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 23
+      },
+      "revId": "087811905cad4e995c88727490aaf09722b97839",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
