@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0384f7c_fbee5266",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000392
+      },
+      "writtenOn": "2021-03-24T16:14:22Z",
+      "side": 1,
+      "message": "Maybe we should limit this further.",
+      "range": {
+        "startLine": 41,
+        "startChar": 9,
+        "endLine": 42,
+        "endChar": 29
+      },
+      "revId": "8a781f3a544853e5282483df81ea9049c868b2c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
