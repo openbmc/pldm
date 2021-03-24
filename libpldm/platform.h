@@ -23,6 +23,8 @@ extern "C" {
 #define PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES 4
 
 #define PLDM_GET_PDR_REQ_BYTES 13
+
+#define PLDM_SET_EVENT_RECEIVER_RESP_BYTES 1
 /* Minimum response length */
 #define PLDM_GET_PDR_MIN_RESP_BYTES 12
 #define PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES 5
@@ -110,6 +112,7 @@ enum pldm_effecter_oper_state {
 };
 
 enum pldm_platform_commands {
+	PLDM_SET_EVENT_RECEIVER = 0X04,
 	PLDM_GET_SENSOR_READING = 0x11,
 	PLDM_GET_STATE_SENSOR_READINGS = 0x21,
 	PLDM_SET_NUMERIC_EFFECTER_VALUE = 0x31,
@@ -171,6 +174,10 @@ enum pldm_platform_completion_codes {
 	PLDM_PLATFORM_TRANSFER_TIMEOUT = 0x84,
 
 	PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE = 0x82,
+
+	PLDM_PLATFORM_INVALID_PROTOCOL_TYPE = 0x80,
+	PLDM_PLATFORM_ENABLE_METHOD_NOT_SUPPORTED = 0x81,
+	PLDM_PLATFORM_HEARTBEAT_FREQUENCY_TOO_HIGH = 0x82,
 };
 
 /** @brief PLDM Event types
@@ -260,6 +267,16 @@ enum pldm_terminus_locator_type {
 	PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID,
 	PLDM_TERMINUS_LOCATOR_TYPE_SMBUS_RELATIVE,
 	PLDM_TERMINUS_LOCATOR_TYPE_SYS_SW
+};
+
+/** @brief PLDM event message global enable for
+ *  SetEventReceiver command
+ */
+enum pldm_event_message_global_enable {
+	PLDM_EVENT_MESSAGE_GLOBAL_DISABLE,
+	PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC,
+	PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_POLLING,
+	PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE
 };
 
 /** @struct pldm_pdr_hdr
@@ -557,6 +574,17 @@ struct pldm_get_pdr_req {
 	uint8_t transfer_op_flag;
 	uint16_t request_count;
 	uint16_t record_change_number;
+} __attribute__((packed));
+
+/** @struct pldm_set_event_receiver_req
+ *
+ * structure representing SetEventReceiver command
+ */
+struct pldm_set_event_receiver_req {
+	uint8_t event_message_global_enable;
+	uint8_t transport_protocol_type;
+	uint8_t event_receiver_address_info;
+	uint16_t heartbeat_timer;
 } __attribute__((packed));
 
 /** @struct pldm_set_numeric_effecter_value_req
