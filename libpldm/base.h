@@ -54,6 +54,13 @@ enum transfer_resp_flag {
 	PLDM_START_AND_END = 0x05,
 };
 
+/** @brief PLDM transport protocol type
+ */
+enum transport_protocol_type {
+	PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP = 0x00,
+	PLDM_TRANSPORT_PROTOCOL_TYPE_OEM = 0XFF,
+};
+
 /** @enum MessageType
  *
  *  The different message types supported by the PLDM specification.
