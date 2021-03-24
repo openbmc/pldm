@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "18fee0a8_ffd9f888",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-24T16:18:17Z",
+      "side": 1,
+      "message": "this is probably not interesting to the customer, as the redfish api is being used by the customers. can you please remove the highlighted portion alone.",
+      "range": {
+        "startLine": 36,
+        "startChar": 91,
+        "endLine": 36,
+        "endChar": 199
+      },
+      "revId": "8a781f3a544853e5282483df81ea9049c868b2c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e0384f7c_fbee5266",
         "filename": "oem/ibm/configurations/bios/integer_attrs.json",
         "patchSetId": 4
@@ -18,6 +41,52 @@
         "startChar": 9,
         "endLine": 42,
         "endChar": 29
+      },
+      "revId": "8a781f3a544853e5282483df81ea9049c868b2c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8474d144_3070c299",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-24T16:18:17Z",
+      "side": 1,
+      "message": "this as well.",
+      "range": {
+        "startLine": 45,
+        "startChar": 102,
+        "endLine": 45,
+        "endChar": 203
+      },
+      "revId": "8a781f3a544853e5282483df81ea9049c868b2c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2712af36_3202fd7b",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-24T16:18:17Z",
+      "side": 1,
+      "message": "This as well, this granular information are probably understood by a developer but as redfish API is used by customers who are expected to deal with just laymen terms, its better to remove the highlighted portion.",
+      "range": {
+        "startLine": 70,
+        "startChar": 80,
+        "endLine": 70,
+        "endChar": 186
       },
       "revId": "8a781f3a544853e5282483df81ea9049c868b2c8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
