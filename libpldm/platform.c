@@ -1532,3 +1532,62 @@ int decode_get_sensor_reading_req(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_set_event_receiver_req(uint8_t instance_id,
+				  uint8_t event_message_global_enable,
+				  uint8_t transport_protocol_type,
+				  uint8_t event_receiver_address_info,
+				  uint16_t heartbeat_timer,
+				  struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_SET_EVENT_RECEIVER;
+
+	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+		return rc;
+	}
+
+	if (transport_protocol_type != PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP) {
+		return PLDM_PLATFORM_INVALID_PROTOCOL_TYPE;
+	}
+
+	if ((event_message_global_enable ==
+	     PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE) &&
+	    (heartbeat_timer == 0)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_set_event_receiver_req *request =
+	    (struct pldm_set_event_receiver_req *)msg->payload;
+	request->event_message_global_enable = event_message_global_enable;
+	request->transport_protocol_type = transport_protocol_type;
+	request->event_receiver_address_info = event_receiver_address_info;
+	request->heartbeat_timer = heartbeat_timer;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_set_event_receiver_resp(const struct pldm_msg *msg,
+				   size_t payload_length,
+				   uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length > PLDM_SET_EVENT_RECEIVER_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	return PLDM_SUCCESS;
+}
