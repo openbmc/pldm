@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 
     // Send PLDM Request message - pldm_send doesn't wait for response
     rc = pldm_send(mctpEid, fd, requestMsg.data(), requestMsg.size());
-    if (rc != PLDM_REQUESTER_SUCCESS)
+    if (0 > rc)
     {
         std::cerr << "Failed to send message/receive response. RC = " << rc
                   << ", errno = " << errno << "\n";

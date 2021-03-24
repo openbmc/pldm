@@ -180,5 +180,9 @@ pldm_requester_rc_t pldm_send(mctp_eid_t eid, int mctp_fd,
 	msg.msg_iov = iov;
 	msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
 
-	return sendmsg(mctp_fd, &msg, 0);
+	ssize_t rc = sendmsg(mctp_fd, &msg, 0);
+	if (rc == -1) {
+		return PLDM_REQUESTER_SEND_FAIL;
+	}
+	return PLDM_REQUESTER_SUCCESS;
 }
