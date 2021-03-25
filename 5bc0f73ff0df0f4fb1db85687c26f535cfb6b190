@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e3be2e39_79c7b678",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-25T12:44:32Z",
+      "side": 1,
+      "message": "Could you show your spec?\ne.g: DSP_2048_1.2.0 Table_xx.",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e84a98f_55407361",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-25T12:44:32Z",
+      "side": 1,
+      "message": "Please keep the case consistent",
+      "range": {
+        "startLine": 115,
+        "startChar": 27,
+        "endLine": 115,
+        "endChar": 31
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6007f2dc_8575b88c",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-25T12:44:32Z",
+      "side": 1,
+      "message": "@param",
+      "range": {
+        "startLine": 1520,
+        "startChar": 3,
+        "endLine": 1520,
+        "endChar": 8
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fc0dff5_499a370b",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-03-25T12:44:32Z",
+      "side": 1,
+      "message": "Are the `encode_xxx_resp` and `decode_xxx_req` methods missing?",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
