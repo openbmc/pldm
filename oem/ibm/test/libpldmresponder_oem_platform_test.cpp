@@ -25,8 +25,6 @@ class MockCodeUpdate : public CodeUpdate
     MockCodeUpdate(const pldm::utils::DBusHandler* dBusIntf) :
         CodeUpdate(dBusIntf)
     {}
-
-    MOCK_METHOD(void, setVersions, (), (override));
 };
 
 class MockOemPlatformHandler : public oem_ibm_platform::Handler
