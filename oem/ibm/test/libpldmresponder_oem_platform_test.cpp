@@ -194,17 +194,24 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester,
         event);
-    std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
-        std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
-                                                 mockCodeUpdate.get(), 0x1, 0x9,
-                                                 requester, event);
-    pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
-        dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
-            oemPlatformHandler.get());
-    pldm::responder::platform::Handler* mckPltHandler =
-        reinterpret_cast<pldm::responder::platform::Handler*>(
-            mockoemPlatformHandler.get());
-    oemIbmPlatformHandler->setPlatformHandler(mckPltHandler);
+    try
+    {
+        std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
+            std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
+                                                     mockCodeUpdate.get(), 0x1,
+                                                     0x9, requester, event);
+        pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+            dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+                oemPlatformHandler.get());
+        pldm::responder::platform::Handler* mckPltHandler =
+            reinterpret_cast<pldm::responder::platform::Handler*>(
+                mockoemPlatformHandler.get());
+        oemIbmPlatformHandler->setPlatformHandler(mckPltHandler);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed with  ERROR=" << e.what() << "\n";
+    }
 
     Repo inRepo(inPDRRepo);
 
@@ -295,6 +302,33 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     bf3.byte = 126;
     ASSERT_EQ(states->states[0].byte, bf3.byte);
 
+    // Test for effecter number 4, for systen reboot effecter
+    auto record4 = pdr::getRecordByHandle(inRepo, 4, e);
+    ASSERT_NE(record4, nullptr);
+
+    pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
+
+    ASSERT_EQ(pdr->hdr.record_handle, 4);
+    ASSERT_EQ(pdr->hdr.version, 1);
+    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdr->hdr.record_change_num, 0);
+    ASSERT_EQ(pdr->hdr.length, 16);
+    ASSERT_EQ(pdr->terminus_handle, BmcPldmTerminusHandle);
+    ASSERT_EQ(pdr->entity_type, PLDM_ENTITY_SYSTEM_CHASSIS);
+    ASSERT_EQ(pdr->entity_instance, 0);
+    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->effecter_semantic_id, 0);
+    ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr->has_description_pdr, false);
+    ASSERT_EQ(pdr->composite_effecter_count, 1);
+    states =
+        reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states);
+    ASSERT_EQ(states->state_set_id, 32771);
+    ASSERT_EQ(states->possible_states_size, 2);
+    bitfield8_t bf4{};
+    bf4.byte = 2;
+    ASSERT_EQ(states->states[0].byte, bf4.byte);
+
     pldm_pdr_destroy(inPDRRepo);
 }
 
@@ -313,17 +347,24 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, requester,
         event);
-    std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
-        std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
-                                                 mockCodeUpdate.get(), 0x1, 0x9,
-                                                 requester, event);
-    pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
-        dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
-            oemPlatformHandler.get());
-    pldm::responder::platform::Handler* mckPltHandler =
-        reinterpret_cast<pldm::responder::platform::Handler*>(
-            mockoemPlatformHandler.get());
-    oemIbmPlatformHandler->setPlatformHandler(mckPltHandler);
+    try
+    {
+        std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
+            std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
+                                                     mockCodeUpdate.get(), 0x1,
+                                                     0x9, requester, event);
+        pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
+            dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
+                oemPlatformHandler.get());
+        pldm::responder::platform::Handler* mckPltHandler =
+            reinterpret_cast<pldm::responder::platform::Handler*>(
+                mockoemPlatformHandler.get());
+        oemIbmPlatformHandler->setPlatformHandler(mckPltHandler);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed with  ERROR=" << e.what() << "\n";
+    }
     Repo inRepo(inPDRRepo);
 
     oemPlatformHandler->buildOEMPDR(inRepo);
@@ -332,13 +373,13 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     pdr_utils::PdrEntry e;
 
     // Test for sensor number 1, for current boot side state
-    auto record1 = pdr::getRecordByHandle(inRepo, 4, e);
+    auto record1 = pdr::getRecordByHandle(inRepo, 5, e);
     ASSERT_NE(record1, nullptr);
 
     pldm_state_sensor_pdr* pdr =
         reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 4);
+    ASSERT_EQ(pdr->hdr.record_handle, 5);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
@@ -359,12 +400,12 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(states->states[0].byte, bf1.byte);
 
     // Test for sensor number 2, for next boot side state
-    auto record2 = pdr::getRecordByHandle(inRepo, 5, e);
+    auto record2 = pdr::getRecordByHandle(inRepo, 6, e);
     ASSERT_NE(record2, nullptr);
 
     pdr = reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 5);
+    ASSERT_EQ(pdr->hdr.record_handle, 6);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
@@ -385,12 +426,12 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(states->states[0].byte, bf2.byte);
 
     // Test for sensor number 3, for firmware update state control
-    auto record3 = pdr::getRecordByHandle(inRepo, 6, e);
+    auto record3 = pdr::getRecordByHandle(inRepo, 7, e);
     ASSERT_NE(record3, nullptr);
 
     pdr = reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 6);
+    ASSERT_EQ(pdr->hdr.record_handle, 7);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
