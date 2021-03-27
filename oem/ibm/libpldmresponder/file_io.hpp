@@ -162,9 +162,10 @@ class Handler : public CmdHandler
 {
   public:
     Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
-            uint8_t hostEid, dbus_api::Requester* dbusImplReqester) :
+            uint8_t hostEid, dbus_api::Requester* dbusImplReqester,
+            bool verbose) :
         oemPlatformHandler(oemPlatformHandler),
-        hostSockFd(hostSockFd), hostEid(hostEid),
+        hostSockFd(hostSockFd), hostEid(hostEid), verbose(verbose),
         dbusImplReqester(dbusImplReqester)
     {
         handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
@@ -367,6 +368,7 @@ class Handler : public CmdHandler
     oem_platform::Handler* oemPlatformHandler;
     int hostSockFd;
     uint8_t hostEid;
+    bool verbose;
     dbus_api::Requester* dbusImplReqester;
     using DBusInterfaceAdded = std::vector<std::pair<
         std::string,
