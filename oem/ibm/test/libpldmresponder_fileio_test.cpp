@@ -209,6 +209,8 @@ TEST(ReadFileIntoMemory, BadPath)
     uint32_t offset = 0;
     uint32_t length = 10;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -223,7 +225,8 @@ TEST(ReadFileIntoMemory, BadPath)
 
     // Pass invalid payload length
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.readFileIntoMemory(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -236,6 +239,8 @@ TEST_F(TestFileTable, ReadFileInvalidFileHandle)
     uint32_t offset = 0;
     uint32_t length = 0;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -254,7 +259,14 @@ TEST_F(TestFileTable, ReadFileInvalidFileHandle)
     auto& table = buildFileTable(fileTableConfig.c_str());
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+<<<<<<< HEAD
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
+=======
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+    oem_ibm::Handler handler(oemPlatformHandler.get(), 0x1, 0x9, &requester);
+>>>>>>> ae4b264 (fix: oem-ibm failing testcases)
     auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
@@ -269,6 +281,8 @@ TEST_F(TestFileTable, ReadFileInvalidOffset)
     uint32_t offset = 1024;
     uint32_t length = 0;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -286,7 +300,8 @@ TEST_F(TestFileTable, ReadFileInvalidOffset)
     auto& table = buildFileTable(fileTableConfig.c_str());
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
@@ -301,6 +316,8 @@ TEST_F(TestFileTable, ReadFileInvalidLength)
     // Length should be a multiple of dma min size(16)
     uint32_t length = 10;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -318,7 +335,8 @@ TEST_F(TestFileTable, ReadFileInvalidLength)
     auto& table = buildFileTable(fileTableConfig.c_str());
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -336,6 +354,8 @@ TEST_F(TestFileTable, ReadFileInvalidEffectiveLength)
     // DMA min size(16)
     uint32_t length = 1024;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -353,7 +373,8 @@ TEST_F(TestFileTable, ReadFileInvalidEffectiveLength)
     auto& table = buildFileTable(fileTableConfig.c_str());
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.readFileIntoMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -367,6 +388,8 @@ TEST(WriteFileFromMemory, BadPath)
     uint32_t offset = 0;
     uint32_t length = 10;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -382,7 +405,8 @@ TEST(WriteFileFromMemory, BadPath)
 
     // Pass invalid payload length
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.writeFileFromMemory(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -400,6 +424,8 @@ TEST_F(TestFileTable, WriteFileInvalidFileHandle)
     uint32_t offset = 0;
     uint32_t length = 16;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -418,7 +444,8 @@ TEST_F(TestFileTable, WriteFileInvalidFileHandle)
     auto& table = buildFileTable(fileTableConfig.c_str());
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.writeFileFromMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_HANDLE);
@@ -433,6 +460,8 @@ TEST_F(TestFileTable, WriteFileInvalidOffset)
     uint32_t offset = 1024;
     uint32_t length = 16;
     uint64_t address = 0;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_REQ_BYTES>
         requestMsg{};
@@ -451,7 +480,8 @@ TEST_F(TestFileTable, WriteFileInvalidOffset)
     auto& table = buildFileTable(TestFileTable::fileTableConfig.c_str());
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.writeFileFromMemory(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_DATA_OUT_OF_RANGE);
@@ -509,6 +539,8 @@ TEST_F(TestFileTable, GetFileTableCommand)
     uint8_t type = PLDM_FILE_ATTRIBUTE_TABLE;
     uint32_t nextTransferHandle = 0;
     uint8_t transferFlag = PLDM_START_AND_END;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_FILE_TABLE_REQ_BYTES>
         requestMsg{};
@@ -521,7 +553,8 @@ TEST_F(TestFileTable, GetFileTableCommand)
     request->table_type = type;
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.getFileTable(requestMsgPtr, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_SUCCESS);
@@ -539,13 +572,16 @@ TEST_F(TestFileTable, GetFileTableCommand)
 
 TEST_F(TestFileTable, GetFileTableCommandReqLengthMismatch)
 {
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_FILE_TABLE_REQ_BYTES>
         requestMsg{};
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
     // Pass invalid command payload length
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.getFileTable(request, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -556,6 +592,8 @@ TEST_F(TestFileTable, GetFileTableCommandOEMAttrTable)
     uint32_t transferHandle = 0;
     uint8_t opFlag = 0;
     uint8_t type = PLDM_OEM_FILE_ATTRIBUTE_TABLE;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_FILE_TABLE_REQ_BYTES>
         requestMsg{};
@@ -568,7 +606,8 @@ TEST_F(TestFileTable, GetFileTableCommandOEMAttrTable)
     request->table_type = type;
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.getFileTable(requestMsgPtr, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_INVALID_FILE_TABLE_TYPE);
@@ -579,6 +618,8 @@ TEST_F(TestFileTable, ReadFileBadPath)
     uint32_t fileHandle = 1;
     uint32_t offset = 0;
     uint32_t length = 0x4;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_READ_FILE_REQ_BYTES>
         requestMsg{};
@@ -597,7 +638,8 @@ TEST_F(TestFileTable, ReadFileBadPath)
 
     // Invalid payload length
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.readFile(requestMsgPtr, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -624,6 +666,8 @@ TEST_F(TestFileTable, ReadFileGoodPath)
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
     uint32_t length = 0x4;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_READ_FILE_REQ_BYTES>
         requestMsg{};
@@ -648,7 +692,8 @@ TEST_F(TestFileTable, ReadFileGoodPath)
     stream.read(buffer.data(), length);
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto responseMsg = handler.readFile(requestMsgPtr, payload_length);
     auto response = reinterpret_cast<pldm_read_file_resp*>(
         responseMsg.data() + sizeof(pldm_msg_hdr));
@@ -681,6 +726,8 @@ TEST_F(TestFileTable, WriteFileBadPath)
     uint32_t fileHandle = 0;
     uint32_t offset = 0;
     uint32_t length = 0x10;
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_WRITE_FILE_REQ_BYTES + length);
@@ -699,7 +746,8 @@ TEST_F(TestFileTable, WriteFileBadPath)
 
     // Invalid payload length
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.writeFile(requestMsgPtr, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR_INVALID_LENGTH);
@@ -727,6 +775,8 @@ TEST_F(TestFileTable, WriteFileGoodPath)
     uint32_t offset = 0;
     std::array<uint8_t, 4> fileData = {0x41, 0x42, 0x43, 0x44};
     uint32_t length = fileData.size();
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
 
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_WRITE_FILE_REQ_BYTES + length);
@@ -747,7 +797,8 @@ TEST_F(TestFileTable, WriteFileGoodPath)
     memcpy(request->file_data, fileData.data(), fileData.size());
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto responseMsg = handler.writeFile(requestMsgPtr, payload_length);
     auto response = reinterpret_cast<pldm_read_file_resp*>(
         responseMsg.data() + sizeof(pldm_msg_hdr));
@@ -766,6 +817,9 @@ TEST_F(TestFileTable, WriteFileGoodPath)
 
 TEST(writeFileByTypeFromMemory, testBadPath)
 {
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
+
     const auto hdr_size = sizeof(pldm_msg_hdr);
     std::array<uint8_t, hdr_size + PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES>
         requestMsg{};
@@ -781,7 +835,8 @@ TEST(writeFileByTypeFromMemory, testBadPath)
     request->address = 0;
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.writeFileByTypeFromMemory(req, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -844,6 +899,8 @@ TEST(getHandlerByType, allPaths)
 
 TEST(readFileByTypeIntoMemory, testBadPath)
 {
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
     const auto hdr_size = sizeof(pldm_msg_hdr);
     std::array<uint8_t, hdr_size + PLDM_RW_FILE_BY_TYPE_MEM_REQ_BYTES>
         requestMsg{};
@@ -858,7 +915,8 @@ TEST(readFileByTypeIntoMemory, testBadPath)
     request->address = 0;
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.readFileByTypeIntoMemory(req, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     struct pldm_read_write_file_by_type_memory_resp* resp =
@@ -884,6 +942,8 @@ TEST(readFileByTypeIntoMemory, testBadPath)
 
 TEST(readFileByType, testBadPath)
 {
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
     const auto hdr_size = sizeof(pldm_msg_hdr);
     std::array<uint8_t, hdr_size + PLDM_RW_FILE_BY_TYPE_REQ_BYTES> requestMsg{};
     auto payloadLength = requestMsg.size() - hdr_size;
@@ -897,7 +957,8 @@ TEST(readFileByType, testBadPath)
     request->length = 13;
 
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
-    oem_ibm::Handler handler(oemPlatformHandler.get());
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr);
     auto response = handler.readFileByType(req, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     struct pldm_read_write_file_by_type_resp* resp =
@@ -924,7 +985,7 @@ TEST(readFileByType, testReadFile)
     char tmplt[] = "/tmp/lid.XXXXXX";
     auto fd = mkstemp(tmplt);
     std::vector<uint8_t> in = {100, 10, 56, 78, 34, 56, 79, 235, 111};
-    write(fd, in.data(), in.size());
+    rc = write(fd, in.data(), in.size());
     close(fd);
     length = in.size() + 1000;
     rc = handler.readFile(tmplt, 0, length, response);
