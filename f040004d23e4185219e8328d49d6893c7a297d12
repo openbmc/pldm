@@ -65,6 +65,24 @@
     },
     {
       "key": {
+        "uuid": "65bc0448_ed5ffa9d",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-29T07:10:10Z",
+      "side": 1,
+      "message": "yes,agree.",
+      "parentUuid": "44ab8573_a4a56676",
+      "revId": "f040004d23e4185219e8328d49d6893c7a297d12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "403a85ba_f1cc590f",
         "filename": "libpldmresponder/pdr_state_sensor.hpp",
         "patchSetId": 7
