@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "314a8040_26bb2f5e",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2021-03-29T16:52:38Z",
+      "side": 1,
+      "message": "I feel huge is pretty subjective.\nWhat does hostboot consider a \"huge\" page?",
+      "range": {
+        "startLine": 36,
+        "startChar": 47,
+        "endLine": 36,
+        "endChar": 52
+      },
+      "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c0c9118_96623835",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2021-03-29T16:52:38Z",
+      "side": 1,
+      "message": "in MB? Can you add the unit to the description and maybe to the name and display name as well?\n\nE.g.\n\"displayName\" : \"Pending Memory Region Size in MB\"",
+      "range": {
+        "startLine": 45,
+        "startChar": 69,
+        "endLine": 45,
+        "endChar": 70
+      },
+      "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cf3c202_898c4e84",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2021-03-29T16:52:38Z",
+      "side": 1,
+      "message": "Is this different than \"Requested\" above as in \"Requested Number Huge Pages\"? Should you just drop the \"Pending\" and \"Requested\"? I don\u0027t see it for Manufacturing Flags",
+      "range": {
+        "startLine": 46,
+        "startChar": 26,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
