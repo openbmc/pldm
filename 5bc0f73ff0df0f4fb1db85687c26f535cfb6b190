@@ -19,6 +19,70 @@
     },
     {
       "key": {
+        "uuid": "518bd13d_8d1f4d2b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-29T06:25:41Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "e3be2e39_79c7b678",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54714019_7aad2116",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1539,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-29T06:25:41Z",
+      "side": 1,
+      "message": "how was this decided to be uint8_t, the spec says it varies based on the transport protocol type.",
+      "range": {
+        "startLine": 1539,
+        "startChar": 5,
+        "endLine": 1539,
+        "endChar": 14
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dfbaa4b_1c12c2af",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1540,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-29T06:25:41Z",
+      "side": 1,
+      "message": "confused, i don\u0027t see this in the spec , can you point me to which table in the spec you are following ?",
+      "range": {
+        "startLine": 1540,
+        "startChar": 6,
+        "endLine": 1540,
+        "endChar": 30
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0e84a98f_55407361",
         "filename": "libpldm/platform.h",
         "patchSetId": 2
@@ -30,6 +94,30 @@
       "writtenOn": "2021-03-25T12:44:32Z",
       "side": 1,
       "message": "Please keep the case consistent",
+      "range": {
+        "startLine": 115,
+        "startChar": 27,
+        "endLine": 115,
+        "endChar": 31
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f24f9c42_f9199898",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-29T06:25:41Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "0e84a98f_55407361",
       "range": {
         "startLine": 115,
         "startChar": 27,
@@ -65,6 +153,30 @@
     },
     {
       "key": {
+        "uuid": "fa85f642_d3dd835a",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-29T06:25:41Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "6007f2dc_8575b88c",
+      "range": {
+        "startLine": 1520,
+        "startChar": 3,
+        "endLine": 1520,
+        "endChar": 8
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7fc0dff5_499a370b",
         "filename": "libpldm/platform.h",
         "patchSetId": 2
@@ -76,6 +188,24 @@
       "writtenOn": "2021-03-25T12:44:32Z",
       "side": 1,
       "message": "Are the `encode_xxx_resp` and `decode_xxx_req` methods missing?",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34501f7c_73166473",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-29T06:25:41Z",
+      "side": 1,
+      "message": "+1 , please talk about the unit tests \u0026  `encode_xxx_resp` and `decode_xxx_req` methods in the commit message , if you are not willing to do this in this commit.",
+      "parentUuid": "7fc0dff5_499a370b",
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
