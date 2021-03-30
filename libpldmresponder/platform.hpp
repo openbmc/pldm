@@ -57,13 +57,15 @@ class Handler : public CmdHandler
             HostPDRHandler* hostPDRHandler,
             DbusToPLDMEvent* dbusToPLDMEventHandler, fru::Handler* fruHandler,
             pldm::responder::oem_platform::Handler* oemPlatformHandler,
-            sdeventplus::Event& event, bool buildPDRLazily = false,
+            sdeventplus::Event& event, bool verbose = false,
+            bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        event(event), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
+        event(event), verbose(verbose), pdrJsonsDir(pdrJsonsDir),
+        pdrCreated(false)
     {
         if (!buildPDRLazily)
         {
@@ -76,6 +78,12 @@ class Handler : public CmdHandler
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->getPDR(request, payloadLength);
                          });
+
+        respHandlers.emplace(PLDM_GET_PDR, [this](const pldm_msg* request,
+                                                  size_t payloadLength) {
+            return this->getPDRResp(request, payloadLength);
+        });
+
         handlers.emplace(PLDM_SET_NUMERIC_EFFECTER_VALUE,
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->setNumericEffecterValue(
@@ -210,6 +218,14 @@ class Handler : public CmdHandler
      *  @param[out] Response - Response message written here
      */
     Response getPDR(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handles GetPDR response asynchronously
+     *
+     *  @param[in] request - Request message payload
+     *  @param[in] payloadLength - Request payload length
+     *  @param[out] Response - Response message written here
+     */
+    Response getPDRResp(const pldm_msg* request, size_t payloadLength);
 
     /** @brief Handler for setNumericEffecterValue
      *
@@ -454,6 +470,15 @@ class Handler : public CmdHandler
      */
     void _processPostGetPDRActions(sdeventplus::source::EventBase& source);
 
+    /** @brief send PDR Repo change after merging Host's PDR to BMC PDR repo
+     */
+    void _processPDRRepoChgEvent(sdeventplus::source::EventBase& source);
+
+    /** @brief fetch the next PDR based on the record handle sent by Host
+     */
+    void _processFetchPDREvent(uint32_t nextRecordHandle,
+                               sdeventplus::source::EventBase& source);
+
   private:
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
@@ -466,9 +491,12 @@ class Handler : public CmdHandler
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
     sdeventplus::Event& event;
+    bool verbose;
     std::string pdrJsonsDir;
     bool pdrCreated;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
+    std::unique_ptr<sdeventplus::source::Defer> deferredFetchPDREvent;
+    std::unique_ptr<sdeventplus::source::Defer> deferredPDRRepoChgEvent;
 };
 
 /** @brief Function to check if a sensor falls in OEM range
