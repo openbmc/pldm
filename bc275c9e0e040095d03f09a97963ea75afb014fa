@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8c7e689b_508a3f52",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2021-03-30T18:13:30Z",
+      "side": 1,
+      "message": "No way to add descriptions for the enums?\nIs Pbl a well known acronym? Should we spell out ?",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 24
+      },
+      "revId": "bc275c9e0e040095d03f09a97963ea75afb014fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0586cc2_2f2f90b6",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2021-03-30T18:13:30Z",
+      "side": 1,
+      "message": "These are not very descriptive names, can we use descriptive names?",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 20
+      },
+      "revId": "bc275c9e0e040095d03f09a97963ea75afb014fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
