@@ -185,6 +185,48 @@
          ],
          "helpText" : "CEC Primary OS",
          "displayName" : "CEC Primary OS"
+      },
+	  {
+         "attribute_name":"pvm_system_operating_mode",
+         "possible_values":[
+            "Normal",
+            "Manual"
+         ],
+         "default_values":[
+            "Normal"
+         ],
+         "helpText" : "Manual mode is used for service or maintenance purpose of the system hardware. When the system is in manual mode, various automatic functions such as recovery on error, system poweron on power loss and reboot of host on failure are disabled.",
+         "displayName" : "Server Operating Mode"
+      },
+	  {
+         "attribute_name":"pvm_rpa_boot_mode",
+         "possible_values":[
+            "Normal",
+            "SavedList",
+            "SmsMenu",
+            "OkPrompt",
+            "DefaultList",
+            "PblBootLid"
+         ],
+         "default_values":[
+            "Normal"
+         ],
+         "helpText" : "Select the boot type for an AIX/Linux partition.",
+         "displayName" : "AIX/Linux Partition Boot Mode"
+      },
+	  {
+         "attribute_name":"pvm_os_ipl_type",
+         "possible_values":[
+            "A_Mode",
+            "B_Mode",
+            "C_Mode",
+            "D_Mode"
+         ],
+         "default_values":[
+            "D_Mode"
+         ],
+         "helpText" : "Select the IBMi partition boot mode for next system boot. A_Mode: Boot from disk using copy A, B_Mode: Boot from disk using copy B, C_Mode: Reserved for IBM lab use only, D_Mode: Boot from media/drives",
+         "displayName" : "IBMi Partition Boot Mode"
       }
    ]
 }
