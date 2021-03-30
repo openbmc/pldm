@@ -137,6 +137,133 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
     }
 }
 
+Response Handler::getPDRResp(const pldm_msg* request, size_t payloadLength)
+{
+    Response response;
+    static bool merged = false;
+    static PDRList stateSensorPDRs{};
+    static TLPDRMap tlpdrInfo{};
+    uint32_t nextRecordHandle{};
+    uint8_t completionCode{};
+    uint32_t nextDataTransferHandle{};
+    uint8_t transferFlag{};
+    uint16_t respCount{};
+    uint8_t transferCRC{};
+
+    auto rc = decode_get_pdr_resp(request, payloadLength, &completionCode,
+                                  &nextRecordHandle, &nextDataTransferHandle,
+                                  &transferFlag, &respCount, nullptr, 0,
+                                  &transferCRC);
+
+    std::vector<uint8_t> responsePDRMsg;
+    responsePDRMsg.resize(payloadLength + sizeof(pldm_msg_hdr));
+    memcpy(responsePDRMsg.data(), request,
+           payloadLength + sizeof(pldm_msg_hdr));
+    if (verbose)
+    {
+        std::cout << "Receiving Msg:" << std::endl;
+        printBuffer(responsePDRMsg, verbose);
+    }
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc << std::endl;
+        return response;
+    }
+    else
+    {
+        std::vector<uint8_t> pdr(respCount, 0);
+        rc = decode_get_pdr_resp(request, payloadLength, &completionCode,
+                                 &nextRecordHandle, &nextDataTransferHandle,
+                                 &transferFlag, &respCount, pdr.data(),
+                                 respCount, &transferCRC);
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to decode_get_pdr_resp: "
+                      << "rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << std::endl;
+            return response;
+        }
+        else
+        {
+            auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+            if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
+            {
+                hostPDRHandler->mergeEntityAssociations(pdr);
+                merged = true;
+            }
+            else
+            {
+                if (pdrHdr->type == PLDM_TERMINUS_LOCATOR_PDR)
+                {
+                    auto tlpdr =
+                        reinterpret_cast<const pldm_terminus_locator_pdr*>(
+                            pdr.data());
+                    tlpdrInfo.emplace(
+                        static_cast<pldm::pdr::TerminusHandle>(
+                            tlpdr->terminus_handle),
+                        static_cast<pldm::pdr::TerminusID>(tlpdr->tid));
+                }
+                else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+                {
+                    stateSensorPDRs.emplace_back(pdr);
+                }
+                pldm_pdr_add(pdrRepo.getPdr(), pdr.data(), respCount, 0, true);
+            }
+        }
+    }
+    if (!nextRecordHandle)
+    {
+        // received last record
+        hostPDRHandler->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+        stateSensorPDRs.clear();
+        tlpdrInfo.clear();
+        if (merged)
+        {
+            merged = false;
+            deferredPDRRepoChgEvent =
+                std::make_unique<sdeventplus::source::Defer>(
+                    event,
+                    std::bind(std::mem_fn(&pldm::responder::platform::Handler::
+                                              _processPDRRepoChgEvent),
+                              this, std::placeholders::_1));
+        }
+    }
+    else
+    {
+        deferredFetchPDREvent = std::make_unique<sdeventplus::source::Defer>(
+            event,
+            std::bind(
+                std::mem_fn(
+                    &pldm::responder::platform::Handler::_processFetchPDREvent),
+                this, nextRecordHandle, std::placeholders::_1));
+    }
+
+    return response;
+}
+
+void Handler::_processPDRRepoChgEvent(
+    sdeventplus::source::EventBase& /*source */)
+{
+    deferredPDRRepoChgEvent.reset();
+    hostPDRHandler->sendPDRRepositoryChgEvent(
+        std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
+        FORMAT_IS_PDR_HANDLES);
+}
+
+void Handler::_processFetchPDREvent(uint32_t nextRecordHandle,
+                                    sdeventplus::source::EventBase& /*source */)
+{
+    deferredFetchPDREvent.reset();
+    if (!hostPDRHandler->pdrRecordHandles.empty())
+    {
+        nextRecordHandle = hostPDRHandler->pdrRecordHandles.front();
+        hostPDRHandler->pdrRecordHandles.pop_front();
+    }
+    hostPDRHandler->fetchPDRsOnStart(nextRecordHandle);
+}
+
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
     // Build FRU table if not built, since entity association PDR's are built

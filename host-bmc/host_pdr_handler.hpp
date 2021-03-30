@@ -54,6 +54,7 @@ struct SensorEntry
 
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
 using PDRList = std::vector<std::vector<uint8_t>>;
+using TLPDRMap = std::map<pdr::TerminusHandle, pdr::TerminusID>;
 
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
@@ -73,8 +74,6 @@ class HostPDRHandler
     HostPDRHandler& operator=(const HostPDRHandler&) = delete;
     HostPDRHandler& operator=(HostPDRHandler&&) = delete;
     ~HostPDRHandler() = default;
-
-    using TLPDRMap = std::map<pdr::TerminusHandle, pdr::TerminusID>;
 
     /** @brief Constructor
      *  @param[in] mctp_fd - fd of MCTP communications socket
@@ -139,12 +138,12 @@ class HostPDRHandler
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
 
-  private:
-    /** @brief fetchPDR schedules work on the event loop, this method does the
-     *  actual work. This is so that the PDR exchg with the host is async.
-     *  @param[in] source - sdeventplus event source
+    /** @brief fetch PDRs from host firmware
+     *
+     *  @param[in] nextRecordHandle - the record handle to ask for
+     *
      */
-    void _fetchPDR(sdeventplus::source::EventBase& source);
+    void fetchPDRsOnStart(uint32_t nextRecordHandle = 0);
 
     /** @brief Merge host firmware's entity association PDRs into BMC's
      *  @details A merge operation involves adding a pldm_entity under the
@@ -152,6 +151,16 @@ class HostPDRHandler
      *  @param[in] pdr - entity association pdr
      */
     void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
+
+    /** @brief list of PDR record handles pointing to host's PDRs */
+    PDRRecordHandles pdrRecordHandles;
+
+  private:
+    /** @brief fetchPDR schedules work on the event loop, this method does the
+     *  actual work. This is so that the PDR exchg with the host is async.
+     *  @param[in] source - sdeventplus event source
+     */
+    void _fetchPDR(sdeventplus::source::EventBase& source);
 
     /** @brief Find parent of input entity type, from the entity association
      *  tree
@@ -181,8 +190,6 @@ class HostPDRHandler
     Requester& requester;
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> pdrFetchEvent;
-    /** @brief list of PDR record handles pointing to host's PDRs */
-    PDRRecordHandles pdrRecordHandles;
     /** @brief maps an entity type to parent pldm_entity from the BMC's entity
      *  association tree
      */
