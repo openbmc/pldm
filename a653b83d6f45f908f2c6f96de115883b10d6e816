@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "220f2d3e_6f430c0d",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1001046
+      },
+      "writtenOn": "2021-03-30T14:04:56Z",
+      "side": 1,
+      "message": "I would agree, but it seems to be a linux feature.  Looks like it\u0027s anything larger than 4K but is typically 2M or 1G.",
+      "parentUuid": "314a8040_26bb2f5e",
+      "range": {
+        "startLine": 36,
+        "startChar": 47,
+        "endLine": 36,
+        "endChar": 52
+      },
+      "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0c0c9118_96623835",
         "filename": "oem/ibm/configurations/bios/integer_attrs.json",
         "patchSetId": 5
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "823e6ad5_80497c43",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001046
+      },
+      "writtenOn": "2021-03-30T14:04:56Z",
+      "side": 1,
+      "message": "This is LMB_SIZE in hb attributes.  It is an encoded value, so 4 \u003d 256MB.  I can include that in the help text.",
+      "parentUuid": "0c0c9118_96623835",
+      "range": {
+        "startLine": 45,
+        "startChar": 69,
+        "endLine": 45,
+        "endChar": 70
+      },
+      "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4cf3c202_898c4e84",
         "filename": "oem/ibm/configurations/bios/integer_attrs.json",
         "patchSetId": 5
@@ -68,6 +116,30 @@
       "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7719213e_ca2f8e85",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001046
+      },
+      "writtenOn": "2021-03-30T14:04:56Z",
+      "side": 1,
+      "message": "Checked w/ Nick and decided to use \"Requested\" for these.  \"Pending\" is for attrs that are applied at a later time.",
+      "parentUuid": "4cf3c202_898c4e84",
+      "range": {
+        "startLine": 46,
+        "startChar": 26,
+        "endLine": 46,
+        "endChar": 34
+      },
+      "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
