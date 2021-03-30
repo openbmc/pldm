@@ -168,6 +168,7 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
 int FileHandler::readFile(const std::string& filePath, uint32_t offset,
                           uint32_t& length, Response& response)
 {
+    std::cout << "enter readFile in file_io_by_type.cpp \n";
     if (!fs::exists(filePath))
     {
         std::cerr << "File does not exist, HANDLE=" << fileHandle

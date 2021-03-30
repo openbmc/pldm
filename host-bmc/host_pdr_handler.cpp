@@ -102,28 +102,47 @@ void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 
 void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 {
-    std::cout << "enter _fetchPDR \n";
+    fetchPDRsOnStart();
+}
+
+void HostPDRHandler::fetchPDRsOnStart(uint32_t nextRecordHandle)
+{
+    std::cout << "enter fetchPDRsOnStart with nextRecordHandle " 
+              << nextRecordHandle <<"\n";
     pdrFetchEvent.reset();
 
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_GET_PDR_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
-    bool merged = false;
-    PDRList stateSensorPDRs{};
-    TLPDRMap tlpdrInfo{};
+    //bool merged = false;
+    //PDRList stateSensorPDRs{};
+    //TLPDRMap tlpdrInfo{};
 
-    uint32_t nextRecordHandle{};
+    //uint32_t nextRecordHandle{};
     uint32_t recordHandle{};
-    bool isFormatRecHandles = false;
+ //   bool isFormatRecHandles = false;
+    if (!nextRecordHandle)
+    {
     if (!pdrRecordHandles.empty())
     {
         recordHandle = pdrRecordHandles.front();
         pdrRecordHandles.pop_front();
-        isFormatRecHandles = true;
+     //   isFormatRecHandles = true; //why this is used??
     }
-
-    do
+    else
     {
+        std::cout << "got nextRecordHandle as 0\n";
+
+    }
+    }
+    else
+    {
+        recordHandle = nextRecordHandle;
+    }
+    std::cout << "calling getPDR with recordHandle " << recordHandle << "\n";
+
+    //do
+    //{
         auto instanceId = requester.getInstanceId(mctp_eid);
 
         auto rc =
@@ -141,18 +160,25 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             std::cout << "Sending Msg:" << std::endl;
             printBuffer(requestMsg, verbose);
         }
-        std::cout << "before pldm_send_recv \n";
+        std::cout << "before pldm_send \n";
 
-        uint8_t* responseMsg = nullptr;
-        size_t responseMsgSize{};
-        auto requesterRc =
+       // uint8_t* responseMsg = nullptr;
+       // size_t responseMsgSize{};
+        /*auto requesterRc =
             pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(),
-                           requestMsg.size(), &responseMsg, &responseMsgSize);
-        std::cout << "after pldm_send_recv \n";    
-        std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
-            responseMsg, std::free};
-        requester.markFree(mctp_eid, instanceId);
+                           requestMsg.size(), &responseMsg, &responseMsgSize);*/
+          auto requesterRc =
+              pldm_send(mctp_eid, mctp_fd, requestMsg.data(),requestMsg.size());
+        std::cout << "after pldm_send \n";    
         if (requesterRc != PLDM_REQUESTER_SUCCESS)
+        {
+            std::cerr << "Failed to send msg to fetch Host PDR rc = " 
+                      << requesterRc << "\n";
+        }
+        //std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
+          //  responseMsg, std::free};
+     /*   requester.markFree(mctp_eid, instanceId); //done in pldmd*/
+        /*if (requesterRc != PLDM_REQUESTER_SUCCESS)
         {
             std::cerr << "Failed to send msg to fetch pdrs, rc = "
                       << requesterRc << std::endl;
@@ -238,10 +264,10 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
             {
                 break;
             }
-        }
-    } while (recordHandle);
+        }*/
+   // } while (recordHandle);
 
-    parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+   /* parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
     if (merged)
     {
@@ -250,7 +276,9 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         sendPDRRepositoryChgEvent(
             std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
             FORMAT_IS_PDR_HANDLES);
-    }
+    }*/
+
+std::cout << "exit fetchPDRsOnStart  \n";
 }
 
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,

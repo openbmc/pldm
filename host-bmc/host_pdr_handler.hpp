@@ -54,6 +54,7 @@ struct SensorEntry
 
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
 using PDRList = std::vector<std::vector<uint8_t>>;
+using TLPDRMap = std::map<pdr::TerminusHandle, pdr::TerminusID>;
 
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
@@ -74,7 +75,7 @@ class HostPDRHandler
     HostPDRHandler& operator=(HostPDRHandler&&) = delete;
     ~HostPDRHandler() = default;
 
-    using TLPDRMap = std::map<pdr::TerminusHandle, pdr::TerminusID>;
+    //using TLPDRMap = std::map<pdr::TerminusHandle, pdr::TerminusID>;
 
     /** @brief Constructor
      *  @param[in] mctp_fd - fd of MCTP communications socket
@@ -139,6 +140,10 @@ class HostPDRHandler
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
 
+    void fetchPDRsOnStart(uint32_t nextRecordHandle=0);
+    void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
+    PDRRecordHandles pdrRecordHandles;
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -151,7 +156,7 @@ class HostPDRHandler
      *  appropriate parent, and updating container ids.
      *  @param[in] pdr - entity association pdr
      */
-    void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
+   // void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
 
     /** @brief Find parent of input entity type, from the entity association
      *  tree
@@ -182,7 +187,7 @@ class HostPDRHandler
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> pdrFetchEvent;
     /** @brief list of PDR record handles pointing to host's PDRs */
-    PDRRecordHandles pdrRecordHandles;
+    //PDRRecordHandles pdrRecordHandles;
     /** @brief maps an entity type to parent pldm_entity from the BMC's entity
      *  association tree
      */

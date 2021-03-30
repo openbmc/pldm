@@ -31,6 +31,7 @@ class LidHandler : public FileHandler
     LidHandler(uint32_t fileHandle, bool permSide, uint8_t lidType = 0) :
         FileHandler(fileHandle), lidType(lidType)
     {
+        std::cout << "LidHandler constructor \n";
         sideToRead = permSide ? Pside : Tside;
         isPatchDir = false;
         std::string dir = permSide ? LID_ALTERNATE_DIR : LID_RUNNING_DIR;
@@ -44,10 +45,12 @@ class LidHandler : public FileHandler
         {
             lidPath = patch;
             isPatchDir = true;
+            std::cout << "is_regular_file lidPath=" << lidPath.c_str() << "\n";
         }
         else
         {
             lidPath = std::move(dir) + '/' + lidName;
+            std::cout << "lidPath=" << lidPath.c_str() << "\n";
         }
     }
 
@@ -59,6 +62,7 @@ class LidHandler : public FileHandler
     {
         if (oemPlatformHandler != nullptr)
         {
+            std::cout << "constructLIDPath  oemPlatformHandler is not null \n";
             pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
                 dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
                     oemPlatformHandler);
@@ -275,6 +279,7 @@ class LidHandler : public FileHandler
     virtual int read(uint32_t offset, uint32_t& length, Response& response,
                      oem_platform::Handler* oemPlatformHandler)
     {
+        std::cout << "readFile from file_io_type_lid with lidPath=" << lidPath.c_str() << "\n";
         if (constructLIDPath(oemPlatformHandler))
         {
             return readFile(lidPath, offset, length, response);

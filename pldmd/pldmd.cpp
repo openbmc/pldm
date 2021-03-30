@@ -70,6 +70,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
     }
     else if (PLDM_REQUEST == hdrFields.msg_type)
     {
+        std::cout << "processRxMsg  got PLDM_REQUEST \n";
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
                             sizeof(eid) - sizeof(type);
@@ -98,6 +99,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
     }
     else if (PLDM_RESPONSE == hdrFields.msg_type)
     {
+        std::cout << "processRxMsg  got PLDM_RESPONSE \n";
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
                             sizeof(eid) - sizeof(type);
@@ -221,7 +223,7 @@ int main(int argc, char** argv)
     auto platformHandler = std::make_unique<platform::Handler>(
         dbusHandler.get(), PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get(),
         dbusToPLDMEventHandler.get(), fruHandler.get(),
-        oemPlatformHandler.get(), event, true);
+        oemPlatformHandler.get(), event,verbose, true);
 #ifdef OEM_IBM
     pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(

@@ -137,6 +137,149 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
     }
 }
 
+Response Handler::getPDRResp(const pldm_msg* request, size_t payloadLength)
+{
+    Response response;
+    std::cout << "enter getPDRResp with payloadLength " << payloadLength <<"\n";
+    static bool merged = false; //make false again after done
+    static PDRList stateSensorPDRs{}; //clear after done because phyp pdrs will come next
+    static TLPDRMap tlpdrInfo{}; //clear after done
+    uint32_t nextRecordHandle{};
+
+    //uint8_t* responseMsg = nullptr;
+    //size_t responseMsgSize{};
+    uint8_t completionCode{};
+    uint32_t nextDataTransferHandle{};
+    uint8_t transferFlag{};
+    uint16_t respCount{};
+    uint8_t transferCRC{};
+
+    auto rc = decode_get_pdr_resp(request, payloadLength,
+        &completionCode, &nextRecordHandle, &nextDataTransferHandle,
+         &transferFlag, &respCount, nullptr, 0, &transferCRC);
+    std::cout << "after first decode_get_pdr_resp completionCode " 
+            << (uint32_t)completionCode
+            << " nextRecordHandle " << nextRecordHandle 
+            << " nextDataTransferHandle " << (uint32_t)nextDataTransferHandle
+            << " transferFlag " << (uint32_t)transferFlag
+            << " respCount " <<(uint32_t)respCount;
+
+    std::vector<uint8_t> responsePDRMsg;
+    responsePDRMsg.resize(payloadLength + sizeof(pldm_msg_hdr));
+    memcpy(responsePDRMsg.data(),request,payloadLength + sizeof(pldm_msg_hdr));
+    if (verbose)
+    {
+        std::cout << "Receiving Msg:" << std::endl;
+        printBuffer(responsePDRMsg, verbose);
+    }
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc
+                  << std::endl;
+        return response;          
+    }
+    else
+    {
+        std::vector<uint8_t> pdr(respCount, 0);
+        rc = decode_get_pdr_resp(request, payloadLength,
+            &completionCode, &nextRecordHandle, &nextDataTransferHandle,
+            &transferFlag, &respCount, pdr.data(), respCount, &transferCRC);
+        std::cout << "after second decode_get_pdr_resp pdr is: \n";
+        printBuffer(pdr,verbose);
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to decode_get_pdr_resp: "
+                      << "rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << std::endl;
+            return response;          
+        }
+        else
+        {
+            auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+            if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
+            {
+                std::cout << "received PLDM_PDR_ENTITY_ASSOCIATION \n";
+                hostPDRHandler->mergeEntityAssociations(pdr);
+                merged = true;
+            }
+            else
+            {
+                if (pdrHdr->type == PLDM_TERMINUS_LOCATOR_PDR)
+                {
+                    std::cout << "received PLDM_TERMINUS_LOCATOR_PDR \n";
+                    auto tlpdr =
+                        reinterpret_cast<const pldm_terminus_locator_pdr*>(
+                            pdr.data());
+                    tlpdrInfo.emplace(
+                        static_cast<pldm::pdr::TerminusHandle>(
+                            tlpdr->terminus_handle),
+                        static_cast<pldm::pdr::TerminusID>(tlpdr->tid));
+                }
+                else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
+                {
+                    std::cout << "received PLDM_STATE_SENSOR_PDR \n";
+                    stateSensorPDRs.emplace_back(pdr);
+                }
+                pldm_pdr_add(pdrRepo.getPdr(), pdr.data(), respCount, 0, true);
+            }
+        }
+    }
+        if(!nextRecordHandle)
+        {
+            std::cout << "got the last record \n";
+            hostPDRHandler->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+            stateSensorPDRs.clear();
+            tlpdrInfo.clear();
+            if (merged)
+            {
+                merged = false;
+                deferredPDRRepoChgEvent = 
+                      std::make_unique<sdeventplus::source::Defer>(
+                          event,
+                          std::bind(std::mem_fn(&pldm::responder::platform::Handler::_processPDRRepoChgEvent),
+                          this, std::placeholders::_1));
+            }
+
+        }
+        else /*if(!hostPDRHandler->pdrRecordHandles.empty())*/
+        {
+            deferredFetchPDREvent =
+                std::make_unique<sdeventplus::source::Defer>(
+                   event,
+                   std::bind(std::mem_fn(&pldm::responder::platform::Handler::_processFetchPDREvent),
+                   this,nextRecordHandle, std::placeholders::_1));
+        }
+    
+     std::cout << "exit getPDRResp \n"; 
+    return response;
+}
+
+void Handler::_processPDRRepoChgEvent(sdeventplus::source::EventBase& /*source */)
+{
+    std::cout << "enter _processPDRRepoChgEvent \n";
+    deferredPDRRepoChgEvent.reset();
+    hostPDRHandler->sendPDRRepositoryChgEvent(
+        std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
+        FORMAT_IS_PDR_HANDLES);
+    std::cout << "exit _processPDRRepoChgEvent \n";
+}
+
+void Handler::_processFetchPDREvent(uint32_t nextRecordHandle, sdeventplus::source::EventBase& /*source */)
+{
+    std::cout << "enter _processFetchPDREvent with nextRecordHandle " 
+              << nextRecordHandle << " \n";
+    deferredFetchPDREvent.reset();
+    if(!hostPDRHandler->pdrRecordHandles.empty())
+    {
+        nextRecordHandle = hostPDRHandler->pdrRecordHandles.front();
+        hostPDRHandler->pdrRecordHandles.pop_front();
+    }
+    hostPDRHandler->fetchPDRsOnStart(nextRecordHandle);
+    std::cout << "exit _processFetchPDREvent \n";
+}
+
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
     std::cout << "enter getPDR \n";
