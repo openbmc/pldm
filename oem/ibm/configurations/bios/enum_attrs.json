@@ -13,18 +13,6 @@
          "displayName" : "pvm_fw_boot_side"
       },
       {
-         "attribute_name":"pvm_os_boot_side",
-         "possible_values":[
-            "Perm",
-            "Temp"
-         ],
-         "default_values":[
-            "Temp"
-         ],
-         "helpText" : "pvm_os_boot_side",
-         "displayName" : "pvm_os_boot_side"
-      },
-      {
          "attribute_name":"pvm_inband_code_update",
          "possible_values":[
             "Allowed",
@@ -136,12 +124,12 @@
          "helpText" : "When set to Enabled Hostboot should emit debug trace information to the VUART2 device.",
          "displayName" : "hb-debug-console"
       },
-	  {
+      {
          "attribute_name":"pvm_system_power_off_policy",
          "possible_values":[
             "Power Off",
             "Stay On",
-		    "Automatic"
+            "Automatic"
          ],
          "default_values":[
             "Automatic"
@@ -149,7 +137,7 @@
          "helpText" : "The system power off policy flag is a system parameter that controls the system's behavior when the last partition (or only partition in the case of a system that is not managed by an HMC) is powered off.",
          "displayName" : "System Automatic Power Off Policy"
       },
-	  {
+      {
          "attribute_name":"pvm_hmc_managed",
          "possible_values":[
             "Disabled",
@@ -161,7 +149,7 @@
          "helpText" : "This option enables or disables the system is managed by HMC.",
          "displayName" : "HMC managed System"
       },
-	  {
+      {
          "attribute_name":"pvm_rtad",
          "possible_values":[
             "Disabled",
@@ -173,7 +161,7 @@
          "helpText" : "This option enables or disables the Remote Trusted Attestation Daemon for host firmware.",
          "displayName" : "Remote Trusted Attestation Daemon State"
       },
-	  {
+      {
          "attribute_name":"pvm_default_os_type",
          "possible_values":[
             "AIX",
@@ -185,6 +173,48 @@
          ],
          "helpText" : "CEC Primary OS",
          "displayName" : "CEC Primary OS"
+      },
+      {
+         "attribute_name":"pvm_system_operating_mode",
+         "possible_values":[
+            "Normal",
+            "Manual"
+         ],
+         "default_values":[
+            "Normal"
+         ],
+         "helpText" : "Manual mode is used for service or maintenance purpose of the system hardware. When the system is in manual mode, various automatic functions such as recovery on error, system poweron on power loss and reboot of host on failure are disabled.",
+         "displayName" : "Server Operating Mode"
+      },
+      {
+         "attribute_name":"pvm_rpa_boot_mode",
+         "possible_values":[
+            "Normal",
+            "SavedList",
+            "SmsMenu",
+            "OkPrompt",
+            "DefaultList",
+            "PblBootLid"
+         ],
+         "default_values":[
+            "Normal"
+         ],
+         "helpText" : "Select the boot type for an AIX/Linux partition. Normal: The partition boots directly to the operating system, SavedList: The system boots from the saved service mode boot list, SmsMenu: The partition stops at the System Management Services(SMS) menu, OkPrompt: The system stops at the open firmware prompt, DefaultList: The system boots from the default boot list, PblBootLid(PBL : Petitboot Boot Loader): The partition boots from the petitboot bootloader.",
+         "displayName" : "AIX/Linux Partition Boot Mode"
+      },
+      {
+         "attribute_name":"pvm_os_ipl_type",
+         "possible_values":[
+            "A_Mode",
+            "B_Mode",
+            "C_Mode",
+            "D_Mode"
+         ],
+         "default_values":[
+            "D_Mode"
+         ],
+         "helpText" : "Select the IBMi partition boot mode for next system boot. A_Mode: Boot from disk using copy A, B_Mode: Boot from disk using copy B, C_Mode: Reserved for IBM lab use only, D_Mode: Boot from media/drives.",
+         "displayName" : "IBMi Partition Boot Mode"
       }
    ]
 }
