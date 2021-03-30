@@ -22,6 +22,30 @@
       "revId": "82f1190084f4f9360cafc5b24ae3980ac1e372ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da7dee20_36ab2e6d",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-03-30T13:05:13Z",
+      "side": 1,
+      "message": "Removed the tabs from the file",
+      "parentUuid": "6b63a2e6_6ce9049d",
+      "range": {
+        "startLine": 189,
+        "startChar": 1,
+        "endLine": 189,
+        "endChar": 4
+      },
+      "revId": "82f1190084f4f9360cafc5b24ae3980ac1e372ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
