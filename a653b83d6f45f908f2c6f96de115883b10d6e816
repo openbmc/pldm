@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "0b127595_9d2241d2",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1001046
+      },
+      "writtenOn": "2021-03-30T14:16:11Z",
+      "side": 1,
+      "message": "There is a related attribute, HUGE_PAGE_SIZE in hb, that specifies the size of a huge page, while this one specifies the number of huge pages.  I am adding the huge page size in a separate commit.",
+      "parentUuid": "220f2d3e_6f430c0d",
+      "range": {
+        "startLine": 36,
+        "startChar": 47,
+        "endLine": 36,
+        "endChar": 52
+      },
+      "revId": "a653b83d6f45f908f2c6f96de115883b10d6e816",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0c0c9118_96623835",
         "filename": "oem/ibm/configurations/bios/integer_attrs.json",
         "patchSetId": 5
