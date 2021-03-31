@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "4b2be82e_a778646f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-31T06:14:03Z",
+      "side": 1,
+      "message": "and also a brief write up that what it will be used for",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 28
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e3be2e39_79c7b678",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -76,6 +99,53 @@
         "startChar": 6,
         "endLine": 1540,
         "endChar": 30
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68852de8_185bc558",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1540,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-31T06:14:03Z",
+      "side": 1,
+      "message": "Table-13 DSP0248_1.2.0.pdf\nthe event receiver address info varies based on the protocol chosen. as of now only MCTP is supported and acc to that event receiver field is one byte\nthis can be changed if someone uses a different protocol later",
+      "parentUuid": "8dfbaa4b_1c12c2af",
+      "range": {
+        "startLine": 1540,
+        "startChar": 6,
+        "endLine": 1540,
+        "endChar": 30
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ef2768e_bb27a4f5",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1556,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-31T06:14:03Z",
+      "side": 1,
+      "message": "i think this is not needed now as you are not supporting OEM protocol as per your code",
+      "range": {
+        "startLine": 1556,
+        "startChar": 5,
+        "endLine": 1556,
+        "endChar": 64
       },
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
@@ -206,6 +276,24 @@
       "side": 1,
       "message": "+1 , please talk about the unit tests \u0026  `encode_xxx_resp` and `decode_xxx_req` methods in the commit message , if you are not willing to do this in this commit.",
       "parentUuid": "7fc0dff5_499a370b",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89430e7d_6d220b5c",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-03-31T06:14:03Z",
+      "side": 1,
+      "message": "`encode_xxx_resp` and `decode_xxx_req` methods will not be used by BMC so they are not implemented as part of this commit. That can be taken up as a new commit",
+      "parentUuid": "34501f7c_73166473",
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
