@@ -130,6 +130,30 @@
     },
     {
       "key": {
+        "uuid": "bcb41772_ab4569be",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1540,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-31T16:52:46Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "68852de8_185bc558",
+      "range": {
+        "startLine": 1540,
+        "startChar": 6,
+        "endLine": 1540,
+        "endChar": 30
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ef2768e_bb27a4f5",
         "filename": "libpldm/platform.c",
         "patchSetId": 2
@@ -150,6 +174,30 @@
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ddcc8578_af0ce554",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1556,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-31T16:52:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ef2768e_bb27a4f5",
+      "range": {
+        "startLine": 1556,
+        "startChar": 5,
+        "endLine": 1556,
+        "endChar": 64
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -200,6 +248,30 @@
     },
     {
       "key": {
+        "uuid": "42d72e63_dc4c897c",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-31T16:52:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f24f9c42_f9199898",
+      "range": {
+        "startLine": 115,
+        "startChar": 27,
+        "endLine": 115,
+        "endChar": 31
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6007f2dc_8575b88c",
         "filename": "libpldm/platform.h",
         "patchSetId": 2
@@ -244,6 +316,30 @@
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4f10e72_18bb1f2f",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-31T16:52:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa85f642_d3dd835a",
+      "range": {
+        "startLine": 1520,
+        "startChar": 3,
+        "endLine": 1520,
+        "endChar": 8
+      },
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -297,6 +393,24 @@
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3051532_9887c734",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-03-31T16:52:46Z",
+      "side": 1,
+      "message": "yes, `encode_xxx_resp` and `decode_xxx_req` can be implemented at a later point when BMC will be using those methods. and Units tests will be pushed as a 3rd commit in the chain.",
+      "parentUuid": "89430e7d_6d220b5c",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
