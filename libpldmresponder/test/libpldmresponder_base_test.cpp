@@ -4,6 +4,8 @@
 
 #include <string.h>
 
+#include <sdeventplus/event.hpp>
+
 #include <array>
 
 #include <gtest/gtest.h>
@@ -12,11 +14,16 @@ using namespace pldm::responder;
 
 TEST(GetPLDMTypes, testGoodRequest)
 {
+    int mctpFd = 0;
+    uint8_t mctpEid = 0;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+    auto event = sdeventplus::Event::get_default();
     std::array<uint8_t, sizeof(pldm_msg_hdr)> requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
     // payload length will be 0 in this case
     size_t requestPayloadLength = 0;
-    base::Handler handler;
+    base::Handler handler(nullptr, mctpFd, mctpEid, requester, event);
     auto response = handler.getPLDMTypes(request, requestPayloadLength);
     // Need to support OEM type.
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -28,12 +35,17 @@ TEST(GetPLDMTypes, testGoodRequest)
 
 TEST(GetPLDMCommands, testGoodRequest)
 {
+    int mctpFd = 0;
+    uint8_t mctpEid = 0;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+    auto event = sdeventplus::Event::get_default();
     // Need to support OEM type commands.
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES>
         requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
-    base::Handler handler;
+    base::Handler handler(nullptr, mctpFd, mctpEid, requester, event);
     auto response = handler.getPLDMCommands(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
@@ -44,13 +56,18 @@ TEST(GetPLDMCommands, testGoodRequest)
 
 TEST(GetPLDMCommands, testBadRequest)
 {
+    int mctpFd = 0;
+    uint8_t mctpEid = 0;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+    auto event = sdeventplus::Event::get_default();
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES>
         requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
 
     request->payload[0] = 0xFF;
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
-    base::Handler handler;
+    base::Handler handler(nullptr, mctpFd, mctpEid, requester, event);
     auto response = handler.getPLDMCommands(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     uint8_t* payload_ptr = responsePtr->payload;
@@ -58,6 +75,11 @@ TEST(GetPLDMCommands, testBadRequest)
 }
 TEST(GetPLDMVersion, testGoodRequest)
 {
+    int mctpFd = 0;
+    uint8_t mctpEid = 0;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+    auto event = sdeventplus::Event::get_default();
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES>
         requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
@@ -74,7 +96,7 @@ TEST(GetPLDMVersion, testGoodRequest)
 
     ASSERT_EQ(0, rc);
 
-    base::Handler handler;
+    base::Handler handler(nullptr, mctpFd, mctpEid, requester, event);
     auto response = handler.getPLDMVersion(request, requestPayloadLength);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -90,6 +112,11 @@ TEST(GetPLDMVersion, testGoodRequest)
 }
 TEST(GetPLDMVersion, testBadRequest)
 {
+    int mctpFd = 0;
+    uint8_t mctpEid = 0;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+    auto event = sdeventplus::Event::get_default();
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES>
         requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
@@ -104,7 +131,7 @@ TEST(GetPLDMVersion, testBadRequest)
 
     ASSERT_EQ(0, rc);
 
-    base::Handler handler;
+    base::Handler handler(nullptr, mctpFd, mctpEid, requester, event);
     auto response = handler.getPLDMVersion(request, requestPayloadLength - 1);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -125,11 +152,16 @@ TEST(GetPLDMVersion, testBadRequest)
 
 TEST(GetTID, testGoodRequest)
 {
+    int mctpFd = 0;
+    uint8_t mctpEid = 0;
+    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    Requester requester(bus, "/abc/def");
+    auto event = sdeventplus::Event::get_default();
     std::array<uint8_t, sizeof(pldm_msg_hdr)> requestPayload{};
     auto request = reinterpret_cast<pldm_msg*>(requestPayload.data());
     size_t requestPayloadLength = 0;
 
-    base::Handler handler;
+    base::Handler handler(nullptr, mctpFd, mctpEid, requester, event);
     auto response = handler.getTID(request, requestPayloadLength);
 
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
