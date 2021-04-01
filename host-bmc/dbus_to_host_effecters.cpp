@@ -281,39 +281,13 @@ int HostEffecterParser::setHostStateEffecter(
         }
     }
 
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
-
-    rc = pldm_send_recv(mctpEid, sockFd, requestMsg.data(), requestMsg.size(),
-                        &responseMsg, &responseMsgSize);
-    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
-                                                                  std::free};
-    requester->markFree(mctpEid, instanceId);
+    rc = pldm_send(mctpEid, sockFd, requestMsg.data(), requestMsg.size());
 
     if (rc != PLDM_REQUESTER_SUCCESS)
     {
-        std::cerr << "Failed to send message/receive response. RC = " << rc
+        std::cerr << "Failed to send message. RC = " << rc
                   << ", errno = " << errno << " for setting host effecter "
                   << effecterId << "\n";
-        pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
-        return rc;
-    }
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
-    uint8_t completionCode{};
-    rc = decode_set_state_effecter_states_resp(
-        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode);
-    if (rc != PLDM_SUCCESS)
-    {
-        std::cerr << "Failed to decode setStateEffecterStates response, rc = "
-                  << rc << "\n";
-        return rc;
-    }
-    if (completionCode != PLDM_SUCCESS)
-    {
-        std::cerr << "Failed setStateEffecterStates for effecter " << effecterId
-                  << ". Response from Host " << (uint32_t)completionCode
-                  << "\n";
         pldm::utils::reportError(
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
     }
