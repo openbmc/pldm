@@ -30,6 +30,7 @@ conf_data.set_quoted('FRU_JSONS_DIR', '/usr/share/pldm/fru')
 conf_data.set_quoted('FRU_MASTER_JSON', '/usr/share/pldm/fru_master.json')
 conf_data.set_quoted('HOST_JSONS_DIR', '/usr/share/pldm/host')
 conf_data.set_quoted('EVENTS_JSONS_DIR', '/usr/share/pldm/events')
+conf_data.set('HEARTBEAT_TIMEOUT', get_option('heartbeat-timeout-seconds'))
 add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
 endif
 if get_option('softoff').enabled()
