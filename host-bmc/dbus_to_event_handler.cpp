@@ -42,16 +42,18 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
         return;
     }
 
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
+ //   uint8_t* responseMsg = nullptr;
+   // size_t responseMsgSize{};
 
-    auto requesterRc =
+    /*auto requesterRc =
         pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
                        &responseMsg, &responseMsgSize);
     std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
                                                                   std::free};
 
-    requester.markFree(mctp_eid, instanceId);
+    requester.markFree(mctp_eid, instanceId);*/
+    auto requesterRc =
+      pldm_send(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size());  
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr
@@ -59,7 +61,7 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
             << requesterRc << std::endl;
         return;
     }
-    uint8_t completionCode{};
+   /* uint8_t completionCode{};
     uint8_t status{};
     auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
     rc = decode_platform_event_message_resp(
@@ -72,7 +74,7 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
                   << "rc=" << rc
                   << ", cc=" << static_cast<unsigned>(completionCode)
                   << std::endl;
-    }
+    }*/
 }
 
 void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
