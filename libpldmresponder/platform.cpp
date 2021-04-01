@@ -313,24 +313,30 @@ Response Handler::platformEventMessage(const pldm_msg* request,
         return CmdHandler::ccOnlyResponse(request, rc);
     }
 
-    try
+    if (eventClass == PLDM_HEARTBEAT_TIMER_ELAPSED_EVENT)
     {
-        const auto& handlers = eventHandlers.at(eventClass);
-        for (const auto& handler : handlers)
+        rc = PLDM_SUCCESS;
+    }
+    else
+    {
+        try
         {
-            auto rc =
-                handler(request, payloadLength, formatVersion, tid, offset);
-            if (rc != PLDM_SUCCESS)
+            const auto& handlers = eventHandlers.at(eventClass);
+            for (const auto& handler : handlers)
             {
-                return CmdHandler::ccOnlyResponse(request, rc);
+                auto rc =
+                    handler(request, payloadLength, formatVersion, tid, offset);
+                if (rc != PLDM_SUCCESS)
+                {
+                    return CmdHandler::ccOnlyResponse(request, rc);
+                }
             }
         }
+        catch (const std::out_of_range& e)
+        {
+            return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_DATA);
+        }
     }
-    catch (const std::out_of_range& e)
-    {
-        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_DATA);
-    }
-
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
