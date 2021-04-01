@@ -94,6 +94,11 @@ class Handler : public CmdHandler
                              return this->setStateEffecterStates(request,
                                                                  payloadLength);
                          });
+        respHandlers.emplace(
+            PLDM_SET_STATE_EFFECTER_STATES,
+            [this](const pldm_msg* request, size_t payloadLength) {
+                return this->setStateEffecterStatesResp(request, payloadLength);
+            });
         handlers.emplace(PLDM_PLATFORM_EVENT_MESSAGE,
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->platformEventMessage(request,
@@ -253,6 +258,15 @@ class Handler : public CmdHandler
      */
     Response setStateEffecterStates(const pldm_msg* request,
                                     size_t payloadLength);
+
+    /** @brief Handles the response for setStateEffecterStates
+     *         asynchronously
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Response payload length
+     *  @return Response - PLDM Response message
+     */
+    Response setStateEffecterStatesResp(const pldm_msg* request,
+                                        size_t payloadLength);
 
     /** @brief Handler for PlatformEventMessage
      *

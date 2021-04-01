@@ -42,36 +42,14 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
         return;
     }
 
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
-
     auto requesterRc =
-        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
-                       &responseMsg, &responseMsgSize);
-    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
-                                                                  std::free};
-
-    requester.markFree(mctp_eid, instanceId);
+        pldm_send(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size());
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr
             << "Failed to send msg to report state sensor event changes, rc = "
             << requesterRc << std::endl;
         return;
-    }
-    uint8_t completionCode{};
-    uint8_t status{};
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
-    rc = decode_platform_event_message_resp(
-        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
-        &status);
-
-    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
-    {
-        std::cerr << "Failed to decode_platform_event_message_resp: "
-                  << "rc=" << rc
-                  << ", cc=" << static_cast<unsigned>(completionCode)
-                  << std::endl;
     }
 }
 
