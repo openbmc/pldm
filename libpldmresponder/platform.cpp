@@ -421,6 +421,25 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     return response;
 }
 
+Response Handler::setStateEffecterStatesResp(const pldm_msg* request,
+                                             size_t payloadLength)
+{
+    Response response;
+    uint8_t completionCode{};
+    auto rc = decode_set_state_effecter_states_resp(request, payloadLength,
+                                                    &completionCode);
+    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode setStateEffecterStates response,"
+                  << " or failed setStateEffecterStates to Host "
+                  << " rc " << rc
+                  << ", cc=" << static_cast<unsigned>(completionCode) << "\n";
+        pldm::utils::reportError(
+            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+    }
+    return response;
+}
+
 Response Handler::platformEventMessageResp(const pldm_msg* request,
                                            size_t payloadLength)
 {
