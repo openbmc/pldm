@@ -27,7 +27,9 @@ class CertHandler : public FileHandler
      */
     CertHandler(uint32_t fileHandle, uint16_t fileType) :
         FileHandler(fileHandle), certType(fileType)
-    {}
+    {
+        std::cerr << "VMI: Inside Cert Haandler constructor" << std::endl;
+    }
 
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address,

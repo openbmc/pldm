@@ -190,6 +190,114 @@ void DbusToFileHandler::processNewResourceDump(
     sendNewFileAvailableCmd(fileSize);
 }
 
+void DbusToFileHandler::newCsrFileAvailable(const std::string& csr,
+                                            std::string fileHandle)
+{
+    std::cerr << "VMI: Inside newCsrFileAvailable." << std::endl;
+    namespace fs = std::filesystem;
+    std::string dirPath = "/var/lib/pldm";
+    const fs::path certDirPath = dirPath;
+
+    if (!fs::exists(certDirPath))
+    {
+        fs::create_directories(certDirPath);
+    }
+
+    fs::path certFilePath = certDirPath / fileHandle;
+    std::ofstream certFile;
+
+    certFile.open(certFilePath, std::ios::out | std::ofstream::binary);
+
+    if (!certFile)
+    {
+        std::cerr << "cert file open error: " << certFilePath << "\n";
+        return;
+    }
+
+    // Add csr to file
+    certFile << csr << std::endl;
+
+    std::cerr << "VMI: csr file written" << std::endl;
+
+    certFile.close();
+    size_t fileSize = fs::file_size(certFilePath);
+
+    newFileAvailableSendToHost(fileSize, (uint32_t)stoi(fileHandle),
+                               PLDM_FILE_TYPE_CERT_SIGNING_REQUEST);
+}
+
+void DbusToFileHandler::newFileAvailableSendToHost(uint64_t fileSize,
+                                                   uint32_t fileHandle,
+                                                   uint16_t type)
+{
+    std::cerr << "VMI: Inside newFileAvailableSendToHost" << std::endl;
+    if (requester == NULL)
+    {
+        std::cerr << "Failed to send csr to host.";
+        pldm::utils::reportError(
+            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+        return;
+    }
+    auto instanceId = requester->getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_NEW_FILE_REQ_BYTES + fileSize);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc =
+        encode_new_file_req(instanceId, type, fileHandle, fileSize, request);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester->markFree(mctp_eid, instanceId);
+        std::cerr << "Failed to encode_new_file_req, rc = " << rc << std::endl;
+        return;
+    }
+
+    uint8_t* responseMsg = nullptr;
+    size_t responseMsgSize{};
+
+    auto requesterRc =
+        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
+                       &responseMsg, &responseMsgSize);
+
+    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
+                                                                  std::free};
+
+    requester->markFree(mctp_eid, instanceId);
+    bool isDecodeNewFileRespFailed = false;
+    if (requesterRc != PLDM_REQUESTER_SUCCESS)
+    {
+        std::cerr << "Failed to send file to host, rc = " << requesterRc
+                  << std::endl;
+    }
+    else
+    {
+        std::cerr << "VMI: CSR file sent to host and response received"
+                  << std::endl;
+        uint8_t completionCode{};
+        auto responsePtr =
+            reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
+
+        rc = decode_new_file_resp(responsePtr, PLDM_NEW_FILE_RESP_BYTES,
+                                  &completionCode);
+
+        std::cerr << "VMI: decode complete completion code: " << completionCode
+                  << std::endl;
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to decode_new_file_resp: "
+                      << "rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << std::endl;
+            isDecodeNewFileRespFailed = true;
+        }
+    }
+    if ((requesterRc != PLDM_REQUESTER_SUCCESS) || (isDecodeNewFileRespFailed))
+    {
+        pldm::utils::reportError(
+            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+    }
+}
+
 } // namespace oem_ibm
 } // namespace requester
 } // namespace pldm

@@ -24,6 +24,7 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                  uint64_t address,
                                  oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cerr << "VMI: Inside write from memory" << std::endl;
     auto it = certMap.find(certType);
     if (it == certMap.end())
     {
@@ -50,6 +51,7 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
                                 uint64_t address,
                                 oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cerr << "VMI: Inside read into memory" << std::endl;
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {
         return PLDM_ERROR_INVALID_DATA;
@@ -60,6 +62,7 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
 int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
                       oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cerr << "VMI: Inside read" << std::endl;
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {
         return PLDM_ERROR_INVALID_DATA;
@@ -70,6 +73,7 @@ int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
 int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                        oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cerr << "VMI: Inside write" << std::endl;
     auto it = certMap.find(certType);
     if (it == certMap.end())
     {
@@ -106,6 +110,8 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
 int CertHandler::newFileAvailable(uint64_t length)
 {
     static constexpr auto vmiCertPath = "/var/lib/bmcweb";
+
+    std::cerr << "VMI: Inside new file available" << std::endl;
     fs::create_directories(vmiCertPath);
     int fileFd = -1;
     int flags = O_WRONLY | O_CREAT | O_TRUNC;
@@ -116,10 +122,56 @@ int CertHandler::newFileAvailable(uint64_t length)
     }
     if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
     {
+        std::cerr << "VMI: Client Cert new file available" << std::endl;
         fileFd = open(clientCertPath, flags, S_IRUSR | S_IWUSR);
+
+        static constexpr auto certObjPath = "/xyz/openbmc_project/certs/entry";
+        static constexpr auto certEntryIntf = "xyz.openbmc_project.Certs.Entry";
+
+        std::fstream inFile;
+        inFile.open(clientCertPath);
+        std::stringstream strStream;
+        strStream << inFile.rdbuf();
+        std::string str = strStream.str();
+
+        std::cerr << "VMI: Client cert: " << str << std::endl;
+
+        PropertyValue value{str};
+        DBusMapping dbusMapping{certObjPath, certEntryIntf, "ClientCertificate",
+                                "string"};
+        try
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "failed to set Client certificate, "
+                         "ERROR="
+                      << e.what() << "\n";
+        }
+        if (!str.empty())
+        {
+            std::cerr << "Cert Status complete" << std::endl;
+            PropertyValue value{
+                "xyz.openbmc_project.Certs.Entry.State.Complete"};
+            DBusMapping dbusMapping{certObjPath, certEntryIntf, "Status",
+                                    "string"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "failed to set status property of certicate entry, "
+                       "ERROR="
+                    << e.what() << "\n";
+            }
+        }
     }
     else if (certType == PLDM_FILE_TYPE_ROOT_CERT)
     {
+        std::cerr << "VMI: Root Cert new file available" << std::endl;
         fileFd = open(rootCertPath, flags, S_IRUSR | S_IWUSR);
     }
     if (fileFd == -1)
