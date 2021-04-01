@@ -48,6 +48,10 @@ class DbusToFileHandler
     void processNewResourceDump(const std::string& vspString,
                                 const std::string& resDumpReqPass);
 
+    void newCsrFileAvailable(const std::string& csr, std::string entryID);
+    void newFileAvailableSendToHost(uint64_t fileSize, uint32_t fileHandle,
+                                    uint16_t type);
+
   private:
     /** @brief Send the new file available command request to hypervisor
      *  @param[in] fileSize - size of the file
