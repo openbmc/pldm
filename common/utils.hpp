@@ -350,5 +350,7 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
  */
 void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose);
 
+constexpr auto heartBeatTimeout = 0x78;
+
 } // namespace utils
 } // namespace pldm
