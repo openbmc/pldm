@@ -349,6 +349,5 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
  *  @return - None
  */
 void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose);
-
 } // namespace utils
 } // namespace pldm
