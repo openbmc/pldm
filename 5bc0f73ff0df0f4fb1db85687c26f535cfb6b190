@@ -411,6 +411,24 @@
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c233117_de6472b7",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-01T11:38:30Z",
+      "side": 1,
+      "message": "I think your UT should be push along with this commit",
+      "parentUuid": "e3051532_9887c734",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
