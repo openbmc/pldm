@@ -224,7 +224,9 @@ int main(int argc, char** argv)
                                           oemPlatformHandler.get(), sockfd,
                                           hostEID, &dbusImplReq, &reqHandler));
 #endif
-    invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
+    invoker.registerHandler(
+        PLDM_BASE, std::make_unique<base::Handler>(sockfd, hostEID, dbusImplReq,
+                                                   event, &reqHandler));
     invoker.registerHandler(
         PLDM_BIOS, std::make_unique<bios::Handler>(sockfd, hostEID,
                                                    &dbusImplReq, &reqHandler));
