@@ -14,9 +14,9 @@ namespace pldm
 namespace responder
 {
 
-static constexpr auto csrFilePath = "/var/lib/bmcweb/CSR";
-static constexpr auto rootCertPath = "/var/lib/bmcweb/RootCert";
-static constexpr auto clientCertPath = "/var/lib/bmcweb/ClientCert";
+static constexpr auto csrFilePath = "/var/lib/ibm/bmcweb/CSR";
+static constexpr auto rootCertPath = "/var/lib/ibm/bmcweb/RootCert";
+static constexpr auto clientCertPath = "/var/lib/ibm/bmcweb/ClientCert";
 
 CertMap CertHandler::certMap;
 
@@ -100,12 +100,79 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
         close(fd);
         certMap.erase(it);
     }
+
+    if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
+    {
+        constexpr auto certObjPath = "/xyz/openbmc_project/certs/ca/entry/";
+        constexpr auto certEntryIntf = "xyz.openbmc_project.Certs.Entry";
+
+        std::ifstream inFile;
+        inFile.open(clientCertPath);
+        std::stringstream strStream;
+        strStream << inFile.rdbuf();
+        std::string str = strStream.str();
+        inFile.close();
+
+        PropertyValue value{str};
+
+        DBusMapping dbusMapping{certObjPath + std::to_string(fileHandle),
+                                certEntryIntf, "ClientCertificate", "string"};
+        try
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "failed to set Client certificate, "
+                         "ERROR="
+                      << e.what() << "\n";
+            return PLDM_ERROR;
+        }
+        if (!str.empty())
+        {
+            PropertyValue value{
+                "xyz.openbmc_project.Certs.Entry.State.Complete"};
+            DBusMapping dbusMapping{certObjPath + std::to_string(fileHandle),
+                                    certEntryIntf, "Status", "string"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "failed to set status property of certicate entry, "
+                       "ERROR="
+                    << e.what() << "\n";
+                return PLDM_ERROR;
+            }
+        }
+        else
+        {
+            PropertyValue value{"xyz.openbmc_project.Certs.Entry.State.BadCSR"};
+            DBusMapping dbusMapping{certObjPath + std::to_string(fileHandle),
+                                    certEntryIntf, "Status", "string"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "failed to set status property of certicate entry, "
+                       "ERROR="
+                    << e.what() << "\n";
+                return PLDM_ERROR;
+            }
+        }
+    }
     return PLDM_SUCCESS;
 }
 
 int CertHandler::newFileAvailable(uint64_t length)
 {
-    static constexpr auto vmiCertPath = "/var/lib/bmcweb";
+    static constexpr auto vmiCertPath = "/var/lib/ibm/bmcweb";
+
     fs::create_directories(vmiCertPath);
     int fileFd = -1;
     int flags = O_WRONLY | O_CREAT | O_TRUNC;
