@@ -14,10 +14,6 @@ namespace pldm
 namespace responder
 {
 
-static constexpr auto csrFilePath = "/var/lib/bmcweb/CSR";
-static constexpr auto rootCertPath = "/var/lib/bmcweb/RootCert";
-static constexpr auto clientCertPath = "/var/lib/bmcweb/ClientCert";
-
 CertMap CertHandler::certMap;
 
 int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
@@ -105,7 +101,8 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
 
 int CertHandler::newFileAvailable(uint64_t length)
 {
-    static constexpr auto vmiCertPath = "/var/lib/bmcweb";
+    static constexpr auto vmiCertPath =
+        "/var/lib/bmcweb" + "/cert_" + fileHandle;
     fs::create_directories(vmiCertPath);
     int fileFd = -1;
     int flags = O_WRONLY | O_CREAT | O_TRUNC;
@@ -116,11 +113,13 @@ int CertHandler::newFileAvailable(uint64_t length)
     }
     if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
     {
-        fileFd = open(clientCertPath, flags, S_IRUSR | S_IWUSR);
+        vmiCertPath += "/ClientCert";
+        fileFd = open(vmiCertPath, flags, S_IRUSR | S_IWUSR);
     }
     else if (certType == PLDM_FILE_TYPE_ROOT_CERT)
     {
-        fileFd = open(rootCertPath, flags, S_IRUSR | S_IWUSR);
+        vmiCertPath += "/RootCert";
+        fileFd = open(vmiCertPath, flags, S_IRUSR | S_IWUSR);
     }
     if (fileFd == -1)
     {
