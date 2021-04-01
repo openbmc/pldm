@@ -14,9 +14,7 @@ namespace pldm
 namespace responder
 {
 
-static constexpr auto csrFilePath = "/var/lib/bmcweb/CSR";
-static constexpr auto rootCertPath = "/var/lib/bmcweb/RootCert";
-static constexpr auto clientCertPath = "/var/lib/bmcweb/ClientCert";
+static constexpr auto certFilePath = "/var/lib/ibm/bmcweb/";
 
 CertMap CertHandler::certMap;
 
@@ -50,21 +48,26 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
                                 uint64_t address,
                                 oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::string filePath = certFilePath;
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {
         return PLDM_ERROR_INVALID_DATA;
     }
-    return transferFileData(csrFilePath, true, offset, length, address);
+    return transferFileData(
+        (filePath + "CSR_" + std::to_string(fileHandle)).c_str(), true, offset,
+        length, address);
 }
 
 int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
                       oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::string filePath = certFilePath;
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {
         return PLDM_ERROR_INVALID_DATA;
     }
-    return readFile(csrFilePath, offset, length, response);
+    return readFile((filePath + "CSR_" + std::to_string(fileHandle)).c_str(),
+                    offset, length, response);
 }
 
 int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
@@ -100,15 +103,75 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
         close(fd);
         certMap.erase(it);
     }
+
+    if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
+    {
+        constexpr auto certObjPath = "/xyz/openbmc_project/certs/ca/entry/";
+        constexpr auto certEntryIntf = "xyz.openbmc_project.Certs.Entry";
+
+        std::string str = buffer;
+        PropertyValue value{str};
+
+        DBusMapping dbusMapping{certObjPath + std::to_string(fileHandle),
+                                certEntryIntf, "ClientCertificate", "string"};
+        try
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "failed to set Client certificate, "
+                         "ERROR="
+                      << e.what() << "\n";
+            return PLDM_ERROR;
+        }
+        if (!str.empty())
+        {
+            PropertyValue value{
+                "xyz.openbmc_project.Certs.Entry.State.Complete"};
+            DBusMapping dbusMapping{certObjPath + std::to_string(fileHandle),
+                                    certEntryIntf, "Status", "string"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "failed to set status property of certicate entry, "
+                       "ERROR="
+                    << e.what() << "\n";
+                return PLDM_ERROR;
+            }
+        }
+        else
+        {
+            PropertyValue value{"xyz.openbmc_project.Certs.Entry.State.BadCSR"};
+            DBusMapping dbusMapping{certObjPath + std::to_string(fileHandle),
+                                    certEntryIntf, "Status", "string"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "failed to set status property of certicate entry, "
+                       "ERROR="
+                    << e.what() << "\n";
+                return PLDM_ERROR;
+            }
+        }
+    }
     return PLDM_SUCCESS;
 }
 
 int CertHandler::newFileAvailable(uint64_t length)
 {
-    static constexpr auto vmiCertPath = "/var/lib/bmcweb";
-    fs::create_directories(vmiCertPath);
+    fs::create_directories(certFilePath);
     int fileFd = -1;
     int flags = O_WRONLY | O_CREAT | O_TRUNC;
+    std::string filePath = certFilePath;
 
     if (certType == PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {
@@ -116,11 +179,14 @@ int CertHandler::newFileAvailable(uint64_t length)
     }
     if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
     {
-        fileFd = open(clientCertPath, flags, S_IRUSR | S_IWUSR);
+        fileFd = open(
+            (filePath + "ClientCert_" + std::to_string(fileHandle)).c_str(),
+            flags, S_IRUSR | S_IWUSR);
     }
     else if (certType == PLDM_FILE_TYPE_ROOT_CERT)
     {
-        fileFd = open(rootCertPath, flags, S_IRUSR | S_IWUSR);
+        fileFd =
+            open((filePath + "RootCert").c_str(), flags, S_IRUSR | S_IWUSR);
     }
     if (fileFd == -1)
     {
