@@ -216,7 +216,9 @@ int main(int argc, char** argv)
         PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                       oemPlatformHandler.get(), sockfd, hostEID, &dbusImplReq));
 #endif
-    invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
+    invoker.registerHandler(
+        PLDM_BASE, std::make_unique<base::Handler>(sockfd, hostEID, dbusImplReq,
+                                                   event, &reqHandler));
     invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>(
                                            sockfd, hostEID, &dbusImplReq));
     auto fruHandler = std::make_unique<fru::Handler>(
