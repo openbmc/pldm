@@ -16,6 +16,24 @@
       "revId": "6b360aee8f6f4ef6ad28124a2d0badb0e087e45d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56fbb98e_c7cd762d",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-04T06:51:24Z",
+      "side": 1,
+      "message": "Yes, Since here is Unit Test and we do not need this parameter, Right?",
+      "parentUuid": "e9f71725_cb5a0e70",
+      "revId": "6b360aee8f6f4ef6ad28124a2d0badb0e087e45d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
