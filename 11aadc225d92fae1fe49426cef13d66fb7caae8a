@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0594a8c5_ca05d070",
+        "filename": "oem/ibm/test/libpldmresponder_oem_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-05T13:09:41Z",
+      "side": 1,
+      "message": "Don\u0027t catch exceptions in unit tests. You are unit testing to find errors and situations where exceptions are raised. \n\nYou can also ASSERT based on the exceptions that code generate,using try -catch blocks in test cases is a bad idea.",
+      "range": {
+        "startLine": 197,
+        "startChar": 3,
+        "endLine": 197,
+        "endChar": 7
+      },
+      "revId": "11aadc225d92fae1fe49426cef13d66fb7caae8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b02c72f1_b34b077b",
+        "filename": "oem/ibm/test/libpldmresponder_oem_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-05T13:09:41Z",
+      "side": 1,
+      "message": "same here.",
+      "range": {
+        "startLine": 350,
+        "startChar": 4,
+        "endLine": 350,
+        "endChar": 7
+      },
+      "revId": "11aadc225d92fae1fe49426cef13d66fb7caae8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
