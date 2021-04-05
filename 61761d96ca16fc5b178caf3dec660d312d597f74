@@ -22,6 +22,30 @@
       "revId": "61761d96ca16fc5b178caf3dec660d312d597f74",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca3de6d1_5e2a902a",
+        "filename": "libpldm/base.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-05T16:17:02Z",
+      "side": 0,
+      "message": "Thanks, I was a bit confused as to why this change was relevant.",
+      "parentUuid": "4cb20f1e_160423ee",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 2
+      },
+      "revId": "61761d96ca16fc5b178caf3dec660d312d597f74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
