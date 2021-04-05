@@ -101,6 +101,79 @@ int encode_get_firmware_parameters_req(const uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+int decode_get_firmware_parameters_comp_resp(
+    const uint8_t *msg, const size_t payload_length,
+    struct component_parameter_table *component_data,
+    struct variable_field *active_comp_ver_str,
+    struct variable_field *pending_comp_ver_str)
+{
+	if (msg == NULL || component_data == NULL ||
+	    active_comp_ver_str == NULL || pending_comp_ver_str == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length < sizeof(struct component_parameter_table)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct component_parameter_table *component_resp =
+	    (struct component_parameter_table *)(msg);
+	if (component_resp->active_comp_ver_str_len == 0) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	size_t resp_len = sizeof(struct component_parameter_table) +
+			  component_resp->active_comp_ver_str_len +
+			  component_resp->pending_comp_ver_str_len;
+
+	if (payload_length < resp_len) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	component_data->comp_classification =
+	    htole16(component_resp->comp_classification);
+	component_data->comp_identifier =
+	    htole16(component_resp->comp_identifier);
+	component_data->comp_classification_index =
+	    component_resp->comp_classification_index;
+	component_data->active_comp_comparison_stamp =
+	    htole32(component_resp->active_comp_comparison_stamp);
+	component_data->active_comp_ver_str_type =
+	    component_resp->active_comp_ver_str_type;
+	component_data->active_comp_ver_str_len =
+	    component_resp->active_comp_ver_str_len;
+	component_data->active_comp_release_date =
+	    htole64(component_resp->active_comp_release_date);
+	component_data->pending_comp_comparison_stamp =
+	    htole32(component_resp->pending_comp_comparison_stamp);
+	component_data->pending_comp_ver_str_type =
+	    component_resp->pending_comp_ver_str_type;
+	component_data->pending_comp_ver_str_len =
+	    component_resp->pending_comp_ver_str_len;
+	component_data->pending_comp_release_date =
+	    htole64(component_resp->pending_comp_release_date);
+	component_data->comp_activation_methods =
+	    htole16(component_resp->comp_activation_methods);
+	component_data->capabilities_during_update =
+	    htole16(component_resp->capabilities_during_update);
+
+	active_comp_ver_str->ptr =
+	    msg + sizeof(struct component_parameter_table);
+	active_comp_ver_str->length = component_resp->active_comp_ver_str_len;
+
+	if (component_resp->pending_comp_ver_str_len != 0) {
+
+		pending_comp_ver_str->ptr =
+		    msg + sizeof(struct component_parameter_table) +
+		    component_resp->active_comp_ver_str_len;
+		pending_comp_ver_str->length =
+		    component_resp->pending_comp_ver_str_len;
+	} else {
+		pending_comp_ver_str->ptr = NULL;
+		pending_comp_ver_str->length = 0;
+	}
+	return PLDM_SUCCESS;
+}
 int decode_get_firmware_parameters_comp_img_set_resp(
     const struct pldm_msg *msg, const size_t payload_length,
     struct get_firmware_parameters_resp *resp_data,
