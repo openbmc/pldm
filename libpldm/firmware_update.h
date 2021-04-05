@@ -82,6 +82,15 @@ struct request_update_req {
 	uint8_t comp_image_set_ver_str_type;
 	uint8_t comp_image_set_ver_str_len;
 } __attribute__((packed));
+/* @struct request_update_resp
+ *
+ *  Structure representing Request Update response
+ */
+struct request_update_resp {
+	uint8_t completion_code;
+	uint16_t fd_meta_data_len;
+	uint8_t fd_pkg_data;
+} __attribute__((packed));
 /** @brief Decode a GetFirmwareParameters component response
  *
  *  Note:
@@ -189,6 +198,27 @@ int encode_request_update_req(const uint8_t instance_id, struct pldm_msg *msg,
 			      const size_t payload_length,
 			      const struct request_update_req *data,
 			      struct variable_field *comp_img_set_ver_str);
+/** @brief Decode a RequestUpdate response message
+ *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] fd_meta_data_len - Pointer which holds length of FD meta data
+ *  @param[out] fd_pkg_data - Pointer which holds package data
+ * information
+ *  @return pldm_completion_codes
+ */
+int decode_request_update_resp(const struct pldm_msg *msg,
+			       const size_t payload_length,
+			       uint8_t *completion_code,
+			       uint16_t *fd_meta_data_len,
+			       uint8_t *fd_pkg_data);
 #ifdef __cplusplus
 }
 #endif
