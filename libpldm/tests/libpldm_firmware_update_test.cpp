@@ -1641,3 +1641,117 @@ TEST(PassComponentTable, testBadEncodeRequest)
         &inReq, &inCompVerStr);
     EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
 }
+
+TEST(PassComponentTable, testGoodDecodeResponse)
+{
+    uint8_t completionCode = PLDM_ERROR;
+    uint8_t compResp = PLDM_COMP_CAN_BE_UPDATEABLE;
+    uint8_t compRespCode = COMP_COMPARISON_STAMP_IDENTICAL;
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_pass_component_table_resp)>
+        responseMsg{};
+    struct pldm_pass_component_table_resp* inResp =
+        reinterpret_cast<struct pldm_pass_component_table_resp*>(
+            responseMsg.data() + hdrSize);
+    inResp->completion_code = PLDM_SUCCESS;
+    inResp->comp_resp = 0;
+    inResp->comp_resp_code = 1;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(compResp, inResp->comp_resp);
+    EXPECT_EQ(compRespCode, inResp->comp_resp_code);
+}
+
+TEST(PassComponentTable, testBadDecodeResponse)
+{
+    uint8_t completionCode = PLDM_ERROR;
+    uint8_t compResp = PLDM_COMP_CAN_BE_UPDATEABLE;
+    uint8_t compRespCode = INVALID_COMP_COMPARISON_STAMP;
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_pass_component_table_resp)>
+        responseMsg{};
+    struct pldm_pass_component_table_resp* inResp =
+        reinterpret_cast<struct pldm_pass_component_table_resp*>(
+            responseMsg.data() + hdrSize);
+    inResp->completion_code = PLDM_SUCCESS;
+    inResp->comp_resp = 1;
+    inResp->comp_resp_code = 3;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_pass_component_table_resp(
+        NULL, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pass_component_table_resp(response, 0, &completionCode,
+                                          &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, NULL, &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc =
+        decode_pass_component_table_resp(response, responseMsg.size() - hdrSize,
+                                         &completionCode, NULL, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc =
+        decode_pass_component_table_resp(response, responseMsg.size() - hdrSize,
+                                         &completionCode, &compResp, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_resp = PLDM_COMP_CAN_BE_UPDATEABLE - 1;
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_resp = PLDM_COMP_MAY_BE_UPDATEABLE + 1;
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_resp = 0x09;
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_resp_code = FD_VENDOR_COMP_STATUS_CODE_RANGE_MIN - 1;
+
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_resp_code = FD_VENDOR_COMP_STATUS_CODE_RANGE_MAX + 1;
+
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_resp_code = COMP_CAN_BE_UPDATED - 1;
+
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_resp_code = 0xFF;
+
+    rc = decode_pass_component_table_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, &compResp,
+        &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
