@@ -101,3 +101,76 @@ int encode_get_firmware_parameters_req(const uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+int decode_get_firmware_parameters_comp_img_set_resp(
+    const struct pldm_msg *msg, const size_t payload_length,
+    struct get_firmware_parameters_resp *resp_data,
+    struct variable_field *active_comp_image_set_ver_str,
+    struct variable_field *pending_comp_image_set_ver_str)
+{
+	if (msg == NULL || resp_data == NULL ||
+	    active_comp_image_set_ver_str == NULL ||
+	    pending_comp_image_set_ver_str == NULL) {
+
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	const size_t min_resp_len = sizeof(struct get_firmware_parameters_resp);
+
+	if (payload_length < min_resp_len) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct get_firmware_parameters_resp *response =
+	    (struct get_firmware_parameters_resp *)msg->payload;
+
+	if (PLDM_SUCCESS != response->completion_code) {
+		return response->completion_code;
+	}
+
+	if (response->active_comp_image_set_ver_str_len == 0) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	size_t resp_len = sizeof(struct get_firmware_parameters_resp) +
+			  response->active_comp_image_set_ver_str_len +
+			  response->pending_comp_image_set_ver_str_len;
+
+	if (payload_length < resp_len) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	resp_data->capabilities_during_update =
+	    htole32(response->capabilities_during_update);
+	resp_data->comp_count = htole16(response->comp_count);
+
+	if (resp_data->comp_count == 0) {
+		return PLDM_ERROR;
+	}
+
+	resp_data->active_comp_image_set_ver_str_type =
+	    response->active_comp_image_set_ver_str_type;
+	resp_data->active_comp_image_set_ver_str_len =
+	    response->active_comp_image_set_ver_str_len;
+	resp_data->pending_comp_image_set_ver_str_type =
+	    response->pending_comp_image_set_ver_str_type;
+	resp_data->pending_comp_image_set_ver_str_len =
+	    response->pending_comp_image_set_ver_str_len;
+
+	active_comp_image_set_ver_str->ptr =
+	    msg->payload + sizeof(struct get_firmware_parameters_resp);
+	active_comp_image_set_ver_str->length =
+	    resp_data->active_comp_image_set_ver_str_len;
+
+	if (resp_data->pending_comp_image_set_ver_str_len != 0) {
+		pending_comp_image_set_ver_str->ptr =
+		    msg->payload + sizeof(struct get_firmware_parameters_resp) +
+		    resp_data->active_comp_image_set_ver_str_len;
+		pending_comp_image_set_ver_str->length =
+		    resp_data->pending_comp_image_set_ver_str_len;
+	} else {
+		pending_comp_image_set_ver_str->ptr = NULL;
+		pending_comp_image_set_ver_str->length = 0;
+	}
+
+	return PLDM_SUCCESS;
+}
