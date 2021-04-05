@@ -12,6 +12,8 @@ extern "C" {
 #define PLDM_GET_FIRMWARE_PARAMENTERS 0x02
 /* update commands */
 #define PLDM_REQUEST_UPDATE 0x10
+#define PLDM_PASS_COMPONENT_TABLE 0x13
+
 #define PLDM_FWU_BASELINE_TRANSFER_SIZE 32
 #define MIN_OUTSTANDING_REQ 1
 #define PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES 0
@@ -28,6 +30,47 @@ enum comp_type {
 	COMP_UTF_16 = 3,
 	COMP_UTF_16LE = 4,
 	COMP_UTF_16BE = 5
+};
+
+/** @brief PLDM FWU common values for Component Response Code and Component
+ * Compatibility Response Code
+ */
+enum comp_code {
+	COMP_CAN_BE_UPDATED = 0x00,
+	COMP_COMPARISON_STAMP_IDENTICAL = 0x01,
+	COMP_COMPARISON_STAMP_LOWER = 0x02,
+	INVALID_COMP_COMPARISON_STAMP = 0x03,
+	COMP_CONFLICT = 0x04,
+	COMP_PREREQUISITES = 0x05,
+	COMP_NOT_SUPPORTED = 0x06,
+	COMP_SECURITY_RESTRICTIONS = 0x07,
+	INCOMPLETE_COMP_IMAGE_SET = 0x08,
+	COMP_VER_STR_IDENTICAL = 0x0A,
+	COMP_VER_STR_LOWER = 0x0B,
+	FD_VENDOR_COMP_STATUS_CODE_RANGE_MIN = 0xD0,
+	FD_VENDOR_COMP_STATUS_CODE_RANGE_MAX = 0xEF
+};
+
+/** @brief PLDM FWU codes for Component Response
+ */
+enum comp_resp { COMP_CAN_BE_UPDATEABLE = 0, COMP_MAY_BE_UPDATEABLE = 1 };
+/** @brief PLDM FWU values for Component Classification
+ */
+enum comp_classification {
+	COMP_UNKNOWN = 0x0000,
+	COMP_OTHER = 0x0001,
+	COMP_DRIVER = 0x0002,
+	COMP_CONFIGURATION_SOFTWARE = 0x0003,
+	COMP_APPLICATION_SOFTWARE = 0x0004,
+	COMP_INSTRUMENTATION = 0x0005,
+	COMP_FIRMWARE_OR_BIOS = 0x0006,
+	COMP_DIAGNOSTIC_SOFTWARE = 0x0007,
+	COMP_OPERATING_SYSTEM = 0x0008,
+	COMP_MIDDLEWARE = 0x0009,
+	COMP_FIRMWARE = 0x000A,
+	COMP_BIOS_OR_FCODE = 0x000B,
+	COMP_SUPPORT_OR_SERVICEPACK = 0x000C,
+	COMP_SOFTWARE_BUNDLE = 0x000D
 };
 /** @struct query_device_identifiers_resp
  *
@@ -90,6 +133,19 @@ struct request_update_resp {
 	uint8_t completion_code;
 	uint16_t fd_meta_data_len;
 	uint8_t fd_pkg_data;
+} __attribute__((packed));
+/* @struct pass_component_table_req
+ *
+ *  Structure representing Pass Component Table Request
+ */
+struct pass_component_table_req {
+	uint8_t transfer_flag;
+	uint16_t comp_classification;
+	uint16_t comp_identifier;
+	uint8_t comp_classification_index;
+	uint32_t comp_comparison_stamp;
+	uint8_t comp_ver_str_type;
+	uint8_t comp_ver_str_len;
 } __attribute__((packed));
 /** @brief Decode a GetFirmwareParameters component response
  *
@@ -219,6 +275,23 @@ int decode_request_update_resp(const struct pldm_msg *msg,
 			       uint8_t *completion_code,
 			       uint16_t *fd_meta_data_len,
 			       uint8_t *fd_pkg_data);
+/** @brief Create a PLDM request message for PassComponentTable
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] data - Pointer for PassComponentTable Request
+ *  @param[in] comp_ver_str - Pointer to component version string
+ * information
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_pass_component_table_req(const uint8_t instance_id,
+				    struct pldm_msg *msg,
+				    const size_t payload_length,
+				    const struct pass_component_table_req *data,
+				    struct variable_field *comp_ver_str);
 #ifdef __cplusplus
 }
 #endif

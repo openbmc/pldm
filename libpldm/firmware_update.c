@@ -365,3 +365,98 @@ int decode_request_update_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+/** @brief Check whether Component Classification is valid
+ *
+ *  @return true if is from below mentioned values, false if not
+ */
+static bool check_comp_classification_valid(const uint16_t comp_classification)
+{
+	switch (comp_classification) {
+	case COMP_UNKNOWN:
+	case COMP_OTHER:
+	case COMP_DRIVER:
+	case COMP_CONFIGURATION_SOFTWARE:
+	case COMP_APPLICATION_SOFTWARE:
+	case COMP_INSTRUMENTATION:
+	case COMP_FIRMWARE_OR_BIOS:
+	case COMP_DIAGNOSTIC_SOFTWARE:
+	case COMP_OPERATING_SYSTEM:
+	case COMP_MIDDLEWARE:
+	case COMP_FIRMWARE:
+	case COMP_BIOS_OR_FCODE:
+	case COMP_SUPPORT_OR_SERVICEPACK:
+	case COMP_SOFTWARE_BUNDLE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+int encode_pass_component_table_req(const uint8_t instance_id,
+				    struct pldm_msg *msg,
+				    const size_t payload_length,
+				    const struct pass_component_table_req *data,
+				    struct variable_field *comp_ver_str)
+{
+	if (msg == NULL || data == NULL || comp_ver_str == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length < sizeof(struct pass_component_table_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	int rc =
+	    encode_pldm_header(instance_id, PLDM_FWU, PLDM_PASS_COMPONENT_TABLE,
+			       PLDM_REQUEST, msg);
+
+	if (PLDM_SUCCESS != rc) {
+		return rc;
+	}
+
+	struct pass_component_table_req *request =
+	    (struct pass_component_table_req *)msg->payload;
+
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!check_transfer_flag_valid(data->transfer_flag)) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+
+	request->transfer_flag = data->transfer_flag;
+
+	if (!check_comp_classification_valid(
+		htole16(data->comp_classification))) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	request->comp_classification = htole16(data->comp_classification);
+	request->comp_identifier = htole16(data->comp_identifier);
+	request->comp_classification_index = data->comp_classification_index;
+	request->comp_comparison_stamp = htole32(data->comp_comparison_stamp);
+
+	if (!check_comp_ver_str_type_valid(data->comp_ver_str_type)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	request->comp_ver_str_type = data->comp_ver_str_type;
+	request->comp_ver_str_len = data->comp_ver_str_len;
+
+	if (payload_length !=
+	    sizeof(struct pass_component_table_req) + comp_ver_str->length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if (comp_ver_str->ptr == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	memcpy(msg->payload + sizeof(struct pass_component_table_req),
+	       comp_ver_str->ptr, comp_ver_str->length);
+
+	return PLDM_SUCCESS;
+}
