@@ -23,7 +23,8 @@ extern "C" {
 enum pldm_firmware_update_commands {
 	PLDM_QUERY_DEVICE_IDENTIFIERS = 0x01,
 	PLDM_GET_FIRMWARE_PARAMETERS = 0x02,
-	PLDM_REQUEST_UPDATE = 0x10
+	PLDM_REQUEST_UPDATE = 0x10,
+	PLDM_PASS_COMPONENT_TABLE = 0x13
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -105,6 +106,27 @@ enum pldm_firmware_update_descriptor_types_length {
 	PLDM_FWUP_ASCII_MODEL_NUMBER_SHORT_STRING_LENGTH = 10,
 	PLDM_FWUP_SCSI_PRODUCT_ID_LENGTH = 16,
 	PLDM_FWUP_UBM_CONTROLLER_DEVICE_CODE_LENGTH = 4
+};
+
+/** @brief ComponentClassification values defined in firmware update
+ *         specification
+ */
+enum pldm_component_classification_values {
+	PLDM_COMP_UNKNOWN = 0x0000,
+	PLDM_COMP_OTHER = 0x0001,
+	PLDM_COMP_DRIVER = 0x0002,
+	PLDM_COMP_CONFIGURATION_SOFTWARE = 0x0003,
+	PLDM_COMP_APPLICATION_SOFTWARE = 0x0004,
+	PLDM_COMP_INSTRUMENTATION = 0x0005,
+	PLDM_COMP_FIRMWARE_OR_BIOS = 0x0006,
+	PLDM_COMP_DIAGNOSTIC_SOFTWARE = 0x0007,
+	PLDM_COMP_OPERATING_SYSTEM = 0x0008,
+	PLDM_COMP_MIDDLEWARE = 0x0009,
+	PLDM_COMP_FIRMWARE = 0x000A,
+	PLDM_COMP_BIOS_OR_FCODE = 0x000B,
+	PLDM_COMP_SUPPORT_OR_SERVICEPACK = 0x000C,
+	PLDM_COMP_SOFTWARE_BUNDLE = 0x000D,
+	PLDM_COMP_DOWNSTREAM_DEVICE = 0xFFFF
 };
 
 /** @struct pldm_package_header_information
@@ -236,6 +258,20 @@ struct pldm_request_update_resp {
 	uint8_t completion_code;
 	uint16_t fd_meta_data_len;
 	uint8_t fd_will_send_pkg_data;
+} __attribute__((packed));
+
+/** @struct pldm_pass_component_table_req
+ *
+ *  Structure representing PassComponentTable request
+ */
+struct pldm_pass_component_table_req {
+	uint8_t transfer_flag;
+	uint16_t comp_classification;
+	uint16_t comp_identifier;
+	uint8_t comp_classification_index;
+	uint32_t comp_comparison_stamp;
+	uint8_t comp_ver_str_type;
+	uint8_t comp_ver_str_len;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -458,6 +494,33 @@ int decode_request_update_resp(const struct pldm_msg *msg,
 			       size_t payload_length, uint8_t *completion_code,
 			       uint16_t *fd_meta_data_len,
 			       uint8_t *fd_will_send_pkg_data);
+
+/** @brief Create PLDM request message for PassComponentTable
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] transfer_flag - TransferFlag
+ *  @param[in] comp_classification - ComponentClassification
+ *  @param[in] comp_identifier - ComponentIdentifier
+ *  @param[in] comp_classification_index - ComponentClassificationIndex
+ *  @param[in] comp_comparison_stamp - ComponentComparisonStamp
+ *  @param[in] comp_ver_str_type - ComponentVersionStringType
+ *  @param[in] comp_ver_str_len - ComponentVersionStringLength
+ *  @param[in] comp_ver_str - ComponentVersionString
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *                              information
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_pass_component_table_req(
+    uint8_t instance_id, uint8_t transfer_flag, uint16_t comp_classification,
+    uint16_t comp_identifier, uint8_t comp_classification_index,
+    uint32_t comp_comparison_stamp, uint8_t comp_ver_str_type,
+    uint8_t comp_ver_str_len, const struct variable_field *comp_ver_str,
+    struct pldm_msg *msg, size_t payload_length);
 
 #ifdef __cplusplus
 }

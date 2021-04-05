@@ -1475,3 +1475,111 @@ TEST(RequestUpdate, errorPathDecodeResponse)
         &outFdMetaDataLen, &outFdWillSendPkgData);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(PassComponentTable, goodPathEncodeRequest)
+{
+    constexpr uint8_t instanceId = 1;
+    constexpr uint16_t compIdentifier = 400;
+    constexpr uint8_t compClassificationIndex = 40;
+    constexpr uint32_t compComparisonStamp = 0x12345678;
+    constexpr std::string_view compVerStr = "0penBmcv1.1";
+    constexpr uint8_t compVerStrLen = static_cast<uint8_t>(compVerStr.size());
+    variable_field compVerStrInfo{};
+    compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVerStr.data());
+    compVerStrInfo.length = compVerStrLen;
+
+    std::array<uint8_t,
+               hdrSize + sizeof(pldm_pass_component_table_req) + compVerStrLen>
+        request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
+        compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    std::array<uint8_t,
+               hdrSize + sizeof(pldm_pass_component_table_req) + compVerStrLen>
+        outRequest{0x81, 0x05, 0x13, 0x05, 0x0A, 0x00, 0x90, 0x01, 0x28,
+                   0x78, 0x56, 0x34, 0x12, 0x01, 0x0B, 0x30, 0x70, 0x65,
+                   0x6E, 0x42, 0x6D, 0x63, 0x76, 0x31, 0x2E, 0x31};
+    EXPECT_EQ(request, outRequest);
+}
+
+TEST(PassComponentTable, errorPathEncodeRequest)
+{
+    constexpr uint8_t instanceId = 1;
+    constexpr uint16_t compIdentifier = 400;
+    constexpr uint8_t compClassificationIndex = 40;
+    constexpr uint32_t compComparisonStamp = 0x12345678;
+    constexpr std::string_view compVerStr = "0penBmcv1.1";
+    constexpr uint8_t compVerStrLen = static_cast<uint8_t>(compVerStr.size());
+    variable_field compVerStrInfo{};
+    compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVerStr.data());
+    compVerStrInfo.length = compVerStrLen;
+
+    std::array<uint8_t,
+               hdrSize + sizeof(pldm_pass_component_table_req) + compVerStrLen>
+        request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
+        compVerStrLen, nullptr, requestMsg,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    compVerStrInfo.ptr = nullptr;
+    rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
+        compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVerStr.data());
+
+    rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
+        compVerStrLen, &compVerStrInfo, nullptr,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
+        compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_pass_component_table_req));
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII, 0,
+        &compVerStrInfo, requestMsg,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
+        compVerStrLen - 1, &compVerStrInfo, requestMsg,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END + 1, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
+        compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+
+    rc = encode_pass_component_table_req(
+        instanceId, PLDM_START_AND_END, PLDM_COMP_FIRMWARE, compIdentifier,
+        compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_UNKNOWN,
+        compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_pass_component_table_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
