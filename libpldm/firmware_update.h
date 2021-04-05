@@ -55,6 +55,7 @@ enum pldm_comp_code {
 	COMP_NOT_SUPPORTED = 0x06,
 	COMP_SECURITY_RESTRICTIONS = 0x07,
 	INCOMPLETE_COMP_IMAGE_SET = 0x08,
+	FD_DOWN_STREAM_DEVICE_NOT_UPDATE_SUBSEQUENTLY = 0x9,
 	COMP_VER_STR_IDENTICAL = 0x0A,
 	COMP_VER_STR_LOWER = 0x0B,
 	FD_VENDOR_COMP_STATUS_CODE_RANGE_MIN = 0xD0,
@@ -63,7 +64,11 @@ enum pldm_comp_code {
 
 /** @brief PLDM FWU codes for Component Response
  */
-enum comp_resp { COMP_CAN_BE_UPDATEABLE = 0, COMP_MAY_BE_UPDATEABLE = 1 };
+enum comp_resp {
+	PLDM_COMP_CAN_BE_UPDATEABLE = 0,
+	PLDM_COMP_MAY_BE_UPDATEABLE = 1
+};
+
 /** @brief PLDM FWU values for Component Classification
  */
 enum comp_classification {
@@ -163,6 +168,16 @@ struct pldm_pass_component_table_req {
 	uint32_t comp_comparison_stamp;
 	uint8_t comp_ver_str_type;
 	uint8_t comp_ver_str_len;
+} __attribute__((packed));
+
+/** @struct pass_component_table_resp
+ *
+ *  Structure representing Pass Component Table response
+ */
+struct pldm_pass_component_table_resp {
+	uint8_t completion_code;
+	uint8_t comp_resp;
+	uint8_t comp_resp_code;
 } __attribute__((packed));
 
 /** @brief Create a PLDM request message for QueryDeviceIdentifiers
@@ -300,6 +315,22 @@ int encode_pass_component_table_req(
     const size_t payload_length,
     const struct pldm_pass_component_table_req *data,
     struct variable_field *comp_ver_str);
+
+/** @brief Decode a PassComponentTable response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] comp_resp - Pointer to component response
+ *  @param[out] comp_resp_code - Pointer to component response code
+ * information
+ *  @return pldm_completion_codes
+ */
+int decode_pass_component_table_resp(const struct pldm_msg *msg,
+				     const size_t payload_length,
+				     uint8_t *completion_code,
+				     uint8_t *comp_resp,
+				     uint8_t *comp_resp_code);
 
 #ifdef __cplusplus
 }
