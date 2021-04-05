@@ -26,6 +26,31 @@ enum pldm_firmware_update_commands {
 	PLDM_REQUEST_UPDATE = 0x10
 };
 
+/** @brief PLDM Firmware update completion codes
+ */
+enum pldm_firmware_update_completion_codes {
+	PLDM_FWUP_NOT_IN_UPDATE_MODE = 0x80,
+	PLDM_FWUP_ALREADY_IN_UPDATE_MODE = 0x81,
+	PLDM_FWUP_DATA_OUT_OF_RANGE = 0x82,
+	PLDM_FWUP_INVALID_TRANSFER_LENGTH = 0x83,
+	PLDM_FWUP_INVALID_STATE_FOR_COMMAND = 0x84,
+	PLDM_FWUP_INCOMPLETE_UPDATE = 0x85,
+	PLDM_FWUP_BUSY_IN_BACKGROUND = 0x86,
+	PLDM_FWUP_CANCEL_PENDING = 0x87,
+	PLDM_FWUP_COMMAND_NOT_EXPECTED = 0x87,
+	PLDM_FWUP_RETRY_REQUEST_FW_DATA = 0x89,
+	PLDM_FWUP_UNABLE_TO_INITIATE_UPDATE = 0x8A,
+	PLDM_FWUP_ACTIVATION_NOT_REQUIRED = 0x8B,
+	PLDM_FWUP_SELF_CONTAINED_ACTIVATION_NOT_PERMITTED = 0x8C,
+	PLDM_FWUP_NO_DEVICE_METADATA = 0x8D,
+	PLDM_FWUP_RETRY_REQUEST_UPDATE = 0x8E,
+	PLDM_FWUP_NO_PACKAGE_DATA = 0x8F,
+	PLDM_FWUP_INVALID_TRANSFER_HANDLE = 0x90,
+	PLDM_FWUP_INVALID_TRANSFER_OPERATION_FLAG = 0x91,
+	PLDM_FWUP_ACTIVATE_PENDING_IMAGE_NOT_PERMITTED = 0x92,
+	PLDM_FWUP_PACKAGE_DATA_ERROR = 0x93
+};
+
 /** @brief String type values defined in the PLDM firmware update specification
  */
 enum pldm_firmware_update_string_type {
@@ -201,6 +226,16 @@ struct pldm_request_update_req {
 	uint16_t pkg_data_len;
 	uint8_t comp_image_set_ver_str_type;
 	uint8_t comp_image_set_ver_str_len;
+} __attribute__((packed));
+
+/** @struct pldm_request_update_resp
+ *
+ *  Structure representing Request Update response
+ */
+struct pldm_request_update_resp {
+	uint8_t completion_code;
+	uint16_t fd_meta_data_len;
+	uint8_t fd_will_send_pkg_data;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -408,6 +443,22 @@ int encode_request_update_req(uint8_t instance_id, uint32_t max_transfer_size,
 			      uint8_t comp_image_set_ver_str_len,
 			      const struct variable_field *comp_img_set_ver_str,
 			      struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Decode a RequestUpdate response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to hold the completion code
+ *  @param[out] fd_meta_data_len - Pointer to hold the length of FD metadata
+ *  @param[out] fd_will_send_pkg_data - Pointer to hold information whether FD
+ *                                      will send GetPackageData command
+ *  @return pldm_completion_codes
+ */
+int decode_request_update_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint16_t *fd_meta_data_len,
+			       uint8_t *fd_will_send_pkg_data);
+
 #ifdef __cplusplus
 }
 #endif
