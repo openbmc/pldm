@@ -1583,3 +1583,124 @@ TEST(PassComponentTable, errorPathEncodeRequest)
         sizeof(pldm_pass_component_table_req) + compVerStrLen);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(PassComponentTable, goodPathDecodeResponse)
+{
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_pass_component_table_resp)>
+        passCompTableResponse1{0x00, 0x00, 0x00, 0x00, 0x00, 0x01};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(passCompTableResponse1.data());
+
+    uint8_t completionCode = 0;
+    uint8_t compResp = 0;
+    uint8_t compRespCode = 0;
+
+    auto rc = decode_pass_component_table_resp(
+        responseMsg1, sizeof(pldm_pass_component_table_resp), &completionCode,
+        &compResp, &compRespCode);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(compResp, PLDM_CR_COMP_CAN_BE_UPDATED);
+    EXPECT_EQ(compRespCode, PLDM_CRC_COMP_COMPARISON_STAMP_IDENTICAL);
+
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_pass_component_table_resp)>
+        passCompTableResponse2{0x00, 0x00, 0x00, 0x00, 0x00, 0xD0};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(passCompTableResponse2.data());
+    rc = decode_pass_component_table_resp(
+        responseMsg2, sizeof(pldm_pass_component_table_resp), &completionCode,
+        &compResp, &compRespCode);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(compResp, PLDM_CR_COMP_CAN_BE_UPDATED);
+    EXPECT_EQ(compRespCode, PLDM_CRC_VENDOR_COMP_RESP_CODE_RANGE_MIN);
+
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_pass_component_table_resp)>
+        passCompTableResponse3{0x00, 0x00, 0x00, 0x80};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(passCompTableResponse3.data());
+
+    rc = decode_pass_component_table_resp(
+        responseMsg3, sizeof(pldm_pass_component_table_resp), &completionCode,
+        &compResp, &compRespCode);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_FWUP_NOT_IN_UPDATE_MODE);
+}
+
+TEST(PassComponentTable, errorPathDecodeResponse)
+{
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_pass_component_table_resp) - 1>
+        passCompTableResponse1{0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(passCompTableResponse1.data());
+
+    uint8_t completionCode = 0;
+    uint8_t compResp = 0;
+    uint8_t compRespCode = 0;
+
+    auto rc = decode_pass_component_table_resp(
+        nullptr, sizeof(pldm_pass_component_table_resp) - 1, &completionCode,
+        &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pass_component_table_resp(
+        responseMsg1, sizeof(pldm_pass_component_table_resp) - 1, nullptr,
+        &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pass_component_table_resp(
+        responseMsg1, sizeof(pldm_pass_component_table_resp) - 1,
+        &completionCode, nullptr, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pass_component_table_resp(
+        responseMsg1, sizeof(pldm_pass_component_table_resp) - 1,
+        &completionCode, &compResp, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pass_component_table_resp(responseMsg1, 0, &completionCode,
+                                          &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pass_component_table_resp(
+        responseMsg1, sizeof(pldm_pass_component_table_resp) - 1,
+        &completionCode, &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_pass_component_table_resp)>
+        passCompTableResponse2{0x00, 0x00, 0x00, 0x00, 0x02, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(passCompTableResponse2.data());
+    rc = decode_pass_component_table_resp(
+        responseMsg2, sizeof(pldm_pass_component_table_resp), &completionCode,
+        &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_pass_component_table_resp)>
+        passCompTableResponse3{0x00, 0x00, 0x00, 0x00, 0x00, 0x0C};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(passCompTableResponse3.data());
+    rc = decode_pass_component_table_resp(
+        responseMsg3, sizeof(pldm_pass_component_table_resp), &completionCode,
+        &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_pass_component_table_resp)>
+        passCompTableResponse4{0x00, 0x00, 0x00, 0x00, 0x00, 0xF0};
+    auto responseMsg4 =
+        reinterpret_cast<const pldm_msg*>(passCompTableResponse4.data());
+    rc = decode_pass_component_table_resp(
+        responseMsg4, sizeof(pldm_pass_component_table_resp), &completionCode,
+        &compResp, &compRespCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
