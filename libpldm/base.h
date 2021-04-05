@@ -18,6 +18,7 @@ enum pldm_supported_types {
 	PLDM_PLATFORM = 0x02,
 	PLDM_BIOS = 0x03,
 	PLDM_FRU = 0x04,
+	PLDM_FWUP = 0x05,
 	PLDM_OEM = 0x3F,
 };
 
@@ -480,6 +481,18 @@ int encode_get_tid_resp(uint8_t instance_id, uint8_t completion_code,
 int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 			uint8_t cc, struct pldm_msg *msg);
 
+/** @brief Create a PLDM request message which contains empty payload
+ *
+ *	@param[in] instance_id - Message's instance id
+ *	@param[in] pldm_type - PLDM Type
+ *	@param[in] command - PLDM Command
+ *	@param[in] msg_type - PLDM message type
+ *	@param[out] msg - Message will be written to this
+ *	@return pldm_completion_codes
+ */
+int encode_pldm_header_only(const uint8_t instance_id, const uint8_t pldm_type,
+			    const uint8_t command, const uint8_t msg_type,
+			    struct pldm_msg *msg);
 #ifdef __cplusplus
 }
 #endif
