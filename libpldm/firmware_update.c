@@ -26,3 +26,54 @@ int encode_query_device_identifiers_req(const uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+int decode_query_device_identifiers_resp(const struct pldm_msg *msg,
+					 const size_t payload_length,
+					 uint8_t *completion_code,
+					 uint32_t *device_identifiers_len,
+					 uint8_t *descriptor_count,
+					 struct variable_field *descriptor_data)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    device_identifiers_len == NULL || descriptor_count == NULL ||
+	    descriptor_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return *completion_code;
+	}
+
+	if (payload_length < sizeof(struct query_device_identifiers_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct query_device_identifiers_resp *response =
+	    (struct query_device_identifiers_resp *)msg->payload;
+	*device_identifiers_len = htole32(response->device_identifiers_len);
+
+	if (*device_identifiers_len < PLDM_FWU_MIN_DESCRIPTOR_IDENTIFIERS_LEN) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	size_t resp_len = sizeof(struct query_device_identifiers_resp);
+
+	if (payload_length != resp_len + *device_identifiers_len) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	*descriptor_count = response->descriptor_count;
+
+	if (*descriptor_count == 0) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (descriptor_data->length < *device_identifiers_len) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	memset((void *)descriptor_data->ptr, 0, descriptor_data->length);
+	memcpy((void *)descriptor_data->ptr, msg->payload + resp_len,
+	       *device_identifiers_len);
+
+	return PLDM_SUCCESS;
+}
