@@ -612,3 +612,62 @@ int decode_get_firmware_parameters_resp_comp_entry(
 	}
 	return PLDM_SUCCESS;
 }
+
+int encode_request_update_req(uint8_t instance_id, uint32_t max_transfer_size,
+			      uint16_t num_of_comp,
+			      uint8_t max_outstanding_transfer_req,
+			      uint16_t pkg_data_len,
+			      uint8_t comp_image_set_ver_str_type,
+			      uint8_t comp_image_set_ver_str_len,
+			      const struct variable_field *comp_img_set_ver_str,
+			      struct pldm_msg *msg, size_t payload_length)
+{
+	if (comp_img_set_ver_str == NULL || comp_img_set_ver_str->ptr == NULL ||
+	    msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_request_update_req) +
+				  comp_img_set_ver_str->length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if ((comp_image_set_ver_str_len == 0) ||
+	    (comp_image_set_ver_str_len != comp_img_set_ver_str->length)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if ((max_transfer_size < PLDM_FWUP_BASELINE_TRANSFER_SIZE) ||
+	    (max_outstanding_transfer_req < PLDM_FWUP_MIN_OUTSTANDING_REQ)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!is_string_type_valid(comp_image_set_ver_str_type)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_REQUEST_UPDATE;
+	int rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	struct pldm_request_update_req *request =
+	    (struct pldm_request_update_req *)msg->payload;
+
+	request->max_transfer_size = htole32(max_transfer_size);
+	request->num_of_comp = htole16(num_of_comp);
+	request->max_outstanding_transfer_req = max_outstanding_transfer_req;
+	request->pkg_data_len = htole16(pkg_data_len);
+	request->comp_image_set_ver_str_type = comp_image_set_ver_str_type;
+	request->comp_image_set_ver_str_len = comp_image_set_ver_str_len;
+
+	memcpy(msg->payload + sizeof(struct pldm_request_update_req),
+	       comp_img_set_ver_str->ptr, comp_img_set_ver_str->length);
+
+	return PLDM_SUCCESS;
+}
