@@ -15,12 +15,15 @@ extern "C" {
  */
 #define PLDM_FWUP_DEVICE_DESCRIPTOR_MIN_LEN 5
 #define PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES 0
+#define PLDM_FWUP_BASELINE_TRANSFER_SIZE 32
+#define PLDM_FWUP_MIN_OUTSTANDING_REQ 1
 
 /** @brief PLDM Firmware update commands
  */
 enum pldm_firmware_update_commands {
 	PLDM_QUERY_DEVICE_IDENTIFIERS = 0x01,
-	PLDM_GET_FIRMWARE_PARAMETERS = 0x02
+	PLDM_GET_FIRMWARE_PARAMETERS = 0x02,
+	PLDM_REQUEST_UPDATE = 0x10
 };
 
 /** @brief String type values defined in the PLDM firmware update specification
@@ -185,6 +188,19 @@ struct pldm_component_parameter_entry {
 	uint8_t pending_comp_release_date[8];
 	bitfield16_t comp_activation_methods;
 	bitfield32_t capabilities_during_update;
+} __attribute__((packed));
+
+/** @struct pldm_request_update_req
+ *
+ *  Structure representing fixed part of Request Update request
+ */
+struct pldm_request_update_req {
+	uint32_t max_transfer_size;
+	uint16_t num_of_comp;
+	uint8_t max_outstanding_transfer_req;
+	uint16_t pkg_data_len;
+	uint8_t comp_image_set_ver_str_type;
+	uint8_t comp_image_set_ver_str_len;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -357,6 +373,39 @@ int decode_get_firmware_parameters_resp_comp_entry(
     struct variable_field *active_comp_ver_str,
     struct variable_field *pending_comp_ver_str);
 
+/** @brief Create a PLDM request message for RequestUpdate
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] max_transfer_size - Maximum size of the variable payload allowed
+ * to be requested via RequestFirmwareData command
+ *  @param[in] num_of_comp - Total number of components that will be passed to
+ * the FD during the update
+ *  @param[in] max_outstanding_transfer_req - Total number of outstanding
+ * RequestFirmwareData commands that can be sent by the FD
+ *  @param[in] pkg_data_len - Value of the FirmwareDevicePackageDataLength field
+ * present in firmware package header
+ *  @param[in] comp_image_set_ver_str_type - The type of string used in the
+ * ComponentImageSetVersionString
+ *  @param[in] comp_image_set_ver_str_len - The length of the
+ * ComponentImageSetVersionString
+ *  @param[in] comp_img_set_ver_str - Component Image Set version information,
+ * up to 255 bytes
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in,out] msg - Message will be written to this
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_request_update_req(uint8_t instance_id, uint32_t max_transfer_size,
+			      uint16_t num_of_comp,
+			      uint8_t max_outstanding_transfer_req,
+			      uint16_t pkg_data_len,
+			      uint8_t comp_image_set_ver_str_type,
+			      uint8_t comp_image_set_ver_str_len,
+			      struct variable_field *comp_img_set_ver_str,
+			      size_t payload_length, struct pldm_msg *msg);
 #ifdef __cplusplus
 }
 #endif
