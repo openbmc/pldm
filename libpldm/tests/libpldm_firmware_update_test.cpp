@@ -62,3 +62,18 @@ TEST(QueryDeviceIdentifiers, goodPathDecodeResponse)
                              sizeof(struct pldm_query_device_identifiers_resp),
                          responseMsg.end()));
 }
+
+TEST(GetFirmwareParameters, goodPathEncodeRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr)> requestMsg{};
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    uint8_t instanceId = 0x01;
+
+    auto rc = encode_get_firmware_parameters_req(
+        instanceId, PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES, requestPtr);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(requestPtr->hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(requestPtr->hdr.instance_id, instanceId);
+    EXPECT_EQ(requestPtr->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(requestPtr->hdr.command, PLDM_GET_FIRMWARE_PARAMETERS);
+}
