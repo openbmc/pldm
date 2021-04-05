@@ -73,3 +73,72 @@ TEST(GetFirmwareParameters, testGoodEncodeRequest)
     EXPECT_EQ(requestPtr->hdr.type, PLDM_FWUP);
     EXPECT_EQ(requestPtr->hdr.command, PLDM_GET_FIRMWARE_PARAMETERS);
 }
+
+TEST(GetFWParams, testGoodDecodeCompImgSetResponse)
+{
+    // ActiveCompImageSetVerStrLen is not fixed here taking it as 8
+    constexpr uint8_t activeCompImageSetVerStrLen = 8;
+    // PendingCompImageSetVerStrLen is not fixed here taking it as 8
+    constexpr uint8_t pendingCompImageSetVerStrLen = 8;
+    uint8_t completionCode = PLDM_SUCCESS;
+    constexpr size_t payloadLen = sizeof(struct get_firmware_parameters_resp) +
+                                  activeCompImageSetVerStrLen +
+                                  pendingCompImageSetVerStrLen;
+
+    std::array<uint8_t, hdrSize + payloadLen> response{};
+    struct get_firmware_parameters_resp* inResp =
+        reinterpret_cast<struct get_firmware_parameters_resp*>(response.data() +
+                                                               hdrSize);
+    inResp->completion_code = PLDM_SUCCESS;
+    inResp->capabilities_during_update.value = 0x0F;
+    inResp->comp_count = 1;
+    inResp->active_comp_image_set_ver_str_type = 1;
+    inResp->active_comp_image_set_ver_str_len = activeCompImageSetVerStrLen;
+    inResp->pending_comp_image_set_ver_str_type = 1;
+    inResp->pending_comp_image_set_ver_str_len = pendingCompImageSetVerStrLen;
+
+    constexpr uint32_t activeCompImageSetVerStrIndex =
+        hdrSize + sizeof(struct get_firmware_parameters_resp);
+    // filling default values for ActiveComponentImageSetVersionString
+    std::fill_n(response.data() + activeCompImageSetVerStrIndex,
+                activeCompImageSetVerStrLen, 0xFF);
+
+    constexpr uint32_t pendingCompImageSetVerStrIndex =
+        hdrSize + sizeof(struct get_firmware_parameters_resp) +
+        activeCompImageSetVerStrLen;
+    // filling default values for ActiveComponentImageSetVersionString
+    std::fill_n(response.data() + pendingCompImageSetVerStrIndex,
+                pendingCompImageSetVerStrLen, 0xFF);
+
+    auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
+
+    struct get_firmware_parameters_resp outResp;
+    struct variable_field outActiveCompImageSetVerStr;
+    struct variable_field outPendingCompImageSetVerStr;
+
+    auto rc = decode_get_firmware_parameters_comp_img_set_resp(
+        responseMsg, payloadLen, &completionCode, &outResp,
+        &outActiveCompImageSetVerStr, &outPendingCompImageSetVerStr);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(inResp->completion_code, PLDM_SUCCESS);
+
+    EXPECT_EQ(inResp->capabilities_during_update.value,
+              outResp.capabilities_during_update.value);
+    EXPECT_EQ(inResp->comp_count, outResp.comp_count);
+    EXPECT_EQ(inResp->active_comp_image_set_ver_str_type,
+              outResp.active_comp_image_set_ver_str_type);
+    EXPECT_EQ(inResp->active_comp_image_set_ver_str_len,
+              outResp.active_comp_image_set_ver_str_len);
+    EXPECT_EQ(0, memcmp(outActiveCompImageSetVerStr.ptr,
+                        response.data() + activeCompImageSetVerStrIndex,
+                        outActiveCompImageSetVerStr.length));
+
+    EXPECT_EQ(inResp->pending_comp_image_set_ver_str_type,
+              outResp.pending_comp_image_set_ver_str_type);
+    EXPECT_EQ(inResp->pending_comp_image_set_ver_str_len,
+              outResp.pending_comp_image_set_ver_str_len);
+    EXPECT_EQ(0, memcmp(outPendingCompImageSetVerStr.ptr,
+                        response.data() + pendingCompImageSetVerStrIndex,
+                        outPendingCompImageSetVerStr.length));
+}
