@@ -57,9 +57,25 @@ int decode_query_device_identifiers_resp(const struct pldm_msg *msg,
 	if (*descriptor_count == 0) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-
 	*descriptor_data =
 	    (uint8_t *)(msg->payload +
 			sizeof(struct query_device_identifiers_resp));
 	return PLDM_SUCCESS;
+}
+
+int encode_get_firmware_parameters_req(const uint8_t instance_id,
+				       struct pldm_msg *msg,
+				       const size_t payload_length)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	return encode_pldm_header_only(instance_id, PLDM_FWUP,
+				       PLDM_GET_FIRMWARE_PARAMETERS,
+				       PLDM_REQUEST, msg);
 }
