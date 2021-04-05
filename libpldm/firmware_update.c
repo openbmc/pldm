@@ -699,3 +699,59 @@ int decode_request_update_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_pass_component_table_req(
+    uint8_t instance_id, uint8_t transfer_flag, uint16_t comp_classification,
+    uint16_t comp_identifier, uint8_t comp_classification_index,
+    uint32_t comp_comparison_stamp, uint8_t comp_ver_str_type,
+    uint8_t comp_ver_str_len, const struct variable_field *comp_ver_str,
+    struct pldm_msg *msg, size_t payload_length)
+{
+	if (comp_ver_str == NULL || comp_ver_str->ptr == NULL || msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_pass_component_table_req) +
+				  comp_ver_str->length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if ((comp_ver_str_len == 0) ||
+	    (comp_ver_str_len != comp_ver_str->length)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!is_transfer_flag_valid(transfer_flag)) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+
+	if (!is_string_type_valid(comp_ver_str_type)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_PASS_COMPONENT_TABLE;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	struct pldm_pass_component_table_req *request =
+	    (struct pldm_pass_component_table_req *)msg->payload;
+
+	request->transfer_flag = transfer_flag;
+	request->comp_classification = htole16(comp_classification);
+	request->comp_identifier = htole16(comp_identifier);
+	request->comp_classification_index = comp_classification_index;
+	request->comp_comparison_stamp = htole32(comp_comparison_stamp);
+	request->comp_ver_str_type = comp_ver_str_type;
+	request->comp_ver_str_len = comp_ver_str_len;
+
+	memcpy(msg->payload + sizeof(struct pldm_pass_component_table_req),
+	       comp_ver_str->ptr, comp_ver_str->length);
+
+	return PLDM_SUCCESS;
+}
