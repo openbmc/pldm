@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "95f043bb_970cd4e2",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:26:25Z",
+      "side": 1,
+      "message": "We need these mappings too in addition to what is here.\n\n/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu1 --\u003e /xyz/openbmc_project/led/groups/cpu0_identify\n\n/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu3 --\u003e /xyz/openbmc_project/led/groups/cpu1_identify",
+      "revId": "7aaea6b63b433fecd7d1f59047b88df717936581",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87ab6bb8_e065c409",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:26:25Z",
+      "side": 1,
+      "message": "These are not for pcie slots. The Inventory D-Bus object for PCIE slots have not been published yet. Please see Santosh.\n\nInventory D-Bus object for PCIE Slot would be like this : \n\n/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot0",
+      "revId": "7aaea6b63b433fecd7d1f59047b88df717936581",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe5731f3_9b375f21",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:26:25Z",
+      "side": 1,
+      "message": "PCIE slot comment applies until this point.",
+      "revId": "7aaea6b63b433fecd7d1f59047b88df717936581",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c8c818a_cd33b921",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:26:25Z",
+      "side": 1,
+      "message": "Are we going to have a different JSON for Rainier_4u ?.. Because, Rainier_4u would have 2 more Power Supplies.",
+      "revId": "7aaea6b63b433fecd7d1f59047b88df717936581",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa118649_f5bcd869",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:26:25Z",
+      "side": 1,
+      "message": "Same comment given in the other json applies here",
+      "revId": "7aaea6b63b433fecd7d1f59047b88df717936581",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5df7725d_483903d1",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:26:25Z",
+      "side": 1,
+      "message": "Same comment given in the other json applies here.",
+      "revId": "7aaea6b63b433fecd7d1f59047b88df717936581",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
