@@ -3,6 +3,17 @@
 
 #include <stdint.h>
 
+/** @brief PLDM Types
+ */
+enum pldm_supported_types {
+	PLDM_BASE = 0x00,
+	PLDM_PLATFORM = 0x02,
+	PLDM_BIOS = 0x03,
+	PLDM_FRU = 0x04,
+	PLDM_FWU = 0x05,
+	PLDM_OEM = 0x3F,
+};
+
 typedef union {
 	uint8_t byte;
 	struct {

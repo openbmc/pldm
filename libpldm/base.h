@@ -10,16 +10,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "pldm_types.h"
-
-/** @brief PLDM Types
- */
-enum pldm_supported_types {
-	PLDM_BASE = 0x00,
-	PLDM_PLATFORM = 0x02,
-	PLDM_BIOS = 0x03,
-	PLDM_FRU = 0x04,
-	PLDM_OEM = 0x3F,
-};
+#include "utils.h"
 
 /** @brief PLDM Commands
  */
