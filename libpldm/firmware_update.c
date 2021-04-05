@@ -377,6 +377,51 @@ int decode_request_update_resp(const struct pldm_msg *msg,
 	return DECODE_SUCCESS;
 }
 
+/** @brief Check whether Component Response Code is valid
+ *
+ *  @return true if is from below mentioned values, false if not
+ */
+static bool check_resp_code_valid(const uint8_t comp_resp_code)
+{
+	switch (comp_resp_code) {
+	case COMP_CAN_BE_UPDATED:
+	case COMP_COMPARISON_STAMP_IDENTICAL:
+	case COMP_COMPARISON_STAMP_LOWER:
+	case INVALID_COMP_COMPARISON_STAMP:
+	case COMP_CONFLICT:
+	case COMP_PREREQUISITES:
+	case COMP_NOT_SUPPORTED:
+	case COMP_SECURITY_RESTRICTIONS:
+	case INCOMPLETE_COMP_IMAGE_SET:
+	case COMP_VER_STR_IDENTICAL:
+	case COMP_VER_STR_LOWER:
+		return true;
+
+	default:
+		if (comp_resp_code >= FD_VENDOR_COMP_STATUS_CODE_RANGE_MIN &&
+		    comp_resp_code <= FD_VENDOR_COMP_STATUS_CODE_RANGE_MAX) {
+			return true;
+		}
+		return false;
+	}
+}
+
+/** @brief Check whether Component Response is valid
+ *
+ *  @return true if is from below mentioned values, false if not
+ */
+static bool check_comp_resp_valid(const uint8_t comp_resp)
+{
+	switch (comp_resp) {
+	case COMP_CAN_BE_UPDATEABLE:
+	case COMP_MAY_BE_UPDATEABLE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
 /** @brief Check whether Component Classification is valid
  *
  *  @return true if it is from below mentioned values, false if not
@@ -485,4 +530,47 @@ int encode_pass_component_table_req(
 	       comp_ver_str->ptr, comp_ver_str->length);
 
 	return ENCODE_SUCCESS;
+}
+
+int decode_pass_component_table_resp(const struct pldm_msg *msg,
+				     const size_t payload_length,
+				     uint8_t *completion_code,
+				     uint8_t *comp_resp,
+				     uint8_t *comp_resp_code)
+{
+	if (msg == NULL || completion_code == NULL || comp_resp == NULL ||
+	    comp_resp_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+
+	if (*completion_code != PLDM_SUCCESS) {
+		return *completion_code;
+	}
+
+	if (payload_length != sizeof(struct pass_component_table_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pass_component_table_resp *response =
+	    (struct pass_component_table_resp *)msg->payload;
+
+	if (response == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!check_comp_resp_valid(response->comp_resp)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*comp_resp = response->comp_resp;
+
+	if (!check_resp_code_valid(response->comp_resp_code)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*comp_resp_code = response->comp_resp_code;
+
+	return PLDM_SUCCESS;
 }

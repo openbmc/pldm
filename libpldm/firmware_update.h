@@ -166,6 +166,18 @@ struct pldm_pass_component_table_req {
 	uint8_t comp_ver_str_len;
 } __attribute__((packed));
 
+
+/* @struct pass_component_table_resp
+ *
+ *  Structure representing Pass Component Table response
+ */
+struct pass_component_table_resp {
+	uint8_t completion_code;
+	uint8_t comp_resp;
+	uint8_t comp_resp_code;
+} __attribute__((packed));
+
+
 /** @brief Decode a GetFirmwareParameters component response
  *
  *  Note:
@@ -311,11 +323,41 @@ int decode_request_update_resp(const struct pldm_msg *msg,
  *  @note  Caller is responsible for memory alloc and dealloc of param
  *         'msg.payload'
  */
+<<<<<<< HEAD
 int encode_pass_component_table_req(
     const uint8_t instance_id, struct pldm_msg *msg,
     const size_t payload_length,
     const struct pldm_pass_component_table_req *data,
     struct variable_field *comp_ver_str);
+=======
+int encode_pass_component_table_req(const uint8_t instance_id,
+				    struct pldm_msg *msg,
+				    const size_t payload_length,
+				    const struct pass_component_table_req *data,
+				    struct variable_field *comp_ver_str);
+/** @brief Decode a PassComponentTable response message
+ *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] comp_resp - Pointer to component response
+ *  @param[out] comp_resp_code - Pointer to component response code
+ * information
+ *  @return pldm_completion_codes
+ */
+int decode_pass_component_table_resp(const struct pldm_msg *msg,
+				     const size_t payload_length,
+				     uint8_t *completion_code,
+				     uint8_t *comp_resp,
+				     uint8_t *comp_resp_code);
+
+>>>>>>> f49f2e2... libpldm: Added decode API for PassComponentTable cmd
 #ifdef __cplusplus
 }
 #endif
