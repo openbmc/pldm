@@ -1,5 +1,5 @@
 #include "utils.h"
-
+#include "base.h"
 #include <stdio.h>
 
 /** CRC32 code derived from work by Gary S. Brown.
@@ -176,6 +176,19 @@ uint32_t dec2bcd32(uint32_t dec)
 	return dec2bcd16(dec % 10000) | dec2bcd16(dec / 10000) << 16;
 }
 
+bool check_transfer_flag_valid(uint8_t transfer_flag)
+{
+	switch (transfer_flag) {
+	case PLDM_START:
+	case PLDM_MIDDLE:
+	case PLDM_END:
+	case PLDM_START_AND_END:
+		return true;
+
+	default:
+		return false;
+	}
+}
 bool is_time_legal(uint8_t seconds, uint8_t minutes, uint8_t hours, uint8_t day,
 		   uint8_t month, uint16_t year)
 {

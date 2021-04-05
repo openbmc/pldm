@@ -80,6 +80,13 @@ uint32_t bcd2dec32(uint32_t bcd);
  */
 uint32_t dec2bcd32(uint32_t dec);
 
+/** @brief Check whether transfer flag is valid
+ *
+ *  @param[in] transfer flag
+ *  @return true if transfer flag is valid, false if not
+ */
+bool check_transfer_flag_valid(uint8_t transfer_flag);
+
 /** @brief Check whether the input time is legal
  *
  *  @param[in] seconds. Value range 0~59

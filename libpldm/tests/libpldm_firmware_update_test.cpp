@@ -1471,3 +1471,195 @@ TEST(RequestUpdate, errorPathDecodeResponse)
         &outFdMetaDataLen, &outFdWillSendPkgData);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+TEST(PassComponentTable, testGoodEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    constexpr std::string_view compImgSetVerStr = "0penBmcv1.0";
+    uint8_t compImgSetVerStrLen = static_cast<uint8_t>(compImgSetVerStr.size());
+    variable_field compImgSetVerStrInfo{};
+    compImgSetVerStrInfo.ptr =
+        reinterpret_cast<const uint8_t*>(compImgSetVerStr.data());
+    compImgSetVerStrInfo.length = compImgSetVerStrLen;
+
+    uint8_t transfer_flag = PLDM_START;
+    uint16_t comp_classification = PLDM_COMP_UNKNOWN;
+    uint16_t comp_identifier = 0x00;
+    uint8_t comp_classification_index = 0x00;
+    uint32_t comp_comparison_stamp = 0;
+    uint8_t comp_ver_str_type = PLDM_STR_TYPE_ASCII;
+    uint8_t comp_ver_str_len = compImgSetVerStrLen;
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_pass_component_table_req) +
+                            compImgSetVerStr.size()>
+        outReq;
+
+    auto msg = (struct pldm_msg*)outReq.data();
+
+    auto rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+
+    auto request =
+        (struct pldm_pass_component_table_req*)(outReq.data() + hdrSize);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg->hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(msg->hdr.instance_id, instanceId);
+    EXPECT_EQ(msg->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(msg->hdr.command, PLDM_PASS_COMPONENT_TABLE);
+    EXPECT_EQ(request->transfer_flag, transfer_flag);
+    EXPECT_EQ(le16toh(request->comp_classification), comp_classification);
+    EXPECT_EQ(le16toh(request->comp_identifier), comp_identifier);
+    EXPECT_EQ(request->comp_classification_index, comp_classification_index);
+    EXPECT_EQ(le32toh(request->comp_comparison_stamp), comp_comparison_stamp);
+    EXPECT_EQ(request->comp_ver_str_type, comp_ver_str_type);
+    EXPECT_EQ(request->comp_ver_str_len, comp_ver_str_len);
+    EXPECT_EQ(true,
+              std::equal(compImgSetVerStr.begin(), compImgSetVerStr.end(),
+                         outReq.data() + hdrSize +
+                             sizeof(struct pldm_pass_component_table_req)));
+}
+
+TEST(PassComponentTable, testBadEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    constexpr std::string_view compImgSetVerStr = "0penBmcv1.0";
+    uint8_t compImgSetVerStrLen = static_cast<uint8_t>(compImgSetVerStr.size());
+    variable_field compImgSetVerStrInfo{};
+
+    compImgSetVerStrInfo.ptr =
+        reinterpret_cast<const uint8_t*>(compImgSetVerStr.data());
+    compImgSetVerStrInfo.length = compImgSetVerStrLen;
+
+    uint8_t transfer_flag = PLDM_START;
+    uint16_t comp_classification = PLDM_COMP_UNKNOWN;
+    uint16_t comp_identifier = 0x00;
+    uint8_t comp_classification_index = 0x00;
+    uint32_t comp_comparison_stamp = 0;
+    uint8_t comp_ver_str_type = PLDM_STR_TYPE_UNKNOWN;
+    uint8_t comp_ver_str_len = compImgSetVerStrLen;
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_pass_component_table_req) +
+                            compImgSetVerStr.size()>
+        outReq;
+
+    auto msg = (struct pldm_msg*)outReq.data();
+
+    auto rc = encode_pass_component_table_req(
+        instanceId, 0,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_pass_component_table_req(
+        instanceId, msg, 0, transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    transfer_flag = PLDM_START;
+    compImgSetVerStrInfo.ptr = NULL;
+    compImgSetVerStrInfo.length = 0;
+
+    rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    transfer_flag = PLDM_START_AND_END;
+    comp_classification = PLDM_COMP_SOFTWARE_BUNDLE + 1;
+    comp_identifier = 0x00;
+    comp_classification_index = 0x00;
+    comp_comparison_stamp = 0;
+    comp_ver_str_type = PLDM_STR_TYPE_UTF_16BE + 1;
+    comp_ver_str_len = 0;
+
+    rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    transfer_flag = 0x4;
+    comp_classification = 0x000E;
+    comp_identifier = 0x00;
+    comp_classification_index = 0x00;
+    comp_comparison_stamp = 0;
+    comp_ver_str_type = 6;
+    comp_ver_str_len = 0;
+
+    rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    transfer_flag = PLDM_START;
+    comp_classification = PLDM_COMP_UNKNOWN - 1;
+    comp_identifier = 0x00;
+    comp_classification_index = 0x00;
+    comp_comparison_stamp = 0;
+    comp_ver_str_type = PLDM_STR_TYPE_UNKNOWN - 1;
+    comp_ver_str_len = 0;
+
+    rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    comp_ver_str_len = compImgSetVerStrLen;
+    comp_classification = PLDM_COMP_UNKNOWN;
+    comp_ver_str_type = PLDM_STR_TYPE_UNKNOWN;
+    compImgSetVerStrInfo.ptr =
+        reinterpret_cast<const uint8_t*>(compImgSetVerStr.data());
+    compImgSetVerStrInfo.length = compImgSetVerStrLen;
+    transfer_flag = PLDM_START - 1;
+    rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+
+    transfer_flag = PLDM_START_AND_END + 1;
+    rc = encode_pass_component_table_req(
+        instanceId, msg,
+        sizeof(struct pldm_pass_component_table_req) +
+            compImgSetVerStrInfo.length,
+        transfer_flag, comp_classification, comp_identifier,
+        comp_classification_index, comp_comparison_stamp, comp_ver_str_type,
+        comp_ver_str_len, &compImgSetVerStrInfo);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+}
