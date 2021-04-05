@@ -1393,3 +1393,81 @@ TEST(RequestUpdate, errorPathEncodeRequest)
         sizeof(struct pldm_request_update_req) + compImgSetVerStrLen);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(RequestUpdate, goodPathDecodeResponse)
+{
+    constexpr uint16_t fdMetaDataLen = 1024;
+    constexpr uint8_t fdWillSendPkgData = 1;
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_request_update_resp)>
+        requestUpdateResponse1{0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x01};
+
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(requestUpdateResponse1.data());
+    uint8_t outCompletionCode = 0;
+    uint16_t outFdMetaDataLen = 0;
+    uint8_t outFdWillSendPkgData = 0;
+
+    auto rc = decode_request_update_resp(
+        responseMsg1, requestUpdateResponse1.size() - hdrSize,
+        &outCompletionCode, &outFdMetaDataLen, &outFdWillSendPkgData);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outCompletionCode, PLDM_SUCCESS);
+    EXPECT_EQ(outFdMetaDataLen, fdMetaDataLen);
+    EXPECT_EQ(outFdWillSendPkgData, fdWillSendPkgData);
+
+    outCompletionCode = 0;
+    outFdMetaDataLen = 0;
+    outFdWillSendPkgData = 0;
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(outCompletionCode)>
+        requestUpdateResponse2{0x00, 0x00, 0x00, 0x81};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(requestUpdateResponse2.data());
+    rc = decode_request_update_resp(
+        responseMsg2, requestUpdateResponse2.size() - hdrSize,
+        &outCompletionCode, &outFdMetaDataLen, &outFdWillSendPkgData);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outCompletionCode, PLDM_FWUP_ALREADY_IN_UPDATE_MODE);
+}
+
+TEST(RequestUpdate, errorPathDecodeResponse)
+{
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_request_update_resp) - 1>
+        requestUpdateResponse{0x00, 0x00, 0x00, 0x00, 0x00, 0x04};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(requestUpdateResponse.data());
+    uint8_t outCompletionCode = 0;
+    uint16_t outFdMetaDataLen = 0;
+    uint8_t outFdWillSendPkgData = 0;
+
+    auto rc = decode_request_update_resp(
+        nullptr, requestUpdateResponse.size() - hdrSize, &outCompletionCode,
+        &outFdMetaDataLen, &outFdWillSendPkgData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_update_resp(
+        responseMsg, requestUpdateResponse.size() - hdrSize, nullptr,
+        &outFdMetaDataLen, &outFdWillSendPkgData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_update_resp(
+        responseMsg, requestUpdateResponse.size() - hdrSize, &outCompletionCode,
+        nullptr, &outFdWillSendPkgData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_update_resp(
+        responseMsg, requestUpdateResponse.size() - hdrSize, &outCompletionCode,
+        &outFdMetaDataLen, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_update_resp(responseMsg, 0, &outCompletionCode,
+                                    &outFdMetaDataLen, &outFdWillSendPkgData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_update_resp(
+        responseMsg, requestUpdateResponse.size() - hdrSize, &outCompletionCode,
+        &outFdMetaDataLen, &outFdWillSendPkgData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}

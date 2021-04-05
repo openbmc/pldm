@@ -671,3 +671,32 @@ int encode_request_update_req(uint8_t instance_id, uint32_t max_transfer_size,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_request_update_resp(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *completion_code,
+			       uint16_t *fd_meta_data_len,
+			       uint8_t *fd_will_send_pkg_data)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    fd_meta_data_len == NULL || fd_will_send_pkg_data == NULL ||
+	    !payload_length) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (*completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length != sizeof(struct pldm_request_update_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_request_update_resp *response =
+	    (struct pldm_request_update_resp *)msg->payload;
+
+	*fd_meta_data_len = le16toh(response->fd_meta_data_len);
+	*fd_will_send_pkg_data = response->fd_will_send_pkg_data;
+
+	return PLDM_SUCCESS;
+}
