@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 #include "base.h"
+#include "utils.h"
 
 #define PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES 0
 /** @brief Minimum length of device descriptor, 2 bytes for descriptor type,
@@ -28,6 +29,20 @@ struct pldm_query_device_identifiers_resp {
 	uint8_t completion_code;
 	uint32_t device_identifiers_len;
 	uint8_t descriptor_count;
+} __attribute__((packed));
+
+/** @struct pldm_get_firmware_parameters_resp
+ *
+ *  Structure representing get firmware parameters response.
+ */
+struct pldm_get_firmware_parameters_resp {
+	uint8_t completion_code;
+	bitfield32_t capabilities_during_update;
+	uint16_t comp_count;
+	uint8_t active_comp_image_set_ver_str_type;
+	uint8_t active_comp_image_set_ver_str_len;
+	uint8_t pending_comp_image_set_ver_str_type;
+	uint8_t pending_comp_image_set_ver_str_len;
 } __attribute__((packed));
 
 /** @brief Create a PLDM request message for QueryDeviceIdentifiers
@@ -77,6 +92,26 @@ int decode_query_device_identifiers_resp(const struct pldm_msg *msg,
 int encode_get_firmware_parameters_req(uint8_t instance_id,
 				       size_t payload_length,
 				       struct pldm_msg *msg);
+
+/** @brief Decode GetFirmwareParameters response parameters except the
+ *         ComponentParameterTable
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] resp_data - Pointer to get firmware parameters response
+ *  @param[out] active_comp_image_set_ver_str - Pointer to active component
+ * image set version string
+ *  @param[out] pending_comp_image_set_ver_str - Pointer to pending component
+ * image set version string
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_get_firmware_parameters_resp_comp_set_info(
+    const struct pldm_msg *msg, size_t payload_length,
+    struct pldm_get_firmware_parameters_resp *resp_data,
+    struct variable_field *active_comp_image_set_ver_str,
+    struct variable_field *pending_comp_image_set_ver_str);
+
 #ifdef __cplusplus
 }
 #endif
