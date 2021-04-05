@@ -11,10 +11,14 @@ extern "C" {
  *         2 bytes for descriptor length and atleast 1 byte of descriptor data
  */
 #define PLDM_FWUP_DEVICE_DESCRIPTOR_MIN_LEN 5
+#define PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES 0
 
 /** @brief PLDM Firmware update commands
  */
-enum pldm_firmware_update_commands { PLDM_QUERY_DEVICE_IDENTIFIERS = 0x01 };
+enum pldm_firmware_update_commands {
+	PLDM_QUERY_DEVICE_IDENTIFIERS = 0x01,
+	PLDM_GET_FIRMWARE_PARAMETERS = 0x02
+};
 
 /** @struct pldm_query_device_identifiers_resp
  *
@@ -58,6 +62,21 @@ int decode_query_device_identifiers_resp(const struct pldm_msg *msg,
 					 uint32_t *device_identifiers_len,
 					 uint8_t *descriptor_count,
 					 uint8_t **descriptor_data);
+
+/** @brief Create a PLDM request message for GetFirmwareParameters
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] payload_length - Length of the request message payload
+ *  @param[in,out] msg - Message will be written to this
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_get_firmware_parameters_req(uint8_t instance_id,
+				       size_t payload_length,
+				       struct pldm_msg *msg);
 #ifdef __cplusplus
 }
 #endif
