@@ -28,6 +28,20 @@ struct query_device_identifiers_resp {
 	uint8_t descriptor_count;
 } __attribute__((packed));
 
+/** @struct get_firmware_parameters_resp
+ *
+ *  Structure representing get firmware parameters response.
+ */
+struct get_firmware_parameters_resp {
+	uint8_t completion_code;
+	bitfield32_t capabilities_during_update;
+	uint16_t comp_count;
+	uint8_t active_comp_image_set_ver_str_type;
+	uint8_t active_comp_image_set_ver_str_len;
+	uint8_t pending_comp_image_set_ver_str_type;
+	uint8_t pending_comp_image_set_ver_str_len;
+} __attribute__((packed));
+
 /** @brief Create a PLDM request message for QueryDeviceIdentifiers
  *
  *  @param[in] instance_id - Message's instance id
@@ -70,6 +84,29 @@ int decode_query_device_identifiers_resp(const struct pldm_msg *msg,
 int encode_get_firmware_parameters_req(const uint8_t instance_id,
 				       struct pldm_msg *msg,
 				       const size_t payload_length);
+
+/** @brief Decode a GetFirmwareParameters component image set response
+ *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] resp_data - Pointer to get firmware parameters response
+ *  @param[out] active_comp_image_set_ver_str - Pointer to active component
+ * image set version string
+ *  @param[out] pending_comp_image_set_ver_str - Pointer to pending component
+ * image set version string
+ *  @return pldm_completion_codes
+ */
+int decode_get_firmware_parameters_comp_img_set_resp(
+    const struct pldm_msg *msg, const size_t payload_length,
+    struct get_firmware_parameters_resp *resp_data,
+    struct variable_field *active_comp_image_set_ver_str,
+    struct variable_field *pending_comp_image_set_ver_str);
 #ifdef __cplusplus
 }
 #endif
