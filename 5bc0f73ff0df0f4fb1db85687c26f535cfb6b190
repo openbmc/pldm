@@ -429,6 +429,24 @@
       "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d2eaae71_0462b4aa",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-05T04:56:07Z",
+      "side": 1,
+      "message": "Have added Unit tests",
+      "parentUuid": "3c233117_de6472b7",
+      "revId": "5bc0f73ff0df0f4fb1db85687c26f535cfb6b190",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
