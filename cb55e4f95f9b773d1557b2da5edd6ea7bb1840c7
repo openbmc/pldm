@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd20da79_a7c073c8",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:42:19Z",
+      "side": 1,
+      "message": "Just to create these MOCK\u0027s we don\u0027t need another class \"TestInterace\" right ?.. Guess, I am not following why the abstract class HostLampTestInterface was needed.",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a0d1d2d_3fc08d1e",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-05T07:42:19Z",
+      "side": 1,
+      "message": "hmm.. how is this satisfied ?.. I see getEffectorID gets called only if asserted\u003d\u003dtrue. However, the test case below sets asserted\u003dtrue just once.",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
