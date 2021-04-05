@@ -493,6 +493,7 @@ int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 int encode_pldm_header_only(const uint8_t instance_id, const uint8_t pldm_type,
 			    const uint8_t command, const uint8_t msg_type,
 			    struct pldm_msg *msg);
+
 #ifdef __cplusplus
 }
 #endif
