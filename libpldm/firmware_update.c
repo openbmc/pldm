@@ -379,3 +379,83 @@ int decode_get_firmware_parameters_resp_comp_entry(
 	}
 	return PLDM_SUCCESS;
 }
+
+/** @brief Check whether the string type is valid
+ *
+ *  @return true if the string type is valid one
+ */
+static bool is_str_type_valid(const uint8_t comp_type)
+{
+	switch (comp_type) {
+	case PLDM_STR_TYPE_COMP_VER_STR_TYPE_UNKNOWN:
+	case PLDM_STR_TYPE_COMP_ASCII:
+	case PLDM_STR_TYPE_COMP_UTF_8:
+	case PLDM_STR_TYPE_COMP_UTF_16:
+	case PLDM_STR_TYPE_COMP_UTF_16LE:
+	case PLDM_STR_TYPE_COMP_UTF_16BE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+int encode_request_update_req(const uint8_t instance_id, struct pldm_msg *msg,
+			      const size_t payload_length,
+			      uint32_t max_transfer_size, uint16_t num_of_comp,
+			      uint8_t max_outstanding_transfer_req,
+			      uint16_t pkg_data_len,
+			      uint8_t comp_image_set_ver_str_type,
+			      uint8_t comp_image_set_ver_str_len,
+			      struct variable_field *comp_img_set_ver_str)
+{
+	if (msg == NULL || comp_img_set_ver_str == NULL ||
+	    comp_img_set_ver_str->ptr == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length < sizeof(struct pldm_request_update_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	if (payload_length != sizeof(struct pldm_request_update_req) +
+				  comp_img_set_ver_str->length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	if (comp_image_set_ver_str_len != comp_img_set_ver_str->length) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if ((max_transfer_size < PLDM_FWUP_BASELINE_TRANSFER_SIZE) ||
+	    (max_outstanding_transfer_req < PLDM_MIN_OUTSTANDING_REQ)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	int rc = encode_pldm_header_only(PLDM_REQUEST, instance_id, PLDM_FWUP,
+					 PLDM_REQUEST_UPDATE, msg);
+
+	if (PLDM_SUCCESS != rc) {
+		return rc;
+	}
+
+	struct pldm_request_update_req *request =
+	    (struct pldm_request_update_req *)msg->payload;
+
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!is_str_type_valid(comp_image_set_ver_str_type)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	request->max_transfer_size = htole32(max_transfer_size);
+	request->num_of_comp = htole16(num_of_comp);
+	request->max_outstanding_transfer_req = max_outstanding_transfer_req;
+	request->pkg_data_len = htole16(pkg_data_len);
+	request->comp_image_set_ver_str_type = comp_image_set_ver_str_type;
+	request->comp_image_set_ver_str_len = comp_image_set_ver_str_len;
+
+	memcpy(msg->payload + sizeof(struct pldm_request_update_req),
+	       comp_img_set_ver_str->ptr, comp_img_set_ver_str->length);
+
+	return PLDM_SUCCESS;
+}
