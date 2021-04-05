@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4cb20f1e_160423ee",
+        "filename": "libpldm/base.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-04-05T16:15:04Z",
+      "side": 0,
+      "message": "nit: refactoring this isn\u0027t part of introducing QueryDeviceIdentifier command. We could move this particular commit out of the series.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 2
+      },
+      "revId": "61761d96ca16fc5b178caf3dec660d312d597f74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
