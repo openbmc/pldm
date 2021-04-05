@@ -129,6 +129,32 @@ enum pldm_component_classification_values {
 	PLDM_COMP_DOWNSTREAM_DEVICE = 0xFFFF
 };
 
+/** @brief ComponentResponse values in the response of PassComponentTable
+ */
+enum pldm_component_responses {
+	PLDM_CR_COMP_CAN_BE_UPDATED = 0,
+	PLDM_CR_COMP_MAY_BE_UPDATEABLE = 1
+};
+
+/** @brief ComponentResponseCode values in the response of PassComponentTable
+ */
+enum pldm_component_response_codes {
+	PLDM_CRC_COMP_CAN_BE_UPDATED = 0x00,
+	PLDM_CRC_COMP_COMPARISON_STAMP_IDENTICAL = 0x01,
+	PLDM_CRC_COMP_COMPARISON_STAMP_LOWER = 0x02,
+	PLDM_CRC_INVALID_COMP_COMPARISON_STAMP = 0x03,
+	PLDM_CRC_COMP_CONFLICT = 0x04,
+	PLDM_CRC_COMP_PREREQUISITES_NOT_MET = 0x05,
+	PLDM_CRC_COMP_NOT_SUPPORTED = 0x06,
+	PLDM_CRC_COMP_SECURITY_RESTRICTIONS = 0x07,
+	PLDM_CRC_INCOMPLETE_COMP_IMAGE_SET = 0x08,
+	PLDM_CRC_ACTIVE_IMAGE_NOT_UPDATEABLE_SUBSEQUENTLY = 0x09,
+	PLDM_CRC_COMP_VER_STR_IDENTICAL = 0x0A,
+	PLDM_CRC_COMP_VER_STR_LOWER = 0x0B,
+	PLDM_CRC_VENDOR_COMP_RESP_CODE_RANGE_MIN = 0xD0,
+	PLDM_CRC_VENDOR_COMP_RESP_CODE_RANGE_MAX = 0xEF
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -272,6 +298,16 @@ struct pldm_pass_component_table_req {
 	uint32_t comp_comparison_stamp;
 	uint8_t comp_ver_str_type;
 	uint8_t comp_ver_str_len;
+} __attribute__((packed));
+
+/** @struct pldm_pass_component_table_resp
+ *
+ *  Structure representing PassComponentTable response
+ */
+struct pldm_pass_component_table_resp {
+	uint8_t completion_code;
+	uint8_t comp_resp;
+	uint8_t comp_resp_code;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -521,6 +557,22 @@ int encode_pass_component_table_req(
     uint32_t comp_comparison_stamp, uint8_t comp_ver_str_type,
     uint8_t comp_ver_str_len, const struct variable_field *comp_ver_str,
     struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Decode PassComponentTable response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to hold completion code
+ *  @param[out] comp_resp - Pointer to hold component response
+ *  @param[out] comp_resp_code - Pointer to hold component response code
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_pass_component_table_resp(const struct pldm_msg *msg,
+				     size_t payload_length,
+				     uint8_t *completion_code,
+				     uint8_t *comp_resp,
+				     uint8_t *comp_resp_code);
 
 #ifdef __cplusplus
 }
