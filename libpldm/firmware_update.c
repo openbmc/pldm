@@ -700,3 +700,113 @@ int decode_request_update_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+/** @brief Check whether Component Classification is valid
+ *
+ *  @return true if it is from below mentioned values, false if not
+ */
+static bool check_comp_classification_valid(const uint16_t comp_classification)
+{
+	switch (comp_classification) {
+	case PLDM_COMP_UNKNOWN:
+	case PLDM_COMP_OTHER:
+	case PLDM_COMP_DRIVER:
+	case PLDM_COMP_CONFIGURATION_SOFTWARE:
+	case PLDM_COMP_APPLICATION_SOFTWARE:
+	case PLDM_COMP_INSTRUMENTATION:
+	case PLDM_COMP_FIRMWARE_OR_BIOS:
+	case PLDM_COMP_DIAGNOSTIC_SOFTWARE:
+	case PLDM_COMP_OPERATING_SYSTEM:
+	case PLDM_COMP_MIDDLEWARE:
+	case PLDM_COMP_FIRMWARE:
+	case PLDM_COMP_BIOS_OR_FCODE:
+	case PLDM_COMP_SUPPORT_OR_SERVICEPACK:
+	case PLDM_COMP_SOFTWARE_BUNDLE:
+	case PLDM_COMP_DOWNSTREAM_DEVICE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+/** @brief Check whether Request Update Request is valid
+ *
+ *  @return true if request is valid,false if not
+ */
+static int validate_pass_component_table_req(
+    const struct pldm_pass_component_table_req *data)
+{
+	if (!check_comp_classification_valid(
+		htole16(data->comp_classification))) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!check_transfer_flag_valid(data->transfer_flag)) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+	if (!is_string_type_valid(data->comp_ver_str_type)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return PLDM_SUCCESS;
+}
+
+/** @brief Fill the Pass Component Table Request
+ *
+ */
+static void
+fill_pass_component_table_req(const struct pldm_pass_component_table_req *data,
+			      struct pldm_pass_component_table_req *request)
+{
+	request->transfer_flag = data->transfer_flag;
+	request->comp_classification = htole16(data->comp_classification);
+	request->comp_identifier = htole16(data->comp_identifier);
+	request->comp_classification_index = data->comp_classification_index;
+	request->comp_comparison_stamp = htole32(data->comp_comparison_stamp);
+	request->comp_ver_str_type = data->comp_ver_str_type;
+	request->comp_ver_str_len = data->comp_ver_str_len;
+}
+
+int encode_pass_component_table_req(
+     uint8_t instance_id, struct pldm_msg *msg,
+     size_t payload_length,
+    const struct pldm_pass_component_table_req *data,
+    struct variable_field *comp_ver_str)
+{
+	if (msg == NULL || data == NULL || comp_ver_str == NULL ||
+	    comp_ver_str->ptr == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_pass_component_table_req) +
+				  comp_ver_str->length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	if (comp_ver_str->length != data->comp_ver_str_len) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	int rc = validate_pass_component_table_req(data);
+	if ((PLDM_SUCCESS != rc)) {
+		return rc;
+	}
+
+	rc = encode_pldm_header_only(PLDM_REQUEST, instance_id, PLDM_FWUP,
+				     PLDM_PASS_COMPONENT_TABLE, msg);
+
+	if (PLDM_SUCCESS != rc) {
+		return rc;
+	}
+
+	struct pldm_pass_component_table_req *request =
+	    (struct pldm_pass_component_table_req *)msg->payload;
+
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	fill_pass_component_table_req(data, request);
+
+	memcpy(msg->payload + sizeof(struct pldm_pass_component_table_req),
+	       comp_ver_str->ptr, comp_ver_str->length);
+
+	return PLDM_SUCCESS;
+}
