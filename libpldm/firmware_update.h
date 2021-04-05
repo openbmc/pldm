@@ -42,6 +42,48 @@ struct get_firmware_parameters_resp {
 	uint8_t pending_comp_image_set_ver_str_len;
 } __attribute__((packed));
 
+/** @struct get_firmware_parameters_resp
+ *
+ *  Structure representing component parameter table entries.
+ */
+struct component_parameter_table {
+	uint16_t comp_classification;
+	uint16_t comp_identifier;
+	uint8_t comp_classification_index;
+	uint32_t active_comp_comparison_stamp;
+	uint8_t active_comp_ver_str_type;
+	uint8_t active_comp_ver_str_len;
+	uint8_t active_comp_release_date[8];
+	uint32_t pending_comp_comparison_stamp;
+	uint8_t pending_comp_ver_str_type;
+	uint8_t pending_comp_ver_str_len;
+	uint8_t pending_comp_release_date[8];
+	bitfield16_t comp_activation_methods;
+	bitfield32_t capabilities_during_update;
+} __attribute__((packed));
+
+/** @brief Decode a GetFirmwareParameters component response
+ *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] component_data - Pointer to component parameter table
+ *  @param[out] active_comp_ver_str - Pointer to active component version string
+ *  @param[out] pending_comp_ver_str - Pointer to pending component version
+ * string
+ *  @return pldm_completion_codes
+ */
+int decode_get_firmware_parameters_comp_resp(
+    const uint8_t *msg, const size_t payload_length,
+    struct component_parameter_table *component_data,
+    struct variable_field *active_comp_ver_str,
+    struct variable_field *pending_comp_ver_str);
+
 /** @brief Create a PLDM request message for QueryDeviceIdentifiers
  *
  *  @param[in] instance_id - Message's instance id

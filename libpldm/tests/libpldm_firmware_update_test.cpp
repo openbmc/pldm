@@ -142,3 +142,90 @@ TEST(GetFWParams, testGoodDecodeCompImgSetResponse)
                         response.data() + pendingCompImageSetVerStrIndex,
                         outPendingCompImageSetVerStr.length));
 }
+TEST(GetFWParams, testGoodDecodeCompResponse)
+{
+    // ActiveCompImageSetVerStrLen is not fixed here taking it as 8
+    constexpr uint8_t activeCompVerStrLen = 8;
+    // PendingCompImageSetVerStrLen is not fixed here taking it as 8
+    constexpr uint8_t pendingCompVerStrLen = 8;
+
+    constexpr size_t payloadLen = sizeof(struct component_parameter_table) +
+                                  activeCompVerStrLen + pendingCompVerStrLen;
+
+    std::array<uint8_t, payloadLen> response{};
+
+    struct component_parameter_table* inCompData =
+        reinterpret_cast<struct component_parameter_table*>(response.data());
+
+    inCompData->comp_classification = 0x0F;
+    inCompData->comp_identifier = 0x01;
+    inCompData->comp_classification_index = 0x0F;
+    inCompData->active_comp_comparison_stamp = 0;
+    inCompData->active_comp_ver_str_type = 1;
+    inCompData->active_comp_ver_str_len = activeCompVerStrLen;
+    std::fill_n(inCompData->active_comp_release_date,
+                sizeof(inCompData->active_comp_release_date), 0xFF);
+    inCompData->pending_comp_comparison_stamp = 0;
+    inCompData->pending_comp_ver_str_type = 1;
+    inCompData->pending_comp_ver_str_len = pendingCompVerStrLen;
+
+    std::fill_n(inCompData->pending_comp_release_date,
+                sizeof(inCompData->pending_comp_release_date), 0xFF);
+    inCompData->comp_activation_methods.value = 0x0F;
+    inCompData->capabilities_during_update.value = 0x0F;
+
+    constexpr uint32_t activeCompVerStrIndex =
+        sizeof(struct component_parameter_table);
+    std::fill_n(response.data() + activeCompVerStrIndex, activeCompVerStrLen,
+                0xFF);
+
+    constexpr uint32_t pendingCompVerStrIndex =
+        activeCompVerStrIndex + activeCompVerStrLen;
+    std::fill_n(response.data() + pendingCompVerStrIndex, pendingCompVerStrLen,
+                0xFF);
+
+    struct component_parameter_table outCompData;
+    struct variable_field outActiveCompVerStr;
+    struct variable_field outPendingCompVerStr;
+
+    auto rc = decode_get_firmware_parameters_comp_resp(
+        response.data(), payloadLen, &outCompData, &outActiveCompVerStr,
+        &outPendingCompVerStr);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    EXPECT_EQ(inCompData->comp_classification, outCompData.comp_classification);
+    EXPECT_EQ(inCompData->comp_identifier, outCompData.comp_identifier);
+    EXPECT_EQ(inCompData->comp_classification_index,
+              outCompData.comp_classification_index);
+    EXPECT_EQ(inCompData->active_comp_comparison_stamp,
+              outCompData.active_comp_comparison_stamp);
+    EXPECT_EQ(inCompData->active_comp_ver_str_type,
+              outCompData.active_comp_ver_str_type);
+    EXPECT_EQ(inCompData->active_comp_ver_str_len,
+              outCompData.active_comp_ver_str_len);
+    EXPECT_EQ(0, memcmp(inCompData->active_comp_release_date,
+                        outCompData.active_comp_release_date,
+                        sizeof(inCompData->active_comp_release_date)));
+    EXPECT_EQ(inCompData->pending_comp_comparison_stamp,
+              outCompData.pending_comp_comparison_stamp);
+    EXPECT_EQ(inCompData->pending_comp_ver_str_type,
+              outCompData.pending_comp_ver_str_type);
+    EXPECT_EQ(inCompData->pending_comp_ver_str_len,
+              outCompData.pending_comp_ver_str_len);
+    EXPECT_EQ(0, memcmp(inCompData->pending_comp_release_date,
+                        outCompData.pending_comp_release_date,
+                        sizeof(inCompData->pending_comp_release_date)));
+    EXPECT_EQ(inCompData->comp_activation_methods.value,
+              outCompData.comp_activation_methods.value);
+    EXPECT_EQ(inCompData->capabilities_during_update.value,
+              outCompData.capabilities_during_update.value);
+
+    EXPECT_EQ(0, memcmp(outActiveCompVerStr.ptr,
+                        response.data() + activeCompVerStrIndex,
+                        outActiveCompVerStr.length));
+
+    EXPECT_EQ(0, memcmp(outPendingCompVerStr.ptr,
+                        response.data() + pendingCompVerStrIndex,
+                        outPendingCompVerStr.length));
+}
