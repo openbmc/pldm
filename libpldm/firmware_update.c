@@ -1,5 +1,6 @@
 #include "firmware_update.h"
 #include <endian.h>
+#include <string.h>
 
 int encode_query_device_identifiers_req(uint8_t instance_id,
 					size_t payload_length,
@@ -152,5 +153,79 @@ int decode_get_firmware_parameters_resp_comp_set_info(
 		pending_comp_image_set_ver_str->length = 0;
 	}
 
+	return PLDM_SUCCESS;
+}
+
+int decode_get_firmware_parameters_resp_comp_entry(
+    const uint8_t *data, size_t length,
+    struct pldm_component_parameter_entry *component_data,
+    struct variable_field *active_comp_ver_str,
+    struct variable_field *pending_comp_ver_str)
+{
+	if (data == NULL || component_data == NULL ||
+	    active_comp_ver_str == NULL || pending_comp_ver_str == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (length < sizeof(struct pldm_component_parameter_entry)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_component_parameter_entry *entry =
+	    (struct pldm_component_parameter_entry *)(data);
+	if (entry->active_comp_ver_str_len == 0) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	size_t entry_length = sizeof(struct pldm_component_parameter_entry) +
+			      entry->active_comp_ver_str_len +
+			      entry->pending_comp_ver_str_len;
+
+	if (length != entry_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	component_data->comp_classification =
+	    le16toh(entry->comp_classification);
+	component_data->comp_identifier = le16toh(entry->comp_identifier);
+	component_data->comp_classification_index =
+	    entry->comp_classification_index;
+	component_data->active_comp_comparison_stamp =
+	    le32toh(entry->active_comp_comparison_stamp);
+	component_data->active_comp_ver_str_type =
+	    entry->active_comp_ver_str_type;
+	component_data->active_comp_ver_str_len =
+	    entry->active_comp_ver_str_len;
+	memcpy(component_data->active_comp_release_date,
+	       entry->active_comp_release_date,
+	       sizeof(entry->active_comp_release_date));
+	component_data->pending_comp_comparison_stamp =
+	    le32toh(entry->pending_comp_comparison_stamp);
+	component_data->pending_comp_ver_str_type =
+	    entry->pending_comp_ver_str_type;
+	component_data->pending_comp_ver_str_len =
+	    entry->pending_comp_ver_str_len;
+	memcpy(component_data->pending_comp_release_date,
+	       entry->pending_comp_release_date,
+	       sizeof(entry->pending_comp_release_date));
+	component_data->comp_activation_methods.value =
+	    le16toh(entry->comp_activation_methods.value);
+	component_data->capabilities_during_update.value =
+	    le32toh(entry->capabilities_during_update.value);
+
+	active_comp_ver_str->ptr =
+	    data + sizeof(struct pldm_component_parameter_entry);
+	active_comp_ver_str->length = entry->active_comp_ver_str_len;
+
+	if (entry->pending_comp_ver_str_len != 0) {
+
+		pending_comp_ver_str->ptr =
+		    data + sizeof(struct pldm_component_parameter_entry) +
+		    entry->active_comp_ver_str_len;
+		pending_comp_ver_str->length = entry->pending_comp_ver_str_len;
+	} else {
+		pending_comp_ver_str->ptr = NULL;
+		pending_comp_ver_str->length = 0;
+	}
 	return PLDM_SUCCESS;
 }
