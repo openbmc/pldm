@@ -237,3 +237,124 @@ TEST(GetFirmwareParameters, goodPathDecodeComponentParameterEntry)
                         entry.data() + pendingCompVerStrPos,
                         outPendingCompVerStr.length));
 }
+
+TEST(RequestUpdate, testGoodEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    // Component Image Set Version String Length is not fixed here taking it as
+    // 6
+    constexpr uint8_t compImgSetVerStrLen = 6;
+
+    std::array<uint8_t, compImgSetVerStrLen> compImgSetVerStrArr;
+    struct variable_field inCompImgSetVerStr;
+    inCompImgSetVerStr.ptr = compImgSetVerStrArr.data();
+    inCompImgSetVerStr.length = compImgSetVerStrLen;
+
+    struct pldm_request_update_req inReq = {};
+
+    inReq.max_transfer_size = 32;
+    inReq.no_of_comp = 1;
+    inReq.max_outstand_transfer_req = 1;
+    inReq.pkg_data_len = 0;
+    inReq.comp_image_set_ver_str_type = PLDM_COMP_VER_STR_TYPE_UNKNOWN;
+    inReq.comp_image_set_ver_str_len = compImgSetVerStrLen;
+
+    std::fill(compImgSetVerStrArr.data(), compImgSetVerStrArr.end(), 0xFF);
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_request_update_req) +
+                            compImgSetVerStrLen>
+        outReq;
+
+    auto msg = reinterpret_cast<pldm_msg*>(outReq.data());
+
+    auto rc = encode_request_update_req(instanceId, msg,
+                                        sizeof(struct pldm_request_update_req) +
+                                            inCompImgSetVerStr.length,
+                                        &inReq, &inCompImgSetVerStr);
+
+    auto request = (struct pldm_request_update_req*)(outReq.data() + hdrSize);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg->hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(msg->hdr.instance_id, instanceId);
+    EXPECT_EQ(msg->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(msg->hdr.command, PLDM_REQUEST_UPDATE);
+    EXPECT_EQ(le32toh(request->max_transfer_size), inReq.max_transfer_size);
+    EXPECT_EQ(le16toh(request->no_of_comp), inReq.no_of_comp);
+    EXPECT_EQ(request->max_outstand_transfer_req,
+              inReq.max_outstand_transfer_req);
+    EXPECT_EQ(le16toh(request->pkg_data_len), inReq.pkg_data_len);
+    EXPECT_EQ(request->comp_image_set_ver_str_type,
+              inReq.comp_image_set_ver_str_type);
+    EXPECT_EQ(request->comp_image_set_ver_str_len,
+              inReq.comp_image_set_ver_str_len);
+    EXPECT_EQ(true,
+              std::equal(compImgSetVerStrArr.begin(), compImgSetVerStrArr.end(),
+                         outReq.data() + hdrSize +
+                             sizeof(struct pldm_request_update_req)));
+}
+
+TEST(RequestUpdate, testBadEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    constexpr uint8_t compImgSetVerStrLen = 6;
+
+    std::array<uint8_t, compImgSetVerStrLen> compImgSetVerStrArr;
+    struct variable_field inCompImgSetVerStr;
+    inCompImgSetVerStr.ptr = compImgSetVerStrArr.data();
+    inCompImgSetVerStr.length = compImgSetVerStrLen;
+
+    struct pldm_request_update_req inReq = {};
+
+    std::fill(compImgSetVerStrArr.data(), compImgSetVerStrArr.end(), 0xFF);
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_request_update_req) +
+                            compImgSetVerStrLen>
+        outReq;
+
+    auto msg = reinterpret_cast<pldm_msg*>(outReq.data());
+
+    auto rc = encode_request_update_req(instanceId, 0,
+                                        sizeof(struct pldm_request_update_req) +
+                                            inCompImgSetVerStr.length,
+                                        &inReq, &inCompImgSetVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_request_update_req(instanceId, msg, 0, &inReq,
+                                   &inCompImgSetVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_request_update_req(instanceId, msg,
+                                   sizeof(struct pldm_request_update_req) +
+                                       inCompImgSetVerStr.length,
+                                   NULL, &inCompImgSetVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_request_update_req(instanceId, msg,
+                                   sizeof(struct pldm_request_update_req) +
+                                       inCompImgSetVerStr.length,
+                                   &inReq, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inReq.max_transfer_size = 30;
+    inReq.no_of_comp = 0;
+    inReq.max_outstand_transfer_req = 0;
+    inReq.pkg_data_len = 0;
+    inReq.comp_image_set_ver_str_type = 10;
+    inReq.comp_image_set_ver_str_len = 0;
+
+    rc = encode_request_update_req(instanceId, msg,
+                                   sizeof(struct pldm_request_update_req) +
+                                       inCompImgSetVerStr.length,
+                                   &inReq, &inCompImgSetVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inCompImgSetVerStr.ptr = NULL;
+    inCompImgSetVerStr.length = 0;
+
+    rc = encode_request_update_req(instanceId, msg,
+                                   sizeof(struct pldm_request_update_req) +
+                                       inCompImgSetVerStr.length,
+                                   &inReq, &inCompImgSetVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
