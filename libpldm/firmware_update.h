@@ -10,10 +10,25 @@ extern "C" {
 /* inventory commands */
 #define PLDM_QUERY_DEVICE_IDENTIFIERS 0x01
 #define PLDM_GET_FIRMWARE_PARAMENTERS 0x02
+/* update commands */
+#define PLDM_REQUEST_UPDATE 0x10
+#define PLDM_FWU_BASELINE_TRANSFER_SIZE 32
+#define MIN_OUTSTANDING_REQ 1
 #define PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES 0
 #define PLDM_GET_FIRMWARE_PARAMENTERS_REQ_BYTES 0
 // descriptor type 2 byte, length 2 bytes and data 1 byte min.
 #define PLDM_FWU_MIN_DESCRIPTOR_IDENTIFIERS_LEN 5
+/** @brief PLDM FWU values for Component Version String Type or Component Image
+ * Set Version String Type
+ */
+enum comp_type {
+	COMP_VER_STR_TYPE_UNKNOWN = 0,
+	COMP_ASCII = 1,
+	COMP_UTF_8 = 2,
+	COMP_UTF_16 = 3,
+	COMP_UTF_16LE = 4,
+	COMP_UTF_16BE = 5
+};
 /** @struct query_device_identifiers_resp
  *
  *  Structure representing query device identifiers response.
@@ -54,6 +69,18 @@ struct component_parameter_table {
 	uint64_t pending_comp_release_date;
 	uint16_t comp_activation_methods;
 	uint32_t capabilities_during_update;
+} __attribute__((packed));
+/* @struct request_update_req
+ *
+ *  Structure representing Request Update request
+ */
+struct request_update_req {
+	uint32_t max_transfer_size;
+	uint16_t no_of_comp;
+	uint8_t max_outstand_transfer_req;
+	uint16_t pkg_data_len;
+	uint8_t comp_image_set_ver_str_type;
+	uint8_t comp_image_set_ver_str_len;
 } __attribute__((packed));
 /** @brief Decode a GetFirmwareParameters component response
  *
@@ -146,6 +173,22 @@ int decode_get_firmware_parameters_comp_img_set_resp(
     struct get_firmware_parameters_resp *resp_data,
     struct variable_field *active_comp_image_set_ver_str,
     struct variable_field *pending_comp_image_set_ver_str);
+/** @brief Create a PLDM request message for RequestUpdate
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] data - Pointer for RequestUpdate Request
+ *  @param[in] comp_img_set_ver_str - Pointer which holds image set
+ * information
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_request_update_req(const uint8_t instance_id, struct pldm_msg *msg,
+			      const size_t payload_length,
+			      const struct request_update_req *data,
+			      struct variable_field *comp_img_set_ver_str);
 #ifdef __cplusplus
 }
 #endif
