@@ -71,6 +71,54 @@ static uint16_t get_descriptor_type_length(uint16_t descriptor_type)
 	}
 }
 
+/** @brief Check whether ComponentResponse is valid
+ *
+ *  @return true if ComponentResponse is valid, false if not
+ */
+static bool is_comp_resp_valid(uint8_t comp_resp)
+{
+	switch (comp_resp) {
+	case PLDM_CR_COMP_CAN_BE_UPDATED:
+	case PLDM_CR_COMP_MAY_BE_UPDATEABLE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+/** @brief Check whether ComponentResponseCode is valid
+ *
+ *  @return true if ComponentResponseCode is valid, false if not
+ */
+static bool is_comp_resp_code_valid(uint8_t comp_resp_code)
+{
+	switch (comp_resp_code) {
+	case PLDM_CRC_COMP_CAN_BE_UPDATED:
+	case PLDM_CRC_COMP_COMPARISON_STAMP_IDENTICAL:
+	case PLDM_CRC_COMP_COMPARISON_STAMP_LOWER:
+	case PLDM_CRC_INVALID_COMP_COMPARISON_STAMP:
+	case PLDM_CRC_COMP_CONFLICT:
+	case PLDM_CRC_COMP_PREREQUISITES_NOT_MET:
+	case PLDM_CRC_COMP_NOT_SUPPORTED:
+	case PLDM_CRC_COMP_SECURITY_RESTRICTIONS:
+	case PLDM_CRC_INCOMPLETE_COMP_IMAGE_SET:
+	case PLDM_CRC_ACTIVE_IMAGE_NOT_UPDATEABLE_SUBSEQUENTLY:
+	case PLDM_CRC_COMP_VER_STR_IDENTICAL:
+	case PLDM_CRC_COMP_VER_STR_LOWER:
+		return true;
+
+	default:
+		if (comp_resp_code >=
+			PLDM_CRC_VENDOR_COMP_RESP_CODE_RANGE_MIN &&
+		    comp_resp_code <=
+			PLDM_CRC_VENDOR_COMP_RESP_CODE_RANGE_MAX) {
+			return true;
+		}
+		return false;
+	}
+}
+
 int decode_pldm_package_header_info(
     const uint8_t *data, size_t length,
     struct pldm_package_header_information *package_header_info,
@@ -752,6 +800,43 @@ int encode_pass_component_table_req(
 
 	memcpy(msg->payload + sizeof(struct pldm_pass_component_table_req),
 	       comp_ver_str->ptr, comp_ver_str->length);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_pass_component_table_resp(const struct pldm_msg *msg,
+				     const size_t payload_length,
+				     uint8_t *completion_code,
+				     uint8_t *comp_resp,
+				     uint8_t *comp_resp_code)
+{
+	if (msg == NULL || completion_code == NULL || comp_resp == NULL ||
+	    comp_resp_code == NULL || !payload_length) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (*completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length != sizeof(struct pldm_pass_component_table_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_pass_component_table_resp *response =
+	    (struct pldm_pass_component_table_resp *)msg->payload;
+
+	if (!is_comp_resp_valid(response->comp_resp)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!is_comp_resp_code_valid(response->comp_resp_code)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*comp_resp = response->comp_resp;
+	*comp_resp_code = response->comp_resp_code;
 
 	return PLDM_SUCCESS;
 }
