@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "966bde27_0099f2a2",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-06T15:02:11Z",
+      "side": 1,
+      "message": "null pointer check before deference ?",
+      "range": {
+        "startLine": 1551,
+        "startChar": 39,
+        "endLine": 1551,
+        "endChar": 47
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fffbdc12_e042dd5e",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-06T15:02:11Z",
+      "side": 1,
+      "message": "why are we overwriting what is present in the completion_code pointer ?",
+      "range": {
+        "startLine": 1579,
+        "startChar": 20,
+        "endLine": 1579,
+        "endChar": 35
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71a2f620_53c050af",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 1503,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-06T15:02:11Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 1503,
+        "startChar": 42,
+        "endLine": 1503,
+        "endChar": 47
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "457fbf87_c941e5e2",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-06T15:02:11Z",
+      "side": 1,
+      "message": "Argument to capture the Message ?",
+      "range": {
+        "startLine": 1508,
+        "startChar": 21,
+        "endLine": 1508,
+        "endChar": 52
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
