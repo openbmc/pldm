@@ -112,6 +112,29 @@
     },
     {
       "key": {
+        "uuid": "fee5f0c4_88771461",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-06T07:42:34Z",
+      "side": 1,
+      "message": "PLDM_FWUP",
+      "range": {
+        "startLine": 13,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 9
+      },
+      "revId": "a0aad86fe0a4a2e724fc838477b7112548d2a5e0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "65599900_21c269c4",
         "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
         "patchSetId": 1
