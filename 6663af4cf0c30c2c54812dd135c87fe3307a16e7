@@ -154,6 +154,69 @@
       "revId": "6663af4cf0c30c2c54812dd135c87fe3307a16e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16dbdb91_557c8ad7",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-06T06:32:34Z",
+      "side": 1,
+      "message": "auto",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 41
+      },
+      "revId": "6663af4cf0c30c2c54812dd135c87fe3307a16e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "177a4dec_70ce3d3d",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-06T06:32:34Z",
+      "side": 1,
+      "message": "This is not validated in this test.",
+      "range": {
+        "startLine": 55,
+        "startChar": 49,
+        "endLine": 55,
+        "endChar": 67
+      },
+      "revId": "6663af4cf0c30c2c54812dd135c87fe3307a16e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47f4013b_28673f1e",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-06T06:32:34Z",
+      "side": 1,
+      "message": "We can add tests for the bad paths to keep the coverage high.",
+      "revId": "6663af4cf0c30c2c54812dd135c87fe3307a16e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
