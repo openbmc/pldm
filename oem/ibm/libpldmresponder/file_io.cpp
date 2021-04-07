@@ -892,6 +892,22 @@ Response Handler::newFileAvailable(const pldm_msg* request,
     return response;
 }
 
+Response Handler::newFileAvailableResp(const pldm_msg* request,
+                                   size_t payloadLength)
+{
+    Response response;
+    uint8_t completionCode{};
+    auto rc = decode_new_file_resp(request, payloadLength, &completionCode);
+    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode_new_file_resp or"
+                  << " Host returned error for new_file_available"
+                  << " rc=" << rc
+                  << ", cc=" << static_cast<unsigned>(completionCode) << "\n";
+    }
+    return response;
+}
+
 } // namespace oem_ibm
 } // namespace responder
 } // namespace pldm
