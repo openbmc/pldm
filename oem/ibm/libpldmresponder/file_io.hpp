@@ -222,6 +222,11 @@ class Handler : public CmdHandler
                              return this->newFileAvailable(request,
                                                            payloadLength);
                          });
+        respHandlers.emplace(
+            PLDM_NEW_FILE_AVAILABLE,
+            [this](const pldm_msg* request, size_t payloadLength) {
+                return this->newFileAvailableResp(request, payloadLength);
+            });
 
         resDumpMatcher = std::make_unique<sdbusplus::bus::match::match>(
             pldm::utils::DBusHandler::getBus(),
@@ -362,6 +367,16 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response newFileAvailable(const pldm_msg* request, size_t payloadLength);
+
+    /** @brief Handles the response for newFileAvailable command
+     *         asynchronously
+     *  @param[in] request - PLDM request msg
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *   @return PLDM response message
+     */
+    Response newFileAvailableResp(const pldm_msg* request,
+                                  size_t payloadLength);
 
   private:
     oem_platform::Handler* oemPlatformHandler;
