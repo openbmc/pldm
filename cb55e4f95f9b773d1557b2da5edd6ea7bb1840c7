@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "088463bd_92784391",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-07T10:12:09Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c9b88a1b_16d477cd",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a0d1d2d_3fc08d1e",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
         "patchSetId": 14
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "oops. I overlooked line 43 down below since line 44 influenced me.. thanks..\nbut how is line: 44 passing ?. it should EXPECT_EQ, true right ?",
       "parentUuid": "069ce00b_0481127d",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f197b91_337bf5c5",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-07T10:12:09Z",
+      "side": 1,
+      "message": "\u003e but how is line: 44 passing ?. it should EXPECT_EQ, true right ?\n\nNo, as i said: When we set the Asserted property to true for the first time, I expect the getEffecterID method to return 0, so Asserted property will not be updated.\nsee: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/40373/14/oem/ibm/host-bmc/host_lamp_test.cpp#44",
+      "parentUuid": "221efcd5_cb7b0821",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
