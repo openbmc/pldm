@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d40005dd_17ca8abf",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-07T08:35:58Z",
+      "side": 1,
+      "message": "\u003e Just to create these MOCK\u0027s we don\u0027t need another class \"TestInterace\" right ?\n\nYes.\nAccording to my understanding: when we want to mock any method, the method must be a virtual method defined in the abstract interface.",
+      "parentUuid": "bd20da79_a7c073c8",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3a0d1d2d_3fc08d1e",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
         "patchSetId": 14
@@ -30,6 +48,24 @@
       "writtenOn": "2021-04-05T07:42:19Z",
       "side": 1,
       "message": "hmm.. how is this satisfied ?.. I see getEffectorID gets called only if asserted\u003d\u003dtrue. However, the test case below sets asserted\u003dtrue just once.",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "069ce00b_0481127d",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-07T08:35:58Z",
+      "side": 1,
+      "message": "We set asserted\u003d\u003dtrue twice, Right?\n\nThe first time I expected the getEffecterID method to return 0.\nsee: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/40373/14/oem/ibm/host-bmc/host_lamp_test.cpp#42\nSo it did not make any changes, the Asserted property is still `false`, Right?\n\nThe second time I expected the getEffecterID method to return 1(Non-zero)，\nat this time, the Asserted property will be changed to true, Right?",
+      "parentUuid": "3a0d1d2d_3fc08d1e",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
