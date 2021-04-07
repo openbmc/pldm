@@ -58,24 +58,48 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
         return;
     }
 
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
+    //uint8_t* responseMsg = nullptr;
+   // size_t responseMsgSize{};
 
-    auto requesterRc =
+    /*auto requesterRc =
         pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
                        &responseMsg, &responseMsgSize);
 
     std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
                                                                   std::free};
 
-    requester->markFree(mctp_eid, instanceId);
-    bool isDecodeNewFileRespFailed = false;
+    requester->markFree(mctp_eid, instanceId);*/
+    auto requesterRc =
+        pldm_send(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size());
+    //bool isDecodeNewFileRespFailed = false;
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
+        //with the present code pldmd will not be able to handle the case
+        //when there is any error returned as response of this command.
+        //the response does not include the file handle so pldm can't
+        //map a request to the associated response
+        //this can be done if newFileAvailable contains the fileHandle in
+        //response
         std::cerr << "Failed to send resource dump parameters, rc = "
                   << requesterRc << std::endl;
+        pldm::utils::reportError(
+            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+
+        PropertyValue value{resDumpStatus};
+        DBusMapping dbusMapping{resDumpCurrentObjPath, resDumpProgressIntf,
+                                "Status", "string"};
+        try
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "failed to set resource dump operation status, "
+                         "ERROR="
+                      << e.what() << "\n";
+        }
     }
-    else
+   /* else
     {
         uint8_t completionCode{};
         auto responsePtr =
@@ -112,7 +136,7 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
                          "ERROR="
                       << e.what() << "\n";
         }
-    }
+    }*/
 }
 
 void DbusToFileHandler::processNewResourceDump(

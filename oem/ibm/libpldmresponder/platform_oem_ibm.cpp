@@ -77,14 +77,15 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
         std::cout << tempStream.str() << std::endl;
     }
 
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
+ //   uint8_t* responseMsg = nullptr;
+   // size_t responseMsgSize{};
 
-    rc = pldm_send_recv(eid, fd, requestMsg.data(), requestMsg.size(),
+   /* rc = pldm_send_recv(eid, fd, requestMsg.data(), requestMsg.size(),
                         &responseMsg, &responseMsgSize);
     std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
                                                                   std::free};
-    requester->markFree(eid, instanceId);
+    requester->markFree(eid, instanceId);*/
+    rc = pldm_send(eid, fd, requestMsg.data(), requestMsg.size());
 
     if (rc != PLDM_REQUESTER_SUCCESS)
     {
@@ -92,10 +93,11 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
                   << ", errno = " << errno << "\n";
         pldm::utils::reportError(
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
-        return rc;
+        //return rc;
     }
+        return rc;
 
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
+ /*   auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
     uint8_t completionCode{};
     uint8_t status{};
     rc = decode_platform_event_message_resp(
@@ -116,7 +118,7 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
     }
 
-    return completionCode;
+    return completionCode;*/
 }
 
 } // namespace platform

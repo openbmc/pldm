@@ -270,8 +270,8 @@ void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
 int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
     std::vector<uint8_t>& requestMsg)
 {
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
+    //uint8_t* responseMsg = nullptr;
+    //size_t responseMsgSize{};
     if (requestMsg.size())
     {
         std::ostringstream tempStream;
@@ -283,19 +283,22 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         std::cout << tempStream.str() << std::endl;
     }
 
-    auto requesterRc =
+   /* auto requesterRc =
         pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
                        &responseMsg, &responseMsgSize);
     std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
-                                                                  std::free};
+                                                                  std::free};*/
+    auto requesterRc =
+        pldm_send(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size());
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr << "Failed to send message/receive response. RC = "
                   << requesterRc << ", errno = " << errno
                   << "for sending event to host \n";
-        return requesterRc;
+        //return requesterRc;
     }
-    uint8_t completionCode{};
+        return requesterRc;
+   /* uint8_t completionCode{};
     uint8_t status{};
     auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
     auto rc = decode_platform_event_message_resp(
@@ -309,7 +312,7 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
                   << "\n";
         return rc;
     }
-    return rc;
+    return rc;*/
 }
 
 int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
@@ -362,7 +365,7 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
         std::cerr << "Failed to send event to host: "
                   << "rc=" << rc << std::endl;
     }
-    requester.markFree(mctp_eid, instanceId);
+   // requester.markFree(mctp_eid, instanceId);
     return;
 }
 
