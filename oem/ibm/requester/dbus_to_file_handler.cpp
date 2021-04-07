@@ -57,45 +57,19 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
         std::cerr << "Failed to encode_new_file_req, rc = " << rc << std::endl;
         return;
     }
-
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
-
     auto requesterRc =
-        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
-                       &responseMsg, &responseMsgSize);
+        pldm_send(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size());
 
-    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
-                                                                  std::free};
-
-    requester->markFree(mctp_eid, instanceId);
-    bool isDecodeNewFileRespFailed = false;
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
+        // with the present code pldmd will not be able to handle the case
+        // when there is any error returned as response of this command.
+        // the response does not include the file handle so pldm can't
+        // map a request to the associated response
+        // this can be done if newFileAvailable contains the fileHandle in
+        // response
         std::cerr << "Failed to send resource dump parameters, rc = "
                   << requesterRc << std::endl;
-    }
-    else
-    {
-        uint8_t completionCode{};
-        auto responsePtr =
-            reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
-
-        rc = decode_new_file_resp(responsePtr, PLDM_NEW_FILE_RESP_BYTES,
-                                  &completionCode);
-
-        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
-        {
-            std::cerr << "Failed to decode_new_file_resp: "
-                      << "rc=" << rc
-                      << ", cc=" << static_cast<unsigned>(completionCode)
-                      << std::endl;
-            isDecodeNewFileRespFailed = true;
-        }
-    }
-
-    if ((requesterRc != PLDM_REQUESTER_SUCCESS) || (isDecodeNewFileRespFailed))
-    {
         pldm::utils::reportError(
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
 

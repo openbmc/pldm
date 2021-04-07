@@ -293,8 +293,6 @@ void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(
 int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
     std::vector<uint8_t>& requestMsg)
 {
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
     if (requestMsg.size())
     {
         std::ostringstream tempStream;
@@ -307,32 +305,15 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
     }
 
     auto requesterRc =
-        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
-                       &responseMsg, &responseMsgSize);
-    std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{responseMsg,
-                                                                  std::free};
+        pldm_send(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size());
+
     if (requesterRc != PLDM_REQUESTER_SUCCESS)
     {
         std::cerr << "Failed to send message/receive response. RC = "
                   << requesterRc << ", errno = " << errno
                   << "for sending event to host \n";
-        return requesterRc;
     }
-    uint8_t completionCode{};
-    uint8_t status{};
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsgPtr.get());
-    auto rc = decode_platform_event_message_resp(
-        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
-        &status);
-
-    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
-    {
-        std::cerr << "Failure in decode platform event message response, rc= "
-                  << rc << " cc=" << static_cast<unsigned>(completionCode)
-                  << "\n";
-        return rc;
-    }
-    return rc;
+    return requesterRc;
 }
 
 int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
@@ -384,7 +365,6 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
         std::cerr << "Failed to send event to host: "
                   << "rc=" << rc << std::endl;
     }
-    requester.markFree(mctp_eid, instanceId);
     return;
 }
 
