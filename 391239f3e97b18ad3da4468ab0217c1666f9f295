@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0ba3654_a02a179f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-08T02:24:12Z",
+      "side": 1,
+      "message": "1.1.0",
+      "range": {
+        "startLine": 12,
+        "startChar": 31,
+        "endLine": 12,
+        "endChar": 36
+      },
+      "revId": "391239f3e97b18ad3da4468ab0217c1666f9f295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d851b62_8a51a510",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-08T02:24:12Z",
+      "side": 1,
+      "message": "decode_get_firmware_parameters_resp and add one more struct variable_field for the component parmeter table",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 52
+      },
+      "revId": "391239f3e97b18ad3da4468ab0217c1666f9f295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb0dff1e_7c1b942f",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-08T02:24:12Z",
+      "side": 1,
+      "message": "We can avoid this interim variable and use it in the expression.",
+      "range": {
+        "startLine": 117,
+        "startChar": 14,
+        "endLine": 117,
+        "endChar": 26
+      },
+      "revId": "391239f3e97b18ad3da4468ab0217c1666f9f295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7305383_51d1bf8a",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-08T02:24:12Z",
+      "side": 1,
+      "message": "Like other decode functions if the completion code is not PLDM_SUCCESS return from the decode function with PLDM_SUCCESS, since it indicates parsing the response succeeded.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 2
+      },
+      "revId": "391239f3e97b18ad3da4468ab0217c1666f9f295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74812b61_922a7476",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-08T02:24:12Z",
+      "side": 1,
+      "message": "It should be the other way round for decode functions.",
+      "range": {
+        "startLine": 143,
+        "startChar": 5,
+        "endLine": 143,
+        "endChar": 12
+      },
+      "revId": "391239f3e97b18ad3da4468ab0217c1666f9f295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23e50fbe_36f55c1b",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-08T02:24:12Z",
+      "side": 1,
+      "message": "It should be the other way round for decode functions.",
+      "range": {
+        "startLine": 144,
+        "startChar": 25,
+        "endLine": 144,
+        "endChar": 32
+      },
+      "revId": "391239f3e97b18ad3da4468ab0217c1666f9f295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f255193_a9786889",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-08T02:24:12Z",
+      "side": 1,
+      "message": "Add tests for the bad paths",
+      "revId": "391239f3e97b18ad3da4468ab0217c1666f9f295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
