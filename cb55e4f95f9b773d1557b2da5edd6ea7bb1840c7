@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "88723af3_4f779a48",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-08T10:31:17Z",
+      "side": 1,
+      "message": "hmm. This is what makes GTEST totally depend on internals of these logic. and we need to decouple.. Also, if pdrRepo is NULL in the beginning, what will set the pdrRepo to not null for the second test ? but I guess, I am not hung up on that and will leave it on Manoj and maintainers to chime in.",
+      "parentUuid": "84ecc927_4dbd0a4b",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bd20da79_a7c073c8",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
         "patchSetId": 14
@@ -209,6 +227,24 @@
       "side": 1,
       "message": "You meant that whether the getEffecterID method returns 0 or the setHostStateEffecter method returns an PLDM_ERROR, we need to force the update of the Asserted property?",
       "parentUuid": "85a3bd28_655304de",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e50b931_73580ff1",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-08T10:31:17Z",
+      "side": 1,
+      "message": "yeah.. but I guess it does not really matter, since setting the value to \u0027true\u0027 would not mean anything to anyone outside of PLDM on BMC.",
+      "parentUuid": "1da3826c_f088a7ef",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
