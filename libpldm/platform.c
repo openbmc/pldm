@@ -1595,3 +1595,61 @@ int decode_set_event_receiver_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_set_event_receiver_req(const struct pldm_msg *msg,
+				  size_t payload_length,
+				  uint8_t *event_message_global_enable,
+				  uint8_t *transport_protocol_type,
+				  uint8_t *event_receiver_address_info,
+				  uint16_t *heartbeat_timer)
+
+{
+	if (msg == NULL || event_message_global_enable == NULL ||
+	    transport_protocol_type == NULL ||
+	    event_receiver_address_info == NULL || heartbeat_timer == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_SET_EVENT_RECEIVER_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_set_event_receiver_req *request =
+	    (struct pldm_set_event_receiver_req *)msg->payload;
+
+	if ((*event_message_global_enable ==
+	     PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE) &&
+	    (*heartbeat_timer == 0)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*event_message_global_enable = request->event_message_global_enable,
+	*transport_protocol_type = request->transport_protocol_type,
+	*event_receiver_address_info = request->event_receiver_address_info,
+	*heartbeat_timer = le16toh(request->heartbeat_timer);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_event_receiver_resp(uint8_t instance_id, uint8_t completion_code,
+				   struct pldm_msg *msg)
+
+{
+	struct pldm_header_info header = {0};
+	int rc = PLDM_SUCCESS;
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	msg->payload[0] = completion_code;
+
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_PLATFORM;
+	header.command = PLDM_SET_EVENT_RECEIVER;
+
+	rc = pack_pldm_header(&header, &(msg->hdr));
+
+	return rc;
+}
