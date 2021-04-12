@@ -710,6 +710,11 @@ void HostPDRHandler::setOperationStatus(const std::string& path,
     }
 }
 
+void HostPDRHandler::setPresentPropertyStatus(const std::string& path)
+{
+    CustomDBus::getCustomDBus().updateItemPresentStatus(path);
+}
+
 void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
 {
     getFRURecordTableByHost();
@@ -720,6 +725,9 @@ void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
 
         // update xyz.openbmc_project.State.Decorator.OperationalStatus
         setOperationStatus(entity.first, entity.second);
+
+        // update the Present Property
+        setPresentPropertyStatus(entity.first);
 
         for (auto& data : fruRecordData)
         {
