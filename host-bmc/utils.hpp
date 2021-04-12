@@ -28,7 +28,8 @@ const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_POWER_SUPPLY, "powersupply"},
     {PLDM_ENTITY_MEMORY_MODULE, "dimm"},
     {PLDM_ENTITY_PROC, "cpu"},
-    {PLDM_ENTITY_SYSTEM_LOGICAL, "system"}};
+    {PLDM_ENTITY_SYSTEM_LOGICAL, "system"},
+    {PLDM_ENTITY_PROC | 0x8000, "core"}};
 
 namespace hostbmc
 {
