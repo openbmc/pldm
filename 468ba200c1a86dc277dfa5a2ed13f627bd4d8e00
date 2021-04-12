@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef034f85_96039e83",
+        "filename": "host-bmc/custom_dbus.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-12T08:34:21Z",
+      "side": 1,
+      "message": "ObjectPath",
+      "revId": "468ba200c1a86dc277dfa5a2ed13f627bd4d8e00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
