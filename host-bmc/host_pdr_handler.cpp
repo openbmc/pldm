@@ -1004,6 +1004,10 @@ void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
 
             // update xyz.openbmc_project.State.Decorator.OperationalStatus
             setOperationStatus(entity.first, node);
+
+            // update the Present Property
+            setPresentPropertyStatus(entity.first);
+
             for (auto& data : fruRecordData)
             {
                 if (fruRSI != data.fruRSI)
@@ -1154,6 +1158,11 @@ void HostPDRHandler::setOperationStatus(const std::string& path,
         // Get sensorOpState property by the getStateSensorReadings command.
         getPresentStateBySensorReadigs(sensor.first.sensorID, state, path);
     }
+}
+
+void HostPDRHandler::setPresentPropertyStatus(const std::string& path)
+{
+    CustomDBus::getCustomDBus().updateItemPresentStatus(path);
 }
 
 void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
