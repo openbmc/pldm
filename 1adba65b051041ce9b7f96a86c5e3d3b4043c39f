@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62a3d3ae_5c25d06e",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-12T03:21:49Z",
+      "side": 1,
+      "message": "return PLDM_SUCCESS since the decode is successful.",
+      "range": {
+        "startLine": 348,
+        "startChar": 9,
+        "endLine": 348,
+        "endChar": 25
+      },
+      "revId": "1adba65b051041ce9b7f96a86c5e3d3b4043c39f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6991d286_f883eaad",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-12T03:21:49Z",
+      "side": 1,
+      "message": "This check should happen first, before decoding the completion code.",
+      "range": {
+        "startLine": 351,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 2
+      },
+      "revId": "1adba65b051041ce9b7f96a86c5e3d3b4043c39f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "317715ed_ddc3694d",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-12T03:21:49Z",
+      "side": 1,
+      "message": "Append pldm_, I see it for other request/response structs",
+      "range": {
+        "startLine": 89,
+        "startChar": 7,
+        "endLine": 89,
+        "endChar": 26
+      },
+      "revId": "1adba65b051041ce9b7f96a86c5e3d3b4043c39f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
