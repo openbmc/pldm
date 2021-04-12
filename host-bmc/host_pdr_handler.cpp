@@ -949,6 +949,9 @@ void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
             pldm_entity node = pldm_entity_extract(entity.second);
             auto fruRSI = getRSI(fruRecordSetPDRs, node);
 
+            // update the Present Property
+            setPresentPropertyStatus(entity.first);
+
             for (auto& data : fruRecordData)
             {
                 if (fruRSI != data.fruRSI)
@@ -1112,6 +1115,11 @@ void HostPDRHandler::setOperationStatus()
                                            sensorMapIndex->first);
         }
     }
+}
+
+void HostPDRHandler::setPresentPropertyStatus(const std::string& path)
+{
+    CustomDBus::getCustomDBus().updateItemPresentStatus(path);
 }
 
 void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
