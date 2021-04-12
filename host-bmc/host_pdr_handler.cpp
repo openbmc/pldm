@@ -1,12 +1,11 @@
 #include "config.h"
 
-#include "host_pdr_handler.hpp"
-
 #include "libpldm/fru.h"
 #include "libpldm/requester/pldm.h"
 #include "oem/ibm/libpldm/fru.h"
 
 #include "custom_dbus.hpp"
+#include "host_pdr_handler.hpp"
 
 #include <assert.h>
 
@@ -709,6 +708,11 @@ void HostPDRHandler::setOperationStatus(const std::string& path,
     }
 }
 
+void HostPDRHandler::setPresentPropertyStatus(const std::string& path)
+{
+    CustomDBus::getCustomDBus().updateCorePresentStatus(path);
+}
+
 void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
 {
     getFRURecordTableByHost();
@@ -719,6 +723,9 @@ void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
 
         // update xyz.openbmc_project.State.Decorator.OperationalStatus
         setOperationStatus(entity.first, entity.second);
+
+        // update the Present Property
+        setPresentPropertyStatus(entity.first);
 
         for (auto& data : fruRecordData)
         {
