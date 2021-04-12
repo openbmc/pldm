@@ -21,7 +21,8 @@ using ObjectPathMaps = std::map<ObjectPath, pldm_entity>;
 
 const std::map<EntityType, EntityName> entityMaps = {
     {45, "chassis"},      {60, "io_board"}, {64, "motherboard"},
-    {120, "powersupply"}, {66, "dimm"},     {135, "cpu"}};
+    {120, "powersupply"}, {142, "dimm"},    {135, "cpu"},
+    {32903, "core"}};
 
 namespace hostbmc
 {
