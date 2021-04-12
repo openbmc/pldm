@@ -260,6 +260,12 @@ class HostPDRHandler
      */
     void setOperationStatus(const std::string& path, const pldm_entity& entity);
 
+    /** @brief Set the Present dbus Property
+     *  @param[in] path     - object path
+     *  @return
+     */
+    void setPresentPropertyStatus(const std::string& path);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
