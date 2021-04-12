@@ -56,5 +56,23 @@ bool CustomDBus::getOperationalStatus(const std::string& path) const
     return false;
 }
 
+void CustomDBus::updateItemPresentStatus(const std::string& path)
+{
+    if (presentStatus.find(path) == presentStatus.end())
+    {
+        presentStatus.emplace(
+            path, std::make_unique<ItemIntf>(pldm::utils::DBusHandler::getBus(),
+                                             path.c_str()));
+    }
+
+    std::filesystem::path ObjectPath(path);
+
+    // Hardcode the present dbus property to true
+    presentStatus.at(path)->present(true);
+
+    // Set the pretty name dbus property to the filename
+    // form the dbus path object
+    presentStatus.at(path)->prettyName(ObjectPath.filename());
+}
 } // namespace dbus
 } // namespace pldm
