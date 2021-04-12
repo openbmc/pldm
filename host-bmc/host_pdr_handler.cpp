@@ -1284,6 +1284,11 @@ bool HostPDRHandler::getValidity(const pldm::pdr::TerminusID& tid)
     return false;
 }
 
+void HostPDRHandler::setPresentPropertyStatus(const std::string& path)
+{
+    CustomDBus::getCustomDBus().updateItemPresentStatus(path);
+}
+
 void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
     getFRURecordTableMetadataByHost(fruRecordSetPDRs);
@@ -1293,6 +1298,12 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 
     // update xyz.openbmc_project.State.Decorator.OperationalStatus
     setOperationStatus();
+
+    for (const auto& entity : objPathMap)
+    {
+        // update the Present Property
+        setPresentPropertyStatus(entity.first);
+    }
 }
 
 } // namespace pldm
