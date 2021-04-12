@@ -4,6 +4,7 @@
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/server.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
 #include <map>
@@ -23,6 +24,8 @@ using LocationIntf = sdbusplus::server::object::object<
 using OperationalStatusIntf =
     sdbusplus::server::object::object<sdbusplus::xyz::openbmc_project::State::
                                           Decorator::server::OperationalStatus>;
+using ItemIntf = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::server::Item>;
 
 /** @class CustomDBus
  *  @brief This is a custom D-Bus object, used to add D-Bus interface and update
@@ -80,11 +83,18 @@ class CustomDBus
      */
     bool getOperationalStatus(const std::string& path) const;
 
+    /** @brief Set the Inventory Item property
+     *  @param[in] path - The object path
+     */
+    void updateItemPresentStatus(const std::string& path);
+
   private:
     std::map<ObjectPath, std::unique_ptr<LocationIntf>> location;
 
     std::map<ObjectPath, std::unique_ptr<OperationalStatusIntf>>
         operationalStatus;
+
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemIntf>> presentStatus;
 };
 
 } // namespace dbus
