@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4467f44c_9fe71884",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T03:27:26Z",
+      "side": 1,
+      "message": "I prefer to define this method as a method of the class(pldm::responder::oem_ibm_platform::Handler), otherwise, it is better to be a template.\n\nlike: \nhttps://github.com/openbmc/pldm/blob/master/libpldmresponder/pdr_numeric_effecter.hpp#L27",
+      "range": {
+        "startLine": 149,
+        "startChar": 5,
+        "endLine": 149,
+        "endChar": 34
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d47801ae_f22daf1f",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T03:27:26Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 200,
+        "startChar": 5,
+        "endLine": 200,
+        "endChar": 32
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b837f274_40b44d5c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T03:27:26Z",
+      "side": 1,
+      "message": "why defined a virtual?",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 11
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "903a4ff1_379d9864",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T03:27:26Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 93,
+        "endChar": 11
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b384bad_02c62b2a",
+        "filename": "oem/ibm/test/libpldmresponder_oem_platform_test.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T03:27:26Z",
+      "side": 1,
+      "message": "I think we need to mock the getNextEffecterId and getNextSensorId method.\notherwise, I think we can remove this class.",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 5
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
