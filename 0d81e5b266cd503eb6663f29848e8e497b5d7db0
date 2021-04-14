@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "3db7d68b_fb147269",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T07:26:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b506eff8_02058c70",
+      "range": {
+        "startLine": 149,
+        "startChar": 5,
+        "endLine": 149,
+        "endChar": 34
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d47801ae_f22daf1f",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 9
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "0d60855f_d3feb8a2",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T07:26:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "65981ff8_a622a930",
+      "range": {
+        "startLine": 200,
+        "startChar": 5,
+        "endLine": 200,
+        "endChar": 32
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b837f274_40b44d5c",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 9
@@ -131,6 +179,30 @@
       "side": 1,
       "message": "this is to make sure we don\u0027t trigger the actual function , but instead we use this as a mocked function in the derived mock class",
       "parentUuid": "b837f274_40b44d5c",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 11
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5689f36f_a9c0c476",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T07:26:49Z",
+      "side": 1,
+      "message": "Yes, I left this comment is because I do not see you used these methods in UTest.cpp\nAck.",
+      "parentUuid": "aecc3a40_8ffd999f",
       "range": {
         "startLine": 83,
         "startChar": 4,
@@ -210,6 +282,30 @@
       "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83681367_abb3c018",
+        "filename": "oem/ibm/test/libpldmresponder_oem_platform_test.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-14T07:26:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "98f80fb5_2f2c0b9d",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 5
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
