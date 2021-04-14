@@ -37,6 +37,15 @@
          "displayName" : "Number Huge Pages"
       },
       {
+         "attribute_name" : "hb_huge_page_size",
+         "lower_bound" : 0,
+         "upper_bound" : 255,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "helpText" : "Specifies the size of huge pages, requires a reboot for a change to be applied.",
+         "displayName" : "Huge Page Size"
+      },
+      {
          "attribute_name" : "hb_memory_region_size",
          "lower_bound" : 0,
          "upper_bound" : 255,
