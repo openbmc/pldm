@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "144556d3_d70bdd63",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-14T10:53:14Z",
+      "side": 1,
+      "message": "What about this ?, let me know if i am missing something ?",
+      "parentUuid": "fffbdc12_e042dd5e",
+      "range": {
+        "startLine": 1579,
+        "startChar": 20,
+        "endLine": 1579,
+        "endChar": 35
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "71a2f620_53c050af",
         "filename": "libpldm/platform.h",
         "patchSetId": 7
