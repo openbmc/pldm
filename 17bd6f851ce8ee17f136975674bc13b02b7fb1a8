@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f718cbce_39e15a20",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-14T10:28:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "966bde27_0099f2a2",
+      "range": {
+        "startLine": 1551,
+        "startChar": 39,
+        "endLine": 1551,
+        "endChar": 47
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fffbdc12_e042dd5e",
         "filename": "libpldm/platform.c",
         "patchSetId": 7
@@ -71,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "898a5163_66f1f337",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 1503,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-14T10:28:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71a2f620_53c050af",
+      "range": {
+        "startLine": 1503,
+        "startChar": 42,
+        "endLine": 1503,
+        "endChar": 47
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "457fbf87_c941e5e2",
         "filename": "libpldm/platform.h",
         "patchSetId": 7
@@ -91,6 +139,30 @@
       "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c755aefc_07f9039c",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-14T10:28:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "457fbf87_c941e5e2",
+      "range": {
+        "startLine": 1508,
+        "startChar": 21,
+        "endLine": 1508,
+        "endChar": 52
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
