@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "83e7e0a8_b2ee2fbd",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1579,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-14T11:34:08Z",
+      "side": 1,
+      "message": "\u003e why are we overwriting what is present in the completion_code pointer ?\n\nif the CC is not success then host has not agreed to the command and sent some error code as return. so we do not decode futher fields in the response packet and just return the CC. and return PLDM_SUCCESS from the decode function because the decode function did not fail logically",
+      "parentUuid": "144556d3_d70bdd63",
+      "range": {
+        "startLine": 1579,
+        "startChar": 20,
+        "endLine": 1579,
+        "endChar": 35
+      },
+      "revId": "17bd6f851ce8ee17f136975674bc13b02b7fb1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "71a2f620_53c050af",
         "filename": "libpldm/platform.h",
         "patchSetId": 7
