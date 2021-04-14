@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "430f47ab_d8d51675",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-14T18:01:53Z",
+      "side": 1,
+      "message": "Hmm, this isn\u0027t going to work. phosphor-state-manager has a design point that it owns this property and it\u0027s solely based on the obmc-host-*.target systemd states. https://github.com/openbmc/docs/blob/master/designs/bmc-reset-with-host-up.md has some design points but basically there\u0027s some fairly complicated systemd services and applications that run in phosphor-state-manager to ensure all systemd targets and services get into the right state in situations where the BMC is reset and the host is up. What phosphor-state-manager needs though is to know from PLDM if the host is running (i.e. all the other logic in this commit). I\u0027m wondering if there\u0027s a way state-manager could monitor for this PDR to be received? Worst case could we create a PDI property to indicate checking, hostUp, hostDown?",
+      "revId": "311c213d81463c8f86b7929861265f35d578416d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
