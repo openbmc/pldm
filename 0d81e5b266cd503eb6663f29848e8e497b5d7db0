@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b506eff8_02058c70",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-14T06:41:00Z",
+      "side": 1,
+      "message": "we can do this as a part of seperate commit, lets stick to getting the ibm tests working with this commit.",
+      "parentUuid": "4467f44c_9fe71884",
+      "range": {
+        "startLine": 149,
+        "startChar": 5,
+        "endLine": 149,
+        "endChar": 34
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d47801ae_f22daf1f",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 9
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "65981ff8_a622a930",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-14T06:41:00Z",
+      "side": 1,
+      "message": "lets take it in a different commit",
+      "parentUuid": "d47801ae_f22daf1f",
+      "range": {
+        "startLine": 200,
+        "startChar": 5,
+        "endLine": 200,
+        "endChar": 32
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b837f274_40b44d5c",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 9
@@ -59,6 +107,30 @@
       "writtenOn": "2021-04-14T03:27:26Z",
       "side": 1,
       "message": "why defined a virtual?",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 11
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aecc3a40_8ffd999f",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-14T06:41:00Z",
+      "side": 1,
+      "message": "this is to make sure we don\u0027t trigger the actual function , but instead we use this as a mocked function in the derived mock class",
+      "parentUuid": "b837f274_40b44d5c",
       "range": {
         "startLine": 83,
         "startChar": 4,
@@ -105,6 +177,30 @@
       "writtenOn": "2021-04-14T03:27:26Z",
       "side": 1,
       "message": "I think we need to mock the getNextEffecterId and getNextSensorId method.\notherwise, I think we can remove this class.",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 5
+      },
+      "revId": "0d81e5b266cd503eb6663f29848e8e497b5d7db0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98f80fb5_2f2c0b9d",
+        "filename": "oem/ibm/test/libpldmresponder_oem_platform_test.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-14T06:41:00Z",
+      "side": 1,
+      "message": "Agree , these can be mocked, done .",
+      "parentUuid": "7b384bad_02c62b2a",
       "range": {
         "startLine": 42,
         "startChar": 4,
