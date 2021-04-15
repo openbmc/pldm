@@ -41,6 +41,28 @@
         }]
     },
     {
+        "type" : 45,
+        "instance" : 0,
+        "container" : 0,
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/physical/virtual_enc_id",
+                "interface": "xyz.openbmc_project.Led.Physical",
+                "property_name": "State",
+                "property_type": "string",
+                "property_values": [
+                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink",
+                         "xyz.openbmc_project.Led.Physical.Action.Off"
+                ]
+             }
+        }]
+    },
+    {
         "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/base_op_panel_blyth",
         "sensors" : [{
             "set" : {
@@ -362,6 +384,28 @@
                 "property_name": "Asserted",
                 "property_type": "bool",
                 "property_values" : [true, false]
+             }
+        }]
+    },
+    {
+        "type" : 45,
+        "instance" : 0,
+        "container" : 0,
+        "sensors" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/physical/virtual_enc_fault",
+                "interface": "xyz.openbmc_project.Led.Physical",
+                "property_name": "State",
+                "property_type": "string",
+                "property_values": [
+                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink",
+                         "xyz.openbmc_project.Led.Physical.Action.Off"
+                ]
              }
         }]
     }]
