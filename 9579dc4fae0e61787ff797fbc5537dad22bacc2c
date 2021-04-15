@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f893c5c_c0f97a87",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-15T05:54:14Z",
+      "side": 1,
+      "message": "Also for sensors, what really matters is [ whether it is in Identify state or no.. So, the value of [Blink || On] really means it\u0027s in Identify state.\n\nIt needs to be similar to what we have for other non enclosure sensors. But just that, we use different D-Bus objects\n\nIf [off], then it means, it\u0027s not in Identify state",
+      "revId": "9579dc4fae0e61787ff797fbc5537dad22bacc2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
