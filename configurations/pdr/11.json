@@ -31,6 +31,44 @@
         }]
     },
     {
+        "type" : 45,
+        "instance" : 0,
+        "container" : 0,
+        "effecters" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/enclosure_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
+        "type" : 45,
+        "instance" : 0,
+        "container" : 0,
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/enclosure_fault",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
         "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/base_op_panel_blyth",
         "effecters" : [{
             "set" : {
