@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ac31bb59_189fa9a7",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1562,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-16T07:24:00Z",
+      "side": 1,
+      "message": "Sorry\nif ((event_message_global_enable \u003d\u003d PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE)",
+      "parentUuid": "5b6114bc_85fa7edf",
+      "range": {
+        "startLine": 1558,
+        "startChar": 1,
+        "endLine": 1562,
+        "endChar": 2
+      },
+      "revId": "4c566c7f766263164ff2a0fdbbb5bcd835af7c57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ba1c18e1_76bbe2d5",
         "filename": "libpldm/platform.c",
         "patchSetId": 9
