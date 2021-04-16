@@ -744,13 +744,22 @@ void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
             {
                 for (auto& tlv : data.fruTLV)
                 {
-                    if (tlv.fruFieldType ==
-                        PLDM_OEM_FRU_FIELD_TYPE_LOCATION_CODE)
+                    switch (tlv.fruFieldType)
                     {
-                        CustomDBus::getCustomDBus().setLocationCode(
-                            entity.first,
-                            std::string(reinterpret_cast<const char*>(
-                                tlv.fruFieldValue.data())));
+                        case PLDM_OEM_FRU_FIELD_TYPE_LOCATION_CODE:
+                            CustomDBus::getCustomDBus().setLocationCode(
+                                entity.first,
+                                std::string(reinterpret_cast<const char*>(
+                                    tlv.fruFieldValue.data())));
+                            break;
+                        case PLDM_OEM_FRU_FIELD_TYPE_MRU_ID:
+                            CustomDBus::getCustomDBus().updateIdProperty(
+                                entity.first,
+                                std::string(reinterpret_cast<const char*>(
+                                    tlv.fruFieldValue.data())));
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
