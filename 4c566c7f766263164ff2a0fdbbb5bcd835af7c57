@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b6114bc_85fa7edf",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1562,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-16T07:02:54Z",
+      "side": 1,
+      "message": "I do not think this is correct:\nfrom DSP0248_1.2.0 Table 13:\nAbout heartbeatTime:\n```\nThis field is mandatory if eventMessageGlobalEnable above is set to enableAsyncKeepAlive. This field shall be omitted from the request data if eventMessageGlobalEnable is set to any other value. (This preserves backward compatibility with previous versions of this specification.)\n```\n\nSo, I think it should be like this:\n```\nstruct pldm_set_event_receiver_req *request \u003d\n\t    (struct pldm_set_event_receiver_req *)msg-\u003epayload;\n\nrequest-\u003eevent_message_global_enable \u003d event_message_global_enable;\nrequest-\u003etransport_protocol_type \u003d transport_protocol_type;\nrequest-\u003eevent_receiver_address_info \u003d event_receiver_address_info;\n\nif ((event_message_global_enable !\u003d\n\t PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE){\n    if (heartbeat_timer \u003d\u003d 0) {\n        return error;\n    }\n    request-\u003eheartbeat_timer \u003d heartbeat_timer;\n}\n```\n\n@Manoj, @Sampa, What do you think?",
+      "range": {
+        "startLine": 1558,
+        "startChar": 1,
+        "endLine": 1562,
+        "endChar": 2
+      },
+      "revId": "4c566c7f766263164ff2a0fdbbb5bcd835af7c57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba1c18e1_76bbe2d5",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-16T07:02:54Z",
+      "side": 1,
+      "message": "htole16(heartbeat_timer)",
+      "range": {
+        "startLine": 1569,
+        "startChar": 28,
+        "endLine": 1569,
+        "endChar": 43
+      },
+      "revId": "4c566c7f766263164ff2a0fdbbb5bcd835af7c57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be977500_59dcd4b5",
+        "filename": "libpldm/tests/libpldm_platform_test.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1888,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-16T07:02:54Z",
+      "side": 1,
+      "message": "le16toh(req-\u003eheartbeat_timer)",
+      "range": {
+        "startLine": 1888,
+        "startChar": 30,
+        "endLine": 1888,
+        "endChar": 50
+      },
+      "revId": "4c566c7f766263164ff2a0fdbbb5bcd835af7c57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
