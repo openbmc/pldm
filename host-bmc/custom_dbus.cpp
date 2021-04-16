@@ -74,5 +74,17 @@ void CustomDBus::updateItemPresentStatus(const std::string& path)
     // form the dbus path object
     presentStatus.at(path)->prettyName(ObjectPath.filename());
 }
+
+void CustomDBus::updateIdProperty(const std::string& path,
+                                  const string& idValue)
+{
+    if (id.find(path) == id.end())
+    {
+        id.emplace(path, std::make_unique<UniqueIdentifierIntf>(
+                             pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+    id.at(path)->uniqueIdentifier(idValue);
+}
+
 } // namespace dbus
 } // namespace pldm

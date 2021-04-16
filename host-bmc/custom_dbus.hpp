@@ -4,6 +4,7 @@
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
+#include <xyz/openbmc_project/Inventory/Decorator/UniqueIdentifier/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/server.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
@@ -23,6 +24,8 @@ using LocationIntf =
 using OperationalStatusIntf = sdbusplus::xyz::openbmc_project::State::
     Decorator::server::OperationalStatus;
 using ItemIntf = sdbusplus::xyz::openbmc_project::Inventory::server::Item;
+using UniqueIdentifierIntf = sdbusplus::xyz::openbmc_project::Inventory::
+    Decorator::server::UniqueIdentifier;
 
 /** @class CustomDBus
  *  @brief This is a custom D-Bus object, used to add D-Bus interface and update
@@ -85,13 +88,17 @@ class CustomDBus
      */
     void updateItemPresentStatus(const std::string& path);
 
+    /** @brief Set the Id property
+     *  @param[in] path - The object path
+     */
+    void updateIdProperty(const std::string& path, const std::stirng& id);
+
   private:
     std::map<ObjectPath, std::unique_ptr<LocationIntf>> location;
-
     std::map<ObjectPath, std::unique_ptr<OperationalStatusIntf>>
         operationalStatus;
-
     std::unordered_map<ObjectPath, std::unique_ptr<ItemIntf>> presentStatus;
+    std::unordered_map<ObjectPath, std::unique_ptr<UniqueIdentifierIntf>> id;
 };
 
 } // namespace dbus
