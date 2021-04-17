@@ -2,7 +2,7 @@ deps = [
   phosphor_dbus_interfaces,
   sdbusplus,
   sdeventplus,
-  libpldm,
+  libpldm_dep,
   libpldmutils
 ]
 

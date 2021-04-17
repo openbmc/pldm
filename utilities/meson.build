@@ -1,4 +1,4 @@
-deps = [ libpldm, sdeventplus ]
+deps = [ libpldm_dep, sdeventplus ]
 
 executable('set-state-effecter', 'requester/set_state_effecter.cpp',
            implicit_include_directories: false,

@@ -63,7 +63,7 @@ libpldmutils = library(
   'common/utils.cpp',
   version: meson.project_version(),
   dependencies: [
-      libpldm,
+      libpldm_dep,
       phosphor_dbus_interfaces,
       sdbusplus,
   ],
@@ -77,7 +77,7 @@ libpldmutils = declare_dependency(
 subdir('libpldmresponder')
 
 deps = [
-  libpldm,
+  libpldm_dep,
   libpldmutils,
   libpldmresponder,
   libpldmutils,
