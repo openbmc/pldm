@@ -38,7 +38,7 @@ foreach t : tests
                      link_args: dynamic_linker,
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
                      dependencies: [
-                         libpldm,
+                         libpldm_dep,
                          gtest,
                          gmock]),
        workdir: meson.current_source_dir())

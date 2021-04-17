@@ -1,5 +1,5 @@
 deps = [
-    libpldm,
+    libpldm_dep,
     libpldmutils,
     sdeventplus,
     sdbusplus,
