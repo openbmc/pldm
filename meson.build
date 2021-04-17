@@ -41,8 +41,8 @@ if get_option('oem-ibm').enabled()
   conf_data.set_quoted('LID_ALTERNATE_PATCH_DIR', '/usr/local/share/hostfw/alternate')
   conf_data.set_quoted('LID_STAGING_DIR', '/var/lib/phosphor-software-manager/hostfw/staging')
   conf_data.set('DMA_MAXSIZE', get_option('oem-ibm-dma-maxsize'))
-  add_global_arguments('-DOEM_IBM', language : 'c')
-  add_global_arguments('-DOEM_IBM', language : 'cpp')
+  add_project_arguments('-DOEM_IBM', language : 'c')
+  add_project_arguments('-DOEM_IBM', language : 'cpp')
 endif
 configure_file(output: 'config.h',
   configuration: conf_data
