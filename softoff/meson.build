@@ -15,10 +15,8 @@ executable('pldm-softpoweroff',source,
            install: true,
            install_dir: get_option('bindir'))
 
-servicedir = systemd.get_pkgconfig_variable('systemdsystemunitdir')
-
 configure_file(input: 'services/pldmSoftPowerOff.service',
                  output: 'pldmSoftPowerOff.service',
                  copy: true,
-                 install_dir: servicedir)
+                 install_dir: systemd_system_unit_dir)
 
