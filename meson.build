@@ -48,10 +48,43 @@ configure_file(output: 'config.h',
   configuration: conf_data
 )
 
-phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
-sdbusplus = dependency('sdbusplus')
-sdeventplus = dependency('sdeventplus')
+phosphor_dbus_interfaces = dependency(
+  'phosphor-dbus-interfaces',
+  fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
+)
+sdbusplus = dependency(
+  'sdbusplus',
+  fallback: ['sdbusplus', 'sdbusplus_dep'],
+)
+sdeventplus = dependency(
+  'sdeventplus',
+  fallback: ['sdeventplus', 'sdeventplus_dep'],
+)
 systemd = dependency('systemd')
+
+cpp = meson.get_compiler('cpp')
+
+if cpp.has_header('nlomann/json.hpp')
+  nlohmann_json = declare_dependency()
+else
+  subproject('nlohmann-json')
+  nlohmann_json = declare_dependency(
+    include_directories: [
+      'subprojects/nlohmann-json/single_include',
+      'subprojects/nlohmann-json/single_include/nlohmann',
+    ]
+  )
+endif
+
+if cpp.has_header('CLI/CLI.hpp')
+  CLI11_dep = declare_dependency()
+else
+  CLI11_dep = dependency(
+    'CLI11',
+    fallback: [ 'CLI11', 'CLI11_dep' ],
+  )
+endif
+
 
 subdir('libpldm')
 
@@ -65,6 +98,7 @@ libpldmutils = library(
   dependencies: [
       libpldm_dep,
       phosphor_dbus_interfaces,
+      nlohmann_json,
       sdbusplus,
   ],
   install: true,
@@ -81,6 +115,7 @@ deps = [
   libpldmutils,
   libpldmresponder,
   libpldmutils,
+  nlohmann_json,
   sdbusplus,
   sdeventplus,
   phosphor_dbus_interfaces

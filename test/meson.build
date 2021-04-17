@@ -58,6 +58,7 @@ foreach t : tests
                          libpldmutils,
                          gtest,
                          gmock,
+                         nlohmann_json,
                          pldmd,
                          phosphor_dbus_interfaces,
                          sdeventplus,

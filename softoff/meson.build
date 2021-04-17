@@ -1,6 +1,7 @@
 deps = [
     libpldm_dep,
     libpldmutils,
+    nlohmann_json,
     sdeventplus,
     sdbusplus,
     phosphor_dbus_interfaces,
