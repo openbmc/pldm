@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08dafd00_da7f720a",
+        "filename": "test/meson.build",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-19T04:50:33Z",
+      "side": 1,
+      "message": "should we also create wraps for gtest \u0026 gmock ?\ni see gtest is available in meson wrap database - https://wrapdb.mesonbuild.com/gtest",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 5
+      },
+      "revId": "274241d2e01e393af802b1f3b1f437683816bc47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
