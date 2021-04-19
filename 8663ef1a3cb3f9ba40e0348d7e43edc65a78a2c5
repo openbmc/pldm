@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1454c500_54823de8",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-19T06:43:30Z",
+      "side": 1,
+      "message": "I do not understand why need a return value(Response), it should `void`.\nBecause, it is requester is BMC, and responser is HOST.\nFor this command, it is HOST to BMC, So we do not need to send data to HOST again, Correct?",
+      "range": {
+        "startLine": 255,
+        "startChar": 4,
+        "endLine": 255,
+        "endChar": 12
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df62e528_b745d56d",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-19T06:43:30Z",
+      "side": 1,
+      "message": "I think we should separate the two methods, instead of `bool`, like this:\n\nFor Requester Handle:\n```\n Response reqHandle(Command pldmCommand, const pldm_msg* request, size_t reqMsgLen)\n{\n    return reqHandlers.at(pldmCommand)(request, reqMsgLen);\n}\n```\n\nFor Responser Handler:\n```\n void respHandle(Command pldmCommand, const pldm_msg* request, size_t reqMsgLen)\n{\n    return respHandlers.at(pldmCommand)(request, reqMsgLen);\n}\n```",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea09733a_901c9f79",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-19T06:43:30Z",
+      "side": 1,
+      "message": "Add doxygen",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 48
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b4a265e_68a8d938",
+        "filename": "pldmd/invoker.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-19T06:43:30Z",
+      "side": 1,
+      "message": "As above:\n\nFor Requester Handle:\n```\nResponse reqHandle(Type pldmType, Command pldmCommand, const pldm_msg* request,\n                    size_t reqMsgLen, bool isRespMsg)\n{\n    return handlers.at(pldmType)-\u003ereqHandle(pldmCommand, request, reqMsgLen,\n                                             isRespMsg);\n}\n```\n\nFor Responser Handler:\n```\nvoid respHandle(Type pldmType, Command pldmCommand, const pldm_msg* request,\n                    size_t reqMsgLen, bool isRespMsg)\n{\n    return handlers.at(pldmType)-\u003erespHandle(pldmCommand, request, reqMsgLen,\n                                             isRespMsg);\n}\n```",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6598343_99a61358",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-19T06:43:30Z",
+      "side": 1,
+      "message": "Add `return response`;",
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06596261_47d465e9",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-19T06:43:30Z",
+      "side": 1,
+      "message": "nit: I like use `switch case` instead of `if, else if, else if...`",
+      "range": {
+        "startLine": 71,
+        "startChar": 3,
+        "endLine": 71,
+        "endChar": 48
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
