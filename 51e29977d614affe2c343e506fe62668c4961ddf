@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a36abf5d_85155148",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-19T05:34:13Z",
+      "side": 1,
+      "message": "should this not be in a separate enum ? that captures all the commands that are related to firmware_update ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 43
+      },
+      "revId": "51e29977d614affe2c343e506fe62668c4961ddf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6fbe469_a86aaca1",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-19T05:34:13Z",
+      "side": 1,
+      "message": "expand it to make it understandable .",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 27
+      },
+      "revId": "51e29977d614affe2c343e506fe62668c4961ddf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e152704_7f595332",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-19T05:34:13Z",
+      "side": 1,
+      "message": "Its just \"in\" in encode request right ?",
+      "range": {
+        "startLine": 18,
+        "startChar": 11,
+        "endLine": 18,
+        "endChar": 17
+      },
+      "revId": "51e29977d614affe2c343e506fe62668c4961ddf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
