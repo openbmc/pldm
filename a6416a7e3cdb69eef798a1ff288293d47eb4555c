@@ -16,6 +16,47 @@
       "revId": "a6416a7e3cdb69eef798a1ff288293d47eb4555c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3c854ad_b8384ab9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-19T05:18:29Z",
+      "side": 1,
+      "message": "+1\n\nAdding a new command type does not fall into the scope of refactoring.Please explicitly mention it here, if you want that change also in this commit.",
+      "parentUuid": "6ea14806_ce5fdeac",
+      "revId": "a6416a7e3cdb69eef798a1ff288293d47eb4555c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47e56f4f_7b8be8fc",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-19T05:18:29Z",
+      "side": 1,
+      "message": "Looking at the other definitions in this file this enum does not really seem to fit here, because the rest of them talks about the data types used in pldm and this talks about various supported command types.\n\nBut i would leave it to the maintainers to decide.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 7
+      },
+      "revId": "a6416a7e3cdb69eef798a1ff288293d47eb4555c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
