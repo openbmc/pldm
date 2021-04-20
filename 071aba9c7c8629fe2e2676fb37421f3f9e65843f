@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "53afc85e_a79f9b6f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "pointer to a design doc or a bit of detail will help",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 49
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a029fad_ce788229",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "what timer is this?",
+      "range": {
+        "startLine": 14,
+        "startChar": 26,
+        "endLine": 14,
+        "endChar": 31
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f8505fc_867bf92d",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "there is no override happening here",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fca84385_10121ee4",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "not sure where this is happening.",
+      "range": {
+        "startLine": 29,
+        "startChar": 11,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb7288b9_028474d9",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "Is there a need to fetch this each time?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ec10511_0faf3afb",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "What if BMC has the PDR but PHYP is not up or is rebooting?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64114dcd_adfa9d0a",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "Do you need to make a blocking call here?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5e25e2b_4cc2bb4e",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "This sections with #ifdefs keeps growing. I\u0027ve discussed this with Sampa in the past and we agreed on having a single entry point for OEM-IBM instead of several sections throughout this file.",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54798321_d3e58b13",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T11:16:27Z",
+      "side": 1,
+      "message": "It looks like this d-bus object path forms part of the lamp test API, so it needs to be documented in a d-bus interface file?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
