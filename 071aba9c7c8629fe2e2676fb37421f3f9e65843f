@@ -177,6 +177,23 @@
     },
     {
       "key": {
+        "uuid": "9be305ba_fbf77fc3",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T12:29:04Z",
+      "side": 1,
+      "message": "I think you should throw a d-bus exception here (if you cant find the effecter) to let the caller handle it.",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4ec10511_0faf3afb",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -194,6 +211,46 @@
     },
     {
       "key": {
+        "uuid": "50aa7899_1b90d400",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T12:29:04Z",
+      "side": 1,
+      "message": "When value\u003dtrue, you\u0027re not checking the error returned from setHostStateEffecter and always setting this to true.\n\nThis probably also means a unit test did not catch this.",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3672b643_bd21110f",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T12:29:04Z",
+      "side": 1,
+      "message": "use c++ style cast",
+      "range": {
+        "startLine": 67,
+        "startChar": 31,
+        "endLine": 67,
+        "endChar": 39
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "64114dcd_adfa9d0a",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -205,6 +262,23 @@
       "writtenOn": "2021-04-20T11:16:27Z",
       "side": 1,
       "message": "Do you need to make a blocking call here?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e60033f_40994cc8",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-20T12:29:04Z",
+      "side": 1,
+      "message": "All these errors should result in a d-bus exception back to the caller.",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
