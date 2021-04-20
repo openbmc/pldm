@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "427c24d0_77b22569",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-20T10:14:07Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "826b6c4a_455544f9",
+      "range": {
+        "startLine": 12,
+        "startChar": 18,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "1dbabf7e1e7066581bc116fb01ebab18d6eef373",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "add9a0b9_2b030f3f",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2021-04-06T07:43:26Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 12,
+        "startChar": 26,
+        "endLine": 12,
+        "endChar": 37
+      },
+      "revId": "1dbabf7e1e7066581bc116fb01ebab18d6eef373",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95de2be4_dc1dea4f",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-20T10:14:07Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "add9a0b9_2b030f3f",
       "range": {
         "startLine": 12,
         "startChar": 26,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "1b787463_577998c9",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-20T10:14:07Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "8946c44b_9a912a27",
+      "range": {
+        "startLine": 14,
+        "startChar": 27,
+        "endLine": 14,
+        "endChar": 37
+      },
+      "revId": "1dbabf7e1e7066581bc116fb01ebab18d6eef373",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4e58dcee_47cdcad8",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 1
@@ -82,6 +154,24 @@
       "writtenOn": "2021-04-06T07:43:26Z",
       "side": 1,
       "message": "A blank line to separate the comment and the decode function.",
+      "revId": "1dbabf7e1e7066581bc116fb01ebab18d6eef373",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71c90d94_21ee3381",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-20T10:14:07Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "4e58dcee_47cdcad8",
       "revId": "1dbabf7e1e7066581bc116fb01ebab18d6eef373",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
