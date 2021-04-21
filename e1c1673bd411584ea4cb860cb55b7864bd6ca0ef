@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a00c1927_ad894de9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "499b5fc4_4b787b5f",
+      "range": {
+        "startLine": 7,
+        "startChar": 44,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7d54f507_8bf3f384",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2021-04-12T03:23:30Z",
       "side": 1,
       "message": "1.1.0",
+      "range": {
+        "startLine": 12,
+        "startChar": 31,
+        "endLine": 12,
+        "endChar": 36
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9a76a31_6e6ac7e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "7d54f507_8bf3f384",
       "range": {
         "startLine": 12,
         "startChar": 31,
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "ea8fbd4e_ce96e769",
+        "filename": "libpldm/base.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "this is a genreic api to create pldm header",
+      "parentUuid": "f9cf2e70_f661eac7",
+      "range": {
+        "startLine": 467,
+        "startChar": 50,
+        "endLine": 467,
+        "endChar": 63
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4aabf0cb_ad7990e1",
         "filename": "libpldm/base.h",
         "patchSetId": 2
@@ -105,6 +177,30 @@
       "writtenOn": "2021-04-12T02:57:35Z",
       "side": 1,
       "message": "In the PLDM header the message type comes first, we can move this arg as the first one.",
+      "range": {
+        "startLine": 472,
+        "startChar": 3,
+        "endLine": 472,
+        "endChar": 42
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7eb42886_d3f891f0",
+        "filename": "libpldm/base.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "4aabf0cb_ad7990e1",
       "range": {
         "startLine": 472,
         "startChar": 3,
@@ -140,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "15be4078_c8e6d047",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "b31b65b5_494f61f1",
+      "range": {
+        "startLine": 300,
+        "startChar": 9,
+        "endLine": 300,
+        "endChar": 34
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d62ff7c_55e55ab2",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 2
@@ -151,6 +271,30 @@
       "writtenOn": "2021-04-12T02:57:35Z",
       "side": 1,
       "message": "All the validation can happen first, before packing.",
+      "range": {
+        "startLine": 306,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 2
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "515e879a_f5ab62b8",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "3d62ff7c_55e55ab2",
       "range": {
         "startLine": 306,
         "startChar": 0,
@@ -186,6 +330,30 @@
     },
     {
       "key": {
+        "uuid": "a2c69064_b44e25bd",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "9c000467_5a3e8222",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 2
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cb6fcf26_ee8c2aaf",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 2
@@ -197,6 +365,30 @@
       "writtenOn": "2021-04-12T02:57:35Z",
       "side": 1,
       "message": "comp_image_set_ver_str_len can be checked if it same as comp_img_set_ver_str-\u003elength",
+      "range": {
+        "startLine": 319,
+        "startChar": 39,
+        "endLine": 319,
+        "endChar": 71
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6252a1d1_4fc9d246",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "cb6fcf26_ee8c2aaf",
       "range": {
         "startLine": 319,
         "startChar": 39,
@@ -232,6 +424,30 @@
     },
     {
       "key": {
+        "uuid": "619166d5_65025667",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "d7d81fa0_646925fb",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 27
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "20e2a9f6_d7b5b83e",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 2
@@ -243,6 +459,30 @@
       "writtenOn": "2021-04-12T02:57:35Z",
       "side": 1,
       "message": "Prepend PLDM_",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 18
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84d43d3b_75948144",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T07:31:08Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "20e2a9f6_d7b5b83e",
       "range": {
         "startLine": 25,
         "startChar": 0,
