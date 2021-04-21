@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "85f87700_c26cc173",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "10b6b3f2_0488feb3",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 49
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a029fad_ce788229",
         "filename": "/COMMIT_MSG",
         "patchSetId": 18
@@ -120,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "1e90122f_d1f480d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Sure, I will remove it.",
+      "parentUuid": "75402e64_aec87fe8",
+      "range": {
+        "startLine": 14,
+        "startChar": 26,
+        "endLine": 14,
+        "endChar": 31
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4f8505fc_867bf92d",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -131,6 +179,24 @@
       "writtenOn": "2021-04-20T11:16:27Z",
       "side": 1,
       "message": "there is no override happening here",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b819c47a_480309cb",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Right, renamed getAsserted",
+      "parentUuid": "4f8505fc_867bf92d",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -184,6 +250,30 @@
     },
     {
       "key": {
+        "uuid": "edb32e1c_6c0ec155",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Udpated description",
+      "parentUuid": "70fe8e3c_61ea79c3",
+      "range": {
+        "startLine": 29,
+        "startChar": 11,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fb7288b9_028474d9",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -195,6 +285,24 @@
       "writtenOn": "2021-04-20T11:16:27Z",
       "side": 1,
       "message": "Is there a need to fetch this each time?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b899a18b_929aedc1",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "need to fetch when effecterID \u003d\u003d 0\nupdated",
+      "parentUuid": "fb7288b9_028474d9",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -218,6 +326,24 @@
     },
     {
       "key": {
+        "uuid": "26fcf480_ee845393",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "9be305ba_fbf77fc3",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4ec10511_0faf3afb",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -235,6 +361,24 @@
     },
     {
       "key": {
+        "uuid": "67461e05_482621ee",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Ack.\nCatch the return value and log the error",
+      "parentUuid": "4ec10511_0faf3afb",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "50aa7899_1b90d400",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -246,6 +390,24 @@
       "writtenOn": "2021-04-20T12:29:04Z",
       "side": 1,
       "message": "When value\u003dtrue, you\u0027re not checking the error returned from setHostStateEffecter and always setting this to true.\n\nThis probably also means a unit test did not catch this.",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d834003_5bc25b77",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Yes, we should not update D-Bus object when the setHostStateEffecter method return error.\nUpdated.",
+      "parentUuid": "50aa7899_1b90d400",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -275,6 +437,30 @@
     },
     {
       "key": {
+        "uuid": "a81190b0_a9e4f976",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3672b643_bd21110f",
+      "range": {
+        "startLine": 67,
+        "startChar": 31,
+        "endLine": 67,
+        "endChar": 39
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "64114dcd_adfa9d0a",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -286,6 +472,24 @@
       "writtenOn": "2021-04-20T11:16:27Z",
       "side": 1,
       "message": "Do you need to make a blocking call here?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38aa0adc_dbe41eee",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Yes, I think so.\nWe should not update the Asserted property when we get an error value",
+      "parentUuid": "64114dcd_adfa9d0a",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -309,6 +513,24 @@
     },
     {
       "key": {
+        "uuid": "17cdb744_4ce8dc10",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0e60033f_40994cc8",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c5e25e2b_4cc2bb4e",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 18
@@ -326,6 +548,24 @@
     },
     {
       "key": {
+        "uuid": "91112145_e61c85ed",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Yes, Sampa told me, I can refactor these codes later, do you agree?",
+      "parentUuid": "c5e25e2b_4cc2bb4e",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "54798321_d3e58b13",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 18
@@ -337,6 +577,24 @@
       "writtenOn": "2021-04-20T11:16:27Z",
       "side": 1,
       "message": "It looks like this d-bus object path forms part of the lamp test API, so it needs to be documented in a d-bus interface file?",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ef94b96_e5431c62",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T05:59:04Z",
+      "side": 1,
+      "message": "Yes, Vishwa will update it",
+      "parentUuid": "54798321_d3e58b13",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
