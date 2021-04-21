@@ -496,6 +496,24 @@
     },
     {
       "key": {
+        "uuid": "8176b168_c0e3d302",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T11:28:10Z",
+      "side": 1,
+      "message": "For this you should do a pldm_sen() and then a timer based pldm_recv(). The problem with current approach is - if the host doesn\u0027t respond due to whatever reason, pldmd will block forever.",
+      "parentUuid": "38aa0adc_dbe41eee",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0e60033f_40994cc8",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -566,6 +584,24 @@
     },
     {
       "key": {
+        "uuid": "a9ccdcf5_5c4c8840",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T11:28:10Z",
+      "side": 1,
+      "message": "Sorry to hold you on this commit, but we\u0027ve been pushing this out again and again. Please handle it with this commit (or a new commit that is made the parent of this commit).",
+      "parentUuid": "91112145_e61c85ed",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "54798321_d3e58b13",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 18
@@ -613,6 +649,24 @@
       "side": 1,
       "message": "hmm.. which D-Bus interface file Deepak ?.",
       "parentUuid": "6ef94b96_e5431c62",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8dfd60e_e58f6560",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T11:28:10Z",
+      "side": 1,
+      "message": "I\u0027m not sure. How do IBM consumer apps know about this object path?",
+      "parentUuid": "cc922ba6_f0a3c149",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
