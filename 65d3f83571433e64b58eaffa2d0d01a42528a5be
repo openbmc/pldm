@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1e3347d1_bec5a7f4",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T07:49:18Z",
+      "side": 1,
+      "message": "\u003e hmm.. Where is this used ?.\n\nUsed this method in the host_bmc_lamp_test.cpp",
+      "parentUuid": "64c431ec_83abccf2",
+      "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2212f0b7_26fcecde",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 20
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "3cf09d7c_18c5126f",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T07:49:18Z",
+      "side": 1,
+      "message": "They are different.\n\nThe first check: Only when effecterID\u003d0 will call the getEffecterID method.\nThe second check: when we get effecter ID \u003d\u003d 0, we will not notfiy PHYP to start lamp test.",
+      "parentUuid": "2212f0b7_26fcecde",
+      "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5969cbd3_0c8f1f82",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 20
@@ -47,6 +83,24 @@
       "writtenOn": "2021-04-21T06:52:05Z",
       "side": 1,
       "message": "I see exception being thrown here but setStateHostEffector does not.. . we may want uniform behavior ?. I defer to maintainer \n\nAlso, please remove the commented line here",
+      "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc0a666e_afbd15fb",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-21T07:49:18Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "5969cbd3_0c8f1f82",
       "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
