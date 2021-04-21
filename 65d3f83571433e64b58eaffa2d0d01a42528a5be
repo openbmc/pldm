@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "64c431ec_83abccf2",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-21T06:52:05Z",
+      "side": 1,
+      "message": "hmm.. Where is this used ?.\n\nAlso, if this is just a getter, then we don\u0027t need this and we don\u0027t need to override \u0027asserted` also.. \n\nThis can be used sdbusplus::xyz:..........::asserted() as is down below",
+      "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2212f0b7_26fcecde",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-21T06:52:05Z",
+      "side": 1,
+      "message": "hmm.. it always makes 2 checks . one here and one at line 46. is there any way to make it better ?",
+      "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5969cbd3_0c8f1f82",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-21T06:52:05Z",
+      "side": 1,
+      "message": "I see exception being thrown here but setStateHostEffector does not.. . we may want uniform behavior ?. I defer to maintainer \n\nAlso, please remove the commented line here",
+      "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
