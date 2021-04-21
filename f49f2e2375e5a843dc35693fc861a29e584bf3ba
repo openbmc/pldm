@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c5e069b0_ba601b61",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T18:23:22Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "3500b7a0_c3cfcce5",
+      "range": {
+        "startLine": 376,
+        "startChar": 6,
+        "endLine": 376,
+        "endChar": 10
+      },
+      "revId": "f49f2e2375e5a843dc35693fc861a29e584bf3ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7ae3fd98_33156fa8",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2021-04-12T04:53:37Z",
       "side": 1,
       "message": "return PLDM_SUCCESS?",
+      "range": {
+        "startLine": 523,
+        "startChar": 9,
+        "endLine": 523,
+        "endChar": 26
+      },
+      "revId": "f49f2e2375e5a843dc35693fc861a29e584bf3ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34c23b18_22d512aa",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T18:23:22Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "7ae3fd98_33156fa8",
       "range": {
         "startLine": 523,
         "startChar": 9,
