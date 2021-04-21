@@ -515,6 +515,30 @@
       "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b369e5ec_62baaa96",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-04-21T09:51:36Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "10252e94_251a9cef",
+      "range": {
+        "startLine": 261,
+        "startChar": 15,
+        "endLine": 261,
+        "endChar": 33
+      },
+      "revId": "e1c1673bd411584ea4cb860cb55b7864bd6ca0ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
