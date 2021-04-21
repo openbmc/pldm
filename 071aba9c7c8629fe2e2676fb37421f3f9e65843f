@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "2a9d4822_348f335a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-21T05:38:59Z",
+      "side": 1,
+      "message": "George, please use this commit message : \n\noem-ibm: Implement Host Lamp Tets interface\n\nIBM has a feature called LampTest and what it does is this : \n    - BMC would set the state of LEDs to [ON] on all the BMC accessible LEDs.\n    - For LEDs that are not accessible by BMC, a message is sent to the host, so that the host can exercise all the LEDs on the connected drawers and anything else that the BMC does not have access to.\n\nThis commit adds support to send message to Host when BMC has to tell the host to exercise LEDs accessible by host.\n\nWhen host sees the effector is set, it goes ahead and turns [ON] all the LEDs for a specified time and automatically restores the states at timer expiration. BMC does not have to tell the host to stop the test and it is part of host\u0027s lamp test requirement.",
+      "parentUuid": "10b6b3f2_0488feb3",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 49
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3a029fad_ce788229",
         "filename": "/COMMIT_MSG",
         "patchSetId": 18
