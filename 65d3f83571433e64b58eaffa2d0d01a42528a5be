@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "de93b581_9b39aac8",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-21T12:22:20Z",
+      "side": 1,
+      "message": "right I get it.. What I was saying was, irrespective of condition, it always makes 2 checks and I was hoping it can be better ?.. I am not saying there is an issue here :) . May be this is how it needs to be.",
+      "parentUuid": "3cf09d7c_18c5126f",
+      "revId": "65d3f83571433e64b58eaffa2d0d01a42528a5be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5969cbd3_0c8f1f82",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 20
