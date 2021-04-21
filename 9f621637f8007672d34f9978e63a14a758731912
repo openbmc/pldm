@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bcf19ce8_0d54837d",
+        "filename": "tools/fw-update/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T12:35:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5fde7b26_e1efd7ad",
+      "range": {
+        "startLine": 12,
+        "startChar": 34,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d89fbe9f_44e2a1f9",
         "filename": "tools/fw-update/README.md",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2021-04-21T10:43:11Z",
       "side": 1,
       "message": "nit: This could be easily supported in script by taking this input from the meta-data file. It could be an optional field in the meta-data file",
+      "range": {
+        "startLine": 72,
+        "startChar": 6,
+        "endLine": 72,
+        "endChar": 76
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8230a914_95a66c11",
+        "filename": "tools/fw-update/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T12:35:30Z",
+      "side": 1,
+      "message": "Right, this can be done.",
+      "parentUuid": "d89fbe9f_44e2a1f9",
       "range": {
         "startLine": 72,
         "startChar": 6,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "16a25302_626a6925",
+        "filename": "tools/fw-update/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T12:35:30Z",
+      "side": 1,
+      "message": "I think we will have such plans. The script can be enhanced to consume this.",
+      "parentUuid": "8fe43c8d_7aba9dc0",
+      "range": {
+        "startLine": 102,
+        "startChar": 6,
+        "endLine": 102,
+        "endChar": 78
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0adc4a71_d174831a",
         "filename": "tools/fw-update/README.md",
         "patchSetId": 1
@@ -91,6 +163,30 @@
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dd281dc_1585ae62",
+        "filename": "tools/fw-update/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T12:35:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0adc4a71_d174831a",
+      "range": {
+        "startLine": 113,
+        "startChar": 27,
+        "endLine": 113,
+        "endChar": 28
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "af259176_10c8fc73",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T12:35:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7ca20692_0ab7967e",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 60
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cab1bc33_66653239",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -128,6 +248,30 @@
       "writtenOn": "2021-04-21T04:47:39Z",
       "side": 1,
       "message": "These 2 parameters can be taken from the configuration (json) file as some firmwares may have addition metadata in the image which may not be used for firmware update or some firmwares may use only a subset of bytes from the firmware image used for packaging.",
+      "range": {
+        "startLine": 204,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 25
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "715d854a_4f82da6f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-21T12:35:30Z",
+      "side": 1,
+      "message": "Yes, that can be an enhancement. Please feel free to push a commit that does this.",
+      "parentUuid": "cab1bc33_66653239",
       "range": {
         "startLine": 204,
         "startChar": 8,
