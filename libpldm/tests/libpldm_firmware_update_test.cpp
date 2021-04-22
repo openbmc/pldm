@@ -2447,3 +2447,22 @@ TEST(ActivateFirmware, errorPathDecodeResponse)
         &estimatedTimeForActivation);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetStatus, testGoodEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    struct pldm_msg msg;
+    auto rc = encode_get_status_req(instanceId, &msg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg.hdr.instance_id, instanceId);
+    EXPECT_EQ(msg.hdr.type, PLDM_FWUP);
+    EXPECT_EQ(msg.hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(msg.hdr.command, PLDM_GET_STATUS);
+}
+
+TEST(GetStatus, testBadEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    auto rc = encode_get_status_req(instanceId, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
