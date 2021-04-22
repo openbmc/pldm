@@ -484,7 +484,7 @@ int encode_get_tid_resp(uint8_t instance_id, uint8_t completion_code,
 int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 			uint8_t cc, struct pldm_msg *msg);
 
-/** @brief Create a PLDM message only with the header
+/** @brief Create a PLDM request message contains empty payload
  *
  *	@param[in] msg_type - PLDM message type
  *	@param[in] instance_id - Message's instance id

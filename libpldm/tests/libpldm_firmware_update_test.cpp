@@ -2447,3 +2447,28 @@ TEST(ActivateFirmware, errorPathDecodeResponse)
         &estimatedTimeForActivation);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetStatus, testGoodEncodeRequest)
+{
+    constexpr uint8_t instanceId = 8;
+    std::array<uint8_t, hdrSize> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_get_status_req(instanceId, requestMsg, 0);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    std::array<uint8_t, hdrSize> outRequest{0x88, 0x05, 0x1B};
+    EXPECT_EQ(request, outRequest);
+}
+
+TEST(GetStatus, errorPathEncodeRequest)
+{
+    std::array<uint8_t, hdrSize + sizeof(uint8_t)> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_get_status_req(0, nullptr, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_get_status_req(0, requestMsg, 1);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
