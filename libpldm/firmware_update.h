@@ -15,6 +15,7 @@ extern "C" {
 #define PLDM_REQUEST_UPDATE 0x10
 #define PLDM_PASS_COMPONENT_TABLE 0x13
 #define PLDM_UPDATE_COMPONENT 0x14
+#define PLDM_GET_STATUS 0x1B
 
 #define PLDM_FWU_BASELINE_TRANSFER_SIZE 32
 #define PLDM_MIN_OUTSTANDING_REQ 1
@@ -440,6 +441,16 @@ int decode_update_component_resp(const struct pldm_msg *msg,
 				 uint8_t *comp_compatability_resp_code,
 				 bitfield32_t *update_option_flags_enabled,
 				 uint16_t *estimated_time_req_fd);
+
+/** @brief Create a PLDM request message for GetStatus
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ * 'msg.payload'
+ */
+int encode_get_status_req(const uint8_t instance_id, struct pldm_msg *msg);
 
 #ifdef __cplusplus
 }

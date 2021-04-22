@@ -737,3 +737,12 @@ int decode_update_component_resp(const struct pldm_msg *msg,
 
 	return DECODE_SUCCESS;
 }
+
+int encode_get_status_req(const uint8_t instance_id, struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return (encode_header_only_request(instance_id, PLDM_FWUP,
+					   PLDM_GET_STATUS, msg));
+}
