@@ -1704,3 +1704,116 @@ TEST(PassComponentTable, errorPathDecodeResponse)
         &compResp, &compRespCode);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(UpdateComponent, goodPathEncodeRequest)
+{
+    constexpr uint8_t instanceId = 2;
+    constexpr uint16_t compIdentifier = 500;
+    constexpr uint8_t compClassificationIndex = 50;
+    constexpr uint32_t compComparisonStamp = 0x89ABCDEF;
+    constexpr uint32_t compImageSize = 4096;
+    constexpr bitfield32_t updateOptionFlags{1};
+    constexpr std::string_view compVerStr = "OpenBmcv2.2";
+    constexpr uint8_t compVerStrLen = static_cast<uint8_t>(compVerStr.size());
+    variable_field compVerStrInfo{};
+    compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVerStr.data());
+    compVerStrInfo.length = compVerStrLen;
+
+    std::array<uint8_t,
+               hdrSize + sizeof(pldm_update_component_req) + compVerStrLen>
+        request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_ASCII, compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    std::array<uint8_t,
+               hdrSize + sizeof(pldm_update_component_req) + compVerStrLen>
+        outRequest{0x82, 0x05, 0x14, 0x0A, 0x00, 0xF4, 0x01, 0x32, 0xEF,
+                   0xCD, 0xAB, 0x89, 0x00, 0x10, 0x00, 0x00, 0x01, 0x00,
+                   0x00, 0x00, 0x01, 0x0B, 0x4f, 0x70, 0x65, 0x6E, 0x42,
+                   0x6D, 0x63, 0x76, 0x32, 0x2E, 0x32};
+    EXPECT_EQ(request, outRequest);
+}
+
+TEST(UpdateComponent, errorPathEncodeRequest)
+{
+    constexpr uint8_t instanceId = 2;
+    constexpr uint16_t compIdentifier = 500;
+    constexpr uint8_t compClassificationIndex = 50;
+    constexpr uint32_t compComparisonStamp = 0x89ABCDEF;
+    constexpr uint32_t compImageSize = 4096;
+    constexpr bitfield32_t updateOptionFlags{1};
+    constexpr std::string_view compVerStr = "OpenBmcv2.2";
+    constexpr uint8_t compVerStrLen = static_cast<uint8_t>(compVerStr.size());
+    variable_field compVerStrInfo{};
+    compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVerStr.data());
+    compVerStrInfo.length = compVerStrLen;
+
+    std::array<uint8_t,
+               hdrSize + sizeof(pldm_update_component_req) + compVerStrLen>
+        request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_ASCII, compVerStrLen, nullptr, requestMsg,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    compVerStrInfo.ptr = nullptr;
+    rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_ASCII, compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVerStr.data());
+
+    rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_ASCII, compVerStrLen, &compVerStrInfo, nullptr,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_ASCII, compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_update_component_req));
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, 0, updateOptionFlags, PLDM_STR_TYPE_ASCII,
+        compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_ASCII, 0, &compVerStrInfo, requestMsg,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_ASCII, compVerStrLen - 1, &compVerStrInfo, requestMsg,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_update_component_req(
+        instanceId, PLDM_COMP_FIRMWARE, compIdentifier, compClassificationIndex,
+        compComparisonStamp, compImageSize, updateOptionFlags,
+        PLDM_STR_TYPE_UNKNOWN, compVerStrLen, &compVerStrInfo, requestMsg,
+        sizeof(pldm_update_component_req) + compVerStrLen);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}

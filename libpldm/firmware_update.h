@@ -24,7 +24,8 @@ enum pldm_firmware_update_commands {
 	PLDM_QUERY_DEVICE_IDENTIFIERS = 0x01,
 	PLDM_GET_FIRMWARE_PARAMETERS = 0x02,
 	PLDM_REQUEST_UPDATE = 0x10,
-	PLDM_PASS_COMPONENT_TABLE = 0x13
+	PLDM_PASS_COMPONENT_TABLE = 0x13,
+	PLDM_UPDATE_COMPONENT = 0x14
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -310,6 +311,21 @@ struct pldm_pass_component_table_resp {
 	uint8_t comp_resp_code;
 } __attribute__((packed));
 
+/** @struct pldm_update_component_req
+ *
+ *  Structure representing UpdateComponent request
+ */
+struct pldm_update_component_req {
+	uint16_t comp_classification;
+	uint16_t comp_identifier;
+	uint8_t comp_classification_index;
+	uint32_t comp_comparison_stamp;
+	uint32_t comp_image_size;
+	bitfield32_t update_option_flags;
+	uint8_t comp_ver_str_type;
+	uint8_t comp_ver_str_len;
+} __attribute__((packed));
+
 /** @brief Decode the PLDM package header information
  *
  *  @param[in] data - pointer to package header information
@@ -573,6 +589,35 @@ int decode_pass_component_table_resp(const struct pldm_msg *msg,
 				     uint8_t *completion_code,
 				     uint8_t *comp_resp,
 				     uint8_t *comp_resp_code);
+
+/** @brief Create PLDM request message for UpdateComponent
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] comp_classification - ComponentClassification
+ *  @param[in] comp_identifier - ComponentIdentifier
+ *  @param[in] comp_classification_index - ComponentClassificationIndex
+ *  @param[in] comp_comparison_stamp - ComponentComparisonStamp
+ *  @param[in] comp_image_size - ComponentImageSize
+ *  @param[in] update_option_flags - UpdateOptionFlags
+ *  @param[in] comp_ver_str_type - ComponentVersionStringType
+ *  @param[in] comp_ver_str_len - ComponentVersionStringLength
+ *  @param[in] comp_ver_str - ComponentVersionString
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *                              information
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_update_component_req(
+    uint8_t instance_id, uint16_t comp_classification, uint16_t comp_identifier,
+    uint8_t comp_classification_index, uint32_t comp_comparison_stamp,
+    uint32_t comp_image_size, bitfield32_t update_option_flags,
+    uint8_t comp_ver_str_type, uint8_t comp_ver_str_len,
+    const struct variable_field *comp_ver_str, struct pldm_msg *msg,
+    size_t payload_length);
 
 #ifdef __cplusplus
 }
