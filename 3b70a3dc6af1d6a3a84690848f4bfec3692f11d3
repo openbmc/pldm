@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "efabce77_7ee034ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T03:11:04Z",
+      "side": 1,
+      "message": "Modify this to consume the xyz interface not the com/ibm interface, as the com/ibm interface would be deprecated in future.",
+      "range": {
+        "startLine": 14,
+        "startChar": 2,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "3b70a3dc6af1d6a3a84690848f4bfec3692f11d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
