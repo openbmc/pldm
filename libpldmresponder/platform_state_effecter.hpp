@@ -145,6 +145,7 @@ int setStateEffecterStatesHandler(
     {
         std::cerr << "the effecterId does not exist. effecter id: "
                   << effecterId << e.what() << '\n';
+        return PLDM_ERROR;
     }
 
     return rc;
