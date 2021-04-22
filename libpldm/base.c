@@ -423,3 +423,21 @@ int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_header_only_request(const uint8_t instance_id,
+			       const uint8_t pldm_type, const uint8_t command,
+			       struct pldm_msg *msg)
+{
+	struct pldm_header_info header = {0};
+
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = pldm_type;
+	header.command = command;
+
+	return pack_pldm_header(&header, &(msg->hdr));
+	;
+}
