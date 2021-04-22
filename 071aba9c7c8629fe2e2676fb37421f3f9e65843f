@@ -514,6 +514,24 @@
     },
     {
       "key": {
+        "uuid": "26dee036_9d93f9b5",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-22T08:55:25Z",
+      "side": 1,
+      "message": "Sure, \nI saw Sampa push a new patch related to handle response asynchronously.\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/41407\n\nI will push a new patch after the above commit merge.",
+      "parentUuid": "8176b168_c0e3d302",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0e60033f_40994cc8",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
@@ -596,6 +614,24 @@
       "side": 1,
       "message": "Sorry to hold you on this commit, but we\u0027ve been pushing this out again and again. Please handle it with this commit (or a new commit that is made the parent of this commit).",
       "parentUuid": "91112145_e61c85ed",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1d6e9d2_02d8ed7e",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-04-22T08:55:25Z",
+      "side": 1,
+      "message": "\u003e  but we\u0027ve been pushing this out again and again.\n\nBTW, which commit?\n\n\u003e or a new commit that is made the parent of this commit\n\nI will push a new commit base on this commit",
+      "parentUuid": "a9ccdcf5_5c4c8840",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
