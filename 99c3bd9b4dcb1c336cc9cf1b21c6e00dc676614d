@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04a72611_62597c6a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T03:07:40Z",
+      "side": 1,
+      "message": "This should be \"/xyz/openbmc_project/inventory/system/\" ?",
+      "range": {
+        "startLine": 242,
+        "startChar": 24,
+        "endLine": 242,
+        "endChar": 53
+      },
+      "revId": "99c3bd9b4dcb1c336cc9cf1b21c6e00dc676614d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
