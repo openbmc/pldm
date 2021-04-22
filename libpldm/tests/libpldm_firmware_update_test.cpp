@@ -1817,3 +1817,161 @@ TEST(UpdateComponent, errorPathEncodeRequest)
         sizeof(pldm_update_component_req) + compVerStrLen);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(UpdateComponent, goodPathDecodeResponse)
+{
+    constexpr std::bitset<32> forceUpdateComp{1};
+    constexpr uint16_t timeBeforeSendingReqFwData100s = 100;
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_update_component_resp)>
+        updateComponentResponse1{0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                 0x01, 0x00, 0x00, 0x00, 0x64, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(updateComponentResponse1.data());
+
+    uint8_t completionCode = 0;
+    uint8_t compCompatibilityResp = 0;
+    uint8_t compCompatibilityRespCode = 0;
+    bitfield32_t updateOptionFlagsEnabled{};
+    uint16_t timeBeforeReqFWData = 0;
+
+    auto rc = decode_update_component_resp(
+        responseMsg1, sizeof(pldm_update_component_resp), &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(compCompatibilityResp, PLDM_CCR_COMP_CAN_BE_UPDATED);
+    EXPECT_EQ(compCompatibilityRespCode, PLDM_CCRC_NO_RESPONSE_CODE);
+    EXPECT_EQ(updateOptionFlagsEnabled.value, forceUpdateComp);
+    EXPECT_EQ(timeBeforeReqFWData, timeBeforeSendingReqFwData100s);
+
+    constexpr std::bitset<32> noFlags{};
+    constexpr uint16_t timeBeforeSendingReqFwData0s = 0;
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_update_component_resp)>
+        updateComponentResponse2{0x00, 0x00, 0x00, 0x00, 0x01, 0x09,
+                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(updateComponentResponse2.data());
+    rc = decode_update_component_resp(
+        responseMsg2, sizeof(pldm_update_component_resp), &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(compCompatibilityResp, PLDM_CCR_COMP_CANNOT_BE_UPDATED);
+    EXPECT_EQ(compCompatibilityRespCode, PLDM_CCRC_COMP_INFO_NO_MATCH);
+    EXPECT_EQ(updateOptionFlagsEnabled.value, noFlags);
+    EXPECT_EQ(timeBeforeReqFWData, timeBeforeSendingReqFwData0s);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_update_component_resp)>
+        updateComponentResponse3{0x00, 0x00, 0x00, 0x80};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(updateComponentResponse3.data());
+
+    rc = decode_update_component_resp(
+        responseMsg3, sizeof(pldm_update_component_resp), &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_FWUP_NOT_IN_UPDATE_MODE);
+}
+
+TEST(UpdateComponent, errorPathDecodeResponse)
+{
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_update_component_resp) - 1>
+        updateComponentResponse1{0x00, 0x00, 0x00, 0x00, 0x01, 0x09,
+                                 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(updateComponentResponse1.data());
+
+    uint8_t completionCode = 0;
+    uint8_t compCompatibilityResp = 0;
+    uint8_t compCompatibilityRespCode = 0;
+    bitfield32_t updateOptionFlagsEnabled{};
+    uint16_t timeBeforeReqFWData = 0;
+
+    auto rc = decode_update_component_resp(
+        nullptr, sizeof(pldm_update_component_resp) - 1, &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        responseMsg1, sizeof(pldm_update_component_resp) - 1, nullptr,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        responseMsg1, sizeof(pldm_update_component_resp) - 1, &completionCode,
+        nullptr, &compCompatibilityRespCode, &updateOptionFlagsEnabled,
+        &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        responseMsg1, sizeof(pldm_update_component_resp) - 1, &completionCode,
+        &compCompatibilityResp, nullptr, &updateOptionFlagsEnabled,
+        &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        responseMsg1, sizeof(pldm_update_component_resp) - 1, &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode, nullptr,
+        &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        responseMsg1, sizeof(pldm_update_component_resp) - 1, &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        responseMsg1, 0, &completionCode, &compCompatibilityResp,
+        &compCompatibilityRespCode, &updateOptionFlagsEnabled,
+        &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        responseMsg1, sizeof(pldm_update_component_resp) - 1, &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_update_component_resp)>
+        updateComponentResponse2{0x00, 0x00, 0x00, 0x00, 0x02, 0x00,
+                                 0x01, 0x00, 0x00, 0x00, 0x64, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(updateComponentResponse2.data());
+    rc = decode_update_component_resp(
+        responseMsg2, sizeof(pldm_update_component_resp), &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_update_component_resp)>
+        updateComponentResponse3{0x00, 0x00, 0x00, 0x00, 0x00, 0x0C,
+                                 0x01, 0x00, 0x00, 0x00, 0x64, 0x00};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(updateComponentResponse3.data());
+    rc = decode_update_component_resp(
+        responseMsg3, sizeof(pldm_update_component_resp), &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_update_component_resp)>
+        updateComponentResponse4{0x00, 0x00, 0x00, 0x00, 0x00, 0xF0,
+                                 0x01, 0x00, 0x00, 0x00, 0x64, 0x00};
+    auto responseMsg4 =
+        reinterpret_cast<const pldm_msg*>(updateComponentResponse4.data());
+    rc = decode_update_component_resp(
+        responseMsg4, sizeof(pldm_update_component_resp), &completionCode,
+        &compCompatibilityResp, &compCompatibilityRespCode,
+        &updateOptionFlagsEnabled, &timeBeforeReqFWData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}

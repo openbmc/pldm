@@ -156,6 +156,34 @@ enum pldm_component_response_codes {
 	PLDM_CRC_VENDOR_COMP_RESP_CODE_RANGE_MAX = 0xEF
 };
 
+/** @brief ComponentCompatibilityResponse values in the response of
+ *         UpdateComponent
+ */
+enum pldm_component_compatability_responses {
+	PLDM_CCR_COMP_CAN_BE_UPDATED = 0,
+	PLDM_CCR_COMP_CANNOT_BE_UPDATED = 1
+};
+
+/** @brief ComponentCompatibilityResponse Code values in the response of
+ *         UpdateComponent
+ */
+enum pldm_component_compatability_response_codes {
+	PLDM_CCRC_NO_RESPONSE_CODE = 0x00,
+	PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL = 0x01,
+	PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER = 0x02,
+	PLDM_CCRC_INVALID_COMP_COMPARISON_STAMP = 0x03,
+	PLDM_CCRC_COMP_CONFLICT = 0x04,
+	PLDM_CCRC_COMP_PREREQUISITES_NOT_MET = 0x05,
+	PLDM_CCRC_COMP_NOT_SUPPORTED = 0x06,
+	PLDM_CCRC_COMP_SECURITY_RESTRICTIONS = 0x07,
+	PLDM_CCRC_INCOMPLETE_COMP_IMAGE_SET = 0x08,
+	PLDM_CCRC_COMP_INFO_NO_MATCH = 0x09,
+	PLDM_CCRC_COMP_VER_STR_IDENTICAL = 0x0A,
+	PLDM_CCRC_COMP_VER_STR_LOWER = 0x0B,
+	PLDM_CCRC_VENDOR_COMP_RESP_CODE_RANGE_MIN = 0xD0,
+	PLDM_CCRC_VENDOR_COMP_RESP_CODE_RANGE_MAX = 0xEF
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -324,6 +352,18 @@ struct pldm_update_component_req {
 	bitfield32_t update_option_flags;
 	uint8_t comp_ver_str_type;
 	uint8_t comp_ver_str_len;
+} __attribute__((packed));
+
+/** @struct pldm_update_component_resp
+ *
+ *  Structure representing UpdateComponent response
+ */
+struct pldm_update_component_resp {
+	uint8_t completion_code;
+	uint8_t comp_compatability_resp;
+	uint8_t comp_compatability_resp_code;
+	bitfield32_t update_option_flags_enabled;
+	uint16_t time_before_req_fw_data;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -619,6 +659,29 @@ int encode_update_component_req(
     const struct variable_field *comp_ver_str, struct pldm_msg *msg,
     size_t payload_length);
 
+/** @brief Decode UpdateComponent response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to hold completion code
+ *  @param[out] comp_compatability_resp - Pointer to hold component
+ *                                        compatibility response
+ *  @param[out] comp_compatability_resp_code - Pointer to hold component
+ *                                             compatibility response code
+ *  @param[out] update_option_flags_enabled - Pointer to hold
+ *                                            UpdateOptionsFlagEnabled
+ *  @param[out] time_before_req_fw_data - Pointer to hold the estimated time
+ *                                        before sending RequestFirmwareData
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_update_component_resp(const struct pldm_msg *msg,
+				 size_t payload_length,
+				 uint8_t *completion_code,
+				 uint8_t *comp_compatability_resp,
+				 uint8_t *comp_compatability_resp_code,
+				 bitfield32_t *update_option_flags_enabled,
+				 uint16_t *time_before_req_fw_data);
 #ifdef __cplusplus
 }
 #endif
