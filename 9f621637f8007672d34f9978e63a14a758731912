@@ -190,6 +190,52 @@
     },
     {
       "key": {
+        "uuid": "942809c9_d31b2f49",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "python may not always be under /usr/bin. can we use #!/usr/bin/env python3 instead, this would be portable across different unix operating systems",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 18
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61faf0c2_d4383ed9",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "can be sorted based on PEP8 ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 15
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7ca20692_0ab7967e",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -237,6 +283,29 @@
     },
     {
       "key": {
+        "uuid": "fc3b7c84_3b9cc501",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "if UUID can be done, i guess this as well can be based on the DSP0267 version number right ?",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 35
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cab1bc33_66653239",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -277,6 +346,213 @@
         "startChar": 8,
         "endLine": 205,
         "endChar": 25
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d3d241c_3ef0d953",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "Through out the file, Maybe having docstring helps.\nEx: \n\"\"\"\n\u003cfunction in brief\u003e\n:args:\n:return:\n\"\"\"",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 44
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ccfe379_de476638",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "not used , can we not pass this?",
+      "range": {
+        "startLine": 246,
+        "startChar": 41,
+        "endLine": 246,
+        "endChar": 49
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21bd4070_73c0ce2f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "not used ? duplicate variable ?",
+      "range": {
+        "startLine": 247,
+        "startChar": 15,
+        "endLine": 247,
+        "endChar": 26
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6e2e168_3757c673",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 262,
+        "startChar": 73,
+        "endLine": 262,
+        "endChar": 77
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96e69587_80b3572f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "is it worth adding required\u003dTrue for this argument as per the README ?",
+      "range": {
+        "startLine": 266,
+        "startChar": 3,
+        "endLine": 266,
+        "endChar": 39
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2d6cccc_56fb17ac",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "more than 80 characters, may be better to follow the PEP8 Coding style ? same below",
+      "range": {
+        "startLine": 270,
+        "startChar": 14,
+        "endLine": 270,
+        "endChar": 107
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8aab13a5_aa3c1eb6",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "Can we be specific about types of exceptions instead of using wider scope",
+      "range": {
+        "startLine": 276,
+        "startChar": 7,
+        "endLine": 276,
+        "endChar": 29
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14f20122_583b3100",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "try/except",
+      "range": {
+        "startLine": 284,
+        "startChar": 3,
+        "endLine": 284,
+        "endChar": 50
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fea9211_97277521",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-22T14:45:24Z",
+      "side": 1,
+      "message": "snake_case as per PEP8 ? same for all functions \u0026 variable names",
+      "range": {
+        "startLine": 287,
+        "startChar": 21,
+        "endLine": 287,
+        "endChar": 50
       },
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
