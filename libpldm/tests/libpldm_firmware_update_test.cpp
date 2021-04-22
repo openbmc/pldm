@@ -707,3 +707,157 @@ TEST(PassComponentTable, testBadDecodeResponse)
         &compRespCode);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(UpdateComponent, testGoodEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    // Component Version String Length is not fixed here taking it as 6
+    constexpr uint8_t compVerStrLen = 6;
+
+    std::array<uint8_t, compVerStrLen> compVerStrArr;
+    struct variable_field inCompVerStr;
+    inCompVerStr.ptr = compVerStrArr.data();
+    inCompVerStr.length = compVerStrLen;
+
+    struct pldm_update_component_req inReq = {};
+
+    inReq.comp_classification = COMP_OTHER;
+    inReq.comp_identifier = 0x01;
+    inReq.comp_classification_index = 0x0F;
+    inReq.comp_comparison_stamp = 0;
+    inReq.comp_image_size = 32;
+    inReq.update_option_flags.value = 1;
+    inReq.comp_ver_str_type = PLDM_COMP_ASCII;
+    inReq.comp_ver_str_len = compVerStrLen;
+
+    std::fill(compVerStrArr.data(), compVerStrArr.end(), 0xFF);
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_update_component_req) +
+                            compVerStrLen>
+        outReq;
+
+    auto msg = (struct pldm_msg*)outReq.data();
+
+    auto rc = encode_update_component_req(
+        instanceId, msg,
+        sizeof(struct pldm_update_component_req) + inCompVerStr.length, &inReq,
+        &inCompVerStr);
+
+    auto request = (struct pldm_update_component_req*)(outReq.data() + hdrSize);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg->hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(msg->hdr.instance_id, instanceId);
+    EXPECT_EQ(msg->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(msg->hdr.command, PLDM_UPDATE_COMPONENT);
+    EXPECT_EQ(le16toh(request->comp_classification), inReq.comp_classification);
+    EXPECT_EQ(le16toh(request->comp_identifier), inReq.comp_identifier);
+    EXPECT_EQ(request->comp_classification_index,
+              inReq.comp_classification_index);
+    EXPECT_EQ(le32toh(request->comp_comparison_stamp),
+              inReq.comp_comparison_stamp);
+    EXPECT_EQ(le32toh(request->comp_image_size), inReq.comp_image_size);
+    EXPECT_EQ(le32toh(request->update_option_flags.value),
+              inReq.update_option_flags.value);
+    EXPECT_EQ(request->comp_ver_str_type, inReq.comp_ver_str_type);
+    EXPECT_EQ(request->comp_ver_str_len, inReq.comp_ver_str_len);
+    EXPECT_EQ(true, std::equal(compVerStrArr.begin(), compVerStrArr.end(),
+                               outReq.data() + hdrSize +
+                                   sizeof(struct pldm_update_component_req)));
+}
+
+TEST(UpdateComponent, testBadEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+    constexpr uint8_t compVerStrLen = 6;
+
+    std::array<uint8_t, compVerStrLen> compVerStrArr;
+    struct variable_field inCompVerStr;
+    inCompVerStr.ptr = compVerStrArr.data();
+    inCompVerStr.length = compVerStrLen;
+
+    struct pldm_update_component_req inReq = {};
+
+    std::fill(compVerStrArr.data(), compVerStrArr.end(), 0xFF);
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_update_component_req) +
+                            compVerStrLen>
+        outReq;
+
+    auto msg = (struct pldm_msg*)outReq.data();
+
+    auto rc = encode_update_component_req(
+        instanceId, 0,
+        sizeof(struct pldm_update_component_req) + inCompVerStr.length, &inReq,
+        &inCompVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_update_component_req(instanceId, msg, 0, &inReq, &inCompVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_update_component_req(instanceId, msg,
+                                     sizeof(struct pldm_update_component_req) +
+                                         inCompVerStr.length,
+                                     NULL, &inCompVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_update_component_req(instanceId, msg,
+                                     sizeof(struct pldm_update_component_req) +
+                                         inCompVerStr.length,
+                                     &inReq, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inReq.comp_classification = COMP_UNKNOWN - 1;
+    inReq.comp_identifier = 0x01;
+    inReq.comp_classification_index = 0x0F;
+    inReq.comp_comparison_stamp = 0;
+    inReq.comp_image_size = 160;
+    inReq.update_option_flags.value = 1;
+    inReq.comp_ver_str_type = PLDM_COMP_VER_STR_TYPE_UNKNOWN - 1;
+    inReq.comp_ver_str_len = 0;
+
+    rc = encode_update_component_req(instanceId, msg,
+                                     sizeof(struct pldm_update_component_req) +
+                                         inCompVerStr.length,
+                                     &inReq, &inCompVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inReq.comp_classification = 0x000F;
+    inReq.comp_identifier = 0x00;
+    inReq.comp_classification_index = 0x00;
+    inReq.comp_comparison_stamp = 10;
+    inReq.comp_image_size = 255;
+    inReq.update_option_flags.value = 10;
+    inReq.comp_ver_str_type = 7;
+    inReq.comp_ver_str_len = 1;
+
+    rc = encode_update_component_req(instanceId, msg,
+                                     sizeof(struct pldm_update_component_req) +
+                                         inCompVerStr.length,
+                                     &inReq, &inCompVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inReq.comp_classification = COMP_SOFTWARE_BUNDLE + 1;
+    inReq.comp_identifier = 0x01;
+    inReq.comp_classification_index = 0x0F;
+    inReq.comp_comparison_stamp = 0;
+    inReq.comp_image_size = 161;
+    inReq.update_option_flags.value = 1;
+    inReq.comp_ver_str_type = PLDM_COMP_UTF_16BE + 1;
+    inReq.comp_ver_str_len = 0;
+
+    rc = encode_update_component_req(instanceId, msg,
+                                     sizeof(struct pldm_update_component_req) +
+                                         inCompVerStr.length,
+                                     &inReq, &inCompVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inCompVerStr.ptr = NULL;
+    inCompVerStr.length = 0;
+
+    rc = encode_update_component_req(instanceId, msg,
+                                     sizeof(struct pldm_update_component_req) +
+                                         inCompVerStr.length,
+                                     &inReq, &inCompVerStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
