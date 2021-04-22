@@ -562,3 +562,61 @@ int decode_pass_component_table_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+/** @brief Fill the update component Request
+ *
+ */
+static void
+fill_update_component_req(const struct pldm_update_component_req *data,
+			  struct pldm_update_component_req *request)
+{
+	request->comp_classification = htole16(data->comp_classification);
+	request->comp_identifier = htole16(data->comp_identifier);
+	request->comp_classification_index = data->comp_classification_index;
+	request->comp_comparison_stamp = htole32(data->comp_comparison_stamp);
+	request->comp_image_size = htole32(data->comp_image_size);
+	request->update_option_flags.value =
+	    htole32(data->update_option_flags.value);
+	request->comp_ver_str_type = data->comp_ver_str_type;
+	request->comp_ver_str_len = data->comp_ver_str_len;
+}
+int encode_update_component_req(const uint8_t instance_id, struct pldm_msg *msg,
+				const size_t payload_length,
+				const struct pldm_update_component_req *data,
+				struct variable_field *comp_ver_str)
+{
+	if (msg == NULL || data == NULL || comp_ver_str == NULL ||
+	    comp_ver_str->ptr == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length !=
+	    sizeof(struct pldm_update_component_req) + comp_ver_str->length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	if (!check_comp_ver_str_type_valid(data->comp_ver_str_type)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!check_comp_classification_valid(
+		htole16(data->comp_classification))) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	int rc = encode_pldm_header_only(
+	    instance_id, PLDM_FWUP, PLDM_UPDATE_COMPONENT, PLDM_REQUEST, msg);
+	if (PLDM_SUCCESS != rc) {
+		return rc;
+	}
+
+	struct pldm_update_component_req *request =
+	    (struct pldm_update_component_req *)msg->payload;
+
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	fill_update_component_req(data, request);
+	memcpy(msg->payload + sizeof(struct pldm_update_component_req),
+	       comp_ver_str->ptr, comp_ver_str->length);
+
+	return PLDM_SUCCESS;
+}

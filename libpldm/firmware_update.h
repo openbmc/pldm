@@ -23,7 +23,8 @@ enum pldm_fwu_inventory_commands {
 /* update commands */
 enum pldm_fwu_update_commands {
 	PLDM_REQUEST_UPDATE = 0x10,
-	PLDM_PASS_COMPONENT_TABLE = 0x13
+	PLDM_PASS_COMPONENT_TABLE = 0x13,
+	PLDM_UPDATE_COMPONENT = 0x14
 };
 
 /** @brief PLDM FWU values for Component Version String Type or Component Image
@@ -175,6 +176,21 @@ struct pldm_pass_component_table_resp {
 	uint8_t comp_resp_code;
 } __attribute__((packed));
 
+/* @struct update_component_req
+ *
+ *  Structure representing Update Component request
+ */
+struct pldm_update_component_req {
+	uint16_t comp_classification;
+	uint16_t comp_identifier;
+	uint8_t comp_classification_index;
+	uint32_t comp_comparison_stamp;
+	uint32_t comp_image_size;
+	bitfield32_t update_option_flags;
+	uint8_t comp_ver_str_type;
+	uint8_t comp_ver_str_len;
+} __attribute__((packed));
+
 /** @brief Decode a GetFirmwareParameters component response
  *
  *  Note:
@@ -324,6 +340,23 @@ int decode_pass_component_table_resp(const struct pldm_msg *msg,
 				     uint8_t *completion_code,
 				     uint8_t *comp_resp,
 				     uint8_t *comp_resp_code);
+
+/** @brief Create a PLDM request message for UpdateComponent
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] data - Pointer for UpdateComponent Request
+ *  @param[in] comp_ver_str - Pointer to component version string
+ * information
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ * 'msg.payload'
+ */
+int encode_update_component_req(const uint8_t instance_id, struct pldm_msg *msg,
+				const size_t payload_length,
+				const struct pldm_update_component_req *data,
+				struct variable_field *comp_ver_str);
 
 #ifdef __cplusplus
 }
