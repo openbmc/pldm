@@ -2,6 +2,7 @@
 #include "libpldm/bios.h"
 #include "libpldm/pdr.h"
 #include "libpldm/platform.h"
+#include "libpldm/requester/pldm.h"
 
 #include "common/utils.hpp"
 #include "dbus_impl_pdr.hpp"
@@ -143,13 +144,14 @@ int main(int argc, char** argv)
 
     /* Create local socket. */
     int returnCode = 0;
-    int sockfd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    int sockfd = pldm_open();
     if (-1 == sockfd)
     {
         returnCode = -errno;
         std::cerr << "Failed to create the socket, RC= " << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
+    pldm::utils::CustomFD socketFd(sockfd);
 
     auto event = Event::get_default();
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
@@ -215,32 +217,6 @@ int main(int argc, char** argv)
 
     invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
-
-    pldm::utils::CustomFD socketFd(sockfd);
-
-    struct sockaddr_un addr
-    {};
-    addr.sun_family = AF_UNIX;
-    const char path[] = "\0mctp-mux";
-    memcpy(addr.sun_path, path, sizeof(path) - 1);
-    int result = connect(socketFd(), reinterpret_cast<struct sockaddr*>(&addr),
-                         sizeof(path) + sizeof(addr.sun_family) - 1);
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        std::cerr << "Failed to connect to the socket, RC= " << returnCode
-                  << "\n";
-        exit(EXIT_FAILURE);
-    }
-
-    result = write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        std::cerr << "Failed to send message type as pldm to mctp, RC= "
-                  << returnCode << "\n";
-        exit(EXIT_FAILURE);
-    }
 
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
@@ -341,8 +317,7 @@ int main(int argc, char** argv)
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
     event.loop();
 
-    result = shutdown(sockfd, SHUT_RDWR);
-    if (-1 == result)
+    if (-1 == shutdown(sockfd, SHUT_RDWR))
     {
         returnCode = -errno;
         std::cerr << "Failed to shutdown the socket, RC=" << returnCode << "\n";
