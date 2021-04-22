@@ -25,7 +25,8 @@ enum pldm_firmware_update_commands {
 	PLDM_GET_FIRMWARE_PARAMETERS = 0x02,
 	PLDM_REQUEST_UPDATE = 0x10,
 	PLDM_PASS_COMPONENT_TABLE = 0x13,
-	PLDM_UPDATE_COMPONENT = 0x14
+	PLDM_UPDATE_COMPONENT = 0x14,
+	PLDM_GET_STATUS = 0x1B
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -651,6 +652,17 @@ int decode_update_component_resp(const struct pldm_msg *msg,
 				 uint8_t *comp_compatability_resp_code,
 				 bitfield32_t *update_option_flags_enabled,
 				 uint16_t *estimated_time_req_fd);
+
+/** @brief Create a PLDM request message for GetStatus
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ * 'msg.payload'
+ */
+int encode_get_status_req(const uint8_t instance_id, struct pldm_msg *msg);
+
 #ifdef __cplusplus
 }
 #endif
