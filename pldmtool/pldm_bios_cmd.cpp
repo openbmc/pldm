@@ -354,7 +354,14 @@ class GetBIOSTableHandler : public CommandInterface
         if (verbose)
         {
             output["AttributeHandle"] = attrHandle;
-            output["AttributeType"] = attrTypeMap.at(attrType);
+            if (attrTypeMap.find(attrType) != attrTypeMap.end())
+            {
+                output["AttributeType"] = attrTypeMap.at(attrType);
+            }
+            else
+            {
+                std::cout << "Get AttributeType faild.\n";
+            }
         }
         switch (attrType)
         {
@@ -533,7 +540,14 @@ class GetBIOSTable : public GetBIOSTableHandler
             attrdata["AttributeHandle"] = attrHandle;
             attrdata["AttributeNameHandle"] =
                 displayStringHandle(attrNameHandle, stringTable);
-            attrdata["AttributeType"] = attrTypeMap.at(attrType);
+            if (attrTypeMap.find(attrType) != attrTypeMap.end())
+            {
+                attrdata["AttributeType"] = attrTypeMap.at(attrType);
+            }
+            else
+            {
+                std::cout << "Get AttributeType faild.\n";
+            }
 
             switch (attrType)
             {

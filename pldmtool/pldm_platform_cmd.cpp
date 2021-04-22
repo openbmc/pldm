@@ -327,7 +327,15 @@ class GetPDR : public CommandInterface
         }
 
         output["containerID"] = int(pdr->container_id);
-        output["associationType"] = assocationType.at(pdr->association_type);
+        if (assocationType.find(pdr->association_type) != assocationType.end())
+        {
+            output["associationType"] =
+                assocationType.at(pdr->association_type);
+        }
+        else
+        {
+            std::cout << "Get associationType faild.\n";
+        }
         output["containerEntityType"] =
             getEntityName(pdr->container.entity_type);
         output["containerEntityInstanceNumber"] =
@@ -834,15 +842,22 @@ class GetStateSensorReadings : public CommandInterface
 
         for (size_t i = 0; i < compSensorCount; i++)
         {
-
-            output.emplace(("sensorOpState[" + std::to_string(i) + "]"),
-                           sensorOpState.at(stateField[i].sensor_op_state));
-            output.emplace(("presentState[" + std::to_string(i) + "]"),
-                           sensorPresState.at(stateField[i].present_state));
-            output.emplace(("previousState[" + std::to_string(i) + "]"),
-                           sensorPresState.at(stateField[i].previous_state));
-            output.emplace(("eventState[" + std::to_string(i) + "]"),
-                           sensorPresState.at(stateField[i].event_state));
+            try
+            {
+                output.emplace(("sensorOpState[" + std::to_string(i) + "]"),
+                               sensorOpState.at(stateField[i].sensor_op_state));
+                output.emplace(("presentState[" + std::to_string(i) + "]"),
+                               sensorPresState.at(stateField[i].present_state));
+                output.emplace(
+                    ("previousState[" + std::to_string(i) + "]"),
+                    sensorPresState.at(stateField[i].previous_state));
+                output.emplace(("eventState[" + std::to_string(i) + "]"),
+                               sensorPresState.at(stateField[i].event_state));
+            }
+            catch (const std::exception& e)
+            {
+                continue;
+            }
         }
 
         pldmtool::helper::DisplayInJson(output);
