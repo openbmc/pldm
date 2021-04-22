@@ -1257,3 +1257,27 @@ int decode_activate_firmware_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_status_req(uint8_t instance_id, struct pldm_msg *msg,
+			  size_t payload_length)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_GET_STATUS_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_GET_STATUS;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	return PLDM_SUCCESS;
+}
