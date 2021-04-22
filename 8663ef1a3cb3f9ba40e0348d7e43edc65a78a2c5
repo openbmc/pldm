@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f0736608_f7778432",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-04-22T07:23:48Z",
+      "side": 1,
+      "message": "we will not send the data again to Host. the return type is needed by processRxMsg. we send an empty response if we fail to unpack the header as well\nplease refer:\nauto response \u003d\n                        processRxMsg(requestMsg, invoker, dbusImplReq);\n                    if (!response.empty())\n                    {",
+      "parentUuid": "1454c500_54823de8",
+      "range": {
+        "startLine": 255,
+        "startChar": 4,
+        "endLine": 255,
+        "endChar": 12
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df62e528_b745d56d",
         "filename": "pldmd/handler.hpp",
         "patchSetId": 6
@@ -59,6 +83,30 @@
       "writtenOn": "2021-04-19T06:43:30Z",
       "side": 1,
       "message": "Add doxygen",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 48
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b38de092_cac69c99",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-04-22T07:23:48Z",
+      "side": 1,
+      "message": "yeah added up together",
+      "parentUuid": "ea09733a_901c9f79",
       "range": {
         "startLine": 66,
         "startChar": 4,
@@ -111,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "3bad16c1_f92a6382",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-04-22T07:23:48Z",
+      "side": 1,
+      "message": "return is present at the end",
+      "parentUuid": "f6598343_99a61358",
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "06596261_47d465e9",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 6
@@ -122,6 +188,30 @@
       "writtenOn": "2021-04-19T06:43:30Z",
       "side": 1,
       "message": "nit: I like use `switch case` instead of `if, else if, else if...`",
+      "range": {
+        "startLine": 71,
+        "startChar": 3,
+        "endLine": 71,
+        "endChar": 48
+      },
+      "revId": "8663ef1a3cb3f9ba40e0348d7e43edc65a78a2c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bb68838_e5e366e1",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-04-22T07:23:48Z",
+      "side": 1,
+      "message": "yeah i just followed the existing pattern. i will change to switch-case while addressing next set of comments",
+      "parentUuid": "06596261_47d465e9",
       "range": {
         "startLine": 71,
         "startChar": 3,
