@@ -16,6 +16,24 @@
       "revId": "9579dc4fae0e61787ff797fbc5537dad22bacc2c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "590bff59_f2e3af67",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-04-22T13:01:23Z",
+      "side": 1,
+      "message": "Okay I am removing the Blink option here.",
+      "parentUuid": "4f893c5c_c0f97a87",
+      "revId": "9579dc4fae0e61787ff797fbc5537dad22bacc2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
