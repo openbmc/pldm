@@ -23,58 +23,26 @@ namespace helper
 int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
                      std::vector<uint8_t>& responseMsg, bool pldmVerbose)
 {
-
-    const char devPath[] = "\0mctp-mux";
     int returnCode = 0;
 
-    int sockFd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    int sockFd = pldm_open();
     if (-1 == sockFd)
     {
         returnCode = -errno;
-        std::cerr << "Failed to create the socket : RC = " << sockFd << "\n";
+        std::cerr << "failed to init mctp "
+                  << "\n";
         return returnCode;
     }
     Logger(pldmVerbose, "Success in creating the socket : RC = ", sockFd);
 
-    struct sockaddr_un addr
-    {};
-    addr.sun_family = AF_UNIX;
-
-    memcpy(addr.sun_path, devPath, sizeof(devPath) - 1);
-
     CustomFD socketFd(sockFd);
-    int result = connect(socketFd(), reinterpret_cast<struct sockaddr*>(&addr),
-                         sizeof(devPath) + sizeof(addr.sun_family) - 1);
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        std::cerr << "Failed to connect to socket : RC = " << returnCode
-                  << "\n";
-        return returnCode;
-    }
-    Logger(pldmVerbose, "Success in connecting to socket : RC = ", returnCode);
-
-    auto pldmType = MCTP_MSG_TYPE_PLDM;
-    result = write(socketFd(), &pldmType, sizeof(pldmType));
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        std::cerr << "Failed to send message type as pldm to mctp : RC = "
-                  << returnCode << "\n";
-        return returnCode;
-    }
-    Logger(
-        pldmVerbose,
-        "Success in sending message type as pldm to mctp : RC = ", returnCode);
-
-    result = send(socketFd(), requestMsg.data(), requestMsg.size(), 0);
+    int result = send(socketFd(), requestMsg.data(), requestMsg.size(), 0);
     if (-1 == result)
     {
         returnCode = -errno;
         std::cerr << "Write to socket failure : RC = " << returnCode << "\n";
         return returnCode;
     }
-    Logger(pldmVerbose, "Write to socket successful : RC = ", result);
 
     // Read the response from socket
     ssize_t peekedLength = recv(socketFd(), nullptr, 0, MSG_TRUNC | MSG_PEEK);
@@ -149,8 +117,8 @@ void CommandInterface::exec()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = " << mctp_eid
-                  << ", error = " << e.what() << "\n";
+        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = "
+                  << (int)mctp_eid << ", error = " << e.what() << "\n";
         return;
     }
     auto [rc, requestMsg] = createRequestMsg();
