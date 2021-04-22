@@ -1909,3 +1909,153 @@ TEST(UpdateComponent, testBadEncodeRequest)
                                      &inReq, &inCompVerStr);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(UpdateComponent, testGoodDecodeResponse)
+{
+    uint8_t completionCode = PLDM_ERROR;
+    uint8_t compCompatabilityResp = COMPONENT_CANNOT_BE_UPDATED;
+    uint8_t compCompatabilityRespCode = INVALID_COMP_COMPARISON_STAMP;
+    bitfield32_t updateOptionFlagsEnabled = {1};
+    uint16_t estimatedTimeReqFd = 1;
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_update_component_resp)>
+        responseMsg{};
+    struct pldm_update_component_resp* inResp =
+        reinterpret_cast<struct pldm_update_component_resp*>(
+            responseMsg.data() + hdrSize);
+    inResp->completion_code = PLDM_SUCCESS;
+    inResp->comp_compatability_resp = 1;
+    inResp->comp_compatability_resp_code = 3;
+    inResp->update_option_flags_enabled.value = 0x01;
+    inResp->estimated_time_req_fd = 0x01;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(compCompatabilityResp, inResp->comp_compatability_resp);
+    EXPECT_EQ(compCompatabilityRespCode, inResp->comp_compatability_resp_code);
+    EXPECT_EQ(updateOptionFlagsEnabled.value,
+              htole32(inResp->update_option_flags_enabled.value));
+    EXPECT_EQ(estimatedTimeReqFd, htole16(inResp->estimated_time_req_fd));
+}
+
+TEST(UpdateComponent, testBadDecodeResponse)
+{
+    uint8_t completionCode = PLDM_ERROR;
+    uint8_t compCompatabilityResp = COMPONENT_CANNOT_BE_UPDATED;
+    uint8_t compCompatabilityRespCode = INVALID_COMP_COMPARISON_STAMP;
+    bitfield32_t updateOptionFlagsEnabled = {1};
+    uint16_t estimatedTimeReqFd = 1;
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_update_component_resp)>
+        responseMsg{};
+    struct pldm_update_component_resp* inResp =
+        reinterpret_cast<struct pldm_update_component_resp*>(
+            responseMsg.data() + hdrSize);
+    inResp->completion_code = PLDM_SUCCESS;
+    inResp->comp_compatability_resp = 1;
+    inResp->comp_compatability_resp_code = 3;
+    inResp->update_option_flags_enabled.value = 0x01;
+    inResp->estimated_time_req_fd = 0x01;
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_update_component_resp(
+        NULL, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        response, 0, &completionCode, &compCompatabilityResp,
+        &compCompatabilityRespCode, &updateOptionFlagsEnabled,
+        &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, NULL, &compCompatabilityResp,
+        &compCompatabilityRespCode, &updateOptionFlagsEnabled,
+        &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, NULL,
+        &compCompatabilityRespCode, &updateOptionFlagsEnabled,
+        &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(response, responseMsg.size() - hdrSize,
+                                      &completionCode, &compCompatabilityResp,
+                                      NULL, &updateOptionFlagsEnabled,
+                                      &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(response, responseMsg.size() - hdrSize,
+                                      &completionCode, &compCompatabilityResp,
+                                      &compCompatabilityRespCode, NULL,
+                                      &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_update_component_resp(response, responseMsg.size() - hdrSize,
+                                      &completionCode, &compCompatabilityResp,
+                                      &compCompatabilityRespCode,
+                                      &updateOptionFlagsEnabled, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_compatability_resp = COMPONENT_CAN_BE_UPDATED - 1;
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_compatability_resp = COMPONENT_CANNOT_BE_UPDATED + 1;
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_compatability_resp = 6;
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_compatability_resp_code =
+        FD_VENDOR_COMP_STATUS_CODE_RANGE_MIN - 1;
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_compatability_resp_code =
+        FD_VENDOR_COMP_STATUS_CODE_RANGE_MAX + 1;
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_compatability_resp_code = COMP_CAN_BE_UPDATED - 1;
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp->comp_compatability_resp_code = 0xFF;
+    rc = decode_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &compCompatabilityResp, &compCompatabilityRespCode,
+        &updateOptionFlagsEnabled, &estimatedTimeReqFd);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}

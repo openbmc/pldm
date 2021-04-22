@@ -156,6 +156,20 @@ enum comp_classification {
 	PLDM_COMP_DOWNSTREAM_DEVICE = 0xffff
 };
 
+/** @brief PLDM FWU codes for component compatibility response code
+ */
+enum comp_compatability_resp_code {
+	NO_RESPONSE_CODE = 0x0,
+	COMPATABILITY_NO_MATCH = 0x09
+};
+
+/** @brief PLDM FWU codes for Component Compatibility Response
+ */
+enum comp_compatability_resp {
+	COMPONENT_CAN_BE_UPDATED = 0,
+	COMPONENT_CANNOT_BE_UPDATED = 1
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -324,6 +338,18 @@ struct pldm_update_component_req {
 	bitfield32_t update_option_flags;
 	uint8_t comp_ver_str_type;
 	uint8_t comp_ver_str_len;
+} __attribute__((packed));
+
+/** @struct update_component_resp
+ *
+ *  Structure representing Update Component response
+ */
+struct pldm_update_component_resp {
+	uint8_t completion_code;
+	uint8_t comp_compatability_resp;
+	uint8_t comp_compatability_resp_code;
+	bitfield32_t update_option_flags_enabled;
+	uint16_t estimated_time_req_fd;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -560,8 +586,7 @@ int decode_request_update_resp(const struct pldm_msg *msg,
  *         'msg.payload'
  */
 int encode_pass_component_table_req(
-     uint8_t instance_id, struct pldm_msg *msg,
-     size_t payload_length,
+    uint8_t instance_id, struct pldm_msg *msg, size_t payload_length,
     const struct pldm_pass_component_table_req *data,
     struct variable_field *comp_ver_str);
 
@@ -598,6 +623,34 @@ int encode_update_component_req(const uint8_t instance_id, struct pldm_msg *msg,
 				const struct pldm_update_component_req *data,
 				struct variable_field *comp_ver_str);
 
+/** @brief Decode a UpdateComponent response message
+ *
+ *  Note:
+ *  * If the return value is not PLDM_SUCCESS, it represents a
+ * transport layer error.
+ *  * If the completion_code value is not PLDM_SUCCESS, it represents a
+ * protocol layer error and all the out-parameters are invalid.
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] comp_compatability_resp - Pointer to component compatability
+ * response
+ *  @param[out] comp_compatability_resp_code - Pointer to component
+ * compatability response code
+ *  @param[out] update_option_flags_enabled - Pointer to update option flags
+ * enabled
+ *  @param[out] estimated_time_req_fd - Pointer to estimated time before sending
+ * request firmware data information
+ *  @return pldm_completion_codes
+ */
+int decode_update_component_resp(const struct pldm_msg *msg,
+				 const size_t payload_length,
+				 uint8_t *completion_code,
+				 uint8_t *comp_compatability_resp,
+				 uint8_t *comp_compatability_resp_code,
+				 bitfield32_t *update_option_flags_enabled,
+				 uint16_t *estimated_time_req_fd);
 #ifdef __cplusplus
 }
 #endif

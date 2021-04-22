@@ -11,7 +11,6 @@ extern "C" {
 
 #include "pldm_types.h"
 
-
 /** @brief PLDM Types
  */
 enum pldm_supported_types {
