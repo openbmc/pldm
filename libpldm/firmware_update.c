@@ -119,6 +119,55 @@ static bool is_comp_resp_code_valid(uint8_t comp_resp_code)
 	}
 }
 
+/** @brief Check whether ComponentCompatibilityResponse is valid
+ *
+ *  @return true if ComponentCompatibilityResponse is valid, false if not
+ */
+static bool is_comp_compatibility_resp_valid(uint8_t comp_compatibility_resp)
+{
+	switch (comp_compatibility_resp) {
+	case PLDM_CCR_COMP_CAN_BE_UPDATED:
+	case PLDM_CCR_COMP_CANNOT_BE_UPDATED:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+/** @brief Check whether ComponentCompatibilityResponse Code is valid
+ *
+ *  @return true if ComponentCompatibilityResponse Code is valid, false if not
+ */
+static bool
+is_comp_compatibility_resp_code_valid(uint8_t comp_compatibility_resp_code)
+{
+	switch (comp_compatibility_resp_code) {
+	case PLDM_CCRC_NO_RESPONSE_CODE:
+	case PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL:
+	case PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER:
+	case PLDM_CCRC_INVALID_COMP_COMPARISON_STAMP:
+	case PLDM_CCRC_COMP_CONFLICT:
+	case PLDM_CCRC_COMP_PREREQUISITES_NOT_MET:
+	case PLDM_CCRC_COMP_NOT_SUPPORTED:
+	case PLDM_CCRC_COMP_SECURITY_RESTRICTIONS:
+	case PLDM_CRC_INCOMPLETE_COMP_IMAGE_SET:
+	case PLDM_CCRC_COMP_INFO_NO_MATCH:
+	case PLDM_CCRC_COMP_VER_STR_IDENTICAL:
+	case PLDM_CCRC_COMP_VER_STR_LOWER:
+		return true;
+
+	default:
+		if (comp_compatibility_resp_code >=
+			PLDM_CCRC_VENDOR_COMP_RESP_CODE_RANGE_MIN &&
+		    comp_compatibility_resp_code <=
+			PLDM_CCRC_VENDOR_COMP_RESP_CODE_RANGE_MAX) {
+			return true;
+		}
+		return false;
+	}
+}
+
 int decode_pldm_package_header_info(
     const uint8_t *data, size_t length,
     struct pldm_package_header_information *package_header_info,
@@ -895,6 +944,53 @@ int encode_update_component_req(
 
 	memcpy(msg->payload + sizeof(struct pldm_update_component_req),
 	       comp_ver_str->ptr, comp_ver_str->length);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_update_component_resp(const struct pldm_msg *msg,
+				 size_t payload_length,
+				 uint8_t *completion_code,
+				 uint8_t *comp_compatability_resp,
+				 uint8_t *comp_compatability_resp_code,
+				 bitfield32_t *update_option_flags_enabled,
+				 uint16_t *time_before_req_fw_data)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    comp_compatability_resp == NULL ||
+	    comp_compatability_resp_code == NULL ||
+	    update_option_flags_enabled == NULL ||
+	    time_before_req_fw_data == NULL || !payload_length) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (*completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length != sizeof(struct pldm_update_component_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_update_component_resp *response =
+	    (struct pldm_update_component_resp *)msg->payload;
+
+	if (!is_comp_compatibility_resp_valid(
+		response->comp_compatability_resp)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!is_comp_compatibility_resp_code_valid(
+		response->comp_compatability_resp_code)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*comp_compatability_resp = response->comp_compatability_resp;
+	*comp_compatability_resp_code = response->comp_compatability_resp_code;
+	update_option_flags_enabled->value =
+	    le32toh(response->update_option_flags_enabled.value);
+	*time_before_req_fw_data = le16toh(response->time_before_req_fw_data);
 
 	return PLDM_SUCCESS;
 }
