@@ -1927,7 +1927,7 @@
       "type": 31,
       "instance": 0,
       "base_unit": 21,
-      "rate_unit": 3,
+      "rate_unit": 0,
       "effecter_resolution_init": 1,
       "effecter_data_size": 4,
       "range_field_format": 4,
