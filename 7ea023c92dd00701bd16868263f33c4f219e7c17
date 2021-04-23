@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ca1090e_305c5bf4",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-23T14:02:29Z",
+      "side": 1,
+      "message": "D-Bus object is correct. However, I see type / instance / container / effector are same for both fault and identify. ( this is just my observation )",
+      "revId": "7ea023c92dd00701bd16868263f33c4f219e7c17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99f574fc_5a6a09fe",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-23T14:02:29Z",
+      "side": 1,
+      "message": "Like I said in the previous patch.\n\ntrue --\u003e xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink\n\nfals --\u003e xyz.openbmc_project.Led.Physical.Action.Off",
+      "revId": "7ea023c92dd00701bd16868263f33c4f219e7c17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48b67f3b_c82ee314",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-04-23T14:02:29Z",
+      "side": 1,
+      "message": "same comment as before",
+      "revId": "7ea023c92dd00701bd16868263f33c4f219e7c17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
