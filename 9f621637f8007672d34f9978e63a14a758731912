@@ -213,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "ef9b9934_2489e5d2",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "942809c9_d31b2f49",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 18
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "61faf0c2_d4383ed9",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -224,6 +248,30 @@
       "writtenOn": "2021-04-22T14:45:24Z",
       "side": 1,
       "message": "can be sorted based on PEP8 ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 15
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02d95b9a_59cdf5d4",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "I\u0027ve run autopep8.",
+      "parentUuid": "61faf0c2_d4383ed9",
       "range": {
         "startLine": 2,
         "startChar": 0,
@@ -259,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "1abec62c_c6611eed",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8c62a269_6c5ccd5d",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 16
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "06029242_20f5571a",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -282,6 +354,30 @@
     },
     {
       "key": {
+        "uuid": "8718ebca_e476951e",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "06029242_20f5571a",
+      "range": {
+        "startLine": 50,
+        "startChar": 43,
+        "endLine": 50,
+        "endChar": 50
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b5f5380e_6f058669",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -293,6 +389,30 @@
       "writtenOn": "2021-04-22T21:13:15Z",
       "side": 1,
       "message": "nit: just use packageVersionString?",
+      "range": {
+        "startLine": 54,
+        "startChar": 27,
+        "endLine": 54,
+        "endChar": 58
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "594767b8_c6c3c705",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "This is to get something like \u002720s\u0027, not sure I followed your comment.",
+      "parentUuid": "b5f5380e_6f058669",
       "range": {
         "startLine": 54,
         "startChar": 27,
@@ -399,6 +519,30 @@
     },
     {
       "key": {
+        "uuid": "0f4bc48b_56fda768",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fc3b7c84_3b9cc501",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 35
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1306206c_5b6d1d8f",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -419,6 +563,30 @@
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "466060da_75b0b8b9",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1306206c_5b6d1d8f",
+      "range": {
+        "startLine": 146,
+        "startChar": 36,
+        "endLine": 146,
+        "endChar": 37
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -492,6 +660,30 @@
     },
     {
       "key": {
+        "uuid": "a868a686_d3d8c6b3",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5d3d241c_3ef0d953",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 44
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0ccfe379_de476638",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -538,6 +730,30 @@
     },
     {
       "key": {
+        "uuid": "439cab28_19b30fb1",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "21bd4070_73c0ce2f",
+      "range": {
+        "startLine": 247,
+        "startChar": 15,
+        "endLine": 247,
+        "endChar": 26
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0a304d6c_9f55faa7",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -558,6 +774,30 @@
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f619c3c2_f3639728",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0a304d6c_9f55faa7",
+      "range": {
+        "startLine": 249,
+        "startChar": 21,
+        "endLine": 249,
+        "endChar": 23
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -584,6 +824,30 @@
     },
     {
       "key": {
+        "uuid": "26dc6ab0_603d37e0",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d6e2e168_3757c673",
+      "range": {
+        "startLine": 262,
+        "startChar": 73,
+        "endLine": 262,
+        "endChar": 77
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "96e69587_80b3572f",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -607,6 +871,30 @@
     },
     {
       "key": {
+        "uuid": "59a89b4e_b9f7436f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "96e69587_80b3572f",
+      "range": {
+        "startLine": 266,
+        "startChar": 3,
+        "endLine": 266,
+        "endChar": 39
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d2d6cccc_56fb17ac",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -618,6 +906,30 @@
       "writtenOn": "2021-04-22T14:45:24Z",
       "side": 1,
       "message": "more than 80 characters, may be better to follow the PEP8 Coding style ? same below",
+      "range": {
+        "startLine": 270,
+        "startChar": 14,
+        "endLine": 270,
+        "endChar": 107
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16627306_ba536a21",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "I\u0027ve run autopep8, which doesn\u0027t deal with strings - https://github.com/hhatto/autopep8/issues/39",
+      "parentUuid": "d2d6cccc_56fb17ac",
       "range": {
         "startLine": 270,
         "startChar": 14,
@@ -653,6 +965,30 @@
     },
     {
       "key": {
+        "uuid": "d178430d_2db29b9d",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Yes, if there is a need.",
+      "parentUuid": "8aab13a5_aa3c1eb6",
+      "range": {
+        "startLine": 276,
+        "startChar": 7,
+        "endLine": 276,
+        "endChar": 29
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "14f20122_583b3100",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -676,6 +1012,30 @@
     },
     {
       "key": {
+        "uuid": "96dc5b56_8af900b7",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "14f20122_583b3100",
+      "range": {
+        "startLine": 284,
+        "startChar": 3,
+        "endLine": 284,
+        "endChar": 50
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4fea9211_97277521",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -687,6 +1047,30 @@
       "writtenOn": "2021-04-22T14:45:24Z",
       "side": 1,
       "message": "snake_case as per PEP8 ? same for all functions \u0026 variable names",
+      "range": {
+        "startLine": 287,
+        "startChar": 21,
+        "endLine": 287,
+        "endChar": 50
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e340f8ab_4bad421e",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-04-23T11:30:49Z",
+      "side": 1,
+      "message": "I\u0027ve run autopep8",
+      "parentUuid": "4fea9211_97277521",
       "range": {
         "startLine": 287,
         "startChar": 21,
