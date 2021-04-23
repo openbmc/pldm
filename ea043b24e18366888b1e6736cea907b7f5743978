@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d600bff_585024b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-23T04:32:15Z",
+      "side": 1,
+      "message": "I think hang might be a wrong word here, Unhandled out-of-range exceptions might lead to a coredump(crash)",
+      "range": {
+        "startLine": 10,
+        "startChar": 12,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "ea043b24e18366888b1e6736cea907b7f5743978",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
