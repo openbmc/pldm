@@ -562,6 +562,11 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
         pldm::hostbmc::utils::updateEntityAssociation(
             entityAssociations, entityTree, objPathMap, oemPlatformHandler);
 
+        if (oemPlatformHandler != nullptr)
+        {
+            pldm::hostbmc::utils::setCoreCount(entityAssociations);
+        }
+
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
         this->parseFruRecordSetPDRs(fruRecordSetPDRs);
