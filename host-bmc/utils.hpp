@@ -47,6 +47,8 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
                                      const ObjectPath& path,
                                      ObjectPathMaps& objPathMap);
 
+void setCoreCount(const EntityAssociations& entityAssociation);
+
 } // namespace utils
 } // namespace hostbmc
 } // namespace pldm
