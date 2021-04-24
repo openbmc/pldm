@@ -143,6 +143,10 @@ using DBusInterfaceAdded = std::vector<
     std::pair<pldm::dbus::Interface,
               std::vector<std::pair<pldm::dbus::Property,
                                     std::variant<pldm::dbus::Property>>>>>;
+using MapperServiceMap =
+    std::vector<std::pair<std::string, std::vector<std::string>>>;
+using MapperGetSubTreeResponse =
+    std::vector<std::pair<std::string, MapperServiceMap>>;
 
 /**
  * @brief The interface for DBusHandler
@@ -154,6 +158,9 @@ class DBusHandlerInterface
 
     virtual std::string getService(const char* path,
                                    const char* interface) const = 0;
+    virtual MapperGetSubTreeResponse
+        getSubtree(const char* path, int depth,
+                   const std::vector<std::string>& ifacelist) const = 0;
 
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
@@ -194,6 +201,10 @@ class DBusHandler : public DBusHandlerInterface
      */
     std::string getService(const char* path,
                            const char* interface) const override;
+
+    MapperGetSubTreeResponse
+        getSubtree(const char* path, int depth,
+                   const std::vector<std::string>& ifacelist) const override;
 
     /** @brief Get property(type: variant) from the requested dbus
      *
