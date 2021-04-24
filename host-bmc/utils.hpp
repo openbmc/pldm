@@ -50,6 +50,8 @@ void updateEntityAssociation(
     pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
     pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
+void setCoreCount(const EntityAssociations& entityAssociation);
+
 } // namespace utils
 } // namespace hostbmc
 } // namespace pldm
