@@ -257,7 +257,9 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         addObjectPathEntityAssociations(entityAssociations, entity, path,
                                         objPathMap);
     }
-
+#ifdef IBM_OEM
+    setCoreCount(entityAssociations);
+#endif
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
     parseFruRecordSetPDRs(fruRecordSetPDRs);
 

@@ -1,3 +1,5 @@
+#include "common/utils.hpp"
+
 #include "utils.hpp"
 
 #include <iostream>
@@ -87,6 +89,46 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     if (!find)
     {
         objPathMap.emplace(path / fs::path{entityName + entityNum}, entity);
+    }
+}
+void setCoreCount(const EntityAssociations& Associations)
+{
+    static constexpr auto searchpath = "/xyz/openbmc_project/";
+    int depth = 0;
+    std::vector<std::string> cpuInterface = {
+        "xyz.openbmc_project.Inventory.Item.Cpu"};
+    pldm::utils::MapperGetSubTreeResponse response =
+        pldm::utils::DBusHandler().getSubtree(searchpath, depth, cpuInterface);
+
+    // get the CPU pldm entities
+    for (const auto& entries : Associations)
+    {
+        // entries[0] would be the parent in the entity association map
+        if (entries[0].entity_type == 135)
+        {
+            int corecount = 0;
+            for (const auto& entry : entries)
+            {
+                if (entry.entity_type == 33903)
+                {
+                    // got a core child
+                    ++corecount;
+                }
+            }
+
+            std::string grepWord =
+                entityMaps.at(entries[0].entity_type) +
+                std::to_string(entries[0].entity_instance_num);
+            for (const auto& [objectPath, serviceMap] : response)
+            {
+                // find the object path with first occurance of coreX
+                if (objectPath.find(grepWord) != std::string::npos)
+                {
+                    pldm::utils::DBusMapping dbusMapping{
+                        objectPath, cpuInterface[0], "CoreCount", "uint16_t"};
+                }
+            }
+        }
     }
 }
 } // namespace utils
