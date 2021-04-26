@@ -190,6 +190,23 @@
     },
     {
       "key": {
+        "uuid": "34d4b345_2bd3106d",
+        "filename": "tools/fw-update/metadata-example.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-26T10:07:36Z",
+      "side": 1,
+      "message": "PackageHeaderIdentifier \u0026 packageReleaseDateTime can be made configurable.",
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "942809c9_d31b2f49",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -319,6 +336,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "8c62a269_6c5ccd5d",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 16
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d61ec6ba_472923a8",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-26T10:07:36Z",
+      "side": 1,
+      "message": "sys.exit() raises the system.exit() exception and is handled in the main() which removes the pldm-fwup-pkg.bin.",
+      "parentUuid": "1abec62c_c6611eed",
       "range": {
         "startLine": 24,
         "startChar": 8,
@@ -615,6 +656,29 @@
     },
     {
       "key": {
+        "uuid": "3f7e78ea_ed67101f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-26T10:07:36Z",
+      "side": 1,
+      "message": "Should this be the number of components or the ComponentBitMapLength?",
+      "range": {
+        "startLine": 103,
+        "startChar": 36,
+        "endLine": 103,
+        "endChar": 51
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1306206c_5b6d1d8f",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -702,6 +766,29 @@
         "startChar": 8,
         "endLine": 205,
         "endChar": 25
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3db3d8c2_e7e7a223",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-26T10:07:36Z",
+      "side": 1,
+      "message": "size of checksum to be added for calculating the offset of the images",
+      "range": {
+        "startLine": 227,
+        "startChar": 4,
+        "endLine": 227,
+        "endChar": 36
       },
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
@@ -870,6 +957,29 @@
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a714027_de43a1c3",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-26T10:07:36Z",
+      "side": 1,
+      "message": "This is 2 bytes, so should be \u003cH",
+      "range": {
+        "startLine": 250,
+        "startChar": 34,
+        "endLine": 250,
+        "endChar": 37
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     },
     {
       "key": {
