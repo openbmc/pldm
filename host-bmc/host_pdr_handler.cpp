@@ -940,6 +940,11 @@ void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
 
             // update the Present Property
             setPresentPropertyStatus(entity.first);
+            if (node.entity_type == (PLDM_ENTITY_PROC | 0x8000))
+            {
+                CustomDBus::getCustomDBus().implementCpuCoreInterface(
+                    entity.first);
+            }
 
             for (auto& data : fruRecordData)
             {
