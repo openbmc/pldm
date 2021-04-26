@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b6ff277_38b6262f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-26T19:31:40Z",
+      "side": 1,
+      "message": "I assume this will be turned off at some point? How come PLDM doesn\u0027t use the phosphor-logging API\u0027s?",
+      "revId": "2f439459043548778b423b8bd5cb4307a9b34359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8308d6a5_0fb505da",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-26T19:31:40Z",
+      "side": 1,
+      "message": "Is a requester.markFree needed in this error path?",
+      "revId": "2f439459043548778b423b8bd5cb4307a9b34359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86e50973_89b45533",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-26T19:31:40Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-dbus-interfaces/+/42435 is still up for review but I was thinking we\u0027d host this new D-Bus object within PLDM. Is that what you\u0027re thinking? I was also thinking that we\u0027d execute the getTID() call to PHYP when someone reads the property.",
+      "revId": "2f439459043548778b423b8bd5cb4307a9b34359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
