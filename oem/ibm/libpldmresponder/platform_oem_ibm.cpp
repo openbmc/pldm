@@ -2,7 +2,7 @@
 
 #include "libpldm/platform_oem_ibm.h"
 #include "libpldm/requester/pldm.h"
-
+// #include "libpldmresponder/base.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 
@@ -117,6 +117,24 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
     }
 
     return completionCode;
+}
+
+int Watchdog::calculateHeartbeatTimeOut()
+{
+    auto heartbeatTimeout = 0;
+    if (isSetEventReceiverSent)
+    {
+        heartbeatTimeout = 0x78;
+        std::cout << "HeartBeat is 120 sec \n";
+    }
+    else
+    {
+        heartbeatTimeout = 0xf;
+        std::cout << "HeartBeat is 15 sec \n";
+        isSetEventReceiverSent = true;
+    }
+
+    return heartbeatTimeout;
 }
 
 } // namespace platform

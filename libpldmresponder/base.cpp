@@ -17,6 +17,7 @@
 #ifdef OEM_IBM
 #include "libpldm/file_io.h"
 #include "libpldm/host.h"
+// #include "oem/ibm/libpldmresponder/platform_oem_ibm.hpp"
 #endif
 
 namespace pldm
@@ -179,7 +180,9 @@ void Handler::_processSetEventReceiver(
         PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
     uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
     uint8_t eventReceiverAddressInfo = 0x08;
-    uint16_t heartbeatTimer = 0x78;
+#ifdef OEM_IBM
+    uint16_t heartbeatTimer = watchDog.calculateHeartbeatTimeOut();
+#endif
 
     auto rc = encode_set_event_receiver_req(
         instanceId, eventMessageGlobalEnable, transportProtocolType,
