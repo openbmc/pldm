@@ -2693,3 +2693,22 @@ TEST(GetStatus, testBadDecodeResponse)
                                 &reasonCode, &updateOptionFlagsEnabled);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(CancelUpdate, testGoodEncodeRequest)
+{
+    uint8_t instanceId = 0x03;
+    struct pldm_msg msg;
+    auto rc = encode_cancel_update_req(instanceId, &msg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg.hdr.instance_id, instanceId);
+    EXPECT_EQ(msg.hdr.type, PLDM_FWUP);
+    EXPECT_EQ(msg.hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(msg.hdr.command, PLDM_CANCEL_UPDATE);
+}
+
+TEST(CancelUpdate, testBadEncodeRequest)
+{
+    uint8_t instanceId = 0x03;
+    auto rc = encode_cancel_update_req(instanceId, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
