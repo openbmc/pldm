@@ -1497,3 +1497,27 @@ int decode_cancel_update_component_resp(const struct pldm_msg *msg,
 	*completion_code = msg->payload[0];
 	return PLDM_SUCCESS;
 }
+
+int encode_cancel_update_req(uint8_t instance_id, struct pldm_msg *msg,
+			     size_t payload_length)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_CANCEL_UPDATE_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_CANCEL_UPDATE;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	return PLDM_SUCCESS;
+}
