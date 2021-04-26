@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "feec0b6a_a473fa49",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2021-04-26T04:10:01Z",
+      "side": 1,
+      "message": "Chnage in path , Refer https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-certificate-manager/+/42463/5/bmc-vmi-ca/ca_certs_manager.cpp.",
+      "range": {
+        "startLine": 162,
+        "startChar": 36,
+        "endLine": 162,
+        "endChar": 72
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
