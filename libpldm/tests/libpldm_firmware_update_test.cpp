@@ -2478,3 +2478,265 @@ TEST(GetStatus, errorPathEncodeRequest)
     rc = encode_get_status_req(0, requestMsg, PLDM_GET_STATUS_REQ_BYTES + 1);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(GetStatus, goodPathDecodeResponse)
+{
+    constexpr std::bitset<32> updateOptionFlagsEnabled1{0};
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse1{0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x03,
+                           0x09, 0x65, 0x05, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse1.data());
+
+    uint8_t completionCode = 0;
+    uint8_t currentState = 0;
+    uint8_t previousState = 0;
+    uint8_t auxState = 0;
+    uint8_t auxStateStatus = 0;
+    uint8_t progressPercent = 0;
+    uint8_t reasonCode = 0;
+    bitfield32_t updateOptionFlagsEnabled{0};
+
+    auto rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(currentState, PLDM_FD_STATE_IDLE);
+    EXPECT_EQ(previousState, PLDM_FD_STATE_DOWNLOAD);
+    EXPECT_EQ(auxState, PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER);
+    EXPECT_EQ(auxStateStatus, PLDM_FD_TIMEOUT);
+    EXPECT_EQ(progressPercent, PLDM_FWUP_MAX_PROGRESS_PERCENT);
+    EXPECT_EQ(reasonCode, PLDM_FD_TIMEOUT_DOWNLOAD);
+    EXPECT_EQ(updateOptionFlagsEnabled.value, updateOptionFlagsEnabled1);
+
+    // Bit position 0 - Force update of component – FD will perform a force
+    // update of the component.
+    constexpr std::bitset<32> updateOptionFlagsEnabled2{1};
+    constexpr uint8_t progressPercent2 = 50;
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse2{0x00, 0x00, 0x00, 0x00, 0x04, 0x03, 0x00,
+                           0x70, 0x32, 0x05, 0x01, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse2.data());
+
+    rc = decode_get_status_resp(
+        responseMsg2, getStatusResponse2.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(currentState, PLDM_FD_STATE_VERIFY);
+    EXPECT_EQ(previousState, PLDM_FD_STATE_DOWNLOAD);
+    EXPECT_EQ(auxState, PLDM_FD_OPERATION_IN_PROGRESS);
+    EXPECT_EQ(auxStateStatus, PLDM_FD_VENDOR_DEFINED_STATUS_CODE_START);
+    EXPECT_EQ(progressPercent, progressPercent2);
+    EXPECT_EQ(reasonCode, PLDM_FD_TIMEOUT_DOWNLOAD);
+    EXPECT_EQ(updateOptionFlagsEnabled.value, updateOptionFlagsEnabled2);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        getStatusResponse3{0x00, 0x00, 0x00, 0x04};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse3.data());
+    rc = decode_get_status_resp(
+        responseMsg3, getStatusResponse3.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_ERROR_NOT_READY);
+}
+
+TEST(GetStatus, errorPathDecodeResponse)
+{
+    uint8_t completionCode = 0;
+    uint8_t currentState = 0;
+    uint8_t previousState = 0;
+    uint8_t auxState = 0;
+    uint8_t auxStateStatus = 0;
+    uint8_t progressPercent = 0;
+    uint8_t reasonCode = 0;
+    bitfield32_t updateOptionFlagsEnabled{0};
+
+    constexpr std::array<uint8_t, hdrSize> getStatusResponse1{0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse1.data());
+
+    auto rc = decode_get_status_resp(
+        nullptr, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, nullptr,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        nullptr, &previousState, &auxState, &auxStateStatus, &progressPercent,
+        &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, nullptr, &auxState, &auxStateStatus, &progressPercent,
+        &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, nullptr, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, nullptr, &progressPercent,
+        &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus, nullptr,
+        &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, nullptr, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_status_resp(
+        responseMsg1, getStatusResponse1.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp) - 1>
+        getStatusResponse2{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse2.data());
+    rc = decode_get_status_resp(
+        responseMsg2, getStatusResponse2.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse3{0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00,
+                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse3.data());
+    rc = decode_get_status_resp(
+        responseMsg3, getStatusResponse3.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse4{0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00,
+                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg4 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse4.data());
+    rc = decode_get_status_resp(
+        responseMsg4, getStatusResponse4.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse5{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04,
+                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg5 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse5.data());
+    rc = decode_get_status_resp(
+        responseMsg5, getStatusResponse5.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse6{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                           0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg6 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse6.data());
+    rc = decode_get_status_resp(
+        responseMsg6, getStatusResponse6.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse7{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                           0x00, 0x66, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg7 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse7.data());
+    rc = decode_get_status_resp(
+        responseMsg7, getStatusResponse7.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse8{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                           0x00, 0x00, 0xC7, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg8 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse8.data());
+    rc = decode_get_status_resp(
+        responseMsg8, getStatusResponse8.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // AuxState is not PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER when the state is
+    // IDLE
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse9{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg9 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse9.data());
+    rc = decode_get_status_resp(
+        responseMsg9, getStatusResponse9.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // ProgressPercent is invalid for current state DOWNLOAD, VERIFY or APPLY
+    // state
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse10{0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
+                            0x00, 0x65, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg10 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse10.data());
+    rc = decode_get_status_resp(
+        responseMsg10, getStatusResponse10.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // ProgressPercent is invalid for current state IDLE, LEARN COMPONENTS,
+    // READY XFER or ACTIVATE
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_get_status_resp)>
+        getStatusResponse11{0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+                            0x00, 0x64, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg11 =
+        reinterpret_cast<const pldm_msg*>(getStatusResponse11.data());
+    rc = decode_get_status_resp(
+        responseMsg11, getStatusResponse11.size() - hdrSize, &completionCode,
+        &currentState, &previousState, &auxState, &auxStateStatus,
+        &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
