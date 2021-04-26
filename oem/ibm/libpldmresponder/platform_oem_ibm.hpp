@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pldmd/dbus_impl_requester.hpp"
-
+// #include "libpldmresponder/base.hpp"
 #include <vector>
 
 namespace pldm
@@ -27,6 +27,19 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
                                  dbus_api::Requester* requester,
                                  const std::vector<uint16_t>& handles);
 
+class Watchdog
+{
+  public:
+    /** @brief To calculate the heartbeat timeout for sending the
+     *     SetEventReceiver to host
+     *
+     *  @return The heartbeat timeout value */
+    int calculateHeartbeatTimeOut();
+
+  private:
+    /** @brief flag to check if the SetEventReceiver is already sent to host */
+    bool isSetEventReceiverSent = false;
+};
 } // namespace platform
 
 } // namespace responder
