@@ -185,6 +185,101 @@ is_self_contained_activation_req_valid(bool8_t self_contained_activation_req)
 	}
 }
 
+/** @brief Check if current or previous status in GetStatus command response is
+ *         valid
+ *
+ *	@param[in] state - current or previous different state machine state of
+ *                     the FD
+ *	@return true if state is valid, false if not
+ */
+static bool is_state_valid(uint8_t state)
+{
+	switch (state) {
+	case PLDM_FD_STATE_IDLE:
+	case PLDM_FD_STATE_LEARN_COMPONENTS:
+	case PLDM_FD_STATE_READY_XFER:
+	case PLDM_FD_STATE_DOWNLOAD:
+	case PLDM_FD_STATE_VERIFY:
+	case PLDM_FD_STATE_APPLY:
+	case PLDM_FD_STATE_ACTIVATE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+/** @brief Check if aux state in GetStatus command response is valid
+ *
+ *  @param[in] aux_state - provides additional information to the UA to describe
+ *                         the current operation state of the FD/FDP
+ *
+ *	@return true if aux state is valid, false if not
+ */
+static bool is_aux_state_valid(uint8_t aux_state)
+{
+	switch (aux_state) {
+	case PLDM_FD_OPERATION_IN_PROGRESS:
+	case PLDM_FD_OPERATION_SUCCESSFUL:
+	case PLDM_FD_OPERATION_FAILED:
+	case PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+/** @brief Check if aux state status in GetStatus command response is valid
+ *
+ *	@param[in] aux_state_status - aux state status
+ *
+ *	@return true if aux state status is valid, false if not
+ */
+static bool is_aux_state_status_valid(uint8_t aux_state_status)
+{
+	if (aux_state_status == PLDM_FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS ||
+	    aux_state_status == PLDM_FD_TIMEOUT ||
+	    aux_state_status == PLDM_FD_GENERIC_ERROR) {
+		return true;
+	} else if (aux_state_status >=
+		       PLDM_FD_VENDOR_DEFINED_STATUS_CODE_START &&
+		   aux_state_status <= PLDM_FD_VENDOR_DEFINED_STATUS_CODE_END) {
+		return true;
+	}
+
+	return false;
+}
+
+/** @brief Check if reason code in GetStatus command response is valid
+ *
+ *	@param[in] reason_code - provides the reason for why the current state
+ *                           entered the IDLE state
+ *
+ *	@return true if reason code is valid, false if not
+ */
+static bool is_reason_code_valid(uint8_t reason_code)
+{
+
+	switch (reason_code) {
+	case PLDM_FD_INITIALIZATION:
+	case PLDM_FD_ACTIVATE_FW:
+	case PLDM_FD_CANCEL_UPDATE:
+	case PLDM_FD_TIMEOUT_LEARN_COMPONENT:
+	case PLDM_FD_TIMEOUT_READY_XFER:
+	case PLDM_FD_TIMEOUT_DOWNLOAD:
+	case PLDM_FD_TIMEOUT_VERIFY:
+	case PLDM_FD_TIMEOUT_APPLY:
+		return true;
+
+	default:
+		if (reason_code >= PLDM_FD_STATUS_VENDOR_DEFINED_MIN) {
+			return true;
+		}
+		return false;
+	}
+}
+
 int decode_pldm_package_header_info(
     const uint8_t *data, size_t length,
     struct pldm_package_header_information *package_header_info,
@@ -1278,6 +1373,72 @@ int encode_get_status_req(uint8_t instance_id, struct pldm_msg *msg,
 	if (rc) {
 		return rc;
 	}
+
+	return PLDM_SUCCESS;
+}
+
+int decode_get_status_resp(const struct pldm_msg *msg, size_t payload_length,
+			   uint8_t *completion_code, uint8_t *current_state,
+			   uint8_t *previous_state, uint8_t *aux_state,
+			   uint8_t *aux_state_status, uint8_t *progress_percent,
+			   uint8_t *reason_code,
+			   bitfield32_t *update_option_flags_enabled)
+{
+	if (msg == NULL || completion_code == NULL || current_state == NULL ||
+	    previous_state == NULL || aux_state == NULL ||
+	    aux_state_status == NULL || progress_percent == NULL ||
+	    reason_code == NULL || update_option_flags_enabled == NULL ||
+	    !payload_length) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (*completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length != sizeof(struct pldm_get_status_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct pldm_get_status_resp *response =
+	    (struct pldm_get_status_resp *)msg->payload;
+
+	if (!is_state_valid(response->current_state)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!is_state_valid(response->previous_state)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!is_aux_state_valid(response->aux_state)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!is_aux_state_status_valid(response->aux_state_status)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (response->progress_percent > PLDM_FWUP_MAX_PROGRESS_PERCENT) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!is_reason_code_valid(response->reason_code)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if ((response->current_state == PLDM_FD_STATE_IDLE) ||
+	    (response->current_state == PLDM_FD_STATE_LEARN_COMPONENTS) ||
+	    (response->current_state == PLDM_FD_STATE_READY_XFER)) {
+		if (response->aux_state !=
+		    PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER) {
+			return PLDM_ERROR_INVALID_DATA;
+		}
+	}
+
+	*current_state = response->current_state;
+	*previous_state = response->previous_state;
+	*aux_state = response->aux_state;
+	*aux_state_status = response->aux_state_status;
+	*progress_percent = response->progress_percent;
+	*reason_code = response->reason_code;
+	update_option_flags_enabled->value =
+	    le32toh(response->update_option_flags_enabled.value);
 
 	return PLDM_SUCCESS;
 }
