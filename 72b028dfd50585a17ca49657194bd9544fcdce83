@@ -165,6 +165,30 @@
     },
     {
       "key": {
+        "uuid": "af4320df_71623448",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-04-26T06:23:20Z",
+      "side": 1,
+      "message": "Please provide me a patch to test it . The last patch I got from you was a diff obj path",
+      "parentUuid": "319c0927_d75c5438",
+      "range": {
+        "startLine": 162,
+        "startChar": 36,
+        "endLine": 162,
+        "endChar": 72
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "27389cab_ea3b4949",
         "filename": "oem/ibm/libpldmresponder/file_io.hpp",
         "patchSetId": 3
