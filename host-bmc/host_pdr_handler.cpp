@@ -1312,8 +1312,13 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 
     for (const auto& entity : objPathMap)
     {
+        pldm_entity node = pldm_entity_extract(entity.second);
         // update the Present Property
         setPresentPropertyStatus(entity.first);
+        if (node.entity_type == (PLDM_ENTITY_PROC | 0x8000))
+        {
+            CustomDBus::getCustomDBus().implementCpuCoreInterface(entity.first);
+        }
     }
 }
 
