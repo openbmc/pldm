@@ -213,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "1c78ad01_b2a3c98b",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000350
+      },
+      "writtenOn": "2021-04-26T08:14:21Z",
+      "side": 1,
+      "message": "correction, object entry path: /xyz/openbmc_project/certs/ca/entry",
+      "parentUuid": "5c2343cd_382507ab",
+      "range": {
+        "startLine": 162,
+        "startChar": 36,
+        "endLine": 162,
+        "endChar": 72
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "27389cab_ea3b4949",
         "filename": "oem/ibm/libpldmresponder/file_io.hpp",
         "patchSetId": 3
