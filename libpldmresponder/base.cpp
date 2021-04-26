@@ -182,6 +182,9 @@ void Handler::_processSetEventReceiver(
     uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
     uint8_t eventReceiverAddressInfo = 0x08;
     uint16_t heartbeatTimer = pldm::utils::heartBeatTimeout;
+#ifdef OEM_IBM
+    heartbeatTimer = watchDog.calculateHeartbeatTimeOut();
+#endif
 
     auto rc = encode_set_event_receiver_req(
         instanceId, eventMessageGlobalEnable, transportProtocolType,

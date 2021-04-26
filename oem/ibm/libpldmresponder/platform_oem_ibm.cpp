@@ -119,6 +119,22 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
     return completionCode;
 }
 
+int Watchdog::calculateHeartbeatTimeOut()
+{
+    auto heartbeatTimeout = 0;
+    if (isSetEventReceiverSent)
+    {
+        heartbeatTimeout = 0x78;
+    }
+    else
+    {
+        heartbeatTimeout = 0xf;
+        isSetEventReceiverSent = true;
+    }
+
+    return heartbeatTimeout;
+}
+
 } // namespace platform
 
 } // namespace responder
