@@ -2789,3 +2789,31 @@ TEST(CancelUpdateComponent, testBadDecodeResponse)
         &completionCode);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(CancelUpdate, goodPathEncodeRequest)
+{
+    constexpr uint8_t instanceId = 10;
+    std::array<uint8_t, hdrSize> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_cancel_update_req(instanceId, requestMsg,
+                                       PLDM_CANCEL_UPDATE_REQ_BYTES);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    constexpr std::array<uint8_t, hdrSize> outRequest{0x8A, 0x05, 0x1D};
+    EXPECT_EQ(request, outRequest);
+}
+
+TEST(CancelUpdate, errorPathEncodeRequest)
+{
+    std::array<uint8_t, hdrSize + sizeof(uint8_t)> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc =
+        encode_cancel_update_req(0, nullptr, PLDM_CANCEL_UPDATE_REQ_BYTES);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_cancel_update_req(0, requestMsg,
+                                  PLDM_CANCEL_UPDATE_REQ_BYTES + 1);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
