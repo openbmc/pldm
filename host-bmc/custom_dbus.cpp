@@ -74,5 +74,15 @@ void CustomDBus::updateItemPresentStatus(const std::string& path)
     // form the dbus path object
     presentStatus.at(path)->prettyName(ObjectPath.filename());
 }
+
+void CustomDBus::implementCpuCoreInterface(const std::string& path)
+{
+    if (cpuCore.find(path) == cpuCore.end())
+    {
+        cpuCore.emplace(
+            path, std::make_unique<CoreIntf>(pldm::utils::DBusHandler::getBus(),
+                                             path.c_str()));
+    }
+}
 } // namespace dbus
 } // namespace pldm
