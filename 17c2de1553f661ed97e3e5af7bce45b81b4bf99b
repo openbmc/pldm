@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1242579_af41e497",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-26T19:31:57Z",
+      "side": 1,
+      "message": "On line 609, we use the mctp_eid, even if this code path here does not execute. Are there scenarios where mctp_eid can be valid in certain situations but not others? Do we need to make sure we have the correct mctp_eid that matches this PDR\u0027s terminus handle first?",
+      "revId": "17c2de1553f661ed97e3e5af7bce45b81b4bf99b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
