@@ -22,6 +22,30 @@
       "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc516053_bafef2da",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-04-26T04:14:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "feec0b6a_a473fa49",
+      "range": {
+        "startLine": 162,
+        "startChar": 36,
+        "endLine": 162,
+        "endChar": 72
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
