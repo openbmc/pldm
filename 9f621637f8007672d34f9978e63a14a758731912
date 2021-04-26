@@ -520,6 +520,30 @@
     },
     {
       "key": {
+        "uuid": "33490f85_7c4f948a",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-04-26T09:59:06Z",
+      "side": 1,
+      "message": "Suggest to have default value of the spec as 1.1.x, but we could provide option for the user to select a different spec version. @Deepak, can we passdown the spec version as one of the input arguments?",
+      "parentUuid": "7ca20692_0ab7967e",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 60
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fc3b7c84_3b9cc501",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -564,6 +588,30 @@
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5f20e39_dd1c98f0",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-04-26T09:59:06Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "fc3b7c84_3b9cc501",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 81,
+        "endChar": 35
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     },
     {
       "key": {
@@ -919,6 +967,30 @@
     },
     {
       "key": {
+        "uuid": "baeb8215_47d04c6b",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-04-26T09:59:06Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "96e69587_80b3572f",
+      "range": {
+        "startLine": 266,
+        "startChar": 3,
+        "endLine": 266,
+        "endChar": 39
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d2d6cccc_56fb17ac",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -1060,6 +1132,29 @@
     },
     {
       "key": {
+        "uuid": "617773bb_b608ab73",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-04-26T09:59:06Z",
+      "side": 1,
+      "message": "Also provide an option for the user to name the output binary?",
+      "range": {
+        "startLine": 284,
+        "startChar": 4,
+        "endLine": 284,
+        "endChar": 50
+      },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4fea9211_97277521",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 1
@@ -1101,6 +1196,23 @@
         "endLine": 287,
         "endChar": 50
       },
+      "revId": "9f621637f8007672d34f9978e63a14a758731912",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f8545fc_3675eeb2",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-04-26T09:59:06Z",
+      "side": 1,
+      "message": "nit: pldmFwUpPkg.close()\nos.remove(\u003cbinary\u003e)",
       "revId": "9f621637f8007672d34f9978e63a14a758731912",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
