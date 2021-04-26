@@ -1259,3 +1259,167 @@ int encode_get_status_req(const uint8_t instance_id, struct pldm_msg *msg)
 	return (encode_pldm_header_only(PLDM_REQUEST, instance_id, PLDM_FWUP,
 					PLDM_GET_STATUS, msg));
 }
+
+/** @brief Check validity of current or previous status in GetStatus command
+ *
+ *	@param[in] state - current or previous different state machine state of
+ *the FD
+ *	@return validity
+ */
+static bool check_state_validity(const uint8_t state)
+{
+	switch (state) {
+	case FD_IDLE:
+	case FD_LEARN_COMPONENTS:
+	case FD_READY_XFER:
+	case FD_DOWNLOAD:
+	case FD_VERIFY:
+	case FD_APPLY:
+	case FD_ACTIVATE:
+		return true;
+	default:
+		return false;
+	}
+}
+
+/** @brief Check validity of aux state in GetStatus command
+ *
+ *	@param[in] aux_state - provides additional information to the UA to
+ *describe the current operation state of the FD
+ *	@return validity
+ */
+static bool check_aux_state_validity(const uint8_t aux_state)
+{
+	switch (aux_state) {
+	case FD_OPERATION_IN_PROGRESS:
+	case FD_OPERATION_SUCCESSFUL:
+	case FD_OPERATION_FAILED:
+	case FD_WAIT:
+		return true;
+	default:
+		return false;
+	}
+}
+
+/** @brief Check validity of aux state status in GetStatus command
+ *
+ *	@param[in] aux_state_status - aux state status
+ *	@return validity
+ */
+static bool check_aux_state_status_validity(const uint8_t aux_state_status)
+{
+	if (aux_state_status == FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS ||
+	    aux_state_status == FD_TIMEOUT ||
+	    aux_state_status == FD_GENERIC_ERROR) {
+		return true;
+	} else if (aux_state_status >= FD_VENDOR_DEFINED_STATUS_CODE_START &&
+		   aux_state_status <= FD_VENDOR_DEFINED_STATUS_CODE_END) {
+		return true;
+	}
+	return false;
+}
+
+/** @brief Check validity of reason code in GetStatus command
+ *
+ *	@param[in] reason_code - Provides the reason for why the current state
+ *entered the IDLE state
+ *	@return validity
+ */
+static bool check_reason_code_validity(const uint8_t reason_code)
+{
+
+	switch (reason_code) {
+	case FD_INITIALIZATION:
+	case FD_ACTIVATE_FW_RECEIVED:
+	case FD_CANCEL_UPDATE_RECEIVED:
+	case FD_TIMEOUT_LEARN_COMPONENT:
+	case FD_TIMEOUT_READY_XFER:
+	case FD_TIMEOUT_DOWNLOAD:
+	case FD_TIMEOUT_VERIFY:
+	case FD_TIMEOUT_APPLY:
+		return true;
+	default:
+		if (reason_code >= FD_STATUS_VENDOR_DEFINED_MIN) {
+			return true;
+		}
+		return false;
+	}
+}
+
+/** @brief Check validity of Response message in GetStatus command
+ *
+ *	@param[in] response - Response message
+ *	@return validity
+ */
+static bool
+check_response_msg_validity(const struct pldm_get_status_resp *response)
+{
+	if (response == NULL) {
+		return false;
+	}
+	if (!check_state_validity(response->current_state)) {
+		return false;
+	}
+	if (!check_state_validity(response->previous_state)) {
+		return false;
+	}
+	if (!check_aux_state_validity(response->aux_state)) {
+		return false;
+	}
+	if (!check_aux_state_status_validity(response->aux_state_status)) {
+		return false;
+	}
+	if (response->progress_percent > FW_UPDATE_MAX_PROGRESS_PERCENT) {
+		return false;
+	}
+	if (!check_reason_code_validity(response->reason_code)) {
+		return false;
+	}
+	return true;
+}
+
+int decode_get_status_resp(const struct pldm_msg *msg,
+			   const size_t payload_length,
+			   uint8_t *completion_code, uint8_t *current_state,
+			   uint8_t *previous_state, uint8_t *aux_state,
+			   uint8_t *aux_state_status, uint8_t *progress_percent,
+			   uint8_t *reason_code,
+			   bitfield32_t *update_option_flags_enabled)
+{
+	if (msg == NULL || completion_code == NULL || current_state == NULL ||
+	    previous_state == NULL || aux_state == NULL ||
+	    aux_state_status == NULL || progress_percent == NULL ||
+	    reason_code == NULL || update_option_flags_enabled == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+
+	if (PLDM_SUCCESS != *completion_code) {
+		return *completion_code;
+	}
+	if (payload_length != sizeof(struct pldm_get_status_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct pldm_get_status_resp *response =
+	    (struct pldm_get_status_resp *)msg->payload;
+
+	if (response == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!check_response_msg_validity(response)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*current_state = response->current_state;
+	*previous_state = response->previous_state;
+	*aux_state = response->aux_state;
+	*aux_state_status = response->aux_state_status;
+	*progress_percent = response->progress_percent;
+	*reason_code = response->reason_code;
+	update_option_flags_enabled->value =
+	    le32toh(response->update_option_flags_enabled.value);
+
+	return PLDM_SUCCESS;
+}
