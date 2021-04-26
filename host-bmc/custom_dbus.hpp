@@ -4,6 +4,7 @@
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/CpuCore/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/server.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
@@ -23,10 +24,12 @@ using LocationIntf =
 using OperationalStatusIntf = sdbusplus::xyz::openbmc_project::State::
     Decorator::server::OperationalStatus;
 using ItemIntf = sdbusplus::xyz::openbmc_project::Inventory::server::Item;
+using CoreIntf =
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::CpuCore;
 
 /** @class CustomDBus
- *  @brief This is a custom D-Bus object, used to add D-Bus interface and update
- *         the corresponding properties value.
+ *  @brief This is a custom D-Bus object, used to add D-Bus interface and
+ * update the corresponding properties value.
  */
 class CustomDBus
 {
@@ -85,6 +88,11 @@ class CustomDBus
      */
     void updateItemPresentStatus(const std::string& path);
 
+    /** @brief Implement CpuCore Interface
+     *  @param[in] path - The object path
+     */
+    void implementCpuCoreInterface(const std::string& path);
+
   private:
     std::map<ObjectPath, std::unique_ptr<LocationIntf>> location;
 
@@ -92,6 +100,7 @@ class CustomDBus
         operationalStatus;
 
     std::unordered_map<ObjectPath, std::unique_ptr<ItemIntf>> presentStatus;
+    std::unordered_map<ObjectPath, std::unique_ptr<CoreIntf>> cpuCore;
 };
 
 } // namespace dbus
