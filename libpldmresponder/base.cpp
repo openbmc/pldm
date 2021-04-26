@@ -6,6 +6,7 @@
 #include "libpldm/requester/pldm.h"
 
 #include "base.hpp"
+#include "common/utils.hpp"
 
 #include <array>
 #include <cstring>
@@ -180,7 +181,10 @@ void Handler::_processSetEventReceiver(
         PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
     uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
     uint8_t eventReceiverAddressInfo = 0x08;
-    uint16_t heartbeatTimer = 0x78;
+    uint16_t heartbeatTimer = pldm::utils::heartBeatTimeout;
+#ifdef OEM_IBM
+    heartbeatTimer = watchDog.calculateHeartbeatTimeOut();
+#endif
 
     auto rc = encode_set_event_receiver_req(
         instanceId, eventMessageGlobalEnable, transportProtocolType,
