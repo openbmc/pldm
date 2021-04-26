@@ -744,6 +744,11 @@ void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
         // update the Present Property
         setPresentPropertyStatus(entity.first);
 
+        if (entity.second.entity_type == 33903)
+        {
+            CustomDBus::getCustomDBus().implementCpuCoreInterface(entity.first);
+        }
+
         for (auto& data : fruRecordData)
         {
             if (fruRSI != data.fruRSI)
