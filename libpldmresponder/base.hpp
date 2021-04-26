@@ -12,6 +12,10 @@
 
 #include <vector>
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/platform_oem_ibm.hpp"
+#endif
+
 using namespace pldm::dbus_api;
 using namespace pldm::responder;
 
@@ -108,6 +112,11 @@ class Handler : public CmdHandler
     std::unique_ptr<sdeventplus::source::Defer> survEvent;
 
     static constexpr uint16_t heartBeatTimeout = 0x78;
+
+#ifdef OEM_IBM
+    /** @brief object of the Watchdog class*/
+    pldm::responder::platform::Watchdog watchDog;
+#endif
 };
 
 } // namespace base
