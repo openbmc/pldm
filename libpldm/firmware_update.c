@@ -1523,3 +1523,14 @@ int encode_cancel_update_component_req(const uint8_t instance_id,
 	return (encode_pldm_header_only(PLDM_REQUEST, instance_id, PLDM_FWUP,
 					PLDM_CANCEL_UPDATE_COMPONENT, msg));
 }
+
+int decode_cancel_update_component_resp(const struct pldm_msg *msg,
+					const size_t payload_length,
+					uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	return (decode_cc_only_resp(msg, payload_length, completion_code));
+}
