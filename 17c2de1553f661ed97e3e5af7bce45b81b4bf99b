@@ -16,6 +16,24 @@
       "revId": "17c2de1553f661ed97e3e5af7bce45b81b4bf99b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5db50114_f5b09cda",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-04-27T12:17:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a1242579_af41e497",
+      "revId": "17c2de1553f661ed97e3e5af7bce45b81b4bf99b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
