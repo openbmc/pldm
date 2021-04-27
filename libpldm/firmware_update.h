@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 #include "base.h"
+#include "stdbool.h"
 #include "utils.h"
 
 #define PLDM_FWUP_COMPONENT_BITMAP_MULTIPLE 8
@@ -29,7 +30,8 @@ enum pldm_firmware_update_commands {
 	PLDM_REQUEST_FIRMWARE_DATA = 0x15,
 	PLDM_TRANSFER_COMPLETE = 0x16,
 	PLDM_VERIFY_COMPLETE = 0x17,
-	PLDM_APPLY_COMPLETE = 0x18
+	PLDM_APPLY_COMPLETE = 0x18,
+	PLDM_ACTIVATE_FIRMWARE = 0x1A
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -247,6 +249,13 @@ enum pldm_firmware_update_apply_result_values {
 	PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MAX = 0xCF
 };
 
+/** @brief SelfContainedActivationRequest in the request of ActivateFirmware
+ */
+enum pldm_self_contained_activation_req {
+	PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS = false,
+	PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS = true
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -445,6 +454,14 @@ struct pldm_request_firmware_data_req {
 struct pldm_apply_complete_req {
 	uint8_t apply_result;
 	bitfield16_t comp_activation_methods_modification;
+} __attribute__((packed));
+
+/** @struct pldm_activate_firmware_req
+ *
+ *  Structure representing ActivateFirmware request
+ */
+struct pldm_activate_firmware_req {
+	bool8_t self_contained_activation_req;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -882,6 +899,22 @@ int decode_apply_complete_req(
  */
 int encode_apply_complete_resp(uint8_t instance_id, uint8_t completion_code,
 			       struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Create PLDM request message for ActivateFirmware
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] self_contained_activation_req SelfContainedActivationRequest
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_activate_firmware_req(uint8_t instance_id,
+				 bool8_t self_contained_activation_req,
+				 struct pldm_msg *msg, size_t payload_length);
 
 #ifdef __cplusplus
 }
