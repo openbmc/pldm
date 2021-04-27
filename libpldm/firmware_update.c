@@ -1229,3 +1229,31 @@ int encode_activate_firmware_req(uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_activate_firmware_resp(const struct pldm_msg *msg,
+				  size_t payload_length,
+				  uint8_t *completion_code,
+				  uint16_t *estimated_time_activation)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    estimated_time_activation == NULL || !payload_length) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (*completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length != sizeof(struct pldm_activate_firmware_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_activate_firmware_resp *response =
+	    (struct pldm_activate_firmware_resp *)msg->payload;
+
+	*estimated_time_activation =
+	    le16toh(response->estimated_time_activation);
+
+	return PLDM_SUCCESS;
+}
