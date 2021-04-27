@@ -2833,3 +2833,26 @@ TEST(CancelUpdate, testBadDecodeResponse)
         &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(CancelUpdateComponent, testGoodEncodeRequest)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr)> requestMsg{};
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    uint8_t instanceId = 0x01;
+
+    auto rc = encode_cancel_update_component_req(instanceId, requestPtr);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(requestPtr->hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(requestPtr->hdr.instance_id, instanceId);
+    EXPECT_EQ(requestPtr->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(requestPtr->hdr.command, PLDM_CANCEL_UPDATE_COMPONENT);
+}
+
+TEST(CancelUpdateComponent, testBadEncodeRequest)
+{
+    uint8_t instanceId = 0x01;
+
+    auto rc = encode_cancel_update_component_req(instanceId, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
