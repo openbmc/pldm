@@ -2742,3 +2742,50 @@ TEST(CancelUpdateComponent, errorPathEncodeRequest)
         0, requestMsg, PLDM_CANCEL_UPDATE_COMPONENT_REQ_BYTES + 1);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(CancelUpdateComponent, testGoodDecodeResponse)
+{
+    uint8_t completionCode = 0;
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        cancelUpdateComponentResponse1{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 = reinterpret_cast<const pldm_msg*>(
+        cancelUpdateComponentResponse1.data());
+    auto rc = decode_cancel_update_component_resp(
+        responseMsg1, cancelUpdateComponentResponse1.size() - hdrSize,
+        &completionCode);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        cancelUpdateComponentResponse2{0x00, 0x00, 0x00, 0x86};
+    auto responseMsg2 = reinterpret_cast<const pldm_msg*>(
+        cancelUpdateComponentResponse2.data());
+    rc = decode_cancel_update_component_resp(
+        responseMsg2, cancelUpdateComponentResponse2.size() - hdrSize,
+        &completionCode);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_FWUP_BUSY_IN_BACKGROUND);
+}
+
+TEST(CancelUpdateComponent, testBadDecodeResponse)
+{
+    uint8_t completionCode = 0;
+    constexpr std::array<uint8_t, hdrSize> cancelUpdateComponentResponse{
+        0x00, 0x00, 0x00};
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(cancelUpdateComponentResponse.data());
+
+    auto rc = decode_cancel_update_component_resp(
+        nullptr, cancelUpdateComponentResponse.size() - hdrSize,
+        &completionCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_cancel_update_component_resp(
+        responseMsg, cancelUpdateComponentResponse.size() - hdrSize, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_cancel_update_component_resp(
+        responseMsg, cancelUpdateComponentResponse.size() - hdrSize,
+        &completionCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
