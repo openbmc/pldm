@@ -150,6 +150,15 @@ struct pldm_get_commands_req {
 	ver32_t version; //!< version for the specified PLDM Type
 } __attribute__((packed));
 
+/** @struct pldm_cc_only_rsp
+ *
+ *  Structure representing generic pldm response message with only
+ *  completion code
+ */
+struct pldm_cc_only_rsp {
+	uint8_t completion_code; //!< PLDM completion code
+} __attribute__((packed));
+
 /** @struct pldm_get_commands_resp
  *
  *  Structure representing PLDM get commands response.
@@ -464,6 +473,18 @@ int encode_get_tid_resp(uint8_t instance_id, uint8_t completion_code,
  */
 int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 			uint8_t cc, struct pldm_msg *msg);
+
+/** @brief Decode a PLDM response message containing only completion code
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload. Should be 1
+ * byte.
+ *  @param[out] completion_code - Pointer to store response msg's PLDM
+ * completion code
+ *  @return pldm_completion_codes
+ */
+int decode_cc_only_resp(const struct pldm_msg *msg, const size_t payload_length,
+			uint8_t *completion_code);
 
 /** @brief Create a PLDM request message contains empty payload
  *
