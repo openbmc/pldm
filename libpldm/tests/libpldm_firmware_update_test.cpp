@@ -2856,3 +2856,38 @@ TEST(CancelUpdateComponent, testBadEncodeRequest)
     auto rc = encode_cancel_update_component_req(instanceId, NULL);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(CancelUpdateComponent, testGoodDecodeResponse)
+{
+    uint8_t completionCode = PLDM_ERROR;
+
+    std::array<uint8_t, hdrSize + sizeof(uint8_t)> responseMsg{};
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_cancel_update_component_resp(
+        response, responseMsg.size() - hdrSize, &completionCode);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+}
+
+TEST(CancelUpdateComponent, testBadDecodeResponse)
+{
+    uint8_t completionCode = PLDM_ERROR;
+
+    std::array<uint8_t, hdrSize + sizeof(uint8_t)> responseMsg{};
+
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = decode_cancel_update_component_resp(
+        NULL, responseMsg.size() - hdrSize, &completionCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_cancel_update_component_resp(response, 0, &completionCode);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = decode_cancel_update_component_resp(
+        response, responseMsg.size() - hdrSize, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
