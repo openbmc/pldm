@@ -595,7 +595,7 @@ void Handler::generateTerminusLocatorPDR(Repo& repo)
     PdrEntry pdrEntry{};
     pdrEntry.data = pdrBuffer.data();
     pdrEntry.size = pdrBuffer.size();
-    repo.addRecord(pdrEntry);
+    repo.addRecord(pdrEntry, pdr->hdr.type);
 }
 
 Response Handler::getStateSensorReadings(const pldm_msg* request,

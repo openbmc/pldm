@@ -178,7 +178,7 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         pldm::responder::pdr_utils::PdrEntry pdrEntry{};
         pdrEntry.data = entry.data();
         pdrEntry.size = pdrSize;
-        repo.addRecord(pdrEntry);
+        repo.addRecord(pdrEntry, pdr->hdr.type);
     }
 }
 

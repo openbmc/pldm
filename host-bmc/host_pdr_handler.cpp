@@ -488,7 +488,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else
                 {
-                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true);
+                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true,
+                                 pdrHdr->type);
                 }
             }
         }
