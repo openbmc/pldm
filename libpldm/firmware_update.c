@@ -990,3 +990,55 @@ int decode_cancel_update_component_resp(const struct pldm_msg *msg,
 
 	return (decode_cc_only_resp(msg, payload_length, completion_code));
 }
+
+/** @brief Check whether Self Contained Activation Request is valid
+ *
+ *  @return true if is from below mentioned values, false if not
+ */
+static bool check_self_contained_activation_req_valid(
+    const bool8_t self_contained_activation_req)
+{
+	switch (self_contained_activation_req) {
+	case NOT_CONTAINING_SELF_ACTIVATED_COMPONENTS:
+	case CONTAINS_SELF_ACTIVATED_COMPONENTS:
+		return true;
+
+	default:
+		return false;
+	}
+}
+int encode_activate_firmware_req(const uint8_t instance_id,
+				 struct pldm_msg *msg,
+				 const size_t payload_length,
+				 const bool8_t self_contained_activation_req)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_activate_firmware_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	int rc = encode_pldm_header_only(PLDM_REQUEST, instance_id, PLDM_FWUP,
+					 PLDM_ACTIVATE_FIRMWARE, msg);
+
+	if (PLDM_SUCCESS != rc) {
+		return rc;
+	}
+
+	struct pldm_activate_firmware_req *request =
+	    (struct pldm_activate_firmware_req *)msg->payload;
+
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!check_self_contained_activation_req_valid(
+		self_contained_activation_req)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	request->self_contained_activation_req = self_contained_activation_req;
+
+	return PLDM_SUCCESS;
+}

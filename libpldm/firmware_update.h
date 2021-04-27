@@ -34,7 +34,8 @@ enum pldm_firmware_update_commands {
 	PLDM_UPDATE_COMPONENT = 0x14,
 	PLDM_GET_STATUS = 0x1B,
 	PLDM_CANCEL_UPDATE = 0x1D,
-	PLDM_CANCEL_UPDATE_COMPONENT = 0x1C
+	PLDM_CANCEL_UPDATE_COMPONENT = 0x1C,
+	PLDM_ACTIVATE_FIRMWARE = 0x1A
 };
 
 /** @brief PLDM FWU values for Component Version String Type or Component Image
@@ -161,6 +162,13 @@ enum pldm_firmware_update_reason_code {
 enum non_functioning_component_indication {
 	COMPONENTS_FUNCTIONING = 0,
 	COMPONENTS_NOT_FUNCTIONING = 1
+};
+
+/** @brief PLDM FWU codes for Self Contained Activation Request
+ */
+enum self_contained_activation_req {
+	NOT_CONTAINING_SELF_ACTIVATED_COMPONENTS = 0,
+	CONTAINS_SELF_ACTIVATED_COMPONENTS = 1
 };
 
 /** @struct pldm_query_device_identifiers_resp
@@ -304,6 +312,14 @@ struct pldm_cancel_update_resp {
 	uint8_t completion_code;
 	bool8_t non_functioning_component_indication;
 	uint64_t non_functioning_component_bitmap;
+} __attribute__((packed));
+
+/** @struct activate_firmware_req
+ *
+ *  Structure representing Activate Firmware request
+ */
+struct pldm_activate_firmware_req {
+	bool8_t self_contained_activation_req;
 } __attribute__((packed));
 
 /** @brief Create a PLDM request message for QueryDeviceIdentifiers
@@ -587,6 +603,24 @@ int encode_cancel_update_component_req(const uint8_t instance_id,
 int decode_cancel_update_component_resp(const struct pldm_msg *msg,
 					const size_t payload_length,
 					uint8_t *completion_code);
+
+/** @brief Create a PLDM request message for ActivateFirmware
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] self_contained_activation_req returns True if FD shall activate
+ * all self-contained components and returns False if FD shall not activate any
+ * self-contained components.
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_activate_firmware_req(const uint8_t instance_id,
+				 struct pldm_msg *msg,
+				 const size_t payload_length,
+				 const bool8_t self_contained_activation_req);
+
 #ifdef __cplusplus
 }
 #endif
