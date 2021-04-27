@@ -168,6 +168,23 @@ is_comp_compatibility_resp_code_valid(uint8_t comp_compatibility_resp_code)
 	}
 }
 
+/** @brief Check whether SelfContainedActivationRequest is valid
+ *
+ *  @return true if SelfContainedActivationRequest is valid, false if not
+ */
+static bool
+is_self_contained_activation_req_valid(bool8_t self_contained_activation_req)
+{
+	switch (self_contained_activation_req) {
+	case PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS:
+	case PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
 int decode_pldm_package_header_info(
     const uint8_t *data, size_t length,
     struct pldm_package_header_information *package_header_info,
@@ -1170,6 +1187,41 @@ int encode_apply_complete_resp(uint8_t instance_id, uint8_t completion_code,
 	}
 
 	msg->payload[0] = completion_code;
+
+	return PLDM_SUCCESS;
+}
+
+int encode_activate_firmware_req(uint8_t instance_id,
+				 bool8_t self_contained_activation_req,
+				 struct pldm_msg *msg, size_t payload_length)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_activate_firmware_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if (!is_self_contained_activation_req_valid(
+		self_contained_activation_req)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_ACTIVATE_FIRMWARE;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	struct pldm_activate_firmware_req *request =
+	    (struct pldm_activate_firmware_req *)msg->payload;
+
+	request->self_contained_activation_req = self_contained_activation_req;
 
 	return PLDM_SUCCESS;
 }
