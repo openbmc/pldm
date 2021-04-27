@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "132fce02_a8e0fdab",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000350
+      },
+      "writtenOn": "2021-04-27T06:14:58Z",
+      "side": 1,
+      "message": "I think signal should be monitored on object path /xyz/openbmc_project/certs/ca path not on entry path",
+      "revId": "abfa94fbb8803389d04d7a65c567e6fb44a85875",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
