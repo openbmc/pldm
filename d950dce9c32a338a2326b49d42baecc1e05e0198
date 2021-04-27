@@ -16,6 +16,24 @@
       "revId": "d950dce9c32a338a2326b49d42baecc1e05e0198",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4dda017_22340eb0",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-04-27T09:12:23Z",
+      "side": 1,
+      "message": "Please ignore this as I checked an older patchset",
+      "parentUuid": "38a9365b_6557b1fb",
+      "revId": "d950dce9c32a338a2326b49d42baecc1e05e0198",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
