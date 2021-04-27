@@ -2497,3 +2497,68 @@ TEST(CancelUpdateComponent, testBadDecodeResponse)
         response, responseMsg.size() - hdrSize, NULL);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(ActivateFirmware, testGoodEncodeRequest)
+{
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_activate_firmware_req)>
+        requestMsg{};
+
+    auto msg = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto request = reinterpret_cast<pldm_activate_firmware_req*>(msg->payload);
+
+    bool8_t selfContainedActivationReq = CONTAINS_SELF_ACTIVATED_COMPONENTS;
+
+    auto rc = encode_activate_firmware_req(
+        0, msg, sizeof(struct pldm_activate_firmware_req),
+        selfContainedActivationReq);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(msg->hdr.request, PLDM_REQUEST);
+    EXPECT_EQ(msg->hdr.instance_id, 0u);
+    EXPECT_EQ(msg->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(msg->hdr.command, PLDM_ACTIVATE_FIRMWARE);
+    EXPECT_EQ(selfContainedActivationReq,
+              request->self_contained_activation_req);
+}
+
+TEST(ActivateFirmware, testBadEncodeRequest)
+{
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_activate_firmware_req)>
+        requestMsg{};
+
+    auto msg = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    bool8_t selfContainedActivationReq =
+        NOT_CONTAINING_SELF_ACTIVATED_COMPONENTS;
+
+    auto rc = encode_activate_firmware_req(
+        0, 0, sizeof(struct pldm_activate_firmware_req),
+        selfContainedActivationReq);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_activate_firmware_req(0, msg, 0, selfContainedActivationReq);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_activate_firmware_req(
+        0, 0, sizeof(struct pldm_activate_firmware_req), 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    selfContainedActivationReq = CONTAINS_SELF_ACTIVATED_COMPONENTS + 1;
+    rc = encode_activate_firmware_req(0, msg,
+                                      sizeof(struct pldm_activate_firmware_req),
+                                      selfContainedActivationReq);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    selfContainedActivationReq = NOT_CONTAINING_SELF_ACTIVATED_COMPONENTS - 1;
+    rc = encode_activate_firmware_req(0, msg,
+                                      sizeof(struct pldm_activate_firmware_req),
+                                      selfContainedActivationReq);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    selfContainedActivationReq = 6;
+    rc = encode_activate_firmware_req(0, msg,
+                                      sizeof(struct pldm_activate_firmware_req),
+                                      selfContainedActivationReq);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
