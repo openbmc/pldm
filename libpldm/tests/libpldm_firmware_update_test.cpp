@@ -2740,3 +2740,31 @@ TEST(GetStatus, errorPathDecodeResponse)
         &progressPercent, &reasonCode, &updateOptionFlagsEnabled);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(CancelUpdateComponent, goodPathEncodeRequest)
+{
+    constexpr uint8_t instanceId = 9;
+    std::array<uint8_t, hdrSize> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_cancel_update_component_req(
+        instanceId, requestMsg, PLDM_CANCEL_UPDATE_COMPONENT_REQ_BYTES);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    constexpr std::array<uint8_t, hdrSize> outRequest{0x89, 0x05, 0x1C};
+    EXPECT_EQ(request, outRequest);
+}
+
+TEST(CancelUpdateComponent, errorPathEncodeRequest)
+{
+    std::array<uint8_t, hdrSize + sizeof(uint8_t)> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_cancel_update_component_req(
+        0, nullptr, PLDM_CANCEL_UPDATE_COMPONENT_REQ_BYTES);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_cancel_update_component_req(
+        0, requestMsg, PLDM_CANCEL_UPDATE_COMPONENT_REQ_BYTES + 1);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
