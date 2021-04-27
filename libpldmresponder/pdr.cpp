@@ -24,7 +24,7 @@ void getRepoByType(const Repo& inRepo, Repo& outRepo, Type pdrType)
         pdrEntry.data = pdrData;
         pdrEntry.size = pdrSize;
         pdrEntry.handle.recordHandle = inRepo.getRecordHandle(record);
-        outRepo.addRecord(pdrEntry);
+        outRepo.addRecord(pdrEntry, pdrType);
 
         pdrData = nullptr;
         pdrSize = 0;

@@ -18,10 +18,10 @@ pldm_pdr* Repo::getPdr() const
     return repo;
 }
 
-RecordHandle Repo::addRecord(const PdrEntry& pdrEntry)
+RecordHandle Repo::addRecord(const PdrEntry& pdrEntry, uint8_t type)
 {
     return pldm_pdr_add(repo, pdrEntry.data, pdrEntry.size,
-                        pdrEntry.handle.recordHandle, false);
+                        pdrEntry.handle.recordHandle, false, type);
 }
 
 const pldm_pdr_record* Repo::getFirstRecord(PdrEntry& pdrEntry)

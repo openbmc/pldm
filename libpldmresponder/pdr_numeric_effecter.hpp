@@ -222,7 +222,7 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         pdr_utils::PdrEntry pdrEntry{};
         pdrEntry.data = entry.data();
         pdrEntry.size = sizeof(pldm_numeric_effecter_value_pdr);
-        repo.addRecord(pdrEntry);
+        repo.addRecord(pdrEntry, pdr->hdr.type);
     }
 }
 
