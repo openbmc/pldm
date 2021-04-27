@@ -464,6 +464,15 @@ struct pldm_activate_firmware_req {
 	bool8_t self_contained_activation_req;
 } __attribute__((packed));
 
+/** @struct activate_firmware_resp
+ *
+ *  Structure representing Activate Firmware response
+ */
+struct pldm_activate_firmware_resp {
+	uint8_t completion_code;
+	uint16_t estimated_time_activation;
+} __attribute__((packed));
+
 /** @brief Decode the PLDM package header information
  *
  *  @param[in] data - pointer to package header information
@@ -915,6 +924,21 @@ int encode_apply_complete_resp(uint8_t instance_id, uint8_t completion_code,
 int encode_activate_firmware_req(uint8_t instance_id,
 				 bool8_t self_contained_activation_req,
 				 struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Decode ActivateFirmware response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to hold CompletionCode
+ *  @param[out] estimated_time_activation - Pointer to hold
+ *                                       EstimatedTimeForSelfContainedActivation
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_activate_firmware_resp(const struct pldm_msg *msg,
+				  size_t payload_length,
+				  uint8_t *completion_code,
+				  uint16_t *estimated_time_activation);
 
 #ifdef __cplusplus
 }
