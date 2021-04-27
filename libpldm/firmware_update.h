@@ -21,6 +21,7 @@ extern "C" {
 #define PLDM_GET_STATUS_REQ_BYTES 0
 /* Maximum progress percentage value*/
 #define PLDM_FWUP_MAX_PROGRESS_PERCENT 0x65
+#define PLDM_CANCEL_UPDATE_COMPONENT_REQ_BYTES 0
 
 /** @brief PLDM Firmware update commands
  */
@@ -35,7 +36,8 @@ enum pldm_firmware_update_commands {
 	PLDM_VERIFY_COMPLETE = 0x17,
 	PLDM_APPLY_COMPLETE = 0x18,
 	PLDM_ACTIVATE_FIRMWARE = 0x1A,
-	PLDM_GET_STATUS = 0x1B
+	PLDM_GET_STATUS = 0x1B,
+	PLDM_CANCEL_UPDATE_COMPONENT = 0x1C
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -1043,6 +1045,21 @@ int decode_get_status_resp(const struct pldm_msg *msg, size_t payload_length,
 			   uint8_t *aux_state_status, uint8_t *progress_percent,
 			   uint8_t *reason_code,
 			   bitfield32_t *update_option_flags_enabled);
+
+/** @brief Create PLDM request message for CancelUpdateComponent
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_cancel_update_component_req(uint8_t instance_id,
+				       struct pldm_msg *msg,
+				       size_t payload_length);
 
 #ifdef __cplusplus
 }
