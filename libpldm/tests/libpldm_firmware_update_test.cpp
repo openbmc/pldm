@@ -2349,3 +2349,39 @@ TEST(ApplyComplete, errorPathEncodeResponse)
     rc = encode_apply_complete_resp(0, PLDM_SUCCESS, responseMsg, 0);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(ActivateFirmware, goodPathEncodeRequest)
+{
+    constexpr uint8_t instanceId = 7;
+
+    std::array<uint8_t, hdrSize + sizeof(pldm_activate_firmware_req)> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_activate_firmware_req(
+        instanceId, PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
+        sizeof(pldm_activate_firmware_req));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    std::array<uint8_t, hdrSize + sizeof(pldm_activate_firmware_req)>
+        outRequest{0x87, 0x05, 0x1A, 0x01};
+    EXPECT_EQ(request, outRequest);
+}
+
+TEST(ActivateFirmware, errorPathEncodeRequest)
+{
+    std::array<uint8_t, hdrSize + sizeof(pldm_activate_firmware_req)> request{};
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_activate_firmware_req(
+        0, PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS, nullptr,
+        sizeof(pldm_activate_firmware_req));
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_activate_firmware_req(
+        0, PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_activate_firmware_req(0, 2, requestMsg,
+                                      sizeof(pldm_activate_firmware_req));
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
