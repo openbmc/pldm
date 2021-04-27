@@ -2817,3 +2817,106 @@ TEST(CancelUpdate, errorPathEncodeRequest)
                                   PLDM_CANCEL_UPDATE_REQ_BYTES + 1);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(CancelUpdate, goodPathDecodeResponse)
+{
+    constexpr std::bitset<64> nonFunctioningComponentBitmap1{0};
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_cancel_update_resp)>
+        cancelUpdateResponse1{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                              0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(cancelUpdateResponse1.data());
+    uint8_t completionCode = 0;
+    bool8_t nonFunctioningComponentIndication = 0;
+    bitfield64_t nonFunctioningComponentBitmap{0};
+    auto rc = decode_cancel_update_resp(
+        responseMsg1, cancelUpdateResponse1.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(nonFunctioningComponentIndication,
+              PLDM_FWUP_COMPONENTS_FUNCTIONING);
+    EXPECT_EQ(nonFunctioningComponentBitmap.value,
+              nonFunctioningComponentBitmap1);
+
+    constexpr std::bitset<64> nonFunctioningComponentBitmap2{0x0101};
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_cancel_update_resp)>
+        cancelUpdateResponse2{0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01,
+                              0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(cancelUpdateResponse2.data());
+    rc = decode_cancel_update_resp(
+        responseMsg2, cancelUpdateResponse2.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(nonFunctioningComponentIndication,
+              PLDM_FWUP_COMPONENTS_NOT_FUNCTIONING);
+    EXPECT_EQ(nonFunctioningComponentBitmap.value,
+              nonFunctioningComponentBitmap2);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        cancelUpdateResponse3{0x00, 0x00, 0x00, 0x86};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(cancelUpdateResponse3.data());
+    rc = decode_cancel_update_resp(
+        responseMsg3, cancelUpdateResponse3.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_FWUP_BUSY_IN_BACKGROUND);
+}
+
+TEST(CancelUpdate, errorPathDecodeResponse)
+{
+    constexpr std::array<uint8_t, hdrSize> cancelUpdateResponse1{0x00, 0x00,
+                                                                 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(cancelUpdateResponse1.data());
+    uint8_t completionCode = 0;
+    bool8_t nonFunctioningComponentIndication = 0;
+    bitfield64_t nonFunctioningComponentBitmap{0};
+
+    auto rc = decode_cancel_update_resp(
+        nullptr, cancelUpdateResponse1.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_cancel_update_resp(
+        responseMsg1, cancelUpdateResponse1.size() - hdrSize, nullptr,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_cancel_update_resp(
+        responseMsg1, cancelUpdateResponse1.size() - hdrSize, &completionCode,
+        nullptr, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_cancel_update_resp(
+        responseMsg1, cancelUpdateResponse1.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_cancel_update_resp(
+        responseMsg1, cancelUpdateResponse1.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        cancelUpdateResponse2{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(cancelUpdateResponse2.data());
+    rc = decode_cancel_update_resp(
+        responseMsg2, cancelUpdateResponse2.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_cancel_update_resp)>
+        cancelUpdateResponse3{0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00,
+                              0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg3 =
+        reinterpret_cast<const pldm_msg*>(cancelUpdateResponse3.data());
+    rc = decode_cancel_update_resp(
+        responseMsg3, cancelUpdateResponse3.size() - hdrSize, &completionCode,
+        &nonFunctioningComponentIndication, &nonFunctioningComponentBitmap);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}

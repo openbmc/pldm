@@ -280,6 +280,24 @@ static bool is_reason_code_valid(uint8_t reason_code)
 	}
 }
 
+/** @brief Check if non functioning component indication in CancelUpdate
+ *         response is valid
+ *
+ *  @return true if non functioning component indication is valid, false if not
+ */
+static bool is_non_functioning_component_indication_valid(
+    bool8_t non_functioning_component_indication)
+{
+	switch (non_functioning_component_indication) {
+	case PLDM_FWUP_COMPONENTS_FUNCTIONING:
+	case PLDM_FWUP_COMPONENTS_NOT_FUNCTIONING:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
 int decode_pldm_package_header_info(
     const uint8_t *data, size_t length,
     struct pldm_package_header_information *package_header_info,
@@ -1503,6 +1521,44 @@ int encode_cancel_update_req(uint8_t instance_id, struct pldm_msg *msg,
 	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
 	if (rc) {
 		return rc;
+	}
+
+	return PLDM_SUCCESS;
+}
+
+int decode_cancel_update_resp(const struct pldm_msg *msg, size_t payload_length,
+			      uint8_t *completion_code,
+			      bool8_t *non_functioning_component_indication,
+			      bitfield64_t *non_functioning_component_bitmap)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    non_functioning_component_indication == NULL ||
+	    non_functioning_component_bitmap == NULL || !payload_length) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (*completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length != sizeof(struct pldm_cancel_update_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct pldm_cancel_update_resp *response =
+	    (struct pldm_cancel_update_resp *)msg->payload;
+
+	if (!is_non_functioning_component_indication_valid(
+		response->non_functioning_component_indication)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*non_functioning_component_indication =
+	    response->non_functioning_component_indication;
+
+	if (*non_functioning_component_indication) {
+		non_functioning_component_bitmap->value =
+		    le64toh(response->non_functioning_component_bitmap);
 	}
 
 	return PLDM_SUCCESS;
