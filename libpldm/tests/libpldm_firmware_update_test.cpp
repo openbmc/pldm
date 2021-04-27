@@ -2385,3 +2385,70 @@ TEST(ActivateFirmware, errorPathEncodeRequest)
                                       sizeof(pldm_activate_firmware_req));
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(ActivateFirmware, goodPathDecodeResponse)
+{
+    constexpr uint16_t estimatedTimeForActivation100s = 100;
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_activate_firmware_resp)>
+        activateFirmwareResponse1{0x00, 0x00, 0x00, 0x00, 0x64, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<const pldm_msg*>(activateFirmwareResponse1.data());
+
+    uint8_t completionCode = 0;
+    uint16_t estimatedTimeForActivation = 0;
+
+    auto rc = decode_activate_firmware_resp(
+        responseMsg1, sizeof(pldm_activate_firmware_resp), &completionCode,
+        &estimatedTimeForActivation);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    EXPECT_EQ(estimatedTimeForActivation, estimatedTimeForActivation100s);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        activateFirmwareResponse2{0x00, 0x00, 0x00, 0x85};
+    auto responseMsg2 =
+        reinterpret_cast<const pldm_msg*>(activateFirmwareResponse2.data());
+
+    rc = decode_activate_firmware_resp(responseMsg2, sizeof(completionCode),
+                                       &completionCode,
+                                       &estimatedTimeForActivation);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_FWUP_INCOMPLETE_UPDATE);
+}
+
+TEST(ActivateFirmware, errorPathDecodeResponse)
+{
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_activate_firmware_resp)>
+        activateFirmwareResponse{0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(activateFirmwareResponse.data());
+
+    uint8_t completionCode = 0;
+    uint16_t estimatedTimeForActivation = 0;
+
+    auto rc = decode_activate_firmware_resp(
+        nullptr, sizeof(pldm_activate_firmware_resp), &completionCode,
+        &estimatedTimeForActivation);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_activate_firmware_resp(responseMsg,
+                                       sizeof(pldm_activate_firmware_resp),
+                                       nullptr, &estimatedTimeForActivation);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_activate_firmware_resp(responseMsg,
+                                       sizeof(pldm_activate_firmware_resp),
+                                       &completionCode, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_activate_firmware_resp(responseMsg, 0, &completionCode,
+                                       &estimatedTimeForActivation);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_activate_firmware_resp(
+        responseMsg, sizeof(pldm_activate_firmware_resp) - 1, &completionCode,
+        &estimatedTimeForActivation);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
