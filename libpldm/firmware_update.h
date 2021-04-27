@@ -1061,6 +1061,18 @@ int encode_cancel_update_component_req(uint8_t instance_id,
 				       struct pldm_msg *msg,
 				       size_t payload_length);
 
+/** @brief Decode CancelUpdateComponent response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to the completion code
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_cancel_update_component_resp(const struct pldm_msg *msg,
+					size_t payload_length,
+					uint8_t *completion_code);
+
 #ifdef __cplusplus
 }
 #endif
