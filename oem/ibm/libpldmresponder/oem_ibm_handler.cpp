@@ -194,7 +194,7 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
     pldm::responder::pdr_utils::PdrEntry pdrEntry{};
     pdrEntry.data = entry.data();
     pdrEntry.size = pdrSize;
-    repo.addRecord(pdrEntry);
+    repo.addRecord(pdrEntry, pdr->hdr.type);
 }
 
 void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
@@ -243,7 +243,7 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
     pldm::responder::pdr_utils::PdrEntry pdrEntry{};
     pdrEntry.data = entry.data();
     pdrEntry.size = pdrSize;
-    repo.addRecord(pdrEntry);
+    repo.addRecord(pdrEntry, pdr->hdr.type);
 }
 
 void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(

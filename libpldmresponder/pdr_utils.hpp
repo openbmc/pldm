@@ -147,7 +147,7 @@ class RepoInterface
      *
      *  @return uint32_t - record handle assigned to PDR record
      */
-    virtual RecordHandle addRecord(const PdrEntry& pdrEntry) = 0;
+    virtual RecordHandle addRecord(const PdrEntry& pdrEntry, uint8_t type) = 0;
 
     /** @brief Get the first PDR record from a PDR repository
      *
@@ -210,7 +210,7 @@ class Repo : public RepoInterface
 
     pldm_pdr* getPdr() const override;
 
-    RecordHandle addRecord(const PdrEntry& pdrEntry) override;
+    RecordHandle addRecord(const PdrEntry& pdrEntry, uint8_t type) override;
 
     const pldm_pdr_record* getFirstRecord(PdrEntry& pdrEntry) override;
 

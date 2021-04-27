@@ -69,7 +69,7 @@ uint32_t pldm_pdr_get_repo_size(const pldm_pdr *repo);
  *  @return uint32_t - record handle assigned to PDR record
  */
 uint32_t pldm_pdr_add(pldm_pdr *repo, const uint8_t *data, uint32_t size,
-		      uint32_t record_handle, bool is_remote);
+		      uint32_t record_handle, bool is_remote, uint8_t type);
 
 /** @brief Get record handle of a PDR record
  *
@@ -143,6 +143,12 @@ bool pldm_pdr_record_is_remote(const pldm_pdr_record *record);
  *  @param[in] repo - opaque pointer acting as a PDR repo handle
  */
 void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
+
+/** @brief Remove all PDR records base on PDR type
+ *
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ */
+void pldm_pdr_remove_pdrs_by_type(pldm_pdr *repo, uint8_t type);
 
 /* ======================= */
 /* FRU Record Set PDR APIs */
