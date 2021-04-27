@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f30b0721_ee16d68c",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-27T11:46:39Z",
+      "side": 1,
+      "message": "+1\n\nWe can keep the convention of having enums for each PLDM type like \nhttps://github.com/openbmc/pldm/blob/master/libpldm/fru.h#L29",
+      "parentUuid": "a36abf5d_85155148",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 43
+      },
+      "revId": "51e29977d614affe2c343e506fe62668c4961ddf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f6fbe469_a86aaca1",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 13
@@ -59,6 +83,30 @@
       "writtenOn": "2021-04-19T05:34:13Z",
       "side": 1,
       "message": "Its just \"in\" in encode request right ?",
+      "range": {
+        "startLine": 18,
+        "startChar": 11,
+        "endLine": 18,
+        "endChar": 17
+      },
+      "revId": "51e29977d614affe2c343e506fe62668c4961ddf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9e1fe97_769cad2d",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-27T11:46:39Z",
+      "side": 1,
+      "message": "The request data is encoded in the pldm_msg. Why should it be only [in]?",
+      "parentUuid": "3e152704_7f595332",
       "range": {
         "startLine": 18,
         "startChar": 11,
