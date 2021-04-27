@@ -36,7 +36,8 @@ enum pldm_firmware_update_commands {
 	PLDM_APPLY_COMPLETE = 0x18,
 	PLDM_ACTIVATE_FIRMWARE = 0x1A,
 	PLDM_GET_STATUS = 0x1B,
-	PLDM_CANCEL_UPDATE = 0x1D
+	PLDM_CANCEL_UPDATE = 0x1D,
+	PLDM_CANCEL_UPDATE_COMPONENT = 0x1C
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -1084,6 +1085,17 @@ int decode_cancel_update_resp(const struct pldm_msg *msg,
 			      uint8_t *completion_code,
 			      bool8_t *non_functioning_component_indication,
 			      bitfield64_t *non_functioning_component_bitmap);
+
+/** @brief Create a PLDM request message for CancelUpdateComponent
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_cancel_update_component_req(const uint8_t instance_id,
+				       struct pldm_msg *msg);
 #ifdef __cplusplus
 }
 #endif
