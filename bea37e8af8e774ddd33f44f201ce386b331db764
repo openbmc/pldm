@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d64e33c5_b4838548",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-27T09:12:48Z",
+      "side": 1,
+      "message": "Duplicate Signed-off-by",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 55
+      },
+      "revId": "bea37e8af8e774ddd33f44f201ce386b331db764",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cc9f599_ce909134",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-04-27T09:12:48Z",
+      "side": 1,
+      "message": "1) Append PLDM_\n2) Why have we taken the range starting with 0xF0?\n\nI am in favor of adding separate error codes for encode/decode. We had discussed this in the PMCI WG, the only concern being that it will be messy to have some code use this and existing encode/decode using PLDM completion codes. We need to chalk out a plan to do that.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 2
+      },
+      "revId": "bea37e8af8e774ddd33f44f201ce386b331db764",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
