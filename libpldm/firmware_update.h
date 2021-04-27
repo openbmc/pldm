@@ -307,6 +307,13 @@ enum pldm_firmware_update_reason_code {
 	FD_STATUS_VENDOR_DEFINED_MAX = 255
 };
 
+/** @brief PLDM FWU codes for non functioning component indication
+ */
+enum non_functioning_component_indication {
+	COMPONENTS_FUNCTIONING = 0,
+	COMPONENTS_NOT_FUNCTIONING = 1
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -537,6 +544,16 @@ struct pldm_get_status_resp {
 	uint8_t progress_percent;
 	uint8_t reason_code;
 	bitfield32_t update_option_flags_enabled;
+} __attribute__((packed));
+
+/** @struct cancel_update_resp
+ *
+ *  Structure representing CancelUpdate response.
+ */
+struct pldm_cancel_update_resp {
+	uint8_t completion_code;
+	bool8_t non_functioning_component_indication;
+	uint64_t non_functioning_component_bitmap;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -1049,6 +1066,24 @@ int decode_get_status_resp(const struct pldm_msg *msg,
  *'msg.payload'
  */
 int encode_cancel_update_req(const uint8_t instance_id, struct pldm_msg *msg);
+
+/** @brief Decode CancelUpdate response message
+ *
+ *	@param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *	@param[out] completion_code - Pointer to response msg's PLDM completion
+ *code
+ *	@param[out] non_functioning_component_indication - Pointer to non
+ *funcional component indication
+ *	@param[out] non_functioning_component_bitmap - Pointer to non functional
+ *component bitmap state
+ *	@return pldm_completion_codes
+ */
+int decode_cancel_update_resp(const struct pldm_msg *msg,
+			      const size_t payload_len,
+			      uint8_t *completion_code,
+			      bool8_t *non_functioning_component_indication,
+			      bitfield64_t *non_functioning_component_bitmap);
 #ifdef __cplusplus
 }
 #endif
