@@ -203,7 +203,7 @@
          "displayName" : "AIX/Linux Partition Boot Mode"
       },
       {
-         "attribute_name":"pvm_os_ipl_type",
+         "attribute_name":"pvm_os_boot_type",
          "possible_values":[
             "A_Mode",
             "B_Mode",
@@ -215,6 +215,18 @@
          ],
          "helpText" : "Select the IBMi partition boot mode for next system boot. A_Mode: Boot from disk using copy A, B_Mode: Boot from disk using copy B, C_Mode: Reserved for IBM lab use only, D_Mode: Boot from media/drives.",
          "displayName" : "IBMi Partition Boot Mode"
+      },
+      {
+         "attribute_name":"pvm_vtpm",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "Enabling vTPM makes a TPM available to the guest operating system.",
+         "displayName" : "Virtual Trusted Platform Module"
       }
    ]
 }
