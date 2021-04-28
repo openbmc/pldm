@@ -1,6 +1,6 @@
+#include "common/test/mocked_utils.hpp"
 #include "libpldmresponder/bios_enum_attribute.hpp"
 #include "mocked_bios.hpp"
-#include "mocked_utils.hpp"
 
 #include <nlohmann/json.hpp>
 
