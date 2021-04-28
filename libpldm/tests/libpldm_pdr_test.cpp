@@ -570,6 +570,20 @@ TEST(EntityAssociationPDR, testBuild)
     EXPECT_EQ(pldm_entity_is_node_parent(l4a), false);
     EXPECT_EQ(pldm_entity_is_node_parent(l4b), false);
 
+    EXPECT_EQ(pldm_entity_get_parent(l1), nullptr);
+
+    EXPECT_EQ(pldm_entity_get_parent(l2a), l1);
+    EXPECT_EQ(pldm_entity_get_parent(l2b), l1);
+    EXPECT_EQ(pldm_entity_get_parent(l2c), l1);
+
+    EXPECT_EQ(pldm_entity_get_parent(l3a), l2a);
+    EXPECT_EQ(pldm_entity_get_parent(l3b), l2a);
+    EXPECT_EQ(pldm_entity_get_parent(l3c), l2a);
+
+    EXPECT_EQ(pldm_entity_get_parent(l4a), l3a);
+
+    EXPECT_EQ(pldm_entity_get_parent(l4b), l3b);
+
     size_t num{};
     pldm_entity* out = nullptr;
     pldm_entity_association_tree_visit(tree, &out, &num);
