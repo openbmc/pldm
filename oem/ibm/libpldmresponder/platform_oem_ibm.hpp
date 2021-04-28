@@ -36,6 +36,11 @@ class Watchdog
      *  @return The heartbeat timeout value */
     int calculateHeartbeatTimeOut();
 
+    /** @brief Method to reset the Watchdog timer on receiving platform Event
+     *  Message for heartbeat elapsed time from Hostboot
+     */
+    void resetWatchDogTimer();
+
   private:
     /** @brief flag to check if the SetEventReceiver is already sent to host */
     bool isSetEventReceiverSent = false;

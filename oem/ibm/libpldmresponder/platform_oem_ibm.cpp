@@ -135,6 +135,38 @@ int Watchdog::calculateHeartbeatTimeOut()
     return heartbeatTimeout;
 }
 
+void Watchdog::resetWatchDogTimer()
+{
+    static constexpr auto watchDogService = "xyz.openbmc_project.Watchdog";
+    static constexpr auto watchDogObjectPath =
+        "/xyz/openbmc_project/watchdog/host0";
+    static constexpr auto watchDogInterface =
+        "xyz.openbmc_project.State.Watchdog";
+    static constexpr auto watchDogEnablePropName = "Enabled";
+    static constexpr auto watchDogResetPropName = "ResetTimeRemaining";
+
+    try
+    {
+        auto isHostRunning = pldm::utils::DBusHandler().getDbusProperty<bool>(
+            watchDogObjectPath, watchDogEnablePropName, watchDogInterface);
+        if (isHostRunning)
+        {
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            auto resetMethod =
+                bus.new_method_call(watchDogService, watchDogObjectPath,
+                                    watchDogInterface, watchDogResetPropName);
+            resetMethod.append(true);
+            bus.call_noreply(resetMethod);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To reset watchdog timer"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
 } // namespace platform
 
 } // namespace responder
