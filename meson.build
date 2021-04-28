@@ -160,16 +160,18 @@ subdir('pldmtool')
 
 subdir('configurations')
 
-if get_option('tests').enabled()
-  subdir('test')
-endif
-
 if get_option('utilities').enabled()
   subdir('utilities')
 endif
 
 if get_option('softoff').enabled()
   subdir('softoff')
+endif
+
+if get_option('tests').enabled()
+  subdir('common/test')
+  subdir('host-bmc/test')
+  subdir('test')
 endif
 
 endif # pldm-only
