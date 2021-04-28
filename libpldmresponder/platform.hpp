@@ -20,6 +20,9 @@
 
 #include <map>
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/platform_oem_ibm.hpp"
+#endif
 namespace pldm
 {
 namespace responder
@@ -455,6 +458,10 @@ class Handler : public CmdHandler
     std::string pdrJsonsDir;
     bool pdrCreated;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
+#ifdef OEM_IBM
+    /** @brief object of the Watchdog class*/
+    pldm::responder::platform::Watchdog watchDog;
+#endif
 };
 
 /** @brief Function to check if a sensor falls in OEM range
