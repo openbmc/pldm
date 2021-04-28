@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ea40356_43e60751",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-04-28T05:43:01Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d8c459b_f068c229",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-04-28T05:43:01Z",
+      "side": 1,
+      "message": "remove if not needed",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ba2cd53_aa481213",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-04-28T05:43:01Z",
+      "side": 1,
+      "message": "same as earlier",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c524af9_b05fb037",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-04-28T05:43:01Z",
+      "side": 1,
+      "message": "std::cerr?",
+      "range": {
+        "startLine": 128,
+        "startChar": 13,
+        "endLine": 128,
+        "endChar": 17
+      },
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4697414a_ab90d99e",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-04-28T05:43:01Z",
+      "side": 1,
+      "message": "when will the if part get executed? since you have initialized isSetEventReceiverSent to false.\nJust for my understanding.",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c882d6f_0d7133e4",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-04-28T05:43:01Z",
+      "side": 1,
+      "message": "why is this commented",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
