@@ -1,5 +1,6 @@
 #include "libpldm/entity.h"
 
+#include "common/test/mocked_utils.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr.hpp"
@@ -7,7 +8,6 @@
 #include "libpldmresponder/platform.hpp"
 #include "oem/ibm/libpldmresponder/inband_code_update.hpp"
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
-#include "test/mocked_utils.hpp"
 
 #include <sdeventplus/event.hpp>
 
