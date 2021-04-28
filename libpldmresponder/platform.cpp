@@ -312,6 +312,15 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     if (eventClass == PLDM_HEARTBEAT_TIMER_ELAPSED_EVENT)
     {
         rc = PLDM_SUCCESS;
+#ifdef OEM_IBM
+        // check if it tid is of host
+        if (tid == 2)
+        {
+            resetWDEvent = std::make_unique<sdeventplus::source::Defer>(
+                event, std::bind(std::mem_fn(&Handler::_resetWatchDogTimer),
+                                 this, std::placeholders::_1));
+        }
+#endif
     }
     else
     {
@@ -346,6 +355,14 @@ Response Handler::platformEventMessage(const pldm_msg* request,
 
     return response;
 }
+
+#ifdef OEM_IBM
+void Handler::_resetWatchDogTimer(sdeventplus::source::EventBase& /*source*/)
+{
+    resetWDEvent.reset();
+    watchDog.resetWatchDogTimer();
+}
+#endif
 
 int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
                          uint8_t /*formatVersion*/, uint8_t tid,
