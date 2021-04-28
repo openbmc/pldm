@@ -316,6 +316,10 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     if (eventClass == PLDM_HEARTBEAT_TIMER_ELAPSED_EVENT)
     {
         rc = PLDM_SUCCESS;
+        if (oemPlatformHandler)
+        {
+            oemPlatformHandler->resetWatchDogTimer();
+        }
     }
     else
     {
