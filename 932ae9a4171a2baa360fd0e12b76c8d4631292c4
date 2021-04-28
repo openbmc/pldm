@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bc90192a_4f607bd7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-28T17:15:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ea40356_43e60751",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2d8c459b_f068c229",
         "filename": "libpldmresponder/base.cpp",
         "patchSetId": 2
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "9d4df66a_c18a2c2c",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-28T17:15:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2d8c459b_f068c229",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4ba2cd53_aa481213",
         "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
         "patchSetId": 2
@@ -56,6 +98,24 @@
       "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83fe110e_bf905b96",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-28T17:15:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ba2cd53_aa481213",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -99,6 +159,48 @@
     },
     {
       "key": {
+        "uuid": "5f5a8a62_f92acfdc",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-28T17:15:23Z",
+      "side": 1,
+      "message": "This is to check if the setEventReceiver has been sent to host or hypervisor. for the first time it is always sent to host in reply to the GetTID command. the heartbeat timer for host and hypervisor will differ accordingly.",
+      "parentUuid": "4697414a_ab90d99e",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f025b36c_70163bf8",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-28T17:15:23Z",
+      "side": 1,
+      "message": "removed debug statements",
+      "parentUuid": "7c524af9_b05fb037",
+      "range": {
+        "startLine": 128,
+        "startChar": 13,
+        "endLine": 128,
+        "endChar": 17
+      },
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c882d6f_0d7133e4",
         "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.hpp",
         "patchSetId": 2
@@ -113,6 +215,24 @@
       "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06032d5b_aac23c46",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-04-28T17:15:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c882d6f_0d7133e4",
+      "revId": "932ae9a4171a2baa360fd0e12b76c8d4631292c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
