@@ -1,9 +1,8 @@
 #pragma once
 
 #include "libpldm/base.h"
-#include "libpldm/platform.h"
 
-#include "pldmd/dbus_impl_requester.hpp"
+#include "libpldmresponder/platform.hpp"
 #include "pldmd/handler.hpp"
 #include "requester/handler.hpp"
 
@@ -27,9 +26,11 @@ class Handler : public CmdHandler
 {
   public:
     Handler(uint8_t eid, Requester& requester, sdeventplus::Event& event,
+            pldm::responder::oem_platform::Handler* oemPlatformHandler,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         eid(eid),
-        requester(requester), event(event), handler(handler)
+        requester(requester), event(event),
+        oemPlatformHandler(oemPlatformHandler), handler(handler)
     {
         handlers.emplace(PLDM_GET_PLDM_TYPES,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -102,6 +103,9 @@ class Handler : public CmdHandler
      *  work
      */
     sdeventplus::Event& event;
+
+    /** @brief OEM platform handler */
+    pldm::responder::oem_platform::Handler* oemPlatformHandler;
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
