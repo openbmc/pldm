@@ -20,6 +20,9 @@
 
 #include <map>
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/platform_oem_ibm.hpp"
+#endif
 namespace pldm
 {
 namespace responder
@@ -440,6 +443,14 @@ class Handler : public CmdHandler
      */
     void _processPostGetPDRActions(sdeventplus::source::EventBase& source);
 
+#ifdef OEM_IBM
+    /** @brief process the actions that needed to reset the watchdog timer
+     *         after sending the response to the host
+     *  @param[in] source - sdeventplus event source
+     */
+    void _resetWatchDogTimer(sdeventplus::source::EventBase& source);
+#endif
+
   private:
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
@@ -455,6 +466,11 @@ class Handler : public CmdHandler
     std::string pdrJsonsDir;
     bool pdrCreated;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
+#ifdef OEM_IBM
+    std::unique_ptr<sdeventplus::source::Defer> resetWDEvent;
+    /** @brief object of the Watchdog class*/
+    pldm::responder::platform::Watchdog watchDog;
+#endif
 };
 
 /** @brief Function to check if a sensor falls in OEM range
