@@ -119,6 +119,58 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
     return completionCode;
 }
 
+bool Watchdog::checkIfWatchDogRunning()
+{
+    static constexpr auto watchDogObjectPath =
+        "/xyz/openbmc_project/watchdog/host0";
+    static constexpr auto watchDogEnablePropName = "Enabled";
+    static constexpr auto watchDogInterface =
+        "xyz.openbmc_project.State.Watchdog";
+    bool isWatchDogRunning = false;
+    try
+    {
+        isWatchDogRunning = pldm::utils::DBusHandler().getDbusProperty<bool>(
+            watchDogObjectPath, watchDogEnablePropName, watchDogInterface);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to check is Watchdog is running"
+                  << "ERROR=" << e.what() << std::endl;
+        return false;
+    }
+    return isWatchDogRunning;
+}
+
+void Watchdog::resetWatchDogTimer()
+{
+    static constexpr auto watchDogService = "xyz.openbmc_project.Watchdog";
+    static constexpr auto watchDogObjectPath =
+        "/xyz/openbmc_project/watchdog/host0";
+    static constexpr auto watchDogInterface =
+        "xyz.openbmc_project.State.Watchdog";
+    static constexpr auto watchDogResetPropName = "ResetTimeRemaining";
+
+    bool wdStatus = checkIfWatchDogRunning();
+    try
+    {
+        if (wdStatus)
+        {
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            auto resetMethod =
+                bus.new_method_call(watchDogService, watchDogObjectPath,
+                                    watchDogInterface, watchDogResetPropName);
+            resetMethod.append(true);
+            bus.call_noreply(resetMethod);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To reset watchdog timer"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
 } // namespace platform
 
 } // namespace responder
