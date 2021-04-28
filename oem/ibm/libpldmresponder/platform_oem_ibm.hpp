@@ -27,6 +27,25 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
                                  dbus_api::Requester* requester,
                                  const std::vector<uint16_t>& handles);
 
+class Watchdog
+{
+  public:
+    /** @brief To check if the watchdog app is running
+     *
+     *  @return the running status of watchdog app
+     */
+    bool checkIfWatchDogRunning();
+
+    /** @brief Method to reset the Watchdog timer on receiving platform Event
+     *  Message for heartbeat elapsed time from Hostboot
+     */
+    void resetWatchDogTimer();
+
+  private:
+    /** @brief flag to check if the SetEventReceiver is already sent to host */
+    bool isSetEventReceiverSent = false;
+};
+
 } // namespace platform
 
 } // namespace responder
