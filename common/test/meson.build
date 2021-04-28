@@ -1,10 +1,9 @@
-test_src = declare_dependency(
+common_test_src = declare_dependency(
           sources: [
-            '../pldmd/instance_id.cpp'])
+            '../utils.cpp'])
 
 tests = [
-  'pldmd_instanceid_test',
-  'pldmd_registration_test',
+  'pldm_utils_test',
 ]
 
 foreach t : tests
@@ -13,8 +12,10 @@ foreach t : tests
                      link_args: dynamic_linker,
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
                      dependencies: [
-                         libpldm_dep,
+                         common_test_src,
                          gtest,
-                         test_src]),
+                         libpldm_dep,
+                         phosphor_dbus_interfaces,
+                         sdbusplus]),
        workdir: meson.current_source_dir())
 endforeach
