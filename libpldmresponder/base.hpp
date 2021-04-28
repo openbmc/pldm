@@ -1,9 +1,8 @@
 #pragma once
 
 #include "libpldm/base.h"
-#include "libpldm/platform.h"
 
-#include "pldmd/dbus_impl_requester.hpp"
+#include "libpldmresponder/platform.hpp"
 #include "pldmd/handler.hpp"
 #include "requester/handler.hpp"
 
@@ -26,11 +25,11 @@ namespace base
 class Handler : public CmdHandler
 {
   public:
-    Handler(int fd, uint8_t eid, Requester& requester,
-            sdeventplus::Event& event,
+    Handler(pldm::responder::oem_platform::Handler* oemPlatformHandler, int fd,
+            uint8_t eid, Requester& requester, sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
-        fd(fd),
-        eid(eid), requester(requester), event(event), handler(handler)
+        oemPlatformHandler(oemPlatformHandler),
+        fd(fd), eid(eid), requester(requester), event(event), handler(handler)
     {
         handlers.emplace(PLDM_GET_PLDM_TYPES,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -91,6 +90,9 @@ class Handler : public CmdHandler
     Response getTID(const pldm_msg* request, size_t payloadLength);
 
   private:
+    /** @OEM platform handler */
+    pldm::responder::oem_platform::Handler* oemPlatformHandler;
+
     /** @brief fd of MCTP communications socket */
     int fd;
 
