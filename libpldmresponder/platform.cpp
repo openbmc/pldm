@@ -316,6 +316,12 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     if (eventClass == PLDM_HEARTBEAT_TIMER_ELAPSED_EVENT)
     {
         rc = PLDM_SUCCESS;
+#ifdef OEM_IBM
+        if (oemPlatformHandler)
+        {
+            oemPlatformHandler->resetWatchDogTimer();
+        }
+#endif
     }
     else
     {
