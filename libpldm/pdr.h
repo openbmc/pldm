@@ -266,6 +266,14 @@ void pldm_entity_association_tree_destroy(pldm_entity_association_tree *tree);
  */
 bool pldm_entity_is_node_parent(pldm_entity_node *node);
 
+/** @brief Get parent of entity
+ *
+ *  @param[in] node - opaque pointer acting as a handle to an entity node
+ *
+ *  @return pldm_entity_node* - opaque pointer to parent entity
+ */
+pldm_entity_node *pldm_entity_get_parent(pldm_entity_node *node);
+
 /** @brief Convert entity association tree to PDR
  *
  *  @param[in] tree - opaque pointer to entity association tree
