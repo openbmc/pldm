@@ -52,3 +52,7 @@ libpldmresponder = library(
 
 libpldmresponder = declare_dependency(
   link_with: libpldmresponder)
+
+if get_option('tests').enabled()
+  subdir('test')
+endif
