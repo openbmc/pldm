@@ -1,8 +1,8 @@
 #include "libpldm/platform.h"
 
+#include "common/test/mocked_utils.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
-#include "mocked_utils.hpp"
 
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <sdeventplus/event.hpp>

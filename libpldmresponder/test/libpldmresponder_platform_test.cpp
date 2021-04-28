@@ -1,3 +1,4 @@
+#include "common/test/mocked_utils.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr.hpp"
@@ -6,7 +7,6 @@
 #include "libpldmresponder/platform_numeric_effecter.hpp"
 #include "libpldmresponder/platform_state_effecter.hpp"
 #include "libpldmresponder/platform_state_sensor.hpp"
-#include "mocked_utils.hpp"
 
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <sdeventplus/event.hpp>
