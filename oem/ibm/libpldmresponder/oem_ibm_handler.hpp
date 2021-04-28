@@ -144,6 +144,17 @@ class Handler : public oem_platform::Handler
      */
     void _processSystemReboot(sdeventplus::source::EventBase& source);
 
+    /** @brief To check if the watchdog app is running
+     *
+     *  @return the running status of watchdog app
+     */
+    bool checkIfWatchDogRunning();
+
+    /** @brief Method to reset the Watchdog timer on receiving platform Event
+     *  Message for heartbeat elapsed time from Hostboot
+     */
+    void resetWatchDogTimer();
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
