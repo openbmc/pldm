@@ -33,13 +33,12 @@ if not gtest.found() or not gmock.found()
     endif
 endif
 
-test_src = declare_dependency(
+host_bmc_test_src = declare_dependency(
           sources: [
-            '../pldmd/instance_id.cpp'])
+            '../dbus_to_host_effecters.cpp'])
 
 tests = [
-  'pldmd_instanceid_test',
-  'pldmd_registration_test',
+  'dbus_to_host_effecter_test',
 ]
 
 foreach t : tests
@@ -48,8 +47,12 @@ foreach t : tests
                      link_args: dynamic_linker,
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
                      dependencies: [
-                         libpldm_dep,
                          gtest,
-                         test_src]),
+                         gmock,
+                         host_bmc_test_src,
+                         libpldm_dep,
+                         libpldmutils,
+                         phosphor_dbus_interfaces,
+                         sdbusplus]),
        workdir: meson.current_source_dir())
 endforeach

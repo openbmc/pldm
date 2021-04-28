@@ -7,7 +7,7 @@
 #include "libpldmresponder/platform.hpp"
 #include "oem/ibm/libpldmresponder/inband_code_update.hpp"
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
-#include "test/mocked_utils.hpp"
+#include "common/test/mocked_utils.hpp"
 
 #include <sdeventplus/event.hpp>
 
