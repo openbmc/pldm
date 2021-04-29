@@ -105,6 +105,30 @@
       "revId": "a6416a7e3cdb69eef798a1ff288293d47eb4555c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebe95a4d_24c2e006",
+        "filename": "libpldm/pldm_types.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-04-29T02:36:45Z",
+      "side": 1,
+      "message": "Agree, this file is meant for PLDM data types only. @Gokul, suggest you to separate this from the series and submit as a separate patch. \n\n@Tom, the reason for attempting the refactor is- the PLDM Message Type codes are part of PLDM IDs and Codes spec, and they don\u0027t really come from PLDM base spec. If a library user wants to deal only with the PLDM Message types, then we could have the PLDM Message types defined in a separate header called  pldm_message_types.h.",
+      "parentUuid": "b5b94999_af5402b7",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 7
+      },
+      "revId": "a6416a7e3cdb69eef798a1ff288293d47eb4555c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
