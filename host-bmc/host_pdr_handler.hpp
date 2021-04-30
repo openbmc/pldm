@@ -52,6 +52,18 @@ struct SensorEntry
     }
 };
 
+/* @struct TerminusLocatorInfo
+ * Contains validity, eid, terminus_id and terminus handle
+ * of a terminus locator PDR.
+ */
+struct TlInfo
+{
+    uint8_t valid;
+    uint8_t eid;
+    uint8_t tid;
+    uint16_t terminus_handle;
+};
+
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
 using PDRList = std::vector<std::vector<uint8_t>>;
 
@@ -138,6 +150,12 @@ class HostPDRHandler
      */
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
+
+    /** @brief Check Valid Bit in the terminus locator PDR
+     *
+     *  @param[in] info - terminus locator PDR info
+     */
+    bool checkValidBit(TlInfo& info);
 
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
