@@ -110,6 +110,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
     bool merged = false;
     PDRList stateSensorPDRs{};
     TLPDRMap tlpdrInfo{};
+    TlInfo info{};
 
     uint32_t nextRecordHandle{};
     uint32_t recordHandle{};
@@ -216,6 +217,13 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                             static_cast<pdr::TerminusHandle>(
                                 tlpdr->terminus_handle),
                             static_cast<pdr::TerminusID>(tlpdr->tid));
+
+                        auto tlEid = reinterpret_cast<
+                            const pldm_terminus_locator_type_mctp_eid*>(
+                            pdr.data());
+
+                        info = {tlpdr->validity, tlEid->eid, tlpdr->tid,
+                                tlpdr->terminus_handle};
                     }
                     else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
                     {
@@ -239,6 +247,8 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
     } while (recordHandle);
 
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+
+    checkValidBit(info);
 
     if (merged)
     {
@@ -429,4 +439,15 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,
     }
 }
 
+bool HostPDRHandler::checkValidBit(TlInfo& info)
+{
+    if (info.valid == 1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 } // namespace pldm
