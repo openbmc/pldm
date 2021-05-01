@@ -121,6 +121,7 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_MGMT_CONTROLLER, "Management Controller"},
         {PLDM_ENTITY_CONNECTOR, "Connector"},
         {PLDM_ENTITY_POWER_SUPPLY, "Power Supply"},
+        {PLDM_ENTITY_MEMORY_CHIP, "Memory chip"},
         {11521, "System (logical)"},
     };
 
