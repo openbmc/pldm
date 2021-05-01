@@ -244,6 +244,14 @@ pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
 void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
 					pldm_entity **entities, size_t *size);
 
+/** @brief Extract pldm entity by the pldm_entity_node
+ *
+ *  @param[in] node     - opaque pointer to added entity
+ *
+ *  @return pldm_entity - pldm entity
+ */
+pldm_entity pldm_entity_extract(pldm_entity_node *node);
+
 /** @brief Destroy entity association tree
  *
  *  @param[in] tree - opaque pointer acting as a handle to the tree
