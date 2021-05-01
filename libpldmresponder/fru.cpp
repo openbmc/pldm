@@ -11,7 +11,9 @@
 #include <sdbusplus/bus.hpp>
 
 #include <iostream>
+#include <optional>
 #include <set>
+#include <stack>
 
 PHOSPHOR_LOG2_USING;
 
@@ -19,6 +21,122 @@ namespace pldm
 {
 namespace responder
 {
+
+std::optional<pldm_entity>
+    FruImpl::getEntityByObjectPath(const dbus::InterfaceMap& intfMaps)
+{
+    for (const auto& intfMap : intfMaps)
+    {
+        try
+        {
+            pldm_entity entity{};
+            entity.entity_type = parser.getEntityType(intfMap.first);
+            return entity;
+        }
+        catch (const std::exception& e)
+        {
+            continue;
+        }
+    }
+
+    return std::nullopt;
+}
+
+void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
+                                    const std::string& path)
+{
+    std::string root = "/xyz/openbmc_project/inventory";
+    if (path.find(root + "/") == std::string::npos)
+    {
+        return;
+    }
+
+    std::stack<std::string> tmpObjPaths{};
+    tmpObjPaths.emplace(path);
+
+    auto obj = pldm::utils::findParent(path);
+    while (obj != root)
+    {
+        tmpObjPaths.emplace(obj);
+        obj = pldm::utils::findParent(obj);
+    }
+
+    std::stack<std::string> tmpObj = tmpObjPaths;
+    while (!tmpObj.empty())
+    {
+        std::string s = tmpObj.top();
+        std::cout << s << std::endl;
+        tmpObj.pop();
+    }
+    // Update pldm entity to assocition tree
+    std::string prePath = tmpObjPaths.top();
+    while (!tmpObjPaths.empty())
+    {
+        std::string currPath = tmpObjPaths.top();
+        tmpObjPaths.pop();
+
+        do
+        {
+            if (objToEntityNode.contains(currPath))
+            {
+                pldm_entity node =
+                    pldm_entity_extract(objToEntityNode.at(currPath));
+                if (pldm_entity_association_tree_find(entityTree, &node))
+                {
+                    break;
+                }
+            }
+            else
+            {
+                if (!objects.contains(currPath))
+                {
+                    break;
+                }
+
+                auto entityPtr = getEntityByObjectPath(objects.at(currPath));
+                if (!entityPtr)
+                {
+                    break;
+                }
+
+                pldm_entity entity = *entityPtr;
+
+                for (auto& it : objToEntityNode)
+                {
+                    pldm_entity node = pldm_entity_extract(it.second);
+                    if (node.entity_type == entity.entity_type)
+                    {
+                        entity.entity_instance_num = node.entity_instance_num +
+                                                     1;
+                        break;
+                    }
+                }
+
+                if (currPath == prePath)
+                {
+                    auto node = pldm_entity_association_tree_add(
+                        entityTree, &entity, 0xFFFF, nullptr,
+                        PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                    objToEntityNode[currPath] = node;
+                }
+                else
+                {
+                    if (objToEntityNode.contains(prePath))
+                    {
+                        auto node = pldm_entity_association_tree_add(
+                            entityTree, &entity, 0xFFFF,
+                            objToEntityNode[prePath],
+                            PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                        objToEntityNode[currPath] = node;
+                    }
+                }
+            }
+        } while (0);
+
+        prePath = currPath;
+    }
+}
+
 void FruImpl::buildFRUTable()
 {
     if (isBuilt)
@@ -68,35 +186,15 @@ void FruImpl::buildFRUTable()
                 // not have corresponding config jsons
                 try
                 {
+                    updateAssociationTree(objects, object.first.str);
                     pldm_entity entity{};
-                    entity.entity_type = parser.getEntityType(interface.first);
-                    pldm_entity_node* parent = nullptr;
-                    auto parentObj = pldm::utils::findParent(object.first.str);
-                    // To add a FRU to the entity association tree, we need to
-                    // determine if the FRU has a parent (D-Bus object). For eg
-                    // /system/backplane's parent is /system. /system has no
-                    // parent. Some D-Bus pathnames might just be namespaces
-                    // (not D-Bus objects), so we need to iterate upwards until
-                    // a parent is found, or we reach the root ("/").
-                    // Parents are always added first before children in the
-                    // entity association tree. We're relying on the fact that
-                    // the std::map containing object paths from the
-                    // GetManagedObjects call will have a sorted pathname list.
-                    do
+                    if (objToEntityNode.contains(object.first.str))
                     {
-                        auto iter = objToEntityNode.find(parentObj);
-                        if (iter != objToEntityNode.end())
-                        {
-                            parent = iter->second;
-                            break;
-                        }
-                        parentObj = pldm::utils::findParent(parentObj);
-                    } while (parentObj != "/");
+                        pldm_entity_node* node =
+                            objToEntityNode.at(object.first.str);
 
-                    auto node = pldm_entity_association_tree_add(
-                        entityTree, &entity, 0xFFFF, parent,
-                        PLDM_ENTITY_ASSOCIAION_PHYSICAL);
-                    objToEntityNode[object.first.str] = node;
+                        entity = pldm_entity_extract(node);
+                    }
 
                     auto recordInfos = parser.getRecordInfo(interface.first);
                     populateRecords(interfaces, recordInfos, entity);
