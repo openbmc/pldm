@@ -143,6 +143,25 @@ class FruImpl
         return associatedEntityMap;
     }
 
+    /** @brief Get pldm entity by the object path
+     *
+     *  @param[in] intfMaps - D-Bus interfaces and the associated property
+     *                        values for the FRU
+     *
+     *  @return pldm_entity
+     */
+    std::optional<pldm_entity>
+        getEntityByObjectPath(const dbus::InterfaceMap& intfMaps);
+
+    /** @brief Update pldm entity to association tree
+     *
+     *  @param[in] objects - std::map The object value tree
+     *  @param[in] path    - Object path
+     *
+     */
+    void updateAssociationTree(const dbus::ObjectValueTree& objects,
+                               const std::string& path);
+
     /* @brief Method to populate the firmware version ID
      *
      * @return firmware version ID
