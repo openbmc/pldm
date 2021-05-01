@@ -6,6 +6,7 @@
 #include "libpldm/pdr.h"
 
 #include "fru_parser.hpp"
+#include "host-bmc/host_pdr_handler.hpp"
 #include "pldmd/handler.hpp"
 
 #include <sdbusplus/message.hpp>
@@ -137,11 +138,32 @@ class FruImpl
         return associatedEntityMap;
     }
 
+    /** @brief Get pldm entity by the object path
+     *
+     *  @param[in] objects - std::map The object value tree
+     *  @param[in] path    - Object path
+     *
+     *  @return pldm_entity
+     */
+    pldm_entity getEntityByObjectPath(const dbus::ObjectValueTree& objects,
+                                      const std::string& path);
+
+    /** @brief Update pldm entity to association tree
+     *
+     *  @param[in] objects - std::map The object value tree
+     *  @param[in] path    - Object path
+     *
+     */
+    void updateAssociationTree(const dbus::ObjectValueTree& objects,
+                               const std::string& path);
+
     /* @brief Method to populate the firmware version ID
      *
      * @return firmware version ID
      */
     std::string populatefwVersion();
+
+    std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
   private:
     uint16_t nextRSI()
@@ -159,8 +181,6 @@ class FruImpl
     fru_parser::FruParser parser;
     pldm_pdr* pdrRepo;
     pldm_entity_association_tree* entityTree;
-
-    std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
      *         updates the FRU table with the FRU records.
@@ -187,8 +207,10 @@ class Handler : public CmdHandler
 
   public:
     Handler(const std::string& configPath, pldm_pdr* pdrRepo,
-            pldm_entity_association_tree* entityTree) :
-        impl(configPath, pdrRepo, entityTree)
+            pldm_entity_association_tree* entityTree,
+            HostPDRHandler* hostPDRHandler) :
+        impl(configPath, pdrRepo, entityTree),
+        hostPDRHandler(hostPDRHandler)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -233,6 +255,10 @@ class Handler : public CmdHandler
     void buildFRUTable()
     {
         impl.buildFRUTable();
+        if (hostPDRHandler)
+        {
+            hostPDRHandler->updateEntity(impl.objToEntityNode);
+        }
     }
 
     /** @brief Get std::map associated with the entity
@@ -259,6 +285,7 @@ class Handler : public CmdHandler
 
   private:
     FruImpl impl;
+    HostPDRHandler* hostPDRHandler;
 };
 
 } // namespace fru

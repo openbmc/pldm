@@ -139,6 +139,13 @@ class HostPDRHandler
     void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
                               const TLPDRMap& tlpdrInfo);
 
+    /** @brief Update the PDR of the pldm entity association
+     *
+     *  @param[in] entities - Mapping to the PDR of the pldm entity association
+     */
+    void updateEntity(
+        const std::map<dbus::ObjectPath, pldm_entity_node*>& entities);
+
   private:
     /** @brief fetchPDR schedules work on the event loop, this method does the
      *  actual work. This is so that the PDR exchg with the host is async.
@@ -196,6 +203,8 @@ class HostPDRHandler
      */
     HostStateSensorMap sensorMap;
     bool verbose;
+
+    std::map<std::string, pldm_entity_node*> objToEntityNode{};
 };
 
 } // namespace pldm

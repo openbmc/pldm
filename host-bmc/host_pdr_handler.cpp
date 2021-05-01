@@ -429,4 +429,11 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,
     }
 }
 
+void HostPDRHandler::updateEntity(
+    const std::map<dbus::ObjectPath, pldm_entity_node*>& entities)
+{
+    objToEntityNode.clear();
+    objToEntityNode = entities;
+}
+
 } // namespace pldm
