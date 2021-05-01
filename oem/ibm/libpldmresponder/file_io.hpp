@@ -426,11 +426,11 @@ class Handler : public CmdHandler
     std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>
         dbusToFileHandler; //!< pointer to send request to Host
     std::unique_ptr<sdbusplus::bus::match_t>
-        resDumpMatcher; //!< Pointer to capture the interface added signal
-                        //!< for new resource dump
+        resDumpMatcher;    //!< Pointer to capture the interface added signal
+                           //!< for new resource dump
     std::unique_ptr<sdbusplus::bus::match_t>
-        vmiCertMatcher; //!< Pointer to capture the interface added signal
-                        //!< for new csr string
+        vmiCertMatcher;    //!< Pointer to capture the interface added signal
+                           //!< for new csr string
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
     std::vector<std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>>
