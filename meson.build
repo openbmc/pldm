@@ -22,13 +22,14 @@ if(get_option('optimization') == '0')
 endif
 
 conf_data = configuration_data()
+if get_option('libpldmresponder').enabled()
 conf_data.set_quoted('BIOS_JSONS_DIR', '/usr/share/pldm/bios')
 conf_data.set_quoted('BIOS_TABLES_DIR', '/var/lib/pldm/bios')
 conf_data.set_quoted('PDR_JSONS_DIR', '/usr/share/pldm/pdr')
 conf_data.set_quoted('FRU_JSONS_DIR', '/usr/share/pldm/fru')
 conf_data.set_quoted('HOST_JSONS_DIR', '/usr/share/pldm/host')
 conf_data.set_quoted('EVENTS_JSONS_DIR', '/usr/share/pldm/events')
-conf_data.set('PLDM_VERBOSITY',get_option('verbosity'))
+endif
 if get_option('softoff').enabled()
   conf_data.set('SOFTOFF_TIMEOUT_SECONDS', get_option('softoff-timeout-seconds'))
 endif
@@ -44,6 +45,7 @@ if get_option('oem-ibm').enabled()
   add_project_arguments('-DOEM_IBM', language : 'c')
   add_project_arguments('-DOEM_IBM', language : 'cpp')
 endif
+conf_data.set('PLDM_VERBOSITY',get_option('verbosity'))
 configure_file(output: 'config.h',
   configuration: conf_data
 )
@@ -108,18 +110,22 @@ libpldmutils = library(
 libpldmutils = declare_dependency(
   include_directories: include_directories(libpldmutils_headers),
   link_with: libpldmutils)
-subdir('libpldmresponder')
 
 deps = [
   libpldm_dep,
   libpldmutils,
-  libpldmresponder,
-  libpldmutils,
   nlohmann_json,
   sdbusplus,
   sdeventplus,
-  phosphor_dbus_interfaces
+  phosphor_dbus_interfaces,
 ]
+
+if get_option('libpldmresponder').enabled()
+subdir('libpldmresponder')
+deps += [
+  libpldmresponder
+]
+endif
 
 executable(
   'pldmd',
@@ -127,7 +133,6 @@ executable(
   'pldmd/dbus_impl_requester.cpp',
   'pldmd/instance_id.cpp',
   'pldmd/dbus_impl_pdr.cpp',
-  'host-bmc/dbus_to_host_effecters.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
