@@ -375,6 +375,108 @@
         }]
     },
     {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan0",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan0",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan1",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan1",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan2",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan2",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan3",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan3",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan4",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan4",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan5",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/fan5",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [true, false]
+             }
+        }]
+    },
+    {
        "type" : 45,
        "instance" : 0,
        "container" : 0,
@@ -391,7 +493,7 @@
                 "property_type": "string",
                 "property_values":[
                         "xyz.openbmc_project.State.Chassis.Transition.Off"
-  ]
+                ]
            }
        }]
     },
