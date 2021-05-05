@@ -140,6 +140,30 @@
     },
     {
       "key": {
+        "uuid": "531e95f7_8059807b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T10:10:31Z",
+      "side": 1,
+      "message": "how will we know where to look for the cert files? Unlike dump offload VMI dbus operation does not have a dbus property that has path of cert file. the \"ibm\" was added after the bmcweb team asked us to change it please see older review comments from raviteja",
+      "parentUuid": "338fd540_f986fd55",
+      "range": {
+        "startLine": 17,
+        "startChar": 46,
+        "endLine": 17,
+        "endChar": 50
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "982588af_f56835e6",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 7
