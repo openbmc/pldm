@@ -1,0 +1,303 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4cee812a_65ac276a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "which interface ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 45
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc99d1d6_e33f6c2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 11,
+        "startChar": 46,
+        "endLine": 11,
+        "endChar": 54
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed29f23e_a346b351",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "which dbus property ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 20,
+        "endLine": 12,
+        "endChar": 36
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "661159bc_14e1274c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "not at all clear , please rephrase it",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 35
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b753062_7c450983",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "can we not contain this logic in the if (Property.first \u003d\u003d \"CSR\") ? \n\nbecause, this would lead to called newCsrFileAvailabe even when we dont find the CSR property, with an empty string .",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 304,
+        "endChar": 80
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "338fd540_f986fd55",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "why did we pick this hierarchy now ?\n\n@sampa  - i think last time Ed brought this point that we should not be hardcoding the paths like these in pldm code.",
+      "range": {
+        "startLine": 17,
+        "startChar": 46,
+        "endLine": 17,
+        "endChar": 50
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "982588af_f56835e6",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "Seems like we opened a file /var/lib/ibm/bmcweb/ClientCert,\nthen we created a stingstream,\n\nbut we did not copy the data that we got from host into this file ? this does not look correct to me. is this unit tested ?\n\n@sampa thoughts ?\n\nare we trying to replace /var/lib/ibm/bmcweb/ClientCert everytime ? are we not having a unique file name for each cert ?",
+      "range": {
+        "startLine": 109,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 23
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25296676_2dd46591",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "this part needs to be done after we get the data from the host not after settings the certificate into the dbus property.\n\nand i think what we should do is \n\nif (received the certificate)\n{\n  set the state complete, then\n  set the certificate property\n}\nelse\n{\n  set the badcsr\n}",
+      "range": {
+        "startLine": 131,
+        "startChar": 1,
+        "endLine": 167,
+        "endChar": 9
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bb55cbd_87f4ddbb",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "const ref?",
+      "range": {
+        "startLine": 194,
+        "startChar": 44,
+        "endLine": 194,
+        "endChar": 55
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23758a8b_ff475d7e",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "this cannot be created with default permissions , need to restrict the permission on who can access this directory.",
+      "range": {
+        "startLine": 202,
+        "startChar": 7,
+        "endLine": 202,
+        "endChar": 44
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c276aa90_b5a87298",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "whats is the typical size of the csr string ? why cant we just send the buffer instead of putting it in a file and sending it ?(if the csr is small)",
+      "range": {
+        "startLine": 216,
+        "startChar": 2,
+        "endLine": 217,
+        "endChar": 33
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5515c8f_60aa7bad",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "do we really need a blocking call here ?",
+      "range": {
+        "startLine": 255,
+        "startChar": 9,
+        "endLine": 255,
+        "endChar": 22
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f0b6a3c_d70845ca",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-05T08:48:12Z",
+      "side": 1,
+      "message": "const reference missing",
+      "range": {
+        "startLine": 55,
+        "startChar": 52,
+        "endLine": 55,
+        "endChar": 65
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
