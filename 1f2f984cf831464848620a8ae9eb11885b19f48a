@@ -117,6 +117,30 @@
     },
     {
       "key": {
+        "uuid": "02bf5ea2_daeb7a90",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T10:16:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1b753062_7c450983",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 304,
+        "endChar": 80
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "338fd540_f986fd55",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 7
@@ -187,6 +211,30 @@
     },
     {
       "key": {
+        "uuid": "d79ee8d7_278dade8",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T10:16:02Z",
+      "side": 1,
+      "message": "@manoj yes this is tested and it works.\n\nOn the second point , we can have a unique file name for each client cert since the file handle is unique but we must do that with coordination with phyp team since they create this file.\n\nMI: decode complete completion code: 0\nVMI: Inside Cert Haandler constructor\nVMI: Inside read\nVMI: Inside Cert Haandler constructor\nVMI: Inside new file available\nVMI: Client Cert new file available\nVMI: Inside Cert Haandler constructor\nVMI: Inside write\nfileHandle: 3\nVMI: Client cert: -----BEGIN CERTIFICATE-----\nMIIDOzCCAiMCEEm92QI5nHDAyn9RRJNZ+nQwDQYJKoZIhvcNAQELBQAwJDEiMCAG\nA1UEAwwZVk1JIENlcnRpZmljYXRlIEF1dGhvcml0eTAeFw0yMTA1MDMwNDE3MzBa\nFw0yMTEwMzEwNDE3MzBaMIGTMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTkgxEDAO\nBgNVBAcMB0NvbmNvcmQxDDAKBgNVBAoMA0lCTTENMAsGA1UECwwESVNETDEkMCIG\nA1UEAwwbZ2Z3YTE4MC5hdXMuc3RnbGFicy5pYm0uY29tMSIwIAYJKoZIhvcNAQkB\nFhNyYmFpbGFwdUBpbi5pYm0uY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEA6s0IEwTKtdxZNpAKksbstqX6JRuNG2xlJ7on+Rb7KD5BuczAAwp8SK9b\na0Vy9kC+J/ah7vq133AvoHm8UWvpwOzYQej8rNdlHTdFhL6UwyEHzDmA0NL9Nomm\nCgFHDD25nhi32pf2vAZ2/QyWzG0OaUmJqSsECMuy3z2GlBZzYQpCtgJyhi/YQh6G\nx7LoPylFZeC2iYBcBJjC3vRNlrhLxZcbGi19GT6xy2MVA6rADV5g1tApCQ/NSnHL\nl1sRvToOulgkntvk7/A4ntDEcrCUey2YYdDb/nSf0LYQQTxG9J8I5iIKRB8cM1pD\nuqsUjLJ1YF/c8W0OeJZC3G140XlNdwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQCc\neQcMXPBO+fBxkQ2aD+l+xD2aG/CxN1mFmctiiGTIzyxCJ8/C+N3Q4bm6Scc7UNGZ\nyrwmHJuhiCgqYriwAI5v34A1VTnzThPmfUTnFotyKzBFcP8CPTV0qY20WtMW4Gna\nrmSQ02SkjR0Y+ok3oiLKZ2qBc5w3R47ftuhpOyGQxKlWU6u0Bnq2fEyAUusSX5C0\n9hx3KvO2pILjNX0DsDgT+qE+RBrCbNDlWcuC+mdSw1ykKNIaTWb8XVEsShmY+At5\nAXTmw/C9PzT8pHM661rTvbEUPpaFK8e7Fsgf2GMqYwbWmYbnECjwnMofLLd/sXCc\nmGcKmNNdcTiKEEftr6wG\n-----END CERTIFICATE-----\ndbus obj path: /xyz/openbmc_project/certs/ca/entry/3\nCert Status complete\n\nPlease see the output I got from test we ran with traces in pldm code",
+      "parentUuid": "982588af_f56835e6",
+      "range": {
+        "startLine": 109,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 23
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "25296676_2dd46591",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 7
@@ -210,6 +258,30 @@
     },
     {
       "key": {
+        "uuid": "e3bf5ba4_fc3fb6ee",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T10:16:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "25296676_2dd46591",
+      "range": {
+        "startLine": 131,
+        "startChar": 1,
+        "endLine": 167,
+        "endChar": 9
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4bb55cbd_87f4ddbb",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 7
@@ -230,6 +302,30 @@
       "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f7366bb_594538a2",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T10:16:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4bb55cbd_87f4ddbb",
+      "range": {
+        "startLine": 194,
+        "startChar": 44,
+        "endLine": 194,
+        "endChar": 55
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -267,6 +363,30 @@
       "writtenOn": "2021-05-05T08:48:12Z",
       "side": 1,
       "message": "whats is the typical size of the csr string ? why cant we just send the buffer instead of putting it in a file and sending it ?(if the csr is small)",
+      "range": {
+        "startLine": 216,
+        "startChar": 2,
+        "endLine": 217,
+        "endChar": 33
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13e72f47_0a0aad0f",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T10:16:02Z",
+      "side": 1,
+      "message": "I think phyp expects a file operation . Once we write the string to a file we send new file request , host responds to this with new file available and read . This whole communication with host has to be changed if we send the buffer",
+      "parentUuid": "c276aa90_b5a87298",
       "range": {
         "startLine": 216,
         "startChar": 2,
@@ -322,6 +442,30 @@
       "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d094febc_40d4a70c",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T10:16:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5f0b6a3c_d70845ca",
+      "range": {
+        "startLine": 55,
+        "startChar": 52,
+        "endLine": 55,
+        "endChar": 65
+      },
+      "revId": "1f2f984cf831464848620a8ae9eb11885b19f48a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
