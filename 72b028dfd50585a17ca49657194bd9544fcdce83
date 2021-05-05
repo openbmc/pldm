@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0615f9f7_9bbdb83d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "we did not test with busctl, we run one curl commadn . there are no unit tests for this",
+      "parentUuid": "8043a275_611af519",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9bd78057_a8ed7db9",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -45,6 +69,30 @@
       "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc069346_847915d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bd78057_a8ed7db9",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "10e9d12c_dc6b6170",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9895e02_1e03f189",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 21
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e59c1d95_ef43923a",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -91,6 +163,30 @@
       "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c10158e_3cf1f773",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e59c1d95_ef43923a",
+      "range": {
+        "startLine": 13,
+        "startChar": 22,
+        "endLine": 14,
+        "endChar": 57
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -260,6 +356,30 @@
     },
     {
       "key": {
+        "uuid": "8e0cb00c_f4a63bb8",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27389cab_ea3b4949",
+      "range": {
+        "startLine": 285,
+        "startChar": 16,
+        "endLine": 286,
+        "endChar": 54
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a07469b8_6107c41b",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 3
@@ -307,6 +427,30 @@
     },
     {
       "key": {
+        "uuid": "ec23b86f_7634f33b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c852f31_dd6d05ed",
+      "range": {
+        "startLine": 107,
+        "startChar": 2,
+        "endLine": 109,
+        "endChar": 40
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "16f386fe_2850b08a",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 3
@@ -321,6 +465,24 @@
       "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc1f0a01_14e47503",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16f386fe_2850b08a",
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -341,6 +503,24 @@
     },
     {
       "key": {
+        "uuid": "8f11e450_c37857fc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d3fcca2_9887e5e7",
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1918282c_0f75090b",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 3
@@ -352,6 +532,30 @@
       "writtenOn": "2021-04-26T04:52:05Z",
       "side": 1,
       "message": "static constexpr ?",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 41
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9e71c39_efe1ad26",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "we are concatenating to CSR path to that string I cannot make it static",
+      "parentUuid": "1918282c_0f75090b",
       "range": {
         "startLine": 197,
         "startChar": 4,
@@ -387,6 +591,30 @@
     },
     {
       "key": {
+        "uuid": "796ec3bc_98740f7b",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0a74e4b_89c9971b",
+      "range": {
+        "startLine": 226,
+        "startChar": 50,
+        "endLine": 228,
+        "endChar": 65
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d453307_778bac37",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 3
@@ -410,6 +638,30 @@
     },
     {
       "key": {
+        "uuid": "3a28d567_6fd595c4",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "no this is how it is done for dump offload also and it works good",
+      "parentUuid": "5d453307_778bac37",
+      "range": {
+        "startLine": 255,
+        "startChar": 7,
+        "endLine": 255,
+        "endChar": 22
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ebd18753_c77ad8a8",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 3
@@ -421,6 +673,30 @@
       "writtenOn": "2021-04-26T04:52:05Z",
       "side": 1,
       "message": "can you add file type as well here , so that we will know which file type file we could not send",
+      "range": {
+        "startLine": 265,
+        "startChar": 7,
+        "endLine": 266,
+        "endChar": 31
+      },
+      "revId": "72b028dfd50585a17ca49657194bd9544fcdce83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61eccbc5_96724e50",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-05-05T07:31:18Z",
+      "side": 1,
+      "message": "there is only one file type that we send to host and that is the singing request type which is the CSR. So I feel it is understood CSR was not sent",
+      "parentUuid": "ebd18753_c77ad8a8",
       "range": {
         "startLine": 265,
         "startChar": 7,
