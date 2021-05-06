@@ -8,6 +8,7 @@
 #include "dbus_impl_requester.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/dbus_to_host_effecters.hpp"
+#include "host-bmc/host_condition.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
@@ -160,6 +161,9 @@ int main(int argc, char** argv)
                    pldm_entity_association_tree_destroy);
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
+
+    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
+
     std::unique_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
