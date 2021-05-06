@@ -5,6 +5,7 @@
 
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
+#include "host-bmc/host_condition.hpp"
 #include "invoker.hpp"
 
 #include <err.h>
@@ -157,6 +158,9 @@ int main(int argc, char** argv)
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
+
+    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
+
     Invoker invoker{};
 
 #ifdef LIBPLDMRESPONDER
@@ -167,6 +171,7 @@ int main(int argc, char** argv)
                     decltype(&pldm_entity_association_tree_destroy)>
         entityTree(pldm_entity_association_tree_init(),
                    pldm_entity_association_tree_destroy);
+
     std::unique_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
