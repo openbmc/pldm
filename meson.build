@@ -185,6 +185,7 @@ executable(
   'pldmd/dbus_impl_requester.cpp',
   'pldmd/instance_id.cpp',
   'pldmd/dbus_impl_pdr.cpp',
+  'host-bmc/host_condition.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
