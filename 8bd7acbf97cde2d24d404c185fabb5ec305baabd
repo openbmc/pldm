@@ -46,6 +46,52 @@
       "revId": "8bd7acbf97cde2d24d404c185fabb5ec305baabd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a4e586f_c3e2e585",
+        "filename": "common/test/meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-06T06:53:45Z",
+      "side": 1,
+      "message": "we seemed to repeat this is every meson test file, can\u0027t we just declare this in the meson file at the root level, and then reuse the objects in the subsequent subdirs ? as the variables from root can be used in subdirs().",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "8bd7acbf97cde2d24d404c185fabb5ec305baabd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40758b4f_2c40b6ed",
+        "filename": "host-bmc/test/meson.build",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-06T06:53:45Z",
+      "side": 1,
+      "message": "here as well.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 5
+      },
+      "revId": "8bd7acbf97cde2d24d404c185fabb5ec305baabd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
