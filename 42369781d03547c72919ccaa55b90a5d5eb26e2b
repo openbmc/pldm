@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f0b869d4_314cc9df",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-06T09:51:13Z",
+      "side": 1,
+      "message": "Sampa, after starting to see more of your changes ,should we make sure we standardize these function names(much like what we did for the encode_foo(), decode_foo()) of request and response ? so that it would be easy for someone to understand the code ?\n\nand i think it\u0027s also better to document that in README ?",
+      "range": {
+        "startLine": 297,
+        "startChar": 18,
+        "endLine": 297,
+        "endChar": 42
+      },
+      "revId": "42369781d03547c72919ccaa55b90a5d5eb26e2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
