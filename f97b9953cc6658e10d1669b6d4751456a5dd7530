@@ -22,6 +22,30 @@
       "revId": "f97b9953cc6658e10d1669b6d4751456a5dd7530",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f3f849f_1da35163",
+        "filename": "common/test/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-07T09:09:46Z",
+      "side": 1,
+      "message": "\u003e can we drop this ? as build via x86 sdk is obsolete now ?\nIs there a formal decision by the community? .I am aware that the community is not excited to support x86SDK and rather prefer run the local CI. I still use an x86SDK while developing unit tests. If it comes to a situation where every OpenBMC repo removes support for x86SDK, pldm can also do it.\n\nIt is a good suggestion to move it to the base meson.build to avoid the clutter.",
+      "parentUuid": "b723df76_53e74991",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "f97b9953cc6658e10d1669b6d4751456a5dd7530",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
