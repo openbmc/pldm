@@ -1,5 +1,7 @@
 #pragma once
 
+#include "host-bmc/host_pdr_handler.hpp"
+
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Condition/HostFirmware/server.hpp>
@@ -25,11 +27,20 @@ class Host : public HostIntf
     Host(sdbusplus::bus::bus& bus, const std::string& path) :
         HostIntf(bus, path.c_str()){};
 
-    void updateCurrentFirmwareCondition(std::string& firmwareCondition);
+    /** @brief Override reads to CurrentFirmwareCondition */
+    FirmwareCondition currentFirmwareCondition() const override;
+
+    /** @brief Store shared pointer to host PDR instance */
+    void setHostPdrObj(std::shared_ptr<HostPDRHandler> obj)
+    {
+        hostPdrObj = obj;
+    }
 
   private:
     sdbusplus::xyz::openbmc_project::Condition::server::HostFirmware::
         FirmwareCondition firmC;
+
+    std::shared_ptr<HostPDRHandler> hostPdrObj;
 };
 } // namespace dbus_api
 } // namespace pldm

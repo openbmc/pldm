@@ -172,7 +172,7 @@ int main(int argc, char** argv)
         entityTree(pldm_entity_association_tree_init(),
                    pldm_entity_association_tree_destroy);
 
-    std::unique_ptr<HostPDRHandler> hostPDRHandler;
+    std::shared_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
@@ -180,9 +180,13 @@ int main(int argc, char** argv)
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
-        hostPDRHandler = std::make_unique<HostPDRHandler>(
+        hostPDRHandler = std::make_shared<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
             entityTree.get(), dbusImplReq, verbose);
+        // HostFirmware interface needs access to hostPDR to know if host
+        // is running
+        dbusImplHost.setHostPdrObj(hostPDRHandler);
+
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),

@@ -13,18 +13,20 @@ namespace pldm
 namespace dbus_api
 {
 
-void Host::updateCurrentFirmwareCondition(std::string& firmwareCondition)
+Host::FirmwareCondition Host::currentFirmwareCondition() const
 {
-    if (firmwareCondition.empty())
+    bool hostRunning = false;
+
+    if (hostPdrObj != nullptr)
     {
-        firmC = HostFirmware::FirmwareCondition::Unknown;
+        hostRunning = hostPdrObj.get()->isHostUp();
     }
-    else
-    {
-        firmC = server::HostFirmware::convertFirmwareConditionFromString(
-            firmwareCondition);
-    }
-    server::HostFirmware::currentFirmwareCondition(firmC);
+
+    auto value = hostRunning ? Host::FirmwareCondition::Running
+                             : Host::FirmwareCondition::Off;
+
+    return value;
 }
+
 } // namespace dbus_api
 } // namespace pldm
