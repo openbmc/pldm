@@ -22,6 +22,40 @@
       "revId": "42369781d03547c72919ccaa55b90a5d5eb26e2b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e1d2e8e_93973caa",
+        "filename": "pldmd/invoker.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-07T08:38:41Z",
+      "side": 1,
+      "message": "TBH, I really do not like using `bool` to distinguish between request and response.\nIt\u0027s better way is to encapsulate into a class call.\n\nBut I am Ok if you insist.",
+      "revId": "42369781d03547c72919ccaa55b90a5d5eb26e2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "276beedb_0515e653",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-07T08:38:41Z",
+      "side": 1,
+      "message": "Line 71 to line 118, I think we can optimize and remove duplicate code",
+      "revId": "42369781d03547c72919ccaa55b90a5d5eb26e2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
