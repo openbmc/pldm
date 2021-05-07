@@ -69,6 +69,16 @@
          "default_string" : "00000000000000000000000000000000",
          "helpText" : "Specifies the configuration flags used by manufacturing, requires a reboot for a change to be applied.",
          "displayName" : "Manufacturing Flags"
+      },
+      {
+         "attribute_name" : "hb_lid_ids",
+         "string_type" : "ASCII",
+         "minimum_string_length" : 0,
+         "maximum_string_length" : 512,
+         "default_string_length" : 375,
+         "default_string" : "HBI=81e0065d,HBB=81e0065a,SBE=81e00661,HCODE=81e00696,PAYLOAD=81e00660,HBRT=81e0068e,HBD=81e0068d,GUARD=81e00667,HBEL=81e00668,NVRAM=81e0066b,OCC=81e00688,ATTR_TMP=81e00664,VERSION=81e00662,HBBL=81e0065b,RINGOVD=81e00620,WOFDATA=81e00692,SBKT=81e0066c,HB_VOLATILE=81e0066f,HDAT=81e00669,EECACHE=81e00679,DEVTREE=81e00672,BOOTKERNEL=81e00658,HCODE_LID=81e00671,OCMBFW=81e0067a",
+         "helpText" : "Provides the host a mapping of the lid IDs to human readable names. Current default is for Rainier 2U config.",
+         "displayName" : "Hostboot Lid IDs"
       }
     ]
 }
