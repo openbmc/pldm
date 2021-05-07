@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b723df76_53e74991",
+        "filename": "common/test/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-07T07:34:28Z",
+      "side": 1,
+      "message": "can we drop this ? as build via x86 sdk is obsolete now ? if answer is \"no\",IMO then we should also define it once, and reuse it ..otherwise ..this looks like a clutter in every meson test file.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "f97b9953cc6658e10d1669b6d4751456a5dd7530",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
