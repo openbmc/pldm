@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1632bd5b_461d6384",
+        "filename": "libpldm/base.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-07T06:43:49Z",
+      "side": 1,
+      "message": "pldm_transport_protocol_type",
+      "range": {
+        "startLine": 59,
+        "startChar": 5,
+        "endLine": 59,
+        "endChar": 28
+      },
+      "revId": "20b4f295908576ccede76630dd3410d98c7c5139",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48c9c601_cf107c5f",
+        "filename": "libpldm/platform.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-07T06:43:49Z",
+      "side": 1,
+      "message": "Since there is no support for types other than MCTP at this point, return failure.",
+      "range": {
+        "startLine": 1561,
+        "startChar": 1,
+        "endLine": 1561,
+        "endChar": 60
+      },
+      "revId": "20b4f295908576ccede76630dd3410d98c7c5139",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46024f4c_deff1c47",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-07T06:43:49Z",
+      "side": 1,
+      "message": "Add some documentation that this struct applies only for transport type MCTP.",
+      "range": {
+        "startLine": 582,
+        "startChar": 3,
+        "endLine": 582,
+        "endChar": 50
+      },
+      "revId": "20b4f295908576ccede76630dd3410d98c7c5139",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
