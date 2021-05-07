@@ -570,28 +570,6 @@ void HostPDRHandler::setHostState()
             return;
         }
     }
-
-    DBusMapping dbusMapping{"/xyz/openbmc_project/condition/host0",
-                            "xyz.openbmc_project.Condition.Host",
-                            "CurrentHostCondition", "string"};
-    pldm::utils::PropertyValue value{};
-    if (responseReceived)
-    {
-        value = "xyz.openbmc_project.Condition.Host.HostCondition.Running";
-    }
-    else
-    {
-        value = "xyz.openbmc_project.Condition.Host.HostCondition.Off";
-    }
-    try
-    {
-        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Failed To set D-Bus property "
-                  << "ERROR=" << e.what() << std::endl;
-    }
 }
 
 bool HostPDRHandler::isHostUp()
