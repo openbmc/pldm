@@ -45,7 +45,29 @@ FileTable::FileTable(const std::string& fileTableConfigPath)
         std::string filepath = record.value(path, "");
         traits = static_cast<uint32_t>(record.value(fileTraits, 0));
 
-        fs::path fsPath(filepath);
+        // Split the filepath string using ',' as a delimiter
+        // as the json can define multiple paths to try and use
+        // in order of priority
+        std::vector<std::string> filepaths_vec;
+        std::istringstream stringstream(filepath);
+        std::string substring;
+        while (std::getline(stringstream, substring, ','))
+        {
+            filepaths_vec.push_back(substring);
+        }
+
+        // Try each file path in the list of filepath strings
+        // and use the first one that exists
+        fs::path fsPath;
+        for (auto path_str : filepaths_vec)
+        {
+            fsPath.assign(path_str);
+            if (fs::exists(fsPath))
+            {
+                break;
+            }
+        }
+        // Skip file table entry if it is not a regular file
         if (!fs::is_regular_file(fsPath))
         {
             continue;
