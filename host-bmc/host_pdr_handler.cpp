@@ -64,12 +64,13 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                       << e.what() << std::endl;
         }
     }
+    bmcEntityTree = pldm_entity_association_tree_init();
 
     hostOffMatch = std::make_unique<sdbusplus::bus::match::match>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
                           "xyz.openbmc_project.State.Host"),
-        [this, repo](sdbusplus::message::message& msg) {
+        [this, repo, entityTree](sdbusplus::message::message& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
@@ -78,9 +79,13 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
             {
                 PropertyValue value = itr->second;
                 auto propVal = std::get<std::string>(value);
-                if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
+                if (propVal == "xyz.openbmc_project.State.Host.HostState."
+                               "TransitioningToOff")
                 {
                     pldm_pdr_remove_remote_pdrs(repo);
+                    pldm_entity_association_tree_destroy_root(entityTree);
+                    pldm_entity_association_tree_copy_root(bmcEntityTree,
+                                                           entityTree);
                     this->sensorMap.clear();
                 }
             }
@@ -103,6 +108,12 @@ void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 {
     pdrFetchEvent.reset();
+
+    // save a copy of bmc's entity association PDR
+    if (pldm_is_empty_entity_assoc_tree(bmcEntityTree))
+    {
+        pldm_entity_association_tree_copy_root(entityTree, bmcEntityTree);
+    }
 
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_GET_PDR_REQ_BYTES);
