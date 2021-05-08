@@ -64,12 +64,13 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
                       << e.what() << std::endl;
         }
     }
+    bmcEntityTree = pldm_entity_association_tree_init();
 
     hostOffMatch = std::make_unique<sdbusplus::bus::match::match>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
                           "xyz.openbmc_project.State.Host"),
-        [this, repo](sdbusplus::message::message& msg) {
+        [this, repo, entityTree](sdbusplus::message::message& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
@@ -78,9 +79,13 @@ HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
             {
                 PropertyValue value = itr->second;
                 auto propVal = std::get<std::string>(value);
-                if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
+                if (propVal == "xyz.openbmc_project.State.Host.HostState."
+                               "TransitioningToOff")
                 {
                     pldm_pdr_remove_remote_pdrs(repo);
+                    pldm_entity_association_tree_destroy_root(entityTree);
+                    pldm_entity_association_tree_copy_root(bmcEntityTree,
+                                                           entityTree);
                     this->sensorMap.clear();
                 }
             }
@@ -103,6 +108,12 @@ void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 {
     pdrFetchEvent.reset();
+
+    // save a copy of bmc's entity association PDR
+    if (pldm_is_empty_entity_assoc_tree(bmcEntityTree))
+    {
+        pldm_entity_association_tree_copy_root(entityTree, bmcEntityTree);
+    }
 
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_GET_PDR_REQ_BYTES);
@@ -277,6 +288,7 @@ bool HostPDRHandler::getParent(EntityType type, pldm_entity& parent)
 
 void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 {
+    std::cout << "enter HostPDRHandler::mergeEntityAssociations \n";
     size_t numEntities{};
     pldm_entity* entities = nullptr;
     bool merged = false;
@@ -285,16 +297,45 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
+    std::cout << "after pldm_entity_association_pdr_extract got numEntities "
+              << numEntities << "\n\n";
     for (size_t i = 0; i < numEntities; ++i)
     {
         pldm_entity parent{};
+        std::cout << "for loop Host entity num " << i << "\n";
+        std::cout << "entity_type " << entities[i].entity_type
+                  << " entity_instance_num " << entities[i].entity_instance_num
+                  << " entity_container_id " << entities[i].entity_container_id
+                  << "\n";
         if (getParent(entities[i].entity_type, parent))
         {
+            std::cout << "getParent returned parent's entity_type "
+                      << parent.entity_type << "\n"
+                      << " entity_instance_num " << parent.entity_instance_num
+                      << "\n entity_container_id " << parent.entity_container_id
+                      << "\n";
             auto node = pldm_entity_association_tree_find(entityTree, &parent);
+            std::cout << "after pldm_entity_association_tree_find parent "
+                      << " container_id " << parent.entity_container_id << "\n";
             if (node)
             {
+                std::cout << "calling pldm_entity_association_tree_add \n";
+                /*           std::cout << "entityTree->root->entity.entity_type
+                   " << ((entityTree->root)->entity).entity_type
+                                  <<
+                   "entityTree->root->entity.entity_instance_num " <<
+                   entityTree->root->entity.entity_instance_num
+                                  <<
+                   "entityTree->root->entity.entity_container_id " <<
+                   ((entityTree->root)->entity).entity_container_id << "\n";*/
+                std::cout << "before pldm_entity_association_tree_add"
+                          << " entities[i] instance number is :"
+                          << entities[i].entity_instance_num << "\n";
                 pldm_entity_association_tree_add(entityTree, &entities[i], node,
                                                  entityPdr->association_type);
+                std::cout << "after pldm_entity_association_tree_add"
+                          << " entities[i] instance number is :"
+                          << entities[i].entity_instance_num << "\n";
                 merged = true;
             }
         }
@@ -303,6 +344,7 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     if (merged)
     {
+        std::cout << "calling pldm_entity_association_pdr_add \n";
         // Update our PDR repo with the merged entity association PDRs
         pldm_entity_association_pdr_add(entityTree, repo, true);
     }
