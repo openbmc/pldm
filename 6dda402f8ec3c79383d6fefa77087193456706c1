@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "762729b0_27173b41",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "If pdrRecordHandles is empty, do we get pdr with recordHandle\u003d0, or return directly?\n\nI think we can return directly.",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 123,
+        "endChar": 9
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69867cef_699e16b7",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "the next record",
+      "range": {
+        "startLine": 143,
+        "startChar": 38,
+        "endLine": 143,
+        "endChar": 48
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7772725_5320d8d8",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "Here, I would rather define `std::vector\u003cuint8_t\u003e pdr(UINT16_MAX);` than call the `decode_get_pdr_resp` method twice.",
+      "range": {
+        "startLine": 153,
+        "startChar": 4,
+        "endLine": 156,
+        "endChar": 48
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c328c128_0f5ee2f2",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "I think this logic is incorrect.\nWhy do not call the `_processFetchPDREvent` method if `nextRecordHandle` \u003d\u003d 0?\nAt this time, perhaps `pdrRecordHandles` !\u003d empty\nSo I think we can check if pdrRecordHandles is empty.",
+      "range": {
+        "startLine": 216,
+        "startChar": 4,
+        "endLine": 216,
+        "endChar": 26
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19b7ea68_59dddbb7",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "We call this method after the `pdrRecordHandles` equal empty?",
+      "range": {
+        "startLine": 258,
+        "startChar": 4,
+        "endLine": 258,
+        "endChar": 34
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a27a59d3_11cb406f",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "Do we need to send getPDR command again if `pdrRecordHandles` equal empty?",
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "395af35d_c76bbde8",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "Remove?",
+      "range": {
+        "startLine": 226,
+        "startChar": 7,
+        "endLine": 226,
+        "endChar": 60
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26c82a84_6ab36968",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "Add param",
+      "range": {
+        "startLine": 473,
+        "startChar": 4,
+        "endLine": 474,
+        "endChar": 7
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f66bcbc_fcfe3829",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:18:23Z",
+      "side": 1,
+      "message": "Add param",
+      "range": {
+        "startLine": 477,
+        "startChar": 4,
+        "endLine": 477,
+        "endChar": 73
+      },
+      "revId": "6dda402f8ec3c79383d6fefa77087193456706c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
