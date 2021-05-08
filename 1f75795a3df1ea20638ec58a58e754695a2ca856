@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03203bb9_55277377",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-08T09:19:16Z",
+      "side": 1,
+      "message": "Remove?",
+      "range": {
+        "startLine": 266,
+        "startChar": 7,
+        "endLine": 266,
+        "endChar": 48
+      },
+      "revId": "1f75795a3df1ea20638ec58a58e754695a2ca856",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
