@@ -173,8 +173,12 @@ class HostPDRHandler
     pldm_pdr* repo;
 
     StateSensorHandler stateSensorHandler;
-    /** @brief Pointer to BMC's entity association tree */
+    /** @brief Pointer to BMC's and Host's entity association tree */
     pldm_entity_association_tree* entityTree;
+
+    /** @brief Pointer to BMC's entity association tree */
+    static inline pldm_entity_association_tree* bmcEntityTree;
+
     /** @brief reference to Requester object, primarily used to access API to
      *  obtain PLDM instance id.
      */
