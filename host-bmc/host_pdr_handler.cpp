@@ -238,6 +238,15 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
     } while (recordHandle);
 
+    const fs::path path{"/xyz/openbmc_project/inventory/system"};
+    std::vector<pldm_entity> parentsEntity =
+        getParentEntites(entityAssociations);
+    for (auto& entity : parentsEntity)
+    {
+        addObjectPathEntityAssociations(entityAssociations, entity, path,
+                                        objPathMap);
+    }
+
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
     if (merged)
@@ -285,17 +294,44 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
-    for (size_t i = 0; i < numEntities; ++i)
+    if (numEntities > 0)
     {
         pldm_entity parent{};
-        if (getParent(entities[i].entity_type, parent))
+        if (getParent(entities[0].entity_type, parent))
         {
             auto node = pldm_entity_association_tree_find(entityTree, &parent);
             if (node)
             {
-                pldm_entity_association_tree_add(entityTree, &entities[i], node,
-                                                 entityPdr->association_type);
-                merged = true;
+                auto pNode =
+                    pldm_entity_association_tree_find(entityTree, &entities[0]);
+                if (!pNode || pldm_entity_get_parent(pNode) != node)
+                {
+                    pNode = pldm_entity_association_tree_add(
+                        entityTree, &entities[0], node,
+                        entityPdr->association_type);
+                }
+
+                Entities entityAssoc;
+                entityAssoc.push_back(pldm_entity_extract(pNode));
+
+                for (size_t i = 1; i < numEntities; ++i)
+                {
+                    auto cNode = pldm_entity_association_tree_find(
+                        entityTree, &entities[i]);
+                    if (!cNode || pldm_entity_get_parent(cNode) != pNode)
+                    {
+                        cNode = pldm_entity_association_tree_add(
+                            entityTree, &entities[i], pNode,
+                            entityPdr->association_type);
+                        entityAssoc.push_back(pldm_entity_extract(cNode));
+                        merged = true;
+                    }
+                }
+
+                if (merged)
+                {
+                    entityAssociations.push_back(entityAssoc);
+                }
             }
         }
     }
