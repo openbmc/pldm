@@ -217,6 +217,12 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                         auto tlpdr =
                             reinterpret_cast<const pldm_terminus_locator_pdr*>(
                                 pdr.data());
+#ifdef OEM_IBM
+                        if (tlpdr->validity == 0)
+                        {
+                            watchDog.extendWatchDogTimer();
+                        }
+#endif
                         tlpdrInfo.emplace(
                             static_cast<pdr::TerminusHandle>(
                                 tlpdr->terminus_handle),
