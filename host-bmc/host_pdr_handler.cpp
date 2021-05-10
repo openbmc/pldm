@@ -447,6 +447,9 @@ bool HostPDRHandler::checkValidBit(TlInfo& info)
     }
     else
     {
+#ifdef OEM_IBM
+        watchDog.extendWatchDogTimer();
+#endif
         return false;
     }
 }
