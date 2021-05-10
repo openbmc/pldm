@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aaadafe2_3b8e6a6b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T11:32:11Z",
+      "side": 1,
+      "message": "\"entity_association_tree: Keep tree updated across host reboots\"\n\nThis is a more specific heading.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31787b21_83b3ea12",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T11:32:11Z",
+      "side": 1,
+      "message": "Please align the commit message text.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 31
+      },
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6bc2b257_90ee1f70",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T11:32:11Z",
+      "side": 1,
+      "message": "https://github.com/openbmc/pldm/blob/master/libpldm/pdr.h#L251\n\nDoes this pldm_entity_association_tree_destroy serve the purpose?",
+      "range": {
+        "startLine": 86,
+        "startChar": 20,
+        "endLine": 86,
+        "endChar": 74
+      },
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e52eb10_f64f9e46",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T11:32:11Z",
+      "side": 1,
+      "message": "Making the bmcEntityTree static and initialize it from _fetchPDR makes the code difficult to read and dependency is not clear. \n\nInstead of that I would suggeste bmcEntityTree is initialised when BMC\u0027s entity association tree is built.(https://github.com/openbmc/pldm/blob/master/libpldmresponder/fru.cpp#L21)",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 62
+      },
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72b7229f_d0f887ad",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T11:32:11Z",
+      "side": 1,
+      "message": "Please add unit test",
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6645c404_040951ef",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T11:32:11Z",
+      "side": 1,
+      "message": "nit: pldm_entity_association_tree_copy",
+      "range": {
+        "startLine": 297,
+        "startChar": 5,
+        "endLine": 297,
+        "endChar": 43
+      },
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
