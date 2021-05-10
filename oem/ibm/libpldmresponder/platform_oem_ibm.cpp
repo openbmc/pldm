@@ -186,6 +186,33 @@ void Watchdog::resetWatchDogTimer()
     }
 }
 
+void Watchdog::extendWatchDogTimer()
+{
+    std::cout << "extending watchdog timer \n";
+    auto val = 100000;
+    pldm::utils::PropertyValue value = static_cast<uint64_t>(val);
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = "/xyz/openbmc_project/watchdog/host0";
+    dbusMapping.interface = "xyz.openbmc_project.State.Watchdog";
+    dbusMapping.propertyName = "Interval";
+    dbusMapping.propertyType = "uint64_t";
+
+    bool wdStatus = checkIfWatchDogRunning();
+    try
+    {
+        if (wdStatus)
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To extend watchdog timer"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
 } // namespace platform
 
 } // namespace responder
