@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "8e6b42f6_e6d150be",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T04:55:40Z",
+      "side": 1,
+      "message": "The response handlers of PLDM requests cannot be modelled in the same way as handlers for PLDM responders. This approach inhibits the solution my team wants to provide in the near future.\n\n1) BMC (PLDM requester) wants to do firmware update of PLDM devices in a parallel fashion. So RequestUpdate PLDM command will be in flight for multiple devices. So the responses need more context than the request buffers.\n\n2) PLDM requesters are expected to do retries of the command if there are no responses from the PLDM responder.\n\nI am working on trying to solve the above requirements, will share code that will make PLDM request and response handling asynchronous.",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 48
+      },
+      "revId": "42369781d03547c72919ccaa55b90a5d5eb26e2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1e1d2e8e_93973caa",
         "filename": "pldmd/invoker.hpp",
         "patchSetId": 7
