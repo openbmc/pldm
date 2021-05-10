@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5730210b_ef277578",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000238
+      },
+      "writtenOn": "2021-05-10T17:03:51Z",
+      "side": 1,
+      "message": "Is there any reason that PLDM would not be able to read this attribute (or the enable) from the BMC?  If HB is not able to get this data it would leave the system in safe mode (reduced performance).  Just trying to determine if HB needs to cache this value from a successful boot.",
+      "revId": "f286d98d2648f6edd68d9ad7edb9f75b3309917f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
