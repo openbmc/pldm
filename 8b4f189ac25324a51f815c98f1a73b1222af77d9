@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45ce233d_8b894ec3",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-10T08:18:29Z",
+      "side": 1,
+      "message": "Should we not set the merged to true after all the children are also merged ?",
+      "range": {
+        "startLine": 298,
+        "startChar": 16,
+        "endLine": 298,
+        "endChar": 30
+      },
+      "revId": "8b4f189ac25324a51f815c98f1a73b1222af77d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
