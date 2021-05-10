@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02780371_bb9b67ef",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "which contains",
+      "range": {
+        "startLine": 477,
+        "startChar": 40,
+        "endLine": 477,
+        "endChar": 42
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "120a188e_25cda317",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "type",
+      "range": {
+        "startLine": 480,
+        "startChar": 14,
+        "endLine": 480,
+        "endChar": 23
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0f2cdda_0f520537",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "encode_pldm_header_only or encode_only_pldm_header will make the intent clear.",
+      "range": {
+        "startLine": 486,
+        "startChar": 4,
+        "endLine": 486,
+        "endChar": 22
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03785e7b_3cbf45c6",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "What is this parameter for?\n\nIn the case of encoding a response, bare minimum you have the completion code and you already have encode_cc_only_resp.",
+      "range": {
+        "startLine": 487,
+        "startChar": 32,
+        "endLine": 487,
+        "endChar": 54
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cfe04df_88da865f",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "I see there is a challenge to get the right return code. This function is returning both PLDM base completion code as well as pldm_encode_decode_rc. My view is that this is going to create confusion and I suggest we separate the introduction of pldm_encode_decode_rc as a complete separate patch. We also need discussion to change the signature of the pack_pldm_header and unpack_pldm_header.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 51
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "460b08c0_a5f6e553",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "As mentioned in the earlier patch. Put the commands for PLDM FW update commands in an enumeration.\n\nhttps://github.com/openbmc/pldm/blob/master/libpldm/fru.h#L27",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f8af5ff_0356b478",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "pldm_encode_decode_rc",
+      "range": {
+        "startLine": 16,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b11513fa_9030605f",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "Why is the range 0xF0-0xF4 selected for this?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eaab1330_fceccd8b",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-10T05:51:37Z",
+      "side": 1,
+      "message": "Typically @param[in] goes first followed by @param[in,out] and @param[out].",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 69
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
