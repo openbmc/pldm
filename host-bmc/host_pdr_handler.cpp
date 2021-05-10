@@ -55,6 +55,7 @@ HostPDRHandler::HostPDRHandler(
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler)
 {
+    mergedHostParents = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -115,6 +116,7 @@ HostPDRHandler::HostPDRHandler(
                                                        entityTree);
                 this->sensorMap.clear();
                 this->responseReceived = false;
+                this->mergedHostParents = false;
             }
         }
         });
@@ -203,18 +205,6 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
     }
     return PLDM_SUCCESS;
 }
-bool HostPDRHandler::getParent(EntityType type, pldm_entity& parent)
-{
-    auto found = parents.find(type);
-    if (found != parents.end())
-    {
-        parent.entity_type = found->second.entity_type;
-        parent.entity_instance_num = found->second.entity_instance_num;
-        return true;
-    }
-
-    return false;
-}
 
 void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 {
@@ -226,21 +216,33 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
-    for (size_t i = 0; i < numEntities; ++i)
+    if (numEntities > 0)
     {
-        pldm_entity parent{};
-        if (getParent(entities[i].entity_type, parent))
+        pldm_entity_node* pNode = nullptr;
+        if (!mergedHostParents)
         {
-            auto node = pldm_entity_association_tree_find_if_remote(
-                entityTree, &parent, true);
-            if (node)
-            {
-                pldm_entity_association_tree_add_entity(
-                    entityTree, &entities[i], 0xFFFF, node,
-                    entityPdr->association_type, false, true, 0xFFFF);
-                merged = true;
-            }
+            pNode = pldm_entity_association_tree_find_if_remote(entityTree, &entities[0],
+                                                      false);
         }
+        else
+        {
+            pNode = pldm_entity_association_tree_find_if_remote(entityTree, &entities[0],
+                                                      true);
+        }
+        if (!pNode)
+        {
+            return;
+        }
+
+        for (size_t i = 1; i < numEntities; ++i)
+        {
+            pldm_entity_association_tree_add_entity(
+                entityTree, &entities[i], entities[i].entity_instance_num,
+                pNode, entityPdr->association_type, true, true, 0xFFFF);
+            merged = true;
+        }
+
+        mergedHostParents = true;
     }
 
     if (merged)
