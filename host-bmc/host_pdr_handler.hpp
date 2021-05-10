@@ -192,14 +192,6 @@ class HostPDRHandler
      */
     void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
 
-    /** @brief Find parent of input entity type, from the entity association
-     *  tree
-     *  @param[in] type - PLDM entity type
-     *  @param[out] parent - PLDM entity information of parent
-     *  @return bool - true if parent found, false otherwise
-     */
-    bool getParent(EntityType type, pldm_entity& parent);
-
     /** @brief process the Host's PDR and add to BMC's PDR repo
      *  @param[in] eid - MCTP id of Host
      *  @param[in] response - response from Host for GetPDR
@@ -269,6 +261,16 @@ class HostPDRHandler
 
     /** @brief whether response received from Host */
     bool responseReceived;
+
+    /** @brief veriable that captures if the first entity association PDR
+     *         from host is merged into the BMC tree
+     */
+    bool mergedHostParents;
+
+    /** @brief whether timed out waiting for a response from Host */
+    bool timeOut;
+    /** @brief request message instance id */
+    uint8_t insId;
 };
 
 } // namespace pldm
