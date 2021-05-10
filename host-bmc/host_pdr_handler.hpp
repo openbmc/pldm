@@ -153,14 +153,6 @@ class HostPDRHandler
      */
     void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
 
-    /** @brief Find parent of input entity type, from the entity association
-     *  tree
-     *  @param[in] type - PLDM entity type
-     *  @param[out] parent - PLDM entity information of parent
-     *  @return bool - true if parent found, false otherwise
-     */
-    bool getParent(EntityType type, pldm_entity& parent);
-
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
