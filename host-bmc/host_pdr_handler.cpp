@@ -267,18 +267,6 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
     }
     return PLDM_SUCCESS;
 }
-bool HostPDRHandler::getParent(EntityType type, pldm_entity& parent)
-{
-    auto found = parents.find(type);
-    if (found != parents.end())
-    {
-        parent.entity_type = found->second.entity_type;
-        parent.entity_instance_num = found->second.entity_instance_num;
-        return true;
-    }
-
-    return false;
-}
 
 void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 {
@@ -290,16 +278,24 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
-    for (size_t i = 0; i < numEntities; ++i)
+    if (numEntities > 0)
     {
-        pldm_entity parent{};
-        if (getParent(entities[i].entity_type, parent))
+        auto pNode =
+            pldm_entity_association_tree_find(entityTree, &entities[0]);
+        if (!pNode)
         {
-            auto node = pldm_entity_association_tree_find(entityTree, &parent);
-            if (node)
+            return;
+        }
+
+        for (size_t i = 1; i < numEntities; ++i)
+        {
+            auto cNode =
+                pldm_entity_association_tree_find(entityTree, &entities[i]);
+            if (!cNode || pldm_entity_get_parent(cNode) != pNode)
             {
-                pldm_entity_association_tree_add(entityTree, &entities[i], node,
-                                                 entityPdr->association_type);
+                cNode = pldm_entity_association_tree_add(
+                    entityTree, &entities[i], pNode,
+                    entityPdr->association_type);
                 merged = true;
             }
         }
