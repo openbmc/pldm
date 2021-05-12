@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "base.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
