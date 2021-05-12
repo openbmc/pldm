@@ -221,6 +221,9 @@ void Handler::_processSetEventReceiver(
     {
         std::cerr << "decode_set_event_receiver_resp error, rc = " << rc
                   << ",cc=" << (int)completionCode << std::endl;
+#ifdef OEM_IBM
+        watchDog.disableWatchDogTimer();
+#endif
     }
 }
 

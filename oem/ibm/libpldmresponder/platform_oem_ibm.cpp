@@ -122,12 +122,20 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
 int Watchdog::calculateHeartbeatTimeOut()
 {
     uint16_t heartbeatTimeout = 0x78;
-    if (!isSetEventReceiverSent)
+    if ((!isSetEventReceiverSent) && (isHostOff == false))
     {
         heartbeatTimeout = 0xf;
         isSetEventReceiverSent = true;
+        return heartbeatTimeout;
+    }
+    else if ((isSetEventReceiverSent) && (isHostOff == true))
+    {
+        isHostOff = false;
+        heartbeatTimeout = 0xf;
+        return heartbeatTimeout;
     }
 
+    disableWatchDogTimer();
     return heartbeatTimeout;
 }
 
@@ -146,7 +154,7 @@ bool Watchdog::checkIfWatchDogRunning()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed to check is Watchdog is running"
+        std::cerr << "Failed to check if Watchdog is running"
                   << "ERROR=" << e.what() << std::endl;
         return false;
     }
@@ -165,7 +173,7 @@ void Watchdog::resetWatchDogTimer()
     bool wdStatus = checkIfWatchDogRunning();
     try
     {
-        if (wdStatus)
+        if (wdStatus == true)
         {
             auto& bus = pldm::utils::DBusHandler::getBus();
             auto resetMethod =
@@ -178,6 +186,29 @@ void Watchdog::resetWatchDogTimer()
     catch (const std::exception& e)
     {
         std::cerr << "Failed To reset watchdog timer"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
+void Watchdog::disableWatchDogTimer()
+{
+    bool val = false;
+    pldm::utils::PropertyValue value = static_cast<bool>(val);
+    pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/watchdog/host0",
+                                         "/xyz/openbmc_project/watchdog/host0",
+                                         "Enabled", "bool"};
+    bool wdStatus = checkIfWatchDogRunning();
+    try
+    {
+        if (wdStatus == true)
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To extend watchdog timer"
                   << "ERROR=" << e.what() << std::endl;
         return;
     }
