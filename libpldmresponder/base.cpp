@@ -185,6 +185,10 @@ void Handler::_processSetEventReceiver(
     uint8_t eventReceiverAddressInfo = 0x08;
     uint16_t heartbeatTimer = HEARTBEAT_TIMEOUT;
 
+#ifdef OEM_IBM
+    watchDog.checkIsSetEventReceiverSent();
+#endif
+
     auto rc = encode_set_event_receiver_req(
         instanceId, eventMessageGlobalEnable, transportProtocolType,
         eventReceiverAddressInfo, heartbeatTimer, request);
@@ -220,6 +224,9 @@ void Handler::_processSetEventReceiver(
     {
         std::cerr << "decode_set_event_receiver_resp error, rc = " << rc
                   << ",cc=" << (int)completionCode << std::endl;
+#ifdef OEM_IBM
+        watchDog.disableWatchDogTimer();
+#endif
     }
 }
 

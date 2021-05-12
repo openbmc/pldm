@@ -119,6 +119,23 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
     return completionCode;
 }
 
+void Watchdog::checkIsSetEventReceiverSent()
+{
+    if ((!isSetEventReceiverSent) && (!isHostOff))
+    {
+        isSetEventReceiverSent = true;
+        return;
+    }
+    else if ((isSetEventReceiverSent) && (isHostOff))
+    {
+        isHostOff = false;
+        return;
+    }
+
+    disableWatchDogTimer();
+    return;
+}
+
 bool Watchdog::checkIfWatchDogRunning()
 {
     static constexpr auto watchDogObjectPath =
@@ -134,7 +151,7 @@ bool Watchdog::checkIfWatchDogRunning()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed to check is Watchdog is running"
+        std::cerr << "Failed to check if Watchdog is running"
                   << "ERROR=" << e.what() << std::endl;
         return false;
     }
@@ -153,7 +170,7 @@ void Watchdog::resetWatchDogTimer()
     bool wdStatus = checkIfWatchDogRunning();
     try
     {
-        if (wdStatus)
+        if (wdStatus == true)
         {
             auto& bus = pldm::utils::DBusHandler::getBus();
             auto resetMethod =
@@ -166,6 +183,29 @@ void Watchdog::resetWatchDogTimer()
     catch (const std::exception& e)
     {
         std::cerr << "Failed To reset watchdog timer"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
+void Watchdog::disableWatchDogTimer()
+{
+    bool val = false;
+    pldm::utils::PropertyValue value = static_cast<bool>(val);
+    pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/watchdog/host0",
+                                         "xyz.openbmc_project.State.Watchdog",
+                                         "Enabled", "bool"};
+    bool wdStatus = checkIfWatchDogRunning();
+    try
+    {
+        if (wdStatus == true)
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To disable watchdog timer"
                   << "ERROR=" << e.what() << std::endl;
         return;
     }
