@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1119c554_6c79ac2d",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "sys.exit() throws an exception and the exception is caught and the cleanup is done.",
+      "parentUuid": "c6350df0_cedf3c0e",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 64
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d0f95db5_68d85e37",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2021-05-12T05:16:52Z",
       "side": 1,
       "message": "nit: Probably needs a 16 byte check. We could instead generate this number from the script only, no? We could take spec revision as input parameter and generate this parameter.",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 55
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e16ec43_40c0ce76",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "\u003e We could take spec revision as input parameter and generate this parameter.\nI did give it a thought, personally didn\u0027t find great value in the version -\u003e uuid indirection, compared to specifying the UUID directly.",
+      "parentUuid": "d0f95db5_68d85e37",
       "range": {
         "startLine": 137,
         "startChar": 4,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "0c7462b8_3e39e608",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "sys.exit() throws an exception and the exception is caught and the cleanup is done.",
+      "parentUuid": "7ad3875d_98f824e8",
+      "range": {
+        "startLine": 207,
+        "startChar": 8,
+        "endLine": 210,
+        "endChar": 0
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d1592c48_8b770d90",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -82,6 +154,30 @@
       "writtenOn": "2021-05-12T05:16:52Z",
       "side": 1,
       "message": "We are looking at additional descriptors (for PCI device), probably can submit as a patch on top of this",
+      "range": {
+        "startLine": 218,
+        "startChar": 8,
+        "endLine": 219,
+        "endChar": 28
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08f89021_34dc103f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "Please do submit patches if there is interest in additional descriptors.",
+      "parentUuid": "d1592c48_8b770d90",
       "range": {
         "startLine": 218,
         "startChar": 8,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "84e75bfb_384aa5d2",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "DeviceUpdateOptionsFlags supports only bit 0, this check is for that. \n\nThe json supports the option to select both.\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/42454/2/tools/fw-update/metadata-example.json#10\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/42454/2/tools/fw-update/metadata-example.json#24",
+      "parentUuid": "fc503c97_08850c9d",
+      "range": {
+        "startLine": 229,
+        "startChar": 16,
+        "endLine": 229,
+        "endChar": 75
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "502903d6_9a96bfb6",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -128,6 +248,30 @@
       "writtenOn": "2021-05-12T05:16:52Z",
       "side": 1,
       "message": "Not required? len(applicable_components) need to be multiple of 8, no?",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 17
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb70f91a_1a6f9105",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "The number of components is not guaranteed to be a multiple of 8. So round() will adjust the applicable_components_bitfield to accommodate the components.",
+      "parentUuid": "502903d6_9a96bfb6",
       "range": {
         "startLine": 256,
         "startChar": 12,
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "b9c1a583_2e4a9814",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "sys.exit() throws an exception and the exception is caught and the cleanup is done.",
+      "parentUuid": "ac66322a_5a7e83c4",
+      "range": {
+        "startLine": 265,
+        "startChar": 12,
+        "endLine": 265,
+        "endChar": 68
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fbd01d51_1ba777e7",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -174,6 +342,24 @@
       "writtenOn": "2021-05-12T05:16:52Z",
       "side": 1,
       "message": "based on spec revision, we will have to support downstream device identification are also, no ?",
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9e79e0c_9d461f93",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-12T07:51:01Z",
+      "side": 1,
+      "message": "Yes, DSP0236 1.1.0 supports downstream devices in the package. I don\u0027t have a use case for that now. Definitely the json and tool can be extended to address that in the future.",
+      "parentUuid": "fbd01d51_1ba777e7",
       "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
