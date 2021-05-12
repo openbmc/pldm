@@ -217,7 +217,12 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                             static_cast<pdr::TerminusHandle>(
                                 tlpdr->terminus_handle),
                             static_cast<pdr::TerminusID>(tlpdr->tid));
-
+#ifdef OEM_IBM
+                        if (tlpdr->terminus_handle == 0xD000)
+                        {
+                            watchDog.disableWatchDogTimer();
+                        }
+#endif
                         auto tlEid = reinterpret_cast<
                             const pldm_terminus_locator_type_mctp_eid*>(
                             pdr.data());
