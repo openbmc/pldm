@@ -119,6 +119,7 @@ class Handler : public CmdHandler
 #endif
 };
 
+
 } // namespace base
 } // namespace responder
 } // namespace pldm
