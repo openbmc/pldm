@@ -232,6 +232,12 @@ void Handler::processSetEventReceiver(
         std::cerr << "Failed to send the setEventReceiver request"
                   << "\n";
     }
+
+    if (oemPlatformHandler)
+    {
+        oemPlatformHandler->countSetEventReceiver();
+        oemPlatformHandler->checkAndDisableWatchDog();
+    }
 }
 
 Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
