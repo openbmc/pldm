@@ -68,9 +68,15 @@ class Handler : public CmdHandler
      */
     virtual void buildOEMPDR(pdr_utils::Repo& repo) = 0;
 
+    virtual void checkAndDisableWatchDog() = 0;
+
     virtual bool checkIfWatchDogRunning() = 0;
 
     virtual void resetWatchDogTimer() = 0;
+
+    virtual void disableWatchDogTimer() = 0;
+
+    virtual void countSetEventReceiver() = 0;
 
     virtual ~Handler() = default;
 
