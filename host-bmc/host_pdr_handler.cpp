@@ -217,6 +217,12 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                         {
                             watchDog.extendWatchDogTimer();
                         }
+
+                        // To check if hist terminus handle
+                        if (tlpdr->terminus_handle == 0xD000)
+                        {
+                            watchDog.disableWatchDogTimer();
+                        }
 #endif
                         tlpdrInfo.emplace(
                             static_cast<pdr::TerminusHandle>(
