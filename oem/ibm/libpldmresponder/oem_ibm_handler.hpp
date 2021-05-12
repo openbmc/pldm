@@ -59,6 +59,36 @@ class Handler : public oem_platform::Handler
         mctp_eid(mctp_eid), requester(requester), event(event), handler(handler)
     {
         codeUpdate->setVersions();
+        setEventReceiverCnt = 0;
+
+        using namespace sdbusplus::bus::match::rules;
+        hostOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            propertiesChanged("/xyz/openbmc_project/state/host0",
+                              "xyz.openbmc_project.State.Host"),
+            [this](sdbusplus::message::message& msg) {
+                DbusChangedProps props{};
+                std::string intf;
+                msg.read(intf, props);
+                const auto itr = props.find("CurrentHostState");
+                if (itr != props.end())
+                {
+                    PropertyValue value = itr->second;
+                    auto propVal = std::get<std::string>(value);
+                    if (propVal ==
+                        "xyz.openbmc_project.State.Host.HostState.Off")
+                    {
+                        hostOff = true;
+                        setEventReceiverCnt = 0;
+                        disableWatchDogTimer();
+                    }
+                    else if (propVal ==
+                             "xyz.openbmc_project.State.Host.HostState.Running")
+                    {
+                        hostOff = false;
+                    }
+                }
+            });
     }
 
     int getOemStateSensorReadingsHandler(
@@ -144,6 +174,15 @@ class Handler : public oem_platform::Handler
      */
     void _processSystemReboot(sdeventplus::source::EventBase& source);
 
+    /*keeps track how many times setEventReceiver is sent */
+    void countSetEventReceiver()
+    {
+        setEventReceiverCnt++;
+    }
+
+    /* disables watchdog if running and Host is up */
+    void checkAndDisableWatchDog();
+
     /** @brief To check if the watchdog app is running
      *
      *  @return the running status of watchdog app
@@ -154,6 +193,9 @@ class Handler : public oem_platform::Handler
      *  Message for heartbeat elapsed time from Hostboot
      */
     void resetWatchDogTimer();
+
+    /** @brief To disable to the watchdog timer on host poweron completion*/
+    void disableWatchDogTimer();
 
     ~Handler() = default;
 
@@ -187,6 +229,13 @@ class Handler : public oem_platform::Handler
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
+
+    /** @brief D-Bus property changed signal match */
+    std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+
+    bool hostOff = true;
+
+    int setEventReceiverCnt = 0;
 };
 
 /** @brief Method to encode code update event msg
