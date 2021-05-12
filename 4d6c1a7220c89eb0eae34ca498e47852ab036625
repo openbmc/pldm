@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6350df0_cedf3c0e",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "We can close the o/p package file and clean up before we invoke sys.exit() ? Or probably throw from here?",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 64
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0f95db5_68d85e37",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "nit: Probably needs a 16 byte check. We could instead generate this number from the script only, no? We could take spec revision as input parameter and generate this parameter.",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 55
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ad3875d_98f824e8",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "Probably we can throw from here / cleanup the o/p package file before exiting.",
+      "range": {
+        "startLine": 207,
+        "startChar": 8,
+        "endLine": 210,
+        "endChar": 0
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1592c48_8b770d90",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "We are looking at additional descriptors (for PCI device), probably can submit as a patch on top of this",
+      "range": {
+        "startLine": 218,
+        "startChar": 8,
+        "endLine": 219,
+        "endChar": 28
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc503c97_08850c9d",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "Do we have to exit here? Can we \"continue\" instead? Say, if someone wants to have the option to \"reset\" the continue component after failure, they can simply skip keeping this flag in the metadata file.",
+      "range": {
+        "startLine": 229,
+        "startChar": 16,
+        "endLine": 229,
+        "endChar": 75
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "502903d6_9a96bfb6",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "Not required? len(applicable_components) need to be multiple of 8, no?",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 17
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac66322a_5a7e83c4",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "same here and everywhere else",
+      "range": {
+        "startLine": 265,
+        "startChar": 12,
+        "endLine": 265,
+        "endChar": 68
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbd01d51_1ba777e7",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-12T05:16:52Z",
+      "side": 1,
+      "message": "based on spec revision, we will have to support downstream device identification are also, no ?",
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
