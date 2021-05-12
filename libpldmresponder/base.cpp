@@ -227,6 +227,13 @@ void Handler::_processSetEventReceiver(
         std::cerr << "Failed to send the setEventReceiver request"
                   << "\n";
     }
+#ifdef OEM_IBM
+    if (oemPlatformHandler)
+    {
+        oemPlatformHandler->countSetEventReceiver();
+        oemPlatformHandler->checkAndDisableWatchDog();
+    }
+#endif
 }
 
 Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
