@@ -22,6 +22,30 @@
       "revId": "de7a5aeb91fbb26c9fb45d99614968178b2f1325",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7aa6486_b93d77c4",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001046
+      },
+      "writtenOn": "2021-05-12T15:01:04Z",
+      "side": 1,
+      "message": "I have another commit adding to this file, I will add more detail in the helpText there.",
+      "parentUuid": "910d1fb9_0cf97b31",
+      "range": {
+        "startLine": 41,
+        "startChar": 1,
+        "endLine": 42,
+        "endChar": 29
+      },
+      "revId": "de7a5aeb91fbb26c9fb45d99614968178b2f1325",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
