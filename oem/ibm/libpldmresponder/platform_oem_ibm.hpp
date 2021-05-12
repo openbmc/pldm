@@ -47,10 +47,14 @@ class Watchdog
      */
     void resetWatchDogTimer();
 
+    /** @brief To disable to the watchdog timer on host poweron completion*/
+    void disableWatchDogTimer();
+
   private:
     /** @brief flag to check if the SetEventReceiver is already sent to host */
     bool isSetEventReceiverSent = false;
 };
+
 } // namespace platform
 
 } // namespace responder
