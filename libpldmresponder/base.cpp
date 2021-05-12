@@ -222,6 +222,13 @@ void Handler::_processSetEventReceiver(
         std::cerr << "decode_set_event_receiver_resp error, rc = " << rc
                   << ",cc=" << (int)completionCode << std::endl;
     }
+#ifdef OEM_IBM
+    if (oemPlatformHandler)
+    {
+        oemPlatformHandler->countSetEventReceiver();
+        oemPlatformHandler->checkAndDisableWatchDog();
+    }
+#endif
 }
 
 Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
