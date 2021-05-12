@@ -149,7 +149,7 @@ bool Watchdog::checkIfWatchDogRunning()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed to check is Watchdog is running"
+        std::cerr << "Failed to check if Watchdog is running"
                   << "ERROR=" << e.what() << std::endl;
         return PLDM_ERROR;
     }
@@ -202,6 +202,36 @@ void Watchdog::extendWatchDogTimer()
         if (wdStatus)
         {
             pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed To extend watchdog timer"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
+void Watchdog::disableWatchDogTimer()
+{
+    auto val = false;
+    pldm::utils::PropertyValue value = static_cast<bool>(val);
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = "/xyz/openbmc_project/watchdog/host0";
+    dbusMapping.interface = "xyz.openbmc_project.State.Watchdog";
+    dbusMapping.propertyName = "Enabled";
+    dbusMapping.propertyType = "bool";
+
+    bool wdStatus = checkIfWatchDogRunning();
+    try
+    {
+        if (wdStatus)
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+        else
+        {
+            std::cout << "Watchdog is not running\n";
         }
     }
     catch (const std::exception& e)
