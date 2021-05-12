@@ -10,6 +10,10 @@
 
 #include <fstream>
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldm/platform_oem_ibm.h"
+#endif
+
 namespace pldm
 {
 
@@ -87,6 +91,9 @@ HostPDRHandler::HostPDRHandler(
                     pldm_entity_association_tree_copy_root(bmcEntityTree,
                                                            entityTree);
                     this->sensorMap.clear();
+#ifdef OEM_IBM
+                    isHostOff = true;
+#endif
                 }
             }
         });

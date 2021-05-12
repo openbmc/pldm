@@ -2,6 +2,8 @@
 #include "platform.h"
 #include <string.h>
 
+bool isHostOff = false;
+
 int encode_bios_attribute_update_event_req(uint8_t instance_id,
 					   uint8_t format_version, uint8_t tid,
 					   uint8_t num_handles,

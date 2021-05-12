@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "base.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -48,6 +49,9 @@ int encode_bios_attribute_update_event_req(uint8_t instance_id,
 					   const uint8_t *list_of_handles,
 					   size_t payload_length,
 					   struct pldm_msg *msg);
+
+/** @Flag to indicate the host state */
+extern bool isHostOff;
 
 #ifdef __cplusplus
 }
