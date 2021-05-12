@@ -30,6 +30,10 @@ int sendBiosAttributeUpdateEvent(int fd, uint8_t eid,
 class Watchdog
 {
   public:
+    /** @brief To check if setEventReceiver is already sent to host.
+     */
+    void checkIsSetEventReceiverSent();
+
     /** @brief To check if the watchdog app is running
      *
      *  @return the running status of watchdog app
@@ -40,6 +44,9 @@ class Watchdog
      *  Message for heartbeat elapsed time from Hostboot
      */
     void resetWatchDogTimer();
+
+    /** @brief To disable to the watchdog timer on host poweron completion*/
+    void disableWatchDogTimer();
 
   private:
     /** @brief flag to check if the SetEventReceiver is already sent to host */
