@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "23b91070_e3544355",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-13T03:57:45Z",
+      "side": 1,
+      "message": "Need a better commit message than just a one liner.\n\nPlease also mention the spec number/table number e.t.c for reference.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "04ae0549b4bd23a06557ed37fae2ac5f99f14a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71dd3b06_b258c9c5",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1555,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-13T03:57:45Z",
+      "side": 1,
+      "message": "Encode setEventReceiver response message.",
+      "range": {
+        "startLine": 1555,
+        "startChar": 11,
+        "endLine": 1555,
+        "endChar": 62
+      },
+      "revId": "04ae0549b4bd23a06557ed37fae2ac5f99f14a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d09b339_63ee6ba1",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-13T03:57:45Z",
+      "side": 1,
+      "message": "Argument to capture the Message",
+      "range": {
+        "startLine": 1559,
+        "startChar": 22,
+        "endLine": 1559,
+        "endChar": 53
+      },
+      "revId": "04ae0549b4bd23a06557ed37fae2ac5f99f14a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
