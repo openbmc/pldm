@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "87c01acd_729b57d1",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-05-13T06:23:01Z",
+      "side": 1,
+      "message": "Can we add all the cable cards please ?. If a cable card is not plugged in, you won\u0027t get D-Bus populated. But that does not mean the D-Bus support is not in.\n\nhttps://github.com/openbmc/openbmc/blob/master/meta-ibm/recipes-phosphor/inventory/phosphor-inventory-manager/p10bmc/ibm%2Crainier-2u_associations.json\n\nHas all the Inventory and LED associations",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3d43886_22c4752f",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-05-13T06:23:01Z",
+      "side": 1,
+      "message": "Please add all the disk backplanes and the associated nvme. Again, those D-Bus won\u0027t be populated unless they are plugged in the system.",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfa7ebc4_25d1cca5",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-05-13T06:23:01Z",
+      "side": 1,
+      "message": "Is this for Rainier_2U or Rainier_4U ?.. Rainier_2U does not have powersupply2 and powersupply3.  But due to some error, they are appearing in 2U. They are only for Rainier_4U.",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da94cd57_f492c268",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-05-13T06:23:01Z",
+      "side": 1,
+      "message": "hmm.. This is not related to LED. It should not be in this commit",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a84a7be7_3a404324",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-05-13T06:23:01Z",
+      "side": 1,
+      "message": "why there are so many changes ?.. this diff is very difficult to review. Please could you fix it ?",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "035b46ff_6f8604b4",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-05-13T06:23:01Z",
+      "side": 1,
+      "message": "All the comments given for effecters apply to sensors as-well",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
