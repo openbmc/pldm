@@ -1,4 +1,4 @@
-# To Build
+#To Build
 Need `meson` and `ninja`. Alternatively, source an OpenBMC ARM/x86 SDK.
 ```
 meson build && ninja -C build
@@ -11,7 +11,7 @@ meson -Doe-sdk=enabled -Dtests=enabled build
 ninja -C build test
 ```
 
-# Code Organization
+#Code Organization
 At a high-level, code in this repository belongs to one of the following three
 components.
 
@@ -90,11 +90,16 @@ The `pldm/meson.build` and the corresponding source file(s) will need to
 incorporate the logic of adding its mapped compiler flag to allow conditional
 compilation of the code.
 
+## pldmtool
+
+For more info on pldmtool please refer to plmdtool/README.md.
+
+
 ## TODO
 Consider hosting libpldm above in a repo of its own, probably even outside the
 OpenBMC project? A separate repo would enable something like git submodule.
 
-# Flows
+#Flows
 This section documents important code flow paths.
 
 ## BMC as PLDM responder
@@ -131,7 +136,7 @@ c) Once the PLDM daemon receives a corresponding response message, it notifies
 d) The requester app has to work with the response field(s). It can make use of
    a decode_foo_resp() API to deserialize the response message.
 
-# PDR Implementation
+#PDR Implementation
 While PLDM Platform Descriptor Records (PDRs) are mostly static information,
 they can vary across platforms and systems. For this reason, platform specific
 PDR information is encoded in platform specific JSON files. JSON files must be
