@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f582581a_51f248b2",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-05-13T13:37:03Z",
+      "side": 1,
+      "message": "static inline for a member variable?",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 17
+      },
+      "revId": "b6c32fef1769b34204c4497a1fcbb8e371ed5a50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2acf8cc9_d54d7458",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-05-13T13:37:03Z",
+      "side": 1,
+      "message": "why not use/modify pldm_entity_association_tree_destroy?",
+      "revId": "b6c32fef1769b34204c4497a1fcbb8e371ed5a50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
