@@ -333,6 +333,13 @@ static inline uint16_t next_container_id(pldm_entity_association_tree *tree)
 	return ++tree->last_used_container_id;
 }
 
+pldm_entity pldm_entity_extract(pldm_entity_node *node)
+{
+	assert(node != NULL);
+
+	return node->entity;
+}
+
 pldm_entity_association_tree *pldm_entity_association_tree_init()
 {
 	pldm_entity_association_tree *tree =
