@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "75e89e6e_1e192bb5",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-13T11:56:00Z",
+      "side": 1,
+      "message": "If here loop twice, the previous data will be overwritten. Is this logic correct?",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 56
+      },
+      "revId": "88b073cd689f4c29c2a873dde0c89a9c712009b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77934827_6e4b014d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-13T11:56:00Z",
+      "side": 1,
+      "message": "Do you need to check the return value?\nWhat happens if the return value is equal to false?",
+      "range": {
+        "startLine": 251,
+        "startChar": 4,
+        "endLine": 251,
+        "endChar": 24
+      },
+      "revId": "88b073cd689f4c29c2a873dde0c89a9c712009b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad9df721_f308e190",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-13T11:56:00Z",
+      "side": 1,
+      "message": "return info.valid \u003d\u003d 1 ? true : false;",
+      "range": {
+        "startLine": 444,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 5
+      },
+      "revId": "88b073cd689f4c29c2a873dde0c89a9c712009b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
