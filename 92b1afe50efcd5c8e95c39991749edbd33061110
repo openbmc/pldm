@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8e65701d_156a067b",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-05-13T06:03:23Z",
+      "side": 1,
+      "message": "hmm.. where is the Entity path for this and all others below ?.. Entity path must be the fan D-Bus object.",
+      "revId": "92b1afe50efcd5c8e95c39991749edbd33061110",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
