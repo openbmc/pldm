@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3dd77c23_fc54d91c",
+        "filename": "configurations/host/host_frus.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-13T03:42:21Z",
+      "side": 1,
+      "message": "I am a worried here:\nIf we have two core, one core0 belongs to cpu0, and the other core1 belongs to cpu1,\nIf we want to get the parent of the core0, What will happen here?\n\n```\n{\n  \"entity\" :\n  {\n    \"entity_type\": 32903,\n    \"entity_instance\": 1\n  }\n  \"parent\":\n  {\n    \"entity_type\": 64,\n    \"entity_instance\" : 1\n  }\n},\n{\n  \"entity\" :\n  {\n    \"entity_type\": 32903,\n    \"entity_instance\": 2\n  }\n  \"parent\":\n  {\n    \"entity_type\": 64,\n    \"entity_instance\" : 2\n  }\n}\n```",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 10
+      },
+      "revId": "9ab22cae286f72cd4836661aca03cfa5dc96794d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
