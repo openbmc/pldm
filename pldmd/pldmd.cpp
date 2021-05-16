@@ -6,6 +6,8 @@
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
 #include "invoker.hpp"
+#include "requester/handler.hpp"
+#include "requester/request.hpp"
 
 #include <err.h>
 #include <getopt.h>
@@ -26,6 +28,7 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -57,11 +60,10 @@ using namespace sdeventplus::source;
 using namespace pldm::responder;
 using namespace pldm::utils;
 
-static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
-                             Invoker& invoker, dbus_api::Requester& requester)
+static std::optional<Response>
+    processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
+                 requester::Handler<requester::Request>& handler)
 {
-
-    Response response;
     uint8_t eid = requestMsg[0];
     uint8_t type = requestMsg[1];
     pldm_header_info hdrFields{};
@@ -73,6 +75,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
     }
     else if (PLDM_RESPONSE != hdrFields.msg_type)
     {
+        Response response;
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
                             sizeof(eid) - sizeof(type);
@@ -98,12 +101,17 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
             }
             response.insert(response.end(), completion_code);
         }
+        return response;
     }
-    else
+    else if (PLDM_RESPONSE == hdrFields.msg_type)
     {
-        requester.markFree(eid, hdr->instance_id);
+        auto response = reinterpret_cast<const pldm_msg*>(hdr);
+        size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
+                             sizeof(eid) - sizeof(type);
+        handler.handleResponse(eid, hdrFields.instance, hdrFields.pldm_type,
+                               hdrFields.command, response, responseLen);
     }
-    return response;
+    return std::nullopt;
 }
 
 void optionUsage(void)
@@ -158,6 +166,8 @@ int main(int argc, char** argv)
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
     Invoker invoker{};
+    requester::Handler<requester::Request> reqHandler(sockfd, event,
+                                                      dbusImplReq);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
@@ -181,7 +191,8 @@ int main(int argc, char** argv)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), bmcEntityTree.get(), dbusImplReq, verbose);
+            entityTree.get(), bmcEntityTree.get(), dbusImplReq, reqHandler,
+            verbose);
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
@@ -255,8 +266,8 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    auto callback = [verbose, &invoker, &dbusImplReq](IO& io, int fd,
-                                                      uint32_t revents) {
+    auto callback = [verbose, &invoker, &reqHandler](IO& io, int fd,
+                                                     uint32_t revents) {
         if (!(revents & EPOLLIN))
         {
             return;
@@ -308,20 +319,20 @@ int main(int argc, char** argv)
                 {
                     // process message and send response
                     auto response =
-                        processRxMsg(requestMsg, invoker, dbusImplReq);
-                    if (!response.empty())
+                        processRxMsg(requestMsg, invoker, reqHandler);
+                    if (response.has_value())
                     {
                         if (verbose)
                         {
                             std::cout << "Sending Msg" << std::endl;
-                            printBuffer(response, verbose);
+                            printBuffer(*response, verbose);
                         }
 
                         iov[0].iov_base = &requestMsg[0];
                         iov[0].iov_len =
                             sizeof(requestMsg[0]) + sizeof(requestMsg[1]);
-                        iov[1].iov_base = response.data();
-                        iov[1].iov_len = response.size();
+                        iov[1].iov_base = (*response).data();
+                        iov[1].iov_len = (*response).size();
 
                         msg.msg_iov = iov;
                         msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);

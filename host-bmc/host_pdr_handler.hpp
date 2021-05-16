@@ -8,6 +8,7 @@
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
+#include "requester/handler.hpp"
 
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
@@ -82,15 +83,18 @@ class HostPDRHandler
      *  @param[in] event - reference of main event loop of pldmd
      *  @param[in] repo - pointer to BMC's primary PDR repo
      *  @param[in] eventsJsonDir - directory path which has the config JSONs
-     *  @param[in] tree - pointer to BMC's entity association tree
+     *  @param[in] entityTree - Pointer to BMC and Host entity association tree
+     *  @param[in] bmcEntityTree - pointer to BMC's entity association tree
      *  @param[in] requester - reference to Requester object
+     *  @param[in] handler - PLDM request handler
      */
-    explicit HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
-                            sdeventplus::Event& event, pldm_pdr* repo,
-                            const std::string& eventsJsonsDir,
-                            pldm_entity_association_tree* entityTree,
-                            pldm_entity_association_tree* bmcEntityTree,
-                            Requester& requester, bool verbose = false);
+    explicit HostPDRHandler(
+        int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event,
+        pldm_pdr* repo, const std::string& eventsJsonsDir,
+        pldm_entity_association_tree* entityTree,
+        pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+        pldm::requester::Handler<pldm::requester::Request>& handler,
+        bool verbose = false);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -184,6 +188,10 @@ class HostPDRHandler
      *  obtain PLDM instance id.
      */
     Requester& requester;
+
+    /** @brief PLDM request handler */
+    pldm::requester::Handler<pldm::requester::Request>& handler;
+
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> pdrFetchEvent;
     /** @brief list of PDR record handles pointing to host's PDRs */
