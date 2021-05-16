@@ -21,16 +21,16 @@ constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
 const std::vector<Json> emptyJsonList{};
 
-HostPDRHandler::HostPDRHandler(int mctp_fd, uint8_t mctp_eid,
-                               sdeventplus::Event& event, pldm_pdr* repo,
-                               const std::string& eventsJsonsDir,
-                               pldm_entity_association_tree* entityTree,
-                               pldm_entity_association_tree* bmcEntityTree,
-                               Requester& requester, bool verbose) :
+HostPDRHandler::HostPDRHandler(
+    int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
+    const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
+    pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+    pldm::requester::Handler<pldm::requester::Request>& handler, bool verbose) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    bmcEntityTree(bmcEntityTree), requester(requester), verbose(verbose)
+    bmcEntityTree(bmcEntityTree), requester(requester), handler(handler),
+    verbose(verbose)
 {
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
@@ -382,32 +382,39 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         return;
     }
 
-    // Send up the event to host.
-    uint8_t* responseMsg = nullptr;
-    size_t responseMsgSize{};
-    auto requesterRc =
-        pldm_send_recv(mctp_eid, mctp_fd, requestMsg.data(), requestMsg.size(),
-                       &responseMsg, &responseMsgSize);
-    requester.markFree(mctp_eid, instanceId);
-    if (requesterRc != PLDM_REQUESTER_SUCCESS)
+    auto platformEventMessageResponseHandler = [](mctp_eid_t /*eid*/,
+                                                  const pldm_msg* response,
+                                                  size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            std::cerr << "Failed to receive response for the PDR repository "
+                         "changed event"
+                      << "\n";
+            return;
+        }
+
+        uint8_t completionCode{};
+        uint8_t status{};
+        auto responsePtr = reinterpret_cast<const struct pldm_msg*>(response);
+        auto rc = decode_platform_event_message_resp(
+            responsePtr, respMsgLen - sizeof(pldm_msg_hdr), &completionCode,
+            &status);
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to decode_platform_event_message_resp: "
+                      << "rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << std::endl;
+        }
+    };
+
+    rc = handler.registerRequest(
+        mctp_eid, instanceId, PLDM_PLATFORM, PLDM_PDR_REPOSITORY_CHG_EVENT,
+        std::move(requestMsg), std::move(platformEventMessageResponseHandler));
+    if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Failed to send msg to report pdrs, rc = " << requesterRc
-                  << std::endl;
-        return;
-    }
-    uint8_t completionCode{};
-    uint8_t status{};
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg);
-    rc = decode_platform_event_message_resp(
-        responsePtr, responseMsgSize - sizeof(pldm_msg_hdr), &completionCode,
-        &status);
-    free(responseMsg);
-    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
-    {
-        std::cerr << "Failed to decode_platform_event_message_resp: "
-                  << "rc=" << rc
-                  << ", cc=" << static_cast<unsigned>(completionCode)
-                  << std::endl;
+        std::cerr << "Failed to send the PDR repository changed event request"
+                  << "\n";
     }
 }
 

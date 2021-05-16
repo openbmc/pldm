@@ -47,6 +47,9 @@ if get_option('oem-ibm').enabled()
   add_project_arguments('-DOEM_IBM', language : 'cpp')
 endif
 conf_data.set('PLDM_VERBOSITY',get_option('verbosity'))
+conf_data.set('NUMBER_OF_REQUEST_RETRIES', get_option('number-of-request-retries'))
+conf_data.set('INSTANCE_ID_EXPIRATION_INTERVAL',get_option('instance-id-expiration-interval'))
+conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
 configure_file(output: 'config.h',
   configuration: conf_data
 )
@@ -85,6 +88,17 @@ else
   CLI11_dep = dependency(
     'CLI11',
     fallback: [ 'CLI11', 'CLI11_dep' ],
+  )
+endif
+
+if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
+  function2_dep = declare_dependency()
+else
+  subproject('function2')
+  function2_dep = declare_dependency(
+    include_directories: [
+      'subprojects/function2/include/function2'
+    ]
   )
 endif
 
@@ -149,6 +163,7 @@ libpldmutils = declare_dependency(
   link_with: libpldmutils)
 
 deps = [
+  function2_dep,
   libpldm_dep,
   libpldmutils,
   nlohmann_json,
@@ -213,6 +228,7 @@ endif
 if get_option('tests').enabled()
   subdir('common/test')
   subdir('host-bmc/test')
+  subdir('requester/test')
   subdir('test')
 endif
 
