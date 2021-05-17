@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2fa5106_3b1ca65d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:47:03Z",
+      "side": 1,
+      "message": "pldm:oem_ibm",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "342c9795c7fac37a35fff2a3754635b7e26d5bab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85bf4c44_b2c12a6f",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:47:03Z",
+      "side": 1,
+      "message": "Can we name this as a const expr instead of magic number ?(say HBterminusHandle )",
+      "range": {
+        "startLine": 316,
+        "startChar": 19,
+        "endLine": 316,
+        "endChar": 20
+      },
+      "revId": "342c9795c7fac37a35fff2a3754635b7e26d5bab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "561e87c0_a8e6f5b7",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:47:03Z",
+      "side": 1,
+      "message": "platform event message",
+      "range": {
+        "startLine": 45,
+        "startChar": 72,
+        "endLine": 45,
+        "endChar": 77
+      },
+      "revId": "342c9795c7fac37a35fff2a3754635b7e26d5bab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
