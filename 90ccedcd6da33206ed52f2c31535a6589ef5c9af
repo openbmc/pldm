@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1239720b_b0604b75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:43:07Z",
+      "side": 1,
+      "message": "pldm:oem_ibm",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "90ccedcd6da33206ed52f2c31535a6589ef5c9af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e83bcac_9d5ebfca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:43:07Z",
+      "side": 1,
+      "message": "the change",
+      "range": {
+        "startLine": 9,
+        "startChar": 17,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "90ccedcd6da33206ed52f2c31535a6589ef5c9af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66b78069_7bb22668",
+        "filename": "common/utils.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:43:07Z",
+      "side": 1,
+      "message": "no change in this file, can you put back the newline?",
+      "revId": "90ccedcd6da33206ed52f2c31535a6589ef5c9af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38a20c8f_36801fa1",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:43:07Z",
+      "side": 1,
+      "message": "can you put back the newline?",
+      "revId": "90ccedcd6da33206ed52f2c31535a6589ef5c9af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdf0d5f2_ee3fe4d0",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:43:07Z",
+      "side": 1,
+      "message": "allignment",
+      "revId": "90ccedcd6da33206ed52f2c31535a6589ef5c9af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
