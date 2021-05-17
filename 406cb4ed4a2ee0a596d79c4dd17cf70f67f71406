@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "750b0f2d_764e99a9",
+        "filename": "oem/ibm/libpldmresponder/file_table.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-05-17T15:41:31Z",
+      "side": 1,
+      "message": "Would it be more efficient to check each substring to see if it exists here, instead of saving all the paths then traversing through the vector contents?",
+      "revId": "406cb4ed4a2ee0a596d79c4dd17cf70f67f71406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
