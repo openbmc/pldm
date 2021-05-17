@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9427b4a0_ebe9e31d",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-17T14:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87c01acd_729b57d1",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e3d43886_22c4752f",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "d08e5135_622b7d98",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-17T14:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3d43886_22c4752f",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cfa7ebc4_25d1cca5",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2021-05-13T06:23:01Z",
       "side": 1,
       "message": "Is this for Rainier_2U or Rainier_4U ?.. Rainier_2U does not have powersupply2 and powersupply3.  But due to some error, they are appearing in 2U. They are only for Rainier_4U.",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97e4f28a_63426430",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-17T14:05:48Z",
+      "side": 1,
+      "message": "Haa I could see that in one system while testing. So removing powersupply2 and powersupply3. Yes this is based on 2U configuration.",
+      "parentUuid": "cfa7ebc4_25d1cca5",
       "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "2a651f07_0c1bf4cb",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-17T14:05:48Z",
+      "side": 1,
+      "message": "Yea this is not newly added. This was coming in between the led paths so I moved out. I wanted to club together the led only changes so that it will be easier to maintain.",
+      "parentUuid": "da94cd57_f492c268",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a84a7be7_3a404324",
         "filename": "configurations/pdr/4.json",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2021-05-13T06:23:01Z",
       "side": 1,
       "message": "why there are so many changes ?.. this diff is very difficult to review. Please could you fix it ?",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4eab358c_e00f5bc0",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-17T14:05:48Z",
+      "side": 1,
+      "message": "Sorry for the inconvenience. As I mentioned I just re-clubbed the led changes as it was in a zig-zag manner before. From this on wards it will be easier to add/delete.",
+      "parentUuid": "a84a7be7_3a404324",
       "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -101,6 +191,24 @@
       "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d902b7b_3f0e501a",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-17T14:05:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "035b46ff_6f8604b4",
+      "revId": "8a506def6c1071e96d14cdeee62a0e41715ca523",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
