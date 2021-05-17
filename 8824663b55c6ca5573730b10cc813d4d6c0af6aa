@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ada03df7_c7ff391b",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-05-17T15:38:32Z",
+      "side": 1,
+      "message": "The plan is for the BMC to dynamically create this bios attribute string depending on system type. I\u0027m not very knowledgable on bios attributes, is this change needed to initialize a default value or perhaps all bios attributes need to be defined in this file, or is this change just an example of how the dynamic attribute should be built?",
+      "revId": "8824663b55c6ca5573730b10cc813d4d6c0af6aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
