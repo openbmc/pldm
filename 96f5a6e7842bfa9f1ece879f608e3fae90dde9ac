@@ -209,6 +209,30 @@
     },
     {
       "key": {
+        "uuid": "05b3b8c0_fa7bea26",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-05-17T11:31:35Z",
+      "side": 1,
+      "message": "+1, that will help to merge this quicker.",
+      "parentUuid": "423cbe31_3c4da23f",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eaab1330_fceccd8b",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 21
