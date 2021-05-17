@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d5e3a625_ccb0bdec",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-17T10:36:43Z",
+      "side": 1,
+      "message": "instead of sending the objects, why not send the intfMap directly ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 72,
+        "endLine": 21,
+        "endChar": 79
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea63179a_ea4bcf16",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-17T10:36:43Z",
+      "side": 1,
+      "message": "guess instead of vector , using stack would be better right ?\n\nthen you dont need a reverse iterator, as it honors last in first out",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4727938b_f529e67a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-17T10:36:43Z",
+      "side": 1,
+      "message": "this can be ?\n\nobj \u003d path;\nwhile(obj!\u003droot)\n{\n  tmpObjPaths.push_back(obj);\n  obj \u003d pldm::utils::findParent(obj);\n}",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 5
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a221637e_5f5c364b",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-17T10:36:43Z",
+      "side": 1,
+      "message": "This is a limitation of vector, why not use stack  or  use reverse iterator with range based for loop is better ?",
+      "range": {
+        "startLine": 76,
+        "startChar": 3,
+        "endLine": 77,
+        "endChar": 23
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68414f93_4066417a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-17T10:36:43Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 97,
+        "startChar": 17,
+        "endLine": 97,
+        "endChar": 22
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
