@@ -224,6 +224,52 @@
     },
     {
       "key": {
+        "uuid": "4c0811f0_a891bbcc",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:37:03Z",
+      "side": 1,
+      "message": "and",
+      "range": {
+        "startLine": 4,
+        "startChar": 70,
+        "endLine": 4,
+        "endChar": 71
+      },
+      "revId": "dbf67764e290098607c70aa1cc9c7ef7ede66432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65752fc0_9341f2c2",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:37:03Z",
+      "side": 1,
+      "message": "displays",
+      "range": {
+        "startLine": 4,
+        "startChar": 41,
+        "endLine": 4,
+        "endChar": 48
+      },
+      "revId": "dbf67764e290098607c70aa1cc9c7ef7ede66432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "014ed178_e7c65a85",
         "filename": "pldmtool/README.md",
         "patchSetId": 1
@@ -378,6 +424,29 @@
         "startChar": 0,
         "endLine": 17,
         "endChar": 13
+      },
+      "revId": "dbf67764e290098607c70aa1cc9c7ef7ede66432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6503430d_ded7ce39",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:37:03Z",
+      "side": 1,
+      "message": "respective to the PLDM type or with respect to the PLDM type",
+      "range": {
+        "startLine": 17,
+        "startChar": 41,
+        "endLine": 17,
+        "endChar": 70
       },
       "revId": "dbf67764e290098607c70aa1cc9c7ef7ede66432",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
@@ -678,6 +747,29 @@
         "startChar": 59,
         "endLine": 105,
         "endChar": 71
+      },
+      "revId": "dbf67764e290098607c70aa1cc9c7ef7ede66432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dc50ab6_445aa533",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-17T06:37:03Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 106,
+        "startChar": 39,
+        "endLine": 106,
+        "endChar": 51
       },
       "revId": "dbf67764e290098607c70aa1cc9c7ef7ede66432",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
