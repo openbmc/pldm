@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c2bdabb6_2fed44fd",
+        "filename": "host-bmc/host_condition.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:56:34Z",
+      "side": 1,
+      "message": "Not needed",
+      "revId": "7081b25f6b7c705e3d6943b73abc7b817236d46e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7dce181_d9b5ab75",
+        "filename": "host-bmc/host_condition.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:56:34Z",
+      "side": 1,
+      "message": "Can be removed",
+      "revId": "7081b25f6b7c705e3d6943b73abc7b817236d46e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "906cb06d_d989bb1f",
+        "filename": "host-bmc/host_condition.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:56:34Z",
+      "side": 1,
+      "message": "I don\u0027t think this ended up being needed, or the one above?",
+      "revId": "7081b25f6b7c705e3d6943b73abc7b817236d46e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87b0aef5_53cde1e8",
+        "filename": "host-bmc/host_condition.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:56:34Z",
+      "side": 1,
+      "message": "I don\u0027t think this is needed",
+      "revId": "7081b25f6b7c705e3d6943b73abc7b817236d46e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
