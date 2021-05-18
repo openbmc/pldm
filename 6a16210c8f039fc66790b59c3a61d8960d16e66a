@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6ae6b8b_ddf41a0a",
+        "filename": "oem/ibm/libpldmresponder/file_table.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-05-18T20:35:23Z",
+      "side": 1,
+      "message": "The vector variable can be removed with this latest enhancement.",
+      "revId": "6a16210c8f039fc66790b59c3a61d8960d16e66a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
