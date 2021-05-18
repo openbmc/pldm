@@ -33,6 +33,103 @@
       "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1361bc2b_70d8d5d8",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:53:32Z",
+      "side": 1,
+      "message": "Should this be a descriptive constant? Or at least have a comment on what 9 means?",
+      "range": {
+        "startLine": 255,
+        "startChar": 69,
+        "endLine": 255,
+        "endChar": 70
+      },
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0b025fd_0c09f4c6",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:53:32Z",
+      "side": 1,
+      "message": "Should we really continue in this loop if we don\u0027t have a valid mctp_eid?",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "990b2cef_2b3eab30",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:53:32Z",
+      "side": 1,
+      "message": "General comment: There\u0027s a few error paths in this function that seem to just write a message to cerr and return or just continue. I\u0027m not sure on PLDM architecture but should we be writing some of this to phosphor-logging logs? Is there any type of recovery we should do when this hit? Like clear all PDR\u0027s to ensure we\u0027re not in some quasi state?",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "900c6585_4e4a6a44",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:53:32Z",
+      "side": 1,
+      "message": "Is there more info we can provide in these error paths so we could debug without a recreate or verbose PLDM traces enabled?",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21c87f3e_1783d263",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:53:32Z",
+      "side": 1,
+      "message": "There\u0027s that magic 9 number again 😊",
+      "range": {
+        "startLine": 333,
+        "startChar": 21,
+        "endLine": 333,
+        "endChar": 22
+      },
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
