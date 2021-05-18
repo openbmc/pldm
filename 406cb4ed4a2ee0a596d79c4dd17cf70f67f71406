@@ -34,6 +34,24 @@
       "revId": "406cb4ed4a2ee0a596d79c4dd17cf70f67f71406",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce4a9f73_88f963c7",
+        "filename": "oem/ibm/libpldmresponder/file_table.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000392
+      },
+      "writtenOn": "2021-05-18T13:44:43Z",
+      "side": 1,
+      "message": "you are right it would be cleaner",
+      "parentUuid": "04e02077_cdb31831",
+      "revId": "406cb4ed4a2ee0a596d79c4dd17cf70f67f71406",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
