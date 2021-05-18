@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "1cd2c3e0_d8d65b5e",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-18T10:19:28Z",
+      "side": 1,
+      "message": "clang-format should not work on README files. and we are not supposed to run clang-format on these files.",
+      "parentUuid": "b0576335_40eaa1a3",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 9
+      },
+      "revId": "dbf67764e290098607c70aa1cc9c7ef7ede66432",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dfdf69e4_ee3da0dc",
         "filename": "README.md",
         "patchSetId": 1
