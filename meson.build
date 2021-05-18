@@ -45,6 +45,11 @@ if get_option('oem-ibm').enabled()
   add_project_arguments('-DOEM_IBM', language : 'c')
   add_project_arguments('-DOEM_IBM', language : 'cpp')
 endif
+if get_option('libpldmresponder').enabled()
+  add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
+endif
+
+
 conf_data.set('PLDM_VERBOSITY',get_option('verbosity'))
 configure_file(output: 'config.h',
   configuration: conf_data
