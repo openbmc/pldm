@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "789cee0c_d1123081",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:40:02Z",
+      "side": 1,
+      "message": "Not really an error since we call on all paths.",
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69dd5f08_40250437",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:40:02Z",
+      "side": 1,
+      "message": "5 seconds seems like an eternity. Over in IPMI I gave the host 3 seconds and confirmed that if it was running we always had a response within 1 second.",
+      "range": {
+        "startLine": 474,
+        "startChar": 66,
+        "endLine": 474,
+        "endChar": 69
+      },
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f4e223f5_bbc444b3",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 18
@@ -19,6 +59,29 @@
     },
     {
       "key": {
+        "uuid": "8819b936_39cc8672",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:40:02Z",
+      "side": 1,
+      "message": "I think this gets removed in another commit down the line but we should just not ever add it.",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 565,
+        "endChar": 5
+      },
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "40a8b769_908d74d2",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 18
@@ -30,6 +93,23 @@
       "writtenOn": "2021-05-18T16:38:34Z",
       "side": 1,
       "message": "remove debug trace",
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f42fb8d8_4cd6b5b3",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T17:40:02Z",
+      "side": 1,
+      "message": "May be best to tie this to the verbose ouptput flag?",
       "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
