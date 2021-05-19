@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fdfd65e2_410f340c",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000928
+      },
+      "writtenOn": "2021-05-19T09:40:42Z",
+      "side": 1,
+      "message": "seems NULL check missed for newly added completion_code",
+      "range": {
+        "startLine": 88,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 2
+      },
+      "revId": "3ca622a166ee4c1790c3a99b6d6dcaf5ecd1bf87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
