@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b71454c3_5a43dcb4",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000928
+      },
+      "writtenOn": "2021-05-19T07:13:06Z",
+      "side": 1,
+      "message": "Since completion_code is not in the out parameters.. How the caller is supposed to know whether  active_comp_image_set_ver_str etc is usable or not?",
+      "range": {
+        "startLine": 102,
+        "startChar": 2,
+        "endLine": 104,
+        "endChar": 2
+      },
+      "revId": "d62512db4ff4d1ea3685457020ae09103e223563",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
