@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5710aab8_e8d43bbe",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "02780371_bb9b67ef",
+      "range": {
+        "startLine": 477,
+        "startChar": 40,
+        "endLine": 477,
+        "endChar": 42
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "120a188e_25cda317",
         "filename": "libpldm/base.h",
         "patchSetId": 21
@@ -36,6 +60,30 @@
       "writtenOn": "2021-05-10T05:51:37Z",
       "side": 1,
       "message": "type",
+      "range": {
+        "startLine": 480,
+        "startChar": 14,
+        "endLine": 480,
+        "endChar": 23
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18c56380_ef52e046",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "type can be confusing since we have msg_type",
+      "parentUuid": "120a188e_25cda317",
       "range": {
         "startLine": 480,
         "startChar": 14,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "591f459a_09e87561",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "e0f2cdda_0f520537",
+      "range": {
+        "startLine": 486,
+        "startChar": 4,
+        "endLine": 486,
+        "endChar": 22
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "03785e7b_3cbf45c6",
         "filename": "libpldm/base.h",
         "patchSetId": 21
@@ -82,6 +154,30 @@
       "writtenOn": "2021-05-10T05:51:37Z",
       "side": 1,
       "message": "What is this parameter for?\n\nIn the case of encoding a response, bare minimum you have the completion code and you already have encode_cc_only_resp.",
+      "range": {
+        "startLine": 487,
+        "startChar": 32,
+        "endLine": 487,
+        "endChar": 54
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89be0ff8_01a48c64",
+        "filename": "libpldm/base.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "encode_pldm_header() is fucntion to create header part only , cmpletion code will be addded later from the calling fucntion",
+      "parentUuid": "03785e7b_3cbf45c6",
       "range": {
         "startLine": 487,
         "startChar": 32,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "2479c562_91cba3b9",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "2cfe04df_88da865f",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 51
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "460b08c0_a5f6e553",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 21
@@ -140,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "e25fc9c7_d4d35e64",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "460b08c0_a5f6e553",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3f8af5ff_0356b478",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 21
@@ -151,6 +295,30 @@
       "writtenOn": "2021-05-10T05:51:37Z",
       "side": 1,
       "message": "pldm_encode_decode_rc",
+      "range": {
+        "startLine": 16,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "124d3d19_80f9897d",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "moved out of this patch",
+      "parentUuid": "3f8af5ff_0356b478",
       "range": {
         "startLine": 16,
         "startChar": 5,
@@ -233,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "c726892b_d068b720",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "05b3b8c0_fa7bea26",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eaab1330_fceccd8b",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 21
@@ -244,6 +436,30 @@
       "writtenOn": "2021-05-10T05:51:37Z",
       "side": 1,
       "message": "Typically @param[in] goes first followed by @param[in,out] and @param[out].",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 69
+      },
+      "revId": "96f5a6e7842bfa9f1ece879f608e3fae90dde9ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1c00993_65f30c2c",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-05-19T03:49:38Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "eaab1330_fceccd8b",
       "range": {
         "startLine": 27,
         "startChar": 0,
