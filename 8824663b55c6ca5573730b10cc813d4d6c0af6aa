@@ -16,6 +16,24 @@
       "revId": "8824663b55c6ca5573730b10cc813d4d6c0af6aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "261d7769_ac3e42d4",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-05-19T13:35:07Z",
+      "side": 1,
+      "message": "This is a default value until the BMC creates the dynamic bios attribute.",
+      "parentUuid": "ada03df7_c7ff391b",
+      "revId": "8824663b55c6ca5573730b10cc813d4d6c0af6aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
