@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "c49e14bd_59c8e84c",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-20T11:55:40Z",
+      "side": 1,
+      "message": "I do not think so.\nplease check: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/41005/18/pldmd/pldmd.cpp#157\nAnd I am sure they are the same address",
+      "parentUuid": "48b288ec_9c90a734",
+      "range": {
+        "startLine": 449,
+        "startChar": 4,
+        "endLine": 449,
+        "endChar": 52
+      },
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "789cee0c_d1123081",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 18
