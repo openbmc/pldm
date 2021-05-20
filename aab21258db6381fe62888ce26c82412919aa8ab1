@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "51ac16e2_94c90fe6",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-20T11:56:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62f9364b_c0e88860",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6a6ba829_c8612516",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 14
@@ -33,6 +51,24 @@
       "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83a12e5f_e4ec5960",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-20T11:56:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a6ba829_c8612516",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "2cf256e7_b193a84e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-20T11:56:39Z",
+      "side": 1,
+      "message": "added a comment there",
+      "parentUuid": "1361bc2b_70d8d5d8",
+      "range": {
+        "startLine": 255,
+        "startChar": 69,
+        "endLine": 255,
+        "endChar": 70
+      },
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0b025fd_0c09f4c6",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 14
@@ -70,6 +130,24 @@
       "writtenOn": "2021-05-18T17:53:32Z",
       "side": 1,
       "message": "Should we really continue in this loop if we don\u0027t have a valid mctp_eid?",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7781e6ed_994c757f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-20T11:56:39Z",
+      "side": 1,
+      "message": "if we dont get the valid TLPDR, we will use the default mctp_eid",
+      "parentUuid": "d0b025fd_0c09f4c6",
       "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -93,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "a5beee1c_77c58e04",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-20T11:56:39Z",
+      "side": 1,
+      "message": "this is generally followed in pldm that on hitting error we trace out an std::cerr and either continue or return. in few cases we are creating logs. may be here we can do that as well. I will address that in the next patchset.\n\nno recovery is there as such when we hit this path. may be we should let the Host and bmc run as much as possible. if absence of any sensore or effecter cause a performance issue then anyway the Host or bmc will be in quasi state",
+      "parentUuid": "990b2cef_2b3eab30",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "900c6585_4e4a6a44",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 14
@@ -110,6 +206,24 @@
     },
     {
       "key": {
+        "uuid": "aad85801_1f6329b9",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-20T11:56:39Z",
+      "side": 1,
+      "message": "we generally follow in pldm, that when we hit on a error we do a std::cerr and either continue or return",
+      "parentUuid": "900c6585_4e4a6a44",
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "21c87f3e_1783d263",
         "filename": "libpldm/pdr.c",
         "patchSetId": 14
@@ -121,6 +235,30 @@
       "writtenOn": "2021-05-18T17:53:32Z",
       "side": 1,
       "message": "There\u0027s that magic 9 number again 😊",
+      "range": {
+        "startLine": 333,
+        "startChar": 21,
+        "endLine": 333,
+        "endChar": 22
+      },
+      "revId": "aab21258db6381fe62888ce26c82412919aa8ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "334cf846_b727e856",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-20T11:56:39Z",
+      "side": 1,
+      "message": "added a comment there",
+      "parentUuid": "21c87f3e_1783d263",
       "range": {
         "startLine": 333,
         "startChar": 21,
