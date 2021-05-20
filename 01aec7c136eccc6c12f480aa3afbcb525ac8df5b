@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "48b288ec_9c90a734",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-20T10:50:03Z",
+      "side": 1,
+      "message": "no this is a new event created. this does not have impact on the main event loop as this one gets created and destroyed before the daemon starts running",
+      "parentUuid": "77f59d41_e60cbedf",
+      "range": {
+        "startLine": 449,
+        "startChar": 4,
+        "endLine": 449,
+        "endChar": 52
+      },
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "789cee0c_d1123081",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 18
@@ -36,6 +60,24 @@
       "writtenOn": "2021-05-18T17:40:02Z",
       "side": 1,
       "message": "Not really an error since we call on all paths.",
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77217ee6_ce1b586e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-20T10:50:03Z",
+      "side": 1,
+      "message": "Ack. will change to std::cout",
+      "parentUuid": "789cee0c_d1123081",
       "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "98e373c9_8d4e30cb",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-20T10:50:03Z",
+      "side": 1,
+      "message": "yeah i was not sure initially what time will be suitable. will change this one to 3sec as well",
+      "parentUuid": "69dd5f08_40250437",
+      "range": {
+        "startLine": 474,
+        "startChar": 66,
+        "endLine": 474,
+        "endChar": 69
+      },
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f4e223f5_bbc444b3",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 18
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "d5cb914f_d9112ebe",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-20T10:50:03Z",
+      "side": 1,
+      "message": "this code block will be removed from this commit",
+      "parentUuid": "f4e223f5_bbc444b3",
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8819b936_39cc8672",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 18
@@ -93,6 +177,30 @@
       "writtenOn": "2021-05-18T17:40:02Z",
       "side": 1,
       "message": "I think this gets removed in another commit down the line but we should just not ever add it.",
+      "range": {
+        "startLine": 545,
+        "startChar": 0,
+        "endLine": 565,
+        "endChar": 5
+      },
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7f8c9ea_94aa3163",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-20T10:50:03Z",
+      "side": 1,
+      "message": "yeah will remove this piece",
+      "parentUuid": "8819b936_39cc8672",
       "range": {
         "startLine": 545,
         "startChar": 0,
@@ -136,6 +244,42 @@
       "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96e56c70_e6aafc3f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-20T10:50:03Z",
+      "side": 1,
+      "message": "this is actually not a debug trace. we need this",
+      "parentUuid": "40a8b769_908d74d2",
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eabc7cb1_3f79a7b1",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-20T10:50:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f42fb8d8_4cd6b5b3",
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
