@@ -61,7 +61,7 @@
     },
     {
         "type" : 45,
-        "instance" : 0,
+        "instance" : 1,
         "container" : 0,
         "sensors" : [{
             "set" : {
@@ -75,8 +75,8 @@
                 "property_name": "State",
                 "property_type": "string",
                 "property_values": [
-                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink",
-                         "xyz.openbmc_project.Led.Physical.Action.Off"
+                         "xyz.openbmc_project.Led.Physical.Action.Off",
+                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink"
                 ]
              }
         }]
@@ -94,7 +94,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -111,7 +111,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -128,7 +128,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -145,7 +145,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -162,7 +162,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -179,7 +179,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -196,7 +196,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -213,7 +213,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -230,7 +230,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -247,7 +247,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -264,7 +264,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -281,7 +281,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -298,7 +298,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -315,7 +315,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -332,7 +332,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -349,7 +349,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -366,7 +366,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -383,7 +383,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -400,7 +400,551 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm0_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm1",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm1_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm2",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm2_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm3",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm3_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm4",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm4_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm5",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm5_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm6",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm6_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm7",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm7_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm8",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm8_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm9",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm9_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm10",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm10_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm11",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm11_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm12",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm12_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm13",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm13_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm14",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm14_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm15",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm15_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm16",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm16_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm17",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm17_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm18",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm18_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm19",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm19_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm20",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm20_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm21",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm21_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm22",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm22_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm23",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm23_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm24",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm24_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm25",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm25_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm26",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm26_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm27",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm27_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm28",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm28_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm29",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm29_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm30",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm30_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm31",
+        "sensors" : [{
+            "set" : {
+                "id" : 17,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/led/groups/ddimm31_identify",
+                "interface": "xyz.openbmc_project.Led.Group",
+                "property_name": "Asserted",
+                "property_type": "bool",
+                "property_values" : [false, true]
              }
         }]
     },
@@ -417,7 +961,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -434,7 +978,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -451,7 +995,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -468,7 +1012,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -485,7 +1029,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -502,7 +1046,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -519,7 +1063,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -536,7 +1080,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -553,7 +1097,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -570,7 +1114,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -587,7 +1131,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -604,7 +1148,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -621,7 +1165,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -638,7 +1182,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -655,7 +1199,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -672,7 +1216,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -689,7 +1233,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -706,7 +1250,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -723,7 +1267,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -740,7 +1284,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -757,7 +1301,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -774,7 +1318,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -791,7 +1335,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -808,7 +1352,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -825,7 +1369,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -842,7 +1386,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -859,7 +1403,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -876,7 +1420,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -893,7 +1437,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -910,7 +1454,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -927,7 +1471,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -944,7 +1488,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -961,7 +1505,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -978,7 +1522,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -995,7 +1539,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1012,7 +1556,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1029,7 +1573,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1046,7 +1590,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1063,7 +1607,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1080,7 +1624,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1097,7 +1641,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1114,7 +1658,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1131,7 +1675,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1148,7 +1692,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1165,7 +1709,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1182,7 +1726,7 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
@@ -1199,13 +1743,13 @@
                 "interface": "xyz.openbmc_project.Led.Group",
                 "property_name": "Asserted",
                 "property_type": "bool",
-                "property_values" : [true, false]
+                "property_values" : [false, true]
              }
         }]
     },
     {
         "type" : 45,
-        "instance" : 0,
+        "instance" : 1,
         "container" : 0,
         "sensors" : [{
             "set" : {
@@ -1219,8 +1763,8 @@
                 "property_name": "State",
                 "property_type": "string",
                 "property_values": [
-                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink",
-                         "xyz.openbmc_project.Led.Physical.Action.Off"
+                         "xyz.openbmc_project.Led.Physical.Action.Off",
+                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink"
                 ]
              }
         }]
