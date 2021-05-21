@@ -3,34 +3,6 @@
    {
     "pdrType" : 11,
     "entries" : [{
-        "type" : 33,
-        "instance" : 0,
-        "container" : 0,
-        "effecters" : [{
-            "set" : {
-                "id" : 196,
-                "size" : 4,
-                "states" : [1,2,3,5,9,21,22,26]
-            },
-            "dbus" : {
-                "path": "/xyz/openbmc_project/state/host0",
-                "interface": "xyz.openbmc_project.State.Boot.Progress",
-                "property_name": "BootProgress",
-                "property_type": "string",
-                "property_values": [
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.Unspecified",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.SystemInitComplete",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.MemoryInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.SecondaryProcInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.PCIInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.OSRunning",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.BusInit",
-                         "xyz.openbmc_project.State.Boot.Progress.ProgressStages.PrimaryProcInit"
-                ]
-             }
-        }]
-    },
-    {
         "type" : 45,
         "instance" : 1,
         "container" : 0,
