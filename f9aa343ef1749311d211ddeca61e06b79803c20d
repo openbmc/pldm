@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05fa37ed_2c27a278",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-21T02:07:11Z",
+      "side": 1,
+      "message": "+1",
+      "range": {
+        "startLine": 35,
+        "startChar": 21,
+        "endLine": 35,
+        "endChar": 22
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d442044d_aca42e16",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-21T02:07:11Z",
+      "side": 1,
+      "message": "Nit:\nI think we can remove this attribute in the future.\nBecause it generated via pdr.c\nhttps://github.com/openbmc/pldm/blob/master/libpldm/pdr.c#L329",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b29c9c47_13009dd5",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-21T02:07:11Z",
+      "side": 1,
+      "message": "What happens if the `entity_path` is wrong?\nI think we need to add the `type` and `instance` attributes, and we need to generate pldm entity via `type` \u0026 `instance` once the `entity_path` is wrong.\nsee: https://github.com/openbmc/pldm/blob/master/libpldmresponder/pdr_state_sensor.hpp#L77-L103",
+      "range": {
+        "startLine": 376,
+        "startChar": 8,
+        "endLine": 376,
+        "endChar": 90
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2dfc68eb_c9ba3c16",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-21T02:07:11Z",
+      "side": 1,
+      "message": "I am a little confused.\nby DSP0249_1.1.0 Table 1:\n\n```\n17 Identify State For entities that have an identify function, such as LEDs.\n1 – Identify State Unasserted - The entity’s identify function is not asserted.\n2 – Identify State Asserted      - The entity’s identify function is asserted\n```\n\nSo, My understanding is 1--\u003efalse, 2--\u003etrue\nPlease correct me if I am wrong, Thanks",
+      "range": {
+        "startLine": 388,
+        "startChar": 37,
+        "endLine": 388,
+        "endChar": 48
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
