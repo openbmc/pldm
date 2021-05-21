@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec33da8b_7fe4fac6",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-21T15:05:36Z",
+      "side": 1,
+      "message": "Sorry, I think I\u0027m being a bit dense here but this still doesn\u0027t really click for me. The first line implies we have a valid TLPDR but then we check if we have an invalid one? I still don\u0027t know what the \"9\" means.",
+      "revId": "539a89428f7df43dc56c0d70ead40d806ade9657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "645bb64b_26b9860d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-21T15:05:36Z",
+      "side": 1,
+      "message": "I\u0027ll let the maintainers weigh in on this one but my experience has been InternalFailure errors are about as useless as no error. https://github.com/openbmc/docs/blob/master/anti-patterns.md#handling-unexpected-error-codes-and-exceptions encourages more specific errors or just core dumping to try and debug the failure.",
+      "revId": "539a89428f7df43dc56c0d70ead40d806ade9657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
