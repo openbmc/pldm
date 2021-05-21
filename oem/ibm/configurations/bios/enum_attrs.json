@@ -13,30 +13,6 @@
          "displayName" : "pvm_fw_boot_side"
       },
       {
-         "attribute_name":"pvm_inband_code_update",
-         "possible_values":[
-            "Allowed",
-            "Not Allowed"
-         ],
-         "default_values":[
-            "Allowed"
-         ],
-         "helpText" : "pvm_inband_code_update",
-         "displayName" : "pvm_inband_code_update"
-      },
-      {
-         "attribute_name":"pvm_surveillance",
-         "possible_values":[
-            "Disabled",
-            "Enabled"
-         ],
-         "default_values":[
-            "Enabled"
-         ],
-         "helpText" : "pvm_surveillance",
-         "displayName" : "pvm_surveillance"
-      },
-      {
          "attribute_name":"pvm_pcie_error_inject",
          "possible_values":[
             "Disabled",
