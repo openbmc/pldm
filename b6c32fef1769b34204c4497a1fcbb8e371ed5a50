@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7fb2eb1e_ac741823",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-22T15:27:05Z",
+      "side": 1,
+      "message": "removed this. but just to make myself aware, is it not recommended to have a member variable static?",
+      "parentUuid": "f582581a_51f248b2",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 17
+      },
+      "revId": "b6c32fef1769b34204c4497a1fcbb8e371ed5a50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2acf8cc9_d54d7458",
         "filename": "libpldm/pdr.c",
         "patchSetId": 4
@@ -39,6 +63,24 @@
       "revId": "b6c32fef1769b34204c4497a1fcbb8e371ed5a50",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e462e57b_00312ba6",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-22T15:27:05Z",
+      "side": 1,
+      "message": "this api destroys the tree itself which is used in pldmd.cpp while declaring the tree. we need to keep the tree valid but make that an empty tree",
+      "parentUuid": "2acf8cc9_d54d7458",
+      "revId": "b6c32fef1769b34204c4497a1fcbb8e371ed5a50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }

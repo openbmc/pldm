@@ -191,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "4741b1f4_050c2739",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-22T15:27:05Z",
+      "side": 1,
+      "message": "the entity association tree (unique pointer) is created at pldmd.cpp and the reference of the tree is passed here and in fru table. the tree will be deleted automatically when the daemon dies.\nhere had to make the content of the tree empty while the tree pointer still being valid\n\ntypedef struct pldm_entity_association_tree {\n    pldm_entity_node *root;  \u003c\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dthe content is destroyed\n    uint16_t last_used_container_id;\n} pldm_entity_association_tree; \u003c\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dthe tree remains valid as it should be",
+      "parentUuid": "10742bbb_91b63aa6",
+      "range": {
+        "startLine": 86,
+        "startChar": 20,
+        "endLine": 86,
+        "endChar": 74
+      },
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e52eb10_f64f9e46",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 2
@@ -283,6 +307,30 @@
       "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2cd6f72_90978c6b",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-22T15:27:05Z",
+      "side": 1,
+      "message": "changed this. bmc entity tree will always be updated when bmc fru table is built",
+      "parentUuid": "3f3aa599_d0e4559c",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 62
+      },
+      "revId": "d349f55b78599e9a9be601295b49f4cb05f6a54c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
