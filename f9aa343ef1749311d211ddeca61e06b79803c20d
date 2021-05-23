@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "428ab2ab_b1bac7e9",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-23T07:26:22Z",
+      "side": 1,
+      "message": "I do not understand this comment. This is the first instance of enclosure led ie 1.",
+      "parentUuid": "05fa37ed_2c27a278",
+      "range": {
+        "startLine": 35,
+        "startChar": 21,
+        "endLine": 35,
+        "endChar": 22
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d442044d_aca42e16",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2021-05-21T02:07:11Z",
       "side": 1,
       "message": "Nit:\nI think we can remove this attribute in the future.\nBecause it generated via pdr.c\nhttps://github.com/openbmc/pldm/blob/master/libpldm/pdr.c#L329",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28d68760_b7a7f40e",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-23T07:26:22Z",
+      "side": 1,
+      "message": "Yes okay if not needed we could remove in future.",
+      "parentUuid": "d442044d_aca42e16",
       "range": {
         "startLine": 36,
         "startChar": 8,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "e5bf41c6_1a56770a",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-23T07:26:22Z",
+      "side": 1,
+      "message": "Adding entity information explicitly here is a redundant data and also entity path is not supposed to get used if the explicit details are given.\nAlso we would be generating the instance numbers automatically if the entity_path is not present, which may result in us maintaining the instance number here if entity_path is not provided. So I believe its better to have a consistent method to specific the entity_path for the leds which exists and avoid the entity_path if it does not exists (For ex enclosure identify and enclosure path).",
+      "parentUuid": "b29c9c47_13009dd5",
+      "range": {
+        "startLine": 376,
+        "startChar": 8,
+        "endLine": 376,
+        "endChar": 90
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2dfc68eb_c9ba3c16",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2021-05-21T02:07:11Z",
       "side": 1,
       "message": "I am a little confused.\nby DSP0249_1.1.0 Table 1:\n\n```\n17 Identify State For entities that have an identify function, such as LEDs.\n1 – Identify State Unasserted - The entity’s identify function is not asserted.\n2 – Identify State Asserted      - The entity’s identify function is asserted\n```\n\nSo, My understanding is 1--\u003efalse, 2--\u003etrue\nPlease correct me if I am wrong, Thanks",
+      "range": {
+        "startLine": 388,
+        "startChar": 37,
+        "endLine": 388,
+        "endChar": 48
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c01f52bb_1498e793",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-23T07:26:22Z",
+      "side": 1,
+      "message": "Thanks for catching this up. I see that comment is applicable to fault states also. I will update this for all identify and fault leds using this commit itself.",
+      "parentUuid": "2dfc68eb_c9ba3c16",
       "range": {
         "startLine": 388,
         "startChar": 37,
