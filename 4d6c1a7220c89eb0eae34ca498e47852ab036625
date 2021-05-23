@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "0420d7a7_765cb784",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-23T12:46:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1119c554_6c79ac2d",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 64
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0f95db5_68d85e37",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "\u003e We could take spec revision as input parameter and generate this parameter.\nI did give it a thought, personally didn\u0027t find great value in the version -\u003e uuid indirection, compared to specifying the UUID directly.",
       "parentUuid": "d0f95db5_68d85e37",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 55
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4c4904c_41210ae9",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-23T12:46:15Z",
+      "side": 1,
+      "message": "If the script accepts the version ID, then the same metadata file can be used to generate version specific PLDM package. Anyway, nit comment only.",
+      "parentUuid": "1e16ec43_40c0ce76",
       "range": {
         "startLine": 137,
         "startChar": 4,
@@ -237,6 +285,30 @@
     },
     {
       "key": {
+        "uuid": "38a60112_5188461e",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-23T12:46:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "84e75bfb_384aa5d2",
+      "range": {
+        "startLine": 229,
+        "startChar": 16,
+        "endLine": 229,
+        "endChar": 75
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "502903d6_9a96bfb6",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -272,6 +344,30 @@
       "side": 1,
       "message": "The number of components is not guaranteed to be a multiple of 8. So round() will adjust the applicable_components_bitfield to accommodate the components.",
       "parentUuid": "502903d6_9a96bfb6",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 17
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "935e1aab_b4c88a93",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-23T12:46:15Z",
+      "side": 1,
+      "message": "The component_bitmap_bit_length is a multiple of 8, thus I gather that applicable_components should also be multiple of 8.\n\nEven if we want to handle this \"not a multiple of 8\" case, mat.ceil() needs to be used. round() will round off to the nearest integer value, this means that something like 5.125 will be rounded off to 5 instead of 6.",
+      "parentUuid": "eb70f91a_1a6f9105",
       "range": {
         "startLine": 256,
         "startChar": 12,
@@ -331,6 +427,30 @@
     },
     {
       "key": {
+        "uuid": "7dc52c15_1432d41c",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-23T12:46:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b9c1a583_2e4a9814",
+      "range": {
+        "startLine": 265,
+        "startChar": 12,
+        "endLine": 265,
+        "endChar": 68
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fbd01d51_1ba777e7",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -363,6 +483,24 @@
       "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c519ae67_13174930",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-23T12:46:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a9e79e0c_9d461f93",
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
