@@ -476,6 +476,30 @@
     },
     {
       "key": {
+        "uuid": "cea6fe81_bc30e72f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-24T10:21:51Z",
+      "side": 1,
+      "message": "Yeah, struct.pack() later cribs if not an integer.",
+      "parentUuid": "3c3a7a0f_095f9bda",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 17
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ac66322a_5a7e83c4",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
