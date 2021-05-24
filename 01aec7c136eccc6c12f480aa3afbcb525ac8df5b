@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "9b2c616c_314af9bc",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-24T12:11:53Z",
+      "side": 1,
+      "message": "not sure. but this api has been used across the openbmc code to get a new event.\neven if it is same address it does not cause any issue. this event is created and ended before actual transaction starts in pldmd",
+      "parentUuid": "c49e14bd_59c8e84c",
+      "range": {
+        "startLine": 449,
+        "startChar": 4,
+        "endLine": 449,
+        "endChar": 52
+      },
+      "revId": "01aec7c136eccc6c12f480aa3afbcb525ac8df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "789cee0c_d1123081",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 18
