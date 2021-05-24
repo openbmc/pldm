@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "56172b5e_55f31ea4",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-24T09:29:42Z",
+      "side": 1,
+      "message": "Sure, there will be value in accepting the Version ID, once the script is flexible enough to handle multiple versions. Even the JSON structure might need to change to support multiple versions. This is can be part of a future enhancement.",
+      "parentUuid": "b4c4904c_41210ae9",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 55
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7ad3875d_98f824e8",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -368,6 +392,30 @@
       "side": 1,
       "message": "The component_bitmap_bit_length is a multiple of 8, thus I gather that applicable_components should also be multiple of 8.\n\nEven if we want to handle this \"not a multiple of 8\" case, mat.ceil() needs to be used. round() will round off to the nearest integer value, this means that something like 5.125 will be rounded off to 5 instead of 6.",
       "parentUuid": "eb70f91a_1a6f9105",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 17
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edae23da_2eb1d5b8",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-24T09:29:42Z",
+      "side": 1,
+      "message": "\u003e The number of components is not guaranteed to be a multiple of 8. So round() will adjust the applicable_components_bitfield to accommodate the components.\n\nIgnore my earlier comment.\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/42454/2/tools/fw-update/pldm_fwup_pkg_creator.py#113 calculates the component bit map length by using math.ceil(). So applicable_components_bitfield_length is expected to be a multiple of 8.(8,16,24,32). len(applicable_components)/8 returns 1.0, 2.0, 3.0, 4.0. So round() gets it to a whole number.",
+      "parentUuid": "935e1aab_b4c88a93",
       "range": {
         "startLine": 256,
         "startChar": 12,
