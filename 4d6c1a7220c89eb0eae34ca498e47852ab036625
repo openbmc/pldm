@@ -168,6 +168,30 @@
     },
     {
       "key": {
+        "uuid": "6899ea21_700377fd",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-24T10:02:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "56172b5e_55f31ea4",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 55
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7ad3875d_98f824e8",
         "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
         "patchSetId": 2
@@ -416,6 +440,30 @@
       "side": 1,
       "message": "\u003e The number of components is not guaranteed to be a multiple of 8. So round() will adjust the applicable_components_bitfield to accommodate the components.\n\nIgnore my earlier comment.\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/42454/2/tools/fw-update/pldm_fwup_pkg_creator.py#113 calculates the component bit map length by using math.ceil(). So applicable_components_bitfield_length is expected to be a multiple of 8.(8,16,24,32). len(applicable_components)/8 returns 1.0, 2.0, 3.0, 4.0. So round() gets it to a whole number.",
       "parentUuid": "935e1aab_b4c88a93",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 17
+      },
+      "revId": "4d6c1a7220c89eb0eae34ca498e47852ab036625",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c3a7a0f_095f9bda",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-05-24T10:02:07Z",
+      "side": 1,
+      "message": "Right. Since applicable_components is guaranteed to be a multiple of 8 (in the codeflow), do we need the round() function?",
+      "parentUuid": "edae23da_2eb1d5b8",
       "range": {
         "startLine": 256,
         "startChar": 12,
