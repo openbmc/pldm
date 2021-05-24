@@ -45,6 +45,30 @@
       "revId": "65b6fdc0a1933717637fe6b0e1907c9a5ad49b52",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a4cb3f8_14533942",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-05-24T12:59:55Z",
+      "side": 1,
+      "message": "since these changes are related to MEX story, it may take sometime to merge. We can take up another story to make changes to that once we merge this.",
+      "parentUuid": "1eec685b_605ecf1f",
+      "range": {
+        "startLine": 188,
+        "startChar": 8,
+        "endLine": 188,
+        "endChar": 51
+      },
+      "revId": "65b6fdc0a1933717637fe6b0e1907c9a5ad49b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
