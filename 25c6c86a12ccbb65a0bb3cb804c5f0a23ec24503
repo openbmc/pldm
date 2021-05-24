@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f9701b82_acdb8c25",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-24T09:45:21Z",
+      "side": 1,
+      "message": "sha bang shoud always be the first line.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 46
+      },
+      "revId": "25c6c86a12ccbb65a0bb3cb804c5f0a23ec24503",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be1d1610_f11efd09",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-24T09:45:21Z",
+      "side": 1,
+      "message": "there should not be a space between sha and bang.\n\nwithout that, this script will not work when executed with ./\u003cpldm_fwup_pkg_creator.py\u003e",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 6
+      },
+      "revId": "25c6c86a12ccbb65a0bb3cb804c5f0a23ec24503",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
