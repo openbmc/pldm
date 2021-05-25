@@ -22,6 +22,30 @@
       "revId": "a4a91023f2751209635b1355fa7a9e62761278d9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc657954_8db44a32",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-25T08:48:40Z",
+      "side": 1,
+      "message": "We are not supposed to clear the remote PDR\u0027s until we reach the HostSate.Off, because the softoff application would need the PDR\u0027s to detect the right host effecter to ask it to terminate. If we clear the PDR\u0027s even when we reach transitioningToOff(which we reach when we just trigger the softoff app), we might get into a race condition where we will not find the host effecterPDR to trigger the termination of host.\n\nI think sampa reverted the state change after we uncovered the above mentioned issue.",
+      "parentUuid": "e8e71de5_f4ef6e04",
+      "range": {
+        "startLine": 83,
+        "startChar": 63,
+        "endLine": 83,
+        "endChar": 76
+      },
+      "revId": "a4a91023f2751209635b1355fa7a9e62761278d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
