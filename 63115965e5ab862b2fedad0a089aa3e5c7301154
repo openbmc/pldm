@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88251815_53298f60",
+        "filename": "pldmd/service_files/pldmd.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-25T19:33:53Z",
+      "side": 1,
+      "message": "Should be BusName",
+      "revId": "63115965e5ab862b2fedad0a089aa3e5c7301154",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
