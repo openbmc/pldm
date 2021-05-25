@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e8e71de5_f4ef6e04",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-25T05:03:18Z",
+      "side": 1,
+      "message": "Did you intend it to be \"TransitioningToOff\"? Just checking to make sure the change in the last patch was was intentional.",
+      "range": {
+        "startLine": 83,
+        "startChar": 63,
+        "endLine": 83,
+        "endChar": 76
+      },
+      "revId": "a4a91023f2751209635b1355fa7a9e62761278d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
