@@ -46,6 +46,30 @@
       "revId": "a4a91023f2751209635b1355fa7a9e62761278d9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3793cba9_95c90ea9",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-25T11:04:58Z",
+      "side": 1,
+      "message": "yeah i did \"TransitioningToOff\" initially but in a continuous run in DVT, the softoff app is getting into race condition because of that. sometimes it does not get the PDR",
+      "parentUuid": "fc657954_8db44a32",
+      "range": {
+        "startLine": 83,
+        "startChar": 63,
+        "endLine": 83,
+        "endChar": 76
+      },
+      "revId": "a4a91023f2751209635b1355fa7a9e62761278d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
