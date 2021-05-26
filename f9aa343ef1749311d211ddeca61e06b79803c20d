@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "3f0e73ba_b61ef785",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-26T01:40:41Z",
+      "side": 1,
+      "message": "I mean this is a good change +1",
+      "parentUuid": "428ab2ab_b1bac7e9",
+      "range": {
+        "startLine": 35,
+        "startChar": 21,
+        "endLine": 35,
+        "endChar": 22
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d442044d_aca42e16",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "569a636c_0874371c",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-26T01:40:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "28d68760_b7a7f40e",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b29c9c47_13009dd5",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
@@ -131,6 +179,30 @@
       "side": 1,
       "message": "Adding entity information explicitly here is a redundant data and also entity path is not supposed to get used if the explicit details are given.\nAlso we would be generating the instance numbers automatically if the entity_path is not present, which may result in us maintaining the instance number here if entity_path is not provided. So I believe its better to have a consistent method to specific the entity_path for the leds which exists and avoid the entity_path if it does not exists (For ex enclosure identify and enclosure path).",
       "parentUuid": "b29c9c47_13009dd5",
+      "range": {
+        "startLine": 376,
+        "startChar": 8,
+        "endLine": 376,
+        "endChar": 90
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7e1d33c_4cdaee81",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-26T01:40:41Z",
+      "side": 1,
+      "message": "I mean, if `entit_type` is wrong (getting failed in `associatedEntityMap`), So what are its `type` and `instace` values?\nhttps://github.com/openbmc/pldm/blob/master/libpldmresponder/pdr_state_sensor.hpp#L81",
+      "parentUuid": "e5bf41c6_1a56770a",
       "range": {
         "startLine": 376,
         "startChar": 8,
@@ -187,6 +259,30 @@
       "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff2abf30_37b1e89e",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-26T01:40:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c01f52bb_1498e793",
+      "range": {
+        "startLine": 388,
+        "startChar": 37,
+        "endLine": 388,
+        "endChar": 48
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
