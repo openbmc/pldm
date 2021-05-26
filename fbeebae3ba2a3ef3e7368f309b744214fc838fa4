@@ -16,6 +16,75 @@
       "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bcc917a_4fb9be04",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-26T01:34:29Z",
+      "side": 1,
+      "message": "Nit: Align",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1b2dcff_70bb0dce",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-26T01:34:29Z",
+      "side": 1,
+      "message": "Nit: Align",
+      "range": {
+        "startLine": 118,
+        "startChar": 21,
+        "endLine": 118,
+        "endChar": 38
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63014548_2aa539e7",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-26T01:34:29Z",
+      "side": 1,
+      "message": "Remove",
+      "range": {
+        "startLine": 160,
+        "startChar": 89,
+        "endLine": 160,
+        "endChar": 90
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
