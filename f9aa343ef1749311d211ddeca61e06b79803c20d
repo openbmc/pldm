@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "a40914bc_d495bce8",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-26T10:54:10Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "3f0e73ba_b61ef785",
+      "range": {
+        "startLine": 35,
+        "startChar": 21,
+        "endLine": 35,
+        "endChar": 22
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d442044d_aca42e16",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
@@ -203,6 +227,30 @@
       "side": 1,
       "message": "I mean, if `entit_type` is wrong (getting failed in `associatedEntityMap`), So what are its `type` and `instace` values?\nhttps://github.com/openbmc/pldm/blob/master/libpldmresponder/pdr_state_sensor.hpp#L81",
       "parentUuid": "e5bf41c6_1a56770a",
+      "range": {
+        "startLine": 376,
+        "startChar": 8,
+        "endLine": 376,
+        "endChar": 90
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60c06afe_a9c3c4b2",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-26T10:54:10Z",
+      "side": 1,
+      "message": "I believe we are leaning towards a design in which if the path is not present corresponding PDR won\u0027t be generated. In that case we do not need to have separate json files for different types of systems. @sampa can confirm this.",
+      "parentUuid": "f7e1d33c_4cdaee81",
       "range": {
         "startLine": 376,
         "startChar": 8,
