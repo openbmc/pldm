@@ -1837,6 +1837,40 @@
         }]
     },
     {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply1",
+        "effecters" : [{
+            "set" : {
+                "id" : 10,
+                "size" : 1,
+                "states" : [1,2]
+            },
+            "dbus" : {
+                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply1",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values" : [false, true]
+             }
+        }]
+    },
+    {
        "type" : 45,
        "instance" : 0,
        "container" : 0,
