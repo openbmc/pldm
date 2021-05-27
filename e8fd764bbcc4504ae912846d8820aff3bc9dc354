@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e658401_55d21460",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:03:33Z",
+      "side": 1,
+      "message": "uint8_t",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 8
+      },
+      "revId": "e8fd764bbcc4504ae912846d8820aff3bc9dc354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8857b1d9_d0d48996",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:03:33Z",
+      "side": 1,
+      "message": "Refer:\n\n```\nuint8_t heartbeatTimeout \u003d 0x78;\nif (!isSetEventReceiverSent)\n{\n   heartbeatTimeout \u003d 0xf;\n   isSetEventReceiverSent \u003d true;\n}\n```",
+      "range": {
+        "startLine": 124,
+        "startChar": 3,
+        "endLine": 133,
+        "endChar": 5
+      },
+      "revId": "e8fd764bbcc4504ae912846d8820aff3bc9dc354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c44e31b_87003738",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:03:33Z",
+      "side": 1,
+      "message": "Remove",
+      "revId": "e8fd764bbcc4504ae912846d8820aff3bc9dc354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f75e7a16_6a883170",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:03:33Z",
+      "side": 1,
+      "message": "Please align",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 11
+      },
+      "revId": "e8fd764bbcc4504ae912846d8820aff3bc9dc354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
