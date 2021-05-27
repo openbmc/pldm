@@ -129,6 +129,8 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_SLOT, "Slot"},
         {PLDM_ENTITY_CABLE, "Cable (electrical or optical)"},
         {11521, "System (logical)"},
+        {PLDM_ENTITY_COOLING_SUBSYSTEM, "Cooling subsystem"},
+        {PLDM_ENTITY_EXTERNAL_ENVIRONMENT, "External Environment"},
     };
 
     const std::map<uint16_t, std::string> stateSet = {
@@ -144,7 +146,9 @@ class GetPDR : public CommandInterface
         {PLDM_STATE_SET_BOOT_RESTART_CAUSE, "Boot/Restart Cause"},
         {PLDM_STATE_SET_BOOT_PROGRESS, "Boot Progress"},
         {PLDM_STATE_SET_SYSTEM_POWER_STATE, "System Power State"},
-    };
+        {PLDM_STATE_SET_THERMAL_TRIP, "Thermal Trip"},
+        {PLDM_STATE_SET_IDENTIFY_STATE, "Identify State"},
+        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS, "Operational Fault Status"}};
 
     const std::array<std::string_view, 4> sensorInit = {
         "noInit", "useInitPDR", "enableSensor", "disableSensor"};
