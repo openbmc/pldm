@@ -287,6 +287,30 @@
     },
     {
       "key": {
+        "uuid": "28686c2a_16439338",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-05-27T05:42:21Z",
+      "side": 1,
+      "message": "correct @George at present if the entity path is wrong the type and instance etc will be 0 but that is how it was designed. to have either entity path or the type, instance and container id in the json\nif the entity path is put in the json then it is expected to be correct",
+      "parentUuid": "76bbe78d_7f1a7f87",
+      "range": {
+        "startLine": 376,
+        "startChar": 8,
+        "endLine": 376,
+        "endChar": 90
+      },
+      "revId": "f9aa343ef1749311d211ddeca61e06b79803c20d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2dfc68eb_c9ba3c16",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
