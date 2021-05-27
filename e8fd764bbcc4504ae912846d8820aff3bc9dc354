@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a721baa2_bad5fb90",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:27:19Z",
+      "side": 1,
+      "message": "Sorry, s/uint8_t/uint16_t",
+      "parentUuid": "1e658401_55d21460",
+      "range": {
+        "startLine": 124,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 8
+      },
+      "revId": "e8fd764bbcc4504ae912846d8820aff3bc9dc354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8857b1d9_d0d48996",
         "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2021-05-27T08:03:33Z",
       "side": 1,
       "message": "Refer:\n\n```\nuint8_t heartbeatTimeout \u003d 0x78;\nif (!isSetEventReceiverSent)\n{\n   heartbeatTimeout \u003d 0xf;\n   isSetEventReceiverSent \u003d true;\n}\n```",
+      "range": {
+        "startLine": 124,
+        "startChar": 3,
+        "endLine": 133,
+        "endChar": 5
+      },
+      "revId": "e8fd764bbcc4504ae912846d8820aff3bc9dc354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b6a1ff8_7a3a689b",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:27:19Z",
+      "side": 1,
+      "message": "Sorry, s/uint8_t/uint16_t",
+      "parentUuid": "8857b1d9_d0d48996",
       "range": {
         "startLine": 124,
         "startChar": 3,
