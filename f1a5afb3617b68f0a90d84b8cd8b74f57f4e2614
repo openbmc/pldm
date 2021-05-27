@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d074043f_52ed20cc",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:17:35Z",
+      "side": 1,
+      "message": "Could you explain where this value refers to?",
+      "range": {
+        "startLine": 227,
+        "startChar": 54,
+        "endLine": 227,
+        "endChar": 60
+      },
+      "revId": "f1a5afb3617b68f0a90d84b8cd8b74f57f4e2614",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "349fffd1_8ebf1ff9",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:17:35Z",
+      "side": 1,
+      "message": "bool",
+      "range": {
+        "startLine": 217,
+        "startChar": 4,
+        "endLine": 217,
+        "endChar": 8
+      },
+      "revId": "f1a5afb3617b68f0a90d84b8cd8b74f57f4e2614",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb021ed1_0e161df7",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:17:35Z",
+      "side": 1,
+      "message": "Nit:\npldm::utils::DBusMapping dbusMapping{\"/xyz/openbmc_project/watchdog/host0\",\n                                     \"xyz.openbmc_project.State.Watchdog\",\n                                     \"Enabled\", \"bool\"};",
+      "range": {
+        "startLine": 219,
+        "startChar": 4,
+        "endLine": 223,
+        "endChar": 38
+      },
+      "revId": "f1a5afb3617b68f0a90d84b8cd8b74f57f4e2614",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
