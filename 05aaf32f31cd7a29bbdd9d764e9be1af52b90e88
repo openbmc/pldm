@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e1d20aea_00982ceb",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1852,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T11:26:03Z",
+      "side": 1,
+      "message": "```\n10 Operational Fault Status The fault status of the monitored entity\n\n1 – Normal No fault is present.\n2 – Error A fault that causes an entity to deviate from its expected behavior is present.\n3 – Non-Recoverable Error A fault that prohibits an entity from continuing to run is present\n```\n\n[true, false]",
+      "range": {
+        "startLine": 1852,
+        "startChar": 16,
+        "endLine": 1852,
+        "endChar": 49
+      },
+      "revId": "05aaf32f31cd7a29bbdd9d764e9be1af52b90e88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "983a7dc1_cd3c2805",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T11:26:03Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 1887,
+        "startChar": 16,
+        "endLine": 1887,
+        "endChar": 49
+      },
+      "revId": "05aaf32f31cd7a29bbdd9d764e9be1af52b90e88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
