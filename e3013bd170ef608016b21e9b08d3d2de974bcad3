@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ecbc3181_39008a70",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:15:29Z",
+      "side": 1,
+      "message": "uint64_t\nPlease do not use `auto` when declaring variables",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 8
+      },
+      "revId": "e3013bd170ef608016b21e9b08d3d2de974bcad3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9fd3389_684bef72",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-05-27T08:15:29Z",
+      "side": 1,
+      "message": "Nit:\npldm::utils::DBusMapping dbusMapping{\"/xyz/openbmc_project/watchdog/host0\",\n                                     \"xyz.openbmc_project.State.Watchdog\",\n                                     \"Interval\", \"uint64_t\"};",
+      "range": {
+        "startLine": 193,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 42
+      },
+      "revId": "e3013bd170ef608016b21e9b08d3d2de974bcad3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
