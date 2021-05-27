@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "77d2bd64_109aad24",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b463a1ab_66d5375d",
+      "range": {
+        "startLine": 5,
+        "startChar": 69,
+        "endLine": 5,
+        "endChar": 72
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3d37f9ba_b8e16618",
         "filename": "pldmtool/README.md",
         "patchSetId": 5
@@ -136,6 +160,30 @@
     },
     {
       "key": {
+        "uuid": "69a1bcab_dd8b0904",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6b4bc23_8099627e",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "272bb65c_c0123106",
         "filename": "pldmtool/README.md",
         "patchSetId": 5
@@ -156,6 +204,30 @@
       "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f3935ba_f6b33bcc",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "272bb65c_c0123106",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -276,6 +348,30 @@
     },
     {
       "key": {
+        "uuid": "ab10e2a8_259edbd8",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fa09f0a_ee70dc84",
+      "range": {
+        "startLine": 31,
+        "startChar": 60,
+        "endLine": 31,
+        "endChar": 67
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4bcc917a_4fb9be04",
         "filename": "pldmtool/README.md",
         "patchSetId": 5
@@ -299,6 +395,30 @@
     },
     {
       "key": {
+        "uuid": "9d466f3a_776d7ebd",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bcc917a_4fb9be04",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4493130d_34a4ce93",
         "filename": "pldmtool/README.md",
         "patchSetId": 5
@@ -310,6 +430,30 @@
       "writtenOn": "2021-05-26T12:27:56Z",
       "side": 1,
       "message": "Please add an example with this option, to help user understand. Basically two examples, one to target PLDM daemon on OpenBMC and other to target a remote MCTP endpoint.",
+      "range": {
+        "startLine": 116,
+        "startChar": 1,
+        "endLine": 116,
+        "endChar": 46
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "272dedec_374fddd3",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done in separate section",
+      "parentUuid": "4493130d_34a4ce93",
       "range": {
         "startLine": 116,
         "startChar": 1,
@@ -345,6 +489,30 @@
     },
     {
       "key": {
+        "uuid": "e34c7415_c768db6a",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1b2dcff_70bb0dce",
+      "range": {
+        "startLine": 118,
+        "startChar": 21,
+        "endLine": 118,
+        "endChar": 38
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "63014548_2aa539e7",
         "filename": "pldmtool/README.md",
         "patchSetId": 5
@@ -368,6 +536,30 @@
     },
     {
       "key": {
+        "uuid": "26f03f90_10336a1b",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63014548_2aa539e7",
+      "range": {
+        "startLine": 160,
+        "startChar": 89,
+        "endLine": 160,
+        "endChar": 90
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3323d1bb_3be8ce56",
         "filename": "pldmtool/README.md",
         "patchSetId": 5
@@ -388,6 +580,30 @@
       "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4777da3d_415e3799",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-05-27T08:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3323d1bb_3be8ce56",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 89
+      },
+      "revId": "fbeebae3ba2a3ef3e7368f309b744214fc838fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
