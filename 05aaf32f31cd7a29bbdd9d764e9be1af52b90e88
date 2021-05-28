@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7e81f1f2_9c8c0ef8",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1852,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-28T02:02:14Z",
+      "side": 1,
+      "message": "Yes the property values matches with effecter states.  So false maps to 1 (normal) and true maps to 2 (Faulted).\n\"states\" : [1,2] \u003d\u003e \"property_values\" : [false, true]",
+      "parentUuid": "e1d20aea_00982ceb",
+      "range": {
+        "startLine": 1852,
+        "startChar": 16,
+        "endLine": 1852,
+        "endChar": 49
+      },
+      "revId": "05aaf32f31cd7a29bbdd9d764e9be1af52b90e88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "983a7dc1_cd3c2805",
         "filename": "configurations/pdr/4.json",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2021-05-27T11:26:03Z",
       "side": 1,
       "message": "as above",
+      "range": {
+        "startLine": 1887,
+        "startChar": 16,
+        "endLine": 1887,
+        "endChar": 49
+      },
+      "revId": "05aaf32f31cd7a29bbdd9d764e9be1af52b90e88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58d6855d_c44a7264",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-05-28T02:02:14Z",
+      "side": 1,
+      "message": "The property values matche with sensor states.  So false maps to 1 (normal) and true maps to 2 (Faulted).\n\"states\" : [1,2] \u003d\u003e \"property_values\" : [false, true]",
+      "parentUuid": "983a7dc1_cd3c2805",
       "range": {
         "startLine": 1887,
         "startChar": 16,
