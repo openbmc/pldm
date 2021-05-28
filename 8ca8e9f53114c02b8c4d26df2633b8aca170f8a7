@@ -22,6 +22,30 @@
       "revId": "8ca8e9f53114c02b8c4d26df2633b8aca170f8a7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fb6077e_34f2bb4a",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-05-28T05:00:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5165ad5_ff9820c7",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 67
+      },
+      "revId": "8ca8e9f53114c02b8c4d26df2633b8aca170f8a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
