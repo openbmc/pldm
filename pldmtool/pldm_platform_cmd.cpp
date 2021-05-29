@@ -360,15 +360,52 @@ class GetPDR : public CommandInterface
         {PLDM_OEM_PDR, "OEM PDR"},
     };
 
+    bool isLogicalBitSet(const uint16_t entity_type)
+    {
+        return (entity_type & 0x8000);
+    }
+
+    uint16_t getEntityTypeForLogicalEntity(const uint16_t logical_entity_type)
+    {
+        return (logical_entity_type & 0x7FFF);
+    }
     std::string getEntityName(pldm::pdr::EntityType type)
     {
+        if (!isLogicalBitSet(type))
+        {
+            try
+            {
+                return entityType.at(type);
+            }
+            catch (const std::out_of_range& e)
+            {
+                if (type >= PLDM_OEM_ENTITY_TYPE_START &&
+                    type <= PLDM_OEM_ENTITY_TYPE_END)
+                {
+
+                    return std::to_string(static_cast<unsigned>(type)) +
+                           "(OEM)";
+                }
+
+                return std::to_string(static_cast<unsigned>(type));
+            }
+        }
         try
         {
-            return entityType.at(type);
+            return "[Logical] " +
+                   entityType.at(getEntityTypeForLogicalEntity(type));
         }
         catch (const std::out_of_range& e)
         {
-            return std::to_string(static_cast<unsigned>(type)) + "(OEM)";
+            if (type >= PLDM_OEM_ENTITY_TYPE_START &&
+                type <= PLDM_OEM_ENTITY_TYPE_END)
+            {
+
+                return "[Logical]" +
+                       std::to_string(static_cast<unsigned>(type)) + "(OEM)";
+            }
+
+            return "[Logical]" + std::to_string(static_cast<unsigned>(type));
         }
     }
 
