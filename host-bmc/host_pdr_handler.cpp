@@ -243,9 +243,19 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
         }
     } while (recordHandle);
 
-    const fs::path path{"/xyz/openbmc_project/inventory/system"};
+    fs::path path{"/xyz/openbmc_project/inventory/"};
     std::vector<pldm_entity> parentsEntity =
         getParentEntites(entityAssociations);
+    char* entityHierarchyPath;
+    bool status = form_entity_dbus_path(entityTree, entityHierarchyPath,
+                                        parentsEntity[0].entity_type,
+                                        parentsEntity[0].entity_instance_num);
+    if (status)
+    {
+        std::string dbusPath(entityHierarchyPath);
+        path = path.c_str() + dbusPath'
+    }
+
     for (auto& entity : parentsEntity)
     {
         addObjectPathEntityAssociations(entityAssociations, entity, path,

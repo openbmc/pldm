@@ -9,6 +9,13 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+typedef struct pair {
+	uint16_t entity_type;
+	char *entity_string;
+} PAIR;
+
+char *get_entity_string(uint16_t pldm_entity);
+
 /** @struct pldm_pdr
  *  opaque structure that acts as a handle to a PDR repository
  */
@@ -339,7 +346,8 @@ bool pldm_is_empty_entity_assoc_tree(pldm_entity_association_tree *tree);
 void pldm_entity_association_pdr_extract(const uint8_t *pdr, uint16_t pdr_len,
 					 size_t *num_entities,
 					 pldm_entity **entities);
-
+bool form_entity_dbus_path(pldm_entity_association_tree *tree, char *path,
+			   uint16_t entity_type, uint16_t entity_instance_num);
 #ifdef __cplusplus
 }
 #endif
