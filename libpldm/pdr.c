@@ -1,6 +1,8 @@
 #include "pdr.h"
+#include "entity.h"
 #include "platform.h"
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -18,6 +20,17 @@ typedef struct pldm_pdr {
 	pldm_pdr_record *first;
 	pldm_pdr_record *last;
 } pldm_pdr;
+
+PAIR table[] = {
+    {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},
+    {PLDM_ENTITY_BOARD, "io_board"},
+    {PLDM_ENTITY_SYS_BOARD, "motherboard"},
+    {PLDM_ENTITY_POWER_SUPPLY, "powersupply"},
+    {PLDM_ENTITY_MEMORY_MODULE, "dimm"},
+    {PLDM_ENTITY_PROC, "cpu"},
+    {PLDM_ENTITY_SYSTEM_LOGICAL, "system"},
+    {PLDM_ENTITY_PROC | 0x8000, "core"},
+};
 
 static inline uint32_t get_next_record_handle(const pldm_pdr *repo,
 					      const pldm_pdr_record *record)
@@ -775,4 +788,55 @@ void pldm_entity_association_pdr_extract(const uint8_t *pdr, uint16_t pdr_len,
 		++curr_entity;
 		++i;
 	}
+}
+
+char *get_entity_string(uint16_t pldm_entity_type)
+{
+	int size = sizeof table / sizeof table[0];
+	for (int i = 0; i < size; ++i) {
+		if (pldm_entity_type == table[i].entity_type) {
+			return table[i].entity_string;
+		}
+	}
+	return strdup("");
+}
+
+bool find_path(pldm_entity_node *node, char *path, uint16_t entity_type,
+	       uint16_t entity_instance_num)
+{
+	if (!node) {
+		return false;
+	}
+	char temp_path[500] = "/0";
+	if (strlen(path) > 0) {
+		strcpy(temp_path, path);
+		strcat(path, "/");
+	}
+	char str[100];
+	if (node->entity.entity_type == entity_type &&
+	    node->entity.entity_instance_num == entity_instance_num) {
+		return true;
+	}
+	sprintf(str, "%s%d", get_entity_string(node->entity.entity_type),
+		node->entity.entity_instance_num - 1);
+	strcat(path, str);
+	if (find_path(node->first_child, path, entity_type,
+		      entity_instance_num) ||
+	    find_path(node->next_sibling, path, entity_type,
+		      entity_instance_num)) {
+		return true;
+	}
+	strcpy(path, temp_path);
+	return false;
+}
+
+bool form_entity_dbus_path(pldm_entity_association_tree *tree, char *path,
+			   uint16_t entity_type, uint16_t entity_instance_num)
+{
+	assert(tree != NULL);
+
+	if (find_path(tree->root, path, entity_type, entity_instance_num)) {
+		return true;
+	}
+	return false;
 }
