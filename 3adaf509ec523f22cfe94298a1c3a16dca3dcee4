@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8324bf2e_1c8bfd03",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "Please add an example for the JSON output vs printing the output.",
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "680f20b3_0fa23c30",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "sends",
+      "range": {
+        "startLine": 4,
+        "startChar": 9,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbfe1a8c_111f04b4",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "nit: not needed",
+      "range": {
+        "startLine": 8,
+        "startChar": 38,
+        "endLine": 8,
+        "endChar": 41
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a959cc04_33641441",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "C++",
+      "range": {
+        "startLine": 11,
+        "startChar": 34,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acf467a9_03a3a6f8",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "Subheadings need more ##\n\nUse something like this to see how it will render once merged. https://jbt.github.io/markdown-editor/",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 2
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa8fffa9_8522a06a",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "This is not needed, pldmtool does not need libpldmresponder. There is no dependency with libpldmresponder.\n\nhttps://github.com/openbmc/pldm/blob/master/pldmtool/meson.build#L23",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 57
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b4f40f3_0d988d3d",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "Not needed",
+      "range": {
+        "startLine": 37,
+        "startChar": 30,
+        "endLine": 37,
+        "endChar": 37
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59fa046f_0cb91a0d",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "OEM commands defined for IBM systems",
+      "range": {
+        "startLine": 67,
+        "startChar": 30,
+        "endLine": 67,
+        "endChar": 46
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbb9b60d_58b1149f",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "Is this hardcoded or read from a file? Please update once checking.",
+      "range": {
+        "startLine": 164,
+        "startChar": 61,
+        "endLine": 164,
+        "endChar": 69
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8c983fa_5a100452",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-05-31T11:28:50Z",
+      "side": 1,
+      "message": "Remove",
+      "range": {
+        "startLine": 167,
+        "startChar": 15,
+        "endLine": 167,
+        "endChar": 16
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
