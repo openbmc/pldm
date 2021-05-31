@@ -467,3 +467,64 @@ int decode_get_fru_record_table_resp(
 
 	return PLDM_SUCCESS;
 }
+
+int decode_set_fru_record_table_req(const struct pldm_msg *msg,
+				    size_t payload_length,
+				    uint32_t *data_transfer_handle,
+				    uint8_t *transfer_flag,
+				    struct variable_field *fru_table_data)
+
+{
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    transfer_flag == NULL || fru_table_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length <= PLDM_SET_FRU_RECORD_TABLE_MIN_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_set_fru_record_table_req *req =
+	    (struct pldm_set_fru_record_table_req *)msg->payload;
+
+	*data_transfer_handle = le32toh(req->data_transfer_handle);
+	*transfer_flag = req->transfer_flag;
+	fru_table_data->length =
+	    payload_length - PLDM_SET_FRU_RECORD_TABLE_MIN_REQ_BYTES;
+	fru_table_data->ptr = req->fru_record_table_data;
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_fru_record_table_resp(uint8_t instance_id,
+				     uint8_t completion_code,
+				     uint32_t next_data_transfer_handle,
+				     size_t payload_length,
+				     struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != PLDM_SET_FRU_RECORD_TABLE_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_FRU;
+	header.command = PLDM_SET_FRU_RECORD_TABLE;
+
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (PLDM_SUCCESS != rc) {
+		return rc;
+	}
+
+	struct pldm_set_fru_record_table_resp *response =
+	    (struct pldm_set_fru_record_table_resp *)msg->payload;
+	response->completion_code = completion_code;
+	response->next_data_transfer_handle =
+	    htole32(next_data_transfer_handle);
+
+	return PLDM_SUCCESS;
+}
