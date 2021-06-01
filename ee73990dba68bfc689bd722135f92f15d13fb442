@@ -46,6 +46,52 @@
       "revId": "ee73990dba68bfc689bd722135f92f15d13fb442",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9048487_1277e8f1",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-01T10:17:29Z",
+      "side": 1,
+      "message": "does it accept the event class or the command? PLDM_PLATFORM_EVENT_MESSAGE?",
+      "range": {
+        "startLine": 412,
+        "startChar": 45,
+        "endLine": 412,
+        "endChar": 74
+      },
+      "revId": "ee73990dba68bfc689bd722135f92f15d13fb442",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0be08f51_fd623f81",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-01T10:17:29Z",
+      "side": 1,
+      "message": "is \"retry\" a mandatory feature?\nshould we not have an option to disable it as well?",
+      "range": {
+        "startLine": 15,
+        "startChar": 53,
+        "endLine": 15,
+        "endChar": 59
+      },
+      "revId": "ee73990dba68bfc689bd722135f92f15d13fb442",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
