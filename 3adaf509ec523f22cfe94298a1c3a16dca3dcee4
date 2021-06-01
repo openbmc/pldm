@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "25bf905a_0677ea98",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "By default we are displaying pldmtool output in JSON format. so i think there is no need of mentioning example for  \u0027printing the output\u0027. I will add a separate section to show how pldmtool output with JSON format looks",
+      "parentUuid": "8324bf2e_1c8bfd03",
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "680f20b3_0fa23c30",
         "filename": "pldmtool/README.md",
         "patchSetId": 7
@@ -39,6 +57,30 @@
       "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8146cac3_88fe193a",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "680f20b3_0fa23c30",
+      "range": {
+        "startLine": 4,
+        "startChar": 9,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "0df0c35a_a5977785",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbfe1a8c_111f04b4",
+      "range": {
+        "startLine": 8,
+        "startChar": 38,
+        "endLine": 8,
+        "endChar": 41
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a959cc04_33641441",
         "filename": "pldmtool/README.md",
         "patchSetId": 7
@@ -85,6 +151,30 @@
       "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38b1bc9a_01a5ce2e",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a959cc04_33641441",
+      "range": {
+        "startLine": 11,
+        "startChar": 34,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -111,6 +201,30 @@
     },
     {
       "key": {
+        "uuid": "d9e3184e_3a2e7a06",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "I tried with editor ## for subheadings looks decent enough size",
+      "parentUuid": "acf467a9_03a3a6f8",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 2
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa8fffa9_8522a06a",
         "filename": "pldmtool/README.md",
         "patchSetId": 7
@@ -122,6 +236,30 @@
       "writtenOn": "2021-05-31T11:28:50Z",
       "side": 1,
       "message": "This is not needed, pldmtool does not need libpldmresponder. There is no dependency with libpldmresponder.\n\nhttps://github.com/openbmc/pldm/blob/master/pldmtool/meson.build#L23",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 57
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ab81079_d7c7231a",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "thanks for correcting me",
+      "parentUuid": "fa8fffa9_8522a06a",
       "range": {
         "startLine": 31,
         "startChar": 0,
@@ -157,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "ac57b180_14a06eee",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b4f40f3_0d988d3d",
+      "range": {
+        "startLine": 37,
+        "startChar": 30,
+        "endLine": 37,
+        "endChar": 37
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "59fa046f_0cb91a0d",
         "filename": "pldmtool/README.md",
         "patchSetId": 7
@@ -168,6 +330,30 @@
       "writtenOn": "2021-05-31T11:28:50Z",
       "side": 1,
       "message": "OEM commands defined for IBM systems",
+      "range": {
+        "startLine": 67,
+        "startChar": 30,
+        "endLine": 67,
+        "endChar": 46
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c26963d_2f19ad50",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "i just copied this from tool output..",
+      "parentUuid": "59fa046f_0cb91a0d",
       "range": {
         "startLine": 67,
         "startChar": 30,
@@ -203,6 +389,30 @@
     },
     {
       "key": {
+        "uuid": "5910d5a3_175c940e",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "It is taken from https://github.com/openbmc/pldm/blob/master/pldmtool/pldm_cmd_helper.hpp#L30\nhttps://github.com/openbmc/pldm/blob/master/pldmtool/pldm_cmd_helper.hpp#L85",
+      "parentUuid": "fbb9b60d_58b1149f",
+      "range": {
+        "startLine": 164,
+        "startChar": 61,
+        "endLine": 164,
+        "endChar": 69
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e8c983fa_5a100452",
         "filename": "pldmtool/README.md",
         "patchSetId": 7
@@ -223,6 +433,30 @@
       "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aee5bb4d_aacdb0b7",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-01T07:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8c983fa_5a100452",
+      "range": {
+        "startLine": 167,
+        "startChar": 15,
+        "endLine": 167,
+        "endChar": 16
+      },
+      "revId": "3adaf509ec523f22cfe94298a1c3a16dca3dcee4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
