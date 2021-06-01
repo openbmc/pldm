@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "93b0c04a_7d6f01ec",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-01T11:04:19Z",
+      "side": 1,
+      "message": "Don\u0027t have a test setup for the PDR exchange flow, feel free to use the requester APIs for code that uses pldm_send_recv and create patches.",
+      "parentUuid": "089cb19c_77e7b5c1",
+      "range": {
+        "startLine": 152,
+        "startChar": 12,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "ee73990dba68bfc689bd722135f92f15d13fb442",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c9048487_1277e8f1",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 3
@@ -72,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "64c4ae00_908cc453",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-01T11:04:19Z",
+      "side": 1,
+      "message": "This is a broad API, taking the PLDM type/command. Any eventClass data can be encoded using the libpldm API\u0027s and passed as requestMsg.",
+      "parentUuid": "c9048487_1277e8f1",
+      "range": {
+        "startLine": 412,
+        "startChar": 45,
+        "endLine": 412,
+        "endChar": 74
+      },
+      "revId": "ee73990dba68bfc689bd722135f92f15d13fb442",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0be08f51_fd623f81",
         "filename": "meson_options.txt",
         "patchSetId": 3
@@ -83,6 +131,30 @@
       "writtenOn": "2021-06-01T10:17:29Z",
       "side": 1,
       "message": "is \"retry\" a mandatory feature?\nshould we not have an option to disable it as well?",
+      "range": {
+        "startLine": 15,
+        "startChar": 53,
+        "endLine": 15,
+        "endChar": 59
+      },
+      "revId": "ee73990dba68bfc689bd722135f92f15d13fb442",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f24fc338_d8383742",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-01T11:04:19Z",
+      "side": 1,
+      "message": "Yes, feel free to pass it as 0 in the bbappend file. PLDM base specification mentions 2 as min.\n\nI wrote a test for that https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/43465/3/requester/test/request_test.cpp#1",
+      "parentUuid": "0be08f51_fd623f81",
       "range": {
         "startLine": 15,
         "startChar": 53,
