@@ -1,0 +1,440 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68b1ae31_713636e9",
+        "filename": "libpldm/base.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "There is no change in this file, you can remove it in the next patch.",
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88c210cc_fd5bf6c7",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "nit: Check whether the string type is valid",
+      "range": {
+        "startLine": 233,
+        "startChar": 11,
+        "endLine": 234,
+        "endChar": 31
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42d47f13_f4c6437a",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "nit: true if the string type is valid one",
+      "range": {
+        "startLine": 236,
+        "startChar": 12,
+        "endLine": 236,
+        "endChar": 50
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0d8a2f8_480fc4b0",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 238,
+        "startChar": 42,
+        "endLine": 238,
+        "endChar": 48
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98e7b896_24f15f0f",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "nit: is_str_type_valid",
+      "range": {
+        "startLine": 238,
+        "startChar": 12,
+        "endLine": 238,
+        "endChar": 41
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2de918b_be9f1f2d",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "This validation can happen in the encode function, before doing htole* transactions.",
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61fc3dd3_25a27663",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "not needed as per the comment in the .h",
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3289fd0c_73653e1f",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "FWUP",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1db2f792_526f2f53",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "Please add this after the already defined constants.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 34
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f627e10_ba7a732c",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "Don\u0027t need a separate enumeration, add the update commands in the same enumeration.",
+      "range": {
+        "startLine": 21,
+        "startChar": 25,
+        "endLine": 21,
+        "endChar": 36
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b58fe4a_779ceef6",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "Please add an enumeration for the PLDM firmware update completion codes. Table 1 in the specification.",
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60f8e4c6_4399b7ae",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "nit: \"String type values defined in the PLDM firmware update specification\"",
+      "range": {
+        "startLine": 30,
+        "startChar": 11,
+        "endLine": 31,
+        "endChar": 26
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2563ed7f_dd8c3a8c",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "pldm_string_type will be more apt",
+      "range": {
+        "startLine": 33,
+        "startChar": 5,
+        "endLine": 33,
+        "endChar": 14
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba45059d_20024478",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "PLDM_STR_TYPE_* for all enums will be more apt.",
+      "range": {
+        "startLine": 34,
+        "startChar": 1,
+        "endLine": 34,
+        "endChar": 30
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fd6940d_07610803",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "pldm_request_update_req",
+      "range": {
+        "startLine": 86,
+        "startChar": 12,
+        "endLine": 86,
+        "endChar": 30
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e780be3_48433036",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "nit:num",
+      "range": {
+        "startLine": 92,
+        "startChar": 10,
+        "endLine": 92,
+        "endChar": 12
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e179733d_7e2b21c4",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "outstanding",
+      "range": {
+        "startLine": 93,
+        "startChar": 13,
+        "endLine": 93,
+        "endChar": 21
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "deac9b3f_19675d5a",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "const not needed for basic types",
+      "range": {
+        "startLine": 196,
+        "startChar": 30,
+        "endLine": 196,
+        "endChar": 35
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8b61065_c4c9e106",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 197,
+        "startChar": 9,
+        "endLine": 197,
+        "endChar": 14
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a706ca3b_35c13051",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-02T06:58:36Z",
+      "side": 1,
+      "message": "Passing the parameters as a struct is causing an extra copy with the fill function, pass the parameters to the encode function.",
+      "range": {
+        "startLine": 198,
+        "startChar": 9,
+        "endLine": 198,
+        "endChar": 52
+      },
+      "revId": "e8bcc555569b20f3bb14b818596fa0b4721edd91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
