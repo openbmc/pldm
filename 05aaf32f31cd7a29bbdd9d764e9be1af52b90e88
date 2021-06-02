@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "52f1c3cd_3462fd73",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1852,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-06-02T11:08:41Z",
+      "side": 1,
+      "message": "Okay got it and updating it",
+      "parentUuid": "b5ae2d21_8d21d562",
+      "range": {
+        "startLine": 1852,
+        "startChar": 16,
+        "endLine": 1852,
+        "endChar": 49
+      },
+      "revId": "05aaf32f31cd7a29bbdd9d764e9be1af52b90e88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "983a7dc1_cd3c2805",
         "filename": "configurations/pdr/4.json",
         "patchSetId": 1
@@ -108,6 +132,30 @@
       "side": 1,
       "message": "The property values matche with sensor states.  So false maps to 1 (normal) and true maps to 2 (Faulted).\n\"states\" : [1,2] \u003d\u003e \"property_values\" : [false, true]",
       "parentUuid": "983a7dc1_cd3c2805",
+      "range": {
+        "startLine": 1887,
+        "startChar": 16,
+        "endLine": 1887,
+        "endChar": 49
+      },
+      "revId": "05aaf32f31cd7a29bbdd9d764e9be1af52b90e88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f13f476c_61963e9b",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-06-02T11:08:41Z",
+      "side": 1,
+      "message": "Okay got it and updating it",
+      "parentUuid": "58d6855d_c44a7264",
       "range": {
         "startLine": 1887,
         "startChar": 16,
