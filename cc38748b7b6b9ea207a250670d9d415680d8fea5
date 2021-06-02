@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "18c106e2_61edf02c",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-02T03:27:05Z",
+      "side": 1,
+      "message": "Remove parentheses",
+      "range": {
+        "startLine": 365,
+        "startChar": 15,
+        "endLine": 365,
+        "endChar": 16
+      },
+      "revId": "cc38748b7b6b9ea207a250670d9d415680d8fea5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aeec0b17_f3702bd0",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-02T03:27:05Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 370,
+        "startChar": 14,
+        "endLine": 370,
+        "endChar": 16
+      },
+      "revId": "cc38748b7b6b9ea207a250670d9d415680d8fea5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdf1f54f_9e17e66b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-02T03:27:05Z",
+      "side": 1,
+      "message": "Nit: add blank line",
+      "revId": "cc38748b7b6b9ea207a250670d9d415680d8fea5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0689f8cd_656fa285",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-02T03:27:05Z",
+      "side": 1,
+      "message": "Nit: refer to:\n\n```\nconst uint16_t entityType \u003d type;\nconst std::string name \u003d \"[Physical] \";\nif (isLogicalBitSet(type)) \n{\n    entityType \u003d getEntityTypeForLogicalEntity(type);\n    name \u003d \"[Logical] \";\n}\n\ntry\n{\n    return entityType.at(entityType);\n}\ncatch (const std::out_of_range\u0026 e)\n{\n    if (entityType \u003e\u003d PLDM_OEM_ENTITY_TYPE_START \u0026\u0026\n        entityType \u003c\u003d PLDM_OEM_ENTITY_TYPE_END)\n    {\n\n        return name + std::to_string(static_cast\u003cunsigned\u003e(entityType)) +\n            \"(OEM)\";\n    }\n\n    return name + std::to_string(static_cast\u003cunsigned\u003e(entityType));\n}\n```",
+      "range": {
+        "startLine": 374,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 9
+      },
+      "revId": "cc38748b7b6b9ea207a250670d9d415680d8fea5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
