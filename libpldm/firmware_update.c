@@ -1411,3 +1411,21 @@ int decode_activate_firmware_resp(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_request_firmware_data_req(const struct pldm_msg *msg,
+				     const size_t payload_length,
+				     uint32_t *offset, uint32_t *length)
+{
+	if (msg == NULL || offset == NULL || length == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct request_firmware_data_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct request_firmware_data_req *request =
+	    (struct request_firmware_data_req *)msg->payload;
+	*offset = le32toh(request->offset);
+	*length = le32toh(request->length);
+
+	return PLDM_SUCCESS;
+}

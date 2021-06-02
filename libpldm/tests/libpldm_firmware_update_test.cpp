@@ -2620,3 +2620,47 @@ TEST(ActivateFirmware, testBadDecodeResponse)
                                        &completionCode, NULL);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(RequestFirmwareData, testGoodDecodeRequest)
+{
+    uint32_t offset;
+    uint32_t length;
+    std::array<uint8_t, hdrSize + sizeof(struct request_firmware_data_req)>
+        requestMsg{};
+    struct request_firmware_data_req* request =
+        reinterpret_cast<struct request_firmware_data_req*>(requestMsg.data() +
+                                                            hdrSize);
+    request->length = 64;
+    request->offset = 0;
+    auto requestIn = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = decode_request_firmware_data_req(
+        requestIn, requestMsg.size() - hdrSize, &offset, &length);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(offset, request->offset);
+    EXPECT_EQ(length, request->length);
+}
+
+TEST(RequestFirmwareData, testBadDecodeRequest)
+{
+    uint32_t offset;
+    uint32_t length;
+    std::array<uint8_t, hdrSize + sizeof(struct request_firmware_data_req)>
+        requestMsg{};
+    struct request_firmware_data_req* request =
+        reinterpret_cast<struct request_firmware_data_req*>(requestMsg.data() +
+                                                            hdrSize);
+    request->length = 64;
+    request->offset = 0;
+    auto requestIn = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = decode_request_firmware_data_req(
+        NULL, requestMsg.size() - hdrSize, &offset, &length);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_request_firmware_data_req(requestIn, 0, &offset, &length);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    rc = decode_request_firmware_data_req(
+        requestIn, requestMsg.size() - hdrSize, NULL, &length);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_request_firmware_data_req(
+        requestIn, requestMsg.size() - hdrSize, &offset, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
