@@ -12,6 +12,11 @@
 #include <functional>
 #include <iostream>
 
+#include <fstream>
+#include  <iomanip>
+
+
+
 namespace pldm
 {
 
@@ -166,6 +171,13 @@ class Request final : public RequestRetryTimer
         auto rc = pldm_send(eid, fd, requestMsg.data(), requestMsg.size());
         if (rc < 0)
         {
+            std::cout << "Failed msg: \n";
+            std::ostringstream tempStream;
+            for (int byte : requestMsg)
+            {
+                tempStream << std::setfill('0') << std::setw(2) << std::hex << byte << " ";
+            }
+            std::cout << tempStream.str() << std::endl;
             std::cerr << "Failed to send PLDM message. RC = " << rc
                       << ", errno = " << errno << "\n";
             return PLDM_ERROR;

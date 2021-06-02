@@ -5,6 +5,8 @@
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 
+#include "requester/handler.hpp"
+
 #include <map>
 
 using namespace pldm::dbus_api;
@@ -42,7 +44,8 @@ class DbusToPLDMEvent
      *  @param[in] requester - reference to Requester object
      */
     explicit DbusToPLDMEvent(int mctp_fd, uint8_t mctp_eid,
-                             Requester& requester);
+                             Requester& requester,
+                             pldm::requester::Handler<pldm::requester::Request>& handler);
 
   public:
     /** @brief Listen all of the state sensor PDRs
@@ -79,6 +82,9 @@ class DbusToPLDMEvent
     /** @brief D-Bus property changed signal match */
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
         stateSensorMatchs;
+
+    /** @brief PLDM request handler */
+    pldm::requester::Handler<pldm::requester::Request>& handler;    
 };
 
 } // namespace state_sensor

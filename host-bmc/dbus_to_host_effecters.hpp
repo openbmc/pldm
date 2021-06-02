@@ -4,6 +4,8 @@
 #include "common/utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 
+#include "requester/handler.hpp"
+
 #include <string>
 #include <utility>
 #include <vector>
@@ -81,9 +83,10 @@ class HostEffecterParser
                                 const pldm_pdr* repo,
                                 DBusHandler* const dbusHandler,
                                 const std::string& jsonPath,
+                                pldm::requester::Handler<pldm::requester::Request>& handler,
                                 bool verbose = false) :
         requester(requester),
-        sockFd(fd), pdrRepo(repo), dbusHandler(dbusHandler), verbose(verbose)
+        sockFd(fd), pdrRepo(repo), dbusHandler(dbusHandler), handler(handler), verbose(verbose)
     {
         try
         {
@@ -175,6 +178,8 @@ class HostEffecterParser
         effecterInfoMatch; //!< vector to catch the D-Bus property change
                            //!< signals for the effecters
     const DBusHandler* dbusHandler; //!< D-bus Handler
+    /** @brief PLDM request handler */
+    pldm::requester::Handler<pldm::requester::Request>& handler;
     bool verbose;                   //!< verbose flag
 };
 
