@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "b5ae2d21_8d21d562",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1852,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-02T06:10:27Z",
+      "side": 1,
+      "message": "Jay this means that\n\n1 (Normal) - means it is functional - which means the functional state should be set to true\n2 (Error) - means non functional - which means the functional state should be set to false\n\nso [1,2]\u003d\u003e[true,false] right ? i agree with George on this",
+      "parentUuid": "7e81f1f2_9c8c0ef8",
+      "range": {
+        "startLine": 1852,
+        "startChar": 16,
+        "endLine": 1852,
+        "endChar": 49
+      },
+      "revId": "05aaf32f31cd7a29bbdd9d764e9be1af52b90e88",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "983a7dc1_cd3c2805",
         "filename": "configurations/pdr/4.json",
         "patchSetId": 1
