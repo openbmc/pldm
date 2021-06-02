@@ -1975,3 +1975,60 @@ TEST(UpdateComponent, errorPathDecodeResponse)
         &updateOptionFlagsEnabled, &timeBeforeReqFWData);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(RequestFirmwareData, goodPathDecodeRequest)
+{
+    constexpr uint32_t offset = 300;
+    constexpr uint32_t length = 255;
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_request_firmware_data_req)>
+        reqFWDataReq{0x00, 0x00, 0x00, 0x2C, 0x01, 0x00,
+                     0x00, 0xFF, 0x00, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFWDataReq.data());
+
+    uint32_t outOffset = 0;
+    uint32_t outLength = 0;
+    auto rc = decode_request_firmware_data_req(
+        requestMsg, sizeof(pldm_request_firmware_data_req), &outOffset,
+        &outLength);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outOffset, offset);
+    EXPECT_EQ(outLength, length);
+}
+
+TEST(RequestFirmwareData, errorPathDecodeRequest)
+{
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_request_firmware_data_req)>
+        reqFWDataReq{0x00, 0x00, 0x00, 0x2C, 0x01, 0x00,
+                     0x00, 0x1F, 0x00, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFWDataReq.data());
+
+    uint32_t outOffset = 0;
+    uint32_t outLength = 0;
+    auto rc = decode_request_firmware_data_req(
+        nullptr, sizeof(pldm_request_firmware_data_req), &outOffset,
+        &outLength);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_firmware_data_req(
+        requestMsg, sizeof(pldm_request_firmware_data_req), nullptr,
+        &outLength);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_firmware_data_req(
+        requestMsg, sizeof(pldm_request_firmware_data_req), &outOffset,
+        nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_request_firmware_data_req(
+        requestMsg, sizeof(pldm_request_firmware_data_req) - 1, &outOffset,
+        &outLength);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = decode_request_firmware_data_req(
+        requestMsg, sizeof(pldm_request_firmware_data_req), &outOffset,
+        &outLength);
+    EXPECT_EQ(rc, PLDM_FWUP_INVALID_TRANSFER_LENGTH);
+}
