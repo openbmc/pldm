@@ -331,6 +331,15 @@ struct pldm_activate_firmware_resp {
 	uint16_t estimated_time_activation;
 } __attribute__((packed));
 
+/** @struct request_firmware_data_req
+ *
+ *  Structure representing Request firmware data request.
+ */
+struct request_firmware_data_req {
+	uint32_t offset;
+	uint32_t length;
+} __attribute__((packed));
+
 /** @brief Create a PLDM request message for QueryDeviceIdentifiers
  *
  *  @param[in] instance_id - Message's instance id
@@ -643,6 +652,19 @@ int decode_activate_firmware_resp(const struct pldm_msg *msg,
 				  const size_t payload_length,
 				  uint8_t *completion_code,
 				  uint16_t *estimated_time_activation);
+
+/** @brief Decode a RequestFirmwareData request message
+ *
+ *	@param[in] msg - request message
+ *	@param[in] payload_length - Length of request message payload
+ *	@param[out] offset - pointer to offset of the component image segment
+ *	@param[out] length - pointer to size of the component image segment
+ * requested by the FD information
+ *	@return pldm_completion_codes
+ */
+int decode_request_firmware_data_req(const struct pldm_msg *msg,
+				     const size_t payload_length,
+				     uint32_t *offset, uint32_t *length);
 
 #ifdef __cplusplus
 }
