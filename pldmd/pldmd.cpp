@@ -193,14 +193,14 @@ int main(int argc, char** argv)
     {
         hostPDRHandler = std::make_unique<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), bmcEntityTree.get(), dbusImplReq, reqHandler,
+            entityTree.get(), bmcEntityTree.get(), dbusImplReq, &reqHandler,
             verbose);
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
-                HOST_JSONS_DIR, verbose);
-        dbusToPLDMEventHandler =
-            std::make_unique<DbusToPLDMEvent>(sockfd, hostEID, dbusImplReq);
+                HOST_JSONS_DIR, &reqHandler, verbose);
+        dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
+            sockfd, hostEID, dbusImplReq, &reqHandler);
     }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 
@@ -210,15 +210,16 @@ int main(int argc, char** argv)
     codeUpdate->clearDirPath(LID_STAGING_DIR);
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq,
-        event);
+        event, &reqHandler);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
-    invoker.registerHandler(
-        PLDM_OEM, std::make_unique<oem_ibm::Handler>(
-                      oemPlatformHandler.get(), sockfd, hostEID, &dbusImplReq));
+    invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
+                                          oemPlatformHandler.get(), sockfd,
+                                          hostEID, &dbusImplReq, &reqHandler));
 #endif
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
-    invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>(
-                                           sockfd, hostEID, &dbusImplReq));
+    invoker.registerHandler(
+        PLDM_BIOS, std::make_unique<bios::Handler>(sockfd, hostEID,
+                                                   &dbusImplReq, &reqHandler));
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, pdrRepo.get(), entityTree.get(), bmcEntityTree.get());
     // FRU table is built lazily when a FRU command or Get PDR command is
