@@ -96,7 +96,8 @@
          "attribute_name":"pvm_stop_at_standby",
          "possible_values":[
             "Disabled",
-            "Enabled"
+            "Enabled",
+            "ManualOnly"
          ],
          "default_values":[
             "Enabled"
@@ -109,7 +110,7 @@
                "interface" : "xyz.openbmc_project.Control.Boot.Mode",
                "property_name" : "BootMode",
                "property_type" : "string",
-               "property_values" : ["xyz.openbmc_project.Control.Boot.Mode.Modes.Regular", "xyz.openbmc_project.Control.Boot.Mode.Modes.Setup"]
+               "property_values" : ["xyz.openbmc_project.Control.Boot.Mode.Modes.Regular", "xyz.openbmc_project.Control.Boot.Mode.Modes.Setup", "xyz.openbmc_project.Control.Boot.Mode.Modes.Safe"]
             }
       },
       {
