@@ -93,7 +93,7 @@ class HostPDRHandler
         pldm_pdr* repo, const std::string& eventsJsonsDir,
         pldm_entity_association_tree* entityTree,
         pldm_entity_association_tree* bmcEntityTree, Requester& requester,
-        pldm::requester::Handler<pldm::requester::Request>& handler,
+        pldm::requester::Handler<pldm::requester::Request>* handler,
         bool verbose = false);
 
     /** @brief fetch PDRs from host firmware. See @class.
@@ -145,11 +145,18 @@ class HostPDRHandler
                               const TLPDRMap& tlpdrInfo);
 
   private:
-    /** @brief fetchPDR schedules work on the event loop, this method does the
-     *  actual work. This is so that the PDR exchg with the host is async.
+    /** @brief deferred function to fetch PDR from Host, scheduled to work on
+     *  the event loop. The PDR exchg with the host is async.
      *  @param[in] source - sdeventplus event source
      */
     void _fetchPDR(sdeventplus::source::EventBase& source);
+
+    /** @brief this function sends a GetPDR request to Host firmware.
+     *  And processes the PDRs based on type
+     *
+     *  @param[in] - nextRecordHandle - the next record handle to ask for
+     */
+    void getHostPDR(uint32_t nextRecordHandle = 0);
 
     /** @brief Merge host firmware's entity association PDRs into BMC's
      *  @details A merge operation involves adding a pldm_entity under the
@@ -165,6 +172,24 @@ class HostPDRHandler
      *  @return bool - true if parent found, false otherwise
      */
     bool getParent(EntityType type, pldm_entity& parent);
+
+    /** @brief process the Host's PDR and add to BMC's PDR repo
+     *  @param response - response from Host for GetPDR
+     *  @param respMsgLen - response message length
+     */
+    void processHostPDRs(const pldm_msg* response, size_t respMsgLen);
+
+    /** @brief send PDR Repo change after merging Host's PDR to BMC PDR repo
+     *  @param[in] source - sdeventplus event source
+     */
+    void _processPDRRepoChgEvent(sdeventplus::source::EventBase& source);
+
+    /** @brief fetch the next PDR based on the record handle sent by Host
+     *  @param[in] nextRecordHandle - next record handle
+     *  @param[in] source - sdeventplus event source
+     */
+    void _processFetchPDREvent(uint32_t nextRecordHandle,
+                               sdeventplus::source::EventBase& source);
 
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
@@ -190,10 +215,13 @@ class HostPDRHandler
     Requester& requester;
 
     /** @brief PLDM request handler */
-    pldm::requester::Handler<pldm::requester::Request>& handler;
+    pldm::requester::Handler<pldm::requester::Request>* handler;
 
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> pdrFetchEvent;
+    std::unique_ptr<sdeventplus::source::Defer> deferredFetchPDREvent;
+    std::unique_ptr<sdeventplus::source::Defer> deferredPDRRepoChgEvent;
+
     /** @brief list of PDR record handles pointing to host's PDRs */
     PDRRecordHandles pdrRecordHandles;
     /** @brief maps an entity type to parent pldm_entity from the BMC's entity
