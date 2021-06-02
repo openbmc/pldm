@@ -366,6 +366,15 @@ struct pldm_update_component_resp {
 	uint16_t time_before_req_fw_data;
 } __attribute__((packed));
 
+/** @struct pldm_request_firmware_data_req
+ *
+ *  Structure representing RequestFirmwareData request.
+ */
+struct pldm_request_firmware_data_req {
+	uint32_t offset;
+	uint32_t length;
+} __attribute__((packed));
+
 /** @brief Decode the PLDM package header information
  *
  *  @param[in] data - pointer to package header information
@@ -682,6 +691,20 @@ int decode_update_component_resp(const struct pldm_msg *msg,
 				 uint8_t *comp_compatability_resp_code,
 				 bitfield32_t *update_option_flags_enabled,
 				 uint16_t *time_before_req_fw_data);
+
+/** @brief Decode RequestFirmwareData request message
+ *
+ *	@param[in] msg - Request message
+ *	@param[in] payload_length - Length of request message payload
+ *	@param[out] offset - Pointer to hold offset
+ *	@param[out] length - Pointer to hold the size of the component image
+ *                       segment requested by the FD/FDP
+ *
+ *	@return pldm_completion_codes
+ */
+int decode_request_firmware_data_req(const struct pldm_msg *msg,
+				     size_t payload_length, uint32_t *offset,
+				     uint32_t *length);
 #ifdef __cplusplus
 }
 #endif
