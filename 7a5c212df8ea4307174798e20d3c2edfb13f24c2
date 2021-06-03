@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f7c9164a_708b6cce",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-03T03:47:00Z",
+      "side": 1,
+      "message": "can we use the same commit to improve the hextext for this attribute ?",
+      "range": {
+        "startLine": 105,
+        "startChar": 23,
+        "endLine": 105,
+        "endChar": 42
+      },
+      "revId": "7a5c212df8ea4307174798e20d3c2edfb13f24c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
