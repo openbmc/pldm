@@ -2032,3 +2032,51 @@ TEST(RequestFirmwareData, errorPathDecodeRequest)
         &outLength);
     EXPECT_EQ(rc, PLDM_FWUP_INVALID_TRANSFER_LENGTH);
 }
+
+TEST(RequestFirmwareData, goodPathEncodeResponse)
+{
+    constexpr uint8_t instanceId = 3;
+    constexpr uint8_t completionCode = PLDM_SUCCESS;
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode) +
+                                      PLDM_FWUP_BASELINE_TRANSFER_SIZE>
+        outReqFwDataResponse1{0x03, 0x05, 0x15, 0x00, 0x01, 0x02, 0x03, 0x04,
+                              0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C,
+                              0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14,
+                              0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
+                              0x1D, 0x1E, 0x1F, 0x20};
+    std::array<uint8_t, hdrSize + sizeof(completionCode) +
+                            PLDM_FWUP_BASELINE_TRANSFER_SIZE>
+        reqFwDataResponse1{0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x04,
+                           0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C,
+                           0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14,
+                           0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
+                           0x1D, 0x1E, 0x1F, 0x20};
+    auto responseMsg1 = reinterpret_cast<pldm_msg*>(reqFwDataResponse1.data());
+    auto rc = encode_request_firmware_data_resp(
+        instanceId, completionCode, responseMsg1,
+        sizeof(completionCode) + PLDM_FWUP_BASELINE_TRANSFER_SIZE);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(reqFwDataResponse1, outReqFwDataResponse1);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        outReqFwDataResponse2{0x03, 0x05, 0x15, 0x82};
+    std::array<uint8_t, hdrSize + sizeof(completionCode)> reqFwDataResponse2{
+        0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 = reinterpret_cast<pldm_msg*>(reqFwDataResponse2.data());
+    rc = encode_request_firmware_data_resp(
+        instanceId, PLDM_FWUP_DATA_OUT_OF_RANGE, responseMsg2,
+        sizeof(completionCode));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(reqFwDataResponse2, outReqFwDataResponse2);
+}
+
+TEST(RequestFirmwareData, errorPathEncodeResponse)
+{
+    std::array<uint8_t, hdrSize> reqFwDataResponse{0x00, 0x00, 0x00};
+    auto responseMsg = reinterpret_cast<pldm_msg*>(reqFwDataResponse.data());
+    auto rc = encode_request_firmware_data_resp(0, PLDM_SUCCESS, nullptr, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_request_firmware_data_resp(0, PLDM_SUCCESS, responseMsg, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
