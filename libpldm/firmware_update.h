@@ -35,7 +35,8 @@ enum pldm_firmware_update_commands {
 	PLDM_GET_STATUS = 0x1B,
 	PLDM_CANCEL_UPDATE = 0x1D,
 	PLDM_CANCEL_UPDATE_COMPONENT = 0x1C,
-	PLDM_ACTIVATE_FIRMWARE = 0x1A
+	PLDM_ACTIVATE_FIRMWARE = 0x1A,
+	PLDM_REQUEST_FIRMWARE_DATA = 0x15
 };
 
 /** @brief PLDM FWU values for Component Version String Type or Component Image
@@ -665,6 +666,24 @@ int decode_activate_firmware_resp(const struct pldm_msg *msg,
 int decode_request_firmware_data_req(const struct pldm_msg *msg,
 				     const size_t payload_length,
 				     uint32_t *offset, uint32_t *length);
+
+/** @brief Create a PLDM response message for RequestFirmwareData
+ *
+ *	@param[in] instance_id - Message's instance id
+ *	@param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of response message payload
+ *	@param[in] completion_code - Pointer to response msg's PLDM completion
+ *code
+ *	@param[in] component_image_portion - Pointer which holds image segment
+ * information
+ *	@return pldm_completion_codes
+ *	@note  Caller is responsible for memory alloc and dealloc of param
+ *		   'msg.payload'
+ */
+int encode_request_firmware_data_resp(
+    const uint8_t instance_id, struct pldm_msg *msg,
+    const size_t payload_length, const uint8_t completion_code,
+    struct variable_field *component_image_portion);
 
 #ifdef __cplusplus
 }

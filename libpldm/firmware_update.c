@@ -1093,3 +1093,33 @@ int decode_request_firmware_data_req(const struct pldm_msg *msg,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_request_firmware_data_resp(
+    const uint8_t instance_id, struct pldm_msg *msg,
+    const size_t payload_length, const uint8_t completion_code,
+    struct variable_field *component_image_portion)
+{
+	if (msg == NULL || component_image_portion == NULL ||
+	    component_image_portion->ptr == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length < component_image_portion->length ||
+	    payload_length < PLDM_FWU_BASELINE_TRANSFER_SIZE ||
+	    component_image_portion->length == 0) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	int rc = encode_pldm_header_only(PLDM_RESPONSE, instance_id, PLDM_FWUP,
+					 PLDM_REQUEST_FIRMWARE_DATA, msg);
+	if (PLDM_SUCCESS != rc) {
+		return rc;
+	}
+
+	msg->payload[0] = completion_code;
+
+	memcpy(msg->payload + 1, component_image_portion->ptr,
+	       component_image_portion->length);
+
+	return PLDM_SUCCESS;
+}
