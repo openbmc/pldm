@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "985da9e9_b8c1d3a9",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-03T04:56:20Z",
+      "side": 1,
+      "message": "please add entity.entity_type here",
+      "range": {
+        "startLine": 63,
+        "startChar": 68,
+        "endLine": 63,
+        "endChar": 73
+      },
+      "revId": "a3e7ef94498ed0f2f4e9f08ca44856e1c8f3d49f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3183020e_a7841e03",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-03T04:56:20Z",
+      "side": 1,
+      "message": "Parent entity not found",
+      "range": {
+        "startLine": 128,
+        "startChar": 29,
+        "endLine": 128,
+        "endChar": 51
+      },
+      "revId": "a3e7ef94498ed0f2f4e9f08ca44856e1c8f3d49f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b4ce4fb_0b7a9c74",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-03T04:56:20Z",
+      "side": 1,
+      "message": "return instead of break ?",
+      "range": {
+        "startLine": 130,
+        "startChar": 15,
+        "endLine": 130,
+        "endChar": 22
+      },
+      "revId": "a3e7ef94498ed0f2f4e9f08ca44856e1c8f3d49f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
