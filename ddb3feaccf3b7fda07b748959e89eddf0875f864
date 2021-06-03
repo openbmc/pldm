@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88a4f208_fa527ead",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-03T01:37:03Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/43401/1/configurations/pdr/11.json#388",
+      "range": {
+        "startLine": 1887,
+        "startChar": 37,
+        "endLine": 1887,
+        "endChar": 48
+      },
+      "revId": "ddb3feaccf3b7fda07b748959e89eddf0875f864",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08f4b772_2e506fbd",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1904,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-03T01:37:03Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 1904,
+        "startChar": 37,
+        "endLine": 1904,
+        "endChar": 48
+      },
+      "revId": "ddb3feaccf3b7fda07b748959e89eddf0875f864",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
