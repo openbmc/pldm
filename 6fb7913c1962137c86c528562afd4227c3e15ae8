@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d081503_af21c6f5",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-03T09:54:31Z",
+      "side": 1,
+      "message": "I will review the unit test code after the rework is complete with the implementation.",
+      "revId": "6fb7913c1962137c86c528562afd4227c3e15ae8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e5d10e4_8f7437ab",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-03T09:54:31Z",
+      "side": 1,
+      "message": "Thanks for start covering the bad paths!",
+      "revId": "6fb7913c1962137c86c528562afd4227c3e15ae8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
