@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "d44cba3c_a56b9b8a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-03T15:15:38Z",
+      "side": 1,
+      "message": "Please add a brief \"why\" in the commit message? Is this something the hypervisor team is looking for? What would this equate to? Seems like I only know of standby and runtime for the hypervisor. They can end up in a safe mode if they detect corrupted NVRAM but it\u0027s not something we can tell them to go to is my understanding.",
+      "revId": "9cb7fb0cf4c39e9e19c616138529f095e400bb2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eaaf16ef_8298343e",
         "filename": "oem/ibm/configurations/bios/enum_attrs.json",
         "patchSetId": 2
