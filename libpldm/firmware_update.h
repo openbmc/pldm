@@ -25,7 +25,8 @@ enum pldm_firmware_update_commands {
 	PLDM_GET_FIRMWARE_PARAMETERS = 0x02,
 	PLDM_REQUEST_UPDATE = 0x10,
 	PLDM_PASS_COMPONENT_TABLE = 0x13,
-	PLDM_UPDATE_COMPONENT = 0x14
+	PLDM_UPDATE_COMPONENT = 0x14,
+	PLDM_REQUEST_FIRMWARE_DATA = 0x15
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -705,6 +706,30 @@ int decode_update_component_resp(const struct pldm_msg *msg,
 int decode_request_firmware_data_req(const struct pldm_msg *msg,
 				     size_t payload_length, uint32_t *offset,
 				     uint32_t *length);
+
+/** @brief Create PLDM response message for RequestFirmwareData
+ *
+ *  The ComponentImagePortion is not encoded in the PLDM response message
+ *  by encode_request_firmware_data_resp to avoid an additional copy. Populating
+ *  ComponentImagePortion in the PLDM response message is handled by the user
+ *  of this API. The payload_length validation considers only the
+ *  CompletionCode.
+ *
+ *	@param[in] instance_id - Message's instance id
+ *	@param[in] completion_code - CompletionCode
+ *	@param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of response message payload
+ *
+ *	@return pldm_completion_codes
+ *
+ *	@note  Caller is responsible for memory alloc and dealloc of param
+ *		   'msg.payload'
+ */
+int encode_request_firmware_data_resp(uint8_t instance_id,
+				      uint8_t completion_code,
+				      struct pldm_msg *msg,
+				      size_t payload_length);
+
 #ifdef __cplusplus
 }
 #endif
