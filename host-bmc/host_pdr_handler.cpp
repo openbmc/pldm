@@ -116,6 +116,8 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
     PDRList stateSensorPDRs{};
     TLPDRMap tlpdrInfo{};
 
+    static int countEntityPDR{};
+
     uint32_t nextRecordHandle{};
     uint32_t recordHandle{};
     bool isFormatRecHandles = false;
@@ -207,6 +209,8 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
                 if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
                 {
+                    countEntityPDR++;
+                    std::cout << "GOT ENTITY ASSOC PDR " << countEntityPDR << " times \n";
                     mergeEntityAssociations(pdr);
                     merged = true;
                 }
@@ -245,14 +249,19 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
 
     parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
 
+    std::cout << "AT THE END TOTAL ENTITY ASSOC PDR " << countEntityPDR << "\n";
+    std::cout << "merged= " << (uint32_t)merged << "\n";
+
     if (merged)
     {
+        std::cout << "sending PDR repo chg event \n";
         // We have merged host's entity association PDRs with our own. Send an
         // event to the host firmware to indicate the same.
         sendPDRRepositoryChgEvent(
             std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
             FORMAT_IS_PDR_HANDLES);
     }
+    std::cout << "exiting fetchPDR \n";
 }
 
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
@@ -290,11 +299,16 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
+    std::cout << "after extraction container entity type is " << entities[0].entity_type << "\n";
+    std::cout << "after extraction numEntities " << numEntities << "\n";
     for (size_t i = 0; i < numEntities; ++i)
     {
+        std::cout << "for loop entities[i].entity_type " << entities[i].entity_type << "\n";
+        std::cout << "for loop entities[i].entity_instance_num " << entities[i].entity_instance_num << "\n";
         pldm_entity parent{};
         if (getParent(entities[i].entity_type, parent))
         {
+            std::cout << "fetched parent as " << parent.entity_type << "\n";
             auto node = pldm_entity_association_tree_find(entityTree, &parent);
             if (node)
             {
@@ -304,13 +318,25 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             }
         }
     }
-    free(entities);
+   // free(entities);
 
     if (merged)
     {
         // Update our PDR repo with the merged entity association PDRs
-        pldm_entity_association_pdr_add(entityTree, repo, true);
+       // pldm_entity_association_pdr_add(entityTree, repo, true);
+       pldm_entity_node *node = nullptr;
+       pldm_find_entity_ref_in_tree(entityTree,entities[0],&node);
+       if(node == nullptr)
+       {
+           std::cerr << "\ncould not find referrence of the entity in the tree \n";
+       }
+       else
+       {
+           std::cout << "creating remote entity assoc PDR \n";
+            pldm_entity_association_pdr_add_from_node(node, repo,true);
+       }
     }
+    free(entities);
 }
 
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
@@ -318,6 +344,7 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
 {
     assert(eventDataFormat == FORMAT_IS_PDR_HANDLES);
 
+    std::cout << "enter sendPDRRepositoryChgEvent \n";
     // Extract from the PDR repo record handles of PDRs we want the host
     // to pull up.
     std::vector<uint8_t> eventDataOps{PLDM_RECORDS_ADDED};
@@ -326,22 +353,29 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         numsOfChangeEntries.size());
     for (auto pdrType : pdrTypes)
     {
+        std::cout << "for loop pdr Type " << (uint32_t)pdrType << "\n";
         const pldm_pdr_record* record{};
         do
         {
+            std::cout << "before pldm_pdr_find_record_by_type \n";
             record = pldm_pdr_find_record_by_type(repo, pdrType, record,
                                                   nullptr, nullptr);
+            std::cout << "after pldm_pdr_find_record_by_type \n";
             if (record && pldm_pdr_record_is_remote(record))
             {
+                std::cout << "found record is remote \n";
                 changeEntries[0].push_back(
                     pldm_pdr_get_record_handle(repo, record));
+                std::cout << "after pushing to changeEntries \n";
             }
         } while (record);
     }
     if (changeEntries.empty())
     {
+        std::cout << "changeEntries is empty RETURNING \n";
         return;
     }
+    std::cout << "changeEntries size " << changeEntries[0].size();
     numsOfChangeEntries[0] = changeEntries[0].size();
 
     // Encode PLDM platform event msg to indicate a PDR repo change.

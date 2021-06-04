@@ -283,6 +283,12 @@ pldm_entity_node *pldm_entity_get_parent(pldm_entity_node *node);
 void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 				     pldm_pdr *repo, bool is_remote);
 
+void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
+                pldm_pdr *repo, bool is_remote);
+
+void pldm_find_entity_ref_in_tree(pldm_entity_association_tree *tree,
+             pldm_entity entity, pldm_entity_node **node);
+
 /** @brief Get number of children of entity
  *
  *  @param[in] node - opaque pointer acting as a handle to an entity node

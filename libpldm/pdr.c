@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 typedef struct pldm_pdr_record {
 	uint32_t record_handle;
@@ -616,6 +617,44 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 	assert(repo != NULL);
 
 	entity_association_pdr_add(tree->root, repo, is_remote);
+}
+
+void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node, 
+                   pldm_pdr *repo, bool is_remote)
+{
+    assert(repo != NULL);
+
+    entity_association_pdr_add(node, repo, is_remote);
+}
+
+void find_entity_ref_in_tree(pldm_entity_node *tree_node, pldm_entity entity, pldm_entity_node **node)
+{
+    printf("\nenter find_entity_ref_in_tree \n");
+    if(tree_node == NULL)
+    {
+        printf("\n returning \n");
+        return;
+    }
+    printf("\ntree_node->entity.entity_type %d",tree_node->entity.entity_type);
+    printf("\nentity.entity_type %d",entity.entity_type);
+
+    if(tree_node->entity.entity_type == entity.entity_type &&
+        tree_node->entity.entity_instance_num == entity.entity_instance_num)
+     {
+         printf("\nfound a match \n");
+         *node = tree_node;
+         return;
+     }
+     find_entity_ref_in_tree(tree_node->first_child, entity, node);
+     find_entity_ref_in_tree(tree_node->next_sibling, entity, node);
+}
+
+void pldm_find_entity_ref_in_tree(pldm_entity_association_tree *tree,
+                       pldm_entity entity, pldm_entity_node **node)
+{
+    printf("\nentered pldm_find_entity_ref_in_tree with entity type %d\n", entity.entity_type);
+     assert(tree != NULL);
+     find_entity_ref_in_tree(tree->root,entity,node);
 }
 
 void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo)
