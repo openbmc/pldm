@@ -1,0 +1,366 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0358a366_f4044220",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "Is there any current limitation of the tool\npldm-PDR-visualization ??",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c67ff281_a8b2c2dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "pldmtool for GetPDR command lacks to display of PDRs all at once. It fetchs only one PDR info at a time.",
+      "range": {
+        "startLine": 9,
+        "startChar": 6,
+        "endLine": 9,
+        "endChar": 15
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1203ce40_c9f18415",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "functionality",
+      "range": {
+        "startLine": 13,
+        "startChar": 42,
+        "endLine": 13,
+        "endChar": 56
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c82033d_cfbac99a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "what kind of a picture",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 11
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "895593bd_30b17af2",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "Overview of Visualize-pdr tool ?? here u can mention why we need it . there are some good points in commit message we can put here",
+      "range": {
+        "startLine": 1,
+        "startChar": 2,
+        "endLine": 1,
+        "endChar": 10
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77da78b3_571edd93",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "instead of saying full system view i think we says of full view of available PDR types\n\nThis should go in implementation section",
+      "range": {
+        "startLine": 3,
+        "startChar": 42,
+        "endLine": 3,
+        "endChar": 62
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3ff2f43_0423a6e1",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "Tool Requirements ??",
+      "range": {
+        "startLine": 5,
+        "startChar": 2,
+        "endLine": 5,
+        "endChar": 14
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c34c7382_73a13517",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "is alignment required?",
+      "range": {
+        "startLine": 8,
+        "startChar": 5,
+        "endLine": 8,
+        "endChar": 82
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34567dc0_3e41aa77",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "that can be",
+      "range": {
+        "startLine": 20,
+        "startChar": 8,
+        "endLine": 20,
+        "endChar": 18
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4169f789_4f5c7f09",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "is this required ?",
+      "range": {
+        "startLine": 29,
+        "startChar": 2,
+        "endLine": 29,
+        "endChar": 8
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68eef835_85f8ce4e",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "--user, --password ??",
+      "range": {
+        "startLine": 30,
+        "startChar": 61,
+        "endLine": 30,
+        "endChar": 67
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73ff2cd0_7b6f633a",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "IP",
+      "range": {
+        "startLine": 34,
+        "startChar": 23,
+        "endLine": 34,
+        "endChar": 25
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe65b709_788ded3f",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "It is not required i guess ... help is very clear",
+      "range": {
+        "startLine": 40,
+        "startChar": 1,
+        "endLine": 43,
+        "endChar": 29
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f577d3b1_612dde22",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "sample ouput format",
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3829f718_248fb451",
+        "filename": "tools/visualize-pdr/pldm_visualise_pdrs.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "PDR",
+      "range": {
+        "startLine": 3,
+        "startChar": 26,
+        "endLine": 3,
+        "endChar": 29
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c824f7b5_355fa146",
+        "filename": "tools/visualize-pdr/pldm_visualise_pdrs.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T11:12:46Z",
+      "side": 1,
+      "message": "dictionaries",
+      "range": {
+        "startLine": 107,
+        "startChar": 23,
+        "endLine": 107,
+        "endChar": 36
+      },
+      "revId": "26f731c0b9faa03e828a386b87f4586b1416d719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
