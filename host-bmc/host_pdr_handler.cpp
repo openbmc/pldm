@@ -207,13 +207,24 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             }
         }
     }
-    free(entities);
 
     if (merged)
     {
         // Update our PDR repo with the merged entity association PDRs
-        pldm_entity_association_pdr_add(entityTree, repo, true);
+        pldm_entity_node* node = nullptr;
+        pldm_find_entity_ref_in_tree(entityTree, entities[0], &node);
+        if (node == nullptr)
+        {
+            std::cerr
+                << "\ncould not find referrence of the entity in the tree \n";
+        }
+        else
+        {
+            pldm_entity_association_pdr_add_from_node(node, repo, &entities,
+                                                      numEntities, true);
+        }
     }
+    free(entities);
 }
 
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
