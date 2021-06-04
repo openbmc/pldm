@@ -47,14 +47,20 @@ TEST(FruParser, allScenarios)
         {"xyz.openbmc_project.Inventory.Item.Chassis",
          "xyz.openbmc_project.Inventory.Item.Board",
          "xyz.openbmc_project.Inventory.Item.Board.Motherboard",
+         "xyz.openbmc_project.Inventory.Item.Dimm",
          "xyz.openbmc_project.Inventory.Item.Panel",
+         "xyz.openbmc_project.Inventory.Item.DiskBackplane",
+         "xyz.openbmc_project.Inventory.Item.PCIeDevice",
+         "xyz.openbmc_project.Inventory.Item.Fan",
          "xyz.openbmc_project.Inventory.Item.PowerSupply",
          "xyz.openbmc_project.Inventory.Item.Vrm",
          "xyz.openbmc_project.Inventory.Item.Cpu",
          "xyz.openbmc_project.Inventory.Item.Bmc",
-         "xyz.openbmc_project.Inventory.Item.Dimm",
-         "xyz.openbmc_project.Inventory.Item.Tpm",
-         "xyz.openbmc_project.Inventory.Item.System"}};
+         "xyz.openbmc_project.Inventory.Item.Battery",
+         "xyz.openbmc_project.Inventory.Item.Connector",
+         "xyz.openbmc_project.Inventory.Item.PCIeSlot",
+         "xyz.openbmc_project.Inventory.Item.System",
+         "xyz.openbmc_project.Inventory.Item.Tpm"}};
     auto dbusInfo = parser.inventoryLookup();
     ASSERT_EQ(dbusInfo == lookupInfo, true);
 
