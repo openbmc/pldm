@@ -618,6 +618,39 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 	entity_association_pdr_add(tree->root, repo, is_remote);
 }
 
+void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
+					       pldm_pdr *repo, bool is_remote)
+{
+	assert(repo != NULL);
+
+	entity_association_pdr_add(node, repo, is_remote);
+}
+
+void find_entity_ref_in_tree(pldm_entity_node *tree_node, pldm_entity entity,
+			     pldm_entity_node **node)
+{
+	if (tree_node == NULL) {
+		return;
+	}
+
+	if (tree_node->entity.entity_type == entity.entity_type &&
+	    tree_node->entity.entity_instance_num ==
+		entity.entity_instance_num) {
+		*node = tree_node;
+		return;
+	}
+
+	find_entity_ref_in_tree(tree_node->first_child, entity, node);
+	find_entity_ref_in_tree(tree_node->next_sibling, entity, node);
+}
+
+void pldm_find_entity_ref_in_tree(pldm_entity_association_tree *tree,
+				  pldm_entity entity, pldm_entity_node **node)
+{
+	assert(tree != NULL);
+	find_entity_ref_in_tree(tree->root, entity, node);
+}
+
 void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo)
 {
 	assert(repo != NULL);
