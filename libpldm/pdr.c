@@ -631,15 +631,37 @@ static void entity_association_pdr_add_entry(pldm_entity_node *curr,
 	}
 }
 
+bool is_present(pldm_entity entity, pldm_entity **entities, size_t num_entities)
+{
+	if (entities == NULL || num_entities == 0) {
+		return true;
+	}
+	size_t i = 0;
+	while (i < num_entities) {
+		if ((*entities + i)->entity_type == entity.entity_type) {
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+
 static void entity_association_pdr_add(pldm_entity_node *curr, pldm_pdr *repo,
-				       bool is_remote)
+				       pldm_entity **entities,
+				       size_t num_entities, bool is_remote)
 {
 	if (curr == NULL) {
 		return;
 	}
-	entity_association_pdr_add_entry(curr, repo, is_remote);
-	entity_association_pdr_add(curr->next_sibling, repo, is_remote);
-	entity_association_pdr_add(curr->first_child, repo, is_remote);
+	bool to_add = true;
+	to_add = is_present(curr->entity, entities, num_entities);
+	if (to_add) {
+		entity_association_pdr_add_entry(curr, repo, is_remote);
+	}
+	entity_association_pdr_add(curr->next_sibling, repo, entities,
+				   num_entities, is_remote);
+	entity_association_pdr_add(curr->first_child, repo, entities,
+				   num_entities, is_remote);
 }
 
 void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
@@ -648,7 +670,44 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 	assert(tree != NULL);
 	assert(repo != NULL);
 
-	entity_association_pdr_add(tree->root, repo, is_remote);
+	entity_association_pdr_add(tree->root, repo, NULL, 0, is_remote);
+}
+
+void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
+					       pldm_pdr *repo,
+					       pldm_entity **entities,
+					       size_t num_entities,
+					       bool is_remote)
+{
+	assert(repo != NULL);
+
+	entity_association_pdr_add(node, repo, entities, num_entities,
+				   is_remote);
+}
+
+void find_entity_ref_in_tree(pldm_entity_node *tree_node, pldm_entity entity,
+			     pldm_entity_node **node)
+{
+	if (tree_node == NULL) {
+		return;
+	}
+
+	if (tree_node->entity.entity_type == entity.entity_type &&
+	    tree_node->entity.entity_instance_num ==
+		entity.entity_instance_num) {
+		*node = tree_node;
+		return;
+	}
+
+	find_entity_ref_in_tree(tree_node->first_child, entity, node);
+	find_entity_ref_in_tree(tree_node->next_sibling, entity, node);
+}
+
+void pldm_find_entity_ref_in_tree(pldm_entity_association_tree *tree,
+				  pldm_entity entity, pldm_entity_node **node)
+{
+	assert(tree != NULL);
+	find_entity_ref_in_tree(tree->root, entity, node);
 }
 
 void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo)
