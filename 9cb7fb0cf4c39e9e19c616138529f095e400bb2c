@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e2750910_23aca16a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T12:06:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d44cba3c_a56b9b8a",
+      "revId": "9cb7fb0cf4c39e9e19c616138529f095e400bb2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eaaf16ef_8298343e",
         "filename": "oem/ibm/configurations/bios/enum_attrs.json",
         "patchSetId": 2
@@ -39,6 +57,30 @@
       "revId": "9cb7fb0cf4c39e9e19c616138529f095e400bb2c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2f699f0_7364526d",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-04T12:06:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaaf16ef_8298343e",
+      "range": {
+        "startLine": 105,
+        "startChar": 23,
+        "endLine": 105,
+        "endChar": 29
+      },
+      "revId": "9cb7fb0cf4c39e9e19c616138529f095e400bb2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
