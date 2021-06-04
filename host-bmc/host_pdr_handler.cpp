@@ -116,6 +116,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
     PDRList stateSensorPDRs{};
     TLPDRMap tlpdrInfo{};
 
+    static int countEntityPDR{};
     uint32_t nextRecordHandle{};
     uint32_t recordHandle{};
     bool isFormatRecHandles = false;
@@ -207,6 +208,7 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
                 if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
                 {
+                    countEntityPDR++;
                     mergeEntityAssociations(pdr);
                     merged = true;
                 }
@@ -304,13 +306,24 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
             }
         }
     }
-    free(entities);
 
     if (merged)
     {
         // Update our PDR repo with the merged entity association PDRs
-        pldm_entity_association_pdr_add(entityTree, repo, true);
+        // pldm_entity_association_pdr_add(entityTree, repo, true);
+        pldm_entity_node* node = nullptr;
+        pldm_find_entity_ref_in_tree(entityTree, entities[0], &node);
+        if (node == nullptr)
+        {
+            std::cerr
+                << "\ncould not find referrence of the entity in the tree \n";
+        }
+        else
+        {
+            pldm_entity_association_pdr_add_from_node(node, repo, true);
+        }
     }
+    free(entities);
 }
 
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
