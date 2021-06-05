@@ -1,9 +1,115 @@
+#include <cstring>
+
 #include "libpldm/base.h"
 #include "libpldm/firmware_update.h"
 
 #include <gtest/gtest.h>
 
 constexpr auto hdrSize = sizeof(pldm_msg_hdr);
+
+TEST(DecodeDescriptors, goodPath3Descriptors)
+{
+    // In the descriptor data there are 3 descriptor entries
+    // 1) IANA enterprise ID
+    std::array<uint8_t, PLDM_FWUP_IANA_ENTERPRISE_ID_LENGTH> iana{0x0a, 0x0b,
+                                                                  0x0c, 0xd};
+    // 2) UUID
+    std::array<uint8_t, PLDM_FWUP_UUID_LENGTH> uuid{
+        0x12, 0x44, 0xd2, 0x64, 0x8d, 0x7d, 0x47, 0x18,
+        0xa0, 0x30, 0xfc, 0x8a, 0x56, 0x58, 0x7d, 0x5b};
+    // 3) Vendor Defined
+    constexpr std::string_view vendorTitle{"OpenBMC"};
+    constexpr size_t vendorDescriptorLen = 2;
+    std::array<uint8_t, vendorDescriptorLen> vendorDescriptorData{0x01, 0x02};
+
+    constexpr size_t vendorDefinedDescriptorLen =
+        sizeof(pldm_vendor_defined_descriptor_title_data()
+                   .vendor_defined_descriptor_title_str_type) +
+        sizeof(pldm_vendor_defined_descriptor_title_data()
+                   .vendor_defined_descriptor_title_str_len) +
+        vendorTitle.size() + vendorDescriptorData.size();
+
+    constexpr size_t descriptorsLength =
+        3 * (sizeof(pldm_descriptor_tlv().descriptor_type) +
+             sizeof(pldm_descriptor_tlv().descriptor_length)) +
+        iana.size() + uuid.size() + vendorDefinedDescriptorLen;
+
+    std::array<uint8_t, descriptorsLength> descriptors{
+        0x01, 0x00, 0x04, 0x00, 0x0a, 0x0b, 0x0c, 0x0d, 0x02, 0x00, 0x10,
+        0x00, 0x12, 0x44, 0xd2, 0x64, 0x8d, 0x7d, 0x47, 0x18, 0xa0, 0x30,
+        0xfc, 0x8a, 0x56, 0x58, 0x7d, 0x5b, 0xFF, 0xFF, 0x0B, 0x00, 0x01,
+        0x07, 0x4f, 0x70, 0x65, 0x6e, 0x42, 0x4d, 0x43, 0x01, 0x02};
+
+    size_t descriptorCount = 1;
+    size_t descriptorsRemainingLength = descriptorsLength;
+    int rc = 0;
+
+    while (descriptorsRemainingLength && (descriptorCount <= 3))
+    {
+        uint16_t descriptorType = 0;
+        uint16_t descriptorLen = 0;
+        variable_field descriptorData{};
+
+        rc = decode_descriptor_type_length_value(
+            descriptors.data() + descriptorsLength - descriptorsRemainingLength,
+            descriptorsRemainingLength, &descriptorType, &descriptorLen,
+            &descriptorData);
+        EXPECT_EQ(rc, PLDM_SUCCESS);
+
+        if (descriptorCount == 1)
+        {
+            EXPECT_EQ(descriptorType, PLDM_FWUP_IANA_ENTERPRISE_ID);
+            EXPECT_EQ(descriptorLen, PLDM_FWUP_IANA_ENTERPRISE_ID_LENGTH);
+            EXPECT_EQ(descriptorData.length, iana.size());
+            EXPECT_EQ(true,
+                      std::equal(descriptorData.ptr,
+                                 descriptorData.ptr + descriptorData.length,
+                                 iana.begin(), iana.end()));
+        }
+        else if (descriptorCount == 2)
+        {
+            EXPECT_EQ(descriptorType, PLDM_FWUP_UUID);
+            EXPECT_EQ(descriptorLen, PLDM_FWUP_UUID_LENGTH);
+            EXPECT_EQ(descriptorData.length, uuid.size());
+            EXPECT_EQ(true,
+                      std::equal(descriptorData.ptr,
+                                 descriptorData.ptr + descriptorData.length,
+                                 uuid.begin(), uuid.end()));
+        }
+        else if (descriptorCount == 3)
+        {
+            EXPECT_EQ(descriptorType, PLDM_FWUP_VENDOR_DEFINED);
+            EXPECT_EQ(descriptorLen, vendorDefinedDescriptorLen);
+
+            variable_field descriptorTitleStr{};
+            variable_field vendorDefinedDescriptorData{};
+
+            rc = decode_vendor_defined_descriptor_value(
+                descriptorData.ptr, descriptorData.length, &descriptorTitleStr,
+                &vendorDefinedDescriptorData);
+            EXPECT_EQ(rc, PLDM_SUCCESS);
+
+            EXPECT_EQ(descriptorTitleStr.length, vendorTitle.size());
+            std::string vendorTitleStr(
+                reinterpret_cast<const char*>(descriptorTitleStr.ptr),
+                descriptorTitleStr.length);
+            EXPECT_EQ(vendorTitleStr, vendorTitle);
+
+            EXPECT_EQ(vendorDefinedDescriptorData.length,
+                      vendorDescriptorData.size());
+            EXPECT_EQ(true, std::equal(vendorDefinedDescriptorData.ptr,
+                                       vendorDefinedDescriptorData.ptr +
+                                           vendorDefinedDescriptorData.length,
+                                       vendorDescriptorData.begin(),
+                                       vendorDescriptorData.end()));
+        }
+
+        descriptorsRemainingLength -= sizeof(descriptorType) +
+                                      sizeof(descriptorLen) +
+                                      descriptorData.length;
+        descriptorCount++;
+    }
+}
 
 TEST(QueryDeviceIdentifiers, goodPathEncodeRequest)
 {
