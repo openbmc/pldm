@@ -347,7 +347,7 @@ typedef struct pldm_entity_association_tree {
 
 typedef struct pldm_entity_node {
 	pldm_entity entity;
-	pldm_entity_node *parent;
+	pldm_entity parent;
 	pldm_entity_node *first_child;
 	pldm_entity_node *next_sibling;
 	uint8_t association_type;
@@ -421,9 +421,11 @@ pldm_entity_node *pldm_entity_association_tree_add(
 	       association_type == PLDM_ENTITY_ASSOCIAION_LOGICAL);
 	pldm_entity_node *node = malloc(sizeof(pldm_entity_node));
 	assert(node != NULL);
-	node->parent = NULL;
 	node->first_child = NULL;
 	node->next_sibling = NULL;
+	node->parent.entity_type = 0;
+	node->parent.entity_instance_num = 0;
+	node->parent.entity_container_id = 0;
 	node->entity.entity_type = entity->entity_type;
 	node->entity.entity_instance_num =
 	    entity_instance_number != 0xFFFF ? entity_instance_number : 1;
@@ -436,7 +438,7 @@ pldm_entity_node *pldm_entity_association_tree_add(
 		node->entity.entity_container_id = 0;
 	} else if (parent != NULL && parent->first_child == NULL) {
 		parent->first_child = node;
-		node->parent = parent;
+		node->parent = parent->entity;
 		node->entity.entity_container_id = next_container_id(tree);
 	} else {
 		pldm_entity_node *start =
@@ -534,11 +536,24 @@ inline bool pldm_entity_is_node_parent(pldm_entity_node *node)
 	return node->first_child != NULL;
 }
 
-inline pldm_entity_node *pldm_entity_get_parent(pldm_entity_node *node)
+inline pldm_entity pldm_entity_get_parent(pldm_entity_node *node)
 {
 	assert(node != NULL);
 
 	return node->parent;
+}
+
+inline bool pldm_entity_is_exist_parent(pldm_entity_node *node)
+{
+	assert(node != NULL);
+
+	if (node->parent.entity_type == 0 &&
+	    node->parent.entity_instance_num == 0 &&
+	    node->parent.entity_container_id == 0) {
+		return false;
+	}
+
+	return true;
 }
 
 uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
@@ -820,6 +835,7 @@ static void entity_association_tree_copy(pldm_entity_node *org_node,
 		return;
 	}
 	*new_node = malloc(sizeof(pldm_entity_node));
+	(*new_node)->parent = org_node->parent;
 	(*new_node)->entity = org_node->entity;
 	(*new_node)->association_type = org_node->association_type;
 	(*new_node)->first_child = NULL;
