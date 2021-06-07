@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "36f94b7d_7ec19889",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-07T07:33:28Z",
+      "side": 1,
+      "message": "nit:\nconst?",
+      "range": {
+        "startLine": 73,
+        "startChar": 61,
+        "endLine": 73,
+        "endChar": 68
+      },
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9004148_07a04332",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-07T07:33:28Z",
+      "side": 1,
+      "message": "nit:\n!\u003d??",
+      "range": {
+        "startLine": 100,
+        "startChar": 12,
+        "endLine": 100,
+        "endChar": 13
+      },
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "613b4d2e_5d5b5656",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-07T07:33:28Z",
+      "side": 1,
+      "message": "don\u0027t library consumers need VendorDefinedDescriptorTitleStringType and VendorDefinedDescriptorTitleStringLength?",
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0083802_50b30738",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-07T07:33:28Z",
+      "side": 1,
+      "message": "i think this should be VendorDefinedDescriptorTitleString",
+      "range": {
+        "startLine": 133,
+        "startChar": 31,
+        "endLine": 133,
+        "endChar": 59
+      },
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a46be076_d0b441da",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-07T07:33:28Z",
+      "side": 1,
+      "message": "any plans for writing negative unit tests?",
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20c2a31e_a20f94f2",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-07T07:33:28Z",
+      "side": 1,
+      "message": "if my understanding is correct we cannot have this combination.\n\nIf the FD uses Vendor Defined values as part of its implementation of this specification (for example to provide a vendor defined error code or component classification), then the initial descriptor shall be set to either PCI Vendor ID or IANA Enterprise ID.",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 61
+      },
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
