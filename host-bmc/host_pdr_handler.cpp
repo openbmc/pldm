@@ -205,6 +205,12 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                 // Process the PDR host firmware sent us. The most common action
                 // is to add the PDR to the the BMC's PDR repo.
                 auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+                if(!recordHandle)
+                {
+                    std::cout << "first record from host, fetching recordHandle"
+                            <<"  from PDR as " << pdrHdr->record_handle << "\n";
+                    recordHandle = pdrHdr->record_handle;
+                }
                 if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
                 {
                     mergeEntityAssociations(pdr);
@@ -226,7 +232,9 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                     {
                         stateSensorPDRs.emplace_back(pdr);
                     }
-                    pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
+                    std::cout << "calling pldm_pdr_add with HOST record handle " << recordHandle << "\n";
+                    pldm_pdr_add(repo, pdr.data(), respCount, recordHandle,
+                                 true);
                 }
             }
 
