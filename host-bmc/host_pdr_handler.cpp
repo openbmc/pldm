@@ -226,7 +226,9 @@ void HostPDRHandler::_fetchPDR(sdeventplus::source::EventBase& /*source*/)
                     {
                         stateSensorPDRs.emplace_back(pdr);
                     }
-                    pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
+                    std::cout << "calling pldm_pdr_add with HOST record handle " << recordHandle << "\n";
+                    pldm_pdr_add(repo, pdr.data(), respCount, recordHandle,
+                                 true);
                 }
             }
 
