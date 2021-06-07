@@ -250,7 +250,8 @@ inline bool pldm_pdr_record_is_remote(const pldm_pdr_record *record)
 uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 				     uint16_t fru_rsi, uint16_t entity_type,
 				     uint16_t entity_instance_num,
-				     uint16_t container_id)
+				     uint16_t container_id,
+				     uint32_t lastUsedBMCRecordHandle)
 {
 	uint32_t size = sizeof(struct pldm_pdr_hdr) +
 			sizeof(struct pldm_pdr_fru_record_set);
@@ -271,7 +272,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 	fru->entity_instance_num = htole16(entity_instance_num);
 	fru->container_id = htole16(container_id);
 
-	return pldm_pdr_add(repo, data, size, 0, false);
+	return pldm_pdr_add(repo, data, size, lastUsedBMCRecordHandle, false);
 }
 
 const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
