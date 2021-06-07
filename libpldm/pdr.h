@@ -281,9 +281,17 @@ bool pldm_entity_is_node_parent(pldm_entity_node *node);
  *
  *  @param[in] node - opaque pointer acting as a handle to an entity node
  *
- *  @return pldm_entity_node* - opaque pointer to parent entity
+ *  @return pldm_entity - pldm entity
  */
-pldm_entity_node *pldm_entity_get_parent(pldm_entity_node *node);
+pldm_entity pldm_entity_get_parent(pldm_entity_node *node);
+
+/** @brief Check the current pldm entity is exist parent
+ *
+ *  @param[in] node - opaque pointer acting as a handle to an entity node
+ *
+ *  @return bool true if exist parent, false otherwise
+ */
+bool pldm_entity_is_exist_parent(pldm_entity_node *node);
 
 /** @brief Convert entity association tree to PDR
  *
