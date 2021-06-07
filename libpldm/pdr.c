@@ -701,6 +701,7 @@ static void entity_association_tree_copy(pldm_entity_node *org_node,
 		return;
 	}
 	*new_node = malloc(sizeof(pldm_entity_node));
+	(*new_node)->parent = org_node->parent;
 	(*new_node)->entity = org_node->entity;
 	(*new_node)->association_type = org_node->association_type;
 	(*new_node)->first_child = NULL;
