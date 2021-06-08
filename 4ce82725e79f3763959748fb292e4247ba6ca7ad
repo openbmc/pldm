@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f57dc22_aa740a6d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:28:07Z",
+      "side": 1,
+      "message": "Looks like this was the function addition since the last +1\u0027s. I\u0027m not familiar with this area so I\u0027m not able to contribute much to this aspect of the review.",
+      "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ff01e76_3e146c83",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 24
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:28:07Z",
+      "side": 1,
+      "message": "Well, I guess it is internally called a handle so the variable name makes sense.",
+      "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce3f0cbb_0ea4591e",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:28:07Z",
+      "side": 1,
+      "message": "The _handle implies an object of some sort to me. Is this really just a bmc_record_counter or something like that?",
+      "range": {
+        "startLine": 174,
+        "startChar": 18,
+        "endLine": 174,
+        "endChar": 35
+      },
+      "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dba5bdc_aa9b3423",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:28:07Z",
+      "side": 1,
+      "message": "statics can be dangerous, any other way to just discover what this should start at as this function is called?",
+      "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
