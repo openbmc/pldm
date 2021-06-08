@@ -125,6 +125,96 @@ int decode_pldm_package_header_info(
 	return PLDM_SUCCESS;
 }
 
+int decode_firmware_device_id_record(
+    const uint8_t *data, size_t length, uint16_t component_bitmap_bit_length,
+    struct pldm_firmware_device_id_record *fw_device_id_record,
+    struct variable_field *applicable_components,
+    struct variable_field *comp_image_set_version_str,
+    struct variable_field *record_descriptors,
+    struct variable_field *fw_device_pkg_data)
+{
+	if (data == NULL || fw_device_id_record == NULL ||
+	    applicable_components == NULL ||
+	    comp_image_set_version_str == NULL || record_descriptors == NULL ||
+	    fw_device_pkg_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (length < sizeof(struct pldm_firmware_device_id_record)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if ((component_bitmap_bit_length %
+	     PLDM_FWUP_COMPONENT_BITMAP_MULTIPLE) != 0) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_firmware_device_id_record *data_record =
+	    (struct pldm_firmware_device_id_record *)(data);
+
+	if (!is_string_type_valid(
+		data_record->comp_image_set_version_string_type) ||
+	    (data_record->comp_image_set_version_string_length == 0)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	fw_device_id_record->record_length =
+	    le16toh(data_record->record_length);
+	fw_device_id_record->descriptor_count = data_record->descriptor_count;
+	fw_device_id_record->device_update_option_flags.value =
+	    le32toh(data_record->device_update_option_flags.value);
+	fw_device_id_record->comp_image_set_version_string_type =
+	    data_record->comp_image_set_version_string_type;
+	fw_device_id_record->comp_image_set_version_string_length =
+	    data_record->comp_image_set_version_string_length;
+	fw_device_id_record->fw_device_pkg_data_length =
+	    le16toh(data_record->fw_device_pkg_data_length);
+
+	if (length < fw_device_id_record->record_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	uint16_t applicable_components_length =
+	    component_bitmap_bit_length / PLDM_FWUP_COMPONENT_BITMAP_MULTIPLE;
+	uint16_t calc_min_record_length =
+	    sizeof(struct pldm_firmware_device_id_record) +
+	    applicable_components_length +
+	    data_record->comp_image_set_version_string_length +
+	    PLDM_FWUP_DEVICE_DESCRIPTOR_MIN_LEN +
+	    fw_device_id_record->fw_device_pkg_data_length;
+
+	if (fw_device_id_record->record_length < calc_min_record_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	applicable_components->ptr =
+	    data + sizeof(struct pldm_firmware_device_id_record);
+	applicable_components->length = applicable_components_length;
+
+	comp_image_set_version_str->ptr =
+	    applicable_components->ptr + applicable_components->length;
+	comp_image_set_version_str->length =
+	    fw_device_id_record->comp_image_set_version_string_length;
+
+	record_descriptors->ptr = comp_image_set_version_str->ptr +
+				  comp_image_set_version_str->length;
+	record_descriptors->length =
+	    fw_device_id_record->record_length -
+	    sizeof(struct pldm_firmware_device_id_record) -
+	    applicable_components_length -
+	    fw_device_id_record->comp_image_set_version_string_length -
+	    fw_device_id_record->fw_device_pkg_data_length;
+
+	if (fw_device_id_record->fw_device_pkg_data_length) {
+		fw_device_pkg_data->ptr =
+		    record_descriptors->ptr + record_descriptors->length;
+		fw_device_pkg_data->length =
+		    fw_device_id_record->fw_device_pkg_data_length;
+	}
+
+	return PLDM_SUCCESS;
+}
+
 int decode_descriptor_type_length_value(const uint8_t *data, size_t length,
 					uint16_t *descriptor_type,
 					struct variable_field *descriptor_data)
