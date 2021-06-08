@@ -30,7 +30,11 @@ constexpr auto clockId = sdeventplus::ClockId::RealTime;
 using Clock = Clock<clockId>;
 using Timer = Time<clockId>;
 
-pldm::pdr::TerminusID TID = 0; // TID will be implemented later.
+using sdbusplus::exception::SdBusError;
+
+// Shutdown effecter terminus ID, set when we look up the effecter
+pldm::pdr::TerminusID TID = 0;
+
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
 SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
@@ -131,7 +135,7 @@ void SoftPowerOff::hostSoftOffComplete(sdbusplus::message_t& msg)
              msgPreviousEventState);
 
     if (msgSensorID == sensorID && msgSensorOffset == sensorOffset &&
-        msgEventState == PLDM_SW_TERM_GRACEFUL_SHUTDOWN)
+        msgEventState == PLDM_SW_TERM_GRACEFUL_SHUTDOWN && msgTID == TID)
     {
         // Receive Graceful shutdown completion event message. Disable the timer
         auto rc = timer.stop();
