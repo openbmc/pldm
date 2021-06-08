@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8553c79a_7b480cd6",
+        "filename": "libpldm/fru.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-08T11:49:30Z",
+      "side": 1,
+      "message": "I dont think we need any separate if condition...i think the handler should be responsible to assign the default value if TransferFlag is set to Start or StartAndEnd",
+      "parentUuid": "bcb18389_e1098100",
+      "revId": "990ccd6c3791cb451dd82a0df039729b43989d1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "00a7a834_f610d3ee",
         "filename": "libpldm/fru.h",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2021-06-03T11:34:06Z",
       "side": 1,
       "message": "INVALID_DATA_TRANSFER_HANDLE\u003d0x80, INVALID_TRANSFER_FLAG\u003d0x82,\n\nshould these codes from the spec be added as well?",
+      "revId": "990ccd6c3791cb451dd82a0df039729b43989d1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ceb9f84_3554000d",
+        "filename": "libpldm/fru.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-08T11:49:30Z",
+      "side": 1,
+      "message": "i thought so ... but those value is already defined in base.h..",
+      "parentUuid": "00a7a834_f610d3ee",
       "revId": "990ccd6c3791cb451dd82a0df039729b43989d1a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "44bc0c23_051d4166",
+        "filename": "libpldm/fru.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-08T11:49:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dac26dd0_bbd4b376",
+      "revId": "990ccd6c3791cb451dd82a0df039729b43989d1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "35594914_c6fd8d83",
         "filename": "libpldm/fru.h",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "276090b3_1e818886",
+        "filename": "libpldm/fru.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-08T11:49:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35594914_c6fd8d83",
+      "revId": "990ccd6c3791cb451dd82a0df039729b43989d1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9960cf7c_15c7e647",
         "filename": "libpldm/fru.h",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2021-06-03T11:34:06Z",
       "side": 1,
       "message": "how did you arrive at struct variable_field *fru_table_data?",
+      "revId": "990ccd6c3791cb451dd82a0df039729b43989d1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "887fd12c_e84da04c",
+        "filename": "libpldm/fru.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-08T11:49:30Z",
+      "side": 1,
+      "message": "we need a fru table data and table length.. so i created a variable field structure for it..",
+      "parentUuid": "9960cf7c_15c7e647",
       "revId": "990ccd6c3791cb451dd82a0df039729b43989d1a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
