@@ -92,6 +92,19 @@ struct pldm_package_header_information {
 	uint8_t package_version_string_length;
 } __attribute__((packed));
 
+/** @struct pldm_firmware_device_id_record
+ *
+ *  Structure representing firmware device ID record
+ */
+struct pldm_firmware_device_id_record {
+	uint16_t record_length;
+	uint8_t descriptor_count;
+	bitfield32_t device_update_option_flags;
+	uint8_t comp_image_set_version_string_type;
+	uint8_t comp_image_set_version_string_length;
+	uint16_t fw_device_pkg_data_length;
+} __attribute__((packed));
+
 /** @struct pldm_descriptor_tlv
  *
  *  Structure representing descriptor type, length and value
@@ -170,6 +183,30 @@ int decode_pldm_package_header_info(
     const uint8_t *data, size_t length,
     struct pldm_package_header_information *package_header_info,
     struct variable_field *package_version_str);
+
+/** @brief Decode individual firmware device ID record
+ *
+ *  @param[in] data - pointer to firmware device ID record
+ *  @param[in] length - available length in the firmware update package
+ *  @param[in] component_bitmap_bit_length - ComponentBitmapBitLengthfield
+ *                                           parsed from the package header info
+ *  @param[out] fw_device_id_record - pointer to fixed part of firmware device
+ *                                    id record
+ *  @param[out] applicable_components - pointer to ApplicableComponents
+ *  @param[out] comp_image_set_version_str - pointer to
+ *                                           ComponentImageSetVersionString
+ *  @param[out] record_descriptors - pointer to RecordDescriptors
+ *  @param[out] fw_device_pkg_data - pointer to FirmwareDevicePackageData
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_firmware_device_id_record(
+    const uint8_t *data, size_t length, uint16_t component_bitmap_bit_length,
+    struct pldm_firmware_device_id_record *fw_device_id_record,
+    struct variable_field *applicable_components,
+    struct variable_field *comp_image_set_version_str,
+    struct variable_field *record_descriptors,
+    struct variable_field *fw_device_pkg_data);
 
 /** @brief Decode the record descriptor entries in the firmware update package
  *         and the Descriptors in the QueryDeviceIDentifiers command
