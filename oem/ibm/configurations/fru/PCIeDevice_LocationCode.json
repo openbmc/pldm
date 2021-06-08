@@ -3,7 +3,7 @@
    {
         "fru_record_type" : 254,
         "fru_encoding_type": 1,
-        "dbus_interface_name": "xyz.openbmc_project.Inventory.Item.Bmc"
+        "dbus_interface_name": "xyz.openbmc_project.Inventory.Item.PCIeDevice"
    },
    "fru_fields":[
      {
@@ -17,4 +17,3 @@
       }
     ]
 }
-
