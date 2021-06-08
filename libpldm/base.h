@@ -91,6 +91,8 @@ typedef enum {
 #define PLDM_VERSION_0 0
 #define PLDM_CURRENT_VERSION PLDM_VERSION_0
 
+#define PLDM_TIMESTAMP104_SIZE 13
+
 /** @struct pldm_msg_hdr
  *
  * Structure representing PLDM message header fields
