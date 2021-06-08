@@ -70,6 +70,60 @@ static uint16_t get_descriptor_type_length(uint16_t descriptor_type)
 	}
 }
 
+int decode_pldm_package_header_info(
+    const uint8_t *data, size_t length,
+    struct pldm_package_header_information *package_header_info,
+    struct variable_field *package_version_str)
+{
+	if (data == NULL || package_header_info == NULL ||
+	    package_version_str == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (length < sizeof(struct pldm_package_header_information)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_package_header_information *data_header =
+	    (struct pldm_package_header_information *)(data);
+
+	if (!is_string_type_valid(data_header->package_version_string_type) ||
+	    (data_header->package_version_string_length == 0)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (length < sizeof(struct pldm_package_header_information) +
+			 data_header->package_version_string_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	if ((data_header->component_bitmap_bit_length %
+	     PLDM_FWUP_COMPONENT_BITMAP_MULTIPLE) != 0) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	memcpy(package_header_info->uuid, data_header->uuid,
+	       sizeof(data_header->uuid));
+	package_header_info->package_header_format_version =
+	    data_header->package_header_format_version;
+	package_header_info->package_header_size =
+	    le16toh(data_header->package_header_size);
+	memcpy(package_header_info->timestamp104, data_header->timestamp104,
+	       sizeof(data_header->timestamp104));
+	package_header_info->component_bitmap_bit_length =
+	    le16toh(data_header->component_bitmap_bit_length);
+	package_header_info->package_version_string_type =
+	    data_header->package_version_string_type;
+	package_header_info->package_version_string_length =
+	    data_header->package_version_string_length;
+	package_version_str->ptr =
+	    data + sizeof(struct pldm_package_header_information);
+	package_version_str->length =
+	    package_header_info->package_version_string_length;
+
+	return PLDM_SUCCESS;
+}
+
 int decode_descriptor_type_length_value(const uint8_t *data, size_t length,
 					uint16_t *descriptor_type,
 					struct variable_field *descriptor_data)
