@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63208294_84d121ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:16:51Z",
+      "side": 1,
+      "message": "This starts with the word \"remove\" but the code seems to add? Maybe a bit more info in the commit message on what this does and why?",
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f194d311_4d50ee85",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:16:51Z",
+      "side": 1,
+      "message": "I see this incremented below but not used anywhere else?",
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19e936f5_df3ed4a4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:16:51Z",
+      "side": 1,
+      "message": "Should this comment just be deleted (appears to just be dead code)?",
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4237ab09_3e23d07b",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:16:51Z",
+      "side": 1,
+      "message": "Should be on it\u0027s own line? But then again, this file seems to break quite a few coding guidelines so just nitpick I guess.",
+      "range": {
+        "startLine": 638,
+        "startChar": 30,
+        "endLine": 638,
+        "endChar": 31
+      },
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "872fd6f0_cd33bdbf",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-08T20:16:51Z",
+      "side": 1,
+      "message": "Two calls into a recursive function. What if both happen to find the \"node\"? Is there any chance of that. Both would be writing the same **node.",
+      "range": {
+        "startLine": 642,
+        "startChar": 1,
+        "endLine": 643,
+        "endChar": 64
+      },
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
