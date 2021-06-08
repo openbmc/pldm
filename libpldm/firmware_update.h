@@ -7,6 +7,7 @@ extern "C" {
 #include "base.h"
 #include "utils.h"
 
+#define PLDM_FWUP_COMPONENT_BITMAP_MULTIPLE 8
 #define PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES 0
 /** @brief Minimum length of device descriptor, 2 bytes for descriptor type,
  *         2 bytes for descriptor length and atleast 1 byte of descriptor data
@@ -77,6 +78,20 @@ enum pldm_firmware_update_descriptor_types_length {
 	PLDM_FWUP_UBM_CONTROLLER_DEVICE_CODE_LENGTH = 4
 };
 
+/** @struct pldm_package_header_information
+ *
+ *  Structure representing fixed part of package header information
+ */
+struct pldm_package_header_information {
+	uint8_t uuid[PLDM_FWUP_UUID_LENGTH];
+	uint8_t package_header_format_version;
+	uint16_t package_header_size;
+	uint8_t timestamp104[PLDM_TIMESTAMP104_SIZE];
+	uint16_t component_bitmap_bit_length;
+	uint8_t package_version_string_type;
+	uint8_t package_version_string_length;
+} __attribute__((packed));
+
 /** @struct pldm_descriptor_tlv
  *
  *  Structure representing descriptor type, length and value
@@ -140,6 +155,21 @@ struct pldm_component_parameter_entry {
 	bitfield16_t comp_activation_methods;
 	bitfield32_t capabilities_during_update;
 } __attribute__((packed));
+
+/** @brief Decode the PLDM package header information
+ *
+ *  @param[in] data - pointer to package header information
+ *  @param[in] length - available length in the firmware update package
+ *  @param[out] package_header_info - pointer to fixed part of PLDM package
+ *                                    header information
+ *  @param[out] package_version_str - pointer to package version string
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_pldm_package_header_info(
+    const uint8_t *data, size_t length,
+    struct pldm_package_header_information *package_header_info,
+    struct variable_field *package_version_str);
 
 /** @brief Decode the record descriptor entries in the firmware update package
  *         and the Descriptors in the QueryDeviceIDentifiers command
