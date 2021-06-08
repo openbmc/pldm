@@ -27,7 +27,13 @@ constexpr auto clockId = sdeventplus::ClockId::RealTime;
 using Clock = Clock<clockId>;
 using Timer = Time<clockId>;
 
-constexpr pldm::pdr::TerminusID TID = 0; // TID will be implemented later.
+using sdbusplus::exception::SdBusError;
+
+// Shutdown effecter terminus ID, set when we look up the effecter
+pldm::pdr::TerminusID TID;
+
+const pldm::pdr::TerminusID hypervisor_TID = 208;
+
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
 SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
@@ -114,7 +120,7 @@ void SoftPowerOff::hostSoftOffComplete(sdbusplus::message::message& msg)
              msgPreviousEventState);
 
     if (msgSensorID == sensorID && msgSensorOffset == sensorOffset &&
-        msgEventState == PLDM_SW_TERM_GRACEFUL_SHUTDOWN)
+        msgEventState == PLDM_SW_TERM_GRACEFUL_SHUTDOWN && msgTID == TID)
     {
         // Receive Graceful shutdown completion event message. Disable the timer
         auto rc = timer.stop();
@@ -155,6 +161,7 @@ int SoftPowerOff::getEffecterID()
                 auto VMMPdr =
                     reinterpret_cast<pldm_state_effecter_pdr*>(rep.data());
                 effecterID = VMMPdr->effecter_id;
+                TID = hypervisor_TID;
             }
         }
         else
@@ -175,9 +182,10 @@ int SoftPowerOff::getEffecterID()
     }
 
     // If the Virtual Machine Manager PDRs doesn't exist, go find the System
-    // Firmware PDRs.
-    // System Firmware is a logical entity, so the bit 15 in entity type is set
-    entityType = PLDM_ENTITY_SYS_FIRMWARE | 0x8000;
+    // Chassis PDRs.
+    // The host firmware may attach the graceful shutdown effecter to this
+    // entity.
+    entityType = PLDM_ENTITY_SYSTEM_CHASSIS;
     try
     {
         std::vector<std::vector<uint8_t>> sysFwResponse{};
@@ -204,6 +212,7 @@ int SoftPowerOff::getEffecterID()
             auto sysFwPdr =
                 reinterpret_cast<pldm_state_effecter_pdr*>(rep.data());
             effecterID = sysFwPdr->effecter_id;
+            TID = sysFwPdr->terminus_handle;
         }
     }
     catch (const sdbusplus::exception::exception& e)
@@ -221,12 +230,8 @@ int SoftPowerOff::getSensorInfo()
 {
     pldm::pdr::EntityType entityType;
 
-    entityType = VMMPdrExist ? PLDM_ENTITY_VIRTUAL_MACHINE_MANAGER
-                             : PLDM_ENTITY_SYS_FIRMWARE;
-
-    // The Virtual machine manager/System firmware is logical entity, so bit 15
-    // need to be set.
-    entityType = entityType | 0x8000;
+    entityType = VMMPdrExist ? PLDM_ENTITY_VIRTUAL_MACHINE_MANAGER | 0x8000
+                             : PLDM_ENTITY_SYSTEM_CHASSIS;
 
     try
     {
