@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "ce8b308f_ee725768",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T04:47:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0e637db6_1315779a",
+      "revId": "843684104c8bdf624de60ff87851df78341e617e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dff86a21_154cf22b",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 4
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "What is to be removed?",
       "parentUuid": "dff86a21_154cf22b",
+      "revId": "843684104c8bdf624de60ff87851df78341e617e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "632a697c_32c0b55b",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T04:47:26Z",
+      "side": 1,
+      "message": "oh, sorry, it is my mistake, please ignore it",
+      "parentUuid": "f316403c_67182aea",
       "revId": "843684104c8bdf624de60ff87851df78341e617e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -107,6 +143,30 @@
       "side": 1,
       "message": "What is the comment? Anything missing?",
       "parentUuid": "69a36c18_4a90b169",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 2
+      },
+      "revId": "843684104c8bdf624de60ff87851df78341e617e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "280daf71_7504d869",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T04:47:26Z",
+      "side": 1,
+      "message": "I mean we can merge two `if` conditions",
+      "parentUuid": "05220d44_990923a9",
       "range": {
         "startLine": 93,
         "startChar": 0,
