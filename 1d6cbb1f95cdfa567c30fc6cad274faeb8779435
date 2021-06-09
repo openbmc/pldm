@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e1d47f0a_d1af4e4a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T01:38:34Z",
+      "side": 1,
+      "message": "Please add some comments",
+      "revId": "1d6cbb1f95cdfa567c30fc6cad274faeb8779435",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f03a29f2_4fdeda68",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T01:38:34Z",
+      "side": 1,
+      "message": "Please update the corresponding comment, and describe why PLDM_ENTITY_SYSTEM_CHASSIS is used instead of `PLDM_ENTITY_SYS_FIRMWARE | 0x8000`",
+      "range": {
+        "startLine": 182,
+        "startChar": 17,
+        "endLine": 182,
+        "endChar": 43
+      },
+      "revId": "1d6cbb1f95cdfa567c30fc6cad274faeb8779435",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
