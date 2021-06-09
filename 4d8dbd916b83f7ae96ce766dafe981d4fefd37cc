@@ -37,6 +37,42 @@
     },
     {
       "key": {
+        "uuid": "da2310a1_7381c4f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-09T06:44:26Z",
+      "side": 1,
+      "message": "oops... i dono how this junk got in :)",
+      "parentUuid": "e79181d3_3f645b1a",
+      "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cc4616c_62eeb1ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-09T06:44:26Z",
+      "side": 1,
+      "message": "oops... i dono how this junk got in :)",
+      "parentUuid": "e79181d3_3f645b1a",
+      "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b5141b50_ed99592d",
         "filename": "pldmtool/pldm_base_cmd.cpp",
         "patchSetId": 2
@@ -48,6 +84,30 @@
       "writtenOn": "2021-06-09T05:42:51Z",
       "side": 1,
       "message": "when we do a pldmtool platform -h , does it now show these added entries as well ?\n\nwe should only show those that pldmtool supports right ?adding all the commands here might confuse the users ?",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b68a757_e195f2c9",
+        "filename": "pldmtool/pldm_base_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-09T06:44:26Z",
+      "side": 1,
+      "message": "No this will show what pldm commands available... it helps user to try raw command format if not available in pldmtool platform -h",
+      "parentUuid": "b5141b50_ed99592d",
       "range": {
         "startLine": 53,
         "startChar": 0,
