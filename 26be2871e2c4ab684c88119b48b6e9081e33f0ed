@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d855f36d_301dd7ce",
+        "filename": "oem/ibm/configurations/fru/Battery_VINI.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T02:11:58Z",
+      "side": 1,
+      "message": "Nit: remove blank line",
+      "revId": "26be2871e2c4ab684c88119b48b6e9081e33f0ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fcf68cfe_f5b27532",
+        "filename": "oem/ibm/configurations/fru/PCIeDevice_VINI.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T02:11:58Z",
+      "side": 1,
+      "message": "Nit: remove blank line",
+      "revId": "26be2871e2c4ab684c88119b48b6e9081e33f0ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d04e382_982eafd2",
+        "filename": "oem/ibm/configurations/fru/PowerSupply_VINI.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T02:11:58Z",
+      "side": 1,
+      "message": "Nit: remove blank line",
+      "revId": "26be2871e2c4ab684c88119b48b6e9081e33f0ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
