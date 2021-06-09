@@ -16,6 +16,47 @@
       "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e79181d3_3f645b1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-09T05:42:51Z",
+      "side": 1,
+      "message": "+1 Need a better commit message, once line statement as commit message is not enough.\n\nplease try to address why ? what ? tested details in the commit message.",
+      "parentUuid": "ca4a0d07_5bd8f460",
+      "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5141b50_ed99592d",
+        "filename": "pldmtool/pldm_base_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-09T05:42:51Z",
+      "side": 1,
+      "message": "when we do a pldmtool platform -h , does it now show these added entries as well ?\n\nwe should only show those that pldmtool supports right ?adding all the commands here might confuse the users ?",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
