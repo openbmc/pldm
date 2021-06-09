@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0e637db6_1315779a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-09T04:28:38Z",
+      "side": 1,
+      "message": "I did not add that specifically, because this code is common from 1.0.0 to 1.1.0. I can highlight it if that helps.",
+      "parentUuid": "8e39ea1c_7d884fc0",
+      "revId": "843684104c8bdf624de60ff87851df78341e617e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dff86a21_154cf22b",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 4
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "f316403c_67182aea",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-09T04:28:38Z",
+      "side": 1,
+      "message": "What is to be removed?",
+      "parentUuid": "dff86a21_154cf22b",
+      "revId": "843684104c8bdf624de60ff87851df78341e617e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "69a36c18_4a90b169",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 4
@@ -47,6 +83,30 @@
       "writtenOn": "2021-06-09T03:25:00Z",
       "side": 1,
       "message": "```\t\nif (*descriptor_type !\u003d PLDM_FWUP_VENDOR_DEFINED \u0026\u0026\n    descriptor_length !\u003d get_descriptor_type_length(*descriptor_type)) {\n\treturn PLDM_ERROR_INVALID_LENGTH;\n}\n```",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 2
+      },
+      "revId": "843684104c8bdf624de60ff87851df78341e617e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05220d44_990923a9",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-09T04:28:38Z",
+      "side": 1,
+      "message": "What is the comment? Anything missing?",
+      "parentUuid": "69a36c18_4a90b169",
       "range": {
         "startLine": 93,
         "startChar": 0,
