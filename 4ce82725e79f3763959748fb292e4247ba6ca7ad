@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c89acaaf_3ec77490",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-09T06:40:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5f57dc22_aa740a6d",
+      "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9ff01e76_3e146c83",
         "filename": "libpldm/pdr.c",
         "patchSetId": 24
@@ -33,6 +51,24 @@
       "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e8407b6_d829f9c6",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 24
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-09T06:40:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9ff01e76_3e146c83",
+      "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -70,6 +106,24 @@
       "writtenOn": "2021-06-08T20:28:07Z",
       "side": 1,
       "message": "statics can be dangerous, any other way to just discover what this should start at as this function is called?",
+      "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "525b612e_eadcd054",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-09T06:40:10Z",
+      "side": 1,
+      "message": "used static so that we can accommodate dynamically added PDRs",
+      "parentUuid": "8dba5bdc_aa9b3423",
       "revId": "4ce82725e79f3763959748fb292e4247ba6ca7ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
