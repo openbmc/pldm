@@ -635,6 +635,145 @@ TEST(DecodeDescriptors, errorPathVendorDefinedDescriptor)
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
+TEST(DecodeComponentImageInfo, goodPath)
+{
+    // Firmware
+    constexpr uint16_t compClassification = 16;
+    constexpr uint16_t compIdentifier = 300;
+    constexpr uint32_t compComparisonStamp = 0xFFFFFFFF;
+    // Force update
+    constexpr std::bitset<16> compOptions{1};
+    // System reboot[Bit position 3] & Medium-specific reset[Bit position 2]
+    constexpr std::bitset<16> reqCompActivationMethod{0x0c};
+    // Random ComponentLocationOffset
+    constexpr uint32_t compLocOffset = 357;
+    // Random ComponentSize
+    constexpr uint32_t compSize = 27;
+    // ComponentVersionString
+    constexpr std::string_view compVersionStr{"VersionString1"};
+    constexpr size_t compImageInfoSize =
+        sizeof(pldm_component_image_information) + compVersionStr.size();
+
+    constexpr std::array<uint8_t, compImageInfoSize> compImageInfo{
+        0x10, 0x00, 0x2c, 0x01, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00, 0x0c, 0x00,
+        0x65, 0x01, 0x00, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x0e, 0x56, 0x65,
+        0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x31};
+    pldm_component_image_information outCompImageInfo{};
+    variable_field outCompVersionStr{};
+
+    auto rc =
+        decode_pldm_comp_image_info(compImageInfo.data(), compImageInfo.size(),
+                                    &outCompImageInfo, &outCompVersionStr);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outCompImageInfo.comp_classification, compClassification);
+    EXPECT_EQ(outCompImageInfo.comp_identifier, compIdentifier);
+    EXPECT_EQ(outCompImageInfo.comp_comparison_stamp, compComparisonStamp);
+    EXPECT_EQ(outCompImageInfo.comp_options.value, compOptions);
+    EXPECT_EQ(outCompImageInfo.requested_comp_activation_method.value,
+              reqCompActivationMethod);
+    EXPECT_EQ(outCompImageInfo.comp_location_offset, compLocOffset);
+    EXPECT_EQ(outCompImageInfo.comp_size, compSize);
+    EXPECT_EQ(outCompImageInfo.comp_version_string_type, PLDM_STR_TYPE_ASCII);
+    EXPECT_EQ(outCompImageInfo.comp_version_string_length,
+              compVersionStr.size());
+
+    EXPECT_EQ(outCompVersionStr.length,
+              outCompImageInfo.comp_version_string_length);
+    std::string componentVersionString(
+        reinterpret_cast<const char*>(outCompVersionStr.ptr),
+        outCompVersionStr.length);
+    EXPECT_EQ(componentVersionString, compVersionStr);
+}
+
+TEST(DecodeComponentImageInfo, errorPaths)
+{
+    int rc = 0;
+    // ComponentVersionString
+    constexpr std::string_view compVersionStr{"VersionString1"};
+    constexpr size_t compImageInfoSize =
+        sizeof(pldm_component_image_information) + compVersionStr.size();
+    // Invalid ComponentVersionStringType - 0x06
+    constexpr std::array<uint8_t, compImageInfoSize> invalidCompImageInfo1{
+        0x10, 0x00, 0x2c, 0x01, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00, 0x0c, 0x00,
+        0x65, 0x01, 0x00, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x06, 0x0e, 0x56, 0x65,
+        0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x31};
+    pldm_component_image_information outCompImageInfo{};
+    variable_field outCompVersionStr{};
+
+    rc = decode_pldm_comp_image_info(nullptr, invalidCompImageInfo1.size(),
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo1.data(),
+                                     invalidCompImageInfo1.size(), nullptr,
+                                     &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo1.data(),
+                                     invalidCompImageInfo1.size(),
+                                     &outCompImageInfo, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo1.data(),
+                                     sizeof(pldm_component_image_information) -
+                                         1,
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo1.data(),
+                                     invalidCompImageInfo1.size(),
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Invalid ComponentVersionStringLength - 0x00
+    constexpr std::array<uint8_t, compImageInfoSize> invalidCompImageInfo2{
+        0x10, 0x00, 0x2c, 0x01, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00, 0x0c, 0x00,
+        0x65, 0x01, 0x00, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x56, 0x65,
+        0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x31};
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo2.data(),
+                                     invalidCompImageInfo2.size(),
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Use Component Comparison Stamp is not set, but ComponentComparisonStamp
+    // is not 0xFFFFFFFF
+    constexpr std::array<uint8_t, compImageInfoSize> invalidCompImageInfo3{
+        0x10, 0x00, 0x2c, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x0c, 0x00,
+        0x65, 0x01, 0x00, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x0e, 0x56, 0x65,
+        0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x31};
+
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo3.data(),
+                                     invalidCompImageInfo3.size() - 1,
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo3.data(),
+                                     invalidCompImageInfo3.size(),
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Invalid ComponentLocationOffset - 0
+    constexpr std::array<uint8_t, compImageInfoSize> invalidCompImageInfo4{
+        0x10, 0x00, 0x2c, 0x01, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00, 0x0c, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x0e, 0x56, 0x65,
+        0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x31};
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo4.data(),
+                                     invalidCompImageInfo4.size(),
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Invalid ComponentSize - 0
+    constexpr std::array<uint8_t, compImageInfoSize> invalidCompImageInfo5{
+        0x10, 0x00, 0x2c, 0x01, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00, 0x0c, 0x00,
+        0x65, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x0e, 0x56, 0x65,
+        0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x31};
+    rc = decode_pldm_comp_image_info(invalidCompImageInfo5.data(),
+                                     invalidCompImageInfo5.size(),
+                                     &outCompImageInfo, &outCompVersionStr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
 TEST(QueryDeviceIdentifiers, goodPathEncodeRequest)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr)> requestMsg{};

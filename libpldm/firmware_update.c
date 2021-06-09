@@ -297,6 +297,70 @@ int decode_vendor_defined_descriptor_value(
 	return PLDM_SUCCESS;
 }
 
+int decode_pldm_comp_image_info(
+    const uint8_t *data, size_t length,
+    struct pldm_component_image_information *pldm_comp_image_info,
+    struct variable_field *comp_version_str)
+{
+	if (data == NULL || pldm_comp_image_info == NULL ||
+	    comp_version_str == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (length < sizeof(struct pldm_component_image_information)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_component_image_information *data_header =
+	    (struct pldm_component_image_information *)(data);
+
+	if (!is_string_type_valid(data_header->comp_version_string_type) ||
+	    (data_header->comp_version_string_length == 0)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (length < sizeof(struct pldm_component_image_information) +
+			 data_header->comp_version_string_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	pldm_comp_image_info->comp_classification =
+	    le16toh(data_header->comp_classification);
+	pldm_comp_image_info->comp_identifier =
+	    le16toh(data_header->comp_identifier);
+	pldm_comp_image_info->comp_comparison_stamp =
+	    le32toh(data_header->comp_comparison_stamp);
+	pldm_comp_image_info->comp_options.value =
+	    le16toh(data_header->comp_options.value);
+	pldm_comp_image_info->requested_comp_activation_method.value =
+	    le16toh(data_header->requested_comp_activation_method.value);
+	pldm_comp_image_info->comp_location_offset =
+	    le32toh(data_header->comp_location_offset);
+	pldm_comp_image_info->comp_size = le32toh(data_header->comp_size);
+	pldm_comp_image_info->comp_version_string_type =
+	    data_header->comp_version_string_type;
+	pldm_comp_image_info->comp_version_string_length =
+	    data_header->comp_version_string_length;
+
+	if ((pldm_comp_image_info->comp_options.bits.bit1 == false &&
+	     pldm_comp_image_info->comp_comparison_stamp !=
+		 PLDM_FWUP_INVALID_COMPONENT_COMPARISON_TIMESTAMP)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (pldm_comp_image_info->comp_location_offset == 0 ||
+	    pldm_comp_image_info->comp_size == 0) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	comp_version_str->ptr =
+	    data + sizeof(struct pldm_component_image_information);
+	comp_version_str->length =
+	    pldm_comp_image_info->comp_version_string_length;
+
+	return PLDM_SUCCESS;
+}
+
 int encode_query_device_identifiers_req(uint8_t instance_id,
 					size_t payload_length,
 					struct pldm_msg *msg)
