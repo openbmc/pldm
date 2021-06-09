@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "24e31752_3d8eb4fe",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-06-09T18:18:13Z",
+      "side": 1,
+      "message": "Maybe, but that is beyond the scope of the change I am making here. If new functionality needs to be incorporated then I think it would have to be worked by the BMC team.",
+      "parentUuid": "9eec48b7_b2d90363",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "cb4f8a91c36353254d5b43c1594e9abfe0e49f6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "07661135_ec6871a4",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2021-06-09T13:02:21Z",
       "side": 1,
       "message": "What is the entity for hostboot? PLDM_ENTITY_SYSTEM_CHASSIS corresponds to physical chassis.",
+      "range": {
+        "startLine": 182,
+        "startChar": 17,
+        "endLine": 182,
+        "endChar": 43
+      },
+      "revId": "cb4f8a91c36353254d5b43c1594e9abfe0e49f6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1d7dada_bd6dbc29",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-06-09T18:18:13Z",
+      "side": 1,
+      "message": "The agreed-upon design specifies that Hostboot creates entity association PDRs for the system chassis, the processors, the cores, and the dimms. Hostboot attaches this graceful shutdown effecter to the system chassis entity because it is the most appropriate among the ones in the current design.",
+      "parentUuid": "07661135_ec6871a4",
       "range": {
         "startLine": 182,
         "startChar": 17,
