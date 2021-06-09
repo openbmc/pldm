@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "85f65ec4_ec43e618",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T02:22:33Z",
+      "side": 1,
+      "message": "Add some comments and tested",
+      "revId": "b63680612b7c485e818b90907d4f7e60b207e0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9caba9af_3fc39fef",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T02:22:33Z",
+      "side": 1,
+      "message": "Remove blank line",
+      "revId": "b63680612b7c485e818b90907d4f7e60b207e0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
