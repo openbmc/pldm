@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "947e168a_a0524bd9",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-09T10:21:22Z",
+      "side": 1,
+      "message": "sorry this was added as part of debug and was not removed later",
+      "parentUuid": "f194d311_4d50ee85",
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "19e936f5_df3ed4a4",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
@@ -50,6 +68,24 @@
       "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44bcff66_3978f310",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-09T10:21:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "19e936f5_df3ed4a4",
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +112,30 @@
     },
     {
       "key": {
+        "uuid": "f30ea085_003485fc",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-09T10:21:22Z",
+      "side": 1,
+      "message": "seems to be a clang issue. let me check again",
+      "parentUuid": "4237ab09_3e23d07b",
+      "range": {
+        "startLine": 638,
+        "startChar": 30,
+        "endLine": 638,
+        "endChar": 31
+      },
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "872fd6f0_cd33bdbf",
         "filename": "libpldm/pdr.c",
         "patchSetId": 5
@@ -87,6 +147,30 @@
       "writtenOn": "2021-06-08T20:16:51Z",
       "side": 1,
       "message": "Two calls into a recursive function. What if both happen to find the \"node\"? Is there any chance of that. Both would be writing the same **node.",
+      "range": {
+        "startLine": 642,
+        "startChar": 1,
+        "endLine": 643,
+        "endChar": 64
+      },
+      "revId": "7b58e86c8429153708e7b5356dd6bf31042eaaeb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f0ebbc7_87c79d82",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-09T10:21:22Z",
+      "side": 1,
+      "message": "both should not find \"node\" as the entity type and entity instance ideally should not match for the entities we will look for. like \"chassis\" or \"motherboard\"",
+      "parentUuid": "872fd6f0_cd33bdbf",
       "range": {
         "startLine": 642,
         "startChar": 1,
