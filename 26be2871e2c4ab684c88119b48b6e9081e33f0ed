@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5ec33a14_752b3f89",
+        "filename": "oem/ibm/configurations/fru/Battery_VINI.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-06-09T05:17:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d855f36d_301dd7ce",
+      "revId": "26be2871e2c4ab684c88119b48b6e9081e33f0ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fcf68cfe_f5b27532",
         "filename": "oem/ibm/configurations/fru/PCIeDevice_VINI.json",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "b624ce61_e5eb6a3d",
+        "filename": "oem/ibm/configurations/fru/PCIeDevice_VINI.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-06-09T05:17:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcf68cfe_f5b27532",
+      "revId": "26be2871e2c4ab684c88119b48b6e9081e33f0ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d04e382_982eafd2",
         "filename": "oem/ibm/configurations/fru/PowerSupply_VINI.json",
         "patchSetId": 1
@@ -50,6 +86,24 @@
       "revId": "26be2871e2c4ab684c88119b48b6e9081e33f0ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bdc53f0_1ddeea59",
+        "filename": "oem/ibm/configurations/fru/PowerSupply_VINI.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-06-09T05:17:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d04e382_982eafd2",
+      "revId": "26be2871e2c4ab684c88119b48b6e9081e33f0ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
