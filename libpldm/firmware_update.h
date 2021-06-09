@@ -8,6 +8,7 @@ extern "C" {
 #include "utils.h"
 
 #define PLDM_FWUP_COMPONENT_BITMAP_MULTIPLE 8
+#define PLDM_FWUP_INVALID_COMPONENT_COMPARISON_TIMESTAMP 0xFFFFFFFF
 #define PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES 0
 /** @brief Minimum length of device descriptor, 2 bytes for descriptor type,
  *         2 bytes for descriptor length and atleast 1 byte of descriptor data
@@ -125,6 +126,23 @@ struct pldm_vendor_defined_descriptor_title_data {
 	uint8_t vendor_defined_descriptor_title_str[1];
 } __attribute__((packed));
 
+/** @struct pldm_component_image_information
+ *
+ *  Structure representing fixed part of individual component information in
+ *  PLDM firmware update package
+ */
+struct pldm_component_image_information {
+	uint16_t comp_classification;
+	uint16_t comp_identifier;
+	uint32_t comp_comparison_stamp;
+	bitfield16_t comp_options;
+	bitfield16_t requested_comp_activation_method;
+	uint32_t comp_location_offset;
+	uint32_t comp_size;
+	uint8_t comp_version_string_type;
+	uint8_t comp_version_string_length;
+} __attribute__((packed));
+
 /** @struct pldm_query_device_identifiers_resp
  *
  *  Structure representing query device identifiers response.
@@ -238,6 +256,21 @@ int decode_vendor_defined_descriptor_value(
     const uint8_t *data, size_t length, uint8_t *descriptor_title_str_type,
     struct variable_field *descriptor_title_str,
     struct variable_field *descriptor_data);
+
+/** @brief Decode individual component image information
+ *
+ *  @param[in] data - pointer to component image information
+ *  @param[in] length - available length in the firmware update package
+ *  @param[out] pldm_comp_image_info - pointer to fixed part of component image
+ *                                     information
+ *  @param[out] comp_version_str - pointer to component version string
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_pldm_comp_image_info(
+    const uint8_t *data, size_t length,
+    struct pldm_component_image_information *pldm_comp_image_info,
+    struct variable_field *comp_version_str);
 
 /** @brief Create a PLDM request message for QueryDeviceIdentifiers
  *
