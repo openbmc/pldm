@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "0f95e029_d2539a82",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T02:02:30Z",
+      "side": 1,
+      "message": "I suggest move to utils.cpp if other files do not need to access it.",
+      "parentUuid": "454056b2_ce9b2c55",
+      "range": {
+        "startLine": 353,
+        "startChar": 14,
+        "endLine": 353,
+        "endChar": 39
+      },
+      "revId": "b2fad572ab20498531b45c2fc818fb50a81763db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e607db42_951d48ca",
         "filename": "libpldmresponder/base.cpp",
         "patchSetId": 13

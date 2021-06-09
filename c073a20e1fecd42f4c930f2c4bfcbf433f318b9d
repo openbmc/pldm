@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3af2feea_8bbc46c8",
+        "filename": "common/utils.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-09T02:02:30Z",
+      "side": 0,
+      "message": "Please recover it",
+      "revId": "c073a20e1fecd42f4c930f2c4bfcbf433f318b9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
