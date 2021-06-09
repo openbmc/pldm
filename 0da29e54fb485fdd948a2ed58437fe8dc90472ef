@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "03d82cd6_e7ee80e4",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-09T08:18:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "18c558ad_759f9314",
+      "range": {
+        "startLine": 100,
+        "startChar": 12,
+        "endLine": 100,
+        "endChar": 13
+      },
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "613b4d2e_5d5b5656",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 1
@@ -125,6 +149,24 @@
       "side": 1,
       "message": "I will add VendorDefinedDescriptorTitleStringType in the next patch.\n\nVendorDefinedDescriptorTitleStringLength is part of descriptor_title_str",
       "parentUuid": "613b4d2e_5d5b5656",
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9489c9b1_f75055ac",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-09T08:18:35Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "6ed26f8e_74ef340c",
       "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -213,6 +255,24 @@
     },
     {
       "key": {
+        "uuid": "8f4378ff_323d462c",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-09T08:18:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ecb8fc47_56ae870d",
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20c2a31e_a20f94f2",
         "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
         "patchSetId": 1
@@ -248,6 +308,30 @@
       "side": 1,
       "message": "IANA Enterprise ID is the initial descriptor in this example. Can you mention what is missing?",
       "parentUuid": "20c2a31e_a20f94f2",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 61
+      },
+      "revId": "0da29e54fb485fdd948a2ed58437fe8dc90472ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb14445b_3224bf5c",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-09T08:18:35Z",
+      "side": 1,
+      "message": "sorry, at first glance my understanding was as that if we are using vender defined descriptors we cannot have any other additional descriptors.\n\nPlease ignore this comment",
+      "parentUuid": "b5ca2c09_3c99e15a",
       "range": {
         "startLine": 35,
         "startChar": 8,
