@@ -95,6 +95,54 @@
     },
     {
       "key": {
+        "uuid": "2f1b93d5_f350d046",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-06-09T13:52:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "454056b2_ce9b2c55",
+      "range": {
+        "startLine": 353,
+        "startChar": 14,
+        "endLine": 353,
+        "endChar": 39
+      },
+      "revId": "b2fad572ab20498531b45c2fc818fb50a81763db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0d47372c_cc000c8f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-06-09T13:52:31Z",
+      "side": 1,
+      "message": "this has been moved to libpldmresponder/base.hpp",
+      "parentUuid": "1840133c_86b1d9be",
+      "range": {
+        "startLine": 353,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 39
+      },
+      "revId": "b2fad572ab20498531b45c2fc818fb50a81763db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e607db42_951d48ca",
         "filename": "libpldmresponder/base.cpp",
         "patchSetId": 13
@@ -118,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "906c0c0e_8c916d41",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-06-09T13:52:31Z",
+      "side": 1,
+      "message": "The definition of `heartBeatTimeout` has been moved to libpldmresponder/base.hpp",
+      "parentUuid": "e607db42_951d48ca",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 30
+      },
+      "revId": "b2fad572ab20498531b45c2fc818fb50a81763db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7d1773c5_00f2608e",
         "filename": "libpldmresponder/base.hpp",
         "patchSetId": 13
@@ -138,6 +210,30 @@
       "revId": "b2fad572ab20498531b45c2fc818fb50a81763db",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0127b5f_2a5eb8d4",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-06-09T13:52:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d1773c5_00f2608e",
+      "range": {
+        "startLine": 76,
+        "startChar": 69,
+        "endLine": 76,
+        "endChar": 74
+      },
+      "revId": "b2fad572ab20498531b45c2fc818fb50a81763db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
