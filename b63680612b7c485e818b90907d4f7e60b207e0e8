@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "168dddfc_42a96f96",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-09T08:44:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85f65ec4_ec43e618",
+      "revId": "b63680612b7c485e818b90907d4f7e60b207e0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9caba9af_3fc39fef",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "b63680612b7c485e818b90907d4f7e60b207e0e8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1102e9c1_10a05f53",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-09T08:44:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9caba9af_3fc39fef",
+      "revId": "b63680612b7c485e818b90907d4f7e60b207e0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
