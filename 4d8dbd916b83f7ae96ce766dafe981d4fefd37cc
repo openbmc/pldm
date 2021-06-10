@@ -165,6 +165,30 @@
       "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "759837c6_e09e238f",
+        "filename": "pldmtool/pldm_base_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-10T08:10:04Z",
+      "side": 1,
+      "message": "\u003e we did same for pldmIBMFileIOCmds... I think it is okay\npldmtool is not tied up to the libpldmresponder implementation, it can be target a remote MCTP endpoint.\n\n\u003e No this will show what pldm commands available... it helps user to try raw command format if not available in pldmtool platform -h\npldm commands available? Where?",
+      "parentUuid": "1d29a4b7_49831082",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
