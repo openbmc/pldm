@@ -141,6 +141,30 @@
       "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d29a4b7_49831082",
+        "filename": "pldmtool/pldm_base_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-10T05:57:12Z",
+      "side": 1,
+      "message": "we did same for pldmIBMFileIOCmds... I think it is okay",
+      "parentUuid": "a5470988_89e04863",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 59
+      },
+      "revId": "4d8dbd916b83f7ae96ce766dafe981d4fefd37cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
