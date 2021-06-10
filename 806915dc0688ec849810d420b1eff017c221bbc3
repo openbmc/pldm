@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f36e08b_a25333a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-10T02:54:07Z",
+      "side": 1,
+      "message": "Add below in commit message.\n\nResolves : https://github.com/openbmc/pldm/issues/9",
+      "revId": "806915dc0688ec849810d420b1eff017c221bbc3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
