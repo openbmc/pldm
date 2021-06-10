@@ -227,6 +227,18 @@
          ],
          "helpText" : "Specifies if the power limit is enabled.",
          "displayName" : "Power Limit Enable"
+      },
+      {
+         "attribute_name":"hb_secure_ver_lockin_enabled",
+         "possible_values":[
+            "Enabled",
+            "Disabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "Specifies whether the secure version lockin functionality is enabled.",
+         "displayName" : "Secure Version Lockin Enabled"
       }
    ]
 }
