@@ -1,0 +1,405 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7878afd5_4c8a8df1",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "Use is_string_type_valid @line 9",
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5923ff52_d3682014",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "This can be removed, the below condition covers it better.",
+      "range": {
+        "startLine": 624,
+        "startChar": 0,
+        "endLine": 626,
+        "endChar": 35
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef4e276e_6642c599",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "This can be confusing with \"encode_pldm_header_only\", i think it was meant for commands with no request data. You can follow the template like in other functions. Sample example below\n\n\tstruct pldm_header_info header \u003d {0};\n\theader.instance \u003d instance_id;\n\theader.msg_type \u003d PLDM_REQUEST;\n\theader.pldm_type \u003d PLDM_FRU;\n\theader.command \u003d PLDM_GET_FRU_RECORD_TABLE_METADATA;\n\tint rc \u003d pack_pldm_header(\u0026header, \u0026(msg-\u003ehdr));\n\tif (PLDM_SUCCESS !\u003d rc) {\n\t\treturn rc;\n\t}",
+      "range": {
+        "startLine": 640,
+        "startChar": 0,
+        "endLine": 641,
+        "endChar": 32
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6c0252d_76a6dc52",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "rc !\u003d PLDM_SUCCESS",
+      "range": {
+        "startLine": 643,
+        "startChar": 5,
+        "endLine": 643,
+        "endChar": 23
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "282b3a76_b63d799c",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "This condition not need, if msg is a valid pointer. This condition will also succeed.",
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7f1b15e_0841caa5",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "Move this validation before packing the header",
+      "range": {
+        "startLine": 654,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 2
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2ec9717_12ff9ae8",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "Move it after #define PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES 0, just to keep all the constants related to a command together.",
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8975d2bc_2dfba52d",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "PLDM_FWUP_MIN_OUTSTANDING_REQ",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a48d8b23_ee4ca19e",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "Reuse enum pldm_firmware_update_string_type @line no 31",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 23
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1977ec8e_641fdb9a",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "\"fixed part of\"",
+      "range": {
+        "startLine": 207,
+        "startChar": 26,
+        "endLine": 207,
+        "endChar": 27
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d742d046_ab2c2d90",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "move all the [in] parameters after instance_id, keep msg and payload_length at the last",
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c4e54b6_dbd853c8",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "Many params are missing.",
+      "range": {
+        "startLine": 393,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 14
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e2c11f5_3c2f7d7f",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "nit: blank lines before and after @return line",
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "355b3268_296fb2fa",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "constexpr",
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9dc51e4_14cf4f58",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "Define an example component version string(std::string) and pass it to the API.",
+      "range": {
+        "startLine": 1013,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 46
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebedb962_3b707b91",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "I think it can be confusing, libpldm follows snake case, C++ code variables have lowerCamelCase(like maxTransferSize). All these variables can be defined as constexpr.",
+      "range": {
+        "startLine": 1022,
+        "startChar": 0,
+        "endLine": 1025,
+        "endChar": 30
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2dd1ffe_d1eaaf70",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "use ascii when using std::string for the component version string",
+      "range": {
+        "startLine": 1026,
+        "startChar": 0,
+        "endLine": 1027,
+        "endChar": 48
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaa5de7e_ced95f08",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "Not needed if using a std::string",
+      "range": {
+        "startLine": 1028,
+        "startChar": 0,
+        "endLine": 1030,
+        "endChar": 75
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "944b71fb_59ab59e9",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-11T10:11:42Z",
+      "side": 1,
+      "message": "reinterpret_cast",
+      "range": {
+        "startLine": 1045,
+        "startChar": 19,
+        "endLine": 1045,
+        "endChar": 52
+      },
+      "revId": "175d00a0da058db0c25d5692df039c6259220093",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
