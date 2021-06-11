@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2583bfbf_6d828265",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "rephrase? not following this.",
+      "range": {
+        "startLine": 9,
+        "startChar": 38,
+        "endLine": 9,
+        "endChar": 61
+      },
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7373525_5c8e7191",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "Can you also update the README with some details?",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69e0c04e_97df417b",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "not sure I followed, why should the response handler be invoked in this case? can you add details?",
+      "range": {
+        "startLine": 77,
+        "startChar": 41,
+        "endLine": 77,
+        "endChar": 55
+      },
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50c5229d_9f3464b9",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "what about error logging?",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7919755_35322f25",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "Should we assert here?",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "099e406d_66567ead",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "Should check for some kind of limit here - instance id is just 5 bits.",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f21326fc_a0ff0d6c",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "Why would we need this?",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "301bae7f_c3e17a5a",
+        "filename": "requester/request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "isn\u0027t this a fixed value in the spec? who passes this value?",
+      "range": {
+        "startLine": 44,
+        "startChar": 19,
+        "endLine": 44,
+        "endChar": 27
+      },
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfabb657_e6dbabeb",
+        "filename": "requester/request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-11T10:59:10Z",
+      "side": 1,
+      "message": "What happens if we get a response message after this?",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
