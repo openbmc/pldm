@@ -88,7 +88,7 @@ void FruImpl::buildFRUTable()
                     } while (parentObj != "/");
 
                     auto node = pldm_entity_association_tree_add(
-                        entityTree, &entity, parent,
+                        entityTree, &entity, 0xFFFF, nullptr, parent,
                         PLDM_ENTITY_ASSOCIAION_PHYSICAL);
                     objToEntityNode[object.first.str] = node;
 
