@@ -223,16 +223,19 @@ pldm_entity_association_tree *pldm_entity_association_tree_init();
  *  @param[in/out] entity - pointer to the entity to be added. Input has the
  *                          entity type. On output, instance number and the
  *                          container id are populated.
+ *  @param[in] entity_instance_number - entity instance number, we can use the
+ *                          entity instance number of the entity by default if
+ *                          its value is equal 0
  *  @param[in] parent - pointer to the node that should be the parent of input
  *                      entity. If this is NULL, then the entity is the root
  *  @param[in] association_type - relation with the parent : logical or physical
  *
  *  @return pldm_entity_node* - opaque pointer to added entity
  */
-pldm_entity_node *
-pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
-				 pldm_entity *entity, pldm_entity_node *parent,
-				 uint8_t association_type);
+pldm_entity_node *pldm_entity_association_tree_add(
+    pldm_entity_association_tree *tree, pldm_entity *entity,
+    uint16_t entity_instance_number, pldm_entity_node *parent,
+    uint8_t association_type);
 
 /** @brief Visit and note each entity in the entity association tree
  *
