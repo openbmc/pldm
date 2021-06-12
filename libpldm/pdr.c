@@ -373,12 +373,22 @@ static pldm_entity_node *find_insertion_at(pldm_entity_node *start,
 	return start;
 }
 
-pldm_entity_node *
-pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
-				 pldm_entity *entity, pldm_entity_node *parent,
-				 uint8_t association_type)
+pldm_entity_node *pldm_entity_association_tree_add(
+    pldm_entity_association_tree *tree, pldm_entity *entity,
+    uint16_t entity_instance_number, pldm_entity_node *parent,
+    uint8_t association_type)
 {
 	assert(tree != NULL);
+
+	if (entity_instance_number != 0) {
+		pldm_entity et;
+		et.entity_type = entity->entity_type;
+		et.entity_instance_num = entity_instance_number;
+		if (!pldm_entity_association_tree_find(tree, &et)) {
+			return NULL;
+		}
+	}
+
 	assert(association_type == PLDM_ENTITY_ASSOCIAION_PHYSICAL ||
 	       association_type == PLDM_ENTITY_ASSOCIAION_LOGICAL);
 	pldm_entity_node *node = malloc(sizeof(pldm_entity_node));
@@ -387,7 +397,8 @@ pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
 	node->first_child = NULL;
 	node->next_sibling = NULL;
 	node->entity.entity_type = entity->entity_type;
-	node->entity.entity_instance_num = 1;
+	node->entity.entity_instance_num =
+	    entity_instance_number ? entity_instance_number : 1;
 	node->association_type = association_type;
 
 	if (tree->root == NULL) {
@@ -409,7 +420,9 @@ pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
 		if (prev->entity.entity_type == entity->entity_type) {
 			assert(prev->entity.entity_instance_num != UINT16_MAX);
 			node->entity.entity_instance_num =
-			    prev->entity.entity_instance_num + 1;
+			    entity_instance_number
+				? entity_instance_number
+				: prev->entity.entity_instance_num + 1;
 		}
 		prev->next_sibling = node;
 		node->parent = prev->parent;
