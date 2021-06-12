@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2ec3c5d0_8805f05b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-12T06:16:11Z",
+      "side": 1,
+      "message": "\u003e to pldm_pdr_tree_add() function, not libpldm right ?\n\nCorrect, Done\n\n\u003e Also mention here on what entity instance 0 means, and what entity instance non 0 means ?\n\nYes, I will update commit message",
+      "parentUuid": "13bd4556_9d6cee86",
+      "range": {
+        "startLine": 7,
+        "startChar": 44,
+        "endLine": 7,
+        "endChar": 52
+      },
+      "revId": "b9dba3066e7c50ab015371ad2925d3c6d94606ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4f43f2e5_24734708",
         "filename": "libpldm/pdr.c",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2021-06-12T05:39:43Z",
       "side": 1,
       "message": "why are you checking if the entity is present in the tree if the enity instance number !\u003d0 ?",
+      "range": {
+        "startLine": 383,
+        "startChar": 0,
+        "endLine": 390,
+        "endChar": 2
+      },
+      "revId": "b9dba3066e7c50ab015371ad2925d3c6d94606ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b805f81_04afcf8e",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-12T06:16:11Z",
+      "side": 1,
+      "message": "Sampa mentioned in the task:\n\u003e create two same entities with arbitrary instance number like 32 and 67. and then create next instance without passing the entity instance number. the code should create the entity with instance 68. ideally this situation should not happen because one should follow either of the path when populating the entity tree, always provide the instance number or do not provide the instance number. it will be user\u0027s responsibility if they mix up both. say for above example an entity instance 68 got created and then user calls pldm_entity_association_tree_add() with entity instance number 68 as input, that should not get added and return some kind of failure\n\nBecause when we call this method and input 0 as a parameter, it may create an entity (type\u003d1, num\u003d1), and then if we call this method again and input 1 as a parameter, this entity already exists in the tree, so we can not add it and return NULL, Correct?",
+      "parentUuid": "4f43f2e5_24734708",
       "range": {
         "startLine": 383,
         "startChar": 0,
