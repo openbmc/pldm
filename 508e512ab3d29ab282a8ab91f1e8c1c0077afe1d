@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2a3a0e6_c4b7e6fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-13T12:30:49Z",
+      "side": 1,
+      "message": "on BMC",
+      "range": {
+        "startLine": 18,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 12
+      },
+      "revId": "508e512ab3d29ab282a8ab91f1e8c1c0077afe1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae29513d_e7234026",
+        "filename": "tools/visualize-pdr/README.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-13T12:30:49Z",
+      "side": 1,
+      "message": "should these go first?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 69
+      },
+      "revId": "508e512ab3d29ab282a8ab91f1e8c1c0077afe1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4bffa54_d0b6cfba",
+        "filename": "tools/visualize-pdr/pldm_visualise_pdrs.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-13T12:30:49Z",
+      "side": 1,
+      "message": "provide the parameter description",
+      "range": {
+        "startLine": 26,
+        "startChar": 27,
+        "endLine": 26,
+        "endChar": 63
+      },
+      "revId": "508e512ab3d29ab282a8ab91f1e8c1c0077afe1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "214bec12_e2dd65ac",
+        "filename": "tools/visualize-pdr/pldm_visualise_pdrs.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-13T12:30:49Z",
+      "side": 1,
+      "message": "please provide parameter description",
+      "range": {
+        "startLine": 60,
+        "startChar": 7,
+        "endLine": 60,
+        "endChar": 39
+      },
+      "revId": "508e512ab3d29ab282a8ab91f1e8c1c0077afe1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f1be87e_6b2d3e8e",
+        "filename": "tools/visualize-pdr/pldm_visualise_pdrs.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-13T12:30:49Z",
+      "side": 1,
+      "message": "aggregates\n\nCan u please add parameter section ??",
+      "range": {
+        "startLine": 106,
+        "startChar": 20,
+        "endLine": 106,
+        "endChar": 31
+      },
+      "revId": "508e512ab3d29ab282a8ab91f1e8c1c0077afe1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
