@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c5d3f170_8ad50879",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2583bfbf_6d828265",
+      "range": {
+        "startLine": 9,
+        "startChar": 38,
+        "endLine": 9,
+        "endChar": 61
+      },
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a7373525_5c8e7191",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -39,6 +63,24 @@
       "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14edb442_280ab20e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a7373525_5c8e7191",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -82,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "e6b0093d_3762f14b",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "Is the suggestion to have an error log/trace to journal to indicate that no response is received? We can definitely do that. At the same time, the command handlers will typically do the appropriate actions/tracing.",
+      "parentUuid": "50c5229d_9f3464b9",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c7919755_35322f25",
         "filename": "requester/handler.hpp",
         "patchSetId": 5
@@ -96,6 +156,24 @@
       "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b280f5e5_40954ed3",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c7919755_35322f25",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -116,6 +194,47 @@
     },
     {
       "key": {
+        "uuid": "93de939d_fbaa53e8",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "Is the question, do we need to validate the instance id passed into registerRequest?\n\nWe can do that additional check, i didn\u0027t add that in the first place thinking the user will be using the Requester API and the sanity of that code.",
+      "parentUuid": "099e406d_66567ead",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac1fc342_d7d66c30",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 221,
+        "startChar": 61,
+        "endLine": 221,
+        "endChar": 70
+      },
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f21326fc_a0ff0d6c",
         "filename": "requester/handler.hpp",
         "patchSetId": 5
@@ -127,6 +246,24 @@
       "writtenOn": "2021-06-11T10:59:10Z",
       "side": 1,
       "message": "Why would we need this?",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96a08cbe_61ccd534",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/43465/5/pldmd/pldmd.cpp#b104\n\nWhen other applications like softoff \u0026 openpower-occ-control, get the instance ID, it was freed by the pldm daemon(link above). Freeing the instance id is moved to the handleResponse in the requester portion.\n\nIdeally freeing the instance id requested by other application should not be done by pldm daemon and freed by the application itself. But the D-Bus API doesn\u0027t give that provision. So this might need more discussion.",
+      "parentUuid": "f21326fc_a0ff0d6c",
       "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -156,6 +293,30 @@
     },
     {
       "key": {
+        "uuid": "b580cee7_f1ba2a0b",
+        "filename": "requester/request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "Time-out waiting for a response has a min and max in the base specification(300ms- 4800ms). This is provided as a meson option with a default value to facilitate a couple of retries.",
+      "parentUuid": "301bae7f_c3e17a5a",
+      "range": {
+        "startLine": 44,
+        "startChar": 19,
+        "endLine": 44,
+        "endChar": 27
+      },
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bfabb657_e6dbabeb",
         "filename": "requester/request.hpp",
         "patchSetId": 5
@@ -167,6 +328,24 @@
       "writtenOn": "2021-06-11T10:59:10Z",
       "side": 1,
       "message": "What happens if we get a response message after this?",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6496b3d7_cb20e9c7",
+        "filename": "requester/request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-14T07:34:43Z",
+      "side": 1,
+      "message": "If the response comes in the window when the retries are done(timer is stopped) and the instance ID is not yet expired. The response handler is invoked with the response.\n\nIf the instance id expires then the handler is called with null response.\n\nIf the response is received beyond the instance id expiration, response is ignored. (instance id is currently marked free to handle the softoff/openpower-occ-control).",
+      "parentUuid": "bfabb657_e6dbabeb",
       "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
