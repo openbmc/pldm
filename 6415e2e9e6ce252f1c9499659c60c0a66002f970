@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7d667204_05bf9f65",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-14T19:53:21Z",
+      "side": 1,
+      "message": "Not sure why it shows a full diff between my last review of this on patch set 23 and this latest patchset 29. It makes it difficult to know what I\u0027ve already reviewed.",
+      "revId": "6415e2e9e6ce252f1c9499659c60c0a66002f970",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
