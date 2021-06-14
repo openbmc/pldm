@@ -28,6 +28,7 @@ template <class DBusInterface, class Handler>
 void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                             Handler& handler, pdr_utils::RepoInterface& repo)
 {
+    std::cerr << "Inside the generate State sensor PDR function" << std::endl;
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
     for (const auto& e : entries)
@@ -116,12 +117,16 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         HTOLE16(pdr->entity_instance);
         HTOLE16(pdr->container_id);
 
+        bool found = true;
         DbusMappings dbusMappings{};
         DbusValMaps dbusValMaps{};
+
+        std::vector<std::unique_ptr<sdbusplus::bus::match::match>>intfSignal; 
         uint8_t* start =
             entry.data() + sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
         for (const auto& sensor : sensors)
         {
+           std::cerr << "Inside the for loop to parse each sensors" << std::endl;
             auto set = sensor.value("set", empty);
             state_sensor_possible_states* possibleStates =
                 reinterpret_cast<state_sensor_possible_states*>(start);
@@ -149,10 +154,12 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
             auto propertyName = dbusEntry.value("property_name", "");
             auto propertyType = dbusEntry.value("property_type", "");
 
+
             StatestoDbusVal dbusIdToValMap{};
             pldm::utils::DBusMapping dbusMapping{};
             try
             {
+               std::cerr << "Inside try block" << std::endl;
                 auto service =
                     dBusIntf.getService(objectPath.c_str(), interface.c_str());
 
@@ -160,25 +167,85 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                     objectPath, interface, propertyName, propertyType};
                 dbusIdToValMap = populateMapping(
                     propertyType, dbusEntry["property_values"], stateValues);
+
             }
             catch (const std::exception& e)
             {
-                std::cerr << "D-Bus object path does not exist, sensor ID: "
+                std::cerr << "D-Bus object path does not exist and wait for the interface added signal,sensor ID: "
                           << pdr->sensor_id << "\n";
-            }
+                
+                found = false;
+                std::cerr << "Object path inside the catch block: " << objectPath << std::endl;
+                std::cerr << "Interface inside the catch block: " << interface << std::endl;
+                StatestoDbusVal dbusIdToVal{};
 
-            dbusMappings.emplace_back(std::move(dbusMapping));
-            dbusValMaps.emplace_back(std::move(dbusIdToValMap));
-        }
+
+                dbusIdToVal = populateMapping(
+                    propertyType, dbusEntry["property_values"], stateValues);
+
+                intfSignal.push_back(std::make_unique<sdbusplus::bus::match::match>(
+                     pldm::utils::DBusHandler::getBus(),
+                     "interface='org.freedesktop.DBus.ObjectManager',type='signal',"
+                     "member='InterfacesAdded',path= objectPath",
+                 //    sdbusplus::bus::match::rules::interfacesAdded() +
+                   //  sdbusplus::bus::match::rules::argNpath(0, objectPath),
+                     [&](sdbusplus::message::message& msg){
+                        std::map<std::string,std::map<std::string, std::variant<std::string, uint32_t>>>interfaces;
+                         sdbusplus::message::object_path path;
+                         msg.read(path, interfaces);
+                     std::cerr << " Inside lambda" << std::endl;
+                      std::string iface; std::string opath;
+                      for (auto& intf : interfaces)
+                      {
+                         if (intf.first == interface)
+                         {
+                         std::cerr << "Inside interface check" << std::endl;
+                         iface = intf.first;
+                         opath = path.str.c_str();
+                         break;
+                         }
+                      }
+              pldm::utils::DBusMapping dbusMapping = pldm::utils::DBusMapping{
+                    opath, iface, propertyName, propertyType};
+                 
+                 /*handler.addDbusObjMaps(
+                 pdr->sensor_id,std::make_tuple(std::move(dbusMappings), std::move(dbusIdToVal)),
+                 TypeId::PLDM_SENSOR_ID);*/
+                 std::cerr << " Creating the PDR inside Interface added signal watcher code" << std::endl;
+                 PdrEntry pdrEntry{};
+                 pdrEntry.data = entry.data();
+                 pdrEntry.size = pdrSize;
+                 repo.addRecord(pdrEntry);
+                        
+        }));
+      }
+      std::cerr << "outside the interface added signal" << std::endl;
+      if(found == false)
+     {
+        std::cerr << " before continue" << std::endl;
+        continue;
+     }
+     else
+     {
+       std::cerr << " Adding it to the DBus Mapping" << std::endl;
+       dbusMappings.emplace_back(std::move(dbusMapping));
+       dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+     }
+    }
 
         handler.addDbusObjMaps(
             pdr->sensor_id,
             std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)),
             TypeId::PLDM_SENSOR_ID);
+
+        if(found == true)
+      {
+        std::cerr << " Creating the PDR " << std::endl;
         PdrEntry pdrEntry{};
         pdrEntry.data = entry.data();
         pdrEntry.size = pdrSize;
         repo.addRecord(pdrEntry);
+      }
     }
 }
 
