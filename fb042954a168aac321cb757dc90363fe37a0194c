@@ -22,6 +22,30 @@
       "revId": "fb042954a168aac321cb757dc90363fe37a0194c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a1bc397_d47faa95",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000090
+      },
+      "writtenOn": "2021-06-14T15:15:54Z",
+      "side": 1,
+      "message": "Yep, I like that better. Moved this attr to enum_attrs.",
+      "parentUuid": "604b85fc_00d3c039",
+      "range": {
+        "startLine": 66,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 56
+      },
+      "revId": "fb042954a168aac321cb757dc90363fe37a0194c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
