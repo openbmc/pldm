@@ -142,6 +142,24 @@
     },
     {
       "key": {
+        "uuid": "cc77d3ed_bf0ef5b2",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-06-14T08:36:14Z",
+      "side": 1,
+      "message": "No response received and request times out - yes that must be logged. Also, hopefully response handlers handle this empty response gracefully. What is the actual purpose of calling the response handler here? Maybe you can add that in a comment as well.",
+      "parentUuid": "e6b0093d_3762f14b",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c7919755_35322f25",
         "filename": "requester/handler.hpp",
         "patchSetId": 5
