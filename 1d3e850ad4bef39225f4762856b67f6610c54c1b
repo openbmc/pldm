@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fc46f33e_e9e6ae57",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-14T20:27:46Z",
+      "side": 1,
+      "message": "Seems to break name conventions, i.e. camelCase",
+      "range": {
+        "startLine": 380,
+        "startChar": 9,
+        "endLine": 380,
+        "endChar": 19
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "298b37a8_d7cacf0f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-14T20:27:46Z",
+      "side": 1,
+      "message": "An auto on an 0 assignment seems a big vague. Should we just make sure it\u0027s the same type as pdrHdr-\u003erecord_handle since we can end up assigning them?",
+      "range": {
+        "startLine": 381,
+        "startChar": 4,
+        "endLine": 381,
+        "endChar": 8
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a665bc28_1089c838",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-14T20:27:46Z",
+      "side": 1,
+      "message": "I think some comments would be good explaining all of this logic. Like, why would we do a \"- 1\" if it\u0027s not valid? If it\u0027s 0, why do we go back to pdrHdr-\u003erecord_handle?",
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8351e1e4_77b5f816",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-14T20:27:46Z",
+      "side": 1,
+      "message": "If it\u0027s not this, there is no else statement. We will not set tlEid and whatever the default is, will get passed to tlInfo.emplace_back(). Is that ok?",
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
