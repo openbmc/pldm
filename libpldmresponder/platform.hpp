@@ -200,6 +200,14 @@ class Handler : public CmdHandler
      */
     EventMap eventHandlers;
 
+    /** @brief array of map of Json entry and pointer to capture the interface
+     * added signal for the corresponding effecter/sensor entry
+     */
+    std::array<std::unordered_map<
+                   uint8_t, std::unique_ptr<sdbusplus::bus::match::match>>,
+               3>
+        MatchPointers;
+
     /** @brief Handler for GetPDR
      *
      *  @param[in] request - Request message payload

@@ -31,8 +31,10 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
 {
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
+    auto index = 0;
     for (const auto& e : entries)
     {
+        index++;
         std::vector<uint8_t> entry{};
         entry.resize(sizeof(pldm_numeric_effecter_value_pdr));
 
@@ -199,6 +201,7 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
 
         pldm::responder::pdr_utils::DbusMappings dbusMappings{};
         pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
+        bool found = true;
         pldm::utils::DBusMapping dbusMapping{};
         try
         {
@@ -210,19 +213,90 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         }
         catch (const std::exception& e)
         {
-            std::cerr << "D-Bus object path does not exist, effecter ID: "
+            std::cerr << "D-Bus object path does not exist and wait for the "
+                         "interface added signal, effecter ID: "
                       << pdr->effecter_id << "\n";
+
+            found = false;
+            handler.MatchPointers[2].emplace(
+                index,
+                (std::make_unique<sdbusplus::bus::match::match>(
+                    pldm::utils::DBusHandler::getBus(),
+                    sdbusplus::bus::match::rules::interfacesAdded() +
+                        sdbusplus::bus::match::rules::argNpath(0, objectPath),
+                    [=, &repo, &handler](sdbusplus::message::message& msg) {
+                        pldm::utils::DBusInterfaceAdded interfaces;
+                        sdbusplus::message::object_path path;
+                        msg.read(path, interfaces);
+                        std::string iface;
+                        std::string opath;
+                        for (auto& intf : interfaces)
+                        {
+                            if (intf.first == interface.c_str())
+                            {
+                                iface = intf.first;
+                                opath = path.str.c_str();
+                                for (const auto& property : intf.second)
+                                {
+                                    if (property.first == propertyName.c_str())
+                                    {
+                                        break;
+                                    }
+                                }
+                                pldm::responder::pdr_utils::DbusMappings
+                                    dbusMappings{};
+                                pldm::responder::pdr_utils::DbusValMaps
+                                    dbusValMaps{};
+                                pldm::utils::DBusMapping dbusMapping =
+                                    pldm::utils::DBusMapping{opath, iface,
+                                                             propertyName,
+                                                             propertyType};
+                                dbusMappings.emplace_back(
+                                    std::move(dbusMapping));
+                                handler.addDbusObjMaps(
+                                    pdr->effecter_id,
+                                    std::make_tuple(std::move(dbusMappings),
+                                                    std::move(dbusValMaps)),
+                                    pldm::responder::pdr_utils::TypeId::
+                                        PLDM_EFFECTER_ID);
+
+                                pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+                                pdrEntry.data = reinterpret_cast<uint8_t*>(
+                                    const_cast<uint8_t*>(entry.data()));
+                                pdrEntry.size =
+                                    sizeof(pldm_numeric_effecter_value_pdr);
+                                repo.addRecord(pdrEntry);
+                                handler.MatchPointers[2].erase(index);
+                                break;
+                            }
+                        }
+                    })));
         }
-        dbusMappings.emplace_back(std::move(dbusMapping));
+        if (found == false)
+        {
+            // adding a dummy entry
+            dbusMapping = pldm::utils::DBusMapping{"xyz", interface,
+                                                   propertyName, propertyType};
+            dbusMappings.emplace_back(std::move(dbusMapping));
+            dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            continue;
+        }
+        else
+        {
+            dbusMappings.emplace_back(std::move(dbusMapping));
+        }
 
         handler.addDbusObjMaps(
             pdr->effecter_id,
             std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)));
 
-        pdr_utils::PdrEntry pdrEntry{};
-        pdrEntry.data = entry.data();
-        pdrEntry.size = sizeof(pldm_numeric_effecter_value_pdr);
-        repo.addRecord(pdrEntry);
+        if (found == true)
+        {
+            pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = sizeof(pldm_numeric_effecter_value_pdr);
+            repo.addRecord(pdrEntry);
+        }
     }
 }
 

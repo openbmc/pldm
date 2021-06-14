@@ -30,8 +30,10 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
 {
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
+    auto index = 0;
     for (const auto& e : entries)
     {
+        index++;
         size_t pdrSize = 0;
         auto sensors = e.value("sensors", emptyList);
         for (const auto& sensor : sensors)
@@ -118,10 +120,13 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
 
         pldm::responder::pdr_utils::DbusMappings dbusMappings{};
         pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
+        bool found = true;
+        uint8_t compSensorCount = pdr->composite_sensor_count;
         uint8_t* start =
             entry.data() + sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
         for (const auto& sensor : sensors)
         {
+            found = true;
             auto set = sensor.value("set", empty);
             state_sensor_possible_states* possibleStates =
                 reinterpret_cast<state_sensor_possible_states*>(start);
@@ -163,22 +168,110 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
             }
             catch (const std::exception& e)
             {
-                std::cerr << "D-Bus object path does not exist, sensor ID: "
+                std::cerr << "D-Bus object path does not exist and wait for "
+                             "the interface added signal,sensor ID: "
                           << pdr->sensor_id << "\n";
-            }
 
-            dbusMappings.emplace_back(std::move(dbusMapping));
-            dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+                found = false;
+                compSensorCount--;
+
+                pldm::responder::pdr_utils::StatestoDbusVal dbusIdToVal{};
+
+                dbusIdToVal = pldm::responder::pdr_utils::populateMapping(
+                    propertyType, dbusEntry["property_values"], stateValues);
+
+                handler.MatchPointers[1].emplace(
+                    index,
+                    (std::make_unique<sdbusplus::bus::match::match>(
+                        pldm::utils::DBusHandler::getBus(),
+                        sdbusplus::bus::match::rules::interfacesAdded() +
+                            sdbusplus::bus::match::rules::argNpath(0,
+                                                                   objectPath),
+                        [=, &repo, &handler](sdbusplus::message::message& msg) {
+                            pldm::utils::DBusInterfaceAdded interfaces;
+                            sdbusplus::message::object_path path;
+                            msg.read(path, interfaces);
+
+                            std::string iface;
+                            std::string opath;
+                            for (auto& intf : interfaces)
+                            {
+                                if (intf.first == interface.c_str())
+                                {
+                                    iface = intf.first;
+                                    opath = path.str.c_str();
+                                    for (const auto& property : intf.second)
+                                    {
+                                        if (property.first ==
+                                            propertyName.c_str())
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    pldm::responder::pdr_utils::DbusMappings
+                                        dbusMappings{};
+                                    pldm::responder::pdr_utils::DbusValMaps
+                                        dbusValMaps{};
+
+                                    pldm::utils::DBusMapping dbusMapping =
+                                        pldm::utils::DBusMapping{opath, iface,
+                                                                 propertyName,
+                                                                 propertyType};
+
+                                    dbusMappings.emplace_back(
+                                        std::move(dbusMapping));
+                                    dbusValMaps.emplace_back(
+                                        std::move(dbusIdToVal));
+
+                                    handler.addDbusObjMaps(
+                                        pdr->sensor_id,
+                                        std::make_tuple(std::move(dbusMappings),
+                                                        std::move(dbusValMaps)),
+                                        pldm::responder::pdr_utils::TypeId::
+                                            PLDM_SENSOR_ID);
+
+                                    pldm::responder::pdr_utils::PdrEntry
+                                        pdrEntry{};
+                                    pdrEntry.data = reinterpret_cast<uint8_t*>(
+                                        const_cast<uint8_t*>(entry.data()));
+                                    pdrEntry.size = pdrSize;
+                                    repo.addRecord(pdrEntry);
+                                    handler.MatchPointers[1].erase(index);
+
+                                    break;
+                                }
+                            }
+                        })));
+            }
+            if (found == false)
+            {
+                // adding a dummy entry
+                dbusMapping = pldm::utils::DBusMapping{
+                    "xyz", interface, propertyName, propertyType};
+                dbusMappings.emplace_back(std::move(dbusMapping));
+                dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+                continue;
+            }
+            else
+            {
+                dbusMappings.emplace_back(std::move(dbusMapping));
+                dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            }
         }
 
         handler.addDbusObjMaps(
             pdr->sensor_id,
             std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)),
             pldm::responder::pdr_utils::TypeId::PLDM_SENSOR_ID);
-        pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-        pdrEntry.data = entry.data();
-        pdrEntry.size = pdrSize;
-        repo.addRecord(pdrEntry);
+
+        if (found == true || compSensorCount != 0)
+        {
+            pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = pdrSize;
+            repo.addRecord(pdrEntry);
+        }
     }
 }
 
