@@ -70,8 +70,10 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
     if (PLDM_SUCCESS != unpack_pldm_header(hdr, &hdrFields))
     {
         std::cerr << "Empty PLDM request header \n";
+        return response;
     }
-    else if (PLDM_RESPONSE != hdrFields.msg_type)
+
+    if (PLDM_RESPONSE != hdrFields.msg_type)
     {
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
@@ -91,8 +93,7 @@ static Response processRxMsg(const std::vector<uint8_t>& requestMsg,
             header.instance = hdrFields.instance;
             header.pldm_type = hdrFields.pldm_type;
             header.command = hdrFields.command;
-            auto result = pack_pldm_header(&header, responseHdr);
-            if (PLDM_SUCCESS != result)
+            if (PLDM_SUCCESS != pack_pldm_header(&header, responseHdr))
             {
                 std::cerr << "Failed adding response header \n";
             }

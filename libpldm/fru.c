@@ -22,12 +22,8 @@ int encode_get_fru_record_table_metadata_req(uint8_t instance_id,
 	header.msg_type = PLDM_REQUEST;
 	header.pldm_type = PLDM_FRU;
 	header.command = PLDM_GET_FRU_RECORD_TABLE_METADATA;
-	int rc = pack_pldm_header(&header, &(msg->hdr));
-	if (PLDM_SUCCESS != rc) {
-		return rc;
-	}
 
-	return PLDM_SUCCESS;
+	return pack_pldm_header(&header, &(msg->hdr));
 }
 
 int decode_get_fru_record_table_metadata_resp(
@@ -76,7 +72,6 @@ int encode_get_fru_record_table_metadata_resp(
     uint16_t total_record_set_identifiers, uint16_t total_table_records,
     uint32_t checksum, struct pldm_msg *msg)
 {
-
 	if (msg == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
@@ -86,7 +81,8 @@ int encode_get_fru_record_table_metadata_resp(
 	header.instance = instance_id;
 	header.pldm_type = PLDM_FRU;
 	header.command = PLDM_GET_FRU_RECORD_TABLE_METADATA;
-	int rc = pack_pldm_header(&header, &(msg->hdr));
+
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
 	if (PLDM_SUCCESS != rc) {
 		return rc;
 	}
@@ -138,19 +134,18 @@ int encode_get_fru_record_table_resp(uint8_t instance_id,
 				     uint8_t transfer_flag,
 				     struct pldm_msg *msg)
 {
-	struct pldm_header_info header = {0};
-	int rc = PLDM_ERROR_INVALID_DATA;
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
 
+	struct pldm_header_info header = {0};
 	header.msg_type = PLDM_RESPONSE;
 	header.instance = instance_id;
 	header.pldm_type = PLDM_FRU;
 	header.command = PLDM_GET_FRU_RECORD_TABLE;
 
-	if (msg == NULL) {
-		return rc;
-	}
-
-	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc > PLDM_SUCCESS) {
 		return rc;
 	}
 
@@ -288,7 +283,7 @@ int encode_get_fru_record_by_option_req(
 	header.msg_type = PLDM_REQUEST;
 	header.pldm_type = PLDM_FRU;
 	header.command = PLDM_GET_FRU_RECORD_BY_OPTION;
-	int rc = pack_pldm_header(&header, &(msg->hdr));
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
 	if (rc != PLDM_SUCCESS) {
 		return rc;
 	}
@@ -348,7 +343,8 @@ int encode_get_fru_record_by_option_resp(uint8_t instance_id,
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	if (payload_length < PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES) {
+	if (payload_length !=
+	    PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES + data_size) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
@@ -357,7 +353,7 @@ int encode_get_fru_record_by_option_resp(uint8_t instance_id,
 	header.msg_type = PLDM_RESPONSE;
 	header.pldm_type = PLDM_FRU;
 	header.command = PLDM_GET_FRU_RECORD_BY_OPTION;
-	int rc = pack_pldm_header(&header, &(msg->hdr));
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
 	if (rc != PLDM_SUCCESS) {
 		return rc;
 	}
@@ -369,16 +365,9 @@ int encode_get_fru_record_by_option_resp(uint8_t instance_id,
 	resp->next_data_transfer_handle = htole32(next_data_transfer_handle);
 	resp->transfer_flag = transfer_flag;
 
-	if (completion_code != PLDM_SUCCESS) {
-		return PLDM_SUCCESS;
+	if (completion_code == PLDM_SUCCESS) {
+		memcpy(resp->fru_structure_data, fru_structure_data, data_size);
 	}
-
-	if (payload_length !=
-	    PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES + data_size) {
-		return PLDM_ERROR_INVALID_LENGTH;
-	}
-
-	memcpy(resp->fru_structure_data, fru_structure_data, data_size);
 
 	return PLDM_SUCCESS;
 }
@@ -421,21 +410,21 @@ int encode_get_fru_record_table_req(uint8_t instance_id,
 				    struct pldm_msg *msg, size_t payload_length)
 
 {
-	struct pldm_header_info header = {0};
-	int rc = PLDM_ERROR_INVALID_DATA;
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct pldm_get_fru_record_table_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
 
+	struct pldm_header_info header = {0};
 	header.msg_type = PLDM_REQUEST;
 	header.instance = instance_id;
 	header.pldm_type = PLDM_FRU;
 	header.command = PLDM_GET_FRU_RECORD_TABLE;
 
-	if (msg == NULL) {
-		return rc;
-	}
-	if (payload_length != sizeof(struct pldm_get_fru_record_table_req)) {
-		return PLDM_ERROR_INVALID_LENGTH;
-	}
-	if ((rc = pack_pldm_header(&header, &(msg->hdr))) > PLDM_SUCCESS) {
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
 		return rc;
 	}
 

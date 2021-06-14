@@ -223,8 +223,8 @@ struct pldm_get_tid_resp {
  * @note   Caller is responsible for alloc and dealloc of msg
  *         and hdr params
  */
-int pack_pldm_header(const struct pldm_header_info *hdr,
-		     struct pldm_msg_hdr *msg);
+uint8_t pack_pldm_header(const struct pldm_header_info *hdr,
+			 struct pldm_msg_hdr *msg);
 
 /**
  * @brief Unpack the PLDM header from the PLDM message.
@@ -236,8 +236,8 @@ int pack_pldm_header(const struct pldm_header_info *hdr,
  * @note   Caller is responsible for alloc and dealloc of msg
  *         and hdr params
  */
-int unpack_pldm_header(const struct pldm_msg_hdr *msg,
-		       struct pldm_header_info *hdr);
+uint8_t unpack_pldm_header(const struct pldm_msg_hdr *msg,
+			   struct pldm_header_info *hdr);
 
 /* Requester */
 
