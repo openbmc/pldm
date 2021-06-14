@@ -198,6 +198,8 @@ class Handler : public CmdHandler
      */
     EventMap eventHandlers;
 
+    std::map<uint8_t, std::unique_ptr<sdbusplus::bus::match::match>> intfSignal;
+
     /** @brief Handler for GetPDR
      *
      *  @param[in] request - Request message payload
