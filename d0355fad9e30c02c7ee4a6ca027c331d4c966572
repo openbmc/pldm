@@ -160,6 +160,24 @@
     },
     {
       "key": {
+        "uuid": "69b04660_c763062d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-15T04:23:49Z",
+      "side": 1,
+      "message": "Sure, will add tracing.\n\n\u003e What is the actual purpose of calling the response handler here?\nSo that whatever business logic can kick in. For example report failure of a firmware update or  initiate it from the beginning.",
+      "parentUuid": "cc77d3ed_bf0ef5b2",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c7919755_35322f25",
         "filename": "requester/handler.hpp",
         "patchSetId": 5
@@ -242,6 +260,24 @@
       "side": 1,
       "message": "Which Requester API do you mean?\n\nMore than checking the value of the input instanceId, my question was what do we do if the map already contains 2^5 requests? Generalizing that - how do we deal with the case where a key already exists?",
       "parentUuid": "93de939d_fbaa53e8",
+      "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f9849c5_e5e4ac39",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-15T04:23:49Z",
+      "side": 1,
+      "message": "With the current implementation if the key( a combination of eid, instanceId, type, command) exists, then the new entry is not entered in the map, as the emplace will return the existing entry.\n\nBut for practical purposes, the instanceID timer expiry will kick in and free the instance IDs.",
+      "parentUuid": "4a713f26_d7959eb3",
       "revId": "d0355fad9e30c02c7ee4a6ca027c331d4c966572",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
