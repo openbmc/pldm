@@ -4,6 +4,10 @@
 #include "common/types.hpp"
 #include "pldm_cmd_helper.hpp"
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
+#endif
+
 namespace pldmtool
 {
 
@@ -14,6 +18,10 @@ namespace
 {
 
 using namespace pldmtool::helper;
+
+#ifdef OEM_IBM
+using namespace pldm::responder::oem_ibm_platform;
+#endif
 
 static const std::map<uint8_t, std::string> sensorPresState{
     {PLDM_SENSOR_UNKNOWN, "Sensor Unknown"},
@@ -218,7 +226,13 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_INTERCONNECT, "Interconnect"},
         {PLDM_ENTITY_PLUG, "Plug"},
         {PLDM_ENTITY_SOCKET, "Socket"},
-        {PLDM_ENTITY_SYSTEM_LOGICAL, "System (Logical)"}};
+        {PLDM_ENTITY_SYSTEM_LOGICAL, "System (Logical)"},
+#ifdef OEM_IBM
+        {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, "OEM IBM Firmware Update"},
+        {PLDM_OEM_ENTITY_TYPE_START, "OEM IBM Entity Type Start"},
+        {PLDM_OEM_ENTITY_TYPE_END, "OEM IBM Entity Type End"},
+#endif
+    };
 
     const std::map<uint16_t, std::string> stateSet = {
         {PLDM_STATE_SET_HEALTH_STATE, "Health State"},
@@ -323,7 +337,14 @@ class GetPDR : public CommandInterface
         {PLDM_STATE_SET_STUCK_BIT_STATUS, "Stuck Bit Status"},
         {PLDM_STATE_SET_SCRUB_STATUS, "Scrub Status"},
         {PLDM_STATE_SET_SLOT_OCCUPANCY, "Slot Occupancy"},
-        {PLDM_STATE_SET_SLOT_STATE, "Slot State"}};
+        {PLDM_STATE_SET_SLOT_STATE, "Slot State"},
+#ifdef OEM_IBM
+        {PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, "OEM IBM Firmware Update State"},
+        {PLDM_OEM_IBM_BOOT_STATE, "OEM IBM Boot State"},
+        {PLDM_OEM_IBM_VERIFICATION_STATE, "OEM IBM Verification State"},
+        {PLDM_OEM_IBM_SYSTEM_POWER_STATE, "OEM IBM System Power State"}
+#endif
+    };
 
     const std::array<std::string_view, 4> sensorInit = {
         "noInit", "useInitPDR", "enableSensor", "disableSensor"};
@@ -359,6 +380,62 @@ class GetPDR : public CommandInterface
         {PLDM_OEM_DEVICE_PDR, "OEM Device PDR"},
         {PLDM_OEM_PDR, "OEM PDR"},
     };
+
+    static inline const std::map<std::string, std::string> setThermalTrip{
+        {"1", "Normal"}, {"2", "Thermal Trip"}};
+    static inline const std::map<std::string, std::string> setIdentifyState{
+        {"1", "Identify State Unasserted"}, {"2", "Identify State Asserted"}};
+    static inline const std::map<std::string, std::string> setBootProgressState{
+        {"1", "Boot Not Active"},
+        {"2", "Boot Completed"},
+        {"3", "Memory Initialization"},
+        {"5", "Secondary Processor(s) Initialization"},
+        {"9", "PCI Resource Configuration"},
+        {"21", "Starting Operating System"},
+        {"22", "Baseboard Initialization"},
+        {"26", "Primary Processor Initialization"}};
+    static inline const std::map<std::string, std::string> setOpFaultStatus{
+        {"1", "Normal"}, {"2", "Stressed"}};
+    static inline const std::map<std::string, std::string> setSysPowerState{
+        {"9", "Off-Soft Graceful"}};
+    static inline const std::map<std::string, std::string>
+        setSWTerminationStatus{{"6", "Graceful Restart Requested"}};
+    static inline const std::map<std::string, std::string> setAvailability{
+        {"8", "Rebooting"}};
+    static inline const std::map<std::string, std::string> setHealthState{
+        {"1", "Normal"}, {"7", "Upper Critical"}, {"9", "Upper Fatal"}};
+    static inline const std::map<std::string, std::string>
+        SetOemIBMFWUpdateState{{"1", "Start"},  {"2", "End"},
+                               {"3", "Fail"},   {"4", "Abort"},
+                               {"5", "Accept"}, {"6", "Reject"}};
+    static inline const std::map<std::string, std::string>
+        SetOemIBMVerStateValues{{"0", "Valid"},
+                                {"1", "Entitlement Fail"},
+                                {"2", "Banned Platform Fail"},
+                                {"4", "Minimum MIF Fail"}};
+    static inline const std::map<std::string, std::string>
+        SetOemIBMSysPowerStates{{"1", "Power Cycle Hard"}};
+    static inline const std::map<std::string, std::string> SetOemIBMBootState{
+        {"1", "P Side"}, {"2", "T side"}};
+
+    static inline const std::map<uint16_t,
+                                 const std::map<std::string, std::string>>
+        populatePStateMaps{
+            {PLDM_STATE_SET_THERMAL_TRIP, setThermalTrip},
+            {PLDM_STATE_SET_IDENTIFY_STATE, setIdentifyState},
+            {PLDM_STATE_SET_BOOT_PROGRESS, setBootProgressState},
+            {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS, setOpFaultStatus},
+            {PLDM_STATE_SET_SYSTEM_POWER_STATE, setSysPowerState},
+            {PLDM_STATE_SET_SW_TERMINATION_STATUS, setSWTerminationStatus},
+            {PLDM_STATE_SET_AVAILABILITY, setAvailability},
+            {PLDM_STATE_SET_HEALTH_STATE, setHealthState},
+#ifdef OEM_IBM
+            {PLDM_OEM_IBM_BOOT_STATE, SetOemIBMBootState},
+            {PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, SetOemIBMFWUpdateState},
+            {PLDM_OEM_IBM_SYSTEM_POWER_STATE, SetOemIBMSysPowerStates},
+            {PLDM_OEM_IBM_VERIFICATION_STATE, SetOemIBMVerStateValues},
+#endif
+        };
 
     bool isLogicalBitSet(const uint16_t entity_type)
     {
@@ -413,6 +490,34 @@ class GetPDR : public CommandInterface
         }
     }
 
+    std::vector<std::string>
+        getStateSetPossibleStateNames(uint16_t stateId,
+                                      const std::vector<std::string>& value)
+    {
+        std::vector<std::string> data{};
+        for (auto& s : value)
+        {
+            if (populatePStateMaps.contains(stateId))
+            {
+                const std::map<std::string, std::string> stateNames =
+                    populatePStateMaps.at(stateId);
+                if (stateNames.contains(s))
+                {
+                    data.push_back(stateNames.at(s) + "(" + s + ")");
+                }
+                else
+                {
+                    data.push_back(s);
+                }
+            }
+            else
+            {
+                data.push_back(s);
+            }
+        }
+        return data;
+    }
+
     std::string getPDRType(uint8_t type)
     {
         auto typeString = std::to_string(type);
@@ -435,19 +540,19 @@ class GetPDR : public CommandInterface
         output["dataLength"] = hdr->length;
     }
 
-    std::string printPossibleStates(uint8_t possibleStatesSize,
-                                    const bitfield8_t* states)
+    std::vector<std::string> printPossibleStates(uint8_t possibleStatesSize,
+                                                 const bitfield8_t* states)
     {
         uint8_t possibleStatesPos{};
-        std::string data;
+        std::vector<std::string> data{};
         auto printStates = [&possibleStatesPos, &data](const bitfield8_t& val) {
             std::stringstream pstates;
             for (int i = 0; i < CHAR_BIT; i++)
             {
                 if (val.byte & (1 << i))
                 {
-                    pstates << " " << (possibleStatesPos * CHAR_BIT + i);
-                    data.append(pstates.str());
+                    pstates << (possibleStatesPos * CHAR_BIT + i);
+                    data.push_back(pstates.str());
                     pstates.str("");
                 }
             }
@@ -484,8 +589,10 @@ class GetPDR : public CommandInterface
                 state->possible_states_size);
             output.emplace(
                 ("possibleStates[" + std::to_string(compCount) + "]"),
-                printPossibleStates(state->possible_states_size,
-                                    state->states));
+                getStateSetPossibleStateNames(
+                    state->state_set_id,
+                    printPossibleStates(state->possible_states_size,
+                                        state->states)));
 
             if (compCount)
             {
@@ -733,8 +840,10 @@ class GetPDR : public CommandInterface
                 state->possible_states_size);
             output.emplace(
                 ("possibleStates[" + std::to_string(compEffCount) + "]"),
-                printPossibleStates(state->possible_states_size,
-                                    state->states));
+                getStateSetPossibleStateNames(
+                    state->state_set_id,
+                    printPossibleStates(state->possible_states_size,
+                                        state->states)));
 
             if (compEffCount)
             {
