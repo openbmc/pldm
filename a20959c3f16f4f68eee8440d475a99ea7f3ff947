@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4045b1fa_f9b9147e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-15T13:14:11Z",
+      "side": 1,
+      "message": "nit: Manoj, I\u0027ve noticed you like your bullets in commit messages 😊 \n\nI think in general, bullets are for situations where you\u0027re listing things. i.e. \"I tested the following:\" or \"This impacts the following areas:\". But what you have here really just seems like paragraphs with a line feed in between them.",
+      "revId": "a20959c3f16f4f68eee8440d475a99ea7f3ff947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
