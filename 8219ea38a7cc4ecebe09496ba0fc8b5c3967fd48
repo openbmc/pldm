@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f35eab8_ad928728",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-15T14:02:12Z",
+      "side": 1,
+      "message": "uint8_t, there was a recent patch that made this change that got merged.",
+      "range": {
+        "startLine": 626,
+        "startChar": 1,
+        "endLine": 626,
+        "endChar": 4
+      },
+      "revId": "8219ea38a7cc4ecebe09496ba0fc8b5c3967fd48",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d571d6a7_c48ba48a",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-15T14:02:12Z",
+      "side": 1,
+      "message": "constexpr std::string_view",
+      "range": {
+        "startLine": 1014,
+        "startChar": 4,
+        "endLine": 1014,
+        "endChar": 47
+      },
+      "revId": "8219ea38a7cc4ecebe09496ba0fc8b5c3967fd48",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
