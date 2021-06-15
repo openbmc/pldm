@@ -612,7 +612,7 @@ TEST(GetFRURecordByOption, testGoodDecodeRequest)
 TEST(GetFRURecordByOption, testBadDecodeRequest)
 {
     constexpr auto payLoadLength = sizeof(pldm_get_fru_record_by_option_req);
-    std::array<uint8_t, sizeof(pldm_msg_hdr) + payLoadLength> request;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + payLoadLength> request{};
     auto reqMsg = reinterpret_cast<pldm_msg*>(request.data());
 
     uint32_t retDataTransferHandle{};
