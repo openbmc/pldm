@@ -1,0 +1,10 @@
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Code-Review+1: Sridevi Ramesh <sridevra@in.ibm.com>
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Submitted-by: Tom Joseph <rushtotom@gmail.com>
+Submitted-at: Tue, 15 Jun 2021 13:50:29 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/44071
+Project: openbmc/pldm
+Branch: refs/heads/master
