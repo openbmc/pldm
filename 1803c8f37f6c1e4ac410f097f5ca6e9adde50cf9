@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4eae5977_0b5a86c2",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-06-16T08:16:29Z",
+      "side": 1,
+      "message": "should remove the magic number and add a constant instead",
+      "revId": "1803c8f37f6c1e4ac410f097f5ca6e9adde50cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
