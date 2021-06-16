@@ -70,6 +70,24 @@
       "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bdc6c8e_c7f1add0",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-16T08:32:27Z",
+      "side": 1,
+      "message": "@George \nactually we cannot use \"pldm_entity_association_tree_find\" here. sorry i did not look at the api earlier. this sets the container id on output. instead we should have a new api which finds a node in the tree but does not change the container id and gives a referrence of the node in the tree\ncan you use \"find_entity_ref_in_tree\" from https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/43774/10/libpldm/pdr.c#629  instead to find the parent in the tree. when you get the parent, check whether the parent has a child with the entity instance number. if it is there then can not add the new node\n\nsay we already have \"proc0/core0\" and \"proc0/core1\" and \"proc1/core0\"\nand then HB sends core1 again with parent as proc1. so we search for proc1 in the tree. after finding that we see if proc1 has any child with entity instance 1. that is not present so we can create core1 under proc1 \n\n@ibmzach\nhope that solves the problem",
+      "parentUuid": "2911b21f_de4d3ab7",
+      "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
