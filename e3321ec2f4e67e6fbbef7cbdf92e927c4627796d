@@ -88,6 +88,24 @@
       "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "121bdf7d_deb12cde",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-16T09:07:25Z",
+      "side": 1,
+      "message": "@Sampa\nYes, got it\nPlease give me some time, I will fix it 😊",
+      "parentUuid": "4bdc6c8e_c7f1add0",
+      "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
