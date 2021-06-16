@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5fbb3aa1_632127d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-16T09:00:20Z",
+      "side": 1,
+      "message": "would this be a configurable option ? so that client that want a bigger time interval can increase it ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 32,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "f2ea79529eaaa6c8414245fa4e89ce99cb67f777",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d20289d2_60c5278b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-16T09:00:20Z",
+      "side": 1,
+      "message": "Sending a setEventReceiver command after we get GetTID -  is this a generic thing that all companies would do ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "f2ea79529eaaa6c8414245fa4e89ce99cb67f777",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cda567f7_b448716b",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-16T09:00:20Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 183,
+        "startChar": 38,
+        "endLine": 183,
+        "endChar": 43
+      },
+      "revId": "f2ea79529eaaa6c8414245fa4e89ce99cb67f777",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "316ab763_b9dd9af2",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-16T09:00:20Z",
+      "side": 1,
+      "message": "blocking call ? we should go with async direction right ?",
+      "range": {
+        "startLine": 200,
+        "startChar": 8,
+        "endLine": 200,
+        "endChar": 22
+      },
+      "revId": "f2ea79529eaaa6c8414245fa4e89ce99cb67f777",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6ba1b39_b9e9f276",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-16T09:00:20Z",
+      "side": 1,
+      "message": "magic value , this should ideally be configured via meta-layer if you are placing this code generic for every one.",
+      "range": {
+        "startLine": 110,
+        "startChar": 47,
+        "endLine": 110,
+        "endChar": 54
+      },
+      "revId": "f2ea79529eaaa6c8414245fa4e89ce99cb67f777",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
