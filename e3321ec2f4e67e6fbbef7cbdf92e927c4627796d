@@ -34,6 +34,24 @@
       "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "300d2497_2d39c326",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-06-16T02:46:23Z",
+      "side": 1,
+      "message": "The API is unusable by Hostboot if it doesn\u0027t permit entity IDs being reused, since we do have entities that must have the same type and entity instance ID, and differ only by container. This commit as-is prevents us from creating those entities.",
+      "parentUuid": "8854e022_6dcf74c2",
+      "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
