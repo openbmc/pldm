@@ -52,6 +52,24 @@
       "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2911b21f_de4d3ab7",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-16T03:03:17Z",
+      "side": 1,
+      "message": "Sorry, Maybe we need to confirm with the maintainer.\n@Deepak @Tom @Sampa @Manoj\nWhat do you think?",
+      "parentUuid": "300d2497_2d39c326",
+      "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
