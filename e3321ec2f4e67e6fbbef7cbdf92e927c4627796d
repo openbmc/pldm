@@ -16,6 +16,24 @@
       "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8854e022_6dcf74c2",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-16T01:23:30Z",
+      "side": 1,
+      "message": "Yes, correct\nBut now, Since the container IDs on the HOST side and the BMC side are different, we temporarily ignore the verification of the contained ID.\nMaybe we can refactor it in the future.",
+      "parentUuid": "472d5e4f_719ca862",
+      "revId": "e3321ec2f4e67e6fbbef7cbdf92e927c4627796d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
