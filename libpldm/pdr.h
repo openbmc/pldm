@@ -251,15 +251,23 @@ pldm_entity_node *pldm_entity_association_tree_add(
     uint16_t entity_instance_number, pldm_entity_node *parent,
     uint8_t association_type);
 
-/** @brief Visit and note each entity in the entity association tree
+/** @brief Visit and note each entity through the passed entity node
  *
- *  @param[in] tree - opaque pointer acting as a handle to the tree
+ *  @param[in] node		 - opaque pointer to added entity
  *  @param[out] entities - pointer to list of pldm_entity's. To be free()'d by
  *                         the caller
- *  @param[out] size - number of pldm_entity's
+ *  @param[out] size 	 - number of pldm_entity's
  */
-void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
+void pldm_entity_association_tree_visit(pldm_entity_node *node,
 					pldm_entity **entities, size_t *size);
+
+/** @brief Extract pldm entity root by the pldm_entity_association_tree
+ *
+ *  @param[in] tree     - opaque pointer acting as a handle to the tree
+ *
+ *  @return pldm_entity_node* - opaque pointer to added entity
+ */
+pldm_entity_node *pldm_entity_root_extract(pldm_entity_association_tree *tree);
 
 /** @brief Extract pldm entity by the pldm_entity_node
  *
