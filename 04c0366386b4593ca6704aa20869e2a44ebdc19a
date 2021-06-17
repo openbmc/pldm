@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b1bb9a7b_f549c188",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-17T01:10:17Z",
+      "side": 1,
+      "message": "I think we can return `uint8_t` instead of `int`\nI know all the encode/decode method are used `int`, But I will fix it int the future",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 3
+      },
+      "revId": "04c0366386b4593ca6704aa20869e2a44ebdc19a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
