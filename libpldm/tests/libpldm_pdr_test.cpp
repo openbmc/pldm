@@ -586,7 +586,8 @@ TEST(EntityAssociationPDR, testBuild)
 
     size_t num{};
     pldm_entity* out = nullptr;
-    pldm_entity_association_tree_visit(tree, &out, &num);
+    pldm_entity_association_tree_visit(pldm_entity_root_extract(tree), &out,
+                                       &num);
     EXPECT_EQ(num, 9u);
 
     EXPECT_EQ(out[0].entity_type, 1u);
@@ -680,7 +681,8 @@ TEST(EntityAssociationPDR, testSpecialTrees)
     EXPECT_NE(node, nullptr);
     size_t num{};
     pldm_entity* out = nullptr;
-    pldm_entity_association_tree_visit(tree, &out, &num);
+    pldm_entity_association_tree_visit(pldm_entity_root_extract(tree), &out,
+                                       &num);
     EXPECT_EQ(num, 1u);
     EXPECT_EQ(out[0].entity_type, 1u);
     EXPECT_EQ(out[0].entity_instance_num, 1u);
@@ -699,7 +701,8 @@ TEST(EntityAssociationPDR, testSpecialTrees)
     node = pldm_entity_association_tree_add(tree, &entities[2], nullptr,
                                             PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     EXPECT_NE(node, nullptr);
-    pldm_entity_association_tree_visit(tree, &out, &num);
+    pldm_entity_association_tree_visit(pldm_entity_root_extract(tree), &out,
+                                       &num);
     EXPECT_EQ(num, 3u);
     EXPECT_EQ(out[0].entity_type, 1u);
     EXPECT_EQ(out[0].entity_instance_num, 1u);
@@ -728,7 +731,8 @@ TEST(EntityAssociationPDR, testSpecialTrees)
     auto node2 = pldm_entity_association_tree_add(
         tree, &entities[2], node1, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     EXPECT_NE(node2, nullptr);
-    pldm_entity_association_tree_visit(tree, &out, &num);
+    pldm_entity_association_tree_visit(pldm_entity_root_extract(tree), &out,
+                                       &num);
     EXPECT_EQ(num, 3u);
     EXPECT_EQ(out[0].entity_type, 1u);
     EXPECT_EQ(out[0].entity_instance_num, 1u);
@@ -758,7 +762,8 @@ TEST(EntityAssociationPDR, testSpecialTrees)
     node2 = pldm_entity_association_tree_add(tree, &entities[2], node,
                                              PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     EXPECT_NE(node2, nullptr);
-    pldm_entity_association_tree_visit(tree, &out, &num);
+    pldm_entity_association_tree_visit(pldm_entity_root_extract(tree), &out,
+                                       &num);
     EXPECT_EQ(num, 4u);
     EXPECT_EQ(out[0].entity_type, 1u);
     EXPECT_EQ(out[0].entity_instance_num, 1u);
@@ -1195,13 +1200,15 @@ TEST(EntityAssociationPDR, testCopyTree)
     EXPECT_NE(l2c, nullptr);
     size_t orgNum{};
     pldm_entity* orgOut = nullptr;
-    pldm_entity_association_tree_visit(orgTree, &orgOut, &orgNum);
+    pldm_entity_association_tree_visit(pldm_entity_root_extract(orgTree),
+                                       &orgOut, &orgNum);
     EXPECT_EQ(orgNum, 4u);
 
     pldm_entity_association_tree_copy_root(orgTree, newTree);
     size_t newNum{};
     pldm_entity* newOut = nullptr;
-    pldm_entity_association_tree_visit(newTree, &newOut, &newNum);
+    pldm_entity_association_tree_visit(pldm_entity_root_extract(newTree),
+                                       &newOut, &newNum);
     EXPECT_EQ(newNum, orgNum);
     EXPECT_EQ(newOut[0].entity_type, 1u);
     EXPECT_EQ(newOut[0].entity_instance_num, 1u);
