@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "420ce43a_87a8dfe0",
+        "filename": "oem/ibm/configurations/fru/Battery_LocationCode.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-17T07:29:33Z",
+      "side": 1,
+      "message": "there is a standard interface provided by VPD team for location code. could you pls use that instead of the com.ibm one, since you are doing this newly \n\napplicable for all the location codes",
+      "range": {
+        "startLine": 13,
+        "startChar": 30,
+        "endLine": 13,
+        "endChar": 53
+      },
+      "revId": "bab9b17c93973e9bcfe6a7753c7c1772e4e28fac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
