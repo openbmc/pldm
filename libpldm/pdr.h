@@ -234,14 +234,14 @@ pldm_entity_association_tree_add(pldm_entity_association_tree *tree,
 				 pldm_entity *entity, pldm_entity_node *parent,
 				 uint8_t association_type);
 
-/** @brief Visit and note each entity in the entity association tree
+/** @brief Visit and note each entity through the passed entity node
  *
- *  @param[in] tree - opaque pointer acting as a handle to the tree
+ *  @param[in] node		 - opaque pointer to added entity
  *  @param[out] entities - pointer to list of pldm_entity's. To be free()'d by
  *                         the caller
- *  @param[out] size - number of pldm_entity's
+ *  @param[out] size 	 - number of pldm_entity's
  */
-void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
+void pldm_entity_association_tree_visit(pldm_entity_node *node,
 					pldm_entity **entities, size_t *size);
 
 /** @brief Extract pldm entity by the pldm_entity_node
@@ -309,10 +309,12 @@ pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
  *
  *  @param[in] org_tree - pointer to source tree
  *  @param[in/out] new_tree - pointer to destination tree
+ *
+ *  @return pldm_entity_node* pointer to entity
  */
-void pldm_entity_association_tree_copy_root(
-    pldm_entity_association_tree *org_tree,
-    pldm_entity_association_tree *new_tree);
+pldm_entity_node *
+pldm_entity_association_tree_copy_root(pldm_entity_association_tree *org_tree,
+				       pldm_entity_association_tree *new_tree);
 
 /** @brief Destroy all the nodes of the entity association tree
  *

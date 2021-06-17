@@ -451,20 +451,17 @@ static void entity_association_tree_visit(pldm_entity_node *node,
 	entity_association_tree_visit(node->first_child, entities, index);
 }
 
-void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
+void pldm_entity_association_tree_visit(pldm_entity_node *node,
 					pldm_entity **entities, size_t *size)
 {
-	assert(tree != NULL);
+	assert(node != NULL);
 
 	*size = 0;
-	if (tree->root == NULL) {
-		return;
-	}
 
-	get_num_nodes(tree->root, size);
+	get_num_nodes(node, size);
 	*entities = malloc(*size * sizeof(pldm_entity));
 	size_t index = 0;
-	entity_association_tree_visit(tree->root, *entities, &index);
+	entity_association_tree_visit(node, *entities, &index);
 }
 
 static void entity_association_tree_destroy(pldm_entity_node *node)
@@ -711,12 +708,17 @@ static void entity_association_tree_copy(pldm_entity_node *org_node,
 				     &((*new_node)->next_sibling));
 }
 
-void pldm_entity_association_tree_copy_root(
-    pldm_entity_association_tree *org_tree,
-    pldm_entity_association_tree *new_tree)
+pldm_entity_node *
+pldm_entity_association_tree_copy_root(pldm_entity_association_tree *org_tree,
+				       pldm_entity_association_tree *new_tree)
 {
+	assert(org_tree != NULL);
+	assert(new_tree != NULL);
+
 	new_tree->last_used_container_id = org_tree->last_used_container_id;
 	entity_association_tree_copy(org_tree->root, &(new_tree->root));
+
+	return new_tree->root;
 }
 
 void pldm_entity_association_tree_destroy_root(
