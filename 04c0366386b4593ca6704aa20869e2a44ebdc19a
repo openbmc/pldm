@@ -22,6 +22,30 @@
       "revId": "04c0366386b4593ca6704aa20869e2a44ebdc19a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3375c04_3225b40b",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-17T04:25:05Z",
+      "side": 1,
+      "message": "Thanks George for volunteering!\n\nDevelopers from Intel had a proposal to have separate encode/decode return codes[1], instead of using PLDM completion codes. So that there is a clear distinction of completion codes returned in PLDM response and the completion codes used by the libpldm library. Please consider this also.\n\nOne advantage `int` gives as return type is to return ERRNO, similar to system calls. That might be a consideration as well when you get to fixing it.\n\n\n[1] https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/41825/21/libpldm/firmware_update.h#16",
+      "parentUuid": "b1bb9a7b_f549c188",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 3
+      },
+      "revId": "04c0366386b4593ca6704aa20869e2a44ebdc19a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
