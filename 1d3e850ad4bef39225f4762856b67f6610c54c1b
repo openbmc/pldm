@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "2cab2ebd_13c05fd6",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "why auto?",
+      "range": {
+        "startLine": 379,
+        "startChar": 3,
+        "endLine": 379,
+        "endChar": 18
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fc46f33e_e9e6ae57",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 28
@@ -13,6 +36,30 @@
       "writtenOn": "2021-06-14T20:27:46Z",
       "side": 1,
       "message": "Seems to break name conventions, i.e. camelCase",
+      "range": {
+        "startLine": 380,
+        "startChar": 9,
+        "endLine": 380,
+        "endChar": 19
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db09c39b_8a3071da",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "fc46f33e_e9e6ae57",
       "range": {
         "startLine": 380,
         "startChar": 9,
@@ -48,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "5aa65b0e_01553e30",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "298b37a8_d7cacf0f",
+      "range": {
+        "startLine": 381,
+        "startChar": 4,
+        "endLine": 381,
+        "endChar": 8
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a665bc28_1089c838",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 28
@@ -65,6 +136,47 @@
     },
     {
       "key": {
+        "uuid": "9ca9e2df_5b9dc247",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a665bc28_1089c838",
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7320f84a_99a3374b",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "redundant ()",
+      "range": {
+        "startLine": 433,
+        "startChar": 15,
+        "endLine": 433,
+        "endChar": 22
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8351e1e4_77b5f816",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 28
@@ -76,6 +188,75 @@
       "writtenOn": "2021-06-14T20:27:46Z",
       "side": 1,
       "message": "If it\u0027s not this, there is no else statement. We will not set tlEid and whatever the default is, will get passed to tlInfo.emplace_back(). Is that ok?",
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e61fc25_85058059",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "old way of typecasting?",
+      "range": {
+        "startLine": 462,
+        "startChar": 32,
+        "endLine": 462,
+        "endChar": 42
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d14b5160_396b9add",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 28
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "magic number ?",
+      "range": {
+        "startLine": 335,
+        "startChar": 18,
+        "endLine": 335,
+        "endChar": 22
+      },
+      "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b95ef9ec_89ae7d4e",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 28
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:56:17Z",
+      "side": 1,
+      "message": "Magic number",
+      "range": {
+        "startLine": 336,
+        "startChar": 18,
+        "endLine": 336,
+        "endChar": 21
+      },
       "revId": "1d3e850ad4bef39225f4762856b67f6610c54c1b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
