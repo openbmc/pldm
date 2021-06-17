@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b60e336_4ccc7915",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:36:55Z",
+      "side": 1,
+      "message": "bmc will respond to the GetTID command from host, and then immediately send a setEventReceiver command right. as - written it looks like we dont respond to GetTID command and instead send a SetEventReceiver command.",
+      "range": {
+        "startLine": 13,
+        "startChar": 22,
+        "endLine": 14,
+        "endChar": 25
+      },
+      "revId": "306d3decb30cc4e67775b734a390ea9aac90b361",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b670d21c_b6a9a8a1",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-17T03:36:55Z",
+      "side": 1,
+      "message": "magic number ?",
+      "range": {
+        "startLine": 185,
+        "startChar": 39,
+        "endLine": 185,
+        "endChar": 44
+      },
+      "revId": "306d3decb30cc4e67775b734a390ea9aac90b361",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
