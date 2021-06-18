@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f9caeacd_f48b87ba",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-18T07:16:57Z",
+      "side": 1,
+      "message": "not needed here",
+      "range": {
+        "startLine": 95,
+        "startChar": 19,
+        "endLine": 95,
+        "endChar": 37
+      },
+      "revId": "108279aca43d758654da0e5e8a654fa0b604c47d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed84401c_edc63844",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-18T07:16:57Z",
+      "side": 1,
+      "message": "do not do OEM_IBM twice. instead create a single function which does both the jobs. pass an extra parameter if you need to disable the watchdog \nand call that function at the end here",
+      "range": {
+        "startLine": 229,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 40
+      },
+      "revId": "108279aca43d758654da0e5e8a654fa0b604c47d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e977e1d_2383a7c1",
+        "filename": "oem/ibm/libpldm/platform_oem_ibm.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-18T07:16:57Z",
+      "side": 1,
+      "message": "do not declare here. see other comment",
+      "range": {
+        "startLine": 54,
+        "startChar": 12,
+        "endLine": 54,
+        "endChar": 21
+      },
+      "revId": "108279aca43d758654da0e5e8a654fa0b604c47d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9133498_90be02fe",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-18T07:16:57Z",
+      "side": 1,
+      "message": "this is set to false in the first poweroff. then it will continue to remain off right? how will you handle multiple power off and on?\n\ninstead of declaring a global variable, subscribe to the HostState property change signal in Handler of oem_ibm_handler.hpp\nclass Handler : public oem_platform::Handler\n\ndeclare \"isHostOff\" variable there \n\nand always have the value updated dynamically. so whenever Host goes off you set it and when Host becomes running you set it",
+      "range": {
+        "startLine": 124,
+        "startChar": 39,
+        "endLine": 124,
+        "endChar": 48
+      },
+      "revId": "108279aca43d758654da0e5e8a654fa0b604c47d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
