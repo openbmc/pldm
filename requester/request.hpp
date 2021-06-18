@@ -58,7 +58,7 @@ class RequestRetryTimer
     int start()
     {
         auto rc = send();
-        if (rc != PLDM_SUCCESS)
+        if (rc)
         {
             return rc;
         }

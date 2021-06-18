@@ -171,8 +171,9 @@ class Handler
             event.get(), instanceIdExpiryCallBack);
 
         auto rc = request->start();
-        if (rc != PLDM_SUCCESS)
+        if (rc)
         {
+            requester.markFree(eid, instanceId);
             std::cerr << "Failure to send the PLDM request message"
                       << "\n";
             return rc;
@@ -184,6 +185,7 @@ class Handler
         }
         catch (const std::runtime_error& e)
         {
+            requester.markFree(eid, instanceId);
             std::cerr << "Failed to start the instance ID expiry timer. RC = "
                       << e.what() << "\n";
             return PLDM_ERROR;

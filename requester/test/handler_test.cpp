@@ -78,9 +78,10 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
                                               seconds(1), 2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = dbusImplReq.getInstanceId(eid);
-    reqHandler.registerRequest(
+    auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
         std::move(std::bind_front(&HandlerTest::pldmResponseCallBack, this)));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     auto responsePtr = reinterpret_cast<const pldm_msg*>(response.data());
@@ -89,8 +90,8 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
 
     // handleResponse() will free the instance ID after calling the response
     // handler, so the same instance ID is granted next as well
-    ASSERT_EQ(validResponse, true);
-    ASSERT_EQ(instanceId, dbusImplReq.getInstanceId(eid));
+    EXPECT_EQ(validResponse, true);
+    EXPECT_EQ(instanceId, dbusImplReq.getInstanceId(eid));
 }
 
 TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
@@ -99,17 +100,18 @@ TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
                                               seconds(1), 2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = dbusImplReq.getInstanceId(eid);
-    reqHandler.registerRequest(
+    auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
         std::move(std::bind_front(&HandlerTest::pldmResponseCallBack, this)));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     // Waiting for 500ms so that the instance ID expiry callback is invoked
     waitEventExpiry(milliseconds(500));
 
     // cleanup() will free the instance ID after calling the response
     // handler will no response, so the same instance ID is granted next
-    ASSERT_EQ(instanceId, dbusImplReq.getInstanceId(eid));
-    ASSERT_EQ(nullResponse, true);
+    EXPECT_EQ(instanceId, dbusImplReq.getInstanceId(eid));
+    EXPECT_EQ(nullResponse, true);
 }
 
 TEST_F(HandlerTest, multipleRequestResponseScenario)
@@ -118,22 +120,24 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
                                               seconds(2), 2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = dbusImplReq.getInstanceId(eid);
-    reqHandler.registerRequest(
+    auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
         std::move(std::bind_front(&HandlerTest::pldmResponseCallBack, this)));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Request requestNxt{};
     auto instanceIdNxt = dbusImplReq.getInstanceId(eid);
-    reqHandler.registerRequest(
+    rc = reqHandler.registerRequest(
         eid, instanceIdNxt, 0, 0, std::move(requestNxt),
         std::move(std::bind_front(&HandlerTest::pldmResponseCallBack, this)));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     auto responsePtr = reinterpret_cast<const pldm_msg*>(response.data());
     reqHandler.handleResponse(eid, instanceIdNxt, 0, 0, responsePtr,
                               sizeof(response));
-    ASSERT_EQ(validResponse, true);
-    ASSERT_EQ(callbackCount, 1);
+    EXPECT_EQ(validResponse, true);
+    EXPECT_EQ(callbackCount, 1);
     validResponse = false;
 
     // Waiting for 500ms and handle the response for the first request, to
@@ -143,7 +147,7 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     reqHandler.handleResponse(eid, instanceId, 0, 0, responsePtr,
                               sizeof(response));
 
-    ASSERT_EQ(validResponse, true);
-    ASSERT_EQ(callbackCount, 2);
-    ASSERT_EQ(instanceId, dbusImplReq.getInstanceId(eid));
+    EXPECT_EQ(validResponse, true);
+    EXPECT_EQ(callbackCount, 2);
+    EXPECT_EQ(instanceId, dbusImplReq.getInstanceId(eid));
 }

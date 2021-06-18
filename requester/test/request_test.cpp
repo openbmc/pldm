@@ -54,7 +54,7 @@ TEST_F(RequestIntfTest, 0Retries100msTimeout)
         .Times(Exactly(1))
         .WillOnce(Return(PLDM_SUCCESS));
     auto rc = request.start();
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 }
 
 TEST_F(RequestIntfTest, 2Retries100msTimeout)
@@ -64,7 +64,7 @@ TEST_F(RequestIntfTest, 2Retries100msTimeout)
     // send() is called a total of 3 times, the original plus two retries
     EXPECT_CALL(request, send()).Times(3).WillRepeatedly(Return(PLDM_SUCCESS));
     auto rc = request.start();
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     waitEventExpiry(milliseconds(500));
 }
 
@@ -82,7 +82,7 @@ TEST_F(RequestIntfTest, 9Retries100msTimeoutRequestStoppedAfter1sec)
         .Times(Between(5, 10))
         .WillRepeatedly(Return(PLDM_SUCCESS));
     auto rc = request.start();
-    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
 
     auto requestStopCallback = [&](void) { request.stop(); };
     phosphor::Timer timer(event.get(), requestStopCallback);
@@ -97,5 +97,5 @@ TEST_F(RequestIntfTest, 2Retries100msTimeoutsendReturnsError)
                         milliseconds(100));
     EXPECT_CALL(request, send()).Times(Exactly(1)).WillOnce(Return(PLDM_ERROR));
     auto rc = request.start();
-    ASSERT_EQ(rc, PLDM_ERROR);
+    EXPECT_EQ(rc, PLDM_ERROR);
 }
