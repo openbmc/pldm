@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e0e7f51e_360acc49",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-18T10:24:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81b4a35b_28ceabdc",
+      "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa63e562_391e7b6d",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 22
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "a57b765a_7cd24bb5",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-18T10:24:44Z",
+      "side": 1,
+      "message": "hmmm... I changed `std::errc::invalid_argument`",
+      "parentUuid": "fa63e562_391e7b6d",
+      "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c039d43f_d026eb69",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 22
@@ -47,6 +83,24 @@
       "writtenOn": "2021-04-26T07:39:03Z",
       "side": 1,
       "message": "why is it not_supported ?.. May be it\u0027s a PLDM thing.. but just curious.",
+      "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c699f3c9_8c344720",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-18T10:24:44Z",
+      "side": 1,
+      "message": "changed `std::errc::invalid_argument`",
+      "parentUuid": "c039d43f_d026eb69",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true

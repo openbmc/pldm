@@ -532,6 +532,24 @@
     },
     {
       "key": {
+        "uuid": "41a1849e_2bf03efe",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-18T10:24:44Z",
+      "side": 1,
+      "message": "@Deepak, I have changed this logic to async",
+      "parentUuid": "26dee036_9d93f9b5",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0e60033f_40994cc8",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 18
