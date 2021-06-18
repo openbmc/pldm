@@ -231,16 +231,17 @@ int encode_get_firmware_parameters_req(uint8_t instance_id,
 				       PLDM_GET_FIRMWARE_PARAMETERS, msg);
 }
 
-int decode_get_firmware_parameters_resp_comp_set_info(
+int decode_get_firmware_parameters_resp(
     const struct pldm_msg *msg, size_t payload_length,
     struct pldm_get_firmware_parameters_resp *resp_data,
     struct variable_field *active_comp_image_set_ver_str,
-    struct variable_field *pending_comp_image_set_ver_str)
+    struct variable_field *pending_comp_image_set_ver_str,
+    struct variable_field *comp_parameter_table)
 {
 	if (msg == NULL || resp_data == NULL ||
 	    active_comp_image_set_ver_str == NULL ||
-	    pending_comp_image_set_ver_str == NULL) {
-
+	    pending_comp_image_set_ver_str == NULL ||
+	    comp_parameter_table == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
@@ -257,26 +258,36 @@ int decode_get_firmware_parameters_resp_comp_set_info(
 		return PLDM_SUCCESS;
 	}
 
-	if (response->active_comp_image_set_ver_str_len == 0) {
+	if (!is_string_type_valid(
+		response->active_comp_image_set_ver_str_type) ||
+	    (response->active_comp_image_set_ver_str_len == 0)) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	size_t resp_len = sizeof(struct pldm_get_firmware_parameters_resp) +
-			  response->active_comp_image_set_ver_str_len +
-			  response->pending_comp_image_set_ver_str_len;
+	if (response->pending_comp_image_set_ver_str_len == 0) {
+		if (response->pending_comp_image_set_ver_str_type !=
+		    PLDM_STR_TYPE_UNKNOWN) {
+			return PLDM_ERROR_INVALID_DATA;
+		}
+	} else {
+		if (!is_string_type_valid(
+			response->pending_comp_image_set_ver_str_type)) {
+			return PLDM_ERROR_INVALID_DATA;
+		}
+	}
 
-	if (payload_length != resp_len) {
+	size_t partial_response_length =
+	    sizeof(struct pldm_get_firmware_parameters_resp) +
+	    response->active_comp_image_set_ver_str_len +
+	    response->pending_comp_image_set_ver_str_len;
+
+	if (payload_length < partial_response_length) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
 	resp_data->capabilities_during_update.value =
 	    le32toh(response->capabilities_during_update.value);
-
 	resp_data->comp_count = le16toh(response->comp_count);
-	if (resp_data->comp_count == 0) {
-		return PLDM_ERROR;
-	}
-
 	resp_data->active_comp_image_set_ver_str_type =
 	    response->active_comp_image_set_ver_str_type;
 	resp_data->active_comp_image_set_ver_str_len =
@@ -301,6 +312,19 @@ int decode_get_firmware_parameters_resp_comp_set_info(
 	} else {
 		pending_comp_image_set_ver_str->ptr = NULL;
 		pending_comp_image_set_ver_str->length = 0;
+	}
+
+	if (payload_length > partial_response_length && resp_data->comp_count) {
+		comp_parameter_table->ptr =
+		    msg->payload +
+		    sizeof(struct pldm_get_firmware_parameters_resp) +
+		    resp_data->active_comp_image_set_ver_str_len +
+		    resp_data->pending_comp_image_set_ver_str_len;
+		comp_parameter_table->length =
+		    payload_length - partial_response_length;
+	} else {
+		comp_parameter_table->ptr = NULL;
+		comp_parameter_table->length = 0;
 	}
 
 	return PLDM_SUCCESS;

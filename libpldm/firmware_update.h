@@ -109,7 +109,7 @@ struct pldm_query_device_identifiers_resp {
 
 /** @struct pldm_get_firmware_parameters_resp
  *
- *  Structure representing get firmware parameters response.
+ *  Structure representing the fixed part of GetFirmwareParameters response
  */
 struct pldm_get_firmware_parameters_resp {
 	uint8_t completion_code;
@@ -220,24 +220,25 @@ int encode_get_firmware_parameters_req(uint8_t instance_id,
 				       size_t payload_length,
 				       struct pldm_msg *msg);
 
-/** @brief Decode GetFirmwareParameters response parameters except the
- *         ComponentParameterTable
+/** @brief Decode GetFirmwareParameters response
  *
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] resp_data - Pointer to get firmware parameters response
  *  @param[out] active_comp_image_set_ver_str - Pointer to active component
- * image set version string
+ *                                              image set version string
  *  @param[out] pending_comp_image_set_ver_str - Pointer to pending component
- * image set version string
+ *                                               image set version string
+ *  @param[out] comp_parameter_table - Pointer to component parameter table
  *
  *  @return pldm_completion_codes
  */
-int decode_get_firmware_parameters_resp_comp_set_info(
+int decode_get_firmware_parameters_resp(
     const struct pldm_msg *msg, size_t payload_length,
     struct pldm_get_firmware_parameters_resp *resp_data,
     struct variable_field *active_comp_image_set_ver_str,
-    struct variable_field *pending_comp_image_set_ver_str);
+    struct variable_field *pending_comp_image_set_ver_str,
+    struct variable_field *comp_parameter_table);
 
 /** @brief Decode component entries in the component parameter table which is
  *         part of the response of GetFirmwareParameters command
