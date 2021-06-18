@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ebd66748_e94116be",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-18T13:34:29Z",
+      "side": 1,
+      "message": "can the commit message have some more info?",
+      "revId": "ef27796bb98cdaaba8f05dea2a51dd402a356765",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "814c9c74_3bec166b",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-18T13:34:29Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "ef27796bb98cdaaba8f05dea2a51dd402a356765",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a1348eb_0ee754a8",
+        "filename": "requester/request.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-18T13:34:29Z",
+      "side": 1,
+      "message": "nit: no change in this file, can you add back the line?",
+      "revId": "ef27796bb98cdaaba8f05dea2a51dd402a356765",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
