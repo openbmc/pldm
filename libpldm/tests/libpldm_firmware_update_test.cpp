@@ -1,3 +1,4 @@
+#include <bitset>
 #include <cstring>
 
 #include "libpldm/base.h"
@@ -297,73 +298,333 @@ TEST(GetFirmwareParameters, goodPathEncodeRequest)
     EXPECT_EQ(requestPtr->hdr.command, PLDM_GET_FIRMWARE_PARAMETERS);
 }
 
-TEST(GetFirmwareParameters, goodPathDecodeResponseComponentSetInfo)
+TEST(GetFirmwareParameters, decodeResponse)
 {
-    // Random value for capabilities during update
-    constexpr uint32_t capabilitiesDuringUpdate = 0xBADBEEFE;
-    // Random value for component count
-    constexpr uint16_t componentCount = 0xAABB;
-    // ActiveCompImageSetVerStrLen is not fixed here taking it as 8
-    constexpr uint8_t activeCompImageSetVerStrLen = 8;
-    // PendingCompImageSetVerStrLen is not fixed here taking it as 8
-    constexpr uint8_t pendingCompImageSetVerStrLen = 8;
-    constexpr size_t payloadLen =
-        sizeof(struct pldm_get_firmware_parameters_resp) +
-        activeCompImageSetVerStrLen + pendingCompImageSetVerStrLen;
+    // CapabilitiesDuringUpdate of the firmware device
+    // Firmware device downgrade restrictions [Bit position 8] &
+    // Firmware Device Partial Updates [Bit position 3]
+    constexpr std::bitset<32> fdCapabilities{0x00000104};
+    constexpr uint16_t compCount = 1;
+    constexpr std::string_view activeCompImageSetVersion{"VersionString1"};
+    constexpr std::string_view pendingCompImageSetVersion{"VersionString2"};
 
-    std::array<uint8_t, hdrSize + payloadLen> response{};
-    auto inResp = reinterpret_cast<struct pldm_get_firmware_parameters_resp*>(
-        response.data() + hdrSize);
-    inResp->completion_code = PLDM_SUCCESS;
-    inResp->capabilities_during_update.value =
-        htole32(capabilitiesDuringUpdate);
-    inResp->comp_count = htole16(componentCount);
-    inResp->active_comp_image_set_ver_str_type = 1;
-    inResp->active_comp_image_set_ver_str_len = activeCompImageSetVerStrLen;
-    inResp->pending_comp_image_set_ver_str_type = 1;
-    inResp->pending_comp_image_set_ver_str_len = pendingCompImageSetVerStrLen;
+    // constexpr uint16_t compClassification = 16;
+    // constexpr uint16_t compIdentifier = 300;
+    // constexpr uint8_t compClassificationIndex = 20;
+    // constexpr uint32_t activeCompComparisonStamp = 0xABCDEFAB;
+    // constexpr std::array<uint8_t, 8> activeComponentReleaseData = {
+    //     0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+    // constexpr uint32_t pendingCompComparisonStamp = 0x12345678;
+    // constexpr std::array<uint8_t, 8> pendingComponentReleaseData = {
+    //     0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01};
+    constexpr std::string_view activeCompVersion{"VersionString3"};
+    constexpr std::string_view pendingCompVersion{"VersionString4"};
+    // ComponentActivationMethods
+    // DC Power cycle [Bit position 4] & Self-Contained[Bit position 2]
+    constexpr std::bitset<16> compActivationMethod{0x12};
+    // CapabilitiesDuringUpdate of the firmware component
+    // Component downgrade capability [Bit position 2]
+    constexpr std::bitset<32> compCapabilities{0x02};
 
-    constexpr size_t activeCompImageSetVerStrPos =
-        hdrSize + sizeof(struct pldm_get_firmware_parameters_resp);
-    // filling default values for ActiveComponentImageSetVersionString
-    std::fill_n(response.data() + activeCompImageSetVerStrPos,
-                activeCompImageSetVerStrLen, 0xFF);
-    constexpr size_t pendingCompImageSetVerStrPos =
-        hdrSize + sizeof(struct pldm_get_firmware_parameters_resp) +
-        activeCompImageSetVerStrLen;
-    // filling default values for ActiveComponentImageSetVersionString
-    std::fill_n(response.data() + pendingCompImageSetVerStrPos,
-                pendingCompImageSetVerStrLen, 0xFF);
+    constexpr size_t compParamTableSize =
+        sizeof(pldm_component_parameter_entry) + activeCompVersion.size() +
+        pendingCompVersion.size();
 
-    auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
-    struct pldm_get_firmware_parameters_resp outResp;
-    struct variable_field outActiveCompImageSetVerStr;
-    struct variable_field outPendingCompImageSetVerStr;
+    constexpr std::array<uint8_t, compParamTableSize> compParamTable{
+        0x10, 0x00, 0x2c, 0x01, 0x14, 0xAB, 0xEF, 0xCD, 0xAB, 0x01, 0x0e, 0x01,
+        0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x78, 0x56, 0x34, 0x12, 0x01,
+        0x0e, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x12, 0x00, 0x02,
+        0x00, 0x00, 0x00, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x74,
+        0x72, 0x69, 0x6e, 0x67, 0x33, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e,
+        0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x34};
 
-    auto rc = decode_get_firmware_parameters_resp_comp_set_info(
-        responseMsg, payloadLen, &outResp, &outActiveCompImageSetVerStr,
-        &outPendingCompImageSetVerStr);
+    constexpr size_t getFwParamsPayloadLen =
+        sizeof(pldm_get_firmware_parameters_resp) +
+        activeCompImageSetVersion.size() + pendingCompImageSetVersion.size() +
+        compParamTableSize;
+
+    constexpr std::array<uint8_t, hdrSize + getFwParamsPayloadLen>
+        getFwParamsResponse{
+            0x00, 0x00, 0x00, 0x00, 0x04, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01,
+            0x0e, 0x01, 0x0e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53,
+            0x74, 0x72, 0x69, 0x6e, 0x67, 0x31, 0x56, 0x65, 0x72, 0x73, 0x69,
+            0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x32, 0x10, 0x00,
+            0x2c, 0x01, 0x14, 0xAB, 0xEF, 0xCD, 0xAB, 0x01, 0x0e, 0x01, 0x02,
+            0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x78, 0x56, 0x34, 0x12, 0x01,
+            0x0e, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x12, 0x00,
+            0x02, 0x00, 0x00, 0x00, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e,
+            0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x33, 0x56, 0x65, 0x72, 0x73,
+            0x69, 0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x34};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(getFwParamsResponse.data());
+    pldm_get_firmware_parameters_resp outResp{};
+    variable_field outActiveCompImageSetVersion{};
+    variable_field outPendingCompImageSetVersion{};
+    variable_field outCompParameterTable{};
+
+    auto rc = decode_get_firmware_parameters_resp(
+        responseMsg, getFwParamsPayloadLen, &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
 
     EXPECT_EQ(rc, PLDM_SUCCESS);
     EXPECT_EQ(outResp.completion_code, PLDM_SUCCESS);
-    EXPECT_EQ(outResp.capabilities_during_update.value,
-              capabilitiesDuringUpdate);
-    EXPECT_EQ(outResp.comp_count, componentCount);
-    EXPECT_EQ(inResp->active_comp_image_set_ver_str_type,
-              outResp.active_comp_image_set_ver_str_type);
-    EXPECT_EQ(inResp->active_comp_image_set_ver_str_len,
-              outResp.active_comp_image_set_ver_str_len);
-    EXPECT_EQ(0, memcmp(outActiveCompImageSetVerStr.ptr,
-                        response.data() + activeCompImageSetVerStrPos,
-                        outActiveCompImageSetVerStr.length));
+    EXPECT_EQ(outResp.capabilities_during_update.value, fdCapabilities);
+    EXPECT_EQ(outResp.comp_count, compCount);
+    EXPECT_EQ(outResp.active_comp_image_set_ver_str_type, PLDM_STR_TYPE_ASCII);
+    EXPECT_EQ(outResp.active_comp_image_set_ver_str_len,
+              activeCompImageSetVersion.size());
+    EXPECT_EQ(outResp.pending_comp_image_set_ver_str_type, PLDM_STR_TYPE_ASCII);
+    EXPECT_EQ(outResp.pending_comp_image_set_ver_str_len,
+              pendingCompImageSetVersion.size());
+    std::string activeCompImageSetVersionStr(
+        reinterpret_cast<const char*>(outActiveCompImageSetVersion.ptr),
+        outActiveCompImageSetVersion.length);
+    EXPECT_EQ(activeCompImageSetVersionStr, activeCompImageSetVersion);
+    std::string pendingCompImageSetVersionStr(
+        reinterpret_cast<const char*>(outPendingCompImageSetVersion.ptr),
+        outPendingCompImageSetVersion.length);
+    EXPECT_EQ(pendingCompImageSetVersionStr, pendingCompImageSetVersion);
+    EXPECT_EQ(outCompParameterTable.length, compParamTableSize);
+    EXPECT_EQ(true, std::equal(outCompParameterTable.ptr,
+                               outCompParameterTable.ptr +
+                                   outCompParameterTable.length,
+                               compParamTable.begin(), compParamTable.end()));
+}
 
-    EXPECT_EQ(inResp->pending_comp_image_set_ver_str_type,
-              outResp.pending_comp_image_set_ver_str_type);
-    EXPECT_EQ(inResp->pending_comp_image_set_ver_str_len,
-              outResp.pending_comp_image_set_ver_str_len);
-    EXPECT_EQ(0, memcmp(outPendingCompImageSetVerStr.ptr,
-                        response.data() + pendingCompImageSetVerStrPos,
-                        outPendingCompImageSetVerStr.length));
+TEST(GetFirmwareParameters, decodeResponseZeroCompCount)
+{
+    // CapabilitiesDuringUpdate of the firmware device
+    // FD Host Functionality during Firmware Update [Bit position 2] &
+    // Component Update Failure Retry Capability [Bit position 1]
+    constexpr std::bitset<32> fdCapabilities{0x06};
+    constexpr uint16_t compCount = 0;
+    constexpr std::string_view activeCompImageSetVersion{"VersionString1"};
+    constexpr std::string_view pendingCompImageSetVersion{"VersionString2"};
+
+    constexpr size_t getFwParamsPayloadLen =
+        sizeof(pldm_get_firmware_parameters_resp) +
+        activeCompImageSetVersion.size() + pendingCompImageSetVersion.size();
+
+    constexpr std::array<uint8_t, hdrSize + getFwParamsPayloadLen>
+        getFwParamsResponse{
+            0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+            0x0e, 0x01, 0x0e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x53,
+            0x74, 0x72, 0x69, 0x6e, 0x67, 0x31, 0x56, 0x65, 0x72, 0x73, 0x69,
+            0x6f, 0x6e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x32};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(getFwParamsResponse.data());
+    pldm_get_firmware_parameters_resp outResp{};
+    variable_field outActiveCompImageSetVersion{};
+    variable_field outPendingCompImageSetVersion{};
+    variable_field outCompParameterTable{};
+
+    auto rc = decode_get_firmware_parameters_resp(
+        responseMsg, getFwParamsPayloadLen, &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outResp.completion_code, PLDM_SUCCESS);
+    EXPECT_EQ(outResp.capabilities_during_update.value, fdCapabilities);
+    EXPECT_EQ(outResp.comp_count, compCount);
+    EXPECT_EQ(outResp.active_comp_image_set_ver_str_type, PLDM_STR_TYPE_ASCII);
+    EXPECT_EQ(outResp.active_comp_image_set_ver_str_len,
+              activeCompImageSetVersion.size());
+    EXPECT_EQ(outResp.pending_comp_image_set_ver_str_type, PLDM_STR_TYPE_ASCII);
+    EXPECT_EQ(outResp.pending_comp_image_set_ver_str_len,
+              pendingCompImageSetVersion.size());
+    std::string activeCompImageSetVersionStr(
+        reinterpret_cast<const char*>(outActiveCompImageSetVersion.ptr),
+        outActiveCompImageSetVersion.length);
+    EXPECT_EQ(activeCompImageSetVersionStr, activeCompImageSetVersion);
+    std::string pendingCompImageSetVersionStr(
+        reinterpret_cast<const char*>(outPendingCompImageSetVersion.ptr),
+        outPendingCompImageSetVersion.length);
+    EXPECT_EQ(pendingCompImageSetVersionStr, pendingCompImageSetVersion);
+    EXPECT_EQ(outCompParameterTable.ptr, nullptr);
+    EXPECT_EQ(outCompParameterTable.length, 0);
+}
+
+TEST(GetFirmwareParameters,
+     decodeResponseNoPendingCompImageVersionStrZeroCompCount)
+{
+    // CapabilitiesDuringUpdate of the firmware device
+    // FD Host Functionality during Firmware Update [Bit position 2] &
+    // Component Update Failure Retry Capability [Bit position 1]
+    constexpr std::bitset<32> fdCapabilities{0x06};
+    constexpr uint16_t compCount = 0;
+    constexpr std::string_view activeCompImageSetVersion{"VersionString"};
+
+    constexpr size_t getFwParamsPayloadLen =
+        sizeof(pldm_get_firmware_parameters_resp) +
+        activeCompImageSetVersion.size();
+
+    constexpr std::array<uint8_t, hdrSize + getFwParamsPayloadLen>
+        getFwParamsResponse{0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00,
+                            0x00, 0x00, 0x00, 0x01, 0x0d, 0x00, 0x00,
+                            0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e,
+                            0x53, 0x74, 0x72, 0x69, 0x6e, 0x67};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(getFwParamsResponse.data());
+    pldm_get_firmware_parameters_resp outResp{};
+    variable_field outActiveCompImageSetVersion{};
+    variable_field outPendingCompImageSetVersion{};
+    variable_field outCompParameterTable{};
+
+    auto rc = decode_get_firmware_parameters_resp(
+        responseMsg, getFwParamsPayloadLen, &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outResp.completion_code, PLDM_SUCCESS);
+    EXPECT_EQ(outResp.capabilities_during_update.value, fdCapabilities);
+    EXPECT_EQ(outResp.comp_count, compCount);
+    EXPECT_EQ(outResp.active_comp_image_set_ver_str_type, PLDM_STR_TYPE_ASCII);
+    EXPECT_EQ(outResp.active_comp_image_set_ver_str_len,
+              activeCompImageSetVersion.size());
+    EXPECT_EQ(outResp.pending_comp_image_set_ver_str_type,
+              PLDM_STR_TYPE_UNKNOWN);
+    EXPECT_EQ(outResp.pending_comp_image_set_ver_str_len, 0);
+    std::string activeCompImageSetVersionStr(
+        reinterpret_cast<const char*>(outActiveCompImageSetVersion.ptr),
+        outActiveCompImageSetVersion.length);
+    EXPECT_EQ(activeCompImageSetVersionStr, activeCompImageSetVersion);
+    EXPECT_EQ(outPendingCompImageSetVersion.ptr, nullptr);
+    EXPECT_EQ(outPendingCompImageSetVersion.length, 0);
+    EXPECT_EQ(outCompParameterTable.ptr, nullptr);
+    EXPECT_EQ(outCompParameterTable.length, 0);
+}
+
+TEST(GetFirmwareParameters, decodeResponseErrorCompletionCode)
+{
+    constexpr std::array<uint8_t,
+                         hdrSize + sizeof(pldm_get_firmware_parameters_resp)>
+        getFwParamsResponse{0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(getFwParamsResponse.data());
+    pldm_get_firmware_parameters_resp outResp{};
+    variable_field outActiveCompImageSetVersion{};
+    variable_field outPendingCompImageSetVersion{};
+    variable_field outCompParameterTable{};
+
+    auto rc = decode_get_firmware_parameters_resp(
+        responseMsg, getFwParamsResponse.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outResp.completion_code, PLDM_ERROR);
+}
+
+TEST(GetFirmwareParameters, errorPathdecodeResponse)
+{
+    int rc = 0;
+    // Invalid ActiveComponentImageSetVersionStringType
+    constexpr std::array<uint8_t, 14> invalidGetFwParamsResponse1{
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x06, 0x0e, 0x00, 0x00};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse1.data());
+    pldm_get_firmware_parameters_resp outResp{};
+    variable_field outActiveCompImageSetVersion{};
+    variable_field outPendingCompImageSetVersion{};
+    variable_field outCompParameterTable{};
+
+    rc = decode_get_firmware_parameters_resp(
+        nullptr, invalidGetFwParamsResponse1.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse1.size(), nullptr,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse1.size(), &outResp, nullptr,
+        &outPendingCompImageSetVersion, &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse1.size(), &outResp,
+        &outActiveCompImageSetVersion, nullptr, &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse1.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, 0, &outResp, &outActiveCompImageSetVersion,
+        &outPendingCompImageSetVersion, &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse1.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Invalid ActiveComponentImageSetVersionStringLength
+    constexpr std::array<uint8_t, 14> invalidGetFwParamsResponse2{
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00};
+    responseMsg =
+        reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse2.data());
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse2.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Invalid PendingComponentImageSetVersionStringType &
+    // PendingComponentImageSetVersionStringLength
+    constexpr std::array<uint8_t, 14> invalidGetFwParamsResponse3{
+        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x0e, 0x01, 0x00};
+    responseMsg =
+        reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse3.data());
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse3.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Invalid PendingComponentImageSetVersionStringType &
+    // PendingComponentImageSetVersionStringLength
+    constexpr std::array<uint8_t, 14> invalidGetFwParamsResponse4{
+        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x0e, 0x06, 0x0e};
+    responseMsg =
+        reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse4.data());
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse4.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    // Total payload length less than expected
+    constexpr std::array<uint8_t, 14> invalidGetFwParamsResponse5{
+        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x0e, 0x01, 0x0e};
+    responseMsg =
+        reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse5.data());
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse5.size(), &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST(GetFirmwareParameters, goodPathDecodeComponentParameterEntry)
