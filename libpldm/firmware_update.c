@@ -10,6 +10,7 @@ static bool is_string_type_valid(uint8_t string_type)
 {
 	switch (string_type) {
 	case PLDM_STR_TYPE_UNKNOWN:
+		return false;
 	case PLDM_STR_TYPE_ASCII:
 	case PLDM_STR_TYPE_UTF_8:
 	case PLDM_STR_TYPE_UTF_16:
