@@ -2,6 +2,9 @@
 
 #include <stdint.h>
 
+#include <bitset>
+#include <map>
+#include <unordered_map>
 #include <set>
 #include <string>
 #include <variant>
@@ -10,6 +13,7 @@
 namespace pldm
 {
 
+using eid = uint8_t;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 
@@ -26,6 +30,30 @@ using Value = std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
                            int64_t, uint64_t, double, std::string>;
 
 } // namespace dbus
+
+namespace fw_update
+{
+
+using DescriptorType = uint16_t;
+using DescriptorData = std::vector<uint8_t>;
+using VendorDefinedDescriptorTitle = std::string;
+using VendorDefinedDescriptorData = std::vector<uint8_t>;
+using VendorDefinedDescriptorInfo =
+    std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
+
+using Descriptors =
+    std::map<DescriptorType,
+             std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+using DescriptorMap = std::unordered_map<eid, Descriptors>;
+
+using CompClassification = uint16_t;
+using CompIdentifier = uint16_t;
+using CompKey = std::pair<CompClassification, CompIdentifier>;
+using CompClassificationIndex = uint8_t;
+using ComponentInfo  = std::map<CompKey, CompClassificationIndex>;
+using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+
+} // namespace fw_update
 
 namespace pdr
 {
