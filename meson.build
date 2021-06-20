@@ -191,6 +191,7 @@ executable(
   'pldmd/dbus_impl_requester.cpp',
   'pldmd/instance_id.cpp',
   'pldmd/dbus_impl_pdr.cpp',
+  'fw-update/inventory_manager.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
@@ -234,6 +235,7 @@ endif
 
 if get_option('tests').enabled()
   subdir('common/test')
+  subdir('fw-update/test')
   subdir('host-bmc/test')
   subdir('requester/test')
   subdir('test')
