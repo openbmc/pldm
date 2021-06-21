@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d8760c6b_23f97427",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-06-21T15:06:06Z",
+      "side": 1,
+      "message": "I think this visits ALL the children of \"parent\", but we only want to look at IMMEDIATE children of \"parent.\" If we look at all the children, then again we are flattening the tree structure and it can lead to bugs. It should be possible to make the check in line 397 to be\n\n\tif (entity-\u003eentity_type \u003d\u003d out[i].entity_type \u0026\u0026\n\t    entity_instance_number \u003d\u003d out[i].entity_instance_num \u0026\u0026\n\t    parent-\u003eentity.entity_container_id \u003d\u003d out[i].entity_container_id) {",
+      "range": {
+        "startLine": 394,
+        "startChar": 2,
+        "endLine": 394,
+        "endChar": 36
+      },
+      "revId": "961cfe799d9ceaa4badf4029f91efa300d0c79fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfef18d2_46e92799",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-06-21T15:06:06Z",
+      "side": 1,
+      "message": "This may return the wrong node, because it doesn\u0027t compare the container ID (i.e. it flattens/ignores the tree structure).",
+      "range": {
+        "startLine": 401,
+        "startChar": 8,
+        "endLine": 401,
+        "endChar": 41
+      },
+      "revId": "961cfe799d9ceaa4badf4029f91efa300d0c79fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
