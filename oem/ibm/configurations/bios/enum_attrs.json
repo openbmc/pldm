@@ -251,6 +251,18 @@
          ],
          "helpText" : "Specifies if the power limit is enabled.",
          "displayName" : "Power Limit Enable"
+      },
+      {
+         "attribute_name":"hb_mirror_memory",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "Specifies if the mirror memory is enabled.",
+         "displayName" : "Mirror Memory Enable"
       }
    ]
 }
