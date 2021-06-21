@@ -20,10 +20,10 @@ namespace base
 class Handler : public CmdHandler
 {
   public:
-    Handler(sdeventplus::Event& event,
-            pldm::responder::oem_platform::Handler* oemPlatformHandler) :
-        event(event),
-        oemPlatformHandler(oemPlatformHandler)
+    Handler(sdeventplus::Event& event) :
+        // pldm::responder::oem_platform::Handler* oemPlatformHandler) :
+        event(event)
+    // oemPlatformHandler(oemPlatformHandler)
     {
         handlers.emplace(
             PLDM_GET_PLDM_TYPES,
@@ -86,6 +86,9 @@ class Handler : public CmdHandler
      *  @param[return] Response - PLDM Response message
      */
     Response getTID(const pldm_msg* request, size_t payloadLength);
+
+    /* @brief Method to set the oem platform handler in base handler class */
+    void setOemPlatformHandler(pldm::responder::oem_platform::Handler* handler);
 
   private:
     /** @brief reference of main event loop of pldmd, primarily used to schedule

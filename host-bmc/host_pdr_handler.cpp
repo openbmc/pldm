@@ -89,13 +89,14 @@ HostPDRHandler::HostPDRHandler(
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
     pldm_entity_association_tree* bmcEntityTree,
     pldm::InstanceIdDb& instanceIdDb,
-    pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::oem_platform::Handler* oemPlatformHandler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler) :
+    // pldm::responder::oem_platform::Handler* oemPlatformHandler) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler),
-    oemPlatformHandler(oemPlatformHandler)
+    bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb),
+    handler(handler) //,
+// oemPlatformHandler(oemPlatformHandler)
 {
     mergedHostParents = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
@@ -354,6 +355,12 @@ void HostPDRHandler::mergeEntityAssociations(
         }
     }
     free(entities);
+}
+
+void HostPDRHandler::setOemPlatformHandler(
+    pldm::responder::oem_platform::Handler* handler)
+{
+    oemPlatformHandler = handler;
 }
 
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
