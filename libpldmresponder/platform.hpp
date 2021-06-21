@@ -54,7 +54,6 @@ class Handler : public CmdHandler
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
-            pldm::responder::oem_platform::Handler* oemPlatformHandler,
             pldm::responder::platform_config::Handler* platformConfigHandler,
             pldm::requester::Handler<pldm::requester::Request>* handler,
             sdeventplus::Event& event, bool buildPDRLazily = false,
@@ -63,10 +62,9 @@ class Handler : public CmdHandler
         instanceIdDb(instanceIdDb), pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
-        dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        platformConfigHandler(platformConfigHandler), handler(handler),
-        event(event), pdrJsonDir(pdrJsonDir), pdrCreated(false),
-        pdrJsonsDir({pdrJsonDir})
+        dBusIntf(dBusIntf), platformConfigHandler(platformConfigHandler),
+        handler(handler), event(event), pdrJsonDir(pdrJsonDir),
+        pdrCreated(false), pdrJsonsDir({pdrJsonDir})
     {
         if (!buildPDRLazily)
         {
@@ -191,8 +189,6 @@ class Handler : public CmdHandler
     /** @brief Parse PDR JSONs and build PDR repository
      *
      *  @param[in] dBusIntf - The interface object
-     *  @param[in] dir - directory housing platform specific PDR JSON files
-     *  @param[in] repo - instance of concrete implementation of Repo
      */
     void generate(const pldm::utils::DBusHandler& dBusIntf,
                   const std::vector<fs::path>& dir,
@@ -210,6 +206,16 @@ class Handler : public CmdHandler
      *
      */
     EventMap eventHandlers;
+
+    /* @brief Method to set the oem platform handler in platform handler class
+     *
+     * @param[in] handler - oem platform handler
+     */
+    inline void
+        setOemPlatformHandler(pldm::responder::oem_platform::Handler* handler)
+    {
+        oemPlatformHandler = handler;
+    }
 
     /** @brief Handler for GetPDR
      *
@@ -500,7 +506,7 @@ class Handler : public CmdHandler
     pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler;
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;
-    pldm::responder::oem_platform::Handler* oemPlatformHandler;
+    pldm::responder::oem_platform::Handler* oemPlatformHandler = nullptr;
     pldm::responder::platform_config::Handler* platformConfigHandler;
     pldm::requester::Handler<pldm::requester::Request>* handler;
     sdeventplus::Event& event;
