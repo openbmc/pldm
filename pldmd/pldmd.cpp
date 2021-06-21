@@ -60,9 +60,7 @@ PHOSPHOR_LOG2_USING;
 #endif
 
 #ifdef OEM_IBM
-#include "libpldmresponder/file_io.hpp"
-#include "libpldmresponder/fru_oem_ibm.hpp"
-#include "libpldmresponder/oem_ibm_handler.hpp"
+#include "oem_ibm.hpp"
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
@@ -236,19 +234,19 @@ int main(int argc, char** argv)
     std::unique_ptr<oem_fru::Handler> oemFruHandler{};
 
 #ifdef OEM_IBM
-    std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
-        std::make_unique<pldm::responder::CodeUpdate>(&dbusHandler);
-    codeUpdate->clearDirPath(LID_STAGING_DIR);
-    oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        &dbusHandler, codeUpdate.get(), pldmTransport.getEventSource(), hostEID,
-        instanceIdDb, event, &reqHandler);
-    codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
-    oemFruHandler = std::make_unique<oem_ibm_fru::Handler>(pdrRepo.get());
-    invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
-                                          oemPlatformHandler.get(),
-                                          pldmTransport.getEventSource(),
-                                          hostEID, &instanceIdDb, &reqHandler));
-#endif
+    std::unique_ptr<pldm::oem_ibm::OemIBM> oemIBM =
+        std::make_unique<pldm::oem_ibm::OemIBM>(
+            &dbusHandler, pldmTransport.getEventSource(), hostEID,
+            pdrRepo.get(), instanceIdDb, event, invoker, hostPDRHandler.get(),
+            hostEffecterParser.get(), dbusToPLDMEventHandler.get(),
+            platformConfigHandler.get(), &reqHandler, entityTree.get(),
+            bmcEntityTree.get());
+    hostPDRHandler = oemIBM->getHostPDRHandler();
+    dbusImplHost.setHostPdrObj(hostPDRHandler);
+    oemPlatformHandler = oemIBM->getOemPlatformHandler();
+    auto platformHandler = oemIBM->getPlatfromHandler();
+    auto fruHandler = oemIBM->getFruHandler();
+#else
     if (hostEID)
     {
         hostPDRHandler = std::make_shared<HostPDRHandler>(
@@ -266,11 +264,7 @@ int main(int argc, char** argv)
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             pldmTransport.getEventSource(), hostEID, instanceIdDb, &reqHandler);
     }
-    auto biosHandler = std::make_unique<bios::Handler>(
-        pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
-        platformConfigHandler.get(), requestPLDMServiceName);
-
-    auto fruHandler = std::make_unique<fru::Handler>(
+    fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
         bmcEntityTree.get(), oemFruHandler.get());
 
@@ -278,21 +272,14 @@ int main(int argc, char** argv)
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
     auto platformHandler = std::make_unique<platform::Handler>(
-        &dbusHandler, hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),
+        dbusHandler.get(), hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),
         hostPDRHandler.get(), dbusToPLDMEventHandler.get(), fruHandler.get(),
         oemPlatformHandler.get(), platformConfigHandler.get(), &reqHandler,
         event, true);
-#ifdef OEM_IBM
-    pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
-        dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
-            oemPlatformHandler.get());
-    oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
-
-    pldm::responder::oem_ibm_fru::Handler* oemIbmFruHandler =
-        dynamic_cast<pldm::responder::oem_ibm_fru::Handler*>(
-            oemFruHandler.get());
-    oemIbmFruHandler->setIBMFruHandler(fruHandler.get());
 #endif
+    auto biosHandler = std::make_unique<bios::Handler>(
+        pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
+        platformConfigHandler.get(), requestPLDMServiceName);
 
     invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));
     invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
