@@ -196,6 +196,12 @@ Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
     return response;
 }
 
+void Handler::setOemPlatformHandler(
+    pldm::responder::oem_platform::Handler* handler)
+{
+    oemPlatformHandler = handler;
+}
+
 } // namespace base
 } // namespace responder
 } // namespace pldm
