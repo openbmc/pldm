@@ -90,13 +90,11 @@ HostPDRHandler::HostPDRHandler(
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
     pldm_entity_association_tree* bmcEntityTree,
     pldm::InstanceIdDb& instanceIdDb,
-    pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::oem_platform::Handler* oemPlatformHandler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler),
-    oemPlatformHandler(oemPlatformHandler),
     entityMaps(parseEntityMap(ENTITY_MAP_JSON))
 {
     mergedHostParents = false;
