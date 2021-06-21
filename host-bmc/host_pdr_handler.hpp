@@ -95,8 +95,7 @@ class HostPDRHandler
         pldm_entity_association_tree* entityTree,
         pldm_entity_association_tree* bmcEntityTree,
         pldm::InstanceIdDb& instanceIdDb,
-        pldm::requester::Handler<pldm::requester::Request>* handler,
-        pldm::responder::oem_platform::Handler* oemPlatformHandler);
+        pldm::requester::Handler<pldm::requester::Request>* handler);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -170,6 +169,12 @@ class HostPDRHandler
     /** @brief check whether Host is running when pldmd starts
      */
     bool isHostUp();
+
+    /* @brief Method to set the oem platform handler in host pdr handler class
+     *
+     * @param[in] handler - oem platform handler
+     */
+    void setOemPlatformHandler(pldm::responder::oem_platform::Handler* handler);
 
     /** @brief map that captures various terminus information **/
     TLPDRMap tlPDRInfo;

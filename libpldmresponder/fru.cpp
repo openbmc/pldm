@@ -42,6 +42,11 @@ std::optional<pldm_entity>
     return std::nullopt;
 }
 
+void FruImpl::setOemFruHandler(pldm::responder::oem_fru::Handler* handler)
+{
+    oemFruHandler = handler;
+}
+
 void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
                                     const std::string& path)
 {
