@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d36ed506_70a2b362",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-21T01:38:43Z",
+      "side": 1,
+      "message": "const \u0026",
+      "range": {
+        "startLine": 482,
+        "startChar": 38,
+        "endLine": 482,
+        "endChar": 62
+      },
+      "revId": "80c9c6bea0b8d60f803d904de1bfeb98052b1a22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef9eb71b_2e7993f0",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-21T01:38:43Z",
+      "side": 1,
+      "message": "Nit: std::vector\u003cstd::string\u003e data{};",
+      "range": {
+        "startLine": 484,
+        "startChar": 8,
+        "endLine": 484,
+        "endChar": 38
+      },
+      "revId": "80c9c6bea0b8d60f803d904de1bfeb98052b1a22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41dd53af_a60e7f1c",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-21T01:38:43Z",
+      "side": 1,
+      "message": "if(populatePStateMaps.contains(stateId))\n{\n  ... ...\n}",
+      "range": {
+        "startLine": 487,
+        "startChar": 16,
+        "endLine": 487,
+        "endChar": 76
+      },
+      "revId": "80c9c6bea0b8d60f803d904de1bfeb98052b1a22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0150bb0f_364d678d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-21T01:38:43Z",
+      "side": 1,
+      "message": "if (stateNames.contins(s))\n{\n  data.push_back(stateNames.at(s) + \"(\" + s + \")\");\n}",
+      "range": {
+        "startLine": 491,
+        "startChar": 16,
+        "endLine": 491,
+        "endChar": 65
+      },
+      "revId": "80c9c6bea0b8d60f803d904de1bfeb98052b1a22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3948a86_6997a4de",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-06-21T01:38:43Z",
+      "side": 1,
+      "message": "Nit: std::vector\u003cstd::string\u003e data{};",
+      "range": {
+        "startLine": 527,
+        "startChar": 8,
+        "endLine": 527,
+        "endChar": 38
+      },
+      "revId": "80c9c6bea0b8d60f803d904de1bfeb98052b1a22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
