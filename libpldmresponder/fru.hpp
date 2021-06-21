@@ -66,11 +66,11 @@ class FruImpl
     FruImpl(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree,
-            pldm::responder::oem_fru::Handler* oemFruHandler) :
+            pldm_entity_association_tree* bmcEntityTree) :
+        // pldm::responder::oem_fru::Handler* oemFruHandler) :
         parser(configPath, fruMasterJsonPath),
-        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree),
-        oemFruHandler(oemFruHandler)
+        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree)
+    // oemFruHandler(oemFruHandler)
     {}
 
     /** @brief Total length of the FRU table in bytes, this includes the pad
@@ -201,6 +201,9 @@ class FruImpl
      */
     int setFRUTable(const std::vector<uint8_t>& fruData);
 
+    /* @brief Method to set the oem platform handler in fru handler class */
+    void setOemFruHandler(pldm::responder::oem_fru::Handler* handler);
+
   private:
     uint16_t nextRSI()
     {
@@ -255,10 +258,10 @@ class Handler : public CmdHandler
     Handler(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree,
-            pldm::responder::oem_fru::Handler* oemFruHandler) :
-        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree,
-             oemFruHandler)
+            pldm_entity_association_tree* bmcEntityTree) :
+        // pldm::responder::oem_fru::Handler* oemFruHandler) :
+        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree)
+    //  oemFruHandler)
     {
         handlers.emplace(
             PLDM_GET_FRU_RECORD_TABLE_METADATA,
@@ -339,6 +342,11 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response setFRURecordTable(const pldm_msg* request, size_t payloadLength);
+
+    void setOemFruHandler(pldm::responder::oem_fru::Handler* handler)
+    {
+        impl.setOemFruHandler(handler);
+    }
 
     using Table = std::vector<uint8_t>;
 
