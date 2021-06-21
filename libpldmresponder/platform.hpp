@@ -54,7 +54,6 @@ class Handler : public CmdHandler
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
-            pldm::responder::oem_platform::Handler* oemPlatformHandler,
             pldm::responder::platform_config::Handler* platformConfigHandler,
             pldm::requester::Handler<pldm::requester::Request>* handler,
             sdeventplus::Event& event, bool buildPDRLazily = false,
@@ -63,7 +62,7 @@ class Handler : public CmdHandler
         instanceIdDb(instanceIdDb), pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
-        dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
+        dBusIntf(dBusIntf),
         platformConfigHandler(platformConfigHandler), handler(handler),
         event(event), pdrJsonDir(pdrJsonDir), pdrCreated(false),
         pdrJsonsDir({pdrJsonDir})
@@ -210,6 +209,12 @@ class Handler : public CmdHandler
      *
      */
     EventMap eventHandlers;
+
+    /* @brief Method to set the oem platform handler in platform handler class
+     *
+     * @param[in] handler - oem platform handler
+     */
+    void setOemPlatformHandler(pldm::responder::oem_platform::Handler* handler);
 
     /** @brief Handler for GetPDR
      *

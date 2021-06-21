@@ -160,6 +160,12 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
     }
 }
 
+void Handler::setOemPlatformHandler(
+    pldm::responder::oem_platform::Handler* handler)
+{
+    oemPlatformHandler = handler;
+}
+
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
     if (hostPDRHandler)
