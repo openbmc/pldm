@@ -1277,3 +1277,43 @@ TEST(EntityAssociationPDR, testExtract)
 
     free(out);
 }
+
+TEST(EntityAssociationPDR, testGetChildren)
+{
+    pldm_entity entities[4]{};
+    entities[0].entity_type = 1;
+    entities[1].entity_type = 2;
+    entities[2].entity_type = 2;
+    entities[3].entity_type = 3;
+
+    auto tree = pldm_entity_association_tree_init();
+    auto l1 = pldm_entity_association_tree_add(tree, &entities[0], nullptr,
+                                               PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+    EXPECT_NE(l1, nullptr);
+    auto l2a = pldm_entity_association_tree_add(
+        tree, &entities[1], l1, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+    EXPECT_NE(l2a, nullptr);
+    auto l2b = pldm_entity_association_tree_add(
+        tree, &entities[2], l1, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+    EXPECT_NE(l2b, nullptr);
+    auto l2c = pldm_entity_association_tree_add(
+        tree, &entities[3], l1, PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+    EXPECT_NE(l2c, nullptr);
+
+    pldm_entity et1;
+    et1.entity_type = 2;
+    et1.entity_instance_num = 1;
+    EXPECT_EQ(true, pldm_is_current_parent_child(l1, &et1));
+
+    pldm_entity et2;
+    et2.entity_type = 2;
+    et2.entity_instance_num = 2;
+    EXPECT_EQ(true, pldm_is_current_parent_child(l1, &et2));
+
+    pldm_entity et3;
+    et3.entity_type = 2;
+    et3.entity_instance_num = 3;
+    EXPECT_EQ(false, pldm_is_current_parent_child(l1, &et3));
+
+    pldm_entity_association_tree_destroy(tree);
+}

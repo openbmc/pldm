@@ -293,6 +293,13 @@ void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
 uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
 				     uint8_t association_type);
 
+/** @brief Verify that the current node is a child of the current parent
+ *
+ *  @param[in] parent    - opaque pointer acting as a handle to an entity parent
+ *  @param[in] node      - pointer to the node of the pldm entity
+ */
+bool pldm_is_current_parent_child(pldm_entity_node *parent, pldm_entity *node);
+
 /** @brief Find an entity in the entity association tree
  *
  *  @param[in] tree - pointer to entity association tree
