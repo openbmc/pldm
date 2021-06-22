@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26733815_43067c46",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-22T12:19:35Z",
+      "side": 1,
+      "message": "le16toh(data_record-\u003efw_device_pkg_data_length)??",
+      "range": {
+        "startLine": 170,
+        "startChar": 5,
+        "endLine": 170,
+        "endChar": 43
+      },
+      "revId": "7aadaf465212d675e39b75978ea9fdcd2e7790e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
