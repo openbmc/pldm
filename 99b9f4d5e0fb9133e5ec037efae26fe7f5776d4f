@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b4804bda_a488bfd2",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "\"if(rc || completionCode)\" would be less characters.\n\nmight apply for other portions of this patch.",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 65
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96aa33f1_a2f62e59",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "if (rc)\n\nmight apply for other portions of this patch.",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 26
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ba0592c_5b56bf2d",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "It will be good to evaluate the InternalFailure thrown here, in general we have limited the use of InternalFailure.",
+      "range": {
+        "startLine": 301,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 68
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f49238e_a7e3c32b",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "My preference will be separate conditions for a decode failure and error completion code. The trace statement looks messed up :-)",
+      "range": {
+        "startLine": 294,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 13
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "320434a5_d5a170d0",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "Do we want this to be consistent? DbusToPLDMEvent is passing a reference.",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54763964_e233cb18",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "Why this indirect routing from fetchPDRResponseHandler -\u003eprocessHostPDRs  ? The response handler for GetPDR can be processHostPDRs.",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 6
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c3e47f1_32c12275",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "Is this involves sending a PLDM request message to host, this can be synchronous. I don\u0027t see a value in Deferring it.",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 54
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daad568d_1b5200f0",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "At least this should be renamed at a first look, there are already 3 function names fetchPDR/_fetchPDR/fetchPDRsOnStart, as well as improve the documentation around this.",
+      "range": {
+        "startLine": 158,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 25
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f29f353b_af0b0710",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "missing doxygen",
+      "range": {
+        "startLine": 187,
+        "startChar": 2,
+        "endLine": 187,
+        "endChar": 52
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3733d30_e9f8e299",
+        "filename": "host-bmc/test/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "Source files are typically added as dependency, why hpp?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 43
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30b670ed_453a4a95",
+        "filename": "requester/request.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T02:32:38Z",
+      "side": 1,
+      "message": "Why this change? I guess it is unintended.",
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
