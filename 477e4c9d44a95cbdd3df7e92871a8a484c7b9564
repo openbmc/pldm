@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2a9e54e_566e22c5",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000392
+      },
+      "writtenOn": "2021-06-22T18:58:26Z",
+      "side": 1,
+      "message": "This is a synchronous command, any other PLDM messages that come in while waiting for the response to this request will be discarded. In testing I saw PLDM file io requests from Hostboot being ignored while in this loop.",
+      "range": {
+        "startLine": 698,
+        "startChar": 16,
+        "endLine": 700,
+        "endChar": 52
+      },
+      "revId": "477e4c9d44a95cbdd3df7e92871a8a484c7b9564",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
