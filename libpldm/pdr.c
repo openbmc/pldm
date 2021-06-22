@@ -520,6 +520,24 @@ uint8_t pldm_entity_get_num_children(pldm_entity_node *node,
 	return count;
 }
 
+bool pldm_is_currect_parent_child(pldm_entity_node *parent, pldm_entity node)
+{
+	assert(parent != NULL);
+
+	pldm_entity_node *curr = parent->first_child;
+	while (curr != NULL) {
+		if (node.entity_type == curr->entity.entity_type &&
+		    node.entity_instance_num ==
+			curr->entity.entity_instance_num) {
+
+			return true;
+		}
+		curr = curr->next_sibling;
+	}
+
+	return false;
+}
+
 static void _entity_association_pdr_add_entry(pldm_entity_node *curr,
 					      pldm_pdr *repo, uint16_t size,
 					      uint8_t contained_count,
