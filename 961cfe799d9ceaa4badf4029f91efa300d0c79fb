@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "85a1ce2c_9a2bf207",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-22T05:38:30Z",
+      "side": 1,
+      "message": "we can check the immediate children of parent. but the point is the container id that HB sends is not retained in bmc tree. so we can not compare the container id \ninstead of using pldm_entity_association_tree_visit(), pls write a new api which compares only the \"parent\" node to see if it has same child",
+      "parentUuid": "d8760c6b_23f97427",
+      "range": {
+        "startLine": 394,
+        "startChar": 2,
+        "endLine": 394,
+        "endChar": 36
+      },
+      "revId": "961cfe799d9ceaa4badf4029f91efa300d0c79fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bfef18d2_46e92799",
         "filename": "libpldm/pdr.c",
         "patchSetId": 15
@@ -36,6 +60,30 @@
       "writtenOn": "2021-06-21T15:06:06Z",
       "side": 1,
       "message": "This may return the wrong node, because it doesn\u0027t compare the container ID (i.e. it flattens/ignores the tree structure).",
+      "range": {
+        "startLine": 401,
+        "startChar": 8,
+        "endLine": 401,
+        "endChar": 41
+      },
+      "revId": "961cfe799d9ceaa4badf4029f91efa300d0c79fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b82221ea_993a7d22",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-22T05:38:30Z",
+      "side": 1,
+      "message": "i think this loop will not be needed",
+      "parentUuid": "bfef18d2_46e92799",
       "range": {
         "startLine": 401,
         "startChar": 8,
