@@ -2,6 +2,69 @@
   "comments": [
     {
       "key": {
+        "uuid": "07a96280_92da95c3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "As per DSP0248_1.2.0 iirc there can be only one Event Receiver in the platform subsystem, on OpenBMC Host/BMC communication has taken an exception to that and PlatformEventMessage flows in both directions. Apart from that the flow looks good.",
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb2d2e4a_7a421489",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "The commit message can be improved for reviewers understanding by providing different steps involved.\n\n1. Host-\u003eBMC - GetTID\n2. BMC-\u003eHost - SetEventReceiver\n3. .. and so on",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 14
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b49c9982_ee02b62b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "by",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 4
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8716dcc3_0cc79f94",
         "filename": "libpldmresponder/base.cpp",
         "patchSetId": 18
@@ -18,6 +81,179 @@
         "startChar": 8,
         "endLine": 203,
         "endChar": 22
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "231b086d_8ee810af",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "+1, the registerRequest API can be leveraged for that.",
+      "parentUuid": "8716dcc3_0cc79f94",
+      "range": {
+        "startLine": 203,
+        "startChar": 8,
+        "endLine": 203,
+        "endChar": 22
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c14bce5_5b260666",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "if (rc || completionCode)",
+      "range": {
+        "startLine": 220,
+        "startChar": 8,
+        "endLine": 220,
+        "endChar": 60
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b66e2a4f_ef206ee5",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "unsigned",
+      "range": {
+        "startLine": 223,
+        "startChar": 32,
+        "endLine": 223,
+        "endChar": 35
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5f1911f_7ea9592a",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "There is an imperfection in sending SetEventReceiver in the responseHandler of GetTID. Ideally sending SetEventReceiver as a response for GetTID should be done in the context of the InitializationAgent. GetTID is a command that could be invoked otherwise as well, in which case SetEventReceiver should not be sent. Till we have a full fledged InitializationAgent we can probably live with this. Other maintainers can also share their views.",
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80cdcdb6_e4a3d934",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "Defer is typically used when there are long running actions which we want to separate. In this case sending the request for SetEventReceiver which can be done in the ResponseHandler.",
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83fc70f9_bdc537e9",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "C++20 introduces std::bind_front, mem_fn might not be needed.",
+      "range": {
+        "startLine": 242,
+        "startChar": 15,
+        "endLine": 242,
+        "endChar": 24
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc4b0bf6_6d8e263e",
+        "filename": "libpldmresponder/test/libpldmresponder_base_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "Define a fixture class for the initialization common to base commands",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 51
+      },
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e5bdf32_25cce26e",
+        "filename": "meson_options.txt",
+        "patchSetId": 18
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-22T05:39:38Z",
+      "side": 1,
+      "message": "A more generic help text.",
+      "range": {
+        "startLine": 20,
+        "startChar": 73,
+        "endLine": 20,
+        "endChar": 113
       },
       "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
