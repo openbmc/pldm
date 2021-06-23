@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "504cb7e9_a7895798",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-23T08:03:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7450a5d_2a7ee81e",
+      "range": {
+        "startLine": 327,
+        "startChar": 23,
+        "endLine": 327,
+        "endChar": 43
+      },
+      "revId": "79d626bd94c06257d807b5cabc06785b61573580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9fcbfd91_6a509b0f",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 3
@@ -144,6 +168,30 @@
     },
     {
       "key": {
+        "uuid": "bdc85c96_9ec24be5",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-23T08:03:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b98cade_0a6026eb",
+      "range": {
+        "startLine": 329,
+        "startChar": 23,
+        "endLine": 329,
+        "endChar": 39
+      },
+      "revId": "79d626bd94c06257d807b5cabc06785b61573580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3958e341_cce15aaa",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 3
@@ -194,6 +242,24 @@
       "revId": "79d626bd94c06257d807b5cabc06785b61573580",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97c47888_2fde10fc",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-23T08:03:32Z",
+      "side": 1,
+      "message": "I did give it a thought on how much validation should happen for bitfields in libpldm apis. Between different versions of the firmware update spec we can see that bitfields range keep increasing. For example in 1.1.0 ComponentActivationMethods has two more supported bits [7],[6] compared to 1.0.0 and 1.0.1. Even though RequestedComponentActivationMethods is same across the versions, it can change in a later version. To keep the libpldm APIs as much reusable across different versions I am leaning towards keeping bitfield reserved bits validation in version specific package parser. Let me know your thoughts.",
+      "parentUuid": "1d416707_6cd38b34",
+      "revId": "79d626bd94c06257d807b5cabc06785b61573580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
