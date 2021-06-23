@@ -1051,10 +1051,8 @@ TEST(GetFirmwareParameters,
 
 TEST(GetFirmwareParameters, decodeResponseErrorCompletionCode)
 {
-    constexpr std::array<uint8_t,
-                         hdrSize + sizeof(pldm_get_firmware_parameters_resp)>
-        getFwParamsResponse{0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    constexpr std::array<uint8_t, hdrSize + sizeof(uint8_t)>
+        getFwParamsResponse{0x00, 0x00, 0x00, 0x01};
 
     auto responseMsg =
         reinterpret_cast<const pldm_msg*>(getFwParamsResponse.data());
@@ -1088,39 +1086,45 @@ TEST(GetFirmwareParameters, errorPathdecodeResponse)
     variable_field outCompParameterTable{};
 
     rc = decode_get_firmware_parameters_resp(
-        nullptr, invalidGetFwParamsResponse1.size(), &outResp,
+        nullptr, invalidGetFwParamsResponse1.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
         &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse1.size(), nullptr,
+        responseMsg, invalidGetFwParamsResponse1.size() - hdrSize, nullptr,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
         &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse1.size(), &outResp, nullptr,
-        &outPendingCompImageSetVersion, &outCompParameterTable);
+        responseMsg, invalidGetFwParamsResponse1.size() - hdrSize, &outResp,
+        nullptr, &outPendingCompImageSetVersion, &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse1.size(), &outResp,
+        responseMsg, invalidGetFwParamsResponse1.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, nullptr, &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse1.size(), &outResp,
+        responseMsg, invalidGetFwParamsResponse1.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion, nullptr);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     rc = decode_get_firmware_parameters_resp(
         responseMsg, 0, &outResp, &outActiveCompImageSetVersion,
         &outPendingCompImageSetVersion, &outCompParameterTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_firmware_parameters_resp(
+        responseMsg, invalidGetFwParamsResponse1.size() - 1 - hdrSize, &outResp,
+        &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
+        &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse1.size(), &outResp,
+        responseMsg, invalidGetFwParamsResponse1.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
         &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
@@ -1132,7 +1136,7 @@ TEST(GetFirmwareParameters, errorPathdecodeResponse)
     responseMsg =
         reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse2.data());
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse2.size(), &outResp,
+        responseMsg, invalidGetFwParamsResponse2.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
         &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
@@ -1145,7 +1149,7 @@ TEST(GetFirmwareParameters, errorPathdecodeResponse)
     responseMsg =
         reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse3.data());
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse3.size(), &outResp,
+        responseMsg, invalidGetFwParamsResponse3.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
         &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
@@ -1158,7 +1162,7 @@ TEST(GetFirmwareParameters, errorPathdecodeResponse)
     responseMsg =
         reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse4.data());
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse4.size(), &outResp,
+        responseMsg, invalidGetFwParamsResponse4.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
         &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
@@ -1170,7 +1174,7 @@ TEST(GetFirmwareParameters, errorPathdecodeResponse)
     responseMsg =
         reinterpret_cast<const pldm_msg*>(invalidGetFwParamsResponse5.data());
     rc = decode_get_firmware_parameters_resp(
-        responseMsg, invalidGetFwParamsResponse5.size(), &outResp,
+        responseMsg, invalidGetFwParamsResponse5.size() - hdrSize, &outResp,
         &outActiveCompImageSetVersion, &outPendingCompImageSetVersion,
         &outCompParameterTable);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
