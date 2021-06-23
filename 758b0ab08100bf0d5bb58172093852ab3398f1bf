@@ -22,6 +22,30 @@
       "revId": "758b0ab08100bf0d5bb58172093852ab3398f1bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3814990a_d2f368ce",
+        "filename": "libpldm/fru.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-06-23T06:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b89ec7f7_6195f70c",
+      "range": {
+        "startLine": 529,
+        "startChar": 1,
+        "endLine": 529,
+        "endChar": 4
+      },
+      "revId": "758b0ab08100bf0d5bb58172093852ab3398f1bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
