@@ -1,0 +1,9 @@
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Code-Review+1: George Liu <liuxiwei@inspur.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Tom Joseph <rushtotom@gmail.com>
+Submitted-at: Wed, 23 Jun 2021 04:54:20 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/43847
+Project: openbmc/pldm
+Branch: refs/heads/master
