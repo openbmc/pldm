@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "c7450a5d_2a7ee81e",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-23T07:36:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "ff39ec03_d6e4d41a",
+      "range": {
+        "startLine": 327,
+        "startChar": 23,
+        "endLine": 327,
+        "endChar": 43
+      },
+      "revId": "79d626bd94c06257d807b5cabc06785b61573580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9fcbfd91_6a509b0f",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 3
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "0b98cade_0a6026eb",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-23T07:36:08Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "a195aee4_e4568ddf",
+      "range": {
+        "startLine": 329,
+        "startChar": 23,
+        "endLine": 329,
+        "endChar": 39
+      },
+      "revId": "79d626bd94c06257d807b5cabc06785b61573580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3958e341_cce15aaa",
         "filename": "libpldm/firmware_update.c",
         "patchSetId": 3
@@ -125,6 +173,24 @@
       "side": 1,
       "message": "What is the specific validation you are suggesting?",
       "parentUuid": "3958e341_cce15aaa",
+      "revId": "79d626bd94c06257d807b5cabc06785b61573580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d416707_6cd38b34",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-06-23T07:36:08Z",
+      "side": 1,
+      "message": "my intention is to validate the variables for proper values.\nEg: requested_comp_activation_method can have values for bits 0 to 5 and remaining are reserved. We should not set any reserved bits. Please correct me if i am wrong.",
+      "parentUuid": "b05656b8_bc4a044c",
       "revId": "79d626bd94c06257d807b5cabc06785b61573580",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
