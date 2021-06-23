@@ -450,8 +450,13 @@ int decode_get_firmware_parameters_resp(
 	if (msg == NULL || resp_data == NULL ||
 	    active_comp_image_set_ver_str == NULL ||
 	    pending_comp_image_set_ver_str == NULL ||
-	    comp_parameter_table == NULL) {
+	    comp_parameter_table == NULL || !payload_length) {
 		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	resp_data->completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != resp_data->completion_code) {
+		return PLDM_SUCCESS;
 	}
 
 	if (payload_length < sizeof(struct pldm_get_firmware_parameters_resp)) {
@@ -460,12 +465,6 @@ int decode_get_firmware_parameters_resp(
 
 	struct pldm_get_firmware_parameters_resp *response =
 	    (struct pldm_get_firmware_parameters_resp *)msg->payload;
-
-	resp_data->completion_code = response->completion_code;
-
-	if (PLDM_SUCCESS != resp_data->completion_code) {
-		return PLDM_SUCCESS;
-	}
 
 	if (!is_string_type_valid(
 		response->active_comp_image_set_ver_str_type) ||
