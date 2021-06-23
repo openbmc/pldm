@@ -564,7 +564,7 @@ int decode_get_firmware_parameters_resp_comp_entry(
 			      entry->active_comp_ver_str_len +
 			      entry->pending_comp_ver_str_len;
 
-	if (length != entry_length) {
+	if (length < entry_length) {
 		return PLDM_ERROR_INVALID_LENGTH;
 	}
 
