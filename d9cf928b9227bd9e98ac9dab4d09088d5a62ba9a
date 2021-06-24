@@ -16,6 +16,24 @@
       "revId": "d9cf928b9227bd9e98ac9dab4d09088d5a62ba9a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2fc8ffb_e4d6c6a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-24T04:37:59Z",
+      "side": 1,
+      "message": "yup, verified this. \n\nThe test cases for decode_get_firmware_parameters_resp_comp_entry don\u0027t have error path coverage.",
+      "parentUuid": "27d5b3e5_7b7a31c9",
+      "revId": "d9cf928b9227bd9e98ac9dab4d09088d5a62ba9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
