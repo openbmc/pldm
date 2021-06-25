@@ -22,6 +22,30 @@
       "revId": "477e4c9d44a95cbdd3df7e92871a8a484c7b9564",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dfa13b53_2f26ff3a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-25T08:32:57Z",
+      "side": 1,
+      "message": "Ack, fixed in the later patchsets",
+      "parentUuid": "a2a9e54e_566e22c5",
+      "range": {
+        "startLine": 698,
+        "startChar": 16,
+        "endLine": 700,
+        "endChar": 52
+      },
+      "revId": "477e4c9d44a95cbdd3df7e92871a8a484c7b9564",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
