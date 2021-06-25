@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "185f3963_93b991dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-25T04:36:23Z",
+      "side": 1,
+      "message": "current or correct?",
+      "range": {
+        "startLine": 7,
+        "startChar": 34,
+        "endLine": 7,
+        "endChar": 41
+      },
+      "revId": "ad61cdadcac08fdf49dea078922272f9712cfd3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe979bec_cc56053b",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-25T04:36:23Z",
+      "side": 1,
+      "message": "pass a pointer, since it is not a simple type?",
+      "range": {
+        "startLine": 523,
+        "startChar": 60,
+        "endLine": 523,
+        "endChar": 71
+      },
+      "revId": "ad61cdadcac08fdf49dea078922272f9712cfd3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b87624fa_98742081",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-25T04:36:23Z",
+      "side": 1,
+      "message": "Current",
+      "range": {
+        "startLine": 301,
+        "startChar": 13,
+        "endLine": 301,
+        "endChar": 20
+      },
+      "revId": "ad61cdadcac08fdf49dea078922272f9712cfd3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
