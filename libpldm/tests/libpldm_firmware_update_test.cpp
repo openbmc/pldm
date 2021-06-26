@@ -2080,3 +2080,45 @@ TEST(RequestFirmwareData, errorPathEncodeResponse)
     rc = encode_request_firmware_data_resp(0, PLDM_SUCCESS, responseMsg, 0);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(TransferComplete, goodPathDecodeRequest)
+{
+    constexpr uint8_t transferResult = PLDM_FWUP_TRANSFER_SUCCESS;
+    constexpr std::array<uint8_t, hdrSize + sizeof(transferResult)>
+        transferCompleteReq1{0x00, 0x00, 0x00, 0x00};
+    auto requestMsg1 =
+        reinterpret_cast<const pldm_msg*>(transferCompleteReq1.data());
+    uint8_t outTransferResult = 0;
+
+    auto rc = decode_transfer_complete_req(requestMsg1, sizeof(transferResult),
+                                           &outTransferResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outTransferResult, transferResult);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(transferResult)>
+        transferCompleteReq2{0x00, 0x00, 0x00, 0x02};
+    auto requestMsg2 =
+        reinterpret_cast<const pldm_msg*>(transferCompleteReq2.data());
+    rc = decode_transfer_complete_req(requestMsg2, sizeof(transferResult),
+                                      &outTransferResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outTransferResult, PLDM_FWUP_TRANSFER_ERROR_IMAGE_CORRUPT);
+}
+
+TEST(TransferComplete, errorPathDecodeRequest)
+{
+    constexpr std::array<uint8_t, hdrSize> transferCompleteReq{0x00, 0x00,
+                                                               0x00};
+    auto requestMsg =
+        reinterpret_cast<const pldm_msg*>(transferCompleteReq.data());
+    uint8_t outTransferResult = 0;
+
+    auto rc = decode_transfer_complete_req(nullptr, 0, &outTransferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_transfer_complete_req(requestMsg, 0, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_transfer_complete_req(requestMsg, 0, &outTransferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
