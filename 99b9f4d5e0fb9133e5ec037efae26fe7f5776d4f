@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "af78d2d0_f2df4a1c",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b4804bda_a488bfd2",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 65
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "96aa33f1_a2f62e59",
         "filename": "host-bmc/dbus_to_event_handler.cpp",
         "patchSetId": 7
@@ -45,6 +69,30 @@
       "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cea12002_d4de0d70",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "96aa33f1_a2f62e59",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 26
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "444b1821_ee413611",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ba0592c_5b56bf2d",
+      "range": {
+        "startLine": 301,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 68
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5f49238e_a7e3c32b",
         "filename": "host-bmc/dbus_to_host_effecters.cpp",
         "patchSetId": 7
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "d5cbc797_e28f65c3",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f49238e_a7e3c32b",
+      "range": {
+        "startLine": 294,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 13
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "320434a5_d5a170d0",
         "filename": "host-bmc/dbus_to_host_effecters.hpp",
         "patchSetId": 7
@@ -105,6 +201,30 @@
       "writtenOn": "2021-06-22T02:32:38Z",
       "side": 1,
       "message": "Do we want this to be consistent? DbusToPLDMEvent is passing a reference.",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a13f2d49_c3a545c5",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "yeah i had to change that to make the testcase passed. changing all to reference",
+      "parentUuid": "320434a5_d5a170d0",
       "range": {
         "startLine": 85,
         "startChar": 8,
@@ -140,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "2ea7f58f_36490d8a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "i understand the code as: for each request that bmc sends, a new fetchPDRResponseHandler is created. in that case we can not do the processing of the PDRs in the handler. we need to remember the previous record handle and few other stuffs.\none more reason to separate this out is to maintain better clarity since processing the PDR is bit detailed",
+      "parentUuid": "54763964_e233cb18",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 6
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0c3e47f1_32c12275",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 7
@@ -151,6 +295,30 @@
       "writtenOn": "2021-06-22T02:32:38Z",
       "side": 1,
       "message": "Is this involves sending a PLDM request message to host, this can be synchronous. I don\u0027t see a value in Deferring it.",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 54
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b26a381d_85b8e42a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "yeah this sends a request to Host. this has to be deferred otherwise we donot send response from the current command",
+      "parentUuid": "0c3e47f1_32c12275",
       "range": {
         "startLine": 440,
         "startChar": 0,
@@ -186,6 +354,30 @@
     },
     {
       "key": {
+        "uuid": "25e6f018_8285de1f",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "daad568d_1b5200f0",
+      "range": {
+        "startLine": 158,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 25
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f29f353b_af0b0710",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 7
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "94ec05a3_0a52fb53",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f29f353b_af0b0710",
+      "range": {
+        "startLine": 187,
+        "startChar": 2,
+        "endLine": 187,
+        "endChar": 52
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a3733d30_e9f8e299",
         "filename": "host-bmc/test/meson.build",
         "patchSetId": 7
@@ -220,6 +436,30 @@
       "writtenOn": "2021-06-22T02:32:38Z",
       "side": 1,
       "message": "Source files are typically added as dependency, why hpp?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 43
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4feafc90_7c75b8af",
+        "filename": "host-bmc/test/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-26T12:16:53Z",
+      "side": 1,
+      "message": "i guess there was some compilation error in building test cases. will check once more",
+      "parentUuid": "a3733d30_e9f8e299",
       "range": {
         "startLine": 6,
         "startChar": 0,
