@@ -2718,3 +2718,58 @@ TEST(RequestFirmwareData, testBadEncodeResponse)
                                            completionCode, &img);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(TransferComplete, testGoodDecodeRequest)
+{
+    std::array<uint8_t, (hdrSize + 1)> request;
+    uint8_t transferResult = PLDM_FWUP_TRANSFER_COMPLETE_WITH_ERROR;
+    auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+    requestPtr->payload[0] = PLDM_FWUP_TRASFER_SUCCESS;
+    auto rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferResult, PLDM_FWUP_TRASFER_SUCCESS);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MIN;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferResult, PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MIN);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferResult, PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX);
+    requestPtr->payload[0] = 0x02;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferResult, PLDM_FWUP_TRANSFER_COMPLETE_WITH_ERROR);
+}
+TEST(TransferComplete, testBadDecodeRequest)
+{
+    std::array<uint8_t, (hdrSize + 1)> request;
+    uint8_t transferResult = PLDM_FWUP_FD_ABORTED_TRANSFER;
+    auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+    requestPtr->payload[0] = PLDM_FWUP_TRASFER_SUCCESS;
+    auto rc = decode_transfer_complete_req(NULL, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_transfer_complete_req(requestPtr, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_TRASFER_SUCCESS - 1;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_FD_ABORTED_TRANSFER + 1;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_TIME_OUT - 1;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_GENERIC_ERROR + 1;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = 0xFF;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MIN - 1;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX + 1;
+    rc = decode_transfer_complete_req(requestPtr, &transferResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}

@@ -238,6 +238,24 @@ enum self_contained_activation_req {
 	CONTAINS_SELF_ACTIVATED_COMPONENTS = 1
 };
 
+/** @brief PLDM FWU codes for transfer result
+ */
+enum pldm_firmware_update_transfer_result {
+	PLDM_FWUP_TRASFER_SUCCESS = 0x00,
+	PLDM_FWUP_TRANSFER_COMPLETE_WITH_ERROR = 0x02,
+	PLDM_FWUP_FD_ABORTED_TRANSFER = 0x03,
+	PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MIN = 0x70,
+	PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX = 0x8F
+};
+
+/**@brief PLDM FWU common error codes for transfer result, verify result and
+ * apply result
+ */
+enum pldm_firmware_update_common_error_code {
+	PLDM_FWUP_TIME_OUT = 0x09,
+	PLDM_FWUP_GENERIC_ERROR = 0x0A
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -916,6 +934,15 @@ int encode_request_firmware_data_resp(
     const uint8_t instance_id, struct pldm_msg *msg,
     const size_t payload_length, const uint8_t completion_code,
     struct variable_field *component_image_portion);
+
+/** @brief Decode TransferComplete request message
+ *
+ *  @param[in] msg - request message
+ *  @param[out] transfer_result - Pointer to transfer result
+ *  @return pldm_completion_codes
+ */
+int decode_transfer_complete_req(const struct pldm_msg *msg,
+				 uint8_t *transfer_result);
 #ifdef __cplusplus
 }
 #endif

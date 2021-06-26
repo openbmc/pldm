@@ -1459,3 +1459,40 @@ int encode_request_firmware_data_resp(
 
 	return PLDM_SUCCESS;
 }
+/** @brief Check validity of transfer result in TransferComplete
+ *
+ *	@param[in] transfer_result - Indicate the result of the Download stage
+ *	@return validity
+ */
+static bool validate_transfer_result(const uint8_t transfer_result)
+{
+	switch (transfer_result) {
+	case PLDM_FWUP_TRASFER_SUCCESS:
+	case PLDM_FWUP_TRANSFER_COMPLETE_WITH_ERROR:
+	case PLDM_FWUP_FD_ABORTED_TRANSFER:
+	case PLDM_FWUP_TIME_OUT:
+	case PLDM_FWUP_GENERIC_ERROR:
+		return true;
+	default:
+		if (transfer_result >=
+			PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MIN &&
+		    transfer_result <=
+			PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX) {
+			return true;
+		}
+		return false;
+	}
+}
+
+int decode_transfer_complete_req(const struct pldm_msg *msg,
+				 uint8_t *transfer_result)
+{
+	if (msg == NULL || transfer_result == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!validate_transfer_result(msg->payload[0])) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	*transfer_result = msg->payload[0];
+	return PLDM_SUCCESS;
+}
