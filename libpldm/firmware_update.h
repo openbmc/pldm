@@ -185,6 +185,28 @@ enum pldm_component_compatability_response_codes {
 	PLDM_CCRC_VENDOR_COMP_RESP_CODE_RANGE_MAX = 0xEF
 };
 
+/** @brief Common error codes in TransferComplete, VerifyComplete and
+ *        ApplyComplete request
+ */
+enum pldm_firmware_update_common_error_codes {
+	PLDM_FWUP_TIME_OUT = 0x09,
+	PLDM_FWUP_GENERIC_ERROR = 0x0A
+};
+
+/** @brief TransferResult values in the response of TransferComplete
+ */
+enum pldm_firmware_update_transfer_result {
+	PLDM_FWUP_TRANSFER_SUCCESS = 0x00,
+	PLDM_FWUP_TRANSFER_ERROR_IMAGE_CORRUPT = 0x02,
+	PLDM_FWUP_TRANSFER_ERROR_VERSION_MISMATCH = 0x02,
+	PLDM_FWUP_FD_ABORTED_TRANSFER = 0x03,
+	PLDM_FWUP_FD_ABORTED_TRANSFER_LOW_POWER_STATE = 0x0B,
+	PLDM_FWUP_FD_ABORTED_TRANSFER_RESET_NEEDED = 0x0C,
+	PLDM_FWUP_FD_ABORTED_TRANSFER_STORAGE_ISSUE = 0x0D,
+	PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MIN = 0x70,
+	PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX = 0x8F
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -730,6 +752,17 @@ int encode_request_firmware_data_resp(uint8_t instance_id,
 				      struct pldm_msg *msg,
 				      size_t payload_length);
 
+/** @brief Decode TransferComplete request message
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] transfer_result - Pointer to hold TransferResult
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_transfer_complete_req(const struct pldm_msg *msg,
+				 size_t payload_length,
+				 uint8_t *transfer_result);
 #ifdef __cplusplus
 }
 #endif
