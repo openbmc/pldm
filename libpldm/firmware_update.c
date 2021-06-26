@@ -1040,3 +1040,19 @@ int encode_request_firmware_data_resp(uint8_t instance_id,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_transfer_complete_req(const struct pldm_msg *msg,
+				 size_t payload_length,
+				 uint8_t *transfer_result)
+{
+	if (msg == NULL || transfer_result == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(*transfer_result)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*transfer_result = msg->payload[0];
+	return PLDM_SUCCESS;
+}
