@@ -1544,3 +1544,15 @@ int decode_verify_complete_req(const struct pldm_msg *msg,
 	*verify_result = msg->payload[0];
 	return PLDM_SUCCESS;
 }
+
+int encode_verify_complete_resp(const uint8_t instance_id,
+				const uint8_t completion_code,
+				struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return (encode_cc_only_resp(instance_id, PLDM_FWUP,
+				    PLDM_VERIFY_COMPLETE, completion_code,
+				    msg));
+}
