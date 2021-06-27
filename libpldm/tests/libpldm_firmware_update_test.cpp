@@ -2773,3 +2773,26 @@ TEST(TransferComplete, testBadDecodeRequest)
     rc = decode_transfer_complete_req(requestPtr, &transferResult);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(TransferComplete, testGoodEncodeResponse)
+{
+    uint8_t instanceId = 0x01;
+    uint8_t completionCode = PLDM_ERROR;
+    std::array<uint8_t, (hdrSize + 1)> responseMsg{};
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto rc =
+        encode_transfer_complete_resp(instanceId, completionCode, responsePtr);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    EXPECT_EQ(responsePtr->hdr.instance_id, instanceId);
+    EXPECT_EQ(responsePtr->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(responsePtr->hdr.command, PLDM_TRANSFER_COMPLETE);
+    EXPECT_EQ(responsePtr->payload[0], completionCode);
+}
+TEST(TransferComplete, testBadEncodeResponse)
+{
+    uint8_t instanceId = 0x01;
+    uint8_t completionCode = PLDM_ERROR;
+    auto rc = encode_transfer_complete_resp(instanceId, completionCode, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}

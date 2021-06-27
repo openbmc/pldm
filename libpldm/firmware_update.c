@@ -1496,3 +1496,15 @@ int decode_transfer_complete_req(const struct pldm_msg *msg,
 	*transfer_result = msg->payload[0];
 	return PLDM_SUCCESS;
 }
+
+int encode_transfer_complete_resp(const uint8_t instance_id,
+				  const uint8_t completion_code,
+				  struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return (encode_cc_only_resp(instance_id, PLDM_FWUP,
+				    PLDM_TRANSFER_COMPLETE, completion_code,
+				    msg));
+}
