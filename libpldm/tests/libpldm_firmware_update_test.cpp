@@ -2242,3 +2242,71 @@ TEST(VerifyComplete, errorPathEncodeResponse)
     rc = encode_verify_complete_resp(0, PLDM_SUCCESS, responseMsg, 0);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(ApplyComplete, goodPathDecodeRequest)
+{
+    constexpr uint8_t applyResult1 =
+        PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD;
+    // DC power cycle [Bit position 4] & AC power cycle [Bit position 5]
+    constexpr std::bitset<16> compActivationModification1{0x30};
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_apply_complete_req)>
+        applyCompleteReq1{0x00, 0x00, 0x00, 0x01, 0x30, 0x00};
+    auto requestMsg1 =
+        reinterpret_cast<const pldm_msg*>(applyCompleteReq1.data());
+    uint8_t outApplyResult = 0;
+    bitfield16_t outCompActivationModification{};
+    auto rc = decode_apply_complete_req(
+        requestMsg1, sizeof(pldm_apply_complete_req), &outApplyResult,
+        &outCompActivationModification);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outApplyResult, applyResult1);
+    EXPECT_EQ(outCompActivationModification.value, compActivationModification1);
+
+    constexpr uint8_t applyResult2 = PLDM_FWUP_APPLY_SUCCESS;
+    constexpr std::bitset<16> compActivationModification2{};
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_apply_complete_req)>
+        applyCompleteReq2{0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto requestMsg2 =
+        reinterpret_cast<const pldm_msg*>(applyCompleteReq2.data());
+    rc = decode_apply_complete_req(requestMsg2, sizeof(pldm_apply_complete_req),
+                                   &outApplyResult,
+                                   &outCompActivationModification);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(outApplyResult, applyResult2);
+    EXPECT_EQ(outCompActivationModification.value, compActivationModification2);
+}
+
+TEST(ApplyComplete, errorPathDecodeRequest)
+{
+    constexpr std::array<uint8_t, hdrSize> applyCompleteReq1{0x00, 0x00, 0x00};
+    auto requestMsg1 =
+        reinterpret_cast<const pldm_msg*>(applyCompleteReq1.data());
+    uint8_t outApplyResult = 0;
+    bitfield16_t outCompActivationModification{};
+
+    auto rc = decode_apply_complete_req(
+        nullptr, sizeof(pldm_apply_complete_req), &outApplyResult,
+        &outCompActivationModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_apply_complete_req(requestMsg1, sizeof(pldm_apply_complete_req),
+                                   nullptr, &outCompActivationModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_apply_complete_req(requestMsg1, sizeof(pldm_apply_complete_req),
+                                   &outApplyResult, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_apply_complete_req(requestMsg1, 0, &outApplyResult,
+                                   &outCompActivationModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(pldm_apply_complete_req)>
+        applyCompleteReq2{0x00, 0x00, 0x00, 0x00, 0x01, 0x00};
+    auto requestMsg2 =
+        reinterpret_cast<const pldm_msg*>(applyCompleteReq2.data());
+    rc = decode_apply_complete_req(requestMsg2, sizeof(pldm_apply_complete_req),
+                                   &outApplyResult,
+                                   &outCompActivationModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
