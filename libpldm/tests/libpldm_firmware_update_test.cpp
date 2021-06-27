@@ -2876,3 +2876,97 @@ TEST(VerifyComplete, testBadEncodeResponse)
     auto rc = encode_verify_complete_resp(instanceId, completionCode, NULL);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(ApplyComplete, testGoodDecodeRequest)
+{
+    uint8_t applyResult = PLDM_FWUP_APPLY_SUCCESS;
+    bitfield16_t compActivationMethodsModification = {0};
+    std::array<uint8_t, hdrSize + sizeof(struct apply_complete_req)>
+        requestMsg{};
+    struct apply_complete_req* request =
+        reinterpret_cast<struct apply_complete_req*>(requestMsg.data() +
+                                                     hdrSize);
+    request->apply_result = PLDM_FWUP_APPLY_SUCCESS;
+    request->comp_activation_methods_modification.value = APPLY_AUTOMATIC;
+    auto requestIn = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                        &applyResult,
+                                        &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(applyResult, request->apply_result);
+    EXPECT_EQ(compActivationMethodsModification.value,
+              htole16(request->comp_activation_methods_modification.value));
+}
+
+TEST(ApplyComplete, testBadDecodeRequest)
+{
+    uint8_t applyResult = PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR;
+    bitfield16_t compActivationMethodsModification = {3};
+    std::array<uint8_t, hdrSize + sizeof(struct apply_complete_req)>
+        requestMsg{};
+    struct apply_complete_req* request =
+        reinterpret_cast<struct apply_complete_req*>(requestMsg.data() +
+                                                     hdrSize);
+    request->apply_result = PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR;
+    request->comp_activation_methods_modification.value = APPLY_SYSTEM_REBOOT;
+    auto requestIn = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = decode_apply_complete_req(NULL, requestMsg.size() - hdrSize,
+                                        &applyResult,
+                                        &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_apply_complete_req(requestIn, 0, &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize, NULL,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->apply_result = PLDM_FWUP_APPLY_SUCCESS - 1;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->apply_result = PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MIN - 1;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->apply_result = PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MAX + 1;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->apply_result = PLDM_FWUP_TIME_OUT - 1;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->apply_result = PLDM_FWUP_APPLY_COMPLETED_WITH_FAILURE + 1;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->apply_result = 6;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->comp_activation_methods_modification.value = APPLY_AUTOMATIC - 1;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->comp_activation_methods_modification.value =
+        APPLY_AC_POWER_CYCLE + 1;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->comp_activation_methods_modification.value = 0xff;
+    rc = decode_apply_complete_req(requestIn, requestMsg.size() - hdrSize,
+                                   &applyResult,
+                                   &compActivationMethodsModification);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
