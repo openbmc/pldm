@@ -2198,3 +2198,42 @@ TEST(VerifyComplete, errorPathDecodeRequest)
     rc = decode_verify_complete_req(requestMsg, 0, &outVerifyResult);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(VerifyComplete, goodPathEncodeResponse)
+{
+    constexpr uint8_t instanceId = 5;
+    constexpr uint8_t completionCode = PLDM_SUCCESS;
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        outVerifyCompleteResponse1{0x05, 0x05, 0x17, 0x00};
+    std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        verifyCompleteResponse1{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<pldm_msg*>(verifyCompleteResponse1.data());
+    auto rc = encode_verify_complete_resp(instanceId, completionCode,
+                                          responseMsg1, sizeof(completionCode));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(verifyCompleteResponse1, outVerifyCompleteResponse1);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        outVerifyCompleteResponse2{0x05, 0x05, 0x17, 0x87};
+    std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        verifyCompleteResponse2{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<pldm_msg*>(verifyCompleteResponse2.data());
+    rc = encode_verify_complete_resp(instanceId, PLDM_FWUP_COMMAND_NOT_EXPECTED,
+                                     responseMsg2, sizeof(completionCode));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(verifyCompleteResponse2, outVerifyCompleteResponse2);
+}
+
+TEST(VerifyComplete, errorPathEncodeResponse)
+{
+    std::array<uint8_t, hdrSize> verifyCompleteResponse{0x00, 0x00, 0x00};
+    auto responseMsg =
+        reinterpret_cast<pldm_msg*>(verifyCompleteResponse.data());
+    auto rc = encode_verify_complete_resp(0, PLDM_SUCCESS, nullptr, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_verify_complete_resp(0, PLDM_SUCCESS, responseMsg, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
