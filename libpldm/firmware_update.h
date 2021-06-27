@@ -27,7 +27,8 @@ enum pldm_firmware_update_commands {
 	PLDM_PASS_COMPONENT_TABLE = 0x13,
 	PLDM_UPDATE_COMPONENT = 0x14,
 	PLDM_REQUEST_FIRMWARE_DATA = 0x15,
-	PLDM_TRANSFER_COMPLETE = 0x16
+	PLDM_TRANSFER_COMPLETE = 0x16,
+	PLDM_VERIFY_COMPLETE = 0x17
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -208,7 +209,7 @@ enum pldm_firmware_update_transfer_result_values {
 	PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX = 0x8F
 };
 
-/**@brief VerifyResult values in the response of VerifyComplete
+/**@brief VerifyResult values in the request of VerifyComplete
  */
 enum pldm_firmware_update_verify_result_values {
 	PLDM_FWUP_VERIFY_SUCCESS = 0x00,
@@ -802,6 +803,21 @@ int encode_transfer_complete_resp(uint8_t instance_id, uint8_t completion_code,
  */
 int decode_verify_complete_req(const struct pldm_msg *msg,
 			       size_t payload_length, uint8_t *verify_result);
+
+/** @brief Create PLDM response message for VerifyComplete
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - CompletionCode
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of response message payload
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_verify_complete_resp(uint8_t instance_id, uint8_t completion_code,
+				struct pldm_msg *msg, size_t payload_length);
 
 #ifdef __cplusplus
 }
