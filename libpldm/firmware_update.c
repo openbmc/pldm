@@ -1508,3 +1508,39 @@ int encode_transfer_complete_resp(const uint8_t instance_id,
 				    PLDM_TRANSFER_COMPLETE, completion_code,
 				    msg));
 }
+
+/** @brief Check validity of verify result in VerifyComplete request
+ *
+ *	@param[in] verify_result - Indicate the result of the Verify stage
+ *	@return validity
+ */
+static bool validate_verify_result(const uint8_t verify_result)
+{
+	switch (verify_result) {
+	case PLDM_FWUP_VERIFY_SUCCESS:
+	case PLDM_FWUP_VERIFY_COMPLETED_WITH_FAILURE:
+	case PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR:
+	case PLDM_FWUP_TIME_OUT:
+	case PLDM_FWUP_GENERIC_ERROR:
+		return true;
+	default:
+		if (verify_result >= PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MIN &&
+		    verify_result <= PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MAX) {
+			return true;
+		}
+		return false;
+	}
+}
+
+int decode_verify_complete_req(const struct pldm_msg *msg,
+			       uint8_t *verify_result)
+{
+	if (msg == NULL || verify_result == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (!validate_verify_result(msg->payload[0])) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	*verify_result = msg->payload[0];
+	return PLDM_SUCCESS;
+}

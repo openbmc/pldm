@@ -2796,3 +2796,59 @@ TEST(TransferComplete, testBadEncodeResponse)
     auto rc = encode_transfer_complete_resp(instanceId, completionCode, NULL);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(VerifyComplete, testGoodDecodeRequest)
+{
+    std::array<uint8_t, (hdrSize + 1)> request;
+    uint8_t verifyResult = PLDM_FWUP_VERIFY_SUCCESS;
+    auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+    requestPtr->payload[0] = PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR;
+    auto rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(verifyResult, PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR);
+    requestPtr->payload[0] = 0x01;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(verifyResult, PLDM_FWUP_VERIFY_COMPLETED_WITH_FAILURE);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MIN;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(verifyResult, PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MIN);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MAX;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(verifyResult, PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MAX);
+}
+
+TEST(VerifyComplete, testBadDecodeRequest)
+{
+    std::array<uint8_t, (hdrSize + 1)> request;
+    uint8_t verifyResult = PLDM_FWUP_VERIFY_SUCCESS;
+    auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+    requestPtr->payload[0] = PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR;
+    auto rc = decode_verify_complete_req(NULL, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_verify_complete_req(requestPtr, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_VERIFY_SUCCESS - 1;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR + 1;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_TIME_OUT - 1;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_GENERIC_ERROR + 1;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = 0xFF;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MIN - 1;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    requestPtr->payload[0] = PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MAX + 1;
+    rc = decode_verify_complete_req(requestPtr, &verifyResult);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}

@@ -257,6 +257,16 @@ enum pldm_firmware_update_common_error_code {
 	PLDM_FWUP_GENERIC_ERROR = 0x0A
 };
 
+/**@brief PLDM FWU codes for verify result
+ */
+enum pldm_fwu_verify_result {
+	PLDM_FWUP_VERIFY_SUCCESS = 0x00,
+	PLDM_FWUP_VERIFY_COMPLETED_WITH_FAILURE = 0x01,
+	PLDM_FWUP_VERIFY_COMPLETED_WITH_ERROR = 0x02,
+	PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MIN = 0x90,
+	PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MAX = 0xAF
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -957,6 +967,15 @@ int decode_transfer_complete_req(const struct pldm_msg *msg,
 int encode_transfer_complete_resp(const uint8_t instance_id,
 				  const uint8_t completion_code,
 				  struct pldm_msg *msg);
+
+/** @brief Decode VerifyComplete request message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] verify_result - pointer to verify result from FD
+ *  @return pldm_completion_codes
+ */
+int decode_verify_complete_req(const struct pldm_msg *msg,
+			       uint8_t *verify_result);
 #ifdef __cplusplus
 }
 #endif
