@@ -35,7 +35,8 @@ enum pldm_firmware_update_commands {
 	PLDM_ACTIVATE_FIRMWARE = 0x1A,
 	PLDM_REQUEST_FIRMWARE_DATA = 0x15,
 	PLDM_TRANSFER_COMPLETE = 0x16,
-	PLDM_VERIFY_COMPLETE = 0x17
+	PLDM_VERIFY_COMPLETE = 0x17,
+	PLDM_APPLY_COMPLETE = 0x18
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -1032,6 +1033,19 @@ int encode_verify_complete_resp(const uint8_t instance_id,
 int decode_apply_complete_req(
     const struct pldm_msg *msg, const size_t payload_length,
     uint8_t *apply_result, bitfield16_t *comp_activation_methods_modification);
+	
+/** @brief Create a PLDM response message for ApplyComplete
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - completion code
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ * 'msg.payload'
+ */
+int encode_apply_complete_resp(const uint8_t instance_id,
+			       const uint8_t completion_code,
+			       struct pldm_msg *msg);
 #ifdef __cplusplus
 }
 #endif

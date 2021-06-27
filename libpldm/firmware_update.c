@@ -1637,3 +1637,14 @@ int decode_apply_complete_req(
 
 	return PLDM_SUCCESS;
 }
+
+int encode_apply_complete_resp(const uint8_t instance_id,
+			       const uint8_t completion_code,
+			       struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return (encode_cc_only_resp(instance_id, PLDM_FWUP, PLDM_APPLY_COMPLETE,
+				    completion_code, msg));
+}

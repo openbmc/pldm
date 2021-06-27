@@ -2970,3 +2970,27 @@ TEST(ApplyComplete, testBadDecodeRequest)
                                    &compActivationMethodsModification);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(ApplyComplete, testGoodEncodeResponse)
+{
+    uint8_t instanceId = 0x01;
+    uint8_t completionCode = PLDM_ERROR;
+    std::array<uint8_t, (hdrSize + 1)> responseMsg{};
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto rc =
+        encode_apply_complete_resp(instanceId, completionCode, responsePtr);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    EXPECT_EQ(responsePtr->hdr.instance_id, instanceId);
+    EXPECT_EQ(responsePtr->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(responsePtr->hdr.command, PLDM_APPLY_COMPLETE);
+    EXPECT_EQ(responsePtr->payload[0], completionCode);
+}
+
+TEST(ApplyComplete, testBadEncodeResponse)
+{
+    uint8_t instanceId = 0x01;
+    uint8_t completionCode = PLDM_ERROR;
+    auto rc = encode_apply_complete_resp(instanceId, completionCode, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
