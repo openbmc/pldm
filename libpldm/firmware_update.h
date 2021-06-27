@@ -133,6 +133,21 @@ enum pldm_component_classification_values {
 	PLDM_COMP_DOWNSTREAM_DEVICE = 0xFFFF
 };
 
+/** @brief ComponentActivationMethods is the bit position in the bitfield that
+ *         provides the capability of the FD for firmware activation. Multiple
+ *         activation methods can be supported.
+ */
+enum pldm_comp_activation_methods {
+	PLDM_ACTIVATION_AUTOMATIC = 0,
+	PLDM_ACTIVATION_SELF_CONTAINED = 1,
+	PLDM_ACTIVATION_MEDIUM_SPECIFIC_RESET = 2,
+	PLDM_ACTIVATION_SYSTEM_REBOOT = 3,
+	PLDM_ACTIVATION_DC_POWER_CYCLE = 4,
+	PLDM_ACTIVATION_AC_POWER_CYCLE = 5,
+	PLDM_SUPPORTS_ACTIVATE_PENDING_IMAGE = 6,
+	PLDM_SUPPORTS_ACTIVATE_PENDING_IMAGE_SET = 7
+};
+
 /** @brief ComponentResponse values in the response of PassComponentTable
  */
 enum pldm_component_responses {
@@ -219,6 +234,16 @@ enum pldm_firmware_update_verify_result_values {
 	PLDM_FWUP_VERIFY_ERROR_IMAGE_INCOMPLETE = 0x04,
 	PLDM_FWUP_VENDOR_VERIFY_RESULT_RANGE_MIN = 0x90,
 	PLDM_FWUP_VENDOR_VERIFY_RESULT_RANGE_MAX = 0xAF
+};
+
+/**@brief ApplyResult values in the response of ApplyComplete
+ */
+enum pldm_firmware_update_apply_result_values {
+	PLDM_FWUP_APPLY_SUCCESS = 0x00,
+	PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD = 0x01,
+	PLDM_FWUP_APPLY_FAILURE_MEMORY_ISSUE = 0x02,
+	PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MIN = 0xB0,
+	PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MAX = 0xCF
 };
 
 /** @struct pldm_package_header_information
@@ -410,6 +435,15 @@ struct pldm_update_component_resp {
 struct pldm_request_firmware_data_req {
 	uint32_t offset;
 	uint32_t length;
+} __attribute__((packed));
+
+/** @struct pldm_apply_complete_req
+ *
+ *  Structure representing ApplyComplete request.
+ */
+struct pldm_apply_complete_req {
+	uint8_t apply_result;
+	bitfield16_t comp_activation_methods_modification;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -818,6 +852,20 @@ int decode_verify_complete_req(const struct pldm_msg *msg,
  */
 int encode_verify_complete_resp(uint8_t instance_id, uint8_t completion_code,
 				struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Decode ApplyComplete request message
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] apply_result - Pointer to hold ApplyResult
+ *  @param[in] comp_activation_methods_modification - Pointer to hold the
+ *                                        ComponentActivationMethodsModification
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_apply_complete_req(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *apply_result,
+    bitfield16_t *comp_activation_methods_modification);
 
 #ifdef __cplusplus
 }
