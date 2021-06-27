@@ -26,7 +26,8 @@ enum pldm_firmware_update_commands {
 	PLDM_REQUEST_UPDATE = 0x10,
 	PLDM_PASS_COMPONENT_TABLE = 0x13,
 	PLDM_UPDATE_COMPONENT = 0x14,
-	PLDM_REQUEST_FIRMWARE_DATA = 0x15
+	PLDM_REQUEST_FIRMWARE_DATA = 0x15,
+	PLDM_TRANSFER_COMPLETE = 0x16
 };
 
 /** @brief PLDM Firmware update completion codes
@@ -193,9 +194,9 @@ enum pldm_firmware_update_common_error_codes {
 	PLDM_FWUP_GENERIC_ERROR = 0x0A
 };
 
-/** @brief TransferResult values in the response of TransferComplete
+/** @brief TransferResult values in the request of TransferComplete
  */
-enum pldm_firmware_update_transfer_result {
+enum pldm_firmware_update_transfer_result_values {
 	PLDM_FWUP_TRANSFER_SUCCESS = 0x00,
 	PLDM_FWUP_TRANSFER_ERROR_IMAGE_CORRUPT = 0x02,
 	PLDM_FWUP_TRANSFER_ERROR_VERSION_MISMATCH = 0x02,
@@ -763,6 +764,21 @@ int encode_request_firmware_data_resp(uint8_t instance_id,
 int decode_transfer_complete_req(const struct pldm_msg *msg,
 				 size_t payload_length,
 				 uint8_t *transfer_result);
+
+/** @brief Create PLDM response message for TransferComplete
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - CompletionCode
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of response message payload
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_transfer_complete_resp(uint8_t instance_id, uint8_t completion_code,
+				  struct pldm_msg *msg, size_t payload_length);
 #ifdef __cplusplus
 }
 #endif
