@@ -2117,3 +2117,43 @@ TEST(TransferComplete, errorPathDecodeRequest)
     rc = decode_transfer_complete_req(requestMsg, 0, &outTransferResult);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
 }
+
+TEST(TransferComplete, goodPathEncodeResponse)
+{
+    constexpr uint8_t instanceId = 4;
+    constexpr uint8_t completionCode = PLDM_SUCCESS;
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        outTransferCompleteResponse1{0x04, 0x05, 0x16, 0x00};
+    std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        transferCompleteResponse1{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<pldm_msg*>(transferCompleteResponse1.data());
+    auto rc = encode_transfer_complete_resp(
+        instanceId, completionCode, responseMsg1, sizeof(completionCode));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferCompleteResponse1, outTransferCompleteResponse1);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        outTransferCompleteResponse2{0x04, 0x05, 0x16, 0x87};
+    std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        transferCompleteResponse2{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<pldm_msg*>(transferCompleteResponse2.data());
+    rc = encode_transfer_complete_resp(instanceId,
+                                       PLDM_FWUP_COMMAND_NOT_EXPECTED,
+                                       responseMsg2, sizeof(completionCode));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(transferCompleteResponse2, outTransferCompleteResponse2);
+}
+
+TEST(TransferComplete, errorPathEncodeResponse)
+{
+    std::array<uint8_t, hdrSize> transferCompleteResponse{0x00, 0x00, 0x00};
+    auto responseMsg =
+        reinterpret_cast<pldm_msg*>(transferCompleteResponse.data());
+    auto rc = encode_transfer_complete_resp(0, PLDM_SUCCESS, nullptr, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_transfer_complete_resp(0, PLDM_SUCCESS, responseMsg, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
