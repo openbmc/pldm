@@ -1556,3 +1556,84 @@ int encode_verify_complete_resp(const uint8_t instance_id,
 				    PLDM_VERIFY_COMPLETE, completion_code,
 				    msg));
 }
+
+/** @brief Check validity of apply result in ApplyComplete request
+ *
+ *	@param[in] apply_result - Indicate the result of the Apply stage
+ *	@return validity
+ */
+static bool validate_apply_result(const uint8_t apply_result)
+{
+	switch (apply_result) {
+	case PLDM_FWUP_APPLY_SUCCESS:
+	case PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD:
+	case PLDM_FWUP_APPLY_COMPLETED_WITH_FAILURE:
+	case PLDM_FWUP_TIME_OUT:
+	case PLDM_FWUP_GENERIC_ERROR:
+		return true;
+	default:
+		if (apply_result >= PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MIN &&
+		    apply_result <= PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MAX) {
+			return true;
+		}
+		return false;
+	}
+}
+
+/** @brief Check whether Component Activation Methods Modification is valid
+ *
+ *  @return true if it is from below mentioned values, false if not
+ */
+static bool validate_comp_activation_methods_modification(
+    const uint16_t comp_activation_methods_modification)
+{
+	switch (comp_activation_methods_modification) {
+	case APPLY_AUTOMATIC:
+	case APPLY_SELF_CONTAINED:
+	case APPLY_MEDIUM_SPECIFIC_RESET:
+	case APPLY_SYSTEM_REBOOT:
+	case APPLY_DC_POWER_CYCLE:
+	case APPLY_AC_POWER_CYCLE:
+
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+int decode_apply_complete_req(
+    const struct pldm_msg *msg, const size_t payload_length,
+    uint8_t *apply_result, bitfield16_t *comp_activation_methods_modification)
+{
+	if (msg == NULL || apply_result == NULL ||
+	    comp_activation_methods_modification == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct apply_complete_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct apply_complete_req *request =
+	    (struct apply_complete_req *)msg->payload;
+
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (!validate_apply_result(request->apply_result)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*apply_result = request->apply_result;
+
+	if (!validate_comp_activation_methods_modification(
+		le16toh(request->comp_activation_methods_modification.value))) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	comp_activation_methods_modification->value =
+	    le16toh(request->comp_activation_methods_modification.value);
+
+	return PLDM_SUCCESS;
+}

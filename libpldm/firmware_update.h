@@ -268,6 +268,26 @@ enum pldm_fwu_verify_result {
 	PLDM_FWUP_VENDOR_SPEC_STATUS_RANGE_MAX = 0xAF
 };
 
+/**@brief PLDM FWU result of the apply result
+ */
+enum pldm_fwu_apply_result {
+	PLDM_FWUP_APPLY_SUCCESS = 0x00,
+	PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD = 0x01,
+	PLDM_FWUP_APPLY_COMPLETED_WITH_FAILURE = 0x02,
+	PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MIN = 0xB0,
+	PLDM_FWUP_VENDOR_APPLY_RESULT_RANGE_MAX = 0xCF
+};
+/** @brief PLDM FWU values for Component Activation Methods Modification
+ */
+enum comp_activation_methods_modification {
+	APPLY_AUTOMATIC = 0,
+	APPLY_SELF_CONTAINED = 1,
+	APPLY_MEDIUM_SPECIFIC_RESET = 2,
+	APPLY_SYSTEM_REBOOT = 3,
+	APPLY_DC_POWER_CYCLE = 4,
+	APPLY_AC_POWER_CYCLE = 5
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -499,6 +519,15 @@ struct pldm_activate_firmware_resp {
 struct request_firmware_data_req {
 	uint32_t offset;
 	uint32_t length;
+} __attribute__((packed));
+
+/** @struct apply_complete_req
+ *
+ *  Structure representing Apply Complete request.
+ */
+struct apply_complete_req {
+	uint8_t apply_result;
+	bitfield16_t comp_activation_methods_modification;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -990,6 +1019,19 @@ int decode_verify_complete_req(const struct pldm_msg *msg,
 int encode_verify_complete_resp(const uint8_t instance_id,
 				const uint8_t completion_code,
 				struct pldm_msg *msg);
+
+/** @brief Decode ApplyComplete request message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] apply_result - pointer to ApplyResult from FD
+ *  @param[in] comp_activation_methods_modification - pointer to Component
+ * Activation Methods Modification
+ *  @return pldm_completion_codes
+ */
+int decode_apply_complete_req(
+    const struct pldm_msg *msg, const size_t payload_length,
+    uint8_t *apply_result, bitfield16_t *comp_activation_methods_modification);
 #ifdef __cplusplus
 }
 #endif
