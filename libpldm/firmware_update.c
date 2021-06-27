@@ -1123,3 +1123,31 @@ int encode_verify_complete_resp(uint8_t instance_id, uint8_t completion_code,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_apply_complete_req(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *apply_result,
+    bitfield16_t *comp_activation_methods_modification)
+{
+	if (msg == NULL || apply_result == NULL ||
+	    comp_activation_methods_modification == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(struct pldm_apply_complete_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_apply_complete_req *request =
+	    (struct pldm_apply_complete_req *)msg->payload;
+
+	*apply_result = request->apply_result;
+	comp_activation_methods_modification->value =
+	    le16toh(request->comp_activation_methods_modification.value);
+
+	if ((*apply_result != PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD) &&
+	    comp_activation_methods_modification->value) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	return PLDM_SUCCESS;
+}
