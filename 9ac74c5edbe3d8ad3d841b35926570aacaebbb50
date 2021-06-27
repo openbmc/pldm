@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f15986f5_b760589d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-06-27T13:27:37Z",
+      "side": 1,
+      "message": "This patch set also adds OEM State sets and their possible states as well, please explicitly callout that statement in the commit message.",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 4
+      },
+      "revId": "9ac74c5edbe3d8ad3d841b35926570aacaebbb50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
