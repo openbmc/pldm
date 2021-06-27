@@ -208,6 +208,18 @@ enum pldm_firmware_update_transfer_result_values {
 	PLDM_FWUP_VENDOR_TRANSFER_RESULT_RANGE_MAX = 0x8F
 };
 
+/**@brief VerifyResult values in the response of VerifyComplete
+ */
+enum pldm_firmware_update_verify_result_values {
+	PLDM_FWUP_VERIFY_SUCCESS = 0x00,
+	PLDM_FWUP_VERIFY_ERROR_VERIFICATION_FAILURE = 0x01,
+	PLDM_FWUP_VERIFY_ERROR_VERSION_MISMATCH = 0x02,
+	PLDM_FWUP_VERIFY_FAILED_FD_SECURITY_CHECKS = 0x03,
+	PLDM_FWUP_VERIFY_ERROR_IMAGE_INCOMPLETE = 0x04,
+	PLDM_FWUP_VENDOR_VERIFY_RESULT_RANGE_MIN = 0x90,
+	PLDM_FWUP_VENDOR_VERIFY_RESULT_RANGE_MAX = 0xAF
+};
+
 /** @struct pldm_package_header_information
  *
  *  Structure representing fixed part of package header information
@@ -779,6 +791,18 @@ int decode_transfer_complete_req(const struct pldm_msg *msg,
  */
 int encode_transfer_complete_resp(uint8_t instance_id, uint8_t completion_code,
 				  struct pldm_msg *msg, size_t payload_length);
+
+/** @brief Decode VerifyComplete request message
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] verify_result - Pointer to hold VerifyResult
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_verify_complete_req(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *verify_result);
+
 #ifdef __cplusplus
 }
 #endif
