@@ -1082,3 +1082,18 @@ int encode_transfer_complete_resp(uint8_t instance_id, uint8_t completion_code,
 
 	return PLDM_SUCCESS;
 }
+
+int decode_verify_complete_req(const struct pldm_msg *msg,
+			       size_t payload_length, uint8_t *verify_result)
+{
+	if (msg == NULL || verify_result == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(*verify_result)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	*verify_result = msg->payload[0];
+	return PLDM_SUCCESS;
+}
