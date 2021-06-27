@@ -2305,3 +2305,42 @@ TEST(ApplyComplete, errorPathDecodeRequest)
                                    &outCompActivationModification);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(ApplyComplete, goodPathEncodeResponse)
+{
+    constexpr uint8_t instanceId = 6;
+    constexpr uint8_t completionCode = PLDM_SUCCESS;
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        outApplyCompleteResponse1{0x06, 0x05, 0x18, 0x00};
+    std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        applyCompleteResponse1{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg1 =
+        reinterpret_cast<pldm_msg*>(applyCompleteResponse1.data());
+    auto rc = encode_apply_complete_resp(instanceId, completionCode,
+                                         responseMsg1, sizeof(completionCode));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(applyCompleteResponse1, outApplyCompleteResponse1);
+
+    constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        outApplyCompleteResponse2{0x06, 0x05, 0x18, 0x87};
+    std::array<uint8_t, hdrSize + sizeof(completionCode)>
+        applyCompleteResponse2{0x00, 0x00, 0x00, 0x00};
+    auto responseMsg2 =
+        reinterpret_cast<pldm_msg*>(applyCompleteResponse2.data());
+    rc = encode_apply_complete_resp(instanceId, PLDM_FWUP_COMMAND_NOT_EXPECTED,
+                                    responseMsg2, sizeof(completionCode));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(applyCompleteResponse2, outApplyCompleteResponse2);
+}
+
+TEST(ApplyComplete, errorPathEncodeResponse)
+{
+    std::array<uint8_t, hdrSize> applyCompleteResponse{0x00, 0x00, 0x00};
+    auto responseMsg =
+        reinterpret_cast<pldm_msg*>(applyCompleteResponse.data());
+    auto rc = encode_apply_complete_resp(0, PLDM_SUCCESS, nullptr, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_apply_complete_resp(0, PLDM_SUCCESS, responseMsg, 0);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
