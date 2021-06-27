@@ -1052,3 +1052,29 @@ int decode_transfer_complete_req(const struct pldm_msg *msg,
 	*transfer_result = msg->payload[0];
 	return PLDM_SUCCESS;
 }
+
+int encode_transfer_complete_resp(uint8_t instance_id, uint8_t completion_code,
+				  struct pldm_msg *msg, size_t payload_length)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != sizeof(completion_code)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_TRANSFER_COMPLETE;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	msg->payload[0] = completion_code;
+
+	return PLDM_SUCCESS;
+}
