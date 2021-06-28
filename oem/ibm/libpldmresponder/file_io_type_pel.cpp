@@ -271,5 +271,73 @@ int PelHandler::storePel(std::string&& pelFileName)
     return PLDM_SUCCESS;
 }
 
+int PelHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
+                      oem_platform::Handler* /*oemPlatformHandler*/)
+{
+    int rc = PLDM_SUCCESS;
+
+    int flags;
+    if (fs::exists(pelPath))
+    {
+        flags = O_RDWR;
+        size_t fileSize = fs::file_size(pelPath);
+        if (offset > fileSize)
+        {
+            std::cerr << "Offset exceeds file size, OFFSET=" << offset
+                      << " FILE_SIZE=" << fileSize << "\n";
+            return PLDM_DATA_OUT_OF_RANGE;
+        }
+    }
+    else
+    {
+        flags = O_WRONLY | O_CREAT | O_TRUNC | O_SYNC;
+        if (offset > 0)
+        {
+            std::cerr << "Offset is non zero in a new file \n";
+            return PLDM_DATA_OUT_OF_RANGE;
+        }
+    }
+
+    auto fd = open(pelPath.c_str(), flags, S_IRUSR);
+    if (fd == -1)
+    {
+        std::cerr << "lseek failed, ERROR=" << errno << ", OFFSET=" << offset
+                  << "\n";
+        return PLDM_ERROR;
+    }
+
+    rc = lseek(fd, offset, SEEK_SET);
+    if (rc == -1)
+    {
+        std::cerr << "lseek failed, ERROR=" << errno << ", OFFSET=" << offset
+                  << "\n";
+        return PLDM_ERROR;
+    }
+
+    rc = ::write(fd, buffer, length);
+    if (rc == -1)
+    {
+        std::cerr << "file write failed, ERROR=" << errno
+                  << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
+        return PLDM_ERROR;
+    }
+    else if (rc == static_cast<int>(length))
+    {
+        rc = PLDM_SUCCESS;
+    }
+    else if (rc < static_cast<int>(length))
+    {
+        rc = PLDM_ERROR;
+    }
+    close(fd);
+
+    if (rc == PLDM_SUCCESS)
+    {
+        rc = storePel(std::move(pelPath));
+    }
+
+    return rc;
+}
+
 } // namespace responder
 } // namespace pldm
