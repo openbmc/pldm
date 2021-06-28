@@ -264,6 +264,38 @@
          ],
          "helpText" : "Specifies whether the secure version lockin functionality is enabled.",
          "displayName" : "Secure Version Lockin Enabled"
+      },
+      {
+         "attribute_name":"hb_key_clear_request",
+         "possible_values":[
+            "NONE",
+            "ALL",
+            "OS_KEYS",
+            "POWERVM_SYSKEY",
+            "MFG_ALL",
+            "MFG"
+         ],
+         "default_values":[
+            "NONE"
+         ],
+         "helpText" : "Specifies the requested level of security keys to be cleared from the system.",
+         "displayName" : "Key Clear Request (pending)"
+      },
+      {
+         "attribute_name":"hb_key_clear_request_current",
+         "possible_values":[
+            "NONE",
+            "ALL",
+            "OS_KEYS",
+            "POWERVM_SYSKEY",
+            "MFG_ALL",
+            "MFG"
+         ],
+         "default_values":[
+            "NONE"
+         ],
+         "helpText" : "Specifies the requested level of security keys to be cleared from the system.",
+         "displayName" : "Key Clear Request (current)"
       }
    ]
 }
