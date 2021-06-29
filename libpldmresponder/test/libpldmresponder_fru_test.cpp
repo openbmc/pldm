@@ -5,7 +5,8 @@ TEST(FruParser, allScenarios)
 {
     using namespace pldm::responder::fru_parser;
 
-    FruParser parser{"./fru_jsons/good"};
+    FruParser parser{"./fru_jsons/good",
+                     "./fru_jsons/fru_master/fru_master.json"};
 
     // Get an item with a single PLDM FRU record
     FruRecordInfos cpu{
