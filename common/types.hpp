@@ -53,6 +53,38 @@ using CompClassificationIndex = uint8_t;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
 using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
 
+// PackageHeaderInformation
+using PackageHeaderSize = size_t;
+using PackageVersion = std::string;
+using ComponentBitmapBitLength = uint16_t;
+using PackageHeaderChecksum = uint32_t;
+
+// FirmwareDeviceIDRecords
+using DeviceIDRecordCount = uint8_t;
+using DeviceUpdateOptionFlags = std::bitset<32>;
+using ApplicableComponents = std::vector<std::bitset<8>>;
+using ComponentImageSetVersion = std::string;
+using FirmwareDevicePackageData = std::vector<uint8_t>;
+using FirmwareDeviceIDRecord =
+    std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
+               ComponentImageSetVersion, Descriptors,
+               FirmwareDevicePackageData>;
+using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
+
+// ComponentImageInformation
+using ComponentImageCount = uint16_t;
+using CompComparisonTime = uint32_t;
+using CompOptions = std::bitset<16>;
+using ReqCompActivationMethod = std::bitset<16>;
+using CompLocationOffset = uint32_t;
+using CompSize = uint32_t;
+using CompVersion = std::string;
+using ComponentImageInfo =
+    std::tuple<CompClassification, CompIdentifier, CompComparisonTime,
+               CompOptions, ReqCompActivationMethod, CompLocationOffset,
+               CompSize, CompVersion>;
+using ComponentImageInfos = std::vector<ComponentImageInfo>;
+
 } // namespace fw_update
 
 namespace pdr

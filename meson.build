@@ -188,6 +188,7 @@ executable(
   'pldmd/dbus_impl_pdr.cpp',
   'host-bmc/host_condition.cpp',
   'fw-update/fw_inventory_manager.cpp',
+  'fw-update/fw_package_parser.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
