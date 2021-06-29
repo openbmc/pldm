@@ -55,15 +55,17 @@ class FruImpl
      *
      *  @param[in] configPath - path to the directory containing config files
      *                          for PLDM FRU
+     *  @param[in] masterJsonPath - path to the file containing the FRU Dbus
+     *                          Lookup Map
      *  @param[in] pdrRepo - opaque pointer to PDR repository
      *  @param[in] entityTree - opaque pointer to the entity association tree
      *  @param[in] bmcEntityTree - opaque pointer to bmc's entity association
      *                             tree
      */
-    FruImpl(const std::string& configPath, pldm_pdr* pdrRepo,
-            pldm_entity_association_tree* entityTree,
+    FruImpl(const std::string& configPath, const std::string& masterJsonPath,
+            pldm_pdr* pdrRepo, pldm_entity_association_tree* entityTree,
             pldm_entity_association_tree* bmcEntityTree) :
-        parser(configPath),
+        parser(configPath, masterJsonPath),
         pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree)
     {}
 
@@ -190,10 +192,10 @@ class Handler : public CmdHandler
 {
 
   public:
-    Handler(const std::string& configPath, pldm_pdr* pdrRepo,
-            pldm_entity_association_tree* entityTree,
+    Handler(const std::string& configPath, const std::string& masterJsonPath,
+            pldm_pdr* pdrRepo, pldm_entity_association_tree* entityTree,
             pldm_entity_association_tree* bmcEntityTree) :
-        impl(configPath, pdrRepo, entityTree, bmcEntityTree)
+        impl(configPath, masterJsonPath, pdrRepo, entityTree, bmcEntityTree)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
                          [this](const pldm_msg* request, size_t payloadLength) {
