@@ -125,6 +125,8 @@ Options:
   -m,--mctp_eid UINT          MCTP endpoint ID
   -v,--verbose
   -d,--data UINT              REQUIRED raw data
+  -a,--all
+  -t,--type TEXT              REQUIRED pdr type
 ```
 
 **pldmtool request message format:**
