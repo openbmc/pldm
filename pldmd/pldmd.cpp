@@ -221,7 +221,8 @@ int main(int argc, char** argv)
         PLDM_BIOS, std::make_unique<bios::Handler>(sockfd, hostEID,
                                                    &dbusImplReq, &reqHandler));
     auto fruHandler = std::make_unique<fru::Handler>(
-        FRU_JSONS_DIR, pdrRepo.get(), entityTree.get(), bmcEntityTree.get());
+        FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
+        bmcEntityTree.get());
     // FRU table is built lazily when a FRU command or Get PDR command is
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
