@@ -67,7 +67,8 @@ class FruParser
 
   public:
     FruParser() = delete;
-    explicit FruParser(const std::string& dirPath);
+    explicit FruParser(const std::string& dirPath,
+                       const std::string& masterJsonPath);
     virtual ~FruParser() = default;
     FruParser(const FruParser&) = default;
     FruParser& operator=(const FruParser&) = default;
@@ -122,7 +123,7 @@ class FruParser
 
     /** @brief Set the default service root D-Bus path and the item interfaces.
      */
-    void setupDefaultDBusLookup();
+    void setupDefaultDBusLookup(const std::string& masterJsonPath);
 
     /** @brief Build the default FRU record informations
      */
