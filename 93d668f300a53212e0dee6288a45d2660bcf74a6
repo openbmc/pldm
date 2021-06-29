@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6c2a6bee_950af1f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-29T21:25:41Z",
+      "side": 1,
+      "message": "My understanding is we\u0027ve told the HMC team and other external Redfish users to use this interface to control the pvm_stop_st_standby BIOS value:\n\n# PHYP Standby\ncurl -k -H \"X-Auth-Token: $TOKEN\" -X PATCH https://${BMC_IP}/redfish/v1/Systems/system -d \u0027{\"Boot\":{\"BootSourceOverrideEnabled\": \"Continuous\",\"BootSourceOverrideTarget\": \"BiosSetup\"}}\u0027\n\n\n# PHYP runtime\ncurl -k -H \"X-Auth-Token: $TOKEN\" -X PATCH https://${BMC_IP}/redfish/v1/Systems/system -d \u0027{\"Boot\":{\"BootSourceOverrideEnabled\": \"Disabled\",\"BootSourceOverrideTarget\": \"None\"}}\u0027\n\nWith this commit, we appear to be going away from telling users to utilize this Redfish API and instead utilize the generic BIOS interface. So I\u0027ve got a concern there but also, I\u0027m still struggling to understand the use case for this \"ManualOnly\". Can you point me to where this requirement is coming from? Maybe we could look into this being a separate BIOS value vs. trying to push into this existing one?",
+      "revId": "93d668f300a53212e0dee6288a45d2660bcf74a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
