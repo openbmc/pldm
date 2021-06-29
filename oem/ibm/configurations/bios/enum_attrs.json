@@ -215,7 +215,19 @@
             "256MB"
          ],
          "helpText" : "Specifies the size of the logical memory block the system uses to read memory, requires a reboot for a change to be applied.",
-         "displayName" : "Memory Region Size"
+         "displayName" : "Memory Region Size (pending)"
+      },
+      {
+         "attribute_name":"hb_memory_region_size_current",
+         "possible_values":[
+            "128MB",
+            "256MB"
+         ],
+         "default_values":[
+            "256MB"
+         ],
+         "helpText" : "Specifies the size of the logical memory block the system uses to read memory for the current IPL. Do not set this attribute directly; set hb_memory_region_size instead.",
+         "displayName" : "Memory Region Size (current)"
       },
       {
          "attribute_name":"hb_power_limit_enable",
@@ -226,8 +238,20 @@
          "default_values":[
             "Disabled"
          ],
-         "helpText" : "Specifies if the power limit is enabled.",
-         "displayName" : "Power Limit Enable"
+         "helpText" : "Specifies if the power limit is enabled, requires a reboot for a change to be applied.",
+         "displayName" : "Power Limit Enable (pending)"
+      },
+      {
+         "attribute_name":"hb_power_limit_enable_current",
+         "possible_values":[
+            "Enabled",
+            "Disabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "Specifies if the power limit is enabled for the current IPL. Do not set this attribute directly; set hb_power_limit_enable instead.",
+         "displayName" : "Power Limit Enable (current)"
       },
       {
          "attribute_name":"hb_secure_ver_lockin_enabled",
@@ -243,4 +267,3 @@
       }
    ]
 }
-
