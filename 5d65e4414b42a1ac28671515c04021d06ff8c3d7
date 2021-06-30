@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ef09cd37_5467f6b0",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-30T05:55:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53c97c1f_dd7462cb",
+      "revId": "5d65e4414b42a1ac28671515c04021d06ff8c3d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "125e8a31_d5c92efb",
         "filename": "libpldmresponder/pdr_state_sensor.hpp",
         "patchSetId": 4
@@ -30,6 +48,30 @@
       "writtenOn": "2021-06-18T10:16:35Z",
       "side": 1,
       "message": "I am not following:\nIn the composite sensor, if a Dbus is not created, can we not create all the PDRs?",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 264,
+        "endChar": 37
+      },
+      "revId": "5d65e4414b42a1ac28671515c04021d06ff8c3d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c49e68fb_83f814f1",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-06-30T05:55:42Z",
+      "side": 1,
+      "message": "Ack, yes I was not creating the PDR earlier, now I made that change in the recent patchset and updated the commit message.",
+      "parentUuid": "125e8a31_d5c92efb",
       "range": {
         "startLine": 261,
         "startChar": 0,
