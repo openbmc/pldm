@@ -16,6 +16,24 @@
       "revId": "580d01c867916cf5a791930515bfa4c0a8754c27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e6a4248_1232c256",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-06-30T17:03:42Z",
+      "side": 1,
+      "message": "also was this supposed to be called hb_mirror_memory_mode? or is that a different attribute",
+      "parentUuid": "f8e1dce7_785d49cd",
+      "revId": "580d01c867916cf5a791930515bfa4c0a8754c27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
