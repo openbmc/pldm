@@ -499,6 +499,30 @@
     },
     {
       "key": {
+        "uuid": "1bf0397a_cd1e2bf6",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-30T12:43:39Z",
+      "side": 1,
+      "message": "i am not sure if that works with HB. they are not running with async and we are already seeing few hang issues in ipl which had to be solved with the defer events. just do not want to increase another chance. may be i can give a try but if it does not cause a performance hit then what is the harm in keeping?",
+      "parentUuid": "f883dba5_ec98cde4",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 54
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "daad568d_1b5200f0",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 7
