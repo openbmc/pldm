@@ -261,6 +261,30 @@
     },
     {
       "key": {
+        "uuid": "e88ad1e4_43b3d34b",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-30T09:46:07Z",
+      "side": 1,
+      "message": "yeah i have changed all to pointers to keep parity among the functions as you suggested.\ncan not pass the reference because in few cases like \"pldm::host_effecters::HostEffecterParser\"  we have testcases written and passing a null reference fails the testcase\nthe same is being followed for \"dbusImplReq\" as well. in general that is a reference but in few cases it is a pointer",
+      "parentUuid": "39b59e5b_39dafaa4",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "54763964_e233cb18",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 7
@@ -332,6 +356,30 @@
     },
     {
       "key": {
+        "uuid": "4deca272_32f8fac8",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-30T09:46:07Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "55b06ab2_a4b2227d",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 6
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0c3e47f1_32c12275",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 7
@@ -391,6 +439,30 @@
       "side": 1,
       "message": "We typically defer when action for a request is long running(BMC is responder) so respond with a PLDM response and then do the long running action.\n\nIn this case BMC is the requester and is processing the response of GetPDR, so what is the need to defer sending the RepoChanged Event?\n\nI think there is no need to defer this logic as well. (below)\n\n\u003e        deferredFetchPDREvent \u003d std::make_unique\u003csdeventplus::source::Defer\u003e(\n            event,\n            std::bind(std::mem_fn((\u0026HostPDRHandler::_processFetchPDREvent)),\n                      this, nextRecordHandle, std::placeholders::_1));",
       "parentUuid": "b26a381d_85b8e42a",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 54
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9f74327_57618e12",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-06-30T09:46:07Z",
+      "side": 1,
+      "message": "this is the case where bmc should respond to the previous command before sending it\u0027s own request\nwe already faced issue where Host hangs when we request a new command instead of responding to the previous command\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/41113\nwith the above commit\nalso does adding a deferred event cause any performance issue?",
+      "parentUuid": "d54b21fb_68785fb3",
       "range": {
         "startLine": 440,
         "startChar": 0,
