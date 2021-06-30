@@ -475,6 +475,30 @@
     },
     {
       "key": {
+        "uuid": "f883dba5_ec98cde4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-30T10:03:30Z",
+      "side": 1,
+      "message": "I guess this is different Patch 41113 where BMC is the responder for GetPDR. It makes sense to defer in the case of responder, where action for a request is long running and send the response and take the action.\n\nIn this class though BMC is reading the HostPDRs by issuing GetPDR. So I am not convinced whether we need to Defer sending the next GetPDR request. Even if you Defer, event loop will schedule it again. So the flow I am thinking is something like this. Let me know if I have misunderstood any performance considerations.\n\nregisterRequest(GetPDR, respHandler)\n\nrespHandler\n{\nProcess GetPDR response;\nSend the nextPDR request\n}\n\n\u003e also does adding a deferred event cause any performance issue?\nI don\u0027t think there is a performance hit, if you defer. It is more like I have 2 tasks, Task 1 is urgent which I will run now and Task 2 can happen later instead of Task1 + Task2",
+      "parentUuid": "b9f74327_57618e12",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 54
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "daad568d_1b5200f0",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 7
