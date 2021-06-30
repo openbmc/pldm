@@ -523,6 +523,30 @@
     },
     {
       "key": {
+        "uuid": "f50424df_2935911e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-06-30T16:07:00Z",
+      "side": 1,
+      "message": "\u003e they are not running with async\nIt shouldn\u0027t matter what is on the other side, as long as we are sticking to the timing/retry requirements in the PLDM base specification. To summarize the hang issue, Case 1) it was when PLDM daemon blocked on a request and waiting for response from the other side and Case 2) PLDM daemon not serving as the responder for other requests. With adopting async request/response, Case1 will not happen anymore.\n\n\u003e may be i can give a try but if it does not cause a performance hit then what is the harm in keeping?\nMy concern is that since Defer has solved a hang issue in a certain situation, we don\u0027t use that indiscriminately and without thought. If you see a deadlock situation that can arise, we can consider this approach.",
+      "parentUuid": "1bf0397a_cd1e2bf6",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 54
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "daad568d_1b5200f0",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 7
