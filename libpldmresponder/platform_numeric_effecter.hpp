@@ -258,6 +258,36 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
         DBusMapping dbusMapping{
             dbusMappings[0].objectPath, dbusMappings[0].interface,
             dbusMappings[0].propertyName, dbusMappings[0].propertyType};
+
+        if (dbusMapping.propertyType == "uint64_t")
+        {
+            if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT8)
+            {
+                auto value = std::get<uint8_t>(dbusValue.value());
+                dbusValue = static_cast<uint64_t>(value);
+            }
+            else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT16)
+            {
+                auto value = std::get<uint16_t>(dbusValue.value());
+                dbusValue = static_cast<uint64_t>(value);
+            }
+            else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT16)
+            {
+                auto value = std::get<int16_t>(dbusValue.value());
+                dbusValue = static_cast<uint64_t>(value);
+            }
+            else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT32)
+            {
+                auto value = std::get<uint32_t>(dbusValue.value());
+                dbusValue = static_cast<uint64_t>(value);
+            }
+            else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT32)
+            {
+                auto value = std::get<int32_t>(dbusValue.value());
+                dbusValue = static_cast<uint64_t>(value);
+            }
+        }
+
         try
         {
 
