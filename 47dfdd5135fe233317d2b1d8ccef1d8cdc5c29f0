@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68f73a35_eee59eb7",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-02T05:44:51Z",
+      "side": 1,
+      "message": "I am thinking in the case of RequestFirmwareData, it will be efficient to allow the application  to populate the response buffer with the image portion, otherwise it would incur an extra copy for the component image transfer.",
+      "range": {
+        "startLine": 918,
+        "startChar": 4,
+        "endLine": 918,
+        "endChar": 50
+      },
+      "revId": "47dfdd5135fe233317d2b1d8ccef1d8cdc5c29f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
