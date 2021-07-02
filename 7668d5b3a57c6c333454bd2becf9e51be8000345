@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d476f35_3c43c1c1",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1467,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-02T10:43:03Z",
+      "side": 1,
+      "message": "The TransferResult entries have more valid values in 1.1.0 version of the specification. We have discussed in principle the need to have versioning in libpldm, this needs a concrete proposal so that the implementation is consistent in libpldm. Between different versions of firmware update specification apart from new commands and the main difference between versions has been new added entries in enumerations and flags.\n\nTill we have a concrete design for libpldm versioning, my suggestion is to not have validation and let the implementer of libpldm APIs handle it.",
+      "revId": "7668d5b3a57c6c333454bd2becf9e51be8000345",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
