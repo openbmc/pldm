@@ -82,7 +82,7 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
             {
                 pldm_entity node =
                     pldm_entity_extract(objToEntityNode.at(currPath));
-                if (pldm_entity_association_tree_find(entityTree, &node))
+                if (pldm_entity_association_tree_find(entityTree, &node, false))
                 {
                     break;
                 }
@@ -117,7 +117,7 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
                 {
                     auto node = pldm_entity_association_tree_add(
                         entityTree, &entity, 0xFFFF, nullptr,
-                        PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                        PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
                     objToEntityNode[currPath] = node;
                 }
                 else
@@ -127,7 +127,7 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
                         auto node = pldm_entity_association_tree_add(
                             entityTree, &entity, 0xFFFF,
                             objToEntityNode[prePath],
-                            PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
                         objToEntityNode[currPath] = node;
                     }
                 }
