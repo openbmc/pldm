@@ -231,12 +231,13 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         pldm_entity parent{};
         if (getParent(entities[i].entity_type, parent))
         {
-            auto node = pldm_entity_association_tree_find(entityTree, &parent);
+            auto node = pldm_entity_association_tree_find_with_locality(
+                entityTree, &parent, true);
             if (node)
             {
-                pldm_entity_association_tree_add(entityTree, &entities[i],
-                                                 0xFFFF, node,
-                                                 entityPdr->association_type);
+                pldm_entity_association_tree_add_entity(
+                    entityTree, &entities[i], 0xFFFF, node,
+                    entityPdr->association_type, false, true, 0xFFFF);
                 merged = true;
             }
         }
