@@ -244,12 +244,15 @@ pldm_entity_association_tree *pldm_entity_association_tree_init();
  *                      entity. If this is NULL, then the entity is the root
  *  @param[in] association_type - relation with the parent : logical or physical
  *
+ *  @param[in] is_remote - used to denote whether we are adding a BMC entity to
+ *                        the tree or a host entity
+ *
  *  @return pldm_entity_node* - opaque pointer to added entity
  */
 pldm_entity_node *pldm_entity_association_tree_add(
     pldm_entity_association_tree *tree, pldm_entity *entity,
     uint16_t entity_instance_number, pldm_entity_node *parent,
-    uint8_t association_type);
+    uint8_t association_type, bool is_remote);
 
 /** @brief Visit and note each entity in the entity association tree
  *
@@ -268,6 +271,14 @@ void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
  *  @return pldm_entity - pldm entity
  */
 pldm_entity pldm_entity_extract(pldm_entity_node *node);
+
+/** @brief Extract host container id by the pldm_entity_node
+ *
+ *  @param[in] entity         - opaque pointer to added entity
+ *
+ *  @return host container id - host container id
+ */
+uint16_t pldm_extract_host_container_id(const pldm_entity_node *entity);
 
 /** @brief Destroy entity association tree
  *
@@ -350,12 +361,14 @@ bool pldm_is_current_parent_child(pldm_entity_node *parent, pldm_entity *node);
  *  @param[in] tree - pointer to entity association tree
  *  @param[in/out] entity - entity type and instance id set on input, container
  *                 id set on output
+ *  @param[in] is_remote - variable to denote whether we are finding a host
+ *                         entity or a BMC entity
  *
  *  @return pldm_entity_node* pointer to entity if found, NULL otherwise
  */
 pldm_entity_node *
 pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
-				  pldm_entity *entity);
+				  pldm_entity *entity, bool is_remote);
 
 /** @brief Create a copy of an existing entity association tree
  *
