@@ -1,0 +1,116 @@
+In-Memory FlightRecorder support for pldmd
+
+pldm daemon in BMC can act both as a requester and
+responder, and it is capable of talking to any device
+that talks pldm spec.
+
+With the rapid increase in the number of commands supported
+by pldmd, and also with the async request/response support
+enabled, its becomes extremely tough to debug the failures
+in the communication.
+
+And most of times, the essential information that is needed
+to debug are the last few commands that BMC pldm responded to.
+So this commit is an attempt to bring in an in-memory flight
+recorder that could save the last 10(can be configurable)
+pldm transactions in a circular buffer, and dumps the contents
+of it into a file when it receives a SIGUR1 signal.
+
+Resolves openbmc/pldm#24
+
+Tested By :
+
+1. Power on host
+2. In the middle of poweron, send the SIGUSR1 signal to pldmd
+
+root@rain118bmc:/tmp# kill -10 836
+Received SIGUR1(10) Signal interrupt
+root@rain118bmc:/tmp# Dumping the flight recorder into /tmp/pldm_flight_recorder
+
+3. Make sure pldmd is not killed and does the rest of the power on
+  operation.
+
+4. check the contents of /tmp/pldm_flight_recorder
+root@rain118bmc:/tmp# cat pldm_flight_recorder
+22:39:07.841 : Tx :
+02 3f 07 00 00 10 00 00
+22:39:07.841 : Rx :
+09 01 83 3f 07 00 00 00 00 00 f0 de 08 00 10 00 00 00 60 01 00 00 00 00 00
+22:39:07.841 : Tx :
+03 3f 07 00 00 10 00 00
+22:39:07.842 : Rx :
+09 01 84 3f 05 01 00 00 00 00 00 00 00 10 00 00 00 40 00 00 00 00 00 00 00 00 00 00 00 4f a8 69 5d
+22:39:07.842 : Tx :
+04 3f 05 00 10 00 00 00
+22:39:04.574 : Rx :
+09 01 80 3f 09 00 00 ff ff ff ff 00 00 00 00 b0 01 00 00 80 0f 01 00 00 00 00 00
+22:39:04.585 : Tx :
+00 3f 09 00 b0 01 00 00
+22:39:07.837 : Rx :
+09 01 81 3f 05 01 00 00 00 00 00 00 00 10 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 4f a8 69 5d
+22:39:07.837 : Tx :
+01 3f 05 00 10 00 00 00
+22:39:07.840 : Rx :
+09 01 82 3f 07 00 00 00 00 00 e0 08 00 00 10 00 00 00 50 01 00 00 00 00 00
+
+Signed-off-by: Manojkiran Eda <manojkiran.eda@gmail.com>
+Change-Id: I4e9c828f4ada9f1db6bf3a9b68c16e71b6e5d8f0
+
+In-Memory FlightRecorder support for pldmd
+
+pldm daemon in BMC can act both as a requester and
+responder, and it is capable of talking to any device
+that talks pldm spec.
+
+With the rapid increase in the number of commands supported
+by pldmd, and also with the async request/response support
+enabled, its becomes extremely tough to debug the failures
+in the communication.
+
+And most of times, the essential information that is needed
+to debug are the last few commands that BMC pldm responded to.
+So this commit is an attempt to bring in an in-memory flight
+recorder that could save the last 10(can be configurable)
+pldm transactions in a circular buffer, and dumps the contents
+of it into a file when it receives a SIGUR1 signal.
+
+Resolves openbmc/pldm#24
+
+Tested By :
+
+1. Power on host
+2. In the middle of poweron, send the SIGUSR1 signal to pldmd
+
+root@rain118bmc:/tmp# kill -10 836
+Received SIGUR1(10) Signal interrupt
+root@rain118bmc:/tmp# Dumping the flight recorder into /tmp/pldm_flight_recorder
+
+3. Make sure pldmd is not killed and does the rest of the power on
+  operation.
+
+4. check the contents of /tmp/pldm_flight_recorder
+root@rain118bmc:/tmp# cat pldm_flight_recorder
+22:39:07.841 : Tx :
+02 3f 07 00 00 10 00 00
+22:39:07.841 : Rx :
+09 01 83 3f 07 00 00 00 00 00 f0 de 08 00 10 00 00 00 60 01 00 00 00 00 00
+22:39:07.841 : Tx :
+03 3f 07 00 00 10 00 00
+22:39:07.842 : Rx :
+09 01 84 3f 05 01 00 00 00 00 00 00 00 10 00 00 00 40 00 00 00 00 00 00 00 00 00 00 00 4f a8 69 5d
+22:39:07.842 : Tx :
+04 3f 05 00 10 00 00 00
+22:39:04.574 : Rx :
+09 01 80 3f 09 00 00 ff ff ff ff 00 00 00 00 b0 01 00 00 80 0f 01 00 00 00 00 00
+22:39:04.585 : Tx :
+00 3f 09 00 b0 01 00 00
+22:39:07.837 : Rx :
+09 01 81 3f 05 01 00 00 00 00 00 00 00 10 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 4f a8 69 5d
+22:39:07.837 : Tx :
+01 3f 05 00 10 00 00 00
+22:39:07.840 : Rx :
+09 01 82 3f 07 00 00 00 00 00 e0 08 00 00 10 00 00 00 50 01 00 00 00 00 00
+
+Signed-off-by: Manojkiran Eda <manojkiran.eda@gmail.com>
+Change-Id: I4e9c828f4ada9f1db6bf3a9b68c16e71b6e5d8f0
+
