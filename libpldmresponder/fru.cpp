@@ -81,7 +81,8 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
             {
                 pldm_entity node =
                     pldm_entity_extract(objToEntityNode.at(currPath));
-                if (pldm_entity_association_tree_find(entityTree, &node))
+                if (pldm_entity_association_tree_find_with_locality(entityTree,
+                                                                &node, false))
                 {
                     break;
                 }
@@ -114,19 +115,20 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
 
                 if (currPath == prePath)
                 {
-                    auto node = pldm_entity_association_tree_add(
+                    auto node = pldm_entity_association_tree_add_entity(
                         entityTree, &entity, 0xFFFF, nullptr,
-                        PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                        PLDM_ENTITY_ASSOCIAION_PHYSICAL, false, true, 0xFFFF);
                     objToEntityNode[currPath] = node;
                 }
                 else
                 {
                     if (objToEntityNode.contains(prePath))
                     {
-                        auto node = pldm_entity_association_tree_add(
+                        auto node = pldm_entity_association_tree_add_entity(
                             entityTree, &entity, 0xFFFF,
                             objToEntityNode[prePath],
-                            PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false, true,
+                            0xFFFF);
                         objToEntityNode[currPath] = node;
                     }
                 }
