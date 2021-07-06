@@ -547,6 +547,30 @@
     },
     {
       "key": {
+        "uuid": "3308b627_94857312",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-06T05:21:01Z",
+      "side": 1,
+      "message": "Hi Tom,\nI understand your point but would request you to +1 this and may be i can put up a new commit removing the deferred stuff. the reason being, this change is running in GHE for quite some time now and lot of other commits are in queue to get merged after this one.\nit will be good if i can create a separate commit for removing the deferred stuff and run for significant cycles in DVT before getting that merged",
+      "parentUuid": "f50424df_2935911e",
+      "range": {
+        "startLine": 440,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 54
+      },
+      "revId": "99b9f4d5e0fb9133e5ec037efae26fe7f5776d4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "daad568d_1b5200f0",
         "filename": "host-bmc/host_pdr_handler.hpp",
         "patchSetId": 7
