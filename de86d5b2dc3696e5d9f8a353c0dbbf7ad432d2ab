@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73242d5c_3160ebb5",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-06T06:30:23Z",
+      "side": 1,
+      "message": "may be a better string here indicating the actual failure. you can do that when addressing other\u0027s review comments",
+      "range": {
+        "startLine": 218,
+        "startChar": 46,
+        "endLine": 218,
+        "endChar": 61
+      },
+      "revId": "de86d5b2dc3696e5d9f8a353c0dbbf7ad432d2ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
