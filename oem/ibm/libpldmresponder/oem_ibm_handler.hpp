@@ -17,6 +17,12 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
+
+#define PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE 32768
+#define PLDM_OEM_IBM_BOOT_STATE 32769
+#define PLDM_OEM_IBM_SYSTEM_POWER_STATE 32771
+#define PLDM_OEM_IBM_BOOT_SIDE_RENAME 32773
+
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
@@ -24,6 +30,12 @@ constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 enum SetEventReceiverCount
 {
     SET_EVENT_RECEIVER_SENT = 0x2,
+};
+
+enum BootSideRenameStates
+{
+    PLDM_BOOT_SIDE_NOT_RENAMED = 1,
+    PLDM_BOOT_SIDE_HAS_BEEN_RENAMED = 2,
 };
 
 class Handler : public oem_platform::Handler
