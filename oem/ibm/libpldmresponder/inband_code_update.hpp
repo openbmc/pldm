@@ -97,6 +97,11 @@ class CodeUpdate
         codeUpdateInProgress = progress;
     }
 
+    bool isOutOfBandCodeUpdateInProgress()
+    {
+        return outOfBandCodeUpdateInProgress;
+    }
+
     /** @brief Method to clear contents the LID staging directory that contains
      *  images such as host firmware and BMC.
      *  @param[in] dirPath - directory system path that has to be cleared
@@ -152,6 +157,23 @@ class CodeUpdate
         return firmwareUpdateSensorId;
     }
 
+    /* @brief Method to set the sensor id for boot side rename state
+     * @param[in] sensorId - sensor id for boot side rename update
+     *                       state
+     */
+    void setBootSideRenameStateSensor(uint16_t sensorId)
+    {
+        bootSideRenameStateSensorId = sensorId;
+    }
+
+    /* @brief Method to fetch the sensor id for boot side rename state
+     * @return - sensor id
+     */
+    uint16_t getBootSideRenameStateSensor()
+    {
+        return bootSideRenameStateSensorId;
+    }
+
     /* @brief Method to send a state sensor event to Host from CodeUpdate class
      * @param[in] sensorId - sensor id for the event
      * @param[in] sensorEventClass - sensor event class wrt DSP0248
@@ -169,6 +191,8 @@ class CodeUpdate
      */
     void deleteImage();
 
+    void processRenameEvent();
+
     virtual ~CodeUpdate()
     {}
 
@@ -180,6 +204,7 @@ class CodeUpdate
     std::string newImageId;        //!< new image id
     bool codeUpdateInProgress =
         false; //!< indicates whether codeupdate is going on
+    bool outOfBandCodeUpdateInProgress = false;
     const pldm::utils::DBusHandler* dBusIntf; //!< D-Bus handler
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
         captureNextBootSideChange; //!< vector to catch the D-Bus property
@@ -191,7 +216,7 @@ class CodeUpdate
         oemPlatformHandler; //!< oem platform handler
     uint16_t markerLidSensorId;
     uint16_t firmwareUpdateSensorId;
-
+    uint16_t bootSideRenameStateSensorId;
     /** @brief D-Bus property changed signal match for image activation */
     std::unique_ptr<sdbusplus::bus::match::match> imageActivationMatch;
 
