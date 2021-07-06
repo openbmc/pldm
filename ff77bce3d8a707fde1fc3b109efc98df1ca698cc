@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "db5f4f6c_d88798e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-06T07:30:18Z",
+      "side": 1,
+      "message": "+ and the surveillance continues afterwards",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 23
+      },
+      "revId": "ff77bce3d8a707fde1fc3b109efc98df1ca698cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64cb6ecc_0bfa88b2",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-06T07:30:18Z",
+      "side": 1,
+      "message": "we do this after sending the setEventReceiver or getting response of setEventReceiver?\nif it is the second case then it needs to be inside processSetEventReceiverResponse",
+      "range": {
+        "startLine": 231,
+        "startChar": 4,
+        "endLine": 231,
+        "endChar": 27
+      },
+      "revId": "ff77bce3d8a707fde1fc3b109efc98df1ca698cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
