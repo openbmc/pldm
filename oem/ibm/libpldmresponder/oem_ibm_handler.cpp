@@ -329,7 +329,8 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
     auto state =
         reinterpret_cast<state_sensor_possible_states*>(possibleStates);
     if ((stateSetID == PLDM_OEM_IBM_BOOT_STATE) ||
-        (stateSetID == PLDM_OEM_IBM_VERIFICATION_STATE))
+        (stateSetID == PLDM_OEM_IBM_VERIFICATION_STATE) ||
+        (stateSetID == PLDM_OEM_IBM_BOOT_SIDE_RENAME))
         state->states[0].byte = 6;
     else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
         state->states[0].byte = 126;
@@ -443,6 +444,9 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                                 ENTITY_INSTANCE_0,
                                 PLDM_OEM_IBM_VERIFICATION_STATE, repo);
+    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
+                                ENTITY_INSTANCE_0,
+                                PLDM_OEM_IBM_BOOT_SIDE_RENAME, repo);
     auto sensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_VERIFICATION_STATE);
@@ -451,6 +455,10 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE);
     codeUpdate->setFirmwareUpdateSensor(sensorId);
+    sensorId =
+        findStateSensorId(repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
+                          ENTITY_INSTANCE_0, 0, PLDM_OEM_IBM_BOOT_SIDE_RENAME);
+    codeUpdate->setBootSideRenameStateSensor(sensorId);
 }
 
 void pldm::responder::oem_ibm_platform::Handler::setPlatformHandler(

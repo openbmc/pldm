@@ -12,8 +12,9 @@ enum ibm_oem_pldm_state_set_ids {
 	PLDM_OEM_IBM_VERIFICATION_STATE = 32770,
 	PLDM_OEM_IBM_SYSTEM_POWER_STATE = 32771,
 	PLDM_OEM_IBM_SBE_MAINTENANCE_STATE = 32772,
-	PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE = 32773,
-	PLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE = 32774,
+	PLDM_OEM_IBM_BOOT_SIDE_RENAME = 32773,
+	PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE = 32779,
+	PLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE = 32780,
 	PLDM_OEM_IBM_PANEL_TRIGGER_STATE = 32778,
 };
 
@@ -58,6 +59,11 @@ enum ibm_oem_pldm_state_set_system_power_state_values {
 enum ibm_oem_pldm_state_set_sbe_dump_state_values {
 	SBE_DUMP_COMPLETED = 0x1,
 	SBE_RETRY_REQUIRED = 0x2,
+};
+
+enum ibm_oem_pldm_state_set_boot_side_rename_state_values {
+	PLDM_BOOT_SIDE_NOT_RENAMED = 1,
+	PLDM_BOOT_SIDE_HAS_BEEN_RENAMED = 2,
 };
 
 #ifdef __cplusplus
