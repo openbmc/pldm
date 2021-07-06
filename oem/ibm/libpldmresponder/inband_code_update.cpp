@@ -205,7 +205,6 @@ void CodeUpdate::setVersions()
             DBusInterfaceAdded interfaces;
             sdbusplus::message::object_path path;
             msg.read(path, interfaces);
-
             for (auto& interface : interfaces)
             {
                 if (interface.first ==
@@ -302,6 +301,17 @@ void CodeUpdate::setVersions()
                                     << "could not set RequestedActivation \n";
                             }
                             break;
+                        }
+                        else if (imageProp == "xyz.openbmc_project.Software."
+                                              "Activation.Activations.Ready" &&
+                                 !isCodeUpdateInProgress())
+                        {
+                            currBootSide = Pside;
+                            auto sensorId = getBootSideRenameStateSensor();
+                            sendStateSensorEvent(
+                                sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                                PLDM_BOOT_SIDE_HAS_BEEN_RENAMED,
+                                PLDM_BOOT_SIDE_NOT_RENAMED);
                         }
                     }
                     catch (const sdbusplus::exception::SdBusError& e)
