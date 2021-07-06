@@ -70,6 +70,30 @@
       "revId": "b4765b25ee088d25d5a5c422e522ee2409894db4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "152f826f_1f01521a",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-07-06T14:13:13Z",
+      "side": 1,
+      "message": "Yes, it worked on both (i.e. killed timer and exited cleanly).",
+      "parentUuid": "0848adde_aa258ad3",
+      "range": {
+        "startLine": 119,
+        "startChar": 7,
+        "endLine": 119,
+        "endChar": 72
+      },
+      "revId": "b4765b25ee088d25d5a5c422e522ee2409894db4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
