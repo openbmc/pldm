@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81a845a2_7ff4c6e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-06T06:55:38Z",
+      "side": 1,
+      "message": "may be a brief description here that watchdog is started as soon as bmc is powered on. and Host is supposed to send a platformEventMessage periodically so that bmc resets the watchdog each time.\nthe handshake is established by sending the setEventReceiver beforehand",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 5
+      },
+      "revId": "bce59ec478dd407ba58580bb94e0db2ce9557549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd882b55_81ef73cf",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-06T06:55:38Z",
+      "side": 1,
+      "message": "if(oemPlatformHandler)\n{\n    oemPlatformHandler-\u003eresetWatchDogTimer();\n}\nnot needed to explicitly check if watchdog is running since you are already doing that in the reset function itself",
+      "range": {
+        "startLine": 322,
+        "startChar": 16,
+        "endLine": 322,
+        "endChar": 54
+      },
+      "revId": "bce59ec478dd407ba58580bb94e0db2ce9557549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b28c91e_79352ca1",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-06T06:55:38Z",
+      "side": 1,
+      "message": "is this the trace that is in question? i guess we can omit this trace",
+      "range": {
+        "startLine": 512,
+        "startChar": 8,
+        "endLine": 513,
+        "endChar": 55
+      },
+      "revId": "bce59ec478dd407ba58580bb94e0db2ce9557549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
