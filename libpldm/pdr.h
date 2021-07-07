@@ -266,6 +266,8 @@ void pldm_entity_association_tree_visit(pldm_entity_association_tree *tree,
  */
 pldm_entity pldm_entity_extract(pldm_entity_node *node);
 
+uint16_t pldm_extract_host_container_id(pldm_entity_node *entity);
+
 /** @brief Destroy entity association tree
  *
  *  @param[in] tree - opaque pointer acting as a handle to the tree

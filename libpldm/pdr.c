@@ -823,11 +823,11 @@ void entity_association_tree_find(pldm_entity_node *node, pldm_entity *entity,
 		return;
 	}
 	if (is_remote) {
-
 		if (node->entity.entity_type == entity->entity_type &&
 		    node->entity.entity_instance_num ==
 			entity->entity_instance_num &&
-		    node->host_container_id == entity->entity_container_id) {
+		    node->entity.entity_container_id ==
+			entity->entity_container_id) {
 			entity->entity_container_id =
 			    node->entity.entity_container_id;
 
@@ -859,6 +859,13 @@ pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
 	pldm_entity_node *node = NULL;
 	entity_association_tree_find(tree->root, entity, &node, is_remote);
 	return node;
+}
+
+uint16_t pldm_extract_host_container_id(pldm_entity_node *entity)
+{
+	assert(entity != NULL);
+
+	return entity->host_container_id;
 }
 
 static void entity_association_tree_copy(pldm_entity_node *org_node,

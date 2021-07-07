@@ -210,14 +210,14 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         }
 
         Entities entityAssoc;
-        entityAssoc.push_back(pldm_entity_extract(pNode));
+        entityAssoc.push_back(pNode);
         for (size_t i = 1; i < numEntities; ++i)
         {
-            pldm_entity_association_tree_add(
+            auto node = pldm_entity_association_tree_add(
                 entityTree, &entities[i], entities[i].entity_instance_num,
                 pNode, entityPdr->association_type, true);
             merged = true;
-            entityAssoc.push_back(entities[i]);
+            entityAssoc.push_back(node);
         }
         mergedHostParents = true;
         if (merged)
@@ -1006,7 +1006,8 @@ void HostPDRHandler::parseFruRecordSetPDRs(const PDRList& fruRecordSetPDRs)
 
     for (auto& entity : objPathMap)
     {
-        auto fruRSI = getRSI(fruRecordSetPDRs, entity.second);
+        auto fruRSI =
+            getRSI(fruRecordSetPDRs, pldm_entity_extract(entity.second));
 
         for (auto& data : fruRecordData)
         {

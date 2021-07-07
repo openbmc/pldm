@@ -10,23 +10,31 @@ namespace hostbmc
 namespace utils
 {
 
-Entities getParentEntites(const EntityAssociations& entityAssoc)
+Entities getParentEntites(EntityAssociations& entityAssoc)
 {
     Entities parents{};
-    for (const auto& et : entityAssoc)
+    for (auto& et : entityAssoc)
     {
         parents.push_back(et[0]);
     }
 
     for (auto it = parents.begin(); it != parents.end();)
     {
+        uint16_t parent_host_contanied_id = pldm_extract_host_container_id(*it);
         bool find = false;
-        for (const auto& evs : entityAssoc)
+        for (auto& evs : entityAssoc)
         {
             for (size_t i = 1; i < evs.size(); i++)
             {
-                if (evs[i].entity_type == it->entity_type &&
-                    evs[i].entity_instance_num == it->entity_instance_num)
+                uint16_t node_host_contanied_id =
+                    pldm_extract_host_container_id(evs[i]);
+
+                if (pldm_entity_extract(evs[i]).entity_type ==
+                        pldm_entity_extract(*it).entity_type &&
+                    pldm_entity_extract(evs[i]).entity_instance_num ==
+                        pldm_entity_extract(*it).entity_instance_num &&
+                    parent_host_contanied_id == node_host_contanied_id &&
+                    node_host_contanied_id != 0xFFFF)
                 {
                     find = true;
                     break;
@@ -50,34 +58,54 @@ Entities getParentEntites(const EntityAssociations& entityAssoc)
     return parents;
 }
 
-void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
-                                     const pldm_entity& entity,
+void addObjectPathEntityAssociations(EntityAssociations& entityAssoc,
+                                     pldm_entity_association_tree* entityTree,
+                                     pldm_entity_node* entity,
                                      const ObjectPath& path,
                                      ObjectPathMaps& objPathMap)
 {
+    if (entity == nullptr)
+    {
+        return;
+    }
     bool find = false;
-    if (!entityMaps.contains(entity.entity_type))
+    if (!entityMaps.contains(pldm_entity_extract(entity).entity_type))
     {
         std::cerr << "No found entity type from the std::map of entityMaps, "
                      "entity type = "
-                  << entity.entity_type << std::endl;
+                  << pldm_entity_extract(entity).entity_type << std::endl;
         return;
     }
 
-    std::string entityName = entityMaps.at(entity.entity_type);
+    std::string entityName =
+        entityMaps.at(pldm_entity_extract(entity).entity_type);
     for (auto& ev : entityAssoc)
     {
-        if (ev[0].entity_instance_num == entity.entity_instance_num &&
-            ev[0].entity_type == entity.entity_type)
+
+        if (pldm_entity_extract(ev[0]).entity_instance_num ==
+                pldm_entity_extract(entity).entity_instance_num &&
+            pldm_entity_extract(ev[0]).entity_type ==
+                pldm_entity_extract(entity).entity_type)
         {
+            uint16_t node_host_contanied_id =
+                pldm_extract_host_container_id(ev[0]);
+            uint16_t entity_host_contanied_id =
+                pldm_extract_host_container_id(entity);
+
+            if (node_host_contanied_id != entity_host_contanied_id)
+            {
+                continue;
+            }
             ObjectPath p =
-                path / fs::path{entityName +
-                                std::to_string(entity.entity_instance_num)};
+                path /
+                fs::path{entityName +
+                         std::to_string(
+                             pldm_entity_extract(entity).entity_instance_num)};
 
             for (size_t i = 1; i < ev.size(); i++)
             {
-                addObjectPathEntityAssociations(entityAssoc, ev[i], p,
-                                                objPathMap);
+                addObjectPathEntityAssociations(entityAssoc, entityTree, ev[i],
+                                                p, objPathMap);
             }
             find = true;
         }
@@ -86,23 +114,26 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     if (!find)
     {
         objPathMap.emplace(
-            path / fs::path{entityName +
-                            std::to_string(entity.entity_instance_num)},
-            entity);
+            path /
+                fs::path{entityName +
+                         std::to_string(
+                             pldm_entity_extract(entity).entity_instance_num)},
+            std::move(entity));
     }
 }
 
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
+void updateEntityAssociation(EntityAssociations& entityAssoc,
                              pldm_entity_association_tree* entityTree,
                              ObjectPathMaps& objPathMap)
 {
-    std::vector<pldm_entity> parentsEntity = getParentEntites(entityAssoc);
+    std::vector<pldm_entity_node*> parentsEntity =
+        getParentEntites(entityAssoc);
     for (auto& entity : parentsEntity)
     {
-        fs::path path{"/xyz/openbmc_project/inventory"};
+        fs::path path{"/xyz/openbmc_project/inventory/system1/chassis1"};
         std::deque<std::string> paths{};
-        auto node =
-            pldm_entity_association_tree_find(entityTree, &entity, false);
+        pldm_entity e = pldm_entity_extract(entity);
+        auto node = pldm_entity_association_tree_find(entityTree, &e, true);
         if (!node)
         {
             continue;
@@ -133,8 +164,7 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
                 break;
             }
 
-            node =
-                pldm_entity_association_tree_find(entityTree, &parent, false);
+            node = pldm_entity_association_tree_find(entityTree, &parent, true);
         }
 
         if (!found)
@@ -148,7 +178,8 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             paths.pop_back();
         }
 
-        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap);
+        addObjectPathEntityAssociations(entityAssoc, entityTree, entity, path,
+                                        objPathMap);
     }
 }
 } // namespace utils

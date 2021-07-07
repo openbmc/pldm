@@ -1580,25 +1580,19 @@ TEST(EntityAssociationPDR, findAndAddHostPDR)
         tree, &entities[6], 0, l4b, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true);
     EXPECT_NE(l5b, nullptr);
 
-    pldm_entity entity{};
-
-    entity.entity_type = 135;
-    entity.entity_instance_num = 0;
-    entity.entity_container_id = 2;
-    auto result1 = pldm_entity_association_tree_find(tree, &entity, true);
+    auto result1 = pldm_entity_association_tree_find(tree, &entities[5], true);
     EXPECT_EQ(result1, l5a);
-    EXPECT_EQ(entity.entity_container_id, 4);
+    EXPECT_EQ(entities[5].entity_container_id, 4);
+    EXPECT_EQ(pldm_extract_host_container_id(l5a), 2);
 
     auto l6a = pldm_entity_association_tree_add(
         tree, &entities[7], 0, result1, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true);
     EXPECT_NE(l6a, nullptr);
 
-    entity.entity_type = 135;
-    entity.entity_instance_num = 0;
-    entity.entity_container_id = 3;
-    auto result2 = pldm_entity_association_tree_find(tree, &entity, true);
+    auto result2 = pldm_entity_association_tree_find(tree, &entities[6], true);
     EXPECT_EQ(result2, l5b);
-    EXPECT_EQ(entity.entity_container_id, 5);
+    EXPECT_EQ(entities[6].entity_container_id, 5);
+    EXPECT_EQ(pldm_extract_host_container_id(l6a), 3);
 
     auto l7a = pldm_entity_association_tree_add(
         tree, &entities[8], 0, result2, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true);

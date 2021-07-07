@@ -17,9 +17,9 @@ using ObjectPath = fs::path;
 using EntityName = std::string;
 using EntityType = uint16_t;
 
-using Entities = std::vector<pldm_entity>;
+using Entities = std::vector<pldm_entity_node*>;
 using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<ObjectPath, pldm_entity>;
+using ObjectPathMaps = std::map<ObjectPath, pldm_entity_node*>;
 
 const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},
@@ -28,7 +28,9 @@ const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_POWER_SUPPLY, "powersupply"},
     {PLDM_ENTITY_MEMORY_MODULE, "dimm"},
     {PLDM_ENTITY_PROC, "cpu"},
-    {PLDM_ENTITY_SYSTEM_LOGICAL, "system"}};
+    {PLDM_ENTITY_SYSTEM_LOGICAL, "system"},
+    {PLDM_ENTITY_PROC_MODULE, "dcm"},
+    {32903, "core"}};
 
 namespace hostbmc
 {
@@ -42,7 +44,7 @@ namespace utils
  *                               BMC's entity association tree
  *  @return
  */
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
+void updateEntityAssociation(EntityAssociations& entityAssoc,
                              pldm_entity_association_tree* entityTree,
                              ObjectPathMaps& objPathMap);
 
