@@ -193,6 +193,7 @@ typedef struct pldm_entity {
 	uint16_t entity_type;
 	uint16_t entity_instance_num;
 	uint16_t entity_container_id;
+	uint16_t host_container_id;
 } __attribute__((packed)) pldm_entity;
 
 enum entity_association_containment_type {
@@ -313,7 +314,7 @@ bool pldm_is_current_parent_child(pldm_entity_node *parent, pldm_entity *node);
  */
 pldm_entity_node *
 pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
-				  pldm_entity *entity);
+				  pldm_entity *entity, bool is_remote);
 
 /** @brief Create a copy of an existing entity association tree
  *
