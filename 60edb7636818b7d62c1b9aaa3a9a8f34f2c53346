@@ -22,6 +22,30 @@
       "revId": "60edb7636818b7d62c1b9aaa3a9a8f34f2c53346",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e756f438_bd7b65bb",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-07T23:39:22Z",
+      "side": 1,
+      "message": "This code should be improved to be obviously correct. If we must have a named file this needs to use mkostemp() to eliminate the concept of races, and to specify additional flags like O_SYNC. O_WRONLY is a minor restriction over the default O_RDWR that we can ignore to make use of mkostemp(), and additionally the mktemp() family enforce O_CREAT | O_EXCL to make sure the file is unique which eliminates the need for O_TRUNC.\n\nIt would be better if storePel() took a file descriptor instead, and then you could use open() with O_TMPFILE with /tmp as the directory and avoid the naming problem altogether.",
+      "parentUuid": "d6112c66_49c38f60",
+      "range": {
+        "startLine": 285,
+        "startChar": 4,
+        "endLine": 286,
+        "endChar": 76
+      },
+      "revId": "60edb7636818b7d62c1b9aaa3a9a8f34f2c53346",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
