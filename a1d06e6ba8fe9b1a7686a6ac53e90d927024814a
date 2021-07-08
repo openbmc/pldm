@@ -198,6 +198,24 @@
     },
     {
       "key": {
+        "uuid": "c321b368_b96668c3",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-08T12:05:24Z",
+      "side": 1,
+      "message": "Since we do not have an initialization agent in plan, we leveraged getTID to start off the surveillance. we can look back at this approach once the initialization agent is is in place",
+      "parentUuid": "a5f1911f_7ea9592a",
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "80cdcdb6_e4a3d934",
         "filename": "libpldmresponder/base.cpp",
         "patchSetId": 18
@@ -209,6 +227,24 @@
       "writtenOn": "2021-06-22T05:39:38Z",
       "side": 1,
       "message": "Defer is typically used when there are long running actions which we want to separate. In this case sending the request for SetEventReceiver which can be done in the ResponseHandler.",
+      "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a81af6a_8d1909af",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-08T12:05:24Z",
+      "side": 1,
+      "message": "the setEventReceiver is deferred here not because of long running action but due to the fact that bmc needs to respond to getTID first and then send a setEventReceiver request. the Host does not run async and expects response to it\u0027s own command first",
+      "parentUuid": "80cdcdb6_e4a3d934",
       "revId": "a1d06e6ba8fe9b1a7686a6ac53e90d927024814a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
