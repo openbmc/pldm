@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81b5d574_d09abc5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-08T06:39:21Z",
+      "side": 1,
+      "message": "Tested section, if not for detailed outputs a summary should do.",
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f81a0c3f_1eb8e1a9",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-08T06:39:21Z",
+      "side": 1,
+      "message": "nit: masterJsonPath could be misleading, fruMasterJsonPath?",
+      "range": {
+        "startLine": 58,
+        "startChar": 19,
+        "endLine": 58,
+        "endChar": 33
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4ee4123_8d825b20",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-08T06:39:21Z",
+      "side": 1,
+      "message": "nit: D-Bus",
+      "range": {
+        "startLine": 58,
+        "startChar": 72,
+        "endLine": 58,
+        "endChar": 76
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c3694d0_2891eb20",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-08T06:39:21Z",
+      "side": 1,
+      "message": "Let\u0027s prefer std::filesystem::path for file system paths, even though there exceptions around :-).",
+      "range": {
+        "startLine": 65,
+        "startChar": 43,
+        "endLine": 65,
+        "endChar": 76
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29d672b1_0bfb580a",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-08T06:39:21Z",
+      "side": 1,
+      "message": "What code would catch this? I think InternalFailure is used less in the project.\n\nWant daemon to crash and not continue or still continue?",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 32
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76bf1208_95ea2e52",
+        "filename": "oem/ibm/configurations/fru_master.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-08T06:39:21Z",
+      "side": 1,
+      "message": "Do we have a new Vendor entry already?",
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
