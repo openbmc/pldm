@@ -16,6 +16,24 @@
       "revId": "9cbe2982423d36546daf919883e744f50e085bd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebfdaed2_20a3c126",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-07-08T09:44:45Z",
+      "side": 1,
+      "message": "No Tom, this is the only type which needs to be considered, other DBus types to effecter types are handled.",
+      "parentUuid": "c93bb216_c0e5ae3f",
+      "revId": "9cbe2982423d36546daf919883e744f50e085bd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
