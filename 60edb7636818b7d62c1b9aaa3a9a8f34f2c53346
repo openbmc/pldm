@@ -46,6 +46,30 @@
       "revId": "60edb7636818b7d62c1b9aaa3a9a8f34f2c53346",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a9b1592_5b7d4a09",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-08T05:14:35Z",
+      "side": 1,
+      "message": "on the same line with my previous question, the tmpFile gets created with same name every time. that leads to error in the pel files when HB sends down consecutive pels.\npls change the code to use mkstemp as we are doing in the dma write",
+      "parentUuid": "e756f438_bd7b65bb",
+      "range": {
+        "startLine": 285,
+        "startChar": 4,
+        "endLine": 286,
+        "endChar": 76
+      },
+      "revId": "60edb7636818b7d62c1b9aaa3a9a8f34f2c53346",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
