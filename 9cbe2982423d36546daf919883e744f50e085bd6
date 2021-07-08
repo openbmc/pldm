@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c93bb216_c0e5ae3f",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-08T09:34:36Z",
+      "side": 1,
+      "message": "Will we need additional conditions for other types? \n\nIf so, this portion will need refactor to handle combinations of D-Bus types to effecter types.",
+      "revId": "9cbe2982423d36546daf919883e744f50e085bd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
