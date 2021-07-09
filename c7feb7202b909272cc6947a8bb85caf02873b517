@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "ae668169_f368432b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-09T12:09:50Z",
+      "side": 1,
+      "message": "the return value of write() can be *less* than the length provided as a parameter, so dropping this check isn\u0027t the right way to solve it. You need a loop to iterate through the buffer until write() has written all the data in the buffer.",
+      "parentUuid": "1ba7bc66_d88a48b1",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 5
+      },
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7e9c6b26_20f382d4",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
         "patchSetId": 3
