@@ -125,6 +125,24 @@
       "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a697b55_8c3c1231",
+        "filename": "oem/ibm/configurations/fru_master.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-09T02:42:39Z",
+      "side": 1,
+      "message": "I did not get your statement, so the whole point in adding this support was to stop sending certain information that host already knows.\n\nfor example, on IBM systems processors \u0026 dimm information are already available for a host(hostboot), so there is not point in sending them from bmc.\n\nwith eariler design, as it was generic code, we were forced to send cpu \u0026 dimm info even when we did not want it.",
+      "parentUuid": "76bf1208_95ea2e52",
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
