@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1ba7bc66_d88a48b1",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-09T07:17:02Z",
+      "side": 1,
+      "message": "Sorry, It is my mistake.\nThe return value of the write method has only two cases: success (the return value is equal to the number of bytes written) and failure (-1).\nUpdated.",
+      "parentUuid": "fdb3b0c0_d84b8b04",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 5
+      },
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7e9c6b26_20f382d4",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
         "patchSetId": 3
@@ -86,6 +110,24 @@
       "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4971abc3_73e7c2a3",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-09T07:17:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7e9c6b26_20f382d4",
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +231,23 @@
         "endLine": 323,
         "endChar": 22
       },
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa407f87_685fa891",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-09T07:17:02Z",
+      "side": 1,
+      "message": "I have replaced `std::move()` with `fs::path::string`.",
       "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
