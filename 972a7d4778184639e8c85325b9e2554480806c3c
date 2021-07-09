@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cf49ba97_0cc194a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-09T04:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81b5d574_d09abc5d",
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f81a0c3f_1eb8e1a9",
         "filename": "libpldmresponder/fru.hpp",
         "patchSetId": 5
@@ -65,6 +83,54 @@
     },
     {
       "key": {
+        "uuid": "67283984_d186d401",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-09T04:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f81a0c3f_1eb8e1a9",
+      "range": {
+        "startLine": 58,
+        "startChar": 19,
+        "endLine": 58,
+        "endChar": 33
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d82fb183_caf00598",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-09T04:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4ee4123_8d825b20",
+      "range": {
+        "startLine": 58,
+        "startChar": 72,
+        "endLine": 58,
+        "endChar": 76
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8c3694d0_2891eb20",
         "filename": "libpldmresponder/fru.hpp",
         "patchSetId": 5
@@ -88,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "f369ed15_cd1877c5",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-09T04:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c3694d0_2891eb20",
+      "range": {
+        "startLine": 65,
+        "startChar": 43,
+        "endLine": 65,
+        "endChar": 76
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "29d672b1_0bfb580a",
         "filename": "libpldmresponder/fru_parser.cpp",
         "patchSetId": 5
@@ -99,6 +189,30 @@
       "writtenOn": "2021-07-08T06:39:21Z",
       "side": 1,
       "message": "What code would catch this? I think InternalFailure is used less in the project.\n\nWant daemon to crash and not continue or still continue?",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 32
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a3666d0_2e106eb6",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-09T04:23:19Z",
+      "side": 1,
+      "message": "My intent was to halt the execution of pldm when the config file was wrong by throwing xyz::openbmc_project::Common::Error::InternalFailure . It does not make sense to continue as the bmc fru record table \u0026 entity association PDR is the basis for normalization.we can go into all sorts of trouble in the later stages of booting. when this map is null.",
+      "parentUuid": "29d672b1_0bfb580a",
       "range": {
         "startLine": 56,
         "startChar": 8,
@@ -161,6 +275,24 @@
       "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "63297edc_b13afaa1",
+        "filename": "oem/ibm/configurations/fru_master.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-09T04:23:19Z",
+      "side": 1,
+      "message": "Also, this would be useful in cases where we dont have specific entities in the spec.For example : we dont have a pcie slot rather we have a generic slot ,so vendors can choose to pick nvme slot in that placeholder or a pcie slot..and not clutter the community code.",
+      "parentUuid": "0a697b55_8c3c1231",
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
