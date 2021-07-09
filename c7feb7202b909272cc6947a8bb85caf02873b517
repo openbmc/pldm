@@ -2,6 +2,86 @@
   "comments": [
     {
       "key": {
+        "uuid": "6595c9ac_4738ac2d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-09T00:21:01Z",
+      "side": 1,
+      "message": "Why aren\u0027t length and offset off_t? Wouldn\u0027t it be better for buffer to be const void *?",
+      "range": {
+        "startLine": 274,
+        "startChar": 42,
+        "endLine": 274,
+        "endChar": 50
+      },
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdb3b0c0_d84b8b04",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-09T00:21:01Z",
+      "side": 1,
+      "message": "This is a bit lazy? This isn\u0027t a failure, you need to keep moving your write pointer through the buffer (potentially issuing multiple write calls).",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 5
+      },
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e9c6b26_20f382d4",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-09T00:21:01Z",
+      "side": 1,
+      "message": "Why do this test again? Why not just call storePel() in the happy case above?",
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0999d00d_dde80421",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-09T00:21:01Z",
+      "side": 1,
+      "message": "There wasn\u0027t a response to my request to pass a file descriptor here (and through the D-Bus API) instead of the file name. Using a file descriptor is a better representation of the problem generally (removes a lot of the races).",
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fbf83ed4_9c78447f",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
         "patchSetId": 3
@@ -13,6 +93,30 @@
       "writtenOn": "2021-07-08T13:16:25Z",
       "side": 1,
       "message": "use after move?",
+      "range": {
+        "startLine": 323,
+        "startChar": 15,
+        "endLine": 323,
+        "endChar": 22
+      },
+      "revId": "c7feb7202b909272cc6947a8bb85caf02873b517",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "192613ad_dc068d3d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-09T00:21:01Z",
+      "side": 1,
+      "message": "Not only that, but there\u0027s no guarantee that the dbus call backing storePel() has even completed because we don\u0027t wait for a response. This could remove the file before the remote call has even executed, and as we\u0027re passing a file name and not a descriptor, the remote daemon will hit an ENOENT.",
+      "parentUuid": "fbf83ed4_9c78447f",
       "range": {
         "startLine": 323,
         "startChar": 15,
