@@ -34,6 +34,24 @@
       "revId": "9cbe2982423d36546daf919883e744f50e085bd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68500982_b4fa4970",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-12T05:18:13Z",
+      "side": 1,
+      "message": "\u003e other DBus types to effecter types are handled.\nuint64_t also needs to be handled along with the code that handles D-Bus types to effecter types mapping for other types.",
+      "parentUuid": "ebfdaed2_20a3c126",
+      "revId": "9cbe2982423d36546daf919883e744f50e085bd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
