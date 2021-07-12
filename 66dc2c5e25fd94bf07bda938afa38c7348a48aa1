@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d082733b_da51eb69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "need a better commit message",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fed3541_56a56fba",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "nit : it would have been good if these all would have gone into a different hpp file",
+      "range": {
+        "startLine": 72,
+        "startChar": 3,
+        "endLine": 80,
+        "endChar": 45
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36d01c5a_9a257cff",
+        "filename": "oem/ibm/libpldm/platform_oem_ibm.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "revert this change as well",
+      "range": {
+        "startLine": 50,
+        "startChar": 1,
+        "endLine": 50,
+        "endChar": 2
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28a4791a_93680cce",
+        "filename": "oem/ibm/libpldm/platform_oem_ibm.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "change not needed, remove this file change",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0013190a_5dce0a1c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "is this required ?",
+      "range": {
+        "startLine": 554,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 28
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1fc95fa_e65353af",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "this can be remove, instead you can send false when calling setDbusProperty() method.",
+      "range": {
+        "startLine": 555,
+        "startChar": 3,
+        "endLine": 556,
+        "endChar": 62
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cb94397_e5cd6b62",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "if(!wdStatus) ?",
+      "range": {
+        "startLine": 562,
+        "startChar": 4,
+        "endLine": 562,
+        "endChar": 26
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b58aaf4f_418715ee",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "i feel return is redundant here , as there are no more statements after this.",
+      "range": {
+        "startLine": 574,
+        "startChar": 8,
+        "endLine": 574,
+        "endChar": 15
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8783def3_e77865cc",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "why did you have to count the number ?",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 5
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3b850a9b_00ea7add",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:13:35Z",
+      "side": 1,
+      "message": "no change in this file too..revert the changes",
+      "range": {
+        "startLine": 1,
+        "startChar": 9,
+        "endLine": 1,
+        "endChar": 10
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
