@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d760e53_bea68e52",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:03:35Z",
+      "side": 1,
+      "message": "how is this different from surveillance ? you should explain if we are using the similar infrastructure for both .",
+      "range": {
+        "startLine": 10,
+        "startChar": 15,
+        "endLine": 11,
+        "endChar": 43
+      },
+      "revId": "75f79cecea4639a8f9faa47e704a01c0c454aaa9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7da82abb_f1d85446",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:03:35Z",
+      "side": 1,
+      "message": "this should be in the surveillance commit where you added this. not in this commit.",
+      "range": {
+        "startLine": 113,
+        "startChar": 3,
+        "endLine": 113,
+        "endChar": 38
+      },
+      "revId": "75f79cecea4639a8f9faa47e704a01c0c454aaa9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "970d2af6_2ce632fd",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-12T12:03:35Z",
+      "side": 1,
+      "message": "why was this moved from its place ?",
+      "range": {
+        "startLine": 239,
+        "startChar": 3,
+        "endLine": 242,
+        "endChar": 72
+      },
+      "revId": "75f79cecea4639a8f9faa47e704a01c0c454aaa9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
