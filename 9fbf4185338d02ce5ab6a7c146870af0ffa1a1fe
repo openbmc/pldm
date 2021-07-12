@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df090df6_33e74eb9",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 672,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-12T11:18:33Z",
+      "side": 1,
+      "message": "can you define an enum for valid and invalid?",
+      "range": {
+        "startLine": 672,
+        "startChar": 34,
+        "endLine": 672,
+        "endChar": 35
+      },
+      "revId": "9fbf4185338d02ce5ab6a7c146870af0ffa1a1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c730826a_6695a757",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-12T11:18:33Z",
+      "side": 1,
+      "message": "terminusHandle",
+      "range": {
+        "startLine": 65,
+        "startChar": 13,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "9fbf4185338d02ce5ab6a7c146870af0ffa1a1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3af46957_e20e3213",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 44
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-12T11:18:33Z",
+      "side": 1,
+      "message": "may be you can add another parameter here which indicates which TL PDR to update. then you do not need to hard code the following:\nif (value-\u003eeid \u003d\u003d HOST_EID)",
+      "range": {
+        "startLine": 317,
+        "startChar": 5,
+        "endLine": 317,
+        "endChar": 25
+      },
+      "revId": "9fbf4185338d02ce5ab6a7c146870af0ffa1a1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "901f6ae9_16ea99b7",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 44
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-12T11:18:33Z",
+      "side": 1,
+      "message": "+ to invalid",
+      "range": {
+        "startLine": 147,
+        "startChar": 11,
+        "endLine": 147,
+        "endChar": 24
+      },
+      "revId": "9fbf4185338d02ce5ab6a7c146870af0ffa1a1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53c0f33b_9c4c92bc",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 44
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-12T11:18:33Z",
+      "side": 1,
+      "message": "pldm_pdr_update_TL_pdr",
+      "range": {
+        "startLine": 151,
+        "startChar": 5,
+        "endLine": 151,
+        "endChar": 25
+      },
+      "revId": "9fbf4185338d02ce5ab6a7c146870af0ffa1a1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
