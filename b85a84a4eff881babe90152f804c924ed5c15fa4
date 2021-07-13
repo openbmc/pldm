@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8c29192b_e5c47e95",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-13T05:59:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a200b8f_1e3a9737",
+      "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "80baf6d1_220b3952",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2021-07-12T23:53:28Z",
       "side": 1,
       "message": "Can we come up with a better name for this? It represents the sum of the lengths of data written by prior calls to write().",
+      "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "026c95ec_9500c675",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-13T05:59:03Z",
+      "side": 1,
+      "message": "Ack\nReplaced reveiveLen with `writeTotalLength`, What do you think?",
+      "parentUuid": "80baf6d1_220b3952",
       "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "27454a9c_a20f0215",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-13T05:59:03Z",
+      "side": 1,
+      "message": "Ack\nMoved it to L: 309",
+      "parentUuid": "3a2ed6c9_906f8606",
+      "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "732f0740_39d01050",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
         "patchSetId": 5
@@ -64,6 +118,30 @@
       "writtenOn": "2021-07-12T23:53:28Z",
       "side": 1,
       "message": "This doesn\u0027t work if we\u0027ve handled partial writes (i.e. executed the body of the while loop above). Check the relationship between length, rc and receiveLen.",
+      "range": {
+        "startLine": 318,
+        "startChar": 8,
+        "endLine": 318,
+        "endChar": 38
+      },
+      "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a945b7f_dd8f6446",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-13T05:59:03Z",
+      "side": 1,
+      "message": "Sorry, it is my mistake\nUpdated",
+      "parentUuid": "732f0740_39d01050",
       "range": {
         "startLine": 318,
         "startChar": 8,
@@ -93,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "b2a4724c_44a63a7d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-13T05:59:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e0b626d6_668407d0",
+      "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db917683_8bed65b3",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
         "patchSetId": 5
@@ -104,6 +200,24 @@
       "writtenOn": "2021-07-12T23:53:28Z",
       "side": 1,
       "message": "You can\u0027t remove the file until you know the process handling the D-Bus call via storePel() has opened the file.\n\nThis isn\u0027t even something you can know currently, so you can\u0027t remove the file.\n\nDoing the cleanup in a way that isn\u0027t racy is why this needs to be handled via file descriptor passing.",
+      "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc6414b5_c5f67b3d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-13T05:59:03Z",
+      "side": 1,
+      "message": "Ack, Removed",
+      "parentUuid": "db917683_8bed65b3",
       "revId": "b85a84a4eff881babe90152f804c924ed5c15fa4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
