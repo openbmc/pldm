@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a55e53f7_e242085a",
+        "filename": "oem/ibm/libpldm/platform_oem_ibm.c",
+        "patchSetId": 21
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-13T15:41:38Z",
+      "side": 1,
+      "message": "you added a new line, this file also need to be removed from this commit",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 2
+      },
+      "revId": "684cce6362cdd0d555751d0f563e14c78f2f6869",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9b16a82_5957db52",
+        "filename": "oem/ibm/libpldm/platform_oem_ibm.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-13T15:41:38Z",
+      "side": 1,
+      "message": "this file still need to be removed as this does not have any change",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 12
+      },
+      "revId": "684cce6362cdd0d555751d0f563e14c78f2f6869",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
