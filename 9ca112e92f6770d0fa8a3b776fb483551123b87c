@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f9dc8e8_d958ef98",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1841,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-13T08:08:44Z",
+      "side": 1,
+      "message": "Can you please move pcie_cable_card10, cxp_bot and cxp_top after pcie_cable_card4 ? This will help to do any new additions with ease. Please follow the identify ordering for all.",
+      "revId": "9ca112e92f6770d0fa8a3b776fb483551123b87c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83e6bdb9_6664980e",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3218,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-13T08:08:44Z",
+      "side": 1,
+      "message": "pcieslot5 is not present. This needs to be removed.",
+      "revId": "9ca112e92f6770d0fa8a3b776fb483551123b87c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae7512ef_366e8904",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 3388,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-13T08:08:44Z",
+      "side": 1,
+      "message": "The powersupply2 and powersupply3 were not added as it was specific to 4U. If you wanted to add this. This needs to get added under identify sensor (4.json) and identify and fault effecter (under 11.json). Other wise, you can remove these two now and do it as a separate commit also.",
+      "revId": "9ca112e92f6770d0fa8a3b776fb483551123b87c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
