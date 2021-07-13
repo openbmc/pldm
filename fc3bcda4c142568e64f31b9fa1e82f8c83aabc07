@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fdd07dc7_885ece25",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 45
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-13T09:29:31Z",
+      "side": 1,
+      "message": "validity of TL PDR",
+      "range": {
+        "startLine": 147,
+        "startChar": 25,
+        "endLine": 147,
+        "endChar": 35
+      },
+      "revId": "fc3bcda4c142568e64f31b9fa1e82f8c83aabc07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
