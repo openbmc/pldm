@@ -273,6 +273,30 @@
     },
     {
       "key": {
+        "uuid": "7908a89d_b10634fa",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-13T03:32:42Z",
+      "side": 1,
+      "message": "Yup, so instead of InternalFailure, just use std::abort?",
+      "parentUuid": "43aff339_bea9dca7",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 32
+      },
+      "revId": "972a7d4778184639e8c85325b9e2554480806c3c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "76bf1208_95ea2e52",
         "filename": "oem/ibm/configurations/fru_master.json",
         "patchSetId": 5
