@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7272cf25_1d9da5bf",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-13T14:14:06Z",
+      "side": 1,
+      "message": "why was this moved from its original place, was it intentional ?",
+      "range": {
+        "startLine": 239,
+        "startChar": 2,
+        "endLine": 242,
+        "endChar": 72
+      },
+      "revId": "0951fcc80f16d13fdbb91c6598141581edf5fa74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
