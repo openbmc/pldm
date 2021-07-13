@@ -22,6 +22,30 @@
       "revId": "e9ec38d840aa049e33c5180a0d9df108baad123f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e46bbbec_6377bf5f",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:31:15Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "26ecbe62_64a71261",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "e9ec38d840aa049e33c5180a0d9df108baad123f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }

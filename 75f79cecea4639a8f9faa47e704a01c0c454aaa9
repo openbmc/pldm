@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7ec5b9f2_c5f84449",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:31:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d760e53_bea68e52",
+      "range": {
+        "startLine": 10,
+        "startChar": 15,
+        "endLine": 11,
+        "endChar": 43
+      },
+      "revId": "75f79cecea4639a8f9faa47e704a01c0c454aaa9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7da82abb_f1d85446",
         "filename": "libpldmresponder/base.hpp",
         "patchSetId": 19
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "a65d7cb6_77f9f583",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:31:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7da82abb_f1d85446",
+      "range": {
+        "startLine": 113,
+        "startChar": 3,
+        "endLine": 113,
+        "endChar": 38
+      },
+      "revId": "75f79cecea4639a8f9faa47e704a01c0c454aaa9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "970d2af6_2ce632fd",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 19
@@ -68,6 +116,30 @@
       "revId": "75f79cecea4639a8f9faa47e704a01c0c454aaa9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68a10390_05befa9c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:31:15Z",
+      "side": 1,
+      "message": "this was done to pass oemPlatformHandler into the base handler",
+      "parentUuid": "970d2af6_2ce632fd",
+      "range": {
+        "startLine": 239,
+        "startChar": 3,
+        "endLine": 242,
+        "endChar": 72
+      },
+      "revId": "75f79cecea4639a8f9faa47e704a01c0c454aaa9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
