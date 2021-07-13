@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5acc2b2d_b80ff683",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d082733b_da51eb69",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4fed3541_56a56fba",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 20
@@ -36,6 +60,30 @@
       "writtenOn": "2021-07-12T12:13:35Z",
       "side": 1,
       "message": "nit : it would have been good if these all would have gone into a different hpp file",
+      "range": {
+        "startLine": 72,
+        "startChar": 3,
+        "endLine": 80,
+        "endChar": 45
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43dc59e2_a85c954e",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "currently all these functions are defined inside the oem_ibm_platform handler, maybe we can revisit this",
+      "parentUuid": "4fed3541_56a56fba",
       "range": {
         "startLine": 72,
         "startChar": 3,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "75bba6e4_f36eb76a",
+        "filename": "oem/ibm/libpldm/platform_oem_ibm.c",
+        "patchSetId": 20
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36d01c5a_9a257cff",
+      "range": {
+        "startLine": 50,
+        "startChar": 1,
+        "endLine": 50,
+        "endChar": 2
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "28a4791a_93680cce",
         "filename": "oem/ibm/libpldm/platform_oem_ibm.h",
         "patchSetId": 20
@@ -91,6 +163,30 @@
       "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7b35072_7e53b693",
+        "filename": "oem/ibm/libpldm/platform_oem_ibm.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28a4791a_93680cce",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 18
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "56c29cac_85d62906",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Yes, we are resetting this counter before disabling the watchdog timer. So that the next time SetEventReceiver is sent it would be a re-ipl.",
+      "parentUuid": "0013190a_5dce0a1c",
+      "range": {
+        "startLine": 554,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 28
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b1fc95fa_e65353af",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 20
@@ -137,6 +257,30 @@
       "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09a0c8e0_946b511b",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1fc95fa_e65353af",
+      "range": {
+        "startLine": 555,
+        "startChar": 3,
+        "endLine": 556,
+        "endChar": 62
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "3e3b1e97_01040d2f",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cb94397_e5cd6b62",
+      "range": {
+        "startLine": 562,
+        "startChar": 4,
+        "endLine": 562,
+        "endChar": 26
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b58aaf4f_418715ee",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 20
@@ -183,6 +351,30 @@
       "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e44e8733_53c9af6c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b58aaf4f_418715ee",
+      "range": {
+        "startLine": 574,
+        "startChar": 8,
+        "endLine": 574,
+        "endChar": 15
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "ec1fe9ce_7f7a16ec",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "this count is required for use inside checkAndDisableWatchDog() in oem_ibm_handler.cpp to check if we have sent setEventReceiver more than once which means surveillance is in effecter and we should be disabling the watchdog timer",
+      "parentUuid": "8783def3_e77865cc",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 5
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3b850a9b_00ea7add",
         "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
         "patchSetId": 20
@@ -229,6 +445,30 @@
       "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17f0d738_21ad950d",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-13T13:38:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b850a9b_00ea7add",
+      "range": {
+        "startLine": 1,
+        "startChar": 9,
+        "endLine": 1,
+        "endChar": 10
+      },
+      "revId": "66dc2c5e25fd94bf07bda938afa38c7348a48aa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
