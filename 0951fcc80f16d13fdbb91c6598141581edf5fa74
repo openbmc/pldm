@@ -22,6 +22,30 @@
       "revId": "0951fcc80f16d13fdbb91c6598141581edf5fa74",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5a985f4_7ef51ee6",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-14T09:04:11Z",
+      "side": 1,
+      "message": "this was done to pass oemPlatformHandler into the base handler",
+      "parentUuid": "7272cf25_1d9da5bf",
+      "range": {
+        "startLine": 239,
+        "startChar": 2,
+        "endLine": 242,
+        "endChar": 72
+      },
+      "revId": "0951fcc80f16d13fdbb91c6598141581edf5fa74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
