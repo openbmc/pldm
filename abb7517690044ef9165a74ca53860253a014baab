@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd4b634c_ce76df01",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-14T05:00:59Z",
+      "side": 1,
+      "message": "I think this is wrong.\nBecause if we have two sensors, one of them has no service, but it cannot affect us to create the other\n\n@Manoj, @Sapma, what do you think?",
+      "range": {
+        "startLine": 262,
+        "startChar": 12,
+        "endLine": 262,
+        "endChar": 49
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
