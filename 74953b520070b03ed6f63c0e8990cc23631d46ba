@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "efb46966_4896d7da",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000392
+      },
+      "writtenOn": "2021-07-14T21:05:23Z",
+      "side": 1,
+      "message": "I thought there was supposed to be 2 copies of the attribute. hb_key_clear_request and hb_key_clear_request_current. Otherwise looks good.",
+      "revId": "74953b520070b03ed6f63c0e8990cc23631d46ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
