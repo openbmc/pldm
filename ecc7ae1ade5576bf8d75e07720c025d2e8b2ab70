@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f500ae3a_a55ddf02",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-07-14T10:24:00Z",
+      "side": 1,
+      "message": "Done.. Initially I was  doubtful If i need to add OEM_IBM condition.",
+      "parentUuid": "637c83b4_ef823d66",
+      "revId": "ecc7ae1ade5576bf8d75e07720c025d2e8b2ab70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bb10847e_68b36f1a",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 7
@@ -39,6 +57,30 @@
       "revId": "ecc7ae1ade5576bf8d75e07720c025d2e8b2ab70",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d9bdb41_2eadbf14",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-07-14T10:24:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb10847e_68b36f1a",
+      "range": {
+        "startLine": 333,
+        "startChar": 0,
+        "endLine": 336,
+        "endChar": 73
+      },
+      "revId": "ecc7ae1ade5576bf8d75e07720c025d2e8b2ab70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
