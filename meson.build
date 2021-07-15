@@ -8,6 +8,8 @@ project('pldm', ['c', 'cpp'],
           'buildtype=debugoptimized'
         ])
 
+cmake = import('cmake')
+
 # Wno-psabi reduces the number of "Note:" messages when cross-compiling some STL
 # stuff for ARM. See https://stackoverflow.com/questions/48149323/strange-gcc-warning-when-compiling-qt-project
 # Basically, gcc 6 and gcc 7 are not ABI compatible, but since the whole OpenBMC
@@ -95,12 +97,8 @@ endif
 if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
   function2_dep = declare_dependency()
 else
-  subproject('function2')
-  function2_dep = declare_dependency(
-    include_directories: [
-      'subprojects/function2/include/function2'
-    ]
-  )
+  function2 = cmake.subproject('function2')
+  function2_dep = function2.dependency('function2')
 endif
 
 if get_option('oe-sdk').enabled()
