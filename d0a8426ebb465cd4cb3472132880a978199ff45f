@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b4781d20_e4b8a15a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-07-15T10:15:18Z",
+      "side": 1,
+      "message": "how do we delete the temp pel file in good path? can pel daemon delete the file after processing @Mattspinler?\nat present we call the \"Create\" DBus method as bus.call_noreply() and then delete the temp pel file from /tmp. do you think that may lead to situation where pel daemon can get corrupted log? or the log gets deleted before it is processed by you?",
+      "range": {
+        "startLine": 325,
+        "startChar": 4,
+        "endLine": 325,
+        "endChar": 14
+      },
+      "revId": "d0a8426ebb465cd4cb3472132880a978199ff45f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
