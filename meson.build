@@ -57,6 +57,37 @@ configure_file(output: 'config.h',
   configuration: conf_data
 )
 
+# Setup googletest before we import any projects that also depend on it to make
+# sure we have control over its configuration
+if get_option('tests').enabled()
+    gtest = dependency('gtest', main: true, disabler: true, required: false)
+    gmock = dependency('gmock', disabler: true, required: false)
+    if not gtest.found() or not gmock.found()
+        cmake = import('cmake')
+        gtest_opts = cmake.subproject_options()
+        gtest_opts.set_override_option('warning_level', '1')
+        gtest_opts.set_override_option('werror', 'false')
+        gtest_proj = cmake.subproject('googletest',
+                                      options: gtest_opts,
+                                      required: false)
+        if gtest_proj.found()
+            gtest = declare_dependency(
+                dependencies: [
+                    dependency('threads'),
+                    gtest_proj.dependency('gtest'),
+                    gtest_proj.dependency('gtest_main'),
+                ]
+            )
+            gmock = gtest_proj.dependency('gmock')
+        else
+            assert(
+                not get_option('tests').enabled(),
+                'Googletest is required if tests are enabled'
+            )
+        endif
+    endif
+endif
+
 phosphor_dbus_interfaces = dependency(
   'phosphor-dbus-interfaces',
   fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
@@ -113,29 +144,6 @@ if get_option('oe-sdk').enabled()
   dynamic_linker = ['-Wl,-dynamic-linker,' + ld_so]
 else
   dynamic_linker = []
-endif
-
-if get_option('tests').enabled()
-    gtest = dependency('gtest', main: true, disabler: true, required: false)
-    gmock = dependency('gmock', disabler: true, required: false)
-    if not gtest.found() or not gmock.found()
-        gtest_proj = import('cmake').subproject('googletest', required: false)
-        if gtest_proj.found()
-            gtest = declare_dependency(
-                dependencies: [
-                    dependency('threads'),
-                    gtest_proj.dependency('gtest'),
-                    gtest_proj.dependency('gtest_main'),
-                ]
-            )
-            gmock = gtest_proj.dependency('gmock')
-        else
-            assert(
-                not get_option('tests').enabled(),
-                'Googletest is required if tests are enabled'
-            )
-        endif
-    endif
 endif
 
 subdir('libpldm')
