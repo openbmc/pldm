@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08d4d58d_072e6d48",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-15T01:01:25Z",
+      "side": 1,
+      "message": "This should be ssize_t. Also the method should return ssize_t just like write(), but that\u0027s probably a broader problem.",
+      "revId": "b618b051f13cce74dfa241c404367d8500c598f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2bfd980_dae52bc6",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-15T01:01:25Z",
+      "side": 1,
+      "message": "We can rewrite this to give us a cleaner condition down below:\n\n size_t written \u003d 0; // I think this is more succinct than writeTotalLength\n do {\n  if ((rc \u003d write(fd, buffer, length)) \u003d\u003d -1)\n   break;\n  written +\u003d rc;\n  buffer +\u003d rc;\n } while (rc \u0026\u0026 written \u003c length);",
+      "range": {
+        "startLine": 294,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 5
+      },
+      "revId": "b618b051f13cce74dfa241c404367d8500c598f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e467b282_8797814f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-15T01:01:25Z",
+      "side": 1,
+      "message": "We can improve this. With the rework to the write() loop above we can just use one condition. Additionally, we should be casting length to an size_t (and it really should be a size_t or off_t to begin with).\n\n if (written \u003d\u003d static_cast\u003csize_t\u003e(length))",
+      "range": {
+        "startLine": 311,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 55
+      },
+      "revId": "b618b051f13cce74dfa241c404367d8500c598f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bfdc91d_f7a2fda4",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-07-15T01:01:25Z",
+      "side": 1,
+      "message": "Do we want to delete the PEL file in this case? I feel like we should leave it there for someone to manually collect. We should call the file name out in the log message on std::cerr.\n\nWe also need to make pldmd delete the PEL file in the happy case.",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 319,
+        "endChar": 32
+      },
+      "revId": "b618b051f13cce74dfa241c404367d8500c598f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
