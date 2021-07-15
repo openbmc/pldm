@@ -22,6 +22,30 @@
       "revId": "d0a8426ebb465cd4cb3472132880a978199ff45f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d08a2f4e_4842be13",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2021-07-15T14:17:46Z",
+      "side": 1,
+      "message": "I guess I can see a few options:\n1) Don\u0027t use call_noreply\n2) what you suggest here, have the PEL code delete the file, which is fine\n3) Make a new D-Bus method to pass a file descriptor instead, which was mentioned earlier\n\nI\u0027m  not sure if this is what was causing the other problem, but I imagine we should probably figure this piece out first.",
+      "parentUuid": "b4781d20_e4b8a15a",
+      "range": {
+        "startLine": 325,
+        "startChar": 4,
+        "endLine": 325,
+        "endChar": 14
+      },
+      "revId": "d0a8426ebb465cd4cb3472132880a978199ff45f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
