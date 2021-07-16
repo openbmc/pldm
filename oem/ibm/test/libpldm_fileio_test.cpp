@@ -1628,3 +1628,247 @@ TEST(FileAck, testBadEncodeRequest)
 
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(FileAckWithMetadata, testGoodEncodeResponse)
+{
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES>
+        responseMsg{};
+
+    uint8_t completionCode = 0x0;
+
+    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = encode_file_ack_with_meta_data_resp(0, completionCode, response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(response->hdr.instance_id, 0);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
+    ASSERT_EQ(response->hdr.command, PLDM_FILE_ACK_WITH_META_DATA);
+    ASSERT_EQ(
+        0, memcmp(response->payload, &completionCode, sizeof(completionCode)));
+}
+
+TEST(FileAckWithMetadata, testBadEncodeResponse)
+{
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES>
+        responseMsg{};
+    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    // completion code is PLDM_ERROR
+    auto rc = encode_file_ack_with_meta_data_resp(0, PLDM_ERROR, response);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(response->hdr.request, PLDM_RESPONSE);
+    ASSERT_EQ(response->hdr.instance_id, 0);
+    ASSERT_EQ(response->hdr.type, PLDM_OEM);
+    ASSERT_EQ(response->hdr.command, PLDM_FILE_ACK_WITH_META_DATA);
+    ASSERT_EQ(response->payload[0], PLDM_ERROR);
+
+    // response is NULL pointer
+    rc = encode_file_ack_with_meta_data_resp(0, PLDM_SUCCESS, NULL);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(FileAckWithMetadata, testGoodDecodeResponse)
+{
+    std::array<uint8_t,
+               PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES + sizeof(pldm_msg_hdr)>
+        responseMsg{};
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    size_t payload_length = responseMsg.size() - sizeof(pldm_msg_hdr);
+    auto response = reinterpret_cast<pldm_file_ack_with_meta_data_resp*>(
+        responsePtr->payload);
+
+    // Random value for completion code
+    uint8_t completionCode = 0x0;
+
+    response->completion_code = completionCode;
+
+    uint8_t retCompletionCode = PLDM_SUCCESS;
+
+    // Invoke decode the read/write file response
+    auto rc = decode_file_ack_with_meta_data_resp(responsePtr, payload_length,
+                                                  &retCompletionCode);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(completionCode, retCompletionCode);
+}
+
+TEST(FileAckWithMetadata, testBadDecodeResponse)
+{
+    uint8_t completionCode = 0;
+
+    // Request payload message is missing
+    auto rc = decode_file_ack_with_meta_data_resp(NULL, 0, &completionCode);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t,
+               PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES + sizeof(pldm_msg_hdr)>
+        responseMsg{};
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    // Payload length is invalid
+    rc = decode_file_ack_with_meta_data_resp(responsePtr, 0, &completionCode);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST(FileAckWithMetadata, testGoodEncodeRequest)
+{
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_FILE_ACK_WITH_META_DATA_REQ_BYTES>
+        requestMsg{};
+
+    uint16_t fileType = 0xFFFF;
+    uint32_t fileHandle = 0x12345678;
+    uint8_t fileStatus = 0xFF;
+    uint32_t fileMetaData1 = 0xFFFFFFFF;
+    uint32_t fileMetaData2 = 0xFFFFFFFF;
+    uint32_t fileMetaData3 = 0xFFFFFFFF;
+    uint32_t fileMetaData4 = 0xFFFFFFFF;
+
+    uint16_t fileTypeLe = htole16(fileType);
+    uint32_t fileHandleLe = htole32(fileHandle);
+    uint32_t fileMetaData1Le = htole32(fileMetaData1);
+    uint32_t fileMetaData2Le = htole32(fileMetaData2);
+    uint32_t fileMetaData3Le = htole32(fileMetaData3);
+    uint32_t fileMetaData4Le = htole32(fileMetaData4);
+
+    pldm_msg* request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_file_ack_with_meta_data_req(
+        0, fileType, fileHandle, fileStatus, fileMetaData1, fileMetaData2,
+        fileMetaData3, fileMetaData4, request);
+
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(request->hdr.request, PLDM_REQUEST);
+    ASSERT_EQ(request->hdr.instance_id, 0);
+    ASSERT_EQ(request->hdr.type, PLDM_OEM);
+    ASSERT_EQ(request->hdr.command, PLDM_FILE_ACK_WITH_META_DATA);
+    ASSERT_EQ(0, memcmp(request->payload, &fileTypeLe, sizeof(fileTypeLe)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe), &fileHandleLe,
+                        sizeof(fileHandleLe)));
+    ASSERT_EQ(
+        0, memcmp(request->payload + sizeof(fileTypeLe) + sizeof(fileHandleLe),
+                  &fileStatus, sizeof(fileStatus)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe) +
+                            sizeof(fileHandleLe) + sizeof(fileStatus),
+                        &fileMetaData1Le, sizeof(fileMetaData1Le)));
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe) +
+                            sizeof(fileHandleLe) + sizeof(fileStatus) +
+                            sizeof(fileMetaData1Le),
+                        &fileMetaData2Le, sizeof(fileMetaData2Le)));
+
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe) +
+                            sizeof(fileHandleLe) + sizeof(fileStatus) +
+                            sizeof(fileMetaData1Le) + sizeof(fileMetaData2Le),
+                        &fileMetaData3Le, sizeof(fileMetaData3Le)));
+
+    ASSERT_EQ(0, memcmp(request->payload + sizeof(fileTypeLe) +
+                            sizeof(fileHandleLe) + sizeof(fileStatus) +
+                            sizeof(fileMetaData1Le) + sizeof(fileMetaData2Le) +
+                            sizeof(fileMetaData3Le),
+                        &fileMetaData4Le, sizeof(fileMetaData4Le)));
+}
+
+TEST(FileAckWithMetadata, testBadEncodeRequest)
+{
+    uint8_t fileType = 0xFF;
+    uint32_t fileHandle = 0;
+    uint8_t fileStatus = 0;
+    uint32_t fileMetaData1 = 0;
+    uint32_t fileMetaData2 = 0;
+    uint32_t fileMetaData3 = 0;
+    uint32_t fileMetaData4 = 0;
+
+    // request is NULL pointer
+    auto rc = encode_file_ack_with_meta_data_req(
+        0, fileType, fileHandle, fileStatus, fileMetaData1, fileMetaData2,
+        fileMetaData3, fileMetaData4, nullptr);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(FileAckWithMetadata, testGoodDecodeRequest)
+{
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_FILE_ACK_WITH_META_DATA_REQ_BYTES>
+        requestMsg{};
+
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    size_t payload_length = requestMsg.size() - sizeof(pldm_msg_hdr);
+    auto request = reinterpret_cast<pldm_file_ack_with_meta_data_req*>(
+        requestPtr->payload);
+
+    uint16_t fileType = 0xFFFF;
+    uint32_t fileHandle = 0x12345678;
+    uint8_t fileStatus = 0xFF;
+    uint32_t fileMetaData1 = 0x12345678;
+    uint32_t fileMetaData2 = 0x87654321;
+    uint32_t fileMetaData3 = 0x22121117;
+    uint32_t fileMetaData4 = 0x12334345;
+
+    request->file_type = htole16(fileType);
+    request->file_handle = htole32(fileHandle);
+    request->file_status = fileStatus;
+    request->file_meta_data_1 = htole32(fileMetaData1);
+    request->file_meta_data_2 = htole32(fileMetaData2);
+    request->file_meta_data_3 = htole32(fileMetaData3);
+    request->file_meta_data_4 = htole32(fileMetaData4);
+
+    uint16_t retFileType = 0xFFFF;
+    uint32_t retFileHandle = 0;
+    uint8_t retFileStatus = 0;
+    uint32_t retFileMetaData1 = 0;
+    uint32_t retFileMetaData2 = 0;
+    uint32_t retFileMetaData3 = 0;
+    uint32_t retFileMetaData4 = 0;
+
+    auto rc = decode_file_ack_with_meta_data_req(
+        requestPtr, payload_length, &retFileType, &retFileHandle,
+        &retFileStatus, &retFileMetaData1, &retFileMetaData2, &retFileMetaData3,
+        &retFileMetaData4);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(fileType, retFileType);
+    ASSERT_EQ(fileHandle, retFileHandle);
+    ASSERT_EQ(fileStatus, retFileStatus);
+    ASSERT_EQ(fileMetaData1, retFileMetaData1);
+    ASSERT_EQ(fileMetaData2, retFileMetaData2);
+    ASSERT_EQ(fileMetaData3, retFileMetaData3);
+    ASSERT_EQ(fileMetaData4, retFileMetaData4);
+}
+
+TEST(FileAckWithMetadata, testBadDecodeRequest)
+{
+    uint16_t fileType = 0;
+    uint32_t fileHandle = 0;
+    uint8_t fileStatus = 0;
+    uint32_t fileMetaData1 = 0;
+    uint32_t fileMetaData2 = 0;
+    uint32_t fileMetaData3 = 0;
+    uint32_t fileMetaData4 = 0;
+
+    // Request payload message is missing
+    auto rc = decode_file_ack_with_meta_data_req(
+        NULL, 0, &fileType, &fileHandle, &fileStatus, &fileMetaData1,
+        &fileMetaData2, &fileMetaData3, &fileMetaData4);
+
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    std::array<uint8_t,
+               PLDM_FILE_ACK_WITH_META_DATA_REQ_BYTES + sizeof(pldm_msg_hdr)>
+        requestMsg{};
+
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    // Payload length is invalid
+    rc = decode_file_ack_with_meta_data_req(
+        requestPtr, 0, &fileType, &fileHandle, &fileStatus, &fileMetaData1,
+        &fileMetaData2, &fileMetaData3, &fileMetaData4);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
