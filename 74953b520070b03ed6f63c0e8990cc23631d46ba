@@ -34,6 +34,24 @@
       "revId": "74953b520070b03ed6f63c0e8990cc23631d46ba",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54977d41_fdb552d8",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1001144
+      },
+      "writtenOn": "2021-07-16T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02843201_44a4a7e0",
+      "revId": "74953b520070b03ed6f63c0e8990cc23631d46ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
