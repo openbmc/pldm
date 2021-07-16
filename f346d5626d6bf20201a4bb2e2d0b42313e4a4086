@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdd43d17_19811d71",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-07-16T15:36:59Z",
+      "side": 1,
+      "message": "Update help text to specify that this value takes effect on the next boot.",
+      "range": {
+        "startLine": 253,
+        "startChar": 23,
+        "endLine": 253,
+        "endChar": 68
+      },
+      "revId": "f346d5626d6bf20201a4bb2e2d0b42313e4a4086",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c66e19bb_0216b125",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-07-16T15:36:59Z",
+      "side": 1,
+      "message": "Update help text to specify that this value is the value in use for the current IPL, and that this attribute should not be set directly, but to set hb_mirror_memory_mode instead.\n\ne.g. we wrote for hb_power_limit_enable\n\n      {\n         \"attribute_name\":\"hb_power_limit_enable\",\n         ...\n         \"helpText\" : \"Specifies if the power limit is enabled, requires a reboot for a change to be applied.\",\n         \"displayName\" : \"Power Limit Enable (pending)\"\n      },\n      {\n         \"attribute_name\":\"hb_power_limit_enable_current\",\n         ...\n         \"helpText\" : \"Specifies if the power limit is enabled for the current IPL. Do not set this attribute directly; set hb_power_limit_enable instead.\",\n         \"displayName\" : \"Power Limit Enable (current)\"\n      },",
+      "range": {
+        "startLine": 265,
+        "startChar": 23,
+        "endLine": 265,
+        "endChar": 68
+      },
+      "revId": "f346d5626d6bf20201a4bb2e2d0b42313e4a4086",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
