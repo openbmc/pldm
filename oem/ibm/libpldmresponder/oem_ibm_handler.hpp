@@ -2,6 +2,7 @@
 #include "libpldm/entity.h"
 #include "libpldm/platform.h"
 
+#include "collect_slot_vpd.hpp"
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -18,11 +19,16 @@ namespace oem_ibm_platform
 #define PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE 32768
 #define PLDM_OEM_IBM_BOOT_STATE 32769
 #define PLDM_OEM_IBM_SYSTEM_POWER_STATE 32771
+#define PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE 32772
+#define PLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE 32773
 
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
+
+using ObjectPath = std::string;
+using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
 
 enum class CodeUpdateState : uint8_t
 {
@@ -32,6 +38,20 @@ enum class CodeUpdateState : uint8_t
     ABORT = 0x4,
     ACCEPT = 0x5,
     REJECT = 0x6
+};
+
+enum class SlotEnableEffecterState : uint8_t
+{
+    ENABLE = 0x0,
+    DISABLE = 0x1
+};
+
+enum class SlotEnableSensorState : uint8_t
+{
+    SLOT_STATE_UNKOWN = 0x0,
+    SLOT_STATE_ENABLED = 0x1,
+    SLOT_STATE_DISABLED = 0x2,
+    SLOT_STATE_ERROR = 0x03
 };
 
 enum VerificationStateValues
@@ -97,6 +117,11 @@ class Handler : public oem_platform::Handler
         return platformHandler->getNextSensorId();
     }
 
+    virtual const AssociatedEntityMap& getAssociateEntityMap()
+    {
+        return platformHandler->getAssociateEntityMap();
+    }
+
     /** @brief Method to Generate the OEM PDRs
      *
      * @param[in] repo - instance of concrete implementation of Repo
@@ -147,6 +172,7 @@ class Handler : public oem_platform::Handler
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
+    pldm::responder::SlotEnable* slotEnable;
     pldm::responder::platform::Handler*
         platformHandler; //!< pointer to PLDM platform handler
 
