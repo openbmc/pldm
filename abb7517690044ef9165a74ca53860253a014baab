@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "bf69695b_2bbeb9d8",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-18T04:11:11Z",
+      "side": 1,
+      "message": "do you wanna limit the number of entries in json to 256 ?",
+      "range": {
+        "startLine": 33,
+        "startChar": 3,
+        "endLine": 33,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bd4b634c_ce76df01",
         "filename": "libpldmresponder/pdr_state_sensor.hpp",
         "patchSetId": 6
@@ -13,6 +36,30 @@
       "writtenOn": "2021-07-14T05:00:59Z",
       "side": 1,
       "message": "I think this is wrong.\nBecause if we have two sensors, one of them has no service, but it cannot affect us to create the other\n\n@Manoj, @Sapma, what do you think?",
+      "range": {
+        "startLine": 262,
+        "startChar": 12,
+        "endLine": 262,
+        "endChar": 49
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "664ebc24_8dbbc1b3",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-18T04:11:11Z",
+      "side": 1,
+      "message": "in a composite sensor case, we might have two sensors that can be mapped to two different dbus objects correct ?\n\n\u003e but it cannot affect us to create the other\ncan you explain more on why do you think so ?",
+      "parentUuid": "bd4b634c_ce76df01",
       "range": {
         "startLine": 262,
         "startChar": 12,
