@@ -1,0 +1,9 @@
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: <raja.sekhar.reddy.gade@linux.intel.com>
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Submitted-by: Tom Joseph <rushtotom@gmail.com>
+Submitted-at: Mon, 19 Jul 2021 17:05:51 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/42541
+Project: openbmc/pldm
+Branch: refs/heads/master
