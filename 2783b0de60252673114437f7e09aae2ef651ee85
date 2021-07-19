@@ -22,6 +22,30 @@
       "revId": "2783b0de60252673114437f7e09aae2ef651ee85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66462727_4fc51e4f",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-07-19T14:46:36Z",
+      "side": 1,
+      "message": "As this is existing code, we can take this up in a new commit when we have a bit of time.",
+      "parentUuid": "0b4fd0e3_7c0020b4",
+      "range": {
+        "startLine": 318,
+        "startChar": 8,
+        "endLine": 334,
+        "endChar": 9
+      },
+      "revId": "2783b0de60252673114437f7e09aae2ef651ee85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
