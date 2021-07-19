@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "533d81fb_278f6309",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-07-19T12:48:40Z",
+      "side": 1,
+      "message": "I didn\u0027t follow this.",
+      "parentUuid": "bf69695b_2bbeb9d8",
+      "range": {
+        "startLine": 33,
+        "startChar": 3,
+        "endLine": 33,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bd4b634c_ce76df01",
         "filename": "libpldmresponder/pdr_state_sensor.hpp",
         "patchSetId": 6
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "\u003e in a composite sensor case, we might have two sensors that can be mapped to two different dbus objects correct ?\n\nCorrect\n\n\u003e can you explain more on why do you think so ?\n\nIf one sensor can get the correct DBus Object, but the other sensor can not get the correct DBus Object, then we need to add the correct sensor to the PdrEntity, right?",
       "parentUuid": "664ebc24_8dbbc1b3",
+      "range": {
+        "startLine": 262,
+        "startChar": 12,
+        "endLine": 262,
+        "endChar": 49
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2e79bb5_fdc34a23",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-07-19T12:48:40Z",
+      "side": 1,
+      "message": "yes George and Manoj, now that is happening, In case of composite sensor when one sensor does not have a Dbus object and another one has we create PDR but a getStatesensorreading command will throw error. I have explained in the commit message about how the output looks using pldmtool. Did I answer the question?",
+      "parentUuid": "213420d4_dc046c47",
       "range": {
         "startLine": 262,
         "startChar": 12,
