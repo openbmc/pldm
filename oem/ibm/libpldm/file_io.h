@@ -24,6 +24,8 @@ enum pldm_fileio_commands {
 	PLDM_READ_FILE_BY_TYPE = 0xB,
 	PLDM_WRITE_FILE_BY_TYPE = 0xC,
 	PLDM_FILE_ACK = 0xD,
+	PLDM_NEW_FILE_AVAILABLE_WITH_META_DATA = 0xE,
+	PLDM_FILE_ACK_WITH_META_DATA = 0xF,
 };
 
 /** @brief PLDM Command specific codes
@@ -75,6 +77,10 @@ enum pldm_fileio_file_type {
 #define PLDM_RW_FILE_BY_TYPE_RESP_BYTES 5
 #define PLDM_FILE_ACK_REQ_BYTES 7
 #define PLDM_FILE_ACK_RESP_BYTES 1
+#define PLDM_FILE_ACK_WITH_META_DATA_REQ_BYTES 23
+#define PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES 1
+#define PLDM_NEW_FILE_AVAILABLE_WITH_META_DATA_REQ_BYTES 30
+#define PLDM_NEW_FILE_AVAILABLE_WITH_META_DATA_RESP_BYTES 1
 
 /** @struct pldm_read_write_file_memory_req
  *
@@ -717,6 +723,173 @@ int encode_file_ack_req(uint8_t instance_id, uint16_t file_type,
  */
 int decode_file_ack_resp(const struct pldm_msg *msg, size_t payload_length,
 			 uint8_t *completion_code);
+
+/* FileAckWithMetadata */
+
+/** @struct pldm_file_ack_with_meta_data_req
+ *
+ *  Structure representing FileAckWithMetadata request
+ */
+struct pldm_file_ack_with_meta_data_req {
+	uint16_t file_type;	   //!< Type of file
+	uint32_t file_handle;	   //!< Handle to file
+	uint8_t file_status;	   //!< Status of file processing
+	uint32_t file_meta_data_1; //!< Meta data specific to file type 1
+	uint32_t file_meta_data_2; //!< Meta data specific to file type 2
+	uint32_t file_meta_data_3; //!< Meta data specific to file type 3
+	uint32_t file_meta_data_4; //!< Meta data specific to file type 4
+} __attribute__((packed));
+
+/** @struct pldm_file_ack_with_meta_data_resp
+ *
+ *  Structure representing FileAckWithMetadata response
+ */
+struct pldm_file_ack_with_meta_data_resp {
+	uint8_t completion_code; //!< Completion code
+} __attribute__((packed));
+
+/** @brief Encode FileAckWithMetadata request data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] file_type - Type of the file
+ *  @param[in] file_handle - A handle to the file
+ *  @param[in] file_status - Status of file processing
+ *  @param[in] file_meta_data_1 - Meta data specific to file type 1
+ *  @param[in] file_meta_data_2 - Meta data specific to file type 2
+ *  @param[in] file_meta_data_3 - Meta data specific to file type 3
+ *  @param[in] file_meta_data_4 - Meta data specific to file type 4
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_file_ack_with_meta_data_req(
+    uint8_t instance_id, uint16_t file_type, uint32_t file_handle,
+    uint8_t file_status, uint32_t file_meta_data_1, uint32_t file_meta_data_2,
+    uint32_t file_meta_data_3, uint32_t file_meta_data_4, struct pldm_msg *msg);
+
+/** @brief Decode FileAckWithMetadata command response data
+ *
+ *  @param[in] msg - pointer to PLDM response message
+ *  @param[in] payload_length - Length of response payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @return pldm_completion_codes
+ */
+int decode_file_ack_with_meta_data_resp(const struct pldm_msg *msg,
+					size_t payload_length,
+					uint8_t *completion_code);
+
+/** @brief Decode FileAckWithMetadata request data
+ *
+ *  @param[in] msg - Pointer to PLDM request message
+ *  @param[in] payload_length - Length of request payload
+ *  @param[out] file_type - Type of the file
+ *  @param[out] file_handle - A handle to the file
+ *  @param[out] file_status - Status of file processing
+ *  @param[out] file_meta_data_1 - Meta data specific to file type 1
+ *  @param[out] file_meta_data_2 - Meta data specific to file type 2
+ *  @param[out] file_meta_data_3 - Meta data specific to file type 3
+ *  @param[out] file_meta_data_4 - Meta data specific to file type 4
+ *  @return pldm_completion_codes
+ */
+int decode_file_ack_with_meta_data_req(
+    const struct pldm_msg *msg, size_t payload_length, uint16_t *file_type,
+    uint32_t *file_handle, uint8_t *file_status, uint32_t *file_meta_data_1,
+    uint32_t *file_meta_data_2, uint32_t *file_meta_data_3,
+    uint32_t *file_meta_data_4);
+
+/** @brief Create a PLDM response message for FileAckWithMetadata
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_file_ack_with_meta_data_resp(uint8_t instance_id,
+					uint8_t completion_code,
+					struct pldm_msg *msg);
+
+/* NewFileAvailableWithMetaData */
+
+/** @struct pldm_new_file_with_metadata_req
+ *
+ *  Structure representing NewFileAvailableWithMetaData request
+ */
+struct pldm_new_file_with_metadata_req {
+	uint16_t file_type;	   //!< Type of file
+	uint32_t file_handle;	   //!< Handle to file
+	uint64_t length;	   //!< Number of bytes in new file
+	uint32_t file_meta_data_1; //!< Meta data specific to file type 1
+	uint32_t file_meta_data_2; //!< Meta data specific to file type 2
+	uint32_t file_meta_data_3; //!< Meta data specific to file type 3
+	uint32_t file_meta_data_4; //!< Meta data specific to file type 4
+} __attribute__((packed));
+
+/** @struct pldm_new_file_with_metadata_resp
+ *
+ *  Structure representing NewFileAvailableWithMetaData response data
+ */
+struct pldm_new_file_with_metadata_resp {
+	uint8_t completion_code; //!< Completion code
+} __attribute__((packed));
+
+/** @brief Encode NewFileAvailableWithMetaData request data
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] file_type - Type of the file
+ *  @param[in] file_handle - A handle to the file
+ *  @param[in] length -  Number of bytes in new file
+ *  @param[in] file_meta_data_1 - Meta data specific to file type 1
+ *  @param[in] file_meta_data_2 - Meta data specific to file type 2
+ *  @param[in] file_meta_data_3 - Meta data specific to file type 3
+ *  @param[in] file_meta_data_4 - Meta data specific to file type 4
+ *  @param[out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ */
+int encode_new_file_with_metadata_req(
+    uint8_t instance_id, uint16_t file_type, uint32_t file_handle,
+    uint64_t length, uint32_t file_meta_data_1, uint32_t file_meta_data_2,
+    uint32_t file_meta_data_3, uint32_t file_meta_data_4, struct pldm_msg *msg);
+
+/** @brief Decode NewFileAvailableWithMetaData response data
+ *
+ *  @param[in] msg - pointer to PLDM response message
+ *  @param[in] payload_length - Length of response payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @return pldm_completion_codes
+ */
+int decode_new_file_with_metadata_resp(const struct pldm_msg *msg,
+				       size_t payload_length,
+				       uint8_t *completion_code);
+
+/** @brief Decode NewFileAvailableWithMetaData request data
+ *
+ *  @param[in] msg - Pointer to PLDM request message
+ *  @param[in] payload_length - Length of request payload
+ *  @param[out] file_type - Type of the file
+ *  @param[out] file_handle - A handle to the file
+ *  @param[out] length - Number of bytes in new file
+ *  @param[out] file_meta_data_1 - Meta data specific to file type 1
+ *  @param[out] file_meta_data_2 - Meta data specific to file type 2
+ *  @param[out] file_meta_data_3 - Meta data specific to file type 3
+ *  @param[out] file_meta_data_4 - Meta data specific to file type 4
+ *  @return pldm_completion_codes
+ */
+int decode_new_file_with_metadata_req(
+    const struct pldm_msg *msg, size_t payload_length, uint16_t *file_type,
+    uint32_t *file_handle, uint64_t *length, uint32_t *file_meta_data_1,
+    uint32_t *file_meta_data_2, uint32_t *file_meta_data_3,
+    uint32_t *file_meta_data_4);
+
+/** @brief Create a PLDM response for NewFileAvailableWithMetaData
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param 'msg'
+ */
+int encode_new_file_with_metadata_resp(uint8_t instance_id,
+				       uint8_t completion_code,
+				       struct pldm_msg *msg);
 
 #ifdef __cplusplus
 }

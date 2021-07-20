@@ -839,3 +839,212 @@ int decode_file_ack_resp(const struct pldm_msg *msg, size_t payload_length,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_file_ack_with_meta_data_req(
+    uint8_t instance_id, uint16_t file_type, uint32_t file_handle,
+    uint8_t file_status, uint32_t file_meta_data_1, uint32_t file_meta_data_2,
+    uint32_t file_meta_data_3, uint32_t file_meta_data_4, struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_OEM;
+	header.command = PLDM_FILE_ACK_WITH_META_DATA;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_file_ack_with_meta_data_req *req =
+	    (struct pldm_file_ack_with_meta_data_req *)msg->payload;
+	req->file_type = htole16(file_type);
+	req->file_handle = htole32(file_handle);
+	req->file_status = file_status;
+	req->file_meta_data_1 = htole32(file_meta_data_1);
+	req->file_meta_data_2 = htole32(file_meta_data_2);
+	req->file_meta_data_3 = htole32(file_meta_data_3);
+	req->file_meta_data_4 = htole32(file_meta_data_4);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_file_ack_with_meta_data_resp(const struct pldm_msg *msg,
+					size_t payload_length,
+					uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_file_ack_with_meta_data_resp *response =
+	    (struct pldm_file_ack_with_meta_data_resp *)msg->payload;
+	*completion_code = response->completion_code;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_file_ack_with_meta_data_req(
+    const struct pldm_msg *msg, size_t payload_length, uint16_t *file_type,
+    uint32_t *file_handle, uint8_t *file_status, uint32_t *file_meta_data_1,
+    uint32_t *file_meta_data_2, uint32_t *file_meta_data_3,
+    uint32_t *file_meta_data_4)
+{
+	if (msg == NULL || file_type == NULL || file_handle == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_FILE_ACK_WITH_META_DATA_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_file_ack_with_meta_data_req *request =
+	    (struct pldm_file_ack_with_meta_data_req *)msg->payload;
+	*file_type = le16toh(request->file_type);
+	*file_handle = le32toh(request->file_handle);
+	*file_status = request->file_status;
+	*file_meta_data_1 = le32toh(request->file_meta_data_1);
+	*file_meta_data_2 = le32toh(request->file_meta_data_2);
+	*file_meta_data_3 = le32toh(request->file_meta_data_3);
+	*file_meta_data_4 = le32toh(request->file_meta_data_4);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_file_ack_with_meta_data_resp(uint8_t instance_id,
+					uint8_t completion_code,
+					struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_OEM;
+	header.command = PLDM_FILE_ACK_WITH_META_DATA;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_file_ack_with_meta_data_resp *response =
+	    (struct pldm_file_ack_with_meta_data_resp *)msg->payload;
+	response->completion_code = completion_code;
+
+	return PLDM_SUCCESS;
+}
+
+int encode_new_file_with_metadata_req(
+    uint8_t instance_id, uint16_t file_type, uint32_t file_handle,
+    uint64_t length, uint32_t file_meta_data_1, uint32_t file_meta_data_2,
+    uint32_t file_meta_data_3, uint32_t file_meta_data_4, struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.msg_type = PLDM_REQUEST;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_OEM;
+	header.command = PLDM_NEW_FILE_AVAILABLE_WITH_META_DATA;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_new_file_with_metadata_req *req =
+	    (struct pldm_new_file_with_metadata_req *)msg->payload;
+	req->file_type = htole16(file_type);
+	req->file_handle = htole32(file_handle);
+	req->length = htole64(length);
+	req->file_meta_data_1 = htole32(file_meta_data_1);
+	req->file_meta_data_2 = htole32(file_meta_data_2);
+	req->file_meta_data_3 = htole32(file_meta_data_3);
+	req->file_meta_data_4 = htole32(file_meta_data_4);
+
+	return PLDM_SUCCESS;
+}
+
+int decode_new_file_with_metadata_resp(const struct pldm_msg *msg,
+				       size_t payload_length,
+				       uint8_t *completion_code)
+{
+	if (msg == NULL || completion_code == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length !=
+	    PLDM_NEW_FILE_AVAILABLE_WITH_META_DATA_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_new_file_with_metadata_resp *response =
+	    (struct pldm_new_file_with_metadata_resp *)msg->payload;
+	*completion_code = response->completion_code;
+
+	return PLDM_SUCCESS;
+}
+
+int decode_new_file_with_metadata_req(
+    const struct pldm_msg *msg, size_t payload_length, uint16_t *file_type,
+    uint32_t *file_handle, uint64_t *length, uint32_t *file_meta_data_1,
+    uint32_t *file_meta_data_2, uint32_t *file_meta_data_3,
+    uint32_t *file_meta_data_4)
+{
+	if (msg == NULL || file_type == NULL || file_handle == NULL ||
+	    length == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length !=
+	    PLDM_NEW_FILE_AVAILABLE_WITH_META_DATA_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_new_file_with_metadata_req *request =
+	    (struct pldm_new_file_with_metadata_req *)msg->payload;
+	*file_type = le16toh(request->file_type);
+	*file_handle = le32toh(request->file_handle);
+	*length = le64toh(request->length);
+	*file_meta_data_1 = le32toh(request->file_meta_data_1);
+	*file_meta_data_2 = le32toh(request->file_meta_data_2);
+	*file_meta_data_3 = le32toh(request->file_meta_data_3);
+	*file_meta_data_4 = le32toh(request->file_meta_data_4);
+
+	return PLDM_SUCCESS;
+}
+
+int encode_new_file_with_metadata_resp(uint8_t instance_id,
+				       uint8_t completion_code,
+				       struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.msg_type = PLDM_RESPONSE;
+	header.instance = instance_id;
+	header.pldm_type = PLDM_OEM;
+	header.command = PLDM_NEW_FILE_AVAILABLE_WITH_META_DATA;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_new_file_with_metadata_resp *response =
+	    (struct pldm_new_file_with_metadata_resp *)msg->payload;
+	response->completion_code = completion_code;
+
+	return PLDM_SUCCESS;
+}
