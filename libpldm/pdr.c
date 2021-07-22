@@ -1,6 +1,7 @@
 #include "pdr.h"
 #include "platform.h"
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -193,6 +194,7 @@ pldm_pdr_find_record_by_type(const pldm_pdr *repo, uint8_t pdr_type,
 			     const pldm_pdr_record *curr_record, uint8_t **data,
 			     uint32_t *size)
 {
+	printf("Inside the pldm pdr find record by type\n");
 	assert(repo != NULL);
 
 	pldm_pdr_record *record = repo->first;
@@ -202,14 +204,17 @@ pldm_pdr_find_record_by_type(const pldm_pdr *repo, uint8_t pdr_type,
 	while (record != NULL) {
 		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
 		if (hdr->type == pdr_type) {
+			printf("pdr type matches\n");
 			if (data && size) {
 				*size = record->size;
 				*data = record->data;
 			}
+			printf("Record found\n");
 			return record;
 		}
 		record = record->next;
 	}
+	printf("record is null\n");
 
 	if (size) {
 		*size = 0;
@@ -280,6 +285,7 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
     uint16_t *entity_type, uint16_t *entity_instance_num,
     uint16_t *container_id)
 {
+	printf("Inside the pldmpdr fru record setfind by rsi function\n");
 	assert(terminus_handle != NULL);
 	assert(entity_type != NULL);
 	assert(entity_instance_num != NULL);
@@ -290,15 +296,19 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 	const pldm_pdr_record *curr_record = pldm_pdr_find_record_by_type(
 	    repo, PLDM_PDR_FRU_RECORD_SET, NULL, &data, &size);
 	while (curr_record != NULL) {
+		printf("when record is not null\n");
 		struct pldm_pdr_fru_record_set *fru =
 		    (struct pldm_pdr_fru_record_set
 			 *)(data + sizeof(struct pldm_pdr_hdr));
+		printf("fru->fru_rsi: %d\n", fru->fru_rsi);
+
 		if (fru->fru_rsi == htole16(fru_rsi)) {
 			*terminus_handle = le16toh(fru->terminus_handle);
 			*entity_type = le16toh(fru->entity_type);
 			*entity_instance_num =
 			    le16toh(fru->entity_instance_num);
 			*container_id = le16toh(fru->container_id);
+			printf("Record found inside the rsi function\n");
 			return curr_record;
 		}
 		data = NULL;
@@ -311,6 +321,7 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 	*entity_instance_num = 0;
 	*container_id = 0;
 
+	printf("No record found");
 	return NULL;
 }
 
