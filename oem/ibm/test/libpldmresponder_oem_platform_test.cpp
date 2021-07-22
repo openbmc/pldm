@@ -4,6 +4,7 @@
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
+#include "oem/ibm/libpldmresponder/collect_slot_vpd.hpp"
 #include "oem/ibm/libpldmresponder/inband_code_update.hpp"
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 #include "test/test_instance_id.hpp"
@@ -31,15 +32,25 @@ class MockCodeUpdate : public CodeUpdate
     MOCK_METHOD(void, setVersions, (), (override));
 };
 
+class MockSlotHandler : public SlotHandler
+{
+  public:
+    MockSlotHandler(const sdeventplus::Event& event, pldm_pdr* repo) :
+        SlotHandler(event, repo)
+    {}
+};
+
 class MockOemPlatformHandler : public oem_ibm_platform::Handler
 {
   public:
     MockOemPlatformHandler(const pldm::utils::DBusHandler* dBusIntf,
-                           pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
-                           uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
+                           pldm::responder::CodeUpdate* codeUpdate,
+                           pldm::responder::SlotHandler* slotHandler,
+                           int mctp_fd, uint8_t mctp_eid,
+                           pldm::InstanceIdDb& instanceIdDb,
                            sdeventplus::Event& event) :
-        oem_ibm_platform::Handler(dBusIntf, codeUpdate, mctp_fd, mctp_eid,
-                                  instanceIdDb, event, nullptr)
+        oem_ibm_platform::Handler(dBusIntf, codeUpdate, slotHandler, mctp_fd,
+                                  mctp_eid, instanceIdDb, event, nullptr)
     {}
     MOCK_METHOD(uint16_t, getNextEffecterId, ());
     MOCK_METHOD(uint16_t, getNextSensorId, ());
@@ -50,8 +61,10 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t entityID_ = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
     uint16_t stateSetId_ = PLDM_OEM_IBM_BOOT_STATE;
     uint16_t entityInstance_ = 0;
+    uint16_t containerId_ = 0;
     uint8_t compSensorCnt_ = 1;
     uint16_t effecterId = 0xA;
+    uint16_t sensorId = 0x1;
     TestInstanceIdDb instanceIdDb;
 
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
@@ -64,11 +77,12 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, instanceIdDb,
-        event, nullptr);
+        mockDbusHandler.get(), mockCodeUpdate.get(), nullptr, 0x1, 0x9,
+        instanceIdDb, event, nullptr);
 
     auto rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
-        entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField);
+        entityID_, entityInstance_, containerId_, stateSetId_, compSensorCnt_,
+        sensorId, stateField);
 
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(stateField.size(), 1);
@@ -81,19 +95,22 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
 
     std::vector<get_sensor_state_field> stateField1;
     rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
-        entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField1);
+        entityID_, entityInstance_, containerId_, stateSetId_, compSensorCnt_,
+        sensorId, stateField1);
     ASSERT_EQ(stateField1.size(), 1);
     ASSERT_EQ(stateField1[0].event_state, tSideNum);
 
     entityInstance_ = 2;
     rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
-        entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField1);
+        entityID_, entityInstance_, containerId_, stateSetId_, compSensorCnt_,
+        sensorId, stateField1);
     ASSERT_EQ(stateField1[0].event_state, PLDM_SENSOR_UNKNOWN);
 
     entityID_ = 40;
     stateSetId_ = 50;
     rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
-        entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField1);
+        entityID_, entityInstance_, containerId_, stateSetId_, compSensorCnt_,
+        sensorId, stateField1);
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_STATE_VALUE);
 
     entityID_ = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
@@ -195,8 +212,8 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
         std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
     std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
         std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
-                                                 mockCodeUpdate.get(), 0x1, 0x9,
-                                                 instanceIdDb, event);
+                                                 mockCodeUpdate.get(), nullptr,
+                                                 0x1, 0x9, instanceIdDb, event);
     Repo inRepo(inPDRRepo);
 
     mockoemPlatformHandler->buildOEMPDR(inRepo);
@@ -302,8 +319,8 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
         std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
     std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
         std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
-                                                 mockCodeUpdate.get(), 0x1, 0x9,
-                                                 instanceIdDb, event);
+                                                 mockCodeUpdate.get(), nullptr,
+                                                 0x1, 0x9, instanceIdDb, event);
     Repo inRepo(inPDRRepo);
     mockoemPlatformHandler->buildOEMPDR(inRepo);
     ASSERT_EQ(inRepo.empty(), false);
