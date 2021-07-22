@@ -402,7 +402,7 @@ class Handler : public CmdHandler
                     error(
                         "Invalid state set value for effecter ID '{EFFECTERID}', effecter state '{EFFECTER_STATE}', composite effecter ID '{COMPOSITE_EFFECTER_ID}' and path '{PATH}'.",
                         "EFFECTERID", effecterId, "EFFECTER_STATE",
-                        stateField[currState].effecter_state,
+                        (unsigned)stateField[currState].effecter_state,
                         "COMPOSITE_EFFECTER_COUNT", currState, "PATH",
                         dbusMappings[currState].objectPath);
                     rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
@@ -529,6 +529,7 @@ class Handler : public CmdHandler
  *  @param[out] entityType - entity type
  *  @param[out] entityInstance - entity instance number
  *  @param[out] stateSetId - state set id
+ *  @param[out] containerId - container id
  *
  *  @return true if the sensor is OEM. All out parameters are invalid
  *               for a non OEM sensor
@@ -536,7 +537,7 @@ class Handler : public CmdHandler
 bool isOemStateSensor(Handler& handler, uint16_t sensorId,
                       uint8_t sensorRearmCount, uint8_t& compSensorCnt,
                       uint16_t& entityType, uint16_t& entityInstance,
-                      uint16_t& stateSetId);
+                      uint16_t& stateSetId, uint16_t& containerId);
 
 /** @brief Function to check if an effecter falls in OEM range
  *         An effecter is considered to be oem if either of entity
