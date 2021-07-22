@@ -334,7 +334,8 @@ class Handler : public CmdHandler
             {
                 std::cerr << "The requester sent wrong composite effecter"
                           << " count for the effecter, EFFECTER_ID="
-                          << effecterId << "COMP_EFF_CNT=" << compEffecterCnt
+                          << (unsigned)effecterId
+                          << "COMP_EFF_CNT=" << (unsigned)compEffecterCnt
                           << "\n";
                 return PLDM_ERROR_INVALID_DATA;
             }
@@ -364,9 +365,10 @@ class Handler : public CmdHandler
                     !(states->states[bitfieldIndex].byte & (1 << bit)))
                 {
                     std::cerr
-                        << "Invalid state set value, EFFECTER_ID=" << effecterId
-                        << " VALUE=" << stateField[currState].effecter_state
-                        << " COMPOSITE_EFFECTER_ID=" << currState
+                        << "Invalid state set value, EFFECTER_ID="
+                        << (unsigned)effecterId << " VALUE="
+                        << (unsigned)stateField[currState].effecter_state
+                        << " COMPOSITE_EFFECTER_ID=" << (unsigned)currState
                         << " DBUS_PATH=" << dbusMappings[currState].objectPath
                         << "\n";
                     rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
@@ -407,7 +409,7 @@ class Handler : public CmdHandler
         catch (const std::out_of_range& e)
         {
             std::cerr << "the effecterId does not exist. effecter id: "
-                      << effecterId << e.what() << '\n';
+                      << (unsigned)effecterId << e.what() << '\n';
         }
 
         return rc;

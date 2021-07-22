@@ -134,10 +134,10 @@ class Handler
             {
                 std::cerr << "Response not received for the request, instance "
                              "ID expired."
-                          << " EID = " << key.eid
-                          << " INSTANCE_ID = " << key.instanceId
-                          << " TYPE = " << key.type
-                          << " COMMAND = " << key.command << "\n";
+                          << " EID = " << (unsigned)key.eid
+                          << " INSTANCE_ID = " << (unsigned)key.instanceId
+                          << " TYPE = " << (unsigned)key.type
+                          << " COMMAND = " << (unsigned)key.command << "\n";
                 auto& [request, responseHandler, timerInstance] =
                     this->handlers[key];
                 request->stop();
