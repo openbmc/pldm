@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "5f86e985_79dbf701",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-22T14:57:25Z",
+      "side": 1,
+      "message": "emplace is better than insert",
+      "range": {
+        "startLine": 167,
+        "startChar": 39,
+        "endLine": 167,
+        "endChar": 46
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bf69695b_2bbeb9d8",
         "filename": "libpldmresponder/pdr_state_sensor.hpp",
         "patchSetId": 6
@@ -37,6 +60,30 @@
       "side": 1,
       "message": "I didn\u0027t follow this.",
       "parentUuid": "bf69695b_2bbeb9d8",
+      "range": {
+        "startLine": 33,
+        "startChar": 3,
+        "endLine": 33,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1e53688_aeeb89a7",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-22T14:57:25Z",
+      "side": 1,
+      "message": "uint8_t max value can be 256 , so 257 will be stored as 0. so we cannot having an assumption that we can have \u003c256 json entries right ?\n\nWhat happens when we have 257 entries,in the map, 257th value will replace 0th index",
+      "parentUuid": "533d81fb_278f6309",
       "range": {
         "startLine": 33,
         "startChar": 3,
@@ -137,6 +184,99 @@
         "startChar": 12,
         "endLine": 262,
         "endChar": 49
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2210bbaf_9f4d1e6b",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-22T14:57:25Z",
+      "side": 1,
+      "message": "\u003e If one sensor can get the correct DBus Object, but the other sensor can not get the correct DBus Object, then we need to add the correct sensor to the PdrEntity, right?\n\nI agree with pavitra here, we have a single PDR for composite sensors, so when one of the sensor in a composite sensor does not exist, it\u0027s okay to create the PDR and then return SENSOR state to unavailable for the sensor that does not have the dbus backend.",
+      "parentUuid": "f2e79bb5_fdc34a23",
+      "range": {
+        "startLine": 262,
+        "startChar": 12,
+        "endLine": 262,
+        "endChar": 49
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17f19376_173e62cb",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-22T14:57:25Z",
+      "side": 1,
+      "message": "do you need a sorted map ? cant we just use unordered_map instead ?",
+      "range": {
+        "startLine": 204,
+        "startChar": 4,
+        "endLine": 204,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d416bd0d_bcaf088c",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-22T14:57:25Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 210,
+        "startChar": 4,
+        "endLine": 210,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccbaed9f_e2e446ec",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-22T14:57:25Z",
+      "side": 1,
+      "message": "nit : probably , you can have one single rather than 3 individual maps ?\n\nstd::array\u003cstd::map\u003cuint8_t, std::unique_ptr\u003csdbusplus::bus::match::match\u003e\u003e, 3\u003e MatchPointers ?",
+      "range": {
+        "startLine": 216,
+        "startChar": 4,
+        "endLine": 217,
+        "endChar": 31
       },
       "revId": "abb7517690044ef9165a74ca53860253a014baab",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
