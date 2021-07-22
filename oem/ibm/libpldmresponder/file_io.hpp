@@ -414,6 +414,7 @@ class Handler : public CmdHandler
 
   private:
     oem_platform::Handler* oemPlatformHandler;
+    // oem_fru::Handler* oemFruHandler;
     int hostSockFd;
     uint8_t hostEid;
     dbus_api::Requester* dbusImplReqester;
