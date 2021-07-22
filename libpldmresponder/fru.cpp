@@ -284,6 +284,19 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
     return PLDM_SUCCESS;
 }
 
+int FruImpl::setFRUTable(const std::vector<uint8_t>& fruData, bool updateDBus)
+{
+    std::cerr << " Inside the set fru table function in impl" << std::endl;
+    auto record =
+        reinterpret_cast<const pldm_fru_record_data_format*>(fruData.data());
+    if (record->record_type == PLDM_FRU_RECORD_TYPE_OEM)
+    {
+        std::cerr << " calling Process fru record" << std::endl;
+        oemFruHandler->processOEMfruRecord(fruData, updateDBus);
+    }
+    return PLDM_SUCCESS;
+}
+
 namespace fru
 {
 
@@ -390,6 +403,51 @@ Response Handler::getFRURecordByOption(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
+    return response;
+}
+
+Response Handler::setFRURecordTable(const pldm_msg* request,
+                                    size_t payloadLength)
+{
+    std::cerr << "Inside the setFruRecordTable handler" << std::endl;
+    uint32_t transferHandle{};
+    uint8_t transferOpFlag{};
+    struct variable_field fruData;
+
+    auto rc = decode_set_fru_record_table_req(
+        request, payloadLength, &transferHandle, &transferOpFlag, &fruData);
+
+    std::cerr << " after decode request for set fru record table command"
+              << std::endl;
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    Table table(fruData.ptr, fruData.ptr + fruData.length);
+    rc = impl.setFRUTable(table);
+    std::cerr << " afetr calling set fru table" << std::endl;
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_SET_FRU_RECORD_TABLE_RESP_BYTES);
+    struct pldm_msg* responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = encode_set_fru_record_table_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, 0 /* nextDataTransferHandle */,
+        response.size() - sizeof(pldm_msg_hdr), responsePtr);
+
+    std::cerr << " Afetr encode response of set fru record table command"
+              << std::endl;
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    std::cerr << " end of the handler for set fru record table" << std::endl;
     return response;
 }
 
