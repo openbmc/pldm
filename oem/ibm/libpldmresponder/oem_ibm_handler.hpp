@@ -1,5 +1,7 @@
 #pragma once
 
+#include "collect_slot_vpd.hpp"
+#include "common/utils.hpp"
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -16,8 +18,12 @@ namespace pldm
 {
 namespace responder
 {
+using ObjectPath = std::string;
+using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
 namespace oem_ibm_platform
 {
+
+static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -35,14 +41,15 @@ class Handler : public oem_platform::Handler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
-            pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
+            pldm::responder::CodeUpdate* codeUpdate,
+            pldm::responder::SlotHandler* slotHandler, int mctp_fd,
             uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
             sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf),
-        codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), instanceIdDb(instanceIdDb), event(event),
-        handler(handler)
+        codeUpdate(codeUpdate), slotHandler(slotHandler),
+        platformHandler(nullptr), mctp_fd(mctp_fd), mctp_eid(mctp_eid),
+        instanceIdDb(instanceIdDb), event(event), handler(handler)
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -77,9 +84,10 @@ class Handler : public oem_platform::Handler
     }
 
     int getOemStateSensorReadingsHandler(
-        EntityType entityType, pldm::pdr::EntityInstance entityInstance,
-        pldm::pdr::StateSetId stateSetId,
-        pldm::pdr::CompositeCount compSensorCnt,
+        pldm::pdr::EntityType entityType,
+        pldm::pdr::EntityInstance entityInstance,
+        pldm::pdr::ContainerID containerId, pldm::pdr::StateSetId stateSetId,
+        pldm::pdr::CompositeCount compSensorCnt, uint16_t sensorId,
         std::vector<get_sensor_state_field>& stateField);
 
     int oemSetStateEffecterStatesHandler(
@@ -111,6 +119,11 @@ class Handler : public oem_platform::Handler
     virtual uint16_t getNextSensorId()
     {
         return platformHandler->getNextSensorId();
+    }
+
+    virtual const AssociatedEntityMap& getAssociateEntityMap()
+    {
+        return platformHandler->getAssociateEntityMap();
     }
 
     /** @brief Method to Generate the OEM PDRs
@@ -217,6 +230,9 @@ class Handler : public oem_platform::Handler
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
+
+    pldm::responder::SlotHandler* slotHandler;
+
     pldm::responder::platform::Handler*
         platformHandler; //!< pointer to PLDM platform handler
 
@@ -233,6 +249,10 @@ class Handler : public oem_platform::Handler
     std::unique_ptr<sdeventplus::source::Defer> assembleImageEvent;
     std::unique_ptr<sdeventplus::source::Defer> startUpdateEvent;
     std::unique_ptr<sdeventplus::source::Defer> systemRebootEvent;
+
+    /** @brief Effecterid to dbus object path map
+     */
+    std::unordered_map<uint16_t, std::string> effecterIdToDbusMap;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
