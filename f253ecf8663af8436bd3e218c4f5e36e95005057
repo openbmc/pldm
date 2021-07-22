@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17dfcb4d_559d71e3",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-22T03:32:35Z",
+      "side": 1,
+      "message": "Is there any reason we are not putting the next value as 0xE ?",
+      "revId": "f253ecf8663af8436bd3e218c4f5e36e95005057",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a18b03c1_d5be7dd1",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-22T03:32:35Z",
+      "side": 1,
+      "message": "Its confusing to have only this value in a different format, can you please change this enum as per the File IO spec ?",
+      "revId": "f253ecf8663af8436bd3e218c4f5e36e95005057",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48d81ca2_7ab2e4a1",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-22T03:32:35Z",
+      "side": 1,
+      "message": "Please use pldm_fileio_resdump_status_codes, pldm_fileio_res_selector_invalid_status_codes and pldm_fileio_cod_license_status_code just to be inline with other enums. Also change all to hex values like 0x00000001 and 0xFFFFFFFF for unused value.",
+      "revId": "f253ecf8663af8436bd3e218c4f5e36e95005057",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68047db7_d75b9ecc",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-22T03:32:35Z",
+      "side": 1,
+      "message": "Please change PLDM_FILE_RES_DUMP_SUCCESS to something like PLDM_RES_DUMP_PARAM_VALIDATION_SUCCESS",
+      "revId": "f253ecf8663af8436bd3e218c4f5e36e95005057",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f395161_8d617ba1",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-22T03:32:35Z",
+      "side": 1,
+      "message": "Please add description for remaining meta data fields",
+      "revId": "f253ecf8663af8436bd3e218c4f5e36e95005057",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ae4ea9d_d92b09fb",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-22T03:32:35Z",
+      "side": 1,
+      "message": "please add meta data params info here",
+      "revId": "f253ecf8663af8436bd3e218c4f5e36e95005057",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
