@@ -166,10 +166,12 @@ static constexpr auto certAuthority =
 class Handler : public CmdHandler
 {
   public:
-    Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
+    Handler(oem_platform::Handler* oemPlatformHandler,
+            /* oem_fru::Handler* oemFruHandler,*/ int hostSockFd,
             uint8_t hostEid, dbus_api::Requester* dbusImplReqester,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
-        oemPlatformHandler(oemPlatformHandler),
+        oemPlatformHandler(
+            oemPlatformHandler), /*oemFruHandler(oemFruHandler),*/
         hostSockFd(hostSockFd), hostEid(hostEid),
         dbusImplReqester(dbusImplReqester), handler(handler)
     {
@@ -414,6 +416,7 @@ class Handler : public CmdHandler
 
   private:
     oem_platform::Handler* oemPlatformHandler;
+    //    oem_fru::Handler* oemFruHandler;
     int hostSockFd;
     uint8_t hostEid;
     dbus_api::Requester* dbusImplReqester;
