@@ -49,6 +49,7 @@
 
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
+#include "libpldmresponder/fru_oem_ibm.hpp"
 #include "libpldmresponder/oem_ibm_handler.hpp"
 #endif
 
@@ -203,6 +204,7 @@ int main(int argc, char** argv)
             sockfd, hostEID, dbusImplReq, &reqHandler);
     }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+    std::unique_ptr<oem_fru::Handler> oemFruHandler{};
 
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
@@ -212,9 +214,15 @@ int main(int argc, char** argv)
         dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq,
         event, &reqHandler);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
+    std::cerr << " afetr oemfruhandler" << std::endl;
+    oemFruHandler = std::make_unique<oem_ibm_fru::Handler>(dbusHandler.get());
+
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
-                                          oemPlatformHandler.get(), sockfd,
+                                          oemPlatformHandler.get(),
+                                           /*oemFruHandler.get(),*/ sockfd,
                                           hostEID, &dbusImplReq, &reqHandler));
+
+    std::cerr << " after register handler for PLDM_OEM" << std::endl;
 #endif
     invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>());
     invoker.registerHandler(
@@ -222,7 +230,8 @@ int main(int argc, char** argv)
                                                    &dbusImplReq, &reqHandler));
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
-        bmcEntityTree.get());
+        bmcEntityTree.get(), oemFruHandler.get());
+    std::cerr << " after fruhandler" << std::endl;
     // FRU table is built lazily when a FRU command or Get PDR command is
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
@@ -235,6 +244,14 @@ int main(int argc, char** argv)
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
             oemPlatformHandler.get());
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
+
+    /* std::cerr << "Before craeting the oemIBMFRU handler" << std::endl;
+     pldm::responder::oem_ibm_fru::Handler* oemIbmFruHandler =
+         dynamic_cast<pldm::responder::oem_ibm_fru::Handler*>(
+             oemFruHandler.get());
+     oemIbmFruHandler->setFruHandler(fruHandler.get());
+     std::cerr << "After calling setfru handler from oemIBM fru handler" <<
+     std::endl;*/
 #endif
 
     invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
