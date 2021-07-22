@@ -140,6 +140,25 @@ class Handler : public CmdHandler
 
 } // namespace oem_bios
 
+namespace oem_fru
+{
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler() {}
+
+    /** @brief Process OEM FRU record
+     *
+     * @param[in] fruData - the data of the fru
+     */
+    virtual int processOEMFRUTable(const std::vector<uint8_t>& fruData) = 0;
+
+    virtual ~Handler() = default;
+};
+
+} // namespace oem_fru
+
 } // namespace responder
 
 } // namespace pldm
