@@ -7,6 +7,8 @@
 
 #include "common/utils.hpp"
 #include "fru_parser.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
+#include "oem_handler.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 #include "pldmd/handler.hpp"
 #include "requester/handler.hpp"
@@ -69,6 +71,7 @@ class FruImpl
      *  @param[in] entityTree - opaque pointer to the entity association tree
      *  @param[in] bmcEntityTree - opaque pointer to bmc's entity association
      *                             tree
+     *  @param[in] oemFruHandler - OEM fru handler
      *  @param[in] requester - PLDM Requester reference
      *  @param[in] handler - PLDM request handler
      *  @param[in] mctp_eid - MCTP eid of Host
@@ -77,12 +80,15 @@ class FruImpl
     FruImpl(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+            pldm_entity_association_tree* bmcEntityTree,
+            pldm::responder::oem_fru::Handler* oemFruHandler,
+            Requester& requester,
             pldm::requester::Handler<pldm::requester::Request>* handler,
             uint8_t mctp_eid, sdeventplus::Event& event) :
         parser(configPath, fruMasterJsonPath),
         pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree),
-        requester(requester), handler(handler), mctp_eid(mctp_eid), event(event)
+        oemFruHandler(oemFruHandler), requester(requester), handler(handler),
+        mctp_eid(mctp_eid), event(event)
     {
         static constexpr auto inventoryObjPath =
             "/xyz/openbmc_project/inventory/system/chassis";
@@ -191,6 +197,14 @@ class FruImpl
         std::vector<uint32_t>&& pdrRecordHandles,
         std::vector<uint8_t>&& eventDataOps);
 
+    /* @brief set FRU Record Table
+     *
+     * @param[in] fruData - the data of the fru
+     *
+     */
+    int setFRUTable(const std::vector<uint8_t>& fruData,
+                    bool updateDBus = true);
+
   private:
     uint16_t nextRSI()
     {
@@ -214,6 +228,7 @@ class FruImpl
     pldm_pdr* pdrRepo;
     pldm_entity_association_tree* entityTree;
     pldm_entity_association_tree* bmcEntityTree;
+    pldm::responder::oem_fru::Handler* oemFruHandler;
     Requester& requester;
     pldm::requester::Handler<pldm::requester::Request>* handler;
     uint8_t mctp_eid;
@@ -305,11 +320,13 @@ class Handler : public CmdHandler
     Handler(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+            pldm_entity_association_tree* bmcEntityTree,
+            pldm::responder::oem_fru::Handler* oemFruHandler,
+            Requester& requester,
             pldm::requester::Handler<pldm::requester::Request>* handler,
             uint8_t mctp_eid, sdeventplus::Event& event) :
         impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree,
-             requester, handler, mctp_eid, event)
+             oemFruHandler, requester, handler, mctp_eid, event)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -326,6 +343,11 @@ class Handler : public CmdHandler
                          [this](const pldm_msg* request, size_t payloadLength) {
                              return this->getFRURecordByOption(request,
                                                                payloadLength);
+                         });
+        handlers.emplace(PLDM_SET_FRU_RECORD_TABLE,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->setFRURecordTable(request,
+                                                            payloadLength);
                          });
     }
 
@@ -377,6 +399,18 @@ class Handler : public CmdHandler
      */
     Response getFRURecordByOption(const pldm_msg* request,
                                   size_t payloadLength);
+
+    /** @brief Handler for SetFRURecordTable
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *
+     *  @return PLDM response message
+     */
+    Response setFRURecordTable(const pldm_msg* request, size_t payloadLength);
+
+    // std::vector<uint8_t> table;
+    using Table = std::vector<uint8_t>;
 
   private:
     FruImpl impl;
