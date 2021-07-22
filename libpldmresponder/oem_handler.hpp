@@ -38,7 +38,8 @@ class Handler : public CmdHandler
      */
     virtual int getOemStateSensorReadingsHandler(
         EntityType entityType, EntityInstance entityInstance,
-        StateSetId stateSetId, CompositeCount compSensorCnt,
+        ContainerID entityContainerId, StateSetId stateSetId,
+        CompositeCount compSensorCnt, uint16_t sensorId,
         std::vector<get_sensor_state_field>& stateField) = 0;
 
     /** @brief Interface to set the effecter requested by pldm requester

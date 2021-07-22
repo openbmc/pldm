@@ -2,6 +2,8 @@
 #include "libpldm/entity.h"
 #include "libpldm/platform.h"
 
+#include "collect_slot_vpd.hpp"
+#include "common/utils.hpp"
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -12,12 +14,16 @@ namespace pldm
 {
 namespace responder
 {
+using ObjectPath = std::string;
+using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
 namespace oem_ibm_platform
 {
 
 #define PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE 32768
 #define PLDM_OEM_IBM_BOOT_STATE 32769
 #define PLDM_OEM_IBM_SYSTEM_POWER_STATE 32771
+#define PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE 32772
+#define PLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE 32773
 
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
@@ -32,6 +38,21 @@ enum class CodeUpdateState : uint8_t
     ABORT = 0x4,
     ACCEPT = 0x5,
     REJECT = 0x6
+};
+
+enum class SlotEnableEffecterState : uint8_t
+{
+    ADD = 0x0,
+    REMOVE = 0x1,
+    REPLACE = 0x2
+};
+
+enum class SlotEnableSensorState : uint8_t
+{
+    SLOT_STATE_UNKOWN = 0x0,
+    SLOT_STATE_ENABLED = 0x1,
+    SLOT_STATE_DISABLED = 0x2,
+    SLOT_STATE_ERROR = 0x03
 };
 
 enum VerificationStateValues
@@ -51,19 +72,22 @@ class Handler : public oem_platform::Handler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
-            pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
+            pldm::responder::CodeUpdate* codeUpdate,
+            pldm::responder::SlotHandler* slotHandler, int mctp_fd,
             uint8_t mctp_eid, Requester& requester, sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf),
-        codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), requester(requester), event(event), handler(handler)
+        codeUpdate(codeUpdate), slotHandler(slotHandler),
+        platformHandler(nullptr), mctp_fd(mctp_fd), mctp_eid(mctp_eid),
+        requester(requester), event(event), handler(handler)
     {
         codeUpdate->setVersions();
     }
 
     int getOemStateSensorReadingsHandler(
         EntityType entityType, EntityInstance entityInstance,
-        StateSetId stateSetId, CompositeCount compSensorCnt,
+        ContainerID containerId, StateSetId stateSetId,
+        CompositeCount compSensorCnt, uint16_t sensorId,
         std::vector<get_sensor_state_field>& stateField);
 
     int oemSetStateEffecterStatesHandler(
@@ -95,6 +119,11 @@ class Handler : public oem_platform::Handler
     virtual uint16_t getNextSensorId()
     {
         return platformHandler->getNextSensorId();
+    }
+
+    virtual const AssociatedEntityMap& getAssociateEntityMap()
+    {
+        return platformHandler->getAssociateEntityMap();
     }
 
     /** @brief Method to Generate the OEM PDRs
@@ -147,6 +176,9 @@ class Handler : public oem_platform::Handler
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
+
+    pldm::responder::SlotHandler* slotHandler;
+
     pldm::responder::platform::Handler*
         platformHandler; //!< pointer to PLDM platform handler
 
@@ -164,6 +196,10 @@ class Handler : public oem_platform::Handler
     std::unique_ptr<sdeventplus::source::Defer> assembleImageEvent;
     std::unique_ptr<sdeventplus::source::Defer> startUpdateEvent;
     std::unique_ptr<sdeventplus::source::Defer> systemRebootEvent;
+
+    /** @brief Effecterid to dbus object path map
+     */
+    std::unordered_map<uint16_t, std::string> effecterIdToDbusMap;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
