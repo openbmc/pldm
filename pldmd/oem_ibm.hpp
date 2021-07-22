@@ -75,6 +75,7 @@ class OemIBM
         oemIbmFruHandler->setIBMFruHandler(fruHandler);
 
         createCodeUpdate();
+        createSlotHandler();
         createOemPlatformHandler();
         createOemIbmUtilsHandler();
         codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
@@ -82,6 +83,7 @@ class OemIBM
         hostPDRHandler->setOemUtilsHandler(oemUtilsHandler.get());
         platformHandler->setOemPlatformHandler(oemPlatformHandler.get());
         baseHandler->setOemPlatformHandler(oemPlatformHandler.get());
+        slotHandler->setOemPlatformHandler(oemPlatformHandler.get());
 
         createOemIbmPlatformHandler();
         oemIbmPlatformHandler->setPlatformHandler(platformHandler);
@@ -99,6 +101,13 @@ class OemIBM
         codeUpdate->clearDirPath(LID_STAGING_DIR);
     }
 
+    /** @brief Method for creating slot handler */
+    void createSlotHandler()
+    {
+        slotHandler =
+            std::make_unique<pldm::responder::SlotHandler>(event, repo);
+    }
+
     /** @brief Method for creating oemPlatformHandler
      *
      *  This method also assigns the oemPlatformHandler to the below
@@ -106,10 +115,9 @@ class OemIBM
      */
     void createOemPlatformHandler()
     {
-        oemPlatformHandler =
-            std::make_unique<responder::oem_ibm_platform::Handler>(
-                dBusIntf, codeUpdate.get(), mctp_fd, mctp_eid, instanceIdDb,
-                event, reqHandler);
+        oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
+            dBusIntf, codeUpdate.get(), slotHandler.get(), mctp_fd, mctp_eid,
+            instanceIdDb, event, reqHandler);
     }
 
     /** @brief Method for creating oemIbmPlatformHandler */
@@ -194,6 +202,9 @@ class OemIBM
 
     /** @brief pointer to the CodeUpdate class*/
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate{};
+
+    /** @brief pointer to the SlotHanlder class*/
+    std::unique_ptr<pldm::responder::SlotHandler> slotHandler{};
 
     /** @brief oem IBM Platform handler*/
     pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler = nullptr;
