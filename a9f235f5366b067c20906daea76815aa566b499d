@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6aac3c78_8eeed738",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1001144
+      },
+      "writtenOn": "2021-07-22T15:48:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d448ed5f_615f2181",
+      "revId": "a9f235f5366b067c20906daea76815aa566b499d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "06b5efcd_dc0c0d4b",
         "filename": "oem/ibm/configurations/bios/enum_attrs.json",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "a9f235f5366b067c20906daea76815aa566b499d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94c8d63d_10511034",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1001144
+      },
+      "writtenOn": "2021-07-22T15:48:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06b5efcd_dc0c0d4b",
+      "revId": "a9f235f5366b067c20906daea76815aa566b499d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
