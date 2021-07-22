@@ -529,6 +529,7 @@ class Handler : public CmdHandler
  *  @param[out] entityType - entity type
  *  @param[out] entityInstance - entity instance number
  *  @param[out] stateSetId - state set id
+ *  @param[out] containerId - container id
  *
  *  @return true if the sensor is OEM. All out parameters are invalid
  *               for a non OEM sensor
@@ -536,7 +537,7 @@ class Handler : public CmdHandler
 bool isOemStateSensor(Handler& handler, uint16_t sensorId,
                       uint8_t sensorRearmCount, uint8_t& compSensorCnt,
                       uint16_t& entityType, uint16_t& entityInstance,
-                      uint16_t& stateSetId);
+                      uint16_t& stateSetId, uint16_t& containerId);
 
 /** @brief Function to check if an effecter falls in OEM range
  *         An effecter is considered to be oem if either of entity
