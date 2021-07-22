@@ -656,13 +656,15 @@ Response Handler::getStateSensorReadings(const pldm_msg* request,
     uint16_t entityType{};
     uint16_t entityInstance{};
     uint16_t stateSetId{};
+    uint16_t containerId{};
 
     if (isOemStateSensor(*this, sensorId, sensorRearmCount, comSensorCnt,
-                         entityType, entityInstance, stateSetId) &&
+                         entityType, entityInstance, stateSetId, containerId) &&
         oemPlatformHandler != nullptr)
     {
         rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
-            entityType, entityInstance, stateSetId, comSensorCnt, stateField);
+            entityType, entityInstance, containerId, stateSetId, comSensorCnt,
+            sensorId, stateField);
     }
     else
     {
@@ -702,7 +704,7 @@ void Handler::_processPostGetPDRActions(sdeventplus::source::EventBase&
 bool isOemStateSensor(Handler& handler, uint16_t sensorId,
                       uint8_t sensorRearmCount, uint8_t& compSensorCnt,
                       uint16_t& entityType, uint16_t& entityInstance,
-                      uint16_t& stateSetId)
+                      uint16_t& stateSetId, uint16_t& containerId)
 {
     pldm_state_sensor_pdr* pdr = nullptr;
 
@@ -730,6 +732,7 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
         }
         auto tmpEntityType = pdr->entity_type;
         auto tmpEntityInstance = pdr->entity_instance;
+        auto tmpEntityContainerId = pdr->container_id;
         auto tmpCompSensorCnt = pdr->composite_sensor_count;
         auto tmpPossibleStates =
             reinterpret_cast<state_sensor_possible_states*>(
@@ -754,6 +757,7 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
             entityInstance = tmpEntityInstance;
             stateSetId = tmpStateSetId;
             compSensorCnt = tmpCompSensorCnt;
+            containerId = tmpEntityContainerId;
             return true;
         }
         else
