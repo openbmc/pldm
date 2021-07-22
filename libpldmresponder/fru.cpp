@@ -430,6 +430,25 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
     return PLDM_SUCCESS;
 }
 
+int FruImpl::setFRUTable(const std::vector<uint8_t>& fruData)
+{
+    auto record =
+        reinterpret_cast<const pldm_fru_record_data_format*>(fruData.data());
+    if (record)
+    {
+        if (oemFruHandler != nullptr &&
+            record->record_type == PLDM_FRU_RECORD_TYPE_OEM)
+        {
+            auto rc = oemFruHandler->processOEMfruRecord(fruData);
+            if (!rc)
+            {
+                return PLDM_SUCCESS;
+            }
+        }
+    }
+    return PLDM_ERROR;
+}
+
 namespace fru
 {
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
@@ -531,6 +550,44 @@ Response Handler::getFRURecordByOption(const pldm_msg* request,
     rc = encode_get_fru_record_by_option_resp(
         request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END,
         fruData.data(), fruData.size(), responsePtr, respPayloadLength);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    return response;
+}
+
+Response Handler::setFRURecordTable(const pldm_msg* request,
+                                    size_t payloadLength)
+{
+    uint32_t transferHandle{};
+    uint8_t transferOpFlag{};
+    struct variable_field fruData;
+
+    auto rc = decode_set_fru_record_table_req(
+        request, payloadLength, &transferHandle, &transferOpFlag, &fruData);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    Table table(fruData.ptr, fruData.ptr + fruData.length);
+    rc = impl.setFRUTable(table);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_SET_FRU_RECORD_TABLE_RESP_BYTES);
+    struct pldm_msg* responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = encode_set_fru_record_table_resp(
+        request->hdr.instance_id, PLDM_SUCCESS, 0 /* nextDataTransferHandle */,
+        response.size() - sizeof(pldm_msg_hdr), responsePtr);
 
     if (rc != PLDM_SUCCESS)
     {
