@@ -16,6 +16,24 @@
       "revId": "a87190f145a193bb3d8aa55e3a82ebf65599d7d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "157f18f5_1e6dd12a",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1001144
+      },
+      "writtenOn": "2021-07-22T16:23:29Z",
+      "side": 1,
+      "message": "I fixed the square brace in my commit \n\n44525: pldmbios: Add BIOS attributes hb_key_clear_request | https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/44525",
+      "parentUuid": "ee0bf7c2_da59aa71",
+      "revId": "a87190f145a193bb3d8aa55e3a82ebf65599d7d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
