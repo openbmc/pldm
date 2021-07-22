@@ -77,6 +77,26 @@ class Handler : public CmdHandler
 
 } // namespace oem_platform
 
+namespace oem_fru
+{
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf)
+    {}
+
+    virtual void processOEMfruRecord(const std::vector<uint8_t>& fruData,
+                                     bool updateDBus) = 0;
+
+    virtual ~Handler() = default;
+
+  protected:
+    const pldm::utils::DBusHandler* dBusIntf;
+};
+
+} // namespace oem_fru
+
 } // namespace responder
 
 } // namespace pldm
