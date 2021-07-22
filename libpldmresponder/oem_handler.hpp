@@ -35,7 +35,8 @@ class Handler : public CmdHandler
      *            fails
      */
     virtual int getOemStateSensorReadingsHandler(
-        EntityType entityType, pldm::pdr::EntityInstance entityInstance,
+        pldm::pdr::EntityType entityType,
+        pldm::pdr::EntityInstance entityInstance,
         pldm::pdr::StateSetId stateSetId,
         pldm::pdr::CompositeCount compSensorCnt,
         std::vector<get_sensor_state_field>& stateField) = 0;
@@ -75,6 +76,29 @@ class Handler : public CmdHandler
 };
 
 } // namespace oem_platform
+
+namespace oem_fru
+{
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf)
+    {}
+
+    /** @brief Process OEM FRU record
+     *
+     * @param[in] fruData - the data of the fru
+     */
+    virtual void processOEMfruRecord(const std::vector<uint8_t>& fruData) = 0;
+
+    virtual ~Handler() = default;
+
+  protected:
+    const pldm::utils::DBusHandler* dBusIntf;
+};
+
+} // namespace oem_fru
 
 } // namespace responder
 
