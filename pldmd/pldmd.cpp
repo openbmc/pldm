@@ -62,6 +62,7 @@ PHOSPHOR_LOG2_USING;
 #ifdef OEM_IBM
 #include "libpldmresponder/bios_oem_ibm.hpp"
 #include "libpldmresponder/file_io.hpp"
+#include "libpldmresponder/fru_oem_ibm.hpp"
 #include "libpldmresponder/oem_ibm_handler.hpp"
 #endif
 
@@ -227,6 +228,7 @@ int main(int argc, char** argv)
     DBusHandler dbusHandler;
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
     std::unique_ptr<oem_bios::Handler> oemBiosHandler{};
+    std::unique_ptr<oem_fru::Handler> oemFruHandler{};
 
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
@@ -236,6 +238,8 @@ int main(int argc, char** argv)
         &dbusHandler, codeUpdate.get(), pldmTransport.getEventSource(), hostEID,
         instanceIdDb, event, &reqHandler);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
+    oemFruHandler = std::make_unique<oem_ibm_fru::Handler>(&dbusHandler,
+                                                           pdrRepo.get());
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(),
                                           pldmTransport.getEventSource(),
@@ -262,9 +266,11 @@ int main(int argc, char** argv)
     auto biosHandler = std::make_unique<bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
         oemBiosHandler.get());
+
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
-        bmcEntityTree.get());
+        bmcEntityTree.get(), oemFruHandler.get());
+
     // FRU table is built lazily when a FRU command or Get PDR command is
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
@@ -277,6 +283,11 @@ int main(int argc, char** argv)
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
             oemPlatformHandler.get());
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
+
+    pldm::responder::oem_ibm_fru::Handler* oemIbmFruHandler =
+        dynamic_cast<pldm::responder::oem_ibm_fru::Handler*>(
+            oemFruHandler.get());
+    oemIbmFruHandler->setFruHandler(fruHandler.get());
 #endif
 
     invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));
