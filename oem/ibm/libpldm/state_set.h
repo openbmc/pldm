@@ -12,6 +12,21 @@ enum ibm_oem_pldm_state_set_ids {
 	PLDM_OEM_IBM_VERIFICATION_STATE = 32770,
 	PLDM_OEM_IBM_SYSTEM_POWER_STATE = 32771,
 	PLDM_OEM_IBM_SBE_MAINTENANCE_STATE = 32772,
+	PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE = 32773,
+	PLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE = 32774,
+};
+
+enum ibm_slot_enable_effecter_state {
+	ADD = 0x1,
+	REMOVE = 0x2,
+	REPLACE = 0x3,
+};
+
+enum ibm_slot_enable_sensor_state {
+	SLOT_STATE_UNKOWN = 0x0,
+	SLOT_STATE_ENABLED = 0x1,
+	SLOT_STATE_DISABLED = 0x2,
+	SLOT_STATE_ERROR = 0x03,
 };
 
 enum ibm_oem_pldm_state_set_firmware_update_state_values {
