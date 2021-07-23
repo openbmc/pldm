@@ -34,6 +34,8 @@ void FruImpl::buildFRUTable()
     try
     {
         dbusInfo = parser.inventoryLookup();
+        std::cout << "service: " << std::get<0>(dbusInfo).c_str()
+                  << " object: " << std::get<1>(dbusInfo).c_str() << "\n";
         auto method = bus.new_method_call(
             std::get<0>(dbusInfo).c_str(), std::get<1>(dbusInfo).c_str(),
             "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
@@ -55,8 +57,10 @@ void FruImpl::buildFRUTable()
 
         for (const auto& interface : interfaces)
         {
+            std::cout << "interface.first " << interface.first << "\n";
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
             {
+                std::cout << "found interface.first, building \n";
                 // An exception will be thrown by getRecordInfo, if the item
                 // D-Bus interface name specified in FRU_Master.json does
                 // not have corresponding config jsons
@@ -285,6 +289,71 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
     fruData.resize(recordTableSize + pads + sizeof(sum));
 
     return PLDM_SUCCESS;
+}
+
+void FruImpl::subscribeFruPresence(const std::string& inventoryObjPath, const std::string& fruInterface, const std::string& itemInterface, std::vector<std::unique_ptr<sdbusplus::bus::match::match>>& fruHotPlugMatch)
+{
+    std::cout << "entered subscribeFruPresence with " << inventoryObjPath
+              << " and " << fruInterface << "\n";
+    static constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+    static constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        std::vector<std::string> fruObjPaths;
+        auto method = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                          MAPPER_INTERFACE, "GetSubTreePaths");
+        method.append(inventoryObjPath);
+        method.append(0);
+        method.append(std::vector<std::string>({fruInterface}));
+        auto reply = bus.call(method);
+        reply.read(fruObjPaths);
+
+        for (const auto& fruObjPath : fruObjPaths)
+        {
+            std::cout << "subscribing for " << fruObjPath << " and " << fruInterface << "\n";
+            using namespace sdbusplus::bus::match::rules;
+            fruHotPlugMatch.push_back(
+                std::make_unique<sdbusplus::bus::match::match>(
+                bus,
+                propertiesChanged(fruObjPath,
+                                  itemInterface),
+                [this,fruObjPath,itemInterface](sdbusplus::message::message& msg){
+                    DbusChangedProps props;
+                    std::string iface;
+                    msg.read(iface, props);
+                    std::cout << "inside the lambda \n";
+                    processFruPresenceChange(props,fruObjPath,itemInterface);
+                }));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "could not subscribe for hotplug of fru: "
+                  << fruInterface << " error " << e.what() << "\n";
+    }
+    std::cout << "returning from subscribeFruPresence \n";
+}
+
+void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties, const std::string& fruObjPath, const std::string& itemInterface)
+{
+    std::cout << "enter processFruPresenceChange \n";
+    static constexpr auto propertyName = "Present";  //check once
+    std::cout << "chProperties.size() " << chProperties.size() << "\n";
+
+    const auto it = chProperties.find(propertyName);
+    std::cout << "before if block \n";
+    if (it == chProperties.end())
+    {
+        std::cout << "could not find the property name, returning \n";
+        return;
+    }
+    std::cout << "before getting newPropVal \n";
+    auto newPropVal = std::get<bool>(it->second);
+   std::cout << "got new property as " << newPropVal << " for fru " 
+             << fruObjPath << " and interface " << itemInterface << "\n";
 }
 
 namespace fru
