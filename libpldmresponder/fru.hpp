@@ -7,6 +7,7 @@
 
 #include "fru_parser.hpp"
 #include "pldmd/handler.hpp"
+#include "common/utils.hpp"
 
 #include <sdbusplus/message.hpp>
 
@@ -15,6 +16,7 @@
 #include <variant>
 #include <vector>
 
+using namespace pldm::utils;
 namespace pldm
 {
 
@@ -65,7 +67,18 @@ class FruImpl
             pldm_entity_association_tree* bmcEntityTree) :
         parser(configPath),
         pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree)
-    {}
+    {
+        std::cout << "FruImpl constructor \n";
+        static constexpr auto inventoryObjPath = "/xyz/openbmc_project/inventory/system/chassis";
+        static constexpr auto fanInterface = "xyz.openbmc_project.Inventory.Item.Fan";
+        static constexpr auto itemInterface = "xyz.openbmc_project.Inventory.Item";
+        static constexpr auto psuInterface = "xyz.openbmc_project.Inventory.Item.PowerSupply";
+        subscribeFruPresence(inventoryObjPath, fanInterface,itemInterface, fanHotplugMatch);
+        std::cout << "fanHotplugMatch.size " << fanHotplugMatch.size() << "\n";
+        subscribeFruPresence(inventoryObjPath, psuInterface, itemInterface, psuHotplugMatch); 
+        std::cout << "psuHotplugMatch.size " << psuHotplugMatch.size() << "\n";
+        std::cout << "end constructor \n";
+    }
 
     /** @brief Total length of the FRU table in bytes, this excludes the pad
      *         bytes and the checksum.
@@ -178,9 +191,15 @@ class FruImpl
                          const fru_parser::FruRecordInfos& recordInfos,
                          const pldm_entity& entity);
 
+    void subscribeFruPresence(const std::string& inventoryObjPath, const std::string& fruInterface, const std::string& itemInterface, std::vector<std::unique_ptr<sdbusplus::bus::match::match>>& fruHotPlugMatch);
+
+    void processFruPresenceChange(const DbusChangedProps& chProperties, const std::string& fruObjPath,const std::string& fruInterface);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> fanHotplugMatch;
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> psuHotplugMatch;
 };
 
 namespace fru
