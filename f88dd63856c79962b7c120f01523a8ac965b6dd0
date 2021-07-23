@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e8452bfa_a355bd36",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 46
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-07-23T10:22:59Z",
+      "side": 1,
+      "message": "This needs more description.",
+      "revId": "f88dd63856c79962b7c120f01523a8ac965b6dd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
