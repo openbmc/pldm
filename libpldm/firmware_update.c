@@ -1724,3 +1724,48 @@ int encode_get_device_meta_data_req(const uint8_t instance_id,
 	request->transfer_operation_flag = transfer_operation_flag;
 	return PLDM_SUCCESS;
 }
+
+int decode_get_device_meta_data_resp(
+    const struct pldm_msg *msg, const size_t payload_length,
+    uint8_t *completion_code, uint32_t *next_data_transfer_handle,
+    uint8_t *transfer_flag, struct variable_field *portion_of_meta_data)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    next_data_transfer_handle == NULL || transfer_flag == NULL ||
+	    portion_of_meta_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+
+	if (*completion_code != PLDM_SUCCESS) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length < sizeof(struct get_device_meta_data_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct get_device_meta_data_resp *response =
+	    (struct get_device_meta_data_resp *)msg->payload;
+
+	if (response == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*next_data_transfer_handle =
+	    le32toh(response->next_data_transfer_handle);
+
+	if (!is_transfer_flag_valid(response->transfer_flag)) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+
+	*transfer_flag = response->transfer_flag;
+
+	portion_of_meta_data->ptr =
+	    msg->payload + sizeof(struct get_device_meta_data_resp);
+	portion_of_meta_data->length =
+	    payload_length - sizeof(struct get_device_meta_data_resp);
+
+	return PLDM_SUCCESS;
+}
