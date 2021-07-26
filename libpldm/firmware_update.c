@@ -1633,7 +1633,7 @@ int encode_get_meta_data_resp(const uint8_t instance_id,
 			      struct variable_field *portion_of_meta_data)
 {
 
-if (msg == NULL || data == NULL || portion_of_meta_data == NULL) {
+	if (msg == NULL || data == NULL || portion_of_meta_data == NULL) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
@@ -1660,5 +1660,31 @@ if (msg == NULL || data == NULL || portion_of_meta_data == NULL) {
 	memcpy(msg->payload, data, sizeof(struct pldm_get_meta_data_response));
 	memcpy(msg->payload + sizeof(struct pldm_get_meta_data_response),
 	       portion_of_meta_data->ptr, portion_of_meta_data->length);
+	return PLDM_SUCCESS;
+}
+
+int decode_get_meta_data_req(const struct pldm_msg *msg,
+			     const size_t payload_length,
+			     uint32_t *data_transfer_handle,
+			     uint8_t *transfer_operation_flag)
+{
+
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    transfer_operation_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct pldm_get_meta_data_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct pldm_get_meta_data_req *request =
+	    (struct pldm_get_meta_data_req *)msg->payload;
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (request->transfer_operation_flag > PLDM_GET_FIRSTPART) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+	*data_transfer_handle = le32toh(request->data_transfer_handle);
+	*transfer_operation_flag = request->transfer_operation_flag;
 	return PLDM_SUCCESS;
 }
