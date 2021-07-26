@@ -508,5 +508,6 @@ bool checkIfLogicalBitSet(const uint16_t& containerId);
  *  @param[in] present - status to set either true/false
  */
 void setFruPresence(const std::string& fruObjPath, bool present);
+
 } // namespace utils
 } // namespace pldm

@@ -165,6 +165,12 @@ void FruImpl::buildFRUTable()
     for (const auto& object : objects)
     {
         const auto& interfaces = object.second;
+        auto isPresent = checkFruPresence(object.first.str.c_str());
+        if (!isPresent)
+        {
+            continue;
+        }
+
         for (const auto& interface : interfaces)
         {
             if (itemIntfsLookup.contains(interface.first))
