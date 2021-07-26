@@ -571,6 +571,15 @@ struct pldm_get_package_data_resp {
 	uint8_t transfer_flag;
 } __attribute__((packed));
 
+/** @struct pldm_get_package_data_req
+ *
+ *  Structure representing GetPackageData request
+ */
+struct pldm_get_package_data_req {
+	uint32_t data_transfer_handle;
+	uint8_t transfer_operation_flag;
+} __attribute__((packed));
+
 /** @brief Decode the PLDM package header information
  *
  *  @param[in] data - pointer to package header information
@@ -1154,6 +1163,20 @@ int encode_get_package_data_resp(const uint8_t instance_id,
 				 struct pldm_msg *msg,
 				 struct pldm_get_package_data_resp *data,
 				 struct variable_field *portion_of_meta_data);
+
+/** @brief Decode GetPackageData request message
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - Length of Request message payload
+ *  @param[out] data_transfer_handle - Pointer to data transfer handle
+ *  @param[out] transfer_operation_flag - Pointer to transfer operation flag
+ *
+ *  @return pldm_completion_codes
+ */
+int decode_get_pacakge_data_req(const struct pldm_msg *msg,
+				const size_t payload_length,
+				uint32_t *data_transfer_handle,
+				uint8_t *transfer_operation_flag);
 #ifdef __cplusplus
 }
 #endif
