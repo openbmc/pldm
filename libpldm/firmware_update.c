@@ -1534,3 +1534,62 @@ int decode_cancel_update_component_resp(const struct pldm_msg *msg,
 
 	return (decode_cc_only_resp(msg, payload_length, completion_code));
 }
+
+/** @brief generic encode api for GetMetaData/GetPackageData response command
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] command_code - PLDM Command
+ *  @param[in] data - pointer to response data
+ *  @param[in] portion_of_meta_data - pointer to package data
+ *  @return pldm_completion_codes
+ */
+static int encode_firmware_device_data_resp(
+    const uint8_t instance_id, const size_t payload_length,
+    struct pldm_msg *msg, uint8_t command_code, struct get_fd_data_resp *data,
+    struct variable_field *portion_of_meta_data)
+{
+	if (msg == NULL || data == NULL || portion_of_meta_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_FWUP;
+	header.command = command_code;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	if (payload_length < sizeof(struct get_fd_data_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	if (!is_transfer_flag_valid(data->transfer_flag)) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+	if (portion_of_meta_data->ptr == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	HTOLE32(data->next_data_transfer_handle);
+	memcpy(msg->payload, data, sizeof(struct get_fd_data_resp));
+	memcpy(msg->payload + sizeof(struct get_fd_data_resp),
+	       portion_of_meta_data->ptr, portion_of_meta_data->length);
+	return PLDM_SUCCESS;
+}
+
+int encode_get_package_data_resp(const uint8_t instance_id,
+				 const size_t payload_length,
+				 struct pldm_msg *msg,
+				 struct get_fd_data_resp *data,
+				 struct variable_field *portion_of_meta_data)
+{
+	if (msg == NULL || data == NULL || portion_of_meta_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return (encode_firmware_device_data_resp(instance_id, payload_length,
+						 msg, PLDM_GET_PACKAGE_DATA,
+						 data, portion_of_meta_data));
+}
