@@ -1653,3 +1653,17 @@ int encode_get_meta_data_resp(const uint8_t instance_id,
 						 msg, PLDM_GET_META_DATA, data,
 						 portion_of_meta_data));
 }
+
+int decode_get_meta_data_req(const struct pldm_msg *msg,
+			     const size_t payload_length,
+			     uint32_t *data_transfer_handle,
+			     uint8_t *transfer_operation_flag)
+{
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    transfer_operation_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return (decode_firmware_device_data_req(msg, payload_length,
+						data_transfer_handle,
+						transfer_operation_flag));
+}

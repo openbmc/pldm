@@ -1195,6 +1195,18 @@ int encode_get_meta_data_resp(const uint8_t instance_id,
 			      struct get_fd_data_resp *data,
 			      struct variable_field *portion_of_meta_data);
 
+/** @brief Decode GetMetaData request message
+ *
+ *  @param[in] msg - request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] data_transfer_handle - Pointer to data transfer handle
+ *  @param[out] transfer_operation_flag - Pointer to transfer operation flag
+ *  @return pldm_completion_codes
+ */
+int decode_get_meta_data_req(const struct pldm_msg *msg,
+			     const size_t payload_length,
+			     uint32_t *data_transfer_handle,
+			     uint8_t *transfer_operation_flag);
 #ifdef __cplusplus
 }
 #endif
