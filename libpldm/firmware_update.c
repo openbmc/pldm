@@ -1688,3 +1688,39 @@ int decode_get_meta_data_req(const struct pldm_msg *msg,
 	*transfer_operation_flag = request->transfer_operation_flag;
 	return PLDM_SUCCESS;
 }
+
+int encode_get_device_meta_data_req(const uint8_t instance_id,
+				    struct pldm_msg *msg,
+				    const size_t payload_length,
+				    const uint32_t data_transfer_handle,
+				    const uint8_t transfer_operation_flag)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct get_device_meta_data_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_GET_DEVICE_META_DATA;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	struct get_device_meta_data_req *request =
+	    (struct get_device_meta_data_req *)msg->payload;
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	request->data_transfer_handle = htole32(data_transfer_handle);
+	if (!is_transfer_operation_flag_valid(transfer_operation_flag)) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+	request->transfer_operation_flag = transfer_operation_flag;
+	return PLDM_SUCCESS;
+}

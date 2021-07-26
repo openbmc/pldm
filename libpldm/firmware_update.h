@@ -31,6 +31,7 @@ enum pldm_firmware_update_commands {
 	PLDM_GET_FIRMWARE_PARAMETERS = 0x02,
 	PLDM_REQUEST_UPDATE = 0x10,
 	PLDM_GET_PACKAGE_DATA = 0x11,
+	PLDM_GET_DEVICE_META_DATA = 0x12,
 	PLDM_PASS_COMPONENT_TABLE = 0x13,
 	PLDM_UPDATE_COMPONENT = 0x14,
 	PLDM_REQUEST_FIRMWARE_DATA = 0x15,
@@ -596,6 +597,15 @@ struct pldm_get_meta_data_response {
  *  Structure representing GetMetaData request
  */
 struct pldm_get_meta_data_req {
+	uint32_t data_transfer_handle;
+	uint8_t transfer_operation_flag;
+} __attribute__((packed));
+
+/** @struct get_device_meta_data_req
+ *
+ *  Structure representing Get Device Meta Data request
+ */
+struct get_device_meta_data_req {
 	uint32_t data_transfer_handle;
 	uint8_t transfer_operation_flag;
 } __attribute__((packed));
@@ -1226,6 +1236,25 @@ int decode_get_meta_data_req(const struct pldm_msg *msg,
 			     const size_t payload_length,
 			     uint32_t *data_transfer_handle,
 			     uint8_t *transfer_operation_flag);
+
+/** @brief Create a PLDM request message for GetDeviceMetaData
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[in] data_transfer_handle - A handle that is used to identify a
+ * package data transfer
+ *  @param[in] transfer_operation_flag - The operation flag that indicates
+ * whether this is the start of the transfer
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_get_device_meta_data_req(const uint8_t instance_id,
+				    struct pldm_msg *msg,
+				    const size_t payload_length,
+				    const uint32_t data_transfer_handle,
+				    const uint8_t transfer_operation_flag);
 #ifdef __cplusplus
 }
 #endif
