@@ -1565,3 +1565,39 @@ int decode_cancel_update_resp(const struct pldm_msg *msg, size_t payload_length,
 
 	return PLDM_SUCCESS;
 }
+
+int encode_get_package_data_resp(const uint8_t instance_id,
+				 const size_t payload_length,
+				 struct pldm_msg *msg,
+				 struct pldm_get_package_data_resp *data,
+				 struct variable_field *portion_of_meta_data)
+{
+	if (msg == NULL || data == NULL || portion_of_meta_data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.pldm_type = PLDM_FWUP;
+	header.command = PLDM_GET_PACKAGE_DATA;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc) {
+		return rc;
+	}
+
+	if (payload_length < sizeof(struct pldm_get_package_data_resp)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	if (!is_transfer_flag_valid(data->transfer_flag)) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+	if (portion_of_meta_data->ptr == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	HTOLE32(data->next_data_transfer_handle);
+	memcpy(msg->payload, data, sizeof(struct pldm_get_package_data_resp));
+	memcpy(msg->payload + sizeof(struct pldm_get_package_data_resp),
+	       portion_of_meta_data->ptr, portion_of_meta_data->length);
+	return PLDM_SUCCESS;
+}
