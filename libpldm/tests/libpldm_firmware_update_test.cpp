@@ -3086,3 +3086,100 @@ TEST(GetPackageData, testBadDecodeRequest)
                                      &transferOperationFlag);
     EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
 }
+
+TEST(GetMetaData, testGoodEncodeResponse)
+{
+    constexpr uint8_t metaDataLen = 8;
+    struct variable_field portionOfMetaData;
+    struct pldm_get_meta_data_response inResp = {};
+    std::array<uint8_t, metaDataLen> metaData{};
+    portionOfMetaData.length = metaDataLen;
+    portionOfMetaData.ptr = metaData.data();
+    std::fill(metaData.data(), metaData.end(), 0xFF);
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_get_meta_data_response) +
+                            metaDataLen>
+        responseMsg{};
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    uint8_t instanceId = 0x04;
+    inResp.completion_code = PLDM_SUCCESS;
+    inResp.next_data_transfer_handle = 0xFFDE;
+    inResp.transfer_flag = PLDM_END;
+
+    auto rc =
+        encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                  responsePtr, &inResp, &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(responsePtr->hdr.request, PLDM_RESPONSE);
+    EXPECT_EQ(responsePtr->hdr.instance_id, instanceId);
+    EXPECT_EQ(responsePtr->hdr.type, PLDM_FWUP);
+    EXPECT_EQ(responsePtr->hdr.command, PLDM_GET_META_DATA);
+
+    auto resp =
+        reinterpret_cast<pldm_get_package_data_resp*>(responsePtr->payload);
+
+    EXPECT_EQ(resp->completion_code, inResp.completion_code);
+    EXPECT_EQ(resp->next_data_transfer_handle,
+              le32toh(inResp.next_data_transfer_handle));
+    EXPECT_EQ(resp->transfer_flag, inResp.transfer_flag);
+}
+
+TEST(GetMetaData, testBadEncodeResponse)
+{
+    constexpr uint8_t metaDataLen = 8;
+    struct variable_field portionOfMetaData;
+    uint8_t instanceId = 0x01;
+    struct pldm_get_meta_data_response inResp = {};
+
+    inResp.completion_code = PLDM_SUCCESS;
+    inResp.next_data_transfer_handle = 0xFFAB;
+    inResp.transfer_flag = PLDM_START;
+
+    std::array<uint8_t, metaDataLen> metaData{};
+    portionOfMetaData.ptr = metaData.data();
+    portionOfMetaData.length = metaDataLen;
+
+    std::fill(metaData.data(), metaData.end(), 0xFF);
+
+    std::array<uint8_t, hdrSize + sizeof(struct pldm_get_meta_data_response) +
+                            metaDataLen>
+        responseMsg{};
+
+    auto responsePtr = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    auto rc = encode_get_meta_data_resp(instanceId, 0, responsePtr, &inResp,
+                                        &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    rc = encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                   NULL, &inResp, &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                   responsePtr, NULL, &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                   responsePtr, &inResp, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    portionOfMetaData.ptr = NULL;
+    portionOfMetaData.length = 0;
+    rc = encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                   responsePtr, &inResp, &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    inResp.transfer_flag = PLDM_START - 1;
+    rc = encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                   responsePtr, &inResp, &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+
+    inResp.transfer_flag = PLDM_START_AND_END + 1;
+    rc = encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                   responsePtr, &inResp, &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+
+    inResp.transfer_flag = 0x0F;
+    rc = encode_get_meta_data_resp(instanceId, responseMsg.size() - hdrSize,
+                                   responsePtr, &inResp, &portionOfMetaData);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+}
