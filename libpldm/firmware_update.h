@@ -35,6 +35,7 @@ enum pldm_firmware_update_commands {
 	PLDM_TRANSFER_COMPLETE = 0x16,
 	PLDM_VERIFY_COMPLETE = 0x17,
 	PLDM_APPLY_COMPLETE = 0x18,
+	PLDM_GET_META_DATA = 0x19,
 	PLDM_ACTIVATE_FIRMWARE = 0x1A,
 	PLDM_GET_STATUS = 0x1B,
 	PLDM_CANCEL_UPDATE = 0x1D,
@@ -1177,6 +1178,23 @@ int decode_get_pacakge_data_req(const struct pldm_msg *msg,
 				const size_t payload_length,
 				uint32_t *data_transfer_handle,
 				uint8_t *transfer_operation_flag);
+
+/** @brief Create a PLDM response message for GetMetaData
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] data - pointer to response data
+ *  @param[in] portion_of_meta_data - pointer to package data
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ * 'msg.payload'
+ */
+int encode_get_meta_data_resp(const uint8_t instance_id,
+			      const size_t payload_length, struct pldm_msg *msg,
+			      struct get_fd_data_resp *data,
+			      struct variable_field *portion_of_meta_data);
+
 #ifdef __cplusplus
 }
 #endif
