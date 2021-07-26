@@ -101,6 +101,14 @@ bool is_time_legal(uint8_t seconds, uint8_t minutes, uint8_t hours, uint8_t day,
  */
 bool is_transfer_flag_valid(uint8_t transfer_flag);
 
+/** @brief Check whether transfer operation flag is valid
+ *
+ *  @param[in] transfer operation flag. Value: PLDM_GET_NEXTPART = 0,
+ * PLDM_GET_FIRSTPART = 1
+ *  @return true if is from above values, false if not
+ */
+bool is_transfer_operation_flag_valid(const uint8_t transfer_operation_flag);
+
 #ifdef __cplusplus
 }
 #endif
