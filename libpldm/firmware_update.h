@@ -610,6 +610,16 @@ struct get_device_meta_data_req {
 	uint8_t transfer_operation_flag;
 } __attribute__((packed));
 
+/** @struct get_device_meta_data_resp
+ *
+ *  Structure representing Get Device Meta Data response
+ */
+struct get_device_meta_data_resp {
+	uint8_t completion_code;
+	uint32_t next_data_transfer_handle;
+	uint8_t transfer_flag;
+} __attribute__((packed));
+
 /** @brief Decode the PLDM package header information
  *
  *  @param[in] data - pointer to package header information
@@ -1255,6 +1265,21 @@ int encode_get_device_meta_data_req(const uint8_t instance_id,
 				    const size_t payload_length,
 				    const uint32_t data_transfer_handle,
 				    const uint8_t transfer_operation_flag);
+
+/** @brief Decode a GetDeviceMetaData response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - Pointer to response msg's PLDM completion code
+ *  @param[out] next_data_transfer_handle - Pointer to next data transfer handle
+ *  @param[out] transfer_flag - Pointer to transfer flag
+ *  @param[out] portion_of_meta_data - Pointer to portion of meta data
+ *  @return pldm_completion_codes
+ */
+int decode_get_device_meta_data_resp(
+    const struct pldm_msg *msg, const size_t payload_length,
+    uint8_t *completion_code, uint32_t *next_data_transfer_handle,
+    uint8_t *transfer_flag, struct variable_field *portion_of_meta_data);
 #ifdef __cplusplus
 }
 #endif
