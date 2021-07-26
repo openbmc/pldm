@@ -3183,3 +3183,66 @@ TEST(GetMetaData, testBadEncodeResponse)
                                    responsePtr, &inResp, &portionOfMetaData);
     EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
 }
+
+TEST(GetMetaData, testGoodDecodeRequest)
+{
+    uint32_t dataTransferHandle = 0;
+    uint8_t transferOperationFlag = PLDM_GET_NEXTPART;
+    uint32_t handleIn = 0xFFAB;
+    std::array<uint8_t, hdrSize + sizeof(struct get_fd_data_req)> requestMsg{};
+    struct pldm_get_meta_data_req* request =
+        reinterpret_cast<struct pldm_get_meta_data_req*>(requestMsg.data() +
+                                                         hdrSize);
+    request->data_transfer_handle = htole32(handleIn);
+    request->transfer_operation_flag = PLDM_GET_NEXTPART;
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc =
+        decode_get_meta_data_req(requestPtr, requestMsg.size() - hdrSize,
+                                 &dataTransferHandle, &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(dataTransferHandle, handleIn);
+    EXPECT_EQ(transferOperationFlag, request->transfer_operation_flag);
+    rc = decode_get_meta_data_req(requestPtr, requestMsg.size() - hdrSize,
+                                  &dataTransferHandle, &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(dataTransferHandle, handleIn);
+    EXPECT_EQ(transferOperationFlag, request->transfer_operation_flag);
+}
+TEST(GetMetaData, testBadDecodeRequest)
+{
+    uint32_t dataTransferHandle = 0;
+    uint8_t transferOperationFlag = PLDM_GET_NEXTPART;
+    uint32_t handleIn = 0xFFAB;
+    std::array<uint8_t, hdrSize + sizeof(struct get_fd_data_req)> requestMsg{};
+    struct pldm_get_meta_data_req* request =
+        reinterpret_cast<struct pldm_get_meta_data_req*>(requestMsg.data() +
+                                                         hdrSize);
+    request->data_transfer_handle = htole32(handleIn);
+    auto requestPtr = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    request->transfer_operation_flag = PLDM_GET_FIRSTPART;
+    auto rc =
+        decode_get_meta_data_req(NULL, requestMsg.size() - hdrSize,
+                                 &dataTransferHandle, &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_get_meta_data_req(requestPtr, 0, &dataTransferHandle,
+                                  &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+    rc = decode_get_meta_data_req(requestPtr, requestMsg.size() - hdrSize, NULL,
+                                  &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    rc = decode_get_meta_data_req(requestPtr, requestMsg.size() - hdrSize,
+                                  &dataTransferHandle, NULL);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+    request->transfer_operation_flag = PLDM_GET_NEXTPART - 1;
+    rc = decode_get_meta_data_req(requestPtr, requestMsg.size() - hdrSize,
+                                  &dataTransferHandle, &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+    request->transfer_operation_flag = PLDM_GET_FIRSTPART + 1;
+    rc = decode_get_meta_data_req(requestPtr, requestMsg.size() - hdrSize,
+                                  &dataTransferHandle, &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+    request->transfer_operation_flag = 0xFF;
+    rc = decode_get_meta_data_req(requestPtr, requestMsg.size() - hdrSize,
+                                  &dataTransferHandle, &transferOperationFlag);
+    EXPECT_EQ(rc, PLDM_INVALID_TRANSFER_OPERATION_FLAG);
+}
