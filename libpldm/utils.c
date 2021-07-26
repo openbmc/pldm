@@ -209,3 +209,15 @@ bool is_transfer_flag_valid(uint8_t transfer_flag)
 		return false;
 	}
 }
+
+bool is_transfer_operation_flag_valid(const uint8_t transfer_operation_flag)
+{
+	switch (transfer_operation_flag) {
+	case PLDM_GET_NEXTPART:
+	case PLDM_GET_FIRSTPART:
+		return true;
+
+	default:
+		return false;
+	}
+}
