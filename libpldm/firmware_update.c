@@ -1580,6 +1580,39 @@ static int encode_firmware_device_data_resp(
 	return PLDM_SUCCESS;
 }
 
+/** @brief generic decode api for GetMetaData/GetPackageData request command
+ *
+ *  @param[in] msg - request message
+ *  @param[in] payload_length - Length of request message payload
+ *  @param[out] data_transfer_handle - Pointer to data transfer handle
+ *  @param[out] transfer_operation_flag - Pointer to transfer operation flag
+ *  @return pldm_completion_codes
+ */
+static int decode_firmware_device_data_req(const struct pldm_msg *msg,
+					   const size_t payload_length,
+					   uint32_t *data_transfer_handle,
+					   uint8_t *transfer_operation_flag)
+{
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    transfer_operation_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (payload_length != sizeof(struct get_fd_data_req)) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+	struct get_fd_data_req *request =
+	    (struct get_fd_data_req *)msg->payload;
+	if (request == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	if (request->transfer_operation_flag > PLDM_GET_FIRSTPART) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+	*data_transfer_handle = le32toh(request->data_transfer_handle);
+	*transfer_operation_flag = request->transfer_operation_flag;
+	return PLDM_SUCCESS;
+}
+
 int encode_get_package_data_resp(const uint8_t instance_id,
 				 const size_t payload_length,
 				 struct pldm_msg *msg,
@@ -1592,4 +1625,18 @@ int encode_get_package_data_resp(const uint8_t instance_id,
 	return (encode_firmware_device_data_resp(instance_id, payload_length,
 						 msg, PLDM_GET_PACKAGE_DATA,
 						 data, portion_of_meta_data));
+}
+
+int decode_get_pacakge_data_req(const struct pldm_msg *msg,
+				const size_t payload_length,
+				uint32_t *data_transfer_handle,
+				uint8_t *transfer_operation_flag)
+{
+	if (msg == NULL || data_transfer_handle == NULL ||
+	    transfer_operation_flag == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	return (decode_firmware_device_data_req(msg, payload_length,
+						data_transfer_handle,
+						transfer_operation_flag));
 }
