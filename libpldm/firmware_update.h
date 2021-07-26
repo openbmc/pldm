@@ -30,6 +30,7 @@ enum pldm_firmware_update_commands {
 	PLDM_QUERY_DEVICE_IDENTIFIERS = 0x01,
 	PLDM_GET_FIRMWARE_PARAMETERS = 0x02,
 	PLDM_REQUEST_UPDATE = 0x10,
+	PLDM_GET_PACKAGE_DATA = 0x11,
 	PLDM_PASS_COMPONENT_TABLE = 0x13,
 	PLDM_UPDATE_COMPONENT = 0x14,
 	PLDM_REQUEST_FIRMWARE_DATA = 0x15,
@@ -558,6 +559,16 @@ struct pldm_cancel_update_resp {
 	uint8_t completion_code;
 	bool8_t non_functioning_component_indication;
 	uint64_t non_functioning_component_bitmap;
+} __attribute__((packed));
+
+/** @struct pldm_get_package_data_resp
+ *
+ *  Structure representing GetPackageData response
+ */
+struct pldm_get_package_data_resp {
+	uint8_t completion_code;
+	uint32_t next_data_transfer_handle;
+	uint8_t transfer_flag;
 } __attribute__((packed));
 
 /** @brief Decode the PLDM package header information
@@ -1125,6 +1136,24 @@ int decode_cancel_update_resp(const struct pldm_msg *msg, size_t payload_length,
 			      bool8_t *non_functioning_component_indication,
 			      bitfield64_t *non_functioning_component_bitmap);
 
+/** @brief Create a PLDM response message for GetPackageData
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[in,out] msg - Message will be written to this
+ *  @param[in] data - pointer to response data
+ *  @param[in] portion_of_meta_data - pointer to package data
+ *
+ *  @return pldm_completion_codes
+ *
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ * 'msg.payload'
+ */
+int encode_get_package_data_resp(const uint8_t instance_id,
+				 const size_t payload_length,
+				 struct pldm_msg *msg,
+				 struct pldm_get_package_data_resp *data,
+				 struct variable_field *portion_of_meta_data);
 #ifdef __cplusplus
 }
 #endif
