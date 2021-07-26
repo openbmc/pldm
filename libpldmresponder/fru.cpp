@@ -54,13 +54,35 @@ void FruImpl::buildFRUTable()
     for (const auto& object : objects)
     {
         const auto& interfaces = object.second;
+        std::cout << "\nobject.first " << object.first.str << "\n";
+        auto isPresent = checkFruPresence(object.first.str.c_str());
+        //may be a #ifder oem-ibm check here so that we build the pcie slot
+        //and adpters and nvme slot fru records even if they are not present
+        //because as per our agreemnet bmc is supposed to create empty
+        //fru records for all indistry std adapters and
+        //probably create fru records only for present ibm adapters
+        //how to distinguish btn the two? can the PrettyName have
+        //some ibm specific string?
+        //also what do we do about nvme slots? check presence before 
+        //building fru records?
+        if(!isPresent)
+        {
+            std::cout << "\n fru " << object.first.str << " is not present,"
+                      << "  will not build fru record now \n";
+            continue;
+        }
+        else //REMOVE THIS LATER
+        {
+            std::cout << "building fru record for " << object.first.str<< "\n";
+        }
 
         for (const auto& interface : interfaces)
         {
-            std::cout << "interface.first " << interface.first << "\n";
+       //     std::cout << "interface.first " << interface.first << "\n";
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
             {
-                std::cout << "found interface.first, building \n";
+                std::cout << "found interface.first, building " 
+                          << interface.first << "\n";;
                 // An exception will be thrown by getRecordInfo, if the item
                 // D-Bus interface name specified in FRU_Master.json does
                 // not have corresponding config jsons
@@ -70,6 +92,8 @@ void FruImpl::buildFRUTable()
                     entity.entity_type = parser.getEntityType(interface.first);
                     pldm_entity_node* parent = nullptr;
                     auto parentObj = pldm::utils::findParent(object.first.str);
+                    std::cout << "found parent as " << parentObj <<
+                               " for object " << object.first.str << "\n";
                     // To add a FRU to the entity association tree, we need to
                     // determine if the FRU has a parent (D-Bus object). For eg
                     // /system/backplane's parent is /system. /system has no
@@ -91,12 +115,15 @@ void FruImpl::buildFRUTable()
                         parentObj = pldm::utils::findParent(parentObj);
                     } while (parentObj != "/");
 
+                    std::cout << "\ncalling pldm_entity_association_tree_add \n";
                     auto node = pldm_entity_association_tree_add(
                         entityTree, &entity, 0xFFFF, parent,
                         PLDM_ENTITY_ASSOCIAION_PHYSICAL);
                     objToEntityNode[object.first.str] = node;
 
+                    std::cout << "\ncalling getRecordInfo on the interface\n"; 
                     auto recordInfos = parser.getRecordInfo(interface.first);
+                    std::cout << "\ncalling populateRecords \n";
                     populateRecords(interfaces, recordInfos, entity);
 
                     associatedEntityMap.emplace(object.first, entity);
@@ -161,6 +188,7 @@ void FruImpl::populateRecords(
     const pldm::responder::dbus::InterfaceMap& interfaces,
     const fru_parser::FruRecordInfos& recordInfos, const pldm_entity& entity)
 {
+    std::cout << "\nenter populateRecords \n";
     // recordSetIdentifier for the FRU will be set when the first record gets
     // added for the FRU
     uint16_t recordSetIdentifier = 0;
@@ -173,6 +201,7 @@ void FruImpl::populateRecords(
         uint8_t numFRUFields = 0;
         for (auto const& [intf, prop, propType, fieldTypeNum] : fieldInfos)
         {
+            std::cout << "\nfor loop intf " << intf << " prop " << prop << "\n";
 
             try
             {
