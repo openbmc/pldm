@@ -1666,3 +1666,14 @@ int decode_get_pacakge_data_req(const struct pldm_msg *msg,
 						data_transfer_handle,
 						transfer_operation_flag));
 }
+
+int encode_get_meta_data_resp(const uint8_t instance_id,
+			      const size_t payload_length, struct pldm_msg *msg,
+			      struct get_fd_data_resp *data,
+			      struct variable_field *portion_of_meta_data)
+{
+
+	return (encode_firmware_device_data_resp(instance_id, payload_length,
+						 msg, PLDM_GET_META_DATA, data,
+						 portion_of_meta_data));
+}
