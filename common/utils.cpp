@@ -558,5 +558,23 @@ const std::string getCurrentSystemTime()
     return buf;
 }
 
+bool checkFruPresence(const char* objPath)
+{
+    bool isPresent = true;
+    static constexpr auto presentInterface =
+        "xyz.openbmc_project.Inventory.Item";
+    static constexpr auto presentProperty = "Present";
+
+    try
+    {
+        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            objPath, presentProperty, presentInterface);
+        isPresent = std::get<bool>(propVal);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {}
+    return isPresent;
+}
+
 } // namespace utils
 } // namespace pldm
