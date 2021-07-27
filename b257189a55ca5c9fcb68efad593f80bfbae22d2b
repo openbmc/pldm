@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81f1ddaf_a307d19a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1005,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-07-27T01:41:09Z",
+      "side": 1,
+      "message": "Can you please change this magic number 0x8000",
+      "revId": "b257189a55ca5c9fcb68efad593f80bfbae22d2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
