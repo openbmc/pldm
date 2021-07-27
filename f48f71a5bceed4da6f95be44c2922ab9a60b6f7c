@@ -22,6 +22,30 @@
       "revId": "f48f71a5bceed4da6f95be44c2922ab9a60b6f7c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "541b3b50_2d070fde",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-07-27T17:14:45Z",
+      "side": 1,
+      "message": "thanks for pointing this out, I re-tested the app and found that I had used the wrong value, not sure how the test succeeded before---I could have been using an outdated version by accident.\n\nI pushed up some new changes that get the TID from the PDR (or use a hardcoded TID for phyp, since they don\u0027t fill out the TID correctly in the PDR itself).",
+      "parentUuid": "30366b37_6adc89b5",
+      "range": {
+        "startLine": 32,
+        "startChar": 32,
+        "endLine": 32,
+        "endChar": 39
+      },
+      "revId": "f48f71a5bceed4da6f95be44c2922ab9a60b6f7c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
