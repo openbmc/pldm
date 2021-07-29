@@ -16,6 +16,24 @@
       "revId": "142d660430f395dd5dfc0d4bd8ed34b00efcdfb3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fea7cf5c_14a46f14",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-07-29T12:35:29Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/43732/2/libpldm/firmware_update.h#918",
+      "parentUuid": "f88edcfb_4b17b3f9",
+      "revId": "142d660430f395dd5dfc0d4bd8ed34b00efcdfb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
