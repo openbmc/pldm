@@ -5,6 +5,7 @@
 
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
+#include "flight_recorder.hpp"
 #include "invoker.hpp"
 #include "requester/handler.hpp"
 #include "requester/request.hpp"
@@ -20,6 +21,8 @@
 
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
+#include <sdeventplus/source/signal.hpp>
+#include <stdplus/signal.hpp>
 
 #include <cstdio>
 #include <cstring>
@@ -59,6 +62,18 @@ using namespace sdeventplus;
 using namespace sdeventplus::source;
 using namespace pldm::responder;
 using namespace pldm::utils;
+using sdeventplus::source::Signal;
+using namespace pldm::flightrecorder;
+
+FlightRecorder* FlightRecorder::flightRecorder = nullptr;
+
+void interruptCallBack(Signal& /*signal*/, const struct signalfd_siginfo*)
+{
+    std::cerr << "Received SIGUR1(10) Signal interrupt" << std::endl;
+    FlightRecorder* flightRecorder = FlightRecorder::GetInstance();
+    flightRecorder->playRecorder();
+    // signal.get_event().exit(0);
+}
 
 static std::optional<Response>
     processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
@@ -166,6 +181,7 @@ int main(int argc, char** argv)
 
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
+    FlightRecorder* flightRecorder = FlightRecorder::GetInstance();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(sockfd, event,
@@ -270,8 +286,8 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    auto callback = [verbose, &invoker, &reqHandler](IO& io, int fd,
-                                                     uint32_t revents) {
+    auto callback = [verbose, &invoker, &reqHandler,
+                     &flightRecorder](IO& io, int fd, uint32_t revents) {
         if (!(revents & EPOLLIN))
         {
             return;
@@ -308,6 +324,7 @@ int main(int argc, char** argv)
                 fd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
             if (recvDataLength == peekedLength)
             {
+                flightRecorder->saveRecord(requestMsg, false);
                 if (verbose)
                 {
                     std::cout << "Received Msg" << std::endl;
@@ -326,9 +343,11 @@ int main(int argc, char** argv)
                         processRxMsg(requestMsg, invoker, reqHandler);
                     if (response.has_value())
                     {
+                        flightRecorder->saveRecord(*response, true);
                         if (verbose)
                         {
                             std::cout << "Sending Msg" << std::endl;
+
                             printBuffer(*response, verbose);
                         }
 
@@ -364,6 +383,8 @@ int main(int argc, char** argv)
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
+    stdplus::signal::block(SIGINT);
+    Signal(event, SIGINT, interruptCallBack).set_floating(true);
     event.loop();
 
     result = shutdown(sockfd, SHUT_RDWR);
