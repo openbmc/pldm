@@ -543,5 +543,20 @@ std::string toString(const struct variable_field& var)
     return str;
 }
 
+const std::string getCurrentSystemTime()
+{
+    struct timeval tpend;
+    gettimeofday(&tpend, NULL);
+
+    int secofday = (tpend.tv_sec + 3600 * 8) % 86400;
+    int hours = secofday / 3600;
+    int minutes = (secofday - hours * 3600) / 60;
+    int seconds = secofday % 60;
+    int milliseconds = tpend.tv_usec / 1000;
+    char buf[40];
+    sprintf(buf, "%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
+    return buf;
+}
+
 } // namespace utils
 } // namespace pldm
