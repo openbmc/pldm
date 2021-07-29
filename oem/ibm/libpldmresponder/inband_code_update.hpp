@@ -19,6 +19,12 @@ static constexpr auto Tside = "T";
 static constexpr auto redundancyIntf =
     "xyz.openbmc_project.Software.RedundancyPriority";
 
+struct pldm_boot_side_data
+{
+    std::string current_boot_side;
+    std::string running_version_object;
+};
+
 /** @class CodeUpdate
  *
  *  @brief This class performs the necessary operation in pldm for
@@ -203,6 +209,20 @@ class CodeUpdate
      * rename event notification to host when code update is initiated*/
     void processRenameEvent();
 
+    /* @brief Method to write the bootside information into mapping
+     *        file which would be stored on host
+     * @param[in] pldmBootSideData - bootside information such as
+     *        current boot side and running version
+     */
+    void writeBootSideFile(const pldm_boot_side_data& pldmBootSideData);
+
+    /* @brief Method to read the mapping file containing bootside
+     *        which is stored on host and stores that information
+     *        in a structure
+     * @return[] - the structure which holds information regarding
+     *         bootside information */
+    pldm_boot_side_data readBootSideFile();
+
     virtual ~CodeUpdate()
     {}
 
@@ -214,8 +234,10 @@ class CodeUpdate
     std::string newImageId;        //!< new image id
     bool codeUpdateInProgress =
         false; //!< indicates whether codeupdate is going on
-    bool outOfBandCodeUpdateInProgress = false;
-    const pldm::utils::DBusHandler* dBusIntf; //!< D-Bus handler
+    bool outOfBandCodeUpdateInProgress = false; //!< indicates whether
+                                                //!< out of band codeupdate
+                                                //!< is in progress
+    const pldm::utils::DBusHandler* dBusIntf;   //!< D-Bus handler
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
         captureNextBootSideChange; //!< vector to catch the D-Bus property
                                    //!< change for next boot side
@@ -227,6 +249,7 @@ class CodeUpdate
     uint16_t markerLidSensorId;
     uint16_t firmwareUpdateSensorId;
     uint16_t bootSideRenameStateSensorId;
+
     /** @brief D-Bus property changed signal match for image activation */
     std::unique_ptr<sdbusplus::bus::match::match> imageActivationMatch;
 
@@ -264,5 +287,16 @@ int setBootSide(uint16_t entityInstance, uint8_t currState,
  */
 int processCodeUpdateLid(const std::string& filePath);
 
+/** @brief Method to assemble the code update tarball and trigger the
+ *         phosphor software manager to create a version interface
+ *  @return - PLDM_SUCCESS codes
+ */
+int assembleCodeUpdateImage();
+
+/* @brief Method to set the hb_boot_side property with the current
+ *        boot side
+ * @param[in] bootSide - the current boot side needed to set the bios
+ *        attribute*/
+void setBootSideBiosAttr(const std::string& bootSide);
 } // namespace responder
 } // namespace pldm
