@@ -3,6 +3,7 @@
 #include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 
+#include "common/flight_recorder.hpp"
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
 #include "fw-update/manager.hpp"
@@ -22,6 +23,8 @@
 
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
+#include <sdeventplus/source/signal.hpp>
+#include <stdplus/signal.hpp>
 
 #include <cstdio>
 #include <cstring>
@@ -63,6 +66,17 @@ using namespace sdeventplus;
 using namespace sdeventplus::source;
 using namespace pldm::responder;
 using namespace pldm::utils;
+using sdeventplus::source::Signal;
+using namespace pldm::flightrecorder;
+
+void interruptFlightRecorderCallBack(Signal& /*signal*/,
+                                     const struct signalfd_siginfo*)
+{
+    std::cerr << "\nReceived SIGUR1(10) Signal interrupt\n";
+
+    // obtain the flight recorder instance and dump the recorder
+    FlightRecorder::GetInstance().playRecorder();
+}
 
 static std::optional<Response>
     processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
@@ -353,6 +367,7 @@ int main(int argc, char** argv)
                 fd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
             if (recvDataLength == peekedLength)
             {
+                FlightRecorder::GetInstance().saveRecord(requestMsg, false);
                 if (verbose)
                 {
                     printBuffer(Rx, requestMsg);
@@ -369,6 +384,8 @@ int main(int argc, char** argv)
                                                  reqHandler, fwManager.get());
                     if (response.has_value())
                     {
+                        FlightRecorder::GetInstance().saveRecord(*response,
+                                                                 true);
                         if (verbose)
                         {
                             printBuffer(Tx, *response);
@@ -412,8 +429,9 @@ int main(int argc, char** argv)
         hostPDRHandler->setHostFirmwareCondition();
     }
 #endif
+    stdplus::signal::block(SIGUSR1);
+    Signal(event, SIGUSR1, interruptFlightRecorderCallBack).set_floating(true);
     returnCode = event.loop();
-
     if (shutdown(sockfd, SHUT_RDWR))
     {
         std::perror("Failed to shutdown the socket");
