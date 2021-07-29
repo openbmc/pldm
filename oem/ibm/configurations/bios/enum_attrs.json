@@ -13,6 +13,30 @@
          "displayName" : "pvm_fw_boot_side"
       },
       {
+         "attribute_name":"hb_boot_side",
+         "possible_values":[
+            "Perm",
+            "Temp"
+         ],
+         "default_values":[
+            "Temp"
+         ],
+         "helpText" : "hb_boot_side",
+         "displayName" : "hb_boot_side"
+      },
+      {
+         "attribute_name":"hb_boot_side_current",
+         "possible_values":[
+            "Perm",
+            "Temp"
+         ],
+         "default_values":[
+            "Temp"
+         ],
+         "helpText" : "hb_boot_side_current",
+         "displayName" : "hb_boot_side_current"
+      },
+      {
          "attribute_name":"pvm_pcie_error_inject",
          "possible_values":[
             "Disabled",
