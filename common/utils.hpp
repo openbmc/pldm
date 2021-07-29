@@ -362,5 +362,11 @@ void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose);
  */
 std::string toString(const struct variable_field& var);
 
+/** @brief Get the current system time in readable format
+ *
+ *  @return - std::string equivalent of the system time
+ */
+const std::string getCurrentSystemTime();
+
 } // namespace utils
 } // namespace pldm
