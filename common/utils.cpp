@@ -541,5 +541,19 @@ std::string toString(const struct variable_field& var)
     return str;
 }
 
+std::string getCurrentSystemTime()
+{
+    using namespace std::chrono;
+    const time_point<system_clock> tp = system_clock::now();
+    std::time_t tt = system_clock::to_time_t(tp);
+    auto ms = duration_cast<microseconds>(tp.time_since_epoch()) -
+              duration_cast<seconds>(tp.time_since_epoch());
+
+    std::stringstream ss;
+    ss << std::put_time(std::localtime(&tt), "%F %Z %T.")
+       << std::to_string(ms.count());
+    return ss.str();
+}
+
 } // namespace utils
 } // namespace pldm
