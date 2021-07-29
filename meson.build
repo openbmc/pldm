@@ -30,6 +30,7 @@ conf_data.set_quoted('FRU_JSONS_DIR', '/usr/share/pldm/fru')
 conf_data.set_quoted('FRU_MASTER_JSON', '/usr/share/pldm/fru_master.json')
 conf_data.set_quoted('HOST_JSONS_DIR', '/usr/share/pldm/host')
 conf_data.set_quoted('EVENTS_JSONS_DIR', '/usr/share/pldm/events')
+conf_data.set_quoted('FLIGHT_RECORDER_DUMP_PATH', '/tmp/pldm_flight_recorder')
 add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
 endif
 if get_option('softoff').enabled()
@@ -51,6 +52,7 @@ conf_data.set('PLDM_VERBOSITY',get_option('verbosity'))
 conf_data.set('NUMBER_OF_REQUEST_RETRIES', get_option('number-of-request-retries'))
 conf_data.set('INSTANCE_ID_EXPIRATION_INTERVAL',get_option('instance-id-expiration-interval'))
 conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
+conf_data.set('FLIGHT_RECORDER_MAX_SIZE',get_option('flightrecorder-size'))
 configure_file(output: 'config.h',
   configuration: conf_data
 )
