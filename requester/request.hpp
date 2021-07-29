@@ -3,6 +3,7 @@
 #include "libpldm/base.h"
 #include "libpldm/requester/pldm.h"
 
+#include "common/flight_recorder.hpp"
 #include "common/types.hpp"
 
 #include <sdbusplus/timer.hpp>
@@ -163,6 +164,8 @@ class Request final : public RequestRetryTimer
      */
     int send() const
     {
+        pldm::flightrecorder::FlightRecorder::GetInstance().saveRecord(
+            requestMsg, true);
         auto rc = pldm_send(eid, fd, requestMsg.data(), requestMsg.size());
         if (rc < 0)
         {
