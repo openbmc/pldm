@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d9e9e84_3196f450",
+        "filename": "libpldm/state_set.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-29T15:02:09Z",
+      "side": 1,
+      "message": "nit :unnecessary space change ?",
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5405bfc0_db8941d6",
+        "filename": "pldmtool/oem/ibm/oem_ibm_state_set.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-29T15:02:09Z",
+      "side": 1,
+      "message": "can you add some documentation in this file ? atleast one lines for each enum would be helpful",
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7fadb23_ebe12ee7",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-29T15:02:09Z",
+      "side": 1,
+      "message": "why is this needed ? are you using anything from that namespace ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e22bced4_7829aa6f",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-29T15:02:09Z",
+      "side": 1,
+      "message": "i would like to see these maps defined in oem/ibm folder , and an OEM_STATE_SET/ sensor/ effectors have a range , so when that entity is in oem range, we can call \u0026 check the map from oem/ibm file.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e86b47d8_d7ab2025",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-29T15:02:09Z",
+      "side": 1,
+      "message": "same here as well",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 348,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b4ebbbc_d568261b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-29T15:02:09Z",
+      "side": 1,
+      "message": "same here as well , move these to oem/",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "849d5402_fca7c34e",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-07-29T15:02:09Z",
+      "side": 1,
+      "message": "these as well",
+      "range": {
+        "startLine": 461,
+        "startChar": 0,
+        "endLine": 466,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
