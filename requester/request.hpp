@@ -3,6 +3,7 @@
 #include "libpldm/base.h"
 #include "libpldm/requester/pldm.h"
 
+#include "common/flight_recorder.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
@@ -194,6 +195,8 @@ class Request final : public RequestRetryTimer
                 return PLDM_ERROR;
             }
         }
+        pldm::flightrecorder::FlightRecorder::GetInstance().saveRecord(
+            requestMsg, true);
         auto rc = pldm_send(eid, fd, requestMsg.data(), requestMsg.size());
         if (rc < 0)
         {

@@ -402,6 +402,11 @@ std::string toString(const struct variable_field& var);
  */
 std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
                                std::string_view trimStr = "");
+/** @brief Get the current system time in readable format
+ *
+ *  @return - std::string equivalent of the system time
+ */
+std::string getCurrentSystemTime();
 
 } // namespace utils
 } // namespace pldm
