@@ -526,5 +526,27 @@ std::string toString(const struct variable_field& var)
     return str;
 }
 
+const std::string getCurrentSystemTime()
+{
+    uint64_t ts = std::chrono::duration_cast<std::chrono::microseconds>(
+                      std::chrono::system_clock::now().time_since_epoch())
+                      .count();
+
+    std::chrono::time_point<std::chrono::system_clock,
+                            std::chrono::microseconds>
+        tp{std::chrono::microseconds{ts}};
+
+    std::stringstream ss;
+    std::time_t tt = std::chrono::system_clock::to_time_t(tp);
+    uint64_t us = std::chrono::duration_cast<std::chrono::microseconds>(
+                      tp.time_since_epoch())
+                      .count();
+
+    ss << std::put_time(std::localtime(&tt), "%Z %b %d / %H:%M:%S.");
+    ss << std::setfill('0') << std::setw(6) << std::to_string(us % 1000000);
+
+    return ss.str();
+}
+
 } // namespace utils
 } // namespace pldm

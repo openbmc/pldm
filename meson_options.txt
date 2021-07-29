@@ -27,3 +27,5 @@ option('terminus-handle',type:'integer',min:0, max:65535, description: 'The term
 
 # Firmware update configuration parameters
 option('maximum-transfer-size', type: 'integer', min: 16, max: 4294967295, description: 'Maximum size in bytes of the variable payload allowed to be requested by the FD, via RequestFirmwareData command', value: 4096)
+# Flight Recorder for PLDM Daemon
+option('flightrecorder-max-entries', type:'integer',min:0, max:30, description: 'The max number of pldm messages that can be stored in the recorder, this feature will be disabled if it is set to 0', value: 10)
