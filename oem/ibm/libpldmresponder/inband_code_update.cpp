@@ -8,6 +8,7 @@
 
 #include <arpa/inet.h>
 
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Dump/NewDump/server.hpp>
 
@@ -18,6 +19,7 @@ namespace pldm
 namespace responder
 {
 using namespace oem_ibm_platform;
+using namespace phosphor::logging;
 
 /** @brief Directory where the lid files without a header are stored */
 auto lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
@@ -34,6 +36,9 @@ constexpr auto tarImageName = "image.tar";
 /** @brief The file name of the hostfw image */
 constexpr auto hostfwImageName = "image-hostfw";
 
+/** @brief The filename of the file where bootside data will be saved */
+constexpr auto bootSideFileName = "bootSide";
+
 /** @brief The path to the code update tarball file */
 auto tarImagePath = fs::path(imageDirPath) / tarImageName;
 
@@ -43,6 +48,9 @@ auto hostfwImagePath = fs::path(imageDirPath) / hostfwImageName;
 /** @brief The path to the tarball file expected by the phosphor software
  *         manager */
 auto updateImagePath = fs::path("/tmp/images") / tarImageName;
+
+/** @brief The filepath of file where bootside data will be saved */
+auto bootSideDirPath = fs::path("/var/lib/pldm/") / bootSideFileName;
 
 std::string CodeUpdate::fetchCurrentBootSide()
 {
@@ -175,6 +183,30 @@ void CodeUpdate::setVersions()
             {
                 nonRunningVersion = path;
                 break;
+            }
+        }
+
+        if (!fs::exists(bootSideDirPath))
+        {
+            pldm_boot_side_data pldmBootSideData;
+            pldmBootSideData.current_boot_side = "Temp";
+            pldmBootSideData.running_version_object = runningVersion.c_str();
+
+            writeBootSideFile(pldmBootSideData);
+            setBootSideBiosAttr(pldmBootSideData.current_boot_side);
+        }
+        else
+        {
+            pldm_boot_side_data pldmBootSideData = readBootSideFile();
+            if (pldmBootSideData.running_version_object != runningVersion)
+            {
+                pldmBootSideData.current_boot_side = "Temp" ? "Perm" : "Temp";
+                writeBootSideFile(pldmBootSideData);
+                setBootSideBiosAttr(pldmBootSideData.current_boot_side);
+            }
+            else
+            {
+                setBootSideBiosAttr(pldmBootSideData.current_boot_side);
             }
         }
     }
@@ -321,11 +353,48 @@ void CodeUpdate::setVersions()
 
 void CodeUpdate::processRenameEvent()
 {
+    pldm_boot_side_data pldmBootSideData = readBootSideFile();
+    pldmBootSideData.current_boot_side = "Perm";
+
     currBootSide = Pside;
+
     auto sensorId = getBootSideRenameStateSensor();
     sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0,
                          PLDM_BOOT_SIDE_HAS_BEEN_RENAMED,
                          PLDM_BOOT_SIDE_NOT_RENAMED);
+    writeBootSideFile(pldmBootSideData);
+    setBootSideBiosAttr(pldmBootSideData.current_boot_side);
+}
+
+void CodeUpdate::writeBootSideFile(pldm_boot_side_data pldmBootSideData)
+{
+    std::ofstream writeFile(bootSideDirPath.string(),
+                            std::ios::out | std::ios::binary);
+    if (writeFile)
+    {
+        writeFile << pldmBootSideData.current_boot_side << std::endl;
+        writeFile << pldmBootSideData.running_version_object << std::endl;
+
+        writeFile.close();
+    }
+}
+
+pldm_boot_side_data CodeUpdate::readBootSideFile()
+{
+    pldm_boot_side_data pldmBootSideDataRead{};
+
+    std::ifstream readFile(bootSideDirPath.string(),
+                           std::ios::in | std::ios::binary);
+
+    if (readFile)
+    {
+        readFile >> pldmBootSideDataRead.current_boot_side;
+        readFile >> pldmBootSideDataRead.running_version_object;
+
+        readFile.close();
+    }
+
+    return pldmBootSideDataRead;
 }
 
 void CodeUpdate::processPriorityChangeNotification(
@@ -580,6 +649,60 @@ int assembleCodeUpdateImage()
     fs::remove_all(imageDirPath);
 
     return PLDM_SUCCESS;
+}
+
+void setBootSideBiosAttr(std::string bootSide)
+{
+    static constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+    static constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto SYSTEMD_PROPERTY_INTERFACE =
+        "org.freedesktop.DBus.Properties";
+
+    std::string biosAttrStr = bootSide;
+
+    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
+    constexpr auto dbusAttrName = "hb_boot_side";
+    constexpr auto dbusAttrType =
+        "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
+
+    using PendingAttributesType = std::vector<std::pair<
+        std::string, std::tuple<std::string, std::variant<std::string>>>>;
+    PendingAttributesType pendingAttributes;
+    pendingAttributes.emplace_back(std::make_pair(
+        dbusAttrName, std::make_tuple(dbusAttrType, biosAttrStr)));
+
+    auto bus = sdbusplus::bus::new_default();
+    auto method = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                      MAPPER_INTERFACE, "GetObject");
+    method.append(biosConfigPath, std::vector<std::string>({biosConfigIntf}));
+    std::vector<std::pair<std::string, std::vector<std::string>>> response;
+    try
+    {
+        auto reply = bus.call(method);
+        reply.read(response);
+        if (response.empty())
+        {
+            log<level::ERR>("Error reading mapper response",
+                            entry("PATH=%s", biosConfigPath),
+                            entry("INTERFACE=%s", biosConfigIntf));
+            return;
+        }
+        auto method = bus.new_method_call((response.begin()->first).c_str(),
+                                          biosConfigPath,
+                                          SYSTEMD_PROPERTY_INTERFACE, "Set");
+        method.append(biosConfigIntf, "PendingAttributes",
+                      std::variant<PendingAttributesType>(pendingAttributes));
+        bus.call(method);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {
+        log<level::ERR>("Error setting the bios attribute",
+                        entry("ERROR=%s", e.what()),
+                        entry("ATTRIBUTE=%s", dbusAttrName));
+        return;
+    }
 }
 
 } // namespace responder
