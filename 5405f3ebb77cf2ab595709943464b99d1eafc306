@@ -69,6 +69,30 @@
       "revId": "5405f3ebb77cf2ab595709943464b99d1eafc306",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2de2075c_19c5e1cd",
+        "filename": "OWNERS",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-30T03:18:05Z",
+      "side": 1,
+      "message": "I agree with Sapma.\nManoj is a great developer, and he has mastered a lot of PLDM functions and contributed a lot of commits.\nSo, I think he is a good reviewer and become a maintainer in the near future.\n\n@Tom, @Deepak, What do you think?",
+      "parentUuid": "5414fa4d_946dbca9",
+      "range": {
+        "startLine": 6,
+        "startChar": 2,
+        "endLine": 6,
+        "endChar": 8
+      },
+      "revId": "5405f3ebb77cf2ab595709943464b99d1eafc306",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
