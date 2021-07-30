@@ -34,6 +34,24 @@
       "revId": "c9b85ec87afba1f137e9ab393b5e36e1b13616d6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11fa045f_af99e6a6",
+        "filename": "requester/test/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-30T13:12:18Z",
+      "side": 1,
+      "message": "\u003e Because I used openbmc-build-scripts to build pldm locally (enabled testing and enabled oem-ibm) and passed\n\nThe problems fixed by the commit are only obvious when building outside of a pre-built environment like openbmc-build-scripts or an oe-sdk, but show up when you build free-standing on a standard linux machine.  The issue is that the header file path under `subprojects` doesn\u0027t end up into the compile flags, so the code can\u0027t find the nlohmann-json header.  If you\u0027re building in one of the pre-build environments, then it shows up because `-I/usr/include` is done by default.\n\n(It does appear that requester as a subdirectory doesn\u0027t use json though based on a git-grep.)",
+      "parentUuid": "35593e6d_aa7d7ce7",
+      "revId": "c9b85ec87afba1f137e9ab393b5e36e1b13616d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
