@@ -16,6 +16,24 @@
       "revId": "c9b85ec87afba1f137e9ab393b5e36e1b13616d6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35593e6d_aa7d7ce7",
+        "filename": "requester/test/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-07-30T06:09:41Z",
+      "side": 1,
+      "message": "Yes, I agree with Tom and this is also my question\nBecause I used openbmc-build-scripts to build pldm locally (enabled testing and enabled oem-ibm) and passed",
+      "parentUuid": "a663ccb6_fe3928fe",
+      "revId": "c9b85ec87afba1f137e9ab393b5e36e1b13616d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
