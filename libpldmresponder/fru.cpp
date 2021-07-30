@@ -89,7 +89,7 @@ void FruImpl::buildFRUTable()
 
                     auto node = pldm_entity_association_tree_add(
                         entityTree, &entity, 0xFFFF, parent,
-                        PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                        PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
                     objToEntityNode[object.first.str] = node;
 
                     auto recordInfos = parser.getRecordInfo(interface.first);

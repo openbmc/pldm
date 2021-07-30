@@ -324,6 +324,7 @@ typedef struct pldm_entity_node {
 	pldm_entity_node *first_child;
 	pldm_entity_node *next_sibling;
 	uint8_t association_type;
+	uint16_t host_container_id;
 } pldm_entity_node;
 
 static inline uint16_t next_container_id(pldm_entity_association_tree *tree)
@@ -339,6 +340,13 @@ pldm_entity pldm_entity_extract(pldm_entity_node *node)
 	assert(node != NULL);
 
 	return node->entity;
+}
+
+uint16_t pldm_extract_host_container_id(const pldm_entity_node *entity)
+{
+	assert(entity != NULL);
+
+	return entity->host_container_id;
 }
 
 pldm_entity_association_tree *pldm_entity_association_tree_init()
@@ -376,7 +384,7 @@ static pldm_entity_node *find_insertion_at(pldm_entity_node *start,
 pldm_entity_node *pldm_entity_association_tree_add(
     pldm_entity_association_tree *tree, pldm_entity *entity,
     uint16_t entity_instance_number, pldm_entity_node *parent,
-    uint8_t association_type)
+    uint8_t association_type, bool is_remote)
 {
 	assert(tree != NULL);
 	assert(entity != NULL);
@@ -401,6 +409,8 @@ pldm_entity_node *pldm_entity_association_tree_add(
 	node->entity.entity_instance_num =
 	    entity_instance_number != 0xFFFF ? entity_instance_number : 1;
 	node->association_type = association_type;
+	node->host_container_id =
+	    is_remote ? entity->entity_container_id : 0xFFFF;
 
 	if (tree->root == NULL) {
 		assert(parent == NULL);
@@ -736,6 +746,7 @@ static void entity_association_tree_copy(pldm_entity_node *org_node,
 	*new_node = malloc(sizeof(pldm_entity_node));
 	(*new_node)->entity = org_node->entity;
 	(*new_node)->association_type = org_node->association_type;
+	(*new_node)->host_container_id = org_node->host_container_id;
 	(*new_node)->first_child = NULL;
 	(*new_node)->next_sibling = NULL;
 	entity_association_tree_copy(org_node->first_child,
