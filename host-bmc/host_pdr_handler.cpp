@@ -30,6 +30,30 @@ constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
 const std::vector<Json> emptyJsonList{};
 
+template <typename T>
+void updateContanierId(pldm_entity_association_tree* entityTree,
+                       std::vector<uint8_t>& pdr)
+{
+    if (entityTree == nullptr)
+    {
+        return;
+    }
+
+    T* t = (T*)(pdr.data());
+    if (t == nullptr)
+    {
+        return;
+    }
+
+    pldm_entity entity{t->entity_type, t->entity_instance, t->container_id};
+    auto node = pldm_entity_association_tree_find(entityTree, &entity, true);
+    if (node)
+    {
+        pldm_entity e = pldm_entity_extract(node);
+        t->container_id = e.entity_container_id;
+    }
+}
+
 HostPDRHandler::HostPDRHandler(
     int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
@@ -41,7 +65,6 @@ HostPDRHandler::HostPDRHandler(
     bmcEntityTree(bmcEntityTree), requester(requester), handler(handler),
     verbose(verbose)
 {
-    mergedHostParents = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -215,7 +238,7 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         if (!mergedHostParents)
         {
             pNode = pldm_entity_association_tree_find(entityTree, &entities[0],
-                                                      false);
+                                                      true);
         }
         else
         {
@@ -504,11 +527,17 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
                 {
+                    updateContanierId<pldm_state_sensor_pdr>(entityTree, pdr);
                     stateSensorPDRs.emplace_back(pdr);
                 }
                 else if (pdrHdr->type == PLDM_PDR_FRU_RECORD_SET)
                 {
+                    updateContanierId<pldm_pdr_fru_record_set>(entityTree, pdr);
                     fruRecordSetPDRs.emplace_back(pdr);
+                }
+                else if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
+                {
+                    updateContanierId<pldm_state_effecter_pdr>(entityTree, pdr);
                 }
 
                 // if the TLPDR is invalid update the repo accordingly
@@ -1119,7 +1148,7 @@ uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
             const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
 
         if (fruPdr->entity_type == entity.entity_type &&
-            fruPdr->entity_instance_num == entity.entity_instance_num)
+            fruPdr->entity_instance == entity.entity_instance_num)
         {
             fruRSI = fruPdr->fru_rsi;
             break;
