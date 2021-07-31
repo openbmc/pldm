@@ -709,31 +709,48 @@ void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo)
 }
 
 void entity_association_tree_find(pldm_entity_node *node, pldm_entity *entity,
-				  pldm_entity_node **out)
+				  pldm_entity_node **out, bool is_remote)
 {
 	if (node == NULL) {
 		return;
 	}
 
-	if (node->entity.entity_type == entity->entity_type &&
-	    node->entity.entity_instance_num == entity->entity_instance_num) {
-		entity->entity_container_id = node->entity.entity_container_id;
-		*out = node;
-		return;
+	if (is_remote) {
+
+		if (node->entity.entity_type == entity->entity_type &&
+		    node->entity.entity_instance_num ==
+			entity->entity_instance_num &&
+		    node->host_container_id == entity->entity_container_id) {
+			entity->entity_container_id =
+			    node->entity.entity_container_id;
+
+			*out = node;
+			return;
+		}
+	} else {
+		if (node->entity.entity_type == entity->entity_type &&
+		    node->entity.entity_instance_num ==
+			entity->entity_instance_num) {
+			entity->entity_container_id =
+			    node->entity.entity_container_id;
+			*out = node;
+			return;
+		}
 	}
 
-	entity_association_tree_find(node->next_sibling, entity, out);
-	entity_association_tree_find(node->first_child, entity, out);
+	entity_association_tree_find(node->next_sibling, entity, out,
+				     is_remote);
+	entity_association_tree_find(node->first_child, entity, out, is_remote);
 }
 
 pldm_entity_node *
 pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
-				  pldm_entity *entity)
+				  pldm_entity *entity, bool is_remote)
 {
 	assert(tree != NULL);
 
 	pldm_entity_node *node = NULL;
-	entity_association_tree_find(tree->root, entity, &node);
+	entity_association_tree_find(tree->root, entity, &node, is_remote);
 	return node;
 }
 

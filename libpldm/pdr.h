@@ -318,12 +318,14 @@ bool pldm_is_current_parent_child(pldm_entity_node *parent, pldm_entity *node);
  *  @param[in] tree - pointer to entity association tree
  *  @param[in/out] entity - entity type and instance id set on input, container
  *                 id set on output
+ *  @param[in] is_remote - variable to denote whether we are finding a host
+ *                         entity or a BMC entity
  *
  *  @return pldm_entity_node* pointer to entity if found, NULL otherwise
  */
 pldm_entity_node *
 pldm_entity_association_tree_find(pldm_entity_association_tree *tree,
-				  pldm_entity *entity);
+				  pldm_entity *entity, bool is_remote);
 
 /** @brief Create a copy of an existing entity association tree
  *

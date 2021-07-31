@@ -197,7 +197,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         pldm_entity parent{};
         if (getParent(entities[i].entity_type, parent))
         {
-            auto node = pldm_entity_association_tree_find(entityTree, &parent);
+            auto node =
+                pldm_entity_association_tree_find(entityTree, &parent, true);
             if (node)
             {
                 pldm_entity_association_tree_add(
