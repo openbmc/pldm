@@ -342,7 +342,7 @@ struct pldm_pdr_fru_record_set {
 	uint16_t terminus_handle;
 	uint16_t fru_rsi;
 	uint16_t entity_type;
-	uint16_t entity_instance_num;
+	uint16_t entity_instance;
 	uint16_t container_id;
 } __attribute__((packed));
 
