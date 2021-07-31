@@ -269,7 +269,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 	fru->terminus_handle = htole16(terminus_handle);
 	fru->fru_rsi = htole16(fru_rsi);
 	fru->entity_type = htole16(entity_type);
-	fru->entity_instance_num = htole16(entity_instance_num);
+	fru->entity_instance = htole16(entity_instance_num);
 	fru->container_id = htole16(container_id);
 
 	return pldm_pdr_add(repo, data, size, bmc_record_handle, false);
@@ -296,8 +296,7 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 		if (fru->fru_rsi == htole16(fru_rsi)) {
 			*terminus_handle = le16toh(fru->terminus_handle);
 			*entity_type = le16toh(fru->entity_type);
-			*entity_instance_num =
-			    le16toh(fru->entity_instance_num);
+			*entity_instance_num = le16toh(fru->entity_instance);
 			*container_id = le16toh(fru->container_id);
 			return curr_record;
 		}
