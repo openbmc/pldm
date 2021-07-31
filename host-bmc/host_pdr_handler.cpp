@@ -21,6 +21,30 @@ constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
 const std::vector<Json> emptyJsonList{};
 
+template <typename T>
+void updateContanierId(pldm_entity_association_tree* entityTree,
+                       std::vector<uint8_t>& pdr)
+{
+    if (entityTree == nullptr)
+    {
+        return;
+    }
+
+    T* t = (T*)(pdr.data());
+    if (t == nullptr)
+    {
+        return;
+    }
+
+    pldm_entity entity{t->entity_type, t->entity_instance, t->container_id};
+    auto node = pldm_entity_association_tree_find(entityTree, &entity, true);
+    if (node)
+    {
+        pldm_entity e = pldm_entity_extract(node);
+        t->container_id = e.entity_container_id;
+    }
+}
+
 HostPDRHandler::HostPDRHandler(
     int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
@@ -419,7 +443,16 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else if (pdrHdr->type == PLDM_STATE_SENSOR_PDR)
                 {
+                    updateContanierId<pldm_state_sensor_pdr>(entityTree, pdr);
                     stateSensorPDRs.emplace_back(pdr);
+                }
+                else if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
+                {
+                    updateContanierId<pldm_state_effecter_pdr>(entityTree, pdr);
+                }
+                else if (pdrHdr->type == PLDM_PDR_FRU_RECORD_SET)
+                {
+                    updateContanierId<pldm_pdr_fru_record_set>(entityTree, pdr);
                 }
                 pldm_pdr_add(repo, pdr.data(), respCount, 0, true);
             }
