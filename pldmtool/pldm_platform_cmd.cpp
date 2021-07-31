@@ -628,7 +628,7 @@ class GetPDR : public CommandInterface
         output["PLDMTerminusHandle"] = unsigned(pdr->terminus_handle);
         output["FRURecordSetIdentifier"] = unsigned(pdr->fru_rsi);
         output["entityType"] = getEntityName(pdr->entity_type);
-        output["entityInstanceNumber"] = unsigned(pdr->entity_instance_num);
+        output["entityInstanceNumber"] = unsigned(pdr->entity_instance);
         output["containerID"] = unsigned(pdr->container_id);
     }
 
