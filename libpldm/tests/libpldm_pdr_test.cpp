@@ -418,7 +418,7 @@ TEST(PDRUpdate, testAddFruRecordSet)
     EXPECT_EQ(fru->terminus_handle, htole16(1));
     EXPECT_EQ(fru->fru_rsi, htole16(10));
     EXPECT_EQ(fru->entity_type, htole16(1));
-    EXPECT_EQ(fru->entity_instance_num, htole16(0));
+    EXPECT_EQ(fru->entity_instance, htole16(0));
     EXPECT_EQ(fru->container_id, htole16(100));
     outData = nullptr;
 
@@ -441,7 +441,7 @@ TEST(PDRUpdate, testAddFruRecordSet)
     EXPECT_EQ(fru->terminus_handle, htole16(2));
     EXPECT_EQ(fru->fru_rsi, htole16(11));
     EXPECT_EQ(fru->entity_type, htole16(2));
-    EXPECT_EQ(fru->entity_instance_num, htole16(1));
+    EXPECT_EQ(fru->entity_instance, htole16(1));
     EXPECT_EQ(fru->container_id, htole16(101));
     outData = nullptr;
 
@@ -459,7 +459,7 @@ TEST(PDRUpdate, testAddFruRecordSet)
     EXPECT_EQ(fru->terminus_handle, htole16(1));
     EXPECT_EQ(fru->fru_rsi, htole16(10));
     EXPECT_EQ(fru->entity_type, htole16(1));
-    EXPECT_EQ(fru->entity_instance_num, htole16(0));
+    EXPECT_EQ(fru->entity_instance, htole16(0));
     EXPECT_EQ(fru->container_id, htole16(100));
     outData = nullptr;
 
