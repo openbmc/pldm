@@ -1,5 +1,5 @@
 #include "custom_dbus.hpp"
-
+#include "libpldm/state_set.h"
 namespace pldm
 {
 namespace dbus
@@ -35,7 +35,7 @@ void CustomDBus::setOperationalStatus(const std::string& path, uint8_t status)
                       pldm::utils::DBusHandler::getBus(), path.c_str()));
     }
 
-    if (status == PLDM_OPERATIONAL_NORMAL)
+    if (status == PLDM_STATE_SET_OPERATIONAL_NORMAL)
     {
         operationalStatus.at(path)->functional(true);
     }

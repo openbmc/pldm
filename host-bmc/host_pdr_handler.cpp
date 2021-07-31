@@ -19,6 +19,7 @@
 #include <sdeventplus/source/time.hpp>
 
 #include <fstream>
+#include <type_traits>
 
 PHOSPHOR_LOG2_USING;
 
@@ -51,6 +52,37 @@ uint16_t extractTerminusHandle(std::vector<uint8_t>& pdr)
         return var->terminus_handle;
     }
     return TERMINUS_HANDLE;
+}
+
+template <typename T>
+void updateContanierId(pldm_entity_association_tree* entityTree,
+                       std::vector<uint8_t>& pdr)
+{
+    T* t = nullptr;
+    if (entityTree == nullptr)
+    {
+        return;
+    }
+    if (std::is_same<T, pldm_pdr_fru_record_set>::value)
+    {
+        t = (T*)(pdr.data() + sizeof(pldm_pdr_hdr));
+    }
+    else
+    {
+        t = (T*)(pdr.data());
+    }
+    if (t == nullptr)
+    {
+        return;
+    }
+
+    pldm_entity entity{t->entity_type, t->entity_instance, t->container_id};
+    auto node = pldm_entity_association_tree_find_if_remote(entityTree, &entity, true);
+    if (node)
+    {
+        pldm_entity e = pldm_entity_extract(node);
+        t->container_id = e.entity_container_id;
+    }
 }
 
 HostPDRHandler::HostPDRHandler(
@@ -228,7 +260,7 @@ int HostPDRHandler::handleStateSensorEvent(
              stateSetId[0] == PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS))
         {
             CustomDBus::getCustomDBus().setOperationalStatus(
-                entity.first, state == PLDM_OPERATIONAL_NORMAL);
+                entity.first, state == PLDM_STATE_SET_OPERATIONAL_NORMAL);
 
             break;
         }
@@ -554,24 +586,29 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_state_sensor_pdr>(pdr);
+                    updateContanierId<pldm_state_sensor_pdr>(entityTree, pdr);
                     stateSensorPDRs.emplace_back(pdr);
                 }
                 else if (pdrHdr->type == PLDM_PDR_FRU_RECORD_SET)
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_pdr_fru_record_set>(pdr);
+                    updateContanierId<pldm_pdr_fru_record_set>(entityTree, pdr);
                     fruRecordSetPDRs.emplace_back(pdr);
                 }
                 else if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_state_effecter_pdr>(pdr);
+                    updateContanierId<pldm_state_effecter_pdr>(entityTree, pdr);
                 }
                 else if (pdrHdr->type == PLDM_NUMERIC_EFFECTER_PDR)
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_numeric_effecter_value_pdr>(
                             pdr);
+                    updateContanierId<pldm_numeric_effecter_value_pdr>(
+                        entityTree, pdr);
                 }
 
                 // if the TLPDR is invalid update the repo accordingly
@@ -1037,11 +1074,11 @@ void HostPDRHandler::getPresentStateBySensorReadigs(
         instanceIdDb.free(mctp_eid, instanceId);
         std::cerr << "Failed to encode_get_state_sensor_readings_req, rc = "
                   << rc << std::endl;
-        state = PLDM_OPERATIONAL_NON_RECOVERABLE_ERROR;
+        state = PLDM_STATE_SET_OPERATIONAL_NON_RECOVERABLE_ERROR;
         return;
     }
 
-    state = PLDM_OPERATIONAL_ERROR;
+    state = PLDM_STATE_SET_OPERATIONAL_ERROR;
     auto getStateSensorReadingsResponseHandler = [this, path, type, instance,
                                                   containerId, &state,
                                                   stateSetId](
@@ -1067,7 +1104,7 @@ void HostPDRHandler::getPresentStateBySensorReadigs(
             std::cerr << "Faile to decode get state sensor readings resp, "
                          "Message Error: "
                       << "rc=" << rc << ",cc=" << (int)cc << std::endl;
-            state = PLDM_OPERATIONAL_NON_RECOVERABLE_ERROR;
+            state = PLDM_STATE_SET_OPERATIONAL_NON_RECOVERABLE_ERROR;
             return;
         }
 
@@ -1075,7 +1112,7 @@ void HostPDRHandler::getPresentStateBySensorReadigs(
         {
             if (filed.present_state == PLDM_SENSOR_NORMAL)
             {
-                state = PLDM_OPERATIONAL_NORMAL;
+                state = PLDM_STATE_SET_OPERATIONAL_NORMAL;
                 break;
             }
         }
@@ -1090,7 +1127,7 @@ void HostPDRHandler::getPresentStateBySensorReadigs(
             std::cerr << "creating operational status for : " << path << ", "
                       << stateSetId << std::endl;
             CustomDBus::getCustomDBus().setOperationalStatus(
-                path, state == PLDM_OPERATIONAL_NORMAL);
+                path, state == PLDM_STATE_SET_OPERATIONAL_NORMAL);
         }
 
         ++sensorMapIndex;
@@ -1126,7 +1163,7 @@ uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
             const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
 
         if (fruPdr->entity_type == entity.entity_type &&
-            fruPdr->entity_instance_num == entity.entity_instance_num &&
+            fruPdr->entity_instance == entity.entity_instance_num &&
             fruPdr->container_id == entity.entity_container_id)
         {
             fruRSI = fruPdr->fru_rsi;
