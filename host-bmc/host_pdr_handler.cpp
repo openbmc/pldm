@@ -19,6 +19,7 @@
 #include <sdeventplus/source/time.hpp>
 
 #include <fstream>
+#include <type_traits>
 
 PHOSPHOR_LOG2_USING;
 
@@ -51,6 +52,38 @@ uint16_t extractTerminusHandle(std::vector<uint8_t>& pdr)
         return var->terminus_handle;
     }
     return TERMINUS_HANDLE;
+}
+
+template <typename T>
+void updateContanierId(pldm_entity_association_tree* entityTree,
+                       std::vector<uint8_t>& pdr)
+{
+    T* t = nullptr;
+    if (entityTree == nullptr)
+    {
+        return;
+    }
+    if (std::is_same<T, pldm_pdr_fru_record_set>::value)
+    {
+        t = (T*)(pdr.data() + sizeof(pldm_pdr_hdr));
+    }
+    else
+    {
+        t = (T*)(pdr.data());
+    }
+    if (t == nullptr)
+    {
+        return;
+    }
+
+    pldm_entity entity{t->entity_type, t->entity_instance, t->container_id};
+    auto node = pldm_entity_association_tree_find_if_remote(entityTree, &entity,
+                                                            true);
+    if (node)
+    {
+        pldm_entity e = pldm_entity_extract(node);
+        t->container_id = e.entity_container_id;
+    }
 }
 
 HostPDRHandler::HostPDRHandler(
@@ -550,24 +583,29 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_state_sensor_pdr>(pdr);
+                    updateContanierId<pldm_state_sensor_pdr>(entityTree, pdr);
                     stateSensorPDRs.emplace_back(pdr);
                 }
                 else if (pdrHdr->type == PLDM_PDR_FRU_RECORD_SET)
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_pdr_fru_record_set>(pdr);
+                    updateContanierId<pldm_pdr_fru_record_set>(entityTree, pdr);
                     fruRecordSetPDRs.emplace_back(pdr);
                 }
                 else if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_state_effecter_pdr>(pdr);
+                    updateContanierId<pldm_state_effecter_pdr>(entityTree, pdr);
                 }
                 else if (pdrHdr->type == PLDM_NUMERIC_EFFECTER_PDR)
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_numeric_effecter_value_pdr>(
                             pdr);
+                    updateContanierId<pldm_numeric_effecter_value_pdr>(
+                        entityTree, pdr);
                 }
 
                 // if the TLPDR is invalid update the repo accordingly
@@ -1115,7 +1153,7 @@ uint16_t HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
             const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
 
         if (fruPdr->entity_type == entity.entity_type &&
-            fruPdr->entity_instance_num == entity.entity_instance_num &&
+            fruPdr->entity_instance == entity.entity_instance_num &&
             fruPdr->container_id == entity.entity_container_id)
         {
             fruRSI = fruPdr->fru_rsi;

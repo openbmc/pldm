@@ -1,5 +1,6 @@
 #include "custom_dbus.hpp"
 
+#include "libpldm/state_set.h"
 namespace pldm
 {
 namespace dbus
