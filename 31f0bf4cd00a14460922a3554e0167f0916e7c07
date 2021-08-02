@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "295e0651_00a6cb77",
+        "filename": "tools/fw-update/metadata-example.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-02T10:52:48Z",
+      "side": 1,
+      "message": "Updated to v1.0.0/v1.0.1 identifier which will be the most common usecase, since the support for downstream devices is not there yet.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 40
+      },
+      "revId": "31f0bf4cd00a14460922a3554e0167f0916e7c07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
