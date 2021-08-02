@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "36eb53a4_1c651475",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-02T09:51:02Z",
+      "side": 1,
+      "message": "In fact, this template class is redundant, and currently only supports `std::pair\u003cbool, std::vector\u003cuint8_t\u003e`, so I suggest to remove this template class and merge it with FlightRecorder class.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 20
+      },
+      "revId": "8be20ae4b18ed94608e515d11225495614cbddc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc2a6b4c_bf91b8de",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-02T09:51:02Z",
+      "side": 1,
+      "message": "It is better to define it in meson.build, `hard-code` is not a good way",
+      "range": {
+        "startLine": 30,
+        "startChar": 34,
+        "endLine": 30,
+        "endChar": 59
+      },
+      "revId": "8be20ae4b18ed94608e515d11225495614cbddc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a62692ae_597a6185",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-02T09:51:02Z",
+      "side": 1,
+      "message": "Please use `\\n` instead of `std::endl;`",
+      "range": {
+        "startLine": 33,
+        "startChar": 15,
+        "endLine": 33,
+        "endChar": 24
+      },
+      "revId": "8be20ae4b18ed94608e515d11225495614cbddc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb5b44b8_d5bbc689",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-02T09:51:02Z",
+      "side": 1,
+      "message": "I do not see see any place to call this method, could you remove this method?",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 5
+      },
+      "revId": "8be20ae4b18ed94608e515d11225495614cbddc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "279e44cc_921930e4",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-02T09:51:02Z",
+      "side": 1,
+      "message": "It is better to set a default value, true or false",
+      "range": {
+        "startLine": 97,
+        "startChar": 61,
+        "endLine": 97,
+        "endChar": 70
+      },
+      "revId": "8be20ae4b18ed94608e515d11225495614cbddc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68b3f819_78abf19b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-02T09:51:02Z",
+      "side": 1,
+      "message": "Please use `\\n`;",
+      "range": {
+        "startLine": 71,
+        "startChar": 61,
+        "endLine": 71,
+        "endChar": 71
+      },
+      "revId": "8be20ae4b18ed94608e515d11225495614cbddc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
