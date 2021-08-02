@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0fa40770_b472478b",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-02T14:03:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f86e985_79dbf701",
+      "range": {
+        "startLine": 167,
+        "startChar": 39,
+        "endLine": 167,
+        "endChar": 46
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bf69695b_2bbeb9d8",
         "filename": "libpldmresponder/pdr_state_sensor.hpp",
         "patchSetId": 6
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "uint8_t max value can be 256 , so 257 will be stored as 0. so we cannot having an assumption that we can have \u003c256 json entries right ?\n\nWhat happens when we have 257 entries,in the map, 257th value will replace 0th index",
       "parentUuid": "533d81fb_278f6309",
+      "range": {
+        "startLine": 33,
+        "startChar": 3,
+        "endLine": 33,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50c4623c_3934cf7b",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-02T14:03:50Z",
+      "side": 1,
+      "message": "changed it to auto.",
+      "parentUuid": "d1e53688_aeeb89a7",
       "range": {
         "startLine": 33,
         "startChar": 3,
@@ -238,6 +286,30 @@
     },
     {
       "key": {
+        "uuid": "74313c2f_1f29268c",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-02T14:03:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "17f19376_173e62cb",
+      "range": {
+        "startLine": 204,
+        "startChar": 4,
+        "endLine": 204,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d416bd0d_bcaf088c",
         "filename": "libpldmresponder/platform.hpp",
         "patchSetId": 6
@@ -261,6 +333,30 @@
     },
     {
       "key": {
+        "uuid": "7781d993_01991ef0",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-02T14:03:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d416bd0d_bcaf088c",
+      "range": {
+        "startLine": 210,
+        "startChar": 4,
+        "endLine": 210,
+        "endChar": 12
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ccbaed9f_e2e446ec",
         "filename": "libpldmresponder/platform.hpp",
         "patchSetId": 6
@@ -281,6 +377,30 @@
       "revId": "abb7517690044ef9165a74ca53860253a014baab",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae227768_6d139c24",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-02T14:03:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccbaed9f_e2e446ec",
+      "range": {
+        "startLine": 216,
+        "startChar": 4,
+        "endLine": 217,
+        "endChar": 31
+      },
+      "revId": "abb7517690044ef9165a74ca53860253a014baab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
