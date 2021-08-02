@@ -3585,6 +3585,226 @@
         }]
     },
     {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot0",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot0",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot1",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot1",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot2",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot2",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot3",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot3",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot4",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot4",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot6",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot6",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot7",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot7",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot8",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot8",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot9",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot9",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot10",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot10",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot11",
+       "effecters" : [{
+           "set" : {
+               "id" : 11,
+               "size" : 1,
+               "states" : [3,4]
+           },
+           "dbus" : {
+               "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot11",
+               "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+               "property_name": "PowerState",
+               "property_type": "string",
+               "property_values": [
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.Off",
+                        "xyz.openbmc_project.State.Decorator.PowerState.State.On"
+               ]
+           }
+      }]
+    },
+    {
        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis",
        "effecters" : [{
            "set" : {
