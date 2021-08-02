@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "62f8afba_61317365",
+        "filename": "libpldm/state_set.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-02T10:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d9e9e84_3196f450",
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5405bfc0_db8941d6",
         "filename": "pldmtool/oem/ibm/oem_ibm_state_set.hpp",
         "patchSetId": 9
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "63958e82_3744ba12",
+        "filename": "pldmtool/oem/ibm/oem_ibm_state_set.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-02T10:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5405bfc0_db8941d6",
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e7fadb23_ebe12ee7",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 9
@@ -47,6 +83,30 @@
       "writtenOn": "2021-07-29T15:02:09Z",
       "side": 1,
       "message": "why is this needed ? are you using anything from that namespace ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "680382a9_21daf0cb",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-02T10:56:43Z",
+      "side": 1,
+      "message": "yes this is needed ... but i moved this to pldmtool/oem/ibm/oem_ibm_state_set.hpp\n\n#define PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE 32768\n18 #define PLDM_OEM_IBM_BOOT_STATE 32769\n19 #define PLDM_OEM_IBM_SYSTEM_POWER_STATE 32771\n20 \n21 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE \u003d 24577;\n22 static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE \u003d 32770;\n23 constexpr uint16_t ENTITY_INSTANCE_0 \u003d 0;\n24 constexpr uint16_t ENTITY_INSTANCE_1 \u003d 1;",
+      "parentUuid": "e7fadb23_ebe12ee7",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -82,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "2b605a14_bf1db21b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-02T10:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e22bced4_7829aa6f",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e86b47d8_d7ab2025",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 9
@@ -102,6 +186,30 @@
       "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f56b34bb_fec16569",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-02T10:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e86b47d8_d7ab2025",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 348,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -128,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "78086a18_8befc075",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-02T10:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b4ebbbc_d568261b",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 448,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "849d5402_fca7c34e",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 9
@@ -148,6 +280,30 @@
       "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "770cfd31_8fea134b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-02T10:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "849d5402_fca7c34e",
+      "range": {
+        "startLine": 461,
+        "startChar": 0,
+        "endLine": 466,
+        "endChar": 6
+      },
+      "revId": "9fc4aa3e5f4c18ef6413caa558a02397859d79d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
