@@ -36,6 +36,7 @@ using InterfaceMap = std::map<Interface, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 using ObjectPath = std::string;
 using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
+using ObjectPathToRSIMap = std::map<ObjectPath, uint16_t>;
 
 } // namespace dbus
 
@@ -78,10 +79,10 @@ class FruImpl
     {
         static constexpr auto inventoryObjPath =
             "/xyz/openbmc_project/inventory/system/chassis";
-        static constexpr auto fanInterface =
-            "xyz.openbmc_project.Inventory.Item.Fan";
         static constexpr auto itemInterface =
             "xyz.openbmc_project.Inventory.Item";
+        static constexpr auto fanInterface =
+            "xyz.openbmc_project.Inventory.Item.Fan";
         static constexpr auto psuInterface =
             "xyz.openbmc_project.Inventory.Item.PowerSupply";
         subscribeFruPresence(inventoryObjPath, fanInterface, itemInterface,
@@ -221,6 +222,7 @@ class FruImpl
     pldm::responder::oem_fru::Handler* oemFruHandler;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
+    dbus::ObjectPathToRSIMap objectPathToRSIMap{};
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
      *         updates the FRU table with the FRU records.
@@ -229,10 +231,14 @@ class FruImpl
      *                          values for the FRU
      *  @param[in] recordInfos - FRU record info to build the FRU records
      *  @param[in/out] entity - PLDM entity corresponding to FRU instance
+     *  @param[in] objectPath - FRU object path
+     *  @param[in] concurrentAdd - whether this is a CM operation
      */
     void populateRecords(const dbus::InterfaceMap& interfaces,
                          const fru_parser::FruRecordInfos& recordInfos,
-                         const pldm_entity& entity);
+                         const pldm_entity& entity,
+                         const dbus::ObjectPath& objectPath,
+                         bool concurrentAdd = false);
 
     /** @brief subscribeFruPresence subscribes for the "Present" property
      *         change signal. This enables pldm to know when a fru is
@@ -260,6 +266,23 @@ class FruImpl
                                   const std::string& fruObjPath,
                                   const std::string& fruInterface);
 
+    /** @brief Builds a FRU record set PDR and associted PDRs after a
+     *         concurrent add operation.
+     *  @param[in] fruInterface - the FRU interface
+     *  @param[in] fruObjectPath - the FRU object path
+     *
+     *  @return none
+     */
+    void buildIndividualFRU(const std::string& fruInterface,
+                            const std::string& fruObjectPath);
+
+    /** @brief Deletes a FRU record set PDR and it's associted PDRs after
+     *         a concurrent remove operation.
+     *  @param[in] fruObjectPath - the FRU object path
+     *  @return none
+     */
+    void removeIndividualFRU(const std::string& fruObjPath);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
@@ -268,6 +291,7 @@ class FruImpl
      */
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> fanHotplugMatch;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> psuHotplugMatch;
+    dbus::ObjectValueTree objects;
 };
 
 namespace fru
