@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "4050885e_2117f04e",
+        "filename": "pldmtool/oem/ibm/oem_ibm_state_set.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-03T09:48:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a1ce794_4680b513",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 6
+      },
+      "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e67792cf_34f1719e",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 10
@@ -72,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "51c45e47_be6b1670",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-03T09:48:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e67792cf_34f1719e",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 465,
+        "endChar": 17
+      },
+      "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da5d274a_3b68758a",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 10
@@ -92,6 +140,30 @@
       "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04a0693b_dac3fc23",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-03T09:48:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da5d274a_3b68758a",
+      "range": {
+        "startLine": 496,
+        "startChar": 12,
+        "endLine": 514,
+        "endChar": 13
+      },
+      "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
