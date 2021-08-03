@@ -22,6 +22,76 @@
       "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a1ce794_4680b513",
+        "filename": "pldmtool/oem/ibm/oem_ibm_state_set.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-03T06:17:05Z",
+      "side": 1,
+      "message": "+1, Because this hpp is oem-ibm, plse remove #ifdef OEM_IBM",
+      "parentUuid": "c0579034_0b2564aa",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 6
+      },
+      "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e67792cf_34f1719e",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-03T06:17:05Z",
+      "side": 1,
+      "message": "```\n#ifdef OEM_IBM\n                if (OemIBMEntityType.contains(entityNumber))\n                {\n                    return entityName + OemIBMEntityType.at(entityNumber) +\n                           \"(OEM)\";\n                }\n#else\n                return entityName + OemString + \"(OEM)\";\n#endif\n```",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 465,
+        "endChar": 17
+      },
+      "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da5d274a_3b68758a",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-03T06:17:05Z",
+      "side": 1,
+      "message": "```\n#ifdef OEM_IBM\n            if (stateId \u003e\u003d PLDM_OEM_STATE_SET_START \u0026\u0026\n                stateId \u003c\u003d PLDM_OEM_STATE_SET_END)\n            {\n                if (populateOemIBMStateMaps.contains(stateId))\n                {\n                    const std::map\u003cuint8_t, std::string\u003e stateNames \u003d\n                        populateOemIBMStateMaps.at(stateId);\n                    stateNameMaps.insert(stateNames.begin(), stateNames.end());\n                }\n            }\n#else\n            if (populatePStateMaps.contains(stateId))\n            {\n                const std::map\u003cuint8_t, std::string\u003e stateNames \u003d\n                    populatePStateMaps.at(stateId);\n                stateNameMaps.insert(stateNames.begin(), stateNames.end());\n            }\n#endif\n```",
+      "range": {
+        "startLine": 496,
+        "startChar": 12,
+        "endLine": 514,
+        "endChar": 13
+      },
+      "revId": "cfcddc5c769974b7b47724d2f367982f4e9fa59f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
