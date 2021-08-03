@@ -536,7 +536,8 @@ bool checkFruPresence(const char* objPath)
     {
         std::cerr << "object " << objPath << " does not implement Presence";
     }
-    std::cout << "\n returning isPresent as " << (uint32_t)isPresent << "\n";
+    std::cout << "\n returning isPresent as " << (uint32_t)isPresent 
+              << " for object " << objPath << "\n";
     return isPresent;
 }
 

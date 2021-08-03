@@ -29,7 +29,7 @@ void FruImpl::buildFRUTable()
     fru_parser::DBusLookupInfo dbusInfo;
     // Read the all the inventory D-Bus objects
     auto& bus = pldm::utils::DBusHandler::getBus();
-    dbus::ObjectValueTree objects;
+  //  dbus::ObjectValueTree objects; // now declared as a member in FruImpl
 
     try
     {
@@ -62,7 +62,7 @@ void FruImpl::buildFRUTable()
         //fru records for all indistry std adapters and
         //probably create fru records only for present ibm adapters
         //how to distinguish btn the two? can the PrettyName have
-        //some ibm specific string?
+        //some ibm specific string? READ the CCIN or Decorator.Model property
         //also what do we do about nvme slots? check presence before 
         //building fru records?
         if(!isPresent)
@@ -71,18 +71,14 @@ void FruImpl::buildFRUTable()
                       << "  will not build fru record now \n";
             continue;
         }
-        else //REMOVE THIS LATER
-        {
-            std::cout << "building fru record for " << object.first.str<< "\n";
-        }
 
         for (const auto& interface : interfaces)
         {
-       //     std::cout << "interface.first " << interface.first << "\n";
+            //std::cout << "building fru record for " << object.first.str<< "\n";
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
             {
-                std::cout << "found interface.first, building " 
-                          << interface.first << "\n";;
+                std::cout << "\nbuilding fru record for interface " 
+                          << interface.first << " and object " << object.first.str << "\n";;
                 // An exception will be thrown by getRecordInfo, if the item
                 // D-Bus interface name specified in FRU_Master.json does
                 // not have corresponding config jsons
@@ -115,16 +111,20 @@ void FruImpl::buildFRUTable()
                         parentObj = pldm::utils::findParent(parentObj);
                     } while (parentObj != "/");
 
-                    std::cout << "\ncalling pldm_entity_association_tree_add \n";
+                    std::cout << "\ncalling pldm_entity_association_tree_add "
+                         << "for entity type " << entity.entity_type << "\n";
                     auto node = pldm_entity_association_tree_add(
                         entityTree, &entity, 0xFFFF, parent,
                         PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+                    std::cout << "\npldm_entity_association_tree_add returned "
+                            << " entity_instance_num " << entity.entity_instance_num << "\n";
                     objToEntityNode[object.first.str] = node;
 
-                    std::cout << "\ncalling getRecordInfo on the interface\n"; 
+                    std::cout << "\ncalling getRecordInfo on the interface"
+                              << interface.first << "\n"; 
                     auto recordInfos = parser.getRecordInfo(interface.first);
                     std::cout << "\ncalling populateRecords \n";
-                    populateRecords(interfaces, recordInfos, entity);
+                    populateRecords(interfaces, recordInfos, entity,object.first);
 
                     associatedEntityMap.emplace(object.first, entity);
                     break;
@@ -186,9 +186,11 @@ std::string FruImpl::populatefwVersion()
 }
 void FruImpl::populateRecords(
     const pldm::responder::dbus::InterfaceMap& interfaces,
-    const fru_parser::FruRecordInfos& recordInfos, const pldm_entity& entity)
+    const fru_parser::FruRecordInfos& recordInfos, const pldm_entity& entity,
+    const dbus::ObjectPath& objectPath, bool concurrentAdd)
 {
-    std::cout << "\nenter populateRecords \n";
+    std::cout << "\nenter populateRecords for object " << objectPath << " \n";
+    std::cout << "\n numRecs is " << (uint32_t)numRecs << "\n";
     // recordSetIdentifier for the FRU will be set when the first record gets
     // added for the FRU
     uint16_t recordSetIdentifier = 0;
@@ -197,6 +199,7 @@ void FruImpl::populateRecords(
 
     for (auto const& [recType, encType, fieldInfos] : recordInfos)
     {
+        std::cout << "populateRecords outer for loop \n";
         std::vector<uint8_t> tlvs;
         uint8_t numFRUFields = 0;
         for (auto const& [intf, prop, propType, fieldTypeNum] : fieldInfos)
@@ -254,12 +257,24 @@ void FruImpl::populateRecords(
         {
             if (numRecs == numRecsCount)
             {
+                std::cout << "\n numRecs and numRecsCount are same " << numRecsCount
+                          << " calling pldm_pdr_add_fru_record_set \n";
                 recordSetIdentifier = nextRSI();
                 bmc_record_handle = nextRecordHandle();
+                std::cout << "\n got bmc_record_handle as " << bmc_record_handle << 
+                          " and rsi as " << recordSetIdentifier << "\n";
+                bmc_record_handle = concurrentAdd? 0 : bmc_record_handle;          
+                std::cout << "\ncalling pldm_pdr_add_fru_record_set with entity_instance_num "
+                           << entity.entity_instance_num << 
+                            " and bmc_record_handle " << bmc_record_handle << "\n";         
+                           
                 pldm_pdr_add_fru_record_set(
                     pdrRepo, 0, recordSetIdentifier, entity.entity_type,
                     entity.entity_instance_num, entity.entity_container_id,
                     bmc_record_handle);
+                std::cout << "\nafter pldm_pdr_add_fru_record_set \n";
+                objectPathToRSIMap[objectPath] = recordSetIdentifier;
+                std::cout << "\n added to objectPathToRSIMap \n";
             }
             auto curSize = table.size();
             table.resize(curSize + recHeaderSize + tlvs.size());
@@ -267,8 +282,172 @@ void FruImpl::populateRecords(
                               recordSetIdentifier, recType, numFRUFields,
                               encType, tlvs.data(), tlvs.size());
             numRecs++;
+            std::cout << "\n numRecs increased to " << (uint32_t)numRecs << "\n";
         }
     }
+}
+
+void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
+{
+    std::cout << "\nremoving fru record and entity association for " 
+              << fruObjPath << "\n";
+    //now delete fru record set PDR
+    //and delete entity assoc PDR both local and remote
+    //update both the bmc and combined entity assoc tree
+    //recalculate the fru table checksum and table.resize
+    
+    uint16_t rsi = objectPathToRSIMap[fruObjPath];
+    std::cout << "\n fru RSI to be deleted " << rsi << "\n";          
+    pldm_entity removeEntity;
+    uint16_t terminusHdl{};
+    uint16_t entityType{};
+    uint16_t entityInsNum{};
+    uint16_t containerId{};
+    pldm_pdr_fru_record_set_find_by_rsi(pdrRepo, rsi, &terminusHdl,
+                       &entityType, &entityInsNum, 
+                       &containerId, false);
+    std::cout << "\nfru rsi found to be " << rsi << "\n";
+    removeEntity.entity_type = entityType;
+    removeEntity.entity_instance_num = entityInsNum;
+    removeEntity.entity_container_id = containerId;
+    std::cout << "\n removeEntity.entity_type " << removeEntity.entity_type << "\n";
+    std::cout << "\n removeEntity.entity_instance_num " << removeEntity.entity_instance_num << "\n";
+    std::cout << "\n removeEntity.entity_container_id " << removeEntity.entity_container_id << "\n";
+
+    std::cout << "\ncalling pldm_entity_association_pdr_remove_contained_entity for local \n";
+    pldm_entity_association_pdr_remove_contained_entity(pdrRepo,removeEntity,false);
+    std::cout << "\nafter  pldm_entity_association_pdr_remove_contained_entity for local \n";
+
+    pldm_entity_association_pdr_remove_contained_entity(pdrRepo,removeEntity,true);
+    std::cout << "\nafter  pldm_entity_association_pdr_remove_contained_entity for remote \n";
+    
+    std::cout << "calling pldm_pdr_remove_fru_record_set_by_rsi for local \n";
+    pldm_pdr_remove_fru_record_set_by_rsi(pdrRepo, rsi,false);
+
+    std::cout << "\ncalling pldm_entity_association_tree_delete_node for combined tree \n";
+    pldm_entity_association_tree_delete_node(entityTree,removeEntity);
+    std::cout << "\ncalling pldm_entity_association_tree_delete_node for bmc tree \n";
+    pldm_entity_association_tree_delete_node(bmcEntityTree,removeEntity);
+    std::cout << "\nafter pldm_entity_association_tree_delete_node \n";
+    objectPathToRSIMap.erase(fruObjPath);
+    std::cout << "\nafter erasing " << fruObjPath << " from objectPathToRSIMap \n";
+
+    if (table.size()) ///need to remove the entry from table before doing this
+        //may be a separate commit to handle that. as of now it does not
+        //create issue because the pdr repo is updated. the fru record table is
+        //not. which means the pldmtool fru commands will still show the old
+        //record. that may be fine since Host is not asking at this moment
+        //they are getting the updated pdr (both fru and entity assoc pdr)
+        //but eventually we need it because an add happened after a remove will
+        //cause two fru records for the same fan
+    {
+        padBytes = utils::getNumPadBytes(table.size());
+        table.resize(table.size() + padBytes, 0);
+        // Calculate the checksum
+        checksum = crc32(table.data(), table.size());
+    }
+    std::cout << "\n exit removeIndividualFRU \n";
+}
+
+void FruImpl::buildIndividualFRU(/*const dbus::Interfaces& itemIntfsLookup,*/ 
+                   const std::string& fruInterface,const std::string& fruObjectPath) 
+{
+    std::cout << "\nenter buildIndividualFRU with object " 
+              << fruObjectPath << " and" << " interface " << fruInterface << " \n";
+    /*if(itemIntfsLookup.find(fruInterface) == itemIntfsLookup.end())
+    {
+        std::cout << "\ndid not find the interface, will not build the fru" <<
+            " record for object " << fruObjectPath  << " interface "
+            << fruInterface << "\n";
+        return;
+    }*/
+    // An exception will be thrown by getRecordInfo, if the item
+    // D-Bus interface name specified in FRU_Master.json does
+    // not have corresponding config jsons
+    pldm_entity_node* parent = nullptr;
+    pldm_entity entity{};
+    pldm_entity parentEntity{};
+    try
+    {
+        entity.entity_type = parser.getEntityType(fruInterface);
+        auto parentObj = pldm::utils::findParent(fruObjectPath);
+        std::cout << "found parent as " << parentObj <<
+                  " for object " << fruObjectPath << "\n";
+        do
+        {
+            auto iter = objToEntityNode.find(parentObj);
+            if (iter != objToEntityNode.end())
+            {
+                parent = iter->second;
+                break;
+            }
+            parentObj = pldm::utils::findParent(parentObj);
+        } while (parentObj != "/");
+
+        std::cout << "\ncalling pldm_entity_association_tree_add on the combined tree \n";
+        auto node = pldm_entity_association_tree_add(
+                    entityTree, &entity, 0xFFFF, parent,
+                    PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+        objToEntityNode[fruObjectPath] = node;
+        std::cout << "\ncalling getRecordInfo on the interface " << fruInterface << "\n";
+        auto recordInfos = parser.getRecordInfo(fruInterface);
+
+        memcpy(reinterpret_cast<void *>(&parentEntity),reinterpret_cast<void*>(parent),sizeof(pldm_entity));
+        pldm_entity_node* bmcTreeParentNode = nullptr;
+        pldm_find_entity_ref_in_tree(bmcEntityTree, parentEntity, &bmcTreeParentNode);
+        
+        std::cout << "\ncalling pldm_entity_association_tree_add on bmc tree \n";
+        pldm_entity_association_tree_add(
+                       bmcEntityTree, &entity, 0xFFFF, bmcTreeParentNode,
+                       PLDM_ENTITY_ASSOCIAION_PHYSICAL);
+        std::cout << "\ncalling populateRecords \n";
+
+        for(const auto& object : objects)
+        {
+            if(object.first.str == fruObjectPath)
+            {
+                const auto& interfaces = object.second;
+                populateRecords(interfaces, recordInfos, entity,fruObjectPath,true);
+                associatedEntityMap.emplace(fruObjectPath, entity);
+                break;
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << "Config JSONs missing for the item "
+                  "interface type, interface = "
+                  << fruInterface << "\n";
+    }
+
+   //pldm_entity_node* combinedNode;
+ /*  pldm_entity parentEntity;
+   memcpy(reinterpret_cast<void *>(&parentEntity),reinterpret_cast<void*>(parent),sizeof(pldm_entity));*/
+
+
+
+   pldm_entity_association_pdr_add_contained_entity(pdrRepo,entity,parentEntity,false);
+   pldm_entity_association_pdr_add_contained_entity(pdrRepo,entity,parentEntity,true);
+
+
+
+
+  // pldm_find_entity_ref_in_tree(entityTree, parentEntity, &combinedNode);
+   //pldm_entity* addEntity = &entity;
+   //pldm_entity_association_pdr_add_from_node(combinedNode, pdrRepo, &addEntity, 1, true);
+
+   //pldm_entity_node* bmcNode;
+  // pldm_find_entity_ref_in_tree(bmcEntityTree, parentEntity, &bmcNode);
+   //pldm_entity_association_pdr_add_from_node(bmcNode, pdrRepo, &addEntity, 1, false);
+
+    if (table.size()) //does it work? how does table change?? -- changes automatically in populateRecords
+    {
+        padBytes = utils::getNumPadBytes(table.size());
+        table.resize(table.size() + padBytes, 0);
+        // Calculate the checksum
+        checksum = crc32(table.data(), table.size());
+    }
+    std::cout << "\n exit buildIndividualFRU \n";
 }
 
 void FruImpl::getFRUTable(Response& response)
@@ -349,12 +528,12 @@ void FruImpl::subscribeFruPresence(const std::string& inventoryObjPath, const st
                 bus,
                 propertiesChanged(fruObjPath,
                                   itemInterface),
-                [this,fruObjPath,itemInterface](sdbusplus::message::message& msg){
+                [this,fruObjPath,fruInterface](sdbusplus::message::message& msg){
                     DbusChangedProps props;
                     std::string iface;
                     msg.read(iface, props);
                     std::cout << "inside the lambda \n";
-                    processFruPresenceChange(props,fruObjPath,itemInterface);
+                    processFruPresenceChange(props,fruObjPath,fruInterface);
                 }));
         }
     }
@@ -366,7 +545,7 @@ void FruImpl::subscribeFruPresence(const std::string& inventoryObjPath, const st
     std::cout << "returning from subscribeFruPresence \n";
 }
 
-void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties, const std::string& fruObjPath, const std::string& itemInterface)
+void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties, const std::string& fruObjPath, const std::string& fruInterface)
 {
     std::cout << "enter processFruPresenceChange \n";
     static constexpr auto propertyName = "Present";  //check once
@@ -382,7 +561,29 @@ void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties, con
     std::cout << "before getting newPropVal \n";
     auto newPropVal = std::get<bool>(it->second);
    std::cout << "got new property as " << newPropVal << " for fru " 
-             << fruObjPath << " and interface " << itemInterface << "\n";
+             << fruObjPath << " and interface " << fruInterface << "\n";
+    if(!isBuilt)
+    {
+        std::cout << "\nfru table is not built yet so no need to process"
+                   << " the Presence change now. this will be built automatically"
+                   << " with the fru table \n";
+        return;
+    }
+    //#ifdef oem-ibm check here so that we do not build or remove industry
+    //std pcie cards
+
+    if(newPropVal)
+    {
+        std::cout << "handling add calling buildIndividualFRU\n";
+        buildIndividualFRU(fruInterface,fruObjPath);
+    }
+    else
+    {
+        std::cout << "\nhandle remove fru here \n";
+        removeIndividualFRU(fruObjPath);
+    }
+    //send PDR Repo change event from here 
+    std::cout << "\n exit processFruPresenceChange \n";
 }
 
 namespace fru
