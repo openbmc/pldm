@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 typedef struct pldm_pdr_record {
 	uint32_t record_handle;
@@ -278,7 +279,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
     const pldm_pdr *repo, uint16_t fru_rsi, uint16_t *terminus_handle,
     uint16_t *entity_type, uint16_t *entity_instance_num,
-    uint16_t *container_id)
+    uint16_t *container_id, bool is_remote)
 {
 	assert(terminus_handle != NULL);
 	assert(entity_type != NULL);
@@ -293,7 +294,7 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 		struct pldm_pdr_fru_record_set *fru =
 		    (struct pldm_pdr_fru_record_set
 			 *)(data + sizeof(struct pldm_pdr_hdr));
-		if (fru->fru_rsi == htole16(fru_rsi)) {
+		if (fru->fru_rsi == htole16(fru_rsi) && curr_record->is_remote == is_remote) {
 			*terminus_handle = le16toh(fru->terminus_handle);
 			*entity_type = le16toh(fru->entity_type);
 			*entity_instance_num =
@@ -312,6 +313,84 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 	*container_id = 0;
 
 	return NULL;
+}
+
+void pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi, bool is_remote)
+{
+    printf("\nenter pldm_pdr_remove_fru_record_set_by_rsi with rsi=%d and is_remote=%d \n",
+           fru_rsi,is_remote);
+    printf("\ntotal number of records in the repo=%d",repo->record_count);
+    assert(repo != NULL);
+    //bool removed = false;
+
+   // printf("\n before fetching the first record \n");
+    pldm_pdr_record *record = repo->first;
+    pldm_pdr_record *prev = NULL;
+    while (record != NULL) {
+       // printf("\n enter while loop \n");
+        pldm_pdr_record *next = record->next;
+        struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+        printf("\n fetched pdr header %d is_remote=%d", hdr->type,record->is_remote);
+        if ((record->is_remote == is_remote) && hdr->type == PLDM_PDR_FRU_RECORD_SET){
+            struct pldm_pdr_fru_record_set* fru = 
+                    (struct pldm_pdr_fru_record_set*)((uint8_t*)record->data + sizeof(struct pldm_pdr_hdr));
+     //       printf("\nfru->fru_rsi =%d",fru->fru_rsi);        
+            if(fru->fru_rsi == fru_rsi){
+                printf("\nfound record to delete \n");
+            if (repo->first == record) {
+       //         printf("\nrepo->first == record \n");
+                repo->first = next;
+            }
+            else {
+         //       printf("\n else repo->first == record \n");
+                prev->next = next;
+            }
+            if (repo->last == record) {
+           //     printf("\n repo->last == record \n");
+                repo->last = prev;
+            }
+            if (record->data) {
+             //   printf("\n if record->data \n");
+                free(record->data);
+               // printf("\n after free record->data \n");
+            }
+            --repo->record_count;
+            repo->size -= record->size;
+            free(record);
+        //    printf("\n after free record ");
+           // removed = true;
+            break;
+        }
+        else
+        {
+            prev = record;
+        }
+        }
+        else
+        {
+            prev = record;
+        }
+       // printf("\nsetting record = next \n");
+        record = next;
+    }
+
+    /*if (removed == true) {
+      //  printf("\n if removed true");
+        record = repo->first;
+        uint32_t record_handle = 0;
+        while (record != NULL)
+        {
+        //    printf("\n while record not null \n");
+            record->record_handle = ++record_handle;
+            if (record->data != NULL)
+            {
+                struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)(record->data);
+                hdr->record_handle = htole32(record->record_handle);
+            }
+            record = record->next;
+        }
+    }*/
+    printf("\nexit pldm_pdr_remove_fru_record_set_by_rsi \n");
 }
 
 void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
@@ -528,6 +607,14 @@ void pldm_entity_association_tree_destroy(pldm_entity_association_tree *tree)
 	free(tree);
 }
 
+void pldm_entity_association_tree_delete_node(pldm_entity_association_tree *tree,
+                                       pldm_entity entity)
+{
+    pldm_entity_node *node = NULL;
+    pldm_find_entity_ref_in_tree(tree,entity, &node);
+    entity_association_tree_destroy(node);
+}
+
 inline bool pldm_entity_is_node_parent(pldm_entity_node *node)
 {
 	assert(node != NULL);
@@ -711,6 +798,122 @@ void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
 
 	entity_association_pdr_add(node, repo, entities, num_entities,
 				   is_remote);
+}
+
+void pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,pldm_entity entity, bool is_remote)
+{
+    printf("\n enter pldm_entity_association_pdr_remove_contained_entity with entity type=%d and ins=%d \n", 
+                 entity.entity_type, entity.entity_instance_num);
+    assert(repo != NULL);
+    bool removed = false;
+    printf("\nrepo->record_count=%d",repo->record_count);
+
+    pldm_pdr_record *record = repo->first;
+    //pldm_pdr_record *prev = NULL;
+    pldm_pdr_record *prev = repo->first;
+    pldm_pdr_record *new_record = malloc(sizeof(pldm_pdr_record));
+    new_record->data  = malloc(record->size);
+    uint8_t* new_data = new_record->data;
+    while (record != NULL)
+    {
+        printf("\nrecord->record_handle=%d",record->record_handle);
+        pldm_pdr_record *next = record->next;
+        struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+        printf("\npicked up pdr hdr record handle=%d",hdr->record_handle);
+        if ((record->is_remote == is_remote) && hdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
+        {
+            printf("\nrecord->next->record_handle=%d",record->next->record_handle);
+            new_record->record_handle = htole32(record->record_handle);
+            new_record->size = htole32(record->size);
+            new_record->is_remote = record->is_remote;
+            uint8_t *new_start = new_data;
+            struct pldm_pdr_hdr *new_hdr = (struct pldm_pdr_hdr *)new_data;
+            new_hdr->version = hdr->version;
+            new_hdr->record_handle = htole32(hdr->record_handle);
+            new_hdr->type = PLDM_PDR_ENTITY_ASSOCIATION;
+            new_hdr->record_change_num = htole16(hdr->record_change_num);
+            new_hdr->length = htole16(record->size - sizeof(struct pldm_pdr_hdr) - sizeof(pldm_entity));
+            new_start += sizeof(struct pldm_pdr_hdr);
+            struct pldm_pdr_entity_association* new_pdr = (struct pldm_pdr_entity_association*)new_start;
+
+            printf("\npicked PLDM_PDR_ENTITY_ASSOCIATION with matching is_remote \n");
+            struct pldm_pdr_entity_association* pdr = 
+                        (struct pldm_pdr_entity_association*)((uint8_t*)record->data + sizeof(struct pldm_pdr_hdr));
+            struct pldm_entity* child = (struct pldm_entity*)(&pdr->children[0]);
+            printf("\n pdr->num_children=%d",(uint32_t)pdr->num_children);
+
+            new_pdr->container_id = pdr->container_id;
+            new_pdr->association_type = pdr->association_type;
+            new_pdr->container.entity_type = pdr->container.entity_type;
+            new_pdr->container.entity_instance_num = pdr->container.entity_instance_num;
+            new_pdr->container.entity_container_id = pdr->container.entity_container_id;
+            new_pdr->num_children = pdr->num_children - 1; //if this becomes 0 then just delete. no new entity assoc pdr is needed PENDING
+            struct pldm_entity* new_child = (struct pldm_entity*)(&new_pdr->children[0]);
+
+            for (int i = 0; i < pdr->num_children; ++i)
+            {
+                printf("\npicked up %dth child",i);
+                if(child->entity_type == entity.entity_type && child->entity_instance_num == entity.entity_instance_num && child->entity_container_id == entity.entity_container_id)
+                {
+                    printf("\n found the child entity \n");
+                    printf("\nchild->entity_type=%d, child->entity_instance_num=%d, child->entity_container_id=%d",
+                            child->entity_type, child->entity_instance_num, child->entity_container_id);
+                    removed = true;
+                    //skip this child. do not add in the new pdr
+                }
+                else
+                {
+                    new_child->entity_type = child->entity_type;
+                    new_child->entity_instance_num = child->entity_instance_num;
+                    new_child->entity_container_id = child->entity_container_id;
+                    new_child++; 
+                }
+                    
+                ++child;
+            }
+            if(removed)
+            {
+                printf("\n enter if removed \n");
+                if (repo->first == record)
+                {
+                    printf("\nthisis the first record in the repo\n");
+                    repo->first = new_record;
+                    new_record->next = record->next;
+                }
+                else
+                {
+                    printf("\nnot first record in the repo \n");
+                    printf("prev->record_handle=%d",prev->record_handle);
+                    prev->next = new_record;
+                    new_record->next = record->next;
+                }
+                if (repo->last == record)
+                {
+                    repo->last = new_record;
+                }
+                if (record->data)
+                {
+                    free(record->data);
+                }
+                repo->size -= record->size;
+                repo->size += new_record->size;
+                free(record);
+                break;
+            }
+        }
+     //   else
+       // {
+            prev = record;
+        //}
+        record = next;
+    }
+    if(!removed)
+    {
+        free(new_record);
+        free(new_data);
+    }
+
+printf("\nexit pldm_entity_association_pdr_remove_by_contained_entity \n");
 }
 
 void find_entity_ref_in_tree(pldm_entity_node *tree_node, pldm_entity entity,

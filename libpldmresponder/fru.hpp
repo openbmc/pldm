@@ -34,6 +34,7 @@ using InterfaceMap = std::map<Interface, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 using ObjectPath = std::string;
 using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
+using ObjectPathToRSIMap = std::map<ObjectPath,uint16_t>;
 
 } // namespace dbus
 
@@ -70,13 +71,14 @@ class FruImpl
     {
         std::cout << "FruImpl constructor \n";
         static constexpr auto inventoryObjPath = "/xyz/openbmc_project/inventory/system/chassis";
-        static constexpr auto fanInterface = "xyz.openbmc_project.Inventory.Item.Fan";
         static constexpr auto itemInterface = "xyz.openbmc_project.Inventory.Item";
+        static constexpr auto fanInterface = "xyz.openbmc_project.Inventory.Item.Fan";
         static constexpr auto psuInterface = "xyz.openbmc_project.Inventory.Item.PowerSupply";
         subscribeFruPresence(inventoryObjPath, fanInterface,itemInterface, fanHotplugMatch);
         std::cout << "fanHotplugMatch.size " << fanHotplugMatch.size() << "\n";
         subscribeFruPresence(inventoryObjPath, psuInterface, itemInterface, psuHotplugMatch); 
         std::cout << "psuHotplugMatch.size " << psuHotplugMatch.size() << "\n";
+        //NEED TO SUBSCRIBE FOR PCIE ADAPTERS HERE
         std::cout << "end constructor \n";
     }
 
@@ -184,6 +186,7 @@ class FruImpl
     pldm_entity_association_tree* bmcEntityTree;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
+    dbus::ObjectPathToRSIMap objectPathToRSIMap{};
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
      *         updates the FRU table with the FRU records.
@@ -195,17 +198,28 @@ class FruImpl
      */
     void populateRecords(const dbus::InterfaceMap& interfaces,
                          const fru_parser::FruRecordInfos& recordInfos,
-                         const pldm_entity& entity);
+                         const pldm_entity& entity,
+                         const dbus::ObjectPath& objectPath);
 
-    void subscribeFruPresence(const std::string& inventoryObjPath, const std::string& fruInterface, const std::string& itemInterface, std::vector<std::unique_ptr<sdbusplus::bus::match::match>>& fruHotPlugMatch);
+    void subscribeFruPresence(const std::string& inventoryObjPath, 
+                              const std::string& fruInterface, 
+                              const std::string& itemInterface, 
+                              std::vector<std::unique_ptr<sdbusplus::bus::match::match>>& fruHotPlugMatch);
 
-    void processFruPresenceChange(const DbusChangedProps& chProperties, const std::string& fruObjPath,const std::string& fruInterface);
+    void processFruPresenceChange(const DbusChangedProps& chProperties, 
+                                  const std::string& fruObjPath,
+                                  const std::string& fruInterface);
+
+    void buildIndividualFRU(/*const dbus::Interfaces& itemIntfsLookup,*/
+                            const std::string& fruInterface,const std::string& fruObjectPath);
+    void removeIndividualFRU(const std::string& fruObjPath);
 
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> fanHotplugMatch;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> psuHotplugMatch;
+    dbus::ObjectValueTree objects;
 };
 
 namespace fru
