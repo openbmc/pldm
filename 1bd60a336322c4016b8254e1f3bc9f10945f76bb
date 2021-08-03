@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4995ef9c_fd608a05",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-03T18:38:25Z",
+      "side": 1,
+      "message": "this ifdef is redundant right ?\n\nbecause if its oem state set, \n            if (type \u003e\u003d PLDM_OEM_ENTITY_TYPE_START \u0026\u0026\n                type \u003c\u003d PLDM_OEM_ENTITY_TYPE_END)\nthis set will be succeeded.",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 14
+      },
+      "revId": "1bd60a336322c4016b8254e1f3bc9f10945f76bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
