@@ -1,6 +1,7 @@
 #pragma once
 #include "libpldm/entity.h"
 #include "libpldm/platform.h"
+#include "oem/ibm/libpldm/state_set.h"
 
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
@@ -8,44 +9,17 @@
 #include "libpldmresponder/platform.hpp"
 #include "requester/handler.hpp"
 
+typedef ibm_oem_pldm_state_set_firmware_update_state_values CodeUpdateState;
+
 namespace pldm
 {
 namespace responder
 {
 namespace oem_ibm_platform
 {
-
-#define PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE 32768
-#define PLDM_OEM_IBM_BOOT_STATE 32769
-#define PLDM_OEM_IBM_SYSTEM_POWER_STATE 32771
-
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
-static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
-
-enum class CodeUpdateState : uint8_t
-{
-    START = 0x1,
-    END = 0x2,
-    FAIL = 0x3,
-    ABORT = 0x4,
-    ACCEPT = 0x5,
-    REJECT = 0x6
-};
-
-enum VerificationStateValues
-{
-    VALID = 0x0,
-    ENTITLEMENT_FAIL = 0x1,
-    BANNED_PLATFORM_FAIL = 0x2,
-    MIN_MIF_FAIL = 0x4,
-};
-
-enum SystemPowerStates
-{
-    POWER_CYCLE_HARD = 0x1,
-};
 
 class Handler : public oem_platform::Handler
 {
