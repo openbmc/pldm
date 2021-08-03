@@ -85,7 +85,7 @@ void Handler::updateDBusProperty(
 
     record = pldm_pdr_fru_record_set_find_by_rsi(
         pdrRepo, fruRSI, &terminusHandle, &entityType, &entityInstanceNum,
-        &containerId);
+        &containerId, false);
 
     if (record)
     {
