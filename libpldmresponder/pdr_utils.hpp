@@ -89,26 +89,6 @@ inline Json readJson(const std::string& path)
     return Json::parse(jsonFile);
 }
 
-/** @brief Function to get the Bitfield count to 1
- *
- *  @param[in] bit - Bitfield
- *
- *  @return - uint8_t return the number of 1
- */
-inline uint8_t getBitfieldCount(const bitfield8_t bit)
-{
-    uint8_t count = 0;
-    for (uint8_t i = 0; i < 8; ++i)
-    {
-        if (bit.byte & (1 << i))
-        {
-            ++count;
-        }
-    }
-
-    return count;
-}
-
 /** @brief Populate the mapping between D-Bus property stateId and attribute
  *          value for the effecter PDR enumeration attribute.
  *
