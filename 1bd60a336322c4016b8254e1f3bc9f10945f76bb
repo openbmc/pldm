@@ -46,6 +46,30 @@
       "revId": "1bd60a336322c4016b8254e1f3bc9f10945f76bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bfc7ac65_e7bf401c",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-04T13:05:53Z",
+      "side": 1,
+      "message": "ideally, putting multiple ifdefs is not good, we should ideally have an handler created for oem ibm, and delegate the rest of the work to that , instead of doing the work on this file.\n\nIf there are 10 companies, having 10 ifdefs does not make a good solution right ?\n\nSo, i would suggest you to remove this redundant ifdef for now, and probably in a different commit come up with an oem ibm handler infrastructure similar to what we have in pldm.",
+      "parentUuid": "bf94bef5_1683c5fd",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 14
+      },
+      "revId": "1bd60a336322c4016b8254e1f3bc9f10945f76bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
