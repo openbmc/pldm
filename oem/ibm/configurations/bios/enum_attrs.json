@@ -285,7 +285,7 @@
          ],
          "default_values":[
             "Enabled"
-         },
+         ],
          "helpText" : "Specifies if the memory mirroring is enabled for the current IPL. Do not set this attribute directly; set hb_mirror_memory_mode instead.",
          "displayName" : "Mirror Memory Mode (current)"
       }
