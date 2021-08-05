@@ -1,0 +1,11 @@
+Code-Review+1: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: Pavithra Barithaya <pavithra.b@ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Pavithra Barithaya <pavithra.b@ibm.com>
+Submitted-at: Thu, 05 Aug 2021 04:16:15 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/43774
+Project: openbmc/pldm
+Branch: refs/heads/master
