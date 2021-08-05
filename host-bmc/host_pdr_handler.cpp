@@ -550,7 +550,7 @@ void HostPDRHandler::setHostState()
     using Clock = Clock<clockId>;
     using Timer = Time<clockId>;
 
-    auto event1 = sdeventplus::Event::get_default();
+    auto event1 = sdeventplus::Event::get_new();
     auto& bus = pldm::utils::DBusHandler::getBus();
     bus.attach_event(event1.get(), SD_EVENT_PRIORITY_NORMAL);
 
