@@ -20,11 +20,6 @@
 			return PLDM_ERROR_INVALID_DATA;                        \
 	} while (0)
 
-static bool attribute_is_readonly(uint8_t attr_type)
-{
-	return (attr_type & 0x80);
-}
-
 #define BUFFER_SIZE_EXPECT(current_size, expected_size)                        \
 	do {                                                                   \
 		if (current_size < expected_size)                              \
@@ -1086,10 +1081,6 @@ int pldm_bios_table_attr_value_copy_and_update(
 		iter->current_pos += length;
 		if (tmp->attr_handle == to_update->attr_handle) {
 			if (tmp->attr_type != to_update->attr_type) {
-				rc = PLDM_ERROR_INVALID_DATA;
-				goto out;
-			}
-			if (attribute_is_readonly(tmp->attr_type)) {
 				rc = PLDM_ERROR_INVALID_DATA;
 				goto out;
 			}
