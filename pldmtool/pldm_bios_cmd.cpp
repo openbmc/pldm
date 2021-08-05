@@ -803,15 +803,8 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
 
         switch (attrType)
         {
-            case PLDM_BIOS_ENUMERATION_READ_ONLY:
-            case PLDM_BIOS_STRING_READ_ONLY:
-            case PLDM_BIOS_INTEGER_READ_ONLY:
-            {
-                std::cerr << "Set attribute error: " << attrName
-                          << "is read only." << std::endl;
-                return;
-            }
             case PLDM_BIOS_ENUMERATION:
+            case PLDM_BIOS_ENUMERATION_READ_ONLY:
             {
                 entryLength =
                     pldm_bios_table_attr_value_entry_encode_enum_length(1);
@@ -855,6 +848,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                 break;
             }
             case PLDM_BIOS_STRING:
+            case PLDM_BIOS_STRING_READ_ONLY:
             {
                 entryLength =
                     pldm_bios_table_attr_value_entry_encode_string_length(
@@ -868,6 +862,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                 break;
             }
             case PLDM_BIOS_INTEGER:
+            case PLDM_BIOS_INTEGER_READ_ONLY:
             {
                 uint64_t value = std::stoll(attrValue);
                 entryLength =
