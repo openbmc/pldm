@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6f771f9_bbcaf229",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-06T05:02:25Z",
+      "side": 1,
+      "message": "nit: tough :-)",
+      "range": {
+        "startLine": 15,
+        "startChar": 31,
+        "endLine": 15,
+        "endChar": 35
+      },
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb58f429_26c1389a",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-06T05:02:25Z",
+      "side": 1,
+      "message": "Can we have alias for the types like:\n\nusing ReqOrResp \u003d bool;",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 54
+      },
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0573596_590b34e6",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-06T05:02:25Z",
+      "side": 1,
+      "message": "nit: \"Tx\" \u0026 \"Rx\" will be less verbose",
+      "range": {
+        "startLine": 77,
+        "startChar": 39,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "affc9bf8_ff906bfb",
+        "filename": "requester/request.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-06T05:02:25Z",
+      "side": 1,
+      "message": "Not directly related to FlightRecorder, but we might need PrintBuffer here.",
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
