@@ -253,17 +253,6 @@ int main(int argc, char** argv)
     if (hostPDRHandler)
     {
         hostPDRHandler->setHostState();
-        if (hostPDRHandler->isHostUp())
-        {
-            hostPDRHandler->getHostPDR();
-        }
-        else
-        {
-            if (verbose)
-            {
-                std::cout << "Host is not running\n";
-            }
-        }
     }
 #endif
 

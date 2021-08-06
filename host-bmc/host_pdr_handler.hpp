@@ -270,10 +270,6 @@ class HostPDRHandler
 
     /** @brief whether response received from Host */
     bool responseReceived;
-    /** @brief whether timed out waiting for a response from Host */
-    bool timeOut;
-    /** @brief request message instance id */
-    uint8_t insId;
 };
 
 } // namespace pldm
