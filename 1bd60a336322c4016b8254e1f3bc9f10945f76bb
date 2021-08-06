@@ -70,6 +70,30 @@
       "revId": "1bd60a336322c4016b8254e1f3bc9f10945f76bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c6e1bc2_03fbfd7b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-08-06T05:19:44Z",
+      "side": 1,
+      "message": "create oem-ibm handler will be done in the next commit",
+      "parentUuid": "bfc7ac65_e7bf401c",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 14
+      },
+      "revId": "1bd60a336322c4016b8254e1f3bc9f10945f76bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
