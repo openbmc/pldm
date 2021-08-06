@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f6a9d4e4_f72f603e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-06T06:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6f771f9_bbcaf229",
+      "range": {
+        "startLine": 15,
+        "startChar": 31,
+        "endLine": 15,
+        "endChar": 35
+      },
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bb58f429_26c1389a",
         "filename": "common/flight_recorder.hpp",
         "patchSetId": 7
@@ -45,6 +69,30 @@
       "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "987eb245_2abd294c",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-06T06:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb58f429_26c1389a",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 54
+      },
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "01f3373a_a875501c",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-06T06:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0573596_590b34e6",
+      "range": {
+        "startLine": 77,
+        "startChar": 39,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "affc9bf8_ff906bfb",
         "filename": "requester/request.hpp",
         "patchSetId": 7
@@ -82,6 +154,24 @@
       "writtenOn": "2021-08-06T05:02:25Z",
       "side": 1,
       "message": "Not directly related to FlightRecorder, but we might need PrintBuffer here.",
+      "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35f36e5d_569c2ce0",
+        "filename": "requester/request.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-06T06:11:45Z",
+      "side": 1,
+      "message": "yes tom, i do have to plans to put up a separate commit that removes the traces from host-bmc handler and add verbosity to the requester code.",
+      "parentUuid": "affc9bf8_ff906bfb",
       "revId": "98c0c4f174f40aa054a0f31a7f4a58afd604d0e8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
