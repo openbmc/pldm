@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "56594ff6_2f7c2d8d",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "Can this buffer be unbounded in terms of size? tmpfs has a bound.",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20fd3afa_1495526f",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "Why do really want to use index this way (ever incrementing)?\n\nWithout timestamps, how do you know if a rollover happened?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd5d190b_4f8da64e",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "Have you made measurements to make sure there\u0027s no performance impact in terms of PLDM command req/resp timing requirements due to this?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73716393_2c0fab55",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "tmpfs can be cleaned up systemd periodically",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf417584_c3901bcf",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "We also need a flag to disable this if need be. Does size 0 do that?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edc370e8_1b825146",
+        "filename": "meson_options.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "Do we want to enable by default?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3246004b_fc33ffa9",
+        "filename": "meson_options.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "Do we care on how long those messages can be or just the number of messages? FW update messages can be huge.",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87e766e6_d9c3cc94",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "Do you see this as lab/debug only? Or as something that say phosphor-debug-collector can trigger? What if a rogue entity keeps triggering this signal?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "974b6770_2b5b592c",
+        "filename": "requester/request.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-08-06T08:30:29Z",
+      "side": 1,
+      "message": "What if pldm_send hangs? Do we want to log this before or after?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
