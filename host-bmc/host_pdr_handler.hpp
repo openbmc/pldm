@@ -163,9 +163,9 @@ class HostPDRHandler
      */
     void getHostPDR(uint32_t nextRecordHandle = 0);
 
-    /** @brief set the Host state when pldmd starts
+    /** @brief set the Host firmware condition when pldmd starts
      */
-    void setHostState();
+    void setHostFirmwareCondition();
 
     /** @brief set HostSensorStates when pldmd starts or restarts
      *  and updates the D-Bus property
@@ -270,10 +270,6 @@ class HostPDRHandler
 
     /** @brief whether response received from Host */
     bool responseReceived;
-    /** @brief whether timed out waiting for a response from Host */
-    bool timeOut;
-    /** @brief request message instance id */
-    uint8_t insId;
 };
 
 } // namespace pldm
