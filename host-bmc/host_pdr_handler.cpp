@@ -544,106 +544,56 @@ void HostPDRHandler::_processFetchPDREvent(
 
 void HostPDRHandler::setHostState()
 {
-    using namespace sdeventplus;
-    using namespace sdeventplus::source;
-    constexpr auto clockId = sdeventplus::ClockId::RealTime;
-    using Clock = Clock<clockId>;
-    using Timer = Time<clockId>;
-
-    auto event1 = sdeventplus::Event::get_default();
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    bus.attach_event(event1.get(), SD_EVENT_PRIORITY_NORMAL);
-
     responseReceived = false;
-    timeOut = false;
-
-    int fd = pldm_open();
-    if (-1 == fd)
+    auto instanceId = requester.getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_GET_VERSION_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_get_version_req(instanceId, 0, PLDM_GET_FIRSTPART,
+                                     PLDM_BASE, request);
+    if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Failed to connect to mctp demux daemon \n";
+        std::cerr << "GetPLDMVersion encode failure. PLDM error code = "
+                  << std::hex << std::showbase << rc << "\n";
+        requester.markFree(mctp_eid, instanceId);
         return;
     }
-
-    auto timerCallback = [=, this](Timer& /*source*/,
-                                   Timer::TimePoint /*time*/) {
-        timeOut = true;
-        if (!responseReceived)
+    if (verbose)
+    {
+        if (requestMsg.size())
         {
-            std::cout << "PLDM did not get a response from Host"
-                         " Host seems to be off \n";
+            std::ostringstream tempStream;
+            for (int byte : requestMsg)
+            {
+                tempStream << std::setfill('0') << std::setw(2) << std::hex
+                           << byte << " ";
+            }
+            std::cout << "Sending first Msg: " << tempStream.str() << std::endl;
         }
-        return;
-    };
+    }
 
-    Timer time(event1, (Clock(event1).now() + std::chrono::seconds{3}),
-               std::chrono::seconds{1}, std::move(timerCallback));
-
-    auto callback = [=, this](IO& /*io*/, int fd, uint32_t revents) {
-        if (!(revents & EPOLLIN))
+    auto getPLDMVersionHandler = [this](mctp_eid_t /*eid*/,
+                                        const pldm_msg* response,
+                                        size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
         {
+            std::cerr << "Failed to receive response for "
+                      << "getPLDMVersion command, Host seems to be off \n";
             return;
         }
-        uint8_t* responseMsg = nullptr;
-        size_t responseMsgSize{};
-        auto rc =
-            pldm_recv(mctp_eid, fd, insId, &responseMsg, &responseMsgSize);
-        if (rc != PLDM_REQUESTER_SUCCESS)
-        {
-            return;
-        }
-        std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
-            responseMsg, std::free};
-        auto response = reinterpret_cast<pldm_msg*>(responseMsgPtr.get());
         std::cout << "Getting the response. PLDM RC = " << std::hex
                   << std::showbase
                   << static_cast<uint16_t>(response->payload[0]) << "\n";
-        responseReceived = true;
-        return;
+        this->responseReceived = true;
+        std::cout << "starting pdr exchange \n";
+        getHostPDR();
     };
-    IO io(event1, fd, EPOLLIN, std::move(callback));
-    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                    PLDM_GET_PDR_REQ_BYTES);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
-    uint32_t recordHandle{};
-    insId = requester.getInstanceId(mctp_eid);
-    auto rc =
-        encode_get_pdr_req(insId, recordHandle, 0, PLDM_GET_FIRSTPART,
-                           UINT16_MAX, 0, request, PLDM_GET_PDR_REQ_BYTES);
-    if (rc != PLDM_SUCCESS)
+    rc = handler->registerRequest(mctp_eid, instanceId, PLDM_BASE,
+                                  PLDM_GET_PLDM_VERSION, std::move(requestMsg),
+                                  std::move(getPLDMVersionHandler));
+    if (rc)
     {
-        requester.markFree(mctp_eid, insId);
-        std::cerr << "Failed to encode_get_pdr_req, rc = " << rc << std::endl;
-        return;
-    }
-    rc = pldm_send(mctp_eid, fd, requestMsg.data(), requestMsg.size());
-    if (0 > rc)
-    {
-        std::cerr << "Failed to send message RC = " << rc
-                  << ", errno = " << errno << "\n";
-        return;
-    }
-    while (1)
-    {
-        if (responseReceived)
-        {
-            requester.markFree(mctp_eid, insId);
-            break;
-        }
-        if (timeOut)
-        {
-            requester.markFree(mctp_eid, insId);
-            break;
-        }
-        try
-        {
-            event1.run(std::nullopt);
-        }
-        catch (const sdeventplus::SdEventError& e)
-        {
-            std::cerr << "Failure in processing request.ERROR= " << e.what()
-                      << "\n";
-            return;
-        }
+        std::cerr << "Failed to discover Host state. Assuming Host as off \n";
     }
 }
 
