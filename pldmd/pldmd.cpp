@@ -229,7 +229,7 @@ int main(int argc, char** argv)
                                                    &dbusImplReq, &reqHandler));
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
-        bmcEntityTree.get());
+        bmcEntityTree.get(), dbusImplReq, &reqHandler, hostEID, event);
     // FRU table is built lazily when a FRU command or Get PDR command is
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
