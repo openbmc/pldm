@@ -319,11 +319,12 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 	return NULL;
 }
 
-void pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi,
-					   bool is_remote)
+uint32_t pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi,
+					       bool is_remote)
 {
 	assert(repo != NULL);
 
+	uint32_t delete_hdl = 0;
 	pldm_pdr_record *record = repo->first;
 	pldm_pdr_record *prev = NULL;
 	while (record != NULL) {
@@ -336,6 +337,7 @@ void pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi,
 				 *)((uint8_t *)record->data +
 				    sizeof(struct pldm_pdr_hdr));
 			if (fru->fru_rsi == fru_rsi) {
+				delete_hdl = hdr->record_handle;
 				if (repo->first == record) {
 					repo->first = next;
 				} else {
@@ -359,6 +361,7 @@ void pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi,
 		}
 		record = next;
 	}
+	return delete_hdl;
 }
 
 void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
@@ -815,11 +818,12 @@ void pldm_entity_association_pdr_add_from_node(
 				   is_remote, terminus_handle);
 }
 
-void pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
-							 pldm_entity entity,
-							 bool is_remote)
+uint32_t pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
+							     pldm_entity entity,
+							     bool is_remote)
 {
 	assert(repo != NULL);
+	uint32_t updated_hdl = 0;
 	bool removed = false;
 
 	pldm_pdr_record *record = repo->first;
@@ -882,6 +886,7 @@ void pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
 				    child->entity_container_id ==
 					entity.entity_container_id) {
 					removed = true;
+					updated_hdl = hdr->record_handle;
 					// skip this child. do not add in the
 					// new pdr
 				} else {
@@ -923,12 +928,13 @@ void pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
 		free(new_record);
 		free(new_data);
 	}
+	return updated_hdl;
 }
 
-void pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
-						      pldm_entity entity,
-						      pldm_entity parent,
-						      bool is_remote)
+uint32_t pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
+							  pldm_entity entity,
+							  pldm_entity parent,
+							  bool is_remote)
 {
 	// testing pending with pcie slot-card. can test once cards are placed
 	// under slots in DBus. usecase: will not find the PDR and need to
@@ -936,6 +942,7 @@ void pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
 	// if the PDR is not found then search for the PDR having parent as a
 	// child if found then parent is valid and create a new enitity assoc
 	// PDR with parent-entity
+	uint32_t updated_hdl = 0;
 	bool added = false;
 	pldm_pdr_record *record = repo->first;
 	pldm_pdr_record *prev = repo->first;
@@ -957,6 +964,7 @@ void pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
 				parent.entity_instance_num &&
 			    pdr->container.entity_container_id ==
 				parent.entity_container_id) {
+				updated_hdl = record->record_handle;
 				new_record->record_handle =
 				    htole32(record->record_handle);
 				new_record->size =
@@ -1039,6 +1047,7 @@ void pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
 		free(new_record);
 		free(new_data);
 	}
+	return updated_hdl;
 }
 
 void find_entity_ref_in_tree(pldm_entity_node *tree_node, pldm_entity entity,
