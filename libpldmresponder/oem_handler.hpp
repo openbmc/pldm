@@ -1,7 +1,7 @@
 #pragma once
-
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/handler.hpp"
 
 namespace pldm
@@ -14,6 +14,10 @@ namespace responder
 
 namespace oem_platform
 {
+using namespace pldm::responder::pdr_utils;
+
+using ObjectPath = std::filesystem::path;
+using ObjectPathMaps = std::map<ObjectPath, pldm_entity_node*>;
 
 class Handler : public CmdHandler
 {
@@ -68,6 +72,8 @@ class Handler : public CmdHandler
      * @param[in] repo - instance of concrete implementation of Repo
      */
     virtual void buildOEMPDR(pdr_utils::Repo& repo) = 0;
+
+    virtual std::string& upadteOemDbusPaths(std::string& dbusPath) = 0;
 
     virtual ~Handler() = default;
 

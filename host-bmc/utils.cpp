@@ -59,10 +59,10 @@ Entities getParentEntites(const EntityAssociations& entityAssoc)
     return parents;
 }
 
-void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
-                                     pldm_entity_node* entity,
-                                     const ObjectPath& path,
-                                     ObjectPathMaps& objPathMap)
+void addObjectPathEntityAssociations(
+    const EntityAssociations& entityAssoc, pldm_entity_node* entity,
+    const ObjectPath& path, ObjectPathMaps& objPathMap,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler)
 {
     if (entity == nullptr)
     {
@@ -105,7 +105,7 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
             for (size_t i = 1; i < ev.size(); i++)
             {
                 addObjectPathEntityAssociations(entityAssoc, ev[i], p,
-                                                objPathMap);
+                                                objPathMap, oemPlatformHandler);
             }
             find = true;
         }
@@ -116,13 +116,19 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
         std::string dbusPath =
             path / fs::path{entityName +
                             std::to_string(node_entity.entity_instance_num)};
+
+        if (oemPlatformHandler != nullptr)
+        {
+            dbusPath = oemPlatformHandler->upadteOemDbusPaths(dbusPath);
+        }
         objPathMap[dbusPath] = entity;
     }
 }
 
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap)
+void updateEntityAssociation(
+    const EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler)
 {
     std::vector<pldm_entity_node*> parentsEntity =
         getParentEntites(entityAssoc);
@@ -178,7 +184,8 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             paths.pop_back();
         }
 
-        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap);
+        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap,
+                                        oemPlatformHandler);
     }
 }
 } // namespace utils
