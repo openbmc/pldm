@@ -181,6 +181,9 @@ class Handler : public oem_platform::Handler
     /** @brief to check the BMC state*/
     int checkBMCState();
 
+    /** @brief update the dbus object paths */
+    void upadteOemDbusPaths(std::string& dbusPath);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object

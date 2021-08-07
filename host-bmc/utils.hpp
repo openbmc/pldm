@@ -3,6 +3,8 @@
 #include "libpldm/entity.h"
 #include "libpldm/pdr.h"
 
+#include "libpldmresponder/oem_handler.hpp"
+
 #include <deque>
 #include <filesystem>
 #include <map>
@@ -27,7 +29,7 @@ const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_SYS_BOARD, "motherboard"},
     {PLDM_ENTITY_POWER_SUPPLY, "powersupply"},
     {PLDM_ENTITY_PROC, "cpu"},
-    {PLDM_ENTITY_SYSTEM_LOGICAL, "system"},
+    {11521, "system"},
     {PLDM_ENTITY_PROC_MODULE, "dcm"},
     {PLDM_ENTITY_PROC | 0x8000, "core"},
     {PLDM_ENTITY_IO_MODULE, "io_module"},
@@ -49,9 +51,10 @@ namespace utils
  *                               BMC's entity association tree
  *  @return
  */
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap);
+void updateEntityAssociation(
+    const EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
 } // namespace utils
 } // namespace hostbmc
