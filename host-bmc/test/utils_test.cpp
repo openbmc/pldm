@@ -197,7 +197,7 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
 
     ObjectPathMaps objPathMap;
     pldm::hostbmc::utils::updateEntityAssociation(entityAssociations, tree,
-                                                  objPathMap);
+                                                  objPathMap, nullptr);
 
     EXPECT_EQ(objPathMap.size(), retObjectMaps.size());
 
