@@ -417,6 +417,16 @@ void pldm::responder::oem_ibm_platform::Handler::_processStartUpdate(
                          uint8_t(CodeUpdateState::END));
 }
 
+void pldm::responder::oem_ibm_platform::Handler::upadteOemDbusPaths(
+    std::string& dbusPath)
+{
+    std::string toFind("system1/chassis1/motherboard1");
+    if (dbusPath.find(toFind) != std::string::npos)
+    {
+        size_t pos = dbusPath.find(toFind);
+        dbusPath.replace(pos, toFind.length(), "system/chassis/motherboard");
+    }
+}
 void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
     sdeventplus::source::EventBase& /*source */)
 {

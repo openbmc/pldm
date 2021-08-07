@@ -204,6 +204,8 @@ class Handler : public oem_platform::Handler
     /** @brief To disable to the watchdog timer on host poweron completion*/
     void disableWatchDogTimer();
 
+    void upadteOemDbusPaths(std::string& dbusPath);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object

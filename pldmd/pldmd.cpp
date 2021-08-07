@@ -194,6 +194,20 @@ int main(int argc, char** argv)
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     auto dbusHandler = std::make_unique<DBusHandler>();
     auto hostEID = pldm::utils::readHostEID();
+    std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+
+#ifdef OEM_IBM
+    std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
+        std::make_unique<pldm::responder::CodeUpdate>(dbusHandler.get());
+    codeUpdate->clearDirPath(LID_STAGING_DIR);
+    oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
+        dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq,
+        event, &reqHandler);
+    codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
+    invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
+                                          oemPlatformHandler.get(), sockfd,
+                                          hostEID, &dbusImplReq, &reqHandler));
+#endif
     if (hostEID)
     {
         hostPDRHandler = std::make_shared<HostPDRHandler>(
