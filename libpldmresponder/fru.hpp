@@ -7,7 +7,9 @@
 
 #include "common/utils.hpp"
 #include "fru_parser.hpp"
+#include "pldmd/dbus_impl_requester.hpp"
 #include "pldmd/handler.hpp"
+#include "requester/handler.hpp"
 
 #include <sdbusplus/message.hpp>
 
@@ -17,6 +19,7 @@
 #include <vector>
 
 using namespace pldm::utils;
+using namespace pldm::dbus_api;
 namespace pldm
 {
 
@@ -37,6 +40,8 @@ using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
 using ObjectPathToRSIMap = std::map<ObjectPath, uint16_t>;
 
 } // namespace dbus
+
+using ChangeEntry = uint32_t;
 
 /** @class FruImpl
  *
@@ -64,13 +69,20 @@ class FruImpl
      *  @param[in] entityTree - opaque pointer to the entity association tree
      *  @param[in] bmcEntityTree - opaque pointer to bmc's entity association
      *                             tree
+     *  @param[in] requester - PLDM Requester reference
+     *  @param[in] handler - PLDM request handler
+     *  @param[in] mctp_eid - MCTP eid of Host
+     *  @param[in] event - reference of main event loop of pldmd
      */
     FruImpl(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree) :
+            pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            uint8_t mctp_eid, sdeventplus::Event& event) :
         parser(configPath, fruMasterJsonPath),
-        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree)
+        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree),
+        requester(requester), handler(handler), mctp_eid(mctp_eid), event(event)
     {
         static constexpr auto inventoryObjPath =
             "/xyz/openbmc_project/inventory/system/chassis";
@@ -165,6 +177,16 @@ class FruImpl
      */
     std::string populatefwVersion();
 
+    /* @brief Send a PLDM event to host firmware containing a list of record
+     *        handles of PDRs that the host firmware has to fetch.
+     * @param[in] pdrRecordHandles - list of PDR record handles
+     * @param[in] eventDataOps - event data operation for PDRRepositoryChgEvent
+     *                           in DSP0248
+     */
+    void sendPDRRepositoryChgEventbyPDRHandles(
+        std::vector<uint32_t>&& pdrRecordHandles,
+        std::vector<uint8_t>&& eventDataOps);
+
   private:
     uint16_t nextRSI()
     {
@@ -188,6 +210,10 @@ class FruImpl
     pldm_pdr* pdrRepo;
     pldm_entity_association_tree* entityTree;
     pldm_entity_association_tree* bmcEntityTree;
+    Requester& requester;
+    pldm::requester::Handler<pldm::requester::Request>* handler;
+    uint8_t mctp_eid;
+    sdeventplus::Event& event;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
     dbus::ObjectPathToRSIMap objectPathToRSIMap{};
@@ -201,12 +227,14 @@ class FruImpl
      *  @param[in/out] entity - PLDM entity corresponding to FRU instance
      *  @param[in] objectPath - FRU object path
      *  @param[in] concurrentAdd - whether this is a CM operation
+     *
+     *  @return uint32_t the newly added PDR record handle
      */
-    void populateRecords(const dbus::InterfaceMap& interfaces,
-                         const fru_parser::FruRecordInfos& recordInfos,
-                         const pldm_entity& entity,
-                         const dbus::ObjectPath& objectPath,
-                         bool concurrentAdd = false);
+    uint32_t populateRecords(const dbus::InterfaceMap& interfaces,
+                             const fru_parser::FruRecordInfos& recordInfos,
+                             const pldm_entity& entity,
+                             const dbus::ObjectPath& objectPath,
+                             bool concurrentAdd = false);
 
     /** @brief subscribeFruPresence subscribes for the "Present" property
      *         change signal. This enables pldm to know when a fru is
@@ -272,8 +300,11 @@ class Handler : public CmdHandler
     Handler(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree) :
-        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree)
+            pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            uint8_t mctp_eid, sdeventplus::Event& event) :
+        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree,
+             requester, handler, mctp_eid, event)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
                          [this](const pldm_msg* request, size_t payloadLength) {
