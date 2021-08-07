@@ -3,6 +3,8 @@
 #include "libpldm/entity.h"
 #include "libpldm/pdr.h"
 
+#include "libpldmresponder/oem_handler.hpp"
+
 #include <deque>
 #include <filesystem>
 #include <map>
@@ -43,9 +45,10 @@ namespace utils
  *                               BMC's entity association tree
  *  @return
  */
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap);
+void updateEntityAssociation(
+    const EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
 } // namespace utils
 } // namespace hostbmc
