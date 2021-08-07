@@ -36,12 +36,13 @@ HostPDRHandler::HostPDRHandler(
     int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
     pldm_entity_association_tree* bmcEntityTree, Requester& requester,
-    pldm::requester::Handler<pldm::requester::Request>* handler, bool verbose) :
+    pldm::requester::Handler<pldm::requester::Request>* handler,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler, bool verbose) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), requester(requester), handler(handler),
-    verbose(verbose)
+    verbose(verbose), oemPlatformHandler(oemPlatformHandler)
 {
     mergedHostParents = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
@@ -531,8 +532,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
-        pldm::hostbmc::utils::updateEntityAssociation(entityAssociations,
-                                                      entityTree, objPathMap);
+        pldm::hostbmc::utils::updateEntityAssociation(
+            entityAssociations, entityTree, objPathMap, oemPlatformHandler);
 
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
