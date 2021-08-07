@@ -246,7 +246,7 @@ std::string FruImpl::populatefwVersion()
     }
     return currentBmcVersion;
 }
-void FruImpl::populateRecords(
+uint32_t FruImpl::populateRecords(
     const pldm::responder::dbus::InterfaceMap& interfaces,
     const fru_parser::FruRecordInfos& recordInfos, const pldm_entity& entity,
     const dbus::ObjectPath& objectPath, bool concurrentAdd)
@@ -256,6 +256,7 @@ void FruImpl::populateRecords(
     uint16_t recordSetIdentifier = 0;
     auto numRecsCount = numRecs;
     static uint32_t bmc_record_handle = 0;
+    uint32_t newRcord{};
 
     for (auto const& [recType, encType, fieldInfos] : recordInfos)
     {
@@ -317,7 +318,7 @@ void FruImpl::populateRecords(
                 recordSetIdentifier = nextRSI();
                 bmc_record_handle = concurrentAdd ? 0 : nextRecordHandle();
 
-                pldm_pdr_add_fru_record_set(
+                newRcord = pldm_pdr_add_fru_record_set(
                     pdrRepo, TERMINUS_HANDLE, recordSetIdentifier,
                     entity.entity_type, entity.entity_instance_num,
                     entity.entity_container_id, bmc_record_handle);
@@ -331,6 +332,7 @@ void FruImpl::populateRecords(
             numRecs++;
         }
     }
+    return newRcord;
 }
 
 void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
@@ -350,10 +352,11 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
     pldm_entity_association_pdr_remove_contained_entity(pdrRepo, removeEntity,
                                                         false);
 
-    pldm_entity_association_pdr_remove_contained_entity(pdrRepo, removeEntity,
-                                                        true);
+    auto updateRecordHdl = pldm_entity_association_pdr_remove_contained_entity(
+        pdrRepo, removeEntity, true);
 
-    pldm_pdr_remove_fru_record_set_by_rsi(pdrRepo, rsi, false);
+    auto deleteRecordHdl =
+        pldm_pdr_remove_fru_record_set_by_rsi(pdrRepo, rsi, false);
 
     pldm_entity_association_tree_delete_node(entityTree, removeEntity);
     pldm_entity_association_tree_delete_node(bmcEntityTree, removeEntity);
@@ -375,6 +378,12 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
     }
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, deleteRecordHdl)),
+        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_DELETED)));
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, updateRecordHdl)),
+        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_MODIFIED)));
 }
 
 void FruImpl::buildIndividualFRU(const std::string& fruInterface,
@@ -386,6 +395,7 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
     pldm_entity_node* parent = nullptr;
     pldm_entity entity{};
     pldm_entity parentEntity{};
+    uint32_t newRecordHdl{};
     try
     {
         entity.entity_type = parser.getEntityType(fruInterface);
@@ -422,8 +432,8 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
             if (object.first.str == fruObjectPath)
             {
                 const auto& interfaces = object.second;
-                populateRecords(interfaces, recordInfos, entity, fruObjectPath,
-                                true);
+                newRecordHdl = populateRecords(interfaces, recordInfos, entity,
+                                               fruObjectPath, true);
                 associatedEntityMap.emplace(fruObjectPath, entity);
                 break;
             }
@@ -438,8 +448,9 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
 
     pldm_entity_association_pdr_add_contained_entity(pdrRepo, entity,
                                                      parentEntity, false);
-    pldm_entity_association_pdr_add_contained_entity(pdrRepo, entity,
-                                                     parentEntity, true);
+
+    auto updatedRecordHdl = pldm_entity_association_pdr_add_contained_entity(
+        pdrRepo, entity, parentEntity, true);
 
     if (table.size())
     {
@@ -448,6 +459,12 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
     }
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, newRecordHdl)),
+        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_ADDED)));
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, updatedRecordHdl)),
+        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_MODIFIED)));
 }
 
 void FruImpl::getFRUTable(Response& response)
@@ -588,6 +605,95 @@ void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties,
     else
     {
         removeIndividualFRU(fruObjPath);
+    }
+}
+
+void FruImpl::sendPDRRepositoryChgEventbyPDRHandles(
+    std::vector<ChangeEntry>&& pdrRecordHandles,
+    std::vector<uint8_t>&& eventDataOps)
+{
+    uint8_t eventDataFormat = FORMAT_IS_PDR_HANDLES;
+    std::vector<uint8_t> numsOfChangeEntries(1);
+    std::vector<std::vector<ChangeEntry>> changeEntries(
+        numsOfChangeEntries.size());
+    for (auto pdrRecordHandle : pdrRecordHandles)
+    {
+        changeEntries[0].push_back(pdrRecordHandle);
+    }
+    if (changeEntries.empty())
+    {
+        return;
+    }
+    numsOfChangeEntries[0] = changeEntries[0].size();
+    size_t maxSize = PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH +
+                     PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH +
+                     changeEntries[0].size() * sizeof(uint32_t);
+    std::vector<uint8_t> eventDataVec{};
+    eventDataVec.resize(maxSize);
+    auto eventData =
+        reinterpret_cast<struct pldm_pdr_repository_chg_event_data*>(
+            eventDataVec.data());
+    size_t actualSize{};
+    auto firstEntry = changeEntries[0].data();
+    auto rc = encode_pldm_pdr_repository_chg_event_data(
+        eventDataFormat, 1, eventDataOps.data(), numsOfChangeEntries.data(),
+        &firstEntry, eventData, &actualSize, maxSize);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr
+            << "Failed to encode_pldm_pdr_repository_chg_event_data, rc = "
+            << rc << std::endl;
+        return;
+    }
+    auto instanceId = requester.getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+                                    actualSize);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    rc = encode_platform_event_message_req(
+        instanceId, 1, 0, PLDM_PDR_REPOSITORY_CHG_EVENT, eventDataVec.data(),
+        actualSize, request,
+        actualSize + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(mctp_eid, instanceId);
+        std::cerr << "Failed to encode_platform_event_message_req, rc = " << rc
+                  << std::endl;
+        return;
+    }
+    auto platformEventMessageResponseHandler = [](mctp_eid_t /*eid*/,
+                                                  const pldm_msg* response,
+                                                  size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            std::cerr << "Failed to receive response for the PDR repository "
+                         "changed event"
+                      << "\n";
+            return;
+        }
+        uint8_t completionCode{};
+        uint8_t status{};
+        auto responsePtr = reinterpret_cast<const struct pldm_msg*>(response);
+        auto rc = decode_platform_event_message_resp(
+            responsePtr, respMsgLen - sizeof(pldm_msg_hdr), &completionCode,
+            &status);
+        if (rc || completionCode)
+        {
+            std::cerr << "Failed to decode_platform_event_message_resp: "
+                      << "rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << std::endl;
+        }
+    };
+    rc = handler->registerRequest(
+        mctp_eid, instanceId, PLDM_PLATFORM, PLDM_PDR_REPOSITORY_CHG_EVENT,
+        std::move(requestMsg), std::move(platformEventMessageResponseHandler));
+    if (rc)
+    {
+        std::cerr << "Failed to send the PDR repository changed event request "
+                     "after CM"
+                  << "\n";
     }
 }
 

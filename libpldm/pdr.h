@@ -205,10 +205,10 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
  *  @param[in] fru_rsi - FRU record set identifier
  *  @param[in] is_remote - indicates which PDR to remove, local or remote
  *
- *  @return none
+ *  @return uint32_t the FRU rsi that was removed
  */
-void pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi,
-					   bool is_remote);
+uint32_t pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi,
+					       bool is_remote);
 
 /* =========================== */
 /* Entity Association PDR APIs */
@@ -355,11 +355,11 @@ void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
  *  @param[in] entity - the pldm entity to be deleted
  *  @param[in] is_remote - whether to delete from a remote pDR or local PDR
  *
- *  @return none
+ *  @return uint32_t the PDR record handle that was updated
  */
-void pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
-							 pldm_entity entity,
-							 bool is_remote);
+uint32_t pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
+							     pldm_entity entity,
+							     bool is_remote);
 
 /** @brief Add a contained entity into an entity association PDR
  *  @param[in] repo - opaque pointer to pldm PDR repo
@@ -367,12 +367,12 @@ void pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
  *  @param[in] parent - the parent entity
  *  @param[in] is_remote - whether to add in the local or remote PDR
  *
- *  @return none
+ *  @return uint32_t the updated PDR record handle
  */
-void pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
-						      pldm_entity entity,
-						      pldm_entity parent,
-						      bool is_remote);
+uint32_t pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
+							  pldm_entity entity,
+							  pldm_entity parent,
+							  bool is_remote);
 
 /** @brief Find entity reference in tree
  *
