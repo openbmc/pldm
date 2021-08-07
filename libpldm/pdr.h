@@ -201,7 +201,7 @@ const pldm_pdr_record *pldm_pdr_fru_record_set_find_by_rsi(
 
 //check the logic properly, the remove logic for remote pdrs deletes all but
 //here we need to delete only one pdr
-void pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi, bool is_remote);
+uint32_t pldm_pdr_remove_fru_record_set_by_rsi(pldm_pdr *repo, uint16_t fru_rsi, bool is_remote);
 
 /* =========================== */
 /* Entity Association PDR APIs */
@@ -318,9 +318,9 @@ void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
 					       size_t num_entities,
 					       bool is_remote);
 
-void pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,pldm_entity entity, bool is_remote);
+uint32_t pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,pldm_entity entity, bool is_remote);
 
-void pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,pldm_entity entity, pldm_entity parent, bool is_remote);
+uint32_t pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,pldm_entity entity, pldm_entity parent, bool is_remote);
 
 /** @brief Find entity reference in tree
  *
