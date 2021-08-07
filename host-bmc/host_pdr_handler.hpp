@@ -6,8 +6,8 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
+#include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-#include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
 #include "utils.hpp"
 
@@ -106,6 +106,7 @@ class HostPDRHandler
         pldm_entity_association_tree* bmcEntityTree,
         pldm::dbus_api::Requester& requester,
         pldm::requester::Handler<pldm::requester::Request>* handler,
+        pldm::responder::oem_platform::Handler* oemPlatformHandler,
         bool verbose = false);
 
     /** @brief fetch PDRs from host firmware. See @class.
@@ -337,6 +338,9 @@ class HostPDRHandler
     /** @brief the vector of FRU Record Data Format
      */
     std::vector<responder::pdr_utils::FruRecordDataFormat> fruRecordData;
+
+    /** @OEM platform handler */
+    pldm::responder::oem_platform::Handler* oemPlatformHandler;
 
     /** @brief Object path and entity association and is only loaded once
      */
