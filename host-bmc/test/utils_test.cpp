@@ -233,7 +233,7 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
         {"/xyz/openbmc_project/inventory/motherboard1/dcm1/cpu1/core14", l6f}};
 
     ObjectPathMaps objPathMap;
-    updateEntityAssociation(entityAssociations, tree, objPathMap);
+    updateEntityAssociation(entityAssociations, tree, objPathMap, nullptr);
 
     EXPECT_EQ(objPathMap.size(), retObjectMaps.size());
 
