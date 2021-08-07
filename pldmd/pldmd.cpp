@@ -241,22 +241,6 @@ int main(int argc, char** argv)
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     DBusHandler dbusHandler;
     auto hostEID = pldm::utils::readHostEID();
-    if (hostEID)
-    {
-        hostPDRHandler = std::make_shared<HostPDRHandler>(
-            sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), bmcEntityTree.get(), instanceIdDb, &reqHandler);
-        // HostFirmware interface needs access to hostPDR to know if host
-        // is running
-        dbusImplHost.setHostPdrObj(hostPDRHandler);
-
-        hostEffecterParser =
-            std::make_unique<pldm::host_effecters::HostEffecterParser>(
-                &instanceIdDb, sockfd, pdrRepo.get(), &dbusHandler,
-                HOST_JSONS_DIR, &reqHandler);
-        dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
-            sockfd, hostEID, instanceIdDb, &reqHandler);
-    }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 
 #ifdef OEM_IBM
@@ -271,6 +255,23 @@ int main(int argc, char** argv)
                                           oemPlatformHandler.get(), sockfd,
                                           hostEID, &instanceIdDb, &reqHandler));
 #endif
+    if (hostEID)
+    {
+        hostPDRHandler = std::make_shared<HostPDRHandler>(
+            sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
+            entityTree.get(), bmcEntityTree.get(), instanceIdDb, &reqHandler,
+            oemPlatformHandler.get());
+        // HostFirmware interface needs access to hostPDR to know if host
+        // is running
+        dbusImplHost.setHostPdrObj(hostPDRHandler);
+
+        hostEffecterParser =
+            std::make_unique<pldm::host_effecters::HostEffecterParser>(
+                &instanceIdDb, sockfd, pdrRepo.get(), &dbusHandler,
+                HOST_JSONS_DIR, &reqHandler);
+        dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
+            sockfd, hostEID, instanceIdDb, &reqHandler);
+    }
     invoker.registerHandler(
         PLDM_BIOS, std::make_unique<bios::Handler>(sockfd, hostEID,
                                                    &instanceIdDb, &reqHandler));
