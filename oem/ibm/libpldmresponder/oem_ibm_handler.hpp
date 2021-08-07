@@ -144,6 +144,8 @@ class Handler : public oem_platform::Handler
      */
     void _processSystemReboot(sdeventplus::source::EventBase& source);
 
+    void upadteOemDbusPaths(std::string& dbusPath);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
