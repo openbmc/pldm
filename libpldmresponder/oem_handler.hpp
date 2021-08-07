@@ -1,5 +1,4 @@
 #pragma once
-
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -11,6 +10,11 @@ namespace responder
 {
 namespace oem_platform
 {
+using namespace pldm::responder::pdr_utils;
+
+using ObjectPath = std::filesystem::path;
+using ObjectPathMaps = std::map<ObjectPath, pldm_entity_node*>;
+
 class Handler : public CmdHandler
 {
   public:
@@ -89,6 +93,9 @@ class Handler : public CmdHandler
 
     /** @brief Interface to check the BMC state */
     virtual int checkBMCState() = 0;
+
+    /** @brief update the dbus object paths */
+    virtual void upadteOemDbusPaths(std::string& dbusPath) = 0;
 
     virtual ~Handler() = default;
 
