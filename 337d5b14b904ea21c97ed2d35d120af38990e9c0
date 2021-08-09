@@ -282,6 +282,24 @@
     },
     {
       "key": {
+        "uuid": "033f5250_e0b9c00b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:16:58Z",
+      "side": 1,
+      "message": "\u003e What if a rogue entity keeps triggering this signal?\nI dont really have an answer for it , but i guess this can happen with anything in BMC, say for example i could relate this to a rouge process just doing a dbus method call to create eventlogs.\n\nDo you think we need a rate limit for this ? and stop reacting to the signal when we get X number of Signals within Y amount of time ?\n\nIf yes, i guess i could do that as well in a future commit.",
+      "parentUuid": "edb3dc7d_7b81ea9c",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "974b6770_2b5b592c",
         "filename": "requester/request.hpp",
         "patchSetId": 10
