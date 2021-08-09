@@ -33,6 +33,24 @@
       "revId": "1313bdee1561293e8077908e3f0efcdb1b974df8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f21de2ce_65955059",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-08-09T20:31:22Z",
+      "side": 1,
+      "message": "I see that in the next commit, there\u0027s an effector that can call the processRenameEvent(). Maybe we don\u0027t want to set the bios attr in that case and that\u0027s why it\u0027s here?",
+      "parentUuid": "d3dbd540_767a7e46",
+      "revId": "1313bdee1561293e8077908e3f0efcdb1b974df8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
