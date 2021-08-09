@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "aa11d1be_1c541e89",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "hmm, yeah did not think of it. Then can we prefer moving this to rootfs ?",
+      "parentUuid": "56594ff6_2f7c2d8d",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "20fd3afa_1495526f",
         "filename": "common/flight_recorder.hpp",
         "patchSetId": 10
@@ -30,6 +48,24 @@
       "writtenOn": "2021-08-06T08:30:29Z",
       "side": 1,
       "message": "Why do really want to use index this way (ever incrementing)?\n\nWithout timestamps, how do you know if a rollover happened?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa74da87_e2dcbf91",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "I wanted to model a circular buffer avoiding much of allocations and deletions or pushing/popping, as there is no circular buffer in standard STL library, i thought of model it with just an index and a vector, i felt this is faster \u0026 a better solution than bringing in the boost::circular_buffer or modelling a circular bufferwrapper over std::deque.\n\nWhy do we need to know the rollover happened ? am i missing something ? \n\n- we just need the last N transactions, we are not bothered about the timestamp s because we might not be getting 1:1 request-response sequence from host as its async.\n\nIn my testing, i have seen that , if for example the max size if 10, then we rewrite the buffer[0] with 11th element.",
+      "parentUuid": "20fd3afa_1495526f",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "159d041d_26a1927b",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "No, i have not done that but i had an assumption that it would have a pretty less impact on the overall communication as i am using vector with fixed size. But i would be happy to take some performance measurements if need be. Do you have certain PMCI tools in mind that i could run ?",
+      "parentUuid": "dd5d190b_4f8da64e",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "73716393_2c0fab55",
         "filename": "meson.build",
         "patchSetId": 10
@@ -64,6 +118,24 @@
       "writtenOn": "2021-08-06T08:30:29Z",
       "side": 1,
       "message": "tmpfs can be cleaned up systemd periodically",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "392d80cb_98d43981",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "i was thinking that we would never had to use the flightrecoder, so i had moved it to tmp, but i guess what you said is right , as tmpfs is bounded and as certian commands can be large i guess its better to move this too /home ? or /var/lib ?",
+      "parentUuid": "73716393_2c0fab55",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "20551900_aca10b9f",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "hmm with the current design mod 0 would be an exception,so it does not work but i could try to change this to have a disable option as well. Do you have an idea in mind that i could try and achieve the same with less number of ifdefs",
+      "parentUuid": "cf417584_c3901bcf",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "edc370e8_1b825146",
         "filename": "meson_options.txt",
         "patchSetId": 10
@@ -98,6 +188,24 @@
       "writtenOn": "2021-08-06T08:30:29Z",
       "side": 1,
       "message": "Do we want to enable by default?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51bfeec5_d3a94d8f",
+        "filename": "meson_options.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "I thought its a useful feature and could be really useful for every one so i did not provide a flag for it to enable or disable , but let me know if you don\u0027t feel this as a useful feature for debugging.\n\nI tend to not like the verbosity in pldm because it just dumps everything and clutters the journal and most of the time what is needed is just the last few commands.",
+      "parentUuid": "edc370e8_1b825146",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "d93b662c_374fea73",
+        "filename": "meson_options.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "No, we dont care about the how long the messages can be , mainly because we want to capture the exact and accurate data that we send/received from host/bmc. Any way of Wrapping them/manipulating them would not be much helpful in debugging.\n\nBut i agree that certain commands can be huge ,so i agree that /tmp might not be a good place to dump it as it is bounded.",
+      "parentUuid": "3246004b_fc33ffa9",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "87e766e6_d9c3cc94",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 10
@@ -138,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "edb3dc7d_7b81ea9c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "We do have plans to integrate this with phosphor-debug-collector, we could probably write a dump extension so that every time we create a user initiated dump we can collect trigger the signal and collect the flight recorder data. \n\nIts a TODO on me. Do you think of any other ways on how we could integrate it with debug collector ?",
+      "parentUuid": "87e766e6_d9c3cc94",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "974b6770_2b5b592c",
         "filename": "requester/request.hpp",
         "patchSetId": 10
@@ -149,6 +293,24 @@
       "writtenOn": "2021-08-06T08:30:29Z",
       "side": 1,
       "message": "What if pldm_send hangs? Do we want to log this before or after?",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "848fffad_7a56d9b2",
+        "filename": "requester/request.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-09T07:11:08Z",
+      "side": 1,
+      "message": "oh yeah, you are correct. i will move it to before called pldm_send so that we can even capture the failed messages.",
+      "parentUuid": "974b6770_2b5b592c",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
