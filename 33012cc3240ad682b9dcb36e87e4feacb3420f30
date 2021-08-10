@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2cc3370d_8da3ee84",
+        "filename": "requester/request.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-10T15:50:31Z",
+      "side": 1,
+      "message": "Moving this line from  line : 175 is causing a SIGABT.\n\nAug 09 19:06:36 p10bmc pldmd[551]: terminate called after throwing an instance of \u0027std::bad_alloc\u0027\nAug 09 19:06:36 p10bmc pldmd[551]:   what():  std::bad_alloc\nAug 09 19:06:36 p10bmc systemd[1]: Created slice system-systemd\\x2dcoredump.slice.\nAug 09 19:06:36 p10bmc systemd[1]: Started Process Core Dump (PID 1101/UID 0).\nAug 09 19:06:38 p10bmc systemd-coredump[1102]: Process 551 (pldmd) of user 0 dumped core.\nAug 09 19:06:38 p10bmc systemd[1]: pldmd.service: Main process exited, code\u003ddumped, status\u003d6/ABRT\nAug 09 19:06:38 p10bmc systemd[1]: pldmd.service: Failed with result \u0027core-dump\u0027.\n\n\nAlthough i see that the requestMsg is defined as an rvalue reference in the requester infrastructure, there is just a single copy of the message that is used in the send() API to retry sending to the host. but we would also need a copy of that into the flight recorder as well\n\nI have tried :\n1. Making an override saveRecord function that takes an rvalue reference like std::vector\u003cuint8_t\u003e\u0026\u0026 , and passing it to flight recorder circular buffer, it did not work.\n\n2. Tried to make a write override saveRecord function that takes raw array underneath the requestMsg vector \u0026 then fill the flight recorder using the pointer\u0026 size that did not work either.\n+    void saveRecord(const uint8_t* pldm_req_msg, size_t req_msg_len,\n+                    ReqOrResponse isRequest)\n\nWould appreciate if anyone can help me solve this issue.",
+      "range": {
+        "startLine": 167,
+        "startChar": 7,
+        "endLine": 168,
+        "endChar": 30
+      },
+      "revId": "33012cc3240ad682b9dcb36e87e4feacb3420f30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
