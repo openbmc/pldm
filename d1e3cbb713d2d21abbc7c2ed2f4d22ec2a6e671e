@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2c54520_9ab43003",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-08-10T16:08:25Z",
+      "side": 1,
+      "message": "actually should probably update these two too",
+      "range": {
+        "startLine": 278,
+        "startChar": 26,
+        "endLine": 278,
+        "endChar": 39
+      },
+      "revId": "d1e3cbb713d2d21abbc7c2ed2f4d22ec2a6e671e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2722b94b_4c08aabd",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-08-10T16:08:25Z",
+      "side": 1,
+      "message": "update",
+      "range": {
+        "startLine": 290,
+        "startChar": 26,
+        "endLine": 290,
+        "endChar": 44
+      },
+      "revId": "d1e3cbb713d2d21abbc7c2ed2f4d22ec2a6e671e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
