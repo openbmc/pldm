@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bb8ac0a8_edde536a",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-11T14:58:18Z",
+      "side": 1,
+      "message": "nit: add back the line please",
+      "revId": "a7daa9918a3fa0fb45ac1da02aec54e1a7c9566e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6504ebba_074c356e",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-11T14:58:18Z",
+      "side": 1,
+      "message": "PLDM_BOOT_SIDE_RENAMED",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 35
+      },
+      "revId": "a7daa9918a3fa0fb45ac1da02aec54e1a7c9566e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
