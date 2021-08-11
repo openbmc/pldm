@@ -153,9 +153,9 @@ class Request final : public RequestRetryTimer
     {}
 
   private:
-    int fd;         //!< file descriptor of MCTP communications socket
-    mctp_eid_t eid; //!< endpoint ID of the remote MCTP endpoint
-    pldm::Request&& requestMsg; //!< PLDM request message
+    int fd;                   //!< file descriptor of MCTP communications socket
+    mctp_eid_t eid;           //!< endpoint ID of the remote MCTP endpoint
+    pldm::Request requestMsg; //!< PLDM request message
 
     /** @brief Sends the PLDM request message on the socket
      *
