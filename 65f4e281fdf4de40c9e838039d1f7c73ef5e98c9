@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c374315b_2361422a",
+        "filename": "host-bmc/test/utils_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-12T06:13:46Z",
+      "side": 1,
+      "message": "Please restore?",
+      "revId": "65f4e281fdf4de40c9e838039d1f7c73ef5e98c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3d3f541_bd7eb7e0",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-12T06:13:46Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 122,
+        "startChar": 12,
+        "endLine": 122,
+        "endChar": 23
+      },
+      "revId": "65f4e281fdf4de40c9e838039d1f7c73ef5e98c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3005867d_a25a2499",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-12T06:13:46Z",
+      "side": 1,
+      "message": "We do need to return std::string\nbecause we have passed a parameter as input/output",
+      "range": {
+        "startLine": 416,
+        "startChar": 0,
+        "endLine": 416,
+        "endChar": 12
+      },
+      "revId": "65f4e281fdf4de40c9e838039d1f7c73ef5e98c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9fc3b00_29f5e5b1",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-08-12T06:13:46Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 425,
+        "startChar": 4,
+        "endLine": 425,
+        "endChar": 20
+      },
+      "revId": "65f4e281fdf4de40c9e838039d1f7c73ef5e98c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
