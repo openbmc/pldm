@@ -1,5 +1,7 @@
 #include "utils.hpp"
 
+#include "common/utils.hpp"
+
 #include <libpldm/base.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -7,6 +9,10 @@
 #include <unistd.h>
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Inventory/Decorator/Asset/client.hpp>
+
+#include <exception>
+#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 
@@ -135,6 +141,28 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
         }
     }
     return 0;
+}
+
+bool checkIfIBMFru(const std::string& objPath)
+{
+    using DecoratorAsset =
+        sdbusplus::client::xyz::openbmc_project::inventory::decorator::Asset<>;
+
+    try
+    {
+        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            objPath.c_str(), "Model", DecoratorAsset::interface);
+        const auto& model = std::get<std::string>(propVal);
+        if (!model.empty())
+        {
+            return true;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
+    return false;
 }
 
 } // namespace utils

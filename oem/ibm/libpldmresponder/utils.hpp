@@ -36,6 +36,14 @@ int setupUnixSocket(const std::string& socketInterface);
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
 
+/** @brief checks if given FRU is IBM specific
+ *
+ *  @param[in] objPath - FRU object path
+ *
+ *  @return bool - true if IBM specific FRU
+ */
+bool checkIfIBMFru(const std::string& objPath);
+
 } // namespace utils
 } // namespace responder
 } // namespace pldm
