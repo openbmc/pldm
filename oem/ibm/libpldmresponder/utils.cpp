@@ -1,6 +1,7 @@
 #include "utils.hpp"
 
 #include "libpldm/base.h"
+#include "common/utils.hpp"
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -8,6 +9,7 @@
 #include <unistd.h>
 
 #include <iostream>
+#include <exception>
 
 namespace pldm
 {
@@ -139,6 +141,28 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
         }
     }
     return 0;
+}
+
+bool checkIfIBMCableCard(const std::string& objPath)
+{
+   constexpr auto pcieAdapterModelInterface = "xyz.openbmc_project.Inventory.Decorator.Asset"; 
+   constexpr auto modelProperty = "Model";
+
+   try
+   {
+       auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+           objPath.c_str(), modelProperty, pcieAdapterModelInterface);
+       const auto& model = std::get<std::string>(propVal);
+       if(!model.empty())
+       {
+           return true;
+       }
+   }
+   catch (const sdbusplus::exception::SdBusError& e)
+   {
+       return false;
+   }
+   return false;
 }
 
 } // namespace utils

@@ -34,6 +34,8 @@ int setupUnixSocket(const std::string& socketInterface);
  */
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
+
+bool checkIfIBMCableCard(const std::string& objPath);
 } // namespace utils
 } // namespace responder
 } // namespace pldm
