@@ -36,6 +36,14 @@ int setupUnixSocket(const std::string& socketInterface);
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
 
+/** @brief checks if a pcie adapter is IBM specific
+ *         cable card
+ *  @param[in] objPath - FRU object path
+ *
+ *  @return bool - true if IBM specific card
+ */
+bool checkIfIBMCableCard(const std::string& objPath);
+
 } // namespace utils
 } // namespace responder
 } // namespace pldm
