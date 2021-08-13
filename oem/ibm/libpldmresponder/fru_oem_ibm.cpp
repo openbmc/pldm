@@ -105,127 +105,151 @@ void Handler::updateDBusProperty(uint16_t fruRSI,
             {
                 std::string adapterObjPath = key;
 
-                std::cerr << " Adapter Object path:" << adapterObjPath
-                          << std::endl;
-                // set Vendor ID property
-                pldm::utils::PropertyValue value = vendorId;
-                pldm::utils::DBusMapping dbusMapping;
-                dbusMapping.objectPath = adapterObjPath;
-                dbusMapping.interface =
-                    "xyz.openbmc_project.Inventory.Item.PCIeDevice";
-                dbusMapping.propertyName = "Function0VendorId";
-                dbusMapping.propertyType = "string";
-                try
+                if (!(pldm::responder::utils::checkIfIBMCableCard(
+                        adapterObjPath)))
                 {
-                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
-                                                               value);
-                }
-                catch (const std::exception& e)
-                {
-                    std::cerr << "Failed To set vendorId property"
-                              << "ERROR=" << e.what() << std::endl;
-                }
+                    setFruPresence(adapterObjPath);
 
-                // set Device Id property
-                pldm::utils::PropertyValue value1 = deviceId;
-                pldm::utils::DBusMapping dbusMapping1;
-                dbusMapping1.objectPath = adapterObjPath;
-                dbusMapping1.interface =
-                    "xyz.openbmc_project.Inventory.Item.PCIeDevice";
-                dbusMapping1.propertyName = "Function0DeviceId";
-                dbusMapping1.propertyType = "string";
-                try
-                {
-                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping1,
-                                                               value1);
-                }
-                catch (const std::exception& e)
-                {
-                    std::cerr << "Failed To set deviceId property"
-                              << "ERROR=" << e.what() << std::endl;
-                }
+                    std::cerr << " Adapter Object path:" << adapterObjPath
+                              << std::endl;
+                    // set Vendor ID property
+                    pldm::utils::PropertyValue value = vendorId;
+                    pldm::utils::DBusMapping dbusMapping;
+                    dbusMapping.objectPath = adapterObjPath;
+                    dbusMapping.interface =
+                        "xyz.openbmc_project.Inventory.Item.PCIeDevice";
+                    dbusMapping.propertyName = "Function0VendorId";
+                    dbusMapping.propertyType = "string";
+                    try
+                    {
+                        pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                                   value);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Failed To set vendorId property"
+                                  << "ERROR=" << e.what() << std::endl;
+                    }
 
-                // set revision Id Property
-                pldm::utils::PropertyValue value2 = revisionId;
-                pldm::utils::DBusMapping dbusMapping2;
-                dbusMapping2.objectPath = adapterObjPath;
-                dbusMapping2.interface =
-                    "xyz.openbmc_project.Inventory.Item.PCIeDevice";
-                dbusMapping2.propertyName = "Function0RevisionId";
-                dbusMapping2.propertyType = "string";
-                try
-                {
-                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping2,
-                                                               value2);
-                }
-                catch (const std::exception& e)
-                {
-                    std::cerr << "Failed To set revisionId property"
-                              << "ERROR=" << e.what() << std::endl;
-                }
+                    // set Device Id property
+                    pldm::utils::PropertyValue value1 = deviceId;
+                    pldm::utils::DBusMapping dbusMapping1;
+                    dbusMapping1.objectPath = adapterObjPath;
+                    dbusMapping1.interface =
+                        "xyz.openbmc_project.Inventory.Item.PCIeDevice";
+                    dbusMapping1.propertyName = "Function0DeviceId";
+                    dbusMapping1.propertyType = "string";
+                    try
+                    {
+                        pldm::utils::DBusHandler().setDbusProperty(dbusMapping1,
+                                                                   value1);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Failed To set deviceId property"
+                                  << "ERROR=" << e.what() << std::endl;
+                    }
 
-                // set class code
-                pldm::utils::PropertyValue value3 = classCode;
-                pldm::utils::DBusMapping dbusMapping3;
-                dbusMapping3.objectPath = adapterObjPath;
-                dbusMapping3.interface =
-                    "xyz.openbmc_project.Inventory.Item.PCIeDevice";
-                dbusMapping3.propertyName = "Function0ClassCode";
-                dbusMapping3.propertyType = "string";
-                try
-                {
-                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping3,
-                                                               value3);
-                }
-                catch (const std::exception& e)
-                {
-                    std::cerr << "Failed To set classCode property"
-                              << "ERROR=" << e.what() << std::endl;
-                }
+                    // set revision Id Property
+                    pldm::utils::PropertyValue value2 = revisionId;
+                    pldm::utils::DBusMapping dbusMapping2;
+                    dbusMapping2.objectPath = adapterObjPath;
+                    dbusMapping2.interface =
+                        "xyz.openbmc_project.Inventory.Item.PCIeDevice";
+                    dbusMapping2.propertyName = "Function0RevisionId";
+                    dbusMapping2.propertyType = "string";
+                    try
+                    {
+                        pldm::utils::DBusHandler().setDbusProperty(dbusMapping2,
+                                                                   value2);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Failed To set revisionId property"
+                                  << "ERROR=" << e.what() << std::endl;
+                    }
 
-                // set subsystem vendor id
-                pldm::utils::PropertyValue value4 = subSystemVendorId;
-                pldm::utils::DBusMapping dbusMapping4;
-                dbusMapping4.objectPath = adapterObjPath;
-                dbusMapping4.interface =
-                    "xyz.openbmc_project.Inventory.Item.PCIeDevice";
-                dbusMapping4.propertyName = "Function0SubsystemVendorId";
-                dbusMapping4.propertyType = "string";
-                try
-                {
-                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping4,
-                                                               value4);
-                }
-                catch (const std::exception& e)
-                {
-                    std::cerr << "Failed To set subsystemVendorId property"
-                              << "ERROR=" << e.what() << std::endl;
-                }
+                    // set class code
+                    pldm::utils::PropertyValue value3 = classCode;
+                    pldm::utils::DBusMapping dbusMapping3;
+                    dbusMapping3.objectPath = adapterObjPath;
+                    dbusMapping3.interface =
+                        "xyz.openbmc_project.Inventory.Item.PCIeDevice";
+                    dbusMapping3.propertyName = "Function0ClassCode";
+                    dbusMapping3.propertyType = "string";
+                    try
+                    {
+                        pldm::utils::DBusHandler().setDbusProperty(dbusMapping3,
+                                                                   value3);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Failed To set classCode property"
+                                  << "ERROR=" << e.what() << std::endl;
+                    }
 
-                // set subsystem id
-                pldm::utils::PropertyValue value5 = subSystemId;
-                pldm::utils::DBusMapping dbusMapping5;
-                dbusMapping5.objectPath = adapterObjPath;
-                dbusMapping5.interface =
-                    "xyz.openbmc_project.Inventory.Item.PCIeDevice";
-                dbusMapping5.propertyName = "Function0SubsystemId";
-                dbusMapping5.propertyType = "string";
-                try
-                {
-                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping5,
-                                                               value5);
+                    // set subsystem vendor id
+                    pldm::utils::PropertyValue value4 = subSystemVendorId;
+                    pldm::utils::DBusMapping dbusMapping4;
+                    dbusMapping4.objectPath = adapterObjPath;
+                    dbusMapping4.interface =
+                        "xyz.openbmc_project.Inventory.Item.PCIeDevice";
+                    dbusMapping4.propertyName = "Function0SubsystemVendorId";
+                    dbusMapping4.propertyType = "string";
+                    try
+                    {
+                        pldm::utils::DBusHandler().setDbusProperty(dbusMapping4,
+                                                                   value4);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Failed To set subsystemVendorId property"
+                                  << "ERROR=" << e.what() << std::endl;
+                    }
+
+                    // set subsystem id
+                    pldm::utils::PropertyValue value5 = subSystemId;
+                    pldm::utils::DBusMapping dbusMapping5;
+                    dbusMapping5.objectPath = adapterObjPath;
+                    dbusMapping5.interface =
+                        "xyz.openbmc_project.Inventory.Item.PCIeDevice";
+                    dbusMapping5.propertyName = "Function0SubsystemId";
+                    dbusMapping5.propertyType = "string";
+                    try
+                    {
+                        pldm::utils::DBusHandler().setDbusProperty(dbusMapping5,
+                                                                   value5);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Failed To set subsystemId property"
+                                  << "ERROR=" << e.what() << std::endl;
+                    }
+                    break;
                 }
-                catch (const std::exception& e)
-                {
-                    std::cerr << "Failed To set subsystemId property"
-                              << "ERROR=" << e.what() << std::endl;
-                }
-                break;
             }
         }
     }
 }
 
+void Handler::setFruPresence(std::string adapterObjPath)
+{
+    pldm::utils::PropertyValue value = true;
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = adapterObjPath;
+    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
+    dbusMapping.propertyName = "Present";
+    dbusMapping.propertyType = "bool";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to set the present property"
+                  << "ERROR=" << e.what() << std::endl;
+    }
+}
 } // namespace oem_ibm_fru
 } // namespace responder
 } // namespace pldm
