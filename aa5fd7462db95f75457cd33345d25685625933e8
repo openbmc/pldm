@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "43d4ab37_89c6ea4e",
+        "filename": "fw-update/fw_inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-13T08:37:49Z",
+      "side": 1,
+      "message": "In PLDM we represent devices with TerminusID(tid) rite?\nBy using EIDs directly we are tightly coupling pldm to mctp.\nIt will be complex to extend pldm to other transports in future.\nPlease let me know your thoughts.",
+      "range": {
+        "startLine": 16,
+        "startChar": 66,
+        "endLine": 16,
+        "endChar": 70
+      },
+      "revId": "aa5fd7462db95f75457cd33345d25685625933e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
