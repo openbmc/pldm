@@ -5,6 +5,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/oem_handler.hpp"
+#include "utils.hpp"
 
 namespace pldm
 {
@@ -77,6 +78,12 @@ class Handler : public oem_fru::Handler
                             std::string revisionId, std::string classCode,
                             std::string subSystemVendorId,
                             std::string subSystemId);
+
+    /** @brief setting the present property
+     *
+     *  @param[in] objPath - the object path of the fru
+     */
+    void setFruPresence(std::string objPath);
 
     ~Handler() = default;
 
