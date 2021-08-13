@@ -3,6 +3,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/oem_handler.hpp"
+#include "utils.hpp"
 
 namespace pldm
 {
@@ -49,6 +50,7 @@ class Handler : public oem_fru::Handler
                             std::string subSystemVendorId,
                             std::string subSystemId);
 
+    void setFruPresence(std::string objPath);
     ~Handler() = default;
 
     /** @brief pointer to BMC's primary PDR repo */
