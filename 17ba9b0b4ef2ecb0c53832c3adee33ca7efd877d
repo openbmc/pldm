@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ded72b34_184ea047",
+        "filename": "fw-update/fw_package_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-13T07:27:46Z",
+      "side": 1,
+      "message": "this logic will not work for PLDM packages where they maintain some gap in between components.\nEg: Let us assume \npackage header size : 200 bytes\nsome gap 10 bytes\ncomponent 1 size 300 bytes(compLocOffset : 210)\nsome gap 10 bytes\ncomponent 2 size 400 bytes(compLocOffset : 520)\nsome gap 10 bytes\ncomponent 1 size 300 bytes(compLocOffset : 930)\nsome gap 10 bytes\nTotal package size 1240",
+      "range": {
+        "startLine": 215,
+        "startChar": 12,
+        "endLine": 215,
+        "endChar": 40
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02755ba1_3c1165dc",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-13T07:27:46Z",
+      "side": 1,
+      "message": "these arguments are not there for this method.",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 56
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8feeeb3c_078c1fa6",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-13T07:27:46Z",
+      "side": 1,
+      "message": "it looks it is not correct for this method",
+      "range": {
+        "startLine": 110,
+        "startChar": 5,
+        "endLine": 111,
+        "endChar": 60
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52c2eea5_af3b0289",
+        "filename": "fw-update/test/fw_package_parser_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-13T07:27:46Z",
+      "side": 1,
+      "message": "intentional?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
