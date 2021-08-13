@@ -35,6 +35,11 @@ int setupUnixSocket(const std::string& socketInterface);
  */
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
+/** @brief setting the present property
+ *
+ *  @param[in] objPath - the object path of the fru
+ */
+void setFruPresence(const std::string& objPath);
 
 } // namespace utils
 } // namespace responder

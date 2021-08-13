@@ -3,6 +3,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/oem_handler.hpp"
+#include "utils.hpp"
 
 #include <libpldm/oem/ibm/fru.h>
 
@@ -92,7 +93,6 @@ class Handler : public oem_fru::Handler
                          const std::string& propertyName,
                          const std::string& propValue);
 };
-
 } // namespace oem_ibm_fru
 } // namespace responder
 } // namespace pldm
