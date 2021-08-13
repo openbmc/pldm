@@ -139,6 +139,24 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
     return 0;
 }
 
+void setFruPresence(const std::string& fruObjPath)
+{
+    pldm::utils::PropertyValue value{true};
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = fruObjPath;
+    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
+    dbusMapping.propertyName = "Present";
+    dbusMapping.propertyType = "bool";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to set the present property: {ERROR} ", "ERROR", e);
+    }
+}
+
 } // namespace utils
 } // namespace responder
 } // namespace pldm

@@ -3,6 +3,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/oem_handler.hpp"
+#include "utils.hpp"
 
 #include <libpldm/oem/ibm/fru.h>
 
@@ -91,6 +92,7 @@ class Handler : public oem_fru::Handler
     void dbus_map_update(const std::string& adapterObjectPath,
                          const std::string& propertyName,
                          const std::string& propValue);
+
 };
 
 } // namespace oem_ibm_fru

@@ -115,6 +115,10 @@ void Handler::updateDBusProperty(
                 entityType == value.entity_type &&
                 containerId == value.entity_container_id)
             {
+                if (!(pldm::responder::utils::checkIfIBMFru(key)))
+                {
+                    setFruPresence(key);
+                }
                 dbus_map_update(key, "Function0VendorId", vendorId);
                 dbus_map_update(key, "Function0DeviceId", deviceId);
                 dbus_map_update(key, "Function0RevisionId", revisionId);
@@ -147,6 +151,7 @@ void Handler::dbus_map_update(const std::string& adapterObjPath,
               propertyName, "ERROR", e);
     }
 }
+
 } // namespace oem_ibm_fru
 } // namespace responder
 } // namespace pldm
