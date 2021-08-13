@@ -95,18 +95,22 @@ void Handler::updateDBusProperty(
                 entityType == value.entity_type &&
                 containerId == value.entity_container_id)
             {
-                dbus_map_update(key, "Function0VendorId", vendorId);
-                dbus_map_update(key, "Function0DeviceId", deviceId);
-                dbus_map_update(key, "Function0RevisionId", revisionId);
-                dbus_map_update(key, "Function0ClassCode", classCode);
-                dbus_map_update(key, "Function0SubsystemVendorId",
-                                subSystemVendorId);
-                dbus_map_update(key, "Function0SubsystemId", subSystemId);
+                if (!(pldm::responder::utils::checkIfIBMCableCard(key)))
+                {
+                    setFruPresence(key);
+
+                    dbus_map_update(key, "Function0VendorId", vendorId);
+                    dbus_map_update(key, "Function0DeviceId", deviceId);
+                    dbus_map_update(key, "Function0RevisionId", revisionId);
+                    dbus_map_update(key, "Function0ClassCode", classCode);
+                    dbus_map_update(key, "Function0SubsystemVendorId",
+                                    subSystemVendorId);
+                    dbus_map_update(key, "Function0SubsystemId", subSystemId);
+                }
             }
         }
     }
 }
-
 void Handler::dbus_map_update(const std::string& adapterObjPath,
                               const std::string& propertyName,
                               const std::string& propValue)
@@ -124,6 +128,25 @@ void Handler::dbus_map_update(const std::string& adapterObjPath,
     catch (const std::exception& e)
     {
         std::cerr << "Failed To set " << propertyName << "property"
+                  << "ERROR=" << e.what() << std::endl;
+    }
+}
+
+void Handler::setFruPresence(const std::string& adapterObjPath)
+{
+    pldm::utils::PropertyValue value{true};
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = adapterObjPath;
+    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
+    dbusMapping.propertyName = "Present";
+    dbusMapping.propertyType = "bool";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to set the present property"
                   << "ERROR=" << e.what() << std::endl;
     }
 }

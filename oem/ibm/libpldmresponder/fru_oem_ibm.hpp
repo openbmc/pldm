@@ -5,6 +5,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/oem_handler.hpp"
+#include "utils.hpp"
 
 namespace pldm
 {
@@ -93,6 +94,12 @@ class Handler : public oem_fru::Handler
     void dbus_map_update(const std::string& adapterObjectPath,
                          const std::string& propertyName,
                          const std::string& propValue);
+
+    /** @brief setting the present property
+     *
+     *  @param[in] objPath - the object path of the fru
+     */
+    void setFruPresence(const std::string& objPath);
 };
 
 } // namespace oem_ibm_fru
