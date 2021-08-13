@@ -810,5 +810,25 @@ bool checkIfLogicalBitSet(const uint16_t& containerId)
     return !(containerId & 0x8000);
 }
 
+void setFruPresence(const std::string& fruObjPath, bool present)
+{
+    pldm::utils::PropertyValue value{present};
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = fruObjPath;
+    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
+    dbusMapping.propertyName = "Present";
+    dbusMapping.propertyType = "bool";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to set the present property on path: '{PATH}' with {ERROR} ",
+            "PATH", fruObjPath, "ERROR", e);
+    }
+}
+
 } // namespace utils
 } // namespace pldm
