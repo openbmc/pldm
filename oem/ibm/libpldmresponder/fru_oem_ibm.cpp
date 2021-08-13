@@ -115,6 +115,10 @@ void Handler::updateDBusProperty(
                 entityType == value.entity_type &&
                 containerId == value.entity_container_id)
             {
+                if (!(pldm::responder::utils::checkIfIBMCableCard(key)))
+                {
+                    setFruPresence(key);
+                }
                 dbus_map_update(key, "Function0VendorId", vendorId);
                 dbus_map_update(key, "Function0DeviceId", deviceId);
                 dbus_map_update(key, "Function0RevisionId", revisionId);
@@ -126,7 +130,6 @@ void Handler::updateDBusProperty(
         }
     }
 }
-
 void Handler::dbus_map_update(const std::string& adapterObjPath,
                               const std::string& propertyName,
                               const std::string& propValue)
@@ -145,6 +148,25 @@ void Handler::dbus_map_update(const std::string& adapterObjPath,
     {
         error("Failed to set '{PROPERTY}' property: {ERROR}", "PROPERTY",
               propertyName, "ERROR", e);
+    }
+}
+
+void Handler::setFruPresence(const std::string& adapterObjPath)
+{
+    pldm::utils::PropertyValue value{true};
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = adapterObjPath;
+    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
+    dbusMapping.propertyName = "Present";
+    dbusMapping.propertyType = "bool";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to set the present property ERROR={ERR_EXCEP}",
+              "ERR_EXCEP", e.what());
     }
 }
 } // namespace oem_ibm_fru
