@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b541d61_1e833571",
+        "filename": "common/utils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "Please don\u0027t hide  time zone conversion in a utility.\n\nSurly there\u0027s a library for this.\n\nAhh yes, something like put_time or strftime or ...\n\nhttps://en.cppreference.com/w/cpp/io/manip/put_time\n\n\nPS: I thought all code has defaulted to GMT, with the possible exception of the gui (unknown).",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f263cedc_5e01f998",
+        "filename": "meson_options.txt",
+        "patchSetId": 16
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "size is usually in bytes, but this is a count of messages.  fightrecorder-entries? -max-entries?",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "221c3d2a_7a4bfc32",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "https://en.cppreference.com/w/cpp/utility/program/signal\n\nThe behavior is undefined if ...\n\nSignal handlers are hard becasue they are an interrupt and not part of the flow the complier is modeling.\n\nFor deferal to an event loop Linux added signalfd, which moves them to a pollable fd and delivered with read:\nhttps://man7.org/linux/man-pages/man2/signalfd.2.html",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4201ad9_3aecb78d",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "Can you provide a reference for set_floating ?  I wasn\u0027t finding it in a search.",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}

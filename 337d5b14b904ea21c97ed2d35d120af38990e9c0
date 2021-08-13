@@ -142,6 +142,24 @@
     },
     {
       "key": {
+        "uuid": "676880f7_7b7d1b55",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "I much prefer we keep it in /tmp, because it it tmpfs.\n\n1. If we run out of space a reboot of the bmc will recover.\n2. Most NOR based systems actually have more RAM that can be used by tmpfs than flash space dedicated to all writable persisten storage (often 4-8MB).\n3. If persistent storage is filled it may only be possible to recover with a factory reset wiping all data.",
+      "parentUuid": "392d80cb_98d43981",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cf417584_c3901bcf",
         "filename": "meson.build",
         "patchSetId": 10
@@ -171,6 +189,24 @@
       "side": 1,
       "message": "hmm with the current design mod 0 would be an exception,so it does not work but i could try to change this to have a disable option as well. Do you have an idea in mind that i could try and achieve the same with less number of ifdefs",
       "parentUuid": "cf417584_c3901bcf",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61cd881d_6ec1356e",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "you could have code that detects 0 explicitly, saving an additional prompt to the user.\nif that affects too many places you could make a derived bool from the config value.",
+      "parentUuid": "20551900_aca10b9f",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -247,6 +283,24 @@
     },
     {
       "key": {
+        "uuid": "3b2a2a4b_1ba9e6d5",
+        "filename": "meson_options.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "is there an inherent limit due to size of the message size field?  or is it 32 bits or more?",
+      "parentUuid": "d93b662c_374fea73",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "87e766e6_d9c3cc94",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 10
@@ -294,6 +348,24 @@
       "side": 1,
       "message": "\u003e What if a rogue entity keeps triggering this signal?\nI dont really have an answer for it , but i guess this can happen with anything in BMC, say for example i could relate this to a rouge process just doing a dbus method call to create eventlogs.\n\nDo you think we need a rate limit for this ? and stop reacting to the signal when we get X number of Signals within Y amount of time ?\n\nIf yes, i guess i could do that as well in a future commit.",
       "parentUuid": "edb3dc7d_7b81ea9c",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2e589d0_3062972e",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-13T16:35:14Z",
+      "side": 1,
+      "message": "I think the impact is limited as long as the result is written to the same file in tmpfs.",
+      "parentUuid": "033f5250_e0b9c00b",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
