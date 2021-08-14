@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "adecf12b_8bc5fa49",
+        "filename": "fw-update/fw_package_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-14T08:03:18Z",
+      "side": 1,
+      "message": "Why are the gaps maintained?",
+      "parentUuid": "ded72b34_184ea047",
+      "range": {
+        "startLine": 215,
+        "startChar": 12,
+        "endLine": 215,
+        "endChar": 40
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "02755ba1_3c1165dc",
         "filename": "fw-update/fw_package_parser.hpp",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2021-08-13T07:27:46Z",
       "side": 1,
       "message": "these arguments are not there for this method.",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 56
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "314957d4_c4fbd27a",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-14T08:03:18Z",
+      "side": 1,
+      "message": "will look and cleanup if needed.",
+      "parentUuid": "02755ba1_3c1165dc",
       "range": {
         "startLine": 106,
         "startChar": 4,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "cfe8aaa5_dd3b2a03",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-14T08:03:18Z",
+      "side": 1,
+      "message": "will look and cleanup if needed.",
+      "parentUuid": "8feeeb3c_078c1fa6",
+      "range": {
+        "startLine": 110,
+        "startChar": 5,
+        "endLine": 111,
+        "endChar": 60
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "52c2eea5_af3b0289",
         "filename": "fw-update/test/fw_package_parser_test.cpp",
         "patchSetId": 2
@@ -82,6 +154,30 @@
       "writtenOn": "2021-08-13T07:27:46Z",
       "side": 1,
       "message": "intentional?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b33bcfc6_72814b46",
+        "filename": "fw-update/test/fw_package_parser_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-14T08:03:18Z",
+      "side": 1,
+      "message": "nope, more tests to follow.",
+      "parentUuid": "52c2eea5_af3b0289",
       "range": {
         "startLine": 13,
         "startChar": 0,
