@@ -166,6 +166,30 @@
       "revId": "1bd60a336322c4016b8254e1f3bc9f10945f76bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d94b7629_54530a85",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-14T04:57:07Z",
+      "side": 1,
+      "message": "Created -\u003e https://github.com/openbmc/pldm/issues/25\n\nTested this change with visualize-pdr tool and it works great.",
+      "parentUuid": "a3371fc0_b08f9f20",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 14
+      },
+      "revId": "1bd60a336322c4016b8254e1f3bc9f10945f76bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
