@@ -22,6 +22,30 @@
       "revId": "aa5fd7462db95f75457cd33345d25685625933e8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5471e068_672f77d2",
+        "filename": "fw-update/fw_inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-14T10:57:07Z",
+      "side": 1,
+      "message": "Agree with the intent of the comment that PLDM should be using TID to identify FD\u0027s and transport mechanisms should be abstracted for PLDM. In a way the PLDM daemon is tied up with MCTP as transport mechanism as of now and EID\u0027s are spread across. I am thinking the appropriate time to introduce a transport abstraction layer(MCTP, RBT) will be when PLDM switches to a kernel MCTP stack.",
+      "parentUuid": "43d4ab37_89c6ea4e",
+      "range": {
+        "startLine": 16,
+        "startChar": 66,
+        "endLine": 16,
+        "endChar": 70
+      },
+      "revId": "aa5fd7462db95f75457cd33345d25685625933e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
