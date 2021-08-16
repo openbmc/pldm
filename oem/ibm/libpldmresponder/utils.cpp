@@ -167,6 +167,73 @@ bool checkIfIBMCableCard(const std::string& objPath)
     return false;
 }
 
+void findPortObjects(const std::string& cardObjPath,
+                     std::vector<std::string>& portObjects)
+{
+    static constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
+    static constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto portInterface =
+        "xyz.openbmc_project.Inventory.Item.Connector";
+
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto method = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
+                                          MAPPER_INTERFACE, "GetSubTreePaths");
+        method.append(cardObjPath);
+        method.append(0);
+        method.append(std::vector<std::string>({portInterface}));
+        auto reply = bus.call(method);
+        reply.read(portObjects);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "no ports under card " << cardObjPath << "\n";
+    }
+}
+
+bool checkFruPresence(const char* objPath)
+{
+    // if we enter here with port objects then we need to find the parent
+    // and see if the card is present. if so then the port is considered as
+    // present. this is so because the ports do not have "Present" property
+    std::string nvme("nvme");
+    std::string pcieAdapter("pcie_card");
+    std::string portStr("cxp_");
+    std::string newObjPath = objPath;
+    bool isPresent = true;
+    if (newObjPath.find(nvme) != std::string::npos)
+    {
+        return true;
+    }
+    else if ((newObjPath.find(pcieAdapter) != std::string::npos) &&
+             !checkIfIBMCableCard(newObjPath))
+    {
+        return true; // industry std cards
+    }
+    else if (newObjPath.find(portStr) != std::string::npos)
+    {
+        newObjPath = pldm::utils::findParent(objPath);
+    }
+
+    // Phyp expects the FRU records for nvme and industry std cards to be always
+    // built, irrespective of presence
+
+    static constexpr auto presentInterface =
+        "xyz.openbmc_project.Inventory.Item";
+    static constexpr auto presentProperty = "Present";
+    try
+    {
+        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            newObjPath.c_str(), presentProperty, presentInterface);
+        isPresent = std::get<bool>(propVal);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {}
+    return isPresent;
+}
+
 } // namespace utils
 } // namespace responder
 } // namespace pldm
