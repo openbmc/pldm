@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48ad26fb_103d95ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-16T15:37:29Z",
+      "side": 1,
+      "message": "looks we missed unit tests for this API",
+      "revId": "39557dd4eb3ccb38a371976b4fd2226456a1e2f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b6c3a85_f375f99b",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1664,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-16T15:37:29Z",
+      "side": 1,
+      "message": "It looks we are doing this check in decode_firmware_device_data_req() as well",
+      "range": {
+        "startLine": 1662,
+        "startChar": 1,
+        "endLine": 1664,
+        "endChar": 33
+      },
+      "revId": "39557dd4eb3ccb38a371976b4fd2226456a1e2f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
