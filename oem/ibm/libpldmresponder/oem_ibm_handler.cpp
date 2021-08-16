@@ -43,7 +43,7 @@ int pldm::responder::oem_ibm_platform::Handler::
 
 int pldm::responder::oem_ibm_platform::Handler::
     oemSetStateEffecterStatesHandler(
-        uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
+        uint16_t entityType, uint16_t /*entityInstance*/, uint16_t stateSetId,
         uint8_t compEffecterCnt,
         std::vector<set_effecter_state_field>& stateField,
         uint16_t /*effecterId*/)
@@ -55,13 +55,7 @@ int pldm::responder::oem_ibm_platform::Handler::
         if (stateField[currState].set_request == PLDM_REQUEST_SET)
         {
             if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
-                stateSetId == PLDM_OEM_IBM_BOOT_STATE)
-            {
-                rc = setBootSide(entityInstance, currState, stateField,
-                                 codeUpdate);
-            }
-            else if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
-                     stateSetId == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
+                stateSetId == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
             {
                 if (stateField[currState].effecter_state ==
                     uint8_t(CodeUpdateState::START))
@@ -194,8 +188,7 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
     possibleStates->possible_states_size = 2;
     auto state =
         reinterpret_cast<state_effecter_possible_states*>(possibleStates);
-    if ((stateSetID == PLDM_OEM_IBM_BOOT_STATE) ||
-        (stateSetID == PLDM_OEM_IBM_BOOT_SIDE_RENAME))
+    if (stateSetID == PLDM_OEM_IBM_BOOT_SIDE_RENAME)
         state->states[0].byte = 6;
     else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
         state->states[0].byte = 126;
@@ -245,8 +238,7 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
     possibleStates->possible_states_size = 2;
     auto state =
         reinterpret_cast<state_sensor_possible_states*>(possibleStates);
-    if ((stateSetID == PLDM_OEM_IBM_BOOT_STATE) ||
-        (stateSetID == oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE) ||
+    if ((stateSetID == oem_ibm_platform::PLDM_OEM_IBM_VERIFICATION_STATE) ||
         (stateSetID == PLDM_OEM_IBM_BOOT_SIDE_RENAME))
         state->states[0].byte = 6;
     else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
@@ -261,12 +253,6 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     pdr_utils::Repo& repo)
 {
     buildAllCodeUpdateEffecterPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                  ENTITY_INSTANCE_0, PLDM_OEM_IBM_BOOT_STATE,
-                                  repo);
-    buildAllCodeUpdateEffecterPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                  ENTITY_INSTANCE_1, PLDM_OEM_IBM_BOOT_STATE,
-                                  repo);
-    buildAllCodeUpdateEffecterPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                                   ENTITY_INSTANCE_0,
                                   PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
     buildAllCodeUpdateEffecterPDR(this, PLDM_ENTITY_SYSTEM_CHASSIS,
@@ -276,12 +262,6 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
                                   ENTITY_INSTANCE_0,
                                   PLDM_OEM_IBM_BOOT_SIDE_RENAME, repo);
 
-    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                ENTITY_INSTANCE_0, PLDM_OEM_IBM_BOOT_STATE,
-                                repo);
-    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                ENTITY_INSTANCE_1, PLDM_OEM_IBM_BOOT_STATE,
-                                repo);
     buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                                 ENTITY_INSTANCE_0,
                                 PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
