@@ -194,7 +194,7 @@ void CodeUpdate::setVersions()
         {
             pldm_boot_side_data pldmBootSideData;
             std::string nextBootSideBiosValue =
-                getBootSideBiosAttr("hb_fw_boot_side");
+                getBootSideBiosAttr("fw_boot_side");
             pldmBootSideData.current_boot_side = nextBootSideBiosValue;
             pldmBootSideData.next_boot_side = nextBootSideBiosValue;
             pldmBootSideData.running_version_object = runningVersion.c_str();
@@ -730,45 +730,10 @@ int CodeUpdate::assembleCodeUpdateImage()
     return PLDM_SUCCESS;
 }
 
-/*std::string getAttrValue()
+std::string getBootSideBiosAttr(const std::string& dbusAttrName)
 {
-    if (!dBusMap.has_value())
-    {
-        return stringInfo.defString;
-    }
-    try
-    {
-        return dbusHandler->getDbusProperty<std::string>(
-            dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
-            dBusMap->interface.c_str());
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Get String Attribute Value Error: AttributeName = "
-                  << name << std::endl;
-        return stringInfo.defString;
-    }
-}*/
-
-std::string getBootSideBiosAttr(const std::string& bootSide)
-{
-
-    /*static constexpr auto SYSTEMD_PROPERTY_INTERFACE =
-        "org.freedesktop.DBus.Properties";*/
-
-    std::string biosAttrStr = bootSide;
-
     constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
     constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
-    constexpr auto dbusAttrName = "hb_fw_boot_side";
-    constexpr auto dbusAttrType =
-        "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
-
-    using PendingAttributesType = std::vector<std::pair<
-        std::string, std::tuple<std::string, std::variant<std::string>>>>;
-    PendingAttributesType pendingAttributes;
-    pendingAttributes.emplace_back(std::make_pair(
-        dbusAttrName, std::make_tuple(dbusAttrType, biosAttrStr)));
 
     std::string var1;
     std::variant<std::string> var2;
@@ -777,26 +742,14 @@ std::string getBootSideBiosAttr(const std::string& bootSide)
     auto bus = sdbusplus::bus::new_default();
     try
     {
-        // std::variant<std::vector<std::string>> paths;
-        // auto paths {};
-        // using values = std::tuple<std::string, std::variant<std::string>,
-        // std::variant<std::string>>;
-        // values val;
         auto service = pldm::utils::DBusHandler().getService(biosConfigPath,
                                                              biosConfigIntf);
         auto method = bus.new_method_call(
             service.c_str(), biosConfigPath,
             "xyz.openbmc_project.BIOSConfig.Manager", "GetAttribute");
-        method.append(biosAttrStr);
-        // std::variant<PendingAttributesType>(pendingAttributes));
+        method.append(dbusAttrName);
         auto reply = bus.call(method);
-        // reply.read(std::get<0>(val), std::get<1>(val),std::get<2>(val)); // ,
-        // var2, var3);
         reply.read(var1, var2, var3);
-        // reply.read(var1, std::get<0>(var2), std::get<0>(var3));
-        // std::string attVal = std::get<1>(val).c_str();
-        std::cout << "NextBootSide = " << std::get<std::string>(var2)
-                  << std::endl;
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
@@ -818,7 +771,7 @@ void setBootSideBiosAttr(const std::string& bootSide)
 
     constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
     constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
-    constexpr auto dbusAttrName = "hb_fw_boot_side_current";
+    constexpr auto dbusAttrName = "fw_boot_side_current";
     constexpr auto dbusAttrType =
         "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
 

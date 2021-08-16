@@ -13,7 +13,7 @@
          "displayName" : "pvm_fw_boot_side"
       },
       {
-         "attribute_name":"hb_fw_boot_side",
+         "attribute_name":"fw_boot_side",
          "possible_values":[
             "Perm",
             "Temp"
@@ -21,11 +21,11 @@
          "default_values":[
             "Temp"
          ],
-         "helpText" : "Specifies the current boot side to the host, i.e. Temp or Perm. Host can query this attribute at anytime to know which side it is running on.",
+         "helpText" : "Specifies the next boot side to the host, i.e. Temp or Perm. Host can set/query this attribute at anytime to know which side it is running on.",
          "displayName" : "Current Firmware Boot Side (pending)"
       },
       {
-         "attribute_name":"hb_fw_boot_side_current",
+         "attribute_name":"fw_boot_side_current",
          "possible_values":[
             "Perm",
             "Temp"
@@ -33,9 +33,8 @@
          "default_values":[
             "Temp"
          ],
-         "helpText" : "Specifies the current boot side to the host, i.e. Temp or Perm. Host can query this attribute at anytime to know which side it is running on. Do not set this attribute directly; set hb_boot_side instead.",
-         "displayName" : "Current Firmware Boot Side (current)",
-         "readOnly":true
+         "helpText" : "Specifies the current boot side to the host, i.e. Temp or Perm. Host can query this attribute at anytime to know which side it is running on. This attribute is set by the BMC",
+         "displayName" : "Current Firmware Boot Side (current)"
       },
       {
          "attribute_name":"pvm_pcie_error_inject",

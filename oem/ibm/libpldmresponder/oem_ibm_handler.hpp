@@ -285,8 +285,6 @@ class Handler : public oem_platform::Handler
 int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
                    std::vector<uint8_t>& requestMsg, uint8_t instanceId);
 
-// void listenPendingBootSideAttribute();
-
 } // namespace oem_ibm_platform
 
 } // namespace responder
