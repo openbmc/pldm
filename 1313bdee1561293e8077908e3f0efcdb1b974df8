@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4cf3ac92_3aaf8480",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-08-16T17:35:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "929174a5_0c1c71ae",
+      "revId": "1313bdee1561293e8077908e3f0efcdb1b974df8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d3dbd540_767a7e46",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
         "patchSetId": 3
@@ -51,6 +69,24 @@
       "revId": "1313bdee1561293e8077908e3f0efcdb1b974df8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac5cc328_d36b3102",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-08-16T17:35:42Z",
+      "side": 1,
+      "message": "Yes, it makes sense to set the bios attribute inside processRenameEvent().",
+      "parentUuid": "f21de2ce_65955059",
+      "revId": "1313bdee1561293e8077908e3f0efcdb1b974df8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
