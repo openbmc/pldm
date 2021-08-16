@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "50c3dd84_627e9f6b",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-16T12:14:50Z",
+      "side": 1,
+      "message": "we are not validating this for the same reason like\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/44490/1/libpldm/firmware_update.c#1467",
+      "range": {
+        "startLine": 1097,
+        "startChar": 2,
+        "endLine": 1097,
+        "endChar": 16
+      },
+      "revId": "c9ea8995eca3635fcd38d0202be7aaea2fcddc15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
