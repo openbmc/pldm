@@ -4,6 +4,9 @@
 #include "libpldm/utils.h"
 
 #include "common/utils.hpp"
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/utils.hpp"
+#endif
 
 #include <systemd/sd-journal.h>
 
@@ -159,7 +162,11 @@ void FruImpl::buildFRUTable()
     for (const auto& object : objects)
     {
         const auto& interfaces = object.second;
-        auto isPresent = checkFruPresence(object.first.str.c_str());
+        bool isPresent = true;
+#ifdef OEM_IBM
+        isPresent =
+            pldm::responder::utils::checkFruPresence(object.first.str.c_str());
+#endif
         if (!isPresent)
         {
             continue;
@@ -207,7 +214,7 @@ void FruImpl::buildFRUTable()
 
     if (table.size())
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
 
         // Calculate the checksum
@@ -371,7 +378,7 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
                      // but eventually we need it because an add happened after
                      // a remove will cause two fru records for the same fan
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
@@ -452,7 +459,7 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
 
     if (table.size())
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
@@ -503,7 +510,7 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
         return PLDM_FRU_DATA_STRUCTURE_TABLE_UNAVAILABLE;
     }
 
-    auto pads = utils::getNumPadBytes(recordTableSize);
+    auto pads = pldm::utils::getNumPadBytes(recordTableSize);
     auto sum = crc32(fruData.data(), recordTableSize + pads);
 
     auto iter = fruData.begin() + recordTableSize + pads;
@@ -596,12 +603,36 @@ void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties,
         return;
     }
 
+    std::vector<std::string> portObjects;
+    static constexpr auto portInterface =
+        "xyz.openbmc_project.Inventory.Item.Connector";
+
+#ifdef OEM_IBM
+    if (fruInterface == "xyz.openbmc_project.Inventory.Item.PCIeDevice")
+    {
+        if (!pldm::responder::utils::checkIfIBMCableCard(fruObjPath))
+        {
+            return;
+        }
+        pldm::responder::utils::findPortObjects(fruObjPath, portObjects);
+    }
+    // as per current code the ports do not have Present property
+#endif
+
     if (newPropVal)
     {
         buildIndividualFRU(fruInterface, fruObjPath);
+        for (auto portObject : portObjects)
+        {
+            buildIndividualFRU(portInterface, portObject);
+        }
     }
     else
     {
+        for (auto portObject : portObjects)
+        {
+            removeIndividualFRU(portObject);
+        }
         removeIndividualFRU(fruObjPath);
     }
 }
