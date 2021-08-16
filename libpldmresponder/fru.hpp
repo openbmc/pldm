@@ -98,10 +98,14 @@ class FruImpl
             "xyz.openbmc_project.Inventory.Item.Fan";
         static constexpr auto psuInterface =
             "xyz.openbmc_project.Inventory.Item.PowerSupply";
+        static constexpr auto pcieAdapterInterface =
+            "xyz.openbmc_project.Inventory.Item.PCIeDevice";
         subscribeFruPresence(inventoryObjPath, fanInterface, itemInterface,
                              fanHotplugMatch);
         subscribeFruPresence(inventoryObjPath, psuInterface, itemInterface,
                              psuHotplugMatch);
+        subscribeFruPresence(inventoryObjPath, pcieAdapterInterface,
+                             itemInterface, pcieHotplugMatch);
     }
 
     /** @brief Total length of the FRU table in bytes, this excludes the pad
@@ -320,6 +324,7 @@ class FruImpl
      */
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> fanHotplugMatch;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> psuHotplugMatch;
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> pcieHotplugMatch;
     dbus::ObjectValueTree objects;
 };
 
