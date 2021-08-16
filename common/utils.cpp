@@ -518,24 +518,5 @@ std::string toString(const struct variable_field& var)
         str.begin(), str.end(), [](const char& c) { return !isprint(c); }, ' ');
     return str;
 }
-
-bool checkFruPresence(const char* objPath)
-{
-    bool isPresent = true;
-    static constexpr auto presentInterface =
-        "xyz.openbmc_project.Inventory.Item";
-    static constexpr auto presentProperty = "Present";
-
-    try
-    {
-        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
-            objPath, presentProperty, presentInterface);
-        isPresent = std::get<bool>(propVal);
-    }
-    catch (const sdbusplus::exception::SdBusError& e)
-    {}
-    return isPresent;
-}
-
 } // namespace utils
 } // namespace pldm
