@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eecebf1a_c20b81c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-16T15:45:55Z",
+      "side": 1,
+      "message": "missing unit tests?",
+      "revId": "fe92ac68087d859282d1bc6086e32b7b5b8cb7b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71d96b75_0a99cf9b",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1650,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-16T15:45:55Z",
+      "side": 1,
+      "message": "looks we are validating this twice.\nin encode_firmware_device_data_resp() as well?",
+      "range": {
+        "startLine": 1649,
+        "startChar": 3,
+        "endLine": 1650,
+        "endChar": 32
+      },
+      "revId": "fe92ac68087d859282d1bc6086e32b7b5b8cb7b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
