@@ -85,11 +85,13 @@ class FruImpl
         static constexpr auto itemInterface = "xyz.openbmc_project.Inventory.Item";
         static constexpr auto fanInterface = "xyz.openbmc_project.Inventory.Item.Fan";
         static constexpr auto psuInterface = "xyz.openbmc_project.Inventory.Item.PowerSupply";
+        static constexpr auto pcieAdapterInterface = "xyz.openbmc_project.Inventory.Item.PCIeDevice";
         subscribeFruPresence(inventoryObjPath, fanInterface,itemInterface, fanHotplugMatch);
         std::cout << "fanHotplugMatch.size " << fanHotplugMatch.size() << "\n";
         subscribeFruPresence(inventoryObjPath, psuInterface, itemInterface, psuHotplugMatch); 
         std::cout << "psuHotplugMatch.size " << psuHotplugMatch.size() << "\n";
-        //NEED TO SUBSCRIBE FOR PCIE ADAPTERS HERE
+        subscribeFruPresence(inventoryObjPath, pcieAdapterInterface,itemInterface, pcieHotplugMatch);
+        std::cout << "pcieHotplugMatch.size " << pcieHotplugMatch.size() << "\n";
         std::cout << "end constructor \n";
     }
 
@@ -237,6 +239,7 @@ class FruImpl
     dbus::AssociatedEntityMap associatedEntityMap;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> fanHotplugMatch;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> psuHotplugMatch;
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> pcieHotplugMatch;
     dbus::ObjectValueTree objects;
 };
 

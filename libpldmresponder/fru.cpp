@@ -4,6 +4,7 @@
 #include "libpldm/utils.h"
 
 #include "common/utils.hpp"
+#include "oem/ibm/libpldmresponder/utils.hpp"
 
 #include <systemd/sd-journal.h>
 
@@ -55,7 +56,10 @@ void FruImpl::buildFRUTable()
     {
         const auto& interfaces = object.second;
         std::cout << "\nobject.first " << object.first.str << "\n";
-        auto isPresent = checkFruPresence(object.first.str.c_str());
+        bool isPresent = true;
+#ifdef OEM_IBM //change to oem fru handler later
+         isPresent = pldm::responder::utils::checkFruPresence(object.first.str.c_str());
+#endif
         //may be a #ifder oem-ibm check here so that we build the pcie slot
         //and adpters and nvme slot fru records even if they are not present
         //because as per our agreemnet bmc is supposed to create empty
@@ -146,7 +150,7 @@ void FruImpl::buildFRUTable()
 
     if (table.size())
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
 
         // Calculate the checksum
@@ -345,7 +349,7 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
         //but eventually we need it because an add happened after a remove will
         //cause two fru records for the same fan
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
@@ -451,7 +455,7 @@ void FruImpl::buildIndividualFRU(/*const dbus::Interfaces& itemIntfsLookup,*/
 
     if (table.size()) //does it work? how does table change?? -- changes automatically in populateRecords
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
@@ -505,7 +509,7 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
         return PLDM_FRU_DATA_STRUCTURE_TABLE_UNAVAILABLE;
     }
 
-    auto pads = utils::getNumPadBytes(recordTableSize);
+    auto pads = pldm::utils::getNumPadBytes(recordTableSize);
     auto sum = crc32(fruData.data(), recordTableSize + pads);
 
     auto iter = fruData.begin() + recordTableSize + pads;
@@ -586,20 +590,51 @@ void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties, con
                    << " with the fru table \n";
         return;
     }
-    //#ifdef oem-ibm check here so that we do not build or remove industry
-    //std pcie cards
+
+std::vector<std::string> portObjects;
+static constexpr auto portInterface = "xyz.openbmc_project.Inventory.Item.Connector";
+
+#ifdef OEM_IBM //change this to use the oemfruhandler
+    if(fruInterface == "xyz.openbmc_project.Inventory.Item.PCIeDevice") //add this check in checkIfIBMCableCard
+    {
+        if(!pldm::responder::utils::checkIfIBMCableCard(fruObjPath))
+        {
+            std::cout << "\nentity association pdrs of industry std cards will not be modified \n";
+            return;
+        }
+    pldm::responder::utils::findPortObjects(fruObjPath,portObjects);
+    }
+    //use GetSubtreePaths here to find the two port object forthe
+    //card------------------ 
+    //as per current code the ports do not have Present property
+    //if an ibm cable card is added then call buildIndividualFRU for the card
+    //and then call buildIndividualFRU for the port(children of the card)
+    //if an ibm card is removed then first remove the port pdr and then the cable card
+    //pdr
+    //we need th eport objects also to be static like card objects because
+    //otherwise the LED json may not work
+#endif
 
     if(newPropVal)
     {
         std::cout << "handling add calling buildIndividualFRU\n";
         buildIndividualFRU(fruInterface,fruObjPath);
+        for(auto portObject : portObjects)
+        {
+            std::cout << "\nbuilding the ports \n";
+            buildIndividualFRU(portInterface,portObject);
+        }
     }
     else
     {
         std::cout << "\nhandle remove fru here \n";
+        for(auto portObject : portObjects)
+        {
+            std::cout << "\nremoving ports \n";
+            removeIndividualFRU(portObject);
+        }
         removeIndividualFRU(fruObjPath);
     }
-    //send PDR Repo change event from here 
     std::cout << "\n exit processFruPresenceChange \n";
 }
 

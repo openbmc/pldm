@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace pldm
 {
@@ -35,7 +36,11 @@ int setupUnixSocket(const std::string& socketInterface);
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
 
-bool checkIfIBMCableCard(const std::string& objPath);
+bool checkFruPresence(const char* objPath);
+
+bool checkIfIBMCableCard(const std::string& objPath); //check this to accept the fruInterface also. and compare the fruInterface with xyz.openbmc_project.Inventory.Item.PCIeDevice. if not return false
+
+void findPortObjects(const std::string& cardObjPath, std::vector<std::string>& portObjects);
 } // namespace utils
 } // namespace responder
 } // namespace pldm

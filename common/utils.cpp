@@ -518,9 +518,36 @@ std::string toString(const struct variable_field& var)
     return str;
 }
 
-bool checkFruPresence(const char* objPath)
+/*bool checkFruPresence(const char* objPath) //make this function as oem-ibm
 {
+    std::string nvme("nvme");
+    std::string pcieAdapter("pcie_cable_card");
+
+    //if we enter here with port objects then we need to find the parent
+    //and see if the card is present. if so then the port is considered as
+    //present. this is so because the ports do not have "Present" property
     bool isPresent = true;
+    std::string portStr("cxp_");
+    std::string newObjPath = objPath;
+    if(newObjPath.find(nvme) != std::string::npos)
+    {
+        std::cout << "nvme card return true\n";
+        return true;
+    }
+    else if((newObjPath.find(pcieAdapter)!= std::string::npos)&& !checkIfIBMCableCard(newObjPath))
+    {
+        std::cout << "return true for industry std cards \n";
+        return true;
+    }
+    else if(newObjPath.find(portStr) != std::string::npos)
+    {
+        newObjPath = findParent(objPath);
+    }
+    
+
+    //we need to return true for industry std pcie cards and nvme cards
+    //even if the Present is false
+
     static constexpr auto presentInterface =
         "xyz.openbmc_project.Inventory.Item";
     static constexpr auto presentProperty = "Present";      
@@ -528,7 +555,7 @@ bool checkFruPresence(const char* objPath)
     try
     {
         auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
-            objPath, presentProperty, presentInterface);
+            newObjPath.c_str(), presentProperty, presentInterface);
         isPresent = std::get<bool>(propVal);
         std::cout << "\nfound isPresent as " <<(uint32_t) isPresent;
     }
@@ -539,7 +566,7 @@ bool checkFruPresence(const char* objPath)
     std::cout << "\n returning isPresent as " << (uint32_t)isPresent 
               << " for object " << objPath << "\n";
     return isPresent;
-}
+}*/
 
 } // namespace utils
 } // namespace pldm

@@ -362,7 +362,7 @@ void printBuffer(const std::vector<uint8_t>& buffer, bool pldmVerbose);
  *  @return std::string equivalent of variable field
  */
 std::string toString(const struct variable_field& var);
-bool checkFruPresence(const char* objPath);
+//bool checkFruPresence(const char* objPath);
 
 } // namespace utils
 } // namespace pldm
