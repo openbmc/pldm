@@ -22,6 +22,30 @@
       "revId": "c9ea8995eca3635fcd38d0202be7aaea2fcddc15",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44c690c1_4bcfa9e9",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-16T12:16:03Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "50c3dd84_627e9f6b",
+      "range": {
+        "startLine": 1097,
+        "startChar": 2,
+        "endLine": 1097,
+        "endChar": 16
+      },
+      "revId": "c9ea8995eca3635fcd38d0202be7aaea2fcddc15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
