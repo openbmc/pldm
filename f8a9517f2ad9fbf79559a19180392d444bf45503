@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "95ae4360_d87a5143",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1576,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-16T15:59:06Z",
+      "side": 1,
+      "message": "nit: be consistent htole32()?",
+      "range": {
+        "startLine": 1576,
+        "startChar": 1,
+        "endLine": 1576,
+        "endChar": 8
+      },
+      "revId": "f8a9517f2ad9fbf79559a19180392d444bf45503",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f807cea0_976cc253",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1590,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-16T15:59:06Z",
+      "side": 1,
+      "message": "same here doing this check twice",
+      "range": {
+        "startLine": 1589,
+        "startChar": 3,
+        "endLine": 1590,
+        "endChar": 33
+      },
+      "revId": "f8a9517f2ad9fbf79559a19180392d444bf45503",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
