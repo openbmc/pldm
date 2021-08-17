@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "7f16d0c9_6a023542",
+        "filename": "fw-update/fw_package_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000928
+      },
+      "writtenOn": "2021-08-17T07:21:09Z",
+      "side": 1,
+      "message": "Can we assign this safely to size_t ?",
+      "range": {
+        "startLine": 62,
+        "startChar": 33,
+        "endLine": 62,
+        "endChar": 55
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ded72b34_184ea047",
         "filename": "fw-update/fw_package_parser.cpp",
         "patchSetId": 2
@@ -66,6 +89,52 @@
         "startChar": 12,
         "endLine": 215,
         "endChar": 40
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f837d1c_17068cd3",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000928
+      },
+      "writtenOn": "2021-08-17T07:21:09Z",
+      "side": 1,
+      "message": "Why are we not using typedefs defined in common/type.hpp in this file?\nExample. using ComponentBitmapBitLength \u003d uint16_t;",
+      "range": {
+        "startLine": 26,
+        "startChar": 27,
+        "endLine": 27,
+        "endChar": 60
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38d78266_9ed2250b",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000928
+      },
+      "writtenOn": "2021-08-17T07:21:09Z",
+      "side": 1,
+      "message": "Function also can be marked as const. right?",
+      "range": {
+        "startLine": 36,
+        "startChar": 55,
+        "endLine": 36,
+        "endChar": 57
       },
       "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
