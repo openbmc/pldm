@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "aea2f686_53f41258",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2021-08-17T15:54:18Z",
+      "side": 1,
+      "message": "drive by comment, why are we discussing PHYP at all? \nCan\u0027t this be any host? PHYP isn\u0027t a widely recognized acronym in openbmc. Can we just remove any reference to PHYP ?",
+      "parentUuid": "7e95070b_179787dd",
+      "range": {
+        "startLine": 26,
+        "startChar": 70,
+        "endLine": 26,
+        "endChar": 74
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "438cea7f_bcb1a5cc",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 29
