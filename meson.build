@@ -190,6 +190,8 @@ executable(
   'fw-update/fw_inventory_manager.cpp',
   'fw-update/fw_package_parser.cpp',
   'fw-update/fw_device_updater.cpp',
+  'fw-update/watch.cpp',
+  'fw-update/fw_update_manager.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
