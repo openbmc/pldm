@@ -7,7 +7,7 @@ meson build && ninja -C build
 Tests can be run in the CI docker container, or with an OpenBMC x86 sdk(see
 below for x86 steps).
 ```
-meson -Doe-sdk=enabled -Dtests=enabled build
+meson -Doe-sdk=enabled build
 ninja -C build test
 ```
 
