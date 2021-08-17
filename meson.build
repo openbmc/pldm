@@ -192,6 +192,7 @@ executable(
   'fw-update/fw_device_updater.cpp',
   'fw-update/watch.cpp',
   'fw-update/fw_update_manager.cpp',
+  'requester/mctp_endpoint_discovery.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
