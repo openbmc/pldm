@@ -16,6 +16,24 @@
       "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e869e491_6d3f1b3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-17T20:25:50Z",
+      "side": 1,
+      "message": "no worries.  I\u0027m just pointing it out so we can begin the process of having and supporting relocatable packages, which IMO is a normal and expected thing to have.",
+      "parentUuid": "eef71646_69b150fb",
+      "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
