@@ -250,16 +250,19 @@ int main(int argc, char** argv)
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
         bus, "/xyz/openbmc_project/pldm");
 
-    hostPDRHandler->setHostState();
-    if (hostPDRHandler->isHostUp())
+    if (hostPDRHandler)
     {
-        hostPDRHandler->getHostPDR();
-    }
-    else
-    {
-        if (verbose)
+        hostPDRHandler->setHostState();
+        if (hostPDRHandler->isHostUp())
         {
-            std::cout << "Host is not running\n";
+            hostPDRHandler->getHostPDR();
+        }
+        else
+        {
+            if (verbose)
+            {
+                std::cout << "Host is not running\n";
+            }
         }
     }
 #endif
