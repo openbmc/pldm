@@ -288,6 +288,30 @@
          ],
          "helpText" : "Specifies if the memory mirroring is enabled for the current IPL. Do not set this attribute directly; set hb_memory_mirror_mode instead.",
          "displayName" : "Memory Mirror Mode (current)"
+      },
+      {
+         "attribute_name":"hb_tpm_required",
+         "possible_values":[
+            "Required",
+            "Not Required"
+         ],
+         "default_values":[
+            "Required"
+         ],
+         "helpText" : "When the 'TPM Required Policy' is 'Required', a functional TPM is required to boot the system",
+         "displayName" : "TPM Required Policy (pending)"
+      },
+      {
+         "attribute_name":"hb_tpm_required_current",
+         "possible_values":[
+            "Required",
+            "Not Required"
+         ],
+         "default_values":[
+            "Required"
+         ],
+         "helpText" : "When the 'TPM Required Policy' is 'Required', a functional TPM is required to boot the system. Do not set this attribute directly; set hb_tpm_required instead.",
+         "displayName" : "TPM Required Policy (current)"
       }
    ]
 }
