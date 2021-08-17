@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d5324296_bc8c7453",
+        "filename": "fw-update/fw_package_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-17T04:49:56Z",
+      "side": 1,
+      "message": "There could be multiple reasons.\nOne of the reasons will be\nWe have many variable fields in the package which can be increased or decreased form version to version. Same for the component sizes as well they could increase or decrease from version to version.\nIrrespective of these to maintain constant package size(total package size) some buffer can be allowed in between.",
+      "parentUuid": "adecf12b_8bc5fa49",
+      "range": {
+        "startLine": 215,
+        "startChar": 12,
+        "endLine": 215,
+        "endChar": 40
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "02755ba1_3c1165dc",
         "filename": "fw-update/fw_package_parser.hpp",
         "patchSetId": 2
@@ -178,6 +202,30 @@
       "side": 1,
       "message": "nope, more tests to follow.",
       "parentUuid": "52c2eea5_af3b0289",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42648807_2a05e95e",
+        "filename": "fw-update/test/fw_package_parser_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000412
+      },
+      "writtenOn": "2021-08-17T04:49:56Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "b33bcfc6_72814b46",
       "range": {
         "startLine": 13,
         "startChar": 0,
