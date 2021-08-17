@@ -1,0 +1,216 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7e95070b_179787dd",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "PHYP to",
+      "range": {
+        "startLine": 26,
+        "startChar": 70,
+        "endLine": 26,
+        "endChar": 74
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "438cea7f_bcb1a5cc",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "false",
+      "range": {
+        "startLine": 30,
+        "startChar": 45,
+        "endLine": 30,
+        "endChar": 50
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee592260_9b0c6cf8",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "the asserted property",
+      "range": {
+        "startLine": 30,
+        "startChar": 64,
+        "endLine": 30,
+        "endChar": 72
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c82ad69_9c276a4f",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "wait for",
+      "range": {
+        "startLine": 31,
+        "startChar": 57,
+        "endLine": 31,
+        "endChar": 61
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4daabc9_fa702051",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "PHYP to",
+      "range": {
+        "startLine": 31,
+        "startChar": 26,
+        "endLine": 31,
+        "endChar": 30
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbb657bc_9c60693d",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "have braces around for operator precedence to be taken care",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 76
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ee6d1cd_9ce50f81",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "why not else if",
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69c5f091_8306746d",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "Just for more understanding. Why is the exception invalid_argument?",
+      "range": {
+        "startLine": 56,
+        "startChar": 37,
+        "endLine": 56,
+        "endChar": 64
+      },
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23242ac3_30d6d1b3",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "Some places std::cerr is used and some places throwing exception. Can we make it consistent?",
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56bd99da_86ee30b2",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000103
+      },
+      "writtenOn": "2021-08-17T15:42:32Z",
+      "side": 1,
+      "message": "return is missing",
+      "revId": "e4b6767999a5fa25cc4280dace5e0da8b0e24675",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
