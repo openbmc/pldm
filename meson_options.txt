@@ -18,3 +18,6 @@ option('number-of-request-retries', type: 'integer', min: 2, max: 30, descriptio
 option('instance-id-expiration-interval', type: 'integer', min: 5, max: 6, description: 'Instance ID expiration interval in seconds', value: 5)
 # Default response-time-out set to 2 seconds to facilitate a minimum retry of the request of 2.
 option('response-time-out', type: 'integer', min: 300, max: 4800, description: 'The amount of time a requester has to wait for a response message in milliseconds', value: 2000)
+
+# Firmware update configuration parameters
+option('maximum-transfer-size', type: 'integer', min: 16, max: 4294967295, description: 'Maximum size in bytes of the variable payload allowed to be requested by the FD, via RequestFirmwareData command', value: 4096)
