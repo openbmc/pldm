@@ -5,7 +5,6 @@
 
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
-#include "host-bmc/host_condition.hpp"
 #include "invoker.hpp"
 #include "requester/handler.hpp"
 #include "requester/request.hpp"
@@ -39,6 +38,7 @@
 #include "dbus_impl_pdr.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/dbus_to_host_effecters.hpp"
+#include "host-bmc/host_condition.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
@@ -169,14 +169,13 @@ int main(int argc, char** argv)
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
 
-    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
-
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(sockfd, event,
                                                       dbusImplReq);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
+    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
     std::unique_ptr<pldm_entity_association_tree,
@@ -250,6 +249,19 @@ int main(int argc, char** argv)
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
         bus, "/xyz/openbmc_project/pldm");
+
+    hostPDRHandler->setHostState();
+    if (hostPDRHandler->isHostUp())
+    {
+        hostPDRHandler->getHostPDR();
+    }
+    else
+    {
+        if (verbose)
+        {
+            std::cout << "Host is not running\n";
+        }
+    }
 #endif
 
     pldm::utils::CustomFD socketFd(sockfd);
@@ -372,18 +384,6 @@ int main(int argc, char** argv)
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
-    hostPDRHandler->setHostState();
-    if (hostPDRHandler->isHostUp())
-    {
-        hostPDRHandler->getHostPDR();
-    }
-    else
-    {
-        if (verbose)
-        {
-            std::cout << "Host is not running\n";
-        }
-    }
 
     event.loop();
 
