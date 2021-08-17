@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9da0d25e_47d4379b",
+        "filename": "fw-update/fw_package_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-17T10:23:16Z",
+      "side": 1,
+      "message": "yup, spec assigns 2 bytes for the header, we are going beyond that.",
+      "parentUuid": "7f16d0c9_6a023542",
+      "range": {
+        "startLine": 62,
+        "startChar": 33,
+        "endLine": 62,
+        "endChar": 55
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ded72b34_184ea047",
         "filename": "fw-update/fw_package_parser.cpp",
         "patchSetId": 2
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "5d3e4943_c5bdb73b",
+        "filename": "fw-update/fw_package_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-17T10:23:16Z",
+      "side": 1,
+      "message": "\u003e We have many variable fields in the package which can be increased or decreased form version to version. Same for the component sizes as well they could increase or decrease from version to version. Irrespective of these to maintain constant package size(total package size) some buffer can be allowed in between.\n\nWhat will be the merit to maintain a constant package size? If there is a new firmware image(component) in the package, the package needs to be rebuilt including the header because the size needs to be updated in the header. We can use tools like this to build packages(https://github.com/openbmc/pldm/tree/master/tools/fw-update).\n\nAtleast PLDM DSP0267 doesn\u0027t restrict putting buffers, but PLDM FW update package expects Comp1 followed by Comp2.. and so on.",
+      "parentUuid": "d5324296_bc8c7453",
+      "range": {
+        "startLine": 215,
+        "startChar": 12,
+        "endLine": 215,
+        "endChar": 40
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4f837d1c_17068cd3",
         "filename": "fw-update/fw_package_parser.hpp",
         "patchSetId": 2
@@ -119,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "c6c204be_52ccecf6",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-17T10:23:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4f837d1c_17068cd3",
+      "range": {
+        "startLine": 26,
+        "startChar": 27,
+        "endLine": 27,
+        "endChar": 60
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "38d78266_9ed2250b",
         "filename": "fw-update/fw_package_parser.hpp",
         "patchSetId": 2
@@ -139,6 +211,30 @@
       "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b65715c4_38651e32",
+        "filename": "fw-update/fw_package_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-17T10:23:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "38d78266_9ed2250b",
+      "range": {
+        "startLine": 36,
+        "startChar": 55,
+        "endLine": 36,
+        "endChar": 57
+      },
+      "revId": "17ba9b0b4ef2ecb0c53832c3adee33ca7efd877d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
