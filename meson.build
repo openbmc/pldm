@@ -189,6 +189,7 @@ executable(
   'host-bmc/host_condition.cpp',
   'fw-update/fw_inventory_manager.cpp',
   'fw-update/fw_package_parser.cpp',
+  'fw-update/fw_device_updater.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
