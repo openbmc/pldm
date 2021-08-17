@@ -2,6 +2,9 @@
 
 #include "libpldm/firmware_update.h"
 
+#include "activation.hpp"
+#include "update_manager.hpp"
+
 #include <functional>
 
 namespace pldm
@@ -569,6 +572,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     {
         std::cout << "Component apply complete, EID=" << unsigned(eid)
                   << ", COMPONENT_VERSION=" << compVersion << "\n";
+        updateManager->updateActivationProgress();
     }
     else
     {
@@ -664,6 +668,8 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                   << "\n";
         return;
     }
+
+    updateManager->updateDeviceCompletion(eid, true);
 }
 
 } // namespace fw_update
