@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eef71646_69b150fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-08-17T19:37:20Z",
+      "side": 1,
+      "message": "Yeah .. I guess I\u0027ve kept that the \"/var/lib/phosphor-software-manager/\" dir contains symlinks to the host data/binaries, and the \"/usr/local/share/\" dir contains patches, regardless of filesystem layout, so apps can code to those dirs without worrying that they\u0027d change, but perhaps they should be added via a pkg-config, need to see if that would cause any build dependencies or issues.",
+      "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
