@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a1be0f8_619b0581",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T18:19:36Z",
+      "side": 1,
+      "message": "I think this needs at least some discussion.\n\nhttps://discord.com/channels/775381525260664832/819741065531359263/877617016742215720",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "2d00eda8226c73d522b3abaa5a31e63870ca6cf8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c69ffde_081a2128",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T18:19:36Z",
+      "side": 1,
+      "message": "We should probably not eat exceptions like this.  What are you trying to accomplish by catching this exception?",
+      "range": {
+        "startLine": 534,
+        "startChar": 0,
+        "endLine": 535,
+        "endChar": 6
+      },
+      "revId": "2d00eda8226c73d522b3abaa5a31e63870ca6cf8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
