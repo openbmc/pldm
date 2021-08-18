@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d80209d5_f3e3b1f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T19:18:00Z",
+      "side": 1,
+      "message": "Why is that necessary?  Also \"CM\" is probably an IBMism that we should avoid.  Maybe \"firmware assisted hot-plug\" would be better (although that is a lot more typing :-(",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "4a9ff601d3df8cce8bc8978dc2143047d168d944",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edb46553_c4f53b60",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T19:18:00Z",
+      "side": 1,
+      "message": "This is an interface change on a shared library, correct?  Don\u0027t we need a version bump?\n\nhttps://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html\n\nIt looks to me like both libpldm and libpldmresponder are just using the version of the overall pldm (meson) project.  That probably isn\u0027t what we want, because for example if you bump the project version to deal with this interface change, you\u0027ll also be bumping the version of libpldmresponder for no reason.",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 56
+      },
+      "revId": "4a9ff601d3df8cce8bc8978dc2143047d168d944",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6680f6c_4d3995a6",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T19:18:00Z",
+      "side": 1,
+      "message": "I just searched DSP0248 and I couldn\u0027t find any references to remote or local pdrs, so I could make an attempt at understanding what the motivation is here.  Is there a different word that we could use?",
+      "range": {
+        "startLine": 206,
+        "startChar": 37,
+        "endLine": 206,
+        "endChar": 42
+      },
+      "revId": "4a9ff601d3df8cce8bc8978dc2143047d168d944",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
