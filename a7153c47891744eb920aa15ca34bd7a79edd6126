@@ -22,6 +22,23 @@
       "revId": "a7153c47891744eb920aa15ca34bd7a79edd6126",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "993aa714_d81eb9df",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-18T04:21:11Z",
+      "side": 1,
+      "message": "This code needs to go under the build flag. I have a related patch.\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/45949",
+      "revId": "a7153c47891744eb920aa15ca34bd7a79edd6126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
