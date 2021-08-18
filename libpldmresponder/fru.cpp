@@ -43,7 +43,7 @@ void FruImpl::buildFRUTable()
     catch (const std::exception& e)
     {
         std::cerr << "Look up of inventory objects failed and PLDM FRU table "
-                     "creation failed";
+                     "creation failed\n";
         return;
     }
 
