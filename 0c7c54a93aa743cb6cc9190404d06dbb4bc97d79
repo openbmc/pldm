@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7180615d_ec879f2c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T12:23:08Z",
+      "side": 1,
+      "message": "this will still segfault unless configured with -Doem-ibm (because host-eid is not set).",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 35
+      },
+      "revId": "0c7c54a93aa743cb6cc9190404d06dbb4bc97d79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
