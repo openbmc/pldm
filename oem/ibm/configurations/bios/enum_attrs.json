@@ -238,20 +238,8 @@
          "default_values":[
             "Disabled"
          ],
-         "helpText" : "Specifies if the power limit is enabled, requires a reboot for a change to be applied.",
-         "displayName" : "Power Limit Enable (pending)"
-      },
-      {
-         "attribute_name":"hb_power_limit_enable_current",
-         "possible_values":[
-            "Enabled",
-            "Disabled"
-         ],
-         "default_values":[
-            "Disabled"
-         ],
-         "helpText" : "Specifies if the power limit is enabled for the current IPL. Do not set this attribute directly; set hb_power_limit_enable instead.",
-         "displayName" : "Power Limit Enable (current)"
+         "helpText" : "Specifies whether the power limit is enabled.",
+         "displayName" : "Power Limit Enable"
       },
       {
          "attribute_name":"hb_secure_ver_lockin_enabled",
