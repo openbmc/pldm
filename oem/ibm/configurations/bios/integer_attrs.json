@@ -87,17 +87,8 @@
          "upper_bound" : 65535,
          "scalar_increment" : 1,
          "default_value" : 0,
-         "helpText" : "Specifies the power limit in watts, requires a reboot for a change to be applied.",
-         "displayName" : "Power Limit In Watts (pending)"
-      },
-      {
-         "attribute_name" : "hb_power_limit_in_watts_current",
-         "lower_bound" : 0,
-         "upper_bound" : 65535,
-         "scalar_increment" : 1,
-         "default_value" : 0,
-         "helpText" : "Specifies the power limit in watts for the current IPL. Do not set this attribute directly; set hb_power_limit_in_watts instead.",
-         "displayName" : "Power Limit In Watts (current)"
+         "helpText" : "Specifies the power limit in watts.",
+         "displayName" : "Power Limit In Watts"
       },
       {
          "attribute_name" : "hb_max_number_huge_pages",
