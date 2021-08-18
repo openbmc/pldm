@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8ff0270d_c0f071df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T13:13:40Z",
+      "side": 1,
+      "message": "actually I take it back - this is accurate.  the host eid is zero because I built without -Doem-ibm.  Is everyone happy with the commit message here?",
+      "parentUuid": "b3c447bf_36516b81",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 42
+      },
+      "revId": "a7153c47891744eb920aa15ca34bd7a79edd6126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "993aa714_d81eb9df",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 1
@@ -36,6 +60,24 @@
       "writtenOn": "2021-08-18T04:21:11Z",
       "side": 1,
       "message": "This code needs to go under the build flag. I have a related patch.\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/45949",
+      "revId": "a7153c47891744eb920aa15ca34bd7a79edd6126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a8727f9_13b3a0cc",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-18T13:13:40Z",
+      "side": 1,
+      "message": "that patch looks good - it still has the problem though.  I can rebase on top of yours.",
+      "parentUuid": "993aa714_d81eb9df",
       "revId": "a7153c47891744eb920aa15ca34bd7a79edd6126",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
