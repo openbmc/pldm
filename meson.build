@@ -73,7 +73,6 @@ sdeventplus = dependency(
   'sdeventplus',
   fallback: ['sdeventplus', 'sdeventplus_dep'],
 )
-systemd = dependency('systemd')
 
 cpp = meson.get_compiler('cpp')
 
@@ -197,27 +196,28 @@ executable(
   install: true,
   install_dir: get_option('bindir'))
 
-systemd_system_unit_dir = systemd.get_variable(
-        pkgconfig: 'systemdsystemunitdir',
-        pkgconfig_define: ['prefix', get_option('prefix')])
+if get_option('systemd').enabled()
+  systemd_system_unit_dir = dependency('systemd').get_variable(
+          pkgconfig: 'systemdsystemunitdir')
 
-configure_file(
-  copy: true,
-  input: 'pldmd/service_files/pldmd.service',
-  install: true,
-  install_dir: systemd_system_unit_dir,
-  output: 'pldmd.service',
-)
+  configure_file(
+    copy: true,
+    input: 'pldmd/service_files/pldmd.service',
+    install: true,
+    install_dir: systemd_system_unit_dir,
+    output: 'pldmd.service',
+  )
 
-configure_file(
-  input: 'pldmd/verbosity/verbosity',
-  output: 'pldm_verbosity',
-  configuration: conf_data,
-  install: true,
-  install_dir: join_paths(get_option('sysconfdir'), 'default'))
+  configure_file(
+    input: 'pldmd/verbosity/verbosity',
+    output: 'pldm_verbosity',
+    configuration: conf_data,
+    install: true,
+    install_dir: join_paths(get_option('sysconfdir'), 'default'))
 
-if get_option('oem-ibm').enabled()
-  subdir('oem/ibm/service_files')
+  if get_option('oem-ibm').enabled()
+    subdir('oem/ibm/service_files')
+  endif
 endif
 
 subdir('pldmtool')
