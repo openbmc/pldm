@@ -8,6 +8,8 @@
 #include "oem/ibm/oem_ibm_state_set.hpp"
 #endif
 
+using namespace pldm::utils;
+
 namespace pldmtool
 {
 

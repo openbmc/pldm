@@ -17,6 +17,8 @@
 namespace pldm
 {
 
+using namespace pldm::dbus_api;
+using namespace pldm::responder::events;
 using namespace pldm::utils;
 using namespace sdbusplus::bus::match::rules;
 using Json = nlohmann::json;

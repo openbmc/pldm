@@ -204,7 +204,6 @@ class Repo : public RepoInterface
     bool empty() override;
 };
 
-using namespace pldm::pdr;
 /** @brief Parse the State Sensor PDR and return the parsed sensor info which
  *         will be used to lookup the sensor info in the PlatformEventMessage
  *         command of sensorEvent type.
@@ -213,7 +212,8 @@ using namespace pldm::pdr;
  *
  *  @return terminus handle, sensor ID and parsed sensor info
  */
-std::tuple<TerminusHandle, SensorID, SensorInfo>
+std::tuple<pldm::pdr::TerminusHandle, pldm::pdr::SensorID,
+           pldm::pdr::SensorInfo>
     parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr);
 
 } // namespace pdr_utils

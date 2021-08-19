@@ -13,6 +13,8 @@
 #include <variant>
 #include <vector>
 
+using namespace pldm::utils;
+
 namespace pldm
 {
 
