@@ -92,6 +92,47 @@
       "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d698ab2d_6ca1e715",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-19T19:27:37Z",
+      "side": 1,
+      "message": "\u003e I think this has to be IBM_OEM\n\nAgreed, but this was broken before I touched it :-)\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/33750\n\nI might be willing to do some cleanup here but it isn\u0027t as simple as putting it behind oem-ibm, otherwise libpldmutils will not build without oem-ibm.  Do you have any suggestions on how it might be done?",
+      "parentUuid": "6ab46b04_41c1066c",
+      "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "349ffd94_5de10787",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-19T19:27:37Z",
+      "side": 1,
+      "message": "another one to fix.",
+      "range": {
+        "startLine": 218,
+        "startChar": 17,
+        "endLine": 218,
+        "endChar": 20
+      },
+      "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
