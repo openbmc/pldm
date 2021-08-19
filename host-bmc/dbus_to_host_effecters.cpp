@@ -10,6 +10,8 @@
 #include <fstream>
 #include <iostream>
 
+using namespace pldm::utils;
+
 namespace pldm
 {
 namespace host_effecters

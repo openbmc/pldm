@@ -7,8 +7,6 @@ namespace pldm
 namespace responder
 {
 
-using namespace pldm::responder::dma;
-
 /** @class PelHandler
  *
  *  @brief Inherits and implements FileHandler. This class is used

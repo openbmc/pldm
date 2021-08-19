@@ -15,6 +15,8 @@
 #include <fstream>
 namespace pldm
 {
+using namespace utils;
+
 namespace responder
 {
 using namespace oem_ibm_platform;

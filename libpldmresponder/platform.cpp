@@ -16,6 +16,10 @@
 #include "platform_state_effecter.hpp"
 #include "platform_state_sensor.hpp"
 
+using namespace pldm::utils;
+using namespace pldm::responder::pdr;
+using namespace pldm::responder::pdr_utils;
+
 namespace pldm
 {
 namespace responder
