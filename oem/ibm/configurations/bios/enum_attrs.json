@@ -90,6 +90,27 @@
             }
       },
       {
+         "attribute_name":"pvm_stop_at_standby_current",
+         "possible_values":[
+            "Disabled",
+            "Enabled",
+            "ManualOnly"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "Specifies the current hypervisor boot policy. Do not set this attribute directly; set pvm_stop_at_standby instead.",
+         "displayName" : "pvm_stop_at_standby_current (current)",
+         "dbus":
+            {
+               "object_path" : "/xyz/openbmc_project/control/host0/boot",
+               "interface" : "xyz.openbmc_project.Control.Boot.Mode",
+               "property_name" : "BootMode",
+               "property_type" : "string",
+               "property_values" : ["xyz.openbmc_project.Control.Boot.Mode.Modes.Regular", "xyz.openbmc_project.Control.Boot.Mode.Modes.Setup", "xyz.openbmc_project.Control.Boot.Mode.Modes.Safe"]
+            }
+      },
+      {
          "attribute_name":"hb_debug_console",
          "possible_values":[
             "Disabled",
@@ -152,6 +173,19 @@
          "displayName" : "CEC Primary OS"
       },
       {
+         "attribute_name":"pvm_default_os_type_current",
+         "possible_values":[
+            "AIX",
+            "Linux",
+            "IBM I"
+         ],
+         "default_values":[
+            "AIX"
+         ],
+         "helpText" : "Specifies the current CEC Primary OS type. Do not set this attribute directly; set pvm_default_os_type instead.",
+         "displayName" : "CEC Primary OS (current)"
+      },
+      {
          "attribute_name":"pvm_system_operating_mode",
          "possible_values":[
             "Normal",
@@ -180,6 +214,22 @@
          "displayName" : "AIX/Linux Partition Boot Mode"
       },
       {
+         "attribute_name":"pvm_rpa_boot_mode_current",
+         "possible_values":[
+            "Normal",
+            "SavedList",
+            "SmsMenu",
+            "OkPrompt",
+            "DefaultList",
+            "PblBootLid"
+         ],
+         "default_values":[
+            "Normal"
+         ],
+         "helpText" : "Specifies the current boot type for an AIX/Linux partition. Do not set this attribute directly; set pvm_rpa_boot_mode instead.",
+         "displayName" : "AIX/Linux Partition Boot Mode (current)"
+      },
+      {
          "attribute_name":"pvm_os_boot_type",
          "possible_values":[
             "A_Mode",
@@ -194,6 +244,20 @@
          "displayName" : "IBMi Partition Boot Mode"
       },
       {
+         "attribute_name":"pvm_os_boot_type_current",
+         "possible_values":[
+            "A_Mode",
+            "B_Mode",
+            "C_Mode",
+            "D_Mode"
+         ],
+         "default_values":[
+            "D_Mode"
+         ],
+         "helpText" : "Specifies the current IBMi partition boot mode for next system boot. Do not set this attribute directly; set pvm_os_boot_type instead.",
+         "displayName" : "IBMi Partition Boot Mode (current)"
+      },
+      {
          "attribute_name":"pvm_vtpm",
          "possible_values":[
             "Disabled",
@@ -204,6 +268,18 @@
          ],
          "helpText" : "Enabling vTPM makes a TPM available to the guest operating system.",
          "displayName" : "Virtual Trusted Platform Module"
+      },
+      {
+         "attribute_name":"pvm_vtpm_current",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "Specifies the current vTPM policy. Do not set this attribute directly; set pvm_vtpm instead.",
+         "displayName" : "Virtual Trusted Platform Module (current)"
       },
       {
          "attribute_name":"hb_memory_region_size",
