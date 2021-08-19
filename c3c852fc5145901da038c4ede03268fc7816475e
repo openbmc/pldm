@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "6bfbcff9_bf162f27",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-19T19:40:35Z",
+      "side": 1,
+      "message": "Marking as resolved.",
+      "parentUuid": "63f8b8c2_dceab941",
+      "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a95542a_d87e0dfd",
         "filename": "meson.build",
         "patchSetId": 1
@@ -75,6 +93,30 @@
       "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69578ffc_871cd57d",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-19T19:40:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a95542a_d87e0dfd",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 15
+      },
+      "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -133,6 +175,30 @@
       "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e83a75ca_fd862249",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-19T19:40:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "349ffd94_5de10787",
+      "range": {
+        "startLine": 218,
+        "startChar": 17,
+        "endLine": 218,
+        "endChar": 20
+      },
+      "revId": "c3c852fc5145901da038c4ede03268fc7816475e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
