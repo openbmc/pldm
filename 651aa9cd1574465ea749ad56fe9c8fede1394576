@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "099645b1_ec4038dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "Logically the patch for surveillance should come last in the chain.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 48
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db0eaf53_544e6248",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "This should probably go as the last parameter",
+      "range": {
+        "startLine": 28,
+        "startChar": 12,
+        "endLine": 28,
+        "endChar": 70
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85b1c965_e7f96f44",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "@brief",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 93,
+        "endChar": 10
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a9ce72b_ae23fa78",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "nit: \"watchDogRunning\" is descriptive enough.",
+      "range": {
+        "startLine": 72,
+        "startChar": 17,
+        "endLine": 72,
+        "endChar": 41
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e2c5779_4ad69e1a",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "Add doxygen",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 42
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5483d605_c09034aa",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "#ifdef is needed? oemPlatformHandler will be nullptr in the case of other machines?",
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc4089ef_c4abcc71",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "How is the watchdog enabled in the first place? How is the time configured for the watchdog?",
+      "range": {
+        "startLine": 495,
+        "startChar": 4,
+        "endLine": 495,
+        "endChar": 61
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43027f2d_7a389037",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:31:25Z",
+      "side": 1,
+      "message": "Should this go under OEM_IBM or you want to propose it as standard OEM?",
+      "range": {
+        "startLine": 249,
+        "startChar": 43,
+        "endLine": 249,
+        "endChar": 67
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
