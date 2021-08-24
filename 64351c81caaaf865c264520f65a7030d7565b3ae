@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea2765fd_62cba58b",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:36:33Z",
+      "side": 1,
+      "message": "Can we have better abstraction and not spill #ifdef all over the place.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 6
+      },
+      "revId": "64351c81caaaf865c264520f65a7030d7565b3ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5eeba4e9_1f3eada9",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:36:33Z",
+      "side": 1,
+      "message": "Why is this needed in this header?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 6
+      },
+      "revId": "64351c81caaaf865c264520f65a7030d7565b3ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a113bab_f7b4e43a",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:36:33Z",
+      "side": 1,
+      "message": "Please avoid magic numbers like this.",
+      "range": {
+        "startLine": 493,
+        "startChar": 40,
+        "endLine": 493,
+        "endChar": 44
+      },
+      "revId": "64351c81caaaf865c264520f65a7030d7565b3ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bbc5a1e_c1d0f4d6",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:36:33Z",
+      "side": 1,
+      "message": "\"\\n\"",
+      "range": {
+        "startLine": 571,
+        "startChar": 45,
+        "endLine": 571,
+        "endChar": 55
+      },
+      "revId": "64351c81caaaf865c264520f65a7030d7565b3ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75f78130_3ae7ad3f",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-08-24T05:36:33Z",
+      "side": 1,
+      "message": "doxygen?",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 32
+      },
+      "revId": "64351c81caaaf865c264520f65a7030d7565b3ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
