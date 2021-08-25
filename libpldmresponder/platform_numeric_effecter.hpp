@@ -55,8 +55,6 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
             value = rawValue;
             if (propertyType == "uint64_t")
             {
-                std::cerr << " Inside if when propertytype is uint64_t"
-                          << std::endl;
                 auto tempValue = std::get<uint8_t>(value);
                 value = static_cast<uint64_t>(tempValue);
             }
