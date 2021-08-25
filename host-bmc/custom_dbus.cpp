@@ -82,7 +82,20 @@ void CustomDBus::implementCpuCoreInterface(const std::string& path)
         cpuCore.emplace(
             path, std::make_unique<CoreIntf>(pldm::utils::DBusHandler::getBus(),
                                              path.c_str()));
+        implementObjectEnableIface(path);
     }
 }
+
+void CustomDBus::implementObjectEnableIface(const std::string& path)
+{
+    if (_enabledStatus.find(path) == _enabledStatus.end())
+    {
+        _enabledStatus.emplace(
+            path, std::make_unique<EnableIface>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+        _enabledStatus.at(path)->enabled(false);
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
