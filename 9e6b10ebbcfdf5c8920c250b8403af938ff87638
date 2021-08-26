@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "adcf9adb_8c8f4cac",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "this will crash for when running on a non oem machine,need to check for nullptr first before de referencing it.",
+      "range": {
+        "startLine": 626,
+        "startChar": 1,
+        "endLine": 629,
+        "endChar": 5
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a6e7084_43dd7325",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "this is not an OEM function ? why is it in non oem code ?",
+      "range": {
+        "startLine": 206,
+        "startChar": 20,
+        "endLine": 206,
+        "endChar": 43
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1556389_1af8b219",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "doxygen missing",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 2
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8f882c9_c1495b1e",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "range based for loop ?",
+      "range": {
+        "startLine": 26,
+        "startChar": 3,
+        "endLine": 26,
+        "endChar": 52
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ef694c9_6af00854",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "const reference ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 32,
+        "endLine": 64,
+        "endChar": 56
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dede778_fcf7d56e",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "duplicate variable.",
+      "range": {
+        "startLine": 84,
+        "startChar": 16,
+        "endLine": 84,
+        "endChar": 49
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af8db98a_44c76d72",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "cant setting happen in a single function, you just pass the dbusMapping to that function ? and also you can override the dbusMapping after you set the property , as it is not used again.rather than creating new variables for every mapping.",
+      "range": {
+        "startLine": 86,
+        "startChar": 16,
+        "endLine": 199,
+        "endChar": 22
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f61c07da_0f1ca504",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T03:40:10Z",
+      "side": 1,
+      "message": "all that changes in this file should be re-based on top of https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/44271/4",
+      "range": {
+        "startLine": 214,
+        "startChar": 4,
+        "endLine": 214,
+        "endChar": 19
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
