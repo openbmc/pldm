@@ -89,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "46df9784_508223cc",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-26T07:52:12Z",
+      "side": 1,
+      "message": "The text in the c++ standard says you can call exit, interact with atomics and constants but its undefined to do just about anything else using the standard library (unless the signal was sent by the thread itself from raise, which this is not -- its cross program signal delivery).\n\nThis is becasue a signal is basically an interrupt context and may arrive in the middle of statements when data structures are in an inconsistent state (internal state assumptions are not met as during the addition and deletion of modules).\n\nWhile it will appear to work, especially on a mostly idle interface where the request rate is low, we can expect random calls to abort(), infinite loops, address errors, and worse.\n\nMy suggestion is to move the signal to the eventloop by using a signalfd to convert the signal into a read on a (special) file descriptor.  This would not be as reliable",
+      "parentUuid": "d155dd35_15217916",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b4201ad9_3aecb78d",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 16
@@ -118,6 +136,24 @@
       "side": 1,
       "message": "i have took the reference from the sdeventplus repository https://github.com/openbmc/sdeventplus/blob/dce7381a71d1b62ed16f001a73824fd486243cf2/example/heartbeat.cpp",
       "parentUuid": "b4201ad9_3aecb78d",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f524f354_de8ac71b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-08-26T07:52:12Z",
+      "side": 1,
+      "message": "@patrick can you help? Google is finding that example and a method for setting the floating property for a lua window.",
+      "parentUuid": "95d2ade3_9f905221",
       "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
