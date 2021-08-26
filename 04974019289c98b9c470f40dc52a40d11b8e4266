@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a988719_16c7ba37",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-08-26T11:00:06Z",
+      "side": 1,
+      "message": "doxygen about the class",
+      "revId": "04974019289c98b9c470f40dc52a40d11b8e4266",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
