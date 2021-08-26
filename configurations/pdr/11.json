@@ -5,7 +5,7 @@
     "entries" : [{
         "type" : 45,
         "instance" : 1,
-        "container" : 0,
+        "container" : 1,
         "effecters" : [{
             "set" : {
                 "id" : 17,
@@ -1724,7 +1724,7 @@
     {
         "type" : 45,
         "instance" : 1,
-        "container" : 0,
+        "container" : 1,
         "effecters" : [{
             "set" : {
                 "id" : 10,
@@ -1911,9 +1911,7 @@
         }]
     },
     {
-       "type" : 45,
-       "instance" : 0,
-       "container" : 0,
+       "entity_path" : "/xyz/openbmc_project/inventory/system/chassis",
        "effecters" : [{
            "set" : {
                "id" : 260,
@@ -1934,7 +1932,7 @@
     {
         "type" : 31,
         "instance" : 0,
-        "container" : 0,
+        "container" : 1,
         "effecters" : [{
             "set" : {
                 "id" : 129,
@@ -1955,7 +1953,7 @@
      {
          "type" : 137,
          "instance" : 0,
-         "container" : 0,
+         "container" : 3,
          "effecters" : [{
              "set" : {
                  "id" : 2,
@@ -1979,6 +1977,7 @@
     "entries" : [{
         "type" : 193,
         "instance" : 0,
+        "container" : 1,
         "base_unit":72,
         "rate_unit":0,
         "effecter_resolutioninit":1,
@@ -1994,6 +1993,7 @@
     {
       "type": 31,
       "instance": 0,
+      "container" : 1,
       "base_unit": 21,
       "rate_unit": 0,
       "effecter_resolution_init": 1,
