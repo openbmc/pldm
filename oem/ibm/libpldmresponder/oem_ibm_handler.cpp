@@ -176,7 +176,7 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
     pdr->effecter_id = platformHandler->getNextEffecterId();
     pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
-    pdr->container_id = 0;
+    pdr->container_id = 1;
     pdr->effecter_semantic_id = 0;
     pdr->effecter_init = PLDM_NO_INIT;
     pdr->has_description_pdr = false;
@@ -227,7 +227,7 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
     pdr->sensor_id = platformHandler->getNextSensorId();
     pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
-    pdr->container_id = 0;
+    pdr->container_id = 1;
     pdr->sensor_init = PLDM_NO_INIT;
     pdr->sensor_auxiliary_names_pdr = false;
     pdr->composite_sensor_count = 1;
