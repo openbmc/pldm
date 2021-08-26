@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cbc37cd1_00e59512",
+        "filename": "common/utils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T05:34:58Z",
+      "side": 1,
+      "message": "Ack, i would modify that.",
+      "parentUuid": "4b541d61_1e833571",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f263cedc_5e01f998",
         "filename": "meson_options.txt",
         "patchSetId": 16
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "d155dd35_15217916",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T05:34:58Z",
+      "side": 1,
+      "message": "I am not sure i understand your point, can you explain a bit more ?",
+      "parentUuid": "221c3d2a_7a4bfc32",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b4201ad9_3aecb78d",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 16
@@ -64,6 +100,24 @@
       "writtenOn": "2021-08-13T16:35:14Z",
       "side": 1,
       "message": "Can you provide a reference for set_floating ?  I wasn\u0027t finding it in a search.",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95d2ade3_9f905221",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-26T05:34:58Z",
+      "side": 1,
+      "message": "i have took the reference from the sdeventplus repository https://github.com/openbmc/sdeventplus/blob/dce7381a71d1b62ed16f001a73824fd486243cf2/example/heartbeat.cpp",
+      "parentUuid": "b4201ad9_3aecb78d",
       "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
