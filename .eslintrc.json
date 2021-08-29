@@ -1,0 +1,5 @@
+// eslint configuration file that activates the json validation
+// with comments support in the json files
+{
+    "extends": ["plugin:json/recommended-with-comments"]
+}
