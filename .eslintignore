@@ -1,0 +1,4 @@
+/host-bmc/test/host_effecter_jsons/malformed/*
+/host-bmc/test/host_effecter_jsons/no_json/*
+/libpldmresponder/test/pdr_jsons/state_effecter/malformed/*
+/libpldmresponder/test/pdr_jsons/state_sensor/malformed/*
