@@ -5,7 +5,7 @@
             "entries": [
                 {
                     "entity_path": "/xyz/openbmc_project/foo",
-                    "type": 33
+                    "type": 33,
                     "instance": 0,
                     "container": 0,
                     "effecters": [
