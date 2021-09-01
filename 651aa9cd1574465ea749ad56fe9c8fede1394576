@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ab497f9f_6ab18033",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "yes, that\u0027s right. But since the watchdog part is more OEM we wanted it to come later in the chain. Will it be blocking? because If I have to change the order the rework would take lot of effort :)",
+      "parentUuid": "099645b1_ec4038dc",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 48
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "db0eaf53_544e6248",
         "filename": "libpldmresponder/base.hpp",
         "patchSetId": 23
@@ -45,6 +69,30 @@
       "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d71657b_6d539cc3",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db0eaf53_544e6248",
+      "range": {
+        "startLine": 28,
+        "startChar": 12,
+        "endLine": 28,
+        "endChar": 70
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "d2111009_50a6f495",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85b1c965_e7f96f44",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 93,
+        "endChar": 10
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6a9ce72b_ae23fa78",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 23
@@ -91,6 +163,30 @@
       "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91d7a988_ea622337",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a9ce72b_ae23fa78",
+      "range": {
+        "startLine": 72,
+        "startChar": 17,
+        "endLine": 72,
+        "endChar": 41
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "b8bdd5c4_cd3cabe6",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e2c5779_4ad69e1a",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 42
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5483d605_c09034aa",
         "filename": "libpldmresponder/platform.cpp",
         "patchSetId": 23
@@ -131,6 +251,24 @@
       "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edf39fa0_230e652a",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5483d605_c09034aa",
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -157,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "a174f5c2_c0a2a1f7",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "The watchdog app is started by systemd when host is powered on. The time is configured through the watchdog app.",
+      "parentUuid": "dc4089ef_c4abcc71",
+      "range": {
+        "startLine": 495,
+        "startChar": 4,
+        "endLine": 495,
+        "endChar": 61
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "43027f2d_7a389037",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 23
@@ -177,6 +339,30 @@
       "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "de4175fd_223db5b6",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-01T12:56:05Z",
+      "side": 1,
+      "message": "This is a standard OEM, for non IBM implementations this pointer would be a nullptr.",
+      "parentUuid": "43027f2d_7a389037",
+      "range": {
+        "startLine": 249,
+        "startChar": 43,
+        "endLine": 249,
+        "endChar": 67
+      },
+      "revId": "651aa9cd1574465ea749ad56fe9c8fede1394576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
