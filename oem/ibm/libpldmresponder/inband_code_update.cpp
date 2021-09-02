@@ -306,7 +306,7 @@ void CodeUpdate::setVersions()
                             break;
                         }
                     }
-                    catch (const sdbusplus::exception::SdBusError& e)
+                    catch (const sdbusplus::exception::exception& e)
                     {
                         std::cerr << "Error in getting Activation status \n";
                     }
