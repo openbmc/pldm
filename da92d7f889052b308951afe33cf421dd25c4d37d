@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "51379d8c_2e7fe3a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-02T16:25:53Z",
+      "side": 1,
+      "message": "could you also explain the purpose for better understanding?",
+      "revId": "da92d7f889052b308951afe33cf421dd25c4d37d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d563a407_20d3bd80",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-02T16:25:53Z",
+      "side": 1,
+      "message": "newRecordHandle?",
+      "revId": "da92d7f889052b308951afe33cf421dd25c4d37d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
