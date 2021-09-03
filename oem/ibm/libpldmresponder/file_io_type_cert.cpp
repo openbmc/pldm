@@ -68,6 +68,8 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
 int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
                       oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cout << "Read file response for Sign CSR, file handle: " << fileHandle
+              << std::endl;
     std::string filePath = certFilePath;
     filePath += "CSR_" + std::to_string(fileHandle);
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
@@ -86,6 +88,8 @@ int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
 int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                        oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cout << "Client certificate write, file handle: " << fileHandle
+              << std::endl;
     auto it = certMap.find(certType);
     if (it == certMap.end())
     {
@@ -157,6 +161,9 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                                           certEntryIntf, "Status", "string"};
             try
             {
+                std::cout
+                    << "Client cert write, status: complete. File handle: "
+                    << fileHandle << std::endl;
                 pldm::utils::DBusHandler().setDbusProperty(dbusMappingStatus,
                                                            valueStatus);
             }
@@ -177,6 +184,8 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                                     certEntryIntf, "Status", "string"};
             try
             {
+                std::cout << "Client cert write, status: Bad CSR. File handle: "
+                          << fileHandle << std::endl;
                 pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
             }
             catch (const std::exception& e)
@@ -207,6 +216,8 @@ int CertHandler::newFileAvailable(uint64_t length)
     }
     if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
     {
+        std::cout << "new file available client cert file, file handle: "
+                  << fileHandle << std::endl;
         fileFd = open(
             (filePath + "ClientCert_" + std::to_string(fileHandle)).c_str(),
             flags, S_IRUSR | S_IWUSR);
