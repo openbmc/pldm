@@ -2139,7 +2139,7 @@ TEST(TransferComplete, goodPathEncodeResponse)
     EXPECT_EQ(transferCompleteResponse1, outTransferCompleteResponse1);
 
     constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
-        outTransferCompleteResponse2{0x04, 0x05, 0x16, 0x87};
+        outTransferCompleteResponse2{0x04, 0x05, 0x16, 0x88};
     std::array<uint8_t, hdrSize + sizeof(completionCode)>
         transferCompleteResponse2{0x00, 0x00, 0x00, 0x00};
     auto responseMsg2 =
@@ -2220,7 +2220,7 @@ TEST(VerifyComplete, goodPathEncodeResponse)
     EXPECT_EQ(verifyCompleteResponse1, outVerifyCompleteResponse1);
 
     constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
-        outVerifyCompleteResponse2{0x05, 0x05, 0x17, 0x87};
+        outVerifyCompleteResponse2{0x05, 0x05, 0x17, 0x88};
     std::array<uint8_t, hdrSize + sizeof(completionCode)>
         verifyCompleteResponse2{0x00, 0x00, 0x00, 0x00};
     auto responseMsg2 =
@@ -2327,7 +2327,7 @@ TEST(ApplyComplete, goodPathEncodeResponse)
     EXPECT_EQ(applyCompleteResponse1, outApplyCompleteResponse1);
 
     constexpr std::array<uint8_t, hdrSize + sizeof(completionCode)>
-        outApplyCompleteResponse2{0x06, 0x05, 0x18, 0x87};
+        outApplyCompleteResponse2{0x06, 0x05, 0x18, 0x88};
     std::array<uint8_t, hdrSize + sizeof(completionCode)>
         applyCompleteResponse2{0x00, 0x00, 0x00, 0x00};
     auto responseMsg2 =
