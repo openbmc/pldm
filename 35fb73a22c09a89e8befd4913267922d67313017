@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "951d7272_96b57b55",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-07T07:47:00Z",
+      "side": 1,
+      "message": "please also update the pldmtool testing. and setting the effecter \u0026 changing the sensor state via sensor event.",
+      "range": {
+        "startLine": 15,
+        "startChar": 12,
+        "endLine": 15,
+        "endChar": 23
+      },
+      "revId": "35fb73a22c09a89e8befd4913267922d67313017",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
