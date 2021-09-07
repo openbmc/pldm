@@ -171,7 +171,7 @@ int main(int argc, char** argv)
 
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(sockfd, event,
-                                                      dbusImplReq);
+                                                      dbusImplReq, verbose);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
@@ -196,8 +196,7 @@ int main(int argc, char** argv)
     {
         hostPDRHandler = std::make_shared<HostPDRHandler>(
             sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), bmcEntityTree.get(), dbusImplReq, &reqHandler,
-            verbose);
+            entityTree.get(), bmcEntityTree.get(), dbusImplReq, &reqHandler);
         // HostFirmware interface needs access to hostPDR to know if host
         // is running
         dbusImplHost.setHostPdrObj(hostPDRHandler);
@@ -205,7 +204,7 @@ int main(int argc, char** argv)
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
-                HOST_JSONS_DIR, &reqHandler, verbose);
+                HOST_JSONS_DIR, &reqHandler);
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             sockfd, hostEID, dbusImplReq, &reqHandler);
     }
@@ -318,9 +317,9 @@ int main(int argc, char** argv)
             {
                 if (verbose)
                 {
-                    std::cout << "Received Msg" << std::endl;
-                    printBuffer(requestMsg, verbose);
+                    printBuffer(Rx, requestMsg);
                 }
+
                 if (MCTP_MSG_TYPE_PLDM != requestMsg[1])
                 {
                     // Skip this message and continue.
@@ -336,8 +335,7 @@ int main(int argc, char** argv)
                     {
                         if (verbose)
                         {
-                            std::cout << "Sending Msg" << std::endl;
-                            printBuffer(*response, verbose);
+                            printBuffer(Tx, *response);
                         }
 
                         iov[0].iov_base = &requestMsg[0];
