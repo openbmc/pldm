@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "86021515_7c363059",
+        "filename": ".eslintignore",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-08T11:36:57Z",
+      "side": 1,
+      "message": "To me, what you wrote is obvious.  But the _why_ isn\u0027t and isn\u0027t documented.\n\nHow about also adding:\n\n\"these are json files that are purposefully invalid in order to exercise test cases\"\n\nOr something along those lines?\n\nOtherwise the \"why aren\u0027t we formatting these\" isn\u0027t documented.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 41
+      },
+      "revId": "6afeb2a2aa2ca7a54af025bb55dc1ba81a2462dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17a29055_e6942770",
+        "filename": "libpldmresponder/examples/bios/enum_attrs.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-08T11:36:57Z",
+      "side": 1,
+      "message": "Does eslint have a way to limit line length?  Are we missing a setting for that?",
+      "revId": "6afeb2a2aa2ca7a54af025bb55dc1ba81a2462dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
