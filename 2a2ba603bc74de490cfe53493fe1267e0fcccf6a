@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c72f59c7_9a9ab805",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T16:30:11Z",
+      "side": 1,
+      "message": "Could you please remove the new types. It will be added once each feature is being enabled.",
+      "revId": "2a2ba603bc74de490cfe53493fe1267e0fcccf6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
