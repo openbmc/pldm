@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "c986dfc5_619c3f36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T17:42:11Z",
+      "side": 1,
+      "message": "Please use host instead of phyp",
+      "revId": "5213e4d2ff22090bbfda02e9141947d184e0bff9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e9988f4e_c4a7acce",
         "filename": "oem/ibm/libpldm/file_io.h",
         "patchSetId": 2
