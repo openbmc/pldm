@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "051a8934_1a5121cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T17:20:36Z",
+      "side": 1,
+      "message": "anew --\u003e a new",
+      "revId": "b576a93f0c25cf17e5c61f8fde9811aaf862d6af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "caabe97c_cddad017",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T17:20:36Z",
+      "side": 1,
+      "message": "Remove this",
+      "revId": "b576a93f0c25cf17e5c61f8fde9811aaf862d6af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2360bd0_aef1ff26",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T17:20:36Z",
+      "side": 1,
+      "message": "Remove this line",
+      "revId": "b576a93f0c25cf17e5c61f8fde9811aaf862d6af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db407958_9dcce034",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T17:20:36Z",
+      "side": 1,
+      "message": "Remove this line",
+      "revId": "b576a93f0c25cf17e5c61f8fde9811aaf862d6af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3661fc5b_f54fa64d",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T17:20:36Z",
+      "side": 1,
+      "message": "Remove this",
+      "revId": "b576a93f0c25cf17e5c61f8fde9811aaf862d6af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f660446_41708927",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-08T17:20:36Z",
+      "side": 1,
+      "message": "This function has only one argument.",
+      "revId": "b576a93f0c25cf17e5c61f8fde9811aaf862d6af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
