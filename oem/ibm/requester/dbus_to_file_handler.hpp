@@ -56,6 +56,12 @@ class DbusToFileHandler
     void newCsrFileAvailable(const std::string& csr,
                              const std::string fileHandle);
 
+    /** @brief Process the new license file available
+     *  @param[in] licenseStr - License string
+     *  @param[in] licenseName - License name
+     */
+    void newLicFileAvailable(const std::string& licenseStr);
+
   private:
     /** @brief Send the new file available command request to hypervisor
      *  @param[in] fileSize - size of the file

@@ -220,13 +220,48 @@ void DbusToFileHandler::newCsrFileAvailable(const std::string& csr,
                                PLDM_FILE_TYPE_CERT_SIGNING_REQUEST);
 }
 
+void DbusToFileHandler::newLicFileAvailable(const std::string& licenseStr)
+{
+    std::cerr << "new File available for license" << std::endl;
+    namespace fs = std::filesystem;
+    std::string dirPath = "/var/lib/ibm/cod";
+    const fs::path licDirPath = dirPath;
+
+    if (!fs::exists(licDirPath))
+    {
+        fs::create_directories(licDirPath);
+        fs::permissions(licDirPath,
+                        fs::perms::others_read | fs::perms::owner_write);
+    }
+
+    fs::path licFilePath = licDirPath / "licFile";
+    std::ofstream licFile;
+
+    licFile.open(licFilePath, std::ios::out | std::ofstream::binary);
+
+    if (!licFile)
+    {
+        std::cerr << "License file open error: " << licFilePath << "\n";
+        return;
+    }
+
+    // Add csr to file
+    licFile << licenseStr << std::endl;
+    std::cerr << "license string: " << licenseStr << std::endl;
+
+    licFile.close();
+    uint32_t fileSize = fs::file_size(licFilePath);
+
+    newFileAvailableSendToHost(fileSize, 0, PLDM_FILE_TYPE_LICENSE_COD);
+}
+
 void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
                                                    const uint32_t fileHandle,
                                                    const uint16_t type)
 {
     if (requester == NULL)
     {
-        std::cerr << "Failed to send csr to host.";
+        std::cerr << "Failed to send file to host.";
         pldm::utils::reportError(
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
         return;
@@ -250,14 +285,14 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
         if (response == nullptr || !respMsgLen)
         {
             std::cerr << "Failed to receive response for NewFileAvailable "
-                         "command for vmi \n";
+                         "command\n";
             return;
         }
         uint8_t completionCode{};
         auto rc = decode_new_file_resp(response, respMsgLen, &completionCode);
         if (rc || completionCode)
         {
-            std::cerr << "Failed to decode_new_file_resp for vmi, or"
+            std::cerr << "Failed to decode_new_file_resp for file, or"
                       << " Host returned error for new_file_available"
                       << " rc=" << rc
                       << ", cc=" << static_cast<unsigned>(completionCode)
@@ -271,8 +306,7 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
         std::move(requestMsg), std::move(newFileAvailableRespHandler));
     if (rc)
     {
-        std::cerr
-            << "Failed to send NewFileAvailable Request to Host for vmi \n";
+        std::cerr << "Failed to send NewFileAvailable Request to Host\n";
         pldm::utils::reportError(
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
     }
