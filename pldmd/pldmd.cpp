@@ -250,10 +250,6 @@ int main(int argc, char** argv)
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
         bus, "/xyz/openbmc_project/pldm");
 
-    if (hostPDRHandler)
-    {
-        hostPDRHandler->setHostFirmwareCondition();
-    }
 #endif
 
     pldm::utils::CustomFD socketFd(sockfd);
@@ -376,7 +372,12 @@ int main(int argc, char** argv)
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, socketFd(), EPOLLIN, std::move(callback));
-
+#ifdef LIBPLDMRESPONDER
+    if (hostPDRHandler)
+    {
+        hostPDRHandler->setHostFirmwareCondition();
+    }
+#endif
     event.loop();
 
     result = shutdown(sockfd, SHUT_RDWR);
