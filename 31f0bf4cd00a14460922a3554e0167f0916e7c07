@@ -22,6 +22,30 @@
       "revId": "31f0bf4cd00a14460922a3554e0167f0916e7c07",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a523f9e_c1f73ddb",
+        "filename": "tools/fw-update/metadata-example.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-09-08T09:59:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "295e0651_00a6cb77",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 40
+      },
+      "revId": "31f0bf4cd00a14460922a3554e0167f0916e7c07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
