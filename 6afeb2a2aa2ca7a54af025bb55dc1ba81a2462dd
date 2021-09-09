@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8b36d0af_8e61e97f",
+        "filename": ".eslintignore",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-09T05:49:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86021515_7c363059",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 41
+      },
+      "revId": "6afeb2a2aa2ca7a54af025bb55dc1ba81a2462dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "17a29055_e6942770",
         "filename": "libpldmresponder/examples/bios/enum_attrs.json",
         "patchSetId": 7
@@ -36,6 +60,24 @@
       "writtenOn": "2021-09-08T11:36:57Z",
       "side": 1,
       "message": "Does eslint have a way to limit line length?  Are we missing a setting for that?",
+      "revId": "6afeb2a2aa2ca7a54af025bb55dc1ba81a2462dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdecad71_f77ec642",
+        "filename": "libpldmresponder/examples/bios/enum_attrs.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-09T05:49:34Z",
+      "side": 1,
+      "message": "I don\u0027t see any rule for this. Below are the list of individual rules supported by the plugin.\n\njson/undefined\njson/enum-value-mismatch\njson/unexpected-end-of-comment\njson/unexpected-end-of-string\njson/unexpected-end-of-number\njson/invalid-unicode\njson/invalid-escape-character\njson/invalid-character\njson/property-expected\njson/comma-expected\njson/colon-expected\njson/value-expected\njson/comma-or-close-backet-expected\njson/comma-or-close-brace-expected\njson/trailing-comma\njson/duplicate-key\njson/comment-not-permitted\njson/schema-resolve-error\njson/unknown\n\nThese are the only rules that i see for json, that comes with the eslint-plugin-json.",
+      "parentUuid": "17a29055_e6942770",
       "revId": "6afeb2a2aa2ca7a54af025bb55dc1ba81a2462dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
