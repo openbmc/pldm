@@ -173,7 +173,7 @@ void FruImpl::populateRecords(
             try
             {
                 pldm::responder::dbus::Value propValue;
-                if (entity.entity_type == PLDM_ENTITY_SYSTEM_LOGICAL &&
+                if (entity.entity_type == PLDM_ENTITY_SYSTEM_CHASSIS_LOGICAL &&
                     prop == "Version")
                 {
                     propValue = populatefwVersion();

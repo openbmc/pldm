@@ -270,7 +270,8 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_INTERCONNECT, "Interconnect"},
         {PLDM_ENTITY_PLUG, "Plug"},
         {PLDM_ENTITY_SOCKET, "Socket"},
-        {PLDM_ENTITY_SYSTEM_LOGICAL, "System (Logical)"},
+
+
     };
 
     const std::map<uint16_t, std::string> stateSet = {
