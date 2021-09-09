@@ -508,6 +508,11 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                 }
             }
 
+            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
+            {
+                return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+            }
+
             changeRecordData +=
                 dataOffset + (numberOfChangeEntries * sizeof(ChangeEntry));
             changeRecordDataSize -=
