@@ -174,8 +174,10 @@ void FruImpl::populateRecords(
             try
             {
                 pldm::responder::dbus::Value propValue;
-                if (entity.entity_type == PLDM_ENTITY_SYSTEM_LOGICAL &&
-                    prop == "Version")
+
+                // Assuming that 0 container Id is assigned to the System (as
+                // that should be the top most container as per dbus hierarchy)
+                if (entity.entity_container_id == 0 && prop == "Version")
                 {
                     propValue = populatefwVersion();
                 }
