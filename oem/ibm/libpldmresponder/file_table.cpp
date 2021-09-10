@@ -24,8 +24,7 @@ FileTable::FileTable(const std::string& fileTableConfigPath)
     auto data = Json::parse(jsonFile, nullptr, false);
     if (data.is_discarded())
     {
-        std::cerr << "Parsing config file failed"
-                  << "\n";
+        std::cerr << "Parsing config file failed\n";
         return;
     }
 

@@ -145,8 +145,7 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
             }
             catch (const std::exception& e)
             {
-                std::cerr << "failed to set Client certificate, "
-                             "ERROR="
+                std::cerr << "failed to set Client certificate, ERROR="
                           << e.what() << "\n";
                 return PLDM_ERROR;
             }
@@ -163,8 +162,7 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
             catch (const std::exception& e)
             {
                 std::cerr
-                    << "failed to set status property of certicate entry, "
-                       "ERROR="
+                    << "failed to set status property of certicate entry, ERROR="
                     << e.what() << "\n";
                 return PLDM_ERROR;
             }
@@ -182,8 +180,7 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
             catch (const std::exception& e)
             {
                 std::cerr
-                    << "failed to set status property of certicate entry, "
-                       "ERROR="
+                    << "failed to set status property of certicate entry, ERROR="
                     << e.what() << "\n";
                 return PLDM_ERROR;
             }

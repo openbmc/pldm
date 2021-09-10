@@ -122,9 +122,9 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
             {
                 if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)
                 {
-                    std::cerr << "writeToUnixSocket: Write call failed with "
-                                 "EAGAIN or EWOULDBLOCK or EINTR"
-                              << std::endl;
+                    std::cerr
+                        << "writeToUnixSocket: Write call failed with EAGAIN or EWOULDBLOCK or EINTR"
+                        << std::endl;
                     nwrite = 0;
                     continue;
                 }

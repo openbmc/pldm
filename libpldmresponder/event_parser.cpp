@@ -69,8 +69,8 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
                 (supportedDbusPropertyTypes.find(dbusInfo.propertyType) ==
                  supportedDbusPropertyTypes.end()))
             {
-                std::cerr << "Invalid dbus config,"
-                          << " OBJPATH=" << dbusInfo.objectPath << " INTERFACE="
+                std::cerr << "Invalid dbus config, OBJPATH="
+                          << dbusInfo.objectPath << " INTERFACE="
                           << dbusInfo.interface << " PROPERTY_NAME="
                           << dbusInfo.propertyName
                           << " PROPERTY_TYPE=" << dbusInfo.propertyType << "\n";
@@ -82,10 +82,10 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
             if ((eventStates.size() == 0) || (propertyValues.size() == 0) ||
                 (eventStates.size() != propertyValues.size()))
             {
-                std::cerr << "Invalid event state JSON config,"
-                          << " EVENT_STATE_SIZE=" << eventStates.size()
-                          << " PROPERTY_VALUE_SIZE=" << propertyValues.size()
-                          << "\n";
+                std::cerr
+                    << "Invalid event state JSON config, EVENT_STATE_SIZE="
+                    << eventStates.size()
+                    << " PROPERTY_VALUE_SIZE=" << propertyValues.size() << "\n";
                 continue;
             }
 

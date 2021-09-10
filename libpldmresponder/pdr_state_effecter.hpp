@@ -41,10 +41,9 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             auto statesSize = set.value("size", 0);
             if (!statesSize)
             {
-                std::cerr << "Malformed PDR JSON return "
-                             "pdrEntry;- no state set "
-                             "info, TYPE="
-                          << PLDM_STATE_EFFECTER_PDR << "\n";
+                std::cerr
+                    << "Malformed PDR JSON return pdrEntry;- no state set info, TYPE="
+                    << PLDM_STATE_EFFECTER_PDR << "\n";
                 throw InternalFailure();
             }
             pdrSize += sizeof(state_effecter_possible_states) -

@@ -18,15 +18,15 @@ int main()
 
     if (softPower.isError())
     {
-        std::cerr << "Host failed to gracefully shutdown, exiting "
-                     "pldm-softpoweroff app\n";
+        std::cerr
+            << "Host failed to gracefully shutdown, exiting pldm-softpoweroff app\n";
         return -1;
     }
 
     if (softPower.isCompleted())
     {
-        std::cerr << "Host current state is not Running, exiting "
-                     "pldm-softpoweroff app\n";
+        std::cerr
+            << "Host current state is not Running, exiting pldm-softpoweroff app\n";
         return 0;
     }
 
@@ -34,8 +34,8 @@ int main()
     // wait the host gracefully shutdown.
     if (softPower.hostSoftOff(event))
     {
-        std::cerr << "pldm-softpoweroff:Failure in sending soft off request to "
-                     "the host. Exiting pldm-softpoweroff app\n";
+        std::cerr
+            << "pldm-softpoweroff:Failure in sending soft off request to the host. Exiting pldm-softpoweroff app\n";
 
         return -1;
     }
@@ -45,9 +45,7 @@ int main()
         pldm::utils::reportError(
             "pldm soft off: Waiting for the host soft off timeout");
         std::cerr
-            << "PLDM host soft off: ERROR! Wait for the host soft off timeout."
-            << "Exit the pldm-softpoweroff "
-            << "\n";
+            << "PLDM host soft off: ERROR! Wait for the host soft off timeout. Exit the pldm-softpoweroff\n";
         return -1;
     }
 

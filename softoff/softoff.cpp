@@ -55,8 +55,7 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
     rc = getSensorInfo();
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Message get Sensor PDRs error. PLDM "
-                     "error code = "
+        std::cerr << "Message get Sensor PDRs error. PLDM error code = "
                   << std::hex << std::showbase << rc << "\n";
         hasError = true;
         return;
@@ -194,8 +193,7 @@ int SoftPowerOff::getEffecterID()
         if (sysFwResponse.size() == 0)
         {
             std::cerr
-                << "No effecter ID has been found that matches the criteria"
-                << "\n";
+                << "No effecter ID has been found that matches the criteria\n";
             return PLDM_ERROR;
         }
 
@@ -245,8 +243,7 @@ int SoftPowerOff::getSensorInfo()
         if (Response.size() == 0)
         {
             std::cerr
-                << "No sensor PDR has been found that matches the criteria"
-                << "\n";
+                << "No sensor PDR has been found that matches the criteria\n";
             return PLDM_ERROR;
         }
 
@@ -342,8 +339,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     int fd = pldm_open();
     if (-1 == fd)
     {
-        std::cerr << "Failed to connect to mctp demux daemon"
-                  << "\n";
+        std::cerr << "Failed to connect to mctp demux daemon\n";
         return PLDM_ERROR;
     }
 
@@ -352,9 +348,9 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                                    Timer::TimePoint /*time*/) {
         if (!responseReceived)
         {
-            std::cerr << "PLDM soft off: ERROR! Can't get the response for the "
-                         "PLDM request msg. Time out!\n"
-                      << "Exit the pldm-softpoweroff\n";
+            std::cerr
+                << "PLDM soft off: ERROR! Can't get the response for the PLDM request msg. Time out!\n"
+                << "Exit the pldm-softpoweroff\n";
             exit(-1);
         }
         return;
@@ -406,9 +402,9 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         }
         else
         {
-            std::cerr << "Timer started waiting for host soft off, "
-                         "TIMEOUT_IN_SEC = "
-                      << SOFTOFF_TIMEOUT_SECONDS << "\n";
+            std::cerr
+                << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+                << SOFTOFF_TIMEOUT_SECONDS << "\n";
         }
         return;
     };

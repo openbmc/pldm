@@ -307,20 +307,21 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         }
         std::cout << tempStream.str() << std::endl;
     }
-    auto oemPlatformEventMessageResponseHandler =
-        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
-            uint8_t completionCode{};
-            uint8_t status{};
-            auto rc = decode_platform_event_message_resp(
-                response, respMsgLen, &completionCode, &status);
-            if (rc || completionCode)
-            {
-                std::cerr << "Failed to decode_platform_event_message_resp: "
-                          << " for code update event rc=" << rc
-                          << ", cc=" << static_cast<unsigned>(completionCode)
-                          << std::endl;
-            }
-        };
+    auto oemPlatformEventMessageResponseHandler = [](mctp_eid_t /*eid*/,
+                                                     const pldm_msg* response,
+                                                     size_t respMsgLen) {
+        uint8_t completionCode{};
+        uint8_t status{};
+        auto rc = decode_platform_event_message_resp(response, respMsgLen,
+                                                     &completionCode, &status);
+        if (rc || completionCode)
+        {
+            std::cerr
+                << "Failed to decode_platform_event_message_resp: for code update event rc="
+                << rc << ", cc=" << static_cast<unsigned>(completionCode)
+                << std::endl;
+        }
+    };
     auto rc = handler->registerRequest(
         mctp_eid, instanceId, PLDM_PLATFORM, PLDM_PLATFORM_EVENT_MESSAGE,
         std::move(requestMsg),
@@ -380,8 +381,7 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
     rc = sendEventToHost(requestMsg, instanceId);
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Failed to send event to host: "
-                  << "rc=" << rc << std::endl;
+        std::cerr << "Failed to send event to host: rc=" << rc << std::endl;
     }
     return;
 }
@@ -432,9 +432,9 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
     catch (const std::exception& e)
     {
 
-        std::cerr << "Chassis State transition to Off failed,"
-                  << "unable to set property RequestedPowerTransition"
-                  << "ERROR=" << e.what() << "\n";
+        std::cerr
+            << "Chassis State transition to Off failed, unable to set property RequestedPowerTransition, ERROR="
+            << e.what() << "\n";
     }
 
     using namespace sdbusplus::bus::match::rules;
@@ -459,17 +459,17 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                         "power_restore_policy/one_time",
                         "xyz.openbmc_project.Control.Power.RestorePolicy",
                         "PowerRestorePolicy", "string"};
-                    value = "xyz.openbmc_project.Control.Power.RestorePolicy."
-                            "Policy.AlwaysOn";
+                    value =
+                        "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn";
                     try
                     {
                         dBusIntf->setDbusProperty(dbusMapping, value);
                     }
                     catch (const std::exception& e)
                     {
-                        std::cerr << "Setting one-time restore policy failed,"
-                                  << "unable to set property PowerRestorePolicy"
-                                  << "ERROR=" << e.what() << "\n";
+                        std::cerr
+                            << "Setting one-time restore policy failed, unable to set property PowerRestorePolicy, ERROR="
+                            << e.what() << "\n";
                     }
                     dbusMapping = pldm::utils::DBusMapping{
                         "/xyz/openbmc_project/state/bmc0",
@@ -482,10 +482,9 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                     }
                     catch (const std::exception& e)
                     {
-                        std::cerr << "BMC state transition to reboot failed,"
-                                  << "unable to set property "
-                                     "RequestedBMCTransition"
-                                  << "ERROR=" << e.what() << "\n";
+                        std::cerr
+                            << "BMC state transition to reboot failed,unable to set property RequestedBMCTransition, ERROR="
+                            << e.what() << "\n";
                     }
                 }
             }

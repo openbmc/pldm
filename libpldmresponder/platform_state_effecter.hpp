@@ -73,9 +73,9 @@ int setStateEffecterStatesHandler(
             pdr->possible_states);
         if (compEffecterCnt > pdr->composite_effecter_count)
         {
-            std::cerr << "The requester sent wrong composite effecter"
-                      << " count for the effecter, EFFECTER_ID=" << effecterId
-                      << "COMP_EFF_CNT=" << compEffecterCnt << "\n";
+            std::cerr
+                << "The requester sent wrong composite effecter count for the effecter, EFFECTER_ID="
+                << effecterId << "COMP_EFF_CNT=" << compEffecterCnt << "\n";
             return PLDM_ERROR_INVALID_DATA;
         }
         break;

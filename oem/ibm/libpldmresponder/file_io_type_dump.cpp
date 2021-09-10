@@ -128,9 +128,9 @@ int DumpHandler::newFileAvailable(uint64_t length)
         }
         catch (const std::exception& e)
         {
-            std::cerr << "failed to make a d-bus call to DUMP manager to set "
-                         "resource dump SourceDumpId, ERROR="
-                      << e.what() << "\n";
+            std::cerr
+                << "failed to make a d-bus call to DUMP manager to set resource dump SourceDumpId, ERROR="
+                << e.what() << "\n";
         }
     }
 
@@ -191,8 +191,7 @@ int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address,
             sock = -errno;
             close(DumpHandler::fd);
             std::cerr
-                << "DumpHandler::writeFromMemory: setupUnixSocket() failed"
-                << std::endl;
+                << "DumpHandler::writeFromMemory: setupUnixSocket() failed\n";
             std::remove(socketInterface.c_str());
             return PLDM_ERROR;
         }
@@ -212,8 +211,7 @@ int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length,
         close(DumpHandler::fd);
         auto socketInterface = getOffloadUri(fileHandle);
         std::remove(socketInterface.c_str());
-        std::cerr << "DumpHandler::write: writeToUnixSocket() failed"
-                  << std::endl;
+        std::cerr << "DumpHandler::write: writeToUnixSocket() failed\n";
         return PLDM_ERROR;
     }
 
@@ -241,9 +239,9 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             }
             catch (const std::exception& e)
             {
-                std::cerr << "failed to make a d-bus call to DUMP "
-                             "manager, ERROR="
-                          << e.what() << "\n";
+                std::cerr
+                    << "failed to make a d-bus call to DUMP manager, ERROR="
+                    << e.what() << "\n";
             }
         }
 

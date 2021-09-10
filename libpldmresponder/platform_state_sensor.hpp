@@ -111,9 +111,9 @@ int getStateSensorReadingsHandler(
         compSensorCnt = pdr->composite_sensor_count;
         if (sensorRearmCnt > compSensorCnt)
         {
-            std::cerr << "The requester sent wrong sensorRearm"
-                      << " count for the sensor, SENSOR_ID=" << sensorId
-                      << "SENSOR_REARM_COUNT=" << sensorRearmCnt << "\n";
+            std::cerr
+                << "The requester sent wrong sensorRearm count for the sensor, SENSOR_ID="
+                << sensorId << "SENSOR_REARM_COUNT=" << sensorRearmCnt << "\n";
             return PLDM_PLATFORM_REARM_UNAVAILABLE_IN_PRESENT_STATE;
         }
 

@@ -71,8 +71,8 @@ class GetAlertStatus : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode << "\n";
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)completionCode << "\n";
             return;
         }
 
@@ -150,8 +150,8 @@ class GetFileTable : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << ", rc=" << rc << ", cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ", cc=" << (int)cc << std::endl;
             return;
         }
 

@@ -136,8 +136,8 @@ int CodeUpdate::setRequestedActivation()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed To set RequestedActivation property"
-                  << "ERROR=" << e.what() << std::endl;
+        std::cerr << "Failed To set RequestedActivation property, ERROR="
+                  << e.what() << std::endl;
         rc = PLDM_ERROR;
     }
     return rc;
@@ -182,9 +182,9 @@ void CodeUpdate::setVersions()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "failed to make a d-bus call to Object Mapper "
-                     "Association, ERROR="
-                  << e.what() << "\n";
+        std::cerr
+            << "failed to make a d-bus call to Object Mapper Association, ERROR="
+            << e.what() << "\n";
         return;
     }
 
@@ -222,8 +222,8 @@ void CodeUpdate::setVersions()
                         auto propVal = dBusIntf->getDbusPropertyVariant(
                             imageObjPath, "Activation", imageInterface);
                         const auto& imageProp = std::get<std::string>(propVal);
-                        if (imageProp == "xyz.openbmc_project.Software."
-                                         "Activation.Activations.Ready" &&
+                        if (imageProp ==
+                                "xyz.openbmc_project.Software.Activation.Activations.Ready" &&
                             isCodeUpdateInProgress())
                         {
                             newImageId = path.str;
@@ -232,9 +232,9 @@ void CodeUpdate::setVersions()
                                 imageActivationMatch = std::make_unique<
                                     sdbusplus::bus::match::match>(
                                     pldm::utils::DBusHandler::getBus(),
-                                    propertiesChanged(newImageId,
-                                                      "xyz.openbmc_project."
-                                                      "Software.Activation"),
+                                    propertiesChanged(
+                                        newImageId,
+                                        "xyz.openbmc_project.Software.Activation"),
                                     [this](sdbusplus::message::message& msg) {
                                         DbusChangedProps props;
                                         std::string iface;
@@ -247,8 +247,7 @@ void CodeUpdate::setVersions()
                                             auto propVal =
                                                 std::get<std::string>(value);
                                             if (propVal ==
-                                                "xyz.openbmc_project.Software."
-                                                "Activation.Activations.Active")
+                                                "xyz.openbmc_project.Software.Activation.Activations.Active")
                                             {
                                                 CodeUpdateState state =
                                                     CodeUpdateState::END;
@@ -263,16 +262,11 @@ void CodeUpdate::setVersions()
                                                                 START));
                                                 newImageId.clear();
                                             }
-                                            else if (propVal ==
-                                                         "xyz.openbmc_project."
-                                                         "Software.Activation."
-                                                         "Activations.Failed" ||
-                                                     propVal ==
-                                                         "xyz.openbmc_"
-                                                         "project.Software."
-                                                         "Activation."
-                                                         "Activations."
-                                                         "Invalid")
+                                            else if (
+                                                propVal ==
+                                                    "xyz.openbmc_project.Software.Activation.Activations.Failed" ||
+                                                propVal ==
+                                                    "xyz.openbmc_project.Software.Activation.Activations.Invalid")
                                             {
                                                 CodeUpdateState state =
                                                     CodeUpdateState::FAIL;

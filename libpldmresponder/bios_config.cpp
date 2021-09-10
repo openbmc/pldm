@@ -137,8 +137,7 @@ int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table,
 
     if ((tableType == PLDM_BIOS_ATTR_VAL_TABLE) && updateBaseBIOSTable)
     {
-        std::cout << "setBIOSTable:: updateBaseBIOSTableProperty() "
-                  << "\n";
+        std::cout << "setBIOSTable:: updateBaseBIOSTableProperty()\n";
         updateBaseBIOSTableProperty();
     }
 
@@ -300,8 +299,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                                        buffer.data() + strLength);
                 };
 
-                attributeType = "xyz.openbmc_project.BIOSConfig.Manager."
-                                "AttributeType.Enumeration";
+                attributeType =
+                    "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
 
                 auto pvNum =
                     pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry);
@@ -312,10 +311,9 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 // get possible_value
                 for (size_t i = 0; i < pvHandls.size(); i++)
                 {
-                    options.push_back(
-                        std::make_tuple("xyz.openbmc_project.BIOSConfig."
-                                        "Manager.BoundType.OneOf",
-                                        getValue(pvHandls[i], *stringTable)));
+                    options.push_back(std::make_tuple(
+                        "xyz.openbmc_project.BIOSConfig.Manager.BoundType.OneOf",
+                        getValue(pvHandls[i], *stringTable)));
                 }
 
                 auto count =
@@ -349,8 +347,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
             case PLDM_BIOS_INTEGER:
             case PLDM_BIOS_INTEGER_READ_ONLY:
             {
-                attributeType = "xyz.openbmc_project.BIOSConfig.Manager."
-                                "AttributeType.Integer";
+                attributeType =
+                    "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Integer";
                 currentValue = static_cast<int64_t>(
                     pldm_bios_table_attr_value_entry_integer_decode_cv(
                         tableEntry));
@@ -359,26 +357,23 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 uint32_t scalar;
                 pldm_bios_table_attr_entry_integer_decode(
                     attrEntry, &lower, &upper, &scalar, &def);
-                options.push_back(
-                    std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
-                                    "BoundType.LowerBound",
-                                    static_cast<int64_t>(lower)));
-                options.push_back(
-                    std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
-                                    "BoundType.UpperBound",
-                                    static_cast<int64_t>(upper)));
-                options.push_back(
-                    std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
-                                    "BoundType.ScalarIncrement",
-                                    static_cast<int64_t>(scalar)));
+                options.push_back(std::make_tuple(
+                    "xyz.openbmc_project.BIOSConfig.Manager.BoundType.LowerBound",
+                    static_cast<int64_t>(lower)));
+                options.push_back(std::make_tuple(
+                    "xyz.openbmc_project.BIOSConfig.Manager.BoundType.UpperBound",
+                    static_cast<int64_t>(upper)));
+                options.push_back(std::make_tuple(
+                    "xyz.openbmc_project.BIOSConfig.Manager.BoundType.ScalarIncrement",
+                    static_cast<int64_t>(scalar)));
                 defaultValue = static_cast<int64_t>(def);
                 break;
             }
             case PLDM_BIOS_STRING:
             case PLDM_BIOS_STRING_READ_ONLY:
             {
-                attributeType = "xyz.openbmc_project.BIOSConfig.Manager."
-                                "AttributeType.String";
+                attributeType =
+                    "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.String";
                 variable_field currentString;
                 pldm_bios_table_attr_value_entry_string_decode_string(
                     tableEntry, &currentString);
@@ -395,22 +390,20 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 std::vector<char> defString(def + 1);
                 pldm_bios_table_attr_entry_string_decode_def_string(
                     attrEntry, defString.data(), defString.size());
-                options.push_back(
-                    std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
-                                    "BoundType.MinStringLength",
-                                    static_cast<int64_t>(min)));
-                options.push_back(
-                    std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
-                                    "BoundType.MaxStringLength",
-                                    static_cast<int64_t>(max)));
+                options.push_back(std::make_tuple(
+                    "xyz.openbmc_project.BIOSConfig.Manager.BoundType.MinStringLength",
+                    static_cast<int64_t>(min)));
+                options.push_back(std::make_tuple(
+                    "xyz.openbmc_project.BIOSConfig.Manager.BoundType.MaxStringLength",
+                    static_cast<int64_t>(max)));
                 defaultValue = defString.data();
                 break;
             }
             case PLDM_BIOS_PASSWORD:
             case PLDM_BIOS_PASSWORD_READ_ONLY:
             {
-                attributeType = "xyz.openbmc_project.BIOSConfig.Manager."
-                                "AttributeType.Password";
+                attributeType =
+                    "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Password";
                 break;
             }
             default:
@@ -834,9 +827,9 @@ void BIOSConfig::processBiosAttrChangeNotification(
         newValue, attrHdl, attrType, newPropVal);
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Could not update the attribute value table for attribute "
-                     "handle="
-                  << attrHdl << " and type=" << (uint32_t)attrType << "\n";
+        std::cerr
+            << "Could not update the attribute value table for attribute handle="
+            << attrHdl << " and type=" << (uint32_t)attrType << "\n";
         return;
     }
     auto destTable = table::attribute_value::updateTable(

@@ -180,9 +180,9 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         }
         if (rc != static_cast<int>(length))
         {
-            std::cerr << "mismatch between number of characters to read and "
-                      << "the length read, LENGTH=" << length << " COUNT=" << rc
-                      << "\n";
+            std::cerr
+                << "mismatch between number of characters to read and the length read, LENGTH="
+                << length << " COUNT=" << rc << "\n";
             return -1;
         }
         memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),

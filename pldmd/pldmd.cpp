@@ -324,8 +324,7 @@ int main(int argc, char** argv)
                 if (MCTP_MSG_TYPE_PLDM != requestMsg[1])
                 {
                     // Skip this message and continue.
-                    std::cerr << "Encountered Non-PLDM type message"
-                              << "\n";
+                    std::cerr << "Encountered Non-PLDM type message\n";
                 }
                 else
                 {

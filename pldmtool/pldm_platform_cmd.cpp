@@ -71,15 +71,13 @@ class GetPDR : public CommandInterface
         pdrOptionGroup->add_option(
             "-d,--data", recordHandle,
             "retrieve individual PDRs from a PDR Repository\n"
-            "eg: The recordHandle value for the PDR to be retrieved and 0 "
-            "means get first PDR in the repository.");
+            "eg: The recordHandle value for the PDR to be retrieved and 0 means get first PDR in the repository.");
         pdrRecType = "";
-        pdrOptionGroup->add_option("-t, --type", pdrRecType,
-                                   "retrieve all PDRs of the requested type\n"
-                                   "supported types:\n"
-                                   "[terminusLocator, stateSensor, "
-                                   "numericEffecter, stateEffecter, "
-                                   "EntityAssociation, fruRecord, ... ]");
+        pdrOptionGroup->add_option(
+            "-t, --type", pdrRecType,
+            "retrieve all PDRs of the requested type\n"
+            "supported types:\n"
+            "[terminusLocator, stateSensor, numericEffecter, stateEffecter, EntityAssociation, fruRecord, ... ]");
         allPDRs = false;
         pdrOptionGroup->add_flag("-a, --all", allPDRs,
                                  "retrieve all PDRs from a PDR repository");
@@ -147,9 +145,8 @@ class GetPDR : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             return;
         }
 
@@ -677,7 +674,7 @@ class GetPDR : public CommandInterface
             reinterpret_cast<pldm_pdr_fru_record_set*>(data);
         if (!pdr)
         {
-            std::cerr << "Failed to get the FRU record set PDR" << std::endl;
+            std::cerr << "Failed to get the FRU record set PDR\n";
             return;
         }
 
@@ -705,8 +702,7 @@ class GetPDR : public CommandInterface
             reinterpret_cast<pldm_pdr_entity_association*>(data);
         if (!pdr)
         {
-            std::cerr << "Failed to get the PDR eneity association"
-                      << std::endl;
+            std::cerr << "Failed to get the PDR eneity association\n";
             return;
         }
 
@@ -751,7 +747,7 @@ class GetPDR : public CommandInterface
             (struct pldm_numeric_effecter_value_pdr*)data;
         if (!pdr)
         {
-            std::cerr << "Failed to get numeric effecter PDR" << std::endl;
+            std::cerr << "Failed to get numeric effecter PDR\n";
             return;
         }
 
@@ -946,7 +942,7 @@ class GetPDR : public CommandInterface
     {
         if (data == NULL)
         {
-            std::cerr << "Failed to get PDR message" << std::endl;
+            std::cerr << "Failed to get PDR message\n";
             return;
         }
 
@@ -1095,8 +1091,8 @@ class SetStateEffecter : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode << "\n";
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)completionCode << "\n";
             return;
         }
 
@@ -1129,14 +1125,13 @@ class SetNumericEffecterValue : public CommandInterface
                "-i, --id", effecterId,
                "A handle that is used to identify and access the effecter")
             ->required();
-        app->add_option("-s, --size", effecterDataSize,
-                        "The bit width and format of the setting value for the "
-                        "effecter. enum value: {uint8, sint8, uint16, sint16, "
-                        "uint32, sint32}\n")
+        app->add_option(
+               "-s, --size", effecterDataSize,
+               "The bit width and format of the setting value for the effecter. enum value: {uint8, sint8, uint16, sint16, uint32, sint32}\n")
             ->required();
-        app->add_option("-d,--data", maxEffecterValue,
-                        "The setting value of numeric effecter being "
-                        "requested\n")
+        app->add_option(
+               "-d,--data", maxEffecterValue,
+               "The setting value of numeric effecter being requested\n")
             ->required();
     }
 
@@ -1176,9 +1171,8 @@ class SetNumericEffecterValue : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             return;
         }
 
@@ -1211,9 +1205,9 @@ class GetStateSensorReadings : public CommandInterface
                "-i, --sensor_id", sensorId,
                "Sensor ID that is used to identify and access the sensor")
             ->required();
-        app->add_option("-r, --rearm", sensorRearm,
-                        "Each bit location in this field corresponds to a "
-                        "particular sensor")
+        app->add_option(
+               "-r, --rearm", sensorRearm,
+               "Each bit location in this field corresponds to a particular sensor")
             ->required();
     }
 
@@ -1243,9 +1237,8 @@ class GetStateSensorReadings : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             return;
         }
         ordered_json output;

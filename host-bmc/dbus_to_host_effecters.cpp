@@ -175,8 +175,8 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     }
     catch (const sdbusplus::exception::exception& e)
     {
-        std::cerr << "Error in getting current host state. Will still "
-                     "continue to set the host effecter \n";
+        std::cerr
+            << "Error in getting current host state. Will still continue to set the host effecter \n";
     }
     uint8_t newState{};
     try
@@ -282,33 +282,33 @@ int HostEffecterParser::setHostStateEffecter(
             std::cout << tempStream.str() << std::endl;
         }
     }
-    auto setStateEffecterStatesRespHandler =
-        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
-            if (response == nullptr || !respMsgLen)
-            {
-                std::cerr << "Failed to receive response for "
-                          << "setStateEffecterStates command \n";
-                return;
-            }
-            uint8_t completionCode{};
-            auto rc = decode_set_state_effecter_states_resp(
-                response, respMsgLen, &completionCode);
-            if (rc)
-            {
-                std::cerr << "Failed to decode setStateEffecterStates response,"
-                          << " rc " << rc << "\n";
-                pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
-            }
-            if (completionCode)
-            {
-                std::cerr << "Failed to set a Host effecter "
-                          << ", cc=" << static_cast<unsigned>(completionCode)
-                          << "\n";
-                pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
-            }
-        };
+    auto setStateEffecterStatesRespHandler = [](mctp_eid_t /*eid*/,
+                                                const pldm_msg* response,
+                                                size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            std::cerr
+                << "Failed to receive response for setStateEffecterStates command \n";
+            return;
+        }
+        uint8_t completionCode{};
+        auto rc = decode_set_state_effecter_states_resp(response, respMsgLen,
+                                                        &completionCode);
+        if (rc)
+        {
+            std::cerr << "Failed to decode setStateEffecterStates response, rc "
+                      << rc << "\n";
+            pldm::utils::reportError(
+                "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+        }
+        if (completionCode)
+        {
+            std::cerr << "Failed to set a Host effecter, cc="
+                      << static_cast<unsigned>(completionCode) << "\n";
+            pldm::utils::reportError(
+                "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+        }
+    };
 
     rc = handler->registerRequest(
         mctpEid, instanceId, PLDM_PLATFORM, PLDM_SET_STATE_EFFECTER_STATES,

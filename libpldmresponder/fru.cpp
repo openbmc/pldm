@@ -146,8 +146,7 @@ std::string FruImpl::populatefwVersion()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "failed to make a d-bus call "
-                     "Asociation, ERROR= "
+        std::cerr << "failed to make a d-bus call Asociation, ERROR= "
                   << e.what() << "\n";
         return {};
     }

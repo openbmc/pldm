@@ -324,20 +324,17 @@ class GetFRURecordByOption : public CommandInterface
                                   CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option("-i, --identifier", recordSetIdentifier,
-                        "Record Set Identifier\n"
-                        "Possible values: {All record sets = 0, Specific "
-                        "record set = 1 – 65535}")
+        app->add_option(
+               "-i, --identifier", recordSetIdentifier,
+               "Record Set Identifier\nPossible values: {All record sets = 0, Specific record set = 1 – 65535}")
             ->required();
-        app->add_option("-r, --record", recordType,
-                        "Record Type\n"
-                        "Possible values: {All record types = 0, Specific "
-                        "record types = 1 – 255}")
+        app->add_option(
+               "-r, --record", recordType,
+               "Record Type\nPossible values: {All record types = 0, Specific record types = 1 – 255}")
             ->required();
-        app->add_option("-f, --field", fieldType,
-                        "Field Type\n"
-                        "Possible values: {All record field types = 0, "
-                        "Specific field types = 1 – 15}")
+        app->add_option(
+               "-f, --field", fieldType,
+               "Field Type\nPossible values: {All record field types = 0, Specific field types = 1 – 15}")
             ->required();
     }
 
@@ -345,14 +342,13 @@ class GetFRURecordByOption : public CommandInterface
     {
         if (fieldType != 0 && recordType == 0)
         {
-            throw std::invalid_argument("if field type is non-zero, the record "
-                                        "type shall also be non-zero");
+            throw std::invalid_argument(
+                "if field type is non-zero, the record type shall also be non-zero");
         }
         if (recordType == 254 && (fieldType > 2 && fieldType < 254))
         {
             throw std::invalid_argument(
-                "GetFRURecordByOption is not supported for recordType : 254 "
-                "and fieldType > 2");
+                "GetFRURecordByOption is not supported for recordType : 254 and fieldType > 2");
         }
 
         auto payloadLength = sizeof(pldm_get_fru_record_by_option_req);
@@ -382,8 +378,8 @@ class GetFRURecordByOption : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
 
@@ -434,8 +430,8 @@ class GetFruRecordTable : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
 

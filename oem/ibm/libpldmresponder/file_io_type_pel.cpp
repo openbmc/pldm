@@ -144,7 +144,7 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
         off_t fileSize = lseek(fd, 0, SEEK_END);
         if (fileSize == -1)
         {
-            std::cerr << "file seek failed";
+            std::cerr << "file seek failed\n";
             return PLDM_ERROR;
         }
         if (offset >= fileSize)
@@ -160,7 +160,7 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
         auto rc = lseek(fd, offset, SEEK_SET);
         if (rc == -1)
         {
-            std::cerr << "file seek failed";
+            std::cerr << "file seek failed\n";
             return PLDM_ERROR;
         }
         size_t currSize = response.size();
@@ -170,20 +170,20 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
         rc = ::read(fd, filePos, length);
         if (rc == -1)
         {
-            std::cerr << "file read failed";
+            std::cerr << "file read failed\n";
             return PLDM_ERROR;
         }
         if (rc != length)
         {
-            std::cerr << "mismatch between number of characters to read and "
-                      << "the length read, LENGTH=" << length << " COUNT=" << rc
-                      << std::endl;
+            std::cerr
+                << "mismatch between number of characters to read and the length read, LENGTH="
+                << length << " COUNT=" << rc << std::endl;
             return PLDM_ERROR;
         }
     }
     catch (const std::exception& e)
     {
-        std::cerr << "GetPEL D-Bus call failed";
+        std::cerr << "GetPEL D-Bus call failed\n";
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
@@ -229,7 +229,7 @@ int PelHandler::fileAck(uint8_t /*fileStatus*/)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "HostAck D-Bus call failed";
+        std::cerr << "HostAck D-Bus call failed\n";
         return PLDM_ERROR;
     }
 

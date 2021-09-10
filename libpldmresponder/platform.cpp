@@ -709,10 +709,10 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
 
         if (sensorRearmCount > tmpCompSensorCnt)
         {
-            std::cerr << "The requester sent wrong sensorRearm"
-                      << " count for the sensor, SENSOR_ID=" << sensorId
-                      << "SENSOR_REARM_COUNT=" << (uint16_t)sensorRearmCount
-                      << "\n";
+            std::cerr
+                << "The requester sent wrong sensorRearm count for the sensor, SENSOR_ID="
+                << sensorId
+                << "SENSOR_REARM_COUNT=" << (uint16_t)sensorRearmCount << "\n";
             break;
         }
 
@@ -774,9 +774,10 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
 
         if (compEffecterCnt > pdr->composite_effecter_count)
         {
-            std::cerr << "The requester sent wrong composite effecter"
-                      << " count for the effecter, EFFECTER_ID=" << effecterId
-                      << "COMP_EFF_CNT=" << (uint16_t)compEffecterCnt << "\n";
+            std::cerr
+                << "The requester sent wrong composite effecter count for the effecter, EFFECTER_ID="
+                << effecterId << "COMP_EFF_CNT=" << (uint16_t)compEffecterCnt
+                << "\n";
             return false;
         }
 

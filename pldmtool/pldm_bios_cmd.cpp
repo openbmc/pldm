@@ -65,8 +65,8 @@ class GetDateTime : public CommandInterface
                                       &minutes, &hours, &day, &month, &year);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
 
@@ -123,8 +123,7 @@ class SetDateTime : public CommandInterface
         if (!uintToDate(tmData, &year, &month, &day, &hours, &minutes,
                         &seconds))
         {
-            std::cerr << "decode date Error: "
-                      << "tmData=" << tmData << std::endl;
+            std::cerr << "decode date Error: tmData=" << tmData << std::endl;
 
             return {PLDM_ERROR_INVALID_DATA, requestMsg};
         }
@@ -144,9 +143,8 @@ class SetDateTime : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             return;
         }
 
@@ -733,8 +731,8 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
             &attributeData);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
 
@@ -827,8 +825,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                 if (stringEntry == nullptr)
                 {
                     std::cout
-                        << "Set Attribute Error: It's not a possible value"
-                        << std::endl;
+                        << "Set Attribute Error: It's not a possible value\n";
                     return;
                 }
                 auto valueHandle =
@@ -843,8 +840,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                 if (i == pvNum)
                 {
                     std::cout
-                        << "Set Attribute Error: It's not a possible value"
-                        << std::endl;
+                        << "Set Attribute Error: It's not a possible value\n";
                     return;
                 }
 
@@ -912,8 +908,8 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
             responsePtr, payloadLength, &cc, &nextTransferHandle);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
 
