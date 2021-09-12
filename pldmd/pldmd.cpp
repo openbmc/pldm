@@ -65,8 +65,8 @@ static std::optional<Response>
     processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
                  requester::Handler<requester::Request>& handler)
 {
+    using type = uint8_t;
     uint8_t eid = requestMsg[0];
-    uint8_t type = requestMsg[1];
     pldm_header_info hdrFields{};
     auto hdr = reinterpret_cast<const pldm_msg_hdr*>(
         requestMsg.data() + sizeof(eid) + sizeof(type));
