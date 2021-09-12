@@ -257,6 +257,8 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
                                   uint16_t recordSetIdentifer,
                                   uint8_t recordType, uint8_t fieldType)
 {
+    using sum = uint32_t;
+
     // FRU table is built lazily, build if not done.
     buildFRUTable();
 
@@ -278,7 +280,7 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
     }
 
     auto pads = utils::getNumPadBytes(recordTableSize);
-    auto sum = crc32(fruData.data(), recordTableSize + pads);
+    crc32(fruData.data(), recordTableSize + pads);
 
     auto iter = fruData.begin() + recordTableSize + pads;
     std::copy_n(reinterpret_cast<const uint8_t*>(&checksum), sizeof(checksum),
