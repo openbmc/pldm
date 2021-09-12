@@ -66,10 +66,9 @@ static std::optional<Response>
                  requester::Handler<requester::Request>& handler)
 {
     uint8_t eid = requestMsg[0];
-    uint8_t type = requestMsg[1];
     pldm_header_info hdrFields{};
     auto hdr = reinterpret_cast<const pldm_msg_hdr*>(
-        requestMsg.data() + sizeof(eid) + sizeof(type));
+        requestMsg.data() + sizeof(eid) + sizeof(uint8_t));
     if (PLDM_SUCCESS != unpack_pldm_header(hdr, &hdrFields))
     {
         std::cerr << "Empty PLDM request header \n";
@@ -81,7 +80,7 @@ static std::optional<Response>
         Response response;
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
-                            sizeof(eid) - sizeof(type);
+                            sizeof(eid) - sizeof(uint8_t);
         try
         {
             response = invoker.handle(hdrFields.pldm_type, hdrFields.command,
@@ -110,7 +109,7 @@ static std::optional<Response>
     {
         auto response = reinterpret_cast<const pldm_msg*>(hdr);
         size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
-                             sizeof(eid) - sizeof(type);
+                             sizeof(eid) - sizeof(uint8_t);
         handler.handleResponse(eid, hdrFields.instance, hdrFields.pldm_type,
                                hdrFields.command, response, responseLen);
     }

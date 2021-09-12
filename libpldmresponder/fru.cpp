@@ -277,12 +277,12 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
     }
 
     auto pads = utils::getNumPadBytes(recordTableSize);
-    auto sum = crc32(fruData.data(), recordTableSize + pads);
+    crc32(fruData.data(), recordTableSize + pads);
 
     auto iter = fruData.begin() + recordTableSize + pads;
     std::copy_n(reinterpret_cast<const uint8_t*>(&checksum), sizeof(checksum),
                 iter);
-    fruData.resize(recordTableSize + pads + sizeof(sum));
+    fruData.resize(recordTableSize + pads + sizeof(uint32_t));
 
     return PLDM_SUCCESS;
 }
