@@ -1,6 +1,7 @@
 #include "pdr.h"
 #include "platform.h"
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -339,6 +340,74 @@ void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
 		record = pldm_pdr_find_record_by_type(
 		    repo, PLDM_TERMINUS_LOCATOR_PDR, record, &outData, &size);
 	} while (record);
+}
+
+uint16_t pldm_find_container_id(const pldm_pdr *repo, uint16_t entityType,
+				uint16_t entityInstance)
+{
+	printf("Inside the pldm_find_container_id method\n");
+	assert(repo != NULL);
+
+	printf("entity type inside pdr.c in pldm_find_container_id:%d",
+	       entityType);
+	printf("\nInstance numebr is:%d", entityInstance);
+	pldm_pdr_record *record = repo->first;
+
+	while (record != NULL) {
+		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+		if (hdr->type == PLDM_PDR_FRU_RECORD_SET) {
+			printf("\n found a FRU record set");
+			struct pldm_pdr_fru_record_set *fru =
+			    (struct pldm_pdr_fru_record_set
+				 *)((uint8_t *)record->data +
+				    sizeof(struct pldm_pdr_hdr));
+			if (fru->entity_type == entityType &&
+			    fru->entity_instance_num == entityInstance) {
+				printf("\nFound a match fru with same type and "
+				       "instance");
+				uint16_t id = fru->container_id;
+				printf("\nfru->container_id inside pdr.c in "
+				       "pldm_find_container_id is :%d",
+				       id);
+				return id;
+			}
+		}
+		printf("\ngo to next record");
+		record = record->next;
+	}
+	printf("Returning 0 if not found");
+	return 0;
+}
+
+void pldm_change_container_id_of_effecter(const pldm_pdr *repo,
+					  uint16_t effecterId,
+					  uint16_t containerId)
+{
+	printf("\nInside the pldm_change_container_id_of_effecter func");
+	assert(repo != NULL);
+
+	printf("\nEffecter id:%d", effecterId);
+	printf("containerid to be updated:%d", containerId);
+	pldm_pdr_record *record = repo->first;
+
+	while (record != NULL) {
+		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+		if (hdr->type == PLDM_NUMERIC_EFFECTER_PDR) {
+			printf("\nNumeric effecter found");
+			struct pldm_numeric_effecter_value_pdr *pdr =
+			    (struct pldm_numeric_effecter_value_pdr
+				 *)((uint8_t *)record->data);
+			if (pdr->effecter_id == effecterId) {
+				printf("\nEffecter found with similar effecter "
+				       "id match");
+				pdr->container_id = containerId;
+				printf("\nConatiner id updated");
+			}
+		}
+		printf("\ngo to next record in update");
+		record = record->next;
+	}
+	printf("\ncome out of pldm_change_container_id_of_effecter func");
 }
 
 typedef struct pldm_entity_association_tree {
