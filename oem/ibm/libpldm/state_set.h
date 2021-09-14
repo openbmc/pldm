@@ -12,6 +12,7 @@ enum ibm_oem_pldm_state_set_ids {
 	PLDM_OEM_IBM_VERIFICATION_STATE = 32770,
 	PLDM_OEM_IBM_SYSTEM_POWER_STATE = 32771,
 	PLDM_OEM_IBM_SBE_MAINTENANCE_STATE = 32772,
+	PLDM_OEM_IBM_SBE_SEMANTIC_ID = 32775,
 };
 
 enum ibm_oem_pldm_state_set_firmware_update_state_values {
