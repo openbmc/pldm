@@ -21,8 +21,11 @@ namespace oem_ibm_platform
 
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
+static constexpr auto PLDM_OEM_IBM_SBE_SEMANTIC_ID = 32773;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
+constexpr uint16_t ENTITY_INSTANCE_2 = 2;
+constexpr uint16_t ENTITY_INSTANCE_3 = 3;
 
 enum class CodeUpdateState : uint8_t
 {
@@ -61,6 +64,12 @@ class Handler : public oem_platform::Handler
     {
         codeUpdate->setVersions();
     }
+
+    int oemSetNumericEffecterValueHandler(
+        uint16_t entityType, uint16_t entityInstance,
+        uint16_t effecterSemanticId, uint8_t effecterDataSize,
+        uint8_t* effecterValue, real32_t effecterOffset,
+        real32_t effecterResolution, uint16_t effecterId);
 
     int getOemStateSensorReadingsHandler(
         EntityType entityType, pldm::pdr::EntityInstance entityInstance,
@@ -189,6 +198,16 @@ class Handler : public oem_platform::Handler
  */
 int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
                    std::vector<uint8_t>& requestMsg, uint8_t instanceId);
+
+/** @brief method to call a DBus method
+ *
+ *  @param[in] entityInstance - entity instance
+ *  @param[in] value - value to be set
+ *
+ *  @return PLDM status code
+ */
+int setNumericEffecter(uint16_t entityInstance,
+                       const pldm::utils::PropertyValue& value);
 
 } // namespace oem_ibm_platform
 

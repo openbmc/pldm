@@ -463,6 +463,29 @@ class Handler : public CmdHandler
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
 };
 
+/** @brief Function to check if the effecter falls in OEM range
+ *         An effecter is considered to be oem if either of entity
+ *         type or effecter semantic id or both falls in oem range
+ *
+ *  @param[in] handler - the interface object
+ *  @param[in] effecterId - effecter id
+ *  @param[out] entityType - entity type
+ *  @param[out] entityInstance - entity instance number
+ *  @param[out] effecterDataSize - effecter value size
+ *  @param[out] effecterSemanticId - effecter semantic id
+ *  @param[out] effecterOffset - offset of the effecter
+ *  @param[out] effecterResolution - resolution of the effecter
+ *
+ *  @return true if the effecter is OEM. All out parameters are invalid
+ *                  for a non OEM effecter
+ */
+bool isOemNumericEffecter(Handler& handler, uint16_t effecterId,
+                          uint16_t& entityType, uint16_t& entityInstance,
+                          uint8_t& effecterDataSize,
+                          uint16_t& effecterSemanticId,
+                          real32_t& effecterOffset,
+                          real32_t& effecterResolution);
+
 /** @brief Function to check if a sensor falls in OEM range
  *         A sensor is considered to be oem if either of entity
  *         type or state set or both falls in oem range

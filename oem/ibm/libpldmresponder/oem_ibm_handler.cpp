@@ -16,6 +16,29 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
+int pldm::responder::oem_ibm_platform::Handler::
+    oemSetNumericEffecterValueHandler(
+        uint16_t entityType, uint16_t entityInstance,
+        uint16_t effecterSemanticId, uint8_t effecterDataSize,
+        uint8_t* effecterValue, real32_t effecterOffset,
+        real32_t effecterResolution, uint16_t /*effecterId*/)
+{
+    int rc = PLDM_SUCCESS;
+
+    if (entityType == PLDM_ENTITY_PROC &&
+        effecterSemanticId == PLDM_OEM_IBM_SBE_SEMANTIC_ID &&
+        effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT32)
+    {
+        uint32_t currentValue =
+            *(reinterpret_cast<uint32_t*>(&effecterValue[0]));
+        auto rawValue = static_cast<uint32_t>(
+            round(currentValue - effecterOffset) / effecterResolution);
+        pldm::utils::PropertyValue value;
+        value = rawValue;
+        rc = setNumericEffecter(entityInstance, value);
+    }
+    return rc;
+}
 
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
@@ -250,6 +273,71 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
     repo.addRecord(pdrEntry);
 }
 
+void buildAllNumericEffecterPDR(oem_ibm_platform::Handler* platformHandler,
+                                uint16_t entityType, uint16_t entityInstance,
+                                uint16_t effecterSemanticId,
+                                pdr_utils::Repo& repo)
+{
+    size_t pdrSize = 0;
+    pdrSize = sizeof(pldm_numeric_effecter_value_pdr);
+    std::vector<uint8_t> entry{};
+    entry.resize(pdrSize);
+    pldm_numeric_effecter_value_pdr* pdr =
+        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(entry.data());
+    if (!pdr)
+    {
+        std::cerr << "Failed to get record by PDR type, ERROR:"
+                  << PLDM_PLATFORM_INVALID_EFFECTER_ID << std::endl;
+        return;
+    }
+
+    pdr->hdr.record_handle = 0;
+    pdr->hdr.version = 1;
+    pdr->hdr.type = PLDM_NUMERIC_EFFECTER_PDR;
+    pdr->hdr.record_change_num = 0;
+    pdr->hdr.length =
+        sizeof(pldm_numeric_effecter_value_pdr) - sizeof(pldm_pdr_hdr);
+    pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
+    pdr->effecter_id = platformHandler->getNextEffecterId();
+    pdr->entity_type = entityType;
+    pdr->entity_instance = entityInstance;
+    pdr->container_id = 3;
+    pdr->effecter_semantic_id = effecterSemanticId;
+    pdr->effecter_init = PLDM_NO_INIT;
+    pdr->effecter_auxiliary_names = false;
+    pdr->base_unit = 0;
+    pdr->unit_modifier = 0;
+    pdr->rate_unit = 0;
+    pdr->base_oem_unit_handle = 0;
+    pdr->aux_unit = 0;
+    pdr->aux_unit_modifier = 0;
+    pdr->aux_oem_unit_handle = 0;
+    pdr->aux_rate_unit = 0;
+    pdr->is_linear = true;
+    pdr->effecter_data_size = PLDM_EFFECTER_DATA_SIZE_UINT32;
+    pdr->resolution = 1.00;
+    pdr->offset = 0.00;
+    pdr->accuracy = 0;
+    pdr->plus_tolerance = 0;
+    pdr->minus_tolerance = 0;
+    pdr->state_transition_interval = 0.00;
+    pdr->transition_interval = 0.00;
+    pdr->max_set_table.value_u32 = 0xFFFFFFFF;
+    pdr->min_set_table.value_u32 = 0x0;
+    pdr->range_field_format = 0;
+    pdr->range_field_support.byte = 0;
+    pdr->nominal_value.value_u32 = 0;
+    pdr->normal_max.value_u32 = 0;
+    pdr->normal_min.value_u32 = 0;
+    pdr->rated_max.value_u32 = 0;
+    pdr->rated_min.value_u32 = 0;
+
+    pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+    pdrEntry.data = entry.data();
+    pdrEntry.size = pdrSize;
+    repo.addRecord(pdrEntry);
+}
+
 void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     pdr_utils::Repo& repo)
 {
@@ -278,6 +366,16 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                                 ENTITY_INSTANCE_0,
                                 PLDM_OEM_IBM_VERIFICATION_STATE, repo);
+
+    buildAllNumericEffecterPDR(this, PLDM_ENTITY_PROC, ENTITY_INSTANCE_0,
+                               PLDM_OEM_IBM_SBE_SEMANTIC_ID, repo);
+    buildAllNumericEffecterPDR(this, PLDM_ENTITY_PROC, ENTITY_INSTANCE_1,
+                               PLDM_OEM_IBM_SBE_SEMANTIC_ID, repo);
+    buildAllNumericEffecterPDR(this, PLDM_ENTITY_PROC, ENTITY_INSTANCE_2,
+                               PLDM_OEM_IBM_SBE_SEMANTIC_ID, repo);
+    buildAllNumericEffecterPDR(this, PLDM_ENTITY_PROC, ENTITY_INSTANCE_3,
+                               PLDM_OEM_IBM_SBE_SEMANTIC_ID, repo);
+
     auto sensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         ENTITY_INSTANCE_0, 0, PLDM_OEM_IBM_VERIFICATION_STATE);
@@ -344,6 +442,42 @@ int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
         eventDataVec.size() + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
 
     return rc;
+}
+
+int setNumericEffecter(uint16_t entityInstance,
+                       const PropertyValue& propertyValue)
+{
+    static constexpr auto objectPath = "/org/openpower/dump";
+    static constexpr auto interface = "xyz.openbmc_project.Dump.Create";
+
+    uint32_t value = std::get<uint32_t>(propertyValue);
+    auto& bus = pldm::utils::DBusHandler::getBus();
+
+    try
+    {
+        auto service =
+            pldm::utils::DBusHandler().getService(objectPath, interface);
+        auto method = bus.new_method_call(service.c_str(), objectPath,
+                                          interface, "CreateDump");
+
+        std::map<std::string, std::variant<std::string, uint32_t>> createParams;
+        createParams["com.ibm.Dump.Create.CreateParameters.DumpType"] =
+            "com.ibm.Dump.Create.DumpType.SBE";
+        createParams["com.ibm.Dump.Create.CreateParameters.ErrorLogId"] = value;
+        createParams["com.ibm.Dump.Create.CreateParameters.FailingUnitId"] =
+            (uint32_t)entityInstance;
+        method.append(createParams);
+
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr
+            << "Failed to make a DBus call to set the numeric effecter,ERROR= "
+            << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
 }
 
 void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(

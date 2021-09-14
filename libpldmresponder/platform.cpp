@@ -558,9 +558,24 @@ Response Handler::setNumericEffecterValue(const pldm_msg* request,
         request, payloadLength, &effecterId, &effecterDataSize,
         reinterpret_cast<uint8_t*>(&effecterValue));
 
-    if (rc == PLDM_SUCCESS)
+    const pldm::utils::DBusHandler dBusIntf;
+    uint16_t entityType{};
+    uint16_t entityInstance{};
+    uint16_t effecterSemanticId{};
+    real32_t effecterOffset{};
+    real32_t effecterResolution{};
+
+    if (isOemNumericEffecter(*this, effecterId, entityType, entityInstance,
+                             effecterDataSize, effecterSemanticId,
+                             effecterOffset, effecterResolution) &&
+        oemPlatformHandler != nullptr)
     {
-        const pldm::utils::DBusHandler dBusIntf;
+        rc = oemPlatformHandler->oemSetNumericEffecterValueHandler(
+            entityType, entityInstance, effecterSemanticId, effecterDataSize,
+            effecterValue, effecterOffset, effecterResolution, effecterId);
+    }
+    else
+    {
         rc = platform_numeric_effecter::setNumericEffecterValueHandler<
             pldm::utils::DBusHandler, Handler>(dBusIntf, *this, effecterId,
                                                effecterDataSize, effecterValue,
@@ -668,6 +683,70 @@ void Handler::_processPostGetPDRActions(
 {
     deferredGetPDREvent.reset();
     dbusToPLDMEventHandler->listenSensorEvent(pdrRepo, sensorDbusObjMaps);
+}
+
+bool isOemNumericEffecter(Handler& handler, uint16_t effecterId,
+                          uint16_t& entityType, uint16_t& entityInstance,
+                          uint8_t& effecterDataSize,
+                          uint16_t& effecterSemanticId,
+                          real32_t& effecterOffset,
+                          real32_t& effecterResolution)
+{
+    pldm_numeric_effecter_value_pdr* pdr = nullptr;
+
+    std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
+        numericEffecterPdrRepo(pldm_pdr_init(), pldm_pdr_destroy);
+    pldm::responder::pdr_utils::Repo numericEffecterPDRs(
+        numericEffecterPdrRepo.get());
+    pldm::responder::pdr::getRepoByType(handler.getRepo(), numericEffecterPDRs,
+                                        PLDM_NUMERIC_EFFECTER_PDR);
+
+    if (numericEffecterPDRs.empty())
+    {
+        std::cerr << "Failed to get record by PDR type\n";
+        return false;
+    }
+
+    PdrEntry pdrEntry{};
+    auto pdrRecord = numericEffecterPDRs.getFirstRecord(pdrEntry);
+    while (pdrRecord)
+    {
+        pdr = reinterpret_cast<pldm_numeric_effecter_value_pdr*>(pdrEntry.data);
+        assert(pdr != NULL);
+        if (pdr->effecter_id != effecterId)
+        {
+            pdr = nullptr;
+            pdrRecord = numericEffecterPDRs.getNextRecord(pdrRecord, pdrEntry);
+            continue;
+        }
+
+        auto tmpEntityType = pdr->entity_type;
+        auto tmpEntityInstance = pdr->entity_instance;
+        auto tmpEffecterDataSize = pdr->effecter_data_size;
+        auto tmpEffecterSemanticId = pdr->effecter_semantic_id;
+        auto tmpEffecterOffset = pdr->offset;
+        auto tmpEffecterResolution = pdr->resolution;
+
+        if ((tmpEntityType >= PLDM_OEM_ENTITY_TYPE_START &&
+             tmpEntityType <= PLDM_OEM_ENTITY_TYPE_END) ||
+            (tmpEffecterSemanticId >= PLDM_OEM_STATE_SET_ID_START &&
+             tmpEffecterSemanticId < PLDM_OEM_STATE_SET_ID_END))
+        {
+
+            entityType = tmpEntityType;
+            entityInstance = tmpEntityInstance;
+            effecterDataSize = tmpEffecterDataSize;
+            effecterSemanticId = tmpEffecterSemanticId;
+            effecterOffset = tmpEffecterOffset;
+            effecterResolution = tmpEffecterResolution;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return false;
 }
 
 bool isOemStateSensor(Handler& handler, uint16_t sensorId,
