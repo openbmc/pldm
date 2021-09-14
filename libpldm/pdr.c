@@ -341,6 +341,61 @@ void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
 	} while (record);
 }
 
+uint16_t pldm_find_child_container_id(const pldm_pdr *repo,
+				      uint16_t entity_type,
+				      uint16_t entity_instance)
+{
+	assert(repo != NULL);
+
+	pldm_pdr_record *record = repo->first;
+
+	while (record != NULL) {
+		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+		if (hdr->type == PLDM_PDR_ENTITY_ASSOCIATION) {
+			struct pldm_pdr_entity_association *pdr =
+			    (struct pldm_pdr_entity_association
+				 *)((uint8_t *)record->data +
+				    sizeof(struct pldm_pdr_hdr));
+			struct pldm_entity *child =
+			    (struct pldm_entity *)(&pdr->children[0]);
+			for (int i = 0; i < pdr->num_children; ++i) {
+				if (pdr->container.entity_type == entity_type &&
+				    pdr->container.entity_instance_num ==
+					entity_instance) {
+					uint16_t id =
+					    child->entity_container_id;
+					return id;
+				}
+			}
+		}
+		record = record->next;
+	}
+	return 0;
+}
+
+void pldm_change_container_id_of_effecter(const pldm_pdr *repo,
+					  uint16_t effecter_id,
+					  uint16_t container_id)
+{
+	assert(repo != NULL);
+
+	pldm_pdr_record *record = repo->first;
+
+	while (record != NULL) {
+		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+		if (hdr->type == PLDM_NUMERIC_EFFECTER_PDR) {
+			struct pldm_numeric_effecter_value_pdr *pdr =
+			    (struct pldm_numeric_effecter_value_pdr
+				 *)((uint8_t *)record->data);
+			if (pdr->effecter_id == effecter_id) {
+				pdr->container_id = container_id;
+				break;
+			}
+		}
+		record = record->next;
+	}
+}
+
 typedef struct pldm_entity_association_tree {
 	pldm_entity_node *root;
 	uint16_t last_used_container_id;

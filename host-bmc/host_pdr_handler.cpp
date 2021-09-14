@@ -31,11 +31,13 @@ HostPDRHandler::HostPDRHandler(
     int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
     pldm_entity_association_tree* bmcEntityTree, Requester& requester,
-    pldm::requester::Handler<pldm::requester::Request>* handler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    bmcEntityTree(bmcEntityTree), requester(requester), handler(handler)
+    bmcEntityTree(bmcEntityTree), requester(requester), handler(handler),
+    oemPlatformHandler(oemPlatformHandler)
 {
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
@@ -512,6 +514,10 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
 void HostPDRHandler::_processPDRRepoChgEvent(
     sdeventplus::source::EventBase& /*source */)
 {
+    if (oemPlatformHandler != nullptr)
+    {
+        oemPlatformHandler->updateContainerIDofOEMProc();
+    }
     deferredPDRRepoChgEvent.reset();
     this->sendPDRRepositoryChgEvent(
         std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),

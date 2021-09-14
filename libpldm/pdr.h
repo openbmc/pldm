@@ -156,6 +156,26 @@ void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
 void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
 			    uint8_t tid, uint8_t tlEid, bool valid);
 
+/** @brief find the container ID of the contained entity
+ *
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ *  @param[in] entityType - entity type
+ *  @param[in] entityInstance - instance of the entity
+ */
+uint16_t pldm_find_child_container_id(const pldm_pdr *repo,
+				      uint16_t entity_type,
+				      uint16_t entity_instance);
+
+/** @brief update the container id of an effecter
+ *
+ *  @param[in] repo -  opaque pointer acting as a PDR repo handle
+ *  @param[in] effecterId - effecter ID
+ *  @param[in] containerId - conatiner ID to be updated
+ */
+void pldm_change_container_id_of_effecter(const pldm_pdr *repo,
+					  uint16_t effecter_id,
+					  uint16_t container_id);
+
 /* ======================= */
 /* FRU Record Set PDR APIs */
 /* ======================= */
