@@ -71,6 +71,12 @@ class Handler : public oem_platform::Handler
             });
     }
 
+    int oemSetNumericEffecterValueHandler(
+        uint16_t entityType, uint16_t entityInstance,
+        uint16_t effecterSemanticId, uint8_t effecterDataSize,
+        uint8_t* effecterValue, real32_t effecterOffset,
+        real32_t effecterResolution, uint16_t effecterId);
+
     int getOemStateSensorReadingsHandler(
         EntityType entityType, pldm::pdr::EntityInstance entityInstance,
         pldm::pdr::StateSetId stateSetId,
@@ -231,6 +237,19 @@ class Handler : public oem_platform::Handler
  */
 int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
                    std::vector<uint8_t>& requestMsg, uint8_t instanceId);
+
+/** @brief method to call a DBus method
+ *
+ *  @param[in] entityInstance - entity instance
+ *  @param[in] value - value to be set
+ *
+ *  @return PLDM status code
+ */
+int setNumericEffecter(uint16_t entityInstance,
+                       const pldm::utils::PropertyValue& value);
+
+/* @brief method to get the processor object paths*/
+std::vector<std::string> getProcObjectPaths();
 
 } // namespace oem_ibm_platform
 
