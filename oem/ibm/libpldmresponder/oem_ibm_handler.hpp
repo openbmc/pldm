@@ -20,6 +20,8 @@ namespace oem_ibm_platform
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
+constexpr uint16_t ENTITY_INSTANCE_2 = 2;
+constexpr uint16_t ENTITY_INSTANCE_3 = 3;
 
 enum SetEventReceiverCount
 {
@@ -31,12 +33,13 @@ class Handler : public oem_platform::Handler
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
             pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
-            uint8_t mctp_eid, pldm::dbus_api::Requester& requester,
-            sdeventplus::Event& event,
+            uint8_t mctp_eid, /*pldm_entity_association_tree* entityTree,*/
+            pldm::dbus_api::Requester& requester, sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf),
         codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), requester(requester), event(event), handler(handler)
+        mctp_eid(mctp_eid), /*entityTree(entityTree),*/ requester(requester),
+        event(event), handler(handler)
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -70,6 +73,12 @@ class Handler : public oem_platform::Handler
                 }
             });
     }
+
+    int oemSetNumericEffecterValueHandler(
+        uint16_t entityType, uint16_t entityInstance,
+        uint16_t effecterSemanticId, uint8_t effecterDataSize,
+        uint8_t* effecterValue, real32_t effecterOffset,
+        real32_t effecterResolution, uint16_t effecterId);
 
     int getOemStateSensorReadingsHandler(
         EntityType entityType, pldm::pdr::EntityInstance entityInstance,
@@ -193,6 +202,7 @@ class Handler : public oem_platform::Handler
     /** @brief MCTP EID of host firmware */
     uint8_t mctp_eid;
 
+    // pldm_entity_association_tree* entityTree;
     /** @brief reference to Requester object, primarily used to access API to
      *  obtain PLDM instance id.
      */
@@ -231,6 +241,18 @@ class Handler : public oem_platform::Handler
  */
 int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
                    std::vector<uint8_t>& requestMsg, uint8_t instanceId);
+
+/** @brief method to call a DBus method
+ *
+ *  @param[in] entityInstance - entity instance
+ *  @param[in] value - value to be set
+ *
+ *  @return PLDM status code
+ */
+int setNumericEffecter(uint16_t entityInstance,
+                       const pldm::utils::PropertyValue& value);
+
+std::vector<std::string> getProcObjectPaths();
 
 } // namespace oem_ibm_platform
 
