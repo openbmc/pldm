@@ -455,12 +455,11 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                     "xyz.openbmc_project.State.Chassis.PowerState.Off")
                 {
                     pldm::utils::DBusMapping dbusMapping{
-                        "/xyz/openbmc_project/control/host0/"
-                        "power_restore_policy/one_time",
+                        "/xyz/openbmc_project/control/host0/power_restore_policy/one_time",
                         "xyz.openbmc_project.Control.Power.RestorePolicy",
                         "PowerRestorePolicy", "string"};
-                    value = "xyz.openbmc_project.Control.Power.RestorePolicy."
-                            "Policy.AlwaysOn";
+                    value =
+                        "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn";
                     try
                     {
                         dBusIntf->setDbusProperty(dbusMapping, value);

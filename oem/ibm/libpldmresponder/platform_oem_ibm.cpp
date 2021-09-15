@@ -30,12 +30,12 @@ int sendBiosAttributeUpdateEvent(
         auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
             hostStatePath, hostStateProperty, hostStateInterface);
         const auto& currHostState = std::get<std::string>(propVal);
-        if ((currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.SystemInitComplete") &&
-            (currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.OSRunning") &&
-            (currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.OSStart"))
+        if ((currHostState !=
+             "xyz.openbmc_project.State.Boot.Progress.ProgressStages.SystemInitComplete") &&
+            (currHostState !=
+             "xyz.openbmc_project.State.Boot.Progress.ProgressStages.OSRunning") &&
+            (currHostState !=
+             "xyz.openbmc_project.State.Boot.Progress.ProgressStages.OSStart"))
         {
             return PLDM_SUCCESS;
         }

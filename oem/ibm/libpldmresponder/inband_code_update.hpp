@@ -201,6 +201,14 @@ class CodeUpdate
      */
     void processPriorityChangeNotification(
         const pldm::utils::DbusChangedProps& chProperties);
+
+    /* @brief Method to take action when the subscribed D-Bus interfaces is
+     *        added
+     * @param[in] interfaces - list of interfaces which have added
+     * @return - none
+     */
+    void processSoftwareActivation(
+        const pldm::utils::DBusInterfaceAdded& interfaces);
 };
 
 /* @brief Method to fetch current or next boot side
