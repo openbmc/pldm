@@ -300,6 +300,11 @@ class LidHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
+    virtual int fileAckWithMetaData(uint32_t /*metaDataValue*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief LidHandler destructor
      */
     ~LidHandler()

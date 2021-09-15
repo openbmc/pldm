@@ -39,6 +39,11 @@ class DumpHandler : public FileHandler
 
     virtual int fileAck(uint8_t fileStatus);
 
+    virtual int fileAckWithMetaData(uint32_t /*metaDataValue*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     std::string findDumpObjPath(uint32_t fileHandle);
     std::string getOffloadUri(uint32_t fileHandle);
 

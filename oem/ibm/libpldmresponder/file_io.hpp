@@ -441,6 +441,15 @@ class Handler : public CmdHandler
      */
     Response newFileAvailable(const pldm_msg* request, size_t payloadLength);
 
+    /** @brief Handler for fileAckWithMetaData command
+     *
+     *  @param[in] request - PLDM request msg
+     *  @param[in] payloadLength - length of the message payload
+     *
+     *  @return PLDM response message
+     */
+    Response fileAckWithMetaData(const pldm_msg* request, size_t payloadLength);
+
   private:
     oem_platform::Handler* oemPlatformHandler;
     int hostSockFd;

@@ -54,6 +54,11 @@ class ProgressCodeHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
+    virtual int fileAckWithMetaData(uint32_t /*metaDataValue*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief method to set the dbus Raw value Property with
      * the obtained progress code from the host.
      *

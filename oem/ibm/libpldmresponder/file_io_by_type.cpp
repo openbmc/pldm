@@ -157,6 +157,10 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         {
             return std::make_unique<CertHandler>(fileHandle, fileType);
         }
+        case PLDM_FILE_TYPE_COD_LICENSE_KEY:
+        {
+            return std::make_unique<ProgressCodeHandler>(fileHandle);
+        }
         case PLDM_FILE_TYPE_PROGRESS_SRC:
         {
             return std::make_unique<ProgressCodeHandler>(fileHandle);
