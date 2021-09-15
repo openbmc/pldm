@@ -323,8 +323,8 @@ uint32_t FruImpl::populateRecords(
             if (numRecs == numRecsCount)
             {
                 recordSetIdentifier = nextRSI();
-                bmc_record_handle = concurrentAdd ? 0 : nextRecordHandle();
-
+                // bmc_record_handle = concurrentAdd ? 0 : nextRecordHandle();
+                bmc_record_handle = concurrentAdd ? 0xFFFF : nextRecordHandle();
                 newRcord = pldm_pdr_add_fru_record_set(
                     pdrRepo, TERMINUS_HANDLE, recordSetIdentifier,
                     entity.entity_type, entity.entity_instance_num,
@@ -344,6 +344,8 @@ uint32_t FruImpl::populateRecords(
 
 void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
 {
+    //  std::cout << "\nenter removeIndividualFRU with " << fruObjPath <<
+    //  std::endl;
     uint16_t rsi = objectPathToRSIMap[fruObjPath];
     pldm_entity removeEntity;
     uint16_t terminusHdl{};
@@ -356,18 +358,49 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
     removeEntity.entity_instance_num = entityInsNum;
     removeEntity.entity_container_id = containerId;
 
-    pldm_entity_association_pdr_remove_contained_entity(pdrRepo, removeEntity,
-                                                        false);
+    // uint8_t bmcEventDataOps = PLDM_INVALID_OP;
+    // uint8_t hostEventDataOps = PLDM_INVALID_OP;
+    /*  auto updateRecordHdlBmc =
+          pldm_entity_association_pdr_remove_contained_entity(
+              pdrRepo, removeEntity, &bmcEventDataOps, false);
+      std::cout
+          << "\n pldm_entity_association_pdr_remove_contained_entity
+         updateRecordHdlBmc "
+          << updateRecordHdlBmc << std::endl;*/
 
-    auto updateRecordHdl = pldm_entity_association_pdr_remove_contained_entity(
-        pdrRepo, removeEntity, true);
+    /*auto updateRecordHdlHost =
+        pldm_entity_association_pdr_remove_contained_entity(
+            pdrRepo, removeEntity, &hostEventDataOps, true);
+      std::cout
+          << "\n pldm_entity_association_pdr_remove_contained_entity
+       updateRecordHdlHost "
+          << updateRecordHdlHost << std::endl;*/
 
-    auto deleteRecordHdl =
+    /*auto deleteRecordHdl =
         pldm_pdr_remove_fru_record_set_by_rsi(pdrRepo, rsi, false);
+      std::cout << "\npldm_pdr_remove_fru_record_set_by_rsi deleteRecordHdl "
+                << deleteRecordHdl << std::endl;*/
+
+    // sm00
+    /*std::cout << "\nprinting the entityTree before deleting node\n";
+    size_t num{};
+    pldm_entity* out = nullptr;
+    pldm_entity_association_tree_visit(entityTree,&out, &num);
+    free(out);*/
+    // sm00
 
     pldm_entity_association_tree_delete_node(entityTree, removeEntity);
-    pldm_entity_association_tree_delete_node(bmcEntityTree, removeEntity);
+    // sm00
+    /*std::cout << "\nprinting the entityTree after deleting node\n";
+    num = 0;
+    out = nullptr;
+    pldm_entity_association_tree_visit(entityTree,&out, &num);
+    free(out);*/
+    // sm00
+    // pldm_entity_association_tree_delete_node(bmcEntityTree, removeEntity);
     objectPathToRSIMap.erase(fruObjPath);
+    objToEntityNode.erase(fruObjPath);     // sm00
+    associatedEntityMap.erase(fruObjPath); // sm00
 
     if (table
             .size()) /// need to remove the entry from table before doing this
@@ -385,28 +418,43 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
     }
-    sendPDRRepositoryChgEventbyPDRHandles(
-        std::move(std::vector<ChangeEntry>(1, deleteRecordHdl)),
-        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_DELETED)));
-    sendPDRRepositoryChgEventbyPDRHandles(
-        std::move(std::vector<ChangeEntry>(1, updateRecordHdl)),
-        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_MODIFIED)));
+    /*   sendPDRRepositoryChgEventbyPDRHandles(
+           std::move(std::vector<ChangeEntry>(1, deleteRecordHdl)),
+           std::move(std::vector<uint8_t>(1, PLDM_RECORDS_DELETED))); need to
+       send both remote and local records. Phyp keeps track of bmc only records
+           if(bmcEventDataOps!= PLDM_INVALID_OP)
+           {
+       sendPDRRepositoryChgEventbyPDRHandles(
+           std::move(std::vector<ChangeEntry>(1, updateRecordHdlBmc)),
+           std::move(std::vector<uint8_t>(1, bmcEventDataOps)));
+           }
+           if(hostEventDataOps != PLDM_INVALID_OP)
+           {
+       sendPDRRepositoryChgEventbyPDRHandles(
+           std::move(std::vector<ChangeEntry>(1, updateRecordHdlHost)),
+           std::move(std::vector<uint8_t>(1, hostEventDataOps)));
+           }*/ //sm00 this can be RECORDS_DELETED also for adapter pdrs
+    //   std::cout << "\nexit removeIndividualFRU " << std::endl;
 }
 
 void FruImpl::buildIndividualFRU(const std::string& fruInterface,
                                  const std::string& fruObjectPath)
 {
+    //   std::cout << "\nenter buildIndividualFRU with " << fruObjectPath << "
+    //   and "
+    //           << fruInterface << std::endl;
     // An exception will be thrown by getRecordInfo, if the item
     // D-Bus interface name specified in FRU_Master.json does
     // not have corresponding config jsons
     pldm_entity_node* parent = nullptr;
     pldm_entity entity{};
     pldm_entity parentEntity{};
-    uint32_t newRecordHdl{};
+    //  uint32_t newRecordHdl{};
     try
     {
         entity.entity_type = parser.getEntityType(fruInterface);
         auto parentObj = pldm::utils::findParent(fruObjectPath);
+        //   std::cout << "\nfound parent as " << parentObj << std::endl;
         do
         {
             auto iter = objToEntityNode.find(parentObj);
@@ -418,29 +466,50 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
             parentObj = pldm::utils::findParent(parentObj);
         } while (parentObj != "/");
 
+        // sm00
+        /*  std::cout << "\nprinting the entityTree before adding the node" <<
+          std::endl; size_t num = 0; pldm_entity* out = nullptr;
+          pldm_entity_association_tree_visit(entityTree,&out, &num);
+          free(out);*/
+        // sm00
+
         auto node = pldm_entity_association_tree_add(
             entityTree, &entity, 0xFFFF, parent,
             PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
         objToEntityNode[fruObjectPath] = node;
         auto recordInfos = parser.getRecordInfo(fruInterface);
 
+        // sm00
+        /*  std::cout << "\nprinting the entityTree after adding the node" <<
+          std::endl; num = 0; out = nullptr;
+          pldm_entity_association_tree_visit(entityTree,&out, &num);
+          free(out);*/
+        // sm00
+
         memcpy(reinterpret_cast<void*>(&parentEntity),
                reinterpret_cast<void*>(parent), sizeof(pldm_entity));
-        pldm_entity_node* bmcTreeParentNode = nullptr;
-        pldm_find_entity_ref_in_tree(bmcEntityTree, parentEntity,
-                                     &bmcTreeParentNode);
+        /*  pldm_entity_node* bmcTreeParentNode = nullptr;
+          pldm_find_entity_ref_in_tree(bmcEntityTree, parentEntity,
+                                       &bmcTreeParentNode);
 
-        pldm_entity_association_tree_add(
-            bmcEntityTree, &entity, 0xFFFF, bmcTreeParentNode,
-            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
+          pldm_entity_association_tree_add(
+              bmcEntityTree, &entity, 0xFFFF, bmcTreeParentNode,
+              PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
+          pldm_entity_association_tree_add(bmcEntityTree, &entity, 0xFFFF,
+                                           bmcTreeParentNode,
+                                           PLDM_ENTITY_ASSOCIAION_PHYSICAL,false);
+        */
 
         for (const auto& object : objects)
         {
             if (object.first.str == fruObjectPath)
             {
                 const auto& interfaces = object.second;
-                newRecordHdl = populateRecords(interfaces, recordInfos, entity,
-                                               fruObjectPath, true);
+                /*newRecordHdl =*/populateRecords(interfaces, recordInfos,
+                                                  entity, fruObjectPath, true);
+                //           std::cout << "\npopulateRecords returned
+                //           newRecordHdl "
+                //                   << newRecordHdl << std::endl;
                 associatedEntityMap.emplace(fruObjectPath, entity);
                 break;
             }
@@ -453,11 +522,23 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
                   << "interface type, interface = " << fruInterface << "\n";
     }
 
-    pldm_entity_association_pdr_add_contained_entity(pdrRepo, entity,
-                                                     parentEntity, false);
+    // uint8_t bmcEventDataOps = PLDM_INVALID_OP;
+    /* auto updatedRecordHdlBmc =
+      pldm_entity_association_pdr_add_contained_entity( pdrRepo, entity,
+      parentEntity, &bmcEventDataOps, false); std::cout
+          << "\npldm_entity_association_pdr_add_contained_entity
+        updatedRecordHdlBmc "
+          << updatedRecordHdlBmc << std::endl;*/
 
-    auto updatedRecordHdl = pldm_entity_association_pdr_add_contained_entity(
-        pdrRepo, entity, parentEntity, true);
+    // uint8_t hostEventDataOps = PLDM_INVALID_OP;
+
+    /*auto updatedRecordHdlHost =
+        pldm_entity_association_pdr_add_contained_entity(
+            pdrRepo, entity, parentEntity, &hostEventDataOps, true);
+     std::cout
+         << "\npldm_entity_association_pdr_add_contained_entity
+       updatedRecordHdlHost "
+         << updatedRecordHdlHost << std::endl;*/
 
     if (table.size())
     {
@@ -466,12 +547,16 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
     }
-    sendPDRRepositoryChgEventbyPDRHandles(
-        std::move(std::vector<ChangeEntry>(1, newRecordHdl)),
-        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_ADDED)));
-    sendPDRRepositoryChgEventbyPDRHandles(
-        std::move(std::vector<ChangeEntry>(1, updatedRecordHdl)),
-        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_MODIFIED)));
+    /* sendPDRRepositoryChgEventbyPDRHandles(
+         std::move(std::vector<ChangeEntry>(1, newRecordHdl)),
+         std::move(std::vector<uint8_t>(1, PLDM_RECORDS_ADDED)));
+     sendPDRRepositoryChgEventbyPDRHandles(
+         std::move(std::vector<ChangeEntry>(1, updatedRecordHdlBmc)),
+         std::move(std::vector<uint8_t>(1, bmcEventDataOps)));
+     sendPDRRepositoryChgEventbyPDRHandles(
+         std::move(std::vector<ChangeEntry>(1, updatedRecordHdlHost)),
+         std::move(std::vector<uint8_t>(1, hostEventDataOps)));*/
+    //   std::cout << "\nexit buildIndividualFRU" << std::endl;
 }
 
 void FruImpl::getFRUTable(Response& response)
@@ -592,6 +677,9 @@ void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties,
                                        const std::string& fruObjPath,
                                        const std::string& fruInterface)
 {
+    /*   std::cout << "enter processFruPresenceChange for " << fruObjPath << "
+       and "
+                 << fruInterface << std::endl;*/
     static constexpr auto propertyName = "Present";
     const auto it = chProperties.find(propertyName);
 
@@ -617,25 +705,31 @@ void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties,
             return;
         }
         pldm::responder::utils::findPortObjects(fruObjPath, portObjects);
+        /*   std::cout << "after finding the port objects " <<
+           portObjects.size()
+                     << std::endl;*/
     }
     // as per current code the ports do not have Present property
 #endif
 
-    if (newPropVal)
+    // if(fruInterface != "xyz.openbmc_project.Inventory.Item.PCIeDevice")
     {
-        buildIndividualFRU(fruInterface, fruObjPath);
-        for (auto portObject : portObjects)
+        if (newPropVal)
         {
-            buildIndividualFRU(portInterface, portObject);
+            buildIndividualFRU(fruInterface, fruObjPath);
+            for (auto portObject : portObjects)
+            {
+                buildIndividualFRU(portInterface, portObject);
+            }
         }
-    }
-    else
-    {
-        for (auto portObject : portObjects)
+        else
         {
-            removeIndividualFRU(portObject);
+            for (auto portObject : portObjects)
+            {
+                removeIndividualFRU(portObject);
+            }
+            removeIndividualFRU(fruObjPath);
         }
-        removeIndividualFRU(fruObjPath);
     }
 }
 
