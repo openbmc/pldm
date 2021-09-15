@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8aa3b61a_1af35ff6",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-15T10:01:05Z",
+      "side": 1,
+      "message": "This should be LicenseHandler ?",
+      "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42e3a9c0_7b163993",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lic.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-15T10:01:05Z",
+      "side": 1,
+      "message": "whether you need to include \"com/ibm/License/LicenseManager/server.hpp\" to access this ?",
+      "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bd0203d_372c97a3",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lic.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-15T10:01:05Z",
+      "side": 1,
+      "message": "can we avoid putting these magic numbers like 0?",
+      "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83ddae6a_0d9af0bc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lic.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-15T10:01:05Z",
+      "side": 1,
+      "message": "do you intend to continue to put if else for 5 and 6 conditions also ?",
+      "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
