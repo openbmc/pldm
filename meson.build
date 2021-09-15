@@ -146,6 +146,7 @@ if get_option('tests').enabled()
 endif
 
 subdir('libpldm')
+subdir('libncsi')
 
 if get_option('libpldm-only').disabled()
 
@@ -156,6 +157,7 @@ libpldmutils = library(
   version: meson.project_version(),
   dependencies: [
       libpldm_dep,
+      libnl,
       phosphor_dbus_interfaces,
       nlohmann_json,
       sdbusplus,
@@ -171,6 +173,8 @@ libpldmutils = declare_dependency(
 deps = [
   function2_dep,
   libpldm_dep,
+  libnl,
+  libncsi,
   libpldmutils,
   nlohmann_json,
   sdbusplus,
@@ -195,6 +199,15 @@ executable(
   dependencies: deps,
   install: true,
   install_dir: get_option('bindir'))
+
+executable(
+  'fw_update_test',
+  'fw_update_test.cpp',
+  implicit_include_directories: false,
+  dependencies: deps,
+  install: true,
+  install_dir: get_option('bindir'))
+
 
 if get_option('systemd').enabled()
   systemd_system_unit_dir = dependency('systemd').get_variable(
