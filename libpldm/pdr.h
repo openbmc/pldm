@@ -71,6 +71,11 @@ uint32_t pldm_pdr_get_repo_size(const pldm_pdr *repo);
 uint32_t pldm_pdr_add(pldm_pdr *repo, const uint8_t *data, uint32_t size,
 		      uint32_t record_handle, bool is_remote);
 
+uint32_t pldm_pdr_add_hotplug_record(pldm_pdr *repo, const uint8_t *data,
+				     uint32_t size, uint32_t record_handle,
+				     bool is_remote,
+				     uint32_t prev_record_handle);
+
 /** @brief Get record handle of a PDR record
  *
  *  @param[in] repo - opaque pointer acting as a PDR repo handle
@@ -353,26 +358,28 @@ void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
 /** @brief Remove a contained entity from an entity association PDR
  *  @param[in] repo - opaque pointer to pldm PDR repo
  *  @param[in] entity - the pldm entity to be deleted
+ *  @param[in] event_data_op - the event data operation that happens on the
+ *                             record
  *  @param[in] is_remote - whether to delete from a remote pDR or local PDR
  *
  *  @return uint32_t the PDR record handle that was updated
  */
-uint32_t pldm_entity_association_pdr_remove_contained_entity(pldm_pdr *repo,
-							     pldm_entity entity,
-							     bool is_remote);
+uint32_t pldm_entity_association_pdr_remove_contained_entity(
+    pldm_pdr *repo, pldm_entity entity, uint8_t *event_data_op, bool is_remote);
 
 /** @brief Add a contained entity into an entity association PDR
  *  @param[in] repo - opaque pointer to pldm PDR repo
  *  @param[in] entity - the pldm entity to be added
  *  @param[in] parent - the parent entity
+ *  @param[in] event_data_op - the event data operation that happens on the
+ *                             record
  *  @param[in] is_remote - whether to add in the local or remote PDR
  *
  *  @return uint32_t the updated PDR record handle
  */
-uint32_t pldm_entity_association_pdr_add_contained_entity(pldm_pdr *repo,
-							  pldm_entity entity,
-							  pldm_entity parent,
-							  bool is_remote);
+uint32_t pldm_entity_association_pdr_add_contained_entity(
+    pldm_pdr *repo, pldm_entity entity, pldm_entity parent,
+    uint8_t *event_data_op, bool is_remote);
 
 /** @brief Find entity reference in tree
  *
