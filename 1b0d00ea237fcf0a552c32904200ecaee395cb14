@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e9aaeb85_c434ed2a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lic.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-09-15T11:56:16Z",
+      "side": 1,
+      "message": "no",
+      "parentUuid": "42e3a9c0_7b163993",
+      "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8bd0203d_372c97a3",
         "filename": "oem/ibm/libpldmresponder/file_io_type_lic.cpp",
         "patchSetId": 2
@@ -65,6 +83,24 @@
       "writtenOn": "2021-09-15T10:01:05Z",
       "side": 1,
       "message": "can we avoid putting these magic numbers like 0?",
+      "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47d7463a_e69ddfad",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lic.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-09-15T11:56:16Z",
+      "side": 1,
+      "message": "enum added",
+      "parentUuid": "8bd0203d_372c97a3",
       "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -85,6 +121,24 @@
       "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7de9ed7a_595f1932",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lic.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2021-09-15T11:56:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83ddae6a_0d9af0bc",
+      "revId": "1b0d00ea237fcf0a552c32904200ecaee395cb14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
