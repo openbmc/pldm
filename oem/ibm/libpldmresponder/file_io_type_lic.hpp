@@ -25,11 +25,30 @@ class LicenseHandler : public FileHandler
         FileHandler(fileHandle), licType(fileType)
     {}
 
-    virtual int readIntoMemory(uint32_t offset, uint32_t& length,
-                               uint64_t address,
+    virtual int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
+                                uint64_t /*address*/,
+                                oem_platform::Handler* /*oemPlatformHandler*/);
+    virtual int readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
+                               uint64_t /*address*/,
                                oem_platform::Handler* /*oemPlatformHandler*/);
     virtual int read(uint32_t offset, uint32_t& length, Response& response,
                      oem_platform::Handler* /*oemPlatformHandler*/);
+
+    virtual int write(const char* /*buffer*/, uint32_t /*offset*/,
+                      uint32_t& /*length*/,
+                      oem_platform::Handler* /*oemPlatformHandler*/);
+
+    virtual int fileAck(uint8_t /*fileStatus*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
+    virtual int newFileAvailable(uint64_t /*length*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
+    virtual int fileAckWithMetaData(uint32_t metaDataValue);
 
     /** @brief CertHandler destructor
      */
@@ -38,6 +57,17 @@ class LicenseHandler : public FileHandler
 
   private:
     uint16_t licType; //!< type of the certificate
+
+    enum class status : uint32_t
+    {
+        InvalidLicense = 0,
+        Activated = 1,
+        Pending = 2,
+        ActivationFailed = 3,
+        IncorrectSystem = 4,
+        InvalidHostState = 5,
+        IncorrectSequence = 6,
+    };
 };
 } // namespace responder
 } // namespace pldm
