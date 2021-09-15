@@ -25,11 +25,10 @@ class LicenseHandler : public FileHandler
         FileHandler(fileHandle), licType(fileType)
     {}
 
-    virtual int readIntoMemory(uint32_t offset, uint32_t& length,
-                               uint64_t address,
-                               oem_platform::Handler* /*oemPlatformHandler*/);
     virtual int read(uint32_t offset, uint32_t& length, Response& response,
                      oem_platform::Handler* /*oemPlatformHandler*/);
+
+    virtual int fileAckWithMetaData(uint32_t metaDataValue);
 
     /** @brief CertHandler destructor
      */
