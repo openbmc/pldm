@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0cef323_9bdd8448",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-09-16T09:30:55Z",
+      "side": 1,
+      "message": "will caller ensure that request is valid ?",
+      "range": {
+        "startLine": 895,
+        "startChar": 38,
+        "endLine": 895,
+        "endChar": 61
+      },
+      "revId": "16928301f2d788ce18db2679f7e01bb2430106df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8da5fd9_2f620516",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-09-16T09:30:55Z",
+      "side": 1,
+      "message": "this can be moved below the if condition",
+      "range": {
+        "startLine": 898,
+        "startChar": 4,
+        "endLine": 900,
+        "endChar": 0
+      },
+      "revId": "16928301f2d788ce18db2679f7e01bb2430106df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "532cb4bf_61a9b75f",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-09-16T09:30:55Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 85,
+        "startChar": 49,
+        "endLine": 85,
+        "endChar": 55
+      },
+      "revId": "16928301f2d788ce18db2679f7e01bb2430106df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
