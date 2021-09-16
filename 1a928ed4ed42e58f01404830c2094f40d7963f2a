@@ -22,6 +22,30 @@
       "revId": "1a928ed4ed42e58f01404830c2094f40d7963f2a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6a1eb80_abe80b98",
+        "filename": "fw_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000546
+      },
+      "writtenOn": "2021-09-16T17:05:01Z",
+      "side": 1,
+      "message": "No. I have it in the local branch. Will submit in the next PS.",
+      "parentUuid": "8e912bcc_d59ca54b",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 30
+      },
+      "revId": "1a928ed4ed42e58f01404830c2094f40d7963f2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
