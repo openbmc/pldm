@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8e912bcc_d59ca54b",
+        "filename": "fw_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-09-16T12:00:50Z",
+      "side": 1,
+      "message": "is this file alredy merged ?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 30
+      },
+      "revId": "1a928ed4ed42e58f01404830c2094f40d7963f2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
