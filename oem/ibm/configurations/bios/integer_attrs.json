@@ -98,6 +98,24 @@
          "default_value" : 0,
          "helpText" : "Specifies the power limit in watts for the current IPL. Do not set this attribute directly; set hb_power_limit_in_watts instead.",
          "displayName" : "Power Limit In Watts (current)"
+      },
+      {
+         "attribute_name" : "hb_usb_security",
+         "lower_bound" : 0,
+         "upper_bound" : 1,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "helpText" : "Specifies if USB is disabled or enabled for security reasons, requires a reboot for a change to be applied.",
+         "displayName" : "USB Security (pending)"
+      },
+      {
+         "attribute_name" : "hb_usb_security_current",
+         "lower_bound" : 0,
+         "upper_bound" : 1,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "helpText" : "Specifies if USB is disabled or enabled for security reasons. Do not set this attribute directly; set hb_usb_security instead.",
+         "displayName" : "USB Security (current)"
       }
    ]
 }
