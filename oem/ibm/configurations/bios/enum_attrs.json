@@ -420,6 +420,30 @@
          ],
          "helpText" : "Specifies the requested level of security keys to be cleared from the system for the current IPL. Do not set this attribute directly; set hb_key_clear_request instead.",
          "displayName" : "Key Clear Request (current)"
+      },
+      {
+         "attribute_name":"hb_host_usb_enablement",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "Specifies if Host USB is disabled or enabled for security reasons, requires a reboot for a change to be applied.",
+         "displayName" : "Host USB Enablement (pending)"
+      },
+      {
+         "attribute_name":"hb_host_usb_enablement_current",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         },
+         "helpText" : "Specifies if Host USB is disabled or enabled for security reasons. Do not set this attribute directly; set hb_host_usb_enablement instead.",
+         "displayName" : "Host USB Enablement (current)"
       }
    ]
 }
