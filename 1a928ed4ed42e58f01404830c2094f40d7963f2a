@@ -46,6 +46,29 @@
       "revId": "1a928ed4ed42e58f01404830c2094f40d7963f2a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e79560f_8d9cd323",
+        "filename": "fw_update_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-09-17T04:16:36Z",
+      "side": 1,
+      "message": "i am assuming this is a test application for fwu, so instead of hardcoding the image name and path make it more generic\n\nare u planing to make this as a cmd line tool?",
+      "range": {
+        "startLine": 739,
+        "startChar": 4,
+        "endLine": 739,
+        "endChar": 44
+      },
+      "revId": "1a928ed4ed42e58f01404830c2094f40d7963f2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
