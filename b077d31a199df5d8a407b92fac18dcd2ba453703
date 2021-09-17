@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "36dba3ef_4bb434c2",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 3329,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-09-17T03:37:58Z",
+      "side": 1,
+      "message": "Is there any extra space here ? Please remove the same .",
+      "revId": "b077d31a199df5d8a407b92fac18dcd2ba453703",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
