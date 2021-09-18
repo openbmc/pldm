@@ -53,6 +53,7 @@
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/oem_ibm_handler.hpp"
+#include "oem/ibm/libpldmresponder/oem_system_config.hpp"
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
@@ -223,8 +224,11 @@ int main(int argc, char** argv)
             sockfd, hostEID, dbusImplReq, &reqHandler);
     }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+    std::vector<fs::path> pdrJSONPaths = {PDR_JSONS_DIR};
 
 #ifdef OEM_IBM
+    pldm::oem_system::IBMCompatible ibmCompatible;
+    pdrJSONPaths.push_back(ibmCompatible.getConfigDir());
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
         std::make_unique<pldm::responder::CodeUpdate>(&dbusHandler);
     codeUpdate->clearDirPath(LID_STAGING_DIR);
@@ -246,7 +250,7 @@ int main(int argc, char** argv)
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
     auto platformHandler = std::make_unique<platform::Handler>(
-        &dbusHandler, PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get(),
+        &dbusHandler, pdrJSONPaths, pdrRepo.get(), hostPDRHandler.get(),
         dbusToPLDMEventHandler.get(), fruHandler.get(),
         oemPlatformHandler.get(), event, true);
 #ifdef OEM_IBM
