@@ -62,11 +62,15 @@ const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
 }
 
 void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
-                       const std::string& dir, Repo& repo)
+                       const std::vector<fs::path>& dir, Repo& repo)
 {
-    if (!fs::exists(dir))
+    for (const auto& directory : dir)
     {
-        return;
+        std::cerr << "checking if : " << directory << "exists" << std::endl;
+        if (!fs::exists(directory))
+        {
+            return;
+        }
     }
 
     // A map of PDR type to a lambda that handles creation of that PDR type.
@@ -97,47 +101,57 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
          }}};
 
     Type pdrType{};
-    for (const auto& dirEntry : fs::directory_iterator(dir))
-    {
-        try
-        {
-            auto json = readJson(dirEntry.path().string());
-            if (!json.empty())
-            {
-                auto effecterPDRs = json.value("effecterPDRs", empty);
-                for (const auto& effecter : effecterPDRs)
-                {
-                    pdrType = effecter.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, effecter, repo);
-                }
 
-                auto sensorPDRs = json.value("sensorPDRs", empty);
-                for (const auto& sensor : sensorPDRs)
+    for (const auto& directory : dir)
+    {
+        for (const auto& dirEntry : fs::directory_iterator(directory))
+        {
+            try
+            {
+                if (fs::is_regular_file(dirEntry.path().string()))
                 {
-                    pdrType = sensor.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, sensor, repo);
+                    auto json = readJson(dirEntry.path().string());
+                    if (!json.empty())
+                    {
+                        auto effecterPDRs = json.value("effecterPDRs", empty);
+                        for (const auto& effecter : effecterPDRs)
+                        {
+                            pdrType = effecter.value("pdrType", 0);
+                            generateHandlers.at(pdrType)(dBusIntf, effecter,
+                                                         repo);
+                        }
+
+                        auto sensorPDRs = json.value("sensorPDRs", empty);
+                        for (const auto& sensor : sensorPDRs)
+                        {
+                            pdrType = sensor.value("pdrType", 0);
+                            generateHandlers.at(pdrType)(dBusIntf, sensor,
+                                                         repo);
+                        }
+                    }
                 }
             }
-        }
-        catch (const InternalFailure& e)
-        {
-            std::cerr << "PDR config directory does not exist or empty, TYPE= "
-                      << pdrType << "PATH= " << dirEntry
-                      << " ERROR=" << e.what() << "\n";
-        }
-        catch (const Json::exception& e)
-        {
-            std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
-                      << " ERROR=" << e.what() << "\n";
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
-        }
-        catch (const std::exception& e)
-        {
-            std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
-                      << " ERROR=" << e.what() << "\n";
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            catch (const InternalFailure& e)
+            {
+                std::cerr
+                    << "PDR config directory does not exist or empty, TYPE= "
+                    << pdrType << "PATH= " << dirEntry << " ERROR=" << e.what()
+                    << "\n";
+            }
+            catch (const Json::exception& e)
+            {
+                std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
+                          << " ERROR=" << e.what() << "\n";
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
+                          << " ERROR=" << e.what() << "\n";
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            }
         }
     }
 }
