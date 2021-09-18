@@ -49,7 +49,7 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
-            const std::string& pdrJsonsDir, pldm_pdr* repo,
+            const std::vector<fs::path>& pdrJsonsDir, pldm_pdr* repo,
             HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
@@ -184,7 +184,7 @@ class Handler : public CmdHandler
      *  @param[in] repo - instance of concrete implementation of Repo
      */
     void generate(const pldm::utils::DBusHandler& dBusIntf,
-                  const std::string& dir,
+                  const std::vector<fs::path>& dir,
                   pldm::responder::pdr_utils::Repo& repo);
 
     /** @brief Parse PDR JSONs and build state effecter PDR repository
@@ -458,7 +458,7 @@ class Handler : public CmdHandler
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
     sdeventplus::Event& event;
-    std::string pdrJsonsDir;
+    std::vector<fs::path> pdrJsonsDir;
     bool pdrCreated;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
 };
