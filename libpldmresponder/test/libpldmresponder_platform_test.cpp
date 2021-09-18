@@ -42,7 +42,7 @@ TEST(getPDR, testGoodPath)
 
     auto pdrRepo = pldm_pdr_init();
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"}, pdrRepo,
                     nullptr, nullptr, nullptr, nullptr, event);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -80,7 +80,7 @@ TEST(getPDR, testShortRead)
 
     auto pdrRepo = pldm_pdr_init();
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"}, pdrRepo,
                     nullptr, nullptr, nullptr, nullptr, event);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -112,7 +112,7 @@ TEST(getPDR, testBadRecordHandle)
 
     auto pdrRepo = pldm_pdr_init();
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"}, pdrRepo,
                     nullptr, nullptr, nullptr, nullptr, event);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -142,7 +142,7 @@ TEST(getPDR, testNoNextRecord)
 
     auto pdrRepo = pldm_pdr_init();
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"}, pdrRepo,
                     nullptr, nullptr, nullptr, nullptr, event);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -174,7 +174,7 @@ TEST(getPDR, testFindPDR)
 
     auto pdrRepo = pldm_pdr_init();
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", pdrRepo,
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"}, pdrRepo,
                     nullptr, nullptr, nullptr, nullptr, event);
     Repo repo(pdrRepo);
     ASSERT_EQ(repo.empty(), false);
@@ -237,8 +237,8 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr, nullptr, event);
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"},
+                    inPDRRepo, nullptr, nullptr, nullptr, nullptr, event);
     handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
@@ -284,8 +284,8 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr, nullptr, event);
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"},
+                    inPDRRepo, nullptr, nullptr, nullptr, nullptr, event);
     handler.getPDR(req, requestPayloadLength);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
@@ -330,8 +330,8 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr, nullptr, event);
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"},
+                    inPDRRepo, nullptr, nullptr, nullptr, nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
@@ -373,8 +373,8 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
     auto numericEffecterPdrRepo = pldm_pdr_init();
     Repo numericEffecterPDRs(numericEffecterPdrRepo);
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
-                    nullptr, nullptr, nullptr, nullptr, event);
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_effecter/good"},
+                    inPDRRepo, nullptr, nullptr, nullptr, nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
 
@@ -547,7 +547,7 @@ TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
     Repo outRepo(outPDRRepo);
     MockdBusHandler mockedUtils;
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "", inPDRRepo, nullptr, nullptr, nullptr,
+    Handler handler(&mockedUtils, {""}, inPDRRepo, nullptr, nullptr, nullptr,
                     nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_TERMINUS_LOCATOR_PDR);
@@ -592,7 +592,7 @@ TEST(getStateSensorReadingsHandler, testGoodRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", inPDRRepo,
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_sensor/good"}, inPDRRepo,
                     nullptr, nullptr, nullptr, nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
@@ -639,7 +639,7 @@ TEST(getStateSensorReadingsHandler, testBadRequest)
     auto outPDRRepo = pldm_pdr_init();
     Repo outRepo(outPDRRepo);
     auto event = sdeventplus::Event::get_default();
-    Handler handler(&mockedUtils, "./pdr_jsons/state_sensor/good", inPDRRepo,
+    Handler handler(&mockedUtils, {"./pdr_jsons/state_sensor/good"}, inPDRRepo,
                     nullptr, nullptr, nullptr, nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
