@@ -365,5 +365,8 @@ void printBuffer(bool isTx, const std::vector<uint8_t>& buffer);
  */
 std::string toString(const struct variable_field& var);
 
+void deleteStateEffecterPDR(uint16_t& fruRSI, pldm_pdr* repo, bool is_remote);
+
+void deleteStateSensorPDR(uint16_t& fruRSI, pldm_pdr* repo, bool is_remote);
 } // namespace utils
 } // namespace pldm

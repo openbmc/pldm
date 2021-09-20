@@ -527,5 +527,148 @@ std::string toString(const struct variable_field& var)
     return str;
 }
 
+void deleteStateEffecterPDR(uint16_t& fruRSI, pldm_pdr* repo, bool is_remote)
+{
+    std::cerr << "inside the delete effecter pdr function" << std::endl;
+    uint16_t terminusHdl{};
+    uint16_t entityType{};
+    uint16_t entityInstanceNum{};
+    uint16_t containerId{};
+    const pldm_pdr_record* record{};
+
+    std::cerr << "FRU RSI :" << fruRSI << std::endl;
+    record = pldm_pdr_fru_record_set_find_by_rsi(
+        repo, fruRSI, &terminusHdl, &entityType, &entityInstanceNum,
+        &containerId /*, is_remote*/);
+
+    if (record)
+    {
+        std::cerr << "Record found with the fru RSI: " << fruRSI << std::endl;
+        pldm_entity deleteEntity;
+        deleteEntity.entity_type = entityType;
+        deleteEntity.entity_instance_num = entityInstanceNum;
+        deleteEntity.entity_container_id = containerId;
+
+        std::cerr << " ENTITY TYPE:" << deleteEntity.entity_type << std::endl;
+        std::cerr << " ENTITY INSTANCE NUMBER:"
+                  << deleteEntity.entity_instance_num << std::endl;
+        std::cerr << " CONTAINER ID:" << deleteEntity.entity_container_id
+                  << std::endl;
+
+        uint8_t* outData = nullptr;
+        uint32_t size{};
+        const pldm_pdr_record* stateEffecterRecord{};
+        try
+        {
+            std::cerr << "Inside the try block" << std::endl;
+            do
+            {
+                stateEffecterRecord = pldm_pdr_find_record_by_type(
+                    repo, PLDM_STATE_EFFECTER_PDR, stateEffecterRecord,
+                    &outData, &size);
+
+                std::cerr << "After find record by type" << std::endl;
+                if (stateEffecterRecord)
+                {
+                    std::cerr << "Found record by type state effecter"
+                              << std::endl;
+                    auto pdr =
+                        reinterpret_cast<pldm_state_effecter_pdr*>(outData);
+                    auto effecterEntityType = pdr->entity_type;
+                    auto effecterEntityInstanceNumber = pdr->entity_instance;
+                    auto effecterContainerId = pdr->container_id;
+
+                    std::cerr << " effecterEntityType:" << effecterEntityType
+                              << "effecterEntityInstanceNumber: "
+                              << effecterEntityInstanceNumber << std::endl;
+                    std::cerr << " effecterContainerId :" << effecterContainerId
+                              << std::endl;
+                    if (effecterEntityType == deleteEntity.entity_type &&
+                        effecterEntityInstanceNumber ==
+                            deleteEntity.entity_instance_num &&
+                        effecterContainerId == deleteEntity.entity_container_id)
+                    {
+                        std::cerr << "Insid ethe if when all are equal"
+                                  << std::endl;
+                        uint16_t effecterId = pdr->effecter_id;
+                        std::cerr << "Effecter ID:" << effecterId << std::endl;
+                        std::cerr << "Calling delete function from pdr.c"
+                                  << std::endl;
+                        pldm_delete_state_effecter_pdr_by_effecter_id(
+                            repo, effecterId, is_remote);
+                        break;
+                    }
+                }
+            } while (stateEffecterRecord);
+        }
+
+        catch (const std::exception& e)
+        {
+            std::cerr << " Failed to obtain a record. ERROR =" << e.what()
+                      << std::endl;
+        }
+    }
+}
+
+void deleteStateSensorPDR(uint16_t& fruRSI, pldm_pdr* repo, bool is_remote)
+{
+    uint16_t terminusHdl{};
+    uint16_t entityType{};
+    uint16_t entityInstanceNum{};
+    uint16_t containerId{};
+    const pldm_pdr_record* record{};
+
+    record = pldm_pdr_fru_record_set_find_by_rsi(
+        repo, fruRSI, &terminusHdl, &entityType, &entityInstanceNum,
+        &containerId /*, is_remote*/);
+
+    if (record)
+    {
+        pldm_entity deleteEntity;
+        deleteEntity.entity_type = entityType;
+        deleteEntity.entity_instance_num = entityInstanceNum;
+        deleteEntity.entity_container_id = containerId;
+
+        uint8_t* outData = nullptr;
+        uint32_t size{};
+        const pldm_pdr_record* stateSensorRecord{};
+        try
+        {
+            do
+            {
+                stateSensorRecord = pldm_pdr_find_record_by_type(
+                    repo, PLDM_STATE_SENSOR_PDR, stateSensorRecord, &outData,
+                    &size);
+
+                if (stateSensorRecord)
+                {
+                    auto pdr =
+                        reinterpret_cast<pldm_state_sensor_pdr*>(outData);
+                    auto effecterEntityType = pdr->entity_type;
+                    auto effecterEntityInstanceNumber = pdr->entity_instance;
+                    auto effecterContainerId = pdr->container_id;
+
+                    if (effecterEntityType == deleteEntity.entity_type &&
+                        effecterEntityInstanceNumber ==
+                            deleteEntity.entity_instance_num &&
+                        effecterContainerId == deleteEntity.entity_container_id)
+                    {
+                        uint16_t sensorId = pdr->sensor_id;
+                        pldm_delete_state_sensor_pdr_by_sensor_id(
+                            repo, sensorId, is_remote);
+                        break;
+                    }
+                }
+            } while (stateSensorRecord);
+        }
+
+        catch (const std::exception& e)
+        {
+            std::cerr << " Failed to obtain a record. ERROR =" << e.what()
+                      << std::endl;
+        }
+    }
+}
+
 } // namespace utils
 } // namespace pldm
