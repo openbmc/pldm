@@ -252,7 +252,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu0",
+        "type" : 135,
+        "instance" : 1,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 17,
@@ -269,7 +271,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu1",
+        "type" : 135,
+        "instance" : 2,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 17,
@@ -286,7 +290,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu2",
+        "type" : 135,
+        "instance" : 3,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 17,
@@ -303,7 +309,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu3",
+        "type" : 135,
+        "instance" : 4,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 17,
@@ -2038,7 +2046,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu0",
+        "type" : 135,
+        "instance" : 1,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 10,
@@ -2055,7 +2065,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu1",
+        "type" : 135,
+        "instance" : 2,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 10,
@@ -2072,7 +2084,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu2",
+        "type" : 135,
+        "instance" : 3,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 10,
@@ -2089,7 +2103,9 @@
         }]
     },
     {
-        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu3",
+        "type" : 135,
+        "instance" : 4,
+        "container" : 4,
         "sensors" : [{
             "set" : {
                 "id" : 10,
