@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "550aaf87_2c172c34",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T13:36:02Z",
+      "side": 1,
+      "message": "nit : it would have be better to start with 0, and match the dbus object number in the dbus object path.\n\nso in future when we debug..we know that dimm PDR with instance 0 is corresponding PDR for dimm0 dbus object(/xyz/openbmc_project/inventory/system/chassis/motherboard/dimm0) without much effort.",
+      "range": {
+        "startLine": 409,
+        "startChar": 9,
+        "endLine": 409,
+        "endChar": 23
+      },
+      "revId": "99e858317dd5e7a656167a7b8b5c0cabd03db467",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
