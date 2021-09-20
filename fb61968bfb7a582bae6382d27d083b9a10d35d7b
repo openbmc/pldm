@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "35d368f7_8c62b824",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:17:50Z",
+      "side": 1,
+      "message": "what does a security stat mean ? is it security state ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "fb61968bfb7a582bae6382d27d083b9a10d35d7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20118ca6_393a41c3",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:17:50Z",
+      "side": 1,
+      "message": "i dont see it the shared box link https://ibm.ent.box.com/file/478139954961?s\u003dw7lzdwgawwnt9saob8zs05bs6n6o7tg4\n\ncan you please add an entry in that box ?\n\nand i also feel hb_usb_policy makes more sense..not sure why you are using usb_security wording. does it bios attribute increases or decreases the security of an USB ?",
+      "range": {
+        "startLine": 103,
+        "startChar": 29,
+        "endLine": 103,
+        "endChar": 45
+      },
+      "revId": "fb61968bfb7a582bae6382d27d083b9a10d35d7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1c78afe_def7886a",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:17:50Z",
+      "side": 1,
+      "message": "which usb ? are these bmc usb ports ? or the host usb ports ?",
+      "range": {
+        "startLine": 108,
+        "startChar": 23,
+        "endLine": 108,
+        "endChar": 62
+      },
+      "revId": "fb61968bfb7a582bae6382d27d083b9a10d35d7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
