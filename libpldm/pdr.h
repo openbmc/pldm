@@ -156,6 +156,13 @@ void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
 void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
 			    uint8_t tid, uint8_t tlEid, bool valid);
 
+void pldm_delete_state_effecter_pdr_by_effecter_id(pldm_pdr *repo,
+						   uint16_t effecterId,
+						   bool is_remote);
+
+void pldm_delete_state_sensor_pdr_by_sensor_id(pldm_pdr *repo,
+					       uint16_t sensorId,
+					       bool is_remote);
 /* ======================= */
 /* FRU Record Set PDR APIs */
 /* ======================= */

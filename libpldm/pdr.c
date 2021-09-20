@@ -1,6 +1,7 @@
 #include "pdr.h"
 #include "platform.h"
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -339,6 +340,109 @@ void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
 		record = pldm_pdr_find_record_by_type(
 		    repo, PLDM_TERMINUS_LOCATOR_PDR, record, &outData, &size);
 	} while (record);
+}
+
+void pldm_delete_state_effecter_pdr_by_effecter_id(pldm_pdr *repo,
+						   uint16_t effecterId,
+						   bool is_remote)
+{
+	printf("\n Inside the delete  in pdr.c");
+	assert(repo != NULL);
+
+	pldm_pdr_record *record = repo->first;
+	pldm_pdr_record *prev = NULL;
+	while (record != NULL) {
+		printf("\nRecord not null");
+		pldm_pdr_record *next = record->next;
+		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+		if ((record->is_remote == is_remote) &&
+		    hdr->type == PLDM_STATE_EFFECTER_PDR) {
+			printf("\nInside the if when its a state effecter");
+			struct pldm_state_effecter_pdr *stateEffecterPDR =
+			    (struct pldm_state_effecter_pdr
+				 *)((uint8_t *)record->data +
+				    sizeof(struct pldm_pdr_hdr) +
+				    sizeof(
+					struct state_effecter_possible_states) -
+				    sizeof(uint8_t));
+			printf("\nEffecter Id inside the pdr.c %d",
+			       stateEffecterPDR->effecter_id);
+			if (stateEffecterPDR->effecter_id == effecterId) {
+				printf(
+				    "\nEffecter Id inside the if of pdr.c %d",
+				    stateEffecterPDR->effecter_id);
+				printf("\nWhen effecter id are same");
+				if (repo->first == record) {
+					repo->first = next;
+				} else {
+					prev->next = next;
+				}
+				if (repo->last == record) {
+					repo->last = prev;
+				}
+				if (record->data) {
+					free(record->data);
+				}
+				--repo->record_count;
+				repo->size -= record->size;
+				printf("\nBefore freeing the record");
+				free(record);
+				break;
+			} else {
+				prev = record;
+			}
+		} else {
+			prev = record;
+		}
+		record = next;
+	}
+	printf("\nBefore leaving the function");
+}
+
+void pldm_delete_state_sensor_pdr_by_sensor_id(pldm_pdr *repo,
+					       uint16_t sensorId,
+					       bool is_remote)
+{
+	assert(repo != NULL);
+
+	pldm_pdr_record *record = repo->first;
+	pldm_pdr_record *prev = NULL;
+	while (record != NULL) {
+		pldm_pdr_record *next = record->next;
+		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+		if ((record->is_remote == is_remote) &&
+		    hdr->type == PLDM_STATE_SENSOR_PDR) {
+			struct pldm_state_sensor_pdr *stateSensorPDR =
+			    (struct pldm_state_sensor_pdr
+				 *)((uint8_t *)record->data +
+				    sizeof(struct pldm_pdr_hdr) +
+				    sizeof(
+					struct state_sensor_possible_states) -
+				    sizeof(uint8_t));
+			if (stateSensorPDR->sensor_id == sensorId) {
+				if (repo->first == record) {
+					repo->first = next;
+				} else {
+					prev->next = next;
+				}
+				if (repo->last == record) {
+					repo->last = prev;
+				}
+				if (record->data) {
+					free(record);
+				}
+				--repo->record_count;
+				repo->size -= record->size;
+				free(record);
+				break;
+			} else {
+				prev = record;
+			}
+		} else {
+			prev = record;
+		}
+		record = next;
+	}
 }
 
 typedef struct pldm_entity_association_tree {
