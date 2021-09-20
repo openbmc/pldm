@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b292ba4_bc0f2bf6",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:39:36Z",
+      "side": 1,
+      "message": "bios attributes help text is used by the customers and is visible via redfish API\u0027s, please add more meaningful information regarding what this attribute does.",
+      "range": {
+        "startLine": 24,
+        "startChar": 9,
+        "endLine": 24,
+        "endChar": 37
+      },
+      "revId": "f79f69f4638ec5b3cbd7654656521401c362c7a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5904c73_402d3215",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:39:36Z",
+      "side": 1,
+      "message": "why was logging headers added ? pldm uses std::cerr, std::couts for logging right ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "f79f69f4638ec5b3cbd7654656521401c362c7a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "443075a7_931a9014",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:39:36Z",
+      "side": 1,
+      "message": "why dont you use pldm::utils::dbus::getService() API.",
+      "range": {
+        "startLine": 656,
+        "startChar": 4,
+        "endLine": 660,
+        "endChar": 41
+      },
+      "revId": "f79f69f4638ec5b3cbd7654656521401c362c7a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04e5e481_1f6162de",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:39:36Z",
+      "side": 1,
+      "message": "probably this can be removed by using one subtree call to get the service name, i have added subtree pldm utility function as part of https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/42608, please use it and add it to the relation chain.\nor we already have pldm::utils::dbus().getService(), which exactly does the same thing.",
+      "range": {
+        "startLine": 682,
+        "startChar": 0,
+        "endLine": 691,
+        "endChar": 9
+      },
+      "revId": "f79f69f4638ec5b3cbd7654656521401c362c7a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95379fa5_c6ecb647",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T16:39:36Z",
+      "side": 1,
+      "message": "const reference ?",
+      "range": {
+        "startLine": 290,
+        "startChar": 25,
+        "endLine": 290,
+        "endChar": 37
+      },
+      "revId": "f79f69f4638ec5b3cbd7654656521401c362c7a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
