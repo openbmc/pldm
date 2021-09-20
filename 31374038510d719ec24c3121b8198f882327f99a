@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5d9e951_15b96454",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-20T13:38:31Z",
+      "side": 1,
+      "message": "instance numbers can be anything as per the PLDM spec, and it would have been better if the instance number would have started with 0, rather than 1. As the dbus object(/xyz/openbmc_project/inventory/system/chassis/motherboard/cpu0) and fault led group path(/xyz/openbmc_project/led/groups/cpu0_identify) both starts with 0.",
+      "range": {
+        "startLine": 196,
+        "startChar": 6,
+        "endLine": 196,
+        "endChar": 23
+      },
+      "revId": "31374038510d719ec24c3121b8198f882327f99a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
