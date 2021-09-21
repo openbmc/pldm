@@ -216,6 +216,14 @@ std::tuple<pldm::pdr::TerminusHandle, pldm::pdr::SensorID,
            pldm::pdr::SensorInfo>
     parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr);
 
+/** @brief Method to fetch the bitmap of possible states from a PDR
+ *
+ *  @param[in] pdrs - The PDR to fetch the bitmap from
+ *
+ *  @return the bitmap of possible states
+ *  */
+std::vector<uint8_t> fetchBitMap(std::vector<std::vector<uint8_t>> pdrs);
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
