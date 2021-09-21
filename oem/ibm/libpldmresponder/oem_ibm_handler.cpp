@@ -781,6 +781,46 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     return PLDM_SUCCESS;
 }
 
+void pldm::responder::oem_ibm_platform::Handler::setBitmapMethodCall(
+    const char* service, const char* objPath, const char* dbusMethod,
+    const char* dbusInterface, const PropertyValue& value)
+{
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto method =
+            bus.new_method_call(service, objPath, dbusInterface, dbusMethod);
+        auto val = std::get_if<std::vector<uint8_t>>(&value);
+        method.append(*val);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to call the D-Bus Method"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::modifyPDROemActions(
+    uint16_t entityType, uint16_t stateSetId)
+{
+    pldm::pdr::EntityType pdrEntityType = entityType;
+    pldm::pdr::StateSetId pdrStateSetId = stateSetId;
+    if ((pdrEntityType == (PLDM_ENTITY_CHASSIS_FRONT_PANEL_BOARD | 0x8000)) &&
+        (pdrStateSetId == PLDM_OEM_IBM_PANEL_TRIGGER_STATE))
+    {
+        auto pdrs = pldm::utils::findStateEffecterPDR(0, pdrEntityType,
+                                                      pdrStateSetId, pdrRepo);
+        if (!std::empty(pdrs))
+        {
+            auto bitMap = responder::pdr_utils::fetchBitMap(pdrs);
+            setBitmapMethodCall("com.ibm.PanelApp", "/com/ibm/panel_app",
+                                "toggleFunctionState", "com.ibm.panel", bitMap);
+        }
+    }
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

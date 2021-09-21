@@ -5,6 +5,7 @@
 
 #include <config.h>
 
+#include <bitset>
 #include <climits>
 
 using namespace pldm::pdr;
@@ -246,6 +247,40 @@ std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
 
     return frus;
 }
+
+std::vector<uint8_t> fetchBitMap(const std::vector<std::vector<uint8_t>>& pdrs)
+{
+    std::vector<uint8_t> bitMap;
+    for (const auto& pdr : pdrs)
+    {
+        auto effecterPdr =
+            reinterpret_cast<const pldm_state_effecter_pdr*>(pdr.data());
+        auto statesPtr = effecterPdr->possible_states;
+        auto compEffCount = effecterPdr->composite_effecter_count;
+        while (compEffCount--)
+        {
+            auto state =
+                reinterpret_cast<const state_effecter_possible_states*>(
+                    statesPtr);
+            uint8_t possibleStatesPos{};
+            auto printStates = [&possibleStatesPos,
+                                &bitMap](const bitfield8_t& val) {
+                bitMap.emplace_back(static_cast<uint8_t>(val.byte));
+                possibleStatesPos++;
+            };
+            std::for_each(state->states,
+                          state->states + state->possible_states_size,
+                          printStates);
+            if (compEffCount)
+            {
+                statesPtr += sizeof(state_effecter_possible_states) +
+                             state->possible_states_size - 1;
+            }
+        }
+    }
+    return bitMap;
+}
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
