@@ -507,6 +507,27 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                     return rc;
                 }
             }
+            else if (eventDataOperation == PLDM_RECORDS_MODIFIED)
+            {
+                rc = getPDRRecordHandles(
+                    reinterpret_cast<const ChangeEntry*>(changeRecordData +
+                                                         dataOffset),
+                    changeRecordDataSize - dataOffset,
+                    static_cast<size_t>(numberOfChangeEntries),
+                    pdrRecordHandles);
+
+                if (rc != PLDM_SUCCESS)
+                {
+                    return rc;
+                }
+
+                /*auto changeEntryDataSize = changeRecordDataSize - dataOffset;
+
+                fetchPanlPdrEvent =
+                std::make_unique<sdeventplus::source::Defer>( event,
+                std::bind_front(&Handler::_fetchPanlPDR, this, pdrRecordHandles,
+                    changeEntryDataSize));*/
+            }
 
             changeRecordData +=
                 dataOffset + (numberOfChangeEntries * sizeof(ChangeEntry));
@@ -520,6 +541,61 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
 
     return PLDM_SUCCESS;
+}
+
+void Handler::_fetchPanlPDR(PDRRecordHandles pdrRecordHandles,
+                            size_t changeEntryDataSize,
+                            sdeventplus::source::EventBase& /*source */)
+{
+    uint8_t* pdrData = nullptr;
+    uint32_t* nextRecordHandle = nullptr;
+    auto record =
+        pldm_pdr_find_record(pdrRepo.getPdr(), pdrRecordHandles[1], &pdrData,
+                             (uint32_t*)changeEntryDataSize, nextRecordHandle);
+    if (record)
+    {
+        auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrData);
+        auto statesPtr = pdr->possible_states;
+        auto compEffCount = pdr->composite_effecter_count;
+        while (compEffCount--)
+        {
+            auto state =
+                reinterpret_cast<const state_effecter_possible_states*>(
+                    statesPtr);
+            if (state->state_set_id == 32778)
+            {
+                std::vector<uint8_t> bitMap;
+                uint8_t possibleStatesPos{};
+                auto printStates = [&possibleStatesPos,
+                                    &bitMap](const bitfield8_t& val) {
+                    std::stringstream pstates;
+                    for (int i = 0; i < CHAR_BIT; i++)
+                    {
+                        if (val.byte & (1 << i))
+                        {
+                            pstates << (possibleStatesPos * CHAR_BIT + i);
+                            bitMap.push_back(
+                                static_cast<uint8_t>(std::stoi(pstates.str())));
+                            pstates.str("");
+                        }
+                    }
+                    possibleStatesPos++;
+                };
+                std::for_each(state->states,
+                              state->states + state->possible_states_size,
+                              printStates);
+                if (oemPlatformHandler != nullptr)
+                {
+                    oemPlatformHandler->opPanlTrigger(bitMap);
+                }
+            }
+            if (compEffCount)
+            {
+                statesPtr += sizeof(state_effecter_possible_states) +
+                             state->possible_states_size - 1;
+            }
+        }
+    }
 }
 
 int Handler::getPDRRecordHandles(const ChangeEntry* changeEntryData,

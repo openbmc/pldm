@@ -68,6 +68,12 @@ class Handler : public CmdHandler
      */
     virtual void buildOEMPDR(pdr_utils::Repo& repo) = 0;
 
+    /** @brief Interface to call the operator panel D-Bus API to set the bitmap
+     *         for the trigger functions as sent by the host
+     *  @param[in] value - the bitmap value to be passed to the D-Bus API
+     */
+    virtual void opPanlTrigger(const std::vector<uint8_t>& value) = 0;
+
     virtual ~Handler() = default;
 
   protected:
