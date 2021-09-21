@@ -559,5 +559,26 @@ const std::string getCurrentSystemTime()
     sprintf(buf, "%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
     return buf;
 }
+
+void dbusMethodCall(const char* service, const char* objPath,
+                    const char* dbusMethod, const char* dbusInterface,
+                    const PropertyValue& value)
+{
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto method =
+            bus.new_method_call(service, objPath, dbusInterface, dbusMethod);
+        method.append(value);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to call the D-Bus Method"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
+
 } // namespace utils
 } // namespace pldm
