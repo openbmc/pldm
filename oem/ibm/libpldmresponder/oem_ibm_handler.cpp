@@ -781,6 +781,24 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     return PLDM_SUCCESS;
 }
 
+void pldm::responder::oem_ibm_platform::Handler::modifyPDROemActions(
+    uint32_t /*recordHandle*/, pldm_pdr* repo)
+{
+    // need to add a change here to compare the recordHandle before fetching the
+    // panel effecter and calling panel
+    auto pdrs = pldm::utils::findStateEffecterPDR(
+        0xD0,
+        pldm::responder::oem_ibm_platform::PLDM_OEM_IBM_FRONT_PANEL_TRIGGER,
+        PLDM_OEM_IBM_PANEL_TRIGGER_STATE, repo);
+    if (!std::empty(pdrs))
+    {
+        auto bitMap = responder::pdr_utils::fetchBitMap(pdrs);
+        pldm::utils::dbusMethodCall("com.ibm.PanelApp", "/com/ibm/panel_app",
+                                    "toggleFunctionState", "com.ibm.panel",
+                                    bitMap);
+    }
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

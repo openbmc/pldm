@@ -67,9 +67,37 @@ static void add_hotplug_record(pldm_pdr *repo, pldm_pdr_record *record,
 		}
 		/* printf("\nadding the fru hotplug here
 		 curr->record_handle=%d",curr->record_handle);
-		 printf("repo-last=%x, curr=%x, curr-next=%x",
+		printf("repo-last=%x, curr=%x, curr-next=%x",
 		(unsigned int)repo->last, (unsigned int)curr, (unsigned
 		int)curr->next);*/
+		record->next = curr->next;
+		curr->next = record;
+		if (record->next == NULL) {
+			repo->last = record;
+		}
+	}
+	repo->size += record->size;
+	++repo->record_count;
+}
+
+static void add_record_after_record_handle(pldm_pdr *repo,
+					   pldm_pdr_record *record,
+					   uint32_t prev_record_handle)
+{
+	assert(repo != NULL);
+	assert(record != NULL);
+	if (repo->first == NULL) {
+		assert(repo->last == NULL);
+		repo->first = record;
+		repo->last = record;
+	} else {
+		pldm_pdr_record *curr = repo->first;
+		while (curr != NULL) {
+			if (curr->record_handle == prev_record_handle) {
+				break;
+			}
+			curr = curr->next;
+		}
 		record->next = curr->next;
 		curr->next = record;
 		if (record->next == NULL) {
@@ -155,6 +183,22 @@ uint32_t pldm_pdr_add_hotplug_record(pldm_pdr *repo, const uint8_t *data,
 	pldm_pdr_record *record = make_new_record(
 	    repo, data, size, record_handle, is_remote, terminus_handle);
 	add_hotplug_record(repo, record, prev_record_handle);
+
+	return record->record_handle;
+}
+
+uint32_t pldm_pdr_add_after_prev_record(pldm_pdr *repo, const uint8_t *data,
+					uint32_t size, uint32_t record_handle,
+					bool is_remote,
+					uint32_t prev_record_handle,
+					uint16_t terminus_handle)
+{
+	assert(size != 0);
+	assert(data != NULL);
+
+	pldm_pdr_record *record = make_new_record(
+	    repo, data, size, record_handle, is_remote, terminus_handle);
+	add_record_after_record_handle(repo, record, prev_record_handle);
 
 	return record->record_handle;
 }
@@ -247,6 +291,24 @@ pldm_pdr_record *pldm_pdr_find_last_local_record(const pldm_pdr *repo)
 		return prev;
 	}
 	return NULL;
+}
+
+bool pldm_pdr_find_prev_record_handle(pldm_pdr *repo, uint32_t record_handle,
+				      uint32_t *prev_record_handle)
+{
+
+	assert(repo != NULL);
+	pldm_pdr_record *curr = repo->first;
+	pldm_pdr_record *prev = repo->first;
+	while (curr != NULL) {
+		if (curr->record_handle == record_handle) {
+			*prev_record_handle = prev->record_handle;
+			return true;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+	return false;
 }
 
 const pldm_pdr_record *
@@ -497,6 +559,40 @@ void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
 		record = pldm_pdr_find_record_by_type(
 		    repo, PLDM_TERMINUS_LOCATOR_PDR, record, &outData, &size);
 	} while (record);
+}
+
+void pldm_delete_by_record_handle(pldm_pdr *repo, uint32_t record_handle,
+				  bool is_remote)
+{
+	assert(repo != NULL);
+
+	pldm_pdr_record *record = repo->first;
+	pldm_pdr_record *prev = NULL;
+	while (record != NULL) {
+		pldm_pdr_record *next = record->next;
+		struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)record->data;
+		if ((record->is_remote == is_remote) &&
+		    (hdr->record_handle == record_handle)) {
+			if (repo->first == record) {
+				repo->first = next;
+			} else {
+				prev->next = next;
+			}
+			if (repo->last == record) {
+				repo->last = prev;
+			}
+			if (record->data) {
+				free(record->data);
+			}
+			--repo->record_count;
+			repo->size -= record->size;
+			free(record);
+			break;
+		} else {
+			prev = record;
+		}
+		record = next;
+	}
 }
 
 typedef struct pldm_entity_association_tree {
