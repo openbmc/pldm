@@ -17,7 +17,15 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
+
+#define PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE 32768
+#define PLDM_OEM_IBM_BOOT_STATE 32769
+#define PLDM_OEM_IBM_SYSTEM_POWER_STATE 32771
+#define PLDM_OEM_IBM_PANEL_TRIGGER_STATE 32778
+
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
+static constexpr auto PLDM_OEM_IBM_VERIFICATION_STATE = 32770;
+static constexpr auto PLDM_OEM_IBM_FRONT_PANEL_TRIGGER = 32837;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -32,11 +40,12 @@ class Handler : public oem_platform::Handler
     Handler(const pldm::utils::DBusHandler* dBusIntf,
             pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
             uint8_t mctp_eid, pldm::dbus_api::Requester& requester,
-            sdeventplus::Event& event,
+            sdeventplus::Event& event, pldm_pdr* repo,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf),
         codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), requester(requester), event(event), handler(handler)
+        mctp_eid(mctp_eid), requester(requester), event(event), pdrRepo(repo),
+        handler(handler)
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -66,6 +75,39 @@ class Handler : public oem_platform::Handler
                              "xyz.openbmc_project.State.Host.HostState.Running")
                     {
                         hostOff = false;
+                    }
+                }
+            });
+
+        bootProgressMatch = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            propertiesChanged("/xyz/openbmc_project/state/host0",
+                              "xyz.openbmc_project.State.Boot.Progress"),
+            [this](sdbusplus::message::message& msg) {
+                pldm::utils::DbusChangedProps props{};
+                std::string intf;
+                msg.read(intf, props);
+                const auto itr = props.find("BootProgress");
+                if (itr != props.end())
+                {
+                    pldm::utils::PropertyValue value = itr->second;
+                    auto propVal = std::get<std::string>(value);
+                    if (propVal == "xyz.openbmc_project.State.Boot.Progress."
+                                   "ProgressStages.SystemInitComplete")
+                    {
+                        auto pdrs = pldm::utils::findStateEffecterPDR(
+                            0xD0, PLDM_OEM_IBM_FRONT_PANEL_TRIGGER,
+                            PLDM_OEM_IBM_PANEL_TRIGGER_STATE, pdrRepo.getPdr());
+
+                        if (!std::empty(pdrs))
+                        {
+                            auto bitMap =
+                                responder::pdr_utils::fetchBitMap(pdrs);
+
+                            pldm::utils::dbusMethodCall(
+                                "com.ibm.PanelApp", "/com/ibm/panel_app",
+                                "toggleFunctionState", "com.ibm.panel", bitMap);
+                        }
                     }
                 }
             });
@@ -211,11 +253,16 @@ class Handler : public oem_platform::Handler
     /** @brief D-Bus property changed signal match for CurrentPowerState*/
     std::unique_ptr<sdbusplus::bus::match::match> chassisOffMatch;
 
+    pdr_utils::Repo pdrRepo;
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+
+    /** @brief D-Bus property Changed Signal match for bootProgress*/
+    std::unique_ptr<sdbusplus::bus::match::match> bootProgressMatch;
 
     bool hostOff = true;
 
