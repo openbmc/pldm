@@ -108,7 +108,7 @@ class HostPDRHandler
      *             PDRs that need to be fetched.
      */
 
-    void fetchPDR(PDRRecordHandles&& recordHandles);
+    void fetchPDR(PDRRecordHandles&& recordHandles, bool isModified);
 
     /** @brief Send a PLDM event to host firmware containing a list of record
      *  handles of PDRs that the host firmware has to fetch.
@@ -378,6 +378,11 @@ class HostPDRHandler
     /** @brief Object path and entity association and is only loaded once
      */
     bool objPathEntityAssociation;
+
+    /** @brief whether we received PLDM_RECORDS_MODIFIED event data operation
+     *  from host
+     */
+    bool isHostPdrModified;
 };
 
 } // namespace pldm
