@@ -239,11 +239,11 @@ int main(int argc, char** argv)
     codeUpdate->clearDirPath(LID_STAGING_DIR);
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         &dbusHandler, codeUpdate.get(), slotHandler.get(), sockfd, hostEID,
-        dbusImplReq, event, &reqHandler);
-    codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
-    slotHandler->setOemPlatformHandler(oemPlatformHandler.get());
+        dbusImplReq, event, pdrRepo.get(), &reqHandler);
     oemFruHandler =
         std::make_unique<oem_ibm_fru::Handler>(&dbusHandler, pdrRepo.get());
+    codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
+    slotHandler->setOemPlatformHandler(oemPlatformHandler.get());
 
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(), sockfd,

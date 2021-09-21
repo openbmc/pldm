@@ -38,12 +38,12 @@ class Handler : public oem_platform::Handler
             pldm::responder::CodeUpdate* codeUpdate,
             pldm::responder::SlotHandler* slotHandler, int mctp_fd,
             uint8_t mctp_eid, pldm::dbus_api::Requester& requester,
-            sdeventplus::Event& event,
+            sdeventplus::Event& event, pldm_pdr* repo,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf),
         codeUpdate(codeUpdate), slotHandler(slotHandler),
         platformHandler(nullptr), mctp_fd(mctp_fd), mctp_eid(mctp_eid),
-        requester(requester), event(event), handler(handler)
+        requester(requester), event(event), pdrRepo(repo), handler(handler)
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -197,6 +197,26 @@ class Handler : public oem_platform::Handler
     /** @brief update the dbus object paths */
     void upadteOemDbusPaths(std::string& dbusPath);
 
+    /** @brief Method to perform actions when PLDM_RECORDS_MODIFIED event
+     *  is received from host
+     *  @param[in] entityType - entity type
+     *  @param[in] stateSetId - state set id
+     */
+    void modifyPDROemActions(uint16_t entityType, uint16_t stateSetId);
+
+    /** @brief D-Bus Method call to call the Panel D-Bus API
+     *
+     * @param[in] service - Service name for the D-Bus method
+     * @param[in] objPath - The D-Bus object path
+     * @param[in] dbusMethod - The Method name to be invoked
+     * @param[in] dbusInterface - The D-Bus interface
+     * @param[in] value - The value to be passed as argument
+     *            to D-Bus method
+     */
+    void setBitmapMethodCall(const char* service, const char* objPath,
+                             const char* dbusMethod, const char* dbusInterface,
+                             const PropertyValue& value);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
@@ -234,11 +254,18 @@ class Handler : public oem_platform::Handler
     /** @brief D-Bus property changed signal match for CurrentPowerState*/
     std::unique_ptr<sdbusplus::bus::match::match> chassisOffMatch;
 
+    // pdr_utils::Repo pdrRepo;
+
+    const pldm_pdr* pdrRepo;
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+
+    /** @brief D-Bus property Changed Signal match for bootProgress*/
+    std::unique_ptr<sdbusplus::bus::match::match> bootProgressMatch;
 
     bool hostOff = true;
 

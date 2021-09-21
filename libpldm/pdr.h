@@ -87,6 +87,23 @@ uint32_t pldm_pdr_add_hotplug_record(pldm_pdr *repo, const uint8_t *data,
 				     bool is_remote,
 				     uint32_t prev_record_handle,
 				     uint16_t terminus_handle);
+/** @brief Add a PDR record after the record handle sent as input
+ *
+ *  @param[in/out] repo - opaque pointer acting as a PDR repo handle
+ *  @param[in] data - pointer to a PDR record, pointing to a PDR definition as
+ *  per DSP0248. This data is memcpy'd.
+ *  @param[in] size - size of input PDR record in bytes
+ *  @param[in] record_handle - record handle of input PDR record
+ *  @param[in] is_remote - if true, then the PDR is not from this terminus
+ *  @param[in] prev_record_handle - the record handle after which the input
+ *  record handle should be added in the repo
+ *
+ *  @return uint32_t - record handle assigned to PDR record*/
+uint32_t pldm_pdr_add_after_prev_record(pldm_pdr *repo, const uint8_t *data,
+					uint32_t size, uint32_t record_handle,
+					bool is_remote,
+					uint32_t prev_record_handle,
+					uint16_t terminus_handle);
 
 /** @brief Get record handle of a PDR record
  *
@@ -118,6 +135,17 @@ const pldm_pdr_record *pldm_pdr_find_record(const pldm_pdr *repo,
 					    uint32_t *next_record_handle);
 
 pldm_pdr_record *pldm_pdr_find_last_local_record(const pldm_pdr *repo);
+
+/** @brief Find the previous record handle of a PDR record
+ *
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ *  @param[in] record_handle - record handle of input PDR record
+ *  @param[out] prev_record_handle - record handle of the previous PDR
+ *
+ *  @return true if record found, false otherwise
+ */
+bool pldm_pdr_find_prev_record_handle(pldm_pdr *repo, uint32_t record_handle,
+				      uint32_t *prev_record_handle);
 
 /** @brief Get PDR record next to input PDR record
  *
@@ -182,6 +210,15 @@ void pldm_pdr_remove_pdrs_by_terminus_handle(uint32_t terminus_handle,
  */
 void pldm_pdr_update_TL_pdr(const pldm_pdr *repo, uint16_t terminusHandle,
 			    uint8_t tid, uint8_t tlEid, bool valid);
+
+/** @brief Delete record using its record handle
+ *
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ *  @param[in] record_handle - record handle of input PDR record
+ *  @param[in] is_remote - if true, then the PDR is not from this terminus
+ */
+void pldm_delete_by_record_handle(pldm_pdr *repo, uint32_t record_handle,
+				  bool is_remote);
 
 /* ======================= */
 /* FRU Record Set PDR APIs */
