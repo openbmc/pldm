@@ -14,6 +14,9 @@
 
 #include <fstream>
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
+#endif
 namespace pldm
 {
 
@@ -98,10 +101,12 @@ HostPDRHandler::HostPDRHandler(
         });
 }
 
-void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
+void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles, bool isModified)
 {
     pdrRecordHandles.clear();
     pdrRecordHandles = std::move(recordHandles);
+
+    isHostPdrModified = isModified;
 
     // Defer the actual fetch of PDRs from the host (by queuing the call on the
     // main event loop). That way, we can respond to the platform event msg from
@@ -428,6 +433,24 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 rh = pdrHdr->record_handle;
             }
 
+            if (isHostPdrModified)
+            {
+                if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
+                {
+                    auto effecterPdr =
+                        reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+                    auto effecterId = effecterPdr->effecter_id;
+
+                    // pldm_delete_state_effecter_pdr_by_effecter_id to delete
+                    // the effecter from the repo.
+                    pldm_delete_state_effecter_pdr_by_effecter_id(
+                        repo, effecterId, true);
+
+                    // call pldm_pdr_add to add the record into the repo
+                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true);
+                }
+            }
+
             if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
             {
                 this->mergeEntityAssociations(pdr);
@@ -501,6 +524,27 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                     std::bind(
                         std::mem_fn((&HostPDRHandler::_processPDRRepoChgEvent)),
                         this, std::placeholders::_1));
+        }
+
+        if (isHostPdrModified)
+        {
+#ifdef OEM_IBM
+            isHostPdrModified = false;
+            auto pdrs = pldm::utils::findStateEffecterPDR(
+                0xD0,
+                pldm::responder::oem_ibm_platform::
+                    PLDM_OEM_IBM_FRONT_PANEL_TRIGGER,
+                PLDM_OEM_IBM_PANEL_TRIGGER_STATE, repo);
+
+            if (!std::empty(pdrs))
+            {
+                auto bitMap = responder::pdr_utils::fetchBitMap(pdrs);
+
+                pldm::utils::dbusMethodCall(
+                    "com.ibm.PanelApp", "/com/ibm/panel_app",
+                    "toggleFunctionState", "com.ibm.panel", bitMap);
+            }
+#endif
         }
     }
     else
