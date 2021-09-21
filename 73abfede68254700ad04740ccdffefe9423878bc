@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fae8781d_b4164259",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1935,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-21T06:53:08Z",
+      "side": 1,
+      "message": "we cannot assign chassis entity path for all the effecters as the entity_type will change",
+      "parentUuid": "cd7df4df_7c24b85c",
+      "range": {
+        "startLine": 1933,
+        "startChar": 0,
+        "endLine": 1935,
+        "endChar": 24
+      },
+      "revId": "73abfede68254700ad04740ccdffefe9423878bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6d237988_3759b754",
         "filename": "configurations/pdr/4.json",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "73abfede68254700ad04740ccdffefe9423878bc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1985dac0_98eb89cd",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-09-21T06:53:08Z",
+      "side": 1,
+      "message": "we cannot assign chassis entity path for all the effecters as the entity_type will change",
+      "parentUuid": "6d237988_3759b754",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 24
+      },
+      "revId": "73abfede68254700ad04740ccdffefe9423878bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
