@@ -20,6 +20,9 @@
 #include <fstream>
 #include <type_traits>
 
+/*#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
+#endif*/
 namespace pldm
 {
 
@@ -174,10 +177,12 @@ HostPDRHandler::HostPDRHandler(
         });
 }
 
-void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
+void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles, bool isModified)
 {
     pdrRecordHandles.clear();
     pdrRecordHandles = std::move(recordHandles);
+
+    isHostPdrModified = isModified;
 
     // Defer the actual fetch of PDRs from the host (by queuing the call on the
     // main event loop). That way, we can respond to the platform event msg from
@@ -638,8 +643,26 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else
                 {
-                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true,
-                                 pdrTerminusHandle);
+                    if (isHostPdrModified)
+                    {
+                        auto prevRh =
+                            pldm_pdr_find_prev_record_handle(repo, rh);
+                        // pldm_delete_by_record_handle to delete
+                        // the effecter from the repo using record handle.
+                        pldm_delete_by_record_handle(repo, rh, true);
+
+                        // call pldm_pdr_add_after_prev_record to add the
+                        // record into the repo from where it was deleted
+                        pldm_pdr_add_after_prev_record(
+                            repo, pdr.data(), respCount, rh, true, prevRh,
+                            pdrTerminusHandle);
+                    }
+                    else
+                    {
+
+                        pldm_pdr_add(repo, pdr.data(), respCount, rh, true,
+                                     pdrTerminusHandle);
+                    }
                 }
             }
         }
@@ -675,6 +698,15 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                     std::bind(
                         std::mem_fn((&HostPDRHandler::_processPDRRepoChgEvent)),
                         this, std::placeholders::_1));
+        }
+
+        if (isHostPdrModified)
+        {
+            isHostPdrModified = false;
+            if (oemPlatformHandler)
+            {
+                oemPlatformHandler->modifyPDROemActions(rh, repo);
+            }
         }
     }
     else
