@@ -2,8 +2,8 @@
 
 #include "pdr.hpp"
 
+#include <bitset>
 #include <climits>
-
 using namespace pldm::pdr;
 
 namespace pldm
@@ -187,6 +187,34 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
         std::make_tuple(std::move(entityInfo), std::move(sensors));
     return std::make_tuple(pdr->terminus_handle, pdr->sensor_id,
                            std::move(sensorInfo));
+}
+
+std::vector<uint8_t> fetchBitMap(std::vector<std::vector<uint8_t>> pdrs)
+{
+    std::vector<uint8_t> bitMap;
+    pldm_state_effecter_pdr* effecterPdr =
+        reinterpret_cast<pldm_state_effecter_pdr*>(pdrs[1].data());
+    auto statesPtr = effecterPdr->possible_states;
+    auto compEffCount = effecterPdr->composite_effecter_count;
+    while (compEffCount--)
+    {
+        auto state =
+            reinterpret_cast<const state_effecter_possible_states*>(statesPtr);
+        uint8_t possibleStatesPos{};
+        auto printStates = [&possibleStatesPos,
+                            &bitMap](const bitfield8_t& val) {
+            bitMap.emplace_back(static_cast<uint8_t>(val.byte));
+            possibleStatesPos++;
+        };
+        std::for_each(state->states,
+                      state->states + state->possible_states_size, printStates);
+        if (compEffCount)
+        {
+            statesPtr += sizeof(state_effecter_possible_states) +
+                         state->possible_states_size - 1;
+        }
+    }
+    return bitMap;
 }
 
 } // namespace pdr_utils
