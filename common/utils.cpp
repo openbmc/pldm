@@ -566,5 +566,6 @@ const std::string getCurrentSystemTime()
     sprintf(buf, "%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
     return buf;
 }
+
 } // namespace utils
 } // namespace pldm

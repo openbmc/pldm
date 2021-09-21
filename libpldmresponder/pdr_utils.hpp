@@ -246,6 +246,14 @@ std::tuple<pldm::pdr::TerminusHandle, pldm::pdr::SensorID,
 std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
                                                      size_t fruLen);
 
+/** @brief Method to fetch the bitmap of possible states from a PDR
+ *
+ *  @param[in] pdrs - The PDR to fetch the bitmap from
+ *
+ *  @return the bitmap of possible states
+ *  */
+std::vector<uint8_t> fetchBitMap(const std::vector<std::vector<uint8_t>>& pdrs);
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm

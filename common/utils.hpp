@@ -138,7 +138,7 @@ struct DBusMapping
 
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string>;
+                 uint64_t, double, std::string, std::vector<uint8_t>>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -382,5 +382,14 @@ std::string toString(const struct variable_field& var);
  */
 const std::string getCurrentSystemTime();
 
+/** @brief D-Bus Method call
+ *
+ *  @param[in] service - Service name for the D-Bus method
+ *  @param[in] objPath - The D-Bus object path
+ *  @param[in] dbusMethod - The Method name to be invoked
+ *  @param[in] dbusInterface - The D-Bus interface
+ *  @param[in] value - The value to be passed as argument
+ *             to D-Bus method*
+ */
 } // namespace utils
 } // namespace pldm

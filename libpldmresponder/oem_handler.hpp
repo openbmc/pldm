@@ -101,6 +101,9 @@ class Handler : public CmdHandler
     /** @brief update the dbus object paths */
     virtual void upadteOemDbusPaths(std::string& dbusPath) = 0;
 
+    /** @brief Interface to perform OEM actions*/
+    virtual void modifyPDROemActions(uint32_t recordHandle) = 0;
+
     virtual ~Handler() = default;
 
   protected:
