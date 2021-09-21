@@ -451,9 +451,11 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                                        uint8_t /*formatVersion*/,
                                        uint8_t /*tid*/, size_t eventDataOffset)
 {
+    std::cout << "Got repo chnge event from host \n";
     uint8_t eventDataFormat{};
     uint8_t numberOfChangeRecords{};
     size_t dataOffset{};
+    bool isModified = false;
 
     auto eventData =
         reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
@@ -507,10 +509,20 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                     return rc;
                 }
             }
-
-            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
+            else if (eventDataOperation == PLDM_RECORDS_MODIFIED)
             {
-                return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+                isModified = true;
+                rc = getPDRRecordHandles(
+                    reinterpret_cast<const ChangeEntry*>(changeRecordData +
+                                                         dataOffset),
+                    changeRecordDataSize - dataOffset,
+                    static_cast<size_t>(numberOfChangeEntries),
+                    pdrRecordHandles);
+
+                if (rc != PLDM_SUCCESS)
+                {
+                    return rc;
+                }
             }
 
             changeRecordData +=
@@ -521,7 +533,7 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
     if (hostPDRHandler)
     {
-        hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
+        hostPDRHandler->fetchPDR(std::move(pdrRecordHandles), isModified);
     }
 
     return PLDM_SUCCESS;
@@ -761,8 +773,6 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
     auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
-        assert(pdr != NULL);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;

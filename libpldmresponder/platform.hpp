@@ -271,6 +271,15 @@ class Handler : public CmdHandler
                                   uint8_t formatVersion, uint8_t tid,
                                   size_t eventDataOffset);
 
+    /** @brief _fetchPanlPDR processes the work to fetch the operator panel PDR
+     *     from host
+     *  @param[in] pdrRecordHandles - std::vector where the extracted PDR
+     *                                handles are placed
+     *  @param[in] changeEntryDataSize -  total size of changeEntryData
+     */
+    void _fetchPanlPDR(PDRRecordHandles pdrRecordHandles,
+                       size_t changeEntryDataSize,
+                       sdeventplus::source::EventBase& /*source */);
     /** @brief Handler for extracting the PDR handles from changeEntries
      *
      *  @param[in] changeEntryData - ChangeEntry data from changeRecord
@@ -461,6 +470,7 @@ class Handler : public CmdHandler
     std::string pdrJsonsDir;
     bool pdrCreated;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
+    std::unique_ptr<sdeventplus::source::Defer> fetchOEMPdrEvent;
 };
 
 /** @brief Function to check if a sensor falls in OEM range
