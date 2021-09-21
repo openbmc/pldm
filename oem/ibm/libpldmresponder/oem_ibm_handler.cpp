@@ -491,6 +491,31 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
             }
         });
 }
+
+void pldm::responder::oem_ibm_platform::Handler::opPanlTrigger(
+    const std::vector<uint8_t>& value)
+{
+    static constexpr auto panlAppService = "com.ibm.PanelApp";
+    static constexpr auto panlAppObjectPath = "/com/ibm/panel_app";
+    static constexpr auto panlAppInterface = "com.ibm.panel";
+    static constexpr auto watchDogResetPropName = "toggleFunctionState";
+
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto panlTriggerMethod =
+            bus.new_method_call(panlAppService, panlAppObjectPath,
+                                panlAppInterface, watchDogResetPropName);
+        panlTriggerMethod.append(value);
+        bus.call_noreply(panlTriggerMethod);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to set the Trigger functions bimap"
+                  << "ERROR=" << e.what() << std::endl;
+        return;
+    }
+}
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

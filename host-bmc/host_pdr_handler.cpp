@@ -163,6 +163,64 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     }
 }
 
+void HostPDRHandler::fetchModifiedPDR(PDRRecordHandles& recordHandles)
+{
+    pdrRecordHandles.clear();
+    pdrRecordHandles = std::move(recordHandles);
+
+    modifiedPdrFetchEvent = std::make_unique<sdeventplus::source::Defer>(
+        event, std::bind_front(&HostPDRHandler::_fetchModifiedPanlPDR, this));
+}
+
+void HostPDRHandler::_fetchModifiedPanlPDR(
+    sdeventplus::source::EventBase& /*source*/)
+{
+    getModifiedHostPDR();
+}
+
+void HostPDRHandler::getModifiedHostPDR(uint32_t nextRecordHandle)
+{
+    modifiedPdrFetchEvent.reset();
+
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_GET_PDR_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    uint32_t recordHandle{};
+    if (!nextRecordHandle)
+    {
+        if (!pdrRecordHandles.empty())
+        {
+            recordHandle = pdrRecordHandles.front();
+            pdrRecordHandles.pop_front();
+        }
+    }
+    else
+    {
+        recordHandle = nextRecordHandle;
+    }
+    auto instanceId = requester.getInstanceId(mctp_eid);
+
+    auto rc =
+        encode_get_pdr_req(instanceId, recordHandle, 0, PLDM_GET_FIRSTPART,
+                           UINT16_MAX, 0, request, PLDM_GET_PDR_REQ_BYTES);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(mctp_eid, instanceId);
+        std::cerr << "Failed to encode_get_pdr_req, rc = " << rc << std::endl;
+        return;
+    }
+
+    rc = handler->registerRequest(
+        mctp_eid, instanceId, PLDM_PLATFORM, PLDM_GET_PDR,
+        std::move(requestMsg),
+        std::move(
+            std::bind_front(&HostPDRHandler::processModifiedHostPDRs, this)));
+    if (rc)
+    {
+        std::cerr << "Failed to send the GetPDR request to Host \n";
+    }
+}
+
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
                                            pdr::EventState state)
 {
@@ -523,6 +581,86 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
 }
 
+void HostPDRHandler::processModifiedHostPDRs(mctp_eid_t /*eid*/,
+                                             const pldm_msg* response,
+                                             size_t respMsgLen)
+{
+    uint32_t nextRecordHandle{};
+    uint32_t rh = 0;
+
+    uint8_t completionCode{};
+    uint32_t nextDataTransferHandle{};
+    uint8_t transferFlag{};
+    uint16_t respCount{};
+    uint8_t transferCRC{};
+    if (response == nullptr || !respMsgLen)
+    {
+        std::cerr << "Failed to receive response for the GetPDR"
+                     " command \n";
+        return;
+    }
+
+    auto rc = decode_get_pdr_resp(
+        response, respMsgLen /*- sizeof(pldm_msg_hdr)*/, &completionCode,
+        &nextRecordHandle, &nextDataTransferHandle, &transferFlag, &respCount,
+        nullptr, 0, &transferCRC);
+    std::vector<uint8_t> responsePDRMsg;
+    responsePDRMsg.resize(respMsgLen + sizeof(pldm_msg_hdr));
+    memcpy(responsePDRMsg.data(), response, respMsgLen + sizeof(pldm_msg_hdr));
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode_get_pdr_resp, rc = " << rc << std::endl;
+        return;
+    }
+    else
+    {
+        std::vector<uint8_t> pdr(respCount, 0);
+        rc = decode_get_pdr_resp(response, respMsgLen, &completionCode,
+                                 &nextRecordHandle, &nextDataTransferHandle,
+                                 &transferFlag, &respCount, pdr.data(),
+                                 respCount, &transferCRC);
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to decode_get_pdr_resp: "
+                      << "rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << std::endl;
+            return;
+        }
+        else
+        {
+            if (!nextRecordHandle)
+            {
+                rh = nextRecordHandle;
+            }
+            else
+            {
+                rh = nextRecordHandle - 1;
+            }
+
+            auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+            if (!rh)
+            {
+                rh = pdrHdr->record_handle;
+            }
+
+            if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
+            {
+                // auto pdr =
+                // reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data()); call
+                // pldm_delete_state_effecter_pdr_by_effecter_id to delete the
+                // effecter from the repo
+
+                // call pldm_pdr_add to add the record into the repo
+            }
+        }
+    }
+    if (!nextRecordHandle)
+    {
+        // Call FindStateEffecterPDR
+        // fetch the bitmap, call the dbus method
+    }
+}
 void HostPDRHandler::_processPDRRepoChgEvent(
     sdeventplus::source::EventBase& /*source */)
 {

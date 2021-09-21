@@ -217,7 +217,7 @@ int main(int argc, char** argv)
     codeUpdate->clearDirPath(LID_STAGING_DIR);
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq,
-        event, &reqHandler);
+        event, pdrRepo.get(), &reqHandler);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(), sockfd,

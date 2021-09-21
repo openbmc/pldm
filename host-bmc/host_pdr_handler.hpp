@@ -113,6 +113,7 @@ class HostPDRHandler
 
     void fetchPDR(PDRRecordHandles&& recordHandles);
 
+    void fetchModifiedPDR(PDRRecordHandles& recordHandles);
     /** @brief Send a PLDM event to host firmware containing a list of record
      *  handles of PDRs that the host firmware has to fetch.
      *  @param[in] pdrTypes - list of PDR types that need to be looked up in the
@@ -162,6 +163,8 @@ class HostPDRHandler
      */
     void getHostPDR(uint32_t nextRecordHandle = 0);
 
+    void getModifiedHostPDR(uint32_t nextRecordHandle = 0);
+
     /** @brief set the Host firmware condition when pldmd starts
      */
     void setHostFirmwareCondition();
@@ -185,6 +188,8 @@ class HostPDRHandler
      */
     void _fetchPDR(sdeventplus::source::EventBase& source);
 
+    void _fetchModifiedPanlPDR(sdeventplus::source::EventBase& source);
+
     /** @brief Merge host firmware's entity association PDRs into BMC's
      *  @details A merge operation involves adding a pldm_entity under the
      *  appropriate parent, and updating container ids.
@@ -207,6 +212,9 @@ class HostPDRHandler
      */
     void processHostPDRs(mctp_eid_t eid, const pldm_msg* response,
                          size_t respMsgLen);
+
+    void processModifiedHostPDRs(mctp_eid_t eid, const pldm_msg* response,
+                                 size_t respMsgLen);
 
     /** @brief send PDR Repo change after merging Host's PDR to BMC PDR repo
      *  @param[in] source - sdeventplus event source
@@ -248,6 +256,7 @@ class HostPDRHandler
 
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> pdrFetchEvent;
+    std::unique_ptr<sdeventplus::source::Defer> modifiedPdrFetchEvent;
     std::unique_ptr<sdeventplus::source::Defer> deferredFetchPDREvent;
     std::unique_ptr<sdeventplus::source::Defer> deferredPDRRepoChgEvent;
 
