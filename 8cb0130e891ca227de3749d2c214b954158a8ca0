@@ -22,6 +22,30 @@
       "revId": "8cb0130e891ca227de3749d2c214b954158a8ca0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccfd9563_c7f393aa",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000392
+      },
+      "writtenOn": "2021-09-22T14:46:44Z",
+      "side": 1,
+      "message": "No it does not. The _current attribute are used for system settings that the BMC is pushing to us. In this case the host is pushing the value to the BMC essentially.",
+      "parentUuid": "a55dd2dd_b5ae98de",
+      "range": {
+        "startLine": 103,
+        "startChar": 29,
+        "endLine": 103,
+        "endChar": 50
+      },
+      "revId": "8cb0130e891ca227de3749d2c214b954158a8ca0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
