@@ -525,46 +525,135 @@ int processCodeUpdateLid(const std::string& filePath)
 
 int assembleCodeUpdateImage()
 {
-    // Create the hostfw squashfs image from the LID files without header
-    auto rc = executeCmd("/usr/sbin/mksquashfs", lidDirPath.c_str(),
-                         hostfwImagePath.c_str(), "-all-root", "-no-recovery");
-    if (rc < 0)
+    pid_t pid = fork();
+
+    if (pid == 0)
     {
+        pid_t nextPid = fork();
+        if (nextPid == 0)
+        {
+            // Create the hostfw squashfs image from the LID files without
+            // header
+            auto rc = executeCmd("/usr/sbin/mksquashfs", lidDirPath.c_str(),
+                                 hostfwImagePath.c_str(), "-all-root",
+                                 "-no-recovery");
+            if (rc < 0)
+            {
+                std::cerr << "Error occurred during the mksqusquashfs call"
+                          << std::endl;
+                pldm::responder::oem_ibm_platform::Handler*
+                    oemIbmPlatformHandler = dynamic_cast<
+                        pldm::responder::oem_ibm_platform::Handler*>(
+                        oemPlatformHandler);
+                oemIbmPlatformHandler->codeUpdate->setCodeUpdateProgress(false);
+                auto sensorId = oemIbmPlatformHandler->codeUpdate
+                                    ->getFirmwareUpdateSensor();
+                oemIbmPlatformHandler->sendStateSensorEvent(
+                    sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                    uint8_t(CodeUpdateState::FAIL),
+                    uint8_t(CodeUpdateState::START));
+                exit(EXIT_FAILURE);
+            }
+
+            fs::create_directories(updateDirPath);
+
+            // Extract the BMC tarball content
+            rc = executeCmd("/bin/tar", "-xf", tarImagePath.c_str(), "-C",
+                            updateDirPath);
+            if (rc < 0)
+            {
+                std::cerr
+                    << "Error occurred during the extraction of the tarball"
+                    << std::endl;
+                pldm::responder::oem_ibm_platform::Handler*
+                    oemIbmPlatformHandler = dynamic_cast<
+                        pldm::responder::oem_ibm_platform::Handler*>(
+                        oemPlatformHandler);
+                oemIbmPlatformHandler->codeUpdate->setCodeUpdateProgress(false);
+                auto sensorId = oemIbmPlatformHandler->codeUpdate
+                                    ->getFirmwareUpdateSensor();
+                oemIbmPlatformHandler->sendStateSensorEvent(
+                    sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                    uint8_t(CodeUpdateState::FAIL),
+                    uint8_t(CodeUpdateState::START));
+                exit(EXIT_FAILURE);
+            }
+
+            // Add the hostfw image to the directory where the contents were
+            // extracted
+            fs::copy_file(hostfwImagePath,
+                          fs::path(updateDirPath) / hostfwImageName,
+                          fs::copy_options::overwrite_existing);
+
+            // Remove the tarball file, then re-generate it with so that the
+            // hostfw image becomes part of the tarball
+            fs::remove(tarImagePath);
+            rc = executeCmd("/bin/tar", "-cf", tarImagePath, ".", "-C",
+                            updateDirPath);
+            if (rc < 0)
+            {
+                std::cerr
+                    << "Error occurred during the generation of the tarball"
+                    << std::endl;
+                pldm::responder::oem_ibm_platform::Handler*
+                    oemIbmPlatformHandler = dynamic_cast<
+                        pldm::responder::oem_ibm_platform::Handler*>(
+                        oemPlatformHandler);
+                oemIbmPlatformHandler->codeUpdate->setCodeUpdateProgress(false);
+                auto sensorId = oemIbmPlatformHandler->codeUpdate
+                                    ->getFirmwareUpdateSensor();
+                oemIbmPlatformHandler->sendStateSensorEvent(
+                    sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                    uint8_t(CodeUpdateState::FAIL),
+                    uint8_t(CodeUpdateState::START));
+                exit(EXIT_FAILURE);
+            }
+
+            // Copy the tarball to the update directory to trigger the phosphor
+            // software manager to create a version interface
+            fs::copy_file(tarImagePath, updateImagePath,
+                          fs::copy_options::overwrite_existing);
+
+            // Cleanup
+            fs::remove_all(updateDirPath);
+            fs::remove_all(lidDirPath);
+            fs::remove_all(imageDirPath);
+
+            exit(EXIT_SUCCESS);
+        }
+        else if (nextPid < 0)
+        {
+            std::cerr << "Error occurred during fork. ERROR=" << errno
+                      << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        // Do nothing as parent. When parent exits, child will be reparented
+        // under init and be reaped properly.
+        exit(0);
+    }
+    else if (pid > 0)
+    {
+        int status;
+        if (waitpid(pid, &status, 0) < 0)
+        {
+            std::cerr << "Error occurred during waitpid. ERROR=" << errno
+                      << std::endl;
+            return PLDM_ERROR;
+        }
+        else if (WEXITSTATUS(status) != 0)
+        {
+            std::cerr
+                << "Failed to execute the assembling of the image. STATUS="
+                << status << std::endl;
+            return PLDM_ERROR;
+        }
+    }
+    else
+    {
+        std::cerr << "Error occurred during fork. ERROR=" << errno << std::endl;
         return PLDM_ERROR;
     }
-
-    fs::create_directories(updateDirPath);
-
-    // Extract the BMC tarball content
-    rc = executeCmd("/bin/tar", "-xf", tarImagePath.c_str(), "-C",
-                    updateDirPath);
-    if (rc < 0)
-    {
-        return PLDM_ERROR;
-    }
-
-    // Add the hostfw image to the directory where the contents were extracted
-    fs::copy_file(hostfwImagePath, fs::path(updateDirPath) / hostfwImageName,
-                  fs::copy_options::overwrite_existing);
-
-    // Remove the tarball file, then re-generate it with so that the hostfw
-    // image becomes part of the tarball
-    fs::remove(tarImagePath);
-    rc = executeCmd("/bin/tar", "-cf", tarImagePath, ".", "-C", updateDirPath);
-    if (rc < 0)
-    {
-        return PLDM_ERROR;
-    }
-
-    // Copy the tarball to the update directory to trigger the phosphor software
-    // manager to create a version interface
-    fs::copy_file(tarImagePath, updateImagePath,
-                  fs::copy_options::overwrite_existing);
-
-    // Cleanup
-    fs::remove_all(updateDirPath);
-    fs::remove_all(lidDirPath);
-    fs::remove_all(imageDirPath);
 
     return PLDM_SUCCESS;
 }
