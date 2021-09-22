@@ -390,7 +390,7 @@ void pldm::responder::oem_ibm_platform::Handler::_processEndUpdate(
     sdeventplus::source::EventBase& /*source */)
 {
     assembleImageEvent.reset();
-    int retc = assembleCodeUpdateImage();
+    int retc = codeUpdate->assembleCodeUpdateImage();
     if (retc != PLDM_SUCCESS)
     {
         codeUpdate->setCodeUpdateProgress(false);
