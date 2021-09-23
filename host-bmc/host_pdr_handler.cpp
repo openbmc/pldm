@@ -270,6 +270,11 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
         {
             updateAsserted(ledGroupPath, node_entity,
                            state == PLDM_OPERATIONAL_NORMAL);
+
+            std::vector<std::tuple<std::string, std::string, std::string>>
+                associations{{"identify_led_group", "fru", ledGroupPath}};
+            CustomDBus::getCustomDBus().setAssociations(entity.first,
+                                                        associations);
         }
 
         CustomDBus::getCustomDBus().setOperationalStatus(
