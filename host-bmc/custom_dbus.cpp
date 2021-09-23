@@ -27,7 +27,7 @@ std::string CustomDBus::getLocationCode(const std::string& path) const
     return {};
 }
 
-void CustomDBus::setOperationalStatus(const std::string& path, uint8_t status)
+void CustomDBus::setOperationalStatus(const std::string& path, bool status)
 {
     if (operationalStatus.find(path) == operationalStatus.end())
     {
@@ -36,14 +36,7 @@ void CustomDBus::setOperationalStatus(const std::string& path, uint8_t status)
                       pldm::utils::DBusHandler::getBus(), path.c_str()));
     }
 
-    if (status == PLDM_OPERATIONAL_NORMAL)
-    {
-        operationalStatus.at(path)->functional(true);
-    }
-    else
-    {
-        operationalStatus.at(path)->functional(false);
-    }
+    operationalStatus.at(path)->functional(status);
 }
 
 bool CustomDBus::getOperationalStatus(const std::string& path) const

@@ -212,7 +212,8 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
             continue;
         }
 
-        CustomDBus::getCustomDBus().setOperationalStatus(entity.first, state);
+        CustomDBus::getCustomDBus().setOperationalStatus(
+            entity.first, state == PLDM_OPERATIONAL_NORMAL);
         break;
     }
 
@@ -1084,7 +1085,8 @@ void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
                 break;
             }
         }
-        CustomDBus::getCustomDBus().setOperationalStatus(path, state);
+        CustomDBus::getCustomDBus().setOperationalStatus(
+            path, state == PLDM_OPERATIONAL_NORMAL);
 
         if (++sensorMapIndex != objPathMap.end())
         {
