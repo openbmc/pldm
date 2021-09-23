@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3200b90c_ce54706e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000136
+      },
+      "writtenOn": "2021-09-23T15:38:57Z",
+      "side": 1,
+      "message": "Similar to your hostboot commit, it\u0027s not called \"USB Security\" anymore - it\u0027s called \"USB Enablement\".  If you have to touch this commit again, please update the commit message.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 48
+      },
+      "revId": "b33e2a795adf770955e796b1c2d81bacea95e18d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
