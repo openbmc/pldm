@@ -328,5 +328,10 @@ void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
             }));
 }
 
+const pldm_pdr* HostEffecterParser::getPldmPDR()
+{
+    return pdrRepo;
+}
+
 } // namespace host_effecters
 } // namespace pldm
