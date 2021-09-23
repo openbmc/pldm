@@ -6,6 +6,7 @@
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/CpuCore/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/server.hpp>
+#include <xyz/openbmc_project/Led/Group/server.hpp>
 #include <xyz/openbmc_project/Object/Enable/server.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
@@ -32,6 +33,8 @@ using CoreIntf = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::CpuCore>;
 using EnableIface = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Object::server::Enable>;
+using AssertedIntf = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Led::server::Group>;
 
 /** @class CustomDBus
  *  @brief This is a custom D-Bus object, used to add D-Bus interface and
@@ -113,11 +116,30 @@ class CustomDBus
      */
     void implementObjectEnableIface(const std::string& path);
 
+    /** @brief Set the Asserted property
+     *
+     *  @param[in] path     - The object path
+     *
+     *  @param[in] value    - To assert a group, set to True. To de-assert a
+     *                        group, set to False.
+     */
+    void setAsserted(const std::string& path, bool value);
+
+    /** @brief Get the Asserted property
+     *
+     *  @param[in] path   - The object path
+     *
+     *  @return asserted  - Asserted property
+     */
+    bool getAsserted(const std::string& path) const;
+
   private:
     std::map<ObjectPath, std::unique_ptr<LocationIntf>> location;
 
     std::map<ObjectPath, std::unique_ptr<OperationalStatusIntf>>
         operationalStatus;
+
+    std::unordered_map<ObjectPath, std::unique_ptr<AssertedIntf>> ledGroup;
 
     std::unordered_map<ObjectPath, std::unique_ptr<ItemIntf>> presentStatus;
     std::unordered_map<ObjectPath, std::unique_ptr<CoreIntf>> cpuCore;

@@ -5,6 +5,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "dbus_to_host_effecters.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -104,6 +105,7 @@ class HostPDRHandler
         pldm_pdr* repo, const std::string& eventsJsonsDir,
         pldm_entity_association_tree* entityTree,
         pldm_entity_association_tree* bmcEntityTree,
+        pldm::host_effecters::HostEffecterParser* hostEffecterParser,
         pldm::dbus_api::Requester& requester,
         pldm::requester::Handler<pldm::requester::Request>* handler);
 
@@ -241,13 +243,17 @@ class HostPDRHandler
     uint16_t getRSI(const PDRList& fruRecordSetPDRs, const pldm_entity& entity);
 
     /** @brief Get present state from state sensor readings
-     *  @param[in] sensorId   - state sensor Id
+     *  @param[in] sensorId     - state sensor Id
+     *  @param[in] type         - entity type
+     *  @param[in] instance     - entity instance num
+     *  @param[in] containerId  - entity container id
      *
      *  @param[out] state     - pldm operational fault status
      *  @param[in] path       - object path
      */
-    void getPresentStateBySensorReadigs(uint16_t sensorId, uint8_t state,
-                                        const std::string& path);
+    void getPresentStateBySensorReadigs(uint16_t sensorId, uint16_t type,
+                                        uint16_t instance, uint16_t containerId,
+                                        uint8_t state, const std::string& path);
 
     /** @brief Set the OperationalStatus interface
      *  @return
@@ -259,6 +265,22 @@ class HostPDRHandler
      *  @return
      */
     void setPresentPropertyStatus(const std::string& path);
+
+    /** @brief Update the Led Group path
+     *  @param[in] path     - object path
+     *  @param[in] type     - entity type
+     *  @return
+     */
+    std::string updateLedGroupPath(const std::string& path, uint16_t type);
+
+    /** @brief Update the Led Asserted property
+     *  @param[in] path         - object path
+     *  @param[in] entity       - PLDM entity
+     *  @param[in] asserted     - Asserted property
+     *  @return
+     */
+    void updateAsserted(const std::string& path, const pldm_entity& entity,
+                        bool asserted);
 
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
@@ -282,8 +304,11 @@ class HostPDRHandler
     /** @brief Pointer to BMC's entity association tree */
     pldm_entity_association_tree* bmcEntityTree;
 
-    /** @brief reference to Requester object, primarily used to access API to
-     *  obtain PLDM instance id.
+    /** @brief Pointer to host effecter parser */
+    pldm::host_effecters::HostEffecterParser* hostEffecterParser;
+
+    /** @brief reference to Requester object, primarily used to access API
+     * to obtain PLDM instance id.
      */
     pldm::dbus_api::Requester& requester;
 
