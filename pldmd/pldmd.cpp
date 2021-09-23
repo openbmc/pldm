@@ -184,6 +184,8 @@ int main(int argc, char** argv)
         bus, "/xyz/openbmc_project/software");
     sdbusplus::server::manager::manager inventoryManager(
         bus, "/xyz/openbmc_project/inventory");
+    sdbusplus::server::manager::manager ledManager(
+        bus, "/xyz/openbmc_project/led/groups");
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
 
     Invoker invoker{};
@@ -224,18 +226,18 @@ int main(int argc, char** argv)
 #endif
     if (hostEID)
     {
-        hostPDRHandler = std::make_shared<HostPDRHandler>(
-            sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), bmcEntityTree.get(), dbusImplReq, &reqHandler,
-            oemPlatformHandler.get());
-        // HostFirmware interface needs access to hostPDR to know if host
-        // is running
-        dbusImplHost.setHostPdrObj(hostPDRHandler);
-
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
                 HOST_JSONS_DIR, &reqHandler);
+        hostPDRHandler = std::make_shared<HostPDRHandler>(
+            sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
+            entityTree.get(), bmcEntityTree.get(), hostEffecterParser.get(),
+            dbusImplReq, &reqHandler, oemPlatformHandler.get());
+        // HostFirmware interface needs access to hostPDR to know if host
+        // is running
+        dbusImplHost.setHostPdrObj(hostPDRHandler);
+
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             sockfd, hostEID, dbusImplReq, &reqHandler);
     }
