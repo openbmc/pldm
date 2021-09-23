@@ -245,12 +245,10 @@ uint8_t
     return newState;
 }
 
-int HostEffecterParser::setHostStateEffecter(
-    size_t effecterInfoIndex, std::vector<set_effecter_state_field>& stateField,
-    uint16_t effecterId)
+int HostEffecterParser::sendSetStateEffecterStates(
+    uint8_t mctpEid, uint16_t effecterId, uint8_t compEffCnt,
+    std::vector<set_effecter_state_field>& stateField)
 {
-    uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
-    uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
     auto instanceId = requester->getInstanceId(mctpEid);
 
     std::vector<uint8_t> requestMsg(
@@ -263,8 +261,9 @@ int HostEffecterParser::setHostStateEffecter(
 
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Message encode failure. PLDM error code = " << std::hex
-                  << std::showbase << rc << "\n";
+        std::cerr
+            << "Message encode SetStateEffecterStates failure. PLDM error code = "
+            << std::hex << std::showbase << rc << "\n";
         requester->markFree(mctpEid, instanceId);
         return rc;
     }
@@ -307,6 +306,17 @@ int HostEffecterParser::setHostStateEffecter(
     return rc;
 }
 
+int HostEffecterParser::setHostStateEffecter(
+    size_t effecterInfoIndex, std::vector<set_effecter_state_field>& stateField,
+    uint16_t effecterId)
+{
+    uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
+    uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
+
+    return sendSetStateEffecterStates(mctpEid, effecterId, compEffCnt,
+                                      stateField);
+}
+
 void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
                                                  const std::string& interface,
                                                  size_t effecterInfoIndex,
@@ -326,6 +336,11 @@ void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
                 processHostEffecterChangeNotification(
                     props, effecterInfoIndex, dbusInfoIndex, effecterId);
             }));
+}
+
+const pldm_pdr* HostEffecterParser::getPldmPDR()
+{
+    return pdrRepo;
 }
 
 } // namespace host_effecters
