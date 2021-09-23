@@ -68,12 +68,15 @@ void updateContanierId(pldm_entity_association_tree* entityTree,
 HostPDRHandler::HostPDRHandler(
     int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
-    pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+    pldm_entity_association_tree* bmcEntityTree,
+    pldm::host_effecters::HostEffecterParser* hostEffecterParser,
+    Requester& requester,
     pldm::requester::Handler<pldm::requester::Request>* handler) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    bmcEntityTree(bmcEntityTree), requester(requester), handler(handler)
+    bmcEntityTree(bmcEntityTree), hostEffecterParser(hostEffecterParser),
+    requester(requester), handler(handler)
 {
     mergedHostParents = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
@@ -198,8 +201,28 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     }
 }
 
-int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
-                                           pdr::EventState state)
+std::string HostPDRHandler::updateLedGroupPath(const std::string& path,
+                                               uint16_t type)
+{
+    if (type != PLDM_ENTITY_SLOT)
+    {
+        return {};
+    }
+
+    std::string ledGroupPath{};
+    std::string inventoryPath = "/xyz/openbmc_project/inventory/";
+    if (path.find(inventoryPath) != std::string::npos)
+    {
+        ledGroupPath = "/xyz/openbmc_project/led/groups/" +
+                       path.substr(inventoryPath.length());
+    }
+
+    return ledGroupPath;
+}
+
+int HostPDRHandler::handleStateSensorEvent(
+    const std::vector<pldm::pdr::StateSetId>& stateSetId,
+    const StateSensorEntry& entry, pdr::EventState state)
 {
     for (auto& entity : objPathMap)
     {
@@ -210,6 +233,22 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
             node_entity.entity_container_id != entry.containerId)
         {
             continue;
+        }
+
+        for (const auto& setId : stateSetId)
+        {
+            if (setId == PLDM_STATE_SET_IDENTIFY_STATE)
+            {
+                auto ledGroupPath =
+                    updateLedGroupPath(entity.first, entry.entityType);
+                if (!ledGroupPath.empty())
+                {
+                    CustomDBus::getCustomDBus().setAsserted(
+                        ledGroupPath, node_entity,
+                        state == PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED,
+                        hostEffecterParser, mctp_eid);
+                }
+            }
         }
 
         CustomDBus::getCustomDBus().setOperationalStatus(
@@ -427,6 +466,7 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     static bool merged = false;
     static PDRList stateSensorPDRs{};
     static PDRList fruRecordSetPDRs{};
+    static PDRList effecterPDRs{};
     static TLPDRMap tlpdrInfo{};
     uint32_t nextRecordHandle{};
     std::vector<TlInfo> tlInfo;
@@ -542,7 +582,19 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
                 {
+                    std::cerr
+                        << "george: pdr Hdr type = PLDM_STATE_EFFECTER_PDR...\n";
                     updateContanierId<pldm_state_effecter_pdr>(entityTree, pdr);
+                    auto pdrData =
+                        reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+                    std::cerr << "george: pdrData effecter_id = "
+                              << pdrData->effecter_id << std::endl;
+                    std::cerr << "george: pdrData entity_type = "
+                              << pdrData->entity_type << std::endl;
+                    std::cerr << "george: pdrData entity_instance = "
+                              << pdrData->entity_instance << std::endl;
+                    std::cerr << "george: pdrData container_id = "
+                              << pdrData->container_id << std::endl;
                 }
 
                 // if the TLPDR is invalid update the repo accordingly
@@ -813,7 +865,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
                         pldm::responder::events::StateSensorEntry
                             stateSensorEntry{containerId, entityType,
                                              entityInstance, sensorOffset};
-                        handleStateSensorEvent(stateSensorEntry, eventState);
+                        handleStateSensorEvent(stateSetIds, stateSensorEntry,
+                                               eventState);
                     }
                 };
 
@@ -1026,9 +1079,9 @@ void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
     }
 }
 
-void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
-                                                    uint8_t state,
-                                                    const std::string& path)
+void HostPDRHandler::getPresentStateBySensorReadigs(
+    uint16_t sensorId, uint16_t type, uint16_t instance, uint16_t containerId,
+    uint8_t state, const std::string& path, pldm::pdr::StateSetId stateSetId)
 {
 
     auto instanceId = requester.getInstanceId(mctp_eid);
@@ -1050,7 +1103,9 @@ void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
     }
 
     state = PLDM_OPERATIONAL_ERROR;
-    auto getStateSensorReadingsResponseHandler = [this, path, &state](
+    auto getStateSensorReadingsResponseHandler = [this, path, type, instance,
+                                                  containerId, stateSetId,
+                                                  &state](
                                                      mctp_eid_t /*eid*/,
                                                      const pldm_msg* response,
                                                      size_t respMsgLen) {
@@ -1085,8 +1140,28 @@ void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
                 break;
             }
         }
-        CustomDBus::getCustomDBus().setOperationalStatus(
-            path, state == PLDM_OPERATIONAL_NORMAL);
+
+        if (stateSetId == PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS)
+        {
+            // set the dbus property only when its not a composite sensor
+            // and the state set it PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS
+            // Get sensorOpState property by the getStateSensorReadings
+            // command.
+            CustomDBus::getCustomDBus().setOperationalStatus(
+                path, state == PLDM_OPERATIONAL_NORMAL);
+        }
+        else if (stateSetId == PLDM_STATE_SET_IDENTIFY_STATE)
+        {
+            auto ledGroupPath = updateLedGroupPath(path, type);
+            if (!ledGroupPath.empty())
+            {
+                pldm_entity entity{type, instance, containerId};
+                CustomDBus::getCustomDBus().setAsserted(
+                    ledGroupPath, entity,
+                    state == PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED,
+                    hostEffecterParser, mctp_eid, true);
+            }
+        }
 
         if (++sensorMapIndex != objPathMap.end())
         {
@@ -1154,12 +1229,9 @@ void HostPDRHandler::setOperationStatus()
             if (compositeSensorStates.size() == 1 &&
                 stateSetIds[0] == PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS)
             {
-                // set the dbus property only when its not a composite sensor
-                // and the state set it PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS
-                // Get sensorOpState property by the getStateSensorReadings
-                // command.
-                getPresentStateBySensorReadigs(sensor.first.sensorID, state,
-                                               sensorMapIndex->first);
+                getPresentStateBySensorReadigs(
+                    sensor.first.sensorID, entityType, entityInstance,
+                    containerId, state, sensorMapIndex->first, stateSetIds[0]);
             }
         }
     }

@@ -1,5 +1,7 @@
 #include "custom_dbus.hpp"
 
+#include "libpldm/state_set.h"
+
 namespace pldm
 {
 namespace dbus
@@ -88,6 +90,84 @@ void CustomDBus::implementObjectEnableIface(const std::string& path)
                       pldm::utils::DBusHandler::getBus(), path.c_str()));
         _enabledStatus.at(path)->enabled(false);
     }
+}
+
+void CustomDBus::setAsserted(
+    const std::string& path, const pldm_entity& entity, bool value,
+    pldm::host_effecters::HostEffecterParser* hostEffecterParser,
+    uint8_t mctpEid, bool isTriggerStateEffecterStates)
+{
+    if (ledGroup.find(path) == ledGroup.end())
+    {
+        ledGroup.emplace(
+            path, std::make_unique<Group>(pldm::utils::DBusHandler::getBus(),
+                                          path.c_str(), hostEffecterParser,
+                                          entity, mctpEid));
+    }
+    else
+    {
+        ledGroup.at(path)->setStateEffecterStatesFlag(
+            isTriggerStateEffecterStates);
+    }
+    ledGroup.at(path)->asserted(value);
+}
+
+bool CustomDBus::getAsserted(const std::string& path) const
+{
+    if (ledGroup.find(path) != ledGroup.end())
+    {
+        return ledGroup.at(path)->asserted();
+    }
+
+    return false;
+}
+
+bool Group::asserted() const
+{
+    return sdbusplus::xyz::openbmc_project::Led::server::Group::asserted();
+}
+
+bool Group::updateAsserted(bool value)
+{
+    return sdbusplus::xyz::openbmc_project::Led::server::Group::asserted(value);
+}
+
+bool Group::asserted(bool value)
+{
+    std::vector<set_effecter_state_field> stateField;
+
+    if (value ==
+        sdbusplus::xyz::openbmc_project::Led::server::Group::asserted())
+    {
+        stateField.push_back({PLDM_NO_CHANGE, 0});
+    }
+    else
+    {
+        uint8_t state = value ? PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED
+                              : PLDM_STATE_SET_IDENTIFY_STATE_UNASSERTED;
+
+        stateField.push_back({PLDM_REQUEST_SET, state});
+    }
+
+    if (isTriggerStateEffecterStates)
+    {
+        if (hostEffecterParser)
+        {
+            uint16_t effecterId = pldm::utils::findStateEffecterId(
+                hostEffecterParser->getPldmPDR(), entity.entity_type,
+                entity.entity_instance_num, entity.entity_container_id,
+                PLDM_STATE_SET_IDENTIFY_STATE, false);
+
+            hostEffecterParser->sendSetStateEffecterStates(
+                mctpEid, effecterId, 1, stateField,
+                std::bind(std::mem_fn(&pldm::dbus::Group::updateAsserted), this,
+                          std::placeholders::_1));
+        }
+    }
+
+    isTriggerStateEffecterStates = true;
+
+    return sdbusplus::xyz::openbmc_project::Led::server::Group::asserted(value);
 }
 
 } // namespace dbus

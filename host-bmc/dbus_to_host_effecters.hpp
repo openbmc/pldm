@@ -167,6 +167,13 @@ class HostEffecterParser
                                          size_t dbusInfoIndex,
                                          uint16_t effecterId);
 
+    const pldm_pdr* getPldmPDR();
+
+    int sendSetStateEffecterStates(
+        uint8_t mctpEid, uint16_t effecterId, uint8_t compEffCnt,
+        std::vector<set_effecter_state_field>& stateField,
+        std::function<bool(bool)> callBack = nullptr, bool value = false);
+
   protected:
     pldm::dbus_api::Requester*
         requester;           //!< Reference to Requester to obtain instance id
