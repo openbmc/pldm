@@ -1151,6 +1151,10 @@ void HostPDRHandler::getPresentStateBySensorReadigs(
                     ledGroupPath, entity,
                     state == PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED,
                     hostEffecterParser, mctp_eid);
+                std::vector<std::tuple<std::string, std::string, std::string>>
+                    associations{{"identify_led_group",
+                                  "identify_inventory_object", ledGroupPath}};
+                CustomDBus::getCustomDBus().setAssociations(path, associations);
             }
         }
 

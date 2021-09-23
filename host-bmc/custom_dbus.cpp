@@ -170,5 +170,46 @@ bool Group::asserted(bool value)
     return sdbusplus::xyz::openbmc_project::Led::server::Group::asserted(value);
 }
 
+const std::vector<std::tuple<std::string, std::string, std::string>>
+    CustomDBus::getAssociations(const std::string& path)
+{
+    if (associations.find(path) != associations.end())
+    {
+        return associations.at(path)->associations();
+    }
+    return {};
+}
+
+void CustomDBus::setAssociations(const std::string& path, Associations assoc)
+{
+    using PropVariant = sdbusplus::xyz::openbmc_project::Association::server::
+        Definitions::PropertiesVariant;
+
+    if (associations.find(path) == associations.end())
+    {
+        PropVariant value{std::move(assoc)};
+        std::map<std::string, PropVariant> properties;
+        properties.emplace("Associations", std::move(value));
+
+        associations.emplace(path, std::make_unique<AssociationsIntf>(
+                                       pldm::utils::DBusHandler::getBus(),
+                                       path.c_str(), properties));
+    }
+    else
+    {
+        // object already created , so just update the associations
+        auto currentAssociations = getAssociations(path);
+        std::vector<std::tuple<std::string, std::string, std::string>>
+            newAssociations;
+        newAssociations.reserve(currentAssociations.size() + assoc.size());
+        newAssociations.insert(newAssociations.end(),
+                               currentAssociations.begin(),
+                               currentAssociations.end());
+        newAssociations.insert(newAssociations.end(), assoc.begin(),
+                               assoc.end());
+        associations.at(path)->associations(newAssociations);
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
