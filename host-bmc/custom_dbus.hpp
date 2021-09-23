@@ -79,7 +79,7 @@ class CustomDBus
      *
      *  @param[in] status - PLDM operational fault status
      */
-    void setOperationalStatus(const std::string& path, uint8_t status);
+    void setOperationalStatus(const std::string& path, bool status);
 
     /** @brief Get the Functional property
      *
