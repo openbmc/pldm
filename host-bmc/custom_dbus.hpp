@@ -8,6 +8,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/CpuCore/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/server.hpp>
@@ -40,6 +41,11 @@ using EnableIface = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Object::server::Enable>;
 using AssertedIntf = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Led::server::Group>;
+using AssociationsIntf =
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions;
+
+using Associations =
+    std::vector<std::tuple<std::string, std::string, std::string>>;
 
 class Group : public AssertedIntf
 {
@@ -193,6 +199,24 @@ class CustomDBus
      */
     bool getAsserted(const std::string& path) const;
 
+    /** @brief Set the Associations property
+     *
+     *  @param[in] path     - The object path
+     *
+     *  @param[in] value    - An array of forward, reverse, endpoint tuples
+     */
+    void setAssociations(const std::string& path, Associations assoc);
+
+    /** @brief Get the current Associations property
+     *
+     *  @param[in] path     - The object path
+     *
+     *  @return current Associations -  An array of forward, reverse, endpoint
+     * tuples
+     */
+    const std::vector<std::tuple<std::string, std::string, std::string>>
+        getAssociations(const std::string& path);
+
   private:
     std::map<ObjectPath, std::unique_ptr<LocationIntf>> location;
 
@@ -200,6 +224,9 @@ class CustomDBus
         operationalStatus;
 
     std::unordered_map<ObjectPath, std::unique_ptr<Group>> ledGroup;
+
+    std::unordered_map<ObjectPath, std::unique_ptr<AssociationsIntf>>
+        associations;
 
     std::unordered_map<ObjectPath, std::unique_ptr<ItemIntf>> presentStatus;
     std::unordered_map<ObjectPath, std::unique_ptr<CoreIntf>> cpuCore;
