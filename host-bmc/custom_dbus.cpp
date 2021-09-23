@@ -102,5 +102,22 @@ void CustomDBus::setAsserted(const std::string& path, bool value)
     ledGroup.at(path)->asserted(value);
 }
 
+void CustomDBus::setAssociations(const std::string& path, Associations assoc)
+{
+    using PropVariant = sdbusplus::xyz::openbmc_project::Association::server::
+        Definitions::PropertiesVariant;
+
+    if (associations.find(path) == associations.end())
+    {
+        PropVariant value{std::move(assoc)};
+        std::map<std::string, PropVariant> properties;
+        properties.emplace("Associations", std::move(value));
+
+        associations.emplace(path, std::make_unique<AssociationsIntf>(
+                                       pldm::utils::DBusHandler::getBus(),
+                                       path.c_str(), properties));
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
