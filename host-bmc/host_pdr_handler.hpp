@@ -5,6 +5,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "dbus_to_host_effecters.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -104,6 +105,7 @@ class HostPDRHandler
         pldm_pdr* repo, const std::string& eventsJsonsDir,
         pldm_entity_association_tree* entityTree,
         pldm_entity_association_tree* bmcEntityTree,
+        pldm::host_effecters::HostEffecterParser* hostEffecterParser,
         pldm::dbus_api::Requester& requester,
         pldm::requester::Handler<pldm::requester::Request>* handler);
 
@@ -137,12 +139,14 @@ class HostPDRHandler
 
     /** @brief Handles state sensor event
      *
+     *  @param[in] stateSetId - state set Id
      *  @param[in] entry - state sensor entry
      *  @param[in] state - event state
      *
      *  @return PLDM completion code
      */
     int handleStateSensorEvent(
+        const std::vector<pldm::pdr::StateSetId>& stateSetId,
         const pldm::responder::events::StateSensorEntry& entry,
         pdr::EventState state);
 
@@ -241,13 +245,19 @@ class HostPDRHandler
     uint16_t getRSI(const PDRList& fruRecordSetPDRs, const pldm_entity& entity);
 
     /** @brief Get present state from state sensor readings
-     *  @param[in] sensorId   - state sensor Id
+     *  @param[in] sensorId     - state sensor Id
+     *  @param[in] type         - entity type
+     *  @param[in] instance     - entity instance num
+     *  @param[in] containerId  - entity container id
      *
      *  @param[out] state     - pldm operational fault status
      *  @param[in] path       - object path
+     *  @param[in] stateSetId - state set Id
      */
-    void getPresentStateBySensorReadigs(uint16_t sensorId, uint8_t state,
-                                        const std::string& path);
+    void getPresentStateBySensorReadigs(uint16_t sensorId, uint16_t type,
+                                        uint16_t instance, uint16_t containerId,
+                                        uint8_t state, const std::string& path,
+                                        pldm::pdr::StateSetId stateSetId);
 
     /** @brief Set the OperationalStatus interface
      *  @return
@@ -259,6 +269,13 @@ class HostPDRHandler
      *  @return
      */
     void setPresentPropertyStatus(const std::string& path);
+
+    /** @brief Update the Led Group path
+     *  @param[in] path     - object path
+     *  @param[in] type     - entity type
+     *  @return
+     */
+    std::string updateLedGroupPath(const std::string& path, uint16_t type);
 
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
@@ -282,8 +299,11 @@ class HostPDRHandler
     /** @brief Pointer to BMC's entity association tree */
     pldm_entity_association_tree* bmcEntityTree;
 
-    /** @brief reference to Requester object, primarily used to access API to
-     *  obtain PLDM instance id.
+    /** @brief Pointer to host effecter parser */
+    pldm::host_effecters::HostEffecterParser* hostEffecterParser;
+
+    /** @brief reference to Requester object, primarily used to access API
+     * to obtain PLDM instance id.
      */
     pldm::dbus_api::Requester& requester;
 
