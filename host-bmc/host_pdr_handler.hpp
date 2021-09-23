@@ -5,6 +5,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "dbus_to_host_effecters.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -94,6 +95,7 @@ class HostPDRHandler
         pldm_pdr* repo, const std::string& eventsJsonsDir,
         pldm_entity_association_tree* entityTree,
         pldm_entity_association_tree* bmcEntityTree,
+        pldm::host_effecters::HostEffecterParser* hostEffecterParser,
         pldm::dbus_api::Requester& requester,
         pldm::requester::Handler<pldm::requester::Request>* handler,
         pldm::responder::oem_platform::Handler* oemPlatformHandler);
@@ -274,6 +276,12 @@ class HostPDRHandler
      */
     void setPresentPropertyStatus(const std::string& path);
 
+    /** @brief Update the Led Group path
+     *  @param[in] path     - object path
+     *  @return
+     */
+    std::string updateLedGroupPath(const std::string& path);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -298,8 +306,11 @@ class HostPDRHandler
     /** @brief Pointer to BMC's entity association tree */
     pldm_entity_association_tree* bmcEntityTree;
 
-    /** @brief reference to Requester object, primarily used to access API to
-     *  obtain PLDM instance id.
+    /** @brief Pointer to host effecter parser */
+    pldm::host_effecters::HostEffecterParser* hostEffecterParser;
+
+    /** @brief reference to Requester object, primarily used to access API
+     * to obtain PLDM instance id.
      */
     pldm::dbus_api::Requester& requester;
 

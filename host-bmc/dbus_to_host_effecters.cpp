@@ -245,12 +245,11 @@ uint8_t
     return newState;
 }
 
-int HostEffecterParser::setHostStateEffecter(
-    size_t effecterInfoIndex, std::vector<set_effecter_state_field>& stateField,
-    uint16_t effecterId)
+int HostEffecterParser::sendSetStateEffecterStates(
+    uint8_t mctpEid, uint16_t effecterId, uint8_t compEffCnt,
+    std::vector<set_effecter_state_field>& stateField,
+    std::function<bool(bool)> callBack, bool value)
 {
-    uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
-    uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
     auto instanceId = requester->getInstanceId(mctpEid);
 
     std::vector<uint8_t> requestMsg(
@@ -263,14 +262,15 @@ int HostEffecterParser::setHostStateEffecter(
 
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Message encode failure. PLDM error code = " << std::hex
-                  << std::showbase << rc << "\n";
+        std::cerr
+            << "Message encode SetStateEffecterStates failure. PLDM error code = "
+            << std::hex << std::showbase << rc << "\n";
         requester->markFree(mctpEid, instanceId);
         return rc;
     }
 
     auto setStateEffecterStatesRespHandler =
-        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
+        [=](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
             if (response == nullptr || !respMsgLen)
             {
                 std::cerr << "Failed to receive response for "
@@ -295,6 +295,13 @@ int HostEffecterParser::setHostStateEffecter(
                 pldm::utils::reportError(
                     "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
             }
+            else
+            {
+                if (callBack)
+                {
+                    callBack(value);
+                }
+            }
         };
 
     rc = handler->registerRequest(
@@ -305,6 +312,17 @@ int HostEffecterParser::setHostStateEffecter(
         std::cerr << "Failed to send request to set an effecter on Host \n";
     }
     return rc;
+}
+
+int HostEffecterParser::setHostStateEffecter(
+    size_t effecterInfoIndex, std::vector<set_effecter_state_field>& stateField,
+    uint16_t effecterId)
+{
+    uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
+    uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
+
+    return sendSetStateEffecterStates(mctpEid, effecterId, compEffCnt,
+                                      stateField);
 }
 
 void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
@@ -326,6 +344,11 @@ void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
                 processHostEffecterChangeNotification(
                     props, effecterInfoIndex, dbusInfoIndex, effecterId);
             }));
+}
+
+const pldm_pdr* HostEffecterParser::getPldmPDR()
+{
+    return pdrRepo;
 }
 
 } // namespace host_effecters

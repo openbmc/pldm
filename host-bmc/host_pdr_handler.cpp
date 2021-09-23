@@ -87,13 +87,16 @@ void updateContanierId(pldm_entity_association_tree* entityTree,
 HostPDRHandler::HostPDRHandler(
     int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
-    pldm_entity_association_tree* bmcEntityTree, Requester& requester,
+    pldm_entity_association_tree* bmcEntityTree,
+    pldm::host_effecters::HostEffecterParser* hostEffecterParser,
+    Requester& requester,
     pldm::requester::Handler<pldm::requester::Request>* handler,
     pldm::responder::oem_platform::Handler* oemPlatformHandler) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    bmcEntityTree(bmcEntityTree), requester(requester), handler(handler),
+    bmcEntityTree(bmcEntityTree), hostEffecterParser(hostEffecterParser),
+    requester(requester), handler(handler),
     oemPlatformHandler(oemPlatformHandler)
 {
     mergedHostParents = false;
@@ -229,6 +232,20 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     }
 }
 
+std::string HostPDRHandler::updateLedGroupPath(const std::string& path)
+{
+
+    std::string ledGroupPath{};
+    std::string inventoryPath = "/xyz/openbmc_project/inventory/";
+    if (path.find(inventoryPath) != std::string::npos)
+    {
+        ledGroupPath = "/xyz/openbmc_project/led/groups/" +
+                       path.substr(inventoryPath.length());
+    }
+
+    return ledGroupPath;
+}
+
 int HostPDRHandler::handleStateSensorEvent(
     const std::vector<pldm::pdr::StateSetId>& stateSetId,
     const StateSensorEntry& entry, pdr::EventState state)
@@ -242,6 +259,21 @@ int HostPDRHandler::handleStateSensorEvent(
             node_entity.entity_container_id != entry.containerId)
         {
             continue;
+        }
+
+        for (const auto& setId : stateSetId)
+        {
+            if (setId == PLDM_STATE_SET_IDENTIFY_STATE)
+            {
+                auto ledGroupPath = updateLedGroupPath(entity.first);
+                if (!ledGroupPath.empty())
+                {
+                    CustomDBus::getCustomDBus().setAsserted(
+                        ledGroupPath, node_entity,
+                        state == PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED,
+                        hostEffecterParser, mctp_eid);
+                }
+            }
         }
 
         if ((stateSetId[0] == PLDM_STATE_SET_HEALTH_STATE ||
@@ -630,6 +662,7 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
         stateSensorPDRs.clear();
         fruRecordSetPDRs.clear();
         entityAssociations.clear();
+        mergedHostParents = false;
 
         if (merged)
         {
@@ -1105,10 +1138,20 @@ void HostPDRHandler::getPresentStateBySensorReadigs(
             // and the state set it PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS
             // Get sensorOpState property by the getStateSensorReadings
             // command.
-            std::cerr << "creating operational status for : " << path << ", "
-                      << stateSetId << std::endl;
             CustomDBus::getCustomDBus().setOperationalStatus(
                 path, state == PLDM_OPERATIONAL_NORMAL);
+        }
+        else if (stateSetId == PLDM_STATE_SET_IDENTIFY_STATE)
+        {
+            auto ledGroupPath = updateLedGroupPath(path);
+            if (!ledGroupPath.empty())
+            {
+                pldm_entity entity{type, instance, containerId};
+                CustomDBus::getCustomDBus().setAsserted(
+                    ledGroupPath, entity,
+                    state == PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED,
+                    hostEffecterParser, mctp_eid);
+            }
         }
 
         ++sensorMapIndex;
