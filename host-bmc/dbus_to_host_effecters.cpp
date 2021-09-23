@@ -245,12 +245,10 @@ uint8_t
     return newState;
 }
 
-int HostEffecterParser::setHostStateEffecter(
-    size_t effecterInfoIndex, std::vector<set_effecter_state_field>& stateField,
-    uint16_t effecterId)
+int HostEffecterParser::sendSetStateEffecterStates(
+    uint8_t mctpEid, uint16_t effecterId, uint8_t compEffCnt,
+    std::vector<set_effecter_state_field>& stateField)
 {
-    uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
-    uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
     auto instanceId = requester->getInstanceId(mctpEid);
 
     std::vector<uint8_t> requestMsg(
@@ -258,13 +256,15 @@ int HostEffecterParser::setHostStateEffecter(
             sizeof(set_effecter_state_field) * compEffCnt,
         0);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
     auto rc = encode_set_state_effecter_states_req(
         instanceId, effecterId, compEffCnt, stateField.data(), request);
 
-    if (rc != PLDM_SUCCESS)
+    if (PLDM_SUCCESS != rc)
     {
-        std::cerr << "Message encode failure. PLDM error code = " << std::hex
-                  << std::showbase << rc << "\n";
+        std::cerr
+            << "Message encode SetStateEffecterStates failure. PLDM error code = "
+            << std::hex << std::showbase << rc << "\n";
         requester->markFree(mctpEid, instanceId);
         return rc;
     }
@@ -300,11 +300,24 @@ int HostEffecterParser::setHostStateEffecter(
     rc = handler->registerRequest(
         mctpEid, instanceId, PLDM_PLATFORM, PLDM_SET_STATE_EFFECTER_STATES,
         std::move(requestMsg), std::move(setStateEffecterStatesRespHandler));
+
     if (rc)
     {
         std::cerr << "Failed to send request to set an effecter on Host \n";
     }
+
     return rc;
+}
+
+int HostEffecterParser::setHostStateEffecter(
+    size_t effecterInfoIndex, std::vector<set_effecter_state_field>& stateField,
+    uint16_t effecterId)
+{
+    uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
+    uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
+
+    return sendSetStateEffecterStates(mctpEid, effecterId, compEffCnt,
+                                      stateField);
 }
 
 void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
@@ -326,6 +339,11 @@ void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
                 processHostEffecterChangeNotification(
                     props, effecterInfoIndex, dbusInfoIndex, effecterId);
             }));
+}
+
+const pldm_pdr* HostEffecterParser::getPldmPDR()
+{
+    return pdrRepo;
 }
 
 } // namespace host_effecters
