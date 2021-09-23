@@ -198,6 +198,25 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     }
 }
 
+std::string HostPDRHandler::updateLedGroupPath(const std::string& path,
+                                               uint8_t type)
+{
+    if (type != PLDM_ENTITY_SLOT)
+    {
+        return {};
+    }
+
+    std::string ledGroupPath{};
+    std::string inventoryPath = "/xyz/openbmc_project/inventory/";
+    if (path.find(inventoryPath) != std::string::npos)
+    {
+        ledGroupPath = "/xyz/openbmc_project/led/groups/" +
+                       path.substr(inventoryPath.length());
+    }
+
+    return ledGroupPath;
+}
+
 int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
                                            pdr::EventState state)
 {
@@ -210,6 +229,13 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
             node_entity.entity_container_id != entry.containerId)
         {
             continue;
+        }
+
+        auto ledGroupPath = updateLedGroupPath(entity.first, entry.entityType);
+        if (!ledGroupPath.empty())
+        {
+            CustomDBus::getCustomDBus().setAsserted(
+                ledGroupPath, state == PLDM_OPERATIONAL_NORMAL);
         }
 
         CustomDBus::getCustomDBus().setOperationalStatus(
@@ -1027,7 +1053,7 @@ void HostPDRHandler::getFRURecordTableByHost(uint16_t& total_table_records,
 }
 
 void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
-                                                    uint8_t state,
+                                                    uint8_t type, uint8_t state,
                                                     const std::string& path)
 {
 
@@ -1050,7 +1076,7 @@ void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
     }
 
     state = PLDM_OPERATIONAL_ERROR;
-    auto getStateSensorReadingsResponseHandler = [this, path, &state](
+    auto getStateSensorReadingsResponseHandler = [this, path, type, &state](
                                                      mctp_eid_t /*eid*/,
                                                      const pldm_msg* response,
                                                      size_t respMsgLen) {
@@ -1085,6 +1111,14 @@ void HostPDRHandler::getPresentStateBySensorReadigs(uint16_t sensorId,
                 break;
             }
         }
+
+        auto ledGroupPath = updateLedGroupPath(path, type);
+        if (!ledGroupPath.empty())
+        {
+            CustomDBus::getCustomDBus().setAsserted(
+                ledGroupPath, state == PLDM_OPERATIONAL_NORMAL);
+        }
+
         CustomDBus::getCustomDBus().setOperationalStatus(
             path, state == PLDM_OPERATIONAL_NORMAL);
 
@@ -1158,7 +1192,8 @@ void HostPDRHandler::setOperationStatus()
                 // and the state set it PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS
                 // Get sensorOpState property by the getStateSensorReadings
                 // command.
-                getPresentStateBySensorReadigs(sensor.first.sensorID, state,
+                getPresentStateBySensorReadigs(sensor.first.sensorID,
+                                               entityType, state,
                                                sensorMapIndex->first);
             }
         }

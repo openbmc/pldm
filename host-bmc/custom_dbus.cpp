@@ -90,5 +90,17 @@ void CustomDBus::implementObjectEnableIface(const std::string& path)
     }
 }
 
+void CustomDBus::setAsserted(const std::string& path, bool value)
+{
+    if (ledGroup.find(path) == ledGroup.end())
+    {
+        ledGroup.emplace(path,
+                         std::make_unique<AssertedIntf>(
+                             pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+
+    ledGroup.at(path)->asserted(value);
+}
+
 } // namespace dbus
 } // namespace pldm
