@@ -100,15 +100,7 @@
             "Enabled"
          ],
          "helpText" : "Specifies the current hypervisor boot policy. Do not set this attribute directly; set pvm_stop_at_standby instead.",
-         "displayName" : "pvm_stop_at_standby_current (current)",
-         "dbus":
-            {
-               "object_path" : "/xyz/openbmc_project/control/host0/boot",
-               "interface" : "xyz.openbmc_project.Control.Boot.Mode",
-               "property_name" : "BootMode",
-               "property_type" : "string",
-               "property_values" : ["xyz.openbmc_project.Control.Boot.Mode.Modes.Regular", "xyz.openbmc_project.Control.Boot.Mode.Modes.Setup", "xyz.openbmc_project.Control.Boot.Mode.Modes.Safe"]
-            }
+         "displayName" : "pvm_stop_at_standby_current (current)"
       },
       {
          "attribute_name":"hb_debug_console",
