@@ -310,9 +310,8 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         uint8_t completionCode{};
         uint8_t status{};
         auto responsePtr = reinterpret_cast<const struct pldm_msg*>(response);
-        auto rc = decode_platform_event_message_resp(
-            responsePtr, respMsgLen - sizeof(pldm_msg_hdr), &completionCode,
-            &status);
+        auto rc = decode_platform_event_message_resp(responsePtr, respMsgLen,
+                                                     &completionCode, &status);
         if (rc || completionCode)
         {
             std::cerr << "Failed to decode_platform_event_message_resp: "
