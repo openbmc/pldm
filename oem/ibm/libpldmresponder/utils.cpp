@@ -195,29 +195,32 @@ void findPortObjects(const std::string& cardObjPath,
 
 bool checkFruPresence(const char* objPath)
 {
-    // if we enter here with port objects then we need to find the parent
-    // and see if the card is present. if so then the port is considered as
+    // if we enter here with port or nvme objects then we need to find the parent
+    // and see if the pcie card or the drive bp is present. 
+    // if so then the port or the nvme slot is considered as
     // present. this is so because the ports do not have "Present" property
     std::string nvme("nvme");
     std::string pcieAdapter("pcie_card");
     std::string portStr("cxp_");
     std::string newObjPath = objPath;
     bool isPresent = true;
-    if (newObjPath.find(nvme) != std::string::npos)
+    std::cout << "\n enter checkFruPresence with " << objPath << std::endl;
+    /*if (newObjPath.find(nvme) != std::string::npos)
     {
         return true;
     }
-    else if ((newObjPath.find(pcieAdapter) != std::string::npos) &&
+    else*/ if ((newObjPath.find(pcieAdapter) != std::string::npos) &&
              !checkIfIBMCableCard(newObjPath))
     {
         return true; // industry std cards
     }
-    else if (newObjPath.find(portStr) != std::string::npos)
+    else if (newObjPath.find(portStr) != std::string::npos ||
+             newObjPath.find(nvme) != std::string::npos)
     {
         newObjPath = pldm::utils::findParent(objPath);
     }
 
-    // Phyp expects the FRU records for nvme and industry std cards to be always
+    // Phyp expects the FRU records for industry std cards to be always
     // built, irrespective of presence
 
     static constexpr auto presentInterface =

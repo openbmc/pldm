@@ -31,6 +31,7 @@ template <class DBusInterface, class Handler>
 void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                               Handler& handler, pdr_utils::RepoInterface& repo)
 {
+    std::cout << "\nenter generateStateEffecterPDR" << std::endl;
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
     for (const auto& e : entries)
@@ -168,6 +169,7 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         pdrEntry.size = pdrSize;
         repo.addRecord(pdrEntry);
     }
+    std::cout << "\nexit generateStateEffecterPDR" << std::endl;
 }
 
 } // namespace pdr_state_effecter
