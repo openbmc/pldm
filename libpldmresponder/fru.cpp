@@ -4,6 +4,7 @@
 #include "libpldm/utils.h"
 
 #include "common/utils.hpp"
+#include "pdr.hpp"
 #ifdef OEM_IBM
 #include "oem/ibm/libpldmresponder/utils.hpp"
 #endif
@@ -170,8 +171,12 @@ void FruImpl::buildFRUTable()
 #endif
         if (!isPresent)
         {
+            std::cout << "\nwill not build fru record for "
+                      << object.first.str.c_str() << std::endl;
             continue;
         }
+        std::cout << "\nbuilding fru record for " << object.first.str.c_str()
+                  << std::endl;
         for (const auto& interface : interfaces)
         {
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
@@ -192,8 +197,10 @@ void FruImpl::buildFRUTable()
                     }
 
                     auto recordInfos = parser.getRecordInfo(interface.first);
-                    populateRecords(interfaces, recordInfos, entity,
-                                    object.first);
+                    auto tmp_rec = populateRecords(interfaces, recordInfos,
+                                                   entity, object.first);
+                    std::cout << "populateRecords returned record " << tmp_rec
+                              << std::endl;
 
                     associatedEntityMap.emplace(object.first, entity);
                     break;
@@ -344,9 +351,9 @@ uint32_t FruImpl::populateRecords(
 
 void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
 {
-    //  std::cout << "\nenter removeIndividualFRU with " << fruObjPath <<
-    //  std::endl;
+    std::cout << "\nenter removeIndividualFRU with " << fruObjPath << std::endl;
     uint16_t rsi = objectPathToRSIMap[fruObjPath];
+    std::cout << "rsi to delete " << rsi << std::endl;
     pldm_entity removeEntity;
     uint16_t terminusHdl{};
     uint16_t entityType{};
@@ -358,38 +365,48 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
     removeEntity.entity_instance_num = entityInsNum;
     removeEntity.entity_container_id = containerId;
 
-    // uint8_t bmcEventDataOps = PLDM_INVALID_OP;
-    // uint8_t hostEventDataOps = PLDM_INVALID_OP;
-    /*  auto updateRecordHdlBmc =
-          pldm_entity_association_pdr_remove_contained_entity(
-              pdrRepo, removeEntity, &bmcEventDataOps, false);
-      std::cout
-          << "\n pldm_entity_association_pdr_remove_contained_entity
-         updateRecordHdlBmc "
-          << updateRecordHdlBmc << std::endl;*/
+    std::cout << "removeEntity.entity_type "
+              << (uint32_t)removeEntity.entity_type
+              << "\nremoveEntity.entity_instance_num "
+              << (uint32_t)removeEntity.entity_instance_num
+              << "\nremoveEntity.entity_container_id "
+              << (uint32_t)removeEntity.entity_container_id << std::endl;
 
-    /*auto updateRecordHdlHost =
+    uint8_t bmcEventDataOps = PLDM_INVALID_OP;
+    uint8_t hostEventDataOps = PLDM_INVALID_OP;
+    auto updateRecordHdlBmc =
+        pldm_entity_association_pdr_remove_contained_entity(
+            pdrRepo, removeEntity, &bmcEventDataOps, false);
+    std::cout << "\n pldm_entity_association_pdr_remove_contained_entity"
+                 "updateRecordHdlBmc "
+              << updateRecordHdlBmc << std::endl;
+
+    auto updateRecordHdlHost =
         pldm_entity_association_pdr_remove_contained_entity(
             pdrRepo, removeEntity, &hostEventDataOps, true);
-      std::cout
-          << "\n pldm_entity_association_pdr_remove_contained_entity
-       updateRecordHdlHost "
-          << updateRecordHdlHost << std::endl;*/
+    std::cout << "\n pldm_entity_association_pdr_remove_contained_entity"
+                 "updateRecordHdlHost "
+              << updateRecordHdlHost << std::endl;
 
-    /*auto deleteRecordHdl =
+    auto deleteRecordHdl =
         pldm_pdr_remove_fru_record_set_by_rsi(pdrRepo, rsi, false);
-      std::cout << "\npldm_pdr_remove_fru_record_set_by_rsi deleteRecordHdl "
-                << deleteRecordHdl << std::endl;*/
+    std::cout << "\npldm_pdr_remove_fru_record_set_by_rsi deleteRecordHdl "
+              << deleteRecordHdl << std::endl;
 
     // sm00
-    /*std::cout << "\nprinting the entityTree before deleting node\n";
-    size_t num{};
-    pldm_entity* out = nullptr;
-    pldm_entity_association_tree_visit(entityTree,&out, &num);
-    free(out);*/
+    /* std::cout << "\nprinting the entityTree before deleting node\n";
+     size_t num{};
+     pldm_entity* out = nullptr;
+     pldm_entity_association_tree_visit(entityTree,&out, &num);
+     free(out);*/
     // sm00
 
+    std::cout << "\nbefore pldm_entity_association_tree_delete_node "
+              << std::endl;
     pldm_entity_association_tree_delete_node(entityTree, removeEntity);
+
+    std::cout
+        << "\nafter pldm_entity_association_tree_delete_node for entityTree \n";
     // sm00
     /*std::cout << "\nprinting the entityTree after deleting node\n";
     num = 0;
@@ -397,7 +414,10 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
     pldm_entity_association_tree_visit(entityTree,&out, &num);
     free(out);*/
     // sm00
-    // pldm_entity_association_tree_delete_node(bmcEntityTree, removeEntity);
+    pldm_entity_association_tree_delete_node(bmcEntityTree, removeEntity);
+    std::cout
+        << "\nafter pldm_entity_association_tree_delete_node for bmcEntityTree"
+        << std::endl;
     objectPathToRSIMap.erase(fruObjPath);
     objToEntityNode.erase(fruObjPath);     // sm00
     associatedEntityMap.erase(fruObjPath); // sm00
@@ -418,43 +438,42 @@ void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
     }
-    /*   sendPDRRepositoryChgEventbyPDRHandles(
-           std::move(std::vector<ChangeEntry>(1, deleteRecordHdl)),
-           std::move(std::vector<uint8_t>(1, PLDM_RECORDS_DELETED))); need to
-       send both remote and local records. Phyp keeps track of bmc only records
-           if(bmcEventDataOps!= PLDM_INVALID_OP)
-           {
-       sendPDRRepositoryChgEventbyPDRHandles(
-           std::move(std::vector<ChangeEntry>(1, updateRecordHdlBmc)),
-           std::move(std::vector<uint8_t>(1, bmcEventDataOps)));
-           }
-           if(hostEventDataOps != PLDM_INVALID_OP)
-           {
-       sendPDRRepositoryChgEventbyPDRHandles(
-           std::move(std::vector<ChangeEntry>(1, updateRecordHdlHost)),
-           std::move(std::vector<uint8_t>(1, hostEventDataOps)));
-           }*/ //sm00 this can be RECORDS_DELETED also for adapter pdrs
-    //   std::cout << "\nexit removeIndividualFRU " << std::endl;
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, deleteRecordHdl)),
+        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_DELETED))); // need to
+    //  send both remote and local records. Phyp keeps track of bmc only records
+    if (bmcEventDataOps != PLDM_INVALID_OP)
+    {
+        sendPDRRepositoryChgEventbyPDRHandles(
+            std::move(std::vector<ChangeEntry>(1, updateRecordHdlBmc)),
+            std::move(std::vector<uint8_t>(1, bmcEventDataOps)));
+    }
+    if (hostEventDataOps != PLDM_INVALID_OP)
+    {
+        sendPDRRepositoryChgEventbyPDRHandles(
+            std::move(std::vector<ChangeEntry>(1, updateRecordHdlHost)),
+            std::move(std::vector<uint8_t>(1, hostEventDataOps)));
+    } // sm00 this can be RECORDS_DELETED also for adapter pdrs
+    std::cout << "\nexit removeIndividualFRU " << std::endl;
 }
 
 void FruImpl::buildIndividualFRU(const std::string& fruInterface,
                                  const std::string& fruObjectPath)
 {
-    //   std::cout << "\nenter buildIndividualFRU with " << fruObjectPath << "
-    //   and "
-    //           << fruInterface << std::endl;
+    std::cout << "\nenter buildIndividualFRU with " << fruObjectPath << " and "
+              << fruInterface << std::endl;
     // An exception will be thrown by getRecordInfo, if the item
     // D-Bus interface name specified in FRU_Master.json does
     // not have corresponding config jsons
     pldm_entity_node* parent = nullptr;
     pldm_entity entity{};
     pldm_entity parentEntity{};
-    //  uint32_t newRecordHdl{};
+    uint32_t newRecordHdl{};
     try
     {
         entity.entity_type = parser.getEntityType(fruInterface);
         auto parentObj = pldm::utils::findParent(fruObjectPath);
-        //   std::cout << "\nfound parent as " << parentObj << std::endl;
+        std::cout << "\nfound parent as " << parentObj << std::endl;
         do
         {
             auto iter = objToEntityNode.find(parentObj);
@@ -467,49 +486,51 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
         } while (parentObj != "/");
 
         // sm00
-        /*  std::cout << "\nprinting the entityTree before adding the node" <<
-          std::endl; size_t num = 0; pldm_entity* out = nullptr;
-          pldm_entity_association_tree_visit(entityTree,&out, &num);
-          free(out);*/
+        /* std::cout << "\nprinting the entityTree before adding the node" <<
+         std::endl; size_t num = 0; pldm_entity* out = nullptr;
+         pldm_entity_association_tree_visit(entityTree,&out, &num);
+         free(out);*/
         // sm00
 
         auto node = pldm_entity_association_tree_add(
             entityTree, &entity, 0xFFFF, parent,
             PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
+        std::cout << "\nafter pldm_entity_association_tree_add to entityTree: "
+                  << " entity.entity_instance_num "
+                  << entity.entity_instance_num << "\n";
         objToEntityNode[fruObjectPath] = node;
         auto recordInfos = parser.getRecordInfo(fruInterface);
 
         // sm00
-        /*  std::cout << "\nprinting the entityTree after adding the node" <<
-          std::endl; num = 0; out = nullptr;
-          pldm_entity_association_tree_visit(entityTree,&out, &num);
-          free(out);*/
+        /* std::cout << "\nprinting the entityTree after adding the node" <<
+         std::endl; num = 0; out = nullptr;
+         pldm_entity_association_tree_visit(entityTree,&out, &num);
+         free(out);*/
         // sm00
 
         memcpy(reinterpret_cast<void*>(&parentEntity),
                reinterpret_cast<void*>(parent), sizeof(pldm_entity));
-        /*  pldm_entity_node* bmcTreeParentNode = nullptr;
-          pldm_find_entity_ref_in_tree(bmcEntityTree, parentEntity,
-                                       &bmcTreeParentNode);
+        pldm_entity_node* bmcTreeParentNode = nullptr;
+        pldm_find_entity_ref_in_tree(bmcEntityTree, parentEntity,
+                                     &bmcTreeParentNode);
 
-          pldm_entity_association_tree_add(
-              bmcEntityTree, &entity, 0xFFFF, bmcTreeParentNode,
-              PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
-          pldm_entity_association_tree_add(bmcEntityTree, &entity, 0xFFFF,
-                                           bmcTreeParentNode,
-                                           PLDM_ENTITY_ASSOCIAION_PHYSICAL,false);
-        */
+        pldm_entity_association_tree_add(
+            bmcEntityTree, &entity, 0xFFFF, bmcTreeParentNode,
+            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
+        std::cout << "\nafter pldm_entity_association_tree_add to bmcEntityTree"
+                  << " entity.entity_instance_num "
+                  << entity.entity_instance_num << std::endl;
 
         for (const auto& object : objects)
         {
             if (object.first.str == fruObjectPath)
             {
                 const auto& interfaces = object.second;
-                /*newRecordHdl =*/populateRecords(interfaces, recordInfos,
-                                                  entity, fruObjectPath, true);
-                //           std::cout << "\npopulateRecords returned
-                //           newRecordHdl "
-                //                   << newRecordHdl << std::endl;
+                newRecordHdl = populateRecords(interfaces, recordInfos, entity,
+                                               fruObjectPath, true);
+                std::cout << "\npopulateRecords returned"
+                             " newRecordHdl "
+                          << newRecordHdl << std::endl;
                 associatedEntityMap.emplace(fruObjectPath, entity);
                 break;
             }
@@ -522,23 +543,32 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
                   << "interface type, interface = " << fruInterface << "\n";
     }
 
-    // uint8_t bmcEventDataOps = PLDM_INVALID_OP;
-    /* auto updatedRecordHdlBmc =
-      pldm_entity_association_pdr_add_contained_entity( pdrRepo, entity,
-      parentEntity, &bmcEventDataOps, false); std::cout
-          << "\npldm_entity_association_pdr_add_contained_entity
-        updatedRecordHdlBmc "
-          << updatedRecordHdlBmc << std::endl;*/
+    uint8_t bmcEventDataOps = PLDM_INVALID_OP;
+    auto updatedRecordHdlBmc = pldm_entity_association_pdr_add_contained_entity(
+        pdrRepo, entity, parentEntity, &bmcEventDataOps, false);
+    std::cout << "\npldm_entity_association_pdr_add_contained_entity"
+                 "updatedRecordHdlBmc "
+              << updatedRecordHdlBmc << std::endl;
 
-    // uint8_t hostEventDataOps = PLDM_INVALID_OP;
+    uint8_t hostEventDataOps = PLDM_INVALID_OP;
 
-    /*auto updatedRecordHdlHost =
+    auto updatedRecordHdlHost =
         pldm_entity_association_pdr_add_contained_entity(
             pdrRepo, entity, parentEntity, &hostEventDataOps, true);
-     std::cout
-         << "\npldm_entity_association_pdr_add_contained_entity
-       updatedRecordHdlHost "
-         << updatedRecordHdlHost << std::endl;*/
+    std::cout << "\npldm_entity_association_pdr_add_contained_entity"
+                 "updatedRecordHdlHost "
+              << updatedRecordHdlHost << std::endl;
+
+    // create the relevant state effecter and sensor PDRs for the new fru record
+    std::vector<uint32_t> recordHdlList;
+    reGenerateStatePDR(fruObjectPath, recordHdlList);
+    std::cout << "\ncreated " << recordHdlList.size() << " new pdrs"
+              << std::endl;
+
+    for (auto& newLedRecord : recordHdlList)
+    {
+        std::cout << "\ncreated record handle " << newLedRecord << std::endl;
+    }
 
     if (table.size())
     {
@@ -547,16 +577,88 @@ void FruImpl::buildIndividualFRU(const std::string& fruInterface,
         // Calculate the checksum
         checksum = crc32(table.data(), table.size());
     }
-    /* sendPDRRepositoryChgEventbyPDRHandles(
-         std::move(std::vector<ChangeEntry>(1, newRecordHdl)),
-         std::move(std::vector<uint8_t>(1, PLDM_RECORDS_ADDED)));
-     sendPDRRepositoryChgEventbyPDRHandles(
-         std::move(std::vector<ChangeEntry>(1, updatedRecordHdlBmc)),
-         std::move(std::vector<uint8_t>(1, bmcEventDataOps)));
-     sendPDRRepositoryChgEventbyPDRHandles(
-         std::move(std::vector<ChangeEntry>(1, updatedRecordHdlHost)),
-         std::move(std::vector<uint8_t>(1, hostEventDataOps)));*/
-    //   std::cout << "\nexit buildIndividualFRU" << std::endl;
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, newRecordHdl)),
+        std::move(std::vector<uint8_t>(1, PLDM_RECORDS_ADDED)));
+    for (auto& ids : recordHdlList)
+    {
+        sendPDRRepositoryChgEventbyPDRHandles(
+            std::move(std::vector<ChangeEntry>(1, ids)),
+            std::move(std::vector<uint8_t>(1, PLDM_RECORDS_ADDED)));
+    }
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, updatedRecordHdlBmc)),
+        std::move(std::vector<uint8_t>(1, bmcEventDataOps)));
+    sendPDRRepositoryChgEventbyPDRHandles(
+        std::move(std::vector<ChangeEntry>(1, updatedRecordHdlHost)),
+        std::move(std::vector<uint8_t>(1, hostEventDataOps)));
+    std::cout << "\nexit buildIndividualFRU" << std::endl;
+}
+
+void FruImpl::reGenerateStatePDR(const std::string& fruObjectPath,
+                                 std::vector<uint32_t>& recordHdlList)
+{
+    pldm::responder::pdr_utils::Type pdrType{};
+    static const Json empty{};
+    for (const auto& dirEntry : fs::directory_iterator(statePDRJsonsDir))
+    {
+        try
+        {
+            auto json =
+                pldm::responder::pdr_utils::readJson(dirEntry.path().string());
+            if (!json.empty())
+            {
+                pldm::responder::pdr_utils::DbusObjMaps tmpMap{};
+                auto effecterPDRs = json.value("effecterPDRs", empty);
+                for (const auto& effecter : effecterPDRs)
+                {
+                    pdrType = effecter.value("pdrType", 0);
+                    if (pdrType == PLDM_STATE_EFFECTER_PDR)
+                    {
+                        auto stateEffecterList = setStatePDRParams(
+                            statePDRJsonsDir, 0, 0, tmpMap, tmpMap, true,
+                            effecter, fruObjectPath, pdrType);
+                        std::move(stateEffecterList.begin(),
+                                  stateEffecterList.end(),
+                                  std::back_inserter(recordHdlList));
+                    }
+                }
+                auto sensorPDRs = json.value("sensorPDRs", empty);
+                for (const auto& sensor : sensorPDRs)
+                {
+                    pdrType = sensor.value("pdrType", 0);
+                    if (pdrType == PLDM_STATE_SENSOR_PDR)
+                    {
+                        auto stateSensorList = setStatePDRParams(
+                            statePDRJsonsDir, 0, 0, tmpMap, tmpMap, true,
+                            sensor, fruObjectPath, pdrType);
+                        std::move(stateSensorList.begin(),
+                                  stateSensorList.end(),
+                                  std::back_inserter(recordHdlList));
+                    }
+                }
+            }
+        }
+        catch (const InternalFailure& e)
+        {
+            std::cerr << "PDR config directory does not exist or empty, TYPE= "
+                      << pdrType << "PATH= " << dirEntry
+                      << " ERROR=" << e.what() << "\n";
+            // log an error here
+        }
+        catch (const Json::exception& e)
+        {
+            std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
+                      << " ERROR=" << e.what() << "\n";
+            // log error
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Failed parsing PDR JSON file, TYPE= " << pdrType
+                      << " ERROR=" << e.what() << "\n";
+            // log appropriate error
+        }
+    }
 }
 
 void FruImpl::getFRUTable(Response& response)
@@ -822,6 +924,404 @@ void FruImpl::sendPDRRepositoryChgEventbyPDRHandles(
     }
 }
 
+std::vector<uint32_t> FruImpl::setStatePDRParams(
+    const std::string& pdrJsonsDir, uint16_t nextSensorId,
+    uint16_t nextEffecterId,
+    pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+    pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps, bool hotPlug,
+    const Json& json, const std::string& fruObjectPath,
+    pldm::responder::pdr_utils::Type pdrType)
+{
+    std::cout << "\nenter FruImpl::setStatePDRParams " << std::endl;
+    using namespace pldm::responder::pdr_utils;
+    static DbusObjMaps& sensorDbusObjMapsRef = sensorDbusObjMaps;
+    static DbusObjMaps& effecterDbusObjMapsRef = effecterDbusObjMaps;
+    std::cout << "sensorDbusObjMapsRef.size() " << sensorDbusObjMapsRef.size()
+              << std::endl;
+    std::cout << "effecterDbusObjMapsRef.size() "
+              << effecterDbusObjMapsRef.size() << std::endl;
+    std::vector<uint32_t> idList;
+    static const Json empty{};
+    if (!hotPlug)
+    {
+        std::cout << "\nenter not hotplug" << std::endl;
+        startStateSensorId = nextSensorId;
+        startStateEffecterId = nextEffecterId;
+        statePDRJsonsDir = pdrJsonsDir;
+        std::cout << "\n will start from startStateSensorId "
+                  << startStateSensorId << " and startStateEffecterId "
+                  << startStateEffecterId << std::endl;
+        return idList;
+    }
+
+    std::cout << "startStateEffecterId " << startStateEffecterId
+              << " startStateSensorId " << startStateSensorId << std::endl;
+    if (pdrType == PLDM_STATE_EFFECTER_PDR)
+    {
+        static const std::vector<Json> emptyList{};
+        auto entries = json.value("entries", emptyList);
+        for (const auto& e : entries)
+        {
+            size_t pdrSize = 0;
+            auto effecters = e.value("effecters", emptyList);
+            for (const auto& effecter : effecters)
+            {
+                auto set = effecter.value("set", empty);
+                auto statesSize = set.value("size", 0);
+                if (!statesSize)
+                {
+                    std::cerr << "Malformed PDR JSON return "
+                                 "pdrEntry;- no state set "
+                                 "info, TYPE="
+                              << PLDM_STATE_EFFECTER_PDR << "\n";
+                    throw InternalFailure();
+                }
+                pdrSize += sizeof(state_effecter_possible_states) -
+                           sizeof(bitfield8_t) +
+                           (sizeof(bitfield8_t) * statesSize);
+            }
+            pdrSize += sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
+
+            std::vector<uint8_t> entry{};
+            entry.resize(pdrSize);
+
+            pldm_state_effecter_pdr* pdr =
+                reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+            if (!pdr)
+            {
+                std::cerr << "Failed to get state effecter PDR.\n";
+                continue;
+            }
+            pdr->hdr.record_handle = 0;
+            pdr->hdr.version = 1;
+            pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
+            pdr->hdr.record_change_num = 0;
+            pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
+
+            // pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
+            pdr->terminus_handle = TERMINUS_HANDLE;
+
+            bool singleEffecter = false;
+            try
+            {
+                std::string entity_path = e.value("entity_path", "");
+                if (fruObjectPath.size())
+                {
+                    if (fruObjectPath != entity_path)
+                    {
+                        continue;
+                    }
+                    singleEffecter = true;
+                }
+                pdr->effecter_id =
+                    startStateEffecterId++; // handler.getNextEffecterId();
+                std::cout << "assigned effecter id " << pdr->effecter_id
+                          << std::endl;
+                // auto& associatedEntityMap = handler.getAssociateEntityMap();
+                if (entity_path != "" &&
+                    associatedEntityMap.find(entity_path) !=
+                        associatedEntityMap.end())
+                {
+                    pdr->entity_type =
+                        associatedEntityMap.at(entity_path).entity_type;
+                    pdr->entity_instance =
+                        associatedEntityMap.at(entity_path).entity_instance_num;
+                    pdr->container_id =
+                        associatedEntityMap.at(entity_path).entity_container_id;
+                }
+                else
+                {
+                    pdr->entity_type = e.value("type", 0);
+                    pdr->entity_instance = e.value("instance", 0);
+                    pdr->container_id = e.value("container", 0);
+                }
+            }
+            catch (const std::exception& ex)
+            {
+                pdr->entity_type = e.value("type", 0);
+                pdr->entity_instance = e.value("instance", 0);
+                pdr->container_id = e.value("container", 0);
+            }
+            pdr->effecter_semantic_id = 0;
+            pdr->effecter_init = PLDM_NO_INIT;
+            pdr->has_description_pdr = false;
+            pdr->composite_effecter_count = effecters.size();
+
+            pldm::responder::pdr_utils::DbusMappings dbusMappings{};
+            pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
+            uint8_t* start = entry.data() + sizeof(pldm_state_effecter_pdr) -
+                             sizeof(uint8_t);
+            for (const auto& effecter : effecters)
+            {
+                auto set = effecter.value("set", empty);
+                state_effecter_possible_states* possibleStates =
+                    reinterpret_cast<state_effecter_possible_states*>(start);
+                possibleStates->state_set_id = set.value("id", 0);
+                possibleStates->possible_states_size = set.value("size", 0);
+
+                start += sizeof(possibleStates->state_set_id) +
+                         sizeof(possibleStates->possible_states_size);
+                static const std::vector<uint8_t> emptyStates{};
+                pldm::responder::pdr_utils::PossibleValues stateValues;
+                auto states = set.value("states", emptyStates);
+                for (const auto& state : states)
+                {
+                    auto index = state / 8;
+                    auto bit = state - (index * 8);
+                    bitfield8_t* bf =
+                        reinterpret_cast<bitfield8_t*>(start + index);
+                    bf->byte |= 1 << bit;
+                    stateValues.emplace_back(state);
+                }
+                start += possibleStates->possible_states_size;
+
+                auto dbusEntry = effecter.value("dbus", empty);
+                auto objectPath = dbusEntry.value("path", "");
+                auto interface = dbusEntry.value("interface", "");
+                auto propertyName = dbusEntry.value("property_name", "");
+                auto propertyType = dbusEntry.value("property_type", "");
+
+                pldm::responder::pdr_utils::StatestoDbusVal dbusIdToValMap{};
+                pldm::utils::DBusMapping dbusMapping{};
+                try
+                {
+                    auto service =
+                        // dBusIntf.getService(objectPath.c_str(),
+                        // interface.c_str());
+                        pldm::utils::DBusHandler().getService(
+                            objectPath.c_str(), interface.c_str());
+                    dbusMapping = pldm::utils::DBusMapping{
+                        objectPath, interface, propertyName, propertyType};
+                    dbusIdToValMap =
+                        pldm::responder::pdr_utils::populateMapping(
+                            propertyType, dbusEntry["property_values"],
+                            stateValues);
+                }
+                catch (const std::exception& e)
+                {
+                    std::cerr
+                        << "D-Bus object path does not exist, effecter ID: "
+                        << pdr->effecter_id << "\n";
+                }
+                dbusMappings.emplace_back(std::move(dbusMapping));
+                dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            }
+            /* handler.addDbusObjMaps(
+                 pdr->effecter_id,
+                 std::make_tuple(std::move(dbusMappings),
+               std::move(dbusValMaps)));*/
+            uint32_t effecterId = pdr->effecter_id;
+            effecterDbusObjMapsRef.emplace(
+                effecterId, std::make_tuple(std::move(dbusMappings),
+                                            std::move(dbusValMaps)));
+            pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = pdrSize;
+            if (singleEffecter)
+            {
+                std::cout << "calling addHotPlugRecord" << std::endl;
+                auto newRecordHdl = addHotPlugRecord(pdrEntry);
+                // nowa dd to the vector
+                idList.push_back(newRecordHdl);
+            }
+        }
+    }
+    else if (pdrType == PLDM_STATE_SENSOR_PDR)
+    {
+        static const std::vector<Json> emptyList{};
+        auto entries = json.value("entries", emptyList);
+        for (const auto& e : entries)
+        {
+            size_t pdrSize = 0;
+            auto sensors = e.value("sensors", emptyList);
+            for (const auto& sensor : sensors)
+            {
+                auto set = sensor.value("set", empty);
+                auto statesSize = set.value("size", 0);
+                if (!statesSize)
+                {
+                    std::cerr << "Malformed PDR JSON return "
+                                 "pdrEntry;- no state set "
+                                 "info, TYPE="
+                              << PLDM_STATE_SENSOR_PDR << "\n";
+                    throw InternalFailure();
+                }
+                pdrSize += sizeof(state_sensor_possible_states) -
+                           sizeof(bitfield8_t) +
+                           (sizeof(bitfield8_t) * statesSize);
+            }
+            pdrSize += sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
+
+            std::vector<uint8_t> entry{};
+            entry.resize(pdrSize);
+
+            pldm_state_sensor_pdr* pdr =
+                reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
+            if (!pdr)
+            {
+                std::cerr << "Failed to get state sensor PDR.\n";
+                continue;
+            }
+            pdr->hdr.record_handle = 0;
+            pdr->hdr.version = 1;
+            pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
+            pdr->hdr.record_change_num = 0;
+            pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
+
+            HTOLE32(pdr->hdr.record_handle);
+            HTOLE16(pdr->hdr.record_change_num);
+            HTOLE16(pdr->hdr.length);
+
+            pdr->terminus_handle = TERMINUS_HANDLE;
+            bool singleSensor = false;
+
+            try
+            {
+                std::string entity_path = e.value("entity_path", "");
+                if (fruObjectPath.size())
+                {
+                    if (fruObjectPath != entity_path)
+                    {
+                        continue;
+                    }
+                    singleSensor = true;
+                }
+                pdr->sensor_id =
+                    startStateSensorId++; // handler.getNextSensorId();
+                // auto& associatedEntityMap = handler.getAssociateEntityMap();
+                if (entity_path != "" &&
+                    associatedEntityMap.find(entity_path) !=
+                        associatedEntityMap.end())
+                {
+                    pdr->entity_type =
+                        associatedEntityMap.at(entity_path).entity_type;
+                    pdr->entity_instance =
+                        associatedEntityMap.at(entity_path).entity_instance_num;
+                    pdr->container_id =
+                        associatedEntityMap.at(entity_path).entity_container_id;
+                }
+                else
+                {
+                    pdr->entity_type = e.value("type", 0);
+                    pdr->entity_instance = e.value("instance", 0);
+                    pdr->container_id = e.value("container", 0);
+                }
+            }
+            catch (const std::exception& ex)
+            {
+                pdr->entity_type = e.value("type", 0);
+                pdr->entity_instance = e.value("instance", 0);
+                pdr->container_id = e.value("container", 0);
+            }
+            pdr->sensor_init = PLDM_NO_INIT;
+            pdr->sensor_auxiliary_names_pdr = false;
+            if (sensors.size() > 8)
+            {
+                throw std::runtime_error("sensor size must be less than 8");
+            }
+            pdr->composite_sensor_count = sensors.size();
+
+            HTOLE16(pdr->terminus_handle);
+            HTOLE16(pdr->sensor_id);
+            HTOLE16(pdr->entity_type);
+            HTOLE16(pdr->entity_instance);
+            HTOLE16(pdr->container_id);
+
+            pldm::responder::pdr_utils::DbusMappings dbusMappings{};
+            pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
+            uint8_t* start =
+                entry.data() + sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
+            for (const auto& sensor : sensors)
+            {
+                auto set = sensor.value("set", empty);
+                state_sensor_possible_states* possibleStates =
+                    reinterpret_cast<state_sensor_possible_states*>(start);
+                possibleStates->state_set_id = set.value("id", 0);
+                HTOLE16(possibleStates->state_set_id);
+                possibleStates->possible_states_size = set.value("size", 0);
+
+                start += sizeof(possibleStates->state_set_id) +
+                         sizeof(possibleStates->possible_states_size);
+                static const std::vector<uint8_t> emptyStates{};
+                pldm::responder::pdr_utils::PossibleValues stateValues;
+                auto states = set.value("states", emptyStates);
+                for (const auto& state : states)
+                {
+                    auto index = state / 8;
+                    auto bit = state - (index * 8);
+                    bitfield8_t* bf =
+                        reinterpret_cast<bitfield8_t*>(start + index);
+                    bf->byte |= 1 << bit;
+                    stateValues.emplace_back(state);
+                }
+                start += possibleStates->possible_states_size;
+                auto dbusEntry = sensor.value("dbus", empty);
+                auto objectPath = dbusEntry.value("path", "");
+                auto interface = dbusEntry.value("interface", "");
+                auto propertyName = dbusEntry.value("property_name", "");
+                auto propertyType = dbusEntry.value("property_type", "");
+
+                pldm::responder::pdr_utils::StatestoDbusVal dbusIdToValMap{};
+                pldm::utils::DBusMapping dbusMapping{};
+                try
+                {
+                    auto service =
+                        // dBusIntf.getService(objectPath.c_str(),
+                        // interface.c_str());
+                        pldm::utils::DBusHandler().getService(
+                            objectPath.c_str(), interface.c_str());
+                    dbusMapping = pldm::utils::DBusMapping{
+                        objectPath, interface, propertyName, propertyType};
+                    dbusIdToValMap =
+                        pldm::responder::pdr_utils::populateMapping(
+                            propertyType, dbusEntry["property_values"],
+                            stateValues);
+                }
+                catch (const std::exception& e)
+                {
+                    std::cerr << "D-Bus object path does not exist, sensor ID: "
+                              << pdr->sensor_id << "\n";
+                }
+                dbusMappings.emplace_back(std::move(dbusMapping));
+                dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            }
+            /*handler.addDbusObjMaps(
+                pdr->sensor_id,
+                std::make_tuple(std::move(dbusMappings),
+               std::move(dbusValMaps)),
+                pldm::responder::pdr_utils::TypeId::PLDM_SENSOR_ID);*/
+            uint32_t sensorId = pdr->sensor_id;
+            sensorDbusObjMapsRef.emplace(
+                sensorId, std::make_tuple(std::move(dbusMappings),
+                                          std::move(dbusValMaps)));
+            pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = pdrSize;
+            if (singleSensor)
+            {
+                auto newRecordHdl = addHotPlugRecord(pdrEntry);
+                idList.push_back(newRecordHdl);
+            }
+        }
+    }
+    std::cout << "\nexit FruImpl::setStatePDRParams" << std::endl;
+    return idList;
+}
+
+uint32_t
+    FruImpl::addHotPlugRecord(pldm::responder::pdr_utils::PdrEntry pdrEntry)
+{
+    auto lastLocalRecord = pldm_pdr_find_last_local_record(pdrRepo);
+    auto lastHandle = lastLocalRecord->record_handle;
+    std::cout << "lastLocalRecord->record_handle "
+              << lastLocalRecord->record_handle << " lastHandle " << lastHandle
+              << std::endl;
+    pdrEntry.handle.recordHandle = lastHandle + 1;
+    return pldm_pdr_add_hotplug_record(pdrRepo, pdrEntry.data, pdrEntry.size,
+                                       pdrEntry.handle.recordHandle, false,
+                                       lastHandle);
+}
+
 namespace fru
 {
 
@@ -967,6 +1467,19 @@ Response Handler::setFRURecordTable(const pldm_msg* request,
     }
 
     return response;
+}
+
+void Handler::setStatePDRParams(
+    const std::string& pdrJsonsDir, uint16_t nextSensorId,
+    uint16_t nextEffecterId,
+    pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+    pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps, bool hotPlug)
+{
+    std::cout << "\nenter Handler::setStatePDRParams" << std::endl;
+    impl.setStatePDRParams(pdrJsonsDir, nextSensorId, nextEffecterId,
+                           sensorDbusObjMaps, effecterDbusObjMaps, hotPlug,
+                           Json());
+    std::cout << "\nexit Handler::setStatePDRParams" << std::endl;
 }
 
 } // namespace fru
