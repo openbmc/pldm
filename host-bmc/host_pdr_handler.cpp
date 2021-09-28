@@ -92,6 +92,7 @@ HostPDRHandler::HostPDRHandler(
                     pldm_entity_association_tree_copy_root(bmcEntityTree,
                                                            entityTree);
                     this->sensorMap.clear();
+                    this->responseReceived = false;
                 }
             }
         });
