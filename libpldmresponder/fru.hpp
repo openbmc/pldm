@@ -90,6 +90,8 @@ class FruImpl
         oemFruHandler(oemFruHandler), requester(requester), handler(handler),
         mctp_eid(mctp_eid), event(event)
     {
+        startStateSensorId = 0;
+        startStateEffecterId = 0;
         static constexpr auto inventoryObjPath =
             "/xyz/openbmc_project/inventory/system/chassis";
         static constexpr auto itemInterface =
@@ -223,6 +225,14 @@ class FruImpl
         std::vector<uint32_t>&& pdrRecordHandles,
         std::vector<uint8_t>&& eventDataOps);
 
+    std::vector<uint32_t> setStatePDRParams(
+        const std::string& pdrJsonsDir, uint16_t nextSensorId,
+        uint16_t nextEffecterId,
+        pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+        pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps,
+        bool hotPlug, const Json& json, const std::string& fruObjectPath = "",
+        pldm::responder::pdr_utils::Type pdrType = 0);
+
   private:
     uint16_t nextRSI()
     {
@@ -316,6 +326,11 @@ class FruImpl
      */
     void removeIndividualFRU(const std::string& fruObjPath);
 
+    void reGenerateStatePDR(const std::string& fruObjectPath,
+                            std::vector<uint32_t>& recordHdlList);
+
+    uint32_t addHotPlugRecord(pldm::responder::pdr_utils::PdrEntry pdrEntry);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
@@ -326,6 +341,9 @@ class FruImpl
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> psuHotplugMatch;
     std::vector<std::unique_ptr<sdbusplus::bus::match::match>> pcieHotplugMatch;
     dbus::ObjectValueTree objects;
+    std::string statePDRJsonsDir;
+    uint16_t startStateSensorId;
+    uint16_t startStateEffecterId;
 };
 
 namespace fru
@@ -426,6 +444,13 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response setFRURecordTable(const pldm_msg* request, size_t payloadLength);
+
+    void setStatePDRParams(
+        const std::string& pdrJsonsDir, uint16_t nextSensorId,
+        uint16_t nextEffecterId,
+        pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+        pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps,
+        bool hotPlug);
 
     // std::vector<uint8_t> table;
     using Table = std::vector<uint8_t>;

@@ -9,6 +9,14 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+typedef struct pldm_pdr_record {
+	uint32_t record_handle;
+	uint32_t size;
+	uint8_t *data;
+	struct pldm_pdr_record *next;
+	bool is_remote;
+} pldm_pdr_record;
+
 /** @struct pldm_pdr
  *  opaque structure that acts as a handle to a PDR repository
  */
@@ -104,6 +112,8 @@ const pldm_pdr_record *pldm_pdr_find_record(const pldm_pdr *repo,
 					    uint32_t record_handle,
 					    uint8_t **data, uint32_t *size,
 					    uint32_t *next_record_handle);
+
+pldm_pdr_record *pldm_pdr_find_last_local_record(const pldm_pdr *repo);
 
 /** @brief Get PDR record next to input PDR record
  *

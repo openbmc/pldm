@@ -64,6 +64,7 @@ const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
 void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
                        const std::string& dir, Repo& repo)
 {
+    std::cout << "\nenter Handler::generate \n";
     if (!fs::exists(dir))
     {
         return;
@@ -102,6 +103,8 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
         try
         {
             auto json = readJson(dirEntry.path().string());
+            std::cout << "\npicked up json " << dirEntry.path().string()
+                      << std::endl;
             if (!json.empty())
             {
                 auto effecterPDRs = json.value("effecterPDRs", empty);
@@ -140,6 +143,16 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }
     }
+    std::cout << "\ncalling fruHandler setStatePDRParams" << std::endl;
+
+    if (fruHandler)
+    {
+        fruHandler->setStatePDRParams(pdrJsonsDir, getNextSensorId(),
+                                      getNextEffecterId(), sensorDbusObjMaps,
+                                      effecterDbusObjMaps, false);
+    }
+
+    std::cout << "\nexit Handler::generate" << std::endl;
 }
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)

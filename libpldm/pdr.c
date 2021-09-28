@@ -5,13 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct pldm_pdr_record {
+#include <stdio.h>
+
+/*typedef struct pldm_pdr_record {
 	uint32_t record_handle;
 	uint32_t size;
 	uint8_t *data;
 	struct pldm_pdr_record *next;
 	bool is_remote;
-} pldm_pdr_record;
+} pldm_pdr_record;*/
 
 typedef struct pldm_pdr {
 	uint32_t record_count;
@@ -52,9 +54,13 @@ static void add_record(pldm_pdr *repo, pldm_pdr_record *record)
 static void add_hotplug_record(pldm_pdr *repo, pldm_pdr_record *record,
 			       uint32_t prev_record_handle)
 {
-	// the new record needs to be added after prev_record_handle
+	/* printf("\nenter add_hotplug_record with
+	 record->record_handle=%d",record->record_handle);*/
+	// the new record
+	// needs to be added after prev_record_handle
 	assert(repo != NULL);
 	assert(record != NULL);
+	record->next = NULL;
 	if (repo->first == NULL) {
 		assert(repo->last == NULL);
 		repo->first = record;
@@ -67,6 +73,11 @@ static void add_hotplug_record(pldm_pdr *repo, pldm_pdr_record *record,
 			}
 			curr = curr->next;
 		}
+		/* printf("\nadding the fru hotplug here
+		 curr->record_handle=%d",curr->record_handle);
+		 printf("repo-last=%x, curr=%x, curr-next=%x",
+		(unsigned int)repo->last, (unsigned int)curr, (unsigned
+		int)curr->next);*/
 		record->next = curr->next;
 		curr->next = record;
 		if (record->next == NULL) {
@@ -141,6 +152,9 @@ uint32_t pldm_pdr_add_hotplug_record(pldm_pdr *repo, const uint8_t *data,
 {
 	assert(size != 0);
 	assert(data != NULL);
+	// printf("\nenter pldm_pdr_add_hotplug_record with record_handle=%d,
+	// prev_record_handle=%d",
+	//             record_handle,prev_record_handle);
 
 	pldm_pdr_record *record =
 	    make_new_record(repo, data, size, record_handle, is_remote);
@@ -205,6 +219,37 @@ const pldm_pdr_record *pldm_pdr_find_record(const pldm_pdr *repo,
 
 	*size = 0;
 	*next_record_handle = 0;
+	return NULL;
+}
+
+pldm_pdr_record *pldm_pdr_find_last_local_record(const pldm_pdr *repo)
+{
+	printf("\nenter pldm_pdr_find_last_local_record record_count=%d \n",
+	       repo->record_count);
+	assert(repo != NULL);
+	pldm_pdr_record *curr = repo->first;
+	pldm_pdr_record *prev = repo->first;
+	uint32_t i = 0;
+	// printf("\n first record handle=%d\n",repo->first->record_handle);
+	// printf("\nlast record handle=%d,
+	// last->next=%d",repo->last->record_handle, (unsigned
+	// int)repo->last->next);
+	while (curr != NULL) {
+		i = curr->record_handle;
+		// printf("\ni=%d\n",i);
+		if (!(prev->is_remote) && (curr->is_remote)) {
+			printf("\nfound record at %d, prev->record_handle=%d\n",
+			       i, prev->record_handle);
+			return prev;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+	if (curr == NULL) {
+		printf("\nreached curr as NULL prev->record_handle=%d\n",
+		       prev->record_handle);
+		return prev;
+	}
 	return NULL;
 }
 
@@ -302,8 +347,12 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 	uint8_t data[size];
 	bool hotplug = false;
 	pldm_pdr_record *prev = repo->first;
+
 	if (bmc_record_handle == 0xFFFF) // handle hot plug
 	{
+		printf("\nadding a hot plugged record, record count=%d before "
+		       "adding\n",
+		       repo->record_count);
 		hotplug = true;
 		pldm_pdr_record *curr = repo->first;
 		while (curr != NULL) {
@@ -314,6 +363,7 @@ uint32_t pldm_pdr_add_fru_record_set(pldm_pdr *repo, uint16_t terminus_handle,
 			curr = curr->next;
 		}
 		bmc_record_handle = prev->record_handle + 1;
+		printf("\ngenerated record handle=%d", bmc_record_handle);
 	}
 
 	struct pldm_pdr_hdr *hdr = (struct pldm_pdr_hdr *)&data;
@@ -654,17 +704,20 @@ static void entity_association_tree_visit(pldm_entity_node *node,
 	entity->entity_type = node->entity.entity_type;
 	entity->entity_instance_num = node->entity.entity_instance_num;
 	entity->entity_container_id = node->entity.entity_container_id;
-	/*printf("\n\n\nentity_type=%d, instance_num=%d,container_id=%d",
-	    entity->entity_type,entity->entity_instance_num,entity->entity_container_id);*/
+	printf("\n\n\nentity_type=%d, instance_num=%d,container_id=%d",
+	       entity->entity_type, entity->entity_instance_num,
+	       entity->entity_container_id);
 	if (node->next_sibling) {
-		/*   printf("\nsibling type=%d, instance=%d, container=%d",
-		       node->next_sibling->entity.entity_type,node->next_sibling->entity.entity_instance_num,
-		       node->next_sibling->entity.entity_container_id); */
+		printf("\nsibling type=%d, instance=%d, container=%d",
+		       node->next_sibling->entity.entity_type,
+		       node->next_sibling->entity.entity_instance_num,
+		       node->next_sibling->entity.entity_container_id);
 	}
 	if (node->first_child) {
-		/* printf("\nfirst child type=%d, instance=%d, container=%d",
-		     node->first_child->entity.entity_type,node->first_child->entity.entity_instance_num,
-		     node->first_child->entity.entity_container_id);*/
+		printf("\nfirst child type=%d, instance=%d, container=%d",
+		       node->first_child->entity.entity_type,
+		       node->first_child->entity.entity_instance_num,
+		       node->first_child->entity.entity_container_id);
 	}
 	entity_association_tree_visit(node->next_sibling, entities, index);
 	entity_association_tree_visit(node->first_child, entities, index);

@@ -28,6 +28,7 @@ template <class DBusInterface, class Handler>
 void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                             Handler& handler, pdr_utils::RepoInterface& repo)
 {
+    std::cout << "\nenter generateStateSensorPDR " << std::endl;
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
     for (const auto& e : entries)
@@ -180,6 +181,7 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         pdrEntry.size = pdrSize;
         repo.addRecord(pdrEntry);
     }
+    std::cout << "\nexit generateStateSensorPDR " << std::endl;
 }
 
 } // namespace pdr_state_sensor

@@ -12,11 +12,12 @@ namespace pldm
 {
 
 using SensorId = uint16_t;
-using DbusObjMaps =
+/*using DbusObjMaps =
     std::map<SensorId, std::tuple<pldm::responder::pdr_utils::DbusMappings,
-                                  pldm::responder::pdr_utils::DbusValMaps>>;
-using sensorEvent =
-    std::function<void(SensorId sensorId, const DbusObjMaps& dbusMaps)>;
+                                  pldm::responder::pdr_utils::DbusValMaps>>;*/
+using sensorEvent = std::function<void(
+    SensorId sensorId,
+    const pldm::responder::pdr_utils::DbusObjMaps& dbusMaps)>;
 
 namespace state_sensor
 {
@@ -49,14 +50,17 @@ class DbusToPLDMEvent
      *  @param[in] repo - pdr utils repo object
      *  @param[in] dbusMaps - The map of D-Bus mapping and value
      */
-    void listenSensorEvent(const pldm::responder::pdr_utils::Repo& repo,
-                           const DbusObjMaps& dbusMaps);
+    void listenSensorEvent(
+        const pldm::responder::pdr_utils::Repo& repo,
+        const pldm::responder::pdr_utils::DbusObjMaps& dbusMaps);
 
   private:
     /** @brief Send state sensor event msg when a D-Bus property changes
      *  @param[in] sensorId - sensor id
      */
-    void sendStateSensorEvent(SensorId sensorId, const DbusObjMaps& dbusMaps);
+    void sendStateSensorEvent(
+        SensorId sensorId,
+        const pldm::responder::pdr_utils::DbusObjMaps& dbusMaps);
 
     /** @brief Send all of sensor event
      *  @param[in] eventType - PLDM Event types
