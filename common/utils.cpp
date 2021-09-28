@@ -5,6 +5,8 @@
 #include "libpldm/pdr.h"
 #include "libpldm/pldm_types.h"
 
+#include <sys/time.h>
+
 #include <xyz/openbmc_project/Common/error.hpp>
 
 #include <algorithm>

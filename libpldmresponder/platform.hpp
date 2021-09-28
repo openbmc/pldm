@@ -31,10 +31,10 @@ using generatePDR = std::function<void(const pldm::utils::DBusHandler& dBusIntf,
                                        const pldm::utils::Json& json,
                                        pdr_utils::RepoInterface& repo)>;
 
-using EffecterId = uint16_t;
+/*using EffecterId = uint16_t;
 using DbusObjMaps =
     std::map<EffecterId,
-             std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>>;
+             std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>>;*/
 using DbusPath = std::string;
 using EffecterObjs = std::vector<DbusPath>;
 using EventType = uint8_t;
@@ -450,8 +450,8 @@ class Handler : public CmdHandler
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
     uint16_t nextSensorId{};
-    DbusObjMaps effecterDbusObjMaps{};
-    DbusObjMaps sensorDbusObjMaps{};
+    pdr_utils::DbusObjMaps effecterDbusObjMaps{};
+    pdr_utils::DbusObjMaps sensorDbusObjMaps{};
     HostPDRHandler* hostPDRHandler;
     pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler;
     fru::Handler* fruHandler;
