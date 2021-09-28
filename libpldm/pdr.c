@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct pldm_pdr_record {
+/*typedef struct pldm_pdr_record {
 	uint32_t record_handle;
 	uint32_t size;
 	uint8_t *data;
 	struct pldm_pdr_record *next;
 	bool is_remote;
-} pldm_pdr_record;
+} pldm_pdr_record;*/
 
 typedef struct pldm_pdr {
 	uint32_t record_count;
@@ -206,6 +206,27 @@ const pldm_pdr_record *pldm_pdr_find_record(const pldm_pdr *repo,
 	*size = 0;
 	*next_record_handle = 0;
 	return NULL;
+}
+
+pldm_pdr_record *pldm_pdr_find_last_local_record(const pldm_pdr *repo)
+{
+    assert(repo != NULL);
+    pldm_pdr_record *curr = repo->first;
+    pldm_pdr_record *prev = repo->first;
+    while(curr != NULL)
+    {
+        if(!prev->is_remote && curr->is_remote)
+        {
+            return prev;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    if(curr == NULL)
+    {
+        return prev;
+    }
+    return NULL;
 }
 
 const pldm_pdr_record *

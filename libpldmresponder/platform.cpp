@@ -139,6 +139,9 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }
     }
+
+    fruHandler->setStatePDRParams(pdrJsonsDir, getNextSensorId(), getNextEffecterId(),
+                                sensorDbusObjMaps, effecterDbusObjMaps, false);
 }
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
