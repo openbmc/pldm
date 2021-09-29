@@ -89,6 +89,9 @@ class Handler : public CmdHandler
      *         is sent to host */
     virtual void countSetEventReceiver() = 0;
 
+    /** @brief Interface to check the BMC state */
+    virtual int checkBMCState() = 0;
+
     virtual ~Handler() = default;
 
   protected:

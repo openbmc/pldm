@@ -144,8 +144,20 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
-    // Build FRU table if not built, since entity association PDR's are built
-    // when the FRU table is constructed.
+    if (hostPDRHandler)
+    {
+        if (hostPDRHandler->isHostUp() && oemPlatformHandler != nullptr)
+        {
+            auto rc = oemPlatformHandler->checkBMCState();
+            if (rc != PLDM_SUCCESS)
+            {
+                return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
+            }
+        }
+    }
+
+    // Build FRU table if not built, since entity association PDR's
+    // are built when the FRU table is constructed.
     if (fruHandler)
     {
         fruHandler->buildFRUTable();
@@ -679,8 +691,8 @@ Response Handler::getStateSensorReadings(const pldm_msg* request,
     return response;
 }
 
-void Handler::_processPostGetPDRActions(
-    sdeventplus::source::EventBase& /*source */)
+void Handler::_processPostGetPDRActions(sdeventplus::source::EventBase&
+                                        /*source */)
 {
     deferredGetPDREvent.reset();
     dbusToPLDMEventHandler->listenSensorEvent(pdrRepo, sensorDbusObjMaps);
