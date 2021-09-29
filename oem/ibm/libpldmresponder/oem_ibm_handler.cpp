@@ -575,6 +575,30 @@ void pldm::responder::oem_ibm_platform::Handler::disableWatchDogTimer()
                   << "ERROR=" << e.what() << "\n";
     }
 }
+int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
+{
+    try
+    {
+        pldm::utils::PropertyValue propertyValue =
+            pldm::utils::DBusHandler().getDbusPropertyVariant(
+                "/xyz/openbmc_project/state/bmc0", "CurrentBMCState",
+                "xyz.openbmc_project.State.BMC");
+
+        if (std::get<std::string>(propertyValue) ==
+            "xyz.openbmc_project.State.BMC.BMCState.NotReady")
+        {
+            std::cerr << "BMC is not ready" << std::endl;
+            return PLDM_ERROR_NOT_READY;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error getting the current BMC state" << std::endl;
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm
