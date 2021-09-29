@@ -5,6 +5,7 @@
 
 #include "common/utils.hpp"
 
+#include <config.h>
 #include <systemd/sd-journal.h>
 
 #include <sdbusplus/bus.hpp>
@@ -224,9 +225,9 @@ void FruImpl::populateRecords(
                 recordSetIdentifier = nextRSI();
                 bmc_record_handle = nextRecordHandle();
                 pldm_pdr_add_fru_record_set(
-                    pdrRepo, 0, recordSetIdentifier, entity.entity_type,
-                    entity.entity_instance_num, entity.entity_container_id,
-                    bmc_record_handle);
+                    pdrRepo, TERMINUS_ID, recordSetIdentifier,
+                    entity.entity_type, entity.entity_instance_num,
+                    entity.entity_container_id, bmc_record_handle);
             }
             auto curSize = table.size();
             table.resize(curSize + recHeaderSize + tlvs.size());

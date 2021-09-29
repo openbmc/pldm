@@ -1,4 +1,3 @@
-
 #include "platform.hpp"
 
 #include "libpldm/entity.h"
@@ -15,6 +14,8 @@
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
 #include "platform_state_sensor.hpp"
+
+#include <config.h>
 
 using namespace pldm::utils;
 using namespace pldm::responder::pdr;
@@ -596,9 +597,9 @@ void Handler::generateTerminusLocatorPDR(Repo& repo)
     pdr->hdr.type = PLDM_TERMINUS_LOCATOR_PDR;
     pdr->hdr.record_change_num = 0;
     pdr->hdr.length = sizeof(pldm_terminus_locator_pdr) - sizeof(pldm_pdr_hdr);
-    pdr->terminus_handle = BmcPldmTerminusHandle;
+    pdr->terminus_handle = TERMINUS_HANDLE;
     pdr->validity = PLDM_TL_PDR_VALID;
-    pdr->tid = BmcTerminusId;
+    pdr->tid = TERMINUS_ID;
     pdr->container_id = 0x0;
     pdr->terminus_locator_type = PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID;
     pdr->terminus_locator_value_size =

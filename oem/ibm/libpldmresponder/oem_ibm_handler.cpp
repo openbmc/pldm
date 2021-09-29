@@ -172,7 +172,7 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
     pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
     pdr->hdr.record_change_num = 0;
     pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
-    pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
+    pdr->terminus_handle = TERMINUS_HANDLE;
     pdr->effecter_id = platformHandler->getNextEffecterId();
     pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
@@ -223,7 +223,7 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
     pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
     pdr->hdr.record_change_num = 0;
     pdr->hdr.length = sizeof(pldm_state_sensor_pdr) - sizeof(pldm_pdr_hdr);
-    pdr->terminus_handle = pdr::BmcPldmTerminusHandle;
+    pdr->terminus_handle = TERMINUS_HANDLE;
     pdr->sensor_id = platformHandler->getNextSensorId();
     pdr->entity_type = entityType;
     pdr->entity_instance = entityInstance;
