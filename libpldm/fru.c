@@ -436,10 +436,11 @@ int encode_get_fru_record_table_req(uint8_t instance_id,
 	return PLDM_SUCCESS;
 }
 
-int decode_get_fru_record_table_resp(
+int decode_get_fru_record_table_resp_safe(
     const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
     uint32_t *next_data_transfer_handle, uint8_t *transfer_flag,
-    uint8_t *fru_record_table_data, size_t *fru_record_table_length)
+    uint8_t *fru_record_table_data, size_t *fru_record_table_length,
+    size_t max_fru_record_table_length)
 {
 	if (msg == NULL || completion_code == NULL ||
 	    next_data_transfer_handle == NULL || transfer_flag == NULL ||
@@ -460,12 +461,29 @@ int decode_get_fru_record_table_resp(
 
 	*next_data_transfer_handle = le32toh(resp->next_data_transfer_handle);
 	*transfer_flag = resp->transfer_flag;
-	memcpy(fru_record_table_data, resp->fru_record_table_data,
-	       payload_length - PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES);
+
 	*fru_record_table_length =
 	    payload_length - PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES;
 
+	if (*fru_record_table_length > max_fru_record_table_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	memcpy(fru_record_table_data, resp->fru_record_table_data,
+	       *fru_record_table_length);
+
 	return PLDM_SUCCESS;
+}
+
+int decode_get_fru_record_table_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint32_t *next_data_transfer_handle, uint8_t *transfer_flag,
+    uint8_t *fru_record_table_data, size_t *fru_record_table_length)
+{
+	return decode_get_fru_record_table_resp_safe(
+	    msg, payload_length, completion_code, next_data_transfer_handle,
+	    transfer_flag, fru_record_table_data, fru_record_table_length,
+	    (size_t)-1);
 }
 
 int decode_set_fru_record_table_req(const struct pldm_msg *msg,
