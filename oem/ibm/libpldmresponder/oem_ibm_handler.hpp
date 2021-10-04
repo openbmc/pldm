@@ -2,6 +2,7 @@
 #include "libpldm/entity.h"
 #include "libpldm/platform.h"
 
+#include "common/utils.hpp"
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -190,6 +191,10 @@ class Handler : public oem_platform::Handler
      */
     void _processSystemReboot(sdeventplus::source::EventBase& source);
 
+    int setNumericEffecter(uint16_t entityInstance,
+                           const pldm::utils::PropertyValue& propertyValue);
+
+    void monitorDump(const std::string& obj_path);
     /*keeps track how many times setEventReceiver is sent */
     void countSetEventReceiver()
     {
@@ -213,9 +218,12 @@ class Handler : public oem_platform::Handler
     /** @brief To disable to the watchdog timer on host poweron completion*/
     void disableWatchDogTimer();
 
+    void setHostEffecterState();
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
+
     pldm::responder::platform::Handler*
         platformHandler; //!< pointer to PLDM platform handler
 
