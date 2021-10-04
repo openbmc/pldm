@@ -471,8 +471,8 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
 
 int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                                        size_t payloadLength,
-                                       uint8_t /*formatVersion*/,
-                                       uint8_t /*tid*/, size_t eventDataOffset)
+                                       uint8_t /*formatVersion*/, uint8_t tid,
+                                       size_t eventDataOffset)
 {
     uint8_t eventDataFormat{};
     uint8_t numberOfChangeRecords{};
@@ -544,6 +544,24 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
     if (hostPDRHandler)
     {
+        // if we get a Repository change event with the eventDataFormat
+        // as REFRESH_ENTIRE_REPOSITORY, then delete all the PDR's that
+        // have the matched Terminus handle
+        if (eventDataFormat == REFRESH_ENTIRE_REPOSITORY)
+        {
+            // We cannot get the Repo change event from the Terminus
+            // that is not already added to the BMC repository
+
+            for (const auto& [terminusHandle, terminusInfo] :
+                 hostPDRHandler->tlPDRInfo)
+            {
+                if (std::get<0>(terminusInfo) == tid)
+                {
+                    pldm_pdr_remove_pdrs_by_terminus_handle(pdrRepo.getPdr(),
+                                                            terminusHandle);
+                }
+            }
+        }
         hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
     }
 
