@@ -10,6 +10,7 @@ from datetime import datetime
 import paramiko
 from graphviz import Digraph
 from tabulate import tabulate
+import os
 
 
 def connect_to_bmc(hostname, uname, passwd, port):
@@ -197,8 +198,27 @@ def main():
     parser = argparse.ArgumentParser(prog='pldm_visualise_pdrs.py')
     parser.add_argument('--bmc', type=str, required=True,
                         help="BMC IPAddress/BMC Hostname")
-    parser.add_argument('--user', type=str, required=True,
-                        help="BMC username")
+    args, _ = parser.parse_known_args()
+    defaults = {}
+    try:
+        with open(os.path.expanduser("~/.ssh/config")) as f:
+            ssh_config = paramiko.SSHConfig()
+            ssh_config.parse(f)
+            host_config = ssh_config.lookup(args.bmc)
+            if host_config:
+                if 'hostname' in host_config:
+                    args.bmc = host_config['hostname']
+                if 'user' in host_config:
+                    defaults['user'] = host_config['user']
+    except FileNotFoundError:
+        pass
+
+    if 'user' in defaults:
+        parser.add_argument('--user', type=str, default=defaults['user'],
+                            help="BMC username")
+    else:
+        parser.add_argument('--user', type=str, required=True,
+                            help="BMC username")
     parser.add_argument('--password', type=str, required=True,
                         help="BMC Password")
     parser.add_argument('--port', type=int, help="BMC SSH port",
