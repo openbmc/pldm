@@ -204,12 +204,11 @@ def main():
     parser.add_argument('--port', type=int, help="BMC SSH port",
                         default=22)
     args = parser.parse_args()
-    if args.bmc and args.password and args.user:
-        client = connect_to_bmc(args.bmc, args.user, args.password, args.port)
-        association_pdr, state_sensor_pdr, state_effecter_pdr, counter = \
-            fetch_pdrs_from_bmc(client)
-        draw_entity_associations(association_pdr, counter)
-        prepare_summary_report(state_sensor_pdr, state_effecter_pdr)
+    client = connect_to_bmc(args.bmc, args.user, args.password, args.port)
+    association_pdr, state_sensor_pdr, state_effecter_pdr, counter = \
+        fetch_pdrs_from_bmc(client)
+    draw_entity_associations(association_pdr, counter)
+    prepare_summary_report(state_sensor_pdr, state_effecter_pdr)
 
 
 if __name__ == "__main__":
