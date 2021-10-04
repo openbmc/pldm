@@ -3,6 +3,7 @@
 #include "libpldm/platform.h"
 #include "oem/ibm/libpldm/state_set.h"
 
+#include "common/utils.hpp"
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -32,13 +33,14 @@ class Handler : public oem_platform::Handler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
-            pldm::responder::CodeUpdate* codeUpdate, int mctp_fd,
-            uint8_t mctp_eid, pldm::dbus_api::Requester& requester,
+            pldm::responder::CodeUpdate* codeUpdate, pldm_pdr* repo,
+            int mctp_fd, uint8_t mctp_eid, pldm::dbus_api::Requester& requester,
             sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf),
-        codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), requester(requester), event(event), handler(handler)
+        codeUpdate(codeUpdate), pdrRepo(repo), platformHandler(nullptr),
+        mctp_fd(mctp_fd), mctp_eid(mctp_eid), requester(requester),
+        event(event), handler(handler)
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -163,6 +165,10 @@ class Handler : public oem_platform::Handler
      */
     void _processSystemReboot(sdeventplus::source::EventBase& source);
 
+    int setNumericEffecter(uint16_t entityInstance,
+                           const pldm::utils::PropertyValue& propertyValue);
+
+    void monitorDump(const std::string& obj_path);
     /*keeps track how many times setEventReceiver is sent */
     void countSetEventReceiver()
     {
@@ -189,9 +195,14 @@ class Handler : public oem_platform::Handler
     /** @brief to check the BMC state*/
     int checkBMCState();
 
+    void setHostEffecterState();
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
+
+    const pldm_pdr* pdrRepo;
+
     pldm::responder::platform::Handler*
         platformHandler; //!< pointer to PLDM platform handler
 
