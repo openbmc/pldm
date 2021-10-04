@@ -109,6 +109,8 @@ class Handler : public CmdHandler
     /** @brief Interface to disable the watchdog timer */
     virtual void disableWatchDogTimer() = 0;
 
+    virtual void setHostEffecterState() = 0;
+
     /** @brief Interface to keep track of how many times setEventReceiver
      *         is sent to host */
     virtual void countSetEventReceiver() = 0;
