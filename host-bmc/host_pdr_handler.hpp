@@ -171,6 +171,12 @@ class HostPDRHandler
      */
     void setTerminusInfo(uint8_t tid, uint16_t terminusHandle, uint8_t validity,
                          uint8_t eid);
+    /** @brief gets the whole tlpdr look up map
+     */
+    TLPDRMap getTerminusMap()
+    {
+        return tlPDRInfo;
+    }
 
   private:
     /** @brief deferred function to fetch PDR from Host, scheduled to work on
