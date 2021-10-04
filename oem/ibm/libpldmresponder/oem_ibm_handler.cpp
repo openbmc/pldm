@@ -461,9 +461,160 @@ int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
 
     return rc;
 }
+void pldm::responder::oem_ibm_platform::Handler::setHostEffecterState(
+    bool status)
+{
+    //   std::cerr << "Inside the set host effecter state function" <<
+    //   std::endl;
+    pldm::pdr::EntityType entityType = PLDM_ENTITY_PROC;
+    pldm::pdr::StateSetId stateSetId = PLDM_OEM_IBM_SBE_MAINTENANCE_STATE;
 
-int setNumericEffecter(uint16_t entityInstance,
-                       const PropertyValue& propertyValue)
+    uint8_t tid = TERMINUS_ID;
+
+    // std::cerr << "calling the find state effecter PDR function" << std::endl;
+    auto pdrs = findStateEffecterPDR(tid, entityType, stateSetId, pdrRepo);
+    for (auto& pdr : pdrs)
+    {
+        /* std::cerr
+             << "Found the pdrs with the requored state set and entity type"
+             << std::endl;*/
+        auto stateEffecterPDR =
+            reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+        uint16_t effecterId = stateEffecterPDR->effecter_id;
+        uint8_t compEffecterCount = stateEffecterPDR->composite_effecter_count;
+
+        // std::cerr << "Effecter ID:" << effecterId << std::endl;
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + sizeof(effecterId) +
+                sizeof(compEffecterCount) +
+                sizeof(set_effecter_state_field) * compEffecterCount,
+            0);
+
+        auto instanceId = requester.getInstanceId(mctp_eid);
+
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        std::vector<set_effecter_state_field> stateField;
+        if (status == true)
+        {
+            /* std::cerr << "status is true, set the value as dump completed"
+                       << std::endl;*/
+            stateField.push_back(
+                set_effecter_state_field{PLDM_REQUEST_SET, SBE_DUMP_COMPLETED});
+        }
+        else
+        {
+            /*   std::cerr << "Status is false, set the value as dump retry
+               required"
+                         << std::endl;*/
+            stateField.push_back(
+                set_effecter_state_field{PLDM_REQUEST_SET, SBE_RETRY_REQUIRED});
+        }
+        auto rc = encode_set_state_effecter_states_req(
+            instanceId, effecterId, compEffecterCount, stateField.data(),
+            request);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr
+                << " Set state effecter state command failure. PLDM error code ="
+                << rc << std::endl;
+            requester.markFree(mctp_eid, instanceId);
+            return;
+        }
+        auto setStateEffecterStatesRespHandler =
+            [=, this](mctp_eid_t /*eid*/, const pldm_msg* response,
+                      size_t respMsgLen) {
+                if (response == nullptr || !respMsgLen)
+                {
+                    std::cerr << "Failed to receive response for "
+                              << "setstateEffecterSates command\n";
+                    return;
+                }
+                /*  std::cerr
+                      << "Inside the repsonse handler for setStateEffecterStates
+                   "
+                      << std::endl;*/
+                uint8_t completionCode{};
+                auto rc = decode_set_state_effecter_states_resp(
+                    response, respMsgLen, &completionCode);
+                if (rc)
+                {
+                    std::cerr
+                        << "Failed to decode setStateEffecterStates response,"
+                        << " rc " << rc << "\n";
+                    pldm::utils::reportError(
+                        "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                }
+                if (completionCode)
+                {
+                    std::cerr
+                        << "Failed to set a Host effecter "
+                        << ", cc=" << static_cast<unsigned>(completionCode)
+                        << "\n";
+                    pldm::utils::reportError(
+                        "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                }
+            };
+        // std::cerr << "Calling the register request" << std::endl;
+        rc = handler->registerRequest(
+            mctp_eid, instanceId, PLDM_PLATFORM, PLDM_SET_STATE_EFFECTER_STATES,
+            std::move(requestMsg),
+            std::move(setStateEffecterStatesRespHandler));
+        if (rc)
+        {
+            std::cerr << "Failed to send request to set an effecter on Host \n";
+        }
+    }
+}
+void pldm::responder::oem_ibm_platform::Handler::monitorDump(
+    const std::string& obj_path)
+{
+
+    // std::cerr << "ObjectPath:" << obj_path << std::endl;
+    // std::cerr << "Insode the monitor dump function" << std::endl;
+    std::string matchInterface = "xyz.openbmc_project.Common.Progress";
+    // auto bus = sdbusplus::bus::new_default_system();
+    sbeDumpMatch = std::make_unique<sdbusplus::bus::match::match>(
+        pldm::utils::DBusHandler::getBus(),
+        sdbusplus::bus::match::rules::propertiesChanged(obj_path.c_str(),
+                                                        matchInterface.c_str()),
+        [&](sdbusplus::message::message& msg) {
+            DbusChangedProps props{};
+            std::string intf;
+            msg.read(intf, props);
+            // std::cerr << "Got a property changed signal" << std::endl;
+            const auto itr = props.find("Status");
+            if (itr != props.end())
+            {
+                PropertyValue value = itr->second;
+                auto propVal = std::get<std::string>(value);
+                if (propVal ==
+                    "xyz.openbmc_project.Common.Progress.OperationStatus.Completed")
+                {
+                    /*   std::cerr
+                           << "Property value is completed calling set effecter
+                       state function"
+                           << std::endl;*/
+                    setHostEffecterState(true);
+                }
+                else if (
+                    propVal ==
+                        "xyz.openbmc_project.Common.Progress.OperationStatus.Failed" ||
+                    propVal ==
+                        "xyz.openbmc_project.Common.Progress.OperationStatus.Aborted")
+                {
+                    // std::cerr
+                    //    << "Property value is failed and calling the set
+                    //    effecter state function"
+                    //     << std::endl;
+                    setHostEffecterState(false);
+                }
+            }
+            sbeDumpMatch = nullptr;
+        });
+}
+
+int pldm::responder::oem_ibm_platform::Handler::setNumericEffecter(
+    uint16_t entityInstance, const PropertyValue& propertyValue)
 {
     static constexpr auto objectPath = "/org/openpower/dump";
     static constexpr auto interface = "xyz.openbmc_project.Dump.Create";
@@ -478,15 +629,22 @@ int setNumericEffecter(uint16_t entityInstance,
         auto method = bus.new_method_call(service.c_str(), objectPath,
                                           interface, "CreateDump");
 
-        std::map<std::string, std::variant<std::string, uint32_t>> createParams;
+        std::map<std::string, std::variant<std::string, uint64_t>> createParams;
         createParams["com.ibm.Dump.Create.CreateParameters.DumpType"] =
             "com.ibm.Dump.Create.DumpType.SBE";
-        createParams["com.ibm.Dump.Create.CreateParameters.ErrorLogId"] = value;
+        createParams["com.ibm.Dump.Create.CreateParameters.ErrorLogId"] =
+            (uint64_t)value;
         createParams["com.ibm.Dump.Create.CreateParameters.FailingUnitId"] =
-            (uint32_t)entityInstance;
+            (uint64_t)entityInstance;
         method.append(createParams);
 
-        bus.call_noreply(method);
+        auto response = bus.call(method);
+
+        sdbusplus::message::object_path reply;
+        response.read(reply);
+
+        // std::cerr << "calling monitor dump" << std::endl;
+        monitorDump(reply);
     }
     catch (const std::exception& e)
     {
