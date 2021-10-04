@@ -93,6 +93,7 @@ HostPDRHandler::HostPDRHandler(
                                                            entityTree);
                     this->sensorMap.clear();
                     this->responseReceived = false;
+                    this->tlpdrInfo.clear();
                 }
             }
         });
@@ -221,8 +222,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         }
         else
         {
-            pldm_entity_association_pdr_add_from_node(node, repo, &entities,
-                                                      numEntities, true);
+            pldm_entity_association_pdr_add_from_node(
+                node, repo, &entities, numEntities, true, TERMINUS_HANDLE);
         }
     }
     free(entities);
@@ -332,8 +333,7 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
     }
 }
 
-void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs,
-                                          const TLPDRMap& tlpdrInfo)
+void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs)
 {
     for (const auto& pdr : stateSensorPDRs)
     {
@@ -361,7 +361,6 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
 {
     static bool merged = false;
     static PDRList stateSensorPDRs{};
-    static TLPDRMap tlpdrInfo{};
     uint32_t nextRecordHandle{};
     std::vector<TlInfo> tlInfo;
     uint8_t tlEid = 0;
@@ -477,7 +476,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else
                 {
-                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true);
+                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true,
+                                 terminusHandle);
                 }
             }
         }
@@ -485,13 +485,12 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     if (!nextRecordHandle)
     {
         /*received last record*/
-        this->parseStateSensorPDRs(stateSensorPDRs, tlpdrInfo);
+        this->parseStateSensorPDRs(stateSensorPDRs);
         if (isHostUp())
         {
             this->setHostSensorState(stateSensorPDRs, tlInfo);
         }
         stateSensorPDRs.clear();
-        tlpdrInfo.clear();
         if (merged)
         {
             merged = false;

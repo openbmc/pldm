@@ -459,8 +459,8 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
 
 int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                                        size_t payloadLength,
-                                       uint8_t /*formatVersion*/,
-                                       uint8_t /*tid*/, size_t eventDataOffset)
+                                       uint8_t /*formatVersion*/, uint8_t tid,
+                                       size_t eventDataOffset)
 {
     uint8_t eventDataFormat{};
     uint8_t numberOfChangeRecords{};
@@ -532,6 +532,37 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
     if (hostPDRHandler)
     {
+        // if we get a Repository change event with the eventDataFormat
+        // as REFRESH_ENTIRE_REPOSITORY, then fetch the delete all the
+        // remote PDR's that are have the matched Terminus handle
+        if (eventDataFormat == REFRESH_ENTIRE_REPOSITORY)
+        {
+            std::cerr << "Got repository change event from tid :"
+                      << (unsigned)tid << std::endl;
+
+            // We cannot get the Repo change event from the Terminus
+            // that is not already added to the BMC repository
+
+            auto terminusMap = hostPDRHandler->getTerminusMap();
+            std::cerr << "size of the terminus map : " << terminusMap.size()
+                      << std::endl;
+            for (const auto terminus : terminusMap)
+            {
+                std::cerr << "TID : " << (unsigned)terminus.first << std::endl;
+                std::cerr << "Handle : " << (unsigned)terminus.second
+                          << std::endl;
+            }
+            for (const auto [terminusHandle, terminusId] : terminusMap)
+            {
+                if (terminusId == tid)
+                {
+                    std::cerr << "Removing all remote PDR's with tid : "
+                              << (unsigned)terminusHandle << std::endl;
+                    pldm_pdr_remove_remote_pdrs_by_terminus_handle(
+                        terminusHandle, pdrRepo.getPdr());
+                }
+            }
+        }
         hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
     }
 

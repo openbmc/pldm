@@ -151,8 +151,7 @@ class HostPDRHandler
      *  @param[in] tlpdrInfo - terminus locator PDRs info
      *
      */
-    void parseStateSensorPDRs(const PDRList& stateSensorPDRs,
-                              const TLPDRMap& tlpdrInfo);
+    void parseStateSensorPDRs(const PDRList& stateSensorPDRs);
 
     /** @brief this function sends a GetPDR request to Host firmware.
      *  And processes the PDRs based on type
@@ -176,6 +175,13 @@ class HostPDRHandler
     /** @brief check whether Host is running when pldmd starts
      */
     bool isHostUp();
+
+    /** @brief gets the whole tlpdr look up map
+     */
+    TLPDRMap getTerminusMap()
+    {
+        return tlpdrInfo;
+    }
 
   private:
     /** @brief deferred function to fetch PDR from Host, scheduled to work on
@@ -267,6 +273,12 @@ class HostPDRHandler
 
     /** @brief whether response received from Host */
     bool responseReceived;
+
+    /** @brief tlpdrinfo is a loopup data structure that is constructed during
+     * PDR Exchange with other PLDM Terminus that captures the terminus ID to
+     * terminus handle relationships of various PLDM terminus
+     */
+    TLPDRMap tlpdrInfo;
 };
 
 } // namespace pldm
