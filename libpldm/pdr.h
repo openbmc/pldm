@@ -65,11 +65,13 @@ uint32_t pldm_pdr_get_repo_size(const pldm_pdr *repo);
  *  @param[in] record_handle - record handle of input PDR record; if this is set
  *  to 0, then a record handle is computed and assigned to this PDR record
  *  @param[in] is_remote - if true, then the PDR is not from this terminus
+ *  @param[in] terminus_handle - terminus handle of the input PDR record
  *
  *  @return uint32_t - record handle assigned to PDR record
  */
 uint32_t pldm_pdr_add(pldm_pdr *repo, const uint8_t *data, uint32_t size,
-		      uint32_t record_handle, bool is_remote);
+		      uint32_t record_handle, bool is_remote,
+		      uint16_t terminus_handle);
 
 /** @brief Get record handle of a PDR record
  *
@@ -143,6 +145,14 @@ bool pldm_pdr_record_is_remote(const pldm_pdr_record *record);
  *  @param[in] repo - opaque pointer acting as a PDR repo handle
  */
 void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo);
+
+/** @brief Remove all remote PDR's that beling to a specific terminus
+ *         handle
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ *  @param[in] terminus_handle - Terminus Handle of the remove PLDM terminus
+ */
+void pldm_pdr_remove_pdrs_by_terminus_handle(pldm_pdr *repo,
+					     uint16_t terminus_handle);
 
 /** @brief Update the validity of TL PDR - the validity is decided based on
  * whether the valid bit is set or not as per the spec DSP0248
@@ -304,20 +314,21 @@ bool pldm_entity_is_exist_parent(pldm_entity_node *node);
  *  @param[in] tree - opaque pointer to entity association tree
  *  @param[in] repo - PDR repo where entity association records should be added
  *  @param[in] is_remote - if true, then the PDR is not from this terminus
+ *  @param[in] terminus_handle - terminus handle of the terminus
  */
 void pldm_entity_association_pdr_add(pldm_entity_association_tree *tree,
-				     pldm_pdr *repo, bool is_remote);
+				     pldm_pdr *repo, bool is_remote,
+				     uint16_t terminus_handle);
 /** @brief Add entity association pdr from node
  *
  *  @param[in] node - opaque pointer acting as a handle to an entity node
  *  @param[in] repo - PDR repo where entity association records should be added
  *  @param[in] is_remote  - if true, then the PDR is not from this terminus
+ *  @param[in] terminus_handle - terminus handle of the terminus
  */
-void pldm_entity_association_pdr_add_from_node(pldm_entity_node *node,
-					       pldm_pdr *repo,
-					       pldm_entity **entities,
-					       size_t num_entities,
-					       bool is_remote);
+void pldm_entity_association_pdr_add_from_node(
+    pldm_entity_node *node, pldm_pdr *repo, pldm_entity **entities,
+    size_t num_entities, bool is_remote, uint16_t terminus_handle);
 
 /** @brief Find entity reference in tree
  *
