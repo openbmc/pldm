@@ -4,6 +4,7 @@
 #include "oem/ibm/libpldm/state_set.h"
 
 #include "common/types.hpp"
+#include "common/utils.hpp"
 #include "inband_code_update.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -170,6 +171,23 @@ class Handler : public oem_platform::Handler
      */
     void _processSystemReboot(sdeventplus::source::EventBase& source);
 
+    /** @brief setNumericEffecter
+     *
+     *  @param[in] entityInstance - the entity Instance
+     *  @param[in] propertyValue - the value to be set
+     *
+     *  @return PLDM completion_code
+     */
+    int setNumericEffecter(uint16_t entityInstance,
+                           const pldm::utils::PropertyValue& propertyValue);
+
+    /** @brief monitor the dump
+     *
+     *  @param[in] object_path - The object path of the dump to monitor
+     *
+     */
+    void monitorDump(const std::string& obj_path);
+
     /*keeps track how many times setEventReceiver is sent */
     void countSetEventReceiver()
     {
@@ -196,13 +214,16 @@ class Handler : public oem_platform::Handler
     /** @brief to check the BMC state*/
     int checkBMCState();
 
+    /** @brief update the conatiner ID */
     void updateContainerID();
+
+    void setHostEffecterState(bool status);
 
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
 
-    const pldm_pdr* pdrRepo;
+    const pldm_pdr* pdrRepo; // the PDR repo
 
     pldm::responder::platform::Handler*
         platformHandler; //!< pointer to PLDM platform handler
@@ -221,6 +242,9 @@ class Handler : public oem_platform::Handler
     std::unique_ptr<sdeventplus::source::Defer> assembleImageEvent;
     std::unique_ptr<sdeventplus::source::Defer> startUpdateEvent;
     std::unique_ptr<sdeventplus::source::Defer> systemRebootEvent;
+
+    /** unique pointer to the SBE dump match */
+    std::unique_ptr<sdbusplus::bus::match::match> sbeDumpMatch;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
