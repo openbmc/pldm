@@ -13,7 +13,7 @@ from tabulate import tabulate
 import os
 
 
-def connect_to_bmc(hostname, uname, passwd, port):
+def connect_to_bmc(hostname, uname, passwd, port, **kw):
 
     """ This function is responsible to connect to the BMC via
         ssh and returns a client object.
@@ -28,7 +28,7 @@ def connect_to_bmc(hostname, uname, passwd, port):
 
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(hostname, username=uname, password=passwd, port=port)
+    client.connect(hostname, username=uname, password=passwd, port=port, **kw)
     return client
 
 
@@ -200,6 +200,7 @@ def main():
                         help="BMC IPAddress/BMC Hostname")
     args, _ = parser.parse_known_args()
     defaults = {}
+    extra_cfg = {}
     try:
         with open(os.path.expanduser("~/.ssh/config")) as f:
             ssh_config = paramiko.SSHConfig()
@@ -210,6 +211,9 @@ def main():
                     args.bmc = host_config['hostname']
                 if 'user' in host_config:
                     defaults['user'] = host_config['user']
+                if 'proxycommand' in host_config:
+                    extra_cfg['sock'] = paramiko.ProxyCommand(
+                        host_config['proxycommand'])
     except FileNotFoundError:
         pass
 
@@ -224,7 +228,8 @@ def main():
     parser.add_argument('--port', type=int, help="BMC SSH port",
                         default=22)
     args = parser.parse_args()
-    client = connect_to_bmc(args.bmc, args.user, args.password, args.port)
+    client = connect_to_bmc(
+        args.bmc, args.user, args.password, args.port, **extra_cfg)
     association_pdr, state_sensor_pdr, state_effecter_pdr, counter = \
         fetch_pdrs_from_bmc(client)
     draw_entity_associations(association_pdr, counter)
