@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fc085791_9a231158",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-05T06:19:00Z",
+      "side": 1,
+      "message": "can you pick a different number ?\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/45016/6/oem/ibm/libpldmresponder/oem_ibm_handler.hpp\n\nalready uses \n#define PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE 32772\n#define PLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE 32773",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 44
+      },
+      "revId": "b5eb464aacee141d097bbc057d58742dd9a360a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
