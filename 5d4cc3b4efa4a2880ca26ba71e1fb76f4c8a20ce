@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5ebfb67_5fcea64f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-05T06:07:25Z",
+      "side": 1,
+      "message": "can you also explain why pldm (ibm) - cannot wait until all the dependency services are started ? why are we forced to not wait for other dependencies.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 29
+      },
+      "revId": "5d4cc3b4efa4a2880ca26ba71e1fb76f4c8a20ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85d8aa43_03b94a0c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-05T06:07:25Z",
+      "side": 1,
+      "message": "And also, please mention why did we take this route rather than sending PDR repo change events with Record\u0027s added dynamically.",
+      "range": {
+        "startLine": 14,
+        "startChar": 28,
+        "endLine": 14,
+        "endChar": 29
+      },
+      "revId": "5d4cc3b4efa4a2880ca26ba71e1fb76f4c8a20ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ade82f84_e180959a",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-05T06:07:25Z",
+      "side": 1,
+      "message": "these two can be used in a single if() with a logical AND operation. nested if statements are hard to follow and difficult to maintain.",
+      "range": {
+        "startLine": 148,
+        "startChar": 7,
+        "endLine": 150,
+        "endChar": 46
+      },
+      "revId": "5d4cc3b4efa4a2880ca26ba71e1fb76f4c8a20ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b242f372_1bcdcdd6",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-05T06:07:25Z",
+      "side": 1,
+      "message": "please use getService() to dynamically discover the service name rather than hard-coding it.",
+      "range": {
+        "startLine": 585,
+        "startChar": 17,
+        "endLine": 585,
+        "endChar": 46
+      },
+      "revId": "5d4cc3b4efa4a2880ca26ba71e1fb76f4c8a20ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62a0a84e_5dcf8c3c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-05T06:07:25Z",
+      "side": 1,
+      "message": "do you need this trace to be present ? why ?\n\nif yes ..how about \"GetPDR : PLDM stack is not ready for PDR exchange\"",
+      "range": {
+        "startLine": 590,
+        "startChar": 12,
+        "endLine": 590,
+        "endChar": 57
+      },
+      "revId": "5d4cc3b4efa4a2880ca26ba71e1fb76f4c8a20ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
