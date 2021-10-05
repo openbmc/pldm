@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "44809543_6420361d",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-05T06:11:57Z",
+      "side": 1,
+      "message": "this will cause an ELOOP exception from DBUS.\n\nPLDM cannot do a dbus call onto PLDM interfaces, use the pdr repository and use libpldm api\u0027s to get your PDR\u0027s",
+      "range": {
+        "startLine": 455,
+        "startChar": 3,
+        "endLine": 460,
+        "endChar": 61
+      },
+      "revId": "d4a4a76f6e55c1ca5b9bfdb4957513c5871db228",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
