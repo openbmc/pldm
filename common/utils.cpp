@@ -451,7 +451,7 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
 
         msg.signal_send();
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         std::cerr << "Error emitting pldm event signal:"
                   << "ERROR=" << e.what() << "\n";

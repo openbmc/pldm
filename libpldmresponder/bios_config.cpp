@@ -799,7 +799,7 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         attrNameHdl = biosStringTable.findHandle(attrName);
     }
-    catch (std::invalid_argument& e)
+    catch (const std::invalid_argument& e)
     {
         std::cerr << "Could not find handle for BIOS string, ATTRIBUTE="
                   << attrName.c_str() << "\n";
