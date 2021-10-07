@@ -147,12 +147,13 @@ int main(int argc, char** argv)
                     break;
                 default:
                     optionUsage();
-                    break;
+                    exit(EXIT_FAILURE);
             }
             break;
-        default:
-            optionUsage();
+        case -1:
             break;
+        default:
+            exit(EXIT_FAILURE);
     }
 
     /* Create local socket. */
