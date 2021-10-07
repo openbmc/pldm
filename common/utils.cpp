@@ -141,8 +141,7 @@ uint8_t readHostEID()
     std::ifstream eidFile{HOST_EID_PATH};
     if (!eidFile.good())
     {
-        std::cerr << "Could not open host EID file"
-                  << "\n";
+        std::cerr << "Could not open host EID file: " << HOST_EID_PATH << "\n";
     }
     else
     {
