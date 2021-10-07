@@ -379,14 +379,16 @@ int main(int argc, char** argv)
         hostPDRHandler->setHostFirmwareCondition();
     }
 #endif
-    event.loop();
+    returnCode = event.loop();
 
-    result = shutdown(sockfd, SHUT_RDWR);
-    if (-1 == result)
+    if (shutdown(sockfd, SHUT_RDWR))
     {
-        returnCode = -errno;
-        std::cerr << "Failed to shutdown the socket, RC=" << returnCode << "\n";
+        std::perror("Failed to shutdown the socket");
+    }
+    if (returnCode)
+    {
         exit(EXIT_FAILURE);
     }
-    exit(EXIT_FAILURE);
+
+    exit(EXIT_SUCCESS);
 }
