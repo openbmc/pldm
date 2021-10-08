@@ -231,6 +231,11 @@ class Handler : public CmdHandler
                              return this->newFileAvailable(request,
                                                            payloadLength);
                          });
+        handlers.emplace(PLDM_FILE_ACK_WITH_META_DATA,
+                         [this](const pldm_msg* request, size_t payloadLength) {
+                             return this->fileAckWithMetaData(request,
+                                                              payloadLength);
+                         });
 
         resDumpMatcher = std::make_unique<sdbusplus::bus::match::match>(
             pldm::utils::DBusHandler::getBus(),
@@ -334,13 +339,17 @@ class Handler : public CmdHandler
                     {
                         pldm::utils::PropertyValue licStrVal{prop.second};
                         licenseStr = std::get<std::string>(licStrVal);
+                        dbusToFileHandlers
+                            .emplace_back(
+                                std::make_unique<pldm::requester::oem_ibm::
+                                                     DbusToFileHandler>(
+                                    hostSockFd, hostEid, dbusImplReqester, path,
+                                    handler))
+                            ->newLicFileAvailable(licenseStr);
+                        break;
                     }
+                    break;
                 }
-                dbusToFileHandlers
-                    .emplace_back(std::make_unique<
-                                  pldm::requester::oem_ibm::DbusToFileHandler>(
-                        hostSockFd, hostEid, dbusImplReqester, path, handler))
-                    ->newLicFileAvailable(licenseStr);
             });
     }
 

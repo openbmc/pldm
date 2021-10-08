@@ -3,21 +3,41 @@
 #include "libpldm/base.h"
 
 #include "common/utils.hpp"
+#include "host-bmc/custom_dbus.hpp"
 
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
 #include <unistd.h>
 
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <exception>
+#include <fstream>
 #include <iostream>
 
 namespace pldm
 {
+using namespace pldm::dbus;
 namespace responder
 {
 namespace utils
 {
+
+static constexpr auto curLicFilePath =
+    "/var/lib/pldm/license/current_license.bin";
+static constexpr auto newLicFilePath = "/var/lib/pldm/license/new_license.bin";
+static constexpr auto newLicJsonFilePath =
+    "/var/lib/pldm/license/new_license.json";
+static constexpr auto licEntryPath = "/xyz/openbmc_project/license/entry";
+static constexpr uint8_t createLic = 1;
+static constexpr uint8_t clearLicStatus = 2;
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+
+using LicJsonObjMap = std::map<fs::path, nlohmann::json>;
+LicJsonObjMap licJsonMap;
 
 int setupUnixSocket(const std::string& socketInterface)
 {
@@ -142,6 +162,221 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
         }
     }
     return 0;
+}
+
+Json convertBinFileToJson(const fs::path& path)
+{
+    std::ifstream file(path, std::ios::in | std::ios::binary);
+    std::streampos fileSize;
+
+    // Get the file size
+    file.seekg(0, std::ios::end);
+    fileSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    // Read the data into vector from file and convert to json object
+    std::vector<uint8_t> vJson(fileSize);
+    file.read((char*)&vJson[0], fileSize);
+    return Json::from_bson(vJson);
+}
+
+void convertJsonToBinaryFile(const Json& jsonData, const fs::path& path)
+{
+    // Covert the json data to binary format and copy to vector
+    std::vector<uint8_t> vJson = {};
+    vJson = Json::to_bson(jsonData);
+
+    // Copy the vector to file
+    std::ofstream licout(path, std::ios::out | std::ios::binary);
+    size_t size = vJson.size();
+    licout.write(reinterpret_cast<char*>(&vJson[0]), size * sizeof(vJson[0]));
+}
+
+void clearLicenseStatus()
+{
+    if (!fs::exists(curLicFilePath))
+    {
+        return;
+    }
+
+    auto data = convertBinFileToJson(curLicFilePath);
+
+    const Json empty{};
+    const std::vector<Json> emptyList{};
+
+    auto entries = data.value("Licenses", emptyList);
+    fs::path path{licEntryPath};
+
+    for (const auto& entry : entries)
+    {
+        auto licId = entry.value("Id", empty);
+        fs::path l_path = path / licId;
+        licJsonMap.emplace(l_path, entry);
+    }
+
+    createOrUpdateLicenseDbusPaths(clearLicStatus);
+}
+
+int createOrUpdateLicenseDbusPaths(const uint8_t& flag)
+{
+    const Json empty{};
+    std::string authTypeAsNoOfDev = "NumberOfDevice";
+    struct tm tm;
+    time_t licTimeSinceEpoch = 0;
+
+    sdbusplus::com::ibm::License::Entry::server::LicenseEntry::Type licType =
+        sdbusplus::com::ibm::License::Entry::server::LicenseEntry::Type::
+            Prototype;
+    sdbusplus::com::ibm::License::Entry::server::LicenseEntry::AuthorizationType
+        licAuthType = sdbusplus::com::ibm::License::Entry::server::
+            LicenseEntry::AuthorizationType::Device;
+    for (auto const& [key, licJson] : licJsonMap)
+    {
+        auto licName = licJson.value("Name", empty);
+
+        auto type = licJson.value("Type", empty);
+        if (type == "Trial")
+        {
+            licType = sdbusplus::com::ibm::License::Entry::server::
+                LicenseEntry::Type::Trial;
+        }
+        else if (type == "Commercial")
+        {
+            licType = sdbusplus::com::ibm::License::Entry::server::
+                LicenseEntry::Type::Purchased;
+        }
+        else
+        {
+            licType = sdbusplus::com::ibm::License::Entry::server::
+                LicenseEntry::Type::Prototype;
+        }
+
+        auto authType = licJson.value("AuthType", empty);
+        if (authType == "NumberOfDevice")
+        {
+            licAuthType = sdbusplus::com::ibm::License::Entry::server::
+                LicenseEntry::AuthorizationType::Capacity;
+        }
+        else if (authType == "Unlimited")
+        {
+            licAuthType = sdbusplus::com::ibm::License::Entry::server::
+                LicenseEntry::AuthorizationType::Unlimited;
+        }
+        else
+        {
+            licAuthType = sdbusplus::com::ibm::License::Entry::server::
+                LicenseEntry::AuthorizationType::Device;
+        }
+
+        uint32_t licAuthDevNo = 0;
+        if (authType == authTypeAsNoOfDev)
+        {
+            licAuthDevNo = licJson.value("AuthDeviceNumber", 0);
+        }
+
+        auto licSerialNo = licJson.value("SerialNum", "");
+
+        auto expTime = licJson.value("ExpirationTime", "");
+        if (!expTime.empty())
+        {
+            memset(&tm, 0, sizeof(tm));
+            strptime(expTime.c_str(), "%Y-%m-%dT%H:%M:%SZ", &tm);
+            licTimeSinceEpoch = mktime(&tm);
+        }
+
+        CustomDBus::getCustomDBus().implementLicInterfaces(
+            key, licAuthDevNo, licName, licSerialNo, licTimeSinceEpoch, licType,
+            licAuthType);
+
+        auto status = licJson.value("Status", empty);
+
+        // License status is a single entry which needs to be mapped to
+        // OperationalStatus and Availability dbus interfaces
+        auto licOpStatus = false;
+        auto licAvailState = false;
+        if ((flag == clearLicStatus) || (status == "Unknown"))
+        {
+            licOpStatus = false;
+            licAvailState = false;
+        }
+        else if (status == "Enabled")
+        {
+            licOpStatus = true;
+            licAvailState = true;
+        }
+        else if (status == "Disabled")
+        {
+            licOpStatus = false;
+            licAvailState = true;
+        }
+
+        CustomDBus::getCustomDBus().setOperationalStatus(key, licOpStatus);
+        CustomDBus::getCustomDBus().setAvailabilityState(key, licAvailState);
+    }
+
+    return PLDM_SUCCESS;
+}
+
+int createOrUpdateLicenseObjs()
+{
+    bool l_curFilePresent = true;
+    const Json empty{};
+    const std::vector<Json> emptyList{};
+    std::ifstream jsonFileCurrent;
+    Json dataCurrent;
+    Json entries;
+
+    if (!fs::exists(curLicFilePath))
+    {
+        l_curFilePresent = false;
+    }
+
+    if (l_curFilePresent == true)
+    {
+        dataCurrent = convertBinFileToJson(curLicFilePath);
+    }
+
+    auto dataNew = convertBinFileToJson(newLicFilePath);
+
+    if (l_curFilePresent == true)
+    {
+        dataCurrent.merge_patch(dataNew);
+        convertJsonToBinaryFile(dataCurrent, curLicFilePath);
+        entries = dataCurrent.value("Licenses", emptyList);
+    }
+    else
+    {
+        convertJsonToBinaryFile(dataNew, curLicFilePath);
+        entries = dataNew.value("Licenses", emptyList);
+    }
+
+    fs::path path{licEntryPath};
+
+    for (const auto& entry : entries)
+    {
+        auto licId = entry.value("Id", empty);
+        fs::path l_path = path / licId;
+        licJsonMap.emplace(l_path, entry);
+    }
+
+    int rc = createOrUpdateLicenseDbusPaths(createLic);
+    if (rc == PLDM_SUCCESS)
+    {
+        fs::copy_file(newLicFilePath, curLicFilePath,
+                      fs::copy_options::overwrite_existing);
+
+        if (fs::exists(newLicFilePath))
+        {
+            fs::remove_all(newLicFilePath);
+        }
+
+        if (fs::exists(newLicJsonFilePath))
+        {
+            fs::remove_all(newLicJsonFilePath);
+        }
+    }
+
+    return rc;
 }
 
 bool checkIfIBMCableCard(const std::string& objPath)

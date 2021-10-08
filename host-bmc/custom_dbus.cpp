@@ -97,5 +97,40 @@ void CustomDBus::implementObjectEnableIface(const std::string& path)
     }
 }
 
+void CustomDBus::implementLicInterfaces(
+    const std::string& path, const uint32_t& authdevno, const std::string& name,
+    const std::string& serialno, const uint64_t& exptime,
+    const sdbusplus::com::ibm::License::Entry::server::LicenseEntry::Type& type,
+    const sdbusplus::com::ibm::License::Entry::server::LicenseEntry::
+        AuthorizationType& authtype)
+{
+    if (codLic.find(path) == codLic.end())
+    {
+        codLic.emplace(
+            path, std::make_unique<LicIntf>(pldm::utils::DBusHandler::getBus(),
+                                            path.c_str()));
+    }
+
+    codLic.at(path)->authDeviceNumber(authdevno);
+    codLic.at(path)->name(name);
+    codLic.at(path)->serialNumber(serialno);
+    codLic.at(path)->expirationTime(exptime);
+    codLic.at(path)->type(type);
+    codLic.at(path)->authorizationType(authtype);
+}
+
+void CustomDBus::setAvailabilityState(const std::string& path,
+                                      const bool& state)
+{
+    if (availabilityState.find(path) == availabilityState.end())
+    {
+        availabilityState.emplace(
+            path, std::make_unique<AvailabilityIntf>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+
+    availabilityState.at(path)->available(state);
+}
+
 } // namespace dbus
 } // namespace pldm

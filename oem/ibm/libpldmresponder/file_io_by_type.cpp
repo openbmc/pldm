@@ -119,7 +119,7 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
         ;
         return PLDM_ERROR;
     }
-    utils::CustomFD fd(file);
+    pldm::utils::CustomFD fd(file);
 
     return transferFileData(fd(), upstream, offset, length, address);
 }
@@ -159,6 +159,7 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
             return std::make_unique<CertHandler>(fileHandle, fileType);
         }
         case PLDM_FILE_TYPE_COD_LICENSE_KEY:
+        case PLDM_FILE_TYPE_COD_LICENSED_RESOURCES:
         {
             return std::make_unique<LicenseHandler>(fileHandle, fileType);
         }

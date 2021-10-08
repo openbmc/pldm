@@ -898,7 +898,7 @@ Response Handler::fileAckWithMetaData(const pldm_msg* request,
     Response response(sizeof(pldm_msg_hdr) +
                       PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES);
 
-    if (payloadLength != PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES)
+    if (payloadLength != PLDM_FILE_ACK_WITH_META_DATA_REQ_BYTES)
     {
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
     }

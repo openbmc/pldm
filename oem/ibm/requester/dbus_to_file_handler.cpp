@@ -228,7 +228,7 @@ void DbusToFileHandler::newLicFileAvailable(const std::string& licenseStr)
     licFile.close();
     uint32_t fileSize = fs::file_size(licFilePath);
 
-    newFileAvailableSendToHost(fileSize, 0, PLDM_FILE_TYPE_COD_LICENSE_KEY);
+    newFileAvailableSendToHost(fileSize, 1, PLDM_FILE_TYPE_COD_LICENSE_KEY);
 }
 
 void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
