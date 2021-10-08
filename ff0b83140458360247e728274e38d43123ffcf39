@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "380755fd_8daf42c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-08T13:27:12Z",
+      "side": 1,
+      "message": "\u003e Do you think this is the reason ?\n\nI don\u0027t think so.  When you stop a service with systemctl, it will send it sigterm and the process will cease to exist right then (none of this code runs in that scenario).\n\n\u003e how is stopping a service at BMC standby different than stopping the service while doing a reboot ?\n\nFrom a systemd point of view it isn\u0027t any different.  To understand what is going on better - the first step is probably to find out if the exit status is due to a signal or not (and which signal if it is).",
+      "parentUuid": "b4afe5c5_46be4843",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 26
+      },
+      "revId": "ff0b83140458360247e728274e38d43123ffcf39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "71d8e39e_f5688e6a",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
