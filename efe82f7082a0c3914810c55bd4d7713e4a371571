@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "82a26a9b_95f7cb38",
+        "filename": "tools/visualize-pdr/pldm_visualise_pdrs.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-08T08:38:57Z",
+      "side": 1,
+      "message": "this would replace args.bmc again back to the given value ?\n\nsay for example user gives fires : python3 pldm_visualise_pdrs.py --bmc myhost --password 0penBmc\n\nwith below ssh config :\n\nHost myhost\n    Hostname XXXX\n    User root\n\nthen before connecting to bmc, args.bmc will be again replaced with myhost, and fails to connect.",
+      "range": {
+        "startLine": 226,
+        "startChar": 3,
+        "endLine": 226,
+        "endChar": 30
+      },
+      "revId": "efe82f7082a0c3914810c55bd4d7713e4a371571",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
