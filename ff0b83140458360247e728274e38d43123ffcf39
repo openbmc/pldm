@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "b4afe5c5_46be4843",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-08T03:32:29Z",
+      "side": 1,
+      "message": "just a question :\n\nWhen i stop or restart pldmd service, i dont see a failure, but i have seen pldmd exiting with a failure status when the BMC is down a reboot path.\n\nDo you think this is the reason ? how is stopping a service at BMC standby different than stopping the service while doing a reboot ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 26
+      },
+      "revId": "ff0b83140458360247e728274e38d43123ffcf39",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "71d8e39e_f5688e6a",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
