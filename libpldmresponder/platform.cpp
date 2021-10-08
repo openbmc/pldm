@@ -624,6 +624,11 @@ void Handler::generateTerminusLocatorPDR(Repo& repo)
     pdrEntry.data = pdrBuffer.data();
     pdrEntry.size = pdrBuffer.size();
     repo.addRecord(pdrEntry);
+    if (hostPDRHandler)
+    {
+        hostPDRHandler->setTerminusInfo(pdr->tid, pdr->terminus_handle,
+                                        pdr->validity, locatorValue->eid);
+    }
 }
 
 Response Handler::getStateSensorReadings(const pldm_msg* request,
