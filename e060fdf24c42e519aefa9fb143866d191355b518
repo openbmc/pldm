@@ -16,6 +16,24 @@
       "revId": "e060fdf24c42e519aefa9fb143866d191355b518",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "650c369a_38ca76d0",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-10-11T08:30:55Z",
+      "side": 1,
+      "message": "i agree to that",
+      "parentUuid": "17225336_c1711739",
+      "revId": "e060fdf24c42e519aefa9fb143866d191355b518",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
