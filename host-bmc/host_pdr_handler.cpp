@@ -580,163 +580,187 @@ bool HostPDRHandler::isHostUp()
     return responseReceived;
 }
 
-void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
+void HostPDRHandler::setHostSensorState(PDRList& stateSensorPDRs)
 {
-    for (const auto& stateSensorPDR : stateSensorPDRs)
+    std::cerr << "Inside the setHostSensor state first method" << std::endl;
+
+    sensorIndex = stateSensorPDRs.begin();
+    std::cerr << "Calling the _setHostSensorState method" << std::endl;
+    _setHostSensorState(stateSensorPDRs);
+}
+
+void HostPDRHandler::_setHostSensorState(const PDRList& stateSensorPDRs)
+
+{
+    std::vector<uint8_t> stateSensorPDR = *sensorIndex;
+
+    auto pdr =
+        reinterpret_cast<const pldm_state_sensor_pdr*>(stateSensorPDR.data());
+
+    if (!pdr)
     {
-        auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(
-            stateSensorPDR.data());
+        std::cerr << "Failed to get State sensor PDR" << std::endl;
+        pldm::utils::reportError(
+            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+        return;
+    }
 
-        if (!pdr)
+    uint16_t sensorId = pdr->sensor_id;
+
+    std::cerr << "Sensor Id:" << sensorId << std::endl;
+    std::cerr << "Terminus handle from PDR:" << pdr->terminus_handle
+              << std::endl;
+    for (const auto& [terminusHandle, terminusInfo] : tlPDRInfo)
+    {
+        std::cerr << "Terminus handle from tlPDRInfo: " << terminusHandle
+                  << std::endl;
+        if (terminusHandle == pdr->terminus_handle)
         {
-            std::cerr << "Failed to get State sensor PDR" << std::endl;
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
-            return;
-        }
-
-        uint16_t sensorId = pdr->sensor_id;
-
-        for (const auto& [terminusHandle, terminusInfo] : tlPDRInfo)
-        {
-            if (terminusHandle == pdr->terminus_handle)
+            if (std::get<2>(terminusInfo) == PLDM_TL_PDR_VALID)
             {
-                if (std::get<2>(terminusInfo) == PLDM_TL_PDR_VALID)
+                mctp_eid = std::get<1>(terminusInfo);
+                std::cerr << "MCTP_EID when tl pdr is valid:"
+                          << (uint16_t)mctp_eid << std::endl;
+            }
+
+            std::cerr << "MCTP_EID to ask request from:" << (uint16_t)mctp_eid
+                      << std::endl;
+            bitfield8_t sensorRearm;
+            sensorRearm.byte = 0;
+            uint8_t tid = std::get<0>(terminusInfo);
+
+            std::cerr << "TID:" << (uint16_t)tid << std::endl;
+            auto instanceId = requester.getInstanceId(mctp_eid);
+
+            std::cerr << "Instance Id: " << (uint16_t)instanceId << std::endl;
+
+            std::vector<uint8_t> requestMsg(
+                sizeof(pldm_msg_hdr) +
+                PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+            auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+            auto rc = encode_get_state_sensor_readings_req(
+                instanceId, sensorId, sensorRearm, 0, request);
+
+            if (rc != PLDM_SUCCESS)
+            {
+                requester.markFree(mctp_eid, instanceId);
+                std::cerr << "Failed to "
+                             "encode_get_state_sensor_readings_req, rc = "
+                          << rc << std::endl;
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                return;
+            }
+
+            auto getStateSensorReadingRespHandler = [=,
+                                                     this](mctp_eid_t /*eid*/,
+                                                           const pldm_msg*
+                                                               response,
+                                                           size_t respMsgLen) {
+                std::cerr << "Insdie the repsonse handler" << std::endl;
+                if (response == nullptr || !respMsgLen)
                 {
-                    mctp_eid = std::get<1>(terminusInfo);
-                }
-
-                bitfield8_t sensorRearm;
-                sensorRearm.byte = 0;
-                uint8_t tid = std::get<0>(terminusInfo);
-
-                auto instanceId = requester.getInstanceId(mctp_eid);
-                std::vector<uint8_t> requestMsg(
-                    sizeof(pldm_msg_hdr) +
-                    PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
-                auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
-                auto rc = encode_get_state_sensor_readings_req(
-                    instanceId, sensorId, sensorRearm, 0, request);
-
-                if (rc != PLDM_SUCCESS)
-                {
-                    requester.markFree(mctp_eid, instanceId);
-                    std::cerr << "Failed to "
-                                 "encode_get_state_sensor_readings_req, rc = "
-                              << rc << std::endl;
-                    pldm::utils::reportError(
-                        "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                    std::cerr << "Failed to receive response for "
+                                 "getStateSensorReading command \n";
                     return;
                 }
+                std::array<get_sensor_state_field, 8> stateField{};
+                uint8_t completionCode = 0;
+                uint8_t comp_sensor_count = 0;
 
-                auto getStateSensorReadingRespHandler = [=, this](
-                                                            mctp_eid_t /*eid*/,
-                                                            const pldm_msg*
-                                                                response,
-                                                            size_t respMsgLen) {
-                    if (response == nullptr || !respMsgLen)
+                auto rc = decode_get_state_sensor_readings_resp(
+                    response, respMsgLen, &completionCode, &comp_sensor_count,
+                    stateField.data());
+
+                if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+                {
+                    std::cerr << "Failed to "
+                                 "decode_get_state_sensor_readings_resp, rc = "
+                              << rc
+                              << " cc=" << static_cast<unsigned>(completionCode)
+                              << std::endl;
+                    pldm::utils::reportError(
+                        "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                }
+
+                uint8_t eventState;
+                uint8_t previousEventState;
+                uint8_t sensorOffset = comp_sensor_count - 1;
+
+                for (size_t i = 0; i < comp_sensor_count; i++)
+                {
+                    eventState = stateField[i].present_state;
+                    previousEventState = stateField[i].previous_state;
+
+                    emitStateSensorEventSignal(tid, sensorId, sensorOffset,
+                                               eventState, previousEventState);
+
+                    SensorEntry sensorEntry{tid, sensorId};
+
+                    pldm::pdr::EntityInfo entityInfo{};
+                    pldm::pdr::CompositeSensorStates compositeSensorStates{};
+
+                    try
                     {
-                        std::cerr << "Failed to receive response for "
-                                     "getStateSensorReading command \n";
-                        return;
+                        std::tie(entityInfo, compositeSensorStates) =
+                            lookupSensorInfo(sensorEntry);
                     }
-                    std::array<get_sensor_state_field, 8> stateField{};
-                    uint8_t completionCode = 0;
-                    uint8_t comp_sensor_count = 0;
-
-                    auto rc = decode_get_state_sensor_readings_resp(
-                        response, respMsgLen, &completionCode,
-                        &comp_sensor_count, stateField.data());
-
-                    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+                    catch (const std::out_of_range& e)
                     {
-                        std::cerr
-                            << "Failed to "
-                               "decode_get_state_sensor_readings_resp, rc = "
-                            << rc
-                            << " cc=" << static_cast<unsigned>(completionCode)
-                            << std::endl;
-                        pldm::utils::reportError(
-                            "xyz.openbmc_project.bmc.pldm.InternalFailure");
-                    }
-
-                    uint8_t eventState;
-                    uint8_t previousEventState;
-                    uint8_t sensorOffset = comp_sensor_count - 1;
-
-                    for (size_t i = 0; i < comp_sensor_count; i++)
-                    {
-                        eventState = stateField[i].present_state;
-                        previousEventState = stateField[i].previous_state;
-
-                        emitStateSensorEventSignal(tid, sensorId, sensorOffset,
-                                                   eventState,
-                                                   previousEventState);
-
-                        SensorEntry sensorEntry{tid, sensorId};
-
-                        pldm::pdr::EntityInfo entityInfo{};
-                        pldm::pdr::CompositeSensorStates
-                            compositeSensorStates{};
-
                         try
                         {
+                            sensorEntry.terminusID = PLDM_TID_RESERVED;
                             std::tie(entityInfo, compositeSensorStates) =
                                 lookupSensorInfo(sensorEntry);
                         }
                         catch (const std::out_of_range& e)
                         {
-                            try
-                            {
-                                sensorEntry.terminusID = PLDM_TID_RESERVED;
-                                std::tie(entityInfo, compositeSensorStates) =
-                                    lookupSensorInfo(sensorEntry);
-                            }
-                            catch (const std::out_of_range& e)
-                            {
-                                std::cerr << "No mapping for the events"
-                                          << std::endl;
-                            }
+                            std::cerr << "No mapping for the events"
+                                      << std::endl;
                         }
-
-                        if (sensorOffset > compositeSensorStates.size())
-                        {
-                            std::cerr
-                                << " Error Invalid data, Invalid sensor offset"
-                                << std::endl;
-                            return;
-                        }
-
-                        const auto& possibleStates =
-                            compositeSensorStates[sensorOffset];
-                        if (possibleStates.find(eventState) ==
-                            possibleStates.end())
-                        {
-                            std::cerr
-                                << " Error invalid_data, Invalid event state"
-                                << std::endl;
-                            return;
-                        }
-                        const auto& [containerId, entityType, entityInstance] =
-                            entityInfo;
-                        pldm::responder::events::StateSensorEntry
-                            stateSensorEntry{containerId, entityType,
-                                             entityInstance, sensorOffset};
-                        handleStateSensorEvent(stateSensorEntry, eventState);
                     }
-                };
 
-                rc = handler->registerRequest(
-                    mctp_eid, instanceId, PLDM_PLATFORM,
-                    PLDM_GET_STATE_SENSOR_READINGS, std::move(requestMsg),
-                    std::move(getStateSensorReadingRespHandler));
+                    if (sensorOffset > compositeSensorStates.size())
+                    {
+                        std::cerr
+                            << " Error Invalid data, Invalid sensor offset"
+                            << std::endl;
+                        return;
+                    }
 
-                if (rc != PLDM_SUCCESS)
-                {
-                    std::cerr << " Failed to send request to get State sensor "
-                                 "reading on Host "
-                              << std::endl;
+                    const auto& possibleStates =
+                        compositeSensorStates[sensorOffset];
+                    if (possibleStates.find(eventState) == possibleStates.end())
+                    {
+                        std::cerr << " Error invalid_data, Invalid event state"
+                                  << std::endl;
+                        return;
+                    }
+                    const auto& [containerId, entityType, entityInstance] =
+                        entityInfo;
+                    pldm::responder::events::StateSensorEntry stateSensorEntry{
+                        containerId, entityType, entityInstance, sensorOffset};
+                    handleStateSensorEvent(stateSensorEntry, eventState);
                 }
+
+                if (sensorIndex == stateSensorPDRs.end())
+                {
+                    return;
+                }
+                sensorIndex++;
+                _setHostSensorState(stateSensorPDRs);
+            };
+
+            rc = handler->registerRequest(
+                mctp_eid, instanceId, PLDM_PLATFORM,
+                PLDM_GET_STATE_SENSOR_READINGS, std::move(requestMsg),
+                std::move(getStateSensorReadingRespHandler));
+
+            if (rc != PLDM_SUCCESS)
+            {
+                std::cerr << " Failed to send request to get State sensor "
+                             "reading on Host "
+                          << std::endl;
             }
         }
     }
