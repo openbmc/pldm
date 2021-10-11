@@ -55,6 +55,7 @@ HostPDRHandler::HostPDRHandler(
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), requester(requester), handler(handler)
 {
+    isHostOff = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -114,7 +115,10 @@ HostPDRHandler::HostPDRHandler(
                     pldm_entity_association_tree_copy_root(bmcEntityTree,
                                                            entityTree);
                     this->sensorMap.clear();
+                    this->stateSensorPDRs.clear();
                     this->responseReceived = false;
+
+                    isHostOff = true;
                 }
             }
         });
@@ -366,7 +370,7 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
     }
 }
 
-void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs)
+void HostPDRHandler::parseStateSensorPDRs()
 {
     for (const auto& pdr : stateSensorPDRs)
     {
@@ -393,7 +397,6 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                                      size_t respMsgLen)
 {
     static bool merged = false;
-    static PDRList stateSensorPDRs{};
     uint32_t nextRecordHandle{};
     uint8_t tlEid = 0;
     bool tlValid = true;
@@ -544,12 +547,11 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     if (!nextRecordHandle)
     {
         /*received last record*/
-        this->parseStateSensorPDRs(stateSensorPDRs);
+        this->parseStateSensorPDRs();
         if (isHostUp())
         {
-            this->setHostSensorState(stateSensorPDRs);
+            this->setHostSensorState();
         }
-        stateSensorPDRs.clear();
         if (merged)
         {
             merged = false;
@@ -651,10 +653,25 @@ bool HostPDRHandler::isHostUp()
     return responseReceived;
 }
 
-void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
+void HostPDRHandler::setHostSensorState()
 {
-    for (const auto& stateSensorPDR : stateSensorPDRs)
+    sensorIndex = stateSensorPDRs.begin();
+    _setHostSensorState();
+}
+
+void HostPDRHandler::_setHostSensorState()
+
+{
+    if (isHostOff)
     {
+        std::cerr
+            << "set host state sensor begin : Host is off, stopped sending sensor state commands\n";
+        return;
+    }
+    if (sensorIndex != stateSensorPDRs.end())
+    {
+        uint8_t mctpEid = pldm::utils::readHostEID();
+        std::vector<uint8_t> stateSensorPDR = *sensorIndex;
         auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(
             stateSensorPDR.data());
 
@@ -662,7 +679,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
         {
             std::cerr << "Failed to get State sensor PDR" << std::endl;
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.SetHostSensorState.GetStateSensorPDRFail",
+                pldm::PelSeverity::ERROR);
             return;
         }
 
@@ -674,14 +692,14 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
             {
                 if (std::get<2>(terminusInfo) == PLDM_TL_PDR_VALID)
                 {
-                    mctp_eid = std::get<1>(terminusInfo);
+                    mctpEid = std::get<1>(terminusInfo);
                 }
 
                 bitfield8_t sensorRearm;
                 sensorRearm.byte = 0;
                 uint8_t tid = std::get<0>(terminusInfo);
 
-                auto instanceId = requester.getInstanceId(mctp_eid);
+                auto instanceId = requester.getInstanceId(mctpEid);
                 std::vector<uint8_t> requestMsg(
                     sizeof(pldm_msg_hdr) +
                     PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
@@ -691,12 +709,13 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 
                 if (rc != PLDM_SUCCESS)
                 {
-                    requester.markFree(mctp_eid, instanceId);
+                    requester.markFree(mctpEid, instanceId);
                     std::cerr << "Failed to "
                                  "encode_get_state_sensor_readings_req, rc = "
-                              << rc << std::endl;
+                              << rc << " SensorId=" << sensorId << std::endl;
                     pldm::utils::reportError(
-                        "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                        "xyz.openbmc_project.PLDM.Error.SetHostSensorState.EncodeStateSensorFail",
+                        pldm::PelSeverity::ERROR);
                     return;
                 }
 
@@ -707,8 +726,22 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                                                             size_t respMsgLen) {
                     if (response == nullptr || !respMsgLen)
                     {
-                        std::cerr << "Failed to receive response for "
-                                     "getStateSensorReading command \n";
+                        std::cerr
+                            << "Failed to receive response for "
+                               "getStateSensorReading command for sensor id="
+                            << sensorId << std::endl;
+                        if (this->isHostOff)
+                        {
+                            std::cerr
+                                << "set host state sensor : Host is off, stopped sending sensor state commands\n";
+                            return;
+                        }
+                        if (sensorIndex == stateSensorPDRs.end())
+                        {
+                            return;
+                        }
+                        ++sensorIndex;
+                        _setHostSensorState();
                         return;
                     }
                     std::array<get_sensor_state_field, 8> stateField{};
@@ -726,9 +759,14 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                                "decode_get_state_sensor_readings_resp, rc = "
                             << rc
                             << " cc=" << static_cast<unsigned>(completionCode)
-                            << std::endl;
-                        pldm::utils::reportError(
-                            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                            << " SensorId=" << sensorId << std::endl;
+                        if (sensorIndex == stateSensorPDRs.end())
+                        {
+                            return;
+                        }
+                        ++sensorIndex;
+                        _setHostSensorState();
+                        return;
                     }
 
                     uint8_t eventState;
@@ -767,6 +805,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             {
                                 std::cerr << "No mapping for the events"
                                           << std::endl;
+                                continue;
                             }
                         }
 
@@ -774,7 +813,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                         {
                             std::cerr
                                 << " Error Invalid data, Invalid sensor offset"
-                                << std::endl;
+                                << " SensorId= " << sensorId << std::endl;
                             return;
                         }
 
@@ -785,7 +824,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                         {
                             std::cerr
                                 << " Error invalid_data, Invalid event state"
-                                << std::endl;
+                                << " SensorId=" << sensorId << std::endl;
                             return;
                         }
                         const auto& [containerId, entityType, entityInstance] =
@@ -795,10 +834,17 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                                              entityInstance, sensorOffset};
                         handleStateSensorEvent(stateSensorEntry, eventState);
                     }
+
+                    if (sensorIndex == stateSensorPDRs.end())
+                    {
+                        return;
+                    }
+                    ++sensorIndex;
+                    _setHostSensorState();
                 };
 
                 rc = handler->registerRequest(
-                    mctp_eid, instanceId, PLDM_PLATFORM,
+                    mctpEid, instanceId, PLDM_PLATFORM,
                     PLDM_GET_STATE_SENSOR_READINGS, std::move(requestMsg),
                     std::move(getStateSensorReadingRespHandler));
 
@@ -806,7 +852,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                 {
                     std::cerr << " Failed to send request to get State sensor "
                                  "reading on Host "
-                              << std::endl;
+                              << "SensorId= " << sensorId << std::endl;
                 }
             }
         }

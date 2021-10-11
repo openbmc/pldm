@@ -139,7 +139,7 @@ class HostPDRHandler
      *  @param[in] stateSensorPDRs - host state sensor PDRs
      *
      */
-    void parseStateSensorPDRs(const PDRList& stateSensorPDRs);
+    void parseStateSensorPDRs();
 
     /** @brief this function sends a GetPDR request to Host firmware.
      *  And processes the PDRs based on type
@@ -156,7 +156,9 @@ class HostPDRHandler
      *  and updates the D-Bus property
      *  @param[in] stateSensorPDRs - host state sensor PDRs
      */
-    void setHostSensorState(const PDRList& stateSensorPDRs);
+    void setHostSensorState();
+
+    void _setHostSensorState();
 
     /** @brief whether we received PLDM_RECORDS_MODIFIED event data operation
      *  from host
@@ -220,6 +222,13 @@ class HostPDRHandler
      *  work.
      */
     sdeventplus::Event& event;
+
+    //** @brief iterator to track the entries in the sensor list */
+    PDRList::const_iterator sensorIndex;
+
+    /** cache the state sensor PDR's */
+    PDRList stateSensorPDRs;
+
     /** @brief pointer to BMC's primary PDR repo, host PDRs are added here */
     pldm_pdr* repo;
 
@@ -264,6 +273,9 @@ class HostPDRHandler
 
     /** @brief whether response received from Host */
     bool responseReceived;
+
+    /** @brief variable to capture the host state */
+    bool isHostOff;
 };
 
 } // namespace pldm
