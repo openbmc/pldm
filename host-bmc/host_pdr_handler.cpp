@@ -579,13 +579,46 @@ bool HostPDRHandler::isHostUp()
     return responseReceived;
 }
 
-void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
+void HostPDRHandler::setHostSensorState(PDRList& stateSensorPDRs,
                                         const std::vector<TlInfo>& tlinfo)
 {
-    for (const auto& stateSensorPDR : stateSensorPDRs)
-    {
+   std::cerr << "Inside the setHostSensor state first method" << std::endl; 
+/*   std::vector< std::vector<uint8_t>>::iterator pdrRow;
+    std::vector<uint8_t>::iterator pdrCol;
+    auto endIterator = stateSensorPDRs.end();
+    for (pdrRow = stateSensorPDRs.begin(); pdrRow != stateSensorPDRs.end(); pdrRow++) {
+       for (pdrCol = pdrRow->begin(); pdrCol != pdrRow->end(); pdrCol++) {
+
+             _setHostSensorState(pdrCol, endIterator ,tlinfo);
+       }
+    }*/
+
+     auto endIterator = stateSensorPDRs.end();
+     for(auto sensorIndex = stateSensorPDRs.begin(); sensorIndex != stateSensorPDRs.end(); sensorIndex++)
+     {
+      for(auto _sensorIndex = sensorIndex->begin(); _sensorIndex != sensorIndex->end(); _sensorIndex++)
+      {
+           std::cerr << "Calling the _setHostSensorState " << std::endl;
+           _setHostSensorState(&(*_sensorIndex), &(*endIterator), tlinfo);
+      }
+    }
+    /* std::vector<uint8_t>::iterator sensorIndex = stateSensorPDRs.begin();
+     std::vector<uint8_t>::iterator sensorEndIndex = stateSensorPDRs.end();
+     _setHostSensorState(&(*sensorIndex), &(*sensorEndIndex), tlinfo);
+  */
+
+}
+
+void HostPDRHandler:: _setHostSensorState(uint8_t* _sensorIndex ,std::vector<uint8_t>* sensorEndIndex, const std::vector<TlInfo>& tlinfo)
+
+ {
+       std::cerr << "inside the set host sensor state method" << std::endl;
+        auto stateSensorPDR = (*_sensorIndex);
+
+       std::cerr << "StateSensorPDR value:" << stateSensorPDR << std::endl;
+
         auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(
-            stateSensorPDR.data());
+            stateSensorPDR);
 
         if (!pdr)
         {
@@ -596,6 +629,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
         }
 
         uint16_t sensorId = pdr->sensor_id;
+
+        std::cerr << "Sensor Id:" << sensorId << std::endl;
 
         for (auto info : tlinfo)
         {
@@ -611,6 +646,9 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
                 uint8_t tid = info.tid;
 
                 auto instanceId = requester.getInstanceId(mctp_eid);
+
+                std::cerr << "Instance Id: " << (uint16_t)instanceId << std::endl;
+
                 std::vector<uint8_t> requestMsg(
                     sizeof(pldm_msg_hdr) +
                     PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
@@ -629,11 +667,13 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
                     return;
                 }
 
-                auto getStateSensorReadingRespHandler = [=, this](
+                auto getStateSensorReadingRespHandler = [=,this](
                                                             mctp_eid_t /*eid*/,
                                                             const pldm_msg*
                                                                 response,
                                                             size_t respMsgLen) {
+
+                   std::cerr << "Insdie the repsonse handler" << std::endl;
                     if (response == nullptr || !respMsgLen)
                     {
                         std::cerr << "Failed to receive response for "
@@ -723,7 +763,15 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
                             stateSensorEntry{containerId, entityType,
                                              entityInstance, sensorOffset};
                         handleStateSensorEvent(stateSensorEntry, eventState);
-                    }
+
+                      }
+
+                        if(_sensorIndex == reinterpret_cast<uint8_t*>(sensorEndIndex))
+                        {
+                         return;
+                        }
+                        (*_sensorIndex) ++;
+                        _setHostSensorState(_sensorIndex, sensorEndIndex, tlinfo);       
                 };
 
                 rc = handler->registerRequest(
@@ -739,6 +787,5 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs,
                 }
             }
         }
-    }
 }
 } // namespace pldm

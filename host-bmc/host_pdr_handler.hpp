@@ -170,8 +170,10 @@ class HostPDRHandler
      *  @param[in] stateSensorPDRs - host state sensor PDRs
      *  @param[in] tlinfo - vector of struct TlInfo
      */
-    void setHostSensorState(const PDRList& stateSensorPDRs,
+    void setHostSensorState(PDRList& stateSensorPDRs,
                             const std::vector<TlInfo>& tlinfo);
+
+    void  _setHostSensorState(uint8_t * _sensorIndex, std::vector<uint8_t>* sensorEndIndex, const std::vector<TlInfo>& tlinfo);
 
     /** @brief check whether Host is running when pldmd starts
      */
