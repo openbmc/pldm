@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "15aace54_40a91f37",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T04:37:28Z",
+      "side": 1,
+      "message": "do you also want to take the container Id as input ? \n\nyou will not be able to find the correct effecter with just effecter id right ?",
+      "range": {
+        "startLine": 40,
+        "startChar": 16,
+        "endLine": 40,
+        "endChar": 49
+      },
+      "revId": "7505f12eb7b92bd81817a9ee64212e6a5df758d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3fb8109_5d9d68db",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T04:37:28Z",
+      "side": 1,
+      "message": "PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE \u003d 32773,\n\tPLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE \u003d 32774,\n\nplease change this to a different value.",
+      "range": {
+        "startLine": 15,
+        "startChar": 1,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "7505f12eb7b92bd81817a9ee64212e6a5df758d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d1cdf9c_0d569863",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T04:37:28Z",
+      "side": 1,
+      "message": "change not needed.",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 33
+      },
+      "revId": "7505f12eb7b92bd81817a9ee64212e6a5df758d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c192c2b7_5a4e1cbc",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T04:37:28Z",
+      "side": 1,
+      "message": "attached to motherboard ? hardcoding this is a bad idea ..can you dynamically map it to Item.Board ?",
+      "range": {
+        "startLine": 304,
+        "startChar": 4,
+        "endLine": 304,
+        "endChar": 26
+      },
+      "revId": "7505f12eb7b92bd81817a9ee64212e6a5df758d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee7b8b8f_1f98d9fb",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T04:37:28Z",
+      "side": 1,
+      "message": "this seems to be increasing in size, can you just come up with a single function to create all PDR\u0027s in just one function.",
+      "range": {
+        "startLine": 370,
+        "startChar": 3,
+        "endLine": 377,
+        "endChar": 67
+      },
+      "revId": "7505f12eb7b92bd81817a9ee64212e6a5df758d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "487883ab_728da0af",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T04:37:28Z",
+      "side": 1,
+      "message": "that does this mean ? does this signify any additional information ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "7505f12eb7b92bd81817a9ee64212e6a5df758d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
