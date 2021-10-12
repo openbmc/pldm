@@ -190,7 +190,7 @@ int main(int argc, char** argv)
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
-    auto dbusHandler = std::make_unique<DBusHandler>();
+    DBusHandler dbusHandler;
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
@@ -203,7 +203,7 @@ int main(int argc, char** argv)
 
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
-                &dbusImplReq, sockfd, pdrRepo.get(), dbusHandler.get(),
+                &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
                 HOST_JSONS_DIR, &reqHandler);
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             sockfd, hostEID, dbusImplReq, &reqHandler);
@@ -212,11 +212,11 @@ int main(int argc, char** argv)
 
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
-        std::make_unique<pldm::responder::CodeUpdate>(dbusHandler.get());
+        std::make_unique<pldm::responder::CodeUpdate>(&dbusHandler);
     codeUpdate->clearDirPath(LID_STAGING_DIR);
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        dbusHandler.get(), codeUpdate.get(), sockfd, hostEID, dbusImplReq,
-        event, &reqHandler);
+        &dbusHandler, codeUpdate.get(), sockfd, hostEID, dbusImplReq, event,
+        &reqHandler);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(), sockfd,
@@ -232,7 +232,7 @@ int main(int argc, char** argv)
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
     auto platformHandler = std::make_unique<platform::Handler>(
-        dbusHandler.get(), PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get(),
+        &dbusHandler, PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get(),
         dbusToPLDMEventHandler.get(), fruHandler.get(),
         oemPlatformHandler.get(), event, true);
 #ifdef OEM_IBM
