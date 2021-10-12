@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "48055a0b_293c3b5b",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T05:14:18Z",
+      "side": 1,
+      "message": "extra copy ?",
+      "range": {
+        "startLine": 448,
+        "startChar": 2,
+        "endLine": 449,
+        "endChar": 74
+      },
+      "revId": "e50c920ad12b3f99cbd168a9750837cfdfce69b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3388ff5c_3de359c5",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T05:14:18Z",
+      "side": 1,
+      "message": "extra copy ?",
+      "range": {
+        "startLine": 451,
+        "startChar": 2,
+        "endLine": 451,
+        "endChar": 30
+      },
+      "revId": "e50c920ad12b3f99cbd168a9750837cfdfce69b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e4c0af9_83f1bd53",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T05:14:18Z",
+      "side": 1,
+      "message": "@pavitra - but an else block here , and check of other status from dump manager , and set the effecter to SBE_RETRY_REQUIRED.\n\nAnd also please but a logging statement here that you received a Status completed signal - so that in future if we dont see this we know if it is dump manager problem.",
+      "range": {
+        "startLine": 543,
+        "startChar": 17,
+        "endLine": 548,
+        "endChar": 17
+      },
+      "revId": "e50c920ad12b3f99cbd168a9750837cfdfce69b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d307476f_32bca7d1",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 3
@@ -13,6 +82,47 @@
       "writtenOn": "2021-10-11T08:39:13Z",
       "side": 1,
       "message": "Add timeout based wait()  to handle error scenarios",
+      "revId": "e50c920ad12b3f99cbd168a9750837cfdfce69b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7634bbe_61c3844a",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T05:14:18Z",
+      "side": 1,
+      "message": "I believe this should not be implemented in the clients like pldm, this should be implemented with-in the dump infrastructure. When a dump takes forever to complete, dump manager should know that and change the state of the dump to Failed(https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Common/Progress.interface.yaml#L39) or something post a certain time out.\n\nAnd clients like pldm should be monitoring for the Status completed or error -\u003e and based take an action.",
+      "parentUuid": "d307476f_32bca7d1",
+      "revId": "e50c920ad12b3f99cbd168a9750837cfdfce69b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6542be3f_3247eb58",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-12T05:14:18Z",
+      "side": 1,
+      "message": "the property change signal match should be created before even creating the dump, what if by the time you call mointorDump(), the status changes back to complete ?\n\non the other side, this seems like a bad dbus design from dump.",
+      "range": {
+        "startLine": 585,
+        "startChar": 7,
+        "endLine": 585,
+        "endChar": 27
+      },
       "revId": "e50c920ad12b3f99cbd168a9750837cfdfce69b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
