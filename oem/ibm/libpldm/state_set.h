@@ -14,6 +14,7 @@ enum ibm_oem_pldm_state_set_ids {
 	PLDM_OEM_IBM_SBE_MAINTENANCE_STATE = 32772,
 	PLDM_OEM_IBM_SLOT_ENABLE_EFFECTER_STATE = 32773,
 	PLDM_OEM_IBM_SLOT_ENABLE_SENSOR_STATE = 32774,
+	PLDM_OEM_IBM_SBE_HRESET_STATE = 32775,
 };
 
 enum ibm_slot_enable_effecter_state {
@@ -57,6 +58,12 @@ enum ibm_oem_pldm_state_set_system_power_state_values {
 enum ibm_oem_pldm_state_set_sbe_dump_state_values {
 	SBE_DUMP_COMPLETED = 0x1,
 	SBE_RETRY_REQUIRED = 0x2,
+};
+
+enum ibm_oem_pldm_state_set_sbe_hreset_state_values {
+	SBE_HRESET_NOT_READY = 0x1,
+	SBE_HRESET_READY = 0x2,
+	SBE_HRESET_FAILED = 0x3,
 };
 
 #ifdef __cplusplus
