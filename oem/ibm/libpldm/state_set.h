@@ -13,6 +13,7 @@ enum ibm_oem_pldm_state_set_ids {
 	PLDM_OEM_IBM_SYSTEM_POWER_STATE = 32771,
 	PLDM_OEM_IBM_SBE_MAINTENANCE_STATE = 32772,
 	PLDM_OEM_IBM_SBE_SEMANTIC_ID = 32775,
+	PLDM_OEM_IBM_SBE_HRESET_STATE = 32776
 };
 
 enum ibm_oem_pldm_state_set_firmware_update_state_values {
@@ -43,6 +44,12 @@ enum ibm_oem_pldm_state_set_system_power_state_values {
 enum ibm_oem_pldm_state_set_sbe_dump_state_values {
 	SBE_DUMP_COMPLETED = 0x1,
 	SBE_RETRY_REQUIRED = 0x2,
+};
+
+enum ibm_oem_pldm_state_set_sbe_hreset_state_values {
+	SBE_HRESET_NOT_READY = 0x1,
+	SBE_HRESET_READY = 0x2,
+	SBE_HRESET_FAILED = 0x3,
 };
 
 #ifdef __cplusplus
