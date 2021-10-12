@@ -46,6 +46,30 @@
       "revId": "efe82f7082a0c3914810c55bd4d7713e4a371571",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0cad428_3913fd00",
+        "filename": "tools/visualize-pdr/pldm_visualise_pdrs.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-12T21:33:11Z",
+      "side": 1,
+      "message": "actually it\u0027s much worse - another problem I found is that pldm_visualize_pdrs.py -h prints different things depending on:\n\n-whether or not the --bmc option is specified\n-whether or not User\u003dfoo is present in the host config entry\n\nThe help menu should print the same thing every time regardless of what options are specified.  I\u0027ve refactored things in PS3 to address this.",
+      "parentUuid": "69bbdd92_6c6c84f2",
+      "range": {
+        "startLine": 226,
+        "startChar": 3,
+        "endLine": 226,
+        "endChar": 30
+      },
+      "revId": "efe82f7082a0c3914810c55bd4d7713e4a371571",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
