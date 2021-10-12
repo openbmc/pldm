@@ -197,8 +197,7 @@ def main():
     parser = argparse.ArgumentParser(prog='pldm_visualise_pdrs.py')
     parser.add_argument('--bmc', type=str, required=True,
                         help="BMC IPAddress/BMC Hostname")
-    parser.add_argument('--user', type=str, required=True,
-                        help="BMC username")
+    parser.add_argument('--user', type=str, help="BMC username")
     parser.add_argument('--password', type=str, required=True,
                         help="BMC Password")
     parser.add_argument('--port', type=int, help="BMC SSH port",
