@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bae59799_f0325ce0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-13T01:26:49Z",
+      "side": 1,
+      "message": "but brad, the patch is doing the opposite right ? we replace the user-provided user option with whatever is present in the ssh_config file.\n\nMy ssh_config file has \n\nHost myhost\n  hostname xxx\n  port 22\n  user root\n\n$ python3 pldm_visualise_pdrs.py --bmc myhost --user manoj --password 0penBmc\n\nInvoking the tool with ^^ option is overriding manoj with root. Is that expected ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 17,
+        "endLine": 13,
+        "endChar": 58
+      },
+      "revId": "bb2f87bd81c9571afcbd372d69d65c4b56d9bfb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
