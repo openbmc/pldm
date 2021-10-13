@@ -22,6 +22,30 @@
       "revId": "d09197c379644dea1215da94f206a838dabe9df2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab0e34f0_23b6b456",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-10-13T17:33:50Z",
+      "side": 1,
+      "message": "not sure what you mean by implementation, but I updated the number here.",
+      "parentUuid": "edb8c535_074a5e0f",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 39
+      },
+      "revId": "d09197c379644dea1215da94f206a838dabe9df2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
