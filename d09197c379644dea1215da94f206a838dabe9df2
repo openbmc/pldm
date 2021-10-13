@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "edb8c535_074a5e0f",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-13T05:36:52Z",
+      "side": 1,
+      "message": "are you planning to checkin the implementation as well in the same commit ?\n\nI see two other commits in review that has the same state set with implementation. you might wanna have to change the number for this.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 39
+      },
+      "revId": "d09197c379644dea1215da94f206a838dabe9df2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
