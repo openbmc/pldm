@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a6054880_b0ee267b",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T15:17:06Z",
+      "side": 1,
+      "message": "What\u0027s the benefit of this check? Why is pkgSize more reliable?",
+      "revId": "6e0badb6a5d4eb8bdf97c19a65add77917656de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3536cf48_3c3bd0ab",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T15:17:06Z",
+      "side": 1,
+      "message": "Will you be pushing new commits to report failures like these as events that can be seen over an OOB API?",
+      "revId": "6e0badb6a5d4eb8bdf97c19a65add77917656de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53f8c47c_507b0ec8",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T15:17:06Z",
+      "side": 1,
+      "message": "This local method seems unused.",
+      "revId": "6e0badb6a5d4eb8bdf97c19a65add77917656de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6e05f33_4fcace51",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T15:17:06Z",
+      "side": 1,
+      "message": "Can avoid a sting copy here.",
+      "revId": "6e0badb6a5d4eb8bdf97c19a65add77917656de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
