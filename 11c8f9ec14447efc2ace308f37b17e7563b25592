@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "72694edc_46ad230f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T17:51:01Z",
+      "side": 1,
+      "message": "Didn\u0027t follow this.",
+      "range": {
+        "startLine": 12,
+        "startChar": 50,
+        "endLine": 13,
+        "endChar": 13
+      },
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a20a290_4869d11a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T17:51:01Z",
+      "side": 1,
+      "message": "Why isn\u0027t this deferred?",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52b18a3f_3d020c76",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T17:51:01Z",
+      "side": 1,
+      "message": "We should try to avoid this copy, it could be of significance given large image sizes.",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dc910ca_d633553a",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T17:51:01Z",
+      "side": 1,
+      "message": "What would the ifstream package point to? The pkg in tmpfs?",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7de2253b_ee33e61c",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-14T17:51:01Z",
+      "side": 1,
+      "message": "This and several other fields below - it looks like they wouldn\u0027t differ across FDs, so can they be in a common/parent-level object?",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
