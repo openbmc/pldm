@@ -473,6 +473,60 @@
          ],
          "helpText" : "Specifies if Host USB is disabled or enabled for security reasons. Do not set this attribute directly; set hb_host_usb_enablement instead.",
          "displayName" : "Host USB Enablement (current)"
+      },
+      {
+         "attribute_name":"pvm_boot_initiator",
+         "possible_values":[
+             "User",
+             "HMC",
+             "Host",
+             "Auto"
+         ],
+         "default_values":[
+            "User"
+         ],
+         "helpText" : "Specifies who initiated the IPL.",
+         "displayName" : "IPL Initiator (pending)"
+      },
+      {
+         "attribute_name":"pvm_boot_initiator_current",
+         "possible_values":[
+             "User",
+             "HMC",
+             "Host",
+             "Auto"
+         ],
+         "default_values":[
+            "User"
+         ],
+         "helpText" : "Specifies who initiated the IPL. Set pvm_boot_initiator instead.",
+         "displayName" : "IPL Initiator (current)",
+         "readOnly":true
+      },
+      {
+         "attribute_name":"pvm_boot_type",
+         "possible_values":[
+            "IPL",
+            "ReIPL"
+         ],
+         "default_values":[
+            "IPL"
+         ],
+         "helpText" : "Specifies if the boot type is an IPL or a ReIPL",
+         "displayName" : "Boot Type Indicator (pending)"
+      },
+      {
+         "attribute_name":"pvm_boot_type_current",
+         "possible_values":[
+            "IPL",
+            "ReIPL"
+         ],
+         "default_values":[
+            "IPL"
+         ],
+         "helpText" : "Specifies if the boot type is an IPL or a ReIPL. Set pvm_boot_type instead",
+         "displayName" : "Boot Type Indicator (current)",
+         "readOnly":true
       }
    ]
 }
