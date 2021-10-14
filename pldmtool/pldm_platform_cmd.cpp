@@ -96,6 +96,9 @@ class GetPDR : public CommandInterface
                                pdrRecType.begin(), tolower);
             }
 
+            // start the array
+            std::cout << "[\n";
+
             // Retrieve all PDR records starting from the first
             recordHandle = 0;
             uint32_t prevRecordHandle = 0;
@@ -110,7 +113,16 @@ class GetPDR : public CommandInterface
                     return;
                 }
                 prevRecordHandle = recordHandle;
+
+                if (recordHandle != 0)
+                {
+                    // close the array
+                    std::cout << ",";
+                }
             } while (recordHandle != 0);
+
+            // close the array
+            std::cout << "]\n";
         }
         else
         {
