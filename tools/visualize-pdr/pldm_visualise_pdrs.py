@@ -126,6 +126,35 @@ def draw_entity_associations(pdr, counter):
                          view=False, cleanup=True, format='pdf')
 
 
+class PLDMToolError(Exception):
+    """ Exception class intended to be used to hold pldmtool invocation failure
+        information such as exit status and stderr.
+
+    """
+
+    def __init__(self, status, stderr):
+        msg = "pldmtool failed with exit status {}.\n".format(status)
+        msg += "stderr: \n\n{}".format(stderr)
+        super(PLDMToolError, self).__init__(msg)
+
+
+def process_pldmtool_output(stdout_channel, stderr_channel):
+    """ Ensure pldmtool runs without error and if it does fail, detect that and
+        show the pldmtool exit status and it's stderr.
+
+        Parameters:
+            stdout_channel: file-like stdout channel
+            stderr_channel: file-like stderr channel
+
+    """
+
+    status = stderr_channel.channel.recv_exit_status()
+    if status == 0:
+        return json.load(stdout_channel)
+
+    raise PLDMToolError(status, "".join(stderr_channel))
+
+
 def get_pdrs(client):
     """ Using pldmtool over SSH, generate (record handle, PDR) tuples for each
         record in the PDR repository.
@@ -140,7 +169,7 @@ def get_pdrs(client):
     while True:
         output = client.exec_command(command_fmt.format(str(record_handle)))
         _, stdout, stderr = output
-        pdr = json.load(stdout)
+        pdr = process_pldmtool_output(stdout, stderr)
         yield record_handle, pdr
         record_handle = pdr["nextRecordHandle"]
         if record_handle == 0:
