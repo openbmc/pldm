@@ -66,72 +66,61 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
         obj = pldm::utils::findParent(obj);
     }
 
-    // Update pldm entity to assocition tree
-    std::string prePath = tmpObjPaths.top();
-    while (!tmpObjPaths.empty())
+    for (; i >= 0; i--)
     {
-        std::string currPath = tmpObjPaths.top();
-        tmpObjPaths.pop();
-
-        do
+        if (objToEntityNode.contains(tmpObjPaths[i]))
         {
-            if (objToEntityNode.contains(currPath))
+            pldm_entity_node* node = nullptr;
+            pldm_find_entity_ref_in_tree(
+                entityTree, objToEntityNode.at(tmpObjPaths[i]), &node);
+            pldm_entity node_entity = pldm_entity_extract(node);
+            if (pldm_entity_association_tree_find(entityTree, &node_entity,
+                                                  false))
             {
-                pldm_entity node =
-                    pldm_entity_extract(objToEntityNode.at(currPath));
-                if (pldm_entity_association_tree_find(entityTree, &node, false))
+                continue;
+            }
+        }
+        else
+        {
+            pldm_entity entity = getEntityByObjectPath(objects, tmpObjPaths[i]);
+            if (entity.entity_type == 0 && entity.entity_instance_num == 0 &&
+                entity.entity_container_id == 0)
+            {
+                continue;
+            }
+
+            for (auto& it : objToEntityNode)
+            {
+                pldm_entity node = it.second;
+                if (node.entity_type == entity.entity_type)
                 {
+                    entity.entity_instance_num = node.entity_instance_num + 1;
                     break;
                 }
+            }
+
+            if (i == (int)tmpObjPaths.size() - 1)
+            {
+                auto node = pldm_entity_association_tree_add(
+                    entityTree, &entity, 0xFFFF, nullptr,
+                    PLDM_ENTITY_ASSOCIAION_PHYSICAL, false, true, 0xFFFF);
+                objToEntityNode[tmpObjPaths[i]] = pldm_entity_extract(node);
             }
             else
             {
-                if (!objects.contains(currPath))
+                if (objToEntityNode.contains(tmpObjPaths[i + 1]))
                 {
-                    break;
-                }
-
-                auto entityPtr = getEntityByObjectPath(objects.at(currPath));
-                if (!entityPtr)
-                {
-                    break;
-                }
-
-                pldm_entity entity = *entityPtr;
-
-                for (auto& it : objToEntityNode)
-                {
-                    pldm_entity node = pldm_entity_extract(it.second);
-                    if (node.entity_type == entity.entity_type)
-                    {
-                        entity.entity_instance_num =
-                            node.entity_instance_num + 1;
-                        break;
-                    }
-                }
-
-                if (currPath == prePath)
-                {
+                    pldm_entity_node* parent_node = nullptr;
+                    pldm_find_entity_ref_in_tree(
+                        entityTree, objToEntityNode[tmpObjPaths[i + 1]],
+                        &parent_node);
                     auto node = pldm_entity_association_tree_add(
-                        entityTree, &entity, 0xFFFF, nullptr,
-                        PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
-                    objToEntityNode[currPath] = node;
-                }
-                else
-                {
-                    if (objToEntityNode.contains(prePath))
-                    {
-                        auto node = pldm_entity_association_tree_add(
-                            entityTree, &entity, 0xFFFF,
-                            objToEntityNode[prePath],
-                            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false);
-                        objToEntityNode[currPath] = node;
-                    }
+                        entityTree, &entity, 0xFFFF, parent_node,
+                        PLDM_ENTITY_ASSOCIAION_PHYSICAL, false, true, 0xFFFF);
+                    objToEntityNode[tmpObjPaths[i]] = pldm_entity_extract(node);
                 }
             }
-        } while (0);
-
-        prePath = currPath;
+        }
     }
 }
 
