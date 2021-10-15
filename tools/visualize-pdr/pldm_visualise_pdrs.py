@@ -136,11 +136,27 @@ class PLDMToolError(Exception):
         msg = "pldmtool failed with exit status {}.\n".format(status)
         msg += "stderr: \n\n{}".format(stderr)
         super(PLDMToolError, self).__init__(msg)
+        self.status = status
+
+    def get_status(self):
+        return self.status
 
 
 def process_pldmtool_output(stdout_channel, stderr_channel):
     """ Ensure pldmtool runs without error and if it does fail, detect that and
         show the pldmtool exit status and it's stderr.
+
+        A simpler implementation would just wait for the pldmtool exit status
+        prior to attempting to decode it's stdout.  Instead, optimize for the
+        no error case and allow the json decoder to consume pldmtool stdout as
+        soon as it is available (in parallel).  This results in the following
+        error scenarios:
+            - pldmtool fails and the decoder fails
+              Ignore the decoder fail and throw PLDMToolError.
+            - pldmtool fails and the decoder doesn't fail
+              Throw PLDMToolError.
+            - pldmtool doesn't fail and the decoder does fail
+              This is a pldmtool bug - re-throw the decoder error.
 
         Parameters:
             stdout_channel: file-like stdout channel
@@ -148,14 +164,29 @@ def process_pldmtool_output(stdout_channel, stderr_channel):
 
     """
 
-    status = stderr_channel.channel.recv_exit_status()
-    if status == 0:
-        return json.load(stdout_channel)
+    status = 0
+    try:
+        data = json.load(stdout_channel)
+        # it's unlikely, but possible, that pldmtool failed but still wrote a
+        # valid json document - so check for that.
+        status = stderr_channel.channel.recv_exit_status()
+        if status == 0:
+            return data
+    except json.decoder.JSONDecodeError:
+        # pldmtool wrote an invalid json document.  Check to see if it had
+        # non-zero exit status.
+        status = stderr_channel.channel.recv_exit_status()
+        if status == 0:
+            # pldmtool didn't have non zero exit status, so it wrote an invalid
+            # json document and the JSONDecodeError is the correct error.
+            raise
 
+    # pldmtool had a non-zero exit status, so throw an error for that, possibly
+    # discarding a spurious JSONDecodeError exception.
     raise PLDMToolError(status, "".join(stderr_channel))
 
 
-def get_pdrs(client):
+def get_pdrs_one_at_a_time(client):
     """ Using pldmtool over SSH, generate (record handle, PDR) tuples for each
         record in the PDR repository.
 
@@ -174,6 +205,61 @@ def get_pdrs(client):
         record_handle = pdr["nextRecordHandle"]
         if record_handle == 0:
             break
+
+
+def get_all_pdrs_at_once(client):
+    """ Using pldmtool over SSH, generate (record handle, PDR) tuples for each
+        record in the PDR repository.  Use pldmtool platform getpdr --all.
+
+        Parameters:
+            client: paramiko ssh client object
+
+    """
+
+    _, stdout, stderr = client.exec_command('pldmtool platform getpdr -a')
+    all_pdrs = process_pldmtool_output(stdout, stderr)
+
+    # Explicitly request record 0 to find out what the real first record is.
+    _, stdout, stderr = client.exec_command('pldmtool platform getpdr -d 0')
+    pdr_0 = process_pldmtool_output(stdout, stderr)
+    record_handle = pdr_0["recordHandle"]
+
+    while True:
+        for pdr in all_pdrs:
+            if pdr["recordHandle"] == record_handle:
+                yield record_handle, pdr
+                record_handle = pdr["nextRecordHandle"]
+                if record_handle == 0:
+                    return
+        raise RuntimeError(
+            "Dangling reference to record {}".format(record_handle))
+
+
+def get_pdrs(client):
+    """ Using pldmtool over SSH, generate (record handle, PDR) tuples for each
+        record in the PDR repository.  Use pldmtool platform getpdr --all or
+        fallback on getting them one at a time if pldmtool doesn't support the
+        --all option.
+
+        Parameters:
+            client: paramiko ssh client object
+
+    """
+    try:
+        for record_handle, pdr in get_all_pdrs_at_once(client):
+            yield record_handle, pdr
+        return
+    except PLDMToolError as e:
+        # No support for the -a option
+        if e.get_status() != 106:
+            raise
+    except json.decoder.JSONDecodeError as e:
+        # Some versions of pldmtool don't print valid json documents with -a
+        if e.msg != "Extra data":
+            raise
+
+    for record_handle, pdr in get_pdrs_one_at_a_time(client):
+        yield record_handle, pdr
 
 
 def fetch_pdrs_from_bmc(client):
