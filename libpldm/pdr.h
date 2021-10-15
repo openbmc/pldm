@@ -246,13 +246,17 @@ pldm_entity_association_tree *pldm_entity_association_tree_init();
  *
  *  @param[in] is_remote - used to denote whether we are adding a BMC entity to
  *                        the tree or a host entity
+ *  @param[in] is_update_contanier_id - Used to determine whether need to update
+ *                                      contanier id.
+ *                                      true: should be changed
+ *                                      false: should not be changed
  *
  *  @return pldm_entity_node* - opaque pointer to added entity
  */
 pldm_entity_node *pldm_entity_association_tree_add(
     pldm_entity_association_tree *tree, pldm_entity *entity,
     uint16_t entity_instance_number, pldm_entity_node *parent,
-    uint8_t association_type, bool is_remote);
+    uint8_t association_type, bool is_remote, bool is_update_contanier_id);
 
 /** @brief Visit and note each entity in the entity association tree
  *
