@@ -412,7 +412,7 @@ static pldm_entity_node *find_insertion_at(pldm_entity_node *start,
 pldm_entity_node *pldm_entity_association_tree_add(
     pldm_entity_association_tree *tree, pldm_entity *entity,
     uint16_t entity_instance_number, pldm_entity_node *parent,
-    uint8_t association_type, bool is_remote)
+    uint8_t association_type, bool is_remote, bool is_update_contanier_id)
 {
 	assert(tree != NULL);
 	assert(entity != NULL);
@@ -453,11 +453,15 @@ pldm_entity_node *pldm_entity_association_tree_add(
 		if (is_remote) {
 			node->host_container_id = entity->entity_container_id;
 			node->entity.entity_container_id =
-			    next_container_id(tree);
+			    is_update_contanier_id
+				? next_container_id(tree)
+				: node->entity.entity_container_id;
 
 		} else {
 			node->entity.entity_container_id =
-			    next_container_id(tree);
+			    is_update_contanier_id
+				? next_container_id(tree)
+				: node->entity.entity_container_id;
 			node->host_container_id =
 			    node->entity.entity_container_id;
 		}
@@ -483,7 +487,9 @@ pldm_entity_node *pldm_entity_association_tree_add(
 		node->host_container_id = entity->entity_container_id;
 	}
 	entity->entity_instance_num = node->entity.entity_instance_num;
-	entity->entity_container_id = node->entity.entity_container_id;
+	if (is_update_contanier_id) {
+		entity->entity_container_id = node->entity.entity_container_id;
+	}
 
 	return node;
 }
