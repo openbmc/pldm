@@ -36,6 +36,47 @@
     },
     {
       "key": {
+        "uuid": "6dcfac20_8c540230",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-10-18T09:27:23Z",
+      "side": 1,
+      "message": "+1, one would have to run the PLDM base commands to discover the PLDM types the terminus supports.",
+      "parentUuid": "78fbdbed_35bbe00c",
+      "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f83fb76_74002184",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-10-18T09:27:23Z",
+      "side": 1,
+      "message": "Probably this can be refactored out to a different \"init\" function; because one can invoke the fwManager-\u003ehandleMCTPEndpoints only if the device supports PLDM type 5. The rest of the code in constructor/discoverEndpoints can be common for all PLDM types",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 5
+      },
+      "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "21a3c167_40875473",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 7
@@ -50,6 +91,24 @@
       "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ea3c592_fea3ab7f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2021-10-18T09:27:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "21a3c167_40875473",
+      "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
