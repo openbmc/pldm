@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d61c3dd_c34358f4",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-18T05:39:08Z",
+      "side": 1,
+      "message": "This and other errors below should be reported to the user.",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ee82898_f7ef3ccf",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-18T05:39:08Z",
+      "side": 1,
+      "message": "What\u0027s the plan for all error path TODOs?",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "513172a6_6b5e2d71",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-18T05:39:08Z",
+      "side": 1,
+      "message": "Is this per FD or accumulated component count across FD? Or is this FD count?",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
