@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5e758367_80847ce7",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-18T06:46:26Z",
+      "side": 1,
+      "message": "this should not be settable by redfish, so it should be a readOnly attribute.\n\ncan you add readOnly:true ? (refer hb_max_number_huge_pages section).",
+      "range": {
+        "startLine": 121,
+        "startChar": 5,
+        "endLine": 129,
+        "endChar": 7
+      },
+      "revId": "fd7465a845000755538e9c94170ad3f31265ae47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
