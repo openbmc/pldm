@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cb6e762e_889839d7",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-10-18T13:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb8ac0a8_edde536a",
+      "revId": "a7daa9918a3fa0fb45ac1da02aec54e1a7c9566e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6504ebba_074c356e",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 5
@@ -39,6 +57,30 @@
       "revId": "a7daa9918a3fa0fb45ac1da02aec54e1a7c9566e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df8f731f_31f526c6",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-10-18T13:48:23Z",
+      "side": 1,
+      "message": "This was taken as is from Justin\u0027s proposal",
+      "parentUuid": "6504ebba_074c356e",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 35
+      },
+      "revId": "a7daa9918a3fa0fb45ac1da02aec54e1a7c9566e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
