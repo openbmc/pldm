@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3dc69984_b8aae4b8",
+        "filename": "common/utils.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-18T13:11:30Z",
+      "side": 1,
+      "message": "Is this also being used somewhere?",
+      "revId": "d397324e2eeaeb77b8cd9975f7ea9376a6fbc35d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f61e1d23_93dca03e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-18T13:11:30Z",
+      "side": 1,
+      "message": "using directives on the types would lead to more clarity.",
+      "revId": "d397324e2eeaeb77b8cd9975f7ea9376a6fbc35d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
