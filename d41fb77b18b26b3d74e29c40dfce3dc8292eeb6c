@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "64af04dc_33fac443",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-18T05:41:51Z",
+      "side": 1,
+      "message": "Testing details? No unit tests for this commit?",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2d61c3dd_c34358f4",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 6
