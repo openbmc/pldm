@@ -16,6 +16,24 @@
       "revId": "2598eb9dd8ae40bb9eb56525fe61040e1bdbe0e0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ca35423_e3976697",
+        "filename": "common/types.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-18T13:53:03Z",
+      "side": 1,
+      "message": "As per dsp0248 spec, it is represented as an enum8. Right now we just have 2 values, but we might have more states in future ?\n\nAnd also in the PDR structure , we have it as uint8_t (https://github.com/openbmc/pldm/blob/master/libpldm/platform.h#L302)",
+      "parentUuid": "089256f2_0a9c672c",
+      "revId": "2598eb9dd8ae40bb9eb56525fe61040e1bdbe0e0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
