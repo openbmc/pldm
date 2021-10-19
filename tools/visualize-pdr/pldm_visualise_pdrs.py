@@ -11,6 +11,9 @@ import paramiko
 from graphviz import Digraph
 from tabulate import tabulate
 import os
+import shlex
+import shutil
+import subprocess
 
 
 class Process:
@@ -85,6 +88,28 @@ class ParamikoExecutor(Executor):
 
     def close(self):
         self.client.close()
+
+
+class SubprocessProcess(Process):
+    def __init__(self, popen):
+        self.popen = popen
+        super(SubprocessProcess, self).__init__(popen.stdout, popen.stderr)
+
+    def wait(self):
+        self.popen.wait()
+        return self.popen.returncode
+
+
+class SubprocessExecutor(Executor):
+    def __init__(self):
+        super(SubprocessExecutor, self).__init__()
+
+    def exec_command(self, cmd):
+        args = shlex.split(cmd)
+        args[0] = shutil.which(args[0])
+        p = subprocess.Popen(
+            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return SubprocessProcess(p)
 
 
 def prepare_summary_report(state_sensor_pdr, state_effecter_pdr):
@@ -375,34 +400,39 @@ def main():
         association hierarchy."""
 
     parser = argparse.ArgumentParser(prog='pldm_visualise_pdrs.py')
-    parser.add_argument('--bmc', type=str, required=True,
-                        help="BMC IPAddress/BMC Hostname")
+    parser.add_argument('--bmc', type=str, help="BMC IPAddress/BMC Hostname")
     parser.add_argument('--user', type=str, help="BMC username")
-    parser.add_argument('--password', type=str, required=True,
-                        help="BMC Password")
+    parser.add_argument('--password', type=str, help="BMC Password")
     parser.add_argument('--port', type=int, help="BMC SSH port",
                         default=22)
     args = parser.parse_args()
 
     extra_cfg = {}
-    try:
-        with open(os.path.expanduser("~/.ssh/config")) as f:
-            ssh_config = paramiko.SSHConfig()
-            ssh_config.parse(f)
-            host_config = ssh_config.lookup(args.bmc)
-            if host_config:
-                if 'hostname' in host_config:
-                    args.bmc = host_config['hostname']
-                if 'user' in host_config and args.user is None:
-                    args.user = host_config['user']
-                if 'proxycommand' in host_config:
-                    extra_cfg['sock'] = paramiko.ProxyCommand(
-                        host_config['proxycommand'])
-    except FileNotFoundError:
-        pass
+    if args.bmc:
+        try:
+            with open(os.path.expanduser("~/.ssh/config")) as f:
+                ssh_config = paramiko.SSHConfig()
+                ssh_config.parse(f)
+                host_config = ssh_config.lookup(args.bmc)
+                if host_config:
+                    if 'hostname' in host_config:
+                        args.bmc = host_config['hostname']
+                    if 'user' in host_config and args.user is None:
+                        args.user = host_config['user']
+                    if 'proxycommand' in host_config:
+                        extra_cfg['sock'] = paramiko.ProxyCommand(
+                            host_config['proxycommand'])
+        except FileNotFoundError:
+            pass
 
-    executor = ParamikoExecutor(
-        args.bmc, args.user, args.password, args.port, **extra_cfg)
+        executor = ParamikoExecutor(
+            args.bmc, args.user, args.password, args.port, **extra_cfg)
+    elif shutil.which('pldmtool'):
+        executor = SubprocessExecutor()
+    else:
+        sys.exit("Can't find any PDRs: specify remote BMC with --bmc or "
+                 "install pldmtool.")
+
     association_pdr, state_sensor_pdr, state_effecter_pdr, counter = \
         fetch_pdrs_from_bmc(executor)
     draw_entity_associations(association_pdr, counter)
