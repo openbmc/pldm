@@ -277,7 +277,7 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
                                         &entities);
     if (numEntities > 0)
     {
-        pldm_entity_node* pNode;
+        pldm_entity_node* pNode = nullptr;
         if (!mergedHostParents)
         {
             pNode = pldm_entity_association_tree_find(entityTree, &entities[0],
@@ -299,7 +299,12 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         {
             auto node = pldm_entity_association_tree_add(
                 entityTree, &entities[i], entities[i].entity_instance_num,
-                pNode, entityPdr->association_type, true, true);
+                pNode, entityPdr->association_type, true,
+                !(entities[i].entity_container_id & 0x8000));
+            if (!node)
+            {
+                continue;
+            }
             merged = true;
             entityAssoc.push_back(node);
         }
