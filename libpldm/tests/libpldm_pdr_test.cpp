@@ -1429,16 +1429,19 @@ TEST(EntityAssociationPDR, testGetChildren)
     pldm_entity et1;
     et1.entity_type = 2;
     et1.entity_instance_num = 1;
+    et1.entity_container_id = 1;
     EXPECT_EQ(true, pldm_is_current_parent_child(l1, &et1));
 
     pldm_entity et2;
     et2.entity_type = 2;
     et2.entity_instance_num = 2;
+    et2.entity_container_id = 1;
     EXPECT_EQ(true, pldm_is_current_parent_child(l1, &et2));
 
     pldm_entity et3;
     et3.entity_type = 2;
     et3.entity_instance_num = 3;
+    et3.entity_container_id = 1;
     EXPECT_EQ(false, pldm_is_current_parent_child(l1, &et3));
 
     pldm_entity_association_tree_destroy(tree);
@@ -1455,6 +1458,7 @@ TEST(EntityAssociationPDR, testEntityInstanceNumber)
     entities[4].entity_type = 2;
     entities[5].entity_type = 2;
     entities[6].entity_type = 2;
+    entities[6].entity_container_id = 1;
     entities[7].entity_type = 3;
     entities[8].entity_type = 3;
 

@@ -425,6 +425,7 @@ pldm_entity_node *pldm_entity_association_tree_add(
 		pldm_entity node;
 		node.entity_type = entity->entity_type;
 		node.entity_instance_num = entity_instance_number;
+		node.entity_container_id = entity->entity_container_id;
 		if (pldm_is_current_parent_child(parent, &node)) {
 			return NULL;
 		}
@@ -617,7 +618,9 @@ bool pldm_is_current_parent_child(pldm_entity_node *parent, pldm_entity *node)
 	while (curr != NULL) {
 		if (node->entity_type == curr->entity.entity_type &&
 		    node->entity_instance_num ==
-			curr->entity.entity_instance_num) {
+			curr->entity.entity_instance_num &&
+		    node->entity_container_id ==
+			curr->entity.entity_container_id) {
 
 			return true;
 		}
