@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6f911a2a_1284c448",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-19T03:04:08Z",
+      "side": 1,
+      "message": "_current attributes are not meant to be patched via Redfish, can you make this readonly attribute so that readfish cannot patch , but the host can set it.\n\n\"readOnly\":true \n\nthis would make the attribute readonly.",
+      "range": {
+        "startLine": 27,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 8
+      },
+      "revId": "843f659e0546190ec99eb668fcbf7bf16b6b7492",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ddcbc7aa_bf519687",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-19T03:04:08Z",
+      "side": 1,
+      "message": "const reference ?",
+      "range": {
+        "startLine": 217,
+        "startChar": 27,
+        "endLine": 217,
+        "endChar": 46
+      },
+      "revId": "843f659e0546190ec99eb668fcbf7bf16b6b7492",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
