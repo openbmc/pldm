@@ -617,7 +617,9 @@ bool pldm_is_current_parent_child(pldm_entity_node *parent, pldm_entity *node)
 	while (curr != NULL) {
 		if (node->entity_type == curr->entity.entity_type &&
 		    node->entity_instance_num ==
-			curr->entity.entity_instance_num) {
+			curr->entity.entity_instance_num &&
+		    node->entity_container_id ==
+			curr->entity.entity_container_id) {
 
 			return true;
 		}
