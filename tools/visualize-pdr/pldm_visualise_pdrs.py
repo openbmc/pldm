@@ -13,6 +13,29 @@ from tabulate import tabulate
 import os
 
 
+class Process:
+    """ Interface definition for interacting with a process created by an
+        Executor."""
+
+    def __init__(self, stdout, stderr):
+        """ Construct a Process object.  Process object clients can read the
+            process stdout and stderr with os.read(), and can wait for the
+            process to exit.
+
+            Parameters:
+                stdout: os.read()able stream representing stdout
+                stderr: os.read()able stream representing stderr
+        """
+
+        self.stdout = stdout
+        self.stderr = stderr
+
+    def wait(self):
+        """ Wait for the process to finish, and return its exit status."""
+
+        raise NotImplementedError
+
+
 class Executor:
     """ Interface definition for interacting with executors.  An executor is an
         object that can run a program."""
@@ -22,6 +45,17 @@ class Executor:
 
     def close(self):
         pass
+
+
+class ParamikoProcess(Process):
+    """ Concrete implementation of the Process interface that adapts Paramiko
+        interfaces to the Process interface requirements."""
+
+    def __init__(self, stdout, stderr):
+        super(ParamikoProcess, self).__init__(stdout, stderr)
+
+    def wait(self):
+        return self.stderr.channel.recv_exit_status()
 
 
 class ParamikoExecutor(Executor):
@@ -46,7 +80,8 @@ class ParamikoExecutor(Executor):
             hostname, username=uname, password=passwd, port=port, **kw)
 
     def exec_command(self, cmd):
-        return self.client.exec_command(cmd)
+        _, stdout, stderr = self.client.exec_command(cmd)
+        return ParamikoProcess(stdout, stderr)
 
     def close(self):
         self.client.close()
@@ -163,7 +198,7 @@ class PLDMToolError(Exception):
         return self.status
 
 
-def process_pldmtool_output(stdout_channel, stderr_channel):
+def process_pldmtool_output(process):
     """ Ensure pldmtool runs without error and if it does fail, detect that and
         show the pldmtool exit status and it's stderr.
 
@@ -180,23 +215,24 @@ def process_pldmtool_output(stdout_channel, stderr_channel):
               This is a pldmtool bug - re-throw the decoder error.
 
         Parameters:
-            stdout_channel: file-like stdout channel
-            stderr_channel: file-like stderr channel
+            process: A Process object providing process control functions like
+                     wait, and access functions such as reading stdout and
+                     stderr.
 
     """
 
     status = 0
     try:
-        data = json.load(stdout_channel)
+        data = json.load(process.stdout)
         # it's unlikely, but possible, that pldmtool failed but still wrote a
         # valid json document - so check for that.
-        status = stderr_channel.channel.recv_exit_status()
+        status = process.wait()
         if status == 0:
             return data
     except json.decoder.JSONDecodeError:
         # pldmtool wrote an invalid json document.  Check to see if it had
         # non-zero exit status.
-        status = stderr_channel.channel.recv_exit_status()
+        status = process.wait()
         if status == 0:
             # pldmtool didn't have non zero exit status, so it wrote an invalid
             # json document and the JSONDecodeError is the correct error.
@@ -204,7 +240,7 @@ def process_pldmtool_output(stdout_channel, stderr_channel):
 
     # pldmtool had a non-zero exit status, so throw an error for that, possibly
     # discarding a spurious JSONDecodeError exception.
-    raise PLDMToolError(status, "".join(stderr_channel))
+    raise PLDMToolError(status, "".join(process.stderr))
 
 
 def get_pdrs_one_at_a_time(executor):
@@ -219,9 +255,8 @@ def get_pdrs_one_at_a_time(executor):
     command_fmt = 'pldmtool platform getpdr -d {}'
     record_handle = 0
     while True:
-        output = executor.exec_command(command_fmt.format(str(record_handle)))
-        _, stdout, stderr = output
-        pdr = process_pldmtool_output(stdout, stderr)
+        process = executor.exec_command(command_fmt.format(str(record_handle)))
+        pdr = process_pldmtool_output(process)
         yield record_handle, pdr
         record_handle = pdr["nextRecordHandle"]
         if record_handle == 0:
@@ -237,12 +272,12 @@ def get_all_pdrs_at_once(executor):
 
     """
 
-    _, stdout, stderr = executor.exec_command('pldmtool platform getpdr -a')
-    all_pdrs = process_pldmtool_output(stdout, stderr)
+    process = executor.exec_command('pldmtool platform getpdr -a')
+    all_pdrs = process_pldmtool_output(process)
 
     # Explicitly request record 0 to find out what the real first record is.
-    _, stdout, stderr = executor.exec_command('pldmtool platform getpdr -d 0')
-    pdr_0 = process_pldmtool_output(stdout, stderr)
+    process = executor.exec_command('pldmtool platform getpdr -d 0')
+    pdr_0 = process_pldmtool_output(process)
     record_handle = pdr_0["recordHandle"]
 
     while True:
