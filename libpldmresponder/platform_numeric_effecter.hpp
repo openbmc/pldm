@@ -58,6 +58,11 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
                 auto tempValue = std::get<uint8_t>(value);
                 value = static_cast<uint64_t>(tempValue);
             }
+            else if (propertyType == "uint32_t")
+            {
+                auto tempValue = std::get<uint8_t>(value);
+                value = static_cast<uint32_t>(tempValue);
+            }
             break;
         }
         case PLDM_EFFECTER_DATA_SIZE_SINT8:
@@ -89,6 +94,11 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
                 auto tempValue = std::get<uint16_t>(value);
                 value = static_cast<uint64_t>(tempValue);
             }
+            else if (propertyType == "uint32_t")
+            {
+                auto tempValue = std::get<uint16_t>(value);
+                value = static_cast<uint32_t>(tempValue);
+            }
             break;
         }
         case PLDM_EFFECTER_DATA_SIZE_SINT16:
@@ -106,6 +116,11 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
             {
                 auto tempValue = std::get<int16_t>(value);
                 value = static_cast<uint64_t>(tempValue);
+            }
+            else if (propertyType == "uint32_t")
+            {
+                auto tempValue = std::get<int16_t>(value);
+                value = static_cast<uint32_t>(tempValue);
             }
             break;
         }
@@ -125,6 +140,11 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
                 auto tempValue = std::get<uint32_t>(value);
                 value = static_cast<uint64_t>(tempValue);
             }
+            else if (propertyType == "uint32_t")
+            {
+                auto tempValue = std::get<uint32_t>(value);
+                value = static_cast<uint32_t>(tempValue);
+            }
             break;
         }
         case PLDM_EFFECTER_DATA_SIZE_SINT32:
@@ -142,6 +162,11 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
             {
                 auto tempValue = std::get<int32_t>(value);
                 value = static_cast<uint64_t>(tempValue);
+            }
+            else if (propertyType == "uint32_t")
+            {
+                auto tempValue = std::get<int32_t>(value);
+                value = static_cast<uint32_t>(tempValue);
             }
             break;
         }
