@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d0e6fb8e_4faefeb5",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-10-20T12:05:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6f911a2a_1284c448",
+      "range": {
+        "startLine": 27,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 8
+      },
+      "revId": "843f659e0546190ec99eb668fcbf7bf16b6b7492",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ddcbc7aa_bf519687",
         "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
         "patchSetId": 8
@@ -45,6 +69,30 @@
       "revId": "843f659e0546190ec99eb668fcbf7bf16b6b7492",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db2417a4_ef2a13a6",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-10-20T12:05:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddcbc7aa_bf519687",
+      "range": {
+        "startLine": 217,
+        "startChar": 27,
+        "endLine": 217,
+        "endChar": 46
+      },
+      "revId": "843f659e0546190ec99eb668fcbf7bf16b6b7492",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
