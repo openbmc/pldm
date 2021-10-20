@@ -3880,13 +3880,11 @@
   {
     "pdrType" : 9,
     "entries" : [{
-        "type" : 193,
-        "instance" : 0,
-        "container" : 1,
+        "entity_path":"/xyz/openbmc_project/inventory/system",
         "base_unit":72,
         "rate_unit":0,
         "effecter_resolutioninit":1,
-        "effecter_data_size":4,
+        "effecter_data_size":0,
         "range_field_format":3,
         "dbus" : {
                 "path": "/xyz/openbmc_project/state/host0",
