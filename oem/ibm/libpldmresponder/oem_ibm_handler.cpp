@@ -280,11 +280,11 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
                                 PLDM_OEM_IBM_VERIFICATION_STATE, repo);
     auto sensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-        ENTITY_INSTANCE_0, 0, PLDM_OEM_IBM_VERIFICATION_STATE);
+        ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_VERIFICATION_STATE);
     codeUpdate->setMarkerLidSensor(sensorId);
     sensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-        ENTITY_INSTANCE_0, 0, PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE);
+        ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE);
     codeUpdate->setFirmwareUpdateSensor(sensorId);
 }
 
