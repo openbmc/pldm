@@ -362,8 +362,10 @@ def fetch_pdrs_from_bmc(executor):
     fru_record_set_pdr = {}
     tl_pdr = {}
     for handle_number, my_dic in get_pdrs(executor):
-        sys.stdout.write("Fetching PDR's from BMC : %8d\r" % (handle_number))
-        sys.stdout.flush()
+        if sys.stdout.isatty():
+            sys.stdout.write(
+                "Fetching PDR's from BMC : %8d\r" % (handle_number))
+            sys.stdout.flush()
         if my_dic["PDRType"] == "Entity Association PDR":
             entity_association_pdr[handle_number] = my_dic
         if my_dic["PDRType"] == "State Sensor PDR":
