@@ -13,23 +13,43 @@ from tabulate import tabulate
 import os
 
 
-def connect_to_bmc(hostname, uname, passwd, port, **kw):
+class Executor:
+    """ Interface definition for interacting with executors.  An executor is an
+        object that can run a program."""
 
-    """ This function is responsible to connect to the BMC via
-        ssh and returns a client object.
+    def exec_command(self, cmd):
+        raise NotImplementedError
 
-        Parameters:
-            hostname: hostname/IP address of BMC
-            uname: ssh username of BMC
-            passwd: ssh password of BMC
-            port: ssh port of BMC
+    def close(self):
+        pass
 
-    """
 
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(hostname, username=uname, password=passwd, port=port, **kw)
-    return client
+class ParamikoExecutor(Executor):
+    """ Concrete implementation of the Executor interface that uses
+        Paramiko to connect to a remote BMC to run the program."""
+
+    def __init__(self, hostname, uname, passwd, port, **kw):
+        """ This function is responsible for connecting to the BMC via
+            ssh and returning an executor object.
+
+            Parameters:
+                hostname: hostname/IP address of BMC
+                uname: ssh username of BMC
+                passwd: ssh password of BMC
+                port: ssh port of BMC
+        """
+
+        super(ParamikoExecutor, self).__init__()
+        self.client = paramiko.SSHClient()
+        self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        self.client.connect(
+            hostname, username=uname, password=passwd, port=port, **kw)
+
+    def exec_command(self, cmd):
+        return self.client.exec_command(cmd)
+
+    def close(self):
+        self.client.close()
 
 
 def prepare_summary_report(state_sensor_pdr, state_effecter_pdr):
@@ -187,19 +207,19 @@ def process_pldmtool_output(stdout_channel, stderr_channel):
     raise PLDMToolError(status, "".join(stderr_channel))
 
 
-def get_pdrs_one_at_a_time(client):
-    """ Using pldmtool over SSH, generate (record handle, PDR) tuples for each
-        record in the PDR repository.
+def get_pdrs_one_at_a_time(executor):
+    """ Using pldmtool, generate (record handle, PDR) tuples for each record in
+        the PDR repository.
 
         Parameters:
-            client: paramiko ssh client object
+            executor: executor object for running pldmtool
 
     """
 
     command_fmt = 'pldmtool platform getpdr -d {}'
     record_handle = 0
     while True:
-        output = client.exec_command(command_fmt.format(str(record_handle)))
+        output = executor.exec_command(command_fmt.format(str(record_handle)))
         _, stdout, stderr = output
         pdr = process_pldmtool_output(stdout, stderr)
         yield record_handle, pdr
@@ -208,20 +228,20 @@ def get_pdrs_one_at_a_time(client):
             break
 
 
-def get_all_pdrs_at_once(client):
-    """ Using pldmtool over SSH, generate (record handle, PDR) tuples for each
-        record in the PDR repository.  Use pldmtool platform getpdr --all.
+def get_all_pdrs_at_once(executor):
+    """ Using pldmtool, generate (record handle, PDR) tuples for each record in
+        the PDR repository.  Use pldmtool platform getpdr --all.
 
         Parameters:
-            client: paramiko ssh client object
+            executor: executor object for running pldmtool
 
     """
 
-    _, stdout, stderr = client.exec_command('pldmtool platform getpdr -a')
+    _, stdout, stderr = executor.exec_command('pldmtool platform getpdr -a')
     all_pdrs = process_pldmtool_output(stdout, stderr)
 
     # Explicitly request record 0 to find out what the real first record is.
-    _, stdout, stderr = client.exec_command('pldmtool platform getpdr -d 0')
+    _, stdout, stderr = executor.exec_command('pldmtool platform getpdr -d 0')
     pdr_0 = process_pldmtool_output(stdout, stderr)
     record_handle = pdr_0["recordHandle"]
 
@@ -236,18 +256,18 @@ def get_all_pdrs_at_once(client):
             "Dangling reference to record {}".format(record_handle))
 
 
-def get_pdrs(client):
-    """ Using pldmtool over SSH, generate (record handle, PDR) tuples for each
-        record in the PDR repository.  Use pldmtool platform getpdr --all or
-        fallback on getting them one at a time if pldmtool doesn't support the
-        --all option.
+def get_pdrs(executor):
+    """ Using pldmtool, generate (record handle, PDR) tuples for each record in
+        the PDR repository.  Use pldmtool platform getpdr --all or fallback on
+        getting them one at a time if pldmtool doesn't support the --all
+        option.
 
         Parameters:
-            client: paramiko ssh client object
+            executor: executor object for running pldmtool
 
     """
     try:
-        for record_handle, pdr in get_all_pdrs_at_once(client):
+        for record_handle, pdr in get_all_pdrs_at_once(executor):
             yield record_handle, pdr
         return
     except PLDMToolError as e:
@@ -259,19 +279,18 @@ def get_pdrs(client):
         if e.msg != "Extra data":
             raise
 
-    for record_handle, pdr in get_pdrs_one_at_a_time(client):
+    for record_handle, pdr in get_pdrs_one_at_a_time(executor):
         yield record_handle, pdr
 
 
-def fetch_pdrs_from_bmc(client):
+def fetch_pdrs_from_bmc(executor):
 
-    """ This is the core function that would use the existing ssh connection
-        object to connect to BMC and fire the getPDR pldmtool command
-        and it then agreegates the data received from all the calls into
-        the respective dictionaries based on the PDR Type.
+    """ This is the core function that would fire the getPDR pldmtool command
+        and it then agreegates the data received from all the calls into the
+        respective dictionaries based on the PDR Type.
 
         Parameters:
-            client: paramiko ssh client object
+            executor: executor object for running pldmtool
 
     """
 
@@ -282,7 +301,7 @@ def fetch_pdrs_from_bmc(client):
     numeric_pdr = {}
     fru_record_set_pdr = {}
     tl_pdr = {}
-    for handle_number, my_dic in get_pdrs(client):
+    for handle_number, my_dic in get_pdrs(executor):
         sys.stdout.write("Fetching PDR's from BMC : %8d\r" % (handle_number))
         sys.stdout.flush()
         if my_dic["PDRType"] == "Entity Association PDR":
@@ -297,7 +316,7 @@ def fetch_pdrs_from_bmc(client):
             tl_pdr[handle_number] = my_dic
         if my_dic["PDRType"] == "Numeric Effecter PDR":
             numeric_pdr[handle_number] = my_dic
-    client.close()
+    executor.close()
 
     total_pdrs = len(entity_association_pdr.keys()) + len(tl_pdr.keys()) + \
         len(state_effecter_pdr.keys()) + len(numeric_pdr.keys()) + \
@@ -347,10 +366,10 @@ def main():
     except FileNotFoundError:
         pass
 
-    client = connect_to_bmc(
+    executor = ParamikoExecutor(
         args.bmc, args.user, args.password, args.port, **extra_cfg)
     association_pdr, state_sensor_pdr, state_effecter_pdr, counter = \
-        fetch_pdrs_from_bmc(client)
+        fetch_pdrs_from_bmc(executor)
     draw_entity_associations(association_pdr, counter)
     prepare_summary_report(state_sensor_pdr, state_effecter_pdr)
 
