@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "582e4139_cf466a0d",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-21T14:17:29Z",
+      "side": 1,
+      "message": "nit : there are no changes in this file..can we remove this ?",
+      "revId": "5e246302cb5c0801661f9e49e955335cbefb47ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
