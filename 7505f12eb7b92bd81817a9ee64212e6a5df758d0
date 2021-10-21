@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "e77a1e04_b4eec524",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-10-21T05:16:05Z",
+      "side": 1,
+      "message": "changed it to \tPLDM_OEM_IBM_SBE_SEMANTIC_ID \u003d 32775",
+      "parentUuid": "b3fb8109_5d9d68db",
+      "range": {
+        "startLine": 15,
+        "startChar": 1,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "7505f12eb7b92bd81817a9ee64212e6a5df758d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2d1cdf9c_0d569863",
         "filename": "oem/ibm/libpldm/state_set.h",
         "patchSetId": 5
