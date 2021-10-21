@@ -39,6 +39,30 @@
       "revId": "fe92ac68087d859282d1bc6086e32b7b5b8cb7b9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "410bfef5_25ef81e0",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1650,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-10-21T11:31:47Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "71d96b75_0a99cf9b",
+      "range": {
+        "startLine": 1649,
+        "startChar": 3,
+        "endLine": 1650,
+        "endChar": 32
+      },
+      "revId": "fe92ac68087d859282d1bc6086e32b7b5b8cb7b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
