@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fddbcb7f_86d13ab8",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-21T01:34:34Z",
+      "side": 1,
+      "message": "nit :change not related ?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 33
+      },
+      "revId": "6c0e001c5905f1707b473339f92e790a9edd67cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95a16c23_d2645a82",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-21T01:34:34Z",
+      "side": 1,
+      "message": "can we move these as well to state_set.h ?",
+      "revId": "6c0e001c5905f1707b473339f92e790a9edd67cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
