@@ -576,7 +576,7 @@ TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
     auto locatorValue =
         reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
             pdr->terminus_locator_value);
-    EXPECT_EQ(locatorValue->eid, BmcMctpEid);
+    EXPECT_EQ(locatorValue->eid, ENDPOINT_ID);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }

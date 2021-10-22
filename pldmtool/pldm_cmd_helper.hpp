@@ -7,6 +7,7 @@
 
 #include "common/utils.hpp"
 
+#include <config.h>
 #include <err.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -26,7 +27,6 @@ namespace pldmtool
 namespace helper
 {
 
-constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 using ordered_json = nlohmann::ordered_json;
 
@@ -81,7 +81,7 @@ class CommandInterface
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :
         pldmType(type),
-        commandName(name), mctp_eid(PLDM_ENTITY_ID), pldmVerbose(false),
+        commandName(name), mctp_eid(ENDPOINT_ID), pldmVerbose(false),
         instanceId(0)
     {
         app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");

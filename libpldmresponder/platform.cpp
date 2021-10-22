@@ -617,7 +617,7 @@ void Handler::generateTerminusLocatorPDR(Repo& repo)
         sizeof(pldm_terminus_locator_type_mctp_eid);
     auto locatorValue = reinterpret_cast<pldm_terminus_locator_type_mctp_eid*>(
         pdr->terminus_locator_value);
-    locatorValue->eid = BmcMctpEid;
+    locatorValue->eid = ENDPOINT_ID;
 
     PdrEntry pdrEntry{};
     pdrEntry.data = pdrBuffer.data();

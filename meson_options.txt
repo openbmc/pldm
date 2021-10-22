@@ -24,4 +24,4 @@ option('heartbeat-timeout-seconds', type: 'integer', description: ' The amount o
 # PLDM Terminus options
 option('terminus-id', type:'integer', min:0, max: 255, description: 'The terminus id value of the device that is running this pldm stack', value:1)
 option('terminus-handle',type:'integer',min:0, max:65535, description: 'The terminus handle value of the device that is running this pldm stack', value:1)
-
+option('endpoint-id', type:'integer', min:0, max:255, description: 'The endpoint id value of the device that is running this pldm stack', value:8)

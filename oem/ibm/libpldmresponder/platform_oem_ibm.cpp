@@ -55,9 +55,8 @@ int sendBiosAttributeUpdateEvent(
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
     auto rc = encode_bios_attribute_update_event_req(
-        instanceId, PLDM_PLATFORM_EVENT_MESSAGE_FORMAT_VERSION,
-        pldm::responder::pdr::BmcMctpEid, handles.size(),
-        reinterpret_cast<const uint8_t*>(handles.data()),
+        instanceId, PLDM_PLATFORM_EVENT_MESSAGE_FORMAT_VERSION, ENDPOINT_ID,
+        handles.size(), reinterpret_cast<const uint8_t*>(handles.data()),
         requestMsg.size() - sizeof(pldm_msg_hdr), request);
     if (rc != PLDM_SUCCESS)
     {
