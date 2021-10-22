@@ -189,7 +189,8 @@ $ pldmtool base GetPLDMTypes
 ## pldmtool with mctp_eid option
 
 Use **-m** or **--mctp_eid** option to send pldm request message to remote mctp
-end point and by default pldmtool consider mctp_eid value as **'08'**.
+end point and by default pldmtool consider mctp_eid value as configured by **endpoint-id**
+meson option. 
 
 ```
 Command format:

@@ -187,7 +187,7 @@ void Handler::processSetEventReceiver(
     uint8_t eventMessageGlobalEnable =
         PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
     uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
-    uint8_t eventReceiverAddressInfo = pldm::responder::pdr::BmcMctpEid;
+    uint8_t eventReceiverAddressInfo = ENDPOINT_ID;
     uint16_t heartbeatTimer = HEARTBEAT_TIMEOUT;
 
     auto rc = encode_set_event_receiver_req(

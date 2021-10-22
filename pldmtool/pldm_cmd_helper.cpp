@@ -199,7 +199,7 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         printBuffer(Tx, requestMsg);
     }
 
-    if (mctp_eid != PLDM_ENTITY_ID)
+    if (mctp_eid != ENDPOINT_ID)
     {
         int fd = pldm_open();
         if (-1 == fd)
