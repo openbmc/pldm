@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0d669165_b5dbcbda",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-22T13:16:54Z",
+      "side": 1,
+      "message": "Why would a vendor want to do that?  I think it\u0027s important to document that here.  Configurable just for the sake of being configurable is not really a good thing because it makes the code more complicated and harder to understand.",
+      "range": {
+        "startLine": 13,
+        "startChar": 23,
+        "endLine": 14,
+        "endChar": 50
+      },
+      "revId": "abc8db77bf25faaeb7b2bf1fb892cc88416a2b05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f9be864_ae04c288",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-22T13:16:54Z",
+      "side": 1,
+      "message": "a nit for sure - but this just has one l",
+      "range": {
+        "startLine": 36,
+        "startChar": 30,
+        "endLine": 36,
+        "endChar": 31
+      },
+      "revId": "abc8db77bf25faaeb7b2bf1fb892cc88416a2b05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
