@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2a8bd47e_c28fcfac",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-22T10:07:47Z",
+      "side": 1,
+      "message": "nit : i still see some unwanted change",
+      "revId": "dacd72cc2c284dea0d3cd5af6bb84c0e5f4a8819",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
