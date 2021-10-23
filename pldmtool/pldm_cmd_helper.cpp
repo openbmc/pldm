@@ -151,7 +151,7 @@ void CommandInterface::exec()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = " << mctp_eid
+        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = " << (unsigned)mctp_eid
                   << ", error = " << e.what() << "\n";
         return;
     }
