@@ -53,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "b821491d_ac3d0eec",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-25T05:37:25Z",
+      "side": 1,
+      "message": "When will this be implemented?",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "513172a6_6b5e2d71",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 6
