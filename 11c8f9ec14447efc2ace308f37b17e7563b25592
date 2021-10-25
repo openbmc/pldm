@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8e8dbdb7_84552327",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:07:39Z",
+      "side": 1,
+      "message": "No error handling, for example no retries and timeouts in DSP0267.",
+      "parentUuid": "72694edc_46ad230f",
+      "range": {
+        "startLine": 12,
+        "startChar": 50,
+        "endLine": 13,
+        "endChar": 13
+      },
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8a20a290_4869d11a",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 6
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "cdf1f108_4840416a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:07:39Z",
+      "side": 1,
+      "message": "Ack, thanks!",
+      "parentUuid": "8a20a290_4869d11a",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52b18a3f_3d020c76",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 6
@@ -53,6 +95,24 @@
       "writtenOn": "2021-10-14T17:51:01Z",
       "side": 1,
       "message": "We should try to avoid this copy, it could be of significance given large image sizes.",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "077cb464_e17598db",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:07:39Z",
+      "side": 1,
+      "message": "With this implementation there is only one copy of data in PLDM daemon, read from the ifstream and update the response vector which is sent to demux-daemon.",
+      "parentUuid": "52b18a3f_3d020c76",
       "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "0965adeb_f302de0e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:07:39Z",
+      "side": 1,
+      "message": "Tried with 4K and not seeing an issue. This is the current setting of wmem_max and needs to be bumped if there are usecases to have the size increased.\n\ncat /proc/sys/net/core/wmem_max\n180224",
+      "parentUuid": "bb3090c2_ef90a305",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1dc910ca_d633553a",
         "filename": "fw-update/device_updater.hpp",
         "patchSetId": 6
@@ -93,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "2e524118_59117290",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:07:39Z",
+      "side": 1,
+      "message": "yes, the package is in tmpfs.",
+      "parentUuid": "1dc910ca_d633553a",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7de2253b_ee33e61c",
         "filename": "fw-update/device_updater.hpp",
         "patchSetId": 6
@@ -104,6 +200,24 @@
       "writtenOn": "2021-10-14T17:51:01Z",
       "side": 1,
       "message": "This and several other fields below - it looks like they wouldn\u0027t differ across FDs, so can they be in a common/parent-level object?",
+      "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af31fcc7_d6ccbb97",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:07:39Z",
+      "side": 1,
+      "message": "Ack, but all of these are references. These could all become updateManager-\u003e* which is the parent object.",
+      "parentUuid": "7de2253b_ee33e61c",
       "revId": "11c8f9ec14447efc2ace308f37b17e7563b25592",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
