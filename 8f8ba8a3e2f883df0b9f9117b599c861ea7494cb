@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2b0f2621_2de28867",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T05:37:02Z",
+      "side": 1,
+      "message": "We are getting this list of endpoint IDs from the D-Bus interface exposed by the MCTP control application. Does PLDM need to do anything special?",
+      "parentUuid": "fb41ae23_ef313599",
+      "revId": "8f8ba8a3e2f883df0b9f9117b599c861ea7494cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7304b602_cb9ed316",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 6
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e4bab45d_39467acf",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T05:37:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7304b602_cb9ed316",
+      "revId": "8f8ba8a3e2f883df0b9f9117b599c861ea7494cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0fc5ae6f_76cfd57c",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 6
@@ -47,6 +83,24 @@
       "writtenOn": "2021-10-14T13:20:00Z",
       "side": 1,
       "message": "Are all fields being decoded and stored in this structure? For eg how about CapabilitiesDuringUpdate?",
+      "revId": "8f8ba8a3e2f883df0b9f9117b599c861ea7494cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66a26594_c07bbef2",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T05:37:02Z",
+      "side": 1,
+      "message": "For the moment, I have kept the decode data stored in the structure to the minimum, to enable firmware update. Going forward I see fields in the GetFirmwareParameters response to be stored in the D-Bus(for firmware inventory, consumption for other Redfish APIs) and in the ComponentInfo structure to enable firmware update. If it doesn\u0027t fall under these buckets, then validate the field and take no action.",
+      "parentUuid": "0fc5ae6f_76cfd57c",
       "revId": "8f8ba8a3e2f883df0b9f9117b599c861ea7494cb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
