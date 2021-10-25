@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "932c14b7_2954f6cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:23:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bd1c760c_9c79a9a0",
+      "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "78fbdbed_35bbe00c",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 7
@@ -54,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "905d5c05_a47c1579",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:23:37Z",
+      "side": 1,
+      "message": "Similar comment, answered below.",
+      "parentUuid": "6dcfac20_8c540230",
+      "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3f83fb76_74002184",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 7
@@ -65,6 +101,30 @@
       "writtenOn": "2021-10-18T09:27:23Z",
       "side": 1,
       "message": "Probably this can be refactored out to a different \"init\" function; because one can invoke the fwManager-\u003ehandleMCTPEndpoints only if the device supports PLDM type 5. The rest of the code in constructor/discoverEndpoints can be common for all PLDM types",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 5
+      },
+      "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0d954c0_3f2d64b4",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:23:37Z",
+      "side": 1,
+      "message": "Good suggestion. \n\nPutting together the Initialization function agent is still ahead for me, that does the PLDM discovery and firmware inventory should ideally part of that.\n\nFor completeness of this patch, I will create a follow-up patch that does a GetPLDMTypes and check Type5 before doing a firmware discovery.",
+      "parentUuid": "3f83fb76_74002184",
       "range": {
         "startLine": 67,
         "startChar": 0,
@@ -106,6 +166,24 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "21a3c167_40875473",
+      "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9a9221d_03a567ac",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:23:37Z",
+      "side": 1,
+      "message": "Ack, will try code reuse of this portion.",
+      "parentUuid": "2ea3c592_fea3ab7f",
       "revId": "b393449bce5e8ef4821750bb8fd29fc0c7b22ea6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
