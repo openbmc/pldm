@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "daa4c3f5_99de1fb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:11:52Z",
+      "side": 1,
+      "message": "Ack, will add details of the test.",
+      "parentUuid": "64af04dc_33fac443",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2d61c3dd_c34358f4",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2021-10-18T05:39:08Z",
       "side": 1,
       "message": "This and other errors below should be reported to the user.",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a90fe5cd_9545f9b0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:11:52Z",
+      "side": 1,
+      "message": "Ack, in a future patch will implement error logs to match the registry event in the Update schema.",
+      "parentUuid": "2d61c3dd_c34358f4",
       "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "3b160cc7_35e9b108",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:11:52Z",
+      "side": 1,
+      "message": "Ack, will update in the next revision of the patch.",
+      "parentUuid": "8ee82898_f7ef3ccf",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b821491d_ac3d0eec",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 6
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "9eea7b41_4303f5a1",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:11:52Z",
+      "side": 1,
+      "message": "This is implemented, will update in the next revision of the patch.",
+      "parentUuid": "b821491d_ac3d0eec",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "513172a6_6b5e2d71",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 6
@@ -81,6 +153,24 @@
       "writtenOn": "2021-10-18T05:39:08Z",
       "side": 1,
       "message": "Is this per FD or accumulated component count across FD? Or is this FD count?",
+      "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1678ec18_d398b672",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-25T09:11:52Z",
+      "side": 1,
+      "message": "This is the total number of component updates across FD. This is to keep the calculation simple.",
+      "parentUuid": "513172a6_6b5e2d71",
       "revId": "d41fb77b18b26b3d74e29c40dfce3dc8292eeb6c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
