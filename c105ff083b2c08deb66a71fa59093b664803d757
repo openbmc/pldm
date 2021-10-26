@@ -68,6 +68,52 @@
       "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a66af503_1da0ce27",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-10-26T03:42:22Z",
+      "side": 1,
+      "message": "are we doing this check in libpldm ?",
+      "range": {
+        "startLine": 104,
+        "startChar": 7,
+        "endLine": 106,
+        "endChar": 9
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db2043e2_55311747",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2021-10-26T03:42:22Z",
+      "side": 1,
+      "message": "same here , we are doing this in libpldm ?",
+      "range": {
+        "startLine": 114,
+        "startChar": 7,
+        "endLine": 115,
+        "endChar": 60
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
