@@ -93,12 +93,12 @@ class UpdateManager
                               TotalComponentUpdates& totalNumComponentUpdates);
 
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
-
-  private:
     Event& event; //!< reference to PLDM daemon's main event loop
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
     Requester& requester; //!< reference to Requester object
+
+  private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
