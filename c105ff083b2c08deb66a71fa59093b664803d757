@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f84082b9_b5079790",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-26T07:14:53Z",
+      "side": 1,
+      "message": "yeah\n\nhttps://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#sf22-use-an-unnamed-anonymous-namespace-for-all-internalnon-exported-entities",
+      "parentUuid": "b278f274_cd99bc47",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 9
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b89b4f71_ebdbdc15",
         "filename": "pldmtool/pldm_fw_update_cmd.cpp",
         "patchSetId": 3
@@ -45,6 +69,30 @@
       "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4aacca9e_9fa364bf",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-26T07:14:53Z",
+      "side": 1,
+      "message": "In header files it is not preferred.\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/46074",
+      "parentUuid": "b89b4f71_ebdbdc15",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "b87d1687_71c8f9c0",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-26T07:14:53Z",
+      "side": 1,
+      "message": "https://github.com/openbmc/pldm/blob/master/libpldm/firmware_update.c#L1405",
+      "parentUuid": "c109fff7_f885c9a0",
+      "range": {
+        "startLine": 90,
+        "startChar": 12,
+        "endLine": 90,
+        "endChar": 23
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a66af503_1da0ce27",
         "filename": "pldmtool/pldm_fw_update_cmd.cpp",
         "patchSetId": 3
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "e2a05baf_c5dd4ad5",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-26T07:14:53Z",
+      "side": 1,
+      "message": "This check is not for validation, but to decide whether to convert the ausStateStatus to string or print it as number.",
+      "parentUuid": "a66af503_1da0ce27",
+      "range": {
+        "startLine": 104,
+        "startChar": 7,
+        "endLine": 106,
+        "endChar": 9
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db2043e2_55311747",
         "filename": "pldmtool/pldm_fw_update_cmd.cpp",
         "patchSetId": 3
@@ -114,6 +210,30 @@
       "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd4e9be4_b191f5f5",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-26T07:14:53Z",
+      "side": 1,
+      "message": "This check is not for validation, but to decide whether to convert the reasonCode to string or print it as number.",
+      "parentUuid": "db2043e2_55311747",
+      "range": {
+        "startLine": 114,
+        "startChar": 7,
+        "endLine": 115,
+        "endChar": 60
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
