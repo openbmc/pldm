@@ -10,18 +10,12 @@
 #include <gtest/gtest.h>
 
 using namespace pldm;
-using namespace std::chrono;
 using namespace pldm::fw_update;
 
 class DeviceUpdaterTest : public testing::Test
 {
   protected:
     DeviceUpdaterTest() :
-        event(sdeventplus::Event::get_default()),
-        requester(pldm::utils::DBusHandler::getBus(),
-                  "/xyz/openbmc_project/pldm"),
-        reqHandler(fd, event, requester, false, seconds(1), 2,
-                   milliseconds(100)),
         package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate)
     {
         fwDeviceIDRecord = {
@@ -39,9 +33,6 @@ class DeviceUpdaterTest : public testing::Test
     }
 
     int fd = -1;
-    sdeventplus::Event event;
-    pldm::dbus_api::Requester requester;
-    requester::Handler<requester::Request> reqHandler;
     std::ifstream package;
     FirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
@@ -90,9 +81,8 @@ TEST_F(DeviceUpdaterTest, validatePackage)
 
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
-    DeviceUpdater deviceUpdater(0, event, requester, reqHandler, package,
-                                fwDeviceIDRecord, compImageInfos, compInfo, 512,
-                                nullptr);
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>

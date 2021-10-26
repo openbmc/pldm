@@ -15,7 +15,7 @@ namespace fw_update
 
 void DeviceUpdater::startFwUpdateFlow()
 {
-    auto instanceId = requester.getInstanceId(eid);
+    auto instanceId = updateManager->requester.getInstanceId(eid);
     // NumberOfComponents
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -44,13 +44,13 @@ void DeviceUpdater::startFwUpdateFlow()
         sizeof(struct pldm_request_update_req) + compImgSetVerStrInfo.length);
     if (rc)
     {
-        requester.markFree(eid, instanceId);
+        updateManager->requester.markFree(eid, instanceId);
         std::cerr << "encode_request_update_req failed, EID=" << unsigned(eid)
                   << ", RC=" << rc << "\n";
         // Handle error scenario
     }
 
-    rc = handler.registerRequest(
+    rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_REQUEST_UPDATE, std::move(request),
         std::move(std::bind_front(&DeviceUpdater::requestUpdate, this)));
     if (rc)
@@ -95,15 +95,16 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
 
     // Optional fields DeviceMetaData and GetPackageData not handled
     pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-        event, std::bind(&DeviceUpdater::sendPassCompTableRequest, this,
-                         componentIndex));
+        updateManager->event,
+        std::bind(&DeviceUpdater::sendPassCompTableRequest, this,
+                  componentIndex));
 }
 
 void DeviceUpdater::sendPassCompTableRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = requester.getInstanceId(eid);
+    auto instanceId = updateManager->requester.getInstanceId(eid);
     // TransferFlag
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -166,13 +167,13 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         sizeof(pldm_pass_component_table_req) + compVerStrInfo.length);
     if (rc)
     {
-        requester.markFree(eid, instanceId);
+        updateManager->requester.markFree(eid, instanceId);
         std::cerr << "encode_pass_component_table_req failed, EID="
                   << unsigned(eid) << ", RC=" << rc << "\n";
         // Handle error scenario
     }
 
-    rc = handler.registerRequest(
+    rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_PASS_COMPONENT_TABLE,
         std::move(request),
         std::move(std::bind_front(&DeviceUpdater::passCompTable, this)));
@@ -226,15 +227,17 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
     {
         componentIndex = 0;
         pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-            event, std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                             componentIndex));
+            updateManager->event,
+            std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
+                      componentIndex));
     }
     else
     {
         componentIndex++;
         pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-            event, std::bind(&DeviceUpdater::sendPassCompTableRequest, this,
-                             componentIndex));
+            updateManager->event,
+            std::bind(&DeviceUpdater::sendPassCompTableRequest, this,
+                      componentIndex));
     }
 }
 
@@ -242,7 +245,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = requester.getInstanceId(eid);
+    auto instanceId = updateManager->requester.getInstanceId(eid);
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[offset]];
@@ -290,13 +293,13 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         sizeof(pldm_update_component_req) + compVerStrInfo.length);
     if (rc)
     {
-        requester.markFree(eid, instanceId);
+        updateManager->requester.markFree(eid, instanceId);
         std::cerr << "encode_update_component_req failed, EID=" << unsigned(eid)
                   << ", RC=" << rc << "\n";
         // Handle error scenario
     }
 
-    rc = handler.registerRequest(
+    rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_UPDATE_COMPONENT, std::move(request),
         std::move(std::bind_front(&DeviceUpdater::updateComponent, this)));
     if (rc)
@@ -594,15 +597,16 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     {
         componentIndex = 0;
         pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-            event,
+            updateManager->event,
             std::bind(&DeviceUpdater::sendActivateFirmwareRequest, this));
     }
     else
     {
         componentIndex++;
         pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-            event, std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                             componentIndex));
+            updateManager->event,
+            std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
+                      componentIndex));
     }
 
     return response;
@@ -611,7 +615,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
 void DeviceUpdater::sendActivateFirmwareRequest()
 {
     pldmRequest.reset();
-    auto instanceId = requester.getInstanceId(eid);
+    auto instanceId = updateManager->requester.getInstanceId(eid);
     Request request(sizeof(pldm_msg_hdr) +
                     sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
@@ -621,12 +625,12 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         sizeof(pldm_activate_firmware_req));
     if (rc)
     {
-        requester.markFree(eid, instanceId);
+        updateManager->requester.markFree(eid, instanceId);
         std::cerr << "encode_activate_firmware_req failed, EID="
                   << unsigned(eid) << ", RC=" << rc << "\n";
     }
 
-    rc = handler.registerRequest(
+    rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_ACTIVATE_FIRMWARE, std::move(request),
         std::move(std::bind_front(&DeviceUpdater::activateFirmware, this)));
     if (rc)

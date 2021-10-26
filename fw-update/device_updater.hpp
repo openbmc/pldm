@@ -35,9 +35,6 @@ class DeviceUpdater
     /** @brief Constructor
      *
      *  @param[in] eid - Endpoint ID of the firmware device
-     *  @param[in] event - PLDM daemon's main event loop
-     *  @param[in] requester - Instance ID manager for PLDM requests
-     *  @param[in] handler - PLDM request handler
      *  @param[in] package - File stream for firmware update package
      *  @param[in] fwDeviceIDRecord - FirmwareDeviceIDRecord in the fw update
      *                                package that matches this firmware device
@@ -50,19 +47,16 @@ class DeviceUpdater
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
      */
-    explicit DeviceUpdater(
-        mctp_eid_t eid, sdeventplus::Event& event,
-        pldm::dbus_api::Requester& requester,
-        pldm::requester::Handler<pldm::requester::Request>& handler,
-        std::ifstream& package, const FirmwareDeviceIDRecord& fwDeviceIDRecord,
-        const ComponentImageInfos& compImageInfos,
-        const ComponentInfo& compInfo, uint32_t maxTransferSize,
-        UpdateManager* updateManager) :
+    explicit DeviceUpdater(mctp_eid_t eid, std::ifstream& package,
+                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+                           const ComponentImageInfos& compImageInfos,
+                           const ComponentInfo& compInfo,
+                           uint32_t maxTransferSize,
+                           UpdateManager* updateManager) :
         eid(eid),
-        event(event), requester(requester), handler(handler), package(package),
-        fwDeviceIDRecord(fwDeviceIDRecord), compImageInfos(compImageInfos),
-        compInfo(compInfo), maxTransferSize(maxTransferSize),
-        updateManager(updateManager)
+        package(package), fwDeviceIDRecord(fwDeviceIDRecord),
+        compImageInfos(compImageInfos), compInfo(compInfo),
+        maxTransferSize(maxTransferSize), updateManager(updateManager)
     {}
 
     /** @brief Start the firmware update flow for the FD
@@ -178,15 +172,6 @@ class DeviceUpdater
 
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
-
-    /** @brief PLDM daemon's main event loop */
-    sdeventplus::Event& event;
-
-    /** @brief Instance ID manager for PLDM requests */
-    pldm::dbus_api::Requester& requester;
-
-    /** @brief PLDM request handler */
-    pldm::requester::Handler<pldm::requester::Request>& handler;
 
     /** @brief File stream for firmware update package */
     std::ifstream& package;
