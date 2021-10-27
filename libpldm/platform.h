@@ -31,6 +31,7 @@ extern "C" {
 #define PLDM_GET_NUMERIC_EFFECTER_VALUE_MIN_RESP_BYTES 5
 #define PLDM_GET_SENSOR_READING_MIN_RESP_BYTES 8
 #define PLDM_GET_STATE_SENSOR_READINGS_MIN_RESP_BYTES 2
+#define PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES 41
 
 /* Minimum length for PLDM PlatformEventMessage request */
 #define PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES 3
@@ -119,6 +120,7 @@ enum pldm_platform_commands {
 	PLDM_SET_NUMERIC_EFFECTER_VALUE = 0x31,
 	PLDM_GET_NUMERIC_EFFECTER_VALUE = 0x32,
 	PLDM_SET_STATE_EFFECTER_STATES = 0x39,
+	PLDM_GET_PDR_REPOSITORY_INFO = 0x50,
 	PLDM_GET_PDR = 0x51,
 	PLDM_PLATFORM_EVENT_MESSAGE = 0x0A
 };
@@ -548,6 +550,21 @@ struct pldm_set_state_effecter_states_req {
 	uint16_t effecter_id;
 	uint8_t comp_effecter_count;
 	set_effecter_state_field field[8];
+} __attribute__((packed));
+
+/** @struct pldm_get_pdr_repository_info_resp
+ *
+ *  Structure representing GetPDRRepositoryInfo response packet
+ */
+struct pldm_pdr_repository_info_resp {
+	uint8_t completion_code;
+	uint8_t repository_state;
+	uint8_t update_time[PLDM_TIMESTAMP104_SIZE];
+	uint8_t oem_update_time[PLDM_TIMESTAMP104_SIZE];
+	uint32_t record_count;
+	uint32_t repository_size;
+	uint32_t largest_record_size;
+	uint8_t data_transfer_handle_timeout;
 } __attribute__((packed));
 
 /** @struct pldm_get_pdr_resp
@@ -994,6 +1011,14 @@ int encode_get_sensor_reading_resp(
     uint8_t *present_reading, struct pldm_msg *msg, size_t payload_length);
 
 /* Requester */
+
+/*GetPDRRepositoryInfo*/
+int encode_get_pdr_repository_info_resp(
+    uint8_t instance_id, uint8_t completion_code, uint8_t repository_state,
+    const uint8_t *update_time, const uint8_t *oem_update_time,
+    uint32_t record_count, uint32_t repository_size,
+    uint32_t largest_record_size, uint8_t data_transfer_handle_timeout,
+    struct pldm_msg *msg);
 
 /* GetPDR */
 
