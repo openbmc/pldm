@@ -17,7 +17,7 @@ class InventoryManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()),
         dbusImplRequester(pldm::utils::DBusHandler::getBus(),
                           "/xyz/openbmc_project/pldm"),
-        reqHandler(fd, event, dbusImplRequester, false, seconds(1), 2,
+        reqHandler(fd, event, dbusImplRequester, false, 90000, seconds(1), 2,
                    milliseconds(100)),
         inventoryManager(reqHandler, dbusImplRequester, outDescriptorMap,
                          outComponentInfoMap)
