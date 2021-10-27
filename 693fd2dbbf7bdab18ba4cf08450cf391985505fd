@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "69b80962_bba704ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-27T13:04:12Z",
+      "side": 1,
+      "message": "If this is an OEM command, do we need to have this check for the standard commands? Probably isolate this check for the special OEM commands.",
+      "range": {
+        "startLine": 10,
+        "startChar": 15,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "24ccba45_7bcf4540",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
