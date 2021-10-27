@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd163686_dcbb1ea2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-27T11:22:28Z",
+      "side": 1,
+      "message": "can this be passed to the lambda?",
+      "range": {
+        "startLine": 372,
+        "startChar": 46,
+        "endLine": 372,
+        "endChar": 65
+      },
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db9a7c2b_bef4e6fd",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-27T11:22:28Z",
+      "side": 1,
+      "message": "Are we ok to continue post this?",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca705ab0_9eb58cc5",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-27T11:22:28Z",
+      "side": 1,
+      "message": "Shouldn\u0027t you be handling errno here? What if this is too large for the socket buffer?",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73929abc_7d5f51aa",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-10-27T11:22:28Z",
+      "side": 1,
+      "message": "Handle error?",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
