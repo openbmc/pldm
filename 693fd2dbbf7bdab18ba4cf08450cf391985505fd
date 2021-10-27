@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "24ccba45_7bcf4540",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-27T11:25:50Z",
+      "side": 1,
+      "message": "The man-page suggests that most sockopts are `int` types. size_t is a type that can index all of addressable memory, and is often larger than int. It\u0027s also unsigned, but not that SO_SNDBUF should ever be negative. It might be easier just to use int here though, as it dodges all the reasoning.",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 41
+      },
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bc2a015_a386931b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-27T11:25:50Z",
+      "side": 1,
+      "message": "I\u0027m surprised you\u0027re not using phosphor-logging. lg2 is particularly nice.\n\nRegardless, you want to include either errno or the output of strerror() here.",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bd163686_dcbb1ea2",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
@@ -42,6 +82,23 @@
     },
     {
       "key": {
+        "uuid": "a113f959_6dc8c1fd",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-27T11:25:50Z",
+      "side": 1,
+      "message": "As above. Let\u0027s try to help the poor person debugging this failure :)",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ca705ab0_9eb58cc5",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
@@ -70,6 +127,46 @@
       "writtenOn": "2021-10-27T11:22:28Z",
       "side": 1,
       "message": "Handle error?",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a9072b5_7ad4e7fb",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-27T11:25:50Z",
+      "side": 1,
+      "message": "If this fails you\u0027re going to fail to send the message. Did you test the case where you try to send e.g. a 100MB message?",
+      "range": {
+        "startLine": 386,
+        "startChar": 0,
+        "endLine": 387,
+        "endChar": 73
+      },
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f2ec0d4_50ebfd46",
+        "filename": "requester/request.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-27T11:25:50Z",
+      "side": 1,
+      "message": "You know pldm_send() will error before you try to send it if the setsockopt() fails.",
       "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
