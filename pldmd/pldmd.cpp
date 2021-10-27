@@ -165,14 +165,25 @@ int main(int argc, char** argv)
         std::cerr << "Failed to create the socket, RC= " << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
+    socklen_t optlen;
+    size_t currentSendbuffSize;
 
+    // Get Current send buffer size
+    optlen = sizeof(currentSendbuffSize);
+
+    int res = getsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &currentSendbuffSize,
+                         &optlen);
+    if (res == -1)
+    {
+        printf("Error in calling getsockopt\n");
+    }
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
 
     Invoker invoker{};
-    requester::Handler<requester::Request> reqHandler(sockfd, event,
-                                                      dbusImplReq, verbose);
+    requester::Handler<requester::Request> reqHandler(
+        sockfd, event, dbusImplReq, currentSendbuffSize, verbose);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
@@ -350,6 +361,32 @@ int main(int argc, char** argv)
 
                         msg.msg_iov = iov;
                         msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
+
+                        socklen_t optlen;
+                        size_t currentSendbuffSize;
+
+                        // Get Current send buffer size
+                        optlen = sizeof(currentSendbuffSize);
+
+                        int res = getsockopt(fd, SOL_SOCKET, SO_SNDBUF,
+                                             &currentSendbuffSize, &optlen);
+                        if (res == -1)
+                        {
+                            printf("Error in calling getsockopt\n");
+                        }
+                        else
+                        {
+                            if (currentSendbuffSize < (*response).size())
+                            {
+                                currentSendbuffSize = (*response).size();
+                                int res =
+                                    setsockopt(fd, SOL_SOCKET, SO_SNDBUF,
+                                               &currentSendbuffSize,
+                                               sizeof(currentSendbuffSize));
+                                if (res == -1)
+                                    printf("Error calling setsockopt\n");
+                            }
+                        }
 
                         int result = sendmsg(fd, &msg, 0);
                         if (-1 == result)

@@ -74,8 +74,8 @@ class HandlerTest : public testing::Test
 
 TEST_F(HandlerTest, singleRequestResponseScenario)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(fd, event, dbusImplReq, false,
-                                              seconds(1), 2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        fd, event, dbusImplReq, false, 90000, seconds(1), 2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = dbusImplReq.getInstanceId(eid);
     auto rc = reqHandler.registerRequest(
@@ -96,8 +96,8 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
 
 TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(fd, event, dbusImplReq, false,
-                                              seconds(1), 2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        fd, event, dbusImplReq, false, 90000, seconds(1), 2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = dbusImplReq.getInstanceId(eid);
     auto rc = reqHandler.registerRequest(
@@ -116,8 +116,8 @@ TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
 
 TEST_F(HandlerTest, multipleRequestResponseScenario)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(fd, event, dbusImplReq, false,
-                                              seconds(2), 2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        fd, event, dbusImplReq, false, 90000, seconds(2), 2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = dbusImplReq.getInstanceId(eid);
     auto rc = reqHandler.registerRequest(
