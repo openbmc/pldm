@@ -165,14 +165,25 @@ int main(int argc, char** argv)
         std::cerr << "Failed to create the socket, RC= " << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
+    socklen_t optlen;
+    int currentSendbuffSize;
 
+    // Get Current send buffer size
+    optlen = sizeof(currentSendbuffSize);
+
+    int res = getsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &currentSendbuffSize,
+                         &optlen);
+    if (res == -1)
+    {
+        std::cerr << "Error calling getsockopt, errno = " << errno << std::endl;
+    }
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
 
     Invoker invoker{};
-    requester::Handler<requester::Request> reqHandler(sockfd, event,
-                                                      dbusImplReq, verbose);
+    requester::Handler<requester::Request> reqHandler(
+        sockfd, event, dbusImplReq, currentSendbuffSize, verbose);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
@@ -281,8 +292,8 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    auto callback = [verbose, &invoker, &reqHandler](IO& io, int fd,
-                                                     uint32_t revents) {
+    auto callback = [verbose, &invoker, &reqHandler, currentSendbuffSize](
+                        IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
         {
             return;
@@ -350,6 +361,21 @@ int main(int argc, char** argv)
 
                         msg.msg_iov = iov;
                         msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
+                        if (currentSendbuffSize >= 0 &&
+                            (size_t)currentSendbuffSize < (*response).size())
+                        {
+                            currentSendbuffSize = (*response).size();
+                            int res = setsockopt(fd, SOL_SOCKET, SO_SNDBUF,
+                                                 &currentSendbuffSize,
+                                                 sizeof(currentSendbuffSize));
+                            if (res == -1)
+                            {
+                                std::cerr
+                                    << "Tx: Error calling setsockopt, errno = "
+                                    << errno << std::endl;
+                                return;
+                            }
+                        }
 
                         int result = sendmsg(fd, &msg, 0);
                         if (-1 == result)
