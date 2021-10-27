@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "27889659_452052e0",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-10-27T11:31:16Z",
+      "side": 1,
+      "message": "Should we not define repository_state ??\n\n\nvalue: { available, // Record data can be read from the repository.\nupdateInProgress , // Record data is unavailable because an update is in progress.\nfailed // Record data is unavailable because of a detected failure\n// condition.\n}\n\n\nAlso for dataTransferHandleTimeout ??\n\n\nspecial values: { 0x00 \u003d no timeout, 0x01 \u003d default minimum timeout (MC1, see clause\n28.25), 0xFF \u003d timeout \u003e254 seconds. Any timeout values that are less than the specified\ndefault minimum timeout are illegal. }",
+      "revId": "a4374e3aab12336946b6e792edcc5b5c91f03911",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b610bc2_5f650795",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-10-27T11:31:16Z",
+      "side": 1,
+      "message": "Documentation is missing",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 24
+      },
+      "revId": "a4374e3aab12336946b6e792edcc5b5c91f03911",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
