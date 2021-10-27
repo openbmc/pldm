@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "b23d5d0d_cd3221e9",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "24ccba45_7bcf4540",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 172,
+        "endChar": 41
+      },
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7bc2a015_a386931b",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
@@ -86,6 +110,24 @@
       "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f550feae_1e7edf07",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7bc2a015_a386931b",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -109,6 +151,30 @@
       "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5791b338_2eca7b7a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd163686_dcbb1ea2",
+      "range": {
+        "startLine": 372,
+        "startChar": 46,
+        "endLine": 372,
+        "endChar": 65
+      },
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -146,6 +212,24 @@
     },
     {
       "key": {
+        "uuid": "0a94a66d_7fdaf266",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "\u003e Are we ok to continue to post this?\n\u003e As above. Let\u0027s try to help the poor person debugging this failure :)\nthis getsockopt() call is removed using the parameter passed via lambda",
+      "parentUuid": "db9a7c2b_bef4e6fd",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ca705ab0_9eb58cc5",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
@@ -160,6 +244,24 @@
       "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f9a0220_a6ab2f3c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca705ab0_9eb58cc5",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -203,6 +305,48 @@
     },
     {
       "key": {
+        "uuid": "9fd218e4_a19fda81",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "\u003e If this fails you\u0027re going to fail to send the message. Did you test the case where you try to send e.g. a 100MB message?\n\nNo Andrew i have not tested with a big message ,i suppose we may not be use a value than the max allowed on a linux system - in which case we will get [ENOMEM](There was insufficient memory available for the operation to complete).\n\nAlthough i will try to see if i can do this test myself using some fileIO operations.",
+      "parentUuid": "9a9072b5_7ad4e7fb",
+      "range": {
+        "startLine": 386,
+        "startChar": 0,
+        "endLine": 387,
+        "endChar": 73
+      },
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69b491b9_659bb7bb",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "I am not sure how this can be handled, apart from logging the error no and proceeding to pldm_send and fail there ?",
+      "parentUuid": "73929abc_7d5f51aa",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6f2ec0d4_50ebfd46",
         "filename": "requester/request.hpp",
         "patchSetId": 2
@@ -214,6 +358,24 @@
       "writtenOn": "2021-10-27T11:25:50Z",
       "side": 1,
       "message": "You know pldm_send() will error before you try to send it if the setsockopt() fails.",
+      "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0ae4a26_a0db7fbf",
+        "filename": "requester/request.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-27T15:15:37Z",
+      "side": 1,
+      "message": "i am not sure if we can handle this case, apart from logging an error and let pldm_send handle it ? or do you want me to return here and send a PLDM_ERROR without actually calling the pldm_send ?",
+      "parentUuid": "6f2ec0d4_50ebfd46",
       "revId": "693fd2dbbf7bdab18ba4cf08450cf391985505fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
