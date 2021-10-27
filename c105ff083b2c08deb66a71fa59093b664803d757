@@ -260,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "076f1b6b_37494075",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-27T07:54:43Z",
+      "side": 1,
+      "message": "yeah, ack.",
+      "parentUuid": "911a3263_68c14746",
+      "range": {
+        "startLine": 131,
+        "startChar": 49,
+        "endLine": 131,
+        "endChar": 66
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2a9bb950_f3024399",
         "filename": "pldmtool/pldm_fw_update_cmd.cpp",
         "patchSetId": 3
@@ -271,6 +295,30 @@
       "writtenOn": "2021-10-27T07:20:26Z",
       "side": 1,
       "message": "what is FD here",
+      "range": {
+        "startLine": 134,
+        "startChar": 70,
+        "endLine": 134,
+        "endChar": 72
+      },
+      "revId": "c105ff083b2c08deb66a71fa59093b664803d757",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebda4b2f_1c5484cd",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-10-27T07:54:43Z",
+      "side": 1,
+      "message": "Firmware Device",
+      "parentUuid": "2a9bb950_f3024399",
       "range": {
         "startLine": 134,
         "startChar": 70,
