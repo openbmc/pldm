@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "35cbf4fc_a8a9e646",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-29T05:45:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b758d70_980a1e55",
+      "range": {
+        "startLine": 178,
+        "startChar": 48,
+        "endLine": 178,
+        "endChar": 61
+      },
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fd4c3533_1134c64c",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "d4b88ea7_d2f1300f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-29T05:45:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd4c3533_1134c64c",
+      "range": {
+        "startLine": 374,
+        "startChar": 1,
+        "endLine": 375,
+        "endChar": 67
+      },
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cbba6afe_aca50607",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 3
@@ -59,6 +107,24 @@
       "writtenOn": "2021-10-29T00:08:28Z",
       "side": 1,
       "message": "Again, IMO we should just return an error here, as the sendmsg() call is guaranteed to fail, and we know this.",
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c60c740_69a053a2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-29T05:45:43Z",
+      "side": 1,
+      "message": "Added a plain return here skipping the sendmsg() call. do you think instead of return , exit(EXIT_FAILURE) would make more sense ?",
+      "parentUuid": "cbba6afe_aca50607",
       "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -79,6 +145,24 @@
       "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c224c7a_5f471beb",
+        "filename": "requester/request.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-10-29T05:45:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6bd1038_df9eb8e8",
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
