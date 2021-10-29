@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b758d70_980a1e55",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-29T00:08:28Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s useful to report this, it\u0027s always going to be -1 on error. Reporting errno is what we want.",
+      "range": {
+        "startLine": 178,
+        "startChar": 48,
+        "endLine": 178,
+        "endChar": 61
+      },
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd4c3533_1134c64c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-29T00:08:28Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s useful to report the value of rc, it\u0027s always going to be -1 on error. Reporting errno is what we want.",
+      "range": {
+        "startLine": 374,
+        "startChar": 1,
+        "endLine": 375,
+        "endChar": 67
+      },
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cbba6afe_aca50607",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-29T00:08:28Z",
+      "side": 1,
+      "message": "Again, IMO we should just return an error here, as the sendmsg() call is guaranteed to fail, and we know this.",
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6bd1038_df9eb8e8",
+        "filename": "requester/request.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-29T00:08:28Z",
+      "side": 1,
+      "message": "Return here as discussed on PS2.",
+      "revId": "34a8f606ac9d77a955e3399e00822b1fa9c2a3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
