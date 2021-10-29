@@ -3590,7 +3590,7 @@
            "set" : {
                "id" : 260,
                "size" : 2,
-               "states" : [9]
+               "states" : [7, 9]
            },
            "dbus" : {
                 "path": "/xyz/openbmc_project/state/chassis0",
@@ -3598,6 +3598,7 @@
                 "property_name": "RequestedPowerTransition",
                 "property_type": "string",
                 "property_values":[
+                        "xyz.openbmc_project.State.Chassis.Transition.PowerCycle",
                         "xyz.openbmc_project.State.Chassis.Transition.Off"
                 ]
            }
