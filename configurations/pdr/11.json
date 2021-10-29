@@ -3590,7 +3590,7 @@
            "set" : {
                "id" : 260,
                "size" : 2,
-               "states" : [9]
+               "states" : [7,9]
            },
            "dbus" : {
                 "path": "/xyz/openbmc_project/state/chassis0",
@@ -3598,11 +3598,32 @@
                 "property_name": "RequestedPowerTransition",
                 "property_type": "string",
                 "property_values":[
+                        "xyz.openbmc_project.State.Chassis.Transition.PowerCycle",
                         "xyz.openbmc_project.State.Chassis.Transition.Off"
+
                 ]
            }
        }]
     },
+    {
+        "entity_path" : "/xyz/openbmc_project/inventory/system/chassis",
+        "effecters" : [{
+            "set" : {
+                "id" : 260,
+                "size" : 2,
+                "states" : [9]
+            },
+            "dbus" : {
+                 "path": "/xyz/openbmc_project/state/chassis0",
+                 "interface": "xyz.openbmc_project.State.Chassis",
+                 "property_name": "RequestedPowerTransition",
+                 "property_type": "string",
+                 "property_values":[
+                         "xyz.openbmc_project.State.Chassis.Transition.Off"
+                 ]
+            }
+        }]
+     },
     {
         "type" : 31,
         "instance" : 0,

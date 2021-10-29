@@ -17,6 +17,7 @@ enum pldm_boot_progress_states {
 /** @brief PLDM enums for system power states
  */
 enum pldm_system_power_states {
+	PLDM_POWER_CYCLE_OFF_SOFT_GRACEFUL = 7,
 	PLDM_OFF_SOFT_GRACEFUL = 9,
 };
 
