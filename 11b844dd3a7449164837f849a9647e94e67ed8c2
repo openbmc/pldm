@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68f4f07b_6ba412d3",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-11-01T22:29:22Z",
+      "side": 1,
+      "message": "I think these error messages still need work. What were you trying to do when you called getsockopt()?\n\nI\u0027d feel mildly annoyed if I saw this in a log message as it gives me next to no information about what was going on, other than an error occurred and what the errno was.",
+      "revId": "11b844dd3a7449164837f849a9647e94e67ed8c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab5ccdd0_dd346bc4",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-11-01T22:29:22Z",
+      "side": 1,
+      "message": "Again, why were you calling setsockopt()? What was the call trying to achieve when it failed? Try to put yourself in the position of reading the logs when this error occurred and think about what questions you might have when you see this log message.",
+      "revId": "11b844dd3a7449164837f849a9647e94e67ed8c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "244ee50b_8058c82c",
+        "filename": "requester/request.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-11-01T22:29:22Z",
+      "side": 1,
+      "message": "See comments on [gs]etsockopt() in pldmd.cpp",
+      "revId": "11b844dd3a7449164837f849a9647e94e67ed8c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
