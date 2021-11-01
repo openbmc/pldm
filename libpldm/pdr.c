@@ -1,6 +1,7 @@
 #include "pdr.h"
 #include "platform.h"
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -535,6 +536,47 @@ void pldm_entity_association_tree_destroy(pldm_entity_association_tree *tree)
 	free(tree);
 }
 
+void pldm_entity_association_tree_delete_node(
+    pldm_entity_association_tree *tree, pldm_entity entity)
+{
+	printf("\nenter pldm_entity_association_tree_delete_node");
+	pldm_entity_node *node = NULL;
+	pldm_find_entity_ref_in_tree(tree, entity, &node);
+	printf(
+	    "\nfound node to delete "
+	    "node->entity.entity_type=%d,node->entity.entity_instance_num=%d",
+	    node->entity.entity_type, node->entity.entity_instance_num);
+	pldm_entity_node *parent = NULL;
+	pldm_find_entity_ref_in_tree(tree, node->parent, &parent);
+	printf("\nfound parent");
+	pldm_entity_node *start = parent->first_child;
+	pldm_entity_node *prev = parent->first_child;
+	while (start != NULL) {
+		pldm_entity current_entity;
+		current_entity.entity_type = start->entity.entity_type;
+		current_entity.entity_instance_num =
+		    start->entity.entity_instance_num;
+		current_entity.entity_container_id =
+		    start->entity.entity_container_id;
+		if (current_entity.entity_type == entity.entity_type &&
+		    current_entity.entity_instance_num ==
+			entity.entity_instance_num &&
+		    current_entity.entity_container_id ==
+			entity.entity_container_id) {
+			break;
+		}
+		prev = start;
+		start = start->next_sibling;
+	}
+	if (start == parent->first_child) {
+		parent->first_child = start->next_sibling;
+	} else {
+		prev->next_sibling = start->next_sibling;
+	}
+	start->next_sibling = NULL;
+	entity_association_tree_destroy(node);
+}
+
 inline bool pldm_entity_is_node_parent(pldm_entity_node *node)
 {
 	assert(node != NULL);
@@ -841,6 +883,104 @@ void pldm_pdr_remove_remote_pdrs(pldm_pdr *repo)
 		record = next;
 	}
 
+	if (removed == true) {
+		record = repo->first;
+		uint32_t record_handle = 0;
+		while (record != NULL) {
+			record->record_handle = ++record_handle;
+			if (record->data != NULL) {
+				struct pldm_pdr_hdr *hdr =
+				    (struct pldm_pdr_hdr *)(record->data);
+				hdr->record_handle =
+				    htole32(record->record_handle);
+			}
+			record = record->next;
+		}
+	}
+}
+
+void pldm_pdr_remove_entity_association_pdrs_by_terminus_handle(
+    uint32_t terminus_handle, pldm_pdr *repo,
+    pldm_entity_association_tree *tree)
+{
+	printf("\n Inside "
+	       "pldm_pdr_remove_entity_association_pdrs_by_terminus_handle "
+	       "function");
+	assert(repo != NULL);
+
+	bool removed = false;
+
+	pldm_pdr_record *record = repo->first;
+	pldm_pdr_record *prev = NULL;
+
+	while (record != NULL) {
+		pldm_pdr_record *next = record->next;
+		if (record->terminus_handle == terminus_handle) {
+			printf("\nwhen terminus handle found");
+			struct pldm_pdr_hdr *hdr =
+			    (struct pldm_pdr_hdr *)record->data;
+			if (hdr->type == PLDM_PDR_ENTITY_ASSOCIATION) {
+				printf("\nwhen its a entity association PDR");
+				struct pldm_pdr_entity_association *pdr =
+				    (struct pldm_pdr_entity_association
+					 *)((uint8_t *)record->data +
+					    sizeof(struct pldm_pdr_hdr));
+				// printf("\ntree_init");
+				// auto tree =
+				// pldm_entity_association_tree_init();
+				printf("calling tree delete node");
+
+				printf("\nContainer id:%d", pdr->container_id);
+				printf("\nAssociation Type:%d",
+				       (uint16_t)(pdr->association_type));
+				printf("\nNumber of children:%d",
+				       (uint16_t)(pdr->num_children));
+
+				pldm_entity removeEntity;
+				removeEntity.entity_type =
+				    pdr->container.entity_type;
+				removeEntity.entity_instance_num =
+				    pdr->container.entity_instance_num;
+				removeEntity.entity_container_id =
+				    pdr->container.entity_container_id;
+				printf("\nEntity type:%d",
+				       removeEntity.entity_type);
+				printf("\nEntity Instance Number:%d",
+				       removeEntity.entity_instance_num);
+				printf("\nEntity Container Id:%d",
+				       removeEntity.entity_container_id);
+
+				printf("\nafter assigning the entities");
+				pldm_entity_association_tree_delete_node(
+				    tree, removeEntity);
+
+				// pldm_entity_node *node =
+				// pldm_entity_association_tree_find(tree,
+				// pdr->container);
+				if (repo->first == record) {
+					repo->first = next;
+				} else {
+					prev->next = next;
+				}
+				if (repo->last == record) {
+					repo->last = prev;
+				}
+				if (record->data) {
+					free(record->data);
+				}
+				--repo->record_count;
+				repo->size -= record->size;
+				printf("\n freeing the record");
+				free(record);
+				removed = true;
+			} else {
+				prev = record;
+			}
+		} else {
+			prev = record;
+		}
+		record = next;
+	}
 	if (removed == true) {
 		record = repo->first;
 		uint32_t record_handle = 0;

@@ -54,13 +54,15 @@ class Handler : public CmdHandler
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
             pldm::responder::oem_platform::Handler* oemPlatformHandler,
-            sdeventplus::Event& event, bool buildPDRLazily = false,
+            pldm_entity_association_tree* entityTree, sdeventplus::Event& event,
+            bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        event(event), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
+        entityTree(entityTree), event(event), pdrJsonsDir(pdrJsonsDir),
+        pdrCreated(false)
     {
         if (!buildPDRLazily)
         {
@@ -457,6 +459,7 @@ class Handler : public CmdHandler
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+    pldm_entity_association_tree* entityTree;
     sdeventplus::Event& event;
     std::string pdrJsonsDir;
     bool pdrCreated;

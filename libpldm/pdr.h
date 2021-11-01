@@ -261,6 +261,13 @@ pldm_entity_node *pldm_entity_association_tree_add(
     uint16_t entity_instance_number, pldm_entity_node *parent,
     uint8_t association_type);
 
+void pldm_entity_association_tree_delete_node(
+    pldm_entity_association_tree *tree, pldm_entity entity);
+
+void pldm_pdr_remove_entity_association_pdrs_by_terminus_handle(
+    uint32_t terminus_handle, pldm_pdr *repo,
+    pldm_entity_association_tree *tree);
+
 /** @brief Visit and note each entity in the entity association tree
  *
  *  @param[in] tree - opaque pointer acting as a handle to the tree

@@ -473,6 +473,8 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                                        uint8_t /*formatVersion*/, uint8_t tid,
                                        size_t eventDataOffset)
 {
+    std::cerr << "Got a repo change event from hos with TID:" << (uint16_t)tid
+              << std::endl;
     uint8_t eventDataFormat{};
     uint8_t numberOfChangeRecords{};
     size_t dataOffset{};
@@ -490,6 +492,9 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
 
     PDRRecordHandles pdrRecordHandles;
+
+    std::cerr << "Event data format is:" << (uint16_t)eventDataFormat
+              << std::endl;
 
     if (eventDataFormat == FORMAT_IS_PDR_TYPES)
     {
@@ -515,6 +520,8 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                 return rc;
             }
 
+            std::cerr << "event data operation is:"
+                      << (uint16_t)eventDataOperation << std::endl;
             if (eventDataOperation == PLDM_RECORDS_ADDED)
             {
                 rc = getPDRRecordHandles(
@@ -543,11 +550,14 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
     if (hostPDRHandler)
     {
+        std::cerr << "fetch the host pdrs" << std::endl;
         // if we get a Repository change event with the eventDataFormat
         // as REFRESH_ENTIRE_REPOSITORY, then delete all the PDR's that
         // have the matched Terminus handle
         if (eventDataFormat == REFRESH_ENTIRE_REPOSITORY)
         {
+            std::cerr << " event data format is REFRESH_ENTIRE_REPOSITORY"
+                      << std::endl;
             // We cannot get the Repo change event from the Terminus
             // that is not already added to the BMC repository
 
@@ -556,8 +566,16 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
             {
                 if (std::get<0>(terminusInfo) == tid)
                 {
-                    pldm_pdr_remove_pdrs_by_terminus_handle(terminusHandle,
-                                                            pdrRepo.getPdr());
+                    std::cerr
+                        << "Got refresh entire repo from tid:" << (uint16_t)tid
+                        << std::endl;
+                    //  pldm_pdr_remove_pdrs_by_terminus_handle(terminusHandle,
+                    //                                        pdrRepo.getPdr());
+                    std::cerr
+                        << "calling the pldm_pdr_remove_entity_association_pdrs_by_terminus_handle from platfrom.cpp"
+                        << std::endl;
+                    pldm_pdr_remove_entity_association_pdrs_by_terminus_handle(
+                        terminusHandle, pdrRepo.getPdr(), entityTree);
                 }
             }
         }

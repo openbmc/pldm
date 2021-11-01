@@ -456,6 +456,23 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
 
             if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
             {
+                size_t numEntities{};
+                pldm_entity* entities = nullptr;
+                pldm_entity_association_pdr_extract(pdr.data(), pdr.size(),
+                                                    &numEntities, &entities);
+
+                std::cerr << "begin ...\n";
+                for (size_t i = 0; i < numEntities; ++i)
+                {
+                    std::cerr << "entity_type : " << entities[i].entity_type
+                              << std::endl;
+                    std::cerr << "entity instance num : "
+                              << entities[i].entity_instance_num << std::endl;
+                    std::cerr
+                        << "container id : " << entities[i].entity_container_id
+                        << std::endl;
+                }
+                std::cerr << "end...\n";
                 this->mergeEntityAssociations(pdr);
                 merged = true;
             }
