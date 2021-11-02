@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0dbcfc11_7594516d",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-02T15:01:05Z",
+      "side": 1,
+      "message": "@zach Is this the same state set ID used as the semantic ID for the numeric effecters created by BMC. I had named it this way https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/46860/10/oem/ibm/libpldm/state_set.h#15\nIf its used for the same purpose then, we can pick any one of them.",
+      "range": {
+        "startLine": 17,
+        "startChar": 33,
+        "endLine": 17,
+        "endChar": 38
+      },
+      "revId": "1eee328bb56e9278aa7be0fa7b3697abe7d7b306",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
