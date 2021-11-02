@@ -91,12 +91,14 @@ HostPDRHandler::HostPDRHandler(
     pldm::host_effecters::HostEffecterParser* hostEffecterParser,
     Requester& requester,
     pldm::requester::Handler<pldm::requester::Request>* handler,
+    pldm::host_associations::HostAssociationsParser* associationsParser,
     pldm::responder::oem_platform::Handler* oemPlatformHandler) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), hostEffecterParser(hostEffecterParser),
     requester(requester), handler(handler),
+    associationsParser(associationsParser),
     oemPlatformHandler(oemPlatformHandler)
 {
     mergedHostParents = false;
@@ -1328,6 +1330,34 @@ void HostPDRHandler::setPresentPropertyStatus(const std::string& path)
     CustomDBus::getCustomDBus().updateItemPresentStatus(path);
 }
 
+void HostPDRHandler::setFRUAssociations(
+    const std::string& parentPath,
+    const std::vector<std::tuple<pldm::host_associations::entity, std::string,
+                                 std::string>>& child)
+{
+    std::cerr << "Entered the set fru associations\n";
+    std::vector<std::tuple<std::string, std::string, std::string>> associations;
+    for (const auto& c : child)
+    {
+        pldm::host_associations::entity expectedchild = std::get<0>(c);
+        for (const auto& [childPath, node] : objPathMap)
+        {
+            pldm_entity childentity = pldm_entity_extract(node);
+            if (childentity.entity_type == expectedchild.entity_type &&
+                childentity.entity_instance_num ==
+                    expectedchild.entity_instance_num &&
+                childentity.entity_container_id ==
+                    expectedchild.entity_container_id)
+            {
+                auto associationTuple =
+                    std::make_tuple(std::get<1>(c), std::get<2>(c), childPath);
+                associations.push_back(associationTuple);
+            }
+        }
+    }
+    CustomDBus::getCustomDBus().setAssociations(parentPath, associations);
+}
+
 void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
     getFRURecordTableMetadataByHost(fruRecordSetPDRs);
@@ -1383,6 +1413,27 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
                     entity.first);
             default:
                 break;
+        }
+
+        // Establish the Associations across various FRU's
+        std::cerr << "trying to set the associations" << std::endl;
+        for (const auto& [parentAssoc, childAssoc] :
+             associationsParser->associationsInfoMap)
+        {
+            if (node.entity_type == parentAssoc.entity_type &&
+                node.entity_instance_num == parentAssoc.entity_instance_num &&
+                node.entity_container_id == parentAssoc.entity_container_id)
+            {
+                // parent matches , so implement the child Associations on the
+                // parent dbus object path
+
+                // iterate over child associtons - as there can be mutiple
+                // entity,forward,reverse
+                std::cerr << "set fru associations for parent : "
+                          << entity.first << std::endl;
+                setFRUAssociations(entity.first, childAssoc);
+                break;
+            }
         }
     }
 }

@@ -1,0 +1,287 @@
+{
+	"associations":
+	[
+		{
+			"entity_type": 45,
+			"entity_instance": 15363,
+			"entity_container_id": 1,
+			"associate": 
+			[
+				{
+					"entity_type": 123,
+					"entity_instance": 1,
+					"entity_container_id": 32786,
+					"association_details": [
+						"assembly",
+						"inventory"
+					]
+				},
+				{
+					"entity_type": 123,
+					"entity_instance": 1,
+					"entity_container_id": 32787,
+					"association_details": [
+						"assembly",
+						"inventory"
+					]
+				},
+				{
+					"entity_type": 93,
+					"entity_instance": 1,
+					"entity_container_id": 32785,
+					"association_details": [
+						"all_sensors",
+						"chassis"
+					]
+				},
+				{
+					"entity_type": 93,
+					"entity_instance": 2,
+					"entity_container_id": 32785,
+					"association_details": [
+						"all_sensors",
+						"chassis"
+					]
+				},
+				{
+					"entity_type": 93,
+					"entity_instance": 3,
+					"entity_container_id": 32785,
+					"association_details": [
+						"all_sensors",
+						"chassis"
+					]
+				},
+				{
+					"entity_type": 93,
+					"entity_instance": 4,
+					"entity_container_id": 32785,
+					"association_details": [
+						"all_sensors",
+						"chassis"
+					]
+				},
+				{
+					"entity_type": 80,
+					"entity_instance": 1,
+					"entity_container_id": 32785,
+					"association_details": [
+						"assembly",
+						"chassis"
+					]
+				},
+				{
+					"entity_type": 80,
+					"entity_instance": 2,
+					"entity_container_id": 32785,
+					"association_details": [
+						"assembly",
+						"chassis"
+					]
+				},
+				{
+					"entity_type": 64,
+					"entity_instance": 3,
+					"entity_container_id": 32785,
+					"association_details": [
+						"assembly",
+						"chassis"
+					]
+				},
+				{
+					"entity_type": 63,
+					"entity_instance": 1,
+					"entity_container_id": 32788,
+					"association_details": [
+						"assembly",
+						"chassis"
+					]
+				}
+			]
+		},
+		{
+			"entity_type": 120,
+			"entity_instance": 1,
+			"entity_container_id": 32785,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		},
+		{
+			"entity_type": 120,
+			"entity_instance": 2,
+			"entity_container_id": 32785,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 1,
+			"entity_container_id": 32786,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 2,
+			"entity_container_id": 32786,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 3,
+			"entity_container_id": 32786,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 4,
+			"entity_container_id": 32786,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 5,
+			"entity_container_id": 32786,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 6,
+			"entity_container_id": 32786,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 1,
+			"entity_container_id": 32787,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 2,
+			"entity_container_id": 32787,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 3,
+			"entity_container_id": 32787,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 4,
+			"entity_container_id": 32787,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 5,
+			"entity_container_id": 32787,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}, {
+			"entity_type": 186,
+			"entity_instance": 6,
+			"entity_container_id": 32787,
+			"associate": [{
+				"entity_type": 45,
+				"entity_instance": 15363,
+				"entity_container_id": 1,
+				"association_details": [
+					"chassis",
+					"inventory"
+				]
+			}]
+		}
+	]
+}
