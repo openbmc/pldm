@@ -70,6 +70,75 @@ void CustomDBus::updateItemPresentStatus(const std::string& path)
     presentStatus.at(path)->prettyName(ObjectPath.filename());
 }
 
+void CustomDBus::implementChassisInterface(const std::string& path)
+{
+    if (chassis.find(path) == chassis.end())
+    {
+        chassis.emplace(path,
+                        std::make_unique<ItemChassis>(
+                            pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
+void CustomDBus::implementPCIeSlotInterface(const std::string& path)
+{
+    if (pcieSlot.find(path) == pcieSlot.end())
+    {
+        pcieSlot.emplace(
+            path, std::make_unique<ItemSlot>(pldm::utils::DBusHandler::getBus(),
+                                             path.c_str()));
+    }
+}
+
+void CustomDBus::implementMotherboardInterface(const std::string& path)
+{
+    if (motherboard.find(path) == motherboard.end())
+    {
+        motherboard.emplace(
+            path, std::make_unique<ItemMotherboard>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+void CustomDBus::implementPowerSupplyInterface(const std::string& path)
+{
+    if (powersupply.find(path) == powersupply.end())
+    {
+        powersupply.emplace(
+            path, std::make_unique<ItemPowerSupply>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
+void CustomDBus::implementFanInterface(const std::string& path)
+{
+    if (fan.find(path) == fan.end())
+    {
+        fan.emplace(
+            path, std::make_unique<ItemFan>(pldm::utils::DBusHandler::getBus(),
+                                            path.c_str()));
+    }
+}
+
+void CustomDBus::implementConnecterInterface(const std::string& path)
+{
+    if (connector.find(path) == connector.end())
+    {
+        connector.emplace(
+            path, std::make_unique<ItemConnector>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
+void CustomDBus::implementVRMInterface(const std::string& path)
+{
+    if (vrm.find(path) == vrm.end())
+    {
+        vrm.emplace(
+            path, std::make_unique<ItemVRM>(pldm::utils::DBusHandler::getBus(),
+                                            path.c_str()));
+    }
+}
+
 void CustomDBus::implementCpuCoreInterface(const std::string& path)
 {
     if (cpuCore.find(path) == cpuCore.end())
@@ -78,6 +147,26 @@ void CustomDBus::implementCpuCoreInterface(const std::string& path)
             path, std::make_unique<CoreIntf>(pldm::utils::DBusHandler::getBus(),
                                              path.c_str()));
         implementObjectEnableIface(path);
+    }
+}
+
+void CustomDBus::implementFabricAdapter(const std::string& path)
+{
+    if (fabricAdapter.find(path) == fabricAdapter.end())
+    {
+        fabricAdapter.emplace(
+            path, std::make_unique<ItemFabricAdapter>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
+void CustomDBus::implementBoard(const std::string& path)
+{
+    if (board.find(path) == board.end())
+    {
+        board.emplace(path,
+                      std::make_unique<ItemBoard>(
+                          pldm::utils::DBusHandler::getBus(), path.c_str()));
     }
 }
 
