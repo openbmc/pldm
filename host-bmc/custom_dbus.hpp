@@ -10,7 +10,16 @@
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Board/Motherboard/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Board/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Chassis/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Connector/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/CpuCore/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/FabricAdapter/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Fan/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/PCIeSlot/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/PowerSupply/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Vrm/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/server.hpp>
 #include <xyz/openbmc_project/Led/Group/server.hpp>
 #include <xyz/openbmc_project/Object/Enable/server.hpp>
@@ -43,6 +52,25 @@ using AssertedIntf = sdbusplus::server::object::object<
     sdbusplus::xyz::openbmc_project::Led::server::Group>;
 using AssociationsIntf =
     sdbusplus::xyz::openbmc_project::Association::server::Definitions;
+using ItemChassis = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Chassis>;
+using ItemFan = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Fan>;
+using ItemConnector = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Connector>;
+using ItemVRM = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Vrm>;
+using ItemSlot = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::PCIeSlot>;
+using ItemMotherboard = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::Board::server::
+        Motherboard>;
+using ItemPowerSupply = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::PowerSupply>;
+using ItemFabricAdapter = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::FabricAdapter>;
+using ItemBoard = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
 
 using Associations =
     std::vector<std::tuple<std::string, std::string, std::string>>;
@@ -168,6 +196,27 @@ class CustomDBus
      */
     void implementCpuCoreInterface(const std::string& path);
 
+    /** @brief Implement Chassis Interface
+     *  @param[in] path - the object path
+     */
+    void implementChassisInterface(const std::string& path);
+
+    void implementPCIeSlotInterface(const std::string& path);
+
+    void implementPowerSupplyInterface(const std::string& path);
+
+    void implementFanInterface(const std::string& path);
+
+    void implementConnecterInterface(const std::string& path);
+
+    void implementVRMInterface(const std::string& path);
+
+    void implementMotherboardInterface(const std::string& path);
+
+    void implementFabricAdapter(const std::string& path);
+
+    void implementBoard(const std::string& path);
+
     /**
      * @brief Implement the xyz.openbmc_project.Object.Enable interface
      *
@@ -233,6 +282,19 @@ class CustomDBus
 
     /** @brief Used to hold the objects which will contain EnableIface */
     std::unordered_map<ObjectPath, std::unique_ptr<EnableIface>> _enabledStatus;
+
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemChassis>> chassis;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemConnector>> connector;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemFan>> fan;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemVRM>> vrm;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemMotherboard>>
+        motherboard;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemSlot>> pcieSlot;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemPowerSupply>>
+        powersupply;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemFabricAdapter>>
+        fabricAdapter;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemBoard>> board;
 };
 
 } // namespace dbus

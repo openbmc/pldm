@@ -1343,9 +1343,46 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
         pldm_entity node = pldm_entity_extract(entity.second);
         // update the Present Property
         setPresentPropertyStatus(entity.first);
-        if (node.entity_type == (PLDM_ENTITY_PROC | 0x8000))
+        switch (node.entity_type)
         {
-            CustomDBus::getCustomDBus().implementCpuCoreInterface(entity.first);
+            case 32903:
+                CustomDBus::getCustomDBus().implementCpuCoreInterface(
+                    entity.first);
+                break;
+            case PLDM_ENTITY_SYSTEM_CHASSIS:
+                CustomDBus::getCustomDBus().implementChassisInterface(
+                    entity.first);
+                break;
+            case PLDM_ENTITY_POWER_SUPPLY:
+                CustomDBus::getCustomDBus().implementPowerSupplyInterface(
+                    entity.first);
+                break;
+            case PLDM_ENTITY_FAN:
+                CustomDBus::getCustomDBus().implementFanInterface(entity.first);
+                break;
+            case PLDM_ENTITY_SYS_BOARD:
+                CustomDBus::getCustomDBus().implementMotherboardInterface(
+                    entity.first);
+                break;
+            case PLDM_ENTITY_POWER_CONVERTER:
+                CustomDBus::getCustomDBus().implementVRMInterface(entity.first);
+                break;
+            case PLDM_ENTITY_SLOT:
+                CustomDBus::getCustomDBus().implementPCIeSlotInterface(
+                    entity.first);
+                break;
+            case PLDM_ENTITY_CONNECTOR:
+                CustomDBus::getCustomDBus().implementConnecterInterface(
+                    entity.first);
+                break;
+            case PLDM_ENTITY_SYS_MGMT_MODULE:
+                CustomDBus::getCustomDBus().implementBoard(entity.first);
+                break;
+            case PLDM_ENTITY_IO_MODULE:
+                CustomDBus::getCustomDBus().implementFabricAdapter(
+                    entity.first);
+            default:
+                break;
         }
     }
 }
