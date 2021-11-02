@@ -46,6 +46,30 @@
       "revId": "1eee328bb56e9278aa7be0fa7b3697abe7d7b306",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a75f259e_2b2b5383",
+        "filename": "oem/ibm/libpldm/state_set.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-11-02T15:09:13Z",
+      "side": 1,
+      "message": "Wait actually no, it is different. This is for runtime HRESET, the one you have is for SBE dumps at IPL time. So we need both different numbers.",
+      "parentUuid": "127046fb_e50dd8d2",
+      "range": {
+        "startLine": 17,
+        "startChar": 33,
+        "endLine": 17,
+        "endChar": 38
+      },
+      "revId": "1eee328bb56e9278aa7be0fa7b3697abe7d7b306",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
