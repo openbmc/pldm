@@ -2,10 +2,12 @@
 
 #include "libpldm/base.h"
 #include "libpldm/platform.h"
+#include "libpldm/state_set.h"
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "dbus_to_host_effecters.hpp"
+#include "host_associations_parser.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -98,6 +100,7 @@ class HostPDRHandler
         pldm::host_effecters::HostEffecterParser* hostEffecterParser,
         pldm::dbus_api::Requester& requester,
         pldm::requester::Handler<pldm::requester::Request>* handler,
+        pldm::host_associations::HostAssociationsParser* asscoationsParser,
         pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
     /** @brief fetch PDRs from host firmware. See @class.
@@ -224,6 +227,10 @@ class HostPDRHandler
         const std::vector<responder::pdr_utils::FruRecordDataFormat>&
             fruRecordData);
 
+    void setFRUAssociations(
+        const std::string& parentPath,
+        const std::vector<std::tuple<pldm::host_associations::entity,
+                                     std::string, std::string>>& child);
     /** @brief Get FRU record table by host
      *
      *  @return
@@ -316,6 +323,8 @@ class HostPDRHandler
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
+
+    pldm::host_associations::HostAssociationsParser* associationsParser;
 
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> pdrFetchEvent;
