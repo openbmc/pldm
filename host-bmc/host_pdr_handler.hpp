@@ -114,6 +114,8 @@ class HostPDRHandler
 
     void fetchPDR(PDRRecordHandles&& recordHandles, bool isModified);
 
+    void deletePDRFromRepo(PDRRecordHandles&& recordHandles);
+
     /** @brief Send a PLDM event to host firmware containing a list of record
      *  handles of PDRs that the host firmware has to fetch.
      *  @param[in] pdrTypes - list of PDR types that need to be looked up in the

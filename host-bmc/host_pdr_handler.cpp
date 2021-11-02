@@ -500,18 +500,18 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
 
             if (isHostPdrModified)
             {
-                if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
-                {
-                    auto prevRh = pldm_pdr_find_prev_record_handle(repo, rh);
-                    // pldm_delete_by_record_handle to delete
-                    // the effecter from the repo using record handle.
-                    pldm_delete_by_record_handle(repo, rh, true);
+                auto prevRh = pldm_pdr_find_prev_record_handle(repo, rh);
+                // pldm_delete_by_record_handle to delete
+                // the effecter from the repo using record handle.
+                // CHANGE this api to return true/false based on action
+                // whether it could delete or did not find the rh
+                pldm_delete_by_record_handle(repo, rh, true);
 
-                    // call pldm_pdr_add_after_prev_record to add the
-                    // record into the repo from where it was deleted
-                    pldm_pdr_add_after_prev_record(repo, pdr.data(), respCount,
-                                                   rh, true, prevRh);
-                }
+                // call pldm_pdr_add_after_prev_record to add the
+                // record into the repo from where it was deleted
+                // CALL THE below api only if delete returns true
+                pldm_pdr_add_after_prev_record(repo, pdr.data(), respCount, rh,
+                                               true, prevRh);
             }
 
             if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
@@ -1208,4 +1208,13 @@ void HostPDRHandler::setOemPlatformHandler(
 {
     oemPlatformHandler = handler;
 }
+
+void HostPDRHandler::deletePDRFromRepo(PDRRecordHandles&& recordHandles)
+{
+    for (auto& recordHandle : recordHandles)
+    {
+        pldm_delete_by_record_handle(repo, recordHandle, true);
+    }
+}
+
 } // namespace pldm

@@ -489,6 +489,7 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                                        uint8_t /*tid*/, size_t eventDataOffset)
 {
     uint8_t eventDataFormat{};
+    uint8_t eventDataOperation{};
     uint8_t numberOfChangeRecords{};
     size_t dataOffset{};
     bool isModified = false;
@@ -514,7 +515,6 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
 
     if (eventDataFormat == FORMAT_IS_PDR_HANDLES)
     {
-        uint8_t eventDataOperation{};
         uint8_t numberOfChangeEntries{};
 
         auto changeRecordData = eventData + dataOffset;
@@ -531,7 +531,8 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                 return rc;
             }
 
-            if (eventDataOperation == PLDM_RECORDS_ADDED)
+            if (eventDataOperation == PLDM_RECORDS_ADDED ||
+                eventDataOperation == PLDM_RECORDS_DELETED)
             {
                 rc = getPDRRecordHandles(
                     reinterpret_cast<const ChangeEntry*>(changeRecordData +
@@ -569,7 +570,14 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
     }
     if (hostPDRHandler)
     {
-        hostPDRHandler->fetchPDR(std::move(pdrRecordHandles), isModified);
+        if (eventDataOperation == PLDM_RECORDS_DELETED)
+        {
+            hostPDRHandler->deletePDRFromRepo(std::move(pdrRecordHandles));
+        }
+        else
+        {
+            hostPDRHandler->fetchPDR(std::move(pdrRecordHandles), isModified);
+        }
     }
 
     return PLDM_SUCCESS;
