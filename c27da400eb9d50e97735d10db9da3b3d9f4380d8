@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d4d542e_dd8723c9",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3487,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-11-03T04:10:54Z",
+      "side": 1,
+      "message": "Instance number should start withe 1 and should increase",
+      "revId": "c27da400eb9d50e97735d10db9da3b3d9f4380d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b4780ac_91ca2ec2",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3496,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-11-03T04:10:54Z",
+      "side": 1,
+      "message": "We need to set xyz.openbmc_project.State.Decorator.OperationalStatus --\u003e Functional property on the system level D-Bus : /xyz/openbmc_project/inventory/system",
+      "revId": "c27da400eb9d50e97735d10db9da3b3d9f4380d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b45d7810_f669a78f",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3515,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-11-03T04:10:54Z",
+      "side": 1,
+      "message": "We need to set xyz.openbmc_project.State.Decorator.OperationalStatus --\u003e Functional property on the system level D-Bus : /xyz/openbmc_project/inventory/system",
+      "revId": "c27da400eb9d50e97735d10db9da3b3d9f4380d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90398c72_7c8d003f",
+        "filename": "configurations/pdr/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3550,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-11-03T04:10:54Z",
+      "side": 1,
+      "message": "Instance number should start withe 1 and should increase",
+      "revId": "c27da400eb9d50e97735d10db9da3b3d9f4380d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
