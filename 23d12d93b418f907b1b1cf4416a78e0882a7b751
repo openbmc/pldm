@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c78b9f96_d9586294",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-11-04T10:58:34Z",
+      "side": 1,
+      "message": "space alignment",
+      "range": {
+        "startLine": 1042,
+        "startChar": 2,
+        "endLine": 1042,
+        "endChar": 22
+      },
+      "revId": "23d12d93b418f907b1b1cf4416a78e0882a7b751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
