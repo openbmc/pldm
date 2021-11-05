@@ -22,6 +22,30 @@
       "revId": "6d802a3c35f114c4c81d6cee7fbf7cb1f10a3656",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14496b75_109d298f",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000870
+      },
+      "writtenOn": "2021-11-05T14:34:51Z",
+      "side": 1,
+      "message": "I mimicked hb_debug_console, which uses dashes not underscores.",
+      "parentUuid": "ab523ee3_96a45652",
+      "range": {
+        "startLine": 140,
+        "startChar": 26,
+        "endLine": 140,
+        "endChar": 46
+      },
+      "revId": "6d802a3c35f114c4c81d6cee7fbf7cb1f10a3656",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
