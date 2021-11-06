@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "8b287705_75c5ec16",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T08:52:46Z",
+      "side": 1,
+      "message": "I have changed this logic - to not use an ever incrementing a number, instead the numbers is reset after it becomes max number.",
+      "parentUuid": "aa74da87_e2dcbf91",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dd5d190b_4f8da64e",
         "filename": "common/flight_recorder.hpp",
         "patchSetId": 10
@@ -160,6 +178,24 @@
     },
     {
       "key": {
+        "uuid": "92861104_95f4ab60",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T08:52:46Z",
+      "side": 1,
+      "message": "\u003e I much prefer we keep it in /tmp, because it it tmpfs.\n\u003e \n\u003e 1. If we run out of space a reboot of the bmc will recover.\n\u003e 2. Most NOR based systems actually have more RAM that can be used by tmpfs than flash space dedicated to all writable persisten storage (often 4-8MB).\n\u003e 3. If persistent storage is filled it may only be possible to recover with a factory reset wiping all data.\n\nAgree on all of that. and more i feel /tmp would be better as well. And we can think about the alternatives when we get to a place when we hit problems.",
+      "parentUuid": "676880f7_7b7d1b55",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cf417584_c3901bcf",
         "filename": "meson.build",
         "patchSetId": 10
@@ -207,6 +243,24 @@
       "side": 1,
       "message": "you could have code that detects 0 explicitly, saving an additional prompt to the user.\nif that affects too many places you could make a derived bool from the config value.",
       "parentUuid": "20551900_aca10b9f",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dbafec1_b6b4be31",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T08:52:46Z",
+      "side": 1,
+      "message": "\u003e you could have code that detects 0 explicitly, saving an additional prompt to the user.\n\u003e if that affects too many places you could make a derived bool from the config value.\n\nDone, i have derived a bool out of 0, so with the latest patchset it disables saving messages into the flight recorder buffer.",
+      "parentUuid": "61cd881d_6ec1356e",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -295,6 +349,24 @@
       "side": 1,
       "message": "is there an inherent limit due to size of the message size field?  or is it 32 bits or more?",
       "parentUuid": "d93b662c_374fea73",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07ec2659_4acbfa32",
+        "filename": "meson_options.txt",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T08:52:46Z",
+      "side": 1,
+      "message": "\u003e is there an inherent limit due to size of the message size field?  or is it 32 bits or more?\n\nNope certain PLDM messages can be bigger, like for example PLDM File IO commands transfer around 120K messages , which will be split by the mctp in the transport layer based on the MCTP MTU.",
+      "parentUuid": "3b2a2a4b_1ba9e6d5",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true

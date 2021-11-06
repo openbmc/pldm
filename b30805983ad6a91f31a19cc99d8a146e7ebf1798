@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "b0a4e53b_29aa35c1",
+        "filename": "common/utils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T08:52:46Z",
+      "side": 1,
+      "message": "\u003e Please don\u0027t hide  time zone conversion in a utility.\nDone.",
+      "parentUuid": "cbc37cd1_00e59512",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f263cedc_5e01f998",
         "filename": "meson_options.txt",
         "patchSetId": 16
@@ -48,6 +66,24 @@
       "writtenOn": "2021-08-13T16:35:14Z",
       "side": 1,
       "message": "size is usually in bytes, but this is a count of messages.  fightrecorder-entries? -max-entries?",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b03ec554_c4422399",
+        "filename": "meson_options.txt",
+        "patchSetId": 16
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T08:52:46Z",
+      "side": 1,
+      "message": "\u003e size is usually in bytes, but this is a count of messages.  fightrecorder-entries? -max-entries?\n\nDone, changed it to flightrecorder-max-entiries.",
+      "parentUuid": "f263cedc_5e01f998",
       "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -101,6 +137,24 @@
       "side": 1,
       "message": "The text in the c++ standard says you can call exit, interact with atomics and constants but its undefined to do just about anything else using the standard library (unless the signal was sent by the thread itself from raise, which this is not -- its cross program signal delivery).\n\nThis is becasue a signal is basically an interrupt context and may arrive in the middle of statements when data structures are in an inconsistent state (internal state assumptions are not met as during the addition and deletion of modules).\n\nWhile it will appear to work, especially on a mostly idle interface where the request rate is low, we can expect random calls to abort(), infinite loops, address errors, and worse.\n\nMy suggestion is to move the signal to the eventloop by using a signalfd to convert the signal into a read on a (special) file descriptor.  This would not be as reliable",
       "parentUuid": "d155dd35_15217916",
+      "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "093df6bd_5beff30a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T08:52:46Z",
+      "side": 1,
+      "message": "\u003e The text in the c++ standard says you can call exit, interact with atomics and constants but its undefined to do just about anything else using the standard library (unless the signal was sent by the thread itself from raise, which this is not -- its cross program signal delivery).\n\u003e \n\u003e This is becasue a signal is basically an interrupt context and may arrive in the middle of statements when data structures are in an inconsistent state (internal state assumptions are not met as during the addition and deletion of modules).\n\u003e \n\u003e While it will appear to work, especially on a mostly idle interface where the request rate is low, we can expect random calls to abort(), infinite loops, address errors, and worse.\n\u003e \n\u003e My suggestion is to move the signal to the eventloop by using a signalfd to convert the signal into a read on a (special) file descriptor.  This would not be as reliable\n\nDone, I a have made changes to move the signal to the eventloop.",
+      "parentUuid": "46df9784_508223cc",
       "revId": "b30805983ad6a91f31a19cc99d8a146e7ebf1798",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
