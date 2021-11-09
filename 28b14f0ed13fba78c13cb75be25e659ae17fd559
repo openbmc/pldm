@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "1cb01e76_3272787f",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3651,
+      "author": {
+        "id": 1001256
+      },
+      "writtenOn": "2021-11-09T19:59:43Z",
+      "side": 1,
+      "message": "Can we add a semantic id for this PDR so that Hostboot can look it up?\n\nI think 32779 is available",
+      "revId": "28b14f0ed13fba78c13cb75be25e659ae17fd559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f762f38f_b53e9a86",
         "filename": "configurations/pdr/11.json",
         "patchSetId": 1
