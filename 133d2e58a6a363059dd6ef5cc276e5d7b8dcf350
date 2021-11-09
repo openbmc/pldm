@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f97ee5f_a0130eeb",
+        "filename": "common/utils.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-09T21:28:45Z",
+      "side": 1,
+      "message": "There is no reason to have a function return a const r-value.  And you can\u0027t have it return an l-value or reference because you\u0027re creating it inside the function (and that is typically bad practice anyhow).",
+      "range": {
+        "startLine": 529,
+        "startChar": 0,
+        "endLine": 529,
+        "endChar": 5
+      },
+      "revId": "133d2e58a6a363059dd6ef5cc276e5d7b8dcf350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f5d22ca_ac545f29",
+        "filename": "common/utils.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-09T21:28:45Z",
+      "side": 1,
+      "message": "Why in the world is there all this casting?  Doesn\u0027t system_clock::now return you a time_point??",
+      "range": {
+        "startLine": 531,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 42
+      },
+      "revId": "133d2e58a6a363059dd6ef5cc276e5d7b8dcf350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4e0d662_fd07e821",
+        "filename": "common/utils.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-09T21:28:45Z",
+      "side": 1,
+      "message": "Is all this really better than just using \u0027tp.hours()\u0027, etc?",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 76
+      },
+      "revId": "133d2e58a6a363059dd6ef5cc276e5d7b8dcf350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
