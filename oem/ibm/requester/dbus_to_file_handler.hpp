@@ -15,6 +15,8 @@ namespace requester
 {
 namespace oem_ibm
 {
+using ResDumpStatus = std::string;
+
 /** @class DbusToFileHandler
  *  @brief This class can process resource dump parameters and send PLDM
  *         new file available cmd to the hypervisor. This class can be used
