@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0323aa43_6b0d20bd",
+        "filename": "common/utils.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-10T10:01:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f97ee5f_a0130eeb",
+      "range": {
+        "startLine": 529,
+        "startChar": 0,
+        "endLine": 529,
+        "endChar": 5
+      },
+      "revId": "133d2e58a6a363059dd6ef5cc276e5d7b8dcf350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f5d22ca_ac545f29",
         "filename": "common/utils.cpp",
         "patchSetId": 24
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "685baf70_1c38e868",
+        "filename": "common/utils.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-10T10:01:37Z",
+      "side": 1,
+      "message": "look like i have over complicated the logic, you are correct. Done.",
+      "parentUuid": "7f5d22ca_ac545f29",
+      "range": {
+        "startLine": 531,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 42
+      },
+      "revId": "133d2e58a6a363059dd6ef5cc276e5d7b8dcf350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d4e0d662_fd07e821",
         "filename": "common/utils.cpp",
         "patchSetId": 24
@@ -59,6 +107,30 @@
       "writtenOn": "2021-11-09T21:28:45Z",
       "side": 1,
       "message": "Is all this really better than just using \u0027tp.hours()\u0027, etc?",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 76
+      },
+      "revId": "133d2e58a6a363059dd6ef5cc276e5d7b8dcf350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53e2deaa_72565bac",
+        "filename": "common/utils.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-10T10:01:37Z",
+      "side": 1,
+      "message": "I am not sure what API are you talking about, but the reason why i had to do this was to get the milliseconds, without milliseconds the time stamp is not very useful as the last 5 out of the 10 transactions that are stored in the pldm flight recorder would be having the exact same time in seconds.",
+      "parentUuid": "d4e0d662_fd07e821",
       "range": {
         "startLine": 544,
         "startChar": 0,
