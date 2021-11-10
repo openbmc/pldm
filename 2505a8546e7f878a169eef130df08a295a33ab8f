@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4a3b4ff4_9eaa40bf",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-11-10T06:44:52Z",
+      "side": 1,
+      "message": "this is supposed to say \"the side the Host would boot on the next reboot\", have changed that, thanks",
+      "parentUuid": "21f358bb_9abaffd8",
+      "range": {
+        "startLine": 24,
+        "startChar": 137,
+        "endLine": 24,
+        "endChar": 164
+      },
+      "revId": "2505a8546e7f878a169eef130df08a295a33ab8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e615adc_46a5bc04",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 17
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "3ca6a112_6acb6a50",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-11-10T06:44:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e615adc_46a5bc04",
+      "revId": "2505a8546e7f878a169eef130df08a295a33ab8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3deee15_eb67a6fe",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 17
@@ -56,6 +98,24 @@
       "revId": "2505a8546e7f878a169eef130df08a295a33ab8f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc0f736d_7d9f7084",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-11-10T06:44:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3deee15_eb67a6fe",
+      "revId": "2505a8546e7f878a169eef130df08a295a33ab8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
