@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2f07c5a_28a71ea8",
+        "filename": "common/utils.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-11-10T13:58:34Z",
+      "side": 1,
+      "message": "Why not std::string?",
+      "range": {
+        "startLine": 235,
+        "startChar": 28,
+        "endLine": 235,
+        "endChar": 39
+      },
+      "revId": "cfdd14934e0a33caa0158815648a21778d93beb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "171d28b0_ff748289",
+        "filename": "common/utils.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-11-10T13:58:34Z",
+      "side": 1,
+      "message": "Can single append statement handle all parameters?",
+      "range": {
+        "startLine": 242,
+        "startChar": 0,
+        "endLine": 243,
+        "endChar": 29
+      },
+      "revId": "cfdd14934e0a33caa0158815648a21778d93beb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06e21e88_6fa5f9b3",
+        "filename": "common/utils.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-11-10T13:58:34Z",
+      "side": 1,
+      "message": "GetSubTreeResponse looks sufficient.",
+      "range": {
+        "startLine": 150,
+        "startChar": 12,
+        "endLine": 150,
+        "endChar": 30
+      },
+      "revId": "cfdd14934e0a33caa0158815648a21778d93beb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87b65544_07bc5a7c",
+        "filename": "common/utils.hpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-11-10T13:58:34Z",
+      "side": 1,
+      "message": "Can we have type alias?",
+      "range": {
+        "startLine": 151,
+        "startChar": 26,
+        "endLine": 151,
+        "endChar": 37
+      },
+      "revId": "cfdd14934e0a33caa0158815648a21778d93beb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
