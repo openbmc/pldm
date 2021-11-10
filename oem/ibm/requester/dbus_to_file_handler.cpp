@@ -112,6 +112,26 @@ void DbusToFileHandler::reportResourceDumpFailure()
 void DbusToFileHandler::processNewResourceDump(
     const std::string& vspString, const std::string& resDumpReqPass)
 {
+    try
+    {
+        std::string objPath = resDumpCurrentObjPath;
+        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            objPath.c_str(), "Status", resDumpProgressIntf);
+        const auto& curResDumpStatus = std::get<std::string>(propVal);
+
+        if (curResDumpStatus !=
+            "xyz.openbmc_project.Common.Progress.OperationStatus.InProgress")
+        {
+            return;
+        }
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        std::cerr << "Error in getting current resource dump status, "
+                     "ERROR=" << e.what() << std::endl;
+        return;
+    }
+
     namespace fs = std::filesystem;
     const fs::path resDumpDirPath = "/var/lib/pldm/resourcedump";
 
