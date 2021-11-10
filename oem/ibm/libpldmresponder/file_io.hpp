@@ -159,6 +159,7 @@ namespace oem_ibm
 {
 static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump/resource/entry/";
 static constexpr auto resDumpEntry = "com.ibm.Dump.Entry.Resource";
+static constexpr auto resDumpProgress = "xyz.openbmc_project.Common.Progress";
 
 static constexpr auto certObjPath = "/xyz/openbmc_project/certs/ca/";
 static constexpr auto certAuthority =
@@ -243,9 +244,31 @@ class Handler : public CmdHandler
                 msg.read(path, interfaces);
                 std::string vspstring;
                 std::string password;
+                std::string progress;
 
                 for (auto& interface : interfaces)
                 {
+                    // If the dump Status is InProgress, then only we need to
+                    // proceed with a new resource dump initiation
+                    if (interface.first == resDumpProgress)
+                    {
+                        for (const auto& property : interface.second)
+                        {
+                            if (property.first == "Status")
+                            {
+                                progress =
+                                    std::get<std::string>(property.second);
+                                break;
+                            }
+                        }
+                        if (progress.compare(
+                                "xyz.openbmc_project.Common.Progress.OperationStatus.InProgress") !=
+                            0)
+                        {
+                            continue;
+                        }
+                    }
+
                     if (interface.first == resDumpEntry)
                     {
                         for (const auto& property : interface.second)
