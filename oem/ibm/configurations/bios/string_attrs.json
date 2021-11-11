@@ -91,7 +91,7 @@
          "attribute_name" : "hb_lid_ids",
          "string_type" : "ASCII",
          "minimum_string_length" : 0,
-         "maximum_string_length" : 512,
+         "maximum_string_length" : 1024,
          "default_string_length" : 0,
          "default_string" : "",
          "helpText" : "Provides the host a mapping of the lid IDs to human readable names.",
