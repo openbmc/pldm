@@ -88,14 +88,10 @@ HostPDRHandler::HostPDRHandler(
                 if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
                 {
                     // Delete all the remote terminus information
-                    for (const auto& terminusInfo : this->tlPDRInfo)
-                    {
-                        if (terminusInfo.first != TERMINUS_HANDLE)
-                        {
-                            this->tlPDRInfo.erase(terminusInfo.first);
-                        }
-                    }
-
+                    std::erase_if(tlPDRInfo, [](const auto& item) {
+                        auto const& [key, value] = item;
+                        return key != TERMINUS_HANDLE;
+                    });
                     pldm_pdr_remove_remote_pdrs(repo);
                     pldm_entity_association_tree_destroy_root(entityTree);
                     pldm_entity_association_tree_copy_root(bmcEntityTree,
