@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "f50a9ed8_1a71547f",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-11-15T07:15:36Z",
+      "side": 1,
+      "message": "What\u0027s the plan around this? Are we going to set a boundary for the buffer?",
+      "parentUuid": "aa11d1be_1c541e89",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "20fd3afa_1495526f",
         "filename": "common/flight_recorder.hpp",
         "patchSetId": 10
@@ -190,6 +208,24 @@
       "side": 1,
       "message": "\u003e I much prefer we keep it in /tmp, because it it tmpfs.\n\u003e \n\u003e 1. If we run out of space a reboot of the bmc will recover.\n\u003e 2. Most NOR based systems actually have more RAM that can be used by tmpfs than flash space dedicated to all writable persisten storage (often 4-8MB).\n\u003e 3. If persistent storage is filled it may only be possible to recover with a factory reset wiping all data.\n\nAgree on all of that. and more i feel /tmp would be better as well. And we can think about the alternatives when we get to a place when we hit problems.",
       "parentUuid": "676880f7_7b7d1b55",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99f4fafc_509922e9",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-11-15T07:15:36Z",
+      "side": 1,
+      "message": "I think my original question was not clear. I meant to ask, do you plan to prevent the systemd tmpfs cleaner from cleaning this up, or not?",
+      "parentUuid": "92861104_95f4ab60",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
