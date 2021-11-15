@@ -3408,8 +3408,8 @@
             "dbus" : {
                 "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot8",
                 "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
-                "property_name": "Asserted",
-                "property_type": "Functional",
+                "property_name": "Functional",
+                "property_type": "bool",
                 "property_values" : [true, false]
              }
         }]
