@@ -1,0 +1,326 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31a06fb2_67818070",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "change the name of this function ? so that it does not look like the normalization code.",
+      "range": {
+        "startLine": 523,
+        "startChar": 28,
+        "endLine": 523,
+        "endChar": 45
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf21d834_936e4da6",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "need a better name\n\nmay be pldm_find_child_container_id()",
+      "range": {
+        "startLine": 344,
+        "startChar": 9,
+        "endLine": 344,
+        "endChar": 31
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb99067a_39a1deec",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "are these even required ?\n\nall the children under a parent will have the same container id right ?",
+      "range": {
+        "startLine": 344,
+        "startChar": 54,
+        "endLine": 345,
+        "endChar": 27
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f325c492_3f9f1a94",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "checking what it does, i am not sure if this should be a libpldm api, can\u0027t this be done in the host_pdr_handler itself ?\n\nAnd also need unit tests for both of these functions if they needs to be in the libpldm and also should cover broader usecases.",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 28
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e74a9119_5f6213c7",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "in c files, the practice is to have entity_type and entity_instance",
+      "range": {
+        "startLine": 165,
+        "startChar": 63,
+        "endLine": 165,
+        "endChar": 73
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "218554ec_6e653ff2",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "need a better name for this function.",
+      "range": {
+        "startLine": 165,
+        "startChar": 9,
+        "endLine": 165,
+        "endChar": 31
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c8d6485_dcfbd967",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "can we move this to oem ? or can we move this to oemPlatformHandler  ?does not seem like this would be standard API that could be leveraged  by any one in the community",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 29
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4a4bad4_648f2c40",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "why is it uint8_t* ?",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 16
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ef8b459_d84a23c1",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "no need of container id ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 7,
+        "endLine": 44,
+        "endChar": 56
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0eb76f8c_be779b94",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "if key !\u003d effecterId, then the entityInstance will not be set..do you wanna throw error in that case ?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 9
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7305284d_9e6b1718",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "duplicate var",
+      "range": {
+        "startLine": 291,
+        "startChar": 4,
+        "endLine": 291,
+        "endChar": 23
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "196faf51_b380eccc",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "too many magic numbers",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 326,
+        "endChar": 33
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04f715c3_f8c675b4",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "are you not supposed to check the objectpath returned ?",
+      "range": {
+        "startLine": 497,
+        "startChar": 5,
+        "endLine": 497,
+        "endChar": 36
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9441812_a1193930",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-16T06:22:16Z",
+      "side": 1,
+      "message": "do you need this to be public ?",
+      "range": {
+        "startLine": 205,
+        "startChar": 3,
+        "endLine": 205,
+        "endChar": 28
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
