@@ -9,6 +9,7 @@
 #include <libpldm/entity.h>
 #include <libpldm/oem/ibm/state_set.h>
 #include <libpldm/platform.h>
+#include <libpldm/state_set.h>
 
 typedef ibm_oem_pldm_state_set_firmware_update_state_values CodeUpdateState;
 
@@ -18,6 +19,7 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
+static constexpr auto PLDM_OEM_IBM_ENTITY_REAL_SAI = 24581;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -72,6 +74,36 @@ class Handler : public oem_platform::Handler
                 {
                     hostOff = false;
                 }
+            }
+        });
+        platformSAIMatch = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            propertiesChanged(
+                "/xyz/openbmc_project/led/groups/partition_system_attention_indicator",
+                "xyz.openbmc_project.Led.Group"),
+            [this](sdbusplus::message::message& msg) {
+            pldm::utils::DbusChangedProps props{};
+            std::string intf;
+            msg.read(intf, props);
+            const auto itr = props.find("Asserted");
+            if (itr != props.end())
+            {
+                processSAIUpdate();
+            }
+        });
+        partitionSAIMatch = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            propertiesChanged(
+                "/xyz/openbmc_project/led/groups/platform_system_attention_indicator",
+                "xyz.openbmc_project.Led.Group"),
+            [this](sdbusplus::message::message& msg) {
+            pldm::utils::DbusChangedProps props{};
+            std::string intf;
+            msg.read(intf, props);
+            const auto itr = props.find("Asserted");
+            if (itr != props.end())
+            {
+                processSAIUpdate();
             }
         });
     }
@@ -214,6 +246,19 @@ class Handler : public oem_platform::Handler
         platformHandler->setEventReceiver();
     }
 
+    /** @brief To turn off Real SAI effecter*/
+    void turnOffRealSAIEffecter();
+
+    /** @brief Fetch Real SAI status based on the partition SAI and platform SAI
+     *  sensor states. Real SAI is turned on if any of the partition or platform
+     *  SAI turned on else Real SAI is turned off
+     *  @return Real SAI sensor state PLDM_SENSOR_WARNING/PLDM_SENSOR_NORMAL
+     */
+    uint8_t fetchRealSAIStatus();
+
+    /** @brief Method to process virtual platform/partition SAI update*/
+    void processSAIUpdate();
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
@@ -249,9 +294,18 @@ class Handler : public oem_platform::Handler
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
 
+    /** @brief D-Bus Interface added signal match for virtual platform SAI */
+    std::unique_ptr<sdbusplus::bus::match::match> platformSAIMatch;
+
+    /** @brief D-Bus Interface added signal match for virtual partition SAI */
+    std::unique_ptr<sdbusplus::bus::match::match> partitionSAIMatch;
+
     bool hostOff = true;
 
     int setEventReceiverCnt = 0;
+
+    /** @brief Real SAI sensor id*/
+    uint16_t realSAISensorId;
 };
 
 /** @brief Method to encode code update event msg
