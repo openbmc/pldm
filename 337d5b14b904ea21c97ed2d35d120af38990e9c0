@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "f953b061_76caff6a",
+        "filename": "common/flight_recorder.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-17T11:25:08Z",
+      "side": 1,
+      "message": "\u003e What\u0027s the plan around this? Are we going to set a boundary for the buffer?\n\nThe idea in my mind was that , we should not tamper with the data in the recorder- this should always replicate the messages that pldm sends and receives.\n\nI believe dumping the flight recorder should be the last resort in debugging issues related to pldm , so the data in this should always be useful. Making it a bounded buffer would lead to ambiguities on whether pldm responded to certain messages or not..or whether pldm responded with the right data or not.\n\n\nif space is the only constraint , we can probably come up with a meson option to set the location in which the recorder can be stored ?",
+      "parentUuid": "f50a9ed8_1a71547f",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "20fd3afa_1495526f",
         "filename": "common/flight_recorder.hpp",
         "patchSetId": 10
@@ -226,6 +244,24 @@
       "side": 1,
       "message": "I think my original question was not clear. I meant to ask, do you plan to prevent the systemd tmpfs cleaner from cleaning this up, or not?",
       "parentUuid": "92861104_95f4ab60",
+      "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "803867b3_c870c3a4",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-17T11:25:08Z",
+      "side": 1,
+      "message": "Yes, I don\u0027t see any issues with clearing this data.\n\nMost of the time, collecting the flight recorder would be performed by the user as a form of collecting FFDC, or some Jenkins plugin that triggers and collects certain artifacts as part of collecting debugging data when something wrong. something like this \n\nhttps://github.com/openbmc/openbmc-test-automation/blob/c9d61d33c2bb64b5d5c06441a60e270da3b4c8fe/lib/openbmc_ffdc_list.py#L62\n\nSo they trigger and then collect the file immediately. letting this to be in /tmp would make things easy as it cleans up things.",
+      "parentUuid": "99f4fafc_509922e9",
       "revId": "337d5b14b904ea21c97ed2d35d120af38990e9c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
