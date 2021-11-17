@@ -53,6 +53,8 @@ enum pldm_oem_ibm_boot_state_set_values
 extern const std::map<uint8_t, std::string> OemIBMEntityType{
     {pldm::responder::oem_ibm_platform::PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
      "OEM IBM Firmware Update"},
+    {pldm::responder::oem_ibm_platform::PLDM_OEM_IBM_ENTITY_REAL_SAI,
+     "OEM IBM Real SAI"},
     {PLDM_OEM_ENTITY_TYPE_START, "OEM IBM Entity Type Start"},
     {PLDM_OEM_ENTITY_TYPE_END, "OEM IBM Entity Type End"},
 };
