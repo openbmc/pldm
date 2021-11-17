@@ -18,6 +18,7 @@ namespace responder
 namespace oem_ibm_platform
 {
 static constexpr auto PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE = 24577;
+static constexpr auto PLDM_OEM_IBM_ENTITY_REAL_SAI = 24578;
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -180,6 +181,12 @@ class Handler : public oem_platform::Handler
 
     /** @brief to check the BMC state*/
     int checkBMCState();
+
+    /** @brief To turn off Real SAI effecter*/
+    void turnOffRealSAIEffecter();
+
+    /** @brief Fetch Real SAI status*/
+    bool fetchRealSAIStatus();
 
     ~Handler() = default;
 
