@@ -16,6 +16,24 @@
       "revId": "51e5e7cf3ad8b5ceb39d88c41fcc9af6c8dc404a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "202b64a4_33e3031e",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 3601,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-18T10:39:05Z",
+      "side": 1,
+      "message": "yeah pldm, does not have support for triggering two different interfaces for the same sensor.\n\nwe might have to improve the infrastructure to do this. Not sure if that is worth doing it, or we might have to build the PDR in the code rather than relying on the json.",
+      "parentUuid": "07cbbdb5_76f45dc4",
+      "revId": "51e5e7cf3ad8b5ceb39d88c41fcc9af6c8dc404a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
