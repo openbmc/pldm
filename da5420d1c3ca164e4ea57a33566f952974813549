@@ -70,6 +70,30 @@
       "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e2ef192_3ef4b50c",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-11-18T12:13:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0dc69b75_1b114926",
+      "range": {
+        "startLine": 35,
+        "startChar": 45,
+        "endLine": 35,
+        "endChar": 49
+      },
+      "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
