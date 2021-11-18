@@ -338,6 +338,10 @@ class HostPDRHandler
 
     /** @brief list of PDR record handles pointing to host's PDRs */
     PDRRecordHandles pdrRecordHandles;
+
+    /** @brief list of PDR record handles modified pointing to host's PDRs */
+    PDRRecordHandles modifiedPDRRecordHandles;
+
     /** @brief maps an entity type to parent pldm_entity from the BMC's entity
      *  association tree
      */

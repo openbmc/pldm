@@ -177,9 +177,15 @@ HostPDRHandler::HostPDRHandler(
 void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 {
     pdrRecordHandles.clear();
-    pdrRecordHandles = std::move(recordHandles);
-
-    // isHostPdrModified = isModified;
+    modifiedPDRRecordHandles.clear();
+    if (isHostPdrModified)
+    {
+        modifiedPDRRecordHandles = std::move(recordHandles);
+    }
+    else
+    {
+        pdrRecordHandles = std::move(recordHandles);
+    }
 
     // Defer the actual fetch of PDRs from the host (by queuing the call on the
     // main event loop). That way, we can respond to the platform event msg from
@@ -202,13 +208,16 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
                                     PLDM_GET_PDR_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     uint32_t recordHandle{};
-    if (!nextRecordHandle)
+    if (!nextRecordHandle && (!modifiedPDRRecordHandles.empty()) &&
+        isHostPdrModified)
     {
-        if (!pdrRecordHandles.empty())
-        {
-            recordHandle = pdrRecordHandles.front();
-            pdrRecordHandles.pop_front();
-        }
+        recordHandle = modifiedPDRRecordHandles.front();
+        modifiedPDRRecordHandles.pop_front();
+    }
+    else if (!nextRecordHandle && (!pdrRecordHandles.empty()))
+    {
+        recordHandle = pdrRecordHandles.front();
+        pdrRecordHandles.pop_front();
     }
     else
     {
@@ -645,7 +654,6 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                     if (isHostPdrModified)
                     {
                         isModifyPDRAction = true;
-                        isHostPdrModified = false;
                         bool recFound =
                             pldm_pdr_find_prev_record_handle(repo, rh, &prevRh);
                         if (recFound)
@@ -715,10 +723,19 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     else
     {
-        deferredFetchPDREvent = std::make_unique<sdeventplus::source::Defer>(
-            event,
-            std::bind(std::mem_fn((&HostPDRHandler::_processFetchPDREvent)),
-                      this, nextRecordHandle, std::placeholders::_1));
+        if (modifiedPDRRecordHandles.empty() && isHostPdrModified)
+        {
+            isHostPdrModified = false;
+        }
+        else
+        {
+            deferredFetchPDREvent =
+                std::make_unique<sdeventplus::source::Defer>(
+                    event,
+                    std::bind(
+                        std::mem_fn((&HostPDRHandler::_processFetchPDREvent)),
+                        this, nextRecordHandle, std::placeholders::_1));
+        }
     }
 }
 
@@ -739,6 +756,11 @@ void HostPDRHandler::_processFetchPDREvent(
     {
         nextRecordHandle = this->pdrRecordHandles.front();
         this->pdrRecordHandles.pop_front();
+    }
+    if (isHostPdrModified && (!this->modifiedPDRRecordHandles.empty()))
+    {
+        nextRecordHandle = this->modifiedPDRRecordHandles.front();
+        this->modifiedPDRRecordHandles.pop_front();
     }
     this->getHostPDR(nextRecordHandle);
 }

@@ -805,6 +805,7 @@ void pldm::responder::oem_ibm_platform::Handler::setBitmapMethodCall(
 void pldm::responder::oem_ibm_platform::Handler::modifyPDROemActions(
     uint32_t recordHandle)
 {
+    std::cerr << "Recordhandle:" << recordHandle << std::endl;
     // need to add a change here to compare the recordHandle before fetching the
     // panel effecter and calling panel
     pldm::pdr::EntityType entity_type =
