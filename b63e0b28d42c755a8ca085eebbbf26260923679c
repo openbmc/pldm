@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "38b35bf8_dcf3099e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31a06fb2_67818070",
+      "range": {
+        "startLine": 523,
+        "startChar": 28,
+        "endLine": 523,
+        "endChar": 45
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cf21d834_936e4da6",
         "filename": "libpldm/pdr.c",
         "patchSetId": 11
@@ -45,6 +69,30 @@
       "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9511a717_40d976c6",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf21d834_936e4da6",
+      "range": {
+        "startLine": 344,
+        "startChar": 9,
+        "endLine": 344,
+        "endChar": 31
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "c1f21cf4_caacd84c",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bb99067a_39a1deec",
+      "range": {
+        "startLine": 344,
+        "startChar": 54,
+        "endLine": 345,
+        "endChar": 27
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f325c492_3f9f1a94",
         "filename": "libpldm/pdr.c",
         "patchSetId": 11
@@ -82,6 +154,30 @@
       "writtenOn": "2021-11-16T06:22:16Z",
       "side": 1,
       "message": "checking what it does, i am not sure if this should be a libpldm api, can\u0027t this be done in the host_pdr_handler itself ?\n\nAnd also need unit tests for both of these functions if they needs to be in the libpldm and also should cover broader usecases.",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 28
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdaa0e4f_b4ff6e92",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "I believe this API can be used in future when there is a need to change the container id of the effecters. Maybe it can be a libpldm API :)\n\nAnd yes, I will write the unit tests and cover broader use cases",
+      "parentUuid": "f325c492_3f9f1a94",
       "range": {
         "startLine": 375,
         "startChar": 0,
@@ -140,6 +236,54 @@
     },
     {
       "key": {
+        "uuid": "5a26eb06_a1c17bfc",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e74a9119_5f6213c7",
+      "range": {
+        "startLine": 165,
+        "startChar": 63,
+        "endLine": 165,
+        "endChar": 73
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8ef6514c_bf022726",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "218554ec_6e653ff2",
+      "range": {
+        "startLine": 165,
+        "startChar": 9,
+        "endLine": 165,
+        "endChar": 31
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c8d6485_dcfbd967",
         "filename": "libpldm/pdr.h",
         "patchSetId": 11
@@ -174,6 +318,30 @@
       "writtenOn": "2021-11-16T06:22:16Z",
       "side": 1,
       "message": "why is it uint8_t* ?",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 16
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7a27dee_bff5f8ef",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "the effecterValue is declared like this - https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/46860/11/libpldmresponder/platform.cpp#575 so i thought it is a uint8_t*. Is it wrong?",
+      "parentUuid": "f4a4bad4_648f2c40",
       "range": {
         "startLine": 43,
         "startChar": 8,
@@ -232,6 +400,30 @@
     },
     {
       "key": {
+        "uuid": "14113154_578e3539",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "no error is needed I guess it can continue to set the numeric effecter with the value and instance number passed in the function.",
+      "parentUuid": "0eb76f8c_be779b94",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 9
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7305284d_9e6b1718",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 11
@@ -255,6 +447,30 @@
     },
     {
       "key": {
+        "uuid": "b891e04f_8d7b9702",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7305284d_9e6b1718",
+      "range": {
+        "startLine": 291,
+        "startChar": 4,
+        "endLine": 291,
+        "endChar": 23
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "196faf51_b380eccc",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 11
@@ -266,6 +482,30 @@
       "writtenOn": "2021-11-16T06:22:16Z",
       "side": 1,
       "message": "too many magic numbers",
+      "range": {
+        "startLine": 323,
+        "startChar": 0,
+        "endLine": 326,
+        "endChar": 33
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9e31ae5_fd2dbe68",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "yes, The dcmId is always at the 61th position in the entityPath string and we need the ascii value of he char so I subtracted 48.\nIt would be helpful if you know any other way of doing this and point me to that.",
+      "parentUuid": "196faf51_b380eccc",
       "range": {
         "startLine": 323,
         "startChar": 0,
@@ -301,6 +541,30 @@
     },
     {
       "key": {
+        "uuid": "870b45d4_699ce2ce",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "yes, it is done in the next commit above this.",
+      "parentUuid": "04f715c3_f8c675b4",
+      "range": {
+        "startLine": 497,
+        "startChar": 5,
+        "endLine": 497,
+        "endChar": 36
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f9441812_a1193930",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 11
@@ -321,6 +585,30 @@
       "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1d91484_bbdd1527",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2021-11-18T12:43:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9441812_a1193930",
+      "range": {
+        "startLine": 205,
+        "startChar": 3,
+        "endLine": 205,
+        "endChar": 28
+      },
+      "revId": "b63e0b28d42c755a8ca085eebbbf26260923679c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
