@@ -3,7 +3,7 @@
    {
         "fru_record_type" : 254,
         "fru_encoding_type": 1,
-        "dbus_interface_name": "xyz.openbmc_project.Inventory.Item.Battery"
+        "dbus_interface_name": "xyz.openbmc_project.Inventory.Item.Fan"
    },
    "fru_fields":[
       {
@@ -159,6 +159,7 @@
                "property_type" : "bytearray"
             }
       }
+
     ]
 }
 
