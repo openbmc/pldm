@@ -661,6 +661,21 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                                   << "ERROR=" << e.what() << "\n";
                     }
                     dbusMapping = pldm::utils::DBusMapping{
+                        "/xyz/openbmc_project/state/host0",
+                        "xyz.openbmc_project.State.Host", "RestartCause",
+                        "string"};
+                    value =
+                        "xyz.openbmc_project.State.Host.RestartCause.ScheduledPowerOn";
+                    try
+                    {
+                        dBusIntf->setDbusProperty(dbusMapping, value);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Failed to set RestartCause property,"
+                                  << "ERROR=" << e.what() << "\n";
+                    }
+                    dbusMapping = pldm::utils::DBusMapping{
                         "/xyz/openbmc_project/state/bmc0",
                         "xyz.openbmc_project.State.BMC",
                         "RequestedBMCTransition", "string"};
