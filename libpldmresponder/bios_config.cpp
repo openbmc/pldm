@@ -137,8 +137,6 @@ int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table,
 
     if ((tableType == PLDM_BIOS_ATTR_VAL_TABLE) && updateBaseBIOSTable)
     {
-        std::cout << "setBIOSTable:: updateBaseBIOSTableProperty() "
-                  << "\n";
         updateBaseBIOSTableProperty();
     }
 
