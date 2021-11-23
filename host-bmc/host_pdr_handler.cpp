@@ -140,8 +140,8 @@ HostPDRHandler::HostPDRHandler(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
                           "xyz.openbmc_project.State.Host"),
-        [this, repo, entityTree,
-         bmcEntityTree](sdbusplus::message::message& msg) {
+        [this, repo, entityTree, bmcEntityTree,
+         oemPlatformHandler](sdbusplus::message::message& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
@@ -170,6 +170,14 @@ HostPDRHandler::HostPDRHandler(
                     this->mergedHostParents = false;
                     this->objMapIndex = objPathMap.begin();
                 }
+                else if (propVal ==
+                         "xyz.openbmc_project.State.Host.HostState.Running")
+                {
+                    if (oemPlatformHandler != nullptr)
+                    {
+                        oemPlatformHandler->handleBootTypesAtPowerOn();
+                    }
+                }
             }
         });
 
@@ -177,7 +185,7 @@ HostPDRHandler::HostPDRHandler(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/chassis0",
                           "xyz.openbmc_project.State.Chassis"),
-        [this](sdbusplus::message::message& msg) {
+        [this, oemPlatformHandler](sdbusplus::message::message& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
@@ -189,6 +197,10 @@ HostPDRHandler::HostPDRHandler(
                 if (propVal ==
                     "xyz.openbmc_project.State.Chassis.PowerState.Off")
                 {
+                    if (oemPlatformHandler != nullptr)
+                    {
+                        oemPlatformHandler->handleBootTypesAtChassisOff();
+                    }
                     static constexpr auto searchpath =
                         "/xyz/openbmc_project/inventory/system/chassis/motherboard";
                     int depth = 0;
