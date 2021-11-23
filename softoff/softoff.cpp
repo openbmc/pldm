@@ -301,6 +301,20 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 
     mctpEID = pldm::utils::readHostEID();
 
+    uint8_t effecterState;
+    auto requestHostTransition =
+        pldm::utils::DBusHandler().getDbusProperty<std::string>(
+            "/xyz/openbmc_project/state/host0", "RequestedHostTransition",
+            "xyz.openbmc_project.State.Host");
+    if (requestHostTransition != "xyz.openbmc_project.State.Host.Transition.On")
+    {
+        effecterState = PLDM_SW_TERM_GRACEFUL_RESTART_REQUESTED;
+    }
+    else
+    {
+        effecterState = PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED;
+    }
+
     // Get instanceID
     try
     {
@@ -326,8 +340,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                             sizeof(set_effecter_state_field)>
         requestMsg{};
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
-    set_effecter_state_field stateField{
-        PLDM_REQUEST_SET, PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED};
+    set_effecter_state_field stateField{PLDM_REQUEST_SET, effecterState};
     auto rc = encode_set_state_effecter_states_req(
         instanceID, effecterID, effecterCount, &stateField, request);
     if (rc != PLDM_SUCCESS)

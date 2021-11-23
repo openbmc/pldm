@@ -170,6 +170,61 @@ HostPDRHandler::HostPDRHandler(
                     this->mergedHostParents = false;
                     this->objMapIndex = objPathMap.begin();
                 }
+                else if (propVal ==
+                         "xyz.openbmc_project.State.Host.HostState.Running")
+                {
+                    auto bootInitiator =
+                        getBiosAttrValue("pvm_boot_initiator_current");
+                    auto bootType = getBiosAttrValue("pvm_boot_type_current");
+                    if ((bootInitiator == "Auto") && (bootType == "IPL"))
+                    {
+                        pldm::utils::DBusMapping dbusMapping{
+                            "/xyz/openbmc_project/control/host0/"
+                            "power_restore_policy/one_time",
+                            "xyz.openbmc_project.Control.Power.RestorePolicy",
+                            "PowerRestorePolicy", "string"};
+                        value =
+                            "xyz.openbmc_project.Control.Power.RestorePolicy."
+                            "Policy.AlwaysOn";
+                        try
+                        {
+                            pldm::utils::DBusHandler().setDbusProperty(
+                                dbusMapping, value);
+                        }
+                        catch (const std::exception& e)
+                        {
+                            std::cerr
+                                << "Setting one-time restore policy failed,"
+                                << "unable to set property PowerRestorePolicy"
+                                << "ERROR=" << e.what() << "\n";
+                        }
+                    }
+                    else if (bootInitiator != "HMC")
+                    {
+                        auto restartCause =
+                            pldm::utils::DBusHandler()
+                                .getDbusProperty<std::string>(
+                                    "/xyz/openbmc_project/state/host0",
+                                    "RestartCause",
+                                    "xyz.openbmc_project.State.Host");
+
+                        if (restartCause ==
+                            "xyz.openbmc_project.State.Host.RestartCause.ScheduledPowerOn")
+                        {
+                            setBiosAttr("pvm_boot_initiator", "Host");
+                        }
+                        else if (
+                            (restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyAlwaysOn") ||
+                            (restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyPreviousState") ||
+                            (restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.HostCrash"))
+                        {
+                            setBiosAttr("pvm_boot_initiator", "Auto");
+                        }
+                    }
+                }
             }
         });
 
@@ -189,6 +244,8 @@ HostPDRHandler::HostPDRHandler(
                 if (propVal ==
                     "xyz.openbmc_project.State.Chassis.PowerState.Off")
                 {
+                    setBiosAttr("pvm_boot_initiator", "User");
+                    setBiosAttr("pvm_boot_type", "IPL");
                     static constexpr auto searchpath =
                         "/xyz/openbmc_project/inventory/system/chassis/motherboard";
                     int depth = 0;
