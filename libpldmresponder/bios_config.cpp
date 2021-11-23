@@ -26,7 +26,6 @@ namespace bios
 {
 namespace
 {
-
 using BIOSConfigManager =
     sdbusplus::xyz::openbmc_project::BIOSConfig::server::Manager;
 
@@ -137,8 +136,6 @@ int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table,
 
     if ((tableType == PLDM_BIOS_ATTR_VAL_TABLE) && updateBaseBIOSTable)
     {
-        std::cout << "setBIOSTable:: updateBaseBIOSTableProperty() "
-                  << "\n";
         updateBaseBIOSTableProperty();
     }
 
@@ -450,6 +447,23 @@ void BIOSConfig::updateBaseBIOSTableProperty()
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
         method.append(biosConfigInterface, biosConfigPropertyName, value);
         bus.call_noreply(method);
+        for (const auto& [attrName, biostabObj] : baseBIOSTableMaps)
+        {
+            if (std::holds_alternative<int64_t>(std::get<5>(biostabObj)))
+            {
+                std::cout << "updateBaseBIOSTableProperty:Attribute "
+                          << attrName << "got updated to value: "
+                          << std::get<int64_t>(std::get<5>(biostabObj))
+                          << std::endl;
+            }
+            else
+            {
+                std::cout << "updateBaseBIOSTableProperty:Attribute "
+                          << attrName << "got updated to value: "
+                          << std::get<std::string>(std::get<5>(biostabObj))
+                          << std::endl;
+            }
+        }
     }
     catch (const std::exception& e)
     {
