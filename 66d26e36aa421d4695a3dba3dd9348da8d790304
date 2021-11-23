@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73c79ed7_ff6648e6",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-23T14:01:09Z",
+      "side": 0,
+      "message": "Agree on removing this - as this is not of a great value \u0026 does not tell what changed and to what value.\n\nnit : Would leave it to the maintainers to decide, but i feel a nice debug trace that tells XX bios attribute changed to YY value. I think that would be a great value add.",
+      "range": {
+        "startLine": 140,
+        "startChar": 7,
+        "endLine": 141,
+        "endChar": 26
+      },
+      "revId": "66d26e36aa421d4695a3dba3dd9348da8d790304",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
