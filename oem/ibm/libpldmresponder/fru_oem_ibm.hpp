@@ -91,6 +91,12 @@ class Handler : public oem_fru::Handler
     void dbus_map_update(const std::string& adapterObjectPath,
                          const std::string& propertyName,
                          const std::string& propValue);
+
+    /** @brief setting firmware UAK
+     *
+     *  @param[in] data - value to be set
+     */
+    void setFirmwareUAK(const std::vector<uint8_t> data);
 };
 
 } // namespace oem_ibm_fru
