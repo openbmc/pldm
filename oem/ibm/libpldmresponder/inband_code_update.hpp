@@ -294,18 +294,5 @@ int processCodeUpdateLid(const std::string& filePath);
  */
 int assembleCodeUpdateImage();
 
-/* @brief Method to get the value from the fw_boot_side attribute which
- *        is set by host, this is next boot side
- * @param[in] bootSideAttr - the bios attribute from which the value needs
- *        to be retrieved(fw_boot_side)
- * @return - the next boot side value
- */
-std::string getBootSideBiosAttr(const std::string& bootSideAttr);
-
-/* @brief Method to set the fw_boot_side_current property with the current
- *        boot side
- * @param[in] bootSide - the current boot side needed to set the bios
- *        attribute*/
-void setBootSideBiosAttr(const std::string& bootSide);
 } // namespace responder
 } // namespace pldm
