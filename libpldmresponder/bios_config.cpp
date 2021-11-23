@@ -26,7 +26,6 @@ namespace bios
 {
 namespace
 {
-
 using BIOSConfigManager =
     sdbusplus::xyz::openbmc_project::BIOSConfig::server::Manager;
 
@@ -137,8 +136,6 @@ int BIOSConfig::setBIOSTable(uint8_t tableType, const Table& table,
 
     if ((tableType == PLDM_BIOS_ATTR_VAL_TABLE) && updateBaseBIOSTable)
     {
-        std::cout << "setBIOSTable:: updateBaseBIOSTableProperty() "
-                  << "\n";
         updateBaseBIOSTableProperty();
     }
 
@@ -229,6 +226,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
     for (auto tableEntry :
          BIOSTableIter<PLDM_BIOS_ATTR_VAL_TABLE>(table.data(), table.size()))
     {
+        // auto tableEntry = reinterpret_cast<const
+        // pldm_bios_attr_val_table_entry*>(table.data());
         AttributeName attributeName{};
         AttributeType attributeType{};
         ReadonlyStatus readonlyStatus{};
@@ -450,6 +449,23 @@ void BIOSConfig::updateBaseBIOSTableProperty()
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
         method.append(biosConfigInterface, biosConfigPropertyName, value);
         bus.call_noreply(method);
+        /*for (const auto& [attrName, biostabObj] : baseBIOSTableMaps)
+        {
+            if (std::holds_alternative<int64_t>(std::get<5>(biostabObj)))
+            {
+                std::cout << "updateBaseBIOSTableProperty:Attribute "
+                          << attrName << "got updated to value: "
+                          << std::get<int64_t>(std::get<5>(biostabObj))
+                          << std::endl;
+            }
+            else
+            {
+                std::cout << "updateBaseBIOSTableProperty:Attribute "
+                          << attrName << "got updated to value: "
+                          << std::get<std::string>(std::get<5>(biostabObj))
+                          << std::endl;
+            }
+        }*/
     }
     catch (const std::exception& e)
     {
@@ -625,19 +641,67 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
     }
 }
 
+std::string BIOSConfig::decodeStringFromStringEntry(
+    const pldm_bios_string_table_entry* stringEntry)
+{
+    auto strLength =
+        pldm_bios_table_string_entry_decode_string_length(stringEntry);
+    std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
+    pldm_bios_table_string_entry_decode_string(stringEntry, buffer.data(),
+                                               buffer.size());
+    return std::string(buffer.data(), buffer.data() + strLength);
+}
+
+std::string
+    BIOSConfig::displayStringHandle(uint16_t handle, uint8_t index,
+                                    const std::optional<Table>& attrTable,
+                                    const std::optional<Table>& stringTable)
+{
+    auto attrEntry = pldm_bios_table_attr_find_by_handle(
+        attrTable->data(), attrTable->size(), handle);
+    auto pvNum = pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry);
+    std::vector<uint16_t> pvHandls(pvNum);
+    pldm_bios_table_attr_entry_enum_decode_pv_hdls(attrEntry, pvHandls.data(),
+                                                   pvHandls.size());
+
+    std::string displayString = std::to_string(pvHandls[index]);
+
+    auto stringEntry = pldm_bios_table_string_find_by_handle(
+        stringTable->data(), stringTable->size(), pvHandls[index]);
+
+    auto decodedStr = decodeStringFromStringEntry(stringEntry);
+
+    return displayString + "(" + decodedStr + ")";
+}
+
 int BIOSConfig::checkAttrValueToUpdate(
     const pldm_bios_attr_val_table_entry* attrValueEntry,
-    const pldm_bios_attr_table_entry* attrEntry, Table&)
+    const pldm_bios_attr_table_entry* attrEntry, Table&, bool isHost)
 
 {
+    std::string isSetBy = isHost ? "HOST" : "BMC";
+    auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
+    auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
     auto [attrHandle, attrType] =
         table::attribute_value::decodeHeader(attrValueEntry);
+
+    auto attrHeader = table::attribute::decodeHeader(attrEntry);
+    BIOSStringTable biosStringTable(*stringTable);
+    auto attrName = biosStringTable.findString(attrHeader.stringHandle);
 
     switch (attrType)
     {
         case PLDM_BIOS_ENUMERATION:
         case PLDM_BIOS_ENUMERATION_READ_ONLY:
         {
+            auto attrHandle =
+                pldm_bios_table_attr_value_entry_decode_attribute_handle(
+                    attrValueEntry);
+            auto count = pldm_bios_table_attr_value_entry_enum_decode_number(
+                attrValueEntry);
+            std::vector<uint8_t> handles(count);
+            pldm_bios_table_attr_value_entry_enum_decode_handles(
+                attrValueEntry, handles.data(), handles.size());
             auto value =
                 table::attribute_value::decodeEnumEntry(attrValueEntry);
             auto [pvHdls, defIndex] =
@@ -652,7 +716,13 @@ int BIOSConfig::checkAttrValueToUpdate(
                           << std::endl;
                 return PLDM_ERROR_INVALID_DATA;
             }
-
+            for (size_t i = 0; i < handles.size(); i++)
+            {
+                std::cout << "Attribute:" << attrName << ", updated to value: "
+                          << displayStringHandle(attrHandle, handles[i],
+                                                 attrTable, stringTable)
+                          << ", Set by: " << isSetBy << "\n";
+            }
             return PLDM_SUCCESS;
         }
         case PLDM_BIOS_INTEGER:
@@ -669,6 +739,9 @@ int BIOSConfig::checkAttrValueToUpdate(
                           << std::endl;
                 return PLDM_ERROR_INVALID_DATA;
             }
+            std::cout << "Attribute:" << attrName
+                      << ", updated to value:" << value
+                      << ", Set by:" << isSetBy << std::endl;
             return PLDM_SUCCESS;
         }
         case PLDM_BIOS_STRING:
@@ -684,6 +757,9 @@ int BIOSConfig::checkAttrValueToUpdate(
                           << " length = " << value.size() << std::endl;
                 return PLDM_ERROR_INVALID_LENGTH;
             }
+            std::cout << "Attribute:" << attrName
+                      << " updated to value:" << value << ", Set by:" << isSetBy
+                      << std::endl;
             return PLDM_SUCCESS;
         }
         default:
@@ -693,8 +769,8 @@ int BIOSConfig::checkAttrValueToUpdate(
     };
 }
 
-int BIOSConfig::setAttrValue(const void* entry, size_t size, bool updateDBus,
-                             bool updateBaseBIOSTable)
+int BIOSConfig::setAttrValue(const void* entry, size_t size, bool isHost,
+                             bool updateDBus, bool updateBaseBIOSTable)
 {
     auto attrValueTable = getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
     auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
@@ -716,7 +792,8 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool updateDBus,
         return PLDM_ERROR;
     }
 
-    auto rc = checkAttrValueToUpdate(attrValueEntry, attrEntry, *stringTable);
+    auto rc =
+        checkAttrValueToUpdate(attrValueEntry, attrEntry, *stringTable, isHost);
     if (rc != PLDM_SUCCESS)
     {
         return rc;
@@ -736,7 +813,6 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool updateDBus,
 
         BIOSStringTable biosStringTable(*stringTable);
         auto attrName = biosStringTable.findString(attrHeader.stringHandle);
-
         auto iter = std::find_if(
             biosAttributes.begin(), biosAttributes.end(),
             [&attrName](const auto& attr) { return attr->name == attrName; });
@@ -852,7 +928,7 @@ void BIOSConfig::processBiosAttrChangeNotification(
         storeTable(tableDir / attrValueTableFile, *destTable);
     }
 
-    rc = setAttrValue(newValue.data(), newValue.size(), false);
+    rc = setAttrValue(newValue.data(), newValue.size(), true, false);
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "could not setAttrValue on base bios table and dbus, rc = "
@@ -936,7 +1012,7 @@ void BIOSConfig::constructPendingAttribute(
 
         (*iter)->generateAttributeEntry(attributevalue, attrValueEntry);
 
-        setAttrValue(attrValueEntry.data(), attrValueEntry.size());
+        setAttrValue(attrValueEntry.data(), attrValueEntry.size(), false);
     }
 
     if (listOfHandles.size())
