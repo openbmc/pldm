@@ -293,8 +293,8 @@ TEST_F(TestBIOSConfig, setAttrValue)
     PropertyValue value = std::string("abcd");
     EXPECT_CALL(dbusHandler, setDbusProperty(dbusMapping, value)).Times(1);
 
-    auto rc =
-        biosConfig.setAttrValue(attrValueEntry.data(), attrValueEntry.size());
+    auto rc = biosConfig.setAttrValue(attrValueEntry.data(),
+                                      attrValueEntry.size(), false);
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     auto attrValueTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);

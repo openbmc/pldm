@@ -346,7 +346,8 @@ Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
-    rc = biosConfig.setAttrValue(attributeField.ptr, attributeField.length);
+    rc = biosConfig.setAttrValue(attributeField.ptr, attributeField.length,
+                                 false);
 
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES, 0);
