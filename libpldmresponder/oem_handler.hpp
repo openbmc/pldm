@@ -35,7 +35,8 @@ class Handler : public CmdHandler
      *            fails
      */
     virtual int getOemStateSensorReadingsHandler(
-        EntityType entityType, pldm::pdr::EntityInstance entityInstance,
+        pldm::pdr::EntityType entityType,
+        pldm::pdr::EntityInstance entityInstance,
         pldm::pdr::StateSetId stateSetId,
         pldm::pdr::CompositeCount compSensorCnt,
         std::vector<get_sensor_state_field>& stateField) = 0;
