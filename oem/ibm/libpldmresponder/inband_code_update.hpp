@@ -300,12 +300,13 @@ int assembleCodeUpdateImage();
  *        to be retrieved(fw_boot_side)
  * @return - the next boot side value
  */
-std::string getBootSideBiosAttr(const std::string& bootSideAttr);
+// std::string getBiosAttrValue(const std::string& dbusAttrName);
 
 /* @brief Method to set the fw_boot_side_current property with the current
  *        boot side
  * @param[in] bootSide - the current boot side needed to set the bios
  *        attribute*/
-void setBootSideBiosAttr(const std::string& bootSide);
+// void setBiosAttr(const std::string& dbusAttrName, const std::string&
+// biosAttrStr);
 } // namespace responder
 } // namespace pldm

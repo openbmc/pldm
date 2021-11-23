@@ -170,6 +170,38 @@ HostPDRHandler::HostPDRHandler(
                     this->mergedHostParents = false;
                     this->objMapIndex = objPathMap.begin();
                 }
+                else if (propVal ==
+                         "xyz.openbmc_project.State.Host.HostState.Running")
+                {
+                    auto bootInitiator =
+                        getBiosAttrValue("pvm_boot_initiator_current");
+                    if (bootInitiator != "HMC")
+                    {
+                        auto restartCause =
+                            pldm::utils::DBusHandler()
+                                .getDbusProperty<std::string>(
+                                    "/xyz/openbmc_project/state/host0",
+                                    "RestartCause",
+                                    "xyz.openbmc_project.State.Host");
+                        if ((restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.TPO") ||
+                            (restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.Host"))
+                        {
+                            setBiosAttr("pvm_boot_initiator", "HOST");
+                        }
+                        else if (
+                            (restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyAlwaysOn") ||
+                            (restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyPreviousState") ||
+                            (restartCause ==
+                             "xyz.openbmc_project.State.Host.RestartCause.MPIPL"))
+                        {
+                            setBiosAttr("pvm_boot_initiator", "AUTO");
+                        }
+                    }
+                }
             }
         });
 
@@ -189,6 +221,9 @@ HostPDRHandler::HostPDRHandler(
                 if (propVal ==
                     "xyz.openbmc_project.State.Chassis.PowerState.Off")
                 {
+                    std::cout << "Before setting pvm_boot_initiator \n";
+                    setBiosAttr("pvm_boot_initiator", "USER");
+                    setBiosAttr("pvm_boot_type", "IPL");
                     static constexpr auto searchpath =
                         "/xyz/openbmc_project/inventory/system/chassis/motherboard";
                     int depth = 0;

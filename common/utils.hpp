@@ -394,5 +394,10 @@ const std::string getCurrentSystemTime();
 void dbusMethodCall(const char* service, const char* objPath,
                     const char* dbusMethod, const char* dbusInterface,
                     const PropertyValue& value);
+
+std::string getBiosAttrValue(const std::string& dbusAttrName);
+
+void setBiosAttr(const std::string& dbusAttrName,
+                 const std::string& biosAttrStr);
 } // namespace utils
 } // namespace pldm
