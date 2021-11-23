@@ -149,6 +149,7 @@ using MapperServiceMap =
     std::vector<std::pair<std::string, std::vector<std::string>>>;
 using MapperGetSubTreeResponse =
     std::vector<std::pair<std::string, MapperServiceMap>>;
+using BiosAttributeList = std::vector<std::pair<std::string, std::string>>;
 
 /**
  * @brief The interface for DBusHandler
@@ -394,5 +395,22 @@ const std::string getCurrentSystemTime();
 void dbusMethodCall(const char* service, const char* objPath,
                     const char* dbusMethod, const char* dbusInterface,
                     const PropertyValue& value);
+
+/** @brief Method to get the value from a bios attribute
+ *
+ *  @param[in] dbusAttrName - the bios attribute name from
+ *             which the value must be retrieved
+ *
+ *  @return the attribute value
+ */
+std::string getBiosAttrValue(const std::string& dbusAttrName);
+
+/** @brief Method to set the specified bios attribute with
+ *         specified value
+ *
+ *  @param[in] BiosAttributeList - the list of bios attribute and values
+ *             to be set
+ */
+void setBiosAttr(const BiosAttributeList& biosAttrList);
 } // namespace utils
 } // namespace pldm

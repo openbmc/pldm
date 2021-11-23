@@ -807,6 +807,81 @@ void pldm::responder::oem_ibm_platform::Handler::modifyPDROemActions(
     }
 }
 
+void pldm::responder::oem_ibm_platform::Handler::handleBootTypesAtPowerOn()
+{
+    BiosAttributeList biosAttrList;
+    auto bootInitiator = getBiosAttrValue("pvm_boot_initiator_current");
+    if (bootInitiator != "HMC" && !bootInitiator.empty())
+    {
+        auto restartCause =
+            pldm::utils::DBusHandler().getDbusProperty<std::string>(
+                "/xyz/openbmc_project/state/host0", "RestartCause",
+                "xyz.openbmc_project.State.Host");
+
+        if (restartCause ==
+            "xyz.openbmc_project.State.Host.RestartCause.ScheduledPowerOn")
+        {
+            biosAttrList.push_back(
+                std::make_pair("pvm_boot_initiator", "Host"));
+            setBiosAttr(biosAttrList);
+        }
+        else if (
+            (restartCause ==
+             "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyAlwaysOn") ||
+            (restartCause ==
+             "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyPreviousState") ||
+            (restartCause ==
+             "xyz.openbmc_project.State.Host.RestartCause.HostCrash"))
+        {
+            biosAttrList.push_back(
+                std::make_pair("pvm_boot_initiator", "Auto"));
+            setBiosAttr(biosAttrList);
+        }
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::handleBootTypesAtChassisOff()
+{
+    BiosAttributeList biosAttrList;
+    auto bootInitiator = getBiosAttrValue("pvm_boot_initiator");
+    auto bootType = getBiosAttrValue("pvm_boot_type");
+    if (bootInitiator.empty() || bootType.empty())
+    {
+        std::cerr
+            << "ERROR in fetching the pvm_boot_initiator and pvm_boot_type BIOS attribute values\n";
+        return;
+    }
+    else if ((bootInitiator == "Auto") && (bootType == "IPL"))
+    {
+        std::cerr << "Setting the APR to AlwaysOn as pvm_boot_initiator="
+                  << bootInitiator << " and pvm_boot_type=" << bootType
+                  << std::endl;
+        pldm::utils::DBusMapping dbusMapping{
+            "/xyz/openbmc_project/control/host0/"
+            "power_restore_policy/one_time",
+            "xyz.openbmc_project.Control.Power.RestorePolicy",
+            "PowerRestorePolicy", "string"};
+        PropertyValue value = "xyz.openbmc_project.Control.Power.RestorePolicy."
+                              "Policy.AlwaysOn";
+        try
+        {
+            pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Setting one-time restore policy failed,"
+                      << "unable to set property PowerRestorePolicy"
+                      << "ERROR=" << e.what() << "\n";
+        }
+    }
+    else
+    {
+        biosAttrList.push_back(std::make_pair("pvm_boot_initiator", "User"));
+        biosAttrList.push_back(std::make_pair("pvm_boot_type", "IPL"));
+        setBiosAttr(biosAttrList);
+    }
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm
