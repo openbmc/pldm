@@ -17,13 +17,10 @@ using namespace pldm::utils;
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace utils
 {
-
 void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
                     uint8_t& hours, uint8_t& day, uint8_t& month,
                     uint16_t& year)
@@ -64,7 +61,6 @@ std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
 
 namespace bios
 {
-
 using EpochTimeUS = uint64_t;
 
 DBusHandler dbusHandler;
@@ -324,7 +320,8 @@ Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
-    rc = biosConfig.setAttrValue(attributeField.ptr, attributeField.length);
+    rc = biosConfig.setAttrValue(attributeField.ptr, attributeField.length,
+                                 false);
 
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES, 0);
