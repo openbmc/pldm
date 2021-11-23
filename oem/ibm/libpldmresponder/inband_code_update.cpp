@@ -39,6 +39,8 @@ constexpr auto hostfwImageName = "image-hostfw";
 /** @brief The filename of the file where bootside data will be saved */
 constexpr auto bootSideFileName = "bootSide";
 
+constexpr auto bootSideAttrName = "fw_boot_side_current";
+
 /** @brief The path to the code update tarball file */
 auto tarImagePath = fs::path(imageDirPath) / tarImageName;
 
@@ -194,13 +196,13 @@ void CodeUpdate::setVersions()
         {
             pldm_boot_side_data pldmBootSideData;
             std::string nextBootSideBiosValue =
-                getBootSideBiosAttr("fw_boot_side");
+                getBiosAttrValue("fw_boot_side");
             pldmBootSideData.current_boot_side = nextBootSideBiosValue;
             pldmBootSideData.next_boot_side = nextBootSideBiosValue;
             pldmBootSideData.running_version_object = runningVersion.c_str();
 
             writeBootSideFile(pldmBootSideData);
-            setBootSideBiosAttr(pldmBootSideData.current_boot_side);
+            setBiosAttr(bootSideAttrName, pldmBootSideData.current_boot_side);
         }
         else
         {
@@ -210,11 +212,13 @@ void CodeUpdate::setVersions()
                 pldmBootSideData.current_boot_side = "Temp" ? "Perm" : "Temp";
                 pldmBootSideData.next_boot_side = "Temp" ? "Perm" : "Temp";
                 writeBootSideFile(pldmBootSideData);
-                setBootSideBiosAttr(pldmBootSideData.current_boot_side);
+                setBiosAttr(bootSideAttrName,
+                            pldmBootSideData.current_boot_side);
             }
             else
             {
-                setBootSideBiosAttr(pldmBootSideData.current_boot_side);
+                setBiosAttr(bootSideAttrName,
+                            pldmBootSideData.current_boot_side);
             }
         }
     }
@@ -372,7 +376,7 @@ void CodeUpdate::processRenameEvent()
                          PLDM_BOOT_SIDE_HAS_BEEN_RENAMED,
                          PLDM_BOOT_SIDE_NOT_RENAMED);
     writeBootSideFile(pldmBootSideData);
-    setBootSideBiosAttr(pldmBootSideData.current_boot_side);
+    setBiosAttr(bootSideAttrName, pldmBootSideData.current_boot_side);
 }
 
 void CodeUpdate::writeBootSideFile(const pldm_boot_side_data& pldmBootSideData)
@@ -728,77 +732,6 @@ int CodeUpdate::assembleCodeUpdateImage()
     }
 
     return PLDM_SUCCESS;
-}
-
-std::string getBootSideBiosAttr(const std::string& bootSideAttr)
-{
-    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
-    constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
-
-    std::string var1;
-    std::variant<std::string> var2;
-    std::variant<std::string> var3;
-
-    auto bus = sdbusplus::bus::new_default();
-    try
-    {
-        auto service = pldm::utils::DBusHandler().getService(biosConfigPath,
-                                                             biosConfigIntf);
-        auto method = bus.new_method_call(
-            service.c_str(), biosConfigPath,
-            "xyz.openbmc_project.BIOSConfig.Manager", "GetAttribute");
-        method.append(bootSideAttr);
-        auto reply = bus.call(method);
-        reply.read(var1, var2, var3);
-    }
-    catch (const sdbusplus::exception::SdBusError& e)
-    {
-        std::cout << "Error getting the bios attribute"
-                  << "ERROR=" << e.what() << "ATTRIBUTE=" << bootSideAttr
-                  << std::endl;
-        return {};
-    }
-
-    return std::get<std::string>(var2);
-}
-
-void setBootSideBiosAttr(const std::string& bootSide)
-{
-    static constexpr auto SYSTEMD_PROPERTY_INTERFACE =
-        "org.freedesktop.DBus.Properties";
-
-    std::string biosAttrStr = bootSide;
-
-    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
-    constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
-    constexpr auto dbusAttrName = "fw_boot_side_current";
-    constexpr auto dbusAttrType =
-        "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
-
-    using PendingAttributesType = std::vector<std::pair<
-        std::string, std::tuple<std::string, std::variant<std::string>>>>;
-    PendingAttributesType pendingAttributes;
-    pendingAttributes.emplace_back(std::make_pair(
-        dbusAttrName, std::make_tuple(dbusAttrType, biosAttrStr)));
-
-    auto bus = sdbusplus::bus::new_default();
-    try
-    {
-        auto service = pldm::utils::DBusHandler().getService(biosConfigPath,
-                                                             biosConfigIntf);
-        auto method = bus.new_method_call(service.c_str(), biosConfigPath,
-                                          SYSTEMD_PROPERTY_INTERFACE, "Set");
-        method.append(biosConfigIntf, "PendingAttributes",
-                      std::variant<PendingAttributesType>(pendingAttributes));
-        bus.call(method);
-    }
-    catch (const sdbusplus::exception::SdBusError& e)
-    {
-        std::cout << "Error setting the bios attribute"
-                  << "ERROR=" << e.what() << "ATTRIBUTE=" << dbusAttrName
-                  << std::endl;
-        return;
-    }
 }
 
 } // namespace responder
