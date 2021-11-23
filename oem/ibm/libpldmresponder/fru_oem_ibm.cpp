@@ -80,6 +80,13 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
                                    deviceId, revisionId, classCode,
                                    subSystemVendorId, subSystemId);
             }
+
+            if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_FIRMWARE_UAK)
+            {
+                std::vector<uint8_t> value(&tlv->value[0],
+                                           &tlv->value[tlv->length]);
+                setFirmwareUAK(value);
+            }
             // length of tlv is removed from the structure pldm_fru_record_tlv
             // and the new tlv length is added back.
             dataSize += sizeof(pldm_fru_record_tlv) - sizeof(uint8_t) +
@@ -147,6 +154,36 @@ void Handler::dbus_map_update(const std::string& adapterObjPath,
               propertyName, "ERROR", e);
     }
 }
+
+void Handler::setFirmwareUAK(std::vector<uint8_t> data)
+{
+    static constexpr auto uakObjPath = "/com/ibm/VPD/Manager";
+    static constexpr auto uakInterface = "com.ibm.VPD.Manager";
+
+    static constexpr auto fruPath =
+        "/xyz/openbmc_project/inventory/system/chassis/motherboard";
+    static constexpr auto fruRecord = "UTIL";
+    static constexpr auto fruKeyword = "D8";
+
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(uakObjPath,
+                                                             uakInterface);
+        auto method = bus.new_method_call(service.c_str(), uakObjPath,
+                                          uakInterface, "WriteKeyword");
+        method.append(static_cast<sdbusplus::message::object_path>(fruPath),
+                      fruRecord, fruKeyword, data);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a DBus call to VPD manager, ERROR="
+                  << e.what() << "\n";
+        return;
+    }
+}
+
 } // namespace oem_ibm_fru
 } // namespace responder
 } // namespace pldm
