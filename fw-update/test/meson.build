@@ -21,6 +21,7 @@ foreach t : tests
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
                      dependencies: [
                          fw_update_test_src,
+                         gmock,
                          gtest,
                          libpldm_dep,
                          nlohmann_json,
