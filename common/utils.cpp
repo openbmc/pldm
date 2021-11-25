@@ -541,5 +541,32 @@ std::string toString(const struct variable_field& var)
     return str;
 }
 
+std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
+                               std::string_view trimStr)
+{
+    std::vector<std::string> out;
+    size_t start;
+    size_t end = 0;
+
+    while ((start = srcStr.find_first_not_of(delim, end)) != std::string::npos)
+    {
+        end = srcStr.find(delim, start);
+        std::string_view dstStr = srcStr.substr(start, end - start);
+        if (!trimStr.empty())
+        {
+            dstStr.remove_prefix(dstStr.find_first_not_of(trimStr));
+            dstStr.remove_suffix(dstStr.size() - 1 -
+                                 dstStr.find_last_not_of(trimStr));
+        }
+
+        if (!dstStr.empty())
+        {
+            out.push_back(std::string(dstStr));
+        }
+    }
+
+    return out;
+}
+
 } // namespace utils
 } // namespace pldm
