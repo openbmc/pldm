@@ -931,3 +931,38 @@ TEST(toString, allTestCases)
     auto returnStr3 = toString(buffer);
     EXPECT_EQ(returnStr3, str3);
 }
+
+TEST(Split, allTestCases)
+{
+    std::string s1 = "aa,bb,cc,dd";
+    auto results1 = split(s1, ",");
+    EXPECT_EQ(results1[0], "aa");
+    EXPECT_EQ(results1[1], "bb");
+    EXPECT_EQ(results1[2], "cc");
+    EXPECT_EQ(results1[3], "dd");
+
+    std::string s2 = "aa||bb||cc||dd";
+    auto results2 = split(s2, "||");
+    EXPECT_EQ(results2[0], "aa");
+    EXPECT_EQ(results2[1], "bb");
+    EXPECT_EQ(results2[2], "cc");
+    EXPECT_EQ(results2[3], "dd");
+
+    std::string s3 = " aa || bb||cc|| dd";
+    auto results3 = split(s3, "||", " ");
+    EXPECT_EQ(results3[0], "aa");
+    EXPECT_EQ(results3[1], "bb");
+    EXPECT_EQ(results3[2], "cc");
+    EXPECT_EQ(results3[3], "dd");
+
+    std::string s4 = "aa\\\\bb\\cc\\dd";
+    auto results4 = split(s4, "\\");
+    EXPECT_EQ(results4[0], "aa");
+    EXPECT_EQ(results4[1], "bb");
+    EXPECT_EQ(results4[2], "cc");
+    EXPECT_EQ(results4[3], "dd");
+
+    std::string s5 = "aa\\";
+    auto results5 = split(s5, "\\");
+    EXPECT_EQ(results5[0], "aa");
+}
