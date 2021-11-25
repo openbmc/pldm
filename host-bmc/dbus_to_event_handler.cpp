@@ -108,23 +108,29 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(dbusMapping.objectPath.c_str(),
                               dbusMapping.interface.c_str()),
-            [this, sensorEventDataVec, dbusValueMapping](auto& msg) mutable {
+            [this, sensorEventDataVec, dbusValueMapping,
+             dbusMapping](auto& msg) mutable {
                 DbusChangedProps props{};
                 std::string intf;
                 msg.read(intf, props);
-                const auto& first = props.begin();
-                for (const auto& itr : dbusValueMapping)
+                const auto iter = props.find(dbusMapping.propertyName);
+                if (iter == props.end())
                 {
-                    if (itr.second == first->second)
+                    return;
+                }
+                for (const auto& dbusValues : dbusValueMapping)
+                {
+                    if (dbusValues.second != iter->second)
                     {
-                        auto eventData =
-                            reinterpret_cast<struct pldm_sensor_event_data*>(
-                                sensorEventDataVec.data());
-                        eventData->event_class[1] = itr.first;
-                        eventData->event_class[2] = itr.first;
-                        this->sendEventMsg(PLDM_SENSOR_EVENT,
-                                           sensorEventDataVec);
+                        continue;
                     }
+
+                    auto eventData =
+                        reinterpret_cast<struct pldm_sensor_event_data*>(
+                            sensorEventDataVec.data());
+                    eventData->event_class[1] = dbusValues.first;
+                    eventData->event_class[2] = dbusValues.first;
+                    this->sendEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec);
                 }
             });
         stateSensorMatchs.emplace_back(std::move(stateSensorMatch));
