@@ -389,5 +389,17 @@ void printBuffer(bool isTx, const std::vector<uint8_t>& buffer);
  */
 std::string toString(const struct variable_field& var);
 
+/** @brief Split strings according to special identifiers
+ *
+ *  We can split the string according to the custom identifier(';', ',', '&' or
+ *  others) and store it to vector.
+ *
+ *  @param[in] s            - The string to be split
+ *  @param[in] delimiter    - The custom identifier
+ *
+ *  @return std::vector<std::string> Vectors are used to store strings
+ */
+std::vector<std::string> split(const std::string& s, char delimiter);
+
 } // namespace utils
 } // namespace pldm
