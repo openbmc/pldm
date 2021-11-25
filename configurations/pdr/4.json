@@ -76,7 +76,7 @@
                 "property_type": "string",
                 "property_values": [
                          "xyz.openbmc_project.Led.Physical.Action.Off",
-                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink"
+                         "xyz.openbmc_project.Led.Physical.Action.On;xyz.openbmc_project.Led.Physical.Action.Blink"
                 ]
              }
         }]
@@ -1870,7 +1870,7 @@
                 "property_type": "string",
                 "property_values": [
                          "xyz.openbmc_project.Led.Physical.Action.Off",
-                         "xyz.openbmc_project.Led.Physical.Action.On || xyz.openbmc_project.Led.Physical.Action.Blink"
+                         "xyz.openbmc_project.Led.Physical.Action.On;xyz.openbmc_project.Led.Physical.Action.Blink"
                 ]
              }
         }]

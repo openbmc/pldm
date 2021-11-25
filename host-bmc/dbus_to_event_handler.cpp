@@ -118,19 +118,43 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                 {
                     return;
                 }
+
                 for (const auto& dbusValues : dbusValueMapping)
                 {
-                    if (dbusValues.second != iter->second)
+                    bool findValue = false;
+                    if (dbusMapping.propertyType == "string")
                     {
-                        continue;
+                        std::string src =
+                            std::get<std::string>(dbusValues.second);
+                        std::string dst = std::get<std::string>(iter->second);
+
+                        auto values = pldm::utils::split(src, ';');
+                        for (auto& value : values)
+                        {
+                            if (value == dst)
+                            {
+                                findValue = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        findValue =
+                            dbusValues.second == iter->second ? true : false;
                     }
 
-                    auto eventData =
-                        reinterpret_cast<struct pldm_sensor_event_data*>(
-                            sensorEventDataVec.data());
-                    eventData->event_class[1] = dbusValues.first;
-                    eventData->event_class[2] = dbusValues.first;
-                    this->sendEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec);
+                    if (findValue)
+                    {
+                        auto eventData =
+                            reinterpret_cast<struct pldm_sensor_event_data*>(
+                                sensorEventDataVec.data());
+                        eventData->event_class[1] = dbusValues.first;
+                        eventData->event_class[2] = dbusValues.first;
+                        this->sendEventMsg(PLDM_SENSOR_EVENT,
+                                           sensorEventDataVec);
+                        break;
+                    }
                 }
             });
         stateSensorMatchs.emplace_back(std::move(stateSensorMatch));
