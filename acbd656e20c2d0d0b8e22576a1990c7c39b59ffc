@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b9e0d33a_17795da5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-25T09:30:24Z",
+      "side": 1,
+      "message": "please update the commit message to explain \"why\".\n\nSomething like this :\n\nWhen some PLDM Terminus sends a 2-byte value for an attr, it will assert pldm and crashes with a sigabrt. Instead of crashing probably, it would be a cleaner solution to return an error RC - then other devices can probably log an error do some recovery action.",
+      "revId": "acbd656e20c2d0d0b8e22576a1990c7c39b59ffc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
