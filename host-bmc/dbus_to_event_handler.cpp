@@ -123,7 +123,32 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                 }
                 for (const auto& itr : dbusValueMapping)
                 {
-                    if (itr.second == props.at(dbusMapping.propertyName))
+                    bool findValue = false;
+                    if (dbusMapping.propertyType == "string")
+                    {
+                        std::string src = std::get<std::string>(itr.second);
+                        std::string dst = std::get<std::string>(
+                            props.at(dbusMapping.propertyName));
+
+                        auto values = pldm::utils::split(src, "||", " ");
+                        for (auto& value : values)
+                        {
+                            if (value == dst)
+                            {
+                                findValue = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        findValue =
+                            itr.second == props.at(dbusMapping.propertyName)
+                                ? true
+                                : false;
+                    }
+
+                    if (findValue)
                     {
                         auto eventData =
                             reinterpret_cast<struct pldm_sensor_event_data*>(
@@ -132,6 +157,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                         eventData->event_class[2] = itr.first;
                         this->sendEventMsg(PLDM_SENSOR_EVENT,
                                            sensorEventDataVec);
+                        break;
                     }
                 }
             });
