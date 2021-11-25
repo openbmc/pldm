@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c90283ba_b8c99482",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-25T09:53:51Z",
+      "side": 1,
+      "message": "can you add unequal testcase as well, something like \n\n1. aaa\\bbbb\\c\\d with delimiter \\\n2. aaa\\\\b\\cc\\d with delimiter \\\n3. aaa\\ with delimiter \\ -\u003e do we get two strings in this case ? or just one ?",
+      "range": {
+        "startLine": 935,
+        "startChar": 0,
+        "endLine": 935,
+        "endChar": 25
+      },
+      "revId": "34bd2185f09f9bb23edd34609b44bd4ece700071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18887443_4f84cd39",
+        "filename": "common/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-25T09:53:51Z",
+      "side": 1,
+      "message": "better name?",
+      "range": {
+        "startLine": 544,
+        "startChar": 49,
+        "endLine": 544,
+        "endChar": 51
+      },
+      "revId": "34bd2185f09f9bb23edd34609b44bd4ece700071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "622280d7_df11b906",
+        "filename": "common/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-25T09:53:51Z",
+      "side": 1,
+      "message": "are we just considering a delimiter of just a character ? dont we consider \"\u0026\u0026\" to be a delimiter ?",
+      "range": {
+        "startLine": 544,
+        "startChar": 53,
+        "endLine": 544,
+        "endChar": 67
+      },
+      "revId": "34bd2185f09f9bb23edd34609b44bd4ece700071",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
