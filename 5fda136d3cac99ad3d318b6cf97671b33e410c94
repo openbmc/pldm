@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f7649d6e_10aab552",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-25T09:40:16Z",
+      "side": 1,
+      "message": "use map.contains() instead ?",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 17
+      },
+      "revId": "5fda136d3cac99ad3d318b6cf97671b33e410c94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99d6ffaf_fd799f1e",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-25T09:40:16Z",
+      "side": 1,
+      "message": "can we change this back to how it was already , i dont see any extra change in this, expect that the logic has been negated with a continue statement.",
+      "range": {
+        "startLine": 121,
+        "startChar": 16,
+        "endLine": 133,
+        "endChar": 78
+      },
+      "revId": "5fda136d3cac99ad3d318b6cf97671b33e410c94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
