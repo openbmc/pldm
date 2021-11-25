@@ -642,7 +642,10 @@ int BIOSConfig::checkAttrValueToUpdate(
                 table::attribute_value::decodeEnumEntry(attrValueEntry);
             auto [pvHdls, defIndex] =
                 table::attribute::decodeEnumEntry(attrEntry);
-            assert(value.size() == 1);
+            if (!(value.size() == 1))
+            {
+                return PLDM_ERROR_INVALID_LENGTH;
+            }
             if (value[0] >= pvHdls.size())
             {
                 std::cerr << "Enum: Illgeal index, Index = " << (int)value[0]
