@@ -108,14 +108,18 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(dbusMapping.objectPath.c_str(),
                               dbusMapping.interface.c_str()),
-            [this, sensorEventDataVec, dbusValueMapping](auto& msg) mutable {
+            [this, sensorEventDataVec, dbusValueMapping,
+             dbusMapping](auto& msg) mutable {
                 DbusChangedProps props{};
                 std::string intf;
                 msg.read(intf, props);
-                const auto& first = props.begin();
+                if (!props.contains(dbusMapping.propertyName))
+                {
+                    return;
+                }
                 for (const auto& itr : dbusValueMapping)
                 {
-                    if (itr.second == first->second)
+                    if (itr.second == props.at(dbusMapping.propertyName))
                     {
                         auto eventData =
                             reinterpret_cast<struct pldm_sensor_event_data*>(
