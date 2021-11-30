@@ -15,7 +15,6 @@ namespace requester
 {
 namespace oem_ibm
 {
-
 /** @class DbusToFileHandler
  *  @brief This class can process resource dump parameters and send PLDM
  *         new file available cmd to the hypervisor. This class can be used
@@ -74,6 +73,9 @@ class DbusToFileHandler
     /** @brief report failure that a resource dump has failed
      */
     void reportResourceDumpFailure();
+
+    /** @brief method to get the acf file contents */
+    std::string getAcfFileContent();
 
     /** @brief fd of MCTP communications socket */
     int mctp_fd;

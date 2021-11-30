@@ -11,7 +11,6 @@ namespace requester
 {
 namespace oem_ibm
 {
-
 using namespace pldm::utils;
 using namespace sdbusplus::bus::match::rules;
 
@@ -156,10 +155,34 @@ void DbusToFileHandler::processNewResourceDump(
     fileFunc(vspString);
     fileFunc(resDumpReqPass);
 
+    std::string str;
+    if (!resDumpReqPass.empty())
+    {
+        str = getAcfFileContent();
+    }
+
+    fileFunc(str);
+
     fileHandle.close();
     size_t fileSize = fs::file_size(resDumpFilePath);
 
     sendNewFileAvailableCmd(fileSize);
+}
+
+std::string DbusToFileHandler::getAcfFileContent()
+{
+    std::string str;
+    static constexpr auto acfDirPath = "/etc/acf/service.acf";
+    if (fs::exists(acfDirPath))
+    {
+        std::ifstream file;
+        file.open(acfDirPath);
+        std::stringstream acfBuf;
+        acfBuf << file.rdbuf();
+        str = acfBuf.str();
+        file.close();
+    }
+    return str;
 }
 
 void DbusToFileHandler::newCsrFileAvailable(const std::string& csr,
