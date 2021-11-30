@@ -157,6 +157,20 @@ void DbusToFileHandler::processNewResourceDump(
     fileFunc(vspString);
     fileFunc(resDumpReqPass);
 
+    std::string acfBuf;
+    if (!resDumpReqPass.empty())
+    {
+        const fs::path acfDirPath = "/etc/acf/";
+        if (!fs::exists(acfDirPath))
+        {
+            std::ifstream file;
+            file.open(acfDirPath);
+            file >> acfBuf;
+            file.close();
+        }
+    }
+    fileFunc(acfBuf);
+
     fileHandle.close();
     size_t fileSize = fs::file_size(resDumpFilePath);
 
