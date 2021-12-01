@@ -212,7 +212,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
         {
             std::cerr << "Failue in resource dump file ack" << std::endl;
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.bmc.PLDM.fileAck.ResourceDumpFileAckFail");
 
             PropertyValue value{
                 "xyz.openbmc_project.Common.Progress.OperationStatus.Failed"};
@@ -285,6 +285,97 @@ int DumpHandler::read(uint32_t offset, uint32_t& length, Response& response,
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
     return readFile(resDumpDirPath, offset, length, response);
+}
+
+int DumpHandler::fileAckWithMetaData(uint32_t metaDataValue1,
+                                     uint32_t metaDataValue2,
+                                     uint32_t /*metaDataValue3*/,
+                                     uint32_t /*metaDataValue4*/)
+{
+    auto path = findDumpObjPath(fileHandle);
+    uint8_t fileStatus = (uint8_t)metaDataValue2;
+    if (dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS)
+    {
+        if (fileStatus != PLDM_SUCCESS)
+        {
+            std::cerr << "Failue in resource dump file ack" << std::endl;
+            pldm::utils::reportError(
+                "xyz.openbmc_project.bmc.PLDM.fileAck.ResourceDumpFileAckFail");
+
+            PropertyValue value{
+                "xyz.openbmc_project.Common.Progress.OperationStatus.Failed"};
+            DBusMapping dbusMapping{path, "xyz.openbmc_project.Common.Progress",
+                                    "Status", "string"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "failed to make a d-bus call to DUMP "
+                             "manager, ERROR="
+                          << e.what() << "\n";
+            }
+        }
+        else
+        {
+            DBusMapping dbusMapping;
+            dbusMapping.objectPath =
+                "/xyz/openbmc_project/dump/resource/entry/";
+            dbusMapping.interface = "com.ibm.Dump.Entry.Resource";
+            dbusMapping.propertyName = "requestToken";
+            dbusMapping.propertyType = "uint32";
+
+            pldm::utils::PropertyValue value =
+                "com.ibm.Dump.Entry.Resource.requestToken";
+
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                           metaDataValue1);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "failed to set token for resource dump, ERROR="
+                          << e.what() << "\n";
+                return PLDM_ERROR;
+            }
+        }
+
+        if (fs::exists(resDumpDirPath))
+        {
+            fs::remove_all(resDumpDirPath);
+        }
+        return PLDM_SUCCESS;
+    }
+
+    if (DumpHandler::fd >= 0 && !path.empty())
+    {
+        if (dumpType == PLDM_FILE_TYPE_DUMP ||
+            dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP)
+        {
+            PropertyValue value{true};
+            DBusMapping dbusMapping{path, dumpEntry, "Offloaded", "bool"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "failed to make a d-bus call to DUMP manager, ERROR="
+                    << e.what() << "\n";
+            }
+
+            close(DumpHandler::fd);
+            auto socketInterface = getOffloadUri(fileHandle);
+            std::remove(socketInterface.c_str());
+            DumpHandler::fd = -1;
+        }
+        return PLDM_SUCCESS;
+    }
+
+    return PLDM_ERROR;
 }
 
 } // namespace responder

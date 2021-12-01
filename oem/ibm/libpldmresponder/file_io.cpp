@@ -892,6 +892,52 @@ Response Handler::newFileAvailable(const pldm_msg* request,
     return response;
 }
 
+Response Handler::fileAckWithMetaData(const pldm_msg* request,
+                                      size_t payloadLength)
+{
+    Response response(sizeof(pldm_msg_hdr) +
+                      PLDM_FILE_ACK_WITH_META_DATA_RESP_BYTES);
+
+    if (payloadLength != PLDM_FILE_ACK_WITH_META_DATA_REQ_BYTES)
+    {
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+    uint16_t fileType{};
+    uint32_t fileHandle{};
+    uint8_t fileStatus{};
+    uint32_t fileMetaData1{};
+    uint32_t fileMetaData2{};
+    uint32_t fileMetaData3{};
+    uint32_t fileMetaData4{};
+
+    auto rc = decode_file_ack_with_meta_data_req(
+        request, payloadLength, &fileType, &fileHandle, &fileStatus,
+        &fileMetaData1, &fileMetaData2, &fileMetaData3, &fileMetaData4);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return CmdHandler::ccOnlyResponse(request, rc);
+    }
+
+    std::unique_ptr<FileHandler> handler{};
+    try
+    {
+        handler = getHandlerByType(fileType, fileHandle);
+    }
+    catch (const InternalFailure& e)
+    {
+        std::cerr << "unknown file type, TYPE=" << fileType << "\n";
+        return CmdHandler::ccOnlyResponse(request, PLDM_INVALID_FILE_TYPE);
+    }
+
+    rc = handler->fileAckWithMetaData(fileMetaData1, fileMetaData2,
+                                      fileMetaData3, fileMetaData4);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    encode_file_ack_with_meta_data_resp(request->hdr.instance_id, rc,
+                                        responsePtr);
+    return response;
+}
+
 } // namespace oem_ibm
 } // namespace responder
 } // namespace pldm

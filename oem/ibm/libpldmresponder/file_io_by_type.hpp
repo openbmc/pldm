@@ -79,6 +79,21 @@ class FileHandler
      */
     virtual int newFileAvailable(uint64_t length) = 0;
 
+    /** @brief Method to process a file ack with meta data notification from the
+     *  host. The bmc can chose to do different actions based on the file type.
+     *
+     *  @param[in] metaDataValue1 - value of meta datat sent by host
+     *  @param[in] metaDataValue2 - value of meta datat sent by host
+     *  @param[in] metaDataValue3 - value of meta datat sent by host
+     *  @param[in] metaDataValue4 - value of meta datat sent by host
+     *
+     *  @return PLDM status code
+     */
+    virtual int fileAckWithMetaData(uint32_t metaDataValue1,
+                                    uint32_t metaDataValue2,
+                                    uint32_t metaDataValue3,
+                                    uint32_t metaDataValue4) = 0;
+
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] filePath - file to read from
      *  @param[in] offset - offset to read
