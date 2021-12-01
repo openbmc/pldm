@@ -48,6 +48,14 @@ class CertHandler : public FileHandler
 
     virtual int newFileAvailable(uint64_t length);
 
+    virtual int fileAckWithMetaData(uint32_t /*metaDataValue1*/,
+                                    uint32_t /*metaDataValue2*/,
+                                    uint32_t /*metaDataValue3*/,
+                                    uint32_t /*metaDataValue4*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief CertHandler destructor
      */
     ~CertHandler()
