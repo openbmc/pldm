@@ -57,8 +57,6 @@ class CertHandler : public FileHandler
                                              uint32_t metaDataValue1,
                                              uint32_t /*metaDataValue2*/,
                                              uint32_t /*metaDataValue3*/,
-                                             uint32_t /*metaDataValue4*/);
-
     /** @brief CertHandler destructor
      */
     ~CertHandler()
