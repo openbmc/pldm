@@ -3835,6 +3835,26 @@
        }]
     },
     {
+       "entity_path" : "/xyz/openbmc_project/inventory/system",
+       "effecters" : [{
+           "set" : {
+               "id" : 193,
+               "size" : 1,
+               "states" : [1,2]
+           },
+           "dbus" :{
+                "path" : "/xyz/openbmc_project/control/host0/power_restore_policy/one_time",
+                "interface" : "xyz.openbmc_project.Control.Power.RestorePolicy",
+                "property_name" : "PowerRestorePolicy",
+                "property_type" : "string",
+                "property_values" :[
+                        "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOff",
+                        "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn"
+                ]
+           }
+       }]
+    },
+    {
         "type" : 31,
         "instance" : 0,
         "container" : 1,
@@ -3875,7 +3895,7 @@
                  ]
              }
          }]
-     }]
+      }]
   },
   {
     "pdrType" : 9,
