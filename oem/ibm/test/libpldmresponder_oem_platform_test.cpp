@@ -9,6 +9,8 @@
 #include "oem/ibm/libpldmresponder/inband_code_update.hpp"
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 
+#include <libpldm/entity_oem_ibm.h>
+
 #include <sdeventplus/event.hpp>
 
 #include <iostream>
