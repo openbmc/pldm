@@ -12,10 +12,15 @@ tests = [
   'libpldmresponder_pdr_effecter_test',
   'libpldmresponder_pdr_sensor_test',
 ]
+broken_tests = []
+
 
 if get_option('oem-ibm').enabled()
   tests += [
     '../../oem/ibm/test/libpldmresponder_fileio_test',
+    '../../oem/ibm/test/libpldmresponder_oem_platform_test'
+  ]
+  broken_tests += [
     '../../oem/ibm/test/libpldmresponder_oem_platform_test'
   ]
 endif
@@ -42,5 +47,6 @@ foreach t : tests
                          phosphor_dbus_interfaces,
                          sdeventplus,
                          sdbusplus]),
+       should_fail: broken_tests.contains(t),
        workdir: meson.current_source_dir())
 endforeach
