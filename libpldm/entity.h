@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+#ifdef OEM_IBM
+#include <libpldm/entity_oem_ibm.h>
+#endif
+
 /** @brief PLDM Entity ID Codes in DSP0249_1.1.0 specification
  */
 enum pldm_entity_id_codes {
