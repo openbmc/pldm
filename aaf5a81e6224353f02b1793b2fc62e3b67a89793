@@ -1,0 +1,446 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e66f7c82_11db251a",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "This should be /xyz/openbmc_project/inventory/system/chassis/motherboard/dasd_backplane/panel0",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7aff2006_65c95fd2",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "this path is wrong correct as per everest data",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16bc2ff8_496a321d",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "name is bmc and not ebmc_card_bmc",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "947e43e1_b255abab",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "name is bmc_identify",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6251f36d_9b32142d",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2071,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "This should be /xyz/openbmc_project/inventory/system/chassis/motherboard/dasd_backplane/panel1",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78e7c883_7367b30b",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2079,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "need to confirm on the everest path",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a424050e_4d0d38ba",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2530,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "Path is wrong. It should be \"/xyz/openbmc_project/inventory/system/chassis/motherboard/bmc/tod_battery\"",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69b1dc5b_ea434ff0",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2583,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change to panel0",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9a6983f_b012e52a",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2591,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change to panel0",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17272ab4_7978f00a",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2600,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change this path as commented before",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5949cd2_871f3907",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2608,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change this path as commented before",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2491666_fe2d6e54",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4478,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change to panel1 path",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee3b1efa_bdaae079",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4486,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "this also may needs to change as per everest",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "542965a5_7fb2cb7c",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "This should be This should be /xyz/openbmc_project/inventory/system/chassis/motherboard/dasd_backplane/panel0",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "640e8938_c50d1005",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "this path is wrong correct as per everest data",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "baaec007_5ac162f2",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "please use everest path",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f3393d1_181699dd",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "please use everest path",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54dbdc0b_77d2f864",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2071,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "This should be /xyz/openbmc_project/inventory/system/chassis/motherboard/dasd_backplane/panel1",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8679d6a5_fb87aea9",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2079,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "need to put the everest path here",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db09ac56_7ee6c84b",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2564,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "this is not supposed to be here right ?",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "355be9a0_b1b14792",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2586,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change name to panel0 path",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a18e728d_92904cf0",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2594,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change name to panel0 path",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1157db6_39b65c5b",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2603,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change as per everest",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4f2fa0e_e8702d33",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2611,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change as per everest",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5366fb10_c40d79bc",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4651,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change this to panel1 path",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "364e4103_7e3ca9d1",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4659,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-03T09:55:44Z",
+      "side": 1,
+      "message": "change as everest",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
