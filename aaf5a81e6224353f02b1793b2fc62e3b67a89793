@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b4e742f6_be4db6da",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e66f7c82_11db251a",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aff2006_65c95fd2",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d16ade99_37bb459d",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aff2006_65c95fd2",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0ec6e182_67b11e4d",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16bc2ff8_496a321d",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "947e43e1_b255abab",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d46516e_6d40fa06",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "947e43e1_b255abab",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "5bbcdf40_7f464352",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2071,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "i will better remove this for now we are not sure about dbus path",
+      "parentUuid": "6251f36d_9b32142d",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "78e7c883_7367b30b",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d33a7da1_f256a3fd",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2079,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "i will better remove this for now we are not sure about dbus path",
+      "parentUuid": "78e7c883_7367b30b",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "cc192f8c_25b83f96",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2530,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a424050e_4d0d38ba",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "69b1dc5b_ea434ff0",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
         "patchSetId": 1
@@ -135,6 +261,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "514348d5_e8474af3",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2583,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69b1dc5b_ea434ff0",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "56444d99_287de104",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2591,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9a6983f_b012e52a",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "17272ab4_7978f00a",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
         "patchSetId": 1
@@ -169,6 +331,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "add61729_3aaa6c99",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2600,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17272ab4_7978f00a",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "e845b264_ef438a32",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2608,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5949cd2_871f3907",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c2491666_fe2d6e54",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
         "patchSetId": 1
@@ -203,6 +401,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "330c108d_bed9293e",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4478,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "i will better remove this for now we are not sure about dbus path",
+      "parentUuid": "c2491666_fe2d6e54",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +439,24 @@
     },
     {
       "key": {
+        "uuid": "889c2468_460df5ed",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4486,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "i will better remove this for now we are not sure about dbus path",
+      "parentUuid": "ee3b1efa_bdaae079",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "542965a5_7fb2cb7c",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
         "patchSetId": 1
@@ -237,6 +471,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb326891_c359a590",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "542965a5_7fb2cb7c",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -257,6 +509,24 @@
     },
     {
       "key": {
+        "uuid": "42c5dd52_543c96c7",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "640e8938_c50d1005",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "baaec007_5ac162f2",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
         "patchSetId": 1
@@ -271,6 +541,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ecd8e52_21c5b735",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baaec007_5ac162f2",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -291,6 +579,24 @@
     },
     {
       "key": {
+        "uuid": "93983d59_b353607c",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f3393d1_181699dd",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "54dbdc0b_77d2f864",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
         "patchSetId": 1
@@ -305,6 +611,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e0aae21_b8ec340e",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2071,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "will remove this for now as we are not sure of dbus path",
+      "parentUuid": "54dbdc0b_77d2f864",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -325,6 +649,24 @@
     },
     {
       "key": {
+        "uuid": "dda5b823_8e6c322f",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2079,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "will remove this for now as we are not sure of dbus path",
+      "parentUuid": "8679d6a5_fb87aea9",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db09ac56_7ee6c84b",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
         "patchSetId": 1
@@ -339,6 +681,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffff9ab2_fcf4188d",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2564,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "as per discussion not changing this",
+      "parentUuid": "db09ac56_7ee6c84b",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -359,6 +719,24 @@
     },
     {
       "key": {
+        "uuid": "24894bba_0aadf2f4",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2586,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "355be9a0_b1b14792",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a18e728d_92904cf0",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
         "patchSetId": 1
@@ -373,6 +751,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5dd6967_987045bf",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2594,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a18e728d_92904cf0",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -393,6 +789,24 @@
     },
     {
       "key": {
+        "uuid": "b51e3801_18316ea0",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2603,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1157db6_39b65c5b",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d4f2fa0e_e8702d33",
         "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
         "patchSetId": 1
@@ -407,6 +821,24 @@
       "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79f34a8d_be7553a9",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2611,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-03T13:23:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4f2fa0e_e8702d33",
+      "revId": "aaf5a81e6224353f02b1793b2fc62e3b67a89793",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
