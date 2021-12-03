@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6a7dc11_7d1f3e13",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-03T06:16:22Z",
+      "side": 1,
+      "message": "If the expression evaluates to 0 (false), then the expression, sourcecode filename, and line number are sent to the standard error, and then abort() function is called. \n\ndont you have to check for if(!(value.size() \u003d\u003d 1)) ?",
+      "range": {
+        "startLine": 645,
+        "startChar": 12,
+        "endLine": 645,
+        "endChar": 34
+      },
+      "revId": "5fc5761f3bb310ff9544dcce786971df0ee10a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
