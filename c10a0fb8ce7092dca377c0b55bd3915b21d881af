@@ -22,6 +22,30 @@
       "revId": "c10a0fb8ce7092dca377c0b55bd3915b21d881af",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daaa8aaa_02409f09",
+        "filename": "libpldm/entity.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-12-03T20:14:25Z",
+      "side": 1,
+      "message": "Done.  This means in PS3 you\u0027ll see a couple new files added to the diff (libpldmresponder_oem_platform_test.cpp and oem_ibm_state_set.hpp) where entity_oem_ibm.h is included because including entity.h is no longer enough.",
+      "parentUuid": "01d0d714_e67be35a",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 6
+      },
+      "revId": "c10a0fb8ce7092dca377c0b55bd3915b21d881af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
