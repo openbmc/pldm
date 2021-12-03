@@ -2,6 +2,8 @@
 
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 
+#include <libpldm/entity.h>
+
 /** @brief PLDM OEM State Set range as per DSP0249_1.1.0 specification
  */
 enum pldm_oem_state_set_id_codes
