@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01d0d714_e67be35a",
+        "filename": "libpldm/entity.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2021-12-03T06:45:18Z",
+      "side": 1,
+      "message": "Why should libpldm/entity_oem_ibm.h be included in libpldm/entity.h?\n\nShouldn\u0027t entity_oem_ibm.h be included in oem/ibm/libpldmresponder/oem_ibm_handler.hpp \u0026 oem/ibm/libpldmresponder/oem_ibm_handler.hpp?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 6
+      },
+      "revId": "c10a0fb8ce7092dca377c0b55bd3915b21d881af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
