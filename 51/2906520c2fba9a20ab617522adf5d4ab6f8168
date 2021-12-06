@@ -1,0 +1,9 @@
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: Jayashankar Padath <jayashankarpadath@gmail.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 06 Dec 2021 16:55:44 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/49365
+Project: openbmc/pldm
+Branch: refs/heads/master
