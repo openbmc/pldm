@@ -413,7 +413,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 1,
         "container" : 3,
         "sensors" : [{
@@ -432,7 +432,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 2,
         "container" : 3,
         "sensors" : [{
@@ -451,7 +451,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 3,
         "container" : 3,
         "sensors" : [{
@@ -470,7 +470,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 4,
         "container" : 3,
         "sensors" : [{
@@ -489,7 +489,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 5,
         "container" : 3,
         "sensors" : [{
@@ -508,7 +508,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 6,
         "container" : 3,
         "sensors" : [{
@@ -527,7 +527,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 7,
         "container" : 3,
         "sensors" : [{
@@ -546,7 +546,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 8,
         "container" : 3,
         "sensors" : [{
@@ -565,7 +565,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 9,
         "container" : 3,
         "sensors" : [{
@@ -584,7 +584,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 10,
         "container" : 3,
         "sensors" : [{
@@ -603,7 +603,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 11,
         "container" : 3,
         "sensors" : [{
@@ -622,7 +622,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 12,
         "container" : 3,
         "sensors" : [{
@@ -641,7 +641,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 13,
         "container" : 3,
         "sensors" : [{
@@ -660,7 +660,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 14,
         "container" : 3,
         "sensors" : [{
@@ -679,7 +679,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 15,
         "container" : 3,
         "sensors" : [{
@@ -698,7 +698,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 16,
         "container" : 3,
         "sensors" : [{
@@ -717,7 +717,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 17,
         "container" : 3,
         "sensors" : [{
@@ -736,7 +736,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 18,
         "container" : 3,
         "sensors" : [{
@@ -755,7 +755,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 19,
         "container" : 3,
         "sensors" : [{
@@ -774,7 +774,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 20,
         "container" : 3,
         "sensors" : [{
@@ -793,7 +793,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 21,
         "container" : 3,
         "sensors" : [{
@@ -812,7 +812,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 22,
         "container" : 3,
         "sensors" : [{
@@ -831,7 +831,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 23,
         "container" : 3,
         "sensors" : [{
@@ -850,7 +850,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 24,
         "container" : 3,
         "sensors" : [{
@@ -869,7 +869,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 25,
         "container" : 3,
         "sensors" : [{
@@ -888,7 +888,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 26,
         "container" : 3,
         "sensors" : [{
@@ -907,7 +907,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 27,
         "container" : 3,
         "sensors" : [{
@@ -926,7 +926,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 28,
         "container" : 3,
         "sensors" : [{
@@ -945,7 +945,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 29,
         "container" : 3,
         "sensors" : [{
@@ -964,7 +964,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 30,
         "container" : 3,
         "sensors" : [{
@@ -983,7 +983,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 31,
         "container" : 3,
         "sensors" : [{
@@ -1002,7 +1002,7 @@
         }]
     },
     {
-        "type" : 142,
+        "type" : 66,
         "instance" : 32,
         "container" : 3,
         "sensors" : [{
