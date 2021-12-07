@@ -51,6 +51,12 @@ class LicenseHandler : public FileHandler
                                     uint32_t metaDataValue2,
                                     uint32_t metaDataValue3,
                                     uint32_t metaDataValue4);
+    virtual int newFileAvailableWithMetaData(uint64_t /*length*/,
+                                             uint32_t /*token*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     int updateBinFileAndLicObjs(const fs::path& newLicFilePath);
 
     /** @brief LicenseHandler destructor

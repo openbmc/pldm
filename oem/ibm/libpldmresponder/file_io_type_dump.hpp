@@ -44,6 +44,9 @@ class DumpHandler : public FileHandler
                                     uint32_t metaDataValue3,
                                     uint32_t metaDataValue4);
 
+    virtual int newFileAvailableWithMetaData(uint64_t length,
+                                             uint32_t metaDataValue1);
+
     std::string findDumpObjPath(uint32_t fileHandle);
     std::string getOffloadUri(uint32_t fileHandle);
 
