@@ -56,6 +56,12 @@ class CertHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
+    virtual int newFileAvailableWithMetaData(uint64_t /*length*/,
+                                             uint32_t /*token*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief CertHandler destructor
      */
     ~CertHandler()

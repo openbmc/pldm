@@ -94,6 +94,17 @@ class FileHandler
                                     uint32_t metaDataValue3,
                                     uint32_t metaDataValue4) = 0;
 
+    /** @brief method to process a new file available metadata notification from
+     * the host
+     *
+     * @param[in] length - size of the file content to be transferred
+     * @param[in] token - token to be transferred
+     *
+     * @return PLDM status code
+     */
+    virtual int newFileAvailableWithMetaData(uint64_t length,
+                                             uint32_t token) = 0;
+
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] filePath - file to read from
      *  @param[in] offset - offset to read
