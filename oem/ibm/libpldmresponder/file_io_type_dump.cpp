@@ -296,11 +296,12 @@ int DumpHandler::fileAckWithMetaData(uint32_t metaDataValue1,
     uint8_t fileStatus = (uint8_t)metaDataValue2;
     if (dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS)
     {
+        std::cerr << "Token: " << metaDataValue1 << std::endl;
         if (fileStatus != PLDM_SUCCESS)
         {
             std::cerr << "Failue in resource dump file ack" << std::endl;
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.PLDM.fileAck.ResourceDumpFileAckFail");
+                "xyz.openbmc_project.bmc.PLDM.fileAck.ResourceDumpFileAckWithMetaDataFail");
 
             PropertyValue value{
                 "xyz.openbmc_project.Common.Progress.OperationStatus.Failed"};
@@ -317,30 +318,30 @@ int DumpHandler::fileAckWithMetaData(uint32_t metaDataValue1,
                           << e.what() << "\n";
             }
         }
-        else
-        {
-            DBusMapping dbusMapping;
-            dbusMapping.objectPath =
-                "/xyz/openbmc_project/dump/resource/entry/";
-            dbusMapping.interface = "com.ibm.Dump.Entry.Resource";
-            dbusMapping.propertyName = "requestToken";
-            dbusMapping.propertyType = "uint32";
+        /* else
+         {
+             DBusMapping dbusMapping;
+             dbusMapping.objectPath =
+                 "/xyz/openbmc_project/dump/resource/entry/";
+             dbusMapping.interface = "com.ibm.Dump.Entry.Resource";
+             dbusMapping.propertyName = "requestToken";
+             dbusMapping.propertyType = "uint32";
 
-            pldm::utils::PropertyValue value =
-                "com.ibm.Dump.Entry.Resource.requestToken";
+             pldm::utils::PropertyValue value =
+                 "com.ibm.Dump.Entry.Resource.requestToken";
 
-            try
-            {
-                pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
-                                                           metaDataValue1);
-            }
-            catch (const std::exception& e)
-            {
-                std::cerr << "failed to set token for resource dump, ERROR="
-                          << e.what() << "\n";
-                return PLDM_ERROR;
-            }
-        }
+             try
+             {
+                 pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                            metaDataValue1);
+             }
+             catch (const std::exception& e)
+             {
+                 std::cerr << "failed to set token for resource dump, ERROR="
+                           << e.what() << "\n";
+                 return PLDM_ERROR;
+             }
+         }*/
 
         if (fs::exists(resDumpDirPath))
         {
@@ -376,6 +377,41 @@ int DumpHandler::fileAckWithMetaData(uint32_t metaDataValue1,
     }
 
     return PLDM_ERROR;
+}
+
+int DumpHandler::newFileAvailableWithMetaData(uint64_t length, uint32_t token)
+{
+    std::cerr
+        << "Inside the dumphandler for new file availabale with metadat command"
+        << std::endl;
+    static constexpr auto dumpInterface = "xyz.openbmc_project.Dump.NewDump";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+
+    std::cerr << "Token sent:" << token << std::endl;
+    auto notifyObjPath = dumpObjPath;
+    if (dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP)
+    {
+        // Setting the Notify path for resource dump
+        notifyObjPath = resDumpObjPath;
+    }
+
+    try
+    {
+        auto service =
+            pldm::utils::DBusHandler().getService(notifyObjPath, dumpInterface);
+        using namespace sdbusplus::xyz::openbmc_project::Dump::server;
+        auto method = bus.new_method_call(service.c_str(), notifyObjPath,
+                                          dumpInterface, "Notify");
+        method.append(fileHandle, length);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
+                  << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
 }
 
 } // namespace responder
