@@ -717,7 +717,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             entityInfo;
                         pldm::responder::events::StateSensorEntry
                             stateSensorEntry{containerId, entityType,
-                                             entityInstance, sensorOffset};
+                                             entityInstance, sensorOffset,
+                                             false};
                         handleStateSensorEvent(stateSensorEntry, eventState);
                     }
                 };

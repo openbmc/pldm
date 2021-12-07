@@ -49,13 +49,21 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
         {
             StateSensorEntry stateSensorEntry{};
             stateSensorEntry.containerId =
-                static_cast<uint16_t>(entry.value("containerID", 0));
+                static_cast<uint16_t>(entry.value("containerID", 0xFFFF));
             stateSensorEntry.entityType =
                 static_cast<uint16_t>(entry.value("entityType", 0));
             stateSensorEntry.entityInstance =
                 static_cast<uint16_t>(entry.value("entityInstance", 0));
             stateSensorEntry.sensorOffset =
                 static_cast<uint8_t>(entry.value("sensorOffset", 0));
+            std::cerr << "Contained is : " << stateSensorEntry.containerId
+                      << std::endl;
+            // container id is not found in the json
+            stateSensorEntry.skipContainerCheck =
+                (stateSensorEntry.containerId == 0xFFFF) ? true : false;
+
+            std::cerr << "skip container check : "
+                      << stateSensorEntry.skipContainerCheck << std::endl;
 
             pldm::utils::DBusMapping dbusInfo{};
 
@@ -114,15 +122,34 @@ StateToDBusValue StateSensorHandler::mapStateToDBusVal(
     return eventStateMap;
 }
 
-int StateSensorHandler::eventAction(const StateSensorEntry& entry,
+int StateSensorHandler::eventAction(StateSensorEntry entry,
                                     pdr::EventState state)
 {
+    std::cerr << "type : " << entry.entityType << std::endl;
+    std::cerr << "instance : " << entry.entityInstance << std::endl;
+    std::cerr << "conId : " << entry.containerId << std::endl;
+    std::cerr << "skip cont : " << entry.skipContainerCheck << std::endl;
+
+    for (const auto& kv : eventMap)
+    {
+        if (kv.first.skipContainerCheck &&
+            kv.first.entityType == entry.entityType &&
+            kv.first.entityInstance == entry.entityInstance)
+        {
+            entry.skipContainerCheck = true;
+            break;
+        }
+    }
     try
     {
         const auto& [dbusMapping, eventStateMap] = eventMap.at(entry);
+        std::cerr << "name : " << dbusMapping.propertyName << std::endl;
+        std::cerr << "interface" << dbusMapping.interface << std::endl;
+        std::cerr << "obj path : " << dbusMapping.objectPath << std::endl;
         utils::PropertyValue propValue{};
         try
         {
+            std::cerr << "entered the try block" << std::endl;
             propValue = eventStateMap.at(state);
         }
         catch (const std::out_of_range& e)

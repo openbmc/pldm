@@ -27,25 +27,49 @@ struct StateSensorEntry
     pdr::EntityType entityType;
     pdr::EntityInstance entityInstance;
     pdr::SensorOffset sensorOffset;
+    bool skipContainerCheck;
 
     bool operator==(const StateSensorEntry& e) const
     {
-        return ((containerId == e.containerId) &&
-                (entityType == e.entityType) &&
-                (entityInstance == e.entityInstance) &&
-                (sensorOffset == e.sensorOffset));
+        if (!skipContainerCheck)
+        {
+            return ((containerId == e.containerId) &&
+                    (entityType == e.entityType) &&
+                    (entityInstance == e.entityInstance) &&
+                    (sensorOffset == e.sensorOffset));
+        }
+        else
+        {
+            return ((entityType == e.entityType) &&
+                    (entityInstance == e.entityInstance) &&
+                    (sensorOffset == e.sensorOffset));
+        }
     }
 
     bool operator<(const StateSensorEntry& e) const
     {
-        return (
-            (containerId < e.containerId) ||
-            ((containerId == e.containerId) && (entityType < e.entityType)) ||
-            ((containerId == e.containerId) && (entityType == e.entityType) &&
-             (entityInstance < e.entityInstance)) ||
-            ((containerId == e.containerId) && (entityType == e.entityType) &&
-             (entityInstance == e.entityInstance) &&
-             (sensorOffset < e.sensorOffset)));
+        if (!skipContainerCheck)
+        {
+            return ((containerId < e.containerId) ||
+                    ((containerId == e.containerId) &&
+                     (entityType < e.entityType)) ||
+                    ((containerId == e.containerId) &&
+                     (entityType == e.entityType) &&
+                     (entityInstance < e.entityInstance)) ||
+                    ((containerId == e.containerId) &&
+                     (entityType == e.entityType) &&
+                     (entityInstance == e.entityInstance) &&
+                     (sensorOffset < e.sensorOffset)));
+        }
+        else
+        {
+            return ((entityType < e.entityType) ||
+                    ((entityType == e.entityType) &&
+                     (entityInstance < e.entityInstance)) ||
+                    ((entityType == e.entityType) &&
+                     (entityInstance == e.entityInstance) &&
+                     (sensorOffset < e.sensorOffset)));
+        }
     }
 };
 
@@ -87,7 +111,7 @@ class StateSensorHandler
      *
      *  @return PLDM completion code
      */
-    int eventAction(const StateSensorEntry& entry, pdr::EventState state);
+    int eventAction(StateSensorEntry entry, pdr::EventState state);
 
     /** @brief Helper API to get D-Bus information for a StateSensorEntry
      *
