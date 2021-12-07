@@ -239,7 +239,7 @@ int main(int argc, char** argv)
     codeUpdate->clearDirPath(LID_STAGING_DIR);
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         &dbusHandler, codeUpdate.get(), slotHandler.get(), sockfd, hostEID,
-        dbusImplReq, event, pdrRepo.get(), &reqHandler);
+        dbusImplReq, event, pdrRepo.get(), &reqHandler, bmcEntityTree.get());
     oemFruHandler =
         std::make_unique<oem_ibm_fru::Handler>(&dbusHandler, pdrRepo.get());
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     // Platform handler.
     auto platformHandler = std::make_unique<platform::Handler>(
         &dbusHandler, PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get(),
-        dbusToPLDMEventHandler.get(), fruHandler.get(),
+        dbusToPLDMEventHandler.get(), fruHandler.get(), bmcEntityTree.get(),
         oemPlatformHandler.get(), event, true);
 #ifdef OEM_IBM
     pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =

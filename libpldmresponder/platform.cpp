@@ -62,9 +62,10 @@ const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
 }
 
 void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
-                       const std::string& dir, Repo& repo)
+                       const std::string& dir, Repo& repo,
+                       pldm_entity_association_tree* bmcEntityTree)
 {
-    /*   std::cout << "\nenter Handler::generate \n";*/
+
     if (!fs::exists(dir))
     {
         return;
@@ -78,23 +79,27 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
     const std::map<Type, generatePDR> generateHandlers = {
         {PLDM_STATE_EFFECTER_PDR,
          [this](const DBusHandler& dBusIntf, const auto& json,
-                RepoInterface& repo) {
+                RepoInterface& repo,
+                pldm_entity_association_tree* bmcEntityTree) {
              pdr_state_effecter::generateStateEffecterPDR<
-                 pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this,
-                                                    repo);
+                 pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this, repo,
+                                                    bmcEntityTree);
          }},
         {PLDM_NUMERIC_EFFECTER_PDR,
          [this](const DBusHandler& dBusIntf, const auto& json,
-                RepoInterface& repo) {
+                RepoInterface& repo,
+                pldm_entity_association_tree* bmcEntityTree) {
              pdr_numeric_effecter::generateNumericEffecterPDR<
-                 pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this,
-                                                    repo);
+                 pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this, repo,
+                                                    bmcEntityTree);
          }},
-        {PLDM_STATE_SENSOR_PDR, [this](const DBusHandler& dBusIntf,
-                                       const auto& json, RepoInterface& repo) {
+        {PLDM_STATE_SENSOR_PDR,
+         [this](const DBusHandler& dBusIntf, const auto& json,
+                RepoInterface& repo,
+                pldm_entity_association_tree* bmcEntityTree) {
              pdr_state_sensor::generateStateSensorPDR<pldm::utils::DBusHandler,
-                                                      Handler>(dBusIntf, json,
-                                                               *this, repo);
+                                                      Handler>(
+                 dBusIntf, json, *this, repo, bmcEntityTree);
          }}};
 
     Type pdrType{};
@@ -103,22 +108,23 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
         try
         {
             auto json = readJson(dirEntry.path().string());
-            std::cout << "\npicked up json " << dirEntry.path().string()
-                      << std::endl;
+
             if (!json.empty())
             {
                 auto effecterPDRs = json.value("effecterPDRs", empty);
                 for (const auto& effecter : effecterPDRs)
                 {
                     pdrType = effecter.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, effecter, repo);
+                    generateHandlers.at(pdrType)(dBusIntf, effecter, repo,
+                                                 bmcEntityTree);
                 }
 
                 auto sensorPDRs = json.value("sensorPDRs", empty);
                 for (const auto& sensor : sensorPDRs)
                 {
                     pdrType = sensor.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, sensor, repo);
+                    generateHandlers.at(pdrType)(dBusIntf, sensor, repo,
+                                                 bmcEntityTree);
                 }
             }
         }
@@ -143,7 +149,6 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }
     }
-    /* std::cout << "\ncalling fruHandler setStatePDRParams" << std::endl;*/
 
     if (fruHandler)
     {
@@ -151,8 +156,6 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
                                       getNextEffecterId(), sensorDbusObjMaps,
                                       effecterDbusObjMaps, false);
     }
-
-    /* std::cout << "\nexit Handler::generate" << std::endl;*/
 }
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
@@ -179,7 +182,7 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     if (!pdrCreated)
     {
         generateTerminusLocatorPDR(pdrRepo);
-        generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+        generate(*dBusIntf, pdrJsonsDir, pdrRepo, bmcEntityTree);
         if (oemPlatformHandler != nullptr)
         {
             oemPlatformHandler->buildOEMPDR(pdrRepo);

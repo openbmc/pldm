@@ -26,9 +26,10 @@ static const Json empty{};
  */
 template <class DBusInterface, class Handler>
 void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
-                            Handler& handler, pdr_utils::RepoInterface& repo)
+                            Handler& handler, pdr_utils::RepoInterface& repo,
+                            pldm_entity_association_tree* bmcEntityTree)
 {
-    std::cout << "\nenter generateStateSensorPDR " << std::endl;
+
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
     for (const auto& e : entries)
@@ -77,8 +78,9 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
 
         try
         {
-            std::string entity_path = e.value("entity_path", "");
             auto& associatedEntityMap = handler.getAssociateEntityMap();
+            std::string entity_path = e.value("entity_path", "");
+
             if (entity_path != "" && associatedEntityMap.find(entity_path) !=
                                          associatedEntityMap.end())
             {
@@ -94,6 +96,42 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                 pdr->entity_type = e.value("type", 0);
                 pdr->entity_instance = e.value("instance", 0);
                 pdr->container_id = e.value("container", 0);
+                // now attach this entity to the container that was
+                // mentioned in the json, and add this entity to the
+                // parents entity assocation PDR
+
+                std::string parent_entity_path =
+                    e.value("parent_entity_path", "");
+                if (parent_entity_path != "" &&
+                    associatedEntityMap.contains(parent_entity_path))
+                {
+                    // find the parent node in the tree
+                    pldm_entity parent_entity =
+                        associatedEntityMap.at(parent_entity_path);
+                    pldm_entity child_entity = {pdr->entity_type,
+                                                pdr->entity_instance,
+                                                pdr->container_id};
+                    uint8_t bmcEventDataOps = PLDM_INVALID_OP;
+                    auto parent_node = pldm_entity_association_tree_find(
+                        bmcEntityTree, &parent_entity, false);
+                    if (!parent_node)
+                    {
+                        // parent node not found in the entity association tree,
+                        // this should not be possible
+                        std::cerr
+                            << "Parent Entity of type "
+                            << parent_entity.entity_type
+                            << " not found in the BMC Entity Association tree\n";
+                        return;
+                    }
+                    pldm_entity_association_tree_add(
+                        bmcEntityTree, &child_entity, pdr->entity_instance,
+                        parent_node, PLDM_ENTITY_ASSOCIAION_PHYSICAL, false,
+                        false);
+                    pldm_entity_association_pdr_add_contained_entity(
+                        repo.getPdr(), child_entity, parent_entity,
+                        &bmcEventDataOps, false);
+                }
             }
         }
         catch (const std::exception& ex)
@@ -181,7 +219,6 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         pdrEntry.size = pdrSize;
         repo.addRecord(pdrEntry);
     }
-    std::cout << "\nexit generateStateSensorPDR " << std::endl;
 }
 
 } // namespace pdr_state_sensor
