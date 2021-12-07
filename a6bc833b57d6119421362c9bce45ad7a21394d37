@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d7b0b05d_2cd2aedb",
+        "filename": "oem/ibm/configurations/pdr/ibm,rainier-2u/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-07T07:28:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c4ae52b_1d0afbdd",
+      "revId": "a6bc833b57d6119421362c9bce45ad7a21394d37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4d57f82c_1d5f1c93",
         "filename": "oem/ibm/configurations/pdr/ibm,rainier-4u/4.json",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "a6bc833b57d6119421362c9bce45ad7a21394d37",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71feaf38_77e14ae5",
+        "filename": "oem/ibm/configurations/pdr/ibm,rainier-4u/4.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2021-12-07T07:28:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d57f82c_1d5f1c93",
+      "revId": "a6bc833b57d6119421362c9bce45ad7a21394d37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
