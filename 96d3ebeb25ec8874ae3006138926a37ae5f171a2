@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8575a91_ef264434",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "container id should be 1 here",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d2349d3_ea00425f",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2464,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "please remove the power_distribution entry",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "198a1393_f59349b7",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2585,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "container should be 1",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7da26a8_ae035ddb",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2782,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "ordering should start with dcm0",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95e17293_b52b4a52",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 4871,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "please remove this power_distribution entry",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6720f55c_01afbfb3",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2467,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "pls remove this complete entry",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a651d9b_5792f107",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 2588,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "container id should be 1 here",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "603483b9_20f01e6c",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 5047,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T08:41:22Z",
+      "side": 1,
+      "message": "please remove this complete entry",
+      "revId": "96d3ebeb25ec8874ae3006138926a37ae5f171a2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
