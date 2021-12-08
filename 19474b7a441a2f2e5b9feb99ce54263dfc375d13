@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "080a0cdf_d38580a3",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/11.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 4683,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T15:32:05Z",
+      "side": 1,
+      "message": "change this to comma symbol",
+      "revId": "19474b7a441a2f2e5b9feb99ce54263dfc375d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "634df731_f7e7fc72",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 4858,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T15:32:05Z",
+      "side": 1,
+      "message": "pls remove the extra line",
+      "revId": "19474b7a441a2f2e5b9feb99ce54263dfc375d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a136223e_94af2aeb",
+        "filename": "oem/ibm/configurations/pdr/ibm,everest/4.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 4860,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2021-12-08T15:32:05Z",
+      "side": 1,
+      "message": "pls change this to comma symbol",
+      "revId": "19474b7a441a2f2e5b9feb99ce54263dfc375d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
