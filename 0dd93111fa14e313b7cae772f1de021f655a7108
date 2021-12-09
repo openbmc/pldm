@@ -34,6 +34,24 @@
       "revId": "0dd93111fa14e313b7cae772f1de021f655a7108",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31740c7c_45cbc26b",
+        "filename": "oem/ibm/libpldm/entity_oem_ibm.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-12-09T18:55:15Z",
+      "side": 1,
+      "message": "actually I take it back - I believe I have followed the existing conventions.  From libpldm/meson.build:\n\n\n if get_option(\u0027oem-ibm\u0027).enabled()\n   headers +\u003d [\n     \u0027../oem/ibm/libpldm/entity_oem_ibm.h\u0027,\n     \u0027../oem/ibm/libpldm/file_io.h\u0027,\n     \u0027../oem/ibm/libpldm/host.h\u0027,\n     \u0027../oem/ibm/libpldm/platform_oem_ibm.h\u0027,\n     \u0027../oem/ibm/libpldm/state_set_oem_ibm.h\u0027\n   ]\n\nmy example was a pldmtool oem extension header:\n\npldmtool/oem/ibm/oem_ibm_state_set.hpp\n\nwhich seems to follow a different convention than libpldm :-/",
+      "parentUuid": "c993f5b1_c21321f0",
+      "revId": "0dd93111fa14e313b7cae772f1de021f655a7108",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
