@@ -79,6 +79,7 @@ class GetPDR : public CommandInterface
                                    "supported types:\n"
                                    "[terminusLocator, stateSensor, "
                                    "numericEffecter, stateEffecter, "
+                                   "compactNumericSensor, "
                                    "EntityAssociation, fruRecord, ... ]");
 
         getPDRGroupOption = pdrOptionGroup->add_option(
@@ -488,6 +489,7 @@ class GetPDR : public CommandInterface
         {PLDM_NUMERIC_EFFECTER_PDR, "Numeric Effecter PDR"},
         {PLDM_NUMERIC_EFFECTER_INITIALIZATION_PDR,
          "Numeric Effecter Initialization PDR"},
+        {PLDM_COMPACT_NUMERIC_SENSOR_PDR, "Compact Numeric Sensor PDR"},
         {PLDM_STATE_EFFECTER_PDR, "State Effecter PDR"},
         {PLDM_STATE_EFFECTER_INITIALIZATION_PDR,
          "State Effecter Initialization PDR"},
@@ -583,6 +585,7 @@ class GetPDR : public CommandInterface
         {"terminuslocator", PLDM_TERMINUS_LOCATOR_PDR},
         {"statesensor", PLDM_STATE_SENSOR_PDR},
         {"numericeffecter", PLDM_NUMERIC_EFFECTER_PDR},
+        {"compactnumericsensor", PLDM_COMPACT_NUMERIC_SENSOR_PDR},
         {"stateeffecter", PLDM_STATE_EFFECTER_PDR},
         {"entityassociation", PLDM_PDR_ENTITY_ASSOCIATION},
         {"frurecord", PLDM_PDR_FRU_RECORD_SET},
@@ -1129,6 +1132,65 @@ class GetPDR : public CommandInterface
         return std::nullopt;
     }
 
+    void printCompactNumericSensorPDR(const uint8_t* data, ordered_json& output)
+    {
+        struct pldm_compact_numeric_sensor_pdr* pdr =
+            (struct pldm_compact_numeric_sensor_pdr*)data;
+        if (!pdr)
+        {
+            std::cerr << "Failed to get compact numeric sensor PDR"
+                      << std::endl;
+            return;
+        }
+        output["PLDMTerminusHandle"] = int(pdr->terminus_handle);
+        output["sensorID"] = int(pdr->sensor_id);
+        output["entityType"] = getEntityName(pdr->entity_type);
+        output["entityInstanceNumber"] = int(pdr->entity_instance);
+        output["containerID"] = int(pdr->container_id);
+        output["sensorNameStringByteLength"] = int(pdr->sensor_name_length);
+        if (pdr->sensor_name_length == 0)
+        {
+            char name[128] = {'\0'};
+            snprintf(name, 128, "PLDM_Device_TID%d_SensorId%d",
+                     unsigned(pdr->terminus_handle), unsigned(pdr->sensor_id));
+            output["Name"] = name;
+        }
+        else
+        {
+            std::string sTemp(reinterpret_cast<const char*>(pdr->sensor_name),
+                              pdr->sensor_name_length);
+            output["Name"] = sTemp;
+        }
+        output["baseUnit"] = unsigned(pdr->base_unit);
+        output["unitModifier"] = signed(pdr->unit_modifier);
+        output["occurrenceRate"] = unsigned(pdr->occurrence_rate);
+        output["rangeFieldSupport"] = unsigned(pdr->range_field_support.byte);
+        if (pdr->range_field_support.bits.bit0)
+        {
+            output["warningHigh"] = int(pdr->warning_high);
+        }
+        if (pdr->range_field_support.bits.bit1)
+        {
+            output["warningLow"] = int(pdr->warning_low);
+        }
+        if (pdr->range_field_support.bits.bit2)
+        {
+            output["criticalHigh"] = int(pdr->critical_high);
+        }
+        if (pdr->range_field_support.bits.bit3)
+        {
+            output["criticalLow"] = int(pdr->critical_low);
+        }
+        if (pdr->range_field_support.bits.bit4)
+        {
+            output["fatalHigh"] = int(pdr->fatal_high);
+        }
+        if (pdr->range_field_support.bits.bit5)
+        {
+            output["fatalLow"] = int(pdr->fatal_low);
+        }
+    }
+
     void printPDRMsg(uint32_t& nextRecordHndl, const uint16_t respCnt,
                      uint8_t* data, std::optional<uint16_t> terminusHandle)
     {
@@ -1201,6 +1263,9 @@ class GetPDR : public CommandInterface
                 break;
             case PLDM_PDR_FRU_RECORD_SET:
                 printPDRFruRecordSet(data, output);
+                break;
+            case PLDM_COMPACT_NUMERIC_SENSOR_PDR:
+                printCompactNumericSensorPDR(data, output);
                 break;
             default:
                 break;
