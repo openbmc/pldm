@@ -458,6 +458,26 @@
          ],
          "helpText" : "Specifies if Host USB is disabled or enabled for security reasons. Do not set this attribute directly; set hb_host_usb_enablement instead.",
          "displayName" : "Host USB Enablement (current)"
-      }
+     },
+     {
+        "attribute_name":"pvm_auto_poweron_restart",
+        "possible_values":[
+           "Disabled",
+           "Enabled"
+        ],
+        "default_values":[
+           "Disabled"
+        ],
+        "helpText" : "Select auto poweron policy. Disabled: Instructs server not to activate any auto poweron logic, Enabled: Instructs the server to automatically power on the server when power is lost.",
+        "displayName" : "pvm_auto_poweron_restart",
+        "dbus":
+           {
+              "object_path" : "/xyz/openbmc_project/control/host0/power_restore_policy",
+              "interface" : "xyz.openbmc_project.Control.Power.RestorePolicy",
+              "property_name" : "PowerRestorePolicy",
+              "property_type" : "string",
+              "property_values" : ["xyz.openbmc_project.Control.Power.RestorePolicy.Policy.None", "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn"]
+           }
+     }
    ]
 }
