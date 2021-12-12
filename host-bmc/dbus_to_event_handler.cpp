@@ -84,7 +84,11 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
     // DSP0248_1.2.0 Table 19
     if (!dbusMaps.contains(sensorId))
     {
-        std::cerr << "Invalid sensor ID : " << sensorId << std::endl;
+        // this is not an error condition, if we end up here
+        // that means that the sensor with the sensor id has
+        // custom behaviour(or probably an oem sensor) in
+        // sending events that cannot be captured via standard
+        // dbus-json infastructure
         return;
     }
 
@@ -145,6 +149,7 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
          }}};
 
     pldm_state_sensor_pdr* pdr = nullptr;
+    bool skipMapEntry = false;
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> sensorPdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
 
@@ -163,7 +168,28 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
         {
             pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrEntry.data);
             SensorId sensorId = LE16TOH(pdr->sensor_id);
-            if (sensorHandlers.contains(pdrType))
+            auto compositeSensorCount = pdr->composite_sensor_count;
+            auto possible_states_start = pdr->possible_states;
+            for (auto sensors = 0x00; sensors < compositeSensorCount; sensors++)
+            {
+                auto possibleStates =
+                    reinterpret_cast<state_sensor_possible_states*>(
+                        possible_states_start);
+                auto setId = possibleStates->state_set_id;
+                auto possibleStateSize = possibleStates->possible_states_size;
+                if ((pdr->entity_type >= PLDM_OEM_ENTITY_TYPE_START) ||
+                    (setId >= PLDM_OEM_STATE_SET_ID_START))
+                {
+                    // this is an OEM Sensor & probably has custom behaviour
+                    // so dont create a map entry for this sensor ID
+                    skipMapEntry = true;
+                    break;
+                }
+                possible_states_start += possibleStateSize + sizeof(setId) +
+                                         sizeof(possibleStateSize);
+            }
+
+            if (sensorHandlers.contains(pdrType) && !skipMapEntry)
             {
                 sensorHandlers.at(pdrType)(sensorId, dbusMaps);
             }
