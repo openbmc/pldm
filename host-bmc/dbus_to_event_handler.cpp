@@ -84,7 +84,11 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
     // DSP0248_1.2.0 Table 19
     if (!dbusMaps.contains(sensorId))
     {
-        std::cerr << "Invalid sensor ID : " << sensorId << std::endl;
+        // this is not an error condition, if we end up here
+        // that means that the sensor with the sensor id has
+        // custom behaviour(or probably an oem sensor) in
+        // sending events that cannot be captured via standard
+        // dbus-json infastructure
         return;
     }
 
@@ -163,7 +167,7 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
         {
             pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrEntry.data);
             SensorId sensorId = LE16TOH(pdr->sensor_id);
-            if (sensorHandlers.contains(pdrType))
+            if (sensorHandlers.contains(pdrType) && !skipMapEntry)
             {
                 sensorHandlers.at(pdrType)(sensorId, dbusMaps);
             }
