@@ -1,6 +1,8 @@
 #pragma once
 
+#include "libpldm/entity.h"
 #include "libpldm/platform.h"
+#include "libpldm/state_set.h"
 
 #include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
