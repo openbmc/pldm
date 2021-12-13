@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "baf419e6_dde4ef34",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-12-13T06:58:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e8c53aca_5694cbb9",
+      "revId": "9760987a40499587576bb593db1108303933f314",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4402af15_96d03cd1",
         "filename": "host-bmc/dbus_to_event_handler.cpp",
         "patchSetId": 2
@@ -105,6 +123,30 @@
       "revId": "9760987a40499587576bb593db1108303933f314",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b889c022_0cd364e6",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-12-13T06:58:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "812d5ca2_f34f7c9f",
+      "range": {
+        "startLine": 152,
+        "startChar": 3,
+        "endLine": 152,
+        "endChar": 30
+      },
+      "revId": "9760987a40499587576bb593db1108303933f314",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
