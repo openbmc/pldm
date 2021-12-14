@@ -64,51 +64,51 @@ configure_file(output: 'config.h',
   configuration: conf_data
 )
 
-phosphor_dbus_interfaces = dependency(
-  'phosphor-dbus-interfaces',
-  fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
-)
-sdbusplus = dependency(
-  'sdbusplus',
-  fallback: ['sdbusplus', 'sdbusplus_dep'],
-)
-sdeventplus = dependency(
-  'sdeventplus',
-  fallback: ['sdeventplus', 'sdeventplus_dep'],
-)
-
 cpp = meson.get_compiler('cpp')
 
-if cpp.has_header('nlohmann/json.hpp')
-  nlohmann_json = declare_dependency()
-else
-  subproject('nlohmann-json')
-  nlohmann_json = declare_dependency(
-    include_directories: [
-      'subprojects/nlohmann-json/single_include',
-      'subprojects/nlohmann-json/single_include/nlohmann',
-    ]
+if get_option('libpldm-only').disabled()
+  phosphor_dbus_interfaces = dependency(
+    'phosphor-dbus-interfaces',
+    fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
   )
-endif
+  sdbusplus = dependency(
+    'sdbusplus',
+    fallback: ['sdbusplus', 'sdbusplus_dep'],
+  )
+  sdeventplus = dependency(
+    'sdeventplus',
+    fallback: ['sdeventplus', 'sdeventplus_dep'],
+  )
+  if cpp.has_header('nlohmann/json.hpp')
+    nlohmann_json = declare_dependency()
+  else
+    subproject('nlohmann-json')
+    nlohmann_json = declare_dependency(
+      include_directories: [
+        'subprojects/nlohmann-json/single_include',
+        'subprojects/nlohmann-json/single_include/nlohmann',
+      ]
+    )
+  endif
+  if cpp.has_header('CLI/CLI.hpp')
+    CLI11_dep = declare_dependency()
+  else
+    CLI11_dep = dependency(
+      'CLI11',
+      fallback: [ 'CLI11', 'CLI11_dep' ],
+    )
+  endif
 
-if cpp.has_header('CLI/CLI.hpp')
-  CLI11_dep = declare_dependency()
-else
-  CLI11_dep = dependency(
-    'CLI11',
-    fallback: [ 'CLI11', 'CLI11_dep' ],
-  )
-endif
-
-if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
-  function2_dep = declare_dependency()
-else
-  subproject('function2')
-  function2_dep = declare_dependency(
-    include_directories: [
-      'subprojects/function2/include/function2'
-    ]
-  )
+  if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
+    function2_dep = declare_dependency()
+  else
+    subproject('function2')
+    function2_dep = declare_dependency(
+      include_directories: [
+        'subprojects/function2/include/function2'
+      ]
+    )
+  endif
 endif
 
 if get_option('oe-sdk').enabled()
