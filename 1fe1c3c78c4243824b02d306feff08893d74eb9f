@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3f352d76_1906fc53",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-14T22:23:52Z",
+      "side": 1,
+      "message": "I got an internal comment asking to clarify that this policy is implemented after power is restored (not when power is lost).",
+      "range": {
+        "startLine": 471,
+        "startChar": 117,
+        "endLine": 471,
+        "endChar": 125
+      },
+      "revId": "1fe1c3c78c4243824b02d306feff08893d74eb9f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
