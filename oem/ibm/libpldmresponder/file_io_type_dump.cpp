@@ -26,7 +26,6 @@ namespace pldm
 {
 namespace responder
 {
-
 static constexpr auto dumpEntry = "xyz.openbmc_project.Dump.Entry";
 static constexpr auto dumpObjPath = "/xyz/openbmc_project/dump/system";
 static constexpr auto systemDumpEntry = "xyz.openbmc_project.Dump.Entry.System";
@@ -212,7 +211,8 @@ int DumpHandler::fileAck(uint8_t fileStatus)
         {
             std::cerr << "Failue in resource dump file ack" << std::endl;
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.fileAck.ResourceDumpFileAckFail",
+                PelSeverity::INFORMATIONAL);
 
             PropertyValue value{
                 "xyz.openbmc_project.Common.Progress.OperationStatus.Failed"};
