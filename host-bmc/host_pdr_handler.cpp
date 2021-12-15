@@ -16,7 +16,6 @@
 
 namespace pldm
 {
-
 using namespace pldm::dbus_api;
 using namespace pldm::responder::events;
 using namespace pldm::utils;
@@ -627,7 +626,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
         {
             std::cerr << "Failed to get State sensor PDR" << std::endl;
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.SetHostSensorState.GetStateSensorPDRFail",
+                pldm::PelSeverity::ERROR);
             return;
         }
 
@@ -661,7 +661,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                                  "encode_get_state_sensor_readings_req, rc = "
                               << rc << std::endl;
                     pldm::utils::reportError(
-                        "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                        "xyz.openbmc_project.PLDM.Error.SetHostSensorState.EncodeStateSensorFail",
+                        pldm::PelSeverity::ERROR);
                     return;
                 }
 
@@ -692,8 +693,6 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             << rc
                             << " cc=" << static_cast<unsigned>(completionCode)
                             << std::endl;
-                        pldm::utils::reportError(
-                            "xyz.openbmc_project.bmc.pldm.InternalFailure");
                     }
 
                     uint8_t eventState;
