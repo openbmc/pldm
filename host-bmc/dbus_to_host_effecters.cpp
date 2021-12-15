@@ -16,7 +16,6 @@ namespace pldm
 {
 namespace host_effecters
 {
-
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
@@ -287,7 +286,8 @@ int HostEffecterParser::setHostStateEffecter(
                 std::cerr << "Failed to decode setStateEffecterStates response,"
                           << " rc " << rc << "\n";
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                    "xyz.openbmc_project.PLDM.Error.SetHostEffecterFailed",
+                    pldm::PelSeverity::ERROR);
             }
             if (completionCode)
             {
@@ -295,7 +295,8 @@ int HostEffecterParser::setHostStateEffecter(
                           << ", cc=" << static_cast<unsigned>(completionCode)
                           << "\n";
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                    "xyz.openbmc_project.PLDM.Error.SetHostEffecterFailed",
+                    pldm::PelSeverity::ERROR);
             }
         };
 

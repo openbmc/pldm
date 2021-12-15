@@ -220,7 +220,8 @@ void Handler::processSetEventReceiver(
                       << " rc=" << rc << "cc=" << (unsigned)completionCode
                       << "\n";
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.bmc.pldm.InternalFailure",
+                pldm::PelSeverity::ERROR);
         }
     };
     rc = handler->registerRequest(
