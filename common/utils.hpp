@@ -32,6 +32,20 @@ constexpr uint64_t dbusTimeout =
 
 namespace pldm
 {
+using Severity = pldm::PelSeverity;
+
+// mapping of severity enum to severity interface
+static std::unordered_map<Severity, std::string> sevMap = {
+    {Severity::Informational,
+     "xyz.openbmc_project.Logging.Entry.Level.Informational"},
+    {Severity::Debug, "xyz.openbmc_project.Logging.Entry.Level.Debug"},
+    {Severity::Notice, "xyz.openbmc_project.Logging.Entry.Level.Notice"},
+    {Severity::Warning, "xyz.openbmc_project.Logging.Entry.Level.Warning"},
+    {Severity::Critical, "xyz.openbmc_project.Logging.Entry.Level.Critical"},
+    {Severity::Emergency, "xyz.openbmc_project.Logging.Entry.Level.Emergency"},
+    {Severity::Error, "xyz.openbmc_project.Logging.Entry.Level.Error"},
+    {Severity::Alert, "xyz.openbmc_project.Logging.Entry.Level.Alert"}};
+
 namespace utils
 {
 namespace fs = std::filesystem;
@@ -139,8 +153,11 @@ std::optional<std::vector<set_effecter_state_field>>
 /**
  *  @brief creates an error log
  *  @param[in] errorMsg - the error message
+ *  @param[in] sev - severity of the log
+ *
  */
-void reportError(const char* errorMsg);
+void reportError(const char* errorMsg,
+                 const PelSeverity& sev = pldm::PelSeverity::Error);
 
 /** @brief Convert any Decimal number to BCD
  *

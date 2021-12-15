@@ -289,14 +289,14 @@ int HostEffecterParser::setHostStateEffecter(
             error("Failed to decode setStateEffecterStates response, rc {RC}",
                   "RC", rc);
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                "xyz.openbmc_project.PLDM.Error.SetHostEffecterFailed");
         }
         if (completionCode)
         {
             error("Failed to set a Host effecter, cc = {CC}", "CC",
                   static_cast<unsigned>(completionCode));
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                "xyz.openbmc_project.PLDM.Error.SetHostEffecterFailed");
         }
     };
 
