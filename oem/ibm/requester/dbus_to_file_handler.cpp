@@ -38,8 +38,8 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
     {
         std::cerr << "Failed to send resource dump parameters as requester is "
                      "not set";
-        pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+        pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure",
+                                 pldm::PelSeverity::ERROR);
         return;
     }
     auto instanceId = requester->getInstanceId(mctp_eid);
@@ -93,7 +93,8 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
 void DbusToFileHandler::reportResourceDumpFailure()
 {
 
-    pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
+    pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure",
+                             pldm::PelSeverity::ERROR);
 
     PropertyValue value{resDumpStatus};
     DBusMapping dbusMapping{resDumpCurrentObjPath, resDumpProgressIntf,
@@ -205,8 +206,8 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
     if (requester == NULL)
     {
         std::cerr << "Failed to send csr to host.";
-        pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+        pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure",
+                                 pldm::PelSeverity::ERROR);
         return;
     }
     auto instanceId = requester->getInstanceId(mctp_eid);
@@ -241,7 +242,8 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
                       << ", cc=" << static_cast<unsigned>(completionCode)
                       << "\n";
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.bmc.pldm.InternalFailure",
+                pldm::PelSeverity::ERROR);
         }
     };
     rc = handler->registerRequest(
@@ -251,8 +253,8 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
     {
         std::cerr
             << "Failed to send NewFileAvailable Request to Host for vmi \n";
-        pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+        pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure",
+                                 pldm::PelSeverity::ERROR);
     }
 }
 

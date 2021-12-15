@@ -285,7 +285,8 @@ int HostEffecterParser::setHostStateEffecter(
                 std::cerr << "Failed to decode setStateEffecterStates response,"
                           << " rc " << rc << "\n";
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed",
+                    pldm::PelSeverity::ERROR);
             }
             if (completionCode)
             {
@@ -293,7 +294,8 @@ int HostEffecterParser::setHostStateEffecter(
                           << ", cc=" << static_cast<unsigned>(completionCode)
                           << "\n";
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
+                    "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed",
+                    pldm::PelSeverity::ERROR);
             }
         };
 
