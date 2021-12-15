@@ -156,7 +156,6 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
         }
     }
 }
-
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
     if (hostPDRHandler)
@@ -999,7 +998,7 @@ void Handler::setEventReceiver()
                 "Failed to decode setEventReceiver command response, rc = {RC}, cc = {CC}",
                 "RC", rc, "CC", (unsigned)completionCode);
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.InternalFailure");
         }
     };
     rc = handler->registerRequest(

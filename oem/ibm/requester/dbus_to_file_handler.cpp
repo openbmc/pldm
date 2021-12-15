@@ -38,7 +38,7 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
         error(
             "Failed to send resource dump parameters as instance ID DB is not set");
         pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            "xyz.openbmc_project.PLDM.Error.sendNewFileAvailableCmd.SendDumpParametersFail");
         return;
     }
     auto instanceId = instanceIdDb->next(mctp_eid);
@@ -88,7 +88,9 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
 
 void DbusToFileHandler::reportResourceDumpFailure()
 {
-    pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
+    pldm::utils::reportError(
+        "xyz.openbmc_project.PLDM.Error.ReportResourceDumpFail",
+        pldm::PelSeverity::Warning);
 
     PropertyValue value{resDumpStatus};
     DBusMapping dbusMapping{resDumpCurrentObjPath, resDumpProgressIntf,
@@ -247,7 +249,7 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
     {
         error("Failed to send csr to host.");
         pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            "xyz.openbmc_project.PLDM.Error.SendFileToHostFail");
         return;
     }
     auto instanceId = instanceIdDb->next(mctp_eid);
@@ -279,7 +281,7 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
                 "Failed to decode_new_file_resp for vmi, or Host returned error for new_file_available rc = {RC}, cc = {CC}",
                 "RC", rc, "CC", static_cast<unsigned>(completionCode));
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.DecodeNewFileResponseFail");
         }
     };
     rc = handler->registerRequest(
@@ -289,7 +291,7 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
     {
         error("Failed to send NewFileAvailable Request to Host for vmi");
         pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            "xyz.openbmc_project.PLDM.Error.NewFileAvailableRequestFail");
     }
 }
 
