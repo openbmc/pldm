@@ -448,7 +448,7 @@ GetSubTreeResponse
     return response;
 }
 
-void reportError(const char* errorMsg)
+void reportError(const char* errorMsg, const Severity& sev)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
 
@@ -457,14 +457,18 @@ void reportError(const char* errorMsg)
         using LoggingCreate =
             sdbusplus::client::xyz::openbmc_project::logging::Create<>;
 
+        std::string severity = "xyz.openbmc_project.Logging.Entry.Level.Error";
+
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
-        auto severity =
-            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
-                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
-                    Error);
         auto method = bus.new_method_call(LoggingCreate::default_service,
                                           LoggingCreate::instance_path,
                                           LoggingCreate::interface, "Create");
+
+        auto itr = sevMap.find(sev);
+        if (itr != sevMap.end())
+        {
+            severity = itr->second;
+        }
 
         std::map<std::string, std::string> addlData{};
         method.append(errorMsg, severity, addlData);
