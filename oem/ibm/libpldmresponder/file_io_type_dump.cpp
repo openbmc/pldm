@@ -224,7 +224,8 @@ int DumpHandler::fileAck(uint8_t fileStatus)
         {
             error("Failue in resource dump file ack");
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.fileAck.ResourceDumpFileAckFail",
+                PelSeverity::INFORMATIONAL);
 
             PropertyValue value{
                 "xyz.openbmc_project.Common.Progress.OperationStatus.Failed"};
@@ -274,7 +275,8 @@ int DumpHandler::fileAck(uint8_t fileStatus)
                     "fileAck: Failed to make a d-bus call to DUMP manager to reset source dump id of {FILE_PATH}, with ERROR={ERR_EXCEP}",
                     "FILE_PATH", path.c_str(), "ERR_EXCEP", e.what());
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.PLDM.fileAck.SourceDumpIdResetFail");
+                    "xyz.openbmc_project.PLDM.Error.fileAck.SourceDumpIdResetFail",
+                    pldm::PelSeverity::ERROR);
                 return PLDM_ERROR;
             }
 
@@ -292,7 +294,8 @@ int DumpHandler::fileAck(uint8_t fileStatus)
                     "fileAck: Failed to make a d-bus method to delete the dump entry {FILE_PATH}, with ERROR={ERR_EXCEP}",
                     "FILE_PATH", path.c_str(), "ERR_EXCEP", e.what());
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.bmc.PLDM.fileAck.DumpEntryDeleteFail");
+                    "xyz.openbmc_project.PLDM.Error.fileAck.DumpEntryDeleteFail",
+                    pldm::PelSeverity::ERROR);
                 return PLDM_ERROR;
             }
             return PLDM_SUCCESS;

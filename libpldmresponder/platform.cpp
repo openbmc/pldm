@@ -144,19 +144,20 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
                 error("Failed parsing PDR JSON file for '{TYPE}' pdr: {ERROR}",
                       "TYPE", pdrType, "ERROR", e);
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail");
+                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail",
+                    pldm::PelSeverity::ERROR);
             }
             catch (const std::exception& e)
             {
                 error("Failed parsing PDR JSON file for '{TYPE}' pdr: {ERROR}",
                       "TYPE", pdrType, "ERROR", e);
                 pldm::utils::reportError(
-                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail");
+                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail",
+                    pldm::PelSeverity::ERROR);
             }
         }
     }
 }
-
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
     if (hostPDRHandler)
@@ -186,11 +187,12 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
             auto systemType = platformConfigHandler->getPlatformName();
             if (systemType.has_value())
             {
-                // In case of normal poweron , the system type would have been
-                // already filled by entity manager when ever BMC reaches Ready
-                // state. If this is not filled by time we get a getpdr request
-                // we can assume that the entity manager service is not present
-                // on this system & continue to build the common PDR's.
+                // In case of normal poweron , the system type would have
+                // been already filled by entity manager when ever BMC
+                // reaches Ready state. If this is not filled by time we get
+                // a getpdr request we can assume that the entity manager
+                // service is not present on this system & continue to build
+                // the common PDR's.
                 pdrJsonsDir.push_back(pdrJsonDir / systemType.value());
             }
         }
@@ -655,11 +657,12 @@ Response Handler::getNumericEffecterValue(const pldm_msg* request,
     }
 
     // Refer DSP0248_1.2.0.pdf (section 22.3, Table 48)
-    // Completion Code (uint8), Effecter Data Size(uint8), Effecter Operational
-    // State(uint8), PendingValue (uint8|sint8|uint16|sint16|uint32|sint32 )
-    // PresentValue (uint8|sint8|uint16|sint16|uint32|sint32 )
-    // Size of PendingValue and PresentValue calculated based on size is
-    // provided in effecter data size
+    // Completion Code (uint8), Effecter Data Size(uint8), Effecter
+    // Operational State(uint8), PendingValue
+    // (uint8|sint8|uint16|sint16|uint32|sint32 ) PresentValue
+    // (uint8|sint8|uint16|sint16|uint32|sint32 ) Size of PendingValue and
+    // PresentValue calculated based on size is provided in effecter data
+    // size
     size_t responsePayloadLength = sizeof(completionCode) +
                                    sizeof(effecterDataSize) +
                                    sizeof(effecterOperationalState) +
@@ -999,7 +1002,8 @@ void Handler::setEventReceiver()
                 "Failed to decode setEventReceiver command response, rc = {RC}, cc = {CC}",
                 "RC", rc, "CC", (unsigned)completionCode);
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.InternalFailure",
+                pldm::PelSeverity::ERROR);
         }
     };
     rc = handler->registerRequest(

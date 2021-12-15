@@ -72,7 +72,8 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
         error("VPD keyword file open error: {KEYWORD_FILE_PATH} errno: {ERR}",
               "KEYWORD_FILE_PATH", keywrdFilePath, "ERR", errno);
         pldm::utils::reportError(
-            "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileOpenError");
+            "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileOpenError",
+            pldm::PelSeverity::ERROR);
         return PLDM_ERROR;
     }
 
@@ -110,7 +111,8 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
         error("Read error for keyword file with size: {KEYWORD_SIZE}",
               "KEYWORD_SIZE", keywrdSize);
         pldm::utils::reportError(
-            "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileReadError");
+            "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileReadError",
+            pldm::PelSeverity::ERROR);
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
