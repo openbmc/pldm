@@ -32,6 +32,20 @@ constexpr uint64_t dbusTimeout =
 
 namespace pldm
 {
+using Severity = pldm::PelSeverity;
+
+// mapping of severity enum to severity interface
+static std::unordered_map<Severity, std::string> sevMap = {
+    {Severity::informational,
+     "xyz.openbmc_project.Logging.Entry.Level.Informational"},
+    {Severity::debug, "xyz.openbmc_project.Logging.Entry.Level.Debug"},
+    {Severity::notice, "xyz.openbmc_project.Logging.Entry.Level.Notice"},
+    {Severity::warning, "xyz.openbmc_project.Logging.Entry.Level.Warning"},
+    {Severity::critical, "xyz.openbmc_project.Logging.Entry.Level.Critical"},
+    {Severity::emergency, "xyz.openbmc_project.Logging.Entry.Level.Emergency"},
+    {Severity::error, "xyz.openbmc_project.Logging.Entry.Level.Error"},
+    {Severity::alert, "xyz.openbmc_project.Logging.Entry.Level.Alert"}};
+
 namespace utils
 {
 namespace fs = std::filesystem;
@@ -139,8 +153,10 @@ std::optional<std::vector<set_effecter_state_field>>
 /**
  *  @brief creates an error log
  *  @param[in] errorMsg - the error message
+ *  @param[in] sev - severity of the log
+ *
  */
-void reportError(const char* errorMsg);
+void reportError(const char* errorMsg, const PelSeverity& sev);
 
 /** @brief Convert any Decimal number to BCD
  *

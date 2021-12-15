@@ -20,6 +20,18 @@ using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
 
+enum PelSeverity
+{
+    notice,
+    informational,
+    debug,
+    warning,
+    critical,
+    emergency,
+    alert,
+    error
+};
+
 namespace dbus
 {
 
