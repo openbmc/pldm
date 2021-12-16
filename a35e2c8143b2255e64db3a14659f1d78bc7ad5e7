@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81bf490f_f72b88b4",
+        "filename": "oem/ibm/configurations/pdr/ibm,rainier-2u/11.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 3379,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-16T14:36:26Z",
+      "side": 1,
+      "message": "property_name should be Functional not property_type, this should be caught in testing.",
+      "range": {
+        "startLine": 3377,
+        "startChar": 0,
+        "endLine": 3379,
+        "endChar": 49
+      },
+      "revId": "a35e2c8143b2255e64db3a14659f1d78bc7ad5e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
