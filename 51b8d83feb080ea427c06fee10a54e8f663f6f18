@@ -1,0 +1,152 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5717a3aa_f99a0963",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "please follow the 50/72 rule for commit messages",
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d9763d9_2791483e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "what?",
+      "range": {
+        "startLine": 11,
+        "startChar": 24,
+        "endLine": 11,
+        "endChar": 27
+      },
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f01a6441_382905e9",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "Useful to log biosAttrStr as well here?",
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0cd02781_b099296c",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "The requirement as I understood it was that we set the RestorePolicy on the power off. This appears to be running on the power on (HostState.Running).",
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d6b9695_ae2d222a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "This logic I would expect here, where we are powering on.",
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f797b452_70b21f7b",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "I think you want to move the RestorePolicy logic from above to down here. i.e. run it on the power off. The use case is that PHYP has been notified that a power loss is eminent. They have logic to figure out if they want the RestorePolicy to be to auto power on once power is fixed so we need to set the RestorePolicy during the power off.",
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6d16968_b8d94b96",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "I don\u0027t think this code is needed. I ensure to reset the RestartCause in state-manager code (https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-state-manager/+/49323).",
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bacf38a9_60d3ca19",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-16T19:50:08Z",
+      "side": 1,
+      "message": "I think this should be \"Off\". i.e. if the system owner has requested an Off then it\u0027s a \"GRACEFUL_SHUTDOWN\" otherwise it some sort of reboot so a \"GRACEFUL_RESTART\"",
+      "range": {
+        "startLine": 309,
+        "startChar": 76,
+        "endLine": 309,
+        "endChar": 78
+      },
+      "revId": "51b8d83feb080ea427c06fee10a54e8f663f6f18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
