@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa8989b3_bc80ebcf",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-17T15:34:31Z",
+      "side": 1,
+      "message": "I don\u0027t know when the _current is switched over. Should we be looking at pvm_boot_initiator to ensure we get whatever the host has set this to most recently or will _current be set correctly when we check it here?",
+      "range": {
+        "startLine": 224,
+        "startChar": 42,
+        "endLine": 224,
+        "endChar": 68
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7ea4ec8_8c72eac5",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-17T15:34:31Z",
+      "side": 1,
+      "message": "This should be rare that the host uses this so I think an info log to the journal when we hit this path would be useful for debug.",
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
