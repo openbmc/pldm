@@ -2,6 +2,121 @@
   "comments": [
     {
       "key": {
+        "uuid": "ba51292e_eddcb768",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T06:19:41Z",
+      "side": 1,
+      "message": "this will create a new bus instance, we already have getBus() singleton infrastructure to get the existing bus instance , please use the existing infra.",
+      "range": {
+        "startLine": 600,
+        "startChar": 3,
+        "endLine": 600,
+        "endChar": 45
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ceadf91_723204db",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T06:19:41Z",
+      "side": 1,
+      "message": "was this being checked in the client code ?",
+      "range": {
+        "startLine": 617,
+        "startChar": 8,
+        "endLine": 617,
+        "endChar": 18
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5a3f60e_3fbae498",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T06:19:41Z",
+      "side": 1,
+      "message": "same here.",
+      "range": {
+        "startLine": 640,
+        "startChar": 4,
+        "endLine": 640,
+        "endChar": 45
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffa92438_f3fd75a2",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T06:19:41Z",
+      "side": 1,
+      "message": "does this need to be blocking ?\n\nor do we need a  bus.call_noreply ?",
+      "range": {
+        "startLine": 649,
+        "startChar": 8,
+        "endLine": 649,
+        "endChar": 25
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "322de14c_f4f1c308",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T06:19:41Z",
+      "side": 1,
+      "message": "This is IBM Only - this should not be in the common code, please move this logic to OEM.",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 17
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fa8989b3_bc80ebcf",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 6
@@ -36,6 +151,52 @@
       "writtenOn": "2021-12-17T15:34:31Z",
       "side": 1,
       "message": "This should be rare that the host uses this so I think an info log to the journal when we hit this path would be useful for debug.",
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e703f07a_a7559b4e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T06:19:41Z",
+      "side": 1,
+      "message": "this logic is OEM only, move this to oem",
+      "range": {
+        "startLine": 223,
+        "startChar": 12,
+        "endLine": 253,
+        "endChar": 21
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c71a791e_d5823d41",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T06:19:41Z",
+      "side": 1,
+      "message": "https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/State/Host.interface.yaml#L26\n\nRequestedHostTransaction -\u003e This can be an enum , and what will be the value of effecterState in other cases ? apart from those two that were being checked ?",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 8
+      },
       "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
