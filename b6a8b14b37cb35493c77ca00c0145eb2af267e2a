@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c5266d2_bf6b9c70",
+        "filename": "common/utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T13:18:53Z",
+      "side": 1,
+      "message": "this ideally does not seem to qualify as a good util function, as you are restricting clients to only set one attribute value at a time , which is not ideal expectation from a utility code point of view.\n\n\nThe cost of this is, that we would send multiple attribute value changed events to host, if we have more than a single attribute value update - which can be avoided as Pending value takes a list of bios attributes \u0026 values.\n\nmaking this to take list/vector as input would be better ?",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 624,
+        "endChar": 48
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "389262ff_58d5efd1",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T13:18:53Z",
+      "side": 1,
+      "message": "nit : !\u003d nullptr is redundant. if(oemPlatformHandler) should be good enough right ?",
+      "range": {
+        "startLine": 176,
+        "startChar": 24,
+        "endLine": 176,
+        "endChar": 53
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70ff167a_e49075de",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T13:18:53Z",
+      "side": 1,
+      "message": "what would be the value of the attribute if the restart cause is not any of these ?\n\nif we dont need any change in attribute value ? probably a good thing to document here ?",
+      "range": {
+        "startLine": 820,
+        "startChar": 8,
+        "endLine": 834,
+        "endChar": 9
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24d1aa06_d99db6c2",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T13:18:53Z",
+      "side": 1,
+      "message": "do you need to return ? from here ?\n\nor you can continue ?",
+      "range": {
+        "startLine": 844,
+        "startChar": 8,
+        "endLine": 844,
+        "endChar": 17
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44bd23a6_47b93719",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-20T13:18:53Z",
+      "side": 1,
+      "message": "ah, this is what i was saying in the earlier comment. this is probably not the best way to model this.\n\nBecause Pending Attributes accepts a list of Attributes , splitting this into two set call would just set that dbus value twice, there by sending the attribute value changed notification twice, which can be avoided.",
+      "range": {
+        "startLine": 872,
+        "startChar": 7,
+        "endLine": 873,
+        "endChar": 44
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
