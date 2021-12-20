@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "22665d08_c7eb139d",
+        "filename": "common/utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T15:07:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c5266d2_bf6b9c70",
+      "range": {
+        "startLine": 623,
+        "startChar": 0,
+        "endLine": 624,
+        "endChar": 48
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "389262ff_58d5efd1",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 7
@@ -94,6 +118,30 @@
     },
     {
       "key": {
+        "uuid": "fb47f0da_cf5e8c19",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T15:07:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24d1aa06_d99db6c2",
+      "range": {
+        "startLine": 844,
+        "startChar": 8,
+        "endLine": 844,
+        "endChar": 17
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44bd23a6_47b93719",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 7
@@ -114,6 +162,30 @@
       "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "328dff65_0de9e076",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T15:07:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44bd23a6_47b93719",
+      "range": {
+        "startLine": 872,
+        "startChar": 7,
+        "endLine": 873,
+        "endChar": 44
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
