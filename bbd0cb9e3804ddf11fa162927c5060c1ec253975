@@ -140,6 +140,30 @@
     },
     {
       "key": {
+        "uuid": "b9bd72e3_e48858e3",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-12-20T07:46:07Z",
+      "side": 1,
+      "message": "yeah i also think the same. Pls check the pvm_boot_initiator",
+      "parentUuid": "fa8989b3_bc80ebcf",
+      "range": {
+        "startLine": 224,
+        "startChar": 42,
+        "endLine": 224,
+        "endChar": 68
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d7ea4ec8_8c72eac5",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 6
@@ -151,6 +175,24 @@
       "writtenOn": "2021-12-17T15:34:31Z",
       "side": 1,
       "message": "This should be rare that the host uses this so I think an info log to the journal when we hit this path would be useful for debug.",
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "493f8f76_8be8ca3f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-12-20T07:46:07Z",
+      "side": 1,
+      "message": "pls add a journal trace as of now. Pavithra is making a commit to allow to create info logs. use that when available",
+      "parentUuid": "d7ea4ec8_8c72eac5",
       "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -173,6 +215,29 @@
         "startChar": 12,
         "endLine": 253,
         "endChar": 21
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90b9e9f5_8471cd17",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2021-12-20T07:46:07Z",
+      "side": 1,
+      "message": "a state !\u003d “xyz.openbmc_project.State.Host.Transition.On”  means a reipl. pls change accordingly",
+      "range": {
+        "startLine": 310,
+        "startChar": 48,
+        "endLine": 310,
+        "endChar": 55
       },
       "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
