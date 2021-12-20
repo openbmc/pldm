@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "7a2bf8d9_3bdfde2f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T16:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "389262ff_58d5efd1",
+      "range": {
+        "startLine": 176,
+        "startChar": 24,
+        "endLine": 176,
+        "endChar": 53
+      },
+      "revId": "b6a8b14b37cb35493c77ca00c0145eb2af267e2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "70ff167a_e49075de",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 7
