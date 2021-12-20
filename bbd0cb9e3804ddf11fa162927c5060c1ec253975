@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b1ac5d1e_fbac50c9",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba51292e_eddcb768",
+      "range": {
+        "startLine": 600,
+        "startChar": 3,
+        "endLine": 600,
+        "endChar": 45
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ceadf91_723204db",
         "filename": "common/utils.cpp",
         "patchSetId": 6
@@ -45,6 +69,30 @@
       "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4af3500a_24f278d3",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Have added code in the client to check for emptiness",
+      "parentUuid": "1ceadf91_723204db",
+      "range": {
+        "startLine": 617,
+        "startChar": 8,
+        "endLine": 617,
+        "endChar": 18
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "ebed0164_a7337689",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5a3f60e_3fbae498",
+      "range": {
+        "startLine": 640,
+        "startChar": 4,
+        "endLine": 640,
+        "endChar": 45
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ffa92438_f3fd75a2",
         "filename": "common/utils.cpp",
         "patchSetId": 6
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "4f0550d8_0103458b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffa92438_f3fd75a2",
+      "range": {
+        "startLine": 649,
+        "startChar": 8,
+        "endLine": 649,
+        "endChar": 25
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "322de14c_f4f1c308",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 6
@@ -114,6 +210,30 @@
       "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "683dac7f_5837c9c8",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "322de14c_f4f1c308",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 17
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -164,6 +284,30 @@
     },
     {
       "key": {
+        "uuid": "47dd50d7_448b146a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9bd72e3_e48858e3",
+      "range": {
+        "startLine": 224,
+        "startChar": 42,
+        "endLine": 224,
+        "endChar": 68
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d7ea4ec8_8c72eac5",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 6
@@ -199,6 +343,24 @@
     },
     {
       "key": {
+        "uuid": "fbc0a18b_2317307e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "493f8f76_8be8ca3f",
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e703f07a_a7559b4e",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 6
@@ -219,6 +381,30 @@
       "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83285374_7f840a11",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e703f07a_a7559b4e",
+      "range": {
+        "startLine": 223,
+        "startChar": 12,
+        "endLine": 253,
+        "endChar": 21
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -245,6 +431,30 @@
     },
     {
       "key": {
+        "uuid": "13b38e19_79bdb5f6",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "if the system owner has requested an Off then it\u0027s a \"GRACEFUL_SHUTDOWN\" otherwise it some sort of reboot so a \"GRACEFUL_RESTART\"",
+      "parentUuid": "90b9e9f5_8471cd17",
+      "range": {
+        "startLine": 310,
+        "startChar": 48,
+        "endLine": 310,
+        "endChar": 55
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c71a791e_d5823d41",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 6
@@ -265,6 +475,30 @@
       "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5c32086_9d495407",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2021-12-20T12:29:51Z",
+      "side": 1,
+      "message": "So, if RequestedHostTransaction is anything but \"xyz.openbmc_project.State.Host.Transition.Off\" then it can be considered as a reboot. so the effecterState would be PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED for all the other cases.",
+      "parentUuid": "c71a791e_d5823d41",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 8
+      },
+      "revId": "bbd0cb9e3804ddf11fa162927c5060c1ec253975",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
