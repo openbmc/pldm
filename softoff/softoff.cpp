@@ -55,9 +55,8 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
     rc = getSensorInfo();
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Message get Sensor PDRs error. PLDM "
-                     "error code = "
-                  << std::hex << std::showbase << rc << "\n";
+        std::cerr << "Message get Sensor PDRs error. PLDM error code = "
+                  << std::hex << std::showbase << (unsigned)rc << "\n";
         hasError = true;
         return;
     }
@@ -120,8 +119,8 @@ void SoftPowerOff::hostSoftOffComplete(sdbusplus::message::message& msg)
         auto rc = timer.stop();
         if (rc < 0)
         {
-            std::cerr << "PLDM soft off: Failure to STOP the timer. ERRNO="
-                      << rc << "\n";
+            std::cerr << "PLDM soft off: Failure to STOP the timer. ERRNO = "
+                      << (unsigned)rc << "\n";
         }
 
         // This marks the completion of pldm soft power off.
@@ -194,8 +193,7 @@ int SoftPowerOff::getEffecterID()
         if (sysFwResponse.size() == 0)
         {
             std::cerr
-                << "No effecter ID has been found that matches the criteria"
-                << "\n";
+                << "No effecter ID has been found that matches the criteria.\n";
             return PLDM_ERROR;
         }
 
@@ -245,8 +243,7 @@ int SoftPowerOff::getSensorInfo()
         if (Response.size() == 0)
         {
             std::cerr
-                << "No sensor PDR has been found that matches the criteria"
-                << "\n";
+                << "No sensor PDR has been found that matches the criteria.\n";
             return PLDM_ERROR;
         }
 
@@ -333,7 +330,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "Message encode failure. PLDM error code = " << std::hex
-                  << std::showbase << rc << "\n";
+                  << std::showbase << (unsigned)rc << "\n";
         return PLDM_ERROR;
     }
 
@@ -341,8 +338,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     int fd = pldm_open();
     if (-1 == fd)
     {
-        std::cerr << "Failed to connect to mctp demux daemon"
-                  << "\n";
+        std::cerr << "Failed to connect to mctp demux daemon.\n";
         return PLDM_ERROR;
     }
 
@@ -351,9 +347,9 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                                    Timer::TimePoint /*time*/) {
         if (!responseReceived)
         {
-            std::cerr << "PLDM soft off: ERROR! Can't get the response for the "
-                         "PLDM request msg. Time out!\n"
-                      << "Exit the pldm-softpoweroff\n";
+            std::cerr
+                << "PLDM soft off: ERROR! Can't get the response for the PLDM request msg. Time out!\n"
+                << "Exit the pldm-softpoweroff\n";
             exit(-1);
         }
         return;
@@ -385,9 +381,13 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         // sent out
         io.set_enabled(Enabled::Off);
         auto response = reinterpret_cast<pldm_msg*>(responseMsgPtr.get());
-        std::cerr << "Getting the response. PLDM RC = " << std::hex
-                  << std::showbase
-                  << static_cast<uint16_t>(response->payload[0]) << "\n";
+        rc = response->payload[0];
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Getting the wrong response. PLDM RC = " << std::hex
+                      << std::showbase << (unsigned)rc << "\n";
+            return;
+        }
 
         responseReceived = true;
 
@@ -405,9 +405,9 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         }
         else
         {
-            std::cerr << "Timer started waiting for host soft off, "
-                         "TIMEOUT_IN_SEC = "
-                      << SOFTOFF_TIMEOUT_SECONDS << "\n";
+            std::cerr
+                << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+                << SOFTOFF_TIMEOUT_SECONDS << "\n";
         }
         return;
     };
@@ -417,8 +417,8 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     rc = pldm_send(mctpEID, fd, requestMsg.data(), requestMsg.size());
     if (0 > rc)
     {
-        std::cerr << "Failed to send message/receive response. RC = " << rc
-                  << ", errno = " << errno << "\n";
+        std::cerr << "Failed to send message/receive response. RC = "
+                  << (unsigned)rc << ", errno = " << errno << "\n";
         return PLDM_ERROR;
     }
 
