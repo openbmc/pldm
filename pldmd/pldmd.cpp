@@ -296,8 +296,8 @@ int main(int argc, char** argv)
 
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(event, reqHandler, dbusImplReq);
-    std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
-        std::make_unique<MctpDiscovery>(bus, fwManager.get());
+
+    std::make_unique<MctpDiscovery>(bus, fwManager.get());
 
     auto callback = [verbose, &invoker, &reqHandler,
                      &fwManager](IO& io, int fd, uint32_t revents) {

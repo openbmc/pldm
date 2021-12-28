@@ -258,7 +258,10 @@ int SoftPowerOff::getSensorInfo()
             }
         }
 
-        sensorID = pdr->sensor_id;
+        if (pdr != nullptr)
+        {
+            sensorID = pdr->sensor_id;
+        }
 
         auto compositeSensorCount = pdr->composite_sensor_count;
         auto possibleStatesStart = pdr->possible_states;
