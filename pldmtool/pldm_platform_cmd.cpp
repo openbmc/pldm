@@ -491,7 +491,7 @@ class GetPDR : public CommandInterface
         {PLDM_STATE_SET_HEALTH_STATE_UPPER_CRITICAL, "Upper Critical"},
         {PLDM_STATE_SET_HEALTH_STATE_LOWER_CRITICAL, "Lower Critical"},
         {PLDM_STATE_SET_HEALTH_STATE_UPPER_FATAL, "Upper Fatal"},
-        {PLDM_STATE_SET_HEALTH_STATE_LOWER_FATAL "Lower Fatal"}};
+        {PLDM_STATE_SET_HEALTH_STATE_LOWER_FATAL, "Lower Fatal"}};
 
     static inline const std::map<uint8_t, std::string>
         setOperationalRunningState{
