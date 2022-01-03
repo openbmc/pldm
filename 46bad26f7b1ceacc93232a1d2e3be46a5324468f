@@ -1,0 +1,221 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25eb09a8_7f8cade2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Added -\u003e Add - use imperative language\n\nhttps://cbea.ms/git-commit/#imperative",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a728956_7788e1fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Please add unit tests and some style changes that apply to this and the following patches.",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9724b4d_e422eb06",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "I would prefer to avoid common APIs since the command looks similar, its actually a burden on the reader of the code and doesn\u0027t count future changes to the command.",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ab39abe_890dcfa8",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Avoid reuse, it can be confusing. Add a separate struct for GetDeviceMetaData. If the spec changes in the future for any of these command, it will invite changes to both commands.",
+      "range": {
+        "startLine": 566,
+        "startChar": 27,
+        "endLine": 566,
+        "endChar": 62
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7721832_5001477e",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Pls stick to the existing code style, the struct is prepended with pldm_.",
+      "range": {
+        "startLine": 568,
+        "startChar": 7,
+        "endLine": 568,
+        "endChar": 23
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e88ceb9f_b056709d",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1143,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Move this out/in,out parmaeters to the last.",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9bb26ff_40e20fff",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1156,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Which command is this? GetDeviceMetaData.. Pls separate to a different patch.",
+      "range": {
+        "startLine": 1156,
+        "startChar": 46,
+        "endLine": 1156,
+        "endChar": 57
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e029e357_45b77e02",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1163,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "For ease of readability, leave a blank line between after @param, @return and @note.",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9296b123_31d8eb2c",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1167,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "const needed for basic types passed in as pass by value.",
+      "range": {
+        "startLine": 1167,
+        "startChar": 30,
+        "endLine": 1167,
+        "endChar": 35
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b986adb_f2a628fa",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1175,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Why is there a change showing up in the diff?",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "784ae23e_8a3fbb33",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2922,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-03T06:51:43Z",
+      "side": 1,
+      "message": "Can we add unit tests which can cover both the happy/error paths?",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
