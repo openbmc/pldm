@@ -483,8 +483,25 @@ class GetPDR : public CommandInterface
 
     static inline const std::map<uint8_t, std::string> setHealthState{
         {PLDM_STATE_SET_HEALTH_STATE_NORMAL, "Normal"},
+        {PLDM_STATE_SET_HEALTH_STATE_NON_CRITICAL, "Non-Critical"},
+        {PLDM_STATE_SET_HEALTH_STATE_CRITICAL, "Critical"},
+        {PLDM_STATE_SET_HEALTH_STATE_FATAL, "Fatal"},
+        {PLDM_STATE_SET_HEALTH_STATE_UPPER_NON_CRITICAL, "Upper Non-Critical"},
+        {PLDM_STATE_SET_HEALTH_STATE_LOWER_NON_CRITICAL, "Lower Non-Critical"},
         {PLDM_STATE_SET_HEALTH_STATE_UPPER_CRITICAL, "Upper Critical"},
-        {PLDM_STATE_SET_HEALTH_STATE_UPPER_FATAL, "Upper Fatal"}};
+        {PLDM_STATE_SET_HEALTH_STATE_LOWER_CRITICAL, "Lower Critical"},
+        {PLDM_STATE_SET_HEALTH_STATE_UPPER_FATAL, "Upper Fatal"},
+        {PLDM_STATE_SET_HEALTH_STATE_LOWER_FATAL, "Lower Fatal"}};
+
+    static inline const std::map<uint8_t, std::string>
+        setOperationalRunningState{
+            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STARTING, "Starting"},
+            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STOPPING, "Stopping"},
+            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STOPPED, "Stopped"},
+            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_IN_SERVICE,
+             "In Service"},
+            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_ABORTED, "Aborted"},
+            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_DORMANT, "Dormant"}};
 
     static inline const std::map<uint16_t, const std::map<uint8_t, std::string>>
         populatePStateMaps{
@@ -496,6 +513,8 @@ class GetPDR : public CommandInterface
             {PLDM_STATE_SET_SW_TERMINATION_STATUS, setSWTerminationStatus},
             {PLDM_STATE_SET_AVAILABILITY, setAvailability},
             {PLDM_STATE_SET_HEALTH_STATE, setHealthState},
+            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS,
+             setOperationalRunningState},
         };
 
     const std::map<std::string, uint8_t> strToPdrType = {
