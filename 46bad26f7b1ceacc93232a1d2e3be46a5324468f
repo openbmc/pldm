@@ -60,6 +60,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eaa92e3b_7bd733d9",
+        "filename": "libpldm/firmware_update.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-01-03T12:02:24Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "d9724b4d_e422eb06",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ab39abe_890dcfa8",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 5
@@ -83,6 +101,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0487f60e_84cc3868",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-01-03T12:02:24Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "9ab39abe_890dcfa8",
+      "range": {
+        "startLine": 566,
+        "startChar": 27,
+        "endLine": 566,
+        "endChar": 62
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7721832_5001477e",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 5
@@ -94,6 +136,30 @@
       "writtenOn": "2022-01-03T06:51:43Z",
       "side": 1,
       "message": "Pls stick to the existing code style, the struct is prepended with pldm_.",
+      "range": {
+        "startLine": 568,
+        "startChar": 7,
+        "endLine": 568,
+        "endChar": 23
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41f5168d_7009c96d",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-01-03T12:02:24Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "a7721832_5001477e",
       "range": {
         "startLine": 568,
         "startChar": 7,
@@ -146,6 +212,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b973fbc3_53bcac89",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1156,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-01-03T12:02:24Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "c9bb26ff_40e20fff",
+      "range": {
+        "startLine": 1156,
+        "startChar": 46,
+        "endLine": 1156,
+        "endChar": 57
+      },
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e029e357_45b77e02",
         "filename": "libpldm/firmware_update.h",
         "patchSetId": 5
@@ -157,6 +247,24 @@
       "writtenOn": "2022-01-03T06:51:43Z",
       "side": 1,
       "message": "For ease of readability, leave a blank line between after @param, @return and @note.",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0398b57_17da05cb",
+        "filename": "libpldm/firmware_update.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1163,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-01-03T12:02:24Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "e029e357_45b77e02",
       "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -214,6 +322,24 @@
       "writtenOn": "2022-01-03T06:51:43Z",
       "side": 1,
       "message": "Can we add unit tests which can cover both the happy/error paths?",
+      "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff91b670_3315a348",
+        "filename": "libpldm/tests/libpldm_firmware_update_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2922,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-01-03T12:02:24Z",
+      "side": 1,
+      "message": "updated",
+      "parentUuid": "784ae23e_8a3fbb33",
       "revId": "46bad26f7b1ceacc93232a1d2e3be46a5324468f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
