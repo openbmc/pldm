@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb00efea_2b0633d6",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-01-03T15:10:49Z",
+      "side": 1,
+      "message": "why is unsigned required while printing the rc here ?\n\nwe are already printing the hex value prepending with 0x right ?",
+      "range": {
+        "startLine": 59,
+        "startChar": 50,
+        "endLine": 59,
+        "endChar": 61
+      },
+      "revId": "0b3d6bcd8f28f8ee9dd8a61f51e48aefca119a11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
