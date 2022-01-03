@@ -3,15 +3,6 @@
 #include <libpldm/entity.h>
 #include <libpldm/entity_oem_ibm.h>
 
-/** @brief PLDM OEM State Set range as per DSP0249_1.1.0 specification
- */
-enum pldm_oem_state_set_id_codes
-{
-    PLDM_OEM_STATE_SET_START = 32768,
-    PLDM_OEM_STATE_SET_END = 65535,
-
-};
-
 /** @brief PLDM OEM IBM Code Update possible state set values
  */
 enum pldm_oem_ibm_cu_state_set_values
@@ -53,9 +44,7 @@ enum pldm_oem_ibm_boot_state_set_values
  */
 extern const std::map<uint8_t, std::string> OemIBMEntityType{
     {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, "OEM IBM Firmware Update"},
-    {PLDM_OEM_ENTITY_TYPE_START, "OEM IBM Entity Type Start"},
-    {PLDM_OEM_ENTITY_TYPE_END, "OEM IBM Entity Type End"},
-};
+    {PLDM_OEM_IBM_ENTITY_TPM, "OEM IBM Trusted Platform Module"}};
 
 /** @brief Map for PLDM OEM IBM State Sets
  */
