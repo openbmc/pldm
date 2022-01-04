@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d3f4780_c59e4563",
+        "filename": "oem/ibm/configurations/pdr/ibm,rainier-4u/11.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 3412,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-01-04T01:28:44Z",
+      "side": 1,
+      "message": "like this?\n```\n\"property_name\": \"Functional\",\n\"property_type\": \"bool\",\n```",
+      "range": {
+        "startLine": 3411,
+        "startChar": 15,
+        "endLine": 3412,
+        "endChar": 46
+      },
+      "revId": "f1dac1be2744bed55bd39617269147ad1726d19a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
