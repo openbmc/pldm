@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e875fecd_3b6a99cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-01-04T10:10:29Z",
+      "side": 1,
+      "message": "Tom/Deepak,\n\nCan you guys please take a look at this patch ?",
+      "revId": "fb1f266017da9064259056c3a4db3bde58f14c2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
