@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0403abff_1b0d1e50",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-01-04T02:00:44Z",
+      "side": 1,
+      "message": "std::info?",
+      "range": {
+        "startLine": 69,
+        "startChar": 13,
+        "endLine": 69,
+        "endChar": 17
+      },
+      "revId": "653404bf6c5796c23df96405d686d7cee7008d69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6fc4d2c_dfdc6ffb",
+        "filename": "oem/ibm/libpldmresponder/oem_system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-01-04T02:00:44Z",
+      "side": 1,
+      "message": "getConfigDirectory?",
+      "range": {
+        "startLine": 35,
+        "startChar": 9,
+        "endLine": 35,
+        "endChar": 27
+      },
+      "revId": "653404bf6c5796c23df96405d686d7cee7008d69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1af2d45_da4465c6",
+        "filename": "oem/ibm/libpldmresponder/oem_system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-01-04T02:00:44Z",
+      "side": 1,
+      "message": "Add try-catch",
+      "range": {
+        "startLine": 41,
+        "startChar": 39,
+        "endLine": 41,
+        "endChar": 49
+      },
+      "revId": "653404bf6c5796c23df96405d686d7cee7008d69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "496596e2_0ac09fac",
+        "filename": "oem/ibm/libpldmresponder/oem_system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-01-04T02:00:44Z",
+      "side": 1,
+      "message": "What happens if the value is empty?",
+      "range": {
+        "startLine": 68,
+        "startChar": 61,
+        "endLine": 68,
+        "endChar": 71
+      },
+      "revId": "653404bf6c5796c23df96405d686d7cee7008d69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
