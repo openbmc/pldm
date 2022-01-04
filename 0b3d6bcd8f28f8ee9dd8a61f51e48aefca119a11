@@ -46,6 +46,30 @@
       },
       "revId": "0b3d6bcd8f28f8ee9dd8a61f51e48aefca119a11",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ef5a3c1_08c06e65",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-01-04T10:06:45Z",
+      "side": 1,
+      "message": "Why do you think that way?\n\nThe pldm_completion_code is an enum that is written to take hex codes, why do you want to change them \u0026 print in an integer? printing them in hex would be easy for someone to debug issues right",
+      "parentUuid": "e94a41a8_bab49361",
+      "range": {
+        "startLine": 59,
+        "startChar": 50,
+        "endLine": 59,
+        "endChar": 61
+      },
+      "revId": "0b3d6bcd8f28f8ee9dd8a61f51e48aefca119a11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
