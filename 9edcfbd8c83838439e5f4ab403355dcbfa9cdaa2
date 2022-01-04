@@ -22,6 +22,30 @@
       },
       "revId": "9edcfbd8c83838439e5f4ab403355dcbfa9cdaa2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54cef8ae_7d0890c1",
+        "filename": "configurations/fru_master.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-01-04T10:01:23Z",
+      "side": 1,
+      "message": "yes, it is.\n\nI had worked on this as well in another commit on top of this https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/46709",
+      "parentUuid": "9a1f56fd_57e37035",
+      "range": {
+        "startLine": 18,
+        "startChar": 24,
+        "endLine": 18,
+        "endChar": 74
+      },
+      "revId": "9edcfbd8c83838439e5f4ab403355dcbfa9cdaa2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
