@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a1f56fd_57e37035",
+        "filename": "configurations/fru_master.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-01-04T08:27:00Z",
+      "side": 1,
+      "message": "Is this in the OEM range?",
+      "range": {
+        "startLine": 18,
+        "startChar": 24,
+        "endLine": 18,
+        "endChar": 74
+      },
+      "revId": "9edcfbd8c83838439e5f4ab403355dcbfa9cdaa2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
