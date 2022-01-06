@@ -598,8 +598,8 @@ class GetPDR : public CommandInterface
             auto pstr = std::to_string(s);
 
 #ifdef OEM_IBM
-            if (stateId >= PLDM_OEM_STATE_SET_START &&
-                stateId <= PLDM_OEM_STATE_SET_END)
+            if (stateId >= PLDM_OEM_STATE_SET_ID_START &&
+                stateId < PLDM_OEM_STATE_SET_ID_END)
             {
                 if (populateOemIBMStateMaps.contains(stateId))
                 {
