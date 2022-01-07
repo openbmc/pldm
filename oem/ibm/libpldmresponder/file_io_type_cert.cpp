@@ -68,6 +68,8 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
 int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
                       oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cout << "Read file response for Sign CSR, file handle: " << fileHandle
+              << std::endl;
     std::string filePath = certFilePath;
     filePath += "CSR_" + std::to_string(fileHandle);
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
@@ -86,6 +88,8 @@ int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
 int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                        oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    std::cout << "Client certificate write, file handle: " << fileHandle
+              << std::endl;
     auto it = certMap.find(certType);
     if (it == certMap.end())
     {
@@ -157,6 +161,9 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                                           certEntryIntf, "Status", "string"};
             try
             {
+                std::cout
+                    << "Client cert write, status: complete. File handle: "
+                    << fileHandle << std::endl;
                 pldm::utils::DBusHandler().setDbusProperty(dbusMappingStatus,
                                                            valueStatus);
             }
@@ -177,6 +184,8 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                                     certEntryIntf, "Status", "string"};
             try
             {
+                std::cout << "Client cert write, status: Bad CSR. File handle: "
+                          << fileHandle << std::endl;
                 pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
             }
             catch (const std::exception& e)
@@ -207,6 +216,8 @@ int CertHandler::newFileAvailable(uint64_t length)
     }
     if (certType == PLDM_FILE_TYPE_SIGNED_CERT)
     {
+        std::cout << "new file available client cert file, file handle: "
+                  << fileHandle << std::endl;
         fileFd = open(
             (filePath + "ClientCert_" + std::to_string(fileHandle)).c_str(),
             flags, S_IRUSR | S_IWUSR);
@@ -223,6 +234,33 @@ int CertHandler::newFileAvailable(uint64_t length)
         return PLDM_ERROR;
     }
     certMap.emplace(certType, std::tuple(fileFd, length));
+    return PLDM_SUCCESS;
+}
+
+int CertHandler::fileAckWithMetaData(uint32_t metaDataValue1,
+                                     uint32_t /*metaDataValue2*/,
+                                     uint32_t /*metaDataValue3*/,
+                                     uint32_t /*metaDataValue4*/)
+{
+    uint8_t fileStatus = (uint8_t)metaDataValue1;
+    if (certType == PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
+    {
+        if (fileStatus == PLDM_ERROR_INVALID_DATA)
+        {
+            std::cerr << "error reading file\n";
+            return PLDM_ERROR;
+        }
+        else if (fileStatus == PLDM_ERROR_NOT_READY)
+        {
+            std::cerr << "Unable to send signing request to VMI\n";
+            return PLDM_ERROR;
+        }
+        else if (fileStatus == PLDM_ERROR)
+        {
+            std::cerr << "signed cert not received. VMI status not success\n";
+            return PLDM_ERROR;
+        }
+    }
     return PLDM_SUCCESS;
 }
 
