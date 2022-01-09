@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a4f56b_f9b46458",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2022-01-09T10:42:36Z",
+      "side": 1,
+      "message": "the error status will be saved in dbus property once the dbus change is made available. Remove cerr and add dbus details when dbus property is available",
+      "revId": "2bc37908b8a7f01ab4c441675334f93563b1eb32",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bf16769_566e9e5f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2022-01-09T10:42:36Z",
+      "side": 1,
+      "message": "the error status will be saved in dbus property once the dbus change is made available. Remove cerr and add dbus details when dbus property is available",
+      "revId": "2bc37908b8a7f01ab4c441675334f93563b1eb32",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73cbf037_173fe1c0",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2022-01-09T10:42:36Z",
+      "side": 1,
+      "message": "the error status will be saved in dbus property once the dbus change is made available. Remove cerr and add dbus details when dbus property is available",
+      "revId": "2bc37908b8a7f01ab4c441675334f93563b1eb32",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
