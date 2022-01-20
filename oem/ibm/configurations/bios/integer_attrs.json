@@ -1,15 +1,6 @@
 {
    "entries":[
       {
-         "attribute_name" : "vmi_if_count",
-         "lower_bound" : 0,
-         "upper_bound" : 2,
-         "scalar_increment" : 1,
-         "default_value" : 1,
-         "helpText" : "vmi_if_count",
-         "displayName" : "vmi_if_count"
-      },
-      {
          "attribute_name" : "vmi_if0_ipv4_prefix_length",
          "lower_bound" : 0,
          "upper_bound" : 32,
