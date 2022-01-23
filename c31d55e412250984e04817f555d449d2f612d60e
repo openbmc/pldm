@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "22b82456_6d88d677",
         "filename": "/COMMIT_MSG",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "What\u0027s the largest message that you\u0027ve tested this with? For eg, what happens when you do something like FW update or IBM dump offload from host?",
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "29a1a3a2_25e6607c",
         "filename": "/COMMIT_MSG",
@@ -32,10 +33,10 @@
       "message": "This change has been present in IBM downstream drivers for almost a couple of months now which will be tested thoroughly and we did not hit any issues.\n\nBut if you are saying , when we dump the recorder and if the message sizes are bigger and fill up the /tmp. Then yes, it is definitely possible that we can fill /tmp.\n\nWe were able to fix couple of PDR exchange and lid file transfer issues with this, but those are typically not more than 200k.",
       "parentUuid": "22b82456_6d88d677",
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d8f54033_7de5bdf1",
         "filename": "/COMMIT_MSG",
@@ -50,10 +51,10 @@
       "message": "Can you please confirm this has been tested for dump offload from host?",
       "parentUuid": "29a1a3a2_25e6607c",
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "23fd2bf1_16dadc43",
         "filename": "/COMMIT_MSG",
@@ -68,10 +69,28 @@
       "message": "Hi Deepak, I have been trying this for almost a week now. Unfortunately, IBM dump offload functionality is pretty badly broken. \n\nI will revert back with the results once I test.",
       "parentUuid": "d8f54033_7de5bdf1",
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "19e8fbff_1461d46e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 25
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-01-23T05:40:37Z",
+      "side": 1,
+      "message": "Hi Deepak,\n\nI have tried this patch with the IBM dump offload(system dump), and i don\u0027t see any issues. The also see the max flight recorder side did not exceed more than 4 MB in my testing.",
+      "parentUuid": "23fd2bf1_16dadc43",
+      "revId": "c31d55e412250984e04817f555d449d2f612d60e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "c5f1ec4f_cfaeb1d2",
         "filename": "common/utils.cpp",
@@ -91,10 +110,10 @@
         "endChar": 65
       },
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "58f19c3b_fdb9ea7d",
         "filename": "common/utils.cpp",
@@ -115,10 +134,10 @@
         "endChar": 65
       },
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "ca93b716_05ed1cc9",
         "filename": "common/utils.cpp",
@@ -138,10 +157,10 @@
         "endChar": 74
       },
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "13fe7fef_c6c77915",
         "filename": "common/utils.cpp",
@@ -162,8 +181,7 @@
         "endChar": 74
       },
       "revId": "c31d55e412250984e04817f555d449d2f612d60e",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
