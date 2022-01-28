@@ -333,8 +333,7 @@ Response Handler::getFRURecordTable(const pldm_msg* request,
         return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
     }
 
-    Response response(
-        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES, 0);
+    Response response(sizeof(pldm_msg_hdr), 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     auto rc =

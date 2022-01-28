@@ -425,12 +425,13 @@ class GetFruRecordTable : public CommandInterface
         uint32_t next_data_transfer_handle = 0;
         uint8_t transfer_flag = 0;
         size_t fru_record_table_length = 0;
-        std::vector<uint8_t> fru_record_table_data(payloadLength);
+        std::vector<uint8_t> fru_record_table_data(payloadLength -
+                                                   sizeof(pldm_msg_hdr));
 
         auto rc = decode_get_fru_record_table_resp(
-            responsePtr, payloadLength, &cc, &next_data_transfer_handle,
-            &transfer_flag, fru_record_table_data.data(),
-            &fru_record_table_length);
+            responsePtr, payloadLength - sizeof(pldm_msg_hdr), &cc,
+            &next_data_transfer_handle, &transfer_flag,
+            fru_record_table_data.data(), &fru_record_table_length);
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
