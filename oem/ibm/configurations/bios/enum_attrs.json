@@ -480,6 +480,18 @@
               "property_type" : "string",
               "property_values" : ["xyz.openbmc_project.Control.Power.RestorePolicy.Policy.None", "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn"]
            }
+     },
+     {
+        "attribute_name":"pvm_keep_and_clear",
+        "possible_values":[
+           "Disabled",
+           "Enabled"
+        ],
+        "default_values":[
+           "Disabled"
+        ],
+        "helpText" : "The hypervisor needs to clear most of PHYP NVRAM, but preserve the NVRAM for the manufacturing default partition.",
+        "displayName" : "pvm_keep_and_clear"
      }
    ]
 }
