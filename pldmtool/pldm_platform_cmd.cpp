@@ -47,6 +47,23 @@ static const std::map<uint8_t, std::string> sensorOpState{
     {PLDM_SENSOR_SHUTTINGDOWN, "Sensor Shutting down"},
     {PLDM_SENSOR_INTEST, "Sensor Intest"}};
 
+static const std::map<uint8_t, std::string> sensorEventMessageEnableToStr{
+    {PLDM_NO_EVENT_GENERATION, "No Event Generation"},
+    {PLDM_EVENTS_DISABLED, "Events Disabled"},
+    {PLDM_EVENTS_ENABLED, "Events Enabled"},
+    {PLDM_OP_EVENTS_ONLY_ENABLED, "OP Event Only Enabled"},
+    {PLDM_STATE_EVENTS_ONLY_ENABLED, "State Events Only Enabled"},
+};
+
+static const std::map<uint8_t, std::string> sensorDataSizeToStr{
+    {PLDM_SENSOR_DATA_SIZE_UINT8, "UINT8"},
+    {PLDM_SENSOR_DATA_SIZE_SINT8, "SINT8"},
+    {PLDM_SENSOR_DATA_SIZE_UINT16, "UINT16"},
+    {PLDM_SENSOR_DATA_SIZE_SINT16, "SINT16"},
+    {PLDM_SENSOR_DATA_SIZE_UINT32, "UINT32"},
+    {PLDM_SENSOR_DATA_SIZE_SINT32, "SINT32"},
+};
+
 std::vector<std::unique_ptr<CommandInterface>> commands;
 
 } // namespace
@@ -526,6 +543,103 @@ class GetPDR : public CommandInterface
         // Add other types
     };
 
+    const std::map<uint8_t, std::string> sensorUnits = {
+        {PLDM_SENSOR_UNIT_NONE, "None"},
+        {PLDM_SENSOR_UNIT_UNSPECIFIED, "Unspecified"},
+        {PLDM_SENSOR_UNIT_DEGRESS_C, "Degress C"},
+        {PLDM_SENSOR_UNIT_DEGRESS_F, "Degress F"},
+        {PLDM_SENSOR_UNIT_KELVINS, "Kelvins"},
+        {PLDM_SENSOR_UNIT_VOLTS, "Volts"},
+        {PLDM_SENSOR_UNIT_AMPS, "Amps"},
+        {PLDM_SENSOR_UNIT_WATTS, "Watts"},
+        {PLDM_SENSOR_UNIT_JOULES, "Joules"},
+        {PLDM_SENSOR_UNIT_COULOMBS, "Coulombs"},
+        {PLDM_SENSOR_UNIT_VA, "VA"},
+        {PLDM_SENSOR_UNIT_NITS, "Nits"},
+        {PLDM_SENSOR_UNIT_LUMENS, "Lumens"},
+        {PLDM_SENSOR_UNIT_LUX, "Lux"},
+        {PLDM_SENSOR_UNIT_CANDELAS, "Candelas"},
+        {PLDM_SENSOR_UNIT_KPA, "kPa"},
+        {PLDM_SENSOR_UNIT_PSI, "PSI"},
+        {PLDM_SENSOR_UNIT_NEWTONS, "Newtons"},
+        {PLDM_SENSOR_UNIT_CFM, "CFM"},
+        {PLDM_SENSOR_UNIT_RPM, "RPM"},
+        {PLDM_SENSOR_UNIT_HERTZ, "Hertz"},
+        {PLDM_SENSOR_UNIT_SECONDS, "Seconds"},
+        {PLDM_SENSOR_UNIT_MINUTES, "Minutes"},
+        {PLDM_SENSOR_UNIT_HOURS, "Hours"},
+        {PLDM_SENSOR_UNIT_DAYS, "Days"},
+        {PLDM_SENSOR_UNIT_WEEKS, "Weeks"},
+        {PLDM_SENSOR_UNIT_MILS, "Mils"},
+        {PLDM_SENSOR_UNIT_INCHES, "Inches"},
+        {PLDM_SENSOR_UNIT_FEET, "Feet"},
+        {PLDM_SENSOR_UNIT_CUBIC_INCHES, "Cubic Inches"},
+        {PLDM_SENSOR_UNIT_CUBIC_FEET, "Cubic Feet"},
+        {PLDM_SENSOR_UNIT_METERS, "Meters"},
+        {PLDM_SENSOR_UNIT_CUBIC_CENTERMETERS, "Cubic Centimeters"},
+        {PLDM_SENSOR_UNIT_CUBIC_METERS, "Cubic Meters"},
+        {PLDM_SENSOR_UNIT_LITERS, "Liters"},
+        {PLDM_SENSOR_UNIT_FLUID_OUNCES, "Fluid Ounces"},
+        {PLDM_SENSOR_UNIT_RADIANS, "Radians"},
+        {PLDM_SENSOR_UNIT_STERADIANS, "Steradians"},
+        {PLDM_SENSOR_UNIT_REVOLUTIONS, "Revolutions"},
+        {PLDM_SENSOR_UNIT_CYCLES, "Cycles"},
+        {PLDM_SENSOR_UNIT_GRAVITIES, "Gravities"},
+        {PLDM_SENSOR_UNIT_OUNCES, "Ounces"},
+        {PLDM_SENSOR_UNIT_POUNDS, "Pounds"},
+        {PLDM_SENSOR_UNIT_FOOT_POUNDS, "Foot-Pounds"},
+        {PLDM_SENSOR_UNIT_OUNCE_INCHES, "Ounces-Inches"},
+        {PLDM_SENSOR_UNIT_GUESS, "Guess"},
+        {PLDM_SENSOR_UNIT_GILBERTS, "Gilberts"},
+        {PLDM_SENSOR_UNIT_HENRIES, "Henries"},
+        {PLDM_SENSOR_UNIT_FARADS, "Farads"},
+        {PLDM_SENSOR_UNIT_OHMS, "Ohms"},
+        {PLDM_SENSOR_UNIT_SIEMENS, "Siemens"},
+        {PLDM_SENSOR_UNIT_MOLES, "Moles"},
+        {PLDM_SENSOR_UNIT_BECQUERELS, "Becquerels"},
+        {PLDM_SENSOR_UNIT_PPM, "PPM(parts/million)"},
+        {PLDM_SENSOR_UNIT_DECIBELS, "Decibels"},
+        {PLDM_SENSOR_UNIT_DBA, "DbA"},
+        {PLDM_SENSOR_UNIT_DBC, "DbC"},
+        {PLDM_SENSOR_UNIT_GRAYS, "Grays"},
+        {PLDM_SENSOR_UNIT_SIEVERTS, "Sieverts"},
+        {PLDM_SENSOR_UNIT_COLOR_TEMPERATURE_DEGRESS_K,
+         "Color Temperature Degress K"},
+        {PLDM_SENSOR_UNIT_BITS, "Bits"},
+        {PLDM_SENSOR_UNIT_BYTES, "Bytes"},
+        {PLDM_SENSOR_UNIT_WORDS, "Words(data)"},
+        {PLDM_SENSOR_UNIT_DOUBLE_WORDS, "DoubleWords"},
+        {PLDM_SENSOR_UNIT_QUAD_WORDS, "QuadWords"},
+        {PLDM_SENSOR_UNIT_PERCENTAGE, "Percentage"},
+        {PLDM_SENSOR_UNIT_PASCALS, "Pascals"},
+        {PLDM_SENSOR_UNIT_COUNTS, "Counts"},
+        {PLDM_SENSOR_UNIT_GRAMS, "Grams"},
+        {PLDM_SENSOR_UNIT_NEWTON_METERS, "Newton-meters"},
+        {PLDM_SENSOR_UNIT_COUNTS, "Hits"},
+        {PLDM_SENSOR_UNIT_NEWTON_METERS, "Misses"},
+        {PLDM_SENSOR_UNIT_RETRIES, "Retries"},
+        {PLDM_SENSOR_UNIT_OVERRUNS_OVERFLOWS, "Overruns/Overflows"},
+        {PLDM_SENSOR_UNIT_UNDERRUNS, "Underruns"},
+        {PLDM_SENSOR_UNIT_OVERRUNS_OVERFLOWS, "Collisions"},
+        {PLDM_SENSOR_UNIT_PACKETS, "Packets"},
+        {PLDM_SENSOR_UNIT_MESSAGES, "Messages"},
+        {PLDM_SENSOR_UNIT_CHARATERS, "Characters"},
+        {PLDM_SENSOR_UNIT_ERRORS, "Errors"},
+        {PLDM_SENSOR_UNIT_CORRECTED_ERRORS, "Corrected Errors"},
+        {PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS, "Uncorrectable Errors"},
+        {PLDM_SENSOR_UNIT_SQUARE_MILS, "Square Mils"},
+        {PLDM_SENSOR_UNIT_SQUARE_INCHES, "Square Inches"},
+        {PLDM_SENSOR_UNIT_SQUARE_FEET, "Square Feet"},
+        {PLDM_SENSOR_UNIT_SQUARE_CENTIMETERS, "Square Centimeters"},
+        {PLDM_SENSOR_UNIT_SQUARE_METERS, "Square Meters"},
+        {PLDM_SENSOR_UNIT_OEMUNIT, "OEMUnit"}
+    };
+
+    const std::array<std::string_view, 10> rateUnit = {
+        "None",       "Per MicroSecond", "Per MilliSecond", "Per Second",
+        "Per Minute", "Per Hour",        "Per Day",         "Per Week",
+        "Per Month",  "Per Year"};
+
     bool isLogicalBitSet(const uint16_t entity_type)
     {
         return entity_type & 0x8000;
@@ -639,6 +753,19 @@ class GetPDR : public CommandInterface
         }
     }
 
+    std::string getSensorUnits(uint8_t unit)
+    {
+        auto sensorUnitsString = std::to_string(unit);
+        try
+        {
+            return sensorUnits.at(unit);
+        }
+        catch (const std::exception& e)
+        {
+            return sensorUnitsString + "(reserved)";
+        }
+    }
+
     void printCommonPDRHeader(const pldm_pdr_hdr* hdr, ordered_json& output)
     {
         output["recordHandle"] = hdr->record_handle;
@@ -669,6 +796,261 @@ class GetPDR : public CommandInterface
         };
         std::for_each(states, states + possibleStatesSize, printStates);
         return data;
+    }
+
+    void printNumericSensorPDR(const uint8_t* data, ordered_json& output)
+    {
+        auto pdr = reinterpret_cast<const pldm_numeric_sensor_pdr*>(data);
+        output["PLDMTerminusHandle"] = pdr->terminus_handle;
+        output["sensorID"] = pdr->sensor_id;
+        output["entityType"] = getEntityName(pdr->entity_type);
+        output["entityInstanceNumber"] = pdr->entity_instance;
+        output["containerID"] = pdr->container_id;
+        output["sensorInit"] = sensorInit[pdr->sensor_init];
+        output["sensorAuxiliaryNamesPDR"] =
+            (pdr->sensor_auxiliary_names_pdr ? true : false);
+        output["baseUnit"] = getSensorUnits(pdr->base_unit);
+        output["unitModifer"] = pdr->uint_modifier;
+        output["rateUnit"] = rateUnit[pdr->rate_unit];
+        output["baseOEMUnitHandle"] = pdr->base_oem_unit_handle;
+        output["auxUnit"] = getSensorUnits(pdr->aux_unit);
+        output["auxUnitModifier"] = pdr->aux_unit_modifier;
+        output["auxRateUnit"] = rateUnit[pdr->aux_rate_unit];
+        output["rel"] = pdr->rel ? "dividedBy" : "multipliedBy";
+        output["auxOEMUnitHandle"] = pdr->aux_oem_uint_handle;
+        output["isLinear"] = pdr->is_linear ? true : false;
+        output["sensorDataSize"] = pdr->sensor_data_size;
+        output["resolution"] = pdr->resolution;
+        output["offset"] = pdr->offset;
+        output["accuracy"] = pdr->accuracy;
+        output["plusTolerance"] = pdr->plus_tolerance;
+        output["minusTolerance"] = pdr->minus_tolerance;
+
+        const uint8_t *ptr = pdr->variable_fields;
+        switch (pdr->sensor_data_size) {
+            case PLDM_SENSOR_DATA_SIZE_UINT8:
+                output["hysteresis"] = *((uint8_t*)ptr);
+                ptr++;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT8:
+                output["hysteresis"] = *((int8_t*)ptr);
+                ptr++;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT16:
+                output["hysteresis"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT16:
+                output["hysteresis"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT32:
+                output["hysteresis"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT32:
+                output["hysteresis"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                break;
+        }
+        output["supportedThresholds"] = *ptr;
+        ptr++;
+
+        output["thresholdAndHysteresisVolatility"] = *ptr;
+        ptr++;
+
+        output["stateTransitionInterval"] = *((real32_t*)ptr);
+        ptr += sizeof(real32_t);
+
+        output["updateInterval"] = *((real32_t*)ptr);
+        ptr += sizeof(real32_t);
+
+        switch (pdr->sensor_data_size) {
+            case PLDM_SENSOR_DATA_SIZE_UINT8:
+                output["maxReadable"] = *((uint8_t*)ptr);
+                ptr++;
+                output["minReadable"] = *((uint8_t*)ptr);
+                ptr++; 
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT8:
+                output["maxReadable"] = *((int8_t*)ptr);
+                ptr++;
+                output["minReadable"] = *((int8_t*)ptr);
+                ptr++;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT16:
+                output["hysteresis"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT16:
+                output["maxReadable"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["minReadable"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT32:
+                output["maxReadable"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["minReadable"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT32:
+                output["maxReadable"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["minReadable"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                break;
+        }
+
+        uint8_t rangeFieldFormat = *((uint8_t*)ptr);
+        ptr++;
+
+        output["rangeFieldFormat"] = rangeFieldFormat;
+        output["rangeFieldSupport"] = *((uint8_t*)ptr);
+        ptr++;
+
+        switch (rangeFieldFormat) {
+            case 0: //uint8
+                output["nominalValue"] = *((uint8_t*)ptr);
+                ptr++;
+                output["normalMax"] = *((uint8_t*)ptr);
+                ptr++;
+                output["normalMin"] = *((uint8_t*)ptr);
+                ptr++;
+                output["warningHigh"] = *((uint8_t*)ptr);
+                ptr++;
+                output["warningLow"] = *((uint8_t*)ptr);
+                ptr++;
+                output["criticalHigh"] = *((uint8_t*)ptr);
+                ptr++;
+                output["criticalLow"] = *((uint8_t*)ptr);
+                ptr++;
+                output["fatalHigh"] = *((uint8_t*)ptr);
+                ptr++;
+                output["fatalLow"] = *((uint8_t*)ptr);
+                ptr++;
+                break;
+            case 1: //sint8
+                output["nominalValue"] = *((int8_t*)ptr);
+                ptr++;
+                output["normalMax"] = *((int8_t*)ptr);
+                ptr++;
+                output["normalMin"] = *((int8_t*)ptr);
+                ptr++;
+                output["warningHigh"] = *((int8_t*)ptr);
+                ptr++;
+                output["warningLow"] = *((int8_t*)ptr);
+                ptr++;
+                output["criticalHigh"] = *((int8_t*)ptr);
+                ptr++;
+                output["criticalLow"] = *((int8_t*)ptr);
+                ptr++;
+                output["fatalHigh"] = *((int8_t*)ptr);
+                ptr++;
+                output["fatalLow"] = *((int8_t*)ptr);
+                ptr++;
+                break;
+            case 2: //uint16
+                output["nominalValue"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["normalMax"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["normalMin"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["warningHigh"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["warningLow"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["criticalHigh"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["criticalLow"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["fatalHigh"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                output["fatalLow"] = *((uint16_t*)ptr);
+                ptr += sizeof(uint16_t);
+                break;
+            case 3: //int16
+                output["nominalValue"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["normalMax"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["normalMin"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["warningHigh"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["warningLow"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["criticalHigh"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["criticalLow"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["fatalHigh"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                output["fatalLow"] = *((int16_t*)ptr);
+                ptr += sizeof(int16_t);
+                break;
+           case 4: //uint32
+                output["nominalValue"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["normalMax"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["normalMin"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["warningHigh"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["warningLow"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["criticalHigh"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["criticalLow"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["fatalHigh"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                output["fatalLow"] = *((uint32_t*)ptr);
+                ptr += sizeof(uint32_t);
+                break;
+            case 5: //int32
+                output["nominalValue"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["normalMax"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["normalMin"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["warningHigh"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["warningLow"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["criticalHigh"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["criticalLow"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["fatalHigh"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                output["fatalLow"] = *((int32_t*)ptr);
+                ptr += sizeof(int32_t);
+                break;
+            case 6: //real32
+                output["nominalValue"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["normalMax"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["normalMin"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["warningHigh"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["warningLow"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["criticalHigh"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["criticalLow"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["fatalHigh"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                output["fatalLow"] = *((real32_t*)ptr);
+                ptr += sizeof(real32_t);
+                break;
+        }
     }
 
     void printStateSensorPDR(const uint8_t* data, ordered_json& output)
@@ -1035,6 +1417,9 @@ class GetPDR : public CommandInterface
             case PLDM_TERMINUS_LOCATOR_PDR:
                 printTerminusLocatorPDR(data, output);
                 break;
+            case PLDM_NUMERIC_SENSOR_PDR:
+                printNumericSensorPDR(data, output);
+                break;
             case PLDM_STATE_SENSOR_PDR:
                 printStateSensorPDR(data, output);
                 break;
@@ -1323,6 +1708,126 @@ class GetStateSensorReadings : public CommandInterface
                 output.emplace(("eventState[" + std::to_string(i) + "]"),
                                sensorPresState.at(stateField[i].event_state));
             }
+        }
+
+        pldmtool::helper::DisplayInJson(output);
+    }
+
+  private:
+    uint16_t sensorId;
+    uint8_t sensorRearm;
+};
+
+
+class GetSensorReading : public CommandInterface
+{
+  public:
+    ~GetSensorReading() = default;
+    GetSensorReading() = delete;
+    GetSensorReading(const GetSensorReading&) = delete;
+    GetSensorReading(GetSensorReading&&) = default;
+    GetSensorReading& operator=(const GetSensorReading&) = delete;
+    GetSensorReading& operator=(GetSensorReading&&) = default;
+
+    explicit GetSensorReading(const char* type, const char* name,
+                              CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-i, --sensor_id", sensorId,
+               "Sensor ID that is used to identify and access the sensor")
+            ->required();
+        app->add_option("-r, --rearm", sensorRearm,
+                        "Each bit location in this field corresponds to a "
+                        "particular sensor")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                        PLDM_GET_SENSOR_READING_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        auto rc = encode_get_sensor_reading_req(instanceId, sensorId,
+                                                sensorRearm, request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = 0;
+        uint8_t sensorDataSize = PLDM_SENSOR_DATA_SIZE_SINT32;
+        uint8_t sensorOperationalState = 0;
+        uint8_t sensorEventMessageEnable = 0;
+        uint8_t presentState = 0;
+        uint8_t previousState = 0;
+        uint8_t eventState = 0;
+        uint32_t presentReading = 0;
+
+        auto rc = decode_get_sensor_reading_resp(
+            responsePtr, payloadLength, &completionCode, &sensorDataSize,
+            &sensorOperationalState, &sensorEventMessageEnable, &presentState,
+            &previousState, &eventState,
+            reinterpret_cast<uint8_t*>(&presentReading));
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)completionCode
+                      << ",payload len=" << payloadLength << std::endl;
+            return;
+        }
+        ordered_json output;
+        output["sensorDataSize"] = sensorDataSizeToStr.at(sensorDataSize);
+        output["sensorOpState"] = sensorOpState.at(sensorOperationalState);
+        output["sensorEventMessageEnable"] =
+            sensorEventMessageEnableToStr.at(sensorEventMessageEnable);
+        output["presentState"] = sensorPresState.at(presentState);
+        output["previousState"] = sensorPresState.at(previousState);
+        output["eventState"] = sensorPresState.at(eventState);
+
+        switch (sensorDataSize)
+        {
+            case PLDM_SENSOR_DATA_SIZE_UINT8:
+            {
+                uint8_t* p = (uint8_t*)&presentReading;
+                output["presentReading"] = *p;
+            }
+            break;
+            case PLDM_SENSOR_DATA_SIZE_SINT8:
+            {
+                int8_t* p = (int8_t*)&presentReading;
+                output["presentReading"] = *p;
+            }
+            break;
+            case PLDM_SENSOR_DATA_SIZE_UINT16:
+            {
+                uint16_t* p = (uint16_t*)(&presentReading);
+                output["presentReading"] = *p;
+            }
+            break;
+            case PLDM_SENSOR_DATA_SIZE_SINT16:
+            {
+                int16_t* p = (int16_t*)&presentReading;
+                output["presentReading"] = *p;
+            }
+            break;
+            case PLDM_SENSOR_DATA_SIZE_UINT32:
+            {
+                uint32_t* p = (uint32_t*)&presentReading;
+                output["presentReading"] = *p;
+            }
+            break;
+            case PLDM_SENSOR_DATA_SIZE_SINT32:
+            {
+                int32_t* p = (int32_t*)&presentReading;
+                output["presentReading"] = *p;
+            }
+            break;
+            default:
+                break;
         }
 
         pldmtool::helper::DisplayInJson(output);

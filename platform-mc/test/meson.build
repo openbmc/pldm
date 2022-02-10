@@ -1,17 +1,16 @@
 test_src = declare_dependency(
           sources: [
+            '../terminus_manager.cpp',
+            '../terminus.cpp',
+            '../sensor_manager.cpp',
+            '../numeric_sensor.cpp',
+            '../../requester/mctp_endpoint_discovery.cpp',
             '../../pldmd/dbus_impl_requester.cpp',
-            '../../pldmd/instance_id.cpp',
-            '../../platform-mc/terminus_manager.cpp',
-            '../../platform-mc/terminus.cpp',
-            '../../platform-mc/sensor_manager.cpp',
-            '../../platform-mc/numeric_sensor.cpp',
-            '../mctp_endpoint_discovery.cpp'])
+            '../../pldmd/instance_id.cpp'],
+            include_directories: '../../requester')
 
 tests = [
-  'handler_test',
-  'request_test',
-  'mctp_endpoint_discovery_test',
+  'terminus_manager_test',
 ]
 
 foreach t : tests
