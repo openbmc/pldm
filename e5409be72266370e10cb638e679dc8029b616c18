@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "654a89e3_f9dbde85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-02-11T02:02:23Z",
+      "side": 1,
+      "message": "Hi Gilbert\n\nwelcome to openbmc/pldm \u0026 Thanks for upstreaming this patch.\n\nJust a couple of things:\n\n1. please provide necessary links to design documents etc in this commit, so that reviewers would get the full context and motive behind this commit. And also please make sure the design gets merged first.\n\n2. This patch seems to be enormous to review in one shot, I would suggest you to split this up into multiple smaller meaningful commits(in a chain), simpler and smaller patches are always easy to review and would also help you to get things merged faster.\n",
+      "revId": "e5409be72266370e10cb638e679dc8029b616c18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
