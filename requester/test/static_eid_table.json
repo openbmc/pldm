@@ -1,0 +1,14 @@
+{
+    "Endpoints":[
+        {
+            "NetworkId" : 66,
+            "EID": 1,
+            "SupportedMessageTypes": [0]
+        },
+        {
+            "NetworkId" : 66,
+            "EID": 2,
+            "SupportedMessageTypes": [0, 1]
+        }
+    ]
+}
