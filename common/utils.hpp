@@ -46,6 +46,12 @@ using Entities = std::vector<pldm_entity_node*>;
 using EntityAssociations = std::vector<Entities>;
 using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
 
+constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
+constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
+constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
+constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
+constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
+
 const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},
     {PLDM_ENTITY_BOARD, "io_board"},
@@ -164,9 +170,6 @@ T decimalToBcd(T decimal)
 
     return bcd;
 }
-
-constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
-constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
 
 struct DBusMapping
 {
