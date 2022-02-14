@@ -16,9 +16,16 @@ namespace pldm
 {
 
 using eid = uint8_t;
+using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
+
+using MctpMedium = std::string;
+using NetworkId = uint32_t;
+using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
+using MctpInfos = std::vector<MctpInfo>;
+using tid_t = uint8_t;
 
 namespace dbus
 {
