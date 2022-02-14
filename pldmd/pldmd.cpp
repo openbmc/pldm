@@ -324,7 +324,18 @@ int main(int argc, char** argv)
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(event, reqHandler, dbusImplReq);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
-        std::make_unique<MctpDiscovery>(bus, fwManager.get());
+        std::make_unique<MctpDiscovery>(
+            bus,
+            std::initializer_list<MctpDiscoveryHandlerIntf*>{fwManager.get()});
+
+    std::unique_ptr<Defer> deferredLoadStaticEndpointsEvent;
+    EventBase::Callback deferredLoadStaticEndpointsCb =
+        [&mctpDiscoveryHandler, &deferredLoadStaticEndpointsEvent](EventBase&) {
+            deferredLoadStaticEndpointsEvent.reset();
+            mctpDiscoveryHandler->loadStaticEndpoints(STATIC_EID_TABLE_PATH);
+        };
+    deferredLoadStaticEndpointsEvent = std::make_unique<Defer>(
+        event, std::move(deferredLoadStaticEndpointsCb));
 
     auto callback = [verbose, &invoker, &reqHandler, currentSendbuffSize,
                      &fwManager](IO& io, int fd, uint32_t revents) mutable {
