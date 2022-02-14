@@ -34,6 +34,24 @@
       "parentUuid": "654a89e3_f9dbde85",
       "revId": "e5409be72266370e10cb638e679dc8029b616c18",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "524568ee_9634943b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-02-14T13:39:32Z",
+      "side": 1,
+      "message": "Thanks for the feedback. I will abandon this commit and split the patch up into smaller commits.",
+      "parentUuid": "786d505f_493d503e",
+      "revId": "e5409be72266370e10cb638e679dc8029b616c18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
