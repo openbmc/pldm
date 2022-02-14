@@ -23,9 +23,6 @@ namespace pldm
 {
 namespace utils
 {
-constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
-constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
-constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
 
 Entities getParentEntites(const EntityAssociations& entityAssoc)
 {
