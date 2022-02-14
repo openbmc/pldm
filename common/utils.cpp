@@ -23,9 +23,6 @@ namespace pldm
 {
 namespace utils
 {
-constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
-constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
-constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
 
 Entities getParentEntites(const EntityAssociations& entityAssoc)
 {
@@ -414,8 +411,9 @@ std::string DBusHandler::getService(const char* path,
     std::map<std::string, std::vector<std::string>> mapperResponse;
     auto& bus = DBusHandler::getBus();
 
-    auto mapper = bus.new_method_call(mapperBusName, mapperPath,
-                                      mapperInterface, "GetObject");
+    auto mapper = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetObject");
 
     if (interface)
     {
@@ -436,8 +434,9 @@ GetSubTreeResponse
                             const std::vector<std::string>& ifaceList) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-    auto method = bus.new_method_call(mapperBusName, mapperPath,
-                                      mapperInterface, "GetSubTree");
+    auto method = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetSubTree");
     method.append(searchPath, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
     GetSubTreeResponse response;
@@ -556,6 +555,21 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     auto reply = bus.call(method, dbusTimeout);
     reply.read(value);
     return value;
+}
+
+PropertyMap
+    DBusHandler::getDbusPropertiesVariant(const char* serviceName,
+                                          const char* objPath,
+                                          const char* dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(serviceName, objPath, dbusProperties,
+                                      "GetAll");
+    method.append(dbusInterface);
+    auto reply = bus.call(method, dbusTimeout);
+    PropertyMap properties;
+    reply.read(properties);
+    return properties;
 }
 
 PropertyValue jsonEntryToDbusVal(std::string_view type,
