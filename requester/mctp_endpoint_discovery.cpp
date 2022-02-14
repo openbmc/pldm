@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "mctp_endpoint_discovery.hpp"
 
 #include "libpldm/requester/pldm.h"
@@ -5,7 +7,11 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include <algorithm>
+#include <fstream>
+#include <iostream>
 #include <map>
 #include <string>
 #include <string_view>
@@ -13,17 +19,27 @@
 
 namespace pldm
 {
+const std::string emptyUUID = "00000000-0000-0000-0000-000000000000";
 
-MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
-                             fw_update::Manager* fwManager) :
+MctpDiscovery::MctpDiscovery(
+    sdbusplus::bus::bus& bus,
+    std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+    const std::filesystem::path& staticEidTablePath) :
     bus(bus),
-    fwManager(fwManager),
-    mctpEndpointSignal(bus,
-                       sdbusplus::bus::match::rules::interfacesAdded(
-                           "/xyz/openbmc_project/mctp"),
-                       std::bind_front(&MctpDiscovery::dicoverEndpoints, this))
+    mctpEndpointAddedSignal(
+        bus,
+        sdbusplus::bus::match::rules::interfacesAdded(
+            "/xyz/openbmc_project/mctp"),
+        std::bind_front(&MctpDiscovery::discoverEndpoints, this)),
+    mctpEndpointRemovedSignal(
+        bus,
+        sdbusplus::bus::match::rules::interfacesRemoved(
+            "/xyz/openbmc_project/mctp"),
+        std::bind_front(&MctpDiscovery::discoverEndpoints, this)),
+    handlers(list), staticEidTablePath(staticEidTablePath)
 {
     dbus::ObjectValueTree objects;
+    MctpInfos mctpInfos;
 
     try
     {
@@ -35,10 +51,10 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
     }
     catch (const std::exception& e)
     {
+        loadStaticEndpoints(mctpInfos);
+        handleMCTPEndpoints(mctpInfos);
         return;
     }
-
-    std::vector<mctp_eid_t> eids;
 
     for (const auto& [objectPath, interfaces] : objects)
     {
@@ -55,28 +71,33 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                         types.end())
                     {
-                        eids.emplace_back(eid);
+                        mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
                     }
                 }
             }
         }
     }
 
-    if (eids.size() && fwManager)
-    {
-        fwManager->handleMCTPEndpoints(eids);
-    }
+    loadStaticEndpoints(mctpInfos);
+    handleMCTPEndpoints(mctpInfos);
 }
 
-void MctpDiscovery::dicoverEndpoints(sdbusplus::message_t& msg)
+void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
 {
     constexpr std::string_view mctpEndpointIntfName{
         "xyz.openbmc_project.MCTP.Endpoint"};
-    std::vector<mctp_eid_t> eids;
+    MctpInfos mctpInfos;
 
     sdbusplus::message::object_path objPath;
     std::map<std::string, std::map<std::string, dbus::Value>> interfaces;
-    msg.read(objPath, interfaces);
+    try
+    {
+        msg.read(objPath, interfaces);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << __FUNCTION__ << e.what() << '\n';
+    }
 
     for (const auto& [intfName, properties] : interfaces)
     {
@@ -91,15 +112,58 @@ void MctpDiscovery::dicoverEndpoints(sdbusplus::message_t& msg)
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                     types.end())
                 {
-                    eids.emplace_back(eid);
+                    mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
                 }
             }
         }
     }
+    loadStaticEndpoints(mctpInfos);
+    handleMCTPEndpoints(mctpInfos);
+}
 
-    if (eids.size() && fwManager)
+void MctpDiscovery::loadStaticEndpoints(MctpInfos& mctpInfos)
+{
+    if (!std::filesystem::exists(staticEidTablePath))
     {
-        fwManager->handleMCTPEndpoints(eids);
+        std::cerr << "Static EIDs json file does not exist, PATH="
+                  << staticEidTablePath << "\n";
+        return;
+    }
+
+    std::ifstream jsonFile(staticEidTablePath);
+    auto data = nlohmann::json::parse(jsonFile, nullptr, false);
+    if (data.is_discarded())
+    {
+        std::cerr << "Parsing json file failed, FILE=" << staticEidTablePath
+                  << "\n";
+        return;
+    }
+
+    const std::vector<nlohmann::json> emptyJsonArray{};
+    auto endpoints = data.value("Endpoints", emptyJsonArray);
+    for (const auto& endpoint : endpoints)
+    {
+        const std::vector<uint8_t> emptyUnit8Array;
+        auto eid = endpoint.value("EID", 0xFF);
+        auto types = endpoint.value("SupportedMessageTypes", emptyUnit8Array);
+        if (std::find(types.begin(), types.end(), mctpTypePLDM) != types.end())
+        {
+            mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
+        }
+    }
+}
+
+void MctpDiscovery::handleMCTPEndpoints(const MctpInfos& mctpInfos)
+{
+    if (handlers.size())
+    {
+        for (const auto& handler : handlers)
+        {
+            if (handler)
+            {
+                handler->handleMCTPEndpoints(mctpInfos);
+            }
+        }
     }
 }
 
