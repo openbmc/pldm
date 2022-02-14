@@ -1,6 +1,12 @@
+test_src = declare_dependency(
+          sources: [
+            '../mctp_endpoint_discovery.cpp',
+          ])
+
 tests = [
   'handler_test',
   'request_test',
+  'mctp_endpoint_discovery_test',
 ]
 
 foreach t : tests
@@ -18,6 +24,7 @@ foreach t : tests
                          phosphor_logging_dep,
                          sdbusplus,
                          sdeventplus,
+                         test_src,
                     ]),
        workdir: meson.current_source_dir())
 endforeach

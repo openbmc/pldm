@@ -69,6 +69,7 @@ if get_option('transport-implementation') == 'mctp-demux'
 elif get_option('transport-implementation') == 'af-mctp'
   conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
+conf_data.set_quoted('STATIC_EID_TABLE_PATH', join_paths(package_datadir, 'static_eid_table.json'))
 config = configure_file(output: 'config.h',
   configuration: conf_data
 )
