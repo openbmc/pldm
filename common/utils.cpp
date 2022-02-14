@@ -25,8 +25,11 @@ namespace pldm
 {
 namespace utils
 {
+<<<<<<< HEAD
 
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
+=======
+>>>>>>> 9e14687 (requester: Modified MctpDiscovery class)
 
 Entities getParentEntites(const EntityAssociations& entityAssoc)
 {
@@ -557,6 +560,21 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
                                       "Get");
     method.append(dbusInterface, dbusProp);
     return bus.call(method, dbusTimeout).unpack<PropertyValue>();
+}
+
+PropertyMap
+    DBusHandler::getDbusPropertiesVariant(const char* serviceName,
+                                          const char* objPath,
+                                          const char* dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(serviceName, objPath, dbusProperties,
+                                      "GetAll");
+    method.append(dbusInterface);
+    auto reply = bus.call(method, dbusTimeout);
+    PropertyMap properties;
+    reply.read(properties);
+    return properties;
 }
 
 PropertyValue jsonEntryToDbusVal(std::string_view type,
