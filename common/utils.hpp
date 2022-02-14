@@ -46,6 +46,12 @@ using Entities = std::vector<pldm_entity_node*>;
 using EntityAssociations = std::vector<Entities>;
 using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
 
+constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
+constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
+constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
+constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
+constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
+
 const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},
     {PLDM_ENTITY_BOARD, "io_board"},
@@ -165,9 +171,6 @@ T decimalToBcd(T decimal)
     return bcd;
 }
 
-constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
-constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
-
 struct DBusMapping
 {
     std::string objectPath;   //!< D-Bus object path
@@ -178,7 +181,8 @@ struct DBusMapping
 
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string, std::vector<std::string>>;
+                 uint64_t, double, std::string, std::vector<std::string>,
+                 std::vector<uint8_t>>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -213,6 +217,10 @@ class DBusHandlerInterface
     virtual PropertyValue
         getDbusPropertyVariant(const char* objPath, const char* dbusProp,
                                const char* dbusInterface) const = 0;
+
+    virtual PropertyMap
+        getDbusPropertiesVariant(const char* serviceName, const char* objPath,
+                                 const char* dbusInterface) const = 0;
 };
 
 /**
@@ -276,6 +284,20 @@ class DBusHandler : public DBusHandlerInterface
     PropertyValue
         getDbusPropertyVariant(const char* objPath, const char* dbusProp,
                                const char* dbusInterface) const override;
+
+    /** @brief Get All properties(type: variant) from the requested dbus
+     *
+     *  @param[in] serviceName - The Dbus service name
+     *  @param[in] objPath - The Dbus object path
+     *  @param[in] dbusInterface - The Dbus interface
+     *
+     *  @return The values of the properties(type: variant)
+     *
+     *  @throw sdbusplus::exception_t when it fails
+     */
+    PropertyMap
+        getDbusPropertiesVariant(const char* serviceName, const char* objPath,
+                                 const char* dbusInterface) const override;
 
     /** @brief The template function to get property from the requested dbus
      *         path
