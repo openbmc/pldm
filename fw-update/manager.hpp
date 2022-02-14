@@ -8,6 +8,7 @@
 #include "inventory_manager.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
+#include "requester/mctp_endpoint_discovery.hpp"
 #include "update_manager.hpp"
 
 #include <unordered_map>
@@ -26,7 +27,7 @@ using namespace pldm::dbus_api;
  * This class handles all the aspects of the PLDM FW update specification for
  * the MCTP devices
  */
-class Manager
+class Manager : public pldm::IMctpDiscoveryHandlerIntf
 {
 
   public:
@@ -52,12 +53,18 @@ class Manager
     /** @brief Discover MCTP endpoints that support the PLDM firmware update
      *         specification
      *
-     *  @param[in] eids - Array of MCTP endpoints
+     *  @param[in] mctpInfos - Array of MctpInfo
      *
      *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
      */
-    void handleMCTPEndpoints(const std::vector<mctp_eid_t>& eids)
+    void handleMCTPEndpoints(const MctpInfos& mctpInfos)
     {
+        std::vector<mctp_eid_t> eids;
+        for (auto mctpInfo : mctpInfos)
+        {
+            eids.emplace_back(mctpInfo.first);
+        }
+
         inventoryMgr.discoverFDs(eids);
     }
 
