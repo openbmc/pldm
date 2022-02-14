@@ -6,6 +6,7 @@
 #include "device_updater.hpp"
 #include "inventory_manager.hpp"
 #include "requester/handler.hpp"
+#include "requester/mctp_endpoint_discovery.hpp"
 #include "update_manager.hpp"
 
 #include <unordered_map>
@@ -22,7 +23,7 @@ namespace fw_update
  * This class handles all the aspects of the PLDM FW update specification for
  * the MCTP devices
  */
-class Manager
+class Manager : public pldm::MctpDiscoveryHandlerIntf
 {
   public:
     Manager() = delete;
@@ -47,13 +48,31 @@ class Manager
     /** @brief Discover MCTP endpoints that support the PLDM firmware update
      *         specification
      *
-     *  @param[in] eids - Array of MCTP endpoints
+     *  @param[in] mctpInfos - Array of MctpInfo
      *
      *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
      */
-    void handleMCTPEndpoints(const std::vector<mctp_eid_t>& eids)
+    void handleMctpEndpoints(const MctpInfos& mctpInfos)
     {
+        std::vector<mctp_eid_t> eids;
+        for (auto& mctpInfo : mctpInfos)
+        {
+            eids.emplace_back(std::get<0>(mctpInfo));
+        }
+
         inventoryMgr.discoverFDs(eids);
+    }
+
+    /** @brief Removed MCTP endpoints that support the PLDM firmware update
+     *         specification
+     *
+     *  @param[in] mctpInfos - Array of MctpInfo
+     *
+     *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
+     */
+    void handleRemovedMctpEndpoints([[maybe_unused]] const MctpInfos& mctpInfos)
+    {
+        return;
     }
 
     /** @brief Handle PLDM request for the commands in the FW update
