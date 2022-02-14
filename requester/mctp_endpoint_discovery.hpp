@@ -1,11 +1,22 @@
 #pragma once
 
-#include "fw-update/manager.hpp"
-
 #include <sdbusplus/bus/match.hpp>
+
+#include "libpldm/requester/pldm.h"
+#include <initializer_list>
+#include <vector>
+
 
 namespace pldm
 {
+
+class IMctpDiscoveryHandler
+{
+  public:
+    virtual void handleMCTPEndpoints(const std::vector<mctp_eid_t>& eids) = 0;
+    virtual ~IMctpDiscoveryHandler()
+    {}
+};
 
 class MctpDiscovery
 {
@@ -21,16 +32,18 @@ class MctpDiscovery
      *         MCTP enabled devices
      *
      *  @param[in] bus - reference to systemd bus
-     *  @param[in] fwManager - pointer to the firmware manager
+     *  @param[in] list - initializer list to the IMctpDiscoveryHandlers
      */
     explicit MctpDiscovery(sdbusplus::bus::bus& bus,
-                           fw_update::Manager* fwManager);
+                           std::initializer_list<IMctpDiscoveryHandler*> list);
+
+    void loadStaticEndpoints(const std::string& jsonPath);
 
   private:
     /** @brief reference to the systemd bus */
     sdbusplus::bus::bus& bus;
 
-    fw_update::Manager* fwManager;
+    std::vector<IMctpDiscoveryHandler*> handlers;
 
     /** @brief Used to watch for new MCTP endpoints */
     sdbusplus::bus::match_t mctpEndpointSignal;
