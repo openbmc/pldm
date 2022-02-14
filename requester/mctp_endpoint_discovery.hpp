@@ -1,11 +1,33 @@
 #pragma once
 
-#include "fw-update/manager.hpp"
+#include "libpldm/requester/pldm.h"
 
 #include <sdbusplus/bus/match.hpp>
 
+#include <filesystem>
+#include <initializer_list>
+#include <vector>
+
 namespace pldm
 {
+
+using EID = uint8_t;
+using UUID = std::string;
+using MctpInfo = std::pair<EID, UUID>;
+using MctpInfos = std::vector<MctpInfo>;
+
+/** @class MctpDiscoveryHandlerIntf
+ *
+ * This abstract class defines the APIs for MctpDiscovery class has common
+ * interface to execute function from different Manager Classes
+ */
+class MctpDiscoveryHandlerIntf
+{
+  public:
+    virtual void handleMCTPEndpoints(const MctpInfos& mctpInfos) = 0;
+    virtual ~MctpDiscoveryHandlerIntf()
+    {}
+};
 
 class MctpDiscovery
 {
@@ -21,21 +43,49 @@ class MctpDiscovery
      *         MCTP enabled devices
      *
      *  @param[in] bus - reference to systemd bus
-     *  @param[in] fwManager - pointer to the firmware manager
+     *  @param[in] list - initializer list to the MctpDiscoveryHandlerIntf
      */
-    explicit MctpDiscovery(sdbusplus::bus::bus& bus,
-                           fw_update::Manager* fwManager);
+    explicit MctpDiscovery(
+        sdbusplus::bus::bus& bus,
+        std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+        const std::filesystem::path& staticEidTablePath =
+            STATIC_EID_TABLE_PATH);
 
   private:
     /** @brief reference to the systemd bus */
     sdbusplus::bus::bus& bus;
 
-    fw_update::Manager* fwManager;
-
     /** @brief Used to watch for new MCTP endpoints */
-    sdbusplus::bus::match_t mctpEndpointSignal;
+    sdbusplus::bus::match_t mctpEndpointAddedSignal;
 
-    void dicoverEndpoints(sdbusplus::message::message& msg);
+    /** @brief Used to watch for the removed MCTP endpoints */
+    sdbusplus::bus::match_t mctpEndpointRemovedSignal;
+
+    /** @brief List of handlers need to notify when new MCTP
+     * Endpoint is Added/Removed */
+    std::vector<MctpDiscoveryHandlerIntf*> handlers;
+
+    /** @brief Path of static EID table config file */
+    std::filesystem::path staticEidTablePath;
+
+    /** @brief Callback function when new MCTP endpoints or revmoed endpoints
+     * D-Bus signal raised.
+     *
+     *  @param[in] msg - Data associated with subscribed signal
+     */
+    void discoverEndpoints(sdbusplus::message::message& msg);
+
+    /** @brief Helper function to invoke registered handlers
+     *
+     *  @param[in] mctpInfos - information of discovered MCTP endpoints
+     */
+    void handleMCTPEndpoints(const MctpInfos& mctpInfos);
+
+    /** @brief Loading the static MCTP endpoints to mctpInfos.
+     *
+     *  @param[in] mctpInfos - information of discovered MCTP endpoints
+     */
+    void loadStaticEndpoints(MctpInfos& mctpInfos);
 
     static constexpr uint8_t mctpTypePLDM = 1;
 

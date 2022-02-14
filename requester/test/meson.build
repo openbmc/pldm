@@ -1,11 +1,13 @@
 test_src = declare_dependency(
           sources: [
             '../../pldmd/dbus_impl_requester.cpp',
-            '../../pldmd/instance_id.cpp'])
+            '../../pldmd/instance_id.cpp',
+            '../mctp_endpoint_discovery.cpp'])
 
 tests = [
   'handler_test',
   'request_test',
+  'mctp_endpoint_discovery_test',
 ]
 
 foreach t : tests
