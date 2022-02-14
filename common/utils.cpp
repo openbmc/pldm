@@ -563,6 +563,18 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     return bus.call(method, dbusTimeout).unpack<PropertyValue>();
 }
 
+PropertyMap
+    DBusHandler::getDbusPropertiesVariant(const char* serviceName,
+                                          const char* objPath,
+                                          const char* dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(serviceName, objPath, dbusProperties,
+                                      "GetAll");
+    method.append(dbusInterface);
+    return bus.call(method, dbusTimeout).unpack<PropertyMap>();
+}
+
 PropertyValue jsonEntryToDbusVal(std::string_view type,
                                  const nlohmann::json& value)
 {
