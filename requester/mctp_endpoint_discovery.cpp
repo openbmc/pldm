@@ -5,7 +5,12 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 #include <map>
 #include <string>
 #include <string_view>
@@ -14,14 +19,15 @@
 namespace pldm
 {
 
-MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
-                             fw_update::Manager* fwManager) :
+MctpDiscovery::MctpDiscovery(
+    sdbusplus::bus::bus& bus,
+    std::initializer_list<IMctpDiscoveryHandlerIntf*> list) :
     bus(bus),
-    fwManager(fwManager),
     mctpEndpointSignal(bus,
                        sdbusplus::bus::match::rules::interfacesAdded(
                            "/xyz/openbmc_project/mctp"),
-                       std::bind_front(&MctpDiscovery::dicoverEndpoints, this))
+                       std::bind_front(&MctpDiscovery::dicoverEndpoints, this)),
+    handlers(list)
 {
     dbus::ObjectValueTree objects;
 
@@ -62,10 +68,7 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
         }
     }
 
-    if (eids.size() && fwManager)
-    {
-        fwManager->handleMCTPEndpoints(eids);
-    }
+    handleMCTPEndpoints(eids);
 }
 
 void MctpDiscovery::dicoverEndpoints(sdbusplus::message::message& msg)
@@ -97,9 +100,55 @@ void MctpDiscovery::dicoverEndpoints(sdbusplus::message::message& msg)
         }
     }
 
-    if (eids.size() && fwManager)
+    handleMCTPEndpoints(eids);
+}
+
+void MctpDiscovery::loadStaticEndpoints(const std::filesystem::path& jsonPath)
+{
+    if (!std::filesystem::exists(jsonPath))
     {
-        fwManager->handleMCTPEndpoints(eids);
+        std::cerr << "Static EIDs json file dones not exist, PATH=" << jsonPath
+                  << "\n";
+        return;
+    }
+
+    std::ifstream jsonFile(jsonPath);
+    auto data = nlohmann::json::parse(jsonFile, nullptr, false);
+    if (data.is_discarded())
+    {
+        std::cerr << "Parsing json file failed, FILE=" << jsonPath << "\n";
+        return;
+    }
+
+    std::vector<mctp_eid_t> eids;
+    const nlohmann::json emptyJson{};
+    const std::vector<nlohmann::json> emptyJsonArray{};
+    auto endpoints = data.value("endpoints", emptyJsonArray);
+    for (const auto& endpoint : endpoints)
+    {
+        const std::vector<uint8_t> emptyUnit8Array;
+        auto eid = endpoint.value("EID", 0xFF);
+        auto types = endpoint.value("SupportedMessageTypes", emptyUnit8Array);
+        if (std::find(types.begin(), types.end(), mctpTypePLDM) != types.end())
+        {
+            eids.emplace_back(eid);
+        }
+    }
+
+    handleMCTPEndpoints(eids);
+}
+
+void MctpDiscovery::handleMCTPEndpoints(std::vector<mctp_eid_t>& eids)
+{
+    if (eids.size() && handlers.size())
+    {
+        for (IMctpDiscoveryHandlerIntf* handler : handlers)
+        {
+            if (handler)
+            {
+                handler->handleMCTPEndpoints(eids);
+            }
+        }
     }
 }
 
