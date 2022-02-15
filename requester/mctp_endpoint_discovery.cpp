@@ -4,6 +4,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "requester/terminus_manager.hpp"
 
 #include <algorithm>
 #include <map>
@@ -15,9 +16,10 @@ namespace pldm
 {
 
 MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
-                             fw_update::Manager* fwManager) :
+                             fw_update::Manager* fwManager,
+                             terminus::Manager* devManager) :
     bus(bus),
-    fwManager(fwManager),
+    fwManager(fwManager), devManager(devManager),
     mctpEndpointAddedSignal(
         bus,
         sdbusplus::bus::match::rules::interfacesAdded(
@@ -40,6 +42,11 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
         reply.read(objects);
     }
     catch (const std::exception& e)
+    {
+        return;
+    }
+
+    if (!objects.size())
     {
         return;
     }
@@ -74,6 +81,11 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
     if (eids.size() && fwManager)
     {
         fwManager->handleMCTPEndpoints(eids);
+    }
+
+    if (eids.size() && devManager)
+    {
+        devManager->addDevices(eids);
     }
 }
 
@@ -115,11 +127,17 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message::message& msg)
     {
         fwManager->handleMCTPEndpoints(eids);
     }
+
+    if (eids.size() && devManager)
+    {
+        devManager->addDevices(eids);
+    }
 }
 
 void MctpDiscovery::removeEndpoints(sdbusplus::message::message& msg)
 {
     dbus::ObjectValueTree objects;
+    /* Unused */
     msg = msg;
 
     /*
@@ -137,19 +155,23 @@ void MctpDiscovery::removeEndpoints(sdbusplus::message::message& msg)
     }
     catch (const std::exception& e)
     {
+        if (listEids.size() && devManager)
+        {
+            devManager->removeDevices(listEids);
+        }
         /* Remove all of EID in list when MCTP D-Bus is empty*/
         listEids = {};
-        /* ToDo: Do somethings with the removed MCTP endpoints */
-
         return;
     }
 
     if (!objects.size())
     {
+        if (listEids.size() && devManager)
+        {
+            devManager->removeDevices(listEids);
+        }
         /* Remove all of EID in list when MCTP D-Bus is empty*/
         listEids = {};
-        /* ToDo: Do somethings with the removed MCTP endpoints */
-
         return;
     }
 
@@ -183,9 +205,19 @@ void MctpDiscovery::removeEndpoints(sdbusplus::message::message& msg)
         }
     }
 
+    /* Find the removed EID */
+    std::sort(listEids.begin(), listEids.end());
+    std::sort(eids.begin(), eids.end());
+    std::vector<mctp_eid_t> difference;
+    std::set_difference(listEids.begin(), listEids.end(), eids.begin(),
+                        eids.end(), std::back_inserter(difference));
+
     /* Update the list EIDs with the current endpoints in MCTP D-Bus */
     listEids = eids;
-    /* ToDo: Do somethings with the removed MCTP endpoints */
+    if (difference.size() && devManager)
+    {
+        devManager->removeDevices(difference);
+    }
 
     return;
 }
