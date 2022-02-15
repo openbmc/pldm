@@ -11,6 +11,7 @@
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
+#include "requester/terminus_manager.hpp"
 
 #include <err.h>
 #include <getopt.h>
@@ -214,8 +215,6 @@ int main(int argc, char** argv)
     requester::Handler<requester::Request> reqHandler(
         sockfd, event, dbusImplReq, currentSendbuffSize, verbose);
 
-#ifdef LIBPLDMRESPONDER
-    using namespace pldm::state_sensor;
     dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
@@ -227,6 +226,8 @@ int main(int argc, char** argv)
                     decltype(&pldm_entity_association_tree_destroy)>
         bmcEntityTree(pldm_entity_association_tree_init(),
                       pldm_entity_association_tree_destroy);
+#ifdef LIBPLDMRESPONDER
+    using namespace pldm::state_sensor;
     std::shared_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
@@ -321,10 +322,14 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
+    std::unique_ptr<terminus::Manager> devManager =
+        std::make_unique<terminus::Manager>(
+            sockfd, bus, event, pdrRepo.get(), entityTree.get(),
+            bmcEntityTree.get(), dbusImplReq, &reqHandler);
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(event, reqHandler, dbusImplReq);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
-        std::make_unique<MctpDiscovery>(bus, fwManager.get());
+        std::make_unique<MctpDiscovery>(bus, fwManager.get(), devManager.get());
 
     auto callback = [verbose, &invoker, &reqHandler, currentSendbuffSize,
                      &fwManager](IO& io, int fd, uint32_t revents) mutable {
