@@ -4,6 +4,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "requester/device_manager.hpp"
 
 #include <algorithm>
 #include <map>
@@ -15,9 +16,10 @@ namespace pldm
 {
 
 MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
-                             fw_update::Manager* fwManager) :
+                             fw_update::Manager* fwManager,
+                             device::Manager* devManager) :
     bus(bus),
-    fwManager(fwManager),
+    fwManager(fwManager), devManager(devManager),
     mctpEndpointAddedSignal(
         bus,
         sdbusplus::bus::match::rules::interfacesAdded(
@@ -40,6 +42,11 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
         reply.read(objects);
     }
     catch (const std::exception& e)
+    {
+        return;
+    }
+
+    if (!objects.size())
     {
         return;
     }
@@ -71,6 +78,11 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
     if (eids.size() && fwManager)
     {
         fwManager->handleMCTPEndpoints(eids);
+    }
+
+    if (eids.size() && devManager)
+    {
+        devManager->addDevices(eids);
     }
 }
 
@@ -107,6 +119,11 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message::message& msg)
     {
         fwManager->handleMCTPEndpoints(eids);
     }
+
+    if (eids.size() && devManager)
+    {
+        devManager->addDevices(eids);
+    }
 }
 
 void MctpDiscovery::removeEndpoints(sdbusplus::message::message& msg)
@@ -138,7 +155,10 @@ void MctpDiscovery::removeEndpoints(sdbusplus::message::message& msg)
         }
     }
 
-    /* Do somethings with the removed MCTP endpoints */
+    if (eids.size() && devManager)
+    {
+        devManager->removeDevices(eids);
+    }
 }
 
 } // namespace pldm

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fw-update/manager.hpp"
+#include "requester/device_manager.hpp"
 
 #include <sdbusplus/bus/match.hpp>
 
@@ -24,13 +25,16 @@ class MctpDiscovery
      *  @param[in] fwManager - pointer to the firmware manager
      */
     explicit MctpDiscovery(sdbusplus::bus::bus& bus,
-                           fw_update::Manager* fwManager);
+                           fw_update::Manager* fwManager,
+                           pldm::device::Manager* devManager);
 
   private:
     /** @brief reference to the systemd bus */
     sdbusplus::bus::bus& bus;
 
     fw_update::Manager* fwManager;
+
+    pldm::device::Manager* devManager;
 
     /** @brief Used to watch for new MCTP endpoints */
     sdbusplus::bus::match_t mctpEndpointAddedSignal;
