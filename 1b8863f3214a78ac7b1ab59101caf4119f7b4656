@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "92faf4c7_730e0149",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-02-16T17:43:51Z",
+      "side": 1,
+      "message": "My original idea was that each manager should check if EID supports expected PLDM Types and PLDM Commands by itself. It can make a simpler code structure but waste some bandwidth to send duplicated GetPLDMTypes and GetPLDMCommands by each managers.",
+      "parentUuid": "234e1587_4c82c283",
+      "range": {
+        "startLine": 10,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 56
+      },
+      "revId": "1b8863f3214a78ac7b1ab59101caf4119f7b4656",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bf40af38_6e9c4d3a",
@@ -501,6 +525,30 @@
       "writtenOn": "2022-02-16T06:56:13Z",
       "side": 1,
       "message": "I am working on a patch to consume MCTP UUID\u0027s. This is needed to handle cases where multiple endpoint ID\u0027s are implemented by the FD and UUID is the mechanism to distinguish.\n\nusing MctpInfo \u003d std::pair\u003cEID, UUID\u003e;\nusing MctpInfos \u003d std::vector\u003cMctpInfo\u003e;\n\nvirtual void handleMCTPEndpoints(const MctpInfos\u0026 mctpInfos) \u003d 0;",
+      "range": {
+        "startLine": 16,
+        "startChar": 37,
+        "endLine": 16,
+        "endChar": 72
+      },
+      "revId": "1b8863f3214a78ac7b1ab59101caf4119f7b4656",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1276e9d_b542b09f",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-02-16T17:43:51Z",
+      "side": 1,
+      "message": "May I know what typedef of EID and UUID are too?\nAnd can you share the piece of code that MctpDiscovery gets the value of UUID and then adds into MctpInfo ? Since the MCTP UUID is not a property of /xyz/openbmc_project/mctp DBus-interface currently.\nhttps://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/MCTP/Endpoint.interface.yaml",
+      "parentUuid": "6f8e15de_3d2f39b8",
       "range": {
         "startLine": 16,
         "startChar": 37,
