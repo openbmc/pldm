@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf40af38_6e9c4d3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-16T04:20:24Z",
+      "side": 1,
+      "message": "Tom - can you take a look at this from FW update perspective to make sure the MCTP discovery mechanism hasn\u0027t changed?",
+      "revId": "1b8863f3214a78ac7b1ab59101caf4119f7b4656",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
