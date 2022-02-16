@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "234e1587_4c82c283",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-02-16T07:21:07Z",
+      "side": 1,
+      "message": "Agree, can\u0027t assume all types are supported.",
+      "parentUuid": "a666041e_a168ce2c",
+      "range": {
+        "startLine": 10,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 56
+      },
+      "revId": "1b8863f3214a78ac7b1ab59101caf4119f7b4656",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bf40af38_6e9c4d3a",
