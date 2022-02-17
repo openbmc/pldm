@@ -1,10 +1,30 @@
 #include "common/utils.hpp"
 #include "softoff.hpp"
 
+#include <getopt.h>
+
 #include <iostream>
 
-int main()
+int main(int argc, char* argv[])
 {
+
+    bool noTimeOut = false;
+    static struct option long_options[] = {{"notimeout", no_argument, 0, 't'},
+                                           {0, 0, 0, 0}};
+
+    auto argflag = getopt_long(argc, argv, "t", long_options, nullptr);
+    switch (argflag)
+    {
+        case 't':
+            noTimeOut = true;
+            std::cout << "Not applying any time outs\n";
+            break;
+        case -1:
+            break;
+        default:
+            exit(EXIT_FAILURE);
+    }
+
     // Get a default event loop
     auto event = sdeventplus::Event::get_default();
 
@@ -14,7 +34,7 @@ int main()
     // Attach the bus to sd_event to service user requests
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
-    pldm::SoftPowerOff softPower(bus, event.get());
+    pldm::SoftPowerOff softPower(bus, event.get(), noTimeOut);
 
     if (softPower.isError())
     {
