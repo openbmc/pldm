@@ -30,8 +30,10 @@ using Timer = Time<clockId>;
 constexpr pldm::pdr::TerminusID TID = 0; // TID will be implemented later.
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
-SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
-    bus(bus), timer(event)
+SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event,
+                           bool noTimeOut) :
+    bus(bus),
+    timer(event), noTimeOut(noTimeOut)
 {
     getHostState();
     if (hasError || completed)
@@ -115,12 +117,17 @@ void SoftPowerOff::hostSoftOffComplete(sdbusplus::message::message& msg)
     if (msgSensorID == sensorID && msgSensorOffset == sensorOffset &&
         msgEventState == PLDM_SW_TERM_GRACEFUL_SHUTDOWN)
     {
-        // Receive Graceful shutdown completion event message. Disable the timer
-        auto rc = timer.stop();
-        if (rc < 0)
+
+        if (!noTimeOut)
         {
-            std::cerr << "PLDM soft off: Failure to STOP the timer. ERRNO="
-                      << rc << "\n";
+            // Receive Graceful shutdown completion event message. Disable the
+            // timer
+            auto rc = timer.stop();
+            if (rc < 0)
+            {
+                std::cerr << "PLDM soft off: Failure to STOP the timer. ERRNO="
+                          << rc << "\n";
+            }
         }
 
         // This marks the completion of pldm soft power off.
@@ -395,23 +402,28 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 
         responseReceived = true;
 
-        // Start Timer
-        using namespace std::chrono;
-        auto timeMicroseconds =
-            duration_cast<microseconds>(seconds(SOFTOFF_TIMEOUT_SECONDS));
+        if (!noTimeOut)
+        {
 
-        auto ret = startTimer(timeMicroseconds);
-        if (ret < 0)
-        {
-            std::cerr << "Failure to start Host soft off wait timer, ERRNO = "
-                      << ret << "Exit the pldm-softpoweroff\n";
-            exit(-1);
-        }
-        else
-        {
-            std::cerr
-                << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
-                << SOFTOFF_TIMEOUT_SECONDS << "\n";
+            // Start Timer
+            using namespace std::chrono;
+            auto timeMicroseconds =
+                duration_cast<microseconds>(seconds(SOFTOFF_TIMEOUT_SECONDS));
+
+            auto ret = startTimer(timeMicroseconds);
+            if (ret < 0)
+            {
+                std::cerr
+                    << "Failure to start Host soft off wait timer, ERRNO = "
+                    << ret << "Exit the pldm-softpoweroff\n";
+                exit(-1);
+            }
+            else
+            {
+                std::cerr
+                    << "Timer started waiting for host soft off, TIMEOUT_IN_SEC = "
+                    << SOFTOFF_TIMEOUT_SECONDS << "\n";
+            }
         }
         return;
     };

@@ -8,5 +8,7 @@ Conflicts=obmc-host-start@0.target
 
 [Service]
 Restart=no
-ExecStart=/usr/bin/pldm-softpoweroff
+Environment=SOFTOFF_ARGS=null
+EnvironmentFile=-/etc/default/softoff
+ExecStart=/usr/bin/pldm-softpoweroff $SOFTOFF_ARGS
 Type=oneshot

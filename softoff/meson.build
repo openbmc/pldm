@@ -20,5 +20,11 @@ if get_option('systemd').enabled()
                    output: 'pldmSoftPowerOff.service',
                    copy: true,
                    install_dir: systemd_system_unit_dir)
+  configure_file(
+    input: 'softoff',
+    output: 'softoff',
+    copy: true,
+    install: true,
+    install_dir: join_paths(get_option('sysconfdir'), 'default'))
 endif
 

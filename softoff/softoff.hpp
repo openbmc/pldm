@@ -23,8 +23,11 @@ class SoftPowerOff
      *
      *  @param[in] bus       - system D-Bus handler
      *  @param[in] event     - sd_event handler
+     *  @param[in] noTimeOut - bool variable that captures
+     *                         is there is indeed a timeout
      */
-    SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event);
+    SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event,
+                 bool noTimeOut = false);
 
     /** @brief Is the pldm-softpoweroff has error.
      * if hasError is true, that means the pldm-softpoweroff failed to
@@ -39,7 +42,7 @@ class SoftPowerOff
      */
     inline bool isTimerExpired()
     {
-        return timer.isExpired();
+        return noTimeOut ? false : timer.isExpired();
     }
 
     /** @brief Is the host soft off completed.
@@ -137,6 +140,10 @@ class SoftPowerOff
 
     /** @brief Reference to Timer object */
     phosphor::Timer timer;
+
+    /** @brief captures if the is a timeout value
+     */
+    bool noTimeOut;
 
     /** @brief Used to subscribe to dbus pldm StateSensorEvent signal
      * When the host soft off is complete, it sends an platform event message
