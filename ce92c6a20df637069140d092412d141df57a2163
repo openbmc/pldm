@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b314009_994d2f93",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-02-18T03:57:44Z",
+      "side": 1,
+      "message": "please add a default value\n`bool noTimeOut \u003d true or false`",
+      "range": {
+        "startLine": 29,
+        "startChar": 65,
+        "endLine": 29,
+        "endChar": 74
+      },
+      "revId": "ce92c6a20df637069140d092412d141df57a2163",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c810618_af0eddfc",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-02-18T03:57:44Z",
+      "side": 1,
+      "message": "Nit:\nreturn noTimeOut ? false : timer.isExpired();",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 48,
+        "endChar": 33
+      },
+      "revId": "ce92c6a20df637069140d092412d141df57a2163",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
