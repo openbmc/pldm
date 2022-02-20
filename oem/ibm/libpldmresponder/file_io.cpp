@@ -121,6 +121,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     uint32_t numPages = length / pageSize;
     uint32_t pageAlignedLength = numPages * pageSize;
 
+    std::cout << "Inside DMA::transferDataHost Length=" << length << std::endl;
     if (length > pageAlignedLength)
     {
         pageAlignedLength += pageSize;
