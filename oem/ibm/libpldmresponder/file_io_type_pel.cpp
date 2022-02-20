@@ -205,6 +205,10 @@ int PelHandler::writeFromMemory(uint32_t offset, uint32_t length,
     close(fd);
     fs::path path(tmpFile);
 
+    std::cout << "Inside PelHandler::writeFromMemory \n";
+    std::cout << "Pel FileName=" << path.string() << std::endl;
+    std::cout << "Offset=" << offset << std::endl;
+    std::cout << "Address=" << address << std::endl;
     auto rc = transferFileData(path, false, offset, length, address);
     if (rc == PLDM_SUCCESS)
     {
