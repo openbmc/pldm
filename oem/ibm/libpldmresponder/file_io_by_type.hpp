@@ -104,10 +104,11 @@ class FileHandler
      */
     virtual int transferFileData(const fs::path& path, bool upstream,
                                  uint32_t offset, uint32_t& length,
-                                 uint64_t address);
+                                 uint64_t address, uint32_t& transferLength);
 
     virtual int transferFileData(int fd, bool upstream, uint32_t offset,
-                                 uint32_t& length, uint64_t address);
+                                 uint32_t& length, uint64_t address,
+                                 uint32_t& transferLength);
 
     virtual int transferFileDataToSocket(int fd, uint32_t& length,
                                          uint64_t address);

@@ -60,7 +60,8 @@ class DMA
      * @return returns 0 on success, negative errno on failure
      */
     int transferDataHost(int fd, uint32_t offset, uint32_t length,
-                         uint64_t address, bool upstream);
+                         uint64_t address, bool upstream,
+                         uint32_t& transferLength);
 
     /** @brief API to transfer data on to unix socket from host using DMA
      *
@@ -124,10 +125,11 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
     }
     pldm::utils::CustomFD fd(file);
 
+    uint32_t transferLength;
     while (length > dma::maxSize)
     {
         auto rc = intf->transferDataHost(fd(), offset, dma::maxSize, address,
-                                         upstream);
+                                         upstream, transferLength);
         if (rc < 0)
         {
             encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
@@ -140,7 +142,8 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
         address += dma::maxSize;
     }
 
-    auto rc = intf->transferDataHost(fd(), offset, length, address, upstream);
+    auto rc = intf->transferDataHost(fd(), offset, length, address, upstream,
+                                     transferLength);
     if (rc < 0)
     {
         encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,

@@ -33,7 +33,9 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
 
     auto fd = std::get<0>(it->second);
     auto& remSize = std::get<1>(it->second);
-    auto rc = transferFileData(fd, false, offset, length, address);
+    uint32_t transferLength;
+    auto rc =
+        transferFileData(fd, false, offset, length, address, transferLength);
     if (rc == PLDM_SUCCESS)
     {
         remSize -= length;
@@ -56,7 +58,9 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
     {
         return PLDM_ERROR_INVALID_DATA;
     }
-    auto rc = transferFileData(filePath.c_str(), true, offset, length, address);
+    uint32_t transferLength;
+    auto rc = transferFileData(filePath.c_str(), true, offset, length, address,
+                               transferLength);
     fs::remove(filePath);
     if (rc)
     {

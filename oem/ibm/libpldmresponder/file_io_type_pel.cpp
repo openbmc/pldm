@@ -110,7 +110,9 @@ int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
         auto reply = bus.call(method);
         sdbusplus::message::unix_fd fd{};
         reply.read(fd);
-        auto rc = transferFileData(fd, true, offset, length, address);
+        uint32_t transferLength;
+        auto rc =
+            transferFileData(fd, true, offset, length, address, transferLength);
         return rc;
     }
     catch (const std::exception& e)
@@ -205,7 +207,14 @@ int PelHandler::writeFromMemory(uint32_t offset, uint32_t length,
     close(fd);
     fs::path path(tmpFile);
 
-    auto rc = transferFileData(path, false, offset, length, address);
+    uint32_t transferLength;
+    auto rc =
+        transferFileData(path, false, offset, length, address, transferLength);
+    std::cout << "Inside PelHandler::writeFromMemory \n";
+    std::cout << "Pel FileName=" << path.string() << std::endl;
+    std::cout << "Offset=" << offset << std::endl;
+    std::cout << "Address=" << address << std::endl;
+    std::cout << "transferLength=" << transferLength << std::endl;
     if (rc == PLDM_SUCCESS)
     {
         rc = storePel(path.string());

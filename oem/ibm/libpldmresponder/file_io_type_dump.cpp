@@ -270,11 +270,13 @@ int DumpHandler::readIntoMemory(uint32_t offset, uint32_t& length,
                                 uint64_t address,
                                 oem_platform::Handler* /*oemPlatformHandler*/)
 {
+    uint32_t transferLength;
     if (dumpType != PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS)
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    return transferFileData(resDumpDirPath, true, offset, length, address);
+    return transferFileData(resDumpDirPath, true, offset, length, address,
+                            transferLength);
 }
 
 int DumpHandler::read(uint32_t offset, uint32_t& length, Response& response,

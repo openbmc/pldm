@@ -115,7 +115,8 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
 }
 
 int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
-                          uint64_t address, bool upstream)
+                          uint64_t address, bool upstream,
+                          uint32_t& transferLength)
 {
     static const size_t pageSize = getpagesize();
     uint32_t numPages = length / pageSize;
@@ -193,7 +194,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     xdmaOp.upstream = upstream ? 1 : 0;
     xdmaOp.hostAddr = address;
     xdmaOp.len = length;
-
+    transferLength = length;
     rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
     if (rc < 0)
     {

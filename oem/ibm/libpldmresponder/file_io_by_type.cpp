@@ -32,13 +32,14 @@ namespace responder
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 int FileHandler::transferFileData(int32_t fd, bool upstream, uint32_t offset,
-                                  uint32_t& length, uint64_t address)
+                                  uint32_t& length, uint64_t address,
+                                  uint32_t& transferLength)
 {
     dma::DMA xdmaInterface;
     while (length > dma::maxSize)
     {
-        auto rc = xdmaInterface.transferDataHost(fd, offset, dma::maxSize,
-                                                 address, upstream);
+        auto rc = xdmaInterface.transferDataHost(
+            fd, offset, dma::maxSize, address, upstream, transferLength);
         if (rc < 0)
         {
             return PLDM_ERROR;
@@ -47,8 +48,8 @@ int FileHandler::transferFileData(int32_t fd, bool upstream, uint32_t offset,
         length -= dma::maxSize;
         address += dma::maxSize;
     }
-    auto rc =
-        xdmaInterface.transferDataHost(fd, offset, length, address, upstream);
+    auto rc = xdmaInterface.transferDataHost(fd, offset, length, address,
+                                             upstream, transferLength);
     return rc < 0 ? PLDM_ERROR : PLDM_SUCCESS;
 }
 
@@ -73,7 +74,7 @@ int FileHandler::transferFileDataToSocket(int32_t fd, uint32_t& length,
 
 int FileHandler::transferFileData(const fs::path& path, bool upstream,
                                   uint32_t offset, uint32_t& length,
-                                  uint64_t address)
+                                  uint64_t address, uint32_t& transferLength)
 {
     bool fileExists = false;
     if (upstream)
@@ -120,7 +121,8 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
     }
     utils::CustomFD fd(file);
 
-    return transferFileData(fd(), upstream, offset, length, address);
+    return transferFileData(fd(), upstream, offset, length, address,
+                            transferLength);
 }
 
 std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,

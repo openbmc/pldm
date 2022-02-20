@@ -98,6 +98,7 @@ class LidHandler : public FileHandler
     {
         int rc = PLDM_SUCCESS;
         bool codeUpdateInProgress = false;
+        uint32_t transferLength;
         if (oemPlatformHandler != nullptr)
         {
             pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
@@ -133,7 +134,8 @@ class LidHandler : public FileHandler
         }
         close(fd);
 
-        rc = transferFileData(lidPath, false, offset, length, address);
+        rc = transferFileData(lidPath, false, offset, length, address,
+                              transferLength);
         if (rc != PLDM_SUCCESS)
         {
             std::cerr << "writeFileFromMemory failed with rc= " << rc << " \n";
@@ -170,7 +172,9 @@ class LidHandler : public FileHandler
     {
         if (constructLIDPath(oemPlatformHandler))
         {
-            return transferFileData(lidPath, true, offset, length, address);
+            uint32_t transferLength;
+            return transferFileData(lidPath, true, offset, length, address,
+                                    transferLength);
         }
         return PLDM_ERROR;
     }
