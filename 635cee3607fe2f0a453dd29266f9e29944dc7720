@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a511a55_ae0b17f7",
+        "filename": "requester/device_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2022-02-21T09:22:37Z",
+      "side": 1,
+      "message": "nit: Can we use the name PlatformHandler? The reason is - there can be PLDM capable devices that do not support PLDM M\u0026C",
+      "range": {
+        "startLine": 28,
+        "startChar": 6,
+        "endLine": 28,
+        "endChar": 16
+      },
+      "revId": "635cee3607fe2f0a453dd29266f9e29944dc7720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fe094bb_e0e076c7",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2022-02-21T09:22:37Z",
+      "side": 1,
+      "message": "Instead of extending this list indefinitely (for each PLDM type and version), we can define a TerminusManager that can gracefully deal with all types of PLDM devices. The TerminusManager can run the PLDM Base commands on discovery of a PLDM capable device, abstract its transport information (MCTP/NC-SI), deal with different specification version of the devices, invoke type specific handlers required for the terminus, etc.",
+      "range": {
+        "startLine": 28,
+        "startChar": 27,
+        "endLine": 29,
+        "endChar": 60
+      },
+      "revId": "635cee3607fe2f0a453dd29266f9e29944dc7720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
