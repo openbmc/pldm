@@ -16,6 +16,24 @@
       "message": "As my understanding the purpose of this patches is support static EID table.\nThe mctp_endpoint_discovery is a dynamic mechanism to add/remove the PLDM devices base on the MCTP devices in the MCTP D-Bus interface. It is not reasonable to add static EID solution in mctp_endpoint_discovery. fw-update/manager is concern fw-update so we should not change it also.\n\nWhat do you think if we add device manager interface which is similar as manager of fw-update interface? This interface will manager all of EID in MCTP D-Bus interface and also static EID if need. You can load static_eid_table.json when construct Device manager interface.\n\nI created patches to support device manager interface and device handler in below patches:\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/51246\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/51245",
       "revId": "6bb4495538ad37ebf839de4fc8d4ccb0d64f5720",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0a6d690_fbe51e65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-02-21T08:41:00Z",
+      "side": 1,
+      "message": "This patch set is for MctpDiscovery to support multiple managers and then MctpDiscovery has a unified interface to execute different manager\u0027s callback function. So, the code changes I am going to submit can do the thing like below.\n\nstd::unique_ptr\u003cplatform_mc::Manager\u003e platformManager \u003d\n    std::make_unique\u003cplatform_mc::Manager\u003e(event, reqHandler, dbusImplReq);\nstd::unique_ptr\u003cMctpDiscovery\u003e mctpDiscoveryHandler \u003d\n    std::make_unique\u003cMctpDiscovery\u003e(\n        bus, std::initializer_list\u003cpldm::IMctpDiscoveryHandler*\u003e{\n                 fwManager.get(), platformManager.get()});\n\nThe purpose of loading static EID table is for the MCTP layer which does not implement /xyz/penbmc_procject/mctp D-Bus interface(e.g. mctp-demux)\n\nBy the way, this patch set is part of the implementation of this design proposal(https://gerrit.openbmc-project.xyz/c/openbmc/docs/+/47252).The whole code changes can be found in this abandoned patch set(\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/51115). I split it into multiple small patch sets for easy review.",
+      "parentUuid": "82cffedb_ba0e5c85",
+      "revId": "6bb4495538ad37ebf839de4fc8d4ccb0d64f5720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
