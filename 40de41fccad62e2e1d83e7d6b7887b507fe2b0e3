@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27631938_799cb9ac",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2022-02-21T08:52:55Z",
+      "side": 1,
+      "message": "nit: discoverEndpoints",
+      "range": {
+        "startLine": 25,
+        "startChar": 40,
+        "endLine": 25,
+        "endChar": 56
+      },
+      "revId": "40de41fccad62e2e1d83e7d6b7887b507fe2b0e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1393b59_f87345de",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000410
+      },
+      "writtenOn": "2022-02-21T08:52:55Z",
+      "side": 1,
+      "message": "Do you plan to address this in same patchset?\n\nIdeally, we would want to invoke the PLDM terminus\u0027s managers\u0027 destructors. Say, we found that some EID x capable of handling PLDM type 2, 4 and 5 is destroyed, then the corresponding type managers\u0027 desturctors need to be invoked.\n\nMy suggestion would be to introduce a TID for a unique PLDM terminus; say a \"terminusManager\" which takes care of device handling. On an event of MCTP EID removed, then terminusManager\u0027s destructor should invoke device\u0027s type spec destructors.",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 141,
+        "endChar": 55
+      },
+      "revId": "40de41fccad62e2e1d83e7d6b7887b507fe2b0e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
