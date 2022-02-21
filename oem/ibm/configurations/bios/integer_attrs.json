@@ -109,6 +109,16 @@
          "readOnly" : true,
          "helpText" : "Specifies the enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity instead.",
          "displayName" : "Enlarged IO Capacity (current)"
+      },
+      {
+         "attribute_name" : "hb_effective_secure_version",
+         "lower_bound" : 0,
+         "upper_bound" : 65535,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "readOnly":true,
+         "helpText" : "Specifies the effective secure version.",
+         "displayName" : "Effective Secure Version"
       }
    ]
 }
