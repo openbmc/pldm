@@ -109,6 +109,16 @@
          "readOnly" : true,
          "helpText" : "Specifies the enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity instead.",
          "displayName" : "Enlarged IO Capacity (current)"
+      },
+      {
+         "attribute_name" : "hb_effective_secure_version",
+         "lower_bound" : 0,
+         "upper_bound" : 255,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "readOnly":true,
+         "helpText" : "Specifies the effective secure version of the host FW. In secure mode, the secure version value of a driver must be greater than or equal to this effective secure version to allow the system to boot.",
+         "displayName" : "Effective Secure Version"
       }
    ]
 }
