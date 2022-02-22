@@ -2,6 +2,7 @@
 #include "mocked_utils.hpp"
 
 #include <libpldm/platform.h>
+#include <linux/mctp.h>
 
 #include <gtest/gtest.h>
 
@@ -1066,4 +1067,30 @@ TEST(Split, allTestCases)
     std::string s5 = "aa\\";
     auto results5 = split(s5, "\\");
     EXPECT_EQ(results5[0], "aa");
+}
+
+TEST(ValidEID, allTestCases)
+{
+    auto rc = isValidEID(MCTP_ADDR_NULL);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(MCTP_ADDR_ANY);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(1);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(2);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(3);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(4);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(5);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(6);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(7);
+    EXPECT_EQ(rc, false);
+    rc = isValidEID(MCTP_START_VALID_EID);
+    EXPECT_EQ(rc, true);
+    rc = isValidEID(254);
+    EXPECT_EQ(rc, true);
 }

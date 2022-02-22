@@ -2,6 +2,7 @@
 
 #include <libpldm/pdr.h>
 #include <libpldm/pldm_types.h>
+#include <linux/mctp.h>
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
@@ -158,6 +159,17 @@ uint8_t readHostEID()
     }
 
     return eid;
+}
+
+bool isValidEID(eid mctpEid)
+{
+    if (mctpEid == MCTP_ADDR_NULL || mctpEid < MCTP_START_VALID_EID ||
+        mctpEid == MCTP_ADDR_ANY)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 uint8_t getNumPadBytes(uint32_t data)

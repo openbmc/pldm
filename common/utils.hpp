@@ -375,6 +375,17 @@ inline std::string findParent(const std::string& dbusObj)
  */
 uint8_t readHostEID();
 
+/** @brief Validate the MCTP EID of MCTP endpoint
+ *         In `Table 2 - Special endpoint IDs` of DSP0236. EID 0 is NULL_EID.
+ *         EID from 1 to 7 is reserved EID. EID 0xFF is broadcast EID.
+ *         Those are invalid EID of one MCTP Endpoint.
+ *
+ * @param[in] eid - MCTP EID
+ *
+ * @return true if the MCTP EID is valid otherwise return false.
+ */
+bool isValidEID(eid mctpEid);
+
 /** @brief Convert a value in the JSON to a D-Bus property value
  *
  *  @param[in] type - type of the D-Bus property
