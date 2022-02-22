@@ -34,6 +34,24 @@
       "parentUuid": "82cffedb_ba0e5c85",
       "revId": "6bb4495538ad37ebf839de4fc8d4ccb0d64f5720",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aed0fc1d_1aa411d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-02-22T01:03:05Z",
+      "side": 1,
+      "message": "Got it. Can we remove the terminus in the static EID table when the devices are off or unplug?",
+      "parentUuid": "b0a6d690_fbe51e65",
+      "revId": "6bb4495538ad37ebf839de4fc8d4ccb0d64f5720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
