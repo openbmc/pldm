@@ -182,6 +182,10 @@ executable(
   'fw-update/device_updater.cpp',
   'fw-update/watch.cpp',
   'fw-update/update_manager.cpp',
+  'platform-mc/terminus_manager.cpp',
+  'platform-mc/terminus.cpp',
+  'platform-mc/platform_manager.cpp',
+  'platform-mc/manager.cpp',
   'requester/mctp_endpoint_discovery.cpp',
   implicit_include_directories: false,
   dependencies: deps,
@@ -220,5 +224,6 @@ if get_option('tests').allowed()
   subdir('fw-update/test')
   subdir('host-bmc/test')
   subdir('requester/test')
+  subdir('platform-mc/test')
   subdir('test')
 endif
