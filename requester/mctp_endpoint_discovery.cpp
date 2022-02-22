@@ -62,16 +62,20 @@ MctpDiscovery::MctpDiscovery(
         {
             if (intfName == mctpEndpointIntfName)
             {
-                if (properties.contains("EID") &&
+                if (properties.contains("NetworkId") &&
+                    properties.contains("EID") &&
                     properties.contains("SupportedMessageTypes"))
                 {
+                    auto networkId =
+                        std::get<size_t>(properties.at("NetworkId"));
                     auto eid = std::get<size_t>(properties.at("EID"));
                     auto types = std::get<std::vector<uint8_t>>(
                         properties.at("SupportedMessageTypes"));
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                         types.end())
                     {
-                        mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
+                        mctpInfos.emplace_back(
+                            MctpInfo(networkId, eid, emptyUUID));
                     }
                 }
             }
@@ -103,16 +107,18 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
     {
         if (intfName == mctpEndpointIntfName)
         {
-            if (properties.contains("EID") &&
+            if (properties.contains("NetworkId") &&
+                properties.contains("EID") &&
                 properties.contains("SupportedMessageTypes"))
             {
+                auto networkId = std::get<size_t>(properties.at("NetworkId"));
                 auto eid = std::get<size_t>(properties.at("EID"));
                 auto types = std::get<std::vector<uint8_t>>(
                     properties.at("SupportedMessageTypes"));
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                     types.end())
                 {
-                    mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
+                    mctpInfos.emplace_back(MctpInfo(networkId, eid, emptyUUID));
                 }
             }
         }
@@ -142,16 +148,16 @@ void MctpDiscovery::loadStaticEndpoints(MctpInfos& mctpInfos)
     for (const auto& endpoint : endpoints)
     {
         const std::vector<uint8_t> emptyUnit8Array;
+        auto networkId = endpoint.value("NetworkId", 0xFF);
         auto eid = endpoint.value("EID", 0xFF);
         auto types = endpoint.value("SupportedMessageTypes", emptyUnit8Array);
         if (std::find(types.begin(), types.end(), mctpTypePLDM) != types.end())
         {
-            if (std::find_if(mctpInfos.begin(), mctpInfos.end(),
-                             [&eid](MctpInfo mctpInfo) {
-                                 return eid == mctpInfo.first;
-                             }) == mctpInfos.end())
+            MctpInfo mctpInfo(networkId, eid, emptyUUID);
+            if (std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo) ==
+                mctpInfos.end())
             {
-                mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
+                mctpInfos.emplace_back(mctpInfo);
             }
             else
             {

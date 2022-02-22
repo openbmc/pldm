@@ -19,9 +19,11 @@ using eid = uint8_t;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
+using networkId = uint8_t;
 using UUID = std::string;
-using MctpInfo = std::pair<eid, UUID>;
+using MctpInfo = std::tuple<networkId, eid, UUID>;
 using MctpInfos = std::vector<MctpInfo>;
+using tid_t = uint8_t;
 
 namespace dbus
 {
