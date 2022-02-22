@@ -1,0 +1,9 @@
+{
+    "endpoints":[
+        {
+            "network_id" : 66,
+            "EID": 18,
+            "SupportedMessageTypes": [0, 1]
+        }
+    ]
+}
