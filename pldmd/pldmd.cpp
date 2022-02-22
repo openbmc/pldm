@@ -6,6 +6,7 @@
 #include "dbus_impl_requester.hpp"
 #include "fw-update/manager.hpp"
 #include "invoker.hpp"
+#include "platform-mc/manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
@@ -292,10 +293,12 @@ int main(int argc, char** argv)
 
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
+    std::unique_ptr<platform_mc::Manager> platformManager =
+        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
-            bus,
-            std::initializer_list<MctpDiscoveryHandlerIntf*>{fwManager.get()});
+            bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
+                     fwManager.get(), platformManager.get()});
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
