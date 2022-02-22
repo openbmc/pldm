@@ -26,6 +26,8 @@ using NetworkId = uint32_t;
 using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
 using MctpInfos = std::vector<MctpInfo>;
 
+#define PLDM_TID_SPECIAL 0x00
+
 namespace dbus
 {
 
