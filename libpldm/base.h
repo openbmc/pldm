@@ -25,6 +25,7 @@ enum pldm_supported_types {
 /** @brief PLDM Commands
  */
 enum pldm_supported_commands {
+	PLDM_SET_TID = 0x01,
 	PLDM_GET_TID = 0x2,
 	PLDM_GET_PLDM_VERSION = 0x3,
 	PLDM_GET_PLDM_TYPES = 0x4,

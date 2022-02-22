@@ -282,6 +282,113 @@ enum pldm_event_message_global_enable {
 	PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE
 };
 
+
+/** @brief PLDM DSP0248 1.2.1 table 74 sensorUnits enumeration
+ */
+enum pldm_sensor_units {
+	PLDM_SENSOR_UNIT_NONE = 0x00,
+	PLDM_SENSOR_UNIT_UNSPECIFIED,
+	PLDM_SENSOR_UNIT_DEGRESS_C,
+	PLDM_SENSOR_UNIT_DEGRESS_F,
+	PLDM_SENSOR_UNIT_KELVINS,
+	PLDM_SENSOR_UNIT_VOLTS,
+	PLDM_SENSOR_UNIT_AMPS,
+	PLDM_SENSOR_UNIT_WATTS,
+	PLDM_SENSOR_UNIT_JOULES,
+	PLDM_SENSOR_UNIT_COULOMBS,
+	PLDM_SENSOR_UNIT_VA,
+	PLDM_SENSOR_UNIT_NITS,
+	PLDM_SENSOR_UNIT_LUMENS,
+	PLDM_SENSOR_UNIT_LUX,
+	PLDM_SENSOR_UNIT_CANDELAS,
+	PLDM_SENSOR_UNIT_KPA,
+	PLDM_SENSOR_UNIT_PSI,
+	PLDM_SENSOR_UNIT_NEWTONS,
+	PLDM_SENSOR_UNIT_CFM,
+	PLDM_SENSOR_UNIT_RPM,
+	PLDM_SENSOR_UNIT_HERTZ,
+	PLDM_SENSOR_UNIT_SECONDS,
+	PLDM_SENSOR_UNIT_MINUTES,
+	PLDM_SENSOR_UNIT_HOURS,
+	PLDM_SENSOR_UNIT_DAYS,
+	PLDM_SENSOR_UNIT_WEEKS,
+	PLDM_SENSOR_UNIT_MILS,
+	PLDM_SENSOR_UNIT_INCHES,
+	PLDM_SENSOR_UNIT_FEET,
+	PLDM_SENSOR_UNIT_CUBIC_INCHES,
+	PLDM_SENSOR_UNIT_CUBIC_FEET,
+	PLDM_SENSOR_UNIT_METERS,
+	PLDM_SENSOR_UNIT_CUBIC_CENTERMETERS,
+	PLDM_SENSOR_UNIT_CUBIC_METERS,
+	PLDM_SENSOR_UNIT_LITERS,
+	PLDM_SENSOR_UNIT_FLUID_OUNCES,
+	PLDM_SENSOR_UNIT_RADIANS,
+	PLDM_SENSOR_UNIT_STERADIANS,
+	PLDM_SENSOR_UNIT_REVOLUTIONS,
+	PLDM_SENSOR_UNIT_CYCLES,
+	PLDM_SENSOR_UNIT_GRAVITIES,
+	PLDM_SENSOR_UNIT_OUNCES,
+	PLDM_SENSOR_UNIT_POUNDS,
+	PLDM_SENSOR_UNIT_FOOT_POUNDS,
+	PLDM_SENSOR_UNIT_OUNCE_INCHES,
+	PLDM_SENSOR_UNIT_GUESS,
+	PLDM_SENSOR_UNIT_GILBERTS,
+	PLDM_SENSOR_UNIT_HENRIES,
+	PLDM_SENSOR_UNIT_FARADS,
+	PLDM_SENSOR_UNIT_OHMS,
+	PLDM_SENSOR_UNIT_SIEMENS,
+	PLDM_SENSOR_UNIT_MOLES,
+	PLDM_SENSOR_UNIT_BECQUERELS,
+	PLDM_SENSOR_UNIT_PPM,
+	PLDM_SENSOR_UNIT_DECIBELS,
+	PLDM_SENSOR_UNIT_DBA,
+	PLDM_SENSOR_UNIT_DBC,
+	PLDM_SENSOR_UNIT_GRAYS,
+	PLDM_SENSOR_UNIT_SIEVERTS,
+	PLDM_SENSOR_UNIT_COLOR_TEMPERATURE_DEGRESS_K,
+	PLDM_SENSOR_UNIT_BITS,
+	PLDM_SENSOR_UNIT_BYTES,
+	PLDM_SENSOR_UNIT_WORDS,
+	PLDM_SENSOR_UNIT_DOUBLE_WORDS,
+	PLDM_SENSOR_UNIT_QUAD_WORDS,
+	PLDM_SENSOR_UNIT_PERCENTAGE,
+	PLDM_SENSOR_UNIT_PASCALS,
+	PLDM_SENSOR_UNIT_COUNTS,
+	PLDM_SENSOR_UNIT_GRAMS,
+	PLDM_SENSOR_UNIT_NEWTON_METERS,
+	PLDM_SENSOR_UNIT_HITS,
+	PLDM_SENSOR_UNIT_MISSES,
+	PLDM_SENSOR_UNIT_RETRIES,
+	PLDM_SENSOR_UNIT_OVERRUNS_OVERFLOWS,
+	PLDM_SENSOR_UNIT_UNDERRUNS,
+	PLDM_SENSOR_UNIT_COLLISIONS,
+	PLDM_SENSOR_UNIT_PACKETS,
+	PLDM_SENSOR_UNIT_MESSAGES,
+	PLDM_SENSOR_UNIT_CHARATERS,
+	PLDM_SENSOR_UNIT_ERRORS,
+	PLDM_SENSOR_UNIT_CORRECTED_ERRORS,
+	PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS,
+	PLDM_SENSOR_UNIT_SQUARE_MILS,
+	PLDM_SENSOR_UNIT_SQUARE_INCHES,
+	PLDM_SENSOR_UNIT_SQUARE_FEET,
+	PLDM_SENSOR_UNIT_SQUARE_CENTIMETERS,
+	PLDM_SENSOR_UNIT_SQUARE_METERS,
+	PLDM_SENSOR_UNIT_OEMUNIT = 255
+};
+
+enum pldm_rate_unit {
+	PLDM_RATE_UNIT_NONE = 0x0,
+	PLDM_RATE_UNIT_PER_MICRO_SECOND,
+	PLDM_RATE_UNIT_PER_MILLI_SECOND,
+	PLDM_RATE_UNIT_PER_SECOND,
+	PLDM_RATE_UNIT_PER_MINUTE,
+	PLDM_RATE_UNIT_PER_HOUR,
+	PLDM_RATE_UNIT_PER_DAY,
+	PLDM_RATE_UNIT_PER_WEEK,
+	PLDM_RATE_UNIT_PER_MONTH,
+	PLDM_RATE_UNIT_PER_YEAR
+};
+
 /** @brief PLDM respository state */
 enum pldm_repository_state {
 	PLDM_AVAILABLE,
@@ -353,6 +460,39 @@ struct pldm_pdr_fru_record_set {
 	uint16_t entity_type;
 	uint16_t entity_instance_num;
 	uint16_t container_id;
+} __attribute__((packed));
+
+/** @struct pldm_numeric_sensor_pdr
+ *
+ *  Structure representing PLDM numeric sensor PDR
+ */
+struct pldm_numeric_sensor_pdr
+{
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t sensor_id;
+	uint16_t entity_type;
+	uint16_t entity_instance;
+	uint16_t container_id;
+	uint8_t sensor_init;
+	bool8_t sensor_auxiliary_names_pdr;
+	uint8_t base_unit;
+	int8_t uint_modifier;
+	uint8_t rate_unit;
+	uint8_t base_oem_unit_handle;
+	uint8_t aux_unit;
+	uint8_t aux_unit_modifier;
+	uint8_t aux_rate_unit;
+	uint8_t rel;
+	uint8_t aux_oem_uint_handle;
+	bool8_t is_linear;
+	uint8_t sensor_data_size;
+	real32_t resolution;
+	real32_t offset;
+	uint16_t accuracy;
+	uint8_t plus_tolerance;
+	uint8_t minus_tolerance;
+	uint8_t variable_fields[57];
 } __attribute__((packed));
 
 /** @struct pldm_state_sensor_pdr
@@ -494,6 +634,71 @@ struct pldm_numeric_effecter_value_pdr {
 	union_range_field_format normal_min;
 	union_range_field_format rated_max;
 	union_range_field_format rated_min;
+} __attribute__((packed));
+
+/** @union union_sensor_data_size
+ *
+ *  The bit width and format of reading and threshold values that the sensor
+ *  returns.
+ *  Refer to: DSP0248_1.2.0: 28.4 Table 78
+ */
+typedef union {
+	uint8_t value_u8;
+	int8_t value_s8;
+	uint16_t value_u16;
+	int16_t value_s16;
+	uint32_t value_u32;
+	int32_t value_s32;
+} union_sensor_data_size;
+
+/** @struct pldm_numeric_sensor_value_pdr
+ *
+ *  Structure representing PLDM Numeric Sensor PDR
+ *  Refer to: DSP0248_1.2.0: 28.4 Table 78
+ */
+struct pldm_numeric_sensor_value_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t sensor_id;
+	uint16_t entity_type;
+	uint16_t entity_instance_num;
+	uint16_t container_id;
+	uint8_t sensor_init;
+	bool8_t sensor_auxiliary_names_pdr;
+	uint8_t base_unit;
+	int8_t unit_modifier;
+	uint8_t rate_unit;
+	uint8_t base_oem_unit_handle;
+	uint8_t aux_unit;
+	int8_t aux_unit_modifier;
+	uint8_t auxrate_unit;
+	uint8_t rel;
+	uint8_t aux_oem_unit_handle;
+	bool8_t is_linear;
+	uint8_t sensor_data_size;
+	real32_t resolution;
+	real32_t offset;
+	uint16_t accuracy;
+	uint8_t plus_tolerance;
+	uint8_t minus_tolerance;
+	union_sensor_data_size hysteresis;
+	bitfield8_t supported_thresholds;
+	bitfield8_t threshold_and_hysteresis_volatility;
+	real32_t state_transition_interval;
+	real32_t update_interval;
+	union_sensor_data_size max_readable;
+	union_sensor_data_size min_readable;
+	uint8_t range_field_format;
+	bitfield8_t range_field_support;
+	union_range_field_format nominal_value;
+	union_range_field_format normal_max;
+	union_range_field_format normal_min;
+	union_range_field_format warning_high;
+	union_range_field_format warning_low;
+	union_range_field_format critical_high;
+	union_range_field_format critical_low;
+	union_range_field_format fatal_high;
+	union_range_field_format fatal_low;
 } __attribute__((packed));
 
 /** @struct state_effecter_possible_states
