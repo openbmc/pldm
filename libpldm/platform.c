@@ -360,6 +360,44 @@ int encode_get_pdr_repository_info_resp(
 	return PLDM_SUCCESS;
 }
 
+int decode_get_pdr_repository_info_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint8_t *repository_state, uint8_t *update_time, uint8_t *oem_update_time,
+    uint32_t *record_count, uint32_t *repository_size,
+    uint32_t *largest_record_size, uint8_t *data_transfer_handle_timeout)
+{
+	if (msg == NULL || completion_code == NULL ||
+	    repository_state == NULL || update_time == NULL ||
+	    oem_update_time == NULL || record_count == NULL ||
+	    repository_size == NULL || largest_record_size == NULL ||
+	    data_transfer_handle_timeout == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	*completion_code = msg->payload[0];
+	if (PLDM_SUCCESS != *completion_code) {
+		return PLDM_SUCCESS;
+	}
+
+	if (payload_length < PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_pdr_repository_info_resp *response =
+	    (struct pldm_pdr_repository_info_resp *)msg->payload;
+
+	*repository_state = response->repository_state;
+	memcpy(update_time, response->update_time, PLDM_TIMESTAMP104_SIZE);
+	memcpy(oem_update_time, response->oem_update_time,
+	       PLDM_TIMESTAMP104_SIZE);
+	*record_count = le32toh(response->record_count);
+	*repository_size = le32toh(response->repository_size);
+	*largest_record_size = le32toh(response->largest_record_size);
+	*data_transfer_handle_timeout = response->data_transfer_handle_timeout;
+
+	return PLDM_SUCCESS;
+}
+
 int encode_get_pdr_req(uint8_t instance_id, uint32_t record_hndl,
 		       uint32_t data_transfer_hndl, uint8_t transfer_op_flag,
 		       uint16_t request_cnt, uint16_t record_chg_num,
