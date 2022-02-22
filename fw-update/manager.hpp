@@ -27,7 +27,7 @@ using namespace pldm::dbus_api;
  * This class handles all the aspects of the PLDM FW update specification for
  * the MCTP devices
  */
-class Manager : public pldm::IMctpDiscoveryHandlerIntf
+class Manager : public pldm::MctpDiscoveryHandlerIntf
 {
 
   public:

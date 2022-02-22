@@ -16,16 +16,16 @@ using UUID = std::string;
 using MctpInfo = std::pair<EID, UUID>;
 using MctpInfos = std::vector<MctpInfo>;
 
-/** @class IMctpDiscoveryHandlerIntf
+/** @class MctpDiscoveryHandlerIntf
  *
  * This abstract class defines the APIs for MctpDiscovery class has common
  * interface to execute function from different Manager Classes
  */
-class IMctpDiscoveryHandlerIntf
+class MctpDiscoveryHandlerIntf
 {
   public:
     virtual void handleMCTPEndpoints(const MctpInfos& mctpInfos) = 0;
-    virtual ~IMctpDiscoveryHandlerIntf()
+    virtual ~MctpDiscoveryHandlerIntf()
     {}
 };
 
@@ -43,26 +43,31 @@ class MctpDiscovery
      *         MCTP enabled devices
      *
      *  @param[in] bus - reference to systemd bus
-     *  @param[in] list - initializer list to the IMctpDiscoveryHandlerIntf
+     *  @param[in] list - initializer list to the MctpDiscoveryHandlerIntf
      */
     explicit MctpDiscovery(
         sdbusplus::bus::bus& bus,
-        std::initializer_list<IMctpDiscoveryHandlerIntf*> list);
-
-    void loadStaticEndpoints(const std::filesystem::path& jsonPath);
+        std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+        const std::filesystem::path& staticEidTablePath =
+            STATIC_EID_TABLE_PATH);
 
   private:
     /** @brief reference to the systemd bus */
     sdbusplus::bus::bus& bus;
 
     /** @brief Used to watch for new MCTP endpoints */
-    sdbusplus::bus::match_t mctpEndpointSignal;
+    sdbusplus::bus::match_t mctpEndpointAddedSignal;
 
-    std::vector<IMctpDiscoveryHandlerIntf*> handlers;
+    /** @brief Used to watch for the removed MCTP endpoints */
+    sdbusplus::bus::match_t mctpEndpointRemovedSignal;
+
+    std::vector<MctpDiscoveryHandlerIntf*> handlers;
+
+    std::filesystem::path staticEidTablePath;
 
     void dicoverEndpoints(sdbusplus::message::message& msg);
-
     void handleMCTPEndpoints(const MctpInfos& mctpInfos);
+    void loadStaticEndpoints(MctpInfos& mctpInfos);
 
     static constexpr uint8_t mctpTypePLDM = 1;
 

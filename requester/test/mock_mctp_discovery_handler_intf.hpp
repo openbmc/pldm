@@ -8,7 +8,7 @@
 namespace pldm
 {
 
-class MockManager : public pldm::IMctpDiscoveryHandlerIntf
+class MockManager : public pldm::MctpDiscoveryHandlerIntf
 {
   public:
     MOCK_METHOD(void, handleMCTPEndpoints, (const MctpInfos& mctpInfos),
