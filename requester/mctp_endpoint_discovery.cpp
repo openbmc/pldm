@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "mctp_endpoint_discovery.hpp"
 
 #include "libpldm/requester/pldm.h"
@@ -17,19 +19,27 @@
 
 namespace pldm
 {
-const std::string EMPTY_UUID = "00000000-0000-0000-0000-000000000000";
+const std::string emptyUUID = "00000000-0000-0000-0000-000000000000";
 
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus::bus& bus,
-    std::initializer_list<IMctpDiscoveryHandlerIntf*> list) :
+    std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+    const std::filesystem::path& staticEidTablePath) :
     bus(bus),
-    mctpEndpointSignal(bus,
-                       sdbusplus::bus::match::rules::interfacesAdded(
-                           "/xyz/openbmc_project/mctp"),
-                       std::bind_front(&MctpDiscovery::dicoverEndpoints, this)),
-    handlers(list)
+    mctpEndpointAddedSignal(
+        bus,
+        sdbusplus::bus::match::rules::interfacesAdded(
+            "/xyz/openbmc_project/mctp"),
+        std::bind_front(&MctpDiscovery::dicoverEndpoints, this)),
+    mctpEndpointRemovedSignal(
+        bus,
+        sdbusplus::bus::match::rules::interfacesRemoved(
+            "/xyz/openbmc_project/mctp"),
+        std::bind_front(&MctpDiscovery::dicoverEndpoints, this)),
+    handlers(list), staticEidTablePath(staticEidTablePath)
 {
     dbus::ObjectValueTree objects;
+    MctpInfos mctpInfos;
 
     try
     {
@@ -41,10 +51,10 @@ MctpDiscovery::MctpDiscovery(
     }
     catch (const std::exception& e)
     {
+        loadStaticEndpoints(mctpInfos);
+        handleMCTPEndpoints(mctpInfos);
         return;
     }
-
-    MctpInfos mctpInfos;
 
     for (const auto& [objectPath, interfaces] : objects)
     {
@@ -61,13 +71,14 @@ MctpDiscovery::MctpDiscovery(
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                         types.end())
                     {
-                        mctpInfos.emplace_back(MctpInfo(eid, EMPTY_UUID));
+                        mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
                     }
                 }
             }
         }
     }
 
+    loadStaticEndpoints(mctpInfos);
     handleMCTPEndpoints(mctpInfos);
 }
 
@@ -94,36 +105,35 @@ void MctpDiscovery::dicoverEndpoints(sdbusplus::message::message& msg)
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                     types.end())
                 {
-                    mctpInfos.emplace_back(MctpInfo(eid, EMPTY_UUID));
+                    mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
                 }
             }
         }
     }
-
+    loadStaticEndpoints(mctpInfos);
     handleMCTPEndpoints(mctpInfos);
 }
 
-void MctpDiscovery::loadStaticEndpoints(const std::filesystem::path& jsonPath)
+void MctpDiscovery::loadStaticEndpoints(MctpInfos& mctpInfos)
 {
-    if (!std::filesystem::exists(jsonPath))
+    if (!std::filesystem::exists(staticEidTablePath))
     {
-        std::cerr << "Static EIDs json file does not exist, PATH=" << jsonPath
+        std::cerr << "Static EIDs json file does not exist, PATH="
+                  << staticEidTablePath << "\n";
+        return;
+    }
+
+    std::ifstream jsonFile(staticEidTablePath);
+    auto data = nlohmann::json::parse(jsonFile, nullptr, false);
+    if (data.is_discarded())
+    {
+        std::cerr << "Parsing json file failed, FILE=" << staticEidTablePath
                   << "\n";
         return;
     }
 
-    std::ifstream jsonFile(jsonPath);
-    auto data = nlohmann::json::parse(jsonFile, nullptr, false);
-    if (data.is_discarded())
-    {
-        std::cerr << "Parsing json file failed, FILE=" << jsonPath << "\n";
-        return;
-    }
-
-    MctpInfos mctpInfos;
-    const nlohmann::json emptyJson{};
     const std::vector<nlohmann::json> emptyJsonArray{};
-    auto endpoints = data.value("endpoints", emptyJsonArray);
+    auto endpoints = data.value("Endpoints", emptyJsonArray);
     for (const auto& endpoint : endpoints)
     {
         const std::vector<uint8_t> emptyUnit8Array;
@@ -131,18 +141,16 @@ void MctpDiscovery::loadStaticEndpoints(const std::filesystem::path& jsonPath)
         auto types = endpoint.value("SupportedMessageTypes", emptyUnit8Array);
         if (std::find(types.begin(), types.end(), mctpTypePLDM) != types.end())
         {
-            mctpInfos.emplace_back(MctpInfo(eid, EMPTY_UUID));
+            mctpInfos.emplace_back(MctpInfo(eid, emptyUUID));
         }
     }
-
-    handleMCTPEndpoints(mctpInfos);
 }
 
 void MctpDiscovery::handleMCTPEndpoints(const MctpInfos& mctpInfos)
 {
     if (mctpInfos.size() && handlers.size())
     {
-        for (IMctpDiscoveryHandlerIntf* handler : handlers)
+        for (const auto& handler : handlers)
         {
             if (handler)
             {
