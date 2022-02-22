@@ -349,6 +349,7 @@ int encode_get_tid_req(uint8_t instance_id, struct pldm_msg *msg)
 
 	return pack_pldm_header(&header, &(msg->hdr));
 }
+
 int encode_get_tid_resp(uint8_t instance_id, uint8_t completion_code,
 			uint8_t tid, struct pldm_msg *msg)
 {
@@ -394,6 +395,29 @@ int decode_get_tid_resp(const struct pldm_msg *msg, size_t payload_length,
 	    (struct pldm_get_tid_resp *)msg->payload;
 
 	*tid = response->tid;
+
+	return PLDM_SUCCESS;
+}
+
+int encode_set_tid_req(uint8_t instance_id, struct pldm_msg *msg, uint8_t tid)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.command = PLDM_SET_TID;
+
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_set_tid_req *request =
+	    (struct pldm_set_tid_req *)msg->payload;
+	request->tid = tid;
 
 	return PLDM_SUCCESS;
 }
