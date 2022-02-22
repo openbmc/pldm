@@ -2,6 +2,8 @@
 
 #include "libpldm/requester/pldm.h"
 
+#include "common/types.hpp"
+
 #include <sdbusplus/bus/match.hpp>
 
 #include <filesystem>
@@ -10,11 +12,6 @@
 
 namespace pldm
 {
-
-using EID = uint8_t;
-using UUID = std::string;
-using MctpInfo = std::pair<EID, UUID>;
-using MctpInfos = std::vector<MctpInfo>;
 
 /** @class MctpDiscoveryHandlerIntf
  *
