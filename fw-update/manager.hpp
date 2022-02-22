@@ -61,7 +61,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         std::vector<mctp_eid_t> eids;
         for (auto& mctpInfo : mctpInfos)
         {
-            eids.emplace_back(mctpInfo.first);
+            eids.emplace_back(std::get<1>(mctpInfo));
         }
 
         inventoryMgr.discoverFDs(eids);
