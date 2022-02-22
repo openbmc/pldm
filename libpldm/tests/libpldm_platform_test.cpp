@@ -434,6 +434,136 @@ TEST(GetPDRRepositoryInfo, testBadEncodeResponse)
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
 
+TEST(GetPDRRepositoryInfo, testGoodDecodeResponse)
+{
+    std::vector<uint8_t> responseMsg(hdrSize +
+                                     PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES);
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    struct pldm_pdr_repository_info_resp* resp =
+        reinterpret_cast<struct pldm_pdr_repository_info_resp*>(
+            response->payload);
+
+    resp->completion_code = PLDM_SUCCESS;
+    resp->repository_state = PLDM_AVAILABLE;
+    resp->record_count = 100;
+    resp->repository_size = 100;
+    resp->largest_record_size = 256;
+    resp->data_transfer_handle_timeout = PLDM_NO_TIMEOUT;
+
+    uint8_t completionCode = 0;
+    uint8_t repositoryState = PLDM_AVAILABLE;
+    uint8_t updateTime[PLDM_TIMESTAMP104_SIZE] = {0};
+    uint8_t oemUpdateTime[PLDM_TIMESTAMP104_SIZE] = {0};
+    uint32_t recordCount = 0;
+    uint32_t repositorySize = 0;
+    uint32_t largestRecordSize = 0;
+    uint8_t dataTransferHandleTimeout = 0;
+
+    auto rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, oemUpdateTime, &recordCount,
+        &repositorySize, &largestRecordSize, &dataTransferHandleTimeout);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, resp->completion_code);
+    EXPECT_EQ(repositoryState, resp->repository_state);
+    EXPECT_EQ(0, memcmp(updateTime, resp->update_time, PLDM_TIMESTAMP104_SIZE));
+    EXPECT_EQ(0, memcmp(oemUpdateTime, resp->oem_update_time,
+                        PLDM_TIMESTAMP104_SIZE));
+    EXPECT_EQ(recordCount, le32toh(resp->record_count));
+    EXPECT_EQ(repositorySize, le32toh(resp->repository_size));
+    EXPECT_EQ(largestRecordSize, le32toh(resp->largest_record_size));
+    EXPECT_EQ(dataTransferHandleTimeout, resp->data_transfer_handle_timeout);
+}
+
+TEST(GetPDRRepositoryInfo, testBadDecodeResponse)
+{
+    std::vector<uint8_t> responseMsg(hdrSize +
+                                     PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES);
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+
+    uint8_t completionCode = 0;
+    uint8_t repositoryState = 0;
+    uint8_t updateTime[PLDM_TIMESTAMP104_SIZE] = {0};
+    uint8_t oemUpdateTime[PLDM_TIMESTAMP104_SIZE] = {0};
+    uint32_t recordCount = 0;
+    uint32_t repositorySize = 0;
+    uint32_t largestRecordSize = 0;
+    uint8_t dataTransferHandleTimeout = 0;
+
+    auto rc = decode_get_pdr_repository_info_resp(
+        nullptr, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, oemUpdateTime, &recordCount,
+        &repositorySize, &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        nullptr, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, oemUpdateTime, &recordCount,
+        &repositorySize, &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, nullptr, &repositoryState,
+        updateTime, oemUpdateTime, &recordCount, &repositorySize,
+        &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, nullptr,
+        updateTime, oemUpdateTime, &recordCount, &repositorySize,
+        &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode, nullptr,
+        updateTime, oemUpdateTime, &recordCount, &repositorySize,
+        &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, nullptr, oemUpdateTime, &recordCount, &repositorySize,
+        &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, nullptr, &recordCount, &repositorySize,
+        &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, oemUpdateTime, nullptr, &repositorySize,
+        &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, oemUpdateTime, &recordCount, nullptr,
+        &largestRecordSize, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, oemUpdateTime, &recordCount,
+        &repositorySize, nullptr, &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, responseMsg.size() - hdrSize, &completionCode,
+        &repositoryState, updateTime, oemUpdateTime, &recordCount,
+        &repositorySize, &largestRecordSize, nullptr);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    rc = decode_get_pdr_repository_info_resp(
+        response, 0, &completionCode, &repositoryState, updateTime,
+        oemUpdateTime, &recordCount, &repositorySize, &largestRecordSize,
+        &dataTransferHandleTimeout);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
 TEST(SetNumericEffecterValue, testGoodDecodeRequest)
 {
     std::array<uint8_t,

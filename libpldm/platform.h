@@ -55,6 +55,7 @@ extern "C" {
 
 #define PLDM_INVALID_EFFECTER_ID 0xFFFF
 #define PLDM_TID_RESERVED 0xFF
+#define PLDM_EID_NULL 0x0
 
 enum pldm_effecter_data_size {
 	PLDM_EFFECTER_DATA_SIZE_UINT8,
@@ -1051,19 +1052,43 @@ int encode_get_pdr_repository_info_resp(
     uint32_t largest_record_size, uint8_t data_transfer_handle_timeout,
     struct pldm_msg *msg);
 
+/** @brief Decode GetPDRRepositoryInfo response data
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] repository_state - PLDM repository state
+ *  @param[out] update_time - When the standard PDR repository data was
+ *                           originally created
+ *  @param[out] oem_update_time - when OEM PDRs in the PDR Repository were
+ *                               originally created
+ *  @param[out] record_count - Total number of PDRs in this repository
+ *  @param[out] repository_size - Size of the PDR Repository in bytes
+ *  @param[out] largest_record_size - Size of the largest record in the PDR
+ * Repository in bytes
+ *  @param[out] data_transfer_handle_timeout - Data transmission timeout
+ *  @return pldm_completion_codes
+ */
+int decode_get_pdr_repository_info_resp(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *completion_code,
+    uint8_t *repository_state, uint8_t *update_time, uint8_t *oem_update_time,
+    uint32_t *record_count, uint32_t *repository_size,
+    uint32_t *largest_record_size, uint8_t *data_transfer_handle_timeout);
+
 /* GetPDR */
 
 /** @brief Create a PLDM request message for GetPDR
  *
  *  @param[in] instance_id - Message's instance id
- *  @param[in] record_hndl - The recordHandle value for the PDR to be retrieved
+ *  @param[in] record_hndl - The recordHandle value for the PDR to be
+ * retrieved
  *  @param[in] data_transfer_hndl - Handle used to identify a particular
  *         multipart PDR data transfer operation
  *  @param[in] transfer_op_flag - Flag to indicate the first or subsequent
  *         portion of transfer
  *  @param[in] request_cnt - The maximum number of record bytes requested
- *  @param[in] record_chg_num - Used to determine whether the PDR has changed
- *        while PDR transfer is going on
+ *  @param[in] record_chg_num - Used to determine whether the PDR has
+ * changed while PDR transfer is going on
  *  @param[out] msg - Message will be written to this
  *  @param[in] payload_length - Length of request message payload
  *  @return pldm_completion_codes
