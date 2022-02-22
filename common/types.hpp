@@ -22,6 +22,7 @@ using Command = uint8_t;
 using UUID = std::string;
 using MctpInfo = std::pair<eid, UUID>;
 using MctpInfos = std::vector<MctpInfo>;
+using pldm_tid_t = uint8_t;
 
 namespace dbus
 {
