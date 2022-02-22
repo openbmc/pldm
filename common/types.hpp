@@ -21,10 +21,29 @@ using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
 
+/** @brief MCTP Endpoint Medium type in string
+ *         Reseverd for future puspose
+ */
+
 using MctpMedium = std::string;
+/** @brief Type definition of MCTP Network Index.
+ *         uint32_t is used as defined in MCTP Endpoint D-Bus Interface
+ */
 using NetworkId = uint32_t;
+
+/** @brief Type definition of MCTP interface information between two endpoints.
+ *         eid : Endpoint EID in byte. Defind to match with MCTP D-Bus Interface
+ *         UUID : Endpoint UUID which is used to different the endpoints
+ *         MctpMedium: Endpoint MCTP Medium info (Resersed)
+ *         NetworkId: MCTP network index
+ */
 using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
+
+/** @brief Type defind of list of MCTP interface information
+ */
 using MctpInfos = std::vector<MctpInfo>;
+
+#define PLDM_TID_SPECIAL 0x00
 
 namespace dbus
 {
