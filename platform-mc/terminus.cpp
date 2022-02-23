@@ -1,7 +1,5 @@
 #include "terminus.hpp"
 
-#include "platform.h"
-
 #include "terminus_manager.hpp"
 
 namespace pldm
@@ -11,7 +9,12 @@ namespace platform_mc
 
 Terminus::Terminus(mctp_eid_t eid, PldmTID tid, uint64_t supportedTypes) :
     eid(eid), tid(tid), supportedTypes(supportedTypes)
-{}
+{
+    inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
+                    std::to_string(tid);
+    inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
+        utils::DBusHandler::getBus(), inventoryPath.c_str());
+}
 
 bool Terminus::doesSupport(uint8_t type)
 {
@@ -40,6 +43,12 @@ bool Terminus::parsePDRs()
             rc = false;
         }
     }
+
+    for (auto pdr : numericSensorPdrs)
+    {
+        addNumericSensor(pdr);
+    }
+
     return rc;
 }
 
@@ -378,6 +387,36 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr>
             break;
     }
     return parsedPdr;
+}
+
+void Terminus::addNumericSensor(
+    const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
+{
+    std::string sensorName = "PLDM_Device_" + std::to_string(pdr->sensor_id) +
+                             "_" + std::to_string(tid);
+
+    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(pdr->sensor_id);
+    if (sensorAuxiliaryNames)
+    {
+        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
+        if (sensorCnt == 1)
+        {
+            sensorName = sensorNames[0].second + "_" +
+                         std::to_string(tid);
+        }
+    }
+
+    try
+    {
+        auto sensor = std::make_shared<NumericSensor>(
+            eid, tid, true, pdr, sensorName, inventoryPath);
+        numericSensors.emplace_back(sensor);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to create NumericSensor. ERROR=" << e.what()
+                  << "sensorName=" << sensorName << "\n";
+    }
 }
 
 } // namespace platform_mc
