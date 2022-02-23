@@ -50,6 +50,8 @@ void TerminusManager::unmapTID(uint8_t tid)
 requester::Coroutine
     TerminusManager::discoverTerminusTask(const MctpInfos& mctpInfos)
 {
+    manager->stopSensorPolling();
+
     // remove absent terminus
     for (auto it = termini.begin(); it != termini.end();)
     {
@@ -80,6 +82,11 @@ requester::Coroutine
             continue;
         }
         co_await initTerminus(mctpInfo);
+    }
+
+    if (termini.size())
+    {
+        manager->startSensorPolling();
     }
 }
 
