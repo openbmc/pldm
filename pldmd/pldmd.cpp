@@ -196,6 +196,8 @@ int main(int argc, char** argv)
     auto& bus = pldm::utils::DBusHandler::getBus();
     sdbusplus::server::manager_t objManager(bus,
                                             "/xyz/openbmc_project/software");
+    sdbusplus::server::manager_t sensorObjManager(
+        bus, "/xyz/openbmc_project/sensors");
 
     InstanceIdDb instanceIdDb;
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm",
