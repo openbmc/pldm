@@ -3,7 +3,7 @@
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
-#include "requester/handler.hpp"
+#include "numeric_sensor.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
@@ -22,6 +22,9 @@ using SensorName = std::string;
 using SensorAuxiliaryNames =
     std::tuple<SensorId, SensorCnt,
                std::vector<std::pair<NameLanguageTag, SensorName>>>;
+using InventoryItemBoardIntf = sdbusplus::server::object::object<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
+class TerminusManager;
 
 /**
  * @brief Terminus
@@ -61,6 +64,9 @@ class Terminus
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
 
+    /** @brief A list of numericSensors */
+    std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
+
     /** @brief A list of parsed numeric sensor PDRs */
     std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
         numericSensorPdrs{};
@@ -71,6 +77,9 @@ class Terminus
      *  @return sensor auxiliary names
      */
     std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorId id);
+
+    void addNumericSensor(
+        const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr);
 
   private:
     std::shared_ptr<pldm_numeric_sensor_value_pdr>
@@ -85,6 +94,9 @@ class Terminus
 
     std::vector<std::shared_ptr<SensorAuxiliaryNames>>
         sensorAuxiliaryNamesTbl{};
+
+    std::shared_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
+    std::string inventoryPath;
 };
 } // namespace platform_mc
 } // namespace pldm
