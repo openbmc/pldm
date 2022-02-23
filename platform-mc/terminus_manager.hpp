@@ -5,7 +5,9 @@
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
 
+#include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
+#include "sensor_manager.hpp"
 #include "terminus.hpp"
 
 #include <queue>
@@ -37,10 +39,11 @@ class TerminusManager
         sdeventplus::Event& event,
         requester::Handler<requester::Request>& handler,
         dbus_api::Requester& requester,
-        std::map<mctp_eid_t, std::shared_ptr<Terminus>>& termini) :
+        std::map<mctp_eid_t, std::shared_ptr<Terminus>>& termini,
+        SensorManager& sensorManager) :
         event(event),
         handler(handler), requester(requester), termini(termini),
-        tidPool(tidPoolSize, 0)
+        tidPool(tidPoolSize, 0), sensorManager(sensorManager)
     {}
 
     /** @brief start a coroutine to discover terminus
@@ -162,6 +165,9 @@ class TerminusManager
 
     /** @brief A table for mantaining the assigned TID */
     std::vector<mctp_eid_t> tidPool;
+
+    /** @brief A reference to SensorManager **/
+    SensorManager& sensorManager;
 
     /** @brief A queue of MctpInfos to be discovered **/
     std::queue<MctpInfos> queuedMctpInfos{};
