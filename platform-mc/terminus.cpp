@@ -70,6 +70,30 @@ std::string Terminus::findTerminusName()
     return "";
 }
 
+bool Terminus::createInventoryPath(std::string tName)
+{
+    if (tName == "")
+    {
+        return false;
+    }
+
+    inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/" + tName;
+    try
+    {
+        inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
+            utils::DBusHandler::getBus(), inventoryPath.c_str());
+        return true;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Inventory Board interface for device {PATH}",
+            "PATH", inventoryPath);
+    }
+
+    return false;
+}
+
 bool Terminus::parseTerminusPDRs()
 {
     auto rc = true;
@@ -169,6 +193,30 @@ bool Terminus::parseTerminusPDRs()
     if (tName != "")
     {
         terminusName = tName;
+    }
+
+    if (terminusName == "" &&
+        (numericSensorPdrs.size() || compactNumericSensorPdrs.size()))
+    {
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
+            "TID", tid);
+        return false;
+    }
+
+    if (createInventoryPath(terminusName))
+    {
+        lg2::error("Terminus ID {TID}: Created Inventory path.", "TID", tid);
+    }
+
+    for (auto pdr : numericSensorPdrs)
+    {
+        addNumericSensor(pdr);
+    }
+
+    for (auto pdr : compactNumericSensorPdrs)
+    {
+        addCompactNumericSensor(pdr);
     }
 
     return rc;
@@ -318,9 +366,60 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr>
     auto rc = decode_numeric_sensor_pdr_data(ptr, pdr.size(), parsedPdr.get());
     if (rc)
     {
+        lg2::error("Failed to decode Numeric Sensor PDR data, error {RC} ",
+                   "RC", rc);
         return nullptr;
     }
     return parsedPdr;
+}
+
+void Terminus::addNumericSensor(
+    const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
+{
+    uint16_t sensorId = pdr->sensor_id;
+    if (terminusName == "")
+    {
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
+            "TID", tid);
+        return;
+    }
+    std::string sensorName = terminusName + "_" + "Sensor_" +
+                             std::to_string(pdr->sensor_id);
+
+    if (pdr->sensor_auxiliary_names_pdr)
+    {
+        auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
+        if (sensorAuxiliaryNames)
+        {
+            const auto& [sensorId, sensorCnt,
+                         sensorNames] = *sensorAuxiliaryNames;
+            if (sensorCnt == 1)
+            {
+                for (const auto& [languageTag, name] : sensorNames[0])
+                {
+                    if (languageTag == "en" && name != "")
+                    {
+                        sensorName = terminusName + "_" + name;
+                    }
+                }
+            }
+        }
+    }
+
+    try
+    {
+        auto sensor = std::make_shared<NumericSensor>(
+            tid, true, pdr, sensorName, inventoryPath);
+        lg2::info("Created NumericSensor {NAME}", "NAME", sensorName);
+        numericSensors.emplace_back(sensor);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create NumericSensor. error - {ERROR} sensorname - {NAME}",
+            "ERROR", e, "NAME", sensorName);
+    }
 }
 
 std::shared_ptr<SensorAuxiliaryNames>
@@ -390,6 +489,51 @@ std::shared_ptr<pldm_compact_numeric_sensor_pdr>
     parsedPdr->fatal_high = pdr->fatal_high;
     parsedPdr->fatal_low = pdr->fatal_low;
     return parsedPdr;
+}
+
+void Terminus::addCompactNumericSensor(
+    const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr)
+{
+    uint16_t sensorId = pdr->sensor_id;
+    if (terminusName == "")
+    {
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
+            "TID", tid);
+        return;
+    }
+    std::string sensorName = terminusName + "_" + "Sensor_" +
+                             std::to_string(pdr->sensor_id);
+
+    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
+    if (sensorAuxiliaryNames)
+    {
+        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
+        if (sensorCnt == 1)
+        {
+            for (const auto& [languageTag, name] : sensorNames[0])
+            {
+                if (languageTag == "en" && name != "")
+                {
+                    sensorName = terminusName + "_" + name;
+                }
+            }
+        }
+    }
+
+    try
+    {
+        auto sensor = std::make_shared<NumericSensor>(
+            tid, true, pdr, sensorName, inventoryPath);
+        lg2::info("Created Compact NumericSensor {NAME}", "NAME", sensorName);
+        numericSensors.emplace_back(sensor);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Compact NumericSensor. error - {ERROR} sensorname - {NAME}",
+            "ERROR", e, "NAME", sensorName);
+    }
 }
 
 } // namespace platform_mc
