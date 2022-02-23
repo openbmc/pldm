@@ -73,6 +73,8 @@ elif get_option('transport-implementation') == 'af-mctp'
   conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
 conf_data.set('DEFAULT_SENSOR_UPDATER_INTERVAL', get_option('default-sensor-update-interval'))
+conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
+conf_data.set_quoted('PRIORITY_SENSOR_TYPE_JSON', join_paths(package_datadir, 'priority_sensor_types.json'))
 
 configure_file(output: 'config.h',
   configuration: conf_data
@@ -175,6 +177,7 @@ executable(
   'platform-mc/terminus.cpp',
   'platform-mc/platform_manager.cpp',
   'platform-mc/manager.cpp',
+  'platform-mc/sensor_manager.cpp',
   'platform-mc/numeric_sensor.cpp',
   'requester/mctp_endpoint_discovery.cpp',
   implicit_include_directories: false,
