@@ -117,6 +117,11 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
 
 requester::Coroutine TerminusManager::discoverMctpTerminusTask()
 {
+    if (manager)
+    {
+        manager->stopSensorPolling();
+    }
+
     while (!queuedMctpInfos.empty())
     {
         if (manager)
@@ -155,6 +160,11 @@ requester::Coroutine TerminusManager::discoverMctpTerminusTask()
         }
 
         queuedMctpInfos.pop();
+    }
+
+    if (manager)
+    {
+        manager->startSensorPolling();
     }
 
     co_return PLDM_SUCCESS;
