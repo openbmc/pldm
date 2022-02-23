@@ -7,6 +7,7 @@
 #include "platform_manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
+#include "sensor_manager.hpp"
 #include "terminus_manager.hpp"
 
 namespace pldm
@@ -33,7 +34,8 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     explicit Manager(sdeventplus::Event& event, RequesterHandler& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
         terminusManager(event, handler, instanceIdDb, termini, this),
-        platformManager(terminusManager, termini)
+        platformManager(terminusManager, termini),
+        sensorManager(event, terminusManager, termini)
     {}
 
     /** @brief Helper function to do the actions before discovering terminus
@@ -68,6 +70,20 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         terminusManager.removeMctpTerminus(mctpInfos);
     }
 
+    /** @brief Helper function to start sensor polling of the terminus TID
+     */
+    void startSensorPolling(pldm_tid_t tid)
+    {
+        sensorManager.startPolling(tid);
+    }
+
+    /** @brief Helper function to stop sensor polling of the terminus TID
+     */
+    void stopSensorPolling(pldm_tid_t tid)
+    {
+        sensorManager.stopPolling(tid);
+    }
+
   private:
     /** @brief List of discovered termini */
     TerminiMapper termini{};
@@ -77,6 +93,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     /** @brief Platform interface for calling the hook functions */
     PlatformManager platformManager;
+
+    /** @brief Store platform manager handler */
+    SensorManager sensorManager;
 };
 } // namespace platform_mc
 } // namespace pldm
