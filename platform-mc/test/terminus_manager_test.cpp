@@ -39,7 +39,7 @@ class TerminusManagerTest : public testing::Test
     pldm::dbus_api::Requester dbusImplRequester;
     pldm::requester::Handler<pldm::requester::Request> reqHandler;
     pldm::platform_mc::TerminusManager terminusManager;
-    std::map<mctp_eid_t, std::shared_ptr<pldm::platform_mc::Terminus>> termini;
+    std::map<pldm::tid_t, std::shared_ptr<pldm::platform_mc::Terminus>> termini;
 };
 
 TEST_F(TerminusManagerTest, mapTidTest)
