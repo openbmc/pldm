@@ -96,6 +96,8 @@ void TerminusManager::unmapTid(const tid_t& tid)
 
 requester::Coroutine TerminusManager::discoverMctpTerminusTask()
 {
+    manager->stopSensorPolling();
+
     while (!queuedMctpInfos.empty())
     {
         co_await manager->beforeDiscoverTerminus();
@@ -143,6 +145,8 @@ requester::Coroutine TerminusManager::discoverMctpTerminusTask()
         co_await manager->afterDiscoverTerminus();
         queuedMctpInfos.pop();
     }
+
+    manager->startSensorPolling();
 }
 
 requester::Coroutine TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
