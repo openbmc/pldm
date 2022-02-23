@@ -92,7 +92,7 @@ TEST(TerminusTest, parseNumericSensorPDRTest)
         0x0,                         // containerID=1
         PLDM_NO_INIT,                // sensorInit
         false,                       // sensorAuxiliaryNamesPDR
-        2,                           // baseUint(2)=degrees C
+        PLDM_SENSOR_UNIT_DEGRESS_C,  // baseUint(2)=degrees C
         0,                           // unitModifier
         0,                           // rateUnit
         0,                           // baseOEMUnitHandle

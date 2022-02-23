@@ -62,6 +62,7 @@ if get_option('libpldm-only').disabled()
 endif
 conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
 conf_data.set_quoted('STATIC_EID_TABLE_PATH', join_paths(package_datadir, 'static_eid_table.json'))
+conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 configure_file(output: 'config.h',
   configuration: conf_data
 )
@@ -189,6 +190,8 @@ executable(
   'fw-update/update_manager.cpp',
   'platform-mc/terminus_manager.cpp',
   'platform-mc/terminus.cpp',
+  'platform-mc/sensor_manager.cpp',
+  'platform-mc/numeric_sensor.cpp',
   'requester/mctp_endpoint_discovery.cpp',
   implicit_include_directories: false,
   dependencies: deps,
