@@ -146,6 +146,7 @@ std::map<pldm_tid_t, std::shared_ptr<Terminus>>::iterator
 
 exec::task<int> TerminusManager::discoverMctpTerminusTask()
 {
+    std::vector<pldm_tid_t> addedTids;
     while (!queuedMctpInfos.empty())
     {
         if (manager)
@@ -161,11 +162,23 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             {
                 co_await initMctpTerminus(mctpInfo);
             }
+
+            /* Get TID of initialized terminus */
+            auto tid = toTid(mctpInfo);
+            if (!tid)
+            {
+                co_return PLDM_ERROR;
+            }
+            addedTids.push_back(tid.value());
         }
 
         if (manager)
         {
             co_await manager->afterDiscoverTerminus();
+            for (auto& tid : addedTids)
+            {
+                manager->startSensorPolling(tid);
+            }
         }
 
         queuedMctpInfos.pop();
@@ -183,6 +196,11 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
         if (it == termini.end())
         {
             continue;
+        }
+
+        if (manager)
+        {
+            manager->stopSensorPolling(it->second->getTid());
         }
 
         unmapTid(it->first);
@@ -274,8 +292,16 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
               static_cast<int>(tid));
         co_return PLDM_ERROR;
     }
+    try
+    {
+        termini[tid] = std::make_shared<Terminus>(tid, supportedTypes);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to create terminus manager for terminus {TID}", "TID",
+              static_cast<int>(tid));
+    }
 
-    termini[tid] = std::make_shared<Terminus>(tid, supportedTypes);
     co_return PLDM_SUCCESS;
 }
 
