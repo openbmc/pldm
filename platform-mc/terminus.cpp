@@ -1,7 +1,5 @@
 #include "terminus.hpp"
 
-#include "platform.h"
-
 #include "terminus_manager.hpp"
 
 namespace pldm
@@ -11,7 +9,12 @@ namespace platform_mc
 
 Terminus::Terminus(mctp_eid_t _eid, uint8_t _tid, uint64_t supportedTypes) :
     _eid(_eid), _tid(_tid), supportedTypes(supportedTypes)
-{}
+{
+    inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
+                    std::to_string(_tid);
+    inventoryItemBoardInft = std::make_shared<InventoryItemBoardIntf>(
+        utils::DBusHandler::getBus(), inventoryPath.c_str());
+}
 
 bool Terminus::doesSupport(uint8_t type)
 {
@@ -29,9 +32,15 @@ void Terminus::parsePDRs()
             sensorAuxiliaryNamesTbl.emplace_back(
                 std::move(sensorAuxiliaryNames));
         }
-        else if (pdrHdr->type == PLDM_NUMERIC_SENSOR_PDR)
+    }
+
+    for (auto& pdr : pdrs)
+    {
+        auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+        if (pdrHdr->type == PLDM_NUMERIC_SENSOR_PDR)
         {
             auto parsedPdr = parseNumericPDR(pdr);
+            addNumericSensor(parsedPdr);
         }
     }
 }
@@ -354,6 +363,27 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr>
             break;
     }
     return parsedPdr;
+}
+
+void Terminus::addNumericSensor(
+    const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
+{
+    std::string sensorName = "PLDM_Device_" + std::to_string(pdr->sensor_id) +
+                             "_" + std::to_string(_tid);
+
+    for (auto sensorAuxiliaryNames : sensorAuxiliaryNamesTbl)
+    {
+        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
+        if (sensorId == pdr->sensor_id && sensorCnt == 1)
+        {
+            sensorName = sensorNames[0].second + "_" + std::to_string(_tid);
+            break;
+        }
+    }
+
+    auto sensor = std::make_shared<NumericSensor>(_eid, _tid, true, pdr,
+                                                  sensorName, inventoryPath);
+    numericSensors.emplace_back(sensor);
 }
 
 } // namespace platform_mc
