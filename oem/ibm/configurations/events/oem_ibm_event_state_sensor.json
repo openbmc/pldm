@@ -43,6 +43,27 @@
                     false
                 ]
             }
+        },
+        {
+            "containerID": 1,
+            "entityType": 32801,
+            "entityInstance": 0,
+            "sensorOffset": 0,
+            "stateSetId": 32777,
+            "event_states":[
+                1,
+                2
+            ],
+            "dbus": {
+                "object_path": "/com/ibm/panel_app",
+                "interface": "com.ibm.panel",
+                "property_name":  "OSIPLMode",
+                "property_type": "bool",
+                "property_values": [
+                    true,
+                    false
+                ]
+            }
         }
-     ]
+    ]
 }
