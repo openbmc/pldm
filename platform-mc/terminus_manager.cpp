@@ -161,6 +161,7 @@ TerminiMapper::iterator
 
 exec::task<int> TerminusManager::discoverMctpTerminusTask()
 {
+    std::vector<pldm_tid_t> addedTids;
     while (!queuedMctpInfos.empty())
     {
         if (manager)
@@ -176,11 +177,23 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             {
                 co_await initMctpTerminus(mctpInfo);
             }
+
+            /* Get TID of initialized terminus */
+            auto tid = toTid(mctpInfo);
+            if (!tid)
+            {
+                co_return PLDM_ERROR;
+            }
+            addedTids.push_back(tid.value());
         }
 
         if (manager)
         {
             co_await manager->afterDiscoverTerminus();
+            for (auto& tid : addedTids)
+            {
+                manager->startSensorPolling(tid);
+            }
         }
 
         queuedMctpInfos.pop();
@@ -198,6 +211,11 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
         if (it == termini.end())
         {
             continue;
+        }
+
+        if (manager)
+        {
+            manager->stopSensorPolling(it->second->getTid());
         }
 
         unmapTid(it->first);

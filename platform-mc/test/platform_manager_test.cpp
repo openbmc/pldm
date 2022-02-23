@@ -63,7 +63,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
             0x0, 0x0,  0x0,  0x0,          0x0, 0x0, // updateTime
             0x0, 0x0,  0x0,  0x0,          0x0, 0x0, 0x0,
             0x0, 0x0,  0x0,  0x0,          0x0, 0x0, // OEMUpdateTime
-            1,   0x0,  0x0,  0x0,                    // recordCount
+            2,   0x0,  0x0,  0x0,                    // recordCount
             0x0, 0x1,  0x0,  0x0,                    // repositorySize
             59,  0x0,  0x0,  0x0,                    // largestRecordSize
             0x0 // dataTransferHandleTimeout
@@ -76,12 +76,12 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     // queue getPDR responses
     const size_t getPdrRespLen = 81;
     std::array<uint8_t, sizeof(pldm_msg_hdr) + getPdrRespLen> getPdrResp{
-        0x0, 0x02, 0x51, PLDM_SUCCESS, 0x0, 0x0, 0x0, 0x0, // nextRecordHandle
+        0x0, 0x02, 0x51, PLDM_SUCCESS, 0x1, 0x0, 0x0, 0x0, // nextRecordHandle
         0x0, 0x0, 0x0, 0x0, // nextDataTransferHandle
         0x5,                // transferFlag
         69, 0x0,            // responseCount
         // numeric Sensor PDR
-        0x1, 0x0, 0x0,
+        0x0, 0x0, 0x0,
         0x0,                     // record handle
         0x1,                     // PDRHeaderVersion
         PLDM_NUMERIC_SENSOR_PDR, // PDRType
@@ -147,9 +147,47 @@ TEST_F(PlatformManagerTest, initTerminusTest)
                                              sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    const size_t getPdrAuxNameRespLen = 39;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + getPdrAuxNameRespLen>
+        getPdrAuxNameResp{
+            0x0, 0x02, 0x51, PLDM_SUCCESS, 0x0, 0x0, 0x0,
+            0x0,                // nextRecordHandle
+            0x0, 0x0, 0x0, 0x0, // nextDataTransferHandle
+            0x5,                // transferFlag
+            0x1b, 0x0,          // responseCount
+            // Common PDR Header
+            0x1, 0x0, 0x0,
+            0x0,                             // record handle
+            0x1,                             // PDRHeaderVersion
+            PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+            0x1,
+            0x0,                             // recordChangeNumber
+            0x11,
+            0,                               // dataLength
+            /* Entity Auxiliary Names PDR Data*/
+            3,
+            0x80, // entityType system software
+            0x1,
+            0x0,  // Entity instance number =1
+            0,
+            0,    // Overal system
+            0,    // shared Name Count one name only
+            01,   // nameStringCount
+            0x65, 0x6e, 0x00,
+            0x00, // Language Tag "en"
+            0x53, 0x00, 0x30, 0x00,
+            0x00  // Entity Name "S0"
+        };
+    rc = mockTerminusManager.enqueueResponse(
+        reinterpret_cast<pldm_msg*>(getPdrAuxNameResp.data()),
+        sizeof(getPdrAuxNameResp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
-    EXPECT_EQ(1, terminus->pdrs.size());
+    EXPECT_EQ(2, terminus->pdrs.size());
+    EXPECT_EQ(1, terminus->numericSensors.size());
+    EXPECT_EQ("S0", terminus->getTerminusName());
 }
 
 TEST_F(PlatformManagerTest, parseTerminusNameTest)
@@ -440,6 +478,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(0, terminus->pdrs.size());
+    EXPECT_EQ(0, terminus->numericSensors.size());
 }
 
 TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
@@ -471,4 +510,5 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(0, terminus->pdrs.size());
+    EXPECT_EQ(0, terminus->numericSensors.size());
 }
