@@ -1,7 +1,5 @@
 #include "terminus.hpp"
 
-#include "platform.h"
-
 #include "terminus_manager.hpp"
 
 namespace pldm
@@ -34,6 +32,11 @@ void Terminus::parsePDRs()
             auto parsedPdr = parseNumericSensorPDR(pdr);
             numericSensorPdrs.emplace_back(parsedPdr);
         }
+    }
+
+    for (auto pdr : numericSensorPdrs)
+    {
+        addNumericSensor(pdr);
     }
 }
 
@@ -372,6 +375,27 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr>
             break;
     }
     return parsedPdr;
+}
+
+void Terminus::addNumericSensor(
+    const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
+{
+    std::string sensorName = "PLDM_Device_" + std::to_string(pdr->sensor_id) +
+                             "_" + std::to_string(tid);
+
+    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(pdr->sensor_id);
+    if (sensorAuxiliaryNames)
+    {
+        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
+        if (sensorCnt == 1)
+        {
+            sensorName = sensorNames[0].second + "_" + std::to_string(tid);
+        }
+    }
+
+    auto sensor = std::make_shared<NumericSensor>(eid, tid, true, pdr,
+                                                  sensorName, inventoryPath);
+    numericSensors.emplace_back(sensor);
 }
 
 } // namespace platform_mc
