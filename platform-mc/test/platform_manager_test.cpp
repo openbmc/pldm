@@ -138,6 +138,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     EXPECT_EQ(true, terminus->initalized);
     EXPECT_EQ(1, terminus->pdrs.size());
     EXPECT_EQ(1, terminus->numericSensorPdrs.size());
+    EXPECT_EQ(1, terminus->numericSensors.size());
 }
 
 TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
@@ -152,6 +153,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
     EXPECT_EQ(true, terminus->initalized);
     EXPECT_EQ(0, terminus->pdrs.size());
     EXPECT_EQ(0, terminus->numericSensorPdrs.size());
+    EXPECT_EQ(0, terminus->numericSensors.size());
 }
 
 TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
@@ -184,4 +186,5 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     EXPECT_EQ(true, terminus->initalized);
     EXPECT_EQ(0, terminus->pdrs.size());
     EXPECT_EQ(0, terminus->numericSensorPdrs.size());
+    EXPECT_EQ(0, terminus->numericSensors.size());
 }
