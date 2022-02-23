@@ -5,6 +5,7 @@
 #include "libpldm/platform.h"
 #include "libpldm/requester/pldm.h"
 
+#include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "terminus.hpp"
 
