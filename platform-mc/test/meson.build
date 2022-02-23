@@ -3,6 +3,8 @@ test_src = declare_dependency(
             '../terminus_manager.cpp',
             '../terminus.cpp',
             '../platform_manager.cpp',
+            '../sensor_manager.cpp',
+            '../numeric_sensor.cpp',
             '../../requester/mctp_endpoint_discovery.cpp',
             '../../pldmd/dbus_impl_requester.cpp',
             '../../pldmd/instance_id.cpp'],
@@ -11,6 +13,8 @@ test_src = declare_dependency(
 tests = [
   'terminus_manager_test',
   'terminus_test',
+  'sensor_manager_test',
+  'numeric_sensor_test',
 ]
 
 foreach t : tests

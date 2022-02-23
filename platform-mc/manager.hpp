@@ -7,9 +7,8 @@
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
+#include "sensor_manager.hpp"
 #include "terminus_manager.hpp"
-
-#include <vector>
 
 namespace pldm
 {
@@ -38,7 +37,8 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      requester::Handler<requester::Request>& handler,
                      Requester& requester) :
         terminusManager(event, handler, requester, termini, this),
-        platformManager(terminusManager, termini)
+        platformManager(terminusManager, termini),
+        sensorManager(event, terminusManager, termini)
     {}
 
     requester::Coroutine beforeDiscoverTerminus()
@@ -57,12 +57,23 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         terminusManager.discoverMctpTerminus(mctpInfos);
     }
 
+    void startSensorPolling()
+    {
+        sensorManager.startPolling();
+    }
+
+    void stopSensorPolling()
+    {
+        sensorManager.stopPolling();
+    }
+
   private:
     /** @brief List of discovered termini */
     std::map<tid_t, std::shared_ptr<Terminus>> termini{};
 
     TerminusManager terminusManager;
     PlatformManager platformManager;
+    SensorManager sensorManager;
 };
 } // namespace platform_mc
 } // namespace pldm
