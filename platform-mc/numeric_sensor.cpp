@@ -265,6 +265,7 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
     resolution = pdr->resolution;
     offset = pdr->offset;
     baseUnitModifier = pdr->unit_modifier;
+    timeStamp = 0;
 
     /**
      * DEFAULT_SENSOR_UPDATER_INTERVAL is in milliseconds
@@ -480,6 +481,7 @@ NumericSensor::NumericSensor(
     resolution = std::numeric_limits<double>::quiet_NaN();
     offset = std::numeric_limits<double>::quiet_NaN();
     baseUnitModifier = pdr->unit_modifier;
+    timeStamp = 0;
 
     /**
      * DEFAULT_SENSOR_UPDATER_INTERVAL is in milliseconds
@@ -580,6 +582,173 @@ double NumericSensor::conversionFormula(double value)
 double NumericSensor::unitModifier(double value)
 {
     return std::isnan(value) ? value : value * std::pow(10, baseUnitModifier);
+}
+
+void NumericSensor::updateReading(bool available, bool functional, double value)
+{
+    if (!availabilityIntf || !operationalStatusIntf || !valueIntf)
+    {
+        lg2::error(
+            "Failed to update sensor {NAME} D-Bus interface don't exist.",
+            "NAME", sensorName);
+    }
+    availabilityIntf->available(available);
+    operationalStatusIntf->functional(functional);
+    double curValue = valueIntf->value();
+    double newValue = std::numeric_limits<double>::quiet_NaN();
+    if (functional && available)
+    {
+        newValue = unitModifier(conversionFormula(value));
+        if (newValue != curValue &&
+            (!std::isnan(newValue) || !std::isnan(curValue)))
+        {
+            valueIntf->value(unitModifier(conversionFormula(value)));
+            updateThresholds();
+        }
+    }
+    else
+    {
+        if (newValue != curValue &&
+            (!std::isnan(newValue) || !std::isnan(curValue)))
+        {
+            valueIntf->value(std::numeric_limits<double>::quiet_NaN());
+        }
+    }
+}
+
+void NumericSensor::handleErrGetSensorReading()
+{
+    if (!operationalStatusIntf || !valueIntf)
+    {
+        lg2::error(
+            "Failed to update sensor {NAME} D-Bus interfaces don't exist.",
+            "NAME", sensorName);
+    }
+    operationalStatusIntf->functional(false);
+    valueIntf->value(std::numeric_limits<double>::quiet_NaN());
+}
+
+bool NumericSensor::checkThreshold(bool alarm, bool direction, double value,
+                                   double threshold, double hyst)
+{
+    if (direction)
+    {
+        if (value >= threshold)
+        {
+            return true;
+        }
+        else if (value < (threshold - hyst))
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if (value <= threshold)
+        {
+            return true;
+        }
+        else if (value > (threshold + hyst))
+        {
+            return false;
+        }
+    }
+    return alarm;
+}
+
+void NumericSensor::updateThresholds()
+{
+    if (!valueIntf)
+    {
+        lg2::error(
+            "Failed to update thresholds sensor {NAME} D-Bus interfaces don't exist.",
+            "NAME", sensorName);
+    }
+
+    auto value = valueIntf->value();
+
+    if (thresholdWarningIntf &&
+        !std::isnan(thresholdWarningIntf->warningHigh()))
+    {
+        auto threshold = thresholdWarningIntf->warningHigh();
+        auto alarm = thresholdWarningIntf->warningAlarmHigh();
+        auto newAlarm = checkThreshold(alarm, true, value, threshold,
+                                       hysteresis);
+        if (alarm != newAlarm)
+        {
+            thresholdWarningIntf->warningAlarmHigh(newAlarm);
+            if (newAlarm)
+            {
+                thresholdWarningIntf->warningHighAlarmAsserted(value);
+            }
+            else
+            {
+                thresholdWarningIntf->warningHighAlarmDeasserted(value);
+            }
+        }
+    }
+
+    if (thresholdWarningIntf && !std::isnan(thresholdWarningIntf->warningLow()))
+    {
+        auto threshold = thresholdWarningIntf->warningLow();
+        auto alarm = thresholdWarningIntf->warningAlarmLow();
+        auto newAlarm = checkThreshold(alarm, false, value, threshold,
+                                       hysteresis);
+        if (alarm != newAlarm)
+        {
+            thresholdWarningIntf->warningAlarmLow(newAlarm);
+            if (newAlarm)
+            {
+                thresholdWarningIntf->warningLowAlarmAsserted(value);
+            }
+            else
+            {
+                thresholdWarningIntf->warningLowAlarmDeasserted(value);
+            }
+        }
+    }
+
+    if (thresholdCriticalIntf &&
+        !std::isnan(thresholdCriticalIntf->criticalHigh()))
+    {
+        auto threshold = thresholdCriticalIntf->criticalHigh();
+        auto alarm = thresholdCriticalIntf->criticalAlarmHigh();
+        auto newAlarm = checkThreshold(alarm, true, value, threshold,
+                                       hysteresis);
+        if (alarm != newAlarm)
+        {
+            thresholdCriticalIntf->criticalAlarmHigh(newAlarm);
+            if (newAlarm)
+            {
+                thresholdCriticalIntf->criticalHighAlarmAsserted(value);
+            }
+            else
+            {
+                thresholdCriticalIntf->criticalHighAlarmDeasserted(value);
+            }
+        }
+    }
+
+    if (thresholdCriticalIntf &&
+        !std::isnan(thresholdCriticalIntf->criticalLow()))
+    {
+        auto threshold = thresholdCriticalIntf->criticalLow();
+        auto alarm = thresholdCriticalIntf->criticalAlarmLow();
+        auto newAlarm = checkThreshold(alarm, false, value, threshold,
+                                       hysteresis);
+        if (alarm != newAlarm)
+        {
+            thresholdCriticalIntf->criticalAlarmLow(newAlarm);
+            if (newAlarm)
+            {
+                thresholdCriticalIntf->criticalLowAlarmAsserted(value);
+            }
+            else
+            {
+                thresholdCriticalIntf->criticalLowAlarmDeasserted(value);
+            }
+        }
+    }
 }
 } // namespace platform_mc
 } // namespace pldm
