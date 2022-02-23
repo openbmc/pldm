@@ -15,6 +15,7 @@
 namespace pldm
 {
 
+using Availability = bool;
 using eid = uint8_t;
 using UUID = std::string;
 using Request = std::vector<uint8_t>;

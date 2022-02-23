@@ -4,6 +4,7 @@ test_src = declare_dependency(
             '../terminus.cpp',
             '../platform_manager.cpp',
             '../manager.cpp',
+            '../sensor_manager.cpp',
             '../numeric_sensor.cpp',
             '../../requester/mctp_endpoint_discovery.cpp'],
             include_directories: ['../../requester', '../../pldmd'])
@@ -12,6 +13,8 @@ tests = [
   'terminus_manager_test',
   'terminus_test',
   'platform_manager_test',
+  'sensor_manager_test',
+  'numeric_sensor_test',
 ]
 
 foreach t : tests
