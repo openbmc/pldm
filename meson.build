@@ -203,6 +203,8 @@ executable(
   'fw-update/update_manager.cpp',
   'platform-mc/terminus_manager.cpp',
   'platform-mc/terminus.cpp',
+  'platform-mc/sensor_manager.cpp',
+  'platform-mc/numeric_sensor.cpp',
   'requester/mctp_endpoint_discovery.cpp',
   implicit_include_directories: false,
   dependencies: deps,

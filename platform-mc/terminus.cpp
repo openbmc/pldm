@@ -128,7 +128,201 @@ void Terminus::handleRespGetPDR(mctp_eid_t _eid, const pldm_msg* response,
 }
 
 void Terminus::parsePDRs()
-{}
+{
+    parseNumericSensorPDRs();
+}
+
+void Terminus::parseNumericSensorPDRs()
+{
+    for (const auto& pdr : numericSensorPDRs)
+    {
+        const auto& [terminusHandle, sensorInfo] = parseNumericPDR(pdr);
+        addNumericSensor(sensorInfo);
+    }
+}
+
+std::tuple<TerminusHandle, NumericSensorInfo>
+    Terminus::parseNumericPDR(const std::vector<uint8_t>& pdrData)
+{
+    auto pdr = reinterpret_cast<const struct pldm_numeric_sensor_value_pdr*>(
+        pdrData.data());
+    NumericSensorInfo sensorInfo{};
+    const uint8_t* ptr = &pdr->hysteresis.value_u8;
+
+    sensorInfo.sensorId = pdr->sensor_id;
+    sensorInfo.unitModifier = pdr->unit_modifier;
+    sensorInfo.sensorDataSize = pdr->sensor_data_size;
+    sensorInfo.resolution = pdr->resolution;
+    sensorInfo.offset = pdr->offset;
+    sensorInfo.baseUnit = pdr->base_unit;
+
+    switch (pdr->sensor_data_size)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            ptr += sizeof(pdr->hysteresis.value_u8);
+            ptr += sizeof(pdr->supported_thresholds);
+            ptr += sizeof(pdr->threshold_and_hysteresis_volatility);
+            ptr += sizeof(pdr->state_transition_interval);
+            ptr += sizeof(pdr->update_interval);
+            sensorInfo.max = static_cast<uint8_t>(*ptr);
+            ptr += sizeof(pdr->max_readable.value_u8);
+            sensorInfo.min = static_cast<uint8_t>(*ptr);
+            ptr += sizeof(pdr->min_readable.value_u8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            ptr += sizeof(pdr->hysteresis.value_s8);
+            ptr += sizeof(pdr->supported_thresholds);
+            ptr += sizeof(pdr->threshold_and_hysteresis_volatility);
+            ptr += sizeof(pdr->state_transition_interval);
+            ptr += sizeof(pdr->update_interval);
+            sensorInfo.max = static_cast<int8_t>(*ptr);
+            ptr += sizeof(pdr->max_readable.value_s8);
+            sensorInfo.min = static_cast<int8_t>(*ptr);
+            ptr += sizeof(pdr->min_readable.value_s8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            ptr += sizeof(pdr->hysteresis.value_u16);
+            ptr += sizeof(pdr->supported_thresholds);
+            ptr += sizeof(pdr->threshold_and_hysteresis_volatility);
+            ptr += sizeof(pdr->state_transition_interval);
+            ptr += sizeof(pdr->update_interval);
+            sensorInfo.max = static_cast<uint16_t>(*ptr);
+            ptr += sizeof(pdr->max_readable.value_u16);
+            sensorInfo.min = static_cast<uint16_t>(*ptr);
+            ptr += sizeof(pdr->min_readable.value_u16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            ptr += sizeof(pdr->hysteresis.value_s16);
+            ptr += sizeof(pdr->supported_thresholds);
+            ptr += sizeof(pdr->threshold_and_hysteresis_volatility);
+            ptr += sizeof(pdr->state_transition_interval);
+            ptr += sizeof(pdr->update_interval);
+            sensorInfo.max = static_cast<int16_t>(*ptr);
+            ptr += sizeof(pdr->max_readable.value_s16);
+            sensorInfo.min = static_cast<int16_t>(*ptr);
+            ptr += sizeof(pdr->min_readable.value_s16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            ptr += sizeof(pdr->hysteresis.value_u32);
+            ptr += sizeof(pdr->supported_thresholds);
+            ptr += sizeof(pdr->threshold_and_hysteresis_volatility);
+            ptr += sizeof(pdr->state_transition_interval);
+            ptr += sizeof(pdr->update_interval);
+            sensorInfo.max = static_cast<uint32_t>(*ptr);
+            ptr += sizeof(pdr->max_readable.value_u32);
+            sensorInfo.min = static_cast<uint32_t>(*ptr);
+            ptr += sizeof(pdr->min_readable.value_u32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            ptr += sizeof(pdr->hysteresis.value_s32);
+            ptr += sizeof(pdr->supported_thresholds);
+            ptr += sizeof(pdr->threshold_and_hysteresis_volatility);
+            ptr += sizeof(pdr->state_transition_interval);
+            ptr += sizeof(pdr->update_interval);
+            sensorInfo.max = static_cast<int32_t>(*ptr);
+            ptr += sizeof(pdr->max_readable.value_s32);
+            sensorInfo.min = static_cast<int32_t>(*ptr);
+            ptr += sizeof(pdr->min_readable.value_s32);
+            break;
+        default:
+            break;
+    }
+
+    uint8_t range_field_format = *ptr;
+    ptr += sizeof(pdr->range_field_format);
+    ptr += sizeof(pdr->range_field_support);
+
+    switch (range_field_format)
+    {
+        case PLDM_RANGE_FIELD_FORMAT_UINT8:
+            ptr += sizeof(pdr->nominal_value.value_u8);
+            ptr += sizeof(pdr->normal_max.value_u8);
+            ptr += sizeof(pdr->normal_min.value_u8);
+            ptr += sizeof(pdr->warning_high.value_u8);
+            ptr += sizeof(pdr->warning_low.value_u8);
+            ptr += sizeof(pdr->critical_high.value_u8);
+            ptr += sizeof(pdr->critical_low.value_u8);
+            ptr += sizeof(pdr->fatal_high.value_u8);
+            ptr += sizeof(pdr->fatal_low.value_u8);
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_SINT8:
+            ptr += sizeof(pdr->nominal_value.value_s8);
+            ptr += sizeof(pdr->normal_max.value_s8);
+            ptr += sizeof(pdr->normal_min.value_s8);
+            ptr += sizeof(pdr->warning_high.value_s8);
+            ptr += sizeof(pdr->warning_low.value_s8);
+            ptr += sizeof(pdr->critical_high.value_s8);
+            ptr += sizeof(pdr->critical_low.value_s8);
+            ptr += sizeof(pdr->fatal_high.value_s8);
+            ptr += sizeof(pdr->fatal_low.value_s8);
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_UINT16:
+            ptr += sizeof(pdr->nominal_value.value_u16);
+            ptr += sizeof(pdr->normal_max.value_u16);
+            ptr += sizeof(pdr->normal_min.value_u16);
+            ptr += sizeof(pdr->warning_high.value_u16);
+            ptr += sizeof(pdr->warning_low.value_u16);
+            ptr += sizeof(pdr->critical_high.value_u16);
+            ptr += sizeof(pdr->critical_low.value_u16);
+            ptr += sizeof(pdr->fatal_high.value_u16);
+            ptr += sizeof(pdr->fatal_low.value_u16);
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_SINT16:
+            ptr += sizeof(pdr->nominal_value.value_s16);
+            ptr += sizeof(pdr->normal_max.value_s16);
+            ptr += sizeof(pdr->normal_min.value_s16);
+            ptr += sizeof(pdr->warning_high.value_s16);
+            ptr += sizeof(pdr->warning_low.value_s16);
+            ptr += sizeof(pdr->critical_high.value_s16);
+            ptr += sizeof(pdr->critical_low.value_s16);
+            ptr += sizeof(pdr->fatal_high.value_s16);
+            ptr += sizeof(pdr->fatal_low.value_s16);
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_UINT32:
+            ptr += sizeof(pdr->nominal_value.value_u32);
+            ptr += sizeof(pdr->normal_max.value_u32);
+            ptr += sizeof(pdr->normal_min.value_u32);
+            ptr += sizeof(pdr->warning_high.value_u32);
+            ptr += sizeof(pdr->warning_low.value_u32);
+            ptr += sizeof(pdr->critical_high.value_u32);
+            ptr += sizeof(pdr->critical_low.value_u32);
+            ptr += sizeof(pdr->fatal_high.value_u32);
+            ptr += sizeof(pdr->fatal_low.value_u32);
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_SINT32:
+            ptr += sizeof(pdr->nominal_value.value_s32);
+            ptr += sizeof(pdr->normal_max.value_s32);
+            ptr += sizeof(pdr->normal_min.value_s32);
+            ptr += sizeof(pdr->warning_high.value_s32);
+            ptr += sizeof(pdr->warning_low.value_s32);
+            ptr += sizeof(pdr->critical_high.value_s32);
+            ptr += sizeof(pdr->critical_low.value_s32);
+            ptr += sizeof(pdr->fatal_high.value_s32);
+            ptr += sizeof(pdr->fatal_low.value_s32);
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_REAL32:
+            ptr += sizeof(pdr->nominal_value.value_f32);
+            ptr += sizeof(pdr->normal_max.value_f32);
+            ptr += sizeof(pdr->normal_min.value_f32);
+            ptr += sizeof(pdr->warning_high.value_f32);
+            ptr += sizeof(pdr->warning_low.value_f32);
+            ptr += sizeof(pdr->critical_high.value_f32);
+            ptr += sizeof(pdr->critical_low.value_f32);
+            ptr += sizeof(pdr->fatal_high.value_f32);
+            ptr += sizeof(pdr->fatal_low.value_f32);
+            break;
+        default:
+            break;
+    }
+    return std::make_tuple(pdr->terminus_handle, std::move(sensorInfo));
+}
+
+void Terminus::addNumericSensor(const NumericSensorInfo& sensorInfo)
+{
+    auto sensor = std::make_shared<NumericSensor>(eid, tid, true, sensorInfo,
+                                                  inventoryPath);
+    numericSensors.emplace_back(std::move(sensor));
+}
 
 } // namespace platform_mc
 } // namespace pldm

@@ -3,7 +3,7 @@
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
-#include "requester/handler.hpp"
+#include "numeric_sensor.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
@@ -44,6 +44,7 @@ class Terminus
 
     uint8_t eid;
     uint8_t tid;
+    std::vector<std::shared_ptr<NumericSensor>> numericSensors;
 
   private:
     void processFetchPDREvent(uint32_t nextRecorHandle,
@@ -54,6 +55,10 @@ class Terminus
     void handleRespGetPDR(mctp_eid_t _eid, const pldm_msg* response,
                           size_t respMsgLen);
     void parsePDRs();
+    std::tuple<TerminusHandle, NumericSensorInfo>
+        parseNumericPDR(const std::vector<uint8_t>& pdrData);
+    void parseNumericSensorPDRs();
+    void addNumericSensor(const NumericSensorInfo& sensorInfo);
 
     sdeventplus::Event& event;
     pldm::requester::Handler<pldm::requester::Request>& handler;

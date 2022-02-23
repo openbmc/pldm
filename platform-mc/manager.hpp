@@ -6,7 +6,7 @@
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
-//#include "sensor_manager.hpp"
+#include "sensor_manager.hpp"
 #include "terminus_manager.hpp"
 
 #include <vector>
@@ -37,7 +37,8 @@ class Manager : public pldm::IMctpDiscoveryHandlerIntf
     explicit Manager(sdeventplus::Event& event,
                      requester::Handler<requester::Request>& handler,
                      Requester& requester) :
-        terminusManager(event, handler, requester, terminuses, this)
+        terminusManager(event, handler, requester, terminuses, this),
+        sensorManager(event, handler, requester, terminuses)
     {}
 
     void handleMCTPEndpoints(const MctpInfos& mctpInfos)
@@ -53,12 +54,12 @@ class Manager : public pldm::IMctpDiscoveryHandlerIntf
 
     void startSensorPolling()
     {
-        // sensorManager.startPolling();
+        sensorManager.startPolling();
     }
 
     void stopSensorPolling()
     {
-        // sensorManager.stopPolling();
+        sensorManager.stopPolling();
     }
 
   private:
@@ -66,7 +67,7 @@ class Manager : public pldm::IMctpDiscoveryHandlerIntf
     std::vector<std::shared_ptr<Terminus>> terminuses{};
 
     TerminusManager terminusManager;
-    // SensorManager sensorManager;
+    SensorManager sensorManager;
 };
 } // namespace platform_mc
 } // namespace pldm
