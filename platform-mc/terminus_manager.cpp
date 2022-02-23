@@ -60,6 +60,8 @@ void TerminusManager::unmapTID(PldmTID tid)
 
 requester::Coroutine TerminusManager::discoverTerminusTask()
 {
+    sensorManager.stopPolling();
+
     while (!queuedMctpInfos.empty())
     {
         const MctpInfos& mctpInfos = queuedMctpInfos.front();
@@ -94,8 +96,22 @@ requester::Coroutine TerminusManager::discoverTerminusTask()
             }
             co_await initTerminus(mctpInfo);
         }
+
+        for (auto& [eid, terminus] : termini)
+        {
+            if (terminus->doesSupport(PLDM_PLATFORM))
+            {
+                auto rc = co_await getPDRs(terminus);
+                if (!rc)
+                {
+                    terminus->parsePDRs();
+                }
+            }
+        }
         queuedMctpInfos.pop();
     }
+
+    sensorManager.startPolling();
 }
 
 requester::Coroutine TerminusManager::initTerminus(const MctpInfo& mctpInfo)
@@ -162,16 +178,7 @@ requester::Coroutine TerminusManager::initTerminus(const MctpInfo& mctpInfo)
         }
     }
 
-    auto terminus = std::make_shared<Terminus>(eid, tid, supportedTypes);
-    if (terminus->doesSupport(PLDM_PLATFORM))
-    {
-        rc = co_await getPDRs(terminus);
-        if (!rc)
-        {
-            terminus->parsePDRs();
-        }
-    }
-    termini[eid] = terminus;
+    termini[eid] = std::make_shared<Terminus>(eid, tid, supportedTypes);
 
     co_return PLDM_SUCCESS;
 }
