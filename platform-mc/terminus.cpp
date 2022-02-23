@@ -12,7 +12,20 @@ namespace platform_mc
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
     initalized(false), tid(tid), supportedTypes(supportedTypes)
 {
-    isConstructed = true;
+    inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
+                    std::to_string(tid);
+    try
+    {
+        inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
+            utils::DBusHandler::getBus(), inventoryPath.c_str());
+        isConstructed = true;
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to create Inventory Board interface for device {PATH}",
+              "PATH", inventoryPath);
+        return;
+    }
 }
 
 bool Terminus::doesSupport(uint8_t type)
@@ -66,6 +79,17 @@ bool Terminus::parsePDRs()
             rc = false;
         }
     }
+
+    for (auto pdr : numericSensorPdrs)
+    {
+        addNumericSensor(pdr);
+    }
+
+    for (auto pdr : compactNumericSensorPdrs)
+    {
+        addCompactNumericSensor(pdr);
+    }
+
     return rc;
 }
 
@@ -145,6 +169,54 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr>
     return parsedPdr;
 }
 
+void Terminus::addNumericSensor(
+    const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
+{
+    uint16_t sensorId = pdr->sensor_id;
+    std::string sensorName = "PLDM_Device_" + std::to_string(sensorId) + "_" +
+                             std::to_string(tid);
+
+    if (pdr->sensor_auxiliary_names_pdr)
+    {
+        auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
+        if (sensorAuxiliaryNames)
+        {
+            const auto& [sensorId, sensorCnt,
+                         sensorNames] = *sensorAuxiliaryNames;
+            if (sensorCnt == 1)
+            {
+                for (const auto& [languageTag, name] : sensorNames[0])
+                {
+                    if (languageTag == "en")
+                    {
+                        sensorName = name + "_" + std::to_string(sensorId) +
+                                     "_" + std::to_string(tid);
+                    }
+                }
+            }
+        }
+    }
+
+    try
+    {
+        auto sensor = std::make_shared<NumericSensor>(
+            tid, true, pdr, sensorName, inventoryPath);
+        if (!sensor->isConstructed)
+        {
+            error("Failed to construct NumericSensor. sensorname - {NAME}",
+                  "NAME", sensorName);
+            return;
+        }
+        numericSensors.emplace_back(sensor);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error(
+            "Failed to create NumericSensor. error - {ERROR} sensorname - {NAME}",
+            "ERROR", e, "NAME", sensorName);
+    }
+}
+
 std::shared_ptr<SensorAuxiliaryNames>
     Terminus::parseCompactNumericSensorNames(const std::vector<uint8_t>& sPdr)
 {
@@ -216,6 +288,52 @@ std::shared_ptr<pldm_compact_numeric_sensor_pdr>
     parsedPdr->fatal_high = pdr->fatal_high;
     parsedPdr->fatal_low = pdr->fatal_low;
     return parsedPdr;
+}
+
+void Terminus::addCompactNumericSensor(
+    const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr)
+{
+    uint16_t sensorId = pdr->sensor_id;
+    std::string sensorName = "PLDM_Device_" + std::to_string(sensorId) + "_" +
+                             std::to_string(tid);
+
+    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
+    if (sensorAuxiliaryNames)
+    {
+        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
+        if (sensorCnt == 1)
+        {
+            for (const auto& [languageTag, name] : sensorNames[0])
+            {
+                if (languageTag == "en")
+                {
+                    {
+                        sensorName = name + "_" + std::to_string(sensorId) +
+                                     "_" + std::to_string(tid);
+                    }
+                }
+            }
+        }
+    }
+
+    try
+    {
+        auto sensor = std::make_shared<NumericSensor>(
+            tid, true, pdr, sensorName, inventoryPath);
+        if (!sensor->isConstructed)
+        {
+            error("Failed to construct NumericSensor. sensorname - {NAME}",
+                  "NAME", sensorName);
+            return;
+        }
+        numericSensors.emplace_back(sensor);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error(
+            "Failed to create NumericSensor. error - {ERROR} sensorname - {NAME}",
+            "ERROR", e, "NAME", sensorName);
+    }
 }
 
 } // namespace platform_mc
