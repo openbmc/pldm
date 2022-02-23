@@ -186,3 +186,15 @@ option(
 
     value: 999
 )
+
+# Platform-mc configuration parameters
+
+## Sensor Polling Options
+option(
+    'sensor-polling-time',
+    type: 'integer',
+    min: 1,
+    max: 4294967295,
+    description: 'The interval time of sensor polling in milliseconds',
+    value: 249
+)
