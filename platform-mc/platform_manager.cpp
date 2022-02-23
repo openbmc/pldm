@@ -101,7 +101,7 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
         else
         {
             // multipart transfer
-            uint32_t receivedRecordSize = 0;
+            uint32_t receivedRecordSize = responseCnt;
             auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(recvBuf.data());
             uint16_t recordChgNum = le16toh(pdrHdr->record_change_num);
             std::vector<uint8_t> receivedPdr(recvBuf.begin(),
