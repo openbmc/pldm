@@ -1,0 +1,12 @@
+{
+    "PrioritySensorNameSpaces": [
+        "/xyz/openbmc_project/sensors/temperature/",
+        "/xyz/openbmc_project/sensors/power/",
+        "/xyz/openbmc_project/sensors/energy/"
+    ],
+    "AggregationSensorNameSpaces": [
+        "/xyz/openbmc_project/sensors/temperature/",
+        "/xyz/openbmc_project/sensors/power/",
+        "/xyz/openbmc_project/sensors/energy/"
+    ]
+}
