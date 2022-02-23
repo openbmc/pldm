@@ -3,6 +3,8 @@ test_src = declare_dependency(
             '../terminus_manager.cpp',
             '../terminus.cpp',
             '../platform_manager.cpp',
+            '../sensor_manager.cpp',
+            '../numeric_sensor.cpp',
             '../../requester/mctp_endpoint_discovery.cpp',
             '../../pldmd/dbus_impl_requester.cpp',
             '../../pldmd/instance_id.cpp'],
@@ -12,6 +14,8 @@ tests = [
   'terminus_manager_test',
   'terminus_test',
   'platform_manager_test',
+  'sensor_manager_test',
+  'numeric_sensor_test',
 ]
 
 foreach t : tests
@@ -26,6 +30,7 @@ foreach t : tests
                          libpldmutils,
                          nlohmann_json,
                          phosphor_dbus_interfaces,
+                         phosphor_logging,
                          sdbusplus,
                          sdeventplus,
                          test_src]),

@@ -70,14 +70,16 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         0x5,                // transferFlag
         69, 0x0,            // responseCount
         // numeric Sensor PDR
-        0x0, 0x0, 0x0,
-        0x1,                     // record handle
+        0x1, 0x0, 0x0,
+        0x0,                     // record handle
         0x1,                     // PDRHeaderVersion
         PLDM_NUMERIC_SENSOR_PDR, // PDRType
         0x0,
         0x0, // recordChangeNumber
-        0x0,
-        59, // dataLength
+        PLDM_PDR_NUMERIC_SENSOR_PDR_FIXED_LENGTH +
+            PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_SENSOR_DATA_SIZE_MIN_LENGTH +
+            PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_RANGE_FIELD_MIN_LENGTH,
+        0, // dataLength
         0,
         0, // PLDMTerminusHandle
         0x1,
@@ -87,19 +89,19 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         1,
         0, // entityInstanceNumber
         0x1,
-        0x0,                         // containerID=1
-        PLDM_NO_INIT,                // sensorInit
-        false,                       // sensorAuxiliaryNamesPDR
-        PLDM_SENSOR_UNIT_DEGRESS_C,  // baseUint(2)=degrees C
-        0,                           // unitModifier = 0
-        0,                           // rateUnit
-        0,                           // baseOEMUnitHandle
-        0,                           // auxUnit
-        0,                           // auxUnitModifier
-        0,                           // auxRateUnit
-        0,                           // rel
-        0,                           // auxOEMUnitHandle
-        true,                        // isLinear
+        0x0,                           // containerID=1
+        PLDM_NO_INIT,                  // sensorInit
+        false,                         // sensorAuxiliaryNamesPDR
+        PLDM_SENSOR_UNIT_DEGRESS_C,    // baseUint(2)=degrees C
+        1,                             // unitModifier = 1
+        0,                             // rateUnit
+        0,                             // baseOEMUnitHandle
+        0,                             // auxUnit
+        0,                             // auxUnitModifier
+        0,                             // auxRateUnit
+        0,                             // rel
+        0,                             // auxOEMUnitHandle
+        true,                          // isLinear
         PLDM_SENSOR_DATA_SIZE_UINT8, // sensorDataSize
         0, 0, 0xc0,
         0x3f, // resolution=1.5
@@ -137,7 +139,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     platformManager.initTerminus();
     EXPECT_EQ(true, terminus->initalized);
     EXPECT_EQ(1, terminus->pdrs.size());
-    EXPECT_EQ(1, terminus->numericSensorPdrs.size());
+    EXPECT_EQ(1, terminus->numericSensors.size());
 }
 
 TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
@@ -151,7 +153,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
     platformManager.initTerminus();
     EXPECT_EQ(true, terminus->initalized);
     EXPECT_EQ(0, terminus->pdrs.size());
-    EXPECT_EQ(0, terminus->numericSensorPdrs.size());
+    EXPECT_EQ(0, terminus->numericSensors.size());
 }
 
 TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
@@ -183,5 +185,5 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     platformManager.initTerminus();
     EXPECT_EQ(true, terminus->initalized);
     EXPECT_EQ(0, terminus->pdrs.size());
-    EXPECT_EQ(0, terminus->numericSensorPdrs.size());
+    EXPECT_EQ(0, terminus->numericSensors.size());
 }
