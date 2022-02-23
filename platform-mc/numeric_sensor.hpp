@@ -54,6 +54,15 @@ class NumericSensor
 
     ~NumericSensor(){};
 
+    /** @brief The function called by Sensor Manager to set sensor to
+     * error status.
+     */
+    void handleErrGetSensorReading();
+
+    /** @brief Updating the sensor status to D-Bus interface
+     */
+    void updateReading(bool available, bool functional, double value = 0);
+
     /** @brief ConversionFormula is used to convert raw value to the unit
      * specified in PDR
      *
@@ -68,6 +77,94 @@ class NumericSensor
      *  @return double - converted value
      */
     double unitModifier(double value);
+
+    /** @brief Check if value is over threshold.
+     *
+     *  @param[in] alarm - previous alarm state
+     *  @param[in] direction - upper or lower threshold checking
+     *  @param[in] value - raw value
+     *  @param[in] threshold - threshold value
+     *  @param[in] hyst - hysteresis value
+     *  @return bool - new alarm state
+     */
+    bool checkThreshold(bool alarm, bool direction, double value,
+                        double threshold, double hyst);
+
+    /** @brief Updating the association to D-Bus interface
+     *  @param[in] inventoryPath - inventory path of the entity
+     */
+    inline void setInventoryPath(const std::string& inventoryPath)
+    {
+        if (associationDefinitionsIntf)
+        {
+            associationDefinitionsIntf->associations(
+                {{"chassis", "all_sensors", inventoryPath}});
+        }
+    }
+
+    /** @brief Get Upper Critical threshold
+     *
+     *  @return double - Upper Critical threshold
+     */
+    double getThresholdUpperCritical()
+    {
+        if (thresholdCriticalIntf)
+        {
+            return thresholdCriticalIntf->criticalHigh();
+        }
+        else
+        {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+    };
+
+    /** @brief Get Lower Critical threshold
+     *
+     *  @return double - Lower Critical threshold
+     */
+    double getThresholdLowerCritical()
+    {
+        if (thresholdCriticalIntf)
+        {
+            return thresholdCriticalIntf->criticalLow();
+        }
+        else
+        {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+    };
+
+    /** @brief Get Upper Warning threshold
+     *
+     *  @return double - Upper Warning threshold
+     */
+    double getThresholdUpperWarning()
+    {
+        if (thresholdWarningIntf)
+        {
+            return thresholdWarningIntf->warningHigh();
+        }
+        else
+        {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+    };
+
+    /** @brief Get Lower Warning threshold
+     *
+     *  @return double - Lower Warning threshold
+     */
+    double getThresholdLowerWarning()
+    {
+        if (thresholdWarningIntf)
+        {
+            return thresholdWarningIntf->warningLow();
+        }
+        else
+        {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+    };
 
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
@@ -91,6 +188,12 @@ class NumericSensor
     bool isPriority;
 
   private:
+    /**
+     * @brief Check sensor reading if any threshold has been crossed and update
+     * Threshold interfaces accordingly
+     */
+    void updateThresholds();
+
     std::unique_ptr<ValueIntf> valueIntf = nullptr;
     std::unique_ptr<ThresholdWarningIntf> thresholdWarningIntf = nullptr;
     std::unique_ptr<ThresholdCriticalIntf> thresholdCriticalIntf = nullptr;
