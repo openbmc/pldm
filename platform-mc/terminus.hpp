@@ -3,7 +3,9 @@
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
+#include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
+#include "terminus.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
@@ -32,6 +34,8 @@ using SensorName = std::string;
 using SensorAuxiliaryNames = std::tuple<
     SensorId, SensorCnt,
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
+using InventoryItemBoardIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
 
 /** @struct EntityKey
  *
@@ -129,6 +133,9 @@ class Terminus
     /** @brief A flag to indicate if terminus has been initialized */
     bool initialized = false;
 
+    /** @brief A list of numericSensors */
+    std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
+
     /** @brief Get Sensor Auxiliary Names by sensorID
      *
      *  @param[in] id - sensor ID
@@ -142,6 +149,15 @@ class Terminus
      *  @return terminus name in string option
      */
     std::optional<std::string_view> findTerminusName();
+
+    /** @brief Construct the NumericSensor sensor class for the PLDM sensor.
+     *         The NumericSensor class will handle create D-Bus object path,
+     *         provide the APIs to update sensor value, threshold...
+     *
+     *  @param[in] pdr - the numeric sensor PDR info
+     */
+    void addNumericSensor(
+        const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr);
 
     /** @brief Parse the numeric sensor PDRs
      *
@@ -167,6 +183,14 @@ class Terminus
     std::shared_ptr<EntityAuxiliaryNames>
         parseEntityAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
 
+    /** @brief Construct the NumericSensor sensor class for the compact numeric
+     *         PLDM sensor.
+     *
+     *  @param[in] pdr - the compact numeric sensor PDR info
+     */
+    void addCompactNumericSensor(
+        const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr);
+
     /** @brief Parse the compact numeric sensor PDRs
      *
      *  @param[in] pdrData - the response PDRs from GetPDR command
@@ -182,6 +206,15 @@ class Terminus
      */
     std::shared_ptr<SensorAuxiliaryNames>
         parseCompactNumericSensorNames(const std::vector<uint8_t>& pdrData);
+
+    /** @brief Create the terminus inventory path to
+     *         /xyz/openbmc_project/inventory/Item/Board/.
+     *
+     *  @param[in] tName - the terminus name
+     *  @return true/false: True if there is no error in creating inventory path
+     *
+     */
+    bool createInventoryPath(std::string tName);
 
     /* @brief The terminus's TID */
     pldm_tid_t tid;
@@ -209,6 +242,11 @@ class Terminus
 
     /** @brief Terminus name */
     EntityName terminusName{};
+    /* @brief The pointer of iventory D-Bus interface for the terminus */
+    std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
+
+    /* @brief Inventory D-Bus object path of the terminus */
+    std::string inventoryPath;
 };
 } // namespace platform_mc
 } // namespace pldm

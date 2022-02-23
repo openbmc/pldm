@@ -1,0 +1,23 @@
+{
+    "Description": {
+        "_comment": [
+            "This JSON file defines the sensor name space in string format which will be prioritied in sensor polling.",
+            "List of the supported sensor name spaces is defined in sensor Value DBus interface.",
+            "airflow",
+            "altitude",
+            "current",
+            "energy",
+            "fan_tach",
+            "humidity",
+            "power",
+            "pressure",
+            "temperature",
+            "utilization",
+            "voltage",
+            "[1] https://github.com/openbmc/phosphor-dbus-interfaces/blob/85bc3395196a9348a6e3530102c18326e02f37f6/yaml/xyz/openbmc_project/Sensor/Value.interface.yaml",
+            "Example config:",
+            "\"PrioritySensorNameSpaces\": [\"temperature\", \"power\"]"
+        ]
+    },
+    "PrioritySensorNameSpaces": []
+}
