@@ -11,7 +11,12 @@ namespace platform_mc
 
 Terminus::Terminus(tid_t tid, uint64_t supportedTypes) :
     initalized(false), tid(tid), supportedTypes(supportedTypes)
-{}
+{
+    inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
+                    std::to_string(tid);
+    inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
+        utils::DBusHandler::getBus(), inventoryPath.c_str());
+}
 
 bool Terminus::doesSupport(uint8_t type)
 {
@@ -49,6 +54,12 @@ bool Terminus::parsePDRs()
             rc = false;
         }
     }
+
+    for (auto pdr : numericSensorPdrs)
+    {
+        addNumericSensor(pdr);
+    }
+
     return rc;
 }
 
@@ -304,6 +315,50 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr>
             break;
     }
     return parsedPdr;
+}
+
+void Terminus::addNumericSensor(
+    const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
+{
+    uint16_t sensorId = pdr->sensor_id;
+    std::string sensorName =
+        "PLDM_Device_" + std::to_string(sensorId) + "_" + std::to_string(tid);
+
+    if (pdr->sensor_auxiliary_names_pdr)
+    {
+        auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
+        if (sensorAuxiliaryNames)
+        {
+            const auto& [sensorId, sensorCnt, sensorNames] =
+                *sensorAuxiliaryNames;
+            if (sensorCnt == 1)
+            {
+                for (const auto& [languageTag, name] : sensorNames[0])
+                {
+                    if (languageTag == "en")
+                    {
+                        sensorName = name + "_" + std::to_string(sensorId) +
+                                     "_" + std::to_string(tid);
+                    }
+                }
+            }
+        }
+    }
+
+    try
+    {
+        auto pdrData = *pdr;
+        auto ptData = reinterpret_cast<uint8_t*>(&pdrData);
+        auto vPdrData = std::vector<uint8_t>(ptData, ptData + sizeof(pdrData));
+        std::shared_ptr<SensorIntf> sensor = std::make_shared<NumericSensor>(
+            tid, true, vPdrData, sensorId, sensorName, inventoryPath);
+        sensorObjects.emplace_back(sensor);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to create NumericSensor. ERROR=" << e.what()
+                  << "sensorName=" << sensorName << "\n";
+    }
 }
 
 } // namespace platform_mc

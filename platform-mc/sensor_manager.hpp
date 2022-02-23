@@ -1,0 +1,102 @@
+#pragma once
+
+#include "libpldm/platform.h"
+#include "libpldm/pldm.h"
+
+#include "common/types.hpp"
+#include "requester/handler.hpp"
+#include "terminus.hpp"
+#include "terminus_manager.hpp"
+
+namespace pldm
+{
+namespace platform_mc
+{
+
+/**
+ * @brief SensorManager
+ *
+ * This class manages the sensors found in terminus and provides
+ * function calls for other classes to start/stop sensor monitoring.
+ *
+ */
+class SensorManager
+{
+  public:
+    SensorManager() = delete;
+    SensorManager(const SensorManager&) = delete;
+    SensorManager(SensorManager&&) = delete;
+    SensorManager& operator=(const SensorManager&) = delete;
+    SensorManager& operator=(SensorManager&&) = delete;
+    virtual ~SensorManager() = default;
+
+    explicit SensorManager(
+        sdeventplus::Event& event, TerminusManager& terminusManager,
+        std::map<tid_t, std::shared_ptr<Terminus>>& termini) :
+        event(event),
+        terminusManager(terminusManager), termini(termini),
+        pollingTime(SENSOR_POLLING_TIME){};
+
+    /** @brief starting sensor polling task
+     */
+    void startPolling();
+
+    /** @brief stopping sensor polling task
+     */
+    void stopPolling();
+
+  protected:
+    /** @brief start a coroutine for polling all sensors.
+     */
+    virtual void doSensorPolling()
+    {
+        if (doSensorPollingTaskHandle)
+        {
+            if (doSensorPollingTaskHandle.done())
+            {
+                doSensorPollingTaskHandle.destroy();
+                auto co = doSensorPollingTask();
+                doSensorPollingTaskHandle = co.handle;
+                if (doSensorPollingTaskHandle.done())
+                {
+                    doSensorPollingTaskHandle = nullptr;
+                }
+            }
+        }
+        else
+        {
+            auto co = doSensorPollingTask();
+            doSensorPollingTaskHandle = co.handle;
+            if (doSensorPollingTaskHandle.done())
+            {
+                doSensorPollingTaskHandle = nullptr;
+            }
+        }
+    }
+
+    /** @brief polling all sensors in each terminus
+     */
+    requester::Coroutine doSensorPollingTask();
+
+    sdeventplus::Event& event;
+
+    /** @brief reference of terminusManager */
+    TerminusManager& terminusManager;
+
+    /** @brief List of discovered termini */
+    std::map<tid_t, std::shared_ptr<Terminus>>& termini;
+
+    /** @brief sensor polling interval in sec. */
+    uint32_t pollingTime;
+
+    /** @brief sensor polling timer */
+    std::unique_ptr<phosphor::Timer> sensorPollTimer;
+
+    /** @brief coroutine handle of doSensorPollingTask */
+    std::coroutine_handle<> doSensorPollingTaskHandle;
+
+    /** @brief force stop polling sensors*/
+    bool forceStopPolling = false;
+};
+} // namespace platform_mc
+} // namespace pldm

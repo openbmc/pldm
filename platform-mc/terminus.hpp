@@ -3,7 +3,10 @@
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
+#include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
+#include "sensor_intf.hpp"
+#include "terminus.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
@@ -22,6 +25,8 @@ using SensorName = std::string;
 using SensorAuxiliaryNames = std::tuple<
     SensorId, SensorCnt,
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
+using InventoryItemBoardIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
 
 /**
  * @brief Terminus
@@ -58,6 +63,9 @@ class Terminus
     /** @brief A flag to indicate if terminus has been initialzed */
     bool initalized = false;
 
+    /** @brief A list of sensor Object */
+    std::vector<std::shared_ptr<SensorIntf>> sensorObjects{};
+
     /** @brief Get Sensor Auxiliary Names by sensorID
      *
      *  @param[in] id - sensor ID
@@ -66,6 +74,9 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorId id);
 
   private:
+    void addNumericSensor(
+        const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr);
+
     std::shared_ptr<pldm_numeric_sensor_value_pdr>
         parseNumericSensorPDR(const std::vector<uint8_t>& pdrData);
 
@@ -77,6 +88,9 @@ class Terminus
 
     std::vector<std::shared_ptr<SensorAuxiliaryNames>>
         sensorAuxiliaryNamesTbl{};
+
+    std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
+    std::string inventoryPath;
 };
 } // namespace platform_mc
 } // namespace pldm
