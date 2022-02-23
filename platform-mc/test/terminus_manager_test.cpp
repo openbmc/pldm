@@ -29,7 +29,9 @@ class TerminusManagerTest : public testing::Test
         dbusImplRequester(bus, "/xyz/openbmc_project/pldm"),
         reqHandler(fd, event, dbusImplRequester, false, 90000, seconds(1), 2,
                    milliseconds(100)),
-        terminusManager(event, reqHandler, dbusImplRequester, termini)
+        sensorManager(event, reqHandler, dbusImplRequester, termini),
+        terminusManager(event, reqHandler, dbusImplRequester, termini,
+                        sensorManager)
     {}
 
     int fd = -1;
@@ -37,6 +39,7 @@ class TerminusManagerTest : public testing::Test
     sdeventplus::Event event;
     pldm::dbus_api::Requester dbusImplRequester;
     pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    pldm::platform_mc::SensorManager sensorManager;
     pldm::platform_mc::TerminusManager terminusManager;
     std::map<mctp_eid_t, std::shared_ptr<pldm::platform_mc::Terminus>> termini;
 };
