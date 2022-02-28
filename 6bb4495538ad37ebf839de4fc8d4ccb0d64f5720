@@ -52,6 +52,24 @@
       "parentUuid": "b0a6d690_fbe51e65",
       "revId": "6bb4495538ad37ebf839de4fc8d4ccb0d64f5720",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87aa8248_e8c0e3cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-02-28T14:56:46Z",
+      "side": 1,
+      "message": "Sorry for late response. As the name suggests, I think the terminus defined by static EID table should always present in system. So when pldmd supports hot plug terminus, the static EID list would need to be merged into the dynamic EID list from /xyz/openbmc_project/mctp D-Bus interface.",
+      "parentUuid": "aed0fc1d_1aa411d7",
+      "revId": "6bb4495538ad37ebf839de4fc8d4ccb0d64f5720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
