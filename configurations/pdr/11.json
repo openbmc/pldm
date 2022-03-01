@@ -3850,7 +3850,7 @@
                 "property_name": "RequestedHostTransition",
                 "property_type": "string",
                 "property_values": [
-                        "xyz.openbmc_project.State.Host.Transition.ForceWarmReboot"
+                        "xyz.openbmc_project.State.Host.Transition.GracefulWarmReboot"
                 ]
             }
         }]
