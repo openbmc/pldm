@@ -1,0 +1,8 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Submitted-by: Corey Swenson <cswenson@us.ibm.com>
+Submitted-at: Thu, 03 Mar 2022 01:00:43 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/51410
+Project: openbmc/pldm
+Branch: refs/heads/master
