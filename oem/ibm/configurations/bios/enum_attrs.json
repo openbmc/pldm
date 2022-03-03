@@ -480,6 +480,30 @@
               "property_type" : "string",
               "property_values" : ["xyz.openbmc_project.Control.Power.RestorePolicy.Policy.None", "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn"]
            }
-     }
+     },
+      {
+         "attribute_name":"hb_lateral_cast_out_mode",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "Only change this value if instructed by service provider as it might degrade system performanc. Specifies if Lateral Cast Out mode is disabled or enabled, requires a reboot for a change to be applied.",
+         "displayName" : "Lateral Cast Out mode (pending)"
+      },
+      {
+         "attribute_name":"hb_lateral_cast_out_mode_current",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "Only change this value if instructed by service provider as it might degrade system performanc. Specifies if Lateral Cast Out mode is disabled or enabled. Do not set this attribute directly; set hb_lateral_cast_out_mode instead.",
+         "displayName" : "Lateral Cast Out mode (current)"
+     },
    ]
 }
