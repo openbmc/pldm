@@ -79,7 +79,13 @@
          "scalar_increment" : 1,
          "default_value" : 0,
          "helpText" : "Specifies the power limit in watts.",
-         "displayName" : "Power Limit In Watts"
+         "displayName" : "Power Limit In Watts",
+         "dbus":{
+            "object_path" : "/xyz/openbmc_project/control/host0/power_cap",
+            "interface" : "xyz.openbmc_project.Control.Power.Cap",
+            "property_type" : "uint32_t",
+            "property_name" : "PowerCap"
+         }
       },
       {
          "attribute_name" : "hb_max_number_huge_pages",
