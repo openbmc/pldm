@@ -16,6 +16,29 @@
       "message": "I\u0027ll defer to the PLDM experts to validate the exact values in the JSON",
       "revId": "31d71a81e4c42c11acce4bc88d062495908a08aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2d66cb2_f3b09ed7",
+        "filename": "oem/ibm/configurations/events/oem_ibm_event_state_sensor.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000353
+      },
+      "writtenOn": "2022-03-07T10:09:21Z",
+      "side": 1,
+      "message": "do we have documented somewhere what are these properties and where from we are getting these values to define it here?",
+      "range": {
+        "startLine": 48,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 14
+      },
+      "revId": "31d71a81e4c42c11acce4bc88d062495908a08aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
