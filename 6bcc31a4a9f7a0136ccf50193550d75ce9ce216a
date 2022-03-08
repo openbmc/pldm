@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f976ba1b_222f7870",
+        "filename": "requester/terminus_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-03-08T04:41:38Z",
+      "side": 1,
+      "message": "Using EID for both TerminusHandler and terminus manager will bind these classes to MCTP specifics. We can have devices which uses other transports like NCSI and still it can support PLDM M\u0026C. If we get such usecases then we won\u0027t be able to re-use these implementations.\n\nInstead we can have a device manager or some sort(Terminus term is specific to PLDM M\u0026C) which can abstract trasport specifics like EID. Basically this layer can implement PLDM base spec and assign TID to the devices, check supported PLDM types etc.. And, it can have a map of TID to transport fd. Later this TID can be used throughout other PLDM types to indicate same device. In this way even if we need to support a different transport only the TID assignment part will need a change and nothing else.",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 33
+      },
+      "revId": "6bcc31a4a9f7a0136ccf50193550d75ce9ce216a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
