@@ -1,0 +1,9 @@
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: Chris Cain <cjcain@us.ibm.com>
+Code-Review+1: George Liu <liuxiwei@inspur.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Wed, 09 Mar 2022 06:53:08 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/51744
+Project: openbmc/pldm
+Branch: refs/heads/master
