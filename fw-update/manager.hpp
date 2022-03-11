@@ -4,6 +4,8 @@
 
 #include "activation.hpp"
 #include "common/types.hpp"
+#include "common/utils.hpp"
+#include "config.hpp"
 #include "device_updater.hpp"
 #include "inventory_manager.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
@@ -39,26 +41,40 @@ class Manager
 
     /** @brief Constructor
      *
+     *  @param[in] event - reference to PLDM daemon's main event loop
      *  @param[in] handler - PLDM request handler
+     *  @param[in] requester - Managing instance ID for PLDM requests
+     *  @param[in] fwUpdateConfigFile - Config file for firmware update
      */
     explicit Manager(Event& event,
                      requester::Handler<requester::Request>& handler,
-                     Requester& requester) :
+                     Requester& requester,
+                     const std::filesystem::path& fwUpdateConfigFile) :
         inventoryMgr(handler, requester, descriptorMap, componentInfoMap),
         updateManager(event, handler, requester, descriptorMap,
                       componentInfoMap)
-    {}
+    {
+        parseConfig(fwUpdateConfigFile, deviceInventoryInfo,
+                    componentNameMapUUID);
+    }
 
     /** @brief Discover MCTP endpoints that support the PLDM firmware update
      *         specification
      *
-     *  @param[in] eids - Array of MCTP endpoints
+     *  @param[in] mctpInfos - <EID, UUID> for every MCTP endpoint
      *
      *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
      */
-    void handleMCTPEndpoints(const std::vector<mctp_eid_t>& eids)
+    void handleMCTPEndpoints(const MctpInfos& mctpInfos)
     {
-        inventoryMgr.discoverFDs(eids);
+        inventoryMgr.discoverFDs(mctpInfos);
+        for (const auto& [eid, uuid] : mctpInfos)
+        {
+            if (componentNameMapUUID.contains(uuid))
+            {
+                componentNameMap[eid] = componentNameMapUUID[uuid];
+            }
+        }
     }
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -88,6 +104,17 @@ class Manager
 
     /** @brief PLDM firmware update manager */
     UpdateManager updateManager;
+
+    /** @brief MCTP UUID to device name mapping for device inventory */
+    DeviceInventoryInfo deviceInventoryInfo;
+
+    /** @brief Component information per MCTP UUID */
+    ComponentNameMapUUID componentNameMapUUID;
+
+    /** @brief Component information to log message registry entries for
+     *         firmware update
+     */
+    ComponentNameMap componentNameMap;
 };
 
 } // namespace fw_update

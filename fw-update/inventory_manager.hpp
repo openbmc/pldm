@@ -56,7 +56,7 @@ class InventoryManager
      *
      *  @param[in] eids - MCTP endpoint ID of the FDs
      */
-    void discoverFDs(const std::vector<mctp_eid_t>& eids);
+    void discoverFDs(const MctpInfos& mctpInfos);
 
     /** @brief Handler for QueryDeviceIdentifiers command response
      *

@@ -13,9 +13,9 @@ namespace pldm
 namespace fw_update
 {
 
-void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
+void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
-    for (const auto& eid : eids)
+    for (const auto& [eid, uuid] : mctpInfos)
     {
         auto instanceId = requester.getInstanceId(eid);
         Request requestMsg(sizeof(pldm_msg_hdr) +
