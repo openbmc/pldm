@@ -15,10 +15,14 @@
 namespace pldm
 {
 
-using eid = uint8_t;
+using EID = uint8_t;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
+
+using UUID = std::string;
+using MctpInfo = std::pair<EID, UUID>;
+using MctpInfos = std::vector<MctpInfo>;
 
 namespace dbus
 {
@@ -53,7 +57,7 @@ using Descriptors =
     std::map<DescriptorType,
              std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
 
-using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DescriptorMap = std::unordered_map<EID, Descriptors>;
 
 // Component information
 using CompClassification = uint16_t;
@@ -61,7 +65,7 @@ using CompIdentifier = uint16_t;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
-using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+using ComponentInfoMap = std::unordered_map<EID, ComponentInfo>;
 
 // PackageHeaderInformation
 using PackageHeaderSize = size_t;
@@ -94,6 +98,16 @@ using ComponentImageInfo =
                CompOptions, ReqCompActivationMethod, CompLocationOffset,
                CompSize, CompVersion>;
 using ComponentImageInfos = std::vector<ComponentImageInfo>;
+
+// DeviceInventory
+using DeviceObjPath = std::string;
+using DeviceInventoryInfo = std::unordered_map<UUID, DeviceObjPath>;
+
+// ComponentInfo
+using ComponentName = std::string;
+using ComponentIdNameMap = std::unordered_map<CompIdentifier, ComponentName>;
+using ComponentNameMapUUID = std::unordered_map<UUID, ComponentIdNameMap>;
+using ComponentNameMap = std::unordered_map<EID, ComponentIdNameMap>;
 
 enum class ComponentImageInfoPos : size_t
 {
