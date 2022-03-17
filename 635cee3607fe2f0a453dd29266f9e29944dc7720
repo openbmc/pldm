@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bef7b61f_b9533828",
+        "filename": "requester/device_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-03-17T02:29:49Z",
+      "side": 1,
+      "message": "I would like to use the name as TerminusHandler to match which terminusManager in your next comments.",
+      "parentUuid": "9a511a55_ae0b17f7",
+      "range": {
+        "startLine": 28,
+        "startChar": 6,
+        "endLine": 28,
+        "endChar": 16
+      },
+      "revId": "635cee3607fe2f0a453dd29266f9e29944dc7720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8fe094bb_e0e076c7",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-21T09:22:37Z",
       "side": 1,
       "message": "Instead of extending this list indefinitely (for each PLDM type and version), we can define a TerminusManager that can gracefully deal with all types of PLDM devices. The TerminusManager can run the PLDM Base commands on discovery of a PLDM capable device, abstract its transport information (MCTP/NC-SI), deal with different specification version of the devices, invoke type specific handlers required for the terminus, etc.",
+      "range": {
+        "startLine": 28,
+        "startChar": 27,
+        "endLine": 29,
+        "endChar": 60
+      },
+      "revId": "635cee3607fe2f0a453dd29266f9e29944dc7720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc134c2_47e23c96",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-03-17T02:29:49Z",
+      "side": 1,
+      "message": "As my opinion, this list only need a device manager (or terminus manager). Which will handle all of functional of an MCTP terminus. In the future depend of the device type, version the terminus manager will use the different way to handle that terminus.",
+      "parentUuid": "8fe094bb_e0e076c7",
       "range": {
         "startLine": 28,
         "startChar": 27,
