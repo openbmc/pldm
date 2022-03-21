@@ -68,36 +68,20 @@ configure_file(output: 'config.h',
 cpp = meson.get_compiler('cpp')
 
 if get_option('libpldm-only').disabled()
-  phosphor_dbus_interfaces = dependency(
-    'phosphor-dbus-interfaces',
-    fallback: ['phosphor-dbus-interfaces', 'phosphor_dbus_interfaces_dep'],
-  )
-  sdbusplus = dependency(
-    'sdbusplus',
-    fallback: ['sdbusplus', 'sdbusplus_dep'],
-  )
-  sdeventplus = dependency(
-    'sdeventplus',
-    fallback: ['sdeventplus', 'sdeventplus_dep'],
-  )
+  phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
+  sdbusplus = dependency('sdbusplus')
+  sdeventplus = dependency('sdeventplus')
+
   if cpp.has_header('nlohmann/json.hpp')
     nlohmann_json = declare_dependency()
   else
-    subproject('nlohmann-json')
-    nlohmann_json = declare_dependency(
-      include_directories: [
-        'subprojects/nlohmann-json/single_include',
-        'subprojects/nlohmann-json/single_include/nlohmann',
-      ]
-    )
+    nlohmann_json = dependency('nlohmann_json')
   endif
+
   if cpp.has_header('CLI/CLI.hpp')
     CLI11_dep = declare_dependency()
   else
-    CLI11_dep = dependency(
-      'CLI11',
-      fallback: [ 'CLI11', 'CLI11_dep' ],
-    )
+    CLI11_dep = dependency('CLI11')
   endif
 
   if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
