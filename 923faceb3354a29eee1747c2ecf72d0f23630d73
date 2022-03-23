@@ -81,6 +81,30 @@
       },
       "revId": "923faceb3354a29eee1747c2ecf72d0f23630d73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d83d67e_d6945a7f",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-03-23T05:07:52Z",
+      "side": 1,
+      "message": "The current code in mctp_endpoint_discovery is using vector for eids, and this list is used as the input parameter for class such as fwManager. Using set for listEids can cause the changing of the current code of other class.\nMoreover, the eid in MCTP D-Bus can\u0027t duplicate and the current code also check the duplicate before add the eids list. So let use vector for listEids to minimum the changing of the current code.",
+      "parentUuid": "4b4da92d_9bf67db9",
+      "range": {
+        "startLine": 51,
+        "startChar": 9,
+        "endLine": 51,
+        "endChar": 15
+      },
+      "revId": "923faceb3354a29eee1747c2ecf72d0f23630d73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
