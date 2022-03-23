@@ -67,6 +67,15 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
     if (response == nullptr || !respMsgLen)
     {
         // Handle error scenario
+        const auto& applicableComponents =
+            std::get<ApplicableComponents>(fwDeviceIDRecord);
+        for (size_t compIndex = 0; compIndex < applicableComponents.size();
+             compIndex++)
+        {
+            updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                                 compIndex,
+                                                 updateManager->transferFailed);
+        }
         std::cerr << "No response received for RequestUpdate, EID="
                   << unsigned(eid) << "\n";
         return;
@@ -86,6 +95,15 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
     }
     if (completionCode)
     {
+        const auto& applicableComponents =
+            std::get<ApplicableComponents>(fwDeviceIDRecord);
+        for (size_t compIndex = 0; compIndex < applicableComponents.size();
+             compIndex++)
+        {
+            updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                                 compIndex,
+                                                 updateManager->transferFailed);
+        }
         std::cerr << "RequestUpdate response failed with error "
                      "completion code, EID="
                   << unsigned(eid) << ", CC=" << unsigned(completionCode)
@@ -191,6 +209,9 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
     if (response == nullptr || !respMsgLen)
     {
         // Handle error scenario
+        updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                             componentIndex,
+                                             updateManager->transferFailed);
         std::cerr << "No response received for PassComponentTable, EID="
                   << unsigned(eid) << "\n";
         return;
@@ -316,6 +337,9 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     if (response == nullptr || !respMsgLen)
     {
         // Handle error scenario
+        updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                             componentIndex,
+                                             updateManager->transferFailed);
         std::cerr << "No response received for updateComponent, EID="
                   << unsigned(eid) << "\n";
         return;
@@ -345,6 +369,10 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
                   << "\n";
         return;
     }
+
+    updateManager->createMessageRegistry(
+        eid, fwDeviceIDRecord, componentIndex,
+        updateManager->transferringToComponent);
 }
 
 Response DeviceUpdater::requestFwData(const pldm_msg* request,
@@ -469,6 +497,10 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
     }
     else
     {
+        // TransferComplete Failed
+        updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                             componentIndex,
+                                             updateManager->transferFailed);
         std::cerr << "Transfer of the component failed, EID=" << unsigned(eid)
                   << ", COMPONENT_VERSION=" << compVersion
                   << ", TRANSFER_RESULT=" << unsigned(transferResult) << "\n";
@@ -522,6 +554,10 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
     }
     else
     {
+        // VerifyComplete Failed
+        updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                             componentIndex,
+                                             updateManager->verificationFailed);
         std::cerr << "Component verification failed, EID=" << unsigned(eid)
                   << ", COMPONENT_VERSION=" << compVersion
                   << ", VERIFY_RESULT=" << unsigned(verifyResult) << "\n";
@@ -545,9 +581,9 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
-
     uint8_t applyResult = 0;
     bitfield16_t compActivationModification{};
+
     auto rc = decode_apply_complete_req(request, payloadLength, &applyResult,
                                         &compActivationModification);
     if (rc)
@@ -573,12 +609,22 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     if (applyResult == PLDM_FWUP_APPLY_SUCCESS ||
         applyResult == PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD)
     {
+        updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                             componentIndex,
+                                             updateManager->updateSuccessful);
         std::cout << "Component apply complete, EID=" << unsigned(eid)
                   << ", COMPONENT_VERSION=" << compVersion << "\n";
         updateManager->updateActivationProgress();
+        updateManager->createMessageRegistry(
+            eid, fwDeviceIDRecord, componentIndex,
+            updateManager->awaitToActivate,
+            updateManager->getActivationMethod(compActivationModification));
     }
     else
     {
+        // ApplyComplete Failed
+        updateManager->createMessageRegistry(
+            eid, fwDeviceIDRecord, componentIndex, updateManager->applyFailed);
         std::cerr << "Component apply failed, EID=" << unsigned(eid)
                   << ", COMPONENT_VERSION=" << compVersion
                   << ", APPLY_RESULT=" << unsigned(applyResult) << "\n";
@@ -665,7 +711,15 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     }
     if (completionCode)
     {
-        // Handle error scenario
+        const auto& applicableComponents =
+            std::get<ApplicableComponents>(fwDeviceIDRecord);
+        for (size_t compIndex = 0; compIndex < applicableComponents.size();
+             compIndex++)
+        {
+            updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
+                                                 compIndex,
+                                                 updateManager->activateFailed);
+        }
         std::cerr << "ActivateFirmware response failed with error "
                      "completion code, EID="
                   << unsigned(eid) << ", CC=" << unsigned(completionCode)
