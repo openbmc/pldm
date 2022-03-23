@@ -302,6 +302,18 @@
          "displayName" : "Virtual Trusted Platform Module (current)"
       },
       {
+         "attribute_name":"pvm_sys_dump_active",
+         "possible_values":[
+            "Enabled",
+            "Disabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "Enabled when a system dump is in progress or stored in hypervisor memory and ready for offload, Disabled otherwise.",
+         "displayName" : "System Dump Active"
+      },
+      {
          "attribute_name":"hb_memory_region_size",
          "possible_values":[
             "128MB",
