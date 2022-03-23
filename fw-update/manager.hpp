@@ -56,12 +56,11 @@ class Manager
                      std::bind_front(&Manager::createInventory, this),
                      descriptorMap, componentInfoMap),
         updateManager(event, handler, requester, descriptorMap,
-                      componentInfoMap),
+                      componentInfoMap, componentNameMap),
         deviceInventoryManager(pldm::utils::DBusHandler::getBus(),
                                deviceInventoryInfo),
         fwInventoryManager(pldm::utils::DBusHandler::getBus(), fwInventoryInfo,
                            componentInfoMap)
-
     {
         parseConfig(fwUpdateConfigFile, deviceInventoryInfo, fwInventoryInfo,
                     componentNameMapInfo);
