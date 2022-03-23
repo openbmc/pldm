@@ -42,6 +42,8 @@ class DeviceUpdater
      *                              components in the fw update package
      *  @param[in] compInfo - Component info for the components in this FD
      *                        derived from GetFirmwareParameters response
+     *  @param[in] compIdNameInfo - Component info for the components in this FD
+     *                        derived from Inventory Data
      *  @param[in] maxTransferSize - Maximum size in bytes of the variable
      *                               payload allowed to be requested by the FD
      *  @param[in] updateManager - To update the status of fw update of the
@@ -51,12 +53,14 @@ class DeviceUpdater
                            const FirmwareDeviceIDRecord& fwDeviceIDRecord,
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
+                           const ComponentIdNameMap& compIdNameInfo,
                            uint32_t maxTransferSize,
                            UpdateManager* updateManager) :
         eid(eid),
         package(package), fwDeviceIDRecord(fwDeviceIDRecord),
         compImageInfos(compImageInfos), compInfo(compInfo),
-        maxTransferSize(maxTransferSize), updateManager(updateManager)
+        compIdNameInfo(compIdNameInfo), maxTransferSize(maxTransferSize),
+        updateManager(updateManager)
     {}
 
     /** @brief Start the firmware update flow for the FD
@@ -154,6 +158,15 @@ class DeviceUpdater
     void activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                           size_t respMsgLen);
 
+    /** @brief Handler to Access private member of DeviceUpdate class
+     *
+     *  @param[in] - Accepts nothing.
+     */
+    FirmwareDeviceIDRecord getfwDeviceIDRecord(void)
+    {
+        return fwDeviceIDRecord;
+    }
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -190,6 +203,11 @@ class DeviceUpdater
      *         GetFirmwareParameters response
      */
     const ComponentInfo& compInfo;
+
+    /** @brief Component info for the components in this FD derived from
+     *         Inventory Data.
+     */
+    const ComponentIdNameMap& compIdNameInfo;
 
     /** @brief Maximum size in bytes of the variable payload to be requested by
      *         the FD via RequestFirmwareData command
