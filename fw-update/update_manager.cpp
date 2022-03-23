@@ -19,6 +19,119 @@ namespace fw_update
 namespace fs = std::filesystem;
 namespace software = sdbusplus::xyz::openbmc_project::Software::server;
 
+void UpdateManager::MethodtoLoggingCreate(const std::string& messageID,
+                                          const std::string& compName,
+                                          const std::string& compVersion,
+                                          const std::string& resolution)
+{
+    using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+    using Level =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    /*Available enum Level types for severity classifications
+    enum class Level
+    {
+        Emergency,
+        Alert,
+        Critical,
+        Error,
+        Warning,
+        Notice,
+        Informational,
+        Debug,
+    };
+    */
+
+    auto DbusCreateApi = [&messageID](
+                             std::map<std::string, std::string>& add_data,
+                             Level& level) {
+        static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+        static constexpr auto logInterface =
+            "xyz.openbmc_project.Logging.Create";
+        auto& bus = pldm::utils::DBusHandler::getBus();
+
+        try
+        {
+            auto service =
+                pldm::utils::DBusHandler().getService(logObjPath, logInterface);
+            auto severity = sdbusplus::xyz::openbmc_project::Logging::server::
+                convertForMessage(level);
+            auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                              logInterface, "Create");
+            method.append(messageID, severity, add_data);
+            bus.call_noreply(method);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr
+                << "failed to make a d-bus call to create Event log, ERROR="
+                << e.what() << "\n";
+        }
+    };
+
+    std::map<std::string, std::string> add_data;
+    add_data["REDFISH_MESSAGE_ID"] = messageID;
+    Level level = Level::Informational;
+
+    /*compName and compVersion order varies between Message Registeries*/
+    if (messageID == TargetDetermined || messageID == UpdateSuccessful)
+    {
+        add_data["REDFISH_MESSAGE_ARGS"] = (compName + ", " + compVersion);
+    }
+    else if (messageID == TransferFailed || messageID == VerificationFailed ||
+             messageID == ApplyFailed || messageID == ActivateFailed)
+    {
+        add_data["REDFISH_MESSAGE_ARGS"] = (compVersion + ", " + compName);
+        level = Level::Critical;
+    }
+    else if (messageID == TransferringToComponent ||
+             messageID == AwaitToActivate)
+    {
+        add_data["REDFISH_MESSAGE_ARGS"] = (compVersion + ", " + compName);
+    }
+    else
+    {
+        std::cerr << "Message Registery messageID is not recognised, "
+                  << messageID << std::endl;
+        return;
+    }
+
+    if (!resolution.empty())
+    {
+        add_data["xyz.openbmc_project.Logging.Entry.Resolution"] = resolution;
+    }
+    DbusCreateApi(add_data, level);
+
+    return;
+}
+
+void UpdateManager::CreateMessageRegistery(
+    mctp_eid_t eid, const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+    size_t comp_index, const std::string messageID,
+    const std::string& resolution)
+{
+    const auto& compImageInfos = parser->getComponentImageInfos();
+    const auto& fd_map = componentNameMap.find(eid);
+    const auto& compIdNameInfo = fd_map->second;
+    const auto& applicableComponents =
+        std::get<ApplicableComponents>(fwDeviceIDRecord);
+    const auto& comp = compImageInfos[applicableComponents[comp_index]];
+    // ComponentIdentifier
+    CompIdentifier compIdentifier =
+        std::get<static_cast<size_t>(ComponentImageInfoPos::CompIdentifierPos)>(
+            comp);
+    const auto& compVersion =
+        std::get<static_cast<size_t>(ComponentImageInfoPos::CompVersionPos)>(
+            comp);
+
+    if (compIdNameInfo.contains(compIdentifier))
+    {
+        auto search = compIdNameInfo.find(compIdentifier);
+        auto compName = search->second;
+        MethodtoLoggingCreate(messageID, compName, compVersion, resolution);
+    }
+}
+
 int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 {
     // If no devices discovered, take no action on the package.
@@ -139,19 +252,19 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& compImageInfos = parser->getComponentImageInfos();
-
     for (const auto& deviceUpdaterInfo : deviceUpdaterInfos)
     {
         const auto& fwDeviceIDRecord =
             fwDeviceIDRecords[deviceUpdaterInfo.second];
         auto search = componentInfoMap.find(deviceUpdaterInfo.first);
+        auto fd_map = componentNameMap.find(deviceUpdaterInfo.first);
         deviceUpdaterMap.emplace(
             deviceUpdaterInfo.first,
-            std::make_unique<DeviceUpdater>(
-                deviceUpdaterInfo.first, package, fwDeviceIDRecord,
-                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+            std::make_unique<DeviceUpdater>(deviceUpdaterInfo.first, package,
+                                            fwDeviceIDRecord, compImageInfos,
+                                            search->second, fd_map->second,
+                                            MAXIMUM_TRANSFER_SIZE, this));
     }
-
     fwPackageFilePath = packageFilePath;
     activation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPath,
@@ -168,6 +281,7 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
+
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
         const auto& deviceIDDescriptors =
@@ -248,6 +362,10 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
     }
     else
     {
+        std::cerr << "RequestFirmwareData reporeted \
+						PLDM_FWUP_INVALID_TRANSFER_LENGTH, EID="
+                  << unsigned(eid) << "\n";
+
         auto ptr = reinterpret_cast<pldm_msg*>(response.data());
         auto rc = encode_cc_only_resp(request->hdr.instance_id,
                                       request->hdr.type, +request->hdr.command,
@@ -263,6 +381,16 @@ void UpdateManager::activatePackage()
     startTime = std::chrono::steady_clock::now();
     for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
     {
+        const auto& fwDeviceIDRecord = deviceUpdaterPtr->getfwDeviceIDRecord();
+        const auto& applicableComponents =
+            std::get<ApplicableComponents>(fwDeviceIDRecord);
+        // static constexpr auto messageID = "Update.1.0.TargetDetermined";
+        auto messageID = TargetDetermined;
+        for (size_t comp_id = 0; comp_id < applicableComponents.size();
+             comp_id++)
+        {
+            CreateMessageRegistery(eid, fwDeviceIDRecord, comp_id, messageID);
+        }
         deviceUpdaterPtr->startFwUpdateFlow();
     }
 }

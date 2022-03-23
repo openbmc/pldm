@@ -52,7 +52,7 @@ class Manager
                      const std::filesystem::path& fwUpdateConfigFile) :
         inventoryMgr(handler, requester, descriptorMap, componentInfoMap),
         updateManager(event, handler, requester, descriptorMap,
-                      componentInfoMap)
+                      componentInfoMap, componentNameMap)
     {
         parseConfig(fwUpdateConfigFile, deviceInventoryInfo,
                     componentNameMapUUID);

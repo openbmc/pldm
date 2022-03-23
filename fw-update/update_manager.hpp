@@ -49,10 +49,11 @@ class UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         Requester& requester, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
+        const ComponentInfoMap& componentInfoMap,
+        ComponentNameMap& componentNameMap) :
         event(event),
         handler(handler), requester(requester), descriptorMap(descriptorMap),
-        componentInfoMap(componentInfoMap),
+        componentInfoMap(componentInfoMap), componentNameMap(componentNameMap),
         watch(event.get(),
               std::bind_front(&UpdateManager::processPackage, this))
     {}
@@ -92,17 +93,40 @@ class UpdateManager
                               const DescriptorMap& descriptorMap,
                               TotalComponentUpdates& totalNumComponentUpdates);
 
+    void
+        CreateMessageRegistery(mctp_eid_t eid,
+                               const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+                               size_t comp_index, const std::string messageID,
+                               const std::string& resolution = std::string(""));
+
+    void MethodtoLoggingCreate(const std::string& messageID,
+                               const std::string& compName,
+                               const std::string& compVersion,
+                               const std::string& resolution);
+
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
     Event& event; //!< reference to PLDM daemon's main event loop
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
     Requester& requester; //!< reference to Requester object
 
+    const std::string TransferFailed{"Update.1.0.TransferFailed"};
+    const std::string TransferringToComponent{
+        "Update.1.0.TransferringToComponent"};
+    const std::string VerificationFailed{"Update.1.0.VerificationFailed"};
+    const std::string UpdateSuccessful{"Update.1.0.UpdateSuccessful"};
+    const std::string AwaitToActivate{"Update.1.0.AwaitToActivate"};
+    const std::string ApplyFailed{"Update.1.0.ApplyFailed"};
+    const std::string ActivateFailed{"Update.1.0.ActivateFailed"};
+    const std::string TargetDetermined{"Update.1.0.TargetDetermined"};
+
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
+    /** @brief Component information needed for the update of the managed FDs */
+    const ComponentNameMap& componentNameMap;
     Watch watch;
 
     std::unique_ptr<Activation> activation;
