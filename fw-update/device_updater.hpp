@@ -42,6 +42,8 @@ class DeviceUpdater
      *                              components in the fw update package
      *  @param[in] compInfo - Component info for the components in this FD
      *                        derived from GetFirmwareParameters response
+     *  @param[in] compIdNameInfo - Component name info for components
+     *                              applicable for the FD
      *  @param[in] maxTransferSize - Maximum size in bytes of the variable
      *                               payload allowed to be requested by the FD
      *  @param[in] updateManager - To update the status of fw update of the
@@ -51,11 +53,12 @@ class DeviceUpdater
                            const FirmwareDeviceIDRecord& fwDeviceIDRecord,
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
+                           const ComponentIdNameMap& compIdNameInfo,
                            uint32_t maxTransferSize,
                            UpdateManager* updateManager) :
-        eid(eid),
-        package(package), fwDeviceIDRecord(fwDeviceIDRecord),
-        compImageInfos(compImageInfos), compInfo(compInfo),
+        fwDeviceIDRecord(fwDeviceIDRecord),
+        eid(eid), package(package), compImageInfos(compImageInfos),
+        compInfo(compInfo), compIdNameInfo(compIdNameInfo),
         maxTransferSize(maxTransferSize), updateManager(updateManager)
     {}
 
@@ -154,6 +157,11 @@ class DeviceUpdater
     void activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                           size_t respMsgLen);
 
+    /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
+     *         firmware device
+     */
+    const FirmwareDeviceIDRecord& fwDeviceIDRecord;
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -176,11 +184,6 @@ class DeviceUpdater
     /** @brief File stream for firmware update package */
     std::ifstream& package;
 
-    /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
-     *         firmware device
-     */
-    const FirmwareDeviceIDRecord& fwDeviceIDRecord;
-
     /** @brief Component image information for all the components in the fw
      *         update package
      */
@@ -190,6 +193,10 @@ class DeviceUpdater
      *         GetFirmwareParameters response
      */
     const ComponentInfo& compInfo;
+
+    /** @brief Component name info for components applicable for the FD.
+     */
+    const ComponentIdNameMap& compIdNameInfo;
 
     /** @brief Maximum size in bytes of the variable payload to be requested by
      *         the FD via RequestFirmwareData command

@@ -31,6 +31,10 @@ class DeviceUpdaterTest : public testing::Test
             {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
         compInfo = {
             {std::make_pair(10, 100), std::make_tuple(1, "comp1Version")}};
+        compIdNameInfo = {{11, "GPU0"},
+                          {55555, "EROT-GPU0"},
+                          {12, "GPU1"},
+                          {66666, "EROT-GPU1"}};
     }
 
     int fd = -1;
@@ -38,6 +42,7 @@ class DeviceUpdaterTest : public testing::Test
     FirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
+    ComponentIdNameMap compIdNameInfo;
 };
 
 TEST_F(DeviceUpdaterTest, validatePackage)
@@ -83,7 +88,7 @@ TEST_F(DeviceUpdaterTest, validatePackage)
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+                                compInfo, compIdNameInfo, 512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
