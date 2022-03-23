@@ -49,10 +49,11 @@ class UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         Requester& requester, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
+        const ComponentInfoMap& componentInfoMap,
+        ComponentNameMap& componentNameMap) :
         event(event),
         handler(handler), requester(requester), descriptorMap(descriptorMap),
-        componentInfoMap(componentInfoMap),
+        componentInfoMap(componentInfoMap), componentNameMap(componentNameMap),
         watch(event.get(),
               std::bind_front(&UpdateManager::processPackage, this))
     {}
@@ -92,17 +93,57 @@ class UpdateManager
                               const DescriptorMap& descriptorMap,
                               TotalComponentUpdates& totalNumComponentUpdates);
 
+    /** @brief Handle Request to Create Message Registries for various
+     *         Firmware update events
+     *
+     *  @param[in] eid - Remote MCTP Endpoint ID
+     *  @param[in] fwDeviceIDRecord - fwDeviceIDRecord from Bundle
+     *  @param[in] compIndex - component Index
+     *  @param[in] messageID - messageID string
+     *  @param[in] resolution - resolution for the event(optional)
+     *
+     */
+    void createMessageRegistry(mctp_eid_t eid,
+                               const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+                               size_t compIndex, const std::string messageID,
+                               const std::string& resolution = std::string(""));
+
+    /** @brief Method to call system api to create Log Entries.
+     *
+     *  @param[in] messageID - messageID string
+     *  @param[in] compName - Component Name string
+     *  @param[in] compVersion - Firmware Version string
+     *  @param[in] resolution - resolution string
+     *
+     */
+    void createMsgRegistryLog(const std::string& messageID,
+                              const std::string& compName,
+                              const std::string& compVersion,
+                              const std::string& resolution);
+
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
     Event& event; //!< reference to PLDM daemon's main event loop
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
     Requester& requester; //!< reference to Requester object
 
+    const std::string transferFailed{"Update.1.0.TransferFailed"};
+    const std::string transferringToComponent{
+        "Update.1.0.TransferringToComponent"};
+    const std::string verificationFailed{"Update.1.0.VerificationFailed"};
+    const std::string updateSuccessful{"Update.1.0.UpdateSuccessful"};
+    const std::string awaitToActivate{"Update.1.0.AwaitToActivate"};
+    const std::string applyFailed{"Update.1.0.ApplyFailed"};
+    const std::string activateFailed{"Update.1.0.ActivateFailed"};
+    const std::string targetDetermined{"Update.1.0.TargetDetermined"};
+
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
+    /** @brief Component information needed for the update of the managed FDs */
+    const ComponentNameMap& componentNameMap;
     Watch watch;
 
     std::unique_ptr<Activation> activation;
