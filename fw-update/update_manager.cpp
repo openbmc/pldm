@@ -4,6 +4,9 @@
 #include "common/utils.hpp"
 #include "package_parser.hpp"
 
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+
+#include <bitset>
 #include <cassert>
 #include <cmath>
 #include <filesystem>
@@ -18,6 +21,144 @@ namespace fw_update
 
 namespace fs = std::filesystem;
 namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+
+std::string
+    UpdateManager::getActivationMethod(bitfield16_t compActivationModification)
+{
+    static std::unordered_map<size_t, std::string> compActivationMethod = {
+        {PLDM_ACTIVATION_AUTOMATIC, "Automatic"},
+        {PLDM_ACTIVATION_SELF_CONTAINED, "Self-Contained"},
+        {PLDM_ACTIVATION_MEDIUM_SPECIFIC_RESET, "Medium-specific reset"},
+        {PLDM_ACTIVATION_SYSTEM_REBOOT, "System reboot"},
+        {PLDM_ACTIVATION_DC_POWER_CYCLE, "DC power cycle"},
+        {PLDM_ACTIVATION_AC_POWER_CYCLE, "AC power cycle"}};
+
+    std::string compActivationMethods{};
+    std::bitset<16> activationMethods(compActivationModification.value);
+
+    for (std::size_t idx = 0; idx < activationMethods.size(); idx++)
+    {
+        if (activationMethods.test(idx) && compActivationMethods.empty() &&
+            compActivationMethod.contains(idx))
+        {
+            compActivationMethods += compActivationMethod[idx];
+        }
+        else if (activationMethods.test(idx) &&
+                 !compActivationMethods.empty() &&
+                 compActivationMethod.contains(idx))
+        {
+            compActivationMethods += " or " + compActivationMethod[idx];
+        }
+    }
+
+    return compActivationMethods;
+}
+
+void UpdateManager::createLogEntry(const std::string& messageID,
+                                   const std::string& compName,
+                                   const std::string& compVersion,
+                                   const std::string& resolution)
+{
+    using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+    using Level =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    auto createLog = [&messageID](std::map<std::string, std::string>& addData,
+                                  Level& level) {
+        static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+        static constexpr auto logInterface =
+            "xyz.openbmc_project.Logging.Create";
+        auto& bus = pldm::utils::DBusHandler::getBus();
+
+        try
+        {
+            auto service =
+                pldm::utils::DBusHandler().getService(logObjPath, logInterface);
+            auto severity = sdbusplus::xyz::openbmc_project::Logging::server::
+                convertForMessage(level);
+            auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                              logInterface, "Create");
+            method.append(messageID, severity, addData);
+            bus.call_noreply(method);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr
+                << "failed to make a d-bus call to create Event log, ERROR="
+                << e.what() << "\n";
+        }
+    };
+
+    std::map<std::string, std::string> addData;
+    addData["REDFISH_MESSAGE_ID"] = messageID;
+    Level level = Level::Informational;
+
+    /*compName and compVersion order varies between Message Registries*/
+    if (messageID == targetDetermined || messageID == updateSuccessful)
+    {
+        addData["REDFISH_MESSAGE_ARGS"] = (compName + ", " + compVersion);
+    }
+    else if (messageID == transferFailed || messageID == verificationFailed ||
+             messageID == applyFailed || messageID == activateFailed)
+    {
+        addData["REDFISH_MESSAGE_ARGS"] = (compVersion + ", " + compName);
+        level = Level::Critical;
+    }
+    else if (messageID == transferringToComponent ||
+             messageID == awaitToActivate)
+    {
+        addData["REDFISH_MESSAGE_ARGS"] = (compVersion + ", " + compName);
+    }
+    else
+    {
+        std::cerr << "Message Registry messageID is not recognised, "
+                  << messageID << std::endl;
+        return;
+    }
+
+    if (!resolution.empty())
+    {
+        addData["xyz.openbmc_project.Logging.Entry.Resolution"] = resolution;
+    }
+    createLog(addData, level);
+
+    return;
+}
+
+void UpdateManager::createMessageRegistry(
+    mctp_eid_t eid, const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+    size_t compIndex, const std::string& messageID,
+    const std::string& resolution)
+{
+    const auto& compImageInfos = parser->getComponentImageInfos();
+    const auto& applicableComponents =
+        std::get<ApplicableComponents>(fwDeviceIDRecord);
+    const auto& comp = compImageInfos[applicableComponents[compIndex]];
+    // ComponentIdentifier
+    CompIdentifier compIdentifier =
+        std::get<static_cast<size_t>(ComponentImageInfoPos::CompIdentifierPos)>(
+            comp);
+    const auto& compVersion =
+        std::get<static_cast<size_t>(ComponentImageInfoPos::CompVersionPos)>(
+            comp);
+    std::string compName;
+    if (componentNameMap.contains(eid))
+    {
+        const auto& fdInfo = componentNameMap.find(eid);
+        const auto& compIdNameInfo = fdInfo->second;
+        if (compIdNameInfo.contains(compIdentifier))
+        {
+            auto search = compIdNameInfo.find(compIdentifier);
+            compName = search->second;
+        }
+    }
+    else
+    {
+        compName = std::to_string(compIdentifier);
+    }
+
+    createLogEntry(messageID, compName, compVersion, resolution);
+}
 
 int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 {
@@ -139,19 +280,20 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& compImageInfos = parser->getComponentImageInfos();
-
     for (const auto& deviceUpdaterInfo : deviceUpdaterInfos)
     {
         const auto& fwDeviceIDRecord =
             fwDeviceIDRecords[deviceUpdaterInfo.second];
         auto search = componentInfoMap.find(deviceUpdaterInfo.first);
+        auto compIdNameInfoSearch =
+            componentNameMap.find(deviceUpdaterInfo.first);
         deviceUpdaterMap.emplace(
             deviceUpdaterInfo.first,
             std::make_unique<DeviceUpdater>(
                 deviceUpdaterInfo.first, package, fwDeviceIDRecord,
-                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+                compImageInfos, search->second, compIdNameInfoSearch->second,
+                MAXIMUM_TRANSFER_SIZE, this));
     }
-
     fwPackageFilePath = packageFilePath;
     activation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPath,
@@ -168,6 +310,7 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
+
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
         const auto& deviceIDDescriptors =
@@ -263,6 +406,14 @@ void UpdateManager::activatePackage()
     startTime = std::chrono::steady_clock::now();
     for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
     {
+        const auto& applicableComponents =
+            std::get<ApplicableComponents>(deviceUpdaterPtr->fwDeviceIDRecord);
+        for (size_t compIndex = 0; compIndex < applicableComponents.size();
+             compIndex++)
+        {
+            createMessageRegistry(eid, deviceUpdaterPtr->fwDeviceIDRecord,
+                                  compIndex, targetDetermined);
+        }
         deviceUpdaterPtr->startFwUpdateFlow();
     }
 }
