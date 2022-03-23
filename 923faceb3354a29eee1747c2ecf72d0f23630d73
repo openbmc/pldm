@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4e48781_38ed6651",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-03-23T03:51:54Z",
+      "side": 1,
+      "message": "listEids contains the plugged devices to the system. When the devices is removed the listEids should be update to removed the unplugged devices. eids list includes the mctp devices in MCTP D-Bus interface. So assigning eids to listEids is reasonable in this case, I thinks.",
+      "parentUuid": "6a558de8_689080b9",
+      "revId": "923faceb3354a29eee1747c2ecf72d0f23630d73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88b24e11_e62dad0a",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 5
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-21T08:22:00Z",
       "side": 1,
       "message": "I supose we don\u0027t want to have dulpicate EID entries. How about using set?",
+      "range": {
+        "startLine": 51,
+        "startChar": 9,
+        "endLine": 51,
+        "endChar": 15
+      },
+      "revId": "923faceb3354a29eee1747c2ecf72d0f23630d73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b4da92d_9bf67db9",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-03-23T03:51:54Z",
+      "side": 1,
+      "message": "Ok. I will update.",
+      "parentUuid": "88b24e11_e62dad0a",
       "range": {
         "startLine": 51,
         "startChar": 9,
