@@ -1,0 +1,14 @@
+{
+    "entries": [
+        {
+            "mctp_endpoint_uuid": "ad4c8360-c54c-11eb-8529-0242ac130003",
+            "firmware_inventory": {
+                "ComponentName1": 1
+            },
+            "component_info": {
+                "ComponentName1": 1,
+                "ComponentName2": 2
+            }
+        }
+    ]
+}

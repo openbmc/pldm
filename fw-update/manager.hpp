@@ -4,6 +4,7 @@
 
 #include "activation.hpp"
 #include "common/types.hpp"
+#include "config.hpp"
 #include "device_updater.hpp"
 #include "inventory_manager.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
@@ -39,15 +40,29 @@ class Manager
 
     /** @brief Constructor
      *
+     *  @param[in] event - reference to PLDM daemon's main event loop
      *  @param[in] handler - PLDM request handler
+     *  @param[in] requester - Managing instance ID for PLDM requests
+     *  @param[in] fwUpdateConfigFile - Config file for firmware update
      */
     explicit Manager(Event& event,
                      requester::Handler<requester::Request>& handler,
-                     Requester& requester) :
+                     Requester& requester,
+                     const std::filesystem::path& fwUpdateConfigFile) :
         inventoryMgr(handler, requester, descriptorMap, componentInfoMap),
         updateManager(event, handler, requester, descriptorMap,
                       componentInfoMap)
-    {}
+    {
+        try
+        {
+            parseConfig(fwUpdateConfigFile, deviceInventoryInfo,
+                        fwInventoryInfo, componentNameMapInfo);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+    }
 
     /** @brief Discover MCTP endpoints that support the PLDM firmware update
      *         specification
@@ -88,6 +103,15 @@ class Manager
 
     /** @brief PLDM firmware update manager */
     UpdateManager updateManager;
+
+    /** @brief Config info to create D-Bus device inventory */
+    DeviceInventoryInfo deviceInventoryInfo;
+
+    /** @brief Config info to create D-Bus firmware inventory */
+    FirmwareInventoryInfo fwInventoryInfo;
+
+    /** @brief Config info to create message registry entries for fw update */
+    ComponentNameMapInfo componentNameMapInfo;
 };
 
 } // namespace fw_update
