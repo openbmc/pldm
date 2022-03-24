@@ -16,6 +16,7 @@ namespace pldm
 {
 
 using eid = uint8_t;
+using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
@@ -94,6 +95,21 @@ using ComponentImageInfo =
                CompOptions, ReqCompActivationMethod, CompLocationOffset,
                CompSize, CompVersion>;
 using ComponentImageInfos = std::vector<ComponentImageInfo>;
+
+// DeviceInventory
+using DeviceObjPath = std::string;
+using Associations =
+    std::vector<std::tuple<std::string, std::string, std::string>>;
+using DeviceInfo = std::tuple<DeviceObjPath, Associations>;
+using DeviceInventoryInfo = std::unordered_map<UUID, DeviceInfo>;
+
+// FirmwareInventory
+using ComponentName = std::string;
+using ComponentIdNameMap = std::unordered_map<CompIdentifier, ComponentName>;
+using FirmwareInventoryInfo = std::unordered_map<UUID, ComponentIdNameMap>;
+
+// ComponentInformation
+using ComponentNameMapInfo = std::unordered_map<UUID, ComponentIdNameMap>;
 
 enum class ComponentImageInfoPos : size_t
 {

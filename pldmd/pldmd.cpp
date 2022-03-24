@@ -322,7 +322,8 @@ int main(int argc, char** argv)
     }
 
     std::unique_ptr<fw_update::Manager> fwManager =
-        std::make_unique<fw_update::Manager>(event, reqHandler, dbusImplReq);
+        std::make_unique<fw_update::Manager>(event, reqHandler, dbusImplReq,
+                                             FW_UPDATE_CONFIG_JSON);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(bus, fwManager.get());
 
