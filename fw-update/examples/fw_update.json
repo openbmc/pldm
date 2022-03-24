@@ -1,0 +1,64 @@
+// This is a sample JSON file for configuring the PLDM fw-update implementation
+// to create firmware inventory, device inventory, populate message registries
+// and for processing HttpPushUriTargets. The configuration may not be
+// applicable for all PLDM implementations and alternate mechanisms can be used
+// for the above purposes. This configuration depends on MCTP UUID which is
+// known in advance and that is used as the key to derive device and component
+// information.
+//
+// 1) Device Inventory - Device inventory should be ideally created by
+// processing PLDM for FRU (Type 4) from the devices. PLDM for FRU is not
+// available on certain FD implementations and we are leveraging PLDM for
+// firmware update specification(Type 5) to create device inventory. This
+// implementation is currently limited to implementing
+// xyz.openbmc_project.Inventory.Item.Chassis interface and default ChassisType
+// to Component. The device section can be expanded if different inventory
+// items are to be supported. It will implement the
+// xyz.openbmc_project.Common.UUID D-Bus interface and populate UUID property
+// with the MCTP UUID for the endpoint. Optionally D-Bus associations can be
+// created by providing the forward, reverse type of the association and the
+// association endpoint.
+//
+// 2) Firmware Inventory - The firmware version for the components on the FD is
+// populated on the D-Bus. The firmware inventory D-Bus object path is
+// "ComponentName" appended to "/xyz/openbmc_project/software". It will
+// implement xyz.openbmc_project.Software.Version interface and default
+// Purpose to xyz.openbmc_project.Software.Version.VersionPurpose.Other and the
+// Version property with "ActiveComponentVersionString" from
+// GetFirmwareParameters response. If device inventory is created for the FD,
+// then xyz.openbmc_project.Association.Definitions interface is implemented
+// with forward association type - "inventory", reverse association type
+// - "activation" and association endpoint -
+// "/xyz/openbmc_project/inventory/chassis/DeviceName". This allows to
+// create D-Bus firmware inventory for selected components in the
+// ComponentParameterTable.
+//
+// 3) Message Registries - PLDM UA firmware update code will log message
+// registry entries based on 
+// https://redfish.dmtf.org/registries/Update.1.0.0.json. The "component_info"
+// will be used to populate the Args for the messages in the Update Message
+// Registry.
+{
+    "entries": [
+        {
+            "mctp_endpoint_uuid": "ad4c8360-c54c-11eb-8529-0242ac130003",
+            "device_inventory": {
+                "object_path": "/xyz/openbmc_project/inventory/chassis/DeviceName",
+                "associations": [
+                    {
+                        "forward": "parent",
+                        "reverse": "child",
+                        "endpoint": "/xyz/openbmc_project/inventory/chassis"
+                    }
+                ]
+            },
+            "firmware_inventory": {
+                "ComponentName": 1
+            },
+            "component_info": {
+                "ComponentName1": 1,
+                "ComponentName2": 2
+            }
+        }
+    ]
+}
