@@ -2,6 +2,7 @@
 #include "pldm_cmd_helper.hpp"
 
 #include <libpldm/entity.h>
+#include "libpldm/platform.h"
 #include <libpldm/state_set.h>
 
 #include <cstddef>
@@ -79,7 +80,8 @@ class GetPDR : public CommandInterface
                                    "supported types:\n"
                                    "[terminusLocator, stateSensor, "
                                    "numericEffecter, stateEffecter, "
-                                   "compactNumericSensor, "
+                                   "compactNumericSensor, stateSensorAuxName, "
+                                   "efffecterAuxName, "
                                    "EntityAssociation, fruRecord, ... ]");
 
         getPDRGroupOption = pdrOptionGroup->add_option(
@@ -584,7 +586,9 @@ class GetPDR : public CommandInterface
     const std::map<std::string, uint8_t> strToPdrType = {
         {"terminuslocator", PLDM_TERMINUS_LOCATOR_PDR},
         {"statesensor", PLDM_STATE_SENSOR_PDR},
+        {"statesensorauxname", PLDM_SENSOR_AUXILIARY_NAMES_PDR},
         {"numericeffecter", PLDM_NUMERIC_EFFECTER_PDR},
+        {"efffecterauxname", PLDM_EFFECTER_AUXILIARY_NAMES_PDR},
         {"compactnumericsensor", PLDM_COMPACT_NUMERIC_SENSOR_PDR},
         {"stateeffecter", PLDM_STATE_EFFECTER_PDR},
         {"entityassociation", PLDM_PDR_ENTITY_ASSOCIATION},
@@ -854,6 +858,66 @@ class GetPDR : public CommandInterface
                            unsigned(child->entity_container_id));
 
             ++child;
+        }
+    }
+
+    /** @brief Format the StateSensor/Effecter Aux Name PDR types to json output
+     *
+     *  @param[in] data - reference to the StateSensor/Effecter Aux Name PDR
+     *  @param[out] output - PDRs data fields in Json format
+     */
+    void printAuxNamePDR(uint8_t* data, ordered_json& output)
+    {
+        constexpr uint8_t nullTerminator = 0;
+        struct pldm_effecter_aux_name_pdr* auxNamePdr =
+            (struct pldm_effecter_aux_name_pdr*)data;
+
+        if (!auxNamePdr)
+        {
+            std::cerr << "Failed to get Aux Name PDR" << std::endl;
+            return;
+        }
+
+        std::string sPrefix = "effecter";
+        if (auxNamePdr->hdr.type == PLDM_SENSOR_AUXILIARY_NAMES_PDR)
+        {
+            sPrefix = "sensor";
+        }
+        output["terminusHandle"] = int(auxNamePdr->terminus_handle);
+        output[sPrefix + "Id"] = int(auxNamePdr->effecter_id);
+        output[sPrefix + "Count"] = int(auxNamePdr->effecter_count);
+
+        const uint8_t* ptr = auxNamePdr->effecter_names;
+        for (int i = 0; i < auxNamePdr->effecter_count; i++)
+        {
+            const uint8_t nameStringCount = static_cast<uint8_t>(*ptr);
+            ptr += sizeof(uint8_t);
+            for (int j = 0; j < nameStringCount; j++)
+            {
+                std::string nameLanguageTagKey = sPrefix + std::to_string(j) +
+                                                 "_nameLanguageTag" +
+                                                 std::to_string(i);
+                std::string entityAuxNameKey = sPrefix + std::to_string(j) +
+                                               "_entityAuxName" +
+                                               std::to_string(i);
+                std::string nameLanguageTag(reinterpret_cast<const char*>(ptr),
+                                            0, PLDM_STR_UTF_8_MAX_LEN);
+                ptr += nameLanguageTag.size() + sizeof(nullTerminator);
+                std::u16string u16NameString(
+                    reinterpret_cast<const char16_t*>(ptr), 0,
+                    PLDM_STR_UTF_16_MAX_LEN);
+                ptr += (u16NameString.size() + sizeof(nullTerminator)) *
+                       sizeof(uint16_t);
+                std::transform(u16NameString.cbegin(), u16NameString.cend(),
+                               u16NameString.begin(),
+                               [](uint16_t utf16) { return be16toh(utf16); });
+                std::string nameString =
+                    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
+                                         char16_t>{}
+                        .to_bytes(u16NameString);
+                output[nameLanguageTagKey] = nameLanguageTag;
+                output[entityAuxNameKey] = nameString;
+            }
         }
     }
 
@@ -1258,6 +1322,12 @@ class GetPDR : public CommandInterface
                 break;
             case PLDM_NUMERIC_EFFECTER_PDR:
                 printNumericEffecterPDR(data, output);
+                break;
+            case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
+                printAuxNamePDR(data, output);
+                break;
+            case PLDM_EFFECTER_AUXILIARY_NAMES_PDR:
+                printAuxNamePDR(data, output);
                 break;
             case PLDM_STATE_EFFECTER_PDR:
                 printStateEffecterPDR(data, output);
