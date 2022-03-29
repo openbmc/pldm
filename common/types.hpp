@@ -15,7 +15,7 @@
 namespace pldm
 {
 
-using eid = uint8_t;
+using EID = uint8_t;
 using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
@@ -54,15 +54,17 @@ using Descriptors =
     std::map<DescriptorType,
              std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
 
-using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DescriptorMap = std::unordered_map<EID, Descriptors>;
 
 // Component information
 using CompClassification = uint16_t;
 using CompIdentifier = uint16_t;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
-using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
-using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+using CompVersion = std::string;
+using CompInfo = std::tuple<CompClassificationIndex, CompVersion>;
+using ComponentInfo = std::map<CompKey, CompInfo>;
+using ComponentInfoMap = std::unordered_map<EID, ComponentInfo>;
 
 // PackageHeaderInformation
 using PackageHeaderSize = size_t;
@@ -89,7 +91,6 @@ using CompOptions = std::bitset<16>;
 using ReqCompActivationMethod = std::bitset<16>;
 using CompLocationOffset = uint32_t;
 using CompSize = uint32_t;
-using CompVersion = std::string;
 using ComponentImageInfo =
     std::tuple<CompClassification, CompIdentifier, CompComparisonStamp,
                CompOptions, ReqCompActivationMethod, CompLocationOffset,

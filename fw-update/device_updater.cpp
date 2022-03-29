@@ -139,7 +139,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     if (compInfo.contains(compKey))
     {
         auto search = compInfo.find(compKey);
-        compClassificationIndex = search->second;
+        compClassificationIndex = std::get<0>(search->second);
     }
     else
     {
@@ -262,7 +262,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     if (compInfo.contains(compKey))
     {
         auto search = compInfo.find(compKey);
-        compClassificationIndex = search->second;
+        compClassificationIndex = std::get<0>(search->second);
     }
     else
     {
