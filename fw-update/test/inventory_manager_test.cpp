@@ -105,8 +105,8 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
 {
     // constexpr uint16_t compCount = 2;
     // constexpr std::string_view activeCompImageSetVersion{"DeviceVer1.0"};
-    // constexpr std::string_view activeCompVersion1{"Comp1v2.0"};
-    // constexpr std::string_view activeCompVersion2{"Comp2v3.0"};
+    const std::string activeCompVersion1{"Comp1v2.0"};
+    const std::string activeCompVersion2{"Comp2v3.0"};
     constexpr uint16_t compClassification1 = 10;
     constexpr uint16_t compIdentifier1 = 300;
     constexpr uint8_t compClassificationIndex1 = 20;
@@ -136,15 +136,15 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     ComponentInfoMap componentInfoMap1{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
-           compClassificationIndex1},
+           std::make_tuple(compClassificationIndex1, activeCompVersion1)},
           {std::make_pair(compClassification2, compIdentifier2),
-           compClassificationIndex2}}}};
+           std::make_tuple(compClassificationIndex2, activeCompVersion2)}}}};
     EXPECT_EQ(outComponentInfoMap.size(), componentInfoMap1.size());
     EXPECT_EQ(outComponentInfoMap, componentInfoMap1);
 
     // constexpr uint16_t compCount = 1;
-    // constexpr std::string_view activeCompImageSetVersion{"DeviceVer2.0"};
-    // constexpr std::string_view activeCompVersion1{"Comp3v4.0"};
+    constexpr std::string_view activeCompImageSetVersion{"DeviceVer2.0"};
+    const std::string activeCompVersion3{"Comp3v4.0"};
     constexpr uint16_t compClassification3 = 2;
     constexpr uint16_t compIdentifier3 = 302;
     constexpr uint8_t compClassificationIndex3 = 40;
@@ -166,12 +166,12 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     ComponentInfoMap componentInfoMap2{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
-           compClassificationIndex1},
+           std::make_tuple(compClassificationIndex1, activeCompVersion1)},
           {std::make_pair(compClassification2, compIdentifier2),
-           compClassificationIndex2}}},
+           std::make_tuple(compClassificationIndex2, activeCompVersion2)}}},
         {2,
          {{std::make_pair(compClassification3, compIdentifier3),
-           compClassificationIndex3}}}};
+           std::make_tuple(compClassificationIndex3, activeCompVersion3)}}}};
     EXPECT_EQ(outComponentInfoMap.size(), componentInfoMap2.size());
     EXPECT_EQ(outComponentInfoMap, componentInfoMap2);
 }

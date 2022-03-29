@@ -29,7 +29,8 @@ class DeviceUpdaterTest : public testing::Test
             {}};
         compImageInfos = {
             {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
-        compInfo = {{std::make_pair(10, 100), 1}};
+        compInfo = {
+            {std::make_pair(10, 100), std::make_tuple(1, "comp1Version")}};
     }
 
     int fd = -1;
