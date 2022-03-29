@@ -231,7 +231,8 @@ void InventoryManager::getFirmwareParameters(mctp_eid_t eid,
         auto compIdentifier = compEntry.comp_identifier;
         componentInfo.emplace(
             std::make_pair(compClassification, compIdentifier),
-            compEntry.comp_classification_index);
+            std::make_tuple(compEntry.comp_classification_index,
+                            utils::toString(activeCompVerStr)));
         compParamPtr += sizeof(pldm_component_parameter_entry) +
                         activeCompVerStr.length + pendingCompVerStr.length;
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
