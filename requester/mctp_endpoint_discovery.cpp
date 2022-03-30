@@ -21,7 +21,7 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
     mctpEndpointSignal(bus,
                        sdbusplus::bus::match::rules::interfacesAdded(
                            "/xyz/openbmc_project/mctp"),
-                       std::bind_front(&MctpDiscovery::dicoverEndpoints, this))
+                       std::bind_front(&MctpDiscovery::discoverEndpoints, this))
 {
     dbus::ObjectValueTree objects;
 
@@ -38,12 +38,19 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
         return;
     }
 
-    std::vector<mctp_eid_t> eids;
+    MctpInfos mctpInfos;
 
     for (const auto& [objectPath, interfaces] : objects)
     {
+        UUID uuid{};
         for (const auto& [intfName, properties] : interfaces)
         {
+
+            if (intfName == uuidEndpointIntfName)
+            {
+                uuid = std::get<std::string>(properties.at("UUID"));
+            }
+
             if (intfName == mctpEndpointIntfName)
             {
                 if (properties.contains("EID") &&
@@ -55,31 +62,35 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                         types.end())
                     {
-                        eids.emplace_back(eid);
+                        mctpInfos.emplace_back(std::make_pair(eid, uuid));
                     }
                 }
             }
         }
     }
 
-    if (eids.size() && fwManager)
+    if (mctpInfos.size() && fwManager)
     {
-        fwManager->handleMCTPEndpoints(eids);
+        fwManager->handleMCTPEndpoints(mctpInfos);
     }
 }
 
-void MctpDiscovery::dicoverEndpoints(sdbusplus::message::message& msg)
+void MctpDiscovery::discoverEndpoints(sdbusplus::message::message& msg)
 {
-    constexpr std::string_view mctpEndpointIntfName{
-        "xyz.openbmc_project.MCTP.Endpoint"};
-    std::vector<mctp_eid_t> eids;
+    MctpInfos mctpInfos;
 
     sdbusplus::message::object_path objPath;
     std::map<std::string, std::map<std::string, dbus::Value>> interfaces;
     msg.read(objPath, interfaces);
 
+    UUID uuid{};
     for (const auto& [intfName, properties] : interfaces)
     {
+        if (intfName == uuidEndpointIntfName)
+        {
+            uuid = std::get<std::string>(properties.at("UUID"));
+        }
+
         if (intfName == mctpEndpointIntfName)
         {
             if (properties.contains("EID") &&
@@ -91,15 +102,15 @@ void MctpDiscovery::dicoverEndpoints(sdbusplus::message::message& msg)
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                     types.end())
                 {
-                    eids.emplace_back(eid);
+                    mctpInfos.emplace_back(std::make_pair(eid, uuid));
                 }
             }
         }
     }
 
-    if (eids.size() && fwManager)
+    if (mctpInfos.size() && fwManager)
     {
-        fwManager->handleMCTPEndpoints(eids);
+        fwManager->handleMCTPEndpoints(mctpInfos);
     }
 }
 
