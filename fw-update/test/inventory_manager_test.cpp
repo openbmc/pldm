@@ -19,8 +19,8 @@ class InventoryManagerTest : public testing::Test
                           "/xyz/openbmc_project/pldm"),
         reqHandler(fd, event, dbusImplRequester, false, 90000, seconds(1), 2,
                    milliseconds(100)),
-        inventoryManager(reqHandler, dbusImplRequester, outDescriptorMap,
-                         outComponentInfoMap)
+        inventoryManager(reqHandler, dbusImplRequester, nullptr,
+                         outDescriptorMap, outComponentInfoMap)
     {}
 
     int fd = -1;
