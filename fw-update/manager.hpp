@@ -4,8 +4,11 @@
 
 #include "activation.hpp"
 #include "common/types.hpp"
+#include "common/utils.hpp"
 #include "config.hpp"
+#include "device_inventory.hpp"
 #include "device_updater.hpp"
+#include "firmware_inventory.hpp"
 #include "inventory_manager.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
@@ -49,9 +52,16 @@ class Manager
                      requester::Handler<requester::Request>& handler,
                      Requester& requester,
                      const std::filesystem::path& fwUpdateConfigFile) :
-        inventoryMgr(handler, requester, descriptorMap, componentInfoMap),
+        inventoryMgr(handler, requester,
+                     std::bind_front(&Manager::createInventory, this),
+                     descriptorMap, componentInfoMap),
         updateManager(event, handler, requester, descriptorMap,
-                      componentInfoMap)
+                      componentInfoMap),
+        deviceInventoryManager(pldm::utils::DBusHandler::getBus(),
+                               deviceInventoryInfo),
+        fwInventoryManager(pldm::utils::DBusHandler::getBus(), fwInventoryInfo,
+                           componentInfoMap)
+
     {
         parseConfig(fwUpdateConfigFile, deviceInventoryInfo, fwInventoryInfo,
                     componentNameMapInfo);
@@ -60,13 +70,33 @@ class Manager
     /** @brief Discover MCTP endpoints that support the PLDM firmware update
      *         specification
      *
-     *  @param[in] eids - Array of MCTP endpoints
-     *
-     *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
+     *  @param[in] mctpInfos - <EID, UUID> for every MCTP endpoint
      */
-    void handleMCTPEndpoints(const std::vector<mctp_eid_t>& eids)
+    void handleMCTPEndpoints(const MctpInfos& mctpInfos)
     {
-        inventoryMgr.discoverFDs(eids);
+        inventoryMgr.discoverFDs(mctpInfos);
+        for (const auto& [eid, uuid] : mctpInfos)
+        {
+            if (componentNameMapInfo.contains(uuid))
+            {
+                componentNameMap[eid] = componentNameMapInfo[uuid];
+            }
+        }
+    }
+
+    /** @brief Create device and firmware inventory based on the firmware update
+     *         config file and firmware inventory commands
+     *
+     *  @param[in] eid - MCTP endpoint
+     *  @param[in] uuid - MCTP UUID
+     */
+    void createInventory(EID eid, UUID uuid)
+    {
+        auto objectPath = deviceInventoryManager.createEntry(uuid);
+        if (componentInfoMap.contains(eid))
+        {
+            fwInventoryManager.createEntry(eid, uuid, objectPath);
+        }
     }
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -76,6 +106,7 @@ class Manager
      *  @param[in] command - PLDM command code
      *  @param[in] request - PLDM request message
      *  @param[in] requestLen - PLDM request message length
+     *
      *  @return PLDM response message
      */
     Response handleRequest(mctp_eid_t eid, Command command,
@@ -85,10 +116,10 @@ class Manager
     }
 
   private:
-    /** Descriptor information of all the discovered MCTP endpoints */
+    /** @brief Descriptor information of all the discovered MCTP endpoints */
     DescriptorMap descriptorMap;
 
-    /** Component information of all the discovered MCTP endpoints */
+    /** @brief Component information of all the discovered MCTP endpoints */
     ComponentInfoMap componentInfoMap;
 
     /** @brief PLDM firmware inventory manager */
@@ -105,6 +136,15 @@ class Manager
 
     /** @brief Config info to create message registry entries for fw update */
     ComponentNameMapInfo componentNameMapInfo;
+
+    /** @brief Component information to create message registries */
+    ComponentNameMap componentNameMap;
+
+    /** @brief Device inventory D-Bus object manager */
+    device_inventory::Manager deviceInventoryManager;
+
+    /** @brief Firmware inventory D-Bus object manager */
+    fw_inventory::Manager fwInventoryManager;
 };
 
 } // namespace fw_update
