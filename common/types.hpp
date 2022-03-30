@@ -21,6 +21,9 @@ using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
 
+using MctpInfo = std::pair<EID, UUID>;
+using MctpInfos = std::vector<MctpInfo>;
+
 namespace dbus
 {
 
@@ -111,6 +114,7 @@ using FirmwareInventoryInfo = std::unordered_map<UUID, ComponentIdNameMap>;
 
 // ComponentInformation
 using ComponentNameMapInfo = std::unordered_map<UUID, ComponentIdNameMap>;
+using ComponentNameMap = std::unordered_map<EID, ComponentIdNameMap>;
 
 enum class ComponentImageInfoPos : size_t
 {
