@@ -13,10 +13,11 @@ namespace pldm
 namespace fw_update
 {
 
-void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
+void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
-    for (const auto& eid : eids)
+    for (const auto& [eid, uuid] : mctpInfos)
     {
+        mctpEidMap[eid] = uuid;
         auto instanceId = requester.getInstanceId(eid);
         Request requestMsg(sizeof(pldm_msg_hdr) +
                            PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES);
@@ -239,6 +240,11 @@ void InventoryManager::getFirmwareParameters(mctp_eid_t eid,
                              activeCompVerStr.length + pendingCompVerStr.length;
     }
     componentInfoMap.emplace(eid, std::move(componentInfo));
+
+    if (createInventoryCallBack)
+    {
+        createInventoryCallBack(eid, mctpEidMap[eid]);
+    }
 }
 
 } // namespace fw_update

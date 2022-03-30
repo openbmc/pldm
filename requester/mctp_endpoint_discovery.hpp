@@ -35,12 +35,15 @@ class MctpDiscovery
     /** @brief Used to watch for new MCTP endpoints */
     sdbusplus::bus::match_t mctpEndpointSignal;
 
-    void dicoverEndpoints(sdbusplus::message::message& msg);
+    void discoverEndpoints(sdbusplus::message::message& msg);
 
     static constexpr uint8_t mctpTypePLDM = 1;
 
     static constexpr std::string_view mctpEndpointIntfName{
         "xyz.openbmc_project.MCTP.Endpoint"};
+
+    static constexpr std::string_view uuidEndpointIntfName{
+        "xyz.openbmc_project.Common.UUID"};
 };
 
 } // namespace pldm
