@@ -214,11 +214,20 @@ int main(int argc, char** argv)
     requester::Handler<requester::Request> reqHandler(
         sockfd, event, dbusImplReq, currentSendbuffSize, verbose);
 
+    std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
+        pldm_pdr_init(), pldm_pdr_destroy);
+    std::unique_ptr<pldm::host_effecters::HostEffecterParser>
+        hostEffecterParser;
+    DBusHandler dbusHandler;
+
+    hostEffecterParser =
+        std::make_unique<pldm::host_effecters::HostEffecterParser>(
+            &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler, HOST_JSONS_DIR,
+            &reqHandler);
+
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
     dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
-    std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
-        pldm_pdr_init(), pldm_pdr_destroy);
     std::unique_ptr<pldm_entity_association_tree,
                     decltype(&pldm_entity_association_tree_destroy)>
         entityTree(pldm_entity_association_tree_init(),
@@ -228,10 +237,7 @@ int main(int argc, char** argv)
         bmcEntityTree(pldm_entity_association_tree_init(),
                       pldm_entity_association_tree_destroy);
     std::shared_ptr<HostPDRHandler> hostPDRHandler;
-    std::unique_ptr<pldm::host_effecters::HostEffecterParser>
-        hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
-    DBusHandler dbusHandler;
     auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
@@ -242,10 +248,6 @@ int main(int argc, char** argv)
         // is running
         dbusImplHost.setHostPdrObj(hostPDRHandler);
 
-        hostEffecterParser =
-            std::make_unique<pldm::host_effecters::HostEffecterParser>(
-                &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
-                HOST_JSONS_DIR, &reqHandler);
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             sockfd, hostEID, dbusImplReq, &reqHandler);
     }
