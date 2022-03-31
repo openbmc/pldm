@@ -200,15 +200,21 @@ int main(int argc, char** argv)
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
                                                       instanceIdDb, verbose);
 
-#ifdef LIBPLDMRESPONDER
-    using namespace pldm::state_sensor;
-    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
     if (!pdrRepo)
     {
         throw std::runtime_error("Failed to instantiate PDR repository");
     }
+    DBusHandler dbusHandler;
+    std::unique_ptr<pldm::host_effecters::HostEffecterParser>
+        hostEffecterParser =
+            std::make_unique<pldm::host_effecters::HostEffecterParser>(
+                &instanceIdDb, pldmTransport.getEventSource(), pdrRepo.get(),
+                &dbusHandler, HOST_JSONS_DIR, &reqHandler);
+#ifdef LIBPLDMRESPONDER
+    using namespace pldm::state_sensor;
+    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_entity_association_tree,
                     decltype(&pldm_entity_association_tree_destroy)>
         entityTree(pldm_entity_association_tree_init(),
@@ -228,10 +234,7 @@ int main(int argc, char** argv)
             "Failed to instantiate BMC PDR entity association tree");
     }
     std::shared_ptr<HostPDRHandler> hostPDRHandler;
-    std::unique_ptr<pldm::host_effecters::HostEffecterParser>
-        hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
-    DBusHandler dbusHandler;
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
     std::unique_ptr<platform_config::Handler> platformConfigHandler{};
     platformConfigHandler = std::make_unique<platform_config::Handler>();
