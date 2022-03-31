@@ -1090,3 +1090,69 @@ TEST(TrimNameForDbus, goodTest)
     result = trimNameForDbus(name);
     EXPECT_EQ(expectedName, result);
 }
+
+TEST(dbusPropValuesToDouble, goodTest)
+{
+    double value = 0;
+    bool ret =
+        dbusPropValuesToDouble("uint8_t", static_cast<uint8_t>(0x12), &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(0x12, value);
+    ret =
+        dbusPropValuesToDouble("int16_t", static_cast<int16_t>(0x1234), &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(0x1234, value);
+    ret = dbusPropValuesToDouble("uint16_t", static_cast<uint16_t>(0x8234),
+                                 &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(0x8234, value);
+    ret = dbusPropValuesToDouble("int32_t", static_cast<int32_t>(0x12345678),
+                                 &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(0x12345678, value);
+    ret = dbusPropValuesToDouble("uint32_t", static_cast<uint32_t>(0x82345678),
+                                 &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(0x82345678, value);
+    ret = dbusPropValuesToDouble(
+        "int64_t", static_cast<int64_t>(0x1234567898765432), &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(0x1234567898765432, value);
+    ret = dbusPropValuesToDouble(
+        "uint64_t", static_cast<uint64_t>(0x8234567898765432), &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(0x8234567898765432, value);
+    ret = dbusPropValuesToDouble("double", static_cast<double>(1234.5678),
+                                 &value);
+    EXPECT_EQ(true, ret);
+    EXPECT_EQ(1234.5678, value);
+}
+
+TEST(dbusPropValuesToDouble, badTest)
+{
+    double value = std::numeric_limits<double>::quiet_NaN();
+    /* Type and Data variant are different */
+    bool ret =
+        dbusPropValuesToDouble("uint8_t", static_cast<uint16_t>(0x12), &value);
+    EXPECT_EQ(false, ret);
+    /* Unsupported Types */
+    ret = dbusPropValuesToDouble("string", static_cast<std::string>("hello"),
+                                 &value);
+    EXPECT_EQ(false, ret);
+    ret = dbusPropValuesToDouble("bool", static_cast<bool>(true), &value);
+    EXPECT_EQ(false, ret);
+    ret = dbusPropValuesToDouble("vector<uint8_t>",
+                                 static_cast<std::string>("hello"), &value);
+    EXPECT_EQ(false, ret);
+    ret = dbusPropValuesToDouble("vector<string>",
+                                 static_cast<std::string>("hello"), &value);
+    EXPECT_EQ(false, ret);
+    /* Support Type but Data Type is unsupported */
+    ret = dbusPropValuesToDouble("double", static_cast<std::string>("hello"),
+                                 &value);
+    EXPECT_EQ(false, ret);
+    /* Null pointer */
+    ret = dbusPropValuesToDouble("double", static_cast<std::string>("hello"),
+                                 nullptr);
+    EXPECT_EQ(false, ret);
+}
