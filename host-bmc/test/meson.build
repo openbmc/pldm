@@ -1,5 +1,5 @@
 host_bmc_test_src = declare_dependency(
-    sources: ['../dbus_to_host_effecters.cpp'],
+    sources: ['../dbus_to_terminus_effecters.cpp'],
     include_directories: '../../requester',
 )
 
