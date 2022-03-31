@@ -26,6 +26,32 @@
                     }
                 }
             ]
+        },
+        {
+            "mctp_eid": 20,
+            "effecter_info": {
+                "effecterPdrType": 9,
+                "effecterID": 155,
+                "entityType": 32903,
+                "entityInstance": 6,
+                "containerID": 4,
+                "compositeEffecterCount": 1,
+                "checkHostState": false
+            },
+            "effecters": [
+                {
+                    "dbus_info": {
+                        "object_path": "/xyz/openbmc_project/effecters/power/PLimit",
+                        "interface": "xyz.openbmc_project.Effecter.Value",
+                        "property_name": "Value",
+                        "property_type": "double"
+                    },
+                    "effecterDataSize": 5,
+                    "resolution": 1,
+                    "offset": 0,
+                    "unitModifier": -3
+                }
+            ]
         }
     ]
 }
