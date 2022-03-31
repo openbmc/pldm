@@ -1,0 +1,285 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7fd2006_aba73a4b",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "We can cleanup this trace, in case we add specific handling for completion codes we can add it back.",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 40
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dda9a83_93918c20",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "We can add it back, when we add support for error handling.",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 46
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8e8bf79_90150f37",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "Remove tabs",
+      "range": {
+        "startLine": 458,
+        "startChar": 0,
+        "endLine": 458,
+        "endChar": 6
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1985bc4_a9e767c4",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "Remove tabs",
+      "range": {
+        "startLine": 475,
+        "startChar": 0,
+        "endLine": 475,
+        "endChar": 6
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "416407de_974c27f0",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "Remove the blank line.",
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bc21004_01911eb4",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "We need to map the resolution to activation method response from the FD.",
+      "range": {
+        "startLine": 686,
+        "startChar": 0,
+        "endLine": 690,
+        "endChar": 74
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63e8f0f8_940d9f42",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "Remove the blank line",
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99493b8f_a979e6f1",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "I think this should be applicable for all the components.",
+      "range": {
+        "startLine": 792,
+        "startChar": 45,
+        "endLine": 792,
+        "endChar": 59
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da799331_30519709",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "We need to update device completion to fail.",
+      "range": {
+        "startLine": 789,
+        "startChar": 0,
+        "endLine": 793,
+        "endChar": 0
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6839cdf_83347eb1",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "Component name info for components applicable for the FD",
+      "range": {
+        "startLine": 45,
+        "startChar": 36,
+        "endLine": 46,
+        "endChar": 57
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2de345c0_ed31191f",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "Let\u0027s make this a public variable, plain getters/setters are not encouraged.",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 0
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c12d9ea1_39c6078b",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "Component name info for components applicable for the FD",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 30
+      },
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "970980f1_1b3f12bb",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-03-31T11:24:20Z",
+      "side": 1,
+      "message": "I think the editor is adding newline at the end of all these files.",
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
