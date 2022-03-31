@@ -36,6 +36,15 @@ namespace pldm
 {
 namespace utils
 {
+
+const std::vector<std::string> DBUS_VALUE_TYPE_NAMES = {
+    "bool",    "uint8_t",  "int16_t",         "uint16_t",
+    "int32_t", "uint32_t", "int64_t",         "uint64_t",
+    "double",  "string",   "vector<uint8_t>", "vector<string>"};
+const std::vector<std::string> DBUS_VALUE_NUMERIC_TYPE_NAMES = {
+    "uint8_t",  "int16_t", "uint16_t", "int32_t",
+    "uint32_t", "int64_t", "uint64_t", "double"};
+
 namespace fs = std::filesystem;
 using Json = nlohmann::json;
 constexpr bool Tx = true;
@@ -530,6 +539,18 @@ void setFruPresence(const std::string& fruObjPath, bool present);
  *  @return the result string
  */
 std::string_view trimNameForDbus(std::string& name);
+
+/** @brief Convert the number type D-Bus Value to the double
+ *
+ *  @param[in] type - string type should in DBUS_VALUE_NUMERIC_TYPE_NAMES list
+ *  @param[in] value - DBus PropertyValue variant
+ *  @param[out] doubleValue - response value
+ *
+ *  @return true if data type is corrected and converting is successful
+ *          otherwise return false.
+ */
+bool dbusPropValuesToDouble(std::string type, pldm::utils::PropertyValue value,
+                            double* doubleValue);
 
 } // namespace utils
 } // namespace pldm

@@ -677,5 +677,67 @@ std::string_view trimNameForDbus(std::string& name)
     }
     return name;
 }
+
+bool dbusPropValuesToDouble(std::string type, pldm::utils::PropertyValue value,
+                            double* doubleValue)
+{
+    if (std::find(DBUS_VALUE_NUMERIC_TYPE_NAMES.begin(),
+                  DBUS_VALUE_NUMERIC_TYPE_NAMES.end(), type) ==
+        DBUS_VALUE_NUMERIC_TYPE_NAMES.end())
+    {
+        return false;
+    }
+
+    if (!doubleValue)
+    {
+        return false;
+    }
+
+    try
+    {
+        if (type == "uint8_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint8_t>(value));
+        }
+        else if (type == "int16_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int16_t>(value));
+        }
+        else if (type == "uint16_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint16_t>(value));
+        }
+        else if (type == "int32_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int32_t>(value));
+        }
+        else if (type == "uint32_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint32_t>(value));
+        }
+        else if (type == "int64_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int64_t>(value));
+        }
+        else if (type == "uint64_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint64_t>(value));
+        }
+        else if (type == "double")
+        {
+            *doubleValue = static_cast<double>(std::get<double>(value));
+        }
+        else
+        {
+            return false;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
+
+    return true;
+}
 } // namespace utils
 } // namespace pldm
