@@ -70,13 +70,60 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
         auto jsonEffecterInfo = entry.value("effecter_info", empty);
         auto effecterId =
             jsonEffecterInfo.value("effecterID", PLDM_INVALID_EFFECTER_ID);
+        /* default as PLDM_STATE_EFFECTER_PDR */
+        auto effecterPdrType =
+            jsonEffecterInfo.value("effecterPdrType", PLDM_STATE_EFFECTER_PDR);
+        if (effecterPdrType != PLDM_STATE_EFFECTER_PDR &&
+            effecterPdrType != PLDM_NUMERIC_EFFECTER_PDR)
+        {
+            error("Invalid EffecterPDRType {TYPE} of effecterID '{EFFECTERID}'",
+                  "TYPE", effecterPdrType, "EFFECTERID", effecterId);
+            continue;
+        }
+        effecterInfo.effecterPdrType = effecterPdrType;
         effecterInfo.containerId = jsonEffecterInfo.value("containerID", 0);
         effecterInfo.entityType = jsonEffecterInfo.value("entityType", 0);
         effecterInfo.entityInstance =
             jsonEffecterInfo.value("entityInstance", 0);
         effecterInfo.compEffecterCnt =
             jsonEffecterInfo.value("compositeEffecterCount", 0);
+        effecterInfo.checkHostState =
+            jsonEffecterInfo.value("checkHostState", true);
         auto effecters = entry.value("effecters", emptyList);
+
+        if (effecterPdrType == PLDM_NUMERIC_EFFECTER_PDR)
+        {
+            for (const auto& effecter : effecters)
+            {
+                DBusNumericEffecterMapping dbusInfo{};
+                auto jsonDbusInfo = effecter.value("dbus_info", empty);
+                dbusInfo.dataSize = effecter.value("effecterDataSize", 0);
+                dbusInfo.unitModifier = effecter.value("unitModifier", 0);
+                dbusInfo.resolution = effecter.value("resolution", 1);
+                dbusInfo.offset = effecter.value("offset", 0);
+                dbusInfo.dbusMap.objectPath =
+                    jsonDbusInfo.value("object_path", "");
+                dbusInfo.dbusMap.interface =
+                    jsonDbusInfo.value("interface", "");
+                dbusInfo.dbusMap.propertyName =
+                    jsonDbusInfo.value("property_name", "");
+                dbusInfo.dbusMap.propertyType =
+                    jsonDbusInfo.value("property_type", "");
+
+                dbusInfo.propertyValue =
+                    std::numeric_limits<double>::quiet_NaN();
+                auto effecterInfoIndex = hostEffecterInfo.size();
+                auto dbusInfoIndex = effecterInfo.dbusInfo.size();
+                createHostEffecterMatch(
+                    dbusInfo.dbusMap.objectPath, dbusInfo.dbusMap.interface,
+                    effecterInfoIndex, dbusInfoIndex, effecterId);
+                effecterInfo.dbusNumericEffecterInfo.emplace_back(
+                    std::move(dbusInfo));
+            }
+            hostEffecterInfo.emplace_back(std::move(effecterInfo));
+            continue;
+        }
+
         for (const auto& effecter : effecters)
         {
             DBusEffecterMapping dbusInfo{};
@@ -120,13 +167,54 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
     }
 }
 
+bool HostEffecterParser::isHostOn(void)
+{
+    using BootProgress =
+        sdbusplus::client::xyz::openbmc_project::state::boot::Progress<>;
+    constexpr auto hostStatePath = "/xyz/openbmc_project/state/host0";
+    try
+    {
+        auto propVal = dbusHandler->getDbusPropertyVariant(
+            hostStatePath, "BootProgress", BootProgress::interface);
+
+        using Stages = BootProgress::ProgressStages;
+        auto currHostState = sdbusplus::message::convert_from_string<Stages>(
+                                 std::get<std::string>(propVal))
+                                 .value();
+
+        if (currHostState != Stages::SystemInitComplete &&
+            currHostState != Stages::OSRunning &&
+            currHostState != Stages::SystemSetup &&
+            currHostState != Stages::OEM)
+        {
+            info(
+                "Remote terminus is not up/active, current remote terminus state is: '{CURRENT_HOST_STATE}'",
+                "CURRENT_HOST_STATE", currHostState);
+            return false;
+        }
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error(
+            "Error in getting current remote terminus state. Will still continue to set the remote terminus effecter, error - {ERROR}",
+            "ERROR", e);
+        return false;
+    }
+
+    return true;
+}
+
 void HostEffecterParser::processHostEffecterChangeNotification(
     const DbusChgHostEffecterProps& chProperties, size_t effecterInfoIndex,
     size_t dbusInfoIndex, uint16_t effecterId)
 {
-    using BootProgress =
-        sdbusplus::client::xyz::openbmc_project::state::boot::Progress<>;
-
+    const auto& pdrType = hostEffecterInfo[effecterInfoIndex].effecterPdrType;
+    if (pdrType == PLDM_NUMERIC_EFFECTER_PDR)
+    {
+        processTerminusNumericEffecterChangeNotification(
+            chProperties, effecterInfoIndex, dbusInfoIndex, effecterId);
+        return;
+    }
     const auto& propertyName = hostEffecterInfo[effecterInfoIndex]
                                    .dbusInfo[dbusInfoIndex]
                                    .dbusMap.propertyName;
@@ -161,34 +249,12 @@ void HostEffecterParser::processHostEffecterChangeNotification(
             return;
         }
     }
-    constexpr auto hostStatePath = "/xyz/openbmc_project/state/host0";
 
-    try
+    if (!isHostOn())
     {
-        auto propVal = dbusHandler->getDbusPropertyVariant(
-            hostStatePath, "BootProgress", BootProgress::interface);
-
-        using Stages = BootProgress::ProgressStages;
-        auto currHostState = sdbusplus::message::convert_from_string<Stages>(
-                                 std::get<std::string>(propVal))
-                                 .value();
-
-        if (currHostState != Stages::SystemInitComplete &&
-            currHostState != Stages::OSRunning &&
-            currHostState != Stages::SystemSetup)
-        {
-            info(
-                "Remote terminus is not up/active, current remote terminus state is: '{CURRENT_HOST_STATE}'",
-                "CURRENT_HOST_STATE", currHostState);
-            return;
-        }
+        return;
     }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error(
-            "Error in getting current remote terminus state. Will still continue to set the remote terminus effecter, error - {ERROR}",
-            "ERROR", e);
-    }
+
     uint8_t newState{};
     try
     {
@@ -235,6 +301,86 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     }
 }
 
+double HostEffecterParser::adjustValue(double value, double offset,
+                                       double resolution, int8_t modify)
+{
+    double unitModifier = std::pow(10, signed(modify));
+    return std::round((value - offset) * resolution / unitModifier);
+}
+
+void HostEffecterParser::processTerminusNumericEffecterChangeNotification(
+    const DbusChgHostEffecterProps& chProperties, size_t effecterInfoIndex,
+    size_t dbusInfoIndex, uint16_t effecterId)
+{
+    const auto& checkHost = hostEffecterInfo[effecterInfoIndex].checkHostState;
+    const auto& propValues = hostEffecterInfo[effecterInfoIndex]
+                                 .dbusNumericEffecterInfo[dbusInfoIndex];
+    const auto& propertyName = propValues.dbusMap.propertyName;
+
+    const auto& it = chProperties.find(propertyName);
+
+    if (it == chProperties.end())
+    {
+        return;
+    }
+
+    double val = std::get<double>(it->second);
+
+    /* Update the current value of D-Bus interface*/
+    if (!std::isnan(val) && std::isnan(propValues.propertyValue))
+    {
+        hostEffecterInfo[effecterInfoIndex]
+            .dbusNumericEffecterInfo[dbusInfoIndex]
+            .propertyValue = val;
+        return;
+    }
+
+    /* Bypass the setting when the current value is NA or settting value is NA*/
+    if (std::isnan(propValues.propertyValue) || std::isnan(val))
+    {
+        return;
+    }
+
+    /* Setting value equals the D-Bus value which is real value of effecter */
+    if (val == propValues.propertyValue)
+    {
+        return;
+    }
+
+    double rawValue = adjustValue(val, propValues.offset, propValues.resolution,
+                                  propValues.unitModifier);
+
+    if (checkHost && !isHostOn())
+    {
+        return;
+    }
+
+    try
+    {
+        auto rc = setTerminusNumericEffecter(effecterInfoIndex, effecterId,
+                                             propValues.dataSize, rawValue);
+        if (rc)
+        {
+            error(
+                "Could not set the numeric effecter ID '{EFFECTERID}' return code '{RC}'",
+                "EFFECTERID", effecterId, "RC", rc);
+            return;
+        }
+    }
+    catch (const std::runtime_error& e)
+    {
+        error("Could not set numeric effecter ID= '{EFFECTERID}'", "EFFECTERID",
+              effecterId);
+        return;
+    }
+
+    hostEffecterInfo[effecterInfoIndex]
+        .dbusNumericEffecterInfo[dbusInfoIndex]
+        .propertyValue = val;
+
+    return;
+}
+
 uint8_t HostEffecterParser::findNewStateValue(
     size_t effecterInfoIndex, size_t dbusInfoIndex,
     const PropertyValue& propertyValue)
@@ -256,6 +402,147 @@ uint8_t HostEffecterParser::findNewStateValue(
         throw std::out_of_range("new state not found in json");
     }
     return newState;
+}
+
+size_t getEffecterDataSize(uint8_t effecterDataSize)
+{
+    switch (effecterDataSize)
+    {
+        case PLDM_EFFECTER_DATA_SIZE_UINT8:
+            return sizeof(uint8_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT8:
+            return sizeof(int8_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT16:
+            return sizeof(uint16_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT16:
+            return sizeof(int16_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT32:
+            return sizeof(uint32_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT32:
+            return sizeof(int32_t);
+        default:
+            return 0;
+    }
+}
+
+int HostEffecterParser::setTerminusNumericEffecter(
+    size_t effecterInfoIndex, uint16_t effecterId, uint8_t dataSize,
+    double rawValue)
+{
+    uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
+    auto instanceId = instanceIdDb->next(mctpEid);
+    int rc = PLDM_ERROR;
+    std::vector<uint8_t> requestMsg;
+
+    /**
+     * PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES = 4. It includes the 1 byte
+     * value for effecterValue as `Table 48 - SetNumericEffecterValue command
+     * format` DSP0248 V1.3.0 So the payload_length of `SetNumericEffecterValue`
+     * request message will be payload_length =
+     * PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES - 1 + sizeof(dataType)
+     */
+    size_t payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES - 1 +
+                            getEffecterDataSize(dataSize);
+    requestMsg.resize(sizeof(pldm_msg_hdr) + payload_length);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    switch (dataSize)
+    {
+        case PLDM_EFFECTER_DATA_SIZE_UINT8:
+        case PLDM_EFFECTER_DATA_SIZE_SINT8:
+        {
+            auto value_int8 = (uint8_t)rawValue;
+            rc = encode_set_numeric_effecter_value_req(
+                instanceId, effecterId, dataSize,
+                reinterpret_cast<uint8_t*>(&value_int8), request,
+                payload_length);
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_UINT16:
+        {
+            auto value_uint16 = (uint16_t)rawValue;
+            rc = encode_set_numeric_effecter_value_req(
+                instanceId, effecterId, dataSize,
+                reinterpret_cast<uint8_t*>(&value_uint16), request,
+                payload_length);
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT16:
+        {
+            auto value_int16 = (int16_t)rawValue;
+            rc = encode_set_numeric_effecter_value_req(
+                instanceId, effecterId, dataSize,
+                reinterpret_cast<uint8_t*>(&value_int16), request,
+                payload_length);
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_UINT32:
+        {
+            auto value_uint32 = (uint32_t)rawValue;
+            rc = encode_set_numeric_effecter_value_req(
+                instanceId, effecterId, dataSize,
+                reinterpret_cast<uint8_t*>(&value_uint32), request,
+                payload_length);
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT32:
+        {
+            auto value_int32 = (int32_t)rawValue;
+            rc = encode_set_numeric_effecter_value_req(
+                instanceId, effecterId, dataSize,
+                reinterpret_cast<uint8_t*>(&value_int32), request,
+                payload_length);
+            break;
+        }
+        default:
+            break;
+    }
+
+    if (rc)
+    {
+        error(
+            "Failed to encode set numeric effecter request message for effecter ID '{EFFECTERID}' and instanceID '{INSTANCE}' with error code '{RC}'",
+            "EFFECTERID", effecterId, "INSTANCE", instanceId, "RC", lg2::hex,
+            rc);
+
+        instanceIdDb->free(mctpEid, instanceId);
+        return rc;
+    }
+
+    auto setNumericEffecterRespHandler = [effecterId](mctp_eid_t /*eid*/,
+                                                      const pldm_msg* response,
+                                                      size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            error(
+                "Failed to receive response for setNumericEffecterValue command");
+            return;
+        }
+        uint8_t completionCode{};
+        auto rc = decode_set_numeric_effecter_value_resp(response, respMsgLen,
+                                                         &completionCode);
+
+        if (rc)
+        {
+            error(
+                "Failed to decode set numeric effecter response message for effecter ID '{EFFECTERID}' with error code '{RC}'",
+                "EFFECTERID", effecterId, "RC", lg2::hex, rc);
+        }
+        if (completionCode)
+        {
+            error(
+                "Failed to set numeric effecter for effecter ID '{EFFECTERID}' with complete code '{CC}'",
+                "EFFECTERID", effecterId, "CC", lg2::hex, completionCode);
+        }
+    };
+
+    rc = handler->registerRequest(
+        mctpEid, instanceId, PLDM_PLATFORM, PLDM_SET_NUMERIC_EFFECTER_VALUE,
+        std::move(requestMsg), std::move(setNumericEffecterRespHandler));
+    if (rc)
+    {
+        error("Failed to send request to set an effecter on Host");
+    }
+    return rc;
 }
 
 int HostEffecterParser::setHostStateEffecter(
@@ -337,7 +624,7 @@ void HostEffecterParser::createHostEffecterMatch(
         [this, effecterInfoIndex, dbusInfoIndex,
          effecterId](sdbusplus::message_t& msg) {
             DbusChgHostEffecterProps props;
-            std::string iface;
+            std::string iface{};
             msg.read(iface, props);
             processHostEffecterChangeNotification(props, effecterInfoIndex,
                                                   dbusInfoIndex, effecterId);
