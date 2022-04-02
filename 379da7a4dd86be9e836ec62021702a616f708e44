@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a254ab46_a86e1a00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-02T05:54:38Z",
+      "side": 1,
+      "message": "can you also state why ? and what is the intention behind doing that explicity in the commit message - and any design documents or logging commits that are tied up to this commit.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 45
+      },
+      "revId": "379da7a4dd86be9e836ec62021702a616f708e44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd353e5b_2e6e41e7",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-02T05:54:38Z",
+      "side": 1,
+      "message": "why are we not creating util functions for these (rather than writing these in fw-update) ? seems like that would be the right place for these ..as other components of the code can leverage this code (if needed)",
+      "revId": "379da7a4dd86be9e836ec62021702a616f708e44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e95ceed_62f0cdb0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-02T05:54:38Z",
+      "side": 1,
+      "message": "is there a design docuement ? or a pre-commit in logging that i should look at to understand if the keys like REDFISH_MESSAGE_ID e.t.c are standard ?",
+      "range": {
+        "startLine": 59,
+        "startChar": 3,
+        "endLine": 90,
+        "endChar": 30
+      },
+      "revId": "379da7a4dd86be9e836ec62021702a616f708e44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
