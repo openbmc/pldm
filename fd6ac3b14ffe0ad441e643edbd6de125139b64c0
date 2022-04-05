@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc8954c_7384a3ed",
+        "filename": "common/types.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T15:38:31Z",
+      "side": 1,
+      "message": "Are changes in this file relevant to this commit?",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10744df8_59c8c93b",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T15:38:31Z",
+      "side": 1,
+      "message": "Why did we have to change this data structure?",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5d59c3a_9507c758",
+        "filename": "fw-update/firmware_inventory.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T15:38:31Z",
+      "side": 1,
+      "message": "Don\u0027t we need to make this check before and do we need other sanity checks?",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "835d79bd_b30fa2ee",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T15:38:31Z",
+      "side": 1,
+      "message": "Why did we have to change this data structure?",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
