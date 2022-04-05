@@ -1,4 +1,4 @@
-deps = [
+libpldmresponder_deps = [
   phosphor_dbus_interfaces,
   nlohmann_json,
   sdbusplus,
@@ -49,7 +49,7 @@ libpldmresponder = library(
   'pldmresponder',
   sources,
   version: meson.project_version(),
-  dependencies: deps,
+  dependencies: libpldmresponder_deps,
   install: true)
 
 libpldmresponder = declare_dependency(
