@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd60562f_091f00af",
+        "filename": "libpldmresponder/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-05T05:28:09Z",
+      "side": 1,
+      "message": "Is stdplus a libpldmresponder library dependency? I thought it is consumed by pldm daemon code.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 10
+      },
+      "revId": "466e619ed2aa47733a87fa5b54fda28293bf5199",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
