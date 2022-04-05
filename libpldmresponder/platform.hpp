@@ -108,6 +108,14 @@ class Handler : public CmdHandler
                                                        eventDataOffset);
             });
 
+        eventHandlers[PLDM_MESSAGE_POLL_EVENT].emplace_back(
+            [this](const pldm_msg* request, size_t payloadLength,
+                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset) {
+                return this->pldmMsgPollEvent(request, payloadLength,
+                                              formatVersion, tid,
+                                              eventDataOffset);
+            });
+
         // Additional OEM event handlers for PLDM events, append it to the
         // standard handlers
         if (addOnHandlersMap)
@@ -269,6 +277,20 @@ class Handler : public CmdHandler
     int pldmPDRRepositoryChgEvent(const pldm_msg* request, size_t payloadLength,
                                   uint8_t formatVersion, uint8_t tid,
                                   size_t eventDataOffset);
+
+    /** @brief Handler for pldmMsgPollEvent
+     *
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request payload length
+     *  @param[in] formatVersion - Version of the event format
+     *  @param[in] tid - Terminus ID of the event's originator
+     *  @param[in] eventDataOffset - Offset of the event data in the request
+     *                               message
+     *  @return PLDM completion code
+     */
+    int pldmMsgPollEvent(const pldm_msg* request, size_t payloadLength,
+                         uint8_t formatVersion, uint8_t tid,
+                         size_t eventDataOffset);
 
     /** @brief Handler for extracting the PDR handles from changeEntries
      *

@@ -467,6 +467,31 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
     return PLDM_SUCCESS;
 }
 
+int Handler::pldmMsgPollEvent(const pldm_msg* request, size_t payloadLength,
+                              uint8_t /*formatVersion*/, uint8_t tid,
+                              size_t eventDataOffset)
+{
+    uint8_t evtFormatVersion{};
+    uint16_t evtID{};
+    uint32_t evtDataTransferHandle{};
+
+    auto eventData =
+        reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
+    auto eventDataSize = payloadLength - eventDataOffset;
+
+    auto rc = decode_pldm_message_poll_event_data(eventData, eventDataSize,
+                                                  &evtFormatVersion, &evtID,
+                                                  &evtDataTransferHandle);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
+
+    return emitPldmMessagePollEventSignal(tid, PLDM_MESSAGE_POLL_EVENT,
+                                          evtFormatVersion, evtID,
+                                          evtDataTransferHandle);
+}
+
 int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                                        size_t payloadLength,
                                        uint8_t /*formatVersion*/, uint8_t tid,

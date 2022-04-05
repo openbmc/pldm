@@ -368,6 +368,20 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
                                uint8_t sensorOffset, uint8_t eventState,
                                uint8_t previousEventState);
 
+/** @brief Emit the PLDM event message signal
+ *
+ *  @param[in] tid - The terminus id
+ *  @param[in] eventClass - The event class value from the state change that
+ * triggered the event message
+ *  @param[in] eventFormatVersion - Version of the event format
+ *  @param[in] eventID - The event id
+ *  @param[in] eventDataTransferHandle - The event data transfer handle
+ *  @return PLDM completion code
+ */
+int emitPldmMessagePollEventSignal(uint8_t tid, uint8_t eventClass,
+                                   uint8_t eventFormatVersion, uint16_t eventID,
+                                   uint32_t eventDataTransferHandle);
+
 /** @brief Print the buffer
  *
  *  @param[in]  isTx - True if the buffer is an outgoing PLDM message, false if

@@ -473,6 +473,31 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
     return PLDM_SUCCESS;
 }
 
+int emitPldmMessagePollEventSignal(uint8_t tid, uint8_t eventClass,
+                                   uint8_t eventFormatVersion, uint16_t eventID,
+                                   uint32_t eventDataTransferHandle)
+{
+    try
+    {
+        auto& bus = DBusHandler::getBus();
+        auto msg = bus.new_signal("/xyz/openbmc_project/pldm",
+                                  "xyz.openbmc_project.PLDM.Event",
+                                  "PldmMessagePollEvent");
+        msg.append(tid, eventClass, eventFormatVersion, eventID,
+                   eventDataTransferHandle);
+
+        msg.signal_send();
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error emitting pldm event signal:"
+                  << "ERROR=" << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
 uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
                            uint16_t entityType, uint16_t entityInstance,
                            uint16_t containerId, uint16_t stateSetId)
