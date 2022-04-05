@@ -3,6 +3,7 @@ deps = [
   nlohmann_json,
   sdbusplus,
   sdeventplus,
+  stdplus,
   libpldm_dep,
   libpldmutils
 ]
