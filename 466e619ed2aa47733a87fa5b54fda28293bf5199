@@ -22,6 +22,30 @@
       },
       "revId": "466e619ed2aa47733a87fa5b54fda28293bf5199",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "985cecd2_095cf702",
+        "filename": "libpldmresponder/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-05T13:42:28Z",
+      "side": 1,
+      "message": "Yes, you are write.\n\nActually the meson file is written poorly - we create deps in main meson file, then we replace the deps when we enter into subfolder(libpldmresponder) with responder depdendencies - that actually changed the entire deps for pldmd.\n\nI have renamed the dependency objects so that they are clear to understand for a new person.",
+      "parentUuid": "dd60562f_091f00af",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 10
+      },
+      "revId": "466e619ed2aa47733a87fa5b54fda28293bf5199",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
