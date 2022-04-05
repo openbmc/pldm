@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d35a69c1_1f4d7efa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "I think we should make a design doc update as well. Also mention here and/or in the design doc why the FW inventory code needs the JSON and why the device inventory code needs the JSON.",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56bc0c34_d8d1f984",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Should we fail here or caller if UUID is not found? In other words, is UUID mandatory?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da51859_c66b893d",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Should we fail here or caller if associations and/or object_path is not found? In other words, are associations and/or object_path mandatory for \"device_inventory\"?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a87e035_e08ad600",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Same as above. Fail here or in caller if no key-value pairs?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fb78c82_d3e170be",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Same as above. Fail here or in caller if no key-value pairs?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b992ea8c_d646fac8",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Also need to add the Updateable association here and in code?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a4144e_b5d1ee2d",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Need a better example below. It isn\u0027t clear how the path will be constructed based on the JSON. Also, what would be the impact if this didn\u0027t exist in the JSON?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07615dbc_166bd367",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Need a better example below. It isn\u0027t clear how the path will be constructed based on the JSON. Also, what would be the impact if this didn\u0027t exist in the JSON?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6a483fe_45c80dc9",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Is \u0027ComponentName\u0027 the actual expected key or just an example? In your other JSONs I have seen other keys. Need to document actual/expected keys. How many keys can exist, etc.",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f10c3f_1cba8a15",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Are these actual expected key or just an example? In your other JSONs I have seen other keys. Need to document actual/expected keys. How many keys can exist, etc.",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e1080e_79567d0f",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-05T14:27:11Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be an optional arg with default value?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
