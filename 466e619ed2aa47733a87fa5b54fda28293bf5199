@@ -46,6 +46,30 @@
       },
       "revId": "466e619ed2aa47733a87fa5b54fda28293bf5199",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "702f290c_66d0092a",
+        "filename": "libpldmresponder/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-06T01:27:24Z",
+      "side": 1,
+      "message": "*write* -\u003e right.",
+      "parentUuid": "985cecd2_095cf702",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 10
+      },
+      "revId": "466e619ed2aa47733a87fa5b54fda28293bf5199",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
