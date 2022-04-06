@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec6bea08_4b6caea6",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-04-06T06:54:54Z",
+      "side": 1,
+      "message": "input paramters should be const right ?",
+      "range": {
+        "startLine": 106,
+        "startChar": 31,
+        "endLine": 106,
+        "endChar": 45
+      },
+      "revId": "a348c6275ce17f5333cbd4290482c7927dee650a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
