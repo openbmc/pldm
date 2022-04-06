@@ -152,6 +152,30 @@
       },
       "revId": "379da7a4dd86be9e836ec62021702a616f708e44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cb53503_b23c445d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-06T11:26:01Z",
+      "side": 1,
+      "message": "That above was an example for similar usage. \n\nIt seems there are quite a bit of upstream repos[1] following the same IDs and redfish arch doc[2] is also making a mention of it\n\n[1] https://grok.openbmc.org/search?full\u003d%22REDFISH_MESSAGE_ID%22\u0026defs\u003d\u0026refs\u003d\u0026path\u003d\u0026hist\u003d\u0026type\u003d\u0026xrd\u003d\u0026nn\u003d1\u0026si\u003dfull\u0026searchall\u003dtrue\u0026si\u003dfull\n\n[2] https://github.com/openbmc/docs/blob/master/architecture/redfish-logging-in-bmcweb.md#journal-based-redfish-logging",
+      "parentUuid": "f64bcaa5_8c9275f4",
+      "range": {
+        "startLine": 59,
+        "startChar": 3,
+        "endLine": 90,
+        "endChar": 30
+      },
+      "revId": "379da7a4dd86be9e836ec62021702a616f708e44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
