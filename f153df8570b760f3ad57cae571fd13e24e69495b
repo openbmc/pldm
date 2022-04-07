@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b316203_7b454cbc",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:39:45Z",
+      "side": 1,
+      "message": "Creating device and firmware inventory is based on the firmware inventory collection by InventoryManager and is not an synchronous operation.",
+      "parentUuid": "e8877fd9_b77b8266",
+      "revId": "f153df8570b760f3ad57cae571fd13e24e69495b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab32ae27_74d12bd2",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a984e7d5_fa4ce213",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:39:45Z",
+      "side": 1,
+      "message": "I moved ObjectManager creation to fw_update/manager.hpp and create it based on device inventory json availability. The ObjectMapper interface is not showing up and I suspect it is to do with the lifetime of the objManager variable. I want to revisit this later.",
+      "parentUuid": "ab32ae27_74d12bd2",
+      "revId": "f153df8570b760f3ad57cae571fd13e24e69495b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "31cad83b_20059de4",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 5
@@ -48,6 +84,24 @@
       "writtenOn": "2022-04-05T16:02:48Z",
       "side": 1,
       "message": "Are we mandating UUID to be implemented by the MCTP endpoints?",
+      "revId": "f153df8570b760f3ad57cae571fd13e24e69495b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "366ba00b_a40b785f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:39:45Z",
+      "side": 1,
+      "message": "We are not mandating it for the mctp control daemon. If UUID is not populated in the D-Bus interface, it will be an empty string.",
+      "parentUuid": "31cad83b_20059de4",
       "revId": "f153df8570b760f3ad57cae571fd13e24e69495b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
