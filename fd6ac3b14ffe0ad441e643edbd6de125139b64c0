@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "774c44b0_a3651ccb",
+        "filename": "common/types.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:42:08Z",
+      "side": 1,
+      "message": "Not relevant, fixed it uppercase to be consistent.",
+      "parentUuid": "5dc8954c_7384a3ed",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "10744df8_59c8c93b",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2022-04-05T15:38:31Z",
       "side": 1,
       "message": "Why did we have to change this data structure?",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0129b415_6e465a10",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:42:08Z",
+      "side": 1,
+      "message": "ComponentVersion field is used to create the firmware inventory, so InventoryManager is exposing it through ComponentInfoMap.",
+      "parentUuid": "10744df8_59c8c93b",
       "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cd4f42c_13630d7c",
+        "filename": "fw-update/firmware_inventory.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:42:08Z",
+      "side": 1,
+      "message": "This is to handle a case where \"device_inventory\" section is not present, but \"firmware_inventory\" is present in the firmware update config json.",
+      "parentUuid": "d5d59c3a_9507c758",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "835d79bd_b30fa2ee",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 5
@@ -65,6 +119,24 @@
       "writtenOn": "2022-04-05T15:38:31Z",
       "side": 1,
       "message": "Why did we have to change this data structure?",
+      "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da6eb99e_bbefb6f7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:42:08Z",
+      "side": 1,
+      "message": "To return component version from InventoryManager.",
+      "parentUuid": "835d79bd_b30fa2ee",
       "revId": "fd6ac3b14ffe0ad441e643edbd6de125139b64c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
