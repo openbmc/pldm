@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "cf28cd3f_35151691",
         "filename": "/COMMIT_MSG",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "what does the severity mean or indicate to the user?",
       "revId": "7a65633c9f627c8aa17ab9c2213fc4e51a184bbd",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "75d83f56_70b10d6a",
         "filename": "common/utils.cpp",
@@ -31,8 +32,25 @@
       "side": 1,
       "message": "remove commented section",
       "revId": "7a65633c9f627c8aa17ab9c2213fc4e51a184bbd",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9144262f_72102395",
+        "filename": "common/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-04-07T05:23:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75d83f56_70b10d6a",
+      "revId": "7a65633c9f627c8aa17ab9c2213fc4e51a184bbd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
