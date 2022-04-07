@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e70baec_15d066da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "Sure, will add relevant design doc updates based on this.",
+      "parentUuid": "d35a69c1_1f4d7efa",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56bc0c34_d8d1f984",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-04-05T14:27:11Z",
       "side": 1,
       "message": "Should we fail here or caller if UUID is not found? In other words, is UUID mandatory?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b7f5a00_20edef0d",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "UUID is mandatory for this config JSON to work.",
+      "parentUuid": "56bc0c34_d8d1f984",
       "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cfc4812_7e0c2be6",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "device_inventory section is optional.\nIn device_inventory, object_path is mandatory, associations is optional.",
+      "parentUuid": "6da51859_c66b893d",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a87e035_e08ad600",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-04-05T14:27:11Z",
       "side": 1,
       "message": "Same as above. Fail here or in caller if no key-value pairs?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08b6e5bc_ada8080c",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "Firmware inventory is optional, \n\nIf the section is empty, fwInventoryInfo for the UUID will be empty.",
+      "parentUuid": "9a87e035_e08ad600",
       "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca33d0f0_daf576ca",
+        "filename": "fw-update/config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "component_info is optional.\n\nIf the section is empty, componentNameMapInfo for the UUID will be empty.",
+      "parentUuid": "8fb78c82_d3e170be",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b992ea8c_d646fac8",
@@ -99,6 +189,24 @@
       "writtenOn": "2022-04-05T14:27:11Z",
       "side": 1,
       "message": "Also need to add the Updateable association here and in code?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cf5e9c1_390608a4",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b992ea8c_d646fac8",
       "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "198d7016_f89e6b82",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "99a4144e_b5d1ee2d",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07615dbc_166bd367",
@@ -133,6 +259,24 @@
       "writtenOn": "2022-04-05T14:27:11Z",
       "side": 1,
       "message": "Need a better example below. It isn\u0027t clear how the path will be constructed based on the JSON. Also, what would be the impact if this didn\u0027t exist in the JSON?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "779ab8c8_3c35d903",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "07615dbc_166bd367",
       "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +298,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7d790ed_8e7709f5",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c6a483fe_45c80dc9",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28f10c3f_1cba8a15",
@@ -171,6 +333,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e58dec5_58e96fe3",
+        "filename": "fw-update/examples/fw_update_config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "28f10c3f_1cba8a15",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6e1080e_79567d0f",
@@ -184,6 +364,24 @@
       "writtenOn": "2022-04-05T14:27:11Z",
       "side": 1,
       "message": "Shouldn\u0027t this be an optional arg with default value?",
+      "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d3efce9_4570e82b",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:45:47Z",
+      "side": 1,
+      "message": "In the configuration we are defaulting to /usr/share/pldm/fw_update_config.json and skipping if the file doesn\u0027t exist.",
+      "parentUuid": "d6e1080e_79567d0f",
       "revId": "87b087fd98c39237d0581ed184ef458799005d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
