@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8db8085_421eeab3",
+        "filename": "fw-update/device_inventory.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:42:21Z",
+      "side": 1,
+      "message": "Object path field is mandatory if device_inventory section is present in the JSON, otherwise parsing will fail.",
+      "parentUuid": "e8206e2f_9506887f",
+      "revId": "b07561d567f819a7430bcd2016795c4da561fd45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f12420f8_a830eb48",
         "filename": "fw-update/device_inventory.cpp",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2022-04-05T14:46:29Z",
       "side": 1,
       "message": "What if this is missing?",
+      "revId": "b07561d567f819a7430bcd2016795c4da561fd45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33ab8ac3_4b3721a0",
+        "filename": "fw-update/device_inventory.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-07T08:42:21Z",
+      "side": 1,
+      "message": "Association is optional, so assocs will be empty and will be a no-op when creating the object.",
+      "parentUuid": "f12420f8_a830eb48",
       "revId": "b07561d567f819a7430bcd2016795c4da561fd45",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
