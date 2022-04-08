@@ -49,6 +49,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1845a30_db3e4b5b",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-08T13:51:14Z",
+      "side": 1,
+      "message": "This API doesn\u0027t have documentation, and I don\u0027t understand why this is related to the message registries patch.",
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "211cc2b9_8bde23ac",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 10
