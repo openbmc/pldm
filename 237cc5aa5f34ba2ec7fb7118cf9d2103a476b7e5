@@ -1,0 +1,395 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e33ea40_a9aaf2e8",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "nit: post increment",
+      "range": {
+        "startLine": 73,
+        "startChar": 13,
+        "endLine": 73,
+        "endChar": 24
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f065c2dd_350d50ac",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "Do we need messageID variable? Pass updateManager-\u003etransferFailed to createMessageRegistry",
+      "range": {
+        "startLine": 75,
+        "startChar": 12,
+        "endLine": 75,
+        "endChar": 59
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "211cc2b9_8bde23ac",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "nit: post increment",
+      "range": {
+        "startLine": 103,
+        "startChar": 13,
+        "endLine": 103,
+        "endChar": 24
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d3122f_81ec1e24",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "pass updateManager-\u003etransferFailed, update throughout this patch.",
+      "range": {
+        "startLine": 107,
+        "startChar": 60,
+        "endLine": 107,
+        "endChar": 69
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "547afe4e_e6377c5e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "Is this comment relevant?",
+      "range": {
+        "startLine": 383,
+        "startChar": 0,
+        "endLine": 384,
+        "endChar": 46
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa80f91_d8e5803c",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "nit: remove it?",
+      "range": {
+        "startLine": 389,
+        "startChar": 0,
+        "endLine": 389,
+        "endChar": 35
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd96f4e1_b05121fb",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "nit:obvious",
+      "range": {
+        "startLine": 399,
+        "startChar": 2,
+        "endLine": 399,
+        "endChar": 65
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d3a9010_df85e76e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "nit:typo",
+      "range": {
+        "startLine": 448,
+        "startChar": 42,
+        "endLine": 448,
+        "endChar": 51
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e158657d_4adceb34",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "nit:typo",
+      "range": {
+        "startLine": 465,
+        "startChar": 42,
+        "endLine": 465,
+        "endChar": 51
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1cec86d_fa9f1d1a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "1. class enumeration for the offsets\n2. std::unordered_map for value to the string\n\nWhy static inline? We can have this data structure in fw_update namespace.",
+      "range": {
+        "startLine": 637,
+        "startChar": 7,
+        "endLine": 637,
+        "endChar": 15
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcd91392_9837663d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "Automatic",
+      "range": {
+        "startLine": 638,
+        "startChar": 20,
+        "endLine": 638,
+        "endChar": 40
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2994902c_161bef50",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "Self-Contained",
+      "range": {
+        "startLine": 641,
+        "startChar": 20,
+        "endLine": 641,
+        "endChar": 45
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b792e34_13279ae8",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "Medium-specific reset",
+      "range": {
+        "startLine": 644,
+        "startChar": 20,
+        "endLine": 644,
+        "endChar": 52
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea60f5f4_d1d58d29",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "\"Required!\" not needed",
+      "range": {
+        "startLine": 647,
+        "startChar": 33,
+        "endLine": 647,
+        "endChar": 43
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f7da2d7_16506699",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "\"Required!\" not needed",
+      "range": {
+        "startLine": 650,
+        "startChar": 34,
+        "endLine": 650,
+        "endChar": 44
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd934e62_41dd1a19",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "\"Required!\" not needed",
+      "range": {
+        "startLine": 653,
+        "startChar": 34,
+        "endLine": 653,
+        "endChar": 44
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c60d8043_08af5304",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-08T10:26:14Z",
+      "side": 1,
+      "message": "Reserved",
+      "range": {
+        "startLine": 656,
+        "startChar": 20,
+        "endLine": 656,
+        "endChar": 45
+      },
+      "revId": "237cc5aa5f34ba2ec7fb7118cf9d2103a476b7e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
