@@ -620,6 +620,44 @@ void Handler::processSetEventReceiver()
     this->setEventReceiver();
 }
 
+void pldm::responder::oem_ibm_platform::Handler::startStopTimer(bool value)
+{
+    if (value)
+    {
+        timer.restart(
+            std::chrono::seconds(HEARTBEAT_TIMEOUT + HEARTBEAT_TIMEOUT_DELTA));
+    }
+    else
+    {
+        timer.setEnabled(value);
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(uint8_t tid,
+                                                              bool value)
+{
+    if (((hostOff == true) || (hostTransitioningToOff == true) ||
+         (tid != HYPERVISOR_TID)) &&
+        timer.isEnabled())
+    {
+        startStopTimer(false);
+        return;
+    }
+    if (value)
+    {
+        startStopTimer(value);
+    }
+    else if (timer.isEnabled())
+    {
+        info(
+            "Failed to stop surveillance timer while remote terminus status is ‘{HOST_TRANST_OFF}’ with Terminus ID ‘{TID}’ ",
+            "HOST_TRANST_OFF", hostTransitioningToOff, "TID", tid);
+        startStopTimer(value);
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.setSurvTimer.RecvSurveillancePingFail");
+    }
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm
