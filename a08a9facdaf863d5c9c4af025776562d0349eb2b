@@ -206,6 +206,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5753ccbc_1759120f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T15:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "416407de_974c27f0",
+      "revId": "a08a9facdaf863d5c9c4af025776562d0349eb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bc21004_01911eb4",

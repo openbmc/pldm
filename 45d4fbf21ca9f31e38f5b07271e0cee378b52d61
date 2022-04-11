@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aac6288_3cc8aaac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T15:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "264ee2ef_890d14c1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 58
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0123d06_0bae12b6",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "Tested: \n\nCompleted PLDM firmware update and the following is a sample of message registry that is added.",
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a403a4b_2b49b7d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T15:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0123d06_0bae12b6",
       "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -454,6 +496,30 @@
       "side": 1,
       "message": "Can we address this?",
       "parentUuid": "2d1d7df7_efbdf5d6",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 366,
+        "endChar": 6
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f7ae5a7_db63843e",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T15:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be85f9b3_a29f3e56",
       "range": {
         "startLine": 366,
         "startChar": 0,
