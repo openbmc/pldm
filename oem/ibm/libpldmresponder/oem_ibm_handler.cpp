@@ -602,6 +602,26 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     return PLDM_SUCCESS;
 }
 
+void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(bool value)
+{
+    if (hostOff)
+    {
+        return;
+    }
+    if (value)
+    {
+        timer.restart(
+            std::chrono::seconds(HEARTBEAT_TIMEOUT + HEARTBEAT_TIMEOUT_DELTA));
+    }
+    else
+    {
+        timer.setEnabled(false);
+        pldm::utils::reportError(
+            "xyz.openbmc_project.bmc.PLDM.setSurvTimer.RecvSurveillancePingFail",
+            pldm::PelSeverity::INFORMATIONAL);
+    }
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

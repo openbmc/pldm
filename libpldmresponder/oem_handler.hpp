@@ -92,6 +92,13 @@ class Handler : public CmdHandler
     /** @brief Interface to check the BMC state */
     virtual int checkBMCState() = 0;
 
+    /** @brief Interface to monitor the surveillance pings from host
+     *
+     * @param[in] value - true or false, to indicate if the timer is
+     *                   running or not
+     * */
+    virtual void setSurvTimer(bool value) = 0;
+
     virtual ~Handler() = default;
 
   protected:
