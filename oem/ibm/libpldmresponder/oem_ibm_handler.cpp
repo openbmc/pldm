@@ -620,6 +620,47 @@ void Handler::processSetEventReceiver()
     this->setEventReceiver();
 }
 
+void pldm::responder::oem_ibm_platform::Handler::startStopTimer(bool value)
+{
+    if (value)
+    {
+        timer.restart(
+            std::chrono::seconds(HEARTBEAT_TIMEOUT + HEARTBEAT_TIMEOUT_DELTA));
+    }
+    else
+    {
+        timer.setEnabled(value);
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(uint8_t tid,
+                                                              bool value)
+{
+    if ((hostOff == true) || (hostTransitioningToOff == true) ||
+        (tid != HYPERVISOR_TID))
+    {
+        if (timer.isEnabled())
+        {
+            startStopTimer(false);
+        }
+        return;
+    }
+    if (value)
+    {
+        startStopTimer(true);
+    }
+    else if (!value && timer.isEnabled())
+    {
+        info(
+            "hostOff {HOST_OFF} hostTransitioningToOff {HOST_TRANST_OFF} tid {tid}",
+            "HOST_OFF", (bool)hostOff, "HOST_TRANST_OFF",
+            (bool)hostTransitioningToOff, "TID", (uint16_t)tid);
+        startStopTimer(false);
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.setSurvTimer.RecvSurveillancePingFail");
+    }
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm
