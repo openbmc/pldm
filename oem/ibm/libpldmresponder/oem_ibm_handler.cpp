@@ -602,6 +602,38 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     return PLDM_SUCCESS;
 }
 
+void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(bool value)
+{
+    if (value)
+    {
+        timer.restart(std::chrono::seconds(130));
+    }
+    else
+    {
+        try
+        {
+            pldm::utils::PropertyValue propertyValue =
+                pldm::utils::DBusHandler().getDbusPropertyVariant(
+                    "/xyz/openbmc_project/state/host0", "CurrentHostState",
+                    "xyz.openbmc_project.State.Host");
+
+            if (std::get<std::string>(propertyValue) !=
+                "xyz.openbmc_project.State.Host.HostState.Running")
+            {
+                std::cerr << "Surveillance ping not sent by host\n";
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.bmc.PLDM.setSurvTimer.RecvSurveillancePingFail",
+                    pldm::PelSeverity::INFORMATIONAL);
+                timer.setEnabled(false);
+            }
+        }
+        catch (const std::exception& e)
+        {
+            return;
+        }
+    }
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

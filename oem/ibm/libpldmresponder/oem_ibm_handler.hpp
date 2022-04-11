@@ -9,6 +9,10 @@
 #include "libpldmresponder/platform.hpp"
 #include "requester/handler.hpp"
 
+#include <sdbusplus/bus/match.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/utility/timer.hpp>
+
 typedef ibm_oem_pldm_state_set_firmware_update_state_values CodeUpdateState;
 
 namespace pldm
@@ -35,7 +39,10 @@ class Handler : public oem_platform::Handler
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf),
         codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), requester(requester), event(event), handler(handler)
+        mctp_eid(mctp_eid), requester(requester), event(event),
+        handler(handler),
+        timer(event,
+              std::bind(std::mem_fn(&Handler::setSurvTimer), this, false))
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -180,6 +187,12 @@ class Handler : public oem_platform::Handler
     /** @brief to check the BMC state*/
     int checkBMCState();
 
+    /** @brief Method to Enable/Disable timer to see if host sends the
+     * surveillance ping and logs informational error if host fails to send the
+     * surveillance pings
+     */
+    void setSurvTimer(bool value);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
@@ -215,6 +228,9 @@ class Handler : public oem_platform::Handler
 
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+
+    /** @brief Timer used for monitoring surveillance pings from host */
+    sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> timer;
 
     bool hostOff = true;
 
