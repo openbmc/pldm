@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ca5297c_5c25d78f",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000092
+      },
+      "writtenOn": "2022-04-11T13:39:13Z",
+      "side": 1,
+      "message": "Add Details of the parameter this interface takes",
+      "range": {
+        "startLine": 96,
+        "startChar": 30,
+        "endLine": 96,
+        "endChar": 34
+      },
+      "revId": "ad95cb064d2cae6d66bd1a1876363a90481aa45d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "847d5dc5_3803a656",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000092
+      },
+      "writtenOn": "2022-04-11T13:39:13Z",
+      "side": 1,
+      "message": "Asking in general , I do not see much comments in any of the functions. Will we have any issue if we add some comment in a line of two indicating what we are doing here. Does it look redundant ?",
+      "revId": "ad95cb064d2cae6d66bd1a1876363a90481aa45d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "795d1d59_85f23321",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000092
+      },
+      "writtenOn": "2022-04-11T13:39:13Z",
+      "side": 1,
+      "message": "Should we first disable the timer and then log the information error. Just in case we hit exception while creating the information errorlog then we will skip disabling the timer . I mean swap line 626 and 623 ?",
+      "revId": "ad95cb064d2cae6d66bd1a1876363a90481aa45d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c784f34d_0665e5b4",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000092
+      },
+      "writtenOn": "2022-04-11T13:39:13Z",
+      "side": 1,
+      "message": "Add @param[in] . \nI could not understand in which scenario we call the setSurvTimer() with false value ?",
+      "revId": "ad95cb064d2cae6d66bd1a1876363a90481aa45d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
