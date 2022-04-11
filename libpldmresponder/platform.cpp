@@ -333,7 +333,14 @@ Response Handler::platformEventMessage(const pldm_msg* request,
         rc = PLDM_SUCCESS;
         if (oemPlatformHandler)
         {
-            oemPlatformHandler->resetWatchDogTimer();
+            if (oemPlatformHandler->watchDogRunning())
+            {
+                oemPlatformHandler->resetWatchDogTimer();
+            }
+            else
+            {
+                oemPlatformHandler->setSurvTimer(true);
+            }
         }
     }
     else
