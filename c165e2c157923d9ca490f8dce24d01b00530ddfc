@@ -22,6 +22,30 @@
       },
       "revId": "c165e2c157923d9ca490f8dce24d01b00530ddfc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "075028cc_c2225da7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-11T03:04:52Z",
+      "side": 1,
+      "message": "\u003e Do we have PLDM retry mechanism for soft-off? This might be interesting topic, since retry mechanism in pldm daemon. softoff is one-off pldm knowing app at the moment. Do we see more pldm knowing apps in the future..etc. A good topic for community discussion and not to hold this patch.\n\nNo , we dont have any retries \u0026 yes i do see apps directly talking to host is gonna be a usecase which needs to have a better design and discussion with in the community.\n\n\u003e What will be the behavior if host never sees the power off request and the graceful shutdown RF API never completes?\n\nSo, currently this is what happens :\n1. softoff app requests a power off request \u0026 start a timer.\n2. host will shutdown the partitions \u0026 send a sensor event back (telling that they are now ready \u0026 then we can go ahead and pull the chassis power).\n3. if the timer expires before getting the sensor event from host - we will forcefully remove the chassis power after a standard timeout.\n\nNow, we have seen cases where host complains that they have not received the power off request , but on the bmc side we see that we trigerred the request (and got a response as well).\nIn this case - when the timer expires we will go ahead and remove the chassis power forcefully. The problem with this is once the host goes down we cannot collect any debug data - which is primarily the usecase that drove this feature.\n\nThis commit would add - a runtime override config support for softoff to not have any timeouts. So that chassis power off target will never be invoked(as there is no timer expiry). This would give time for some one to collect the debug data on host side.",
+      "parentUuid": "73f71d1c_857a5a91",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 18
+      },
+      "revId": "c165e2c157923d9ca490f8dce24d01b00530ddfc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
