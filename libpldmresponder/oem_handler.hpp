@@ -113,6 +113,14 @@ class Handler : public CmdHandler
     /** @brief Interface to the process setEventReceiver*/
     virtual void processSetEventReceiver() = 0;
 
+    /** @brief Interface to monitor the surveillance pings from remote terminus
+     *
+     * @param[in] tid - TID of the remote terminus
+     * @param[in] value - true or false, to indicate if the timer is
+     *                   running or not
+     * */
+    virtual void setSurvTimer(uint8_t tid, bool value) = 0;
+
     virtual ~Handler() = default;
 
   protected:
