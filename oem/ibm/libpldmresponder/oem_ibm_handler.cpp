@@ -18,7 +18,6 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
-
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
         EntityType entityType, EntityInstance entityInstance,
@@ -599,6 +598,47 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
+}
+
+void pldm::responder::oem_ibm_platform::Handler::startStopTimer(bool value)
+{
+    if (value)
+    {
+        timer.restart(
+            std::chrono::seconds(HEARTBEAT_TIMEOUT + HEARTBEAT_TIMEOUT_DELTA));
+    }
+    else
+    {
+        timer.setEnabled(value);
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(uint8_t tid,
+                                                              bool value)
+{
+    if ((hostOff == true) || (hostTransitioningToOff == true) ||
+        (tid != HYPERVISOR_TID))
+    {
+        if (timer.isEnabled())
+        {
+            startStopTimer(false);
+        }
+        return;
+    }
+    if (value)
+    {
+        startStopTimer(true);
+    }
+    else if (!value && timer.isEnabled())
+    {
+        std::cout << "setSurvTimer:LogginPel:hostOff=" << (bool)hostOff
+                  << " hostTransitioningToOff=" << (bool)hostTransitioningToOff
+                  << " tid=" << (uint16_t)tid << std::endl;
+        startStopTimer(false);
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.setSurvTimer.RecvSurveillancePingFail",
+            pldm::PelSeverity::INFORMATIONAL);
+    }
 }
 
 } // namespace oem_ibm_platform
