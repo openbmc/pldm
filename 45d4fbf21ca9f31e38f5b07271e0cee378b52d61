@@ -64,6 +64,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e2ebcc3_b4616edc",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4398912e_650cb221",
+      "range": {
+        "startLine": 22,
+        "startChar": 20,
+        "endLine": 22,
+        "endChar": 41
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3d6d862_5865abf6",
@@ -77,6 +101,30 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "This is not probably necessary here.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 6
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be704654_e22b93f8",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3d6d862_5865abf6",
       "range": {
         "startLine": 31,
         "startChar": 0,
@@ -110,6 +158,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3767b6b7_15c68c0b",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c82ea73a_64380463",
+      "range": {
+        "startLine": 45,
+        "startChar": 9,
+        "endLine": 45,
+        "endChar": 22
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfe65699_e7873493",
@@ -123,6 +195,30 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "nit: lowerCamelCase for variables, add_data -\u003e addData",
+      "range": {
+        "startLine": 72,
+        "startChar": 39,
+        "endLine": 72,
+        "endChar": 47
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e1005b2_290f09c3",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfe65699_e7873493",
       "range": {
         "startLine": 72,
         "startChar": 39,
@@ -156,6 +252,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cd1c4be_add758fd",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f311b2d_4ed960ad",
+      "range": {
+        "startLine": 94,
+        "startChar": 30,
+        "endLine": 94,
+        "endChar": 39
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff1c8352_27d9b6b1",
@@ -169,6 +289,30 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "functions names are lowerCamelCase, \"createMessageRegistry\"",
+      "range": {
+        "startLine": 108,
+        "startChar": 20,
+        "endLine": 108,
+        "endChar": 41
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32562e7a_e3ac25d7",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff1c8352_27d9b6b1",
       "range": {
         "startLine": 108,
         "startChar": 20,
@@ -202,6 +346,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "124309a4_830ad1c4",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5b2b2d2_b5f65d1e",
+      "range": {
+        "startLine": 110,
+        "startChar": 11,
+        "endLine": 110,
+        "endChar": 21
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5214fad1_734240af",
@@ -215,6 +383,30 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "Can we move this to the section before if ()",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 48
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c482aa2c_e26e8f1d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5214fad1_734240af",
       "range": {
         "startLine": 114,
         "startChar": 0,
@@ -250,6 +442,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be85f9b3_a29f3e56",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Can we address this?",
+      "parentUuid": "2d1d7df7_efbdf5d6",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 366,
+        "endChar": 6
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9ca54d5_d1dbb30a",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 1
@@ -261,6 +477,30 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "nit:remove this trace?",
+      "range": {
+        "startLine": 387,
+        "startChar": 0,
+        "endLine": 387,
+        "endChar": 75
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "612478eb_31236dcd",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9ca54d5_d1dbb30a",
       "range": {
         "startLine": 387,
         "startChar": 0,
@@ -296,6 +536,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49ad7812_23178212",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Please fix this for all header/source files in this patch.",
+      "parentUuid": "8ff6f96d_da3afd48",
+      "range": {
+        "startLine": 423,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 19
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "298438e9_7b8cb7ad",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 1
@@ -307,6 +571,24 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "Please add doxygen styled documentation.",
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b008b9a2_a2969f0c",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "298438e9_7b8cb7ad",
       "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -324,6 +606,30 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "typo + lowerCamelCase",
+      "range": {
+        "startLine": 97,
+        "startChar": 8,
+        "endLine": 97,
+        "endChar": 30
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5da08d3d_ef886884",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8e6ebbc_fd0ff794",
       "range": {
         "startLine": 97,
         "startChar": 8,
@@ -357,6 +663,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "436b9414_78ea9615",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cc50d30_c340b7be",
+      "range": {
+        "startLine": 99,
+        "startChar": 38,
+        "endLine": 99,
+        "endChar": 48
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "539ff07d_c0c96843",
@@ -370,6 +700,24 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "Please add doxygen styled documentation.",
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "961b3ad3_b87933ec",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "539ff07d_c0c96843",
       "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -397,6 +745,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20af75ac_2d077326",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fada7a1e_5af6a7dd",
+      "range": {
+        "startLine": 113,
+        "startChar": 38,
+        "endLine": 113,
+        "endChar": 49
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e10732e_59f62403",
@@ -410,6 +782,30 @@
       "writtenOn": "2022-03-29T05:44:46Z",
       "side": 1,
       "message": "https://github.com/openbmc/docs/blob/2f52b0a3e45749c0474e5215ed6d21efeb39c443/cpp-style-and-conventions.md#constants\n\nlowerCamelCase for all constants",
+      "range": {
+        "startLine": 114,
+        "startChar": 22,
+        "endLine": 114,
+        "endChar": 44
+      },
+      "revId": "45d4fbf21ca9f31e38f5b07271e0cee378b52d61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72f97d8e_0bb37d5f",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e10732e_59f62403",
       "range": {
         "startLine": 114,
         "startChar": 22,

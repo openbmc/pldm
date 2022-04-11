@@ -176,6 +176,30 @@
       },
       "revId": "379da7a4dd86be9e836ec62021702a616f708e44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89f55a04_113cbe57",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-11T11:16:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3cb53503_b23c445d",
+      "range": {
+        "startLine": 59,
+        "startChar": 3,
+        "endLine": 90,
+        "endChar": 30
+      },
+      "revId": "379da7a4dd86be9e836ec62021702a616f708e44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
