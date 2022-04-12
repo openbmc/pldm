@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd82caa_1dd51ed1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "can you add the unit tests for the numeric effecter as well ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 29
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ebe46d9_ffc5fbbc",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "traces like these really wont help to figuring out the problem , do you also want to add the object Path \u0026 and also what exception you got ?",
+      "range": {
+        "startLine": 54,
+        "startChar": 7,
+        "endLine": 54,
+        "endChar": 66
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2acba085_0698a93c",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "redundant ? can be initialised at line 93 ?",
+      "range": {
+        "startLine": 105,
+        "startChar": 8,
+        "endLine": 105,
+        "endChar": 55
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76fdb51d_0f083fba",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "this can be initialised without even checking for the pdr type ?",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 60
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb725b02_1fcd3597",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "this code is duplicated in the same file.",
+      "range": {
+        "startLine": 350,
+        "startChar": 7,
+        "endLine": 369,
+        "endChar": 13
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edfb8915_12365753",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "if we are okay to set the effecter even without knowing the host state..then why do we need it ?",
+      "range": {
+        "startLine": 371,
+        "startChar": 5,
+        "endLine": 375,
+        "endChar": 9
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1230314_f9b4561b",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "this just does not help , please improve the error traces.",
+      "range": {
+        "startLine": 386,
+        "startChar": 5,
+        "endLine": 386,
+        "endChar": 59
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9572d49d_f3ea2f7f",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "same here too.. which effecter ?",
+      "range": {
+        "startLine": 390,
+        "startChar": 5,
+        "endLine": 392,
+        "endChar": 27
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1b20a44_75187624",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 447,
+        "startChar": 73,
+        "endLine": 447,
+        "endChar": 76
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "722816ba_f7829182",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 453,
+        "startChar": 58,
+        "endLine": 453,
+        "endChar": 61
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45bcc5ac_8f5a341f",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 475,
+        "startChar": 58,
+        "endLine": 475,
+        "endChar": 61
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c981bd4c_ae6eed40",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-12T10:00:34Z",
+      "side": 1,
+      "message": "doxygen missing.",
+      "range": {
+        "startLine": 215,
+        "startChar": 2,
+        "endLine": 218,
+        "endChar": 38
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
