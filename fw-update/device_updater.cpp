@@ -66,7 +66,6 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
 {
     if (response == nullptr || !respMsgLen)
     {
-        // Handle error scenario
         const auto& applicableComponents =
             std::get<ApplicableComponents>(fwDeviceIDRecord);
         for (size_t compIndex = 0; compIndex < applicableComponents.size();
@@ -78,6 +77,7 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
         }
         std::cerr << "No response received for RequestUpdate, EID="
                   << unsigned(eid) << "\n";
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -108,6 +108,7 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
                      "completion code, EID="
                   << unsigned(eid) << ", CC=" << unsigned(completionCode)
                   << "\n";
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -208,12 +209,12 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
 {
     if (response == nullptr || !respMsgLen)
     {
-        // Handle error scenario
         updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
                                              componentIndex,
                                              updateManager->transferFailed);
         std::cerr << "No response received for PassComponentTable, EID="
                   << unsigned(eid) << "\n";
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -336,12 +337,12 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
 {
     if (response == nullptr || !respMsgLen)
     {
-        // Handle error scenario
         updateManager->createMessageRegistry(eid, fwDeviceIDRecord,
                                              componentIndex,
                                              updateManager->transferFailed);
         std::cerr << "No response received for updateComponent, EID="
                   << unsigned(eid) << "\n";
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -410,6 +411,9 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
 
     if (length < PLDM_FWUP_BASELINE_TRANSFER_SIZE || length > maxTransferSize)
     {
+        std::cerr
+            << "RequestFirmwareData reported PLDM_FWUP_INVALID_TRANSFER_LENGTH, EID="
+            << unsigned(eid) << ", length=" << length << "\n";
         rc = encode_request_firmware_data_resp(
             request->hdr.instance_id, PLDM_FWUP_INVALID_TRANSFER_LENGTH,
             responseMsg, sizeof(completionCode));
@@ -423,6 +427,10 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
 
     if (offset + length > compSize + PLDM_FWUP_BASELINE_TRANSFER_SIZE)
     {
+        std::cerr
+            << "RequestFirmwareData reported PLDM_FWUP_DATA_OUT_OF_RANGE, EID="
+            << unsigned(eid) << ", offset=" << offset << ", length" << length
+            << "\n";
         rc = encode_request_firmware_data_resp(
             request->hdr.instance_id, PLDM_FWUP_DATA_OUT_OF_RANGE, responseMsg,
             sizeof(completionCode));
@@ -724,6 +732,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                      "completion code, EID="
                   << unsigned(eid) << ", CC=" << unsigned(completionCode)
                   << "\n";
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 

@@ -73,6 +73,11 @@ class UpdateManager
 
     int processPackage(const std::filesystem::path& packageFilePath);
 
+    /** @brief Update firmware update completion status of each device
+     *
+     *  @param[in] eid - Remote MCTP Endpoint ID
+     *  @param[in] status - True to indicate success and false for failure
+     */
     void updateDeviceCompletion(mctp_eid_t eid, bool status);
 
     void updateActivationProgress();
