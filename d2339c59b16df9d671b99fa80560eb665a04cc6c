@@ -16,6 +16,29 @@
       "message": "Why are we sending response here? The response needs to be sent to the FD.",
       "revId": "d2339c59b16df9d671b99fa80560eb665a04cc6c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c8272b7_1ea46794",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-12T10:42:09Z",
+      "side": 1,
+      "message": "This should be compIndex.",
+      "range": {
+        "startLine": 728,
+        "startChar": 49,
+        "endLine": 728,
+        "endChar": 64
+      },
+      "revId": "d2339c59b16df9d671b99fa80560eb665a04cc6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
