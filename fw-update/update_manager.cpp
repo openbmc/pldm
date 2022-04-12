@@ -394,6 +394,9 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
     }
     else
     {
+        std::cerr
+            << "RequestFirmwareData reported PLDM_FWUP_COMMAND_NOT_EXPECTED, EID="
+            << unsigned(eid) << "\n";
         auto ptr = reinterpret_cast<pldm_msg*>(response.data());
         auto rc = encode_cc_only_resp(request->hdr.instance_id,
                                       request->hdr.type, +request->hdr.command,
