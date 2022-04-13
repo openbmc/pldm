@@ -71,6 +71,7 @@ if get_option('libpldm-only').disabled()
   phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
   sdbusplus = dependency('sdbusplus')
   sdeventplus = dependency('sdeventplus')
+  stdplus = dependency('stdplus')
 
   if cpp.has_header('nlohmann/json.hpp')
     nlohmann_json = declare_dependency()
@@ -161,9 +162,10 @@ deps = [
   libpldm_dep,
   libpldmutils,
   nlohmann_json,
+  phosphor_dbus_interfaces,
   sdbusplus,
   sdeventplus,
-  phosphor_dbus_interfaces,
+  stdplus,
 ]
 
 if get_option('libpldmresponder').enabled()
