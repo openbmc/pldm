@@ -16,6 +16,24 @@
       "message": "@patrick -  i have this fixed at https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/52621",
       "revId": "e06b17b5ee7a4e78ee1334d2eed62e9c458bd716",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fdedc14_5fbe4d26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-13T14:44:33Z",
+      "side": 1,
+      "message": "can i go ahead and merge it ? i was waiting for 24 hours rule before we merge it",
+      "parentUuid": "57d616a8_9671be51",
+      "revId": "e06b17b5ee7a4e78ee1334d2eed62e9c458bd716",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
