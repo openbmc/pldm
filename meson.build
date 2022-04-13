@@ -162,10 +162,11 @@ deps = [
   libpldm_dep,
   libpldmutils,
   nlohmann_json,
+  phosphor_dbus_interfaces,
   sdbusplus,
   stdplus,
   sdeventplus,
-  phosphor_dbus_interfaces,
+  stdplus,
 ]
 
 if get_option('libpldmresponder').enabled()
