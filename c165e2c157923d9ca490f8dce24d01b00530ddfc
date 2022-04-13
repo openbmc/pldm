@@ -46,6 +46,30 @@
       },
       "revId": "c165e2c157923d9ca490f8dce24d01b00530ddfc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaef158d_373ae4c3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-13T01:41:48Z",
+      "side": 1,
+      "message": "\u003e Now, we have seen cases where host complains that they have not received the power off request ,\nThis seems counter-intuitive, by power off request I am thinking it is the set effecter. If set effecter is not received, host will never initiate graceful shutdown. So indefinite timeout is a moot point.\n\n\n\u003e This commit would add - a runtime override config support for softoff to not have any timeouts. So that chassis power off target will never be invoked(as there is no timer expiry). This would give time for some one to collect the debug data on host side.\n\nMy concern and what I am trying to understand is whether expectation around softoff application has changed. The design was for BMC (user uses GracefulShutdown RF API) to use PLDM mechanisms to gracefully shutdown host and power off the chassis. From this comment I am inferring that for unclear reason/congestion PLDM mechanisms didn\u0027t work and soft off app waits indefinitely. Is it the case that with timeout flag, soft-off app never completes?\n\nThis seems like a workaround. I am not sure whether we should upstream this. The correct thing would be to retry pldm requests and if host is unresponsive, then soft-off application fail.\n\n\u003e 1. softoff app requests a power off request \u0026 start a timer.\nIf would be great if you can document this flow as README under softoff/README.md",
+      "parentUuid": "075028cc_c2225da7",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 18
+      },
+      "revId": "c165e2c157923d9ca490f8dce24d01b00530ddfc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
