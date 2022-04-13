@@ -40,7 +40,7 @@ class Pdr : public PdrIntf
      */
     Pdr(sdbusplus::bus::bus& bus, const std::string& path,
         const pldm_pdr* repo) :
-        PdrIntf(bus, path.c_str(), repo),
+        PdrIntf(bus, path.c_str()),
         pdrRepo(repo){};
 
     /** @brief Implementation for PdrIntf.FindStateEffecterPDR
