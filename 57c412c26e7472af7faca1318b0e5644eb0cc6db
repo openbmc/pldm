@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f56ac8_93f073f9",
+        "filename": "subprojects/stdplus.wrap",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-04-13T01:02:29Z",
+      "side": 1,
+      "message": "We can simplify this further. https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/52178",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 21
+      },
+      "revId": "57c412c26e7472af7faca1318b0e5644eb0cc6db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
