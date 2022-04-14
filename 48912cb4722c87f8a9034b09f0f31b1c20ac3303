@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8bf6eb7_25a9b38a",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-04-14T10:29:24Z",
+      "side": 1,
+      "message": "As per convention, even for constants we follow lowerCamelCase.\nhttps://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md#naming-conventions",
+      "range": {
+        "startLine": 20,
+        "startChar": 18,
+        "endLine": 20,
+        "endChar": 29
+      },
+      "revId": "48912cb4722c87f8a9034b09f0f31b1c20ac3303",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82d2d8a8_3a7895cd",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-04-14T10:29:24Z",
+      "side": 1,
+      "message": "Please remove unused variables.",
+      "range": {
+        "startLine": 124,
+        "startChar": 25,
+        "endLine": 124,
+        "endChar": 34
+      },
+      "revId": "48912cb4722c87f8a9034b09f0f31b1c20ac3303",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cddfb200_c976b84a",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-04-14T10:29:24Z",
+      "side": 1,
+      "message": "Not all endpoint may/may not support all the handlers. Like, say endpoint X supports PLDM FWUP but not M\u0026C. In that case, we need to identify that as part of discovery using GetPLDMTypes and invoke PLDM handlers accordingly.",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 9
+      },
+      "revId": "48912cb4722c87f8a9034b09f0f31b1c20ac3303",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47aefd7e_832f6d9e",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-04-14T10:29:24Z",
+      "side": 1,
+      "message": "What does I denotes here?",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 7
+      },
+      "revId": "48912cb4722c87f8a9034b09f0f31b1c20ac3303",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d26ce6a9_4a7443b3",
+        "filename": "requester/test/static_eid_table.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-04-14T10:29:24Z",
+      "side": 1,
+      "message": "Nit: Endpoints",
+      "range": {
+        "startLine": 2,
+        "startChar": 5,
+        "endLine": 2,
+        "endChar": 14
+      },
+      "revId": "48912cb4722c87f8a9034b09f0f31b1c20ac3303",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2181af13_2d67230b",
+        "filename": "requester/test/static_eid_table.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-04-14T10:29:24Z",
+      "side": 1,
+      "message": "nit: NetworkID?\n\nGood to have a consistent naming convention. It can be either lowercase separated by underscores or UpperCamelCase.",
+      "range": {
+        "startLine": 4,
+        "startChar": 13,
+        "endLine": 4,
+        "endChar": 23
+      },
+      "revId": "48912cb4722c87f8a9034b09f0f31b1c20ac3303",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
