@@ -126,12 +126,15 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         pageAlignedLength += pageSize;
     }
 
-    auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
-        munmap(vgaMem, pageAlignedLength);
+    int rc = 0;
+    auto mmapCleanup = [pageAlignedLength, &rc](void* vgaMem) {
+        if(rc != -EINTR)
+        {
+            munmap(vgaMem, pageAlignedLength);
+        }
     };
 
     int dmaFd = -1;
-    int rc = 0;
     dmaFd = open(xdmaDev, O_RDWR);
     if (dmaFd < 0)
     {
