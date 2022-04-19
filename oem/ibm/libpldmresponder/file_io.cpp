@@ -120,18 +120,26 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     static const size_t pageSize = getpagesize();
     uint32_t numPages = length / pageSize;
     uint32_t pageAlignedLength = numPages * pageSize;
+    constexpr auto transferHung = -4;
 
     if (length > pageAlignedLength)
     {
         pageAlignedLength += pageSize;
     }
 
-    auto mmapCleanup = [pageAlignedLength](void* vgaMem) {
-        munmap(vgaMem, pageAlignedLength);
+    int rc = 0;
+    auto mmapCleanup = [pageAlignedLength, &rc](void* vgaMem) {
+	if(rc != transferHung)
+        {
+            munmap(vgaMem, pageAlignedLength);
+        }
+	else
+	{
+            std::cerr << "Transfer Hung" << std::endl;
+	}
     };
 
     int dmaFd = -1;
-    int rc = 0;
     dmaFd = open(xdmaDev, O_RDWR);
     if (dmaFd < 0)
     {
