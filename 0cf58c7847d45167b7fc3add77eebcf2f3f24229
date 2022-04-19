@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "455fb910_f58be096",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "oem-ibm: Unmap the memory selectively",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c408e9a_e7f62743",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "please elaborate the commit message.\n\nwhy pldm hangs during unmap ? why the opearation is not complete ?\n\nwhen we close which fd ? what will automatically do driver reset ?\n\nwhy specially checking for -4 ? what is its specialty ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 49
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48ee9d8d_f32d972b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "this is an open source code, please remove ibm specific numbers.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 15
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b14985f0_2dc54436",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "also mention how was this tested ?",
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21e23404_e4f9ff78",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "variables like these does not really add any value , please check the status directly",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 33
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15b9cd21_897e9f69",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "please dont use magic numbers.",
+      "range": {
+        "startLine": 123,
+        "startChar": 34,
+        "endLine": 123,
+        "endChar": 37
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdc7a3cc_51280dfa",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "how is tranferHung variable passed inside of lambda ?",
+      "range": {
+        "startLine": 132,
+        "startChar": 10,
+        "endLine": 132,
+        "endChar": 22
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cddb44a9_cf55d376",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "prefer space over tabs.\n\nplease run clang before submitting changes.",
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "befb4b7d_15dfbe81",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-19T08:18:55Z",
+      "side": 1,
+      "message": "this trace is not needed.",
+      "range": {
+        "startLine": 136,
+        "startChar": 1,
+        "endLine": 139,
+        "endChar": 2
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
