@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c014d26_35bff8dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "455fb910_f58be096",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c408e9a_e7f62743",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-19T08:18:55Z",
       "side": 1,
       "message": "please elaborate the commit message.\n\nwhy pldm hangs during unmap ? why the opearation is not complete ?\n\nwhen we close which fd ? what will automatically do driver reset ?\n\nwhy specially checking for -4 ? what is its specialty ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 49
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07c2cf65_28f43b9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c408e9a_e7f62743",
       "range": {
         "startLine": 9,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80497294_5461f256",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48ee9d8d_f32d972b",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 15
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b14985f0_2dc54436",
@@ -83,6 +155,24 @@
       "writtenOn": "2022-04-19T08:18:55Z",
       "side": 1,
       "message": "also mention how was this tested ?",
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2604b208_417de924",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b14985f0_2dc54436",
       "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -133,6 +223,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39de2d41_cc505750",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15b9cd21_897e9f69",
+      "range": {
+        "startLine": 123,
+        "startChar": 34,
+        "endLine": 123,
+        "endChar": 37
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3378913_79a2e611",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21e23404_e4f9ff78",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 33
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdc7a3cc_51280dfa",
@@ -146,6 +284,30 @@
       "writtenOn": "2022-04-19T08:18:55Z",
       "side": 1,
       "message": "how is tranferHung variable passed inside of lambda ?",
+      "range": {
+        "startLine": 132,
+        "startChar": 10,
+        "endLine": 132,
+        "endChar": 22
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3b9c5ee_b6a86e27",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdc7a3cc_51280dfa",
       "range": {
         "startLine": 132,
         "startChar": 10,
@@ -173,6 +335,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f60acd3_a230c172",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cddb44a9_cf55d376",
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "befb4b7d_15dfbe81",
@@ -186,6 +366,30 @@
       "writtenOn": "2022-04-19T08:18:55Z",
       "side": 1,
       "message": "this trace is not needed.",
+      "range": {
+        "startLine": 136,
+        "startChar": 1,
+        "endLine": 139,
+        "endChar": 2
+      },
+      "revId": "0cf58c7847d45167b7fc3add77eebcf2f3f24229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab29cc24_b8468af6",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-04-20T18:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "befb4b7d_15dfbe81",
       "range": {
         "startLine": 136,
         "startChar": 1,
