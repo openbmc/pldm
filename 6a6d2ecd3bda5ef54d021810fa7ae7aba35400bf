@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20e5362b_7edde15b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-22T09:08:11Z",
+      "side": 1,
+      "message": "CI is failing because of clang-format issues:\n\n+++ b/oem/ibm/libpldmresponder/file_io.cpp\n@@ -128,7 +128,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,\n \n     int rc \u003d 0;\n     auto mmapCleanup \u003d [pageAlignedLength, \u0026rc](void* vgaMem) {\n-        if(rc !\u003d -EINTR)\n+        if (rc !\u003d -EINTR)\n         {\n             munmap(vgaMem, pageAlignedLength);\n         }",
+      "revId": "6a6d2ecd3bda5ef54d021810fa7ae7aba35400bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
