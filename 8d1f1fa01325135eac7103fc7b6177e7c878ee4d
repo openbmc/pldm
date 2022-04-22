@@ -1,0 +1,640 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "316bc0f4_aba96ce2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Some more details here would be appreciated.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e406703a_c91bbf3f",
+        "filename": "configurations/static_eid_table.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Is this an example of a real config for some machine? If the former, then this should go to the machine\u0027s meta layer.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19148f8b_14b9370b",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Why not match this to the spec? It\u0027s not clear which PDR this is from DSP0248.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee6cc6c2_7e5f762f",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "remove?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb6d4bb2_5b02832b",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "It looks like this patch is not properly rebased on top of the MCTP discovery one.",
+      "range": {
+        "startLine": 27,
+        "startChar": 29,
+        "endLine": 27,
+        "endChar": 30
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcbb9b21_e24956c6",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Please introduce all the sensor related code in commits that use/implement them.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bda38e6_442d2d68",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "nit: termini",
+      "range": {
+        "startLine": 66,
+        "startChar": 43,
+        "endLine": 66,
+        "endChar": 53
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e744abf2_26244aee",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Should not assume a single-part PDR response. The code is not asking for next parts.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92202500_7df4394f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Please introduce these in commits that use them.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da6a63a1_c4d09336",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "What about sensor and effecter names?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5bd3295_fd2c3078",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "I\u0027m not following this. Why are we making inventory items here? That should be based on FRU.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13189068_261c12e9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Introduce in commit that implements this.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67e80f71_4410ab22",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Please add doxygen-style documentation.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7243e40a_a6e8e687",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "I think we should map this code to the discovery agent and initialization agent steps, as defined in dsp-248. I don\u0027t think this is performing all the discovery/initialization steps. That either needs to be implemented in this commit or documented in the commit message if certain steps are not being implemented.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "753d50be_41177771",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Can this be std::moved?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1421ec8_61a254ab",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Seems odd to stop this at discovery...",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7df3e401_a1c28428",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "What about fetching the terminus locator PDR? The initialization agent is supposed to do that, based on dsp0248.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "668db804_874171eb",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Don\u0027t we need to check if the terminus supports Type 0, Type 2 and the necessary commands?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc8d38d_ce1b471d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "You don\u0027t seem to be calling sacnTerminus() again in the else (success) case. How would processing of other termini, if present, continue?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e8d14da_6aa918b1",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Please init locals.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74d795d5_8f7587d7",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "What about success cases?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "847e9459_58e97326",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Avoid magic numbers.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce836d84_86fa5f86",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Ok to do this if assignedTid is 0?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46b2779_baf07bf5",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "SetTID is an optional command. How do deal with termini that support PLDM Type 2 but not SetTID.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e4b0c72_b8801a54",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "We probably need a better/elegant way to continue the scanning process. I know you\u0027ve made it async, but this could be error prone if it\u0027s missed to be called somewhere.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24224a93_5a4e8eac",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "I see - here\u0027s where we continue rescan for the success cases? It would be good to find a way to just call scanTerminus() from one spot.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "631879d2_be79735d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "No error handling needed here?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e872904_f1c70e16",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "This may have to be configurable.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4408ecb4_5da25457",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Not following this. How does a value of 0 tell us this is the right entry to assign the EID to?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39398a19_366c5a8e",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Please check if you need to include all of these headers here.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f2d5aa1_b958b151",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "nit: termini",
+      "range": {
+        "startLine": 37,
+        "startChar": 69,
+        "endLine": 37,
+        "endChar": 79
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08e76c05_9e52e6fd",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "No magic numbers please.",
+      "range": {
+        "startLine": 41,
+        "startChar": 16,
+        "endLine": 41,
+        "endChar": 19
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c3458d4_cb3d3e7a",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Please add documentation for all APIs.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "113b1b8d_a0e8a534",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "Document all these as well please.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee8017e6_44d77d04",
+        "filename": "platform-mc/test/terminus_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "I think we\u0027d need add a lot more unit tests to cover negative paths.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20a114c0_96d751ca",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-04-22T08:57:09Z",
+      "side": 1,
+      "message": "What if there are static MCTP endpoints? Also it seems like this should be contained in the MCTP discovery class?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
