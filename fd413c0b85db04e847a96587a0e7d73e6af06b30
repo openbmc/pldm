@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3564047c_f44b4022",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-25T11:42:50Z",
+      "side": 1,
+      "message": "nit: over 72 chars",
+      "revId": "fd413c0b85db04e847a96587a0e7d73e6af06b30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46364f59_a04b9947",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-25T11:42:50Z",
+      "side": 1,
+      "message": "Looks to be the workaround we agreed to.",
+      "revId": "fd413c0b85db04e847a96587a0e7d73e6af06b30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
