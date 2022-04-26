@@ -19,6 +19,24 @@
          "displayName" : "vmi_if1_ipv4_prefix_length"
       },
       {
+         "attribute_name" : "vmi_if0_ipv6_prefix_length",
+         "lower_bound" : 1,
+         "upper_bound" : 128,
+         "scalar_increment" : 1,
+         "default_value" : 128,
+         "helpText" : "vmi_if0_ipv6_prefix_length",
+         "displayName" : "vmi_if0_ipv6_prefix_length"
+      },
+      {
+         "attribute_name" : "vmi_if1_ipv6_prefix_length",
+         "lower_bound" : 1,
+         "upper_bound" : 128,
+         "scalar_increment" : 1,
+         "default_value" : 128,
+         "helpText" : "vmi_if1_ipv6_prefix_length",
+         "displayName" : "vmi_if1_ipv6_prefix_length"
+      },
+      {
          "attribute_name" : "hb_number_huge_pages",
          "lower_bound" : 0,
          "upper_bound" : 65535,
