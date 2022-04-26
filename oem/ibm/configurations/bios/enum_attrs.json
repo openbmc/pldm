@@ -49,6 +49,34 @@
          "displayName" : "vmi_if1_ipv4_method"
       },
       {
+         "attribute_name":"vmi_if0_ipv6_method",
+         "possible_values":[
+            "IPv6Static",
+            "IPv6DHCP",
+            "LinkLocal",
+            "SLAAC"
+         ],
+         "default_values":[
+            "IPv6Static"
+         ],
+         "helpText" : "vmi_if0_ipv6_method",
+         "displayName" : "vmi_if0_ipv6_method"
+      },
+      {
+         "attribute_name":"vmi_if1_ipv6_method",
+         "possible_values":[
+            "IPv6Static",
+            "IPv6DHCP",
+            "LinkLocal",
+            "SLAAC"
+         ],
+         "default_values":[
+            "IPv6Static"
+         ],
+         "helpText" : "vmi_if1_ipv6_method",
+         "displayName" : "vmi_if1_ipv6_method"
+      },
+      {
          "attribute_name":"hb_hyp_switch",
          "possible_values":[
             "PowerVM",
