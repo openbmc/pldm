@@ -187,6 +187,54 @@
       },
       "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "572f7218_4bda55a3",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000350
+      },
+      "writtenOn": "2022-04-27T05:14:41Z",
+      "side": 1,
+      "message": "gateway can be ff2e::1, so considered minimum length as 7 and default length  is 15 to match 0:0:0:0:0:0:0:0.\n\nwill check with phyp vmi team",
+      "parentUuid": "d276b532_67b49456",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ba9c8e7_19d70d74",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000350
+      },
+      "writtenOn": "2022-04-27T05:14:41Z",
+      "side": 1,
+      "message": "yeah it can write, but thinking if we need to support shorthands for VMI which may need additional parsing,\nwill check phyp/VMI team",
+      "parentUuid": "097335f1_16e4e624",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
