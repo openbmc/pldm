@@ -140,6 +140,30 @@
       },
       "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d276b532_67b49456",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-04-27T01:40:08Z",
+      "side": 1,
+      "message": "0:0:0:0:0:0:0:0 -\u003e but this is of string with length 15 (minimum) ? can you double check this with the hypervisor team.",
+      "parentUuid": "c5782be0_bce3a36d",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
