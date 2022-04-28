@@ -524,6 +524,31 @@
          ],
          "helpText" : "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Lateral Cast Out mode is disabled or enabled. Do not set this attribute directly; set hb_lateral_cast_out_mode instead.",
          "displayName" : "Lateral Cast Out mode (current)"
+      },
+      {
+         "attribute_name":"pvm_create_default_lpar",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "When enabled creates a new default partition after NVRAM is cleared. This is primarily for machines that are managed by hardware management console.",
+         "displayName" : "pvm_create_default_lpar (pending)"
+      },
+      {
+         "attribute_name":"pvm_create_default_lpar_current",
+         "possible_values":[
+            "Disabled",
+            "Enabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "When enabled creates a new default partition after NVRAM is cleared. This is primarily for machines that are managed by hardware management console.Do not set this attribute directly; set pvm_create_default_lpar instead.",
+         "displayName" : "pvm_create_default_lpar (current)"
       }
+
    ]
 }
