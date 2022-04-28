@@ -95,6 +95,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "989dbf43_d3ff7dc6",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2022-04-28T06:46:00Z",
+      "side": 1,
+      "message": "Default string for both ipaddr and gateway attributes should be \"::\" \nAnd \"::/128\" is default address plus a network prefix length.",
+      "parentUuid": "a43a8ead_2cd6c6a5",
+      "range": {
+        "startLine": 73,
+        "startChar": 9,
+        "endLine": 73,
+        "endChar": 37
+      },
+      "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c14379f8_b62e007a",
@@ -227,6 +251,54 @@
       "side": 1,
       "message": "yeah it can write, but thinking if we need to support shorthands for VMI which may need additional parsing,\nwill check phyp/VMI team",
       "parentUuid": "097335f1_16e4e624",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43dae7eb_f61d3a4a",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2022-04-28T06:46:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "572f7218_4bda55a3",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "62e1d1fdab21b598dacf9d72bf97ee70387379fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee16a152_470a95c0",
+        "filename": "oem/ibm/configurations/bios/string_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2022-04-28T06:46:00Z",
+      "side": 1,
+      "message": "Default string for both ipaddr and gateway attributes should be \"::\" \nAnd \"::/128\" is default address plus a network prefix length. Prefixlength is a separate attribute with default set to 128",
+      "parentUuid": "8ba9c8e7_19d70d74",
       "range": {
         "startLine": 76,
         "startChar": 28,
