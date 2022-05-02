@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "752c94c1_5cdafe93",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-05-02T10:20:03Z",
+      "side": 1,
+      "message": "this seems like redundant variable.",
+      "range": {
+        "startLine": 336,
+        "startChar": 12,
+        "endLine": 336,
+        "endChar": 35
+      },
+      "revId": "fd85ec7c9e04687be1ecbdd2d1b73ebc2956d742",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c61567cb_20ed0f6d",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-05-02T10:20:03Z",
+      "side": 1,
+      "message": "if(hostoff)",
+      "range": {
+        "startLine": 607,
+        "startChar": 8,
+        "endLine": 607,
+        "endChar": 23
+      },
+      "revId": "fd85ec7c9e04687be1ecbdd2d1b73ebc2956d742",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "433fe319_eb74cfec",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-05-02T10:20:03Z",
+      "side": 1,
+      "message": "why is this hardcoded ? can you used the meson variable ?",
+      "range": {
+        "startLine": 613,
+        "startChar": 42,
+        "endLine": 613,
+        "endChar": 48
+      },
+      "revId": "fd85ec7c9e04687be1ecbdd2d1b73ebc2956d742",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
