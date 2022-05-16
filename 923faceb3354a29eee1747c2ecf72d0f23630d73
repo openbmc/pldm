@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89e41325_f8b18e75",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-05-16T07:43:01Z",
+      "side": 1,
+      "message": "Basically if you directly update the previous list with current list, how will you take actions on the removed endpoints? You already lost the previous list. \nOr is it like the PLDM terminus handler will have a copy of EIDs and based on this new list it will take further actions?",
+      "parentUuid": "d4e48781_38ed6651",
+      "revId": "923faceb3354a29eee1747c2ecf72d0f23630d73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88b24e11_e62dad0a",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 5
@@ -97,6 +115,30 @@
       "side": 1,
       "message": "The current code in mctp_endpoint_discovery is using vector for eids, and this list is used as the input parameter for class such as fwManager. Using set for listEids can cause the changing of the current code of other class.\nMoreover, the eid in MCTP D-Bus can\u0027t duplicate and the current code also check the duplicate before add the eids list. So let use vector for listEids to minimum the changing of the current code.",
       "parentUuid": "4b4da92d_9bf67db9",
+      "range": {
+        "startLine": 51,
+        "startChar": 9,
+        "endLine": 51,
+        "endChar": 15
+      },
+      "revId": "923faceb3354a29eee1747c2ecf72d0f23630d73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05551b39_d4c17126",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-05-16T07:43:01Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6d83d67e_d6945a7f",
       "range": {
         "startLine": 51,
         "startChar": 9,
