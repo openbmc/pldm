@@ -15,6 +15,11 @@ namespace pldm
 {
 namespace platform_mc
 {
+using SensorId = uint16_t;
+using SensorAuxiliaryNames =
+    std::tuple<SensorId, uint8_t,
+               std::vector<std::pair<std::string, std::string>>>;
+
 /**
  * @brief Terminus
  *
@@ -26,6 +31,8 @@ class Terminus
   public:
     Terminus(mctp_eid_t _eid, uint8_t _tid, uint64_t supportedPLDMTypes);
     bool doesSupport(uint8_t type);
+    void parsePDRs();
+
     mctp_eid_t eid()
     {
         return _eid;
@@ -39,9 +46,18 @@ class Terminus
     std::vector<std::vector<uint8_t>> pdrs{};
 
   private:
+    std::shared_ptr<pldm_numeric_sensor_value_pdr>
+        parseNumericPDR(std::vector<uint8_t>& pdrData);
+
+    std::shared_ptr<SensorAuxiliaryNames>
+        parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
+
     mctp_eid_t _eid;
     uint8_t _tid;
     uint64_t supportedTypes;
+
+    std::vector<std::shared_ptr<SensorAuxiliaryNames>>
+        sensorAuxiliaryNamesTbl{};
 };
 } // namespace platform_mc
 } // namespace pldm
