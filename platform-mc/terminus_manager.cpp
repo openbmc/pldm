@@ -7,6 +7,19 @@ namespace pldm
 namespace platform_mc
 {
 
+TerminusManager::TerminusManager(
+    sdeventplus::Event& event, requester::Handler<requester::Request>& handler,
+    dbus_api::Requester& requester,
+    std::map<tid_t, std::shared_ptr<Terminus>>& termini, Manager* manager) :
+    event(event),
+    handler(handler), requester(requester), termini(termini),
+    tidPool(tidPoolSize, false), manager(manager)
+{
+    // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
+    tidPool[0] = true;
+    tidPool[PLDM_TID_RESERVED] = true;
+}
+
 std::optional<MctpInfo> TerminusManager::toMctpInfo(const tid_t& tid)
 {
     if (transportLayerTable[tid] != SupportedTransportLayer::MCTP)
