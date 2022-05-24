@@ -13,7 +13,11 @@ requester::Coroutine PlatformManager::initTerminus()
     {
         if (terminus->doesSupport(PLDM_PLATFORM))
         {
-            co_await getPDRs(terminus);
+            auto rc = co_await getPDRs(terminus);
+            if (!rc)
+            {
+                terminus->parsePDRs();
+            }
         }
     }
     co_return PLDM_SUCCESS;
