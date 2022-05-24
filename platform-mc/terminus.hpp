@@ -11,12 +11,23 @@
 
 #include <algorithm>
 #include <bitset>
+#include <string>
+#include <tuple>
+#include <utility>
 #include <vector>
 
 namespace pldm
 {
 namespace platform_mc
 {
+
+using SensorId = uint16_t;
+using SensorCnt = uint8_t;
+using NameLanguageTag = std::string;
+using SensorName = std::string;
+using SensorAuxiliaryNames = std::tuple<
+    SensorId, SensorCnt,
+    std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
 
 /**
  * @brief Terminus
@@ -68,6 +79,13 @@ class Terminus
 
         return true;
     }
+
+    /** @brief Parse the PDRs stored in the member variable, pdrs.
+     *
+     *  @return False if any unsupported PDR is detected.
+     */
+    bool parsePDRs();
+
     /** @brief The getter to return terminus's TID */
     pldm_tid_t getTid()
     {
@@ -80,7 +98,46 @@ class Terminus
     /** @brief A flag to indicate if terminus has been initialzed */
     bool initialized = false;
 
+    /** @brief Get Sensor Auxiliary Names by sensorID
+     *
+     *  @param[in] id - sensor ID
+     *  @return sensor auxiliary names
+     */
+    std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorId id);
+
   private:
+    /** @brief Parse the numeric sensor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to numeric sensor info struct
+     */
+    std::shared_ptr<pldm_numeric_sensor_value_pdr>
+        parseNumericSensorPDR(const std::vector<uint8_t>& pdrData);
+
+    /** @brief Parse the sensor Auxiliary name PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to sensor Auxiliary name info struct
+     */
+    std::shared_ptr<SensorAuxiliaryNames>
+        parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
+
+    /** @brief Parse the compact numeric sensor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to compact numeric sensor info struct
+     */
+    std::shared_ptr<pldm_compact_numeric_sensor_pdr>
+        parseCompactNumericSensorPDR(const std::vector<uint8_t>& pdrData);
+
+    /** @brief Parse the sensor Auxiliary name from compact numeric sensor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to sensor Auxiliary name info struct
+     */
+    std::shared_ptr<SensorAuxiliaryNames>
+        parseCompactNumericSensorNames(const std::vector<uint8_t>& pdrData);
+
     /* @brief The terminus's TID */
     pldm_tid_t tid;
 
@@ -96,6 +153,10 @@ class Terminus
      *         PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8).
      */
     std::vector<uint8_t> supportedCmds;
+
+    /* @brief Sensor Auxiliary Name list */
+    std::vector<std::shared_ptr<SensorAuxiliaryNames>>
+        sensorAuxiliaryNamesTbl{};
 };
 } // namespace platform_mc
 } // namespace pldm
