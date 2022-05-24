@@ -10,6 +10,7 @@ test_src = declare_dependency(
 tests = [
   'terminus_manager_test',
   'terminus_test',
+  'platform_manager_test',
 ]
 
 foreach t : tests
