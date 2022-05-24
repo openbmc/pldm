@@ -174,3 +174,13 @@ option(
     value: 8384512,
     description: 'OEM-IBM: max DMA size'
 )
+
+option(
+    'maximum-receive-size',
+    type: 'integer',
+    min: 64,
+    max: 4096,
+    value: 1024,
+    description: '''Maximum size in bytes of the received data for one PLDM
+                    command.'''
+)
