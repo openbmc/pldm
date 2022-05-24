@@ -50,6 +50,8 @@ using MctpInfos = std::vector<MctpInfo>;
  */
 #define MCTP_START_VALID_EID 8
 
+#define PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES 1024
+
 namespace dbus
 {
 
