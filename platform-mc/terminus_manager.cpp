@@ -153,6 +153,10 @@ requester::Coroutine TerminusManager::initTerminus(const MctpInfo& mctpInfo)
     if (terminus->doesSupport(PLDM_PLATFORM))
     {
         rc = co_await getPDRs(terminus);
+        if (!rc)
+        {
+            terminus->parsePDRs();
+        }
     }
 
     co_return PLDM_SUCCESS;
