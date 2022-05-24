@@ -57,6 +57,10 @@ extern "C" {
 #define PLDM_TID_RESERVED 0xFF
 #define PLDM_EID_NULL 0x0
 
+/* DSP0248 Table1 PLDM monitoring and control data types */
+#define PLDM_STR_UTF_8_MAX_LEN 256
+#define PLDM_STR_UTF_16_MAX_LEN 256
+
 enum pldm_effecter_data_size {
 	PLDM_EFFECTER_DATA_SIZE_UINT8,
 	PLDM_EFFECTER_DATA_SIZE_SINT8,
@@ -323,6 +327,19 @@ struct pldm_terminus_locator_pdr {
 	uint8_t terminus_locator_value[1];
 } __attribute__((packed));
 
+/** @struct pldm_sensor_auxiliary_names_pdr
+ *
+ *  Structure representing PLDM Sensor Auxiliary Names PDR
+ */
+struct pldm_sensor_auxiliary_names_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t sensor_id;
+	uint8_t sensor_count;
+	uint8_t name_string_count;
+	uint8_t name_strings[1];
+} __attribute__((packed));
+
 /** @struct pldm_terminus_locator_type_mctp_eid
  *
  *  Structure representing terminus locator value for
@@ -495,6 +512,71 @@ struct pldm_numeric_effecter_value_pdr {
 	union_range_field_format normal_min;
 	union_range_field_format rated_max;
 	union_range_field_format rated_min;
+} __attribute__((packed));
+
+/** @union union_sensor_data_size
+ *
+ *  The bit width and format of reading and threshold values that the sensor
+ *  returns.
+ *  Refer to: DSP0248_1.2.0: 28.4 Table 78
+ */
+typedef union {
+	uint8_t value_u8;
+	int8_t value_s8;
+	uint16_t value_u16;
+	int16_t value_s16;
+	uint32_t value_u32;
+	int32_t value_s32;
+} union_sensor_data_size;
+
+/** @struct pldm_numeric_sensor_value_pdr
+ *
+ *  Structure representing PLDM Numeric Sensor PDR
+ *  Refer to: DSP0248_1.2.0: 28.4 Table 78
+ */
+struct pldm_numeric_sensor_value_pdr {
+	struct pldm_pdr_hdr hdr;
+	uint16_t terminus_handle;
+	uint16_t sensor_id;
+	uint16_t entity_type;
+	uint16_t entity_instance_num;
+	uint16_t container_id;
+	uint8_t sensor_init;
+	bool8_t sensor_auxiliary_names_pdr;
+	uint8_t base_unit;
+	int8_t unit_modifier;
+	uint8_t rate_unit;
+	uint8_t base_oem_unit_handle;
+	uint8_t aux_unit;
+	int8_t aux_unit_modifier;
+	uint8_t aux_rate_unit;
+	uint8_t rel;
+	uint8_t aux_oem_unit_handle;
+	bool8_t is_linear;
+	uint8_t sensor_data_size;
+	real32_t resolution;
+	real32_t offset;
+	uint16_t accuracy;
+	uint8_t plus_tolerance;
+	uint8_t minus_tolerance;
+	union_sensor_data_size hysteresis;
+	bitfield8_t supported_thresholds;
+	bitfield8_t threshold_and_hysteresis_volatility;
+	real32_t state_transition_interval;
+	real32_t update_interval;
+	union_sensor_data_size max_readable;
+	union_sensor_data_size min_readable;
+	uint8_t range_field_format;
+	bitfield8_t range_field_support;
+	union_range_field_format nominal_value;
+	union_range_field_format normal_max;
+	union_range_field_format normal_min;
+	union_range_field_format warning_high;
+	union_range_field_format warning_low;
+	union_range_field_format critical_high;
+	union_range_field_format critical_low;
+	union_range_field_format fatal_high;
+	union_range_field_format fatal_low;
 } __attribute__((packed));
 
 /** @struct state_effecter_possible_states
