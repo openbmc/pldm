@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3c64e58e_bd64023c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "316bc0f4_aba96ce2",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "43ee2dca_ae6dde15",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81d0ce74_d01c7483",
+        "filename": "configurations/static_eid_table.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The file is remvoed.",
+      "parentUuid": "e406703a_c91bbf3f",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19148f8b_14b9370b",
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7214b922_7fb33837",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The struct is removed.",
+      "parentUuid": "19148f8b_14b9370b",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee6cc6c2_7e5f762f",
@@ -82,6 +136,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "remove?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72488cc7_e019c9d7",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ee6cc6c2_7e5f762f",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -109,6 +181,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e50c405_3d424aeb",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bb6d4bb2_5b02832b",
+      "range": {
+        "startLine": 27,
+        "startChar": 29,
+        "endLine": 27,
+        "endChar": 30
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcbb9b21_e24956c6",
@@ -122,6 +218,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Please introduce all the sensor related code in commits that use/implement them.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c18b270_15514043",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fcbb9b21_e24956c6",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -149,6 +263,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4444e73f_033d72e3",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3bda38e6_442d2d68",
+      "range": {
+        "startLine": 66,
+        "startChar": 43,
+        "endLine": 66,
+        "endChar": 53
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e744abf2_26244aee",
@@ -162,6 +300,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Should not assume a single-part PDR response. The code is not asking for next parts.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd57fbfa_56dd4d28",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "e744abf2_26244aee",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -183,6 +339,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "590210e4_16cb49cc",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "92202500_7df4394f",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da6a63a1_c4d09336",
@@ -196,6 +370,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "What about sensor and effecter names?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b794473e_581df114",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Fixed at https://gerrit.openbmc.org/c/openbmc/pldm/+/53961/4/platform-mc/terminus.cpp#39",
+      "parentUuid": "da6a63a1_c4d09336",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -219,6 +411,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b6b27e2_ae578957",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The inventoryPath is needed by the creating association interface for sensor D-Bus object for exposing PLDM sensor to Redfish. https://github.com/openbmc/docs/blob/master/architecture/sensor-architecture.md\n\nThe inventoryPath will be passed to sensor class for creating its association interface at https://gerrit.openbmc.org/c/openbmc/pldm/+/51489/4/platform-mc/terminus.cpp#384",
+      "parentUuid": "d5bd3295_fd2c3078",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13189068_261c12e9",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 4
@@ -230,6 +440,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Introduce in commit that implements this.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4ee029b_9007fdf6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "13189068_261c12e9",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -247,6 +475,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Please add doxygen-style documentation.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b18f4de5_ffd2bef2",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "67e80f71_4410ab22",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -270,6 +516,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f512fd0_1e690db9",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "commit message is updated",
+      "parentUuid": "7243e40a_a6e8e687",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "753d50be_41177771",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 4
@@ -281,6 +545,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Can this be std::moved?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4879eb09_50652211",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The code is removed in new patch set.",
+      "parentUuid": "753d50be_41177771",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -302,6 +584,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c876153d_3aaf76e7",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The code is removed in new patch set.",
+      "parentUuid": "e1421ec8_61a254ab",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7df3e401_a1c28428",
@@ -315,6 +615,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "What about fetching the terminus locator PDR? The initialization agent is supposed to do that, based on dsp0248.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "133e5d04_e5b69914",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The code is removed in new patch set.",
+      "parentUuid": "7df3e401_a1c28428",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -336,6 +654,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "813b51ed_622dcf3a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Fixed in new patch set.",
+      "parentUuid": "668db804_874171eb",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7dc8d38d_ce1b471d",
@@ -349,6 +685,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "You don\u0027t seem to be calling sacnTerminus() again in the else (success) case. How would processing of other termini, if present, continue?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6edf9ce_14350c69",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The code is re-implemented in new patch set.",
+      "parentUuid": "7dc8d38d_ce1b471d",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -370,6 +724,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c0b7c53_82b1324d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7e8d14da_6aa918b1",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74d795d5_8f7587d7",
@@ -383,6 +755,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "What about success cases?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02a50331_4936a687",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "The code is re-implemented in new patch set.",
+      "parentUuid": "74d795d5_8f7587d7",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -404,6 +794,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41809186_6012bdeb",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "847e9459_58e97326",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce836d84_86fa5f86",
@@ -417,6 +825,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Ok to do this if assignedTid is 0?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46f04535_455f53b2",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ce836d84_86fa5f86",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -438,6 +864,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9ce7683_94a44718",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f46b2779_baf07bf5",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e4b0c72_b8801a54",
@@ -451,6 +895,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "We probably need a better/elegant way to continue the scanning process. I know you\u0027ve made it async, but this could be error prone if it\u0027s missed to be called somewhere.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d34cd02_1dfca8c3",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "re-implemented by using Coroutine",
+      "parentUuid": "6e4b0c72_b8801a54",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -472,6 +934,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49097f26_21192928",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "fixed re-implemented",
+      "parentUuid": "24224a93_5a4e8eac",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "631879d2_be79735d",
@@ -485,6 +965,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "No error handling needed here?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9074c44f_09c8ed7c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "fixed by re-implemented",
+      "parentUuid": "631879d2_be79735d",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -506,6 +1004,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c413ddb0_9742444b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7e872904_f1c70e16",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4408ecb4_5da25457",
@@ -519,6 +1035,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Not following this. How does a value of 0 tell us this is the right entry to assign the EID to?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65709c2e_2387fdba",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4408ecb4_5da25457",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -540,6 +1074,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30cb6e7b_39348f53",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "39398a19_366c5a8e",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f2d5aa1_b958b151",
@@ -553,6 +1105,30 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "nit: termini",
+      "range": {
+        "startLine": 37,
+        "startChar": 69,
+        "endLine": 37,
+        "endChar": 79
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f51d1c26_ab701061",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7f2d5aa1_b958b151",
       "range": {
         "startLine": 37,
         "startChar": 69,
@@ -586,6 +1162,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8403942e_33f2fbb3",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "08e76c05_9e52e6fd",
+      "range": {
+        "startLine": 41,
+        "startChar": 16,
+        "endLine": 41,
+        "endChar": 19
+      },
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c3458d4_cb3d3e7a",
@@ -603,6 +1203,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dba6885_fbb393c0",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2c3458d4_cb3d3e7a",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "113b1b8d_a0e8a534",
@@ -616,6 +1234,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "Document all these as well please.",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76a3f5c9_1033032f",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "113b1b8d_a0e8a534",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -650,6 +1286,24 @@
       "writtenOn": "2022-04-22T08:57:09Z",
       "side": 1,
       "message": "What if there are static MCTP endpoints? Also it seems like this should be contained in the MCTP discovery class?",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d214ca76_8940c1d6",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-25T21:11:48Z",
+      "side": 1,
+      "message": "fixed by the patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/51184/19/requester/mctp_endpoint_discovery.cpp#81",
+      "parentUuid": "20a114c0_96d751ca",
       "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
