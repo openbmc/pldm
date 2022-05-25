@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb05e62e_022b36c3",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-05-25T16:44:52Z",
+      "side": 1,
+      "message": "I think you can move these code to different patch. Which can call as support coroutine_handle.",
+      "revId": "4ff13518200a777223019901c50ea0728f871de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
