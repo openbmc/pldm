@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e63b334_8d422a8d",
+        "filename": "libpldm/base.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-05-25T16:49:56Z",
+      "side": 1,
+      "message": "These code are used for support SetTID PLDM command.\nWhat do you think if we move it to new patches.",
+      "revId": "4ff13518200a777223019901c50ea0728f871de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb05e62e_022b36c3",
         "filename": "requester/handler.hpp",
         "patchSetId": 11
