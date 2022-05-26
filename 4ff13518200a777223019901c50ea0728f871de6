@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9e32e6d_b9bff3a6",
+        "filename": "libpldm/base.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-26T16:32:35Z",
+      "side": 1,
+      "message": "How is that to create a new patch set like below?\n\nplatform-mc: Sensor handling\nplatform-mc: PDR handling\nplatform-mc: Added TerminusManager and Terminus class\n(new)libpldm: Added support of SetTID command\nrequester: Added support to send/recv PLDM message by coroutine\nrequester: Modified MctpDiscovery class",
+      "parentUuid": "1e63b334_8d422a8d",
+      "revId": "4ff13518200a777223019901c50ea0728f871de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb05e62e_022b36c3",
         "filename": "requester/handler.hpp",
         "patchSetId": 11
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-25T16:44:52Z",
       "side": 1,
       "message": "I think you can move these code to different patch. Which can call as support coroutine_handle.",
+      "revId": "4ff13518200a777223019901c50ea0728f871de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1a76387_8dc58a51",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-26T16:32:35Z",
+      "side": 1,
+      "message": "How is that to create a new patch set like below?\n\nplatform-mc: Sensor handling\nplatform-mc: PDR handling\nplatform-mc: Added TerminusManager and Terminus class\n(new)requester: Added support to send/recv PLDM message by coroutine\nrequester: Modified MctpDiscovery class",
+      "parentUuid": "eb05e62e_022b36c3",
       "revId": "4ff13518200a777223019901c50ea0728f871de6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
