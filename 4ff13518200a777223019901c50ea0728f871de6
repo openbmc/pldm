@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c781ce8_68773506",
+        "filename": "libpldm/base.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-29T19:30:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e9e32e6d_b9bff3a6",
+      "revId": "4ff13518200a777223019901c50ea0728f871de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb05e62e_022b36c3",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "How is that to create a new patch set like below?\n\nplatform-mc: Sensor handling\nplatform-mc: PDR handling\nplatform-mc: Added TerminusManager and Terminus class\n(new)requester: Added support to send/recv PLDM message by coroutine\nrequester: Modified MctpDiscovery class",
       "parentUuid": "eb05e62e_022b36c3",
+      "revId": "4ff13518200a777223019901c50ea0728f871de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c654e02_256c85e2",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-05-29T19:30:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b1a76387_8dc58a51",
       "revId": "4ff13518200a777223019901c50ea0728f871de6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
