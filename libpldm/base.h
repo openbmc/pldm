@@ -25,6 +25,7 @@ enum pldm_supported_types {
 /** @brief PLDM Commands
  */
 enum pldm_supported_commands {
+	PLDM_SET_TID = 0x01,
 	PLDM_GET_TID = 0x2,
 	PLDM_GET_PLDM_VERSION = 0x3,
 	PLDM_GET_PLDM_TYPES = 0x4,
@@ -85,6 +86,7 @@ typedef enum {
 /* Response lengths are inclusive of completion code */
 #define PLDM_GET_TYPES_RESP_BYTES 9
 #define PLDM_GET_TID_RESP_BYTES 2
+#define PLDM_SET_TID_RESP_BYTES 1
 #define PLDM_GET_COMMANDS_RESP_BYTES 33
 /* Response data has only one version and does not contain the checksum */
 #define PLDM_GET_VERSION_RESP_BYTES 10
@@ -202,6 +204,15 @@ struct pldm_get_version_resp {
 				       //!< transfer
 	uint8_t transfer_flag;	       //!< PLDM GetVersion transfer flag
 	uint8_t version_data[1];       //!< PLDM GetVersion version field
+} __attribute__((packed));
+
+/** @struct pldm_set_tid_req
+ *
+ *  Structure representing PLDM set tid response.
+ */
+
+struct pldm_set_tid_req {
+	uint8_t tid; //!< PLDM SetTID TID field
 } __attribute__((packed));
 
 /** @struct pldm_get_tid_resp
@@ -471,6 +482,17 @@ int encode_get_tid_req(uint8_t instance_id, struct pldm_msg *msg);
  */
 int encode_get_tid_resp(uint8_t instance_id, uint8_t completion_code,
 			uint8_t tid, struct pldm_msg *msg);
+
+/** @brief Create a PLDM request message for SetTID
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] tid - Terminus ID
+ *  @param[in,out] msg - Message will be written to this
+ *  @return pldm_completion_codes
+ *  @note  Caller is responsible for memory alloc and dealloc of param
+ *         'msg.payload'
+ */
+int encode_set_tid_req(uint8_t instance_id, uint8_t tid, struct pldm_msg *msg);
 
 /** @brief Create a PLDM response message containing only cc
  *
