@@ -18,6 +18,7 @@
 
 #include <cassert>
 #include <chrono>
+#include <coroutine>
 #include <memory>
 #include <tuple>
 #include <unordered_map>
@@ -284,6 +285,145 @@ class Handler
             removeRequestContainer.erase(key);
         }
     }
+};
+
+struct sendRecvPldmMsg
+{
+    std::coroutine_handle<> resumeHandle;
+    requester::Handler<requester::Request>& handler;
+    uint8_t eid;
+    pldm::Request& requestMsg;
+    pldm::Response& responseMsg;
+    uint8_t rc;
+
+    bool await_ready() noexcept
+    {
+        return false;
+    }
+
+    bool await_suspend(std::coroutine_handle<> handle) noexcept
+    {
+        resumeHandle = handle;
+
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        rc = handler.registerRequest(
+            eid, request->hdr.instance_id, request->hdr.type,
+            request->hdr.command, std::move(requestMsg),
+            std::move(std::bind_front(&sendRecvPldmMsg::HandleResponse, this)));
+        if (rc)
+        {
+            std::cerr << "registerRequest failed, rc="
+                      << static_cast<unsigned>(rc) << "\n";
+            return false;
+        }
+        return true;
+    }
+
+    uint8_t await_resume() const noexcept
+    {
+        return rc;
+    }
+
+    sendRecvPldmMsg(requester::Handler<requester::Request>& handler,
+                    uint8_t eid, pldm::Request& requestMsg,
+                    pldm::Response& responseMsg) :
+        handler(handler),
+        eid(eid), requestMsg(requestMsg), responseMsg(responseMsg)
+    {
+        rc = PLDM_SUCCESS;
+        responseMsg.clear();
+    }
+
+    void HandleResponse(mctp_eid_t eid, const pldm_msg* response, size_t length)
+    {
+        if (response == nullptr || !length)
+        {
+            std::cerr << "No response received, EID=" << unsigned(eid) << "\n";
+            rc = PLDM_ERROR;
+        }
+        else
+        {
+            const uint8_t* responsePtr =
+                reinterpret_cast<const uint8_t*>(response);
+
+            responseMsg.insert(responseMsg.end(), responsePtr,
+                               responsePtr + length +
+                                   sizeof(struct pldm_msg_hdr));
+        }
+        resumeHandle();
+    }
+};
+
+struct Coroutine
+{
+    struct promise_type
+    {
+        std::coroutine_handle<> parent_handle;
+        uint8_t data;
+
+        Coroutine get_return_object()
+        {
+            return {std::coroutine_handle<promise_type>::from_promise(*this)};
+        }
+
+        std::suspend_never initial_suspend()
+        {
+            return {};
+        }
+
+        auto final_suspend() noexcept
+        {
+            struct awaiter
+            {
+                bool await_ready() const noexcept
+                {
+                    return false;
+                }
+
+                void await_resume() const noexcept
+                {}
+
+                std::coroutine_handle<> await_suspend(
+                    std::coroutine_handle<promise_type> h) noexcept
+                {
+                    auto parent_handle = h.promise().parent_handle;
+                    if (parent_handle)
+                    {
+                        return parent_handle;
+                    }
+                    return std::noop_coroutine();
+                }
+            };
+
+            return awaiter{};
+        }
+
+        void unhandled_exception()
+        {}
+
+        void return_value(uint8_t value) noexcept
+        {
+            data = std::move(value);
+        }
+    };
+
+    bool await_ready() const noexcept
+    {
+        return handle.done();
+    }
+
+    uint8_t await_resume() const noexcept
+    {
+        return std::move(handle.promise().data);
+    }
+
+    bool await_suspend(std::coroutine_handle<> coroutine)
+    {
+        handle.promise().parent_handle = coroutine;
+        return true;
+    }
+
+    mutable std::coroutine_handle<promise_type> handle;
 };
 
 } // namespace requester
