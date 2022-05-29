@@ -151,3 +151,54 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     EXPECT_EQ(callbackCount, 2);
     EXPECT_EQ(instanceId, dbusImplReq.getInstanceId(eid));
 }
+
+Coroutine getTID(Handler<MockRequest>& handler, mctp_eid_t eid,
+                 uint8_t instanceId, uint8_t& tid)
+{
+    pldm::Request requestMsg(sizeof(pldm_msg_hdr));
+    pldm::Response responseMsg{};
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_get_tid_req(instanceId, request);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    rc = co_await sendRecvPldmMsg<Handler<MockRequest>>(
+        handler, eid, requestMsg, responseMsg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    uint8_t cc = 0;
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    auto length = responseMsg.size() - sizeof(pldm_msg_hdr);
+    rc = decode_get_tid_resp(response, length, &cc, &tid);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    co_return cc;
+}
+
+TEST_F(HandlerTest, requestResponseByCoroutine)
+{
+    Handler<MockRequest> reqHandler(fd, event, dbusImplReq, false, 90000,
+                                    seconds(1), 2, milliseconds(100));
+
+    uint8_t respTid = 0;
+    auto instanceId = dbusImplReq.getInstanceId(eid);
+    // Execute a coroutine to send getTID command. The coroutine is suspended
+    // until reqHandler.handleResponse() is received.
+    auto h = getTID(reqHandler, eid, instanceId, respTid);
+
+    // Compose response message of getTID command
+    uint8_t tid = 1;
+    pldm::Response responseMsg(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES);
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    encode_get_tid_resp(instanceId, PLDM_SUCCESS, tid, response);
+
+    EXPECT_NE(tid, respTid);
+
+    // Send response back to resume getTID coroutine to update respTid by
+    // calling  reqHandler.handleResponse() manually
+    reqHandler.handleResponse(eid, instanceId, PLDM_BASE, PLDM_GET_TID,
+                              response,
+                              responseMsg.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_EQ(tid, respTid);
+    h.destory();
+}
