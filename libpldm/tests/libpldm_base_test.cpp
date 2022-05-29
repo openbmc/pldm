@@ -543,3 +543,30 @@ TEST(CcOnlyResponse, testEncode)
     rc = encode_cc_only_resp(0, 1, 2, 3, nullptr);
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
+
+TEST(SetTID, testGoodEncodeRequest)
+{
+    uint8_t instanceId = 0;
+    uint8_t tid = 0x01;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + sizeof(tid)> requestMsg{};
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc = encode_set_tid_req(instanceId, tid, request);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    EXPECT_EQ(request->hdr.command, PLDM_SET_TID);
+    EXPECT_EQ(request->hdr.type, PLDM_BASE);
+    EXPECT_EQ(request->hdr.request, 1);
+    EXPECT_EQ(request->hdr.datagram, 0);
+    EXPECT_EQ(request->hdr.instance_id, instanceId);
+    EXPECT_EQ(0, memcmp(request->payload, &tid, sizeof(tid)));
+}
+
+TEST(SetTID, testBadEncodeRequest)
+{
+    uint8_t tid = 0x01;
+
+    auto rc = encode_set_tid_req(0, tid, nullptr);
+
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+}
