@@ -150,3 +150,53 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     EXPECT_EQ(validResponse, true);
     EXPECT_EQ(callbackCount, 2);
 }
+
+Coroutine getTID(Handler<MockRequest>& handler, mctp_eid_t eid,
+                 uint8_t instanceId, uint8_t& tid)
+{
+    pldm::Request request(sizeof(pldm_msg_hdr));
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_get_tid_req(instanceId, requestMsg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    rc = co_await SendRecvPldmMsg<Handler<MockRequest>>(
+        handler, eid, request, &responseMsg, &responseLen);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    uint8_t cc = 0;
+    rc = decode_get_tid_resp(responseMsg, responseLen, &cc, &tid);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    co_return cc;
+}
+
+TEST_F(HandlerTest, requestResponseByCoroutine)
+{
+    Handler<MockRequest> reqHandler(pldmTransport, event, instanceIdDb, false,
+                                    seconds(1), 2, milliseconds(100));
+
+    uint8_t respTid = 0;
+    auto instanceId = instanceIdDb.next(eid);
+
+    // Execute a coroutine to send getTID command. The coroutine is suspended
+    // until reqHandler.handleResponse() is received.
+    auto co = getTID(reqHandler, eid, instanceId, respTid);
+
+    // Compose response message of getTID command
+    uint8_t tid = 1;
+    pldm::Response responseMsg(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES);
+    auto response = reinterpret_cast<pldm_msg*>(responseMsg.data());
+    encode_get_tid_resp(instanceId, PLDM_SUCCESS, tid, response);
+
+    EXPECT_NE(tid, respTid);
+
+    // Send response back to resume getTID coroutine to update respTid by
+    // calling  reqHandler.handleResponse() manually
+    reqHandler.handleResponse(eid, instanceId, PLDM_BASE, PLDM_GET_TID,
+                              response,
+                              responseMsg.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_EQ(tid, respTid);
+}
