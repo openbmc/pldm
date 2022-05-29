@@ -15,6 +15,7 @@
 
 #include <cassert>
 #include <chrono>
+#include <coroutine>
 #include <deque>
 #include <functional>
 #include <memory>
@@ -365,6 +366,250 @@ class Handler
             removeRequestContainer.erase(key);
         }
     }
+};
+
+/** @struct SendRecvPldmMsg
+ *
+ * An awaitable object needed by co_await operator to send/recv PLDM
+ * message.
+ * e.g.
+ * rc = co_await SendRecvPldmMsg<h>(h, eid, req, respMsg, respLen);
+ *
+ * @tparam RequesterHandler - Requester::handler class type
+ */
+template <class RequesterHandler>
+struct SendRecvPldmMsg
+{
+    /** @brief For recording the suspended coroutine where the co_await
+     * operator is. When PLDM response message is received, the resumeHandle()
+     * will be called to continue the next line of co_await operator
+     */
+    std::coroutine_handle<> resumeHandle;
+
+    /** @brief The RequesterHandler to send/recv PLDM message.
+     */
+    RequesterHandler& handler;
+
+    /** @brief The EID where PLDM message will be sent to.
+     */
+    uint8_t eid;
+
+    /** @brief The PLDM request message.
+     */
+    pldm::Request& request;
+
+    /** @brief The pointer of PLDM response message.
+     */
+    const pldm_msg** responseMsg;
+
+    /** @brief The length of PLDM response message.
+     */
+    size_t* responseLen;
+
+    /** @brief For keeping the return value of RequesterHandler.
+     */
+    uint8_t rc;
+
+    /** @brief Returning false to make await_suspend() to be called.
+     */
+    bool await_ready() noexcept
+    {
+        return false;
+    }
+
+    /** @brief Called by co_await operator before suspending coroutine. The
+     * method will send out PLDM request message, register handleResponse() as
+     * call back function for the event when PLDM response message received.
+     */
+    bool await_suspend(std::coroutine_handle<> handle) noexcept
+    {
+        if (responseMsg == nullptr || responseLen == nullptr)
+        {
+            rc = PLDM_ERROR_INVALID_DATA;
+            return false;
+        }
+
+        auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+        rc = handler.registerRequest(
+            eid, requestMsg->hdr.instance_id, requestMsg->hdr.type,
+            requestMsg->hdr.command, std::move(request),
+            std::move(std::bind_front(&SendRecvPldmMsg::HandleResponse, this)));
+        if (rc)
+        {
+            std::cerr << "registerRequest failed, rc="
+                      << static_cast<unsigned>(rc) << "\n";
+            return false;
+        }
+
+        resumeHandle = handle;
+        return true;
+    }
+
+    /** @brief Called by co_await operator to get return value when awaitable
+     * object completed.
+     */
+    uint8_t await_resume() const noexcept
+    {
+        return rc;
+    }
+
+    /** @brief Constructor of awaitable object to initialize necessary member
+     * variables.
+     */
+    SendRecvPldmMsg(RequesterHandler& handler, uint8_t eid,
+                    pldm::Request& request, const pldm_msg** responseMsg,
+                    size_t* responseLen) :
+        handler(handler),
+        eid(eid), request(request), responseMsg(responseMsg),
+        responseLen(responseLen), rc(PLDM_ERROR)
+    {}
+
+    /** @brief The function will be registered by RegisterHandler for handling
+     * PLDM response message. The copied responseMsg is for preventing that the
+     * response pointer in parameter becomes invalid when coroutine is
+     * resumed.
+     */
+    void HandleResponse(mctp_eid_t eid, const pldm_msg* response, size_t length)
+    {
+        if (response == nullptr || !length)
+        {
+            std::cerr << "No response received, EID=" << unsigned(eid) << "\n";
+            rc = PLDM_ERROR;
+        }
+        else
+        {
+            *responseMsg = response;
+            *responseLen = length;
+            rc = PLDM_SUCCESS;
+        }
+        resumeHandle();
+    }
+};
+
+/** @struct Coroutine
+ *
+ * A coroutine return_object supports nesting coroutine
+ */
+struct Coroutine
+{
+    /** @brief The nested struct named 'promise_type' which is needed for
+     * Coroutine struct to be a coroutine return_object.
+     */
+    struct promise_type
+    {
+        /** @brief For keeping the parent coroutine handle if any. For the case
+         * of nesting co_await coroutine, this handle will be used to resume to
+         * continue parent coroutine.
+         */
+        std::coroutine_handle<> parent_handle;
+
+        /** @brief For holding return value of coroutine
+         */
+        uint8_t data;
+
+        /** @brief Get the return object object
+         */
+        Coroutine get_return_object()
+        {
+            return {std::coroutine_handle<promise_type>::from_promise(*this)};
+        }
+
+        /** @brief The method is called before starting a coroutine. Returning
+         * std::suspend_never awaitable to execute coroutine body immediately.
+         */
+        std::suspend_never initial_suspend()
+        {
+            return {};
+        }
+
+        /** @brief The method is called after coroutine completed to return a
+         * customized awaitable object to resume to parent coroutine if any.
+         */
+        auto final_suspend() noexcept
+        {
+            struct awaiter
+            {
+                /** @brief Returning false to make await_suspend to be called.
+                 */
+                bool await_ready() const noexcept
+                {
+                    return false;
+                }
+
+                /** @brief Do nothing here for customized awaitable object.
+                 */
+                void await_resume() const noexcept {}
+
+                /** @brief Returning parent coroutine handle here to continue
+                 * parent coroutine.
+                 */
+                std::coroutine_handle<> await_suspend(
+                    std::coroutine_handle<promise_type> h) noexcept
+                {
+                    auto parent_handle = h.promise().parent_handle;
+                    if (parent_handle)
+                    {
+                        return parent_handle;
+                    }
+                    return std::noop_coroutine();
+                }
+            };
+
+            return awaiter{};
+        }
+
+        /** @brief The handler for an exception was thrown in
+         * coroutine body.
+         */
+        void unhandled_exception() {}
+
+        /** @brief Keeping the value returned by co_return operator
+         */
+        void return_value(uint8_t value) noexcept
+        {
+            data = std::move(value);
+        }
+    };
+
+    /** @brief Called by co_await to check if it needs to be
+     * suspended.
+     */
+    bool await_ready() const noexcept
+    {
+        return handle.done();
+    }
+
+    /** @brief Called by co_await operator to get return value when coroutine
+     * finished.
+     */
+    uint8_t await_resume() const noexcept
+    {
+        return std::move(handle.promise().data);
+    }
+
+    /** @brief Called when the coroutine itself is being suspended. The
+     * recording the parent coroutine handle is for await_suspend() in
+     * promise_type::final_suspend to refer.
+     */
+    bool await_suspend(std::coroutine_handle<> coroutine)
+    {
+        handle.promise().parent_handle = coroutine;
+        return true;
+    }
+
+    /** @brief Destructor of Coroutine */
+    ~Coroutine()
+    {
+        if (handle && handle.done())
+        {
+            handle.destroy();
+        }
+    }
+
+    /** @brief Assigned by promise_type::get_return_object to keep coroutine
+     * handle itself.
+     */
+    mutable std::coroutine_handle<promise_type> handle;
 };
 
 } // namespace requester
