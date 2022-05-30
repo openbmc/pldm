@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "673939d4_d02721ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-05-30T03:23:58Z",
+      "side": 1,
+      "message": "I verified this patch with Ampere system. Where the BMC queries many host sensors thru PLDM after each 3 seconds with sleep 10ms between GetSensorReading commands. The host keeps sending some platform event message to BMC thru PLDM after each 4 seconds. The coroutine functions are working well. There is no time out.",
+      "revId": "5412cc07e770510da648fd2de4717b10934ca867",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
