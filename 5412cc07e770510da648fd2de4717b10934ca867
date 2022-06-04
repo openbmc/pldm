@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc156386_29bd7c0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-04T14:20:47Z",
+      "side": 1,
+      "message": "Please improve the commit message by answering the questions like \n\n1/ why this is needed ?\n2/ what extra value this would bring in ?\n3/ What is the problem with the current code ?\n\nPLDM in the current state already handles tx \u0026 rx asynchronously(so pldm can send/receive other messages while waiting on a different message response).",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "5412cc07e770510da648fd2de4717b10934ca867",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "673939d4_d02721ac",
