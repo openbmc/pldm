@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "910a8eea_ace49fbc",
+        "filename": "meson.build",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-04T17:38:15Z",
+      "side": 1,
+      "message": "can this some how be put inside the environment file that pldm consumes \u0026 loads when it starts ? instead of having yet another configuration file ? or can we just have one common configuration file for pldm in which we add all the configuration settings \n\nMy motive behind this question is that , having one common configuration file would allow us to do things like graceful reload of settings without actually restarting pldm.",
+      "range": {
+        "startLine": 64,
+        "startChar": 74,
+        "endLine": 64,
+        "endChar": 96
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ef9c903_dc830145",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-04T17:38:15Z",
+      "side": 1,
+      "message": "Doxygen missing",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 52
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de2b6227_567ccb10",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-04T17:38:15Z",
+      "side": 1,
+      "message": "here as well",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 51
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
