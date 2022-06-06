@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96c1f1ec_4bf9898a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000181
+      },
+      "writtenOn": "2022-06-06T14:17:24Z",
+      "side": 1,
+      "message": "Need to check the ci fail?",
+      "revId": "9c4903777b8b33b8f048f62a0ffda3fb31b6e3f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
