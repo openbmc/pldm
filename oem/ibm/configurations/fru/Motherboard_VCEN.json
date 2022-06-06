@@ -25,6 +25,15 @@
             }
       },
       {
+         "fru_field_type" : 5,
+         "dbus":
+            {
+               "interface" : "com.ibm.ipzvpd.VCEN",
+               "property_name" : "TM",
+               "property_type" : "bytearray"
+            }
+      },
+      {
          "fru_field_type" : 6,
          "dbus":
             {
