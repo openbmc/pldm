@@ -185,7 +185,6 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     }
     catch (const std::exception& e)
     {
-
         std::cerr << "Error Setting time,PATH=" << setTimePath
                   << "TIME INTERFACE=" << setTimeInterface
                   << "ERROR=" << e.what() << "\n";

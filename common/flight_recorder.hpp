@@ -33,7 +33,6 @@ class FlightRecorder
   private:
     FlightRecorder() : index(0)
     {
-
         flightRecorderPolicy = FLIGHT_RECORDER_MAX_ENTRIES ? true : false;
         if (flightRecorderPolicy)
         {

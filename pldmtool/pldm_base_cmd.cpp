@@ -307,7 +307,6 @@ class GetPLDMCommands : public CommandInterface
         ordered_json output;
         for (int i = 0; i < PLDM_MAX_CMDS_PER_TYPE; i++)
         {
-
             ordered_json cmdinfo;
             bitfield8_t b = cmdTypes[i / 8];
             if (b.byte & (1 << i % 8))

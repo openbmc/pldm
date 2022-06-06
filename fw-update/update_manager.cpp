@@ -32,7 +32,6 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     // package processing
     if (activation)
     {
-
         if (activation->activation() ==
             software::Activation::Activations::Activating)
         {

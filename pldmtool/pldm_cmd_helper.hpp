@@ -76,7 +76,6 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
 
 class CommandInterface
 {
-
   public:
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :

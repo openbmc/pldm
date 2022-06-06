@@ -311,7 +311,6 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
         }
         try
         {
-
             dBusIntf.setDbusProperty(dbusMapping, dbusValue.value());
         }
         catch (const std::exception& e)

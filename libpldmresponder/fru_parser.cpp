@@ -50,7 +50,6 @@ void FruParser::setupDefaultDBusLookup(const fs::path& masterJsonPath)
     auto data = Json::parse(jsonFile, nullptr, false);
     if (data.is_discarded())
     {
-
         std::cerr << "Parsing FRU Dbus Lookup Map config file failed, FILE="
                   << masterJsonPath;
         std::abort();
@@ -119,7 +118,6 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
         auto data = Json::parse(jsonFile, nullptr, false);
         if (data.is_discarded())
         {
-
             std::cerr << "Parsing FRU config file failed, FILE=" << file.path();
             throw InternalFailure();
         }

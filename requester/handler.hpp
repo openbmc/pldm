@@ -79,7 +79,6 @@ using ResponseHandler = fu2::unique_function<void(
 template <class RequestInterface>
 class Handler
 {
-
   public:
     Handler() = delete;
     Handler(const Handler&) = delete;

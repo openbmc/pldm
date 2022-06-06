@@ -104,7 +104,6 @@ void BIOSIntegerAttribute::constructEntry(
     const BIOSStringTable& stringTable, Table& attrTable, Table& attrValueTable,
     std::optional<std::variant<int64_t, std::string>> optAttributeValue)
 {
-
     pldm_bios_table_attr_entry_integer_info info = {
         stringTable.findHandle(name), readOnly,
         integerInfo.lowerBound,       integerInfo.upperBound,

@@ -82,7 +82,6 @@ TEST(parseEffecterData, testBadDecodeEffecterData)
 
 TEST(FindStateEffecterPDR, testOneMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 33;
@@ -116,7 +115,6 @@ TEST(FindStateEffecterPDR, testOneMatch)
 
 TEST(FindStateEffecterPDR, testNoMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 44;
@@ -150,7 +148,6 @@ TEST(FindStateEffecterPDR, testNoMatch)
 
 TEST(FindStateEffecterPDR, testEmptyRepo)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 33;
@@ -169,7 +166,6 @@ TEST(FindStateEffecterPDR, testEmptyRepo)
 
 TEST(FindStateEffecterPDR, testMoreMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
 
@@ -225,7 +221,6 @@ TEST(FindStateEffecterPDR, testMoreMatch)
 
 TEST(FindStateEffecterPDR, testManyNoMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 33;
@@ -495,7 +490,6 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
 
 TEST(FindStateSensorPDR, testOneMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 5;
@@ -529,7 +523,6 @@ TEST(FindStateSensorPDR, testOneMatch)
 
 TEST(FindStateSensorPDR, testNoMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 5;
@@ -563,7 +556,6 @@ TEST(FindStateSensorPDR, testNoMatch)
 
 TEST(FindStateSensorPDR, testEmptyRepo)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 5;
@@ -582,7 +574,6 @@ TEST(FindStateSensorPDR, testEmptyRepo)
 
 TEST(FindStateSensorPDR, testMoreMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
 
@@ -638,7 +629,6 @@ TEST(FindStateSensorPDR, testMoreMatch)
 
 TEST(FindStateSensorPDR, testManyNoMatch)
 {
-
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
     uint16_t entityID = 5;

@@ -92,7 +92,6 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
 
 void DbusToFileHandler::reportResourceDumpFailure()
 {
-
     pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
 
     PropertyValue value{resDumpStatus};

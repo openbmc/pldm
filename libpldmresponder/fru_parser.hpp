@@ -67,7 +67,6 @@ using FruRecordMap = std::map<ItemIntfName, FruRecordInfos>;
  */
 class FruParser
 {
-
   public:
     FruParser() = delete;
     explicit FruParser(const std::string& dirPath,

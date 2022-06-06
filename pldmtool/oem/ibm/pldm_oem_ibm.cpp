@@ -106,7 +106,6 @@ class GetFileTable : public CommandInterface
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
-
         return {PLDM_ERROR, {}};
     }
 

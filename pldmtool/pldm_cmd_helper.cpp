@@ -25,7 +25,6 @@ namespace helper
 int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
                      std::vector<uint8_t>& responseMsg, bool pldmVerbose)
 {
-
     const char devPath[] = "\0mctp-mux";
     int returnCode = 0;
 
@@ -179,7 +178,6 @@ void CommandInterface::exec()
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
-
     // Insert the PLDM message type and EID at the beginning of the
     // msg.
     requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);

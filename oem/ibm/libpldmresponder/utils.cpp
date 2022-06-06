@@ -92,7 +92,6 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
 
     for (i = 0; i < blockSize; i = i + nwrite)
     {
-
         fd_set wfd;
         struct timeval tv;
         tv.tv_sec = 1;

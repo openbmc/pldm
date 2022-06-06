@@ -433,7 +433,6 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
     }
     catch (const std::exception& e)
     {
-
         std::cerr << "Chassis State transition to Off failed,"
                   << "unable to set property RequestedPowerTransition"
                   << "ERROR=" << e.what() << "\n";

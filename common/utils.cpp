@@ -235,7 +235,6 @@ GetSubTreeResponse
     DBusHandler::getSubtree(const std::string& searchPath, int depth,
                             const std::vector<std::string>& ifaceList) const
 {
-
     auto& bus = pldm::utils::DBusHandler::getBus();
     auto method = bus.new_method_call(mapperBusName, mapperPath,
                                       mapperInterface, "GetSubTree");

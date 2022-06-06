@@ -21,7 +21,6 @@ namespace responder
 
 void FruImpl::buildFRUTable()
 {
-
     if (isBuilt)
     {
         return;
@@ -170,7 +169,6 @@ void FruImpl::populateRecords(
         uint8_t numFRUFields = 0;
         for (auto const& [intf, prop, propType, fieldTypeNum] : fieldInfos)
         {
-
             try
             {
                 pldm::responder::dbus::Value propValue;

@@ -154,7 +154,6 @@ void optionUsage(void)
 
 int main(int argc, char** argv)
 {
-
     bool verbose = false;
     static struct option long_options[] = {
         {"verbose", required_argument, 0, 'v'}, {0, 0, 0, 0}};

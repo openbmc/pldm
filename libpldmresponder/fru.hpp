@@ -197,7 +197,6 @@ namespace fru
 
 class Handler : public CmdHandler
 {
-
   public:
     Handler(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,

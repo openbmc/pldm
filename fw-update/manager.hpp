@@ -28,7 +28,6 @@ using namespace pldm::dbus_api;
  */
 class Manager
 {
-
   public:
     Manager() = delete;
     Manager(const Manager&) = delete;
