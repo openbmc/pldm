@@ -1,7 +1,7 @@
 {
    "entries":[
       {
-         "attribute_name":"pvm_fw_boot_side",
+         "attribute_name":"fw_boot_side",
          "possible_values":[
             "Perm",
             "Temp"
@@ -9,8 +9,20 @@
          "default_values":[
             "Temp"
          ],
-         "helpText" : "pvm_fw_boot_side",
-         "displayName" : "pvm_fw_boot_side"
+         "helpText" : "Specifies the next boot side to the host, i.e. Temp or Perm. Host can set/query this attribute at anytime to know which is the side the host would boot in the next reboot.",
+         "displayName" : "Current Firmware Boot Side (pending)"
+      },
+      {
+         "attribute_name":"fw_boot_side_current",
+         "possible_values":[
+            "Perm",
+            "Temp"
+         ],
+         "default_values":[
+            "Temp"
+         ],
+         "helpText" : "Specifies the current boot side to the host, i.e. Temp or Perm. Host can query this attribute at anytime to know which side it is running on. This attribute is set by the BMC. Set fw_boot_side instead.",
+         "displayName" : "Current Firmware Boot Side (current)"
       },
       {
          "attribute_name":"pvm_pcie_error_inject",
@@ -198,7 +210,7 @@
             "Enabled"
          ],
          "default_values":[
-            "Enabled"
+            "Disabled"
          ],
          "helpText" : "This option enables or disables the Remote Trusted Attestation Daemon for host firmware.",
          "displayName" : "Remote Trusted Attestation Daemon State"
@@ -310,7 +322,7 @@
             "Enabled"
          ],
          "default_values":[
-            "Disabled"
+            "Enabled"
          ],
          "helpText" : "Enabling vTPM makes a TPM available to the guest operating system.",
          "displayName" : "Virtual Trusted Platform Module"
@@ -322,7 +334,7 @@
             "Enabled"
          ],
          "default_values":[
-            "Disabled"
+            "Enabled"
          ],
          "helpText" : "Specifies the current vTPM policy. Do not set this attribute directly; set pvm_vtpm instead.",
          "displayName" : "Virtual Trusted Platform Module (current)"
@@ -402,7 +414,7 @@
             "Enabled"
          ],
          "default_values":[
-            "Enabled"
+            "Disabled"
          ],
          "helpText" : "Specifies if the memory mirroring is enabled, requires a reboot for a change to be applied.",
          "displayName" : "Memory Mirror Mode (pending)"
@@ -414,7 +426,7 @@
             "Enabled"
          ],
          "default_values":[
-            "Enabled"
+            "Disabled"
          ],
          "helpText" : "Specifies if the memory mirroring is enabled for the current IPL. Do not set this attribute directly; set hb_memory_mirror_mode instead.",
          "displayName" : "Memory Mirror Mode (current)"
@@ -574,7 +586,84 @@
          ],
          "helpText" : "When enabled creates a new default partition after NVRAM is cleared. This is primarily for machines that are managed by hardware management console.Do not set this attribute directly; set pvm_create_default_lpar instead.",
          "displayName" : "pvm_create_default_lpar (current)"
+      },
+      {
+        "attribute_name":"pvm_keep_and_clear",
+        "possible_values":[
+           "Disabled",
+           "Enabled"
+        ],
+        "default_values":[
+           "Disabled"
+        ],
+        "helpText" : "The hypervisor needs to clear most of PHYP NVRAM, but preserve the NVRAM for the manufacturing default partition",
+        "displayName" : "pvm_keep_and_clear"
+     },
+     {
+        "attribute_name":"pvm_clear_nvram",
+        "possible_values":[
+           "Disabled",
+           "Enabled"
+        ],
+        "default_values":[
+           "Disabled"
+        ],
+        "helpText" : "Specifies if the hypervisor needs to clear PHYP NVRAM",
+        "displayName" : "pvm_clear_nvram"
+     },
+     {
+         "attribute_name":"pvm_boot_initiator",
+         "possible_values":[
+             "User",
+             "HMC",
+             "Host",
+             "Auto"
+         ],
+         "default_values":[
+            "User"
+         ],
+         "helpText" : "Specifies who initiated the IPL.",
+         "displayName" : "IPL Initiator (pending)"
+      },
+      {
+         "attribute_name":"pvm_boot_initiator_current",
+         "possible_values":[
+             "User",
+             "HMC",
+             "Host",
+             "Auto"
+         ],
+         "default_values":[
+            "User"
+         ],
+         "helpText" : "Specifies who initiated the IPL. Set pvm_boot_initiator instead.",
+         "displayName" : "IPL Initiator (current)",
+         "readOnly":true
+      },
+      {
+         "attribute_name":"pvm_boot_type",
+         "possible_values":[
+            "IPL",
+            "ReIPL"
+         ],
+         "default_values":[
+            "IPL"
+         ],
+         "helpText" : "Specifies if the boot type is an IPL or a ReIPL",
+         "displayName" : "Boot Type Indicator (pending)"
+      },
+      {
+         "attribute_name":"pvm_boot_type_current",
+         "possible_values":[
+            "IPL",
+            "ReIPL"
+         ],
+         "default_values":[
+            "IPL"
+         ],
+         "helpText" : "Specifies if the boot type is an IPL or a ReIPL. Set pvm_boot_type instead",
+         "displayName" : "Boot Type Indicator (current)",
+         "readOnly":true
       }
-
    ]
 }
