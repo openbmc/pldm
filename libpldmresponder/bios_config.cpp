@@ -922,8 +922,17 @@ void BIOSConfig::constructPendingAttribute(
             continue;
         }
 
+        const auto [attrType, readonlyStatus, displayName, description,
+                    menuPath, currentValue, defaultValue, option] =
+            baseBIOSTableMaps.at(attributeName);
+
         entry->attr_handle = htole16(handler);
-        listOfHandles.emplace_back(htole16(handler));
+
+        // Need to verify that the current value has really changed
+        if (attributeType == attrType && attributevalue != currentValue)
+        {
+            listOfHandles.emplace_back(htole16(handler));
+        }
 
         (*iter)->generateAttributeEntry(attributevalue, attrValueEntry);
 
