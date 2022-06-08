@@ -922,8 +922,29 @@ void BIOSConfig::constructPendingAttribute(
             continue;
         }
 
+        // Need to verify that the current value has really changed
+        if (!baseBIOSTableMaps.contains(attributeName))
+        {
+            continue;
+        }
+
+        const auto [attrType, readonlyStatus, displayName, description,
+                    menuPath, currentValue, defaultValue, option] =
+            baseBIOSTableMaps.at(attributeName);
+
         entry->attr_handle = htole16(handler);
-        listOfHandles.emplace_back(htole16(handler));
+
+        if (attributeType == attrType && attributevalue != currentValue)
+        {
+            listOfHandles.emplace_back(htole16(handler));
+        }
+        else
+        {
+            // The bios property value has not changed
+            std::cerr
+                << "The bios property value has not changed, attributeName = "
+                << attributeName << std::endl;
+        }
 
         (*iter)->generateAttributeEntry(attributevalue, attrValueEntry);
 
