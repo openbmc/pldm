@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8ad125a_24d1ef15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-06-09T08:20:54Z",
+      "side": 1,
+      "message": "nit: could you also add the BIOS attribute names here? the same applies for #135",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "846f3a0c12d556cbd65c7d32bfa0ad47d24a6237",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
