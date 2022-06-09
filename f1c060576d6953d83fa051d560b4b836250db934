@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4932d31_78af6154",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-09T13:18:49Z",
+      "side": 1,
+      "message": "i think this is not needed as this check is already at 901 line number.",
+      "range": {
+        "startLine": 926,
+        "startChar": 0,
+        "endLine": 929,
+        "endChar": 9
+      },
+      "revId": "f1c060576d6953d83fa051d560b4b836250db934",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c4d75bc_a36f0c74",
         "filename": "libpldmresponder/bios_config.cpp",
         "patchSetId": 1
@@ -42,6 +65,29 @@
         "startChar": 12,
         "endLine": 944,
         "endChar": 21
+      },
+      "revId": "f1c060576d6953d83fa051d560b4b836250db934",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74448db5_6a742919",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-09T13:18:49Z",
+      "side": 1,
+      "message": "we dont need to log an error in this case, as it is not an error. it is just a no-op.",
+      "range": {
+        "startLine": 945,
+        "startChar": 0,
+        "endLine": 946,
+        "endChar": 46
       },
       "revId": "f1c060576d6953d83fa051d560b4b836250db934",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
