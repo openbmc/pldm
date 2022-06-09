@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8298e60_7e61805c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-06-09T08:34:45Z",
+      "side": 1,
+      "message": "should this comment be moved to line 936?",
+      "range": {
+        "startLine": 925,
+        "startChar": 8,
+        "endLine": 925,
+        "endChar": 67
+      },
+      "revId": "f1c060576d6953d83fa051d560b4b836250db934",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c4d75bc_a36f0c74",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 944,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-06-09T08:34:45Z",
+      "side": 1,
+      "message": "do we need a cerr in this case?",
+      "range": {
+        "startLine": 944,
+        "startChar": 12,
+        "endLine": 944,
+        "endChar": 21
+      },
+      "revId": "f1c060576d6953d83fa051d560b4b836250db934",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
