@@ -22,6 +22,30 @@
       },
       "revId": "846f3a0c12d556cbd65c7d32bfa0ad47d24a6237",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76131652_dbec6092",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-06-10T08:58:51Z",
+      "side": 1,
+      "message": "Am not making any change in the title.. keeping it sync with the box folder info",
+      "parentUuid": "f8ad125a_24d1ef15",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "846f3a0c12d556cbd65c7d32bfa0ad47d24a6237",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
