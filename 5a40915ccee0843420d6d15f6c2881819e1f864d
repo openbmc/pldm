@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9565eecd_95b176a3",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-06-13T06:45:31Z",
+      "side": 1,
+      "message": "is it fru-\u003eterminus_handle or terminus_handle here?",
+      "range": {
+        "startLine": 280,
+        "startChar": 7,
+        "endLine": 280,
+        "endChar": 27
+      },
+      "revId": "5a40915ccee0843420d6d15f6c2881819e1f864d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7e33c9a_a6750ade",
+        "filename": "libpldm/pdr.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-06-13T06:45:31Z",
+      "side": 1,
+      "message": "uint16 or uint32?",
+      "range": {
+        "startLine": 766,
+        "startChar": 45,
+        "endLine": 766,
+        "endChar": 53
+      },
+      "revId": "5a40915ccee0843420d6d15f6c2881819e1f864d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b50e3b0_081c8a6d",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-06-13T06:45:31Z",
+      "side": 1,
+      "message": "in, out?",
+      "range": {
+        "startLine": 152,
+        "startChar": 11,
+        "endLine": 152,
+        "endChar": 13
+      },
+      "revId": "5a40915ccee0843420d6d15f6c2881819e1f864d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7137bb3_0665bc66",
+        "filename": "libpldm/pdr.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-06-13T06:45:31Z",
+      "side": 1,
+      "message": "Please be consistent with the parameters defined by other methods\n\neg: pldm_pdr *repo, uint32_t terminus_handle",
+      "range": {
+        "startLine": 154,
+        "startChar": 45,
+        "endLine": 155,
+        "endChar": 24
+      },
+      "revId": "5a40915ccee0843420d6d15f6c2881819e1f864d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
