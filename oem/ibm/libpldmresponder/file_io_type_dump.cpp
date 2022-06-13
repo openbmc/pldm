@@ -125,7 +125,7 @@ int DumpHandler::newFileAvailable(uint64_t length)
         auto method = bus.new_method_call(service.c_str(), notifyObjPath,
                                           dumpInterface, "Notify");
         method.append(fileHandle, length);
-        bus.call_noreply(method);
+        bus.call(method);
     }
     catch (const std::exception& e)
     {
@@ -237,8 +237,56 @@ int DumpHandler::fileAck(uint8_t fileStatus)
         return PLDM_SUCCESS;
     }
 
-    if (DumpHandler::fd >= 0 && !path.empty())
+    if (!path.empty())
     {
+        if (fileStatus == PLDM_ERROR_FILE_DISCARDED)
+        {
+            uint32_t val = 0xFFFFFFFF;
+            PropertyValue value = static_cast<uint32_t>(val);
+            auto dumpIntf = resDumpEntry;
+
+            if (dumpType == PLDM_FILE_TYPE_DUMP)
+            {
+                dumpIntf = systemDumpEntry;
+            }
+
+            DBusMapping dbusMapping{path.c_str(), dumpIntf, "SourceDumpId",
+                                    "uint32_t"};
+            try
+            {
+                pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "Failed to make a d-bus call to DUMP "
+                             "manager to reset source dump id of "
+                          << path.c_str() << ", with ERROR=" << e.what()
+                          << "\n";
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.bmc.PLDM.fileAck.SourceDumpIdResetFail");
+                return PLDM_ERROR;
+            }
+
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            try
+            {
+                auto method = bus.new_method_call(
+                    "xyz.openbmc_project.Dump.Manager", path.c_str(),
+                    "xyz.openbmc_project.Object.Delete", "Delete");
+                bus.call(method);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr
+                    << "Failed to make a d-bus method to delete the dump entry "
+                    << path.c_str() << ", with ERROR=" << e.what() << "\n";
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.bmc.PLDM.fileAck.DumpEntryDeleteFail");
+                return PLDM_ERROR;
+            }
+            return PLDM_SUCCESS;
+        }
+
         if (dumpType == PLDM_FILE_TYPE_DUMP ||
             dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP)
         {
@@ -255,10 +303,13 @@ int DumpHandler::fileAck(uint8_t fileStatus)
                     << e.what() << "\n";
             }
 
-            close(DumpHandler::fd);
             auto socketInterface = getOffloadUri(fileHandle);
             std::remove(socketInterface.c_str());
-            DumpHandler::fd = -1;
+            if (DumpHandler::fd >= 0)
+            {
+                close(DumpHandler::fd);
+                DumpHandler::fd = -1;
+            }
         }
         return PLDM_SUCCESS;
     }
