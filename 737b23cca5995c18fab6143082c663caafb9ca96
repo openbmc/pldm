@@ -39,6 +39,30 @@
       },
       "revId": "737b23cca5995c18fab6143082c663caafb9ca96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b167ac_74a607ff",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-13T05:09:37Z",
+      "side": 1,
+      "message": "+1 and \n\nThere is an open issue for this at https://github.com/openbmc/pldm/issues/31.\n\ncan you also mark resolves : https://github.com/openbmc/pldm/issues/31 in the commit message.",
+      "parentUuid": "a9b5e7b4_c588b4d2",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "737b23cca5995c18fab6143082c663caafb9ca96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
