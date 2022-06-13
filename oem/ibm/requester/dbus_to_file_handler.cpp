@@ -44,7 +44,7 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
     }
     auto instanceId = requester->getInstanceId(mctp_eid);
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                    PLDM_NEW_FILE_REQ_BYTES + fileSize);
+                                    PLDM_NEW_FILE_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     // Need to revisit this logic at the time of multiple resource dump support
     uint32_t fileHandle = 1;
