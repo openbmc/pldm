@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfcbe38f_21b24266",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-13T05:56:26Z",
+      "side": 1,
+      "message": "why is this moved out of libpldmresponder ?",
+      "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

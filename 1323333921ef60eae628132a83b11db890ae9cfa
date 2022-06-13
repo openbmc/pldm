@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9ae671e_b0ffe72a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-13T05:56:26Z",
+      "side": 1,
+      "message": "We cannot merge this without unit tests, as i have seen in past that later might never come.(atleast i would like to see a WIP commit for unittests before we merge this)",
+      "parentUuid": "79534a27_52a33761",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 29
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ebe46d9_ffc5fbbc",
         "filename": "host-bmc/dbus_to_host_effecters.cpp",
         "patchSetId": 2
@@ -142,6 +166,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b453493d_21659bda",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-13T05:56:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7cdb6217_7204455b",
+      "range": {
+        "startLine": 105,
+        "startChar": 8,
+        "endLine": 105,
+        "endChar": 55
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76fdb51d_0f083fba",
@@ -179,6 +227,30 @@
       "side": 1,
       "message": "The type of dbusInfo if difference between state effecter and numeric effecter.\nIn EffecterInfo struct, I added:\n    std::vector\u003cDBusNumericEffecterMapping\u003e\n        dbusNumericEffecterInfo; //!\u003c D-Bus information for the effecter id\nto update the numeric effecter info. I can\u0027t use state effecter struct DBusEffecterMapping for numeric effecter.",
       "parentUuid": "76fdb51d_0f083fba",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 60
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d6d43a_01992fd1",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-13T05:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c2ec192_ff21430b",
       "range": {
         "startLine": 171,
         "startChar": 0,
@@ -414,6 +486,30 @@
       "side": 1,
       "message": "The PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES is for 1 byte dateSize. When the dataSize is change two 2, 4 bytes we need add 1 and 3.\nIt is similar as below code:\nhttps://github.com/openbmc/pldm/blob/c021dbc88a4b7009941a72c95c108c03c1409d10/libpldm/platform.c#L478",
       "parentUuid": "d1b20a44_75187624",
+      "range": {
+        "startLine": 447,
+        "startChar": 73,
+        "endLine": 447,
+        "endChar": 76
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8971136c_06f27a41",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-13T05:56:26Z",
+      "side": 1,
+      "message": "I think, its better to have a const value defined for this 1 and 3 to easily find out what it is ?",
+      "parentUuid": "a6272396_b058832e",
       "range": {
         "startLine": 447,
         "startChar": 73,
