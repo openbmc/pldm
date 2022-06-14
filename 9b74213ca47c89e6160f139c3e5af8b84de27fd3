@@ -16,6 +16,24 @@
       "message": "If you were to add:\n\nResolves openbmc/pldm#31.\n\nThen github will automatically close the issue when this is merged. ;)",
       "revId": "9b74213ca47c89e6160f139c3e5af8b84de27fd3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0e46973_93e49848",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-14T07:38:10Z",
+      "side": 1,
+      "message": "@ThuBaNguygen , i see you have commented in the github issue, please add what patrick suggested into the commit message - apart from that the change looks good.",
+      "parentUuid": "19a4ae11_bc0de6d1",
+      "revId": "9b74213ca47c89e6160f139c3e5af8b84de27fd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
