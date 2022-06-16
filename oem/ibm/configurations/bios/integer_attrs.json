@@ -143,6 +143,44 @@
          "readOnly":true,
          "helpText" : "Specifies the effective secure version of the host FW. In secure mode, the secure version value of a driver must be greater than or equal to this effective secure version to allow the system to boot.",
          "displayName" : "Effective Secure Version"
+      },
+      {
+         "attribute_name" : "hb_cap_hana_freq_mhz_min",
+         "lower_bound" : 0,
+         "upper_bound" : 4294967295,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "readOnly":true,
+         "helpText" : "Specifies the lowest floor frequency across all chips in the system.",
+         "displayName" : "Minimum Core Freq MHZ"
+      },
+      {
+         "attribute_name" : "hb_cap_hana_freq_mhz_max",
+         "lower_bound" : 0,
+         "upper_bound" : 4294967295,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "readOnly":true,
+         "helpText" : "Specifies the highest ceiling frequency across all chips in the system.",
+         "displayName" : "Maximum Core Freq MHZ"
+      },
+      {
+         "attribute_name" : "hb_cap_hana_freq_mhz_request",
+         "lower_bound" : 0,
+         "upper_bound" : 4294967295,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "helpText" : "Specifies the desired frequency across all chips in the system.  Requires a reboot for a change to be applied.",
+         "displayName" : "Requested Core Freq MHZ (pending)"
+      },
+      {
+         "attribute_name" : "hb_cap_hana_freq_mhz_request_current",
+         "lower_bound" : 0,
+         "upper_bound" : 4294967295,
+         "scalar_increment" : 1,
+         "default_value" : 0,
+         "helpText" : "Specifies the desired frequency across all chips in the system.  Do not set this attribute directly; set hb_cap_hana_freq_mhz_request instead.",
+         "displayName" : "Requested Core Freq MHZ (current)"
       }
    ]
 }
