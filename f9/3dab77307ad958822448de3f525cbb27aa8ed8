@@ -1,0 +1,9 @@
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: George Liu <liuxiwei@inspur.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: <thu@os.amperecomputing.com>
+Submitted-at: Sat, 18 Jun 2022 11:27:22 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/54498
+Project: openbmc/pldm
+Branch: refs/heads/master
