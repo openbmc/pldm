@@ -1273,6 +1273,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95228ae8_3e9f8654",
+        "filename": "platform-mc/test/terminus_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-06-21T22:16:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ee8017e6_44d77d04",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20a114c0_96d751ca",
