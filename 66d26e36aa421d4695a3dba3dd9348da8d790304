@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "73c79ed7_ff6648e6",
         "filename": "libpldmresponder/bios_config.cpp",
@@ -20,8 +21,31 @@
         "endChar": 26
       },
       "revId": "66d26e36aa421d4695a3dba3dd9348da8d790304",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94e23363_43776943",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-06-21T09:29:07Z",
+      "side": 0,
+      "message": "yes, agree. Would be clear.",
+      "parentUuid": "73c79ed7_ff6648e6",
+      "range": {
+        "startLine": 140,
+        "startChar": 7,
+        "endLine": 141,
+        "endChar": 26
+      },
+      "revId": "66d26e36aa421d4695a3dba3dd9348da8d790304",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
