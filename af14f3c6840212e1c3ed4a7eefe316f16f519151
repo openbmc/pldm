@@ -16,6 +16,24 @@
       "message": "add a comment here that says \"Don\u0027t set this directly\" like the other latched attributes",
       "revId": "af14f3c6840212e1c3ed4a7eefe316f16f519151",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80870f7d_f279f37a",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000911
+      },
+      "writtenOn": "2022-06-21T21:52:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89f1c263_5a97b93f",
+      "revId": "af14f3c6840212e1c3ed4a7eefe316f16f519151",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
