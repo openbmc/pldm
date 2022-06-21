@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90c36a3d_9fb45378",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-06-21T08:06:08Z",
+      "side": 1,
+      "message": "This size do not match with the current value used which is 23.",
+      "revId": "2459ed7ecefbafdf98d4a4cf14f77faf17658e75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
