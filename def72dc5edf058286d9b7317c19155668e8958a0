@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7e6dfc5_0b3144f2",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-22T08:34:57Z",
+      "side": 1,
+      "message": "Doxygen based documentation needed for the struct and member functions.",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36273230_f17c0b5b",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-22T08:34:57Z",
+      "side": 1,
+      "message": "How does rc get passed to the caller?",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca12b49a_ceb6d8dd",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-22T08:34:57Z",
+      "side": 1,
+      "message": "Instead of PLDM_ERROR, we might need to use a specific code to indicate no response after retries.",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6a1d536_80a62942",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-22T08:34:57Z",
+      "side": 1,
+      "message": "Can we avoid an additional copy of the response?",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dec01eb_c696a464",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-22T08:34:57Z",
+      "side": 1,
+      "message": "+ We need to add unit tests, which can also serve as an example for other users to consume this.",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
