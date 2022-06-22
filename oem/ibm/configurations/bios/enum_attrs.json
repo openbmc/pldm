@@ -262,13 +262,12 @@
             "SavedList",
             "SmsMenu",
             "OkPrompt",
-            "DefaultList",
-            "PblBootLid"
+            "DefaultList"
          ],
          "default_values":[
             "Normal"
          ],
-         "helpText" : "Select the boot type for an AIX/Linux partition. Normal: The partition boots directly to the operating system, SavedList: The system boots from the saved service mode boot list, SmsMenu: The partition stops at the System Management Services(SMS) menu, OkPrompt: The system stops at the open firmware prompt, DefaultList: The system boots from the default boot list, PblBootLid(PBL : Petitboot Boot Loader): The partition boots from the petitboot bootloader.",
+         "helpText" : "Select the boot type for an AIX/Linux partition. Normal: The partition boots directly to the operating system, SavedList: The system boots from the saved service mode boot list, SmsMenu: The partition stops at the System Management Services(SMS) menu, OkPrompt: The system stops at the open firmware prompt, DefaultList: The system boots from the default boot list.",
          "displayName" : "AIX/Linux Partition Boot Mode"
       },
       {
@@ -278,8 +277,7 @@
             "SavedList",
             "SmsMenu",
             "OkPrompt",
-            "DefaultList",
-            "PblBootLid"
+            "DefaultList"
          ],
          "default_values":[
             "Normal"
@@ -394,6 +392,18 @@
                "property_type" : "bool",
                "property_values" : [true, false]
             }
+      },
+      {
+         "attribute_name":"hb_power_limit_enable_current",
+         "possible_values":[
+            "Enabled",
+            "Disabled"
+         ],
+         "default_values":[
+            "Disabled"
+         ],
+         "helpText" : "Specifies if the power limit is enabled for the current IPL. Do not set this attribute directly; set hb_power_limit_enable instead.",
+         "displayName" : "Power Limit Enable (current)"
       },
       {
          "attribute_name":"hb_secure_ver_lockin_enabled",
