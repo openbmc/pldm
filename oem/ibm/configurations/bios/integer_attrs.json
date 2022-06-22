@@ -87,7 +87,7 @@
          "upper_bound" : 255,
          "scalar_increment" : 1,
          "default_value" : 0,
-         "helpText" : "The maximum number of cores to activate where 0 being to activate all available cores. Requires a reboot for a change to be applied.",
+         "helpText" : "The maximum number of cores to activate where 0 being to activate all available cores. Value applicable for the current IPL. Do not set this attribute directly; set hb_field_core_override instead.",
          "displayName" : "Field Core Override (current)"
       },
       {
