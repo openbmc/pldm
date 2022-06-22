@@ -68,46 +68,6 @@
          "displayName" : "vmi_if1_ipv4_ipaddr"
       },
       {
-         "attribute_name" : "vmi_if0_ipv6_gateway",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 2,
-         "maximum_string_length" : 39,
-         "default_string_length" : 2,
-         "default_string" : "::",
-         "helpText" : "vmi_if0_ipv6_gateway",
-         "displayName" : "vmi_if0_ipv6_gateway"
-      },
-      {
-         "attribute_name" : "vmi_if1_ipv6_gateway",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 2,
-         "maximum_string_length" : 39,
-         "default_string_length" : 2,
-         "default_string" : "::",
-         "helpText" : "vmi_if1_ipv6_gateway",
-         "displayName" : "vmi_if1_ipv6_gateway"
-      },
-      {
-         "attribute_name" : "vmi_if0_ipv6_ipaddr",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 2,
-         "maximum_string_length" : 39,
-         "default_string_length" : 2,
-         "default_string" : "::",
-         "helpText" : "vmi_if0_ipv6_ipaddr",
-         "displayName" : "vmi_if0_ipv6_ipaddr"
-      },
-      {
-         "attribute_name" : "vmi_if1_ipv6_ipaddr",
-         "string_type" : "ASCII",
-         "minimum_string_length" : 2,
-         "maximum_string_length" : 39,
-         "default_string_length" : 2,
-         "default_string" : "::",
-         "helpText" : "vmi_if1_ipv6_ipaddr",
-         "displayName" : "vmi_if1_ipv6_ipaddr"
-      },
-      {
          "attribute_name" : "hb_mfg_flags",
          "string_type" : "Hex",
          "minimum_string_length" : 32,
