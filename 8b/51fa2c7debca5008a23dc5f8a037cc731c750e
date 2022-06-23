@@ -1,0 +1,10 @@
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: Jayashankar Padath <jayashankarpadath@gmail.com>
+Code-Review+1: Pavithra Barithaya <pavithra.b@ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Thu, 23 Jun 2022 05:45:53 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/54512
+Project: openbmc/pldm
+Branch: refs/heads/master
