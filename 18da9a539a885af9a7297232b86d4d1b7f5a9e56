@@ -22,6 +22,30 @@
       },
       "revId": "18da9a539a885af9a7297232b86d4d1b7f5a9e56",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21eb5792_626dfdd9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-06-24T04:16:45Z",
+      "side": 1,
+      "message": "Yes this was a bug in the initial code. But difference are clearly visible when the ACF file content size was added which is large. Zeroes were getting filled with the ACF file size in the request itself.",
+      "parentUuid": "7515d786_ad6a0e0e",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "18da9a539a885af9a7297232b86d4d1b7f5a9e56",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
