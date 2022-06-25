@@ -46,9 +46,9 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
         {
             auto rawValue = static_cast<uint8_t>(
                 round(effecterValue - pdr->offset) / pdr->resolution);
-            if (pdr->min_set_table.value_u8 < pdr->max_set_table.value_u8 &&
-                (rawValue < pdr->min_set_table.value_u8 ||
-                 rawValue > pdr->max_set_table.value_u8))
+            if (pdr->min_settable.value_u8 < pdr->max_settable.value_u8 &&
+                (rawValue < pdr->min_settable.value_u8 ||
+                 rawValue > pdr->max_settable.value_u8))
             {
                 rc = PLDM_ERROR_INVALID_DATA;
             }
@@ -69,9 +69,9 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
         {
             auto rawValue = static_cast<int8_t>(
                 round(effecterValue - pdr->offset) / pdr->resolution);
-            if (pdr->min_set_table.value_s8 < pdr->max_set_table.value_s8 &&
-                (rawValue < pdr->min_set_table.value_s8 ||
-                 rawValue > pdr->max_set_table.value_s8))
+            if (pdr->min_settable.value_s8 < pdr->max_settable.value_s8 &&
+                (rawValue < pdr->min_settable.value_s8 ||
+                 rawValue > pdr->max_settable.value_s8))
             {
                 rc = PLDM_ERROR_INVALID_DATA;
             }
@@ -82,9 +82,9 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
         {
             auto rawValue = static_cast<uint16_t>(
                 round(effecterValue - pdr->offset) / pdr->resolution);
-            if (pdr->min_set_table.value_u16 < pdr->max_set_table.value_u16 &&
-                (rawValue < pdr->min_set_table.value_u16 ||
-                 rawValue > pdr->max_set_table.value_u16))
+            if (pdr->min_settable.value_u16 < pdr->max_settable.value_u16 &&
+                (rawValue < pdr->min_settable.value_u16 ||
+                 rawValue > pdr->max_settable.value_u16))
             {
                 rc = PLDM_ERROR_INVALID_DATA;
             }
@@ -105,9 +105,9 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
         {
             auto rawValue = static_cast<int16_t>(
                 round(effecterValue - pdr->offset) / pdr->resolution);
-            if (pdr->min_set_table.value_s16 < pdr->max_set_table.value_s16 &&
-                (rawValue < pdr->min_set_table.value_s16 ||
-                 rawValue > pdr->max_set_table.value_s16))
+            if (pdr->min_settable.value_s16 < pdr->max_settable.value_s16 &&
+                (rawValue < pdr->min_settable.value_s16 ||
+                 rawValue > pdr->max_settable.value_s16))
             {
                 rc = PLDM_ERROR_INVALID_DATA;
             }
@@ -128,9 +128,9 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
         {
             auto rawValue = static_cast<uint32_t>(
                 round(effecterValue - pdr->offset) / pdr->resolution);
-            if (pdr->min_set_table.value_u32 < pdr->max_set_table.value_u32 &&
-                (rawValue < pdr->min_set_table.value_u32 ||
-                 rawValue > pdr->max_set_table.value_u32))
+            if (pdr->min_settable.value_u32 < pdr->max_settable.value_u32 &&
+                (rawValue < pdr->min_settable.value_u32 ||
+                 rawValue > pdr->max_settable.value_u32))
             {
                 rc = PLDM_ERROR_INVALID_DATA;
             }
@@ -151,9 +151,9 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
         {
             auto rawValue = static_cast<int32_t>(
                 round(effecterValue - pdr->offset) / pdr->resolution);
-            if (pdr->min_set_table.value_s32 < pdr->max_set_table.value_s32 &&
-                (rawValue < pdr->min_set_table.value_s32 ||
-                 rawValue > pdr->max_set_table.value_s32))
+            if (pdr->min_settable.value_s32 < pdr->max_settable.value_s32 &&
+                (rawValue < pdr->min_settable.value_s32 ||
+                 rawValue > pdr->max_settable.value_s32))
             {
                 rc = PLDM_ERROR_INVALID_DATA;
             }

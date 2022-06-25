@@ -336,8 +336,9 @@ int decode_pldm_package_header_info(
 	    data_header->package_header_format_version;
 	package_header_info->package_header_size =
 	    le16toh(data_header->package_header_size);
-	memcpy(package_header_info->timestamp104, data_header->timestamp104,
-	       sizeof(data_header->timestamp104));
+	memcpy(package_header_info->package_release_date_time,
+	       data_header->package_release_date_time,
+	       sizeof(data_header->package_release_date_time));
 	package_header_info->component_bitmap_bit_length =
 	    le16toh(data_header->component_bitmap_bit_length);
 	package_header_info->package_version_string_type =
@@ -1083,14 +1084,14 @@ int encode_update_component_req(
 int decode_update_component_resp(const struct pldm_msg *msg,
 				 size_t payload_length,
 				 uint8_t *completion_code,
-				 uint8_t *comp_compatability_resp,
-				 uint8_t *comp_compatability_resp_code,
+				 uint8_t *comp_compatibility_resp,
+				 uint8_t *comp_compatibility_resp_code,
 				 bitfield32_t *update_option_flags_enabled,
 				 uint16_t *time_before_req_fw_data)
 {
 	if (msg == NULL || completion_code == NULL ||
-	    comp_compatability_resp == NULL ||
-	    comp_compatability_resp_code == NULL ||
+	    comp_compatibility_resp == NULL ||
+	    comp_compatibility_resp_code == NULL ||
 	    update_option_flags_enabled == NULL ||
 	    time_before_req_fw_data == NULL || !payload_length) {
 		return PLDM_ERROR_INVALID_DATA;
@@ -1109,17 +1110,17 @@ int decode_update_component_resp(const struct pldm_msg *msg,
 	    (struct pldm_update_component_resp *)msg->payload;
 
 	if (!is_comp_compatibility_resp_valid(
-		response->comp_compatability_resp)) {
+		response->comp_compatibility_resp)) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
 	if (!is_comp_compatibility_resp_code_valid(
-		response->comp_compatability_resp_code)) {
+		response->comp_compatibility_resp_code)) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
 
-	*comp_compatability_resp = response->comp_compatability_resp;
-	*comp_compatability_resp_code = response->comp_compatability_resp_code;
+	*comp_compatibility_resp = response->comp_compatibility_resp;
+	*comp_compatibility_resp_code = response->comp_compatibility_resp_code;
 	update_option_flags_enabled->value =
 	    le32toh(response->update_option_flags_enabled.value);
 	*time_before_req_fw_data = le16toh(response->time_before_req_fw_data);

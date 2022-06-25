@@ -832,28 +832,28 @@ class GetPDR : public CommandInterface
         switch (pdr->effecter_data_size)
         {
             case PLDM_EFFECTER_DATA_SIZE_UINT8:
-                output["maxSettable"] = unsigned(pdr->max_set_table.value_u8);
-                output["minSettable"] = unsigned(pdr->min_set_table.value_u8);
+                output["maxSettable"] = unsigned(pdr->max_settable.value_u8);
+                output["minSettable"] = unsigned(pdr->min_settable.value_u8);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT8:
-                output["maxSettable"] = unsigned(pdr->max_set_table.value_s8);
-                output["minSettable"] = unsigned(pdr->min_set_table.value_s8);
+                output["maxSettable"] = unsigned(pdr->max_settable.value_s8);
+                output["minSettable"] = unsigned(pdr->min_settable.value_s8);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT16:
-                output["maxSettable"] = unsigned(pdr->max_set_table.value_u16);
-                output["minSettable"] = unsigned(pdr->min_set_table.value_u16);
+                output["maxSettable"] = unsigned(pdr->max_settable.value_u16);
+                output["minSettable"] = unsigned(pdr->min_settable.value_u16);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT16:
-                output["maxSettable"] = unsigned(pdr->max_set_table.value_s16);
-                output["minSettable"] = unsigned(pdr->min_set_table.value_s16);
+                output["maxSettable"] = unsigned(pdr->max_settable.value_s16);
+                output["minSettable"] = unsigned(pdr->min_settable.value_s16);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT32:
-                output["maxSettable"] = unsigned(pdr->max_set_table.value_u32);
-                output["minSettable"] = unsigned(pdr->min_set_table.value_u32);
+                output["maxSettable"] = unsigned(pdr->max_settable.value_u32);
+                output["minSettable"] = unsigned(pdr->min_settable.value_u32);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT32:
-                output["maxSettable"] = unsigned(pdr->max_set_table.value_s32);
-                output["minSettable"] = unsigned(pdr->min_set_table.value_s32);
+                output["maxSettable"] = unsigned(pdr->max_settable.value_s32);
+                output["minSettable"] = unsigned(pdr->min_settable.value_s32);
                 break;
             default:
                 break;

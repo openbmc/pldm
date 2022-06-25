@@ -106,28 +106,28 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         switch (pdr->effecter_data_size)
         {
             case PLDM_EFFECTER_DATA_SIZE_UINT8:
-                pdr->max_set_table.value_u8 = e.value("max_set_table", 0);
-                pdr->min_set_table.value_u8 = e.value("min_set_table", 0);
+                pdr->max_settable.value_u8 = e.value("max_settable", 0);
+                pdr->min_settable.value_u8 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT8:
-                pdr->max_set_table.value_s8 = e.value("max_set_table", 0);
-                pdr->min_set_table.value_s8 = e.value("min_set_table", 0);
+                pdr->max_settable.value_s8 = e.value("max_settable", 0);
+                pdr->min_settable.value_s8 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT16:
-                pdr->max_set_table.value_u16 = e.value("max_set_table", 0);
-                pdr->min_set_table.value_u16 = e.value("min_set_table", 0);
+                pdr->max_settable.value_u16 = e.value("max_settable", 0);
+                pdr->min_settable.value_u16 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT16:
-                pdr->max_set_table.value_s16 = e.value("max_set_table", 0);
-                pdr->min_set_table.value_s16 = e.value("min_set_table", 0);
+                pdr->max_settable.value_s16 = e.value("max_settable", 0);
+                pdr->min_settable.value_s16 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT32:
-                pdr->max_set_table.value_u32 = e.value("max_set_table", 0);
-                pdr->min_set_table.value_u32 = e.value("min_set_table", 0);
+                pdr->max_settable.value_u32 = e.value("max_settable", 0);
+                pdr->min_settable.value_u32 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT32:
-                pdr->max_set_table.value_s32 = e.value("max_set_table", 0);
-                pdr->min_set_table.value_s32 = e.value("min_set_table", 0);
+                pdr->max_settable.value_s32 = e.value("max_settable", 0);
+                pdr->min_settable.value_s32 = e.value("min_settable", 0);
                 break;
             default:
                 break;

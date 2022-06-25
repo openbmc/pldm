@@ -19,7 +19,7 @@ TEST(DecodePackageHeaderInfo, goodPath)
     // Random PackageHeaderSize
     constexpr uint16_t pkgHeaderSize = 303;
     // PackageReleaseDateTime - "25/12/2021 00:00:00"
-    std::array<uint8_t, PLDM_TIMESTAMP104_SIZE> timestamp104{
+    std::array<uint8_t, PLDM_TIMESTAMP104_SIZE> package_release_date_time{
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x19, 0x0c, 0xe5, 0x07, 0x00};
     constexpr uint16_t componentBitmapBitLength = 8;
@@ -46,9 +46,11 @@ TEST(DecodePackageHeaderInfo, goodPath)
                          uuid.begin(), uuid.end()));
     EXPECT_EQ(pkgHeader.package_header_format_version, pkgHeaderFormatRevision);
     EXPECT_EQ(pkgHeader.package_header_size, pkgHeaderSize);
-    EXPECT_EQ(true, std::equal(pkgHeader.timestamp104,
-                               pkgHeader.timestamp104 + PLDM_TIMESTAMP104_SIZE,
-                               timestamp104.begin(), timestamp104.end()));
+    EXPECT_EQ(true, std::equal(pkgHeader.package_release_date_time,
+                               pkgHeader.package_release_date_time +
+                                   PLDM_TIMESTAMP104_SIZE,
+                               package_release_date_time.begin(),
+                               package_release_date_time.end()));
     EXPECT_EQ(pkgHeader.component_bitmap_bit_length, componentBitmapBitLength);
     EXPECT_EQ(pkgHeader.package_version_string_type, PLDM_STR_TYPE_ASCII);
     EXPECT_EQ(pkgHeader.package_version_string_length,

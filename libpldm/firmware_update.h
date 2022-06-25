@@ -188,7 +188,7 @@ enum pldm_component_response_codes {
 /** @brief ComponentCompatibilityResponse values in the response of
  *         UpdateComponent
  */
-enum pldm_component_compatability_responses {
+enum pldm_component_compatibility_responses {
 	PLDM_CCR_COMP_CAN_BE_UPDATED = 0,
 	PLDM_CCR_COMP_CANNOT_BE_UPDATED = 1
 };
@@ -196,7 +196,7 @@ enum pldm_component_compatability_responses {
 /** @brief ComponentCompatibilityResponse Code values in the response of
  *         UpdateComponent
  */
-enum pldm_component_compatability_response_codes {
+enum pldm_component_compatibility_response_codes {
 	PLDM_CCRC_NO_RESPONSE_CODE = 0x00,
 	PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL = 0x01,
 	PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER = 0x02,
@@ -326,7 +326,7 @@ struct pldm_package_header_information {
 	uint8_t uuid[PLDM_FWUP_UUID_LENGTH];
 	uint8_t package_header_format_version;
 	uint16_t package_header_size;
-	uint8_t timestamp104[PLDM_TIMESTAMP104_SIZE];
+	uint8_t package_release_date_time[PLDM_TIMESTAMP104_SIZE];
 	uint16_t component_bitmap_bit_length;
 	uint8_t package_version_string_type;
 	uint8_t package_version_string_length;
@@ -494,8 +494,8 @@ struct pldm_update_component_req {
  */
 struct pldm_update_component_resp {
 	uint8_t completion_code;
-	uint8_t comp_compatability_resp;
-	uint8_t comp_compatability_resp_code;
+	uint8_t comp_compatibility_resp;
+	uint8_t comp_compatibility_resp_code;
 	bitfield32_t update_option_flags_enabled;
 	uint16_t time_before_req_fw_data;
 } __attribute__((packed));
@@ -858,9 +858,9 @@ int encode_update_component_req(
  *  @param[in] msg - Response message
  *  @param[in] payload_length - Length of response message payload
  *  @param[out] completion_code - Pointer to hold completion code
- *  @param[out] comp_compatability_resp - Pointer to hold component
+ *  @param[out] comp_compatibility_resp - Pointer to hold component
  *                                        compatibility response
- *  @param[out] comp_compatability_resp_code - Pointer to hold component
+ *  @param[out] comp_compatibility_resp_code - Pointer to hold component
  *                                             compatibility response code
  *  @param[out] update_option_flags_enabled - Pointer to hold
  *                                            UpdateOptionsFlagEnabled
@@ -872,8 +872,8 @@ int encode_update_component_req(
 int decode_update_component_resp(const struct pldm_msg *msg,
 				 size_t payload_length,
 				 uint8_t *completion_code,
-				 uint8_t *comp_compatability_resp,
-				 uint8_t *comp_compatability_resp_code,
+				 uint8_t *comp_compatibility_resp,
+				 uint8_t *comp_compatibility_resp_code,
 				 bitfield32_t *update_option_flags_enabled,
 				 uint16_t *time_before_req_fw_data);
 

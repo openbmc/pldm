@@ -485,8 +485,8 @@ struct pldm_numeric_effecter_value_pdr {
 	uint8_t minus_tolerance;
 	real32_t state_transition_interval;
 	real32_t transition_interval;
-	union_effecter_data_size max_set_table;
-	union_effecter_data_size min_set_table;
+	union_effecter_data_size max_settable;
+	union_effecter_data_size min_settable;
 	uint8_t range_field_format;
 	bitfield8_t range_field_support;
 	union_range_field_format nominal_value;
