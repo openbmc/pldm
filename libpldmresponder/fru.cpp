@@ -15,10 +15,8 @@
 
 namespace pldm
 {
-
 namespace responder
 {
-
 void FruImpl::buildFRUTable()
 {
     if (isBuilt)
@@ -52,7 +50,14 @@ void FruImpl::buildFRUTable()
     for (const auto& object : objects)
     {
         const auto& interfaces = object.second;
-
+        bool isPresent =
+            pldm::utils::checkForFruPresence(object.first.str.c_str());
+        // Do not create fru record if fru is not present.
+        // Pick up the next available fru.
+        if (!isPresent)
+        {
+            continue;
+        }
         for (const auto& interface : interfaces)
         {
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
@@ -116,7 +121,7 @@ void FruImpl::buildFRUTable()
 
     if (table.size())
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
 
         // Calculate the checksum
@@ -280,7 +285,7 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
         return PLDM_FRU_DATA_STRUCTURE_TABLE_UNAVAILABLE;
     }
 
-    auto pads = utils::getNumPadBytes(recordTableSize);
+    auto pads = pldm::utils::getNumPadBytes(recordTableSize);
     crc32(fruData.data(), recordTableSize + pads);
 
     auto iter = fruData.begin() + recordTableSize + pads;
@@ -293,7 +298,6 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
 
 namespace fru
 {
-
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
                                             size_t /*payloadLength*/)
 {
