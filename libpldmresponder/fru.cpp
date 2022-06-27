@@ -4,6 +4,10 @@
 #include "libpldm/utils.h"
 
 #include "common/utils.hpp"
+#include "pdr.hpp"
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/utils.hpp"
+#endif
 
 #include <config.h>
 #include <systemd/sd-journal.h>
@@ -15,10 +19,8 @@
 
 namespace pldm
 {
-
 namespace responder
 {
-
 void FruImpl::buildFRUTable()
 {
     if (isBuilt)
@@ -52,7 +54,15 @@ void FruImpl::buildFRUTable()
     for (const auto& object : objects)
     {
         const auto& interfaces = object.second;
-
+        bool isPresent = true;
+#ifdef OEM_IBM
+        isPresent =
+            pldm::responder::utils::checkFruPresence(object.first.str.c_str());
+#endif
+        if (!isPresent)
+        {
+            continue;
+        }
         for (const auto& interface : interfaces)
         {
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
@@ -115,7 +125,7 @@ void FruImpl::buildFRUTable()
 
     if (table.size())
     {
-        padBytes = utils::getNumPadBytes(table.size());
+        padBytes = pldm::utils::getNumPadBytes(table.size());
         table.resize(table.size() + padBytes, 0);
 
         // Calculate the checksum
@@ -279,7 +289,7 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
         return PLDM_FRU_DATA_STRUCTURE_TABLE_UNAVAILABLE;
     }
 
-    auto pads = utils::getNumPadBytes(recordTableSize);
+    auto pads = pldm::utils::getNumPadBytes(recordTableSize);
     crc32(fruData.data(), recordTableSize + pads);
 
     auto iter = fruData.begin() + recordTableSize + pads;
@@ -292,7 +302,6 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
 
 namespace fru
 {
-
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
                                             size_t /*payloadLength*/)
 {
