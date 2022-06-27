@@ -26,7 +26,6 @@ namespace pldm
 {
 namespace utils
 {
-
 namespace fs = std::filesystem;
 using Json = nlohmann::json;
 constexpr bool Tx = true;
@@ -150,6 +149,8 @@ using ServiceName = std::string;
 using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
+using PropertyMap = std::map<std::string, PropertyValue>;
+using InterfaceMap = std::map<std::string, PropertyMap>;
 
 /**
  * @brief The interface for DBusHandler
@@ -407,6 +408,13 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
  *  @return - std::string equivalent of the system time
  */
 std::string getCurrentSystemTime();
+
+/** @brief checks if the FRU is actually present.
+ *  @param[in] objPath - FRU object path.
+ *
+ *  @return bool to indicate presence or absence of FRU.
+ */
+bool CheckForFruPresence(const char* objPath);
 
 } // namespace utils
 } // namespace pldm
