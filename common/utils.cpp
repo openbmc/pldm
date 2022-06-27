@@ -22,7 +22,6 @@ namespace pldm
 {
 namespace utils
 {
-
 constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
@@ -579,6 +578,26 @@ std::string getCurrentSystemTime()
     ss << std::put_time(std::localtime(&tt), "%F %Z %T.")
        << std::to_string(ms.count());
     return ss.str();
+}
+
+bool checkForFruPresence(const char* objPath)
+{
+    bool isPresent = true;
+    static constexpr auto presentInterface =
+        "xyz.openbmc_project.Inventory.Item";
+    static constexpr auto presentProperty = "Present";
+    try
+    {
+        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            objPath, presentProperty, presentInterface);
+        isPresent = std::get<bool>(propVal);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {
+        std::cerr << "Failed to check for FRU presence. ERROR =" << e.what()
+                  << std::endl;
+    }
+    return isPresent;
 }
 
 } // namespace utils
