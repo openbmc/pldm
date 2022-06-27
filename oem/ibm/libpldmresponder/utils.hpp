@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace pldm
 {
@@ -8,7 +9,6 @@ namespace responder
 {
 namespace utils
 {
-
 /** @brief Setup UNIX socket
  *  This function creates listening socket in non-blocking mode and allows only
  *  one socket connection. returns accepted socket after accepting connection
@@ -34,6 +34,28 @@ int setupUnixSocket(const std::string& socketInterface);
  */
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
+
+/** @brief checks if a PCIe adapter is IBM specific card.
+ *  @param[in] objPath - FRU object path.
+ *
+ *  @return bool - true if IBM specific card.
+ */
+bool checkIfIBMCableCard(const std::string& objPath);
+
+/** @brief checks if the FRU is actually present.
+ *  @param[in] objPath - FRU object path. 
+ *
+ *  @return bool to indicate presence or absence of FRU.
+ */
+bool checkFruPresence(const char* objPath);
+
+/** @brief finds the ports under an adapter.
+ *  @param[in] cardObjPath - D-Bus object path for the adapter.
+ *  @param[out] portObjects - the ports under the adapter.
+ */
+void findPortObjects(const std::string& cardObjPath,
+                     std::vector<std::string>& portObjects);
+
 } // namespace utils
 } // namespace responder
 } // namespace pldm
