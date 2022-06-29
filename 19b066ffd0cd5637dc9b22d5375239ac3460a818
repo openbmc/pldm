@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66f04377_b06b38f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-06-29T21:37:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4bd6de2b_1c4a0a7d",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 68
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f35b5c23_0ddcf9a5",
@@ -154,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be2246c7_a0e1453d",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-06-29T21:37:15Z",
+      "side": 1,
+      "message": "According to current design of the MctpDiscovery class, there is nothing to cleanup so the action to handle Added/Removed signal for callback function is the same. MctpDiscovery just update the latest MCTP endpoint list to handlers.\n\nIt should make sense that cleanup actions be preformed by the mangers handler(e.g. fw-update, platform-mc) which has used the Endpoint information to instantiate class object.",
+      "parentUuid": "e70cfa95_3aa76b73",
+      "range": {
+        "startLine": 38,
+        "startChar": 24,
+        "endLine": 38,
+        "endChar": 57
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9aaea4ab_768da1d5",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 19
@@ -165,6 +213,30 @@
       "writtenOn": "2022-06-29T11:02:26Z",
       "side": 1,
       "message": "This can be reused across multiple modules, we can move to common/types.hpp.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ac9bf3a_9a84dfa7",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-06-29T21:37:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9aaea4ab_768da1d5",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -198,6 +270,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e9c4ca_9cbfcffc",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-06-29T21:37:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7ef9c903_dc830145",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 52
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64454e09_5ba37ff2",
@@ -215,6 +311,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcac9cc8_27e3bb3f",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-06-29T21:37:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "64454e09_5ba37ff2",
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2b6227_567ccb10",
@@ -228,6 +342,30 @@
       "writtenOn": "2022-06-04T17:38:15Z",
       "side": 1,
       "message": "here as well",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 51
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d8af8b7_dd9a1e12",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-06-29T21:37:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "de2b6227_567ccb10",
       "range": {
         "startLine": 69,
         "startChar": 0,
