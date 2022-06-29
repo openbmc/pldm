@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73c1c2e8_99cd9144",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T06:32:41Z",
+      "side": 1,
+      "message": "Several magic numbers in this function - please fix.",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "354aeba2_9e3287c5",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T06:32:41Z",
+      "side": 1,
+      "message": "We may need some unit tests to be added for all this new code?",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acf1bf4_7bcf3cbe",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T06:32:41Z",
+      "side": 1,
+      "message": "What do we do in case of failures?",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
