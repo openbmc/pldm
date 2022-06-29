@@ -123,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59263162_5640d25a",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "Why has a lot of code been removed in this file b/w patchsets 4 and 19?",
+      "parentUuid": "7214b922_7fb33837",
+      "revId": "8d1f1fa01325135eac7103fc7b6177e7c878ee4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee6cc6c2_7e5f762f",

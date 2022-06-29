@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efc7eb08_04e37855",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "What\u0027s the plan to support TL PDR?",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "194140fe_e6889097",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "Mostly looks good to me (I didn\u0027t look at the coroutine usage in detail since there are comments on that in a previous patch). Have few comments.",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70fc7f88_f5fb8f47",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "Could you define a using directive (or use existing one if present) for TID?",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e43050c_26c96665",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "Is there a reason for this to be public?",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d35e6c1a_4fa80ecc",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "Can you use an existing bitfield union defined in pldm_types.h?",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f083198_befc6fe6",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "How do you get 1024? Please avoid magic mumbers.",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4beee10_3d3ee976",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2022-06-29T05:57:10Z",
+      "side": 1,
+      "message": "Why is this change needed?",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
