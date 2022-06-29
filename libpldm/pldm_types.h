@@ -22,10 +22,10 @@ typedef union {
  *
  */
 typedef struct pldm_version {
-	uint8_t major;
-	uint8_t minor;
-	uint8_t update;
 	uint8_t alpha;
+	uint8_t update;
+	uint8_t minor;
+	uint8_t major;
 } __attribute__((packed)) ver32_t;
 
 typedef uint8_t bool8_t;
