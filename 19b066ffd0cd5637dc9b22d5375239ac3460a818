@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4bd6de2b_1c4a0a7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-29T11:02:26Z",
+      "side": 1,
+      "message": "nit:we can remove this",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 68
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f35b5c23_0ddcf9a5",
         "filename": "/COMMIT_MSG",
         "patchSetId": 19
@@ -14,6 +37,23 @@
       "writtenOn": "2022-06-29T05:32:04Z",
       "side": 1,
       "message": "Can you state what testing was done for this patch and in general add that to all patches in this chain?",
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f236ce3_721f0b99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-29T11:02:26Z",
+      "side": 1,
+      "message": "Minor comments, looks good.",
       "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -67,6 +107,76 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee23e17a_d8caab94",
+        "filename": "meson.build",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-29T11:02:26Z",
+      "side": 1,
+      "message": "PLDM requester as BMC will not be interested in the configuration files of BMC as PLDM responder. \n\nAlso static_eid_table_path is an optional config and the preferred way is for pldmd to be driven by MCTPEndpoint interface.",
+      "parentUuid": "3403d99f_827d589d",
+      "range": {
+        "startLine": 64,
+        "startChar": 74,
+        "endLine": 64,
+        "endChar": 96
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e70cfa95_3aa76b73",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-29T11:02:26Z",
+      "side": 1,
+      "message": "On interfacesRemoved we need to cleanup instead of discoverEndpoints?",
+      "range": {
+        "startLine": 38,
+        "startChar": 24,
+        "endLine": 38,
+        "endChar": 57
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aaea4ab_768da1d5",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-29T11:02:26Z",
+      "side": 1,
+      "message": "This can be reused across multiple modules, we can move to common/types.hpp.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ef9c903_dc830145",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 19
@@ -84,6 +194,23 @@
         "endLine": 64,
         "endChar": 52
       },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64454e09_5ba37ff2",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-06-29T11:02:26Z",
+      "side": 1,
+      "message": "nit: correct the typo - discoverEndpoints()",
       "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
