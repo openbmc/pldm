@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ab980a_55b475b4",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001486
+      },
+      "writtenOn": "2022-06-30T08:58:08Z",
+      "side": 1,
+      "message": "If there are multiple MCTP daemons which expose this interface under different service names then it would be safer to use object mapper to find all such services.",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1392c10_4f43cb9c",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001486
+      },
+      "writtenOn": "2022-06-30T08:58:08Z",
+      "side": 1,
+      "message": "Is there a possibility that the EiD list would have duplicates when discovered and static EiDs are merged ?",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
