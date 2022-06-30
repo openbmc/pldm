@@ -179,6 +179,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0caef34_634ef6f7",
+        "filename": "meson.build",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-30T06:22:54Z",
+      "side": 1,
+      "message": "Again i am not trying to ask if this can be done in this commit, so this is not a hard stop on this commit. We can go-ahead and merge this commit if maintainers are okay.",
+      "parentUuid": "994d98a8_f9a81ce7",
+      "range": {
+        "startLine": 64,
+        "startChar": 74,
+        "endLine": 64,
+        "endChar": 96
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e70cfa95_3aa76b73",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 19
