@@ -16,6 +16,23 @@
       "message": "Ready for merge",
       "revId": "c30ada6e55a44afee187e18f9ba4bb5a32db837a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06848121_86e0b627",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-30T06:09:06Z",
+      "side": 1,
+      "message": "Matt - are you added to IBM CCLA ? looks like you not added to the ci group as well.\n\nAdding gunnar for CCLA \u0026 andrew for the CI Group.",
+      "revId": "c30ada6e55a44afee187e18f9ba4bb5a32db837a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
