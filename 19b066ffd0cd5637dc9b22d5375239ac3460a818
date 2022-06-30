@@ -155,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "994d98a8_f9a81ce7",
+        "filename": "meson.build",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-06-30T06:20:25Z",
+      "side": 1,
+      "message": "\u003e On the flip side, a single config file would require all users of it to be aware to a certain extent of features they don\u0027t care about...\n\nI dont understand why they have to be aware ..can you explain more ? i was thinking more like a toml config file where we have sections like [Requester], [Responder] e.t.c in a single configuration file. And get them parsed and converted to config data and code can decide what they need to look for based on the config information.\n\nI see a lot of beginners in discord being confused on what files are needed/not needed to get thier pldm stack working, just a thought that a single configuration file would reduce confusion.",
+      "parentUuid": "ee23e17a_d8caab94",
+      "range": {
+        "startLine": 64,
+        "startChar": 74,
+        "endLine": 64,
+        "endChar": 96
+      },
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e70cfa95_3aa76b73",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 19
