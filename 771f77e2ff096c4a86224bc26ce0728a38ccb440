@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4271c518_6c672f17",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1001486
+      },
+      "writtenOn": "2022-07-01T04:58:11Z",
+      "side": 1,
+      "message": "Can we rename PLDM_PLATFORM to PLDM_PLATFORM_MC (Monitoring and Control type) ?",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0acf1bf4_7bcf3cbe",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 12
