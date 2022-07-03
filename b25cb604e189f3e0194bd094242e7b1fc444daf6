@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7486843e_d430dc3a",
+        "filename": "oem/ibm/libpldm/file_io.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-07-03T16:43:18Z",
+      "side": 1,
+      "message": "need to check whether req is valid or not",
+      "range": {
+        "startLine": 965,
+        "startChar": 41,
+        "endLine": 965,
+        "endChar": 44
+      },
+      "revId": "b25cb604e189f3e0194bd094242e7b1fc444daf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13bb7ede_cff77e7a",
+        "filename": "oem/ibm/libpldm/file_io.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2022-07-03T16:43:18Z",
+      "side": 1,
+      "message": "need to add a check to verify response-\u003ecompletion_code is valid or not\n\ni can see the same issue in other places too",
+      "revId": "b25cb604e189f3e0194bd094242e7b1fc444daf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
