@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "831d096b_b932122a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-04T18:28:19Z",
+      "side": 1,
+      "message": "Tested on AST2600 EVB and A MCTP Endpoint over I2C.",
+      "parentUuid": "5fbe1aa9_0cfcd74a",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7e6dfc5_0b3144f2",
         "filename": "requester/handler.hpp",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-22T08:34:57Z",
       "side": 1,
       "message": "Doxygen based documentation needed for the struct and member functions.",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5ed42a1_b0685c8d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-04T18:28:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f7e6dfc5_0b3144f2",
       "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2022-06-22T08:34:57Z",
       "side": 1,
       "message": "How does rc get passed to the caller?",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2864fdc8_39cee7db",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-04T18:28:19Z",
+      "side": 1,
+      "message": "It is passed by await_resume().\n\nhttps://en.cppreference.com/w/cpp/language/coroutines\n\n\u003e Finally, awaiter.await_resume() is called (whether the coroutine was suspended or not), and its result is the result of the whole co_await expr expression.",
+      "parentUuid": "36273230_f17c0b5b",
       "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47e51ea7_2845fb07",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-04T18:28:19Z",
+      "side": 1,
+      "message": "Cannot find a better completion code defined in table 5 of DSP240 1.1.0 currently. Might need to work on to define a new completion code for this error condition.",
+      "parentUuid": "ca12b49a_ceb6d8dd",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6a1d536_80a62942",
         "filename": "requester/handler.hpp",
         "patchSetId": 2
@@ -88,6 +160,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d8ee655_7eecb31b",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-04T18:28:19Z",
+      "side": 1,
+      "message": "The additional copy of the response is trying to prevent the invalid response pointer when coroutine resumed.",
+      "parentUuid": "e6a1d536_80a62942",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5dec01eb_c696a464",
         "filename": "requester/handler.hpp",
         "patchSetId": 2
@@ -99,6 +189,24 @@
       "writtenOn": "2022-06-22T08:34:57Z",
       "side": 1,
       "message": "+ We need to add unit tests, which can also serve as an example for other users to consume this.",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c906265f_e932056d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-04T18:28:19Z",
+      "side": 1,
+      "message": "A unit test for coroutine is added in handle_test.cpp",
+      "parentUuid": "5dec01eb_c696a464",
       "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
