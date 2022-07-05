@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "473baa76_eaee3760",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T16:33:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "70fc7f88_f5fb8f47",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e43050c_26c96665",
@@ -71,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18a54f10_02092882",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T16:33:16Z",
+      "side": 1,
+      "message": "TerminusManager needs to access pdrs to append received pdr from terminus.",
+      "parentUuid": "0e43050c_26c96665",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d35e6c1a_4fa80ecc",
         "filename": "platform-mc/terminus.hpp",
         "patchSetId": 19
@@ -82,6 +118,24 @@
       "writtenOn": "2022-06-29T05:57:10Z",
       "side": 1,
       "message": "Can you use an existing bitfield union defined in pldm_types.h?",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f0b33e0_4a6bac3a",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T16:33:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d35e6c1a_4fa80ecc",
       "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -105,6 +159,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11511521_a70848ac",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T16:33:16Z",
+      "side": 1,
+      "message": "It is from buffer size and it is changed to recvBufSize for better meaning in new patch set.",
+      "parentUuid": "1f083198_befc6fe6",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4beee10_3d3ee976",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 19
@@ -116,6 +188,24 @@
       "writtenOn": "2022-06-29T05:57:10Z",
       "side": 1,
       "message": "Why is this change needed?",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ecdc88c_902a62fd",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T16:33:16Z",
+      "side": 1,
+      "message": "This is for pldmd to be able to export D-Bus object at other path than \"/xyz/openbmc_project/software/*\".\ne.g. the D-Bus object for inventory interface at \"/xyz/openbmc_project/inventory/*\"",
+      "parentUuid": "e4beee10_3d3ee976",
       "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
