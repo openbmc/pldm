@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb2369f5_54cb33f0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T17:05:14Z",
+      "side": 1,
+      "message": "The design of mapping sensor according to Entity Association PDR is not covered by current PLDM document yet(https://gerrit.openbmc.org/c/openbmc/docs/+/47252).\n\nFor now, the current implementation of sensor association over dbus is simply mapping the sensors under the same terminus.\n\nterminus.cpp registers a inventory/Item/Board D-Bus interface for itself and then numeric_sensor.cpp associates itself to terminus.",
+      "parentUuid": "48f89ec3_13a06e83",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "73c1c2e8_99cd9144",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 12
@@ -71,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d43c0e5e_2da2e54a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T17:05:14Z",
+      "side": 1,
+      "message": "Renaming the existing define would introduce a lot code changes because the define has been used by other files(e.g. /libpldm/platform.c, /libpldmresponder/base.cpp, /pldmtool/pldm_base_cmd.cpp and pldmd.cpp)",
+      "parentUuid": "4271c518_6c672f17",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0acf1bf4_7bcf3cbe",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 12
@@ -82,6 +118,24 @@
       "writtenOn": "2022-06-29T06:32:41Z",
       "side": 1,
       "message": "What do we do in case of failures?",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18095567_8b4ef9c8",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-05T17:05:14Z",
+      "side": 1,
+      "message": "For the case of DSP0248 section 8.3.1, terminusManager does nothing if terminus doesn\u0027t use PDRs.",
+      "parentUuid": "0acf1bf4_7bcf3cbe",
       "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
