@@ -214,6 +214,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9881ec9_273c0d0d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-07T16:46:34Z",
+      "side": 1,
+      "message": "The additional copy is replaced by returning response pointe because the original purpose of additional copy of response dose not exist.\npldmd is not multi-threads so pldmd dose not interrupt the process in between receiving response and resuming coroutine.",
+      "parentUuid": "766a1223_0ce2fe8d",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5dec01eb_c696a464",
         "filename": "requester/handler.hpp",
         "patchSetId": 2
