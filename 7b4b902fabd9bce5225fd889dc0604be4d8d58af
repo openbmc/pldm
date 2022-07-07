@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adfec169_c8028f87",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-07-07T06:06:50Z",
+      "side": 1,
+      "message": "UpperCamelCase",
+      "range": {
+        "startLine": 290,
+        "startChar": 12,
+        "endLine": 290,
+        "endChar": 27
+      },
+      "revId": "7b4b902fabd9bce5225fd889dc0604be4d8d58af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9625e9aa_16f705da",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-07-07T06:06:50Z",
+      "side": 1,
+      "message": "\"using\" not needed",
+      "range": {
+        "startLine": 292,
+        "startChar": 33,
+        "endLine": 292,
+        "endChar": 38
+      },
+      "revId": "7b4b902fabd9bce5225fd889dc0604be4d8d58af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af562398_7ca53a6f",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-07-07T06:06:50Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 323,
+        "startChar": 24,
+        "endLine": 323,
+        "endChar": 32
+      },
+      "revId": "7b4b902fabd9bce5225fd889dc0604be4d8d58af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d05070_15eb1e95",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-07-07T06:06:50Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 368,
+        "startChar": 50,
+        "endLine": 368,
+        "endChar": 60
+      },
+      "revId": "7b4b902fabd9bce5225fd889dc0604be4d8d58af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
