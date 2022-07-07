@@ -158,6 +158,7 @@ void CommandInterface::exec()
     {
         std::cerr << "Failed to encode request message for " << pldmType << ":"
                   << commandName << " rc = " << rc << "\n";
+        freeInstanceId();
         return;
     }
 
@@ -167,11 +168,13 @@ void CommandInterface::exec()
     if (rc != PLDM_SUCCESS)
     {
         std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
+        freeInstanceId();
         return;
     }
 
     auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
     parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
+    freeInstanceId();
 }
 
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
@@ -233,6 +236,19 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                           responseMsg.begin() + 2 /* skip the mctp header */);
     }
     return PLDM_SUCCESS;
+}
+void CommandInterface::freeInstanceId(void)
+{
+    static constexpr auto pldmObjPath = "/xyz/openbmc_project/pldm";
+    static constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto service =
+        pldm::utils::DBusHandler().getService(pldmObjPath, pldmRequester);
+    auto method = bus.new_method_call(service.c_str(), pldmObjPath,
+                                      pldmRequester, "FreeInstanceId");
+    method.append(mctp_eid);
+    method.append(instanceId);
+    auto reply = bus.call(method);
 }
 } // namespace helper
 } // namespace pldmtool
