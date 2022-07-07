@@ -41,6 +41,9 @@ class Requester : public RequesterIntf
     /** @brief Implementation for RequesterIntf.GetInstanceId */
     uint8_t getInstanceId(uint8_t eid) override;
 
+    /** @brief Implementation for RequesterIntf.FreeInstanceId */
+    void freeInstanceId(uint8_t eid, uint8_t instanceId);
+
     /** @brief Mark an instance id as unused
      *  @param[in] eid - MCTP eid to which this instance id belongs
      *  @param[in] instanceId - PLDM instance id to be freed

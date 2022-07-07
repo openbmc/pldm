@@ -32,5 +32,10 @@ uint8_t Requester::getInstanceId(uint8_t eid)
     return id;
 }
 
+void Requester::freeInstanceId(uint8_t eid, uint8_t instanceId)
+{
+    ids[eid].markFree(instanceId);
+}
+
 } // namespace dbus_api
 } // namespace pldm
