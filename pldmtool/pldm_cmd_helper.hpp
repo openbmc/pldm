@@ -109,6 +109,8 @@ class CommandInterface
         return mctp_eid;
     }
 
+    void freeInstanceId();
+
   private:
     const std::string pldmType;
     const std::string commandName;
