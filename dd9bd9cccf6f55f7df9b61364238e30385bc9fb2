@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a628ae0_4b22f311",
+        "filename": "libpldm/base.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-07-08T09:03:09Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f50b43bb_70183299",
+      "range": {
+        "startLine": 417,
+        "startChar": 26,
+        "endLine": 417,
+        "endChar": 33
+      },
+      "revId": "dd9bd9cccf6f55f7df9b61364238e30385bc9fb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be76d96a_49d96f3b",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Since the arguments are passed by value, declaring them as const might be unnecessary.",
       "parentUuid": "be76d96a_49d96f3b",
+      "range": {
+        "startLine": 495,
+        "startChar": 23,
+        "endLine": 495,
+        "endChar": 55
+      },
+      "revId": "dd9bd9cccf6f55f7df9b61364238e30385bc9fb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c05061f_6d6b286a",
+        "filename": "libpldm/base.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-07-08T09:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0af0bb44_8ae759b3",
       "range": {
         "startLine": 495,
         "startChar": 23,
