@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6234733_ba48a370",
+        "filename": "oem/ibm/libpldm/file_io.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-11T05:39:10Z",
+      "side": 1,
+      "message": "\u003e I have checked other encode_req API I dont see anywhere req is checked for encode_req.. but when we decode_req checking invalid payload data and length\n\nI think what gokul meant here is that , we need to check req for null before doing the de-reference. Like wise in other places too.",
+      "parentUuid": "71573ed1_3ed74515",
+      "range": {
+        "startLine": 965,
+        "startChar": 41,
+        "endLine": 965,
+        "endChar": 44
+      },
+      "revId": "b25cb604e189f3e0194bd094242e7b1fc444daf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13bb7ede_cff77e7a",
