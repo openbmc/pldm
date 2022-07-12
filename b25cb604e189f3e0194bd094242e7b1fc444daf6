@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0331c92d_0a1fa6db",
+        "filename": "oem/ibm/libpldm/file_io.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-12T06:08:23Z",
+      "side": 1,
+      "message": "@951 we are checking \n\nif (msg \u003d\u003d NULL) {\n                return PLDM_ERROR_INVALID_DATA;\n        }\n\nAlso, we are covering in unit test case\n\nTEST(NewFileAvailableWithMetaData, testBadEncodeRequest)\n{\n    uint8_t fileType \u003d 0xFF;\n    uint32_t fileHandle \u003d 0;\n    uint32_t length \u003d 0;\n    uint32_t fileMetaData1 \u003d 0;\n    uint32_t fileMetaData2 \u003d 0;\n    uint32_t fileMetaData3 \u003d 0;\n    uint32_t fileMetaData4 \u003d 0;\n\n    // request is NULL pointer\n    auto rc \u003d encode_new_file_with_metadata_req(\n        0, fileType, fileHandle, length, fileMetaData1, fileMetaData2,\n        fileMetaData3, fileMetaData4, NULL);\n\n    ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);\n}\n\nwe are checking the msg.. I think it is enough.",
+      "parentUuid": "d6234733_ba48a370",
+      "range": {
+        "startLine": 965,
+        "startChar": 41,
+        "endLine": 965,
+        "endChar": 44
+      },
+      "revId": "b25cb604e189f3e0194bd094242e7b1fc444daf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13bb7ede_cff77e7a",
