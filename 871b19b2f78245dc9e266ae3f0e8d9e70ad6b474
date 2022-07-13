@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecda10de_34f7e9a1",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-07-13T09:46:35Z",
+      "side": 1,
+      "message": "The messages of interfaceAdded and interfaceRemoved signal is difference. They should be handled by two difference functions, I think.",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2ab980a_55b475b4",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 20
@@ -20,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "556314db_ff4bf774",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-07-13T09:46:35Z",
+      "side": 1,
+      "message": "msg.read() with objPath, interfaces will failed with error:\n\"ssd_bus_message_enter_container emplace_container: System.Error.ENXIO: No such device or ads\" the try catch should added.",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f1392c10_4f43cb9c",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 20
@@ -31,6 +65,23 @@
       "writtenOn": "2022-06-30T08:58:08Z",
       "side": 1,
       "message": "Is there a possibility that the EiD list would have duplicates when discovered and static EiDs are merged ?",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b9c234e_4d59ccbb",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-07-13T09:46:35Z",
+      "side": 1,
+      "message": "When the signal is removedInterface(), mctpInfos.size() is 0. But the termini of the removed eid have to be removed. So handleMCTPEndpoints have to be called.",
       "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
