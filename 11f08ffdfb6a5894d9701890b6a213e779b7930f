@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d52fbd1_c69a9a6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-13T08:16:32Z",
+      "side": 1,
+      "message": "Based on discussion with manoj.. I made the changes.",
+      "revId": "11f08ffdfb6a5894d9701890b6a213e779b7930f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70f2ccbd_7d1f7dff",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-06-30T06:27:42Z",
       "side": 1,
       "message": "having ifdefs are not the right way to do. can you figure out a way to get the oem handler here.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 6
+      },
+      "revId": "11f08ffdfb6a5894d9701890b6a213e779b7930f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f3d467c_771e336d",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-13T08:16:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70f2ccbd_7d1f7dff",
       "range": {
         "startLine": 58,
         "startChar": 0,
@@ -47,6 +88,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a716f55e_97162675",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-13T08:16:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d08f19b5_df417d35",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 32
+      },
+      "revId": "11f08ffdfb6a5894d9701890b6a213e779b7930f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9352bf30_ce5b8d22",
@@ -60,6 +125,30 @@
       "writtenOn": "2022-06-30T06:27:42Z",
       "side": 1,
       "message": "nit:space",
+      "range": {
+        "startLine": 46,
+        "startChar": 40,
+        "endLine": 46,
+        "endChar": 42
+      },
+      "revId": "11f08ffdfb6a5894d9701890b6a213e779b7930f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d569d54_11d5e3ea",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-13T08:16:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9352bf30_ce5b8d22",
       "range": {
         "startLine": 46,
         "startChar": 40,
