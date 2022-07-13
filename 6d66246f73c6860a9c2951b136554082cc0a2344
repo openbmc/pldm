@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9372a15_cb30770c",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-13T13:06:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a4f36579_bcc3a495",
+      "revId": "6d66246f73c6860a9c2951b136554082cc0a2344",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b62cab9a_a515881e",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-07-07T18:38:06Z",
       "side": 1,
       "message": "These are checked for null anywhere ?",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 34
+      },
+      "revId": "6d66246f73c6860a9c2951b136554082cc0a2344",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25baca03_63759576",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-13T13:06:21Z",
+      "side": 1,
+      "message": "They are checked at line 345 in await_suspend().",
+      "parentUuid": "b62cab9a_a515881e",
       "range": {
         "startLine": 402,
         "startChar": 0,
