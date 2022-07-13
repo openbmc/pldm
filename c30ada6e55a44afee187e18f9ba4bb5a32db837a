@@ -50,6 +50,23 @@
       "message": "This needs to go into FW1020.10 (so shouldn\u0027t go into base fw1020)",
       "revId": "c30ada6e55a44afee187e18f9ba4bb5a32db837a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "831101a4_8f1ff1c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000911
+      },
+      "writtenOn": "2022-07-13T13:09:00Z",
+      "side": 1,
+      "message": "Removing the -1,  the change is good I just did the -1 to say it should be for the service pack and beyond.",
+      "revId": "c30ada6e55a44afee187e18f9ba4bb5a32db837a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
