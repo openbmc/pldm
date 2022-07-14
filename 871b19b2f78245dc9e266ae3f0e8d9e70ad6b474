@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d268e317_0b26920f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-14T10:51:02Z",
+      "side": 1,
+      "message": "The currently implementation treats the interfaceAdded and InterfaceRemoved signal like a event that the MCTP topology has been changed and then MCTPDiscovery passes the latest MCTP Endpoint list to each manager handlers(e.g. fw-update, platform-mc).\n\nThis design thinking makes the manager handlers(fw-update, platform-mc) don\u0027t need to added additional callback function for Removed signals and MCTPDiscovery also doesn\u0027t need to cache previous MCTP endpoint list to compare the latest list to find out which endpoint is removed because each handlers should already maintain a EID list which is managed by them currently.\n\nPlease let me know if this design fits your requirement.",
+      "parentUuid": "ecda10de_34f7e9a1",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2ab980a_55b475b4",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 20
