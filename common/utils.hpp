@@ -26,7 +26,6 @@ namespace pldm
 {
 namespace utils
 {
-
 namespace fs = std::filesystem;
 using Json = nlohmann::json;
 constexpr bool Tx = true;
@@ -407,6 +406,15 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
  *  @return - std::string equivalent of the system time
  */
 std::string getCurrentSystemTime();
+
+/** @brief Method to get the value from a bios attribute
+ *
+ *  @param[in] dbusAttrName - the bios attribute name from
+ *             which the value must be retrieved
+ *
+ * @return the attribute value
+ */
+std::string getBiosAttrValue(const std::string& dbusAttrName);
 
 } // namespace utils
 } // namespace pldm
