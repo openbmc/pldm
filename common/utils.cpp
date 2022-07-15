@@ -581,5 +581,37 @@ std::string getCurrentSystemTime()
     return ss.str();
 }
 
+std::string getBiosAttrValue(const std::string& dbusAttrName)
+{
+    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
+
+    std::string var1;
+    std::variant<std::string> var2;
+    std::variant<std::string> var3;
+
+    auto& bus = DBusHandler::getBus();
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(biosConfigPath,
+                                                             biosConfigIntf);
+        auto method = bus.new_method_call(
+            service.c_str(), biosConfigPath,
+            "xyz.openbmc_project.BIOSConfig.Manager", "GetAttribute");
+        method.append(dbusAttrName);
+        auto reply = bus.call(method);
+        reply.read(var1, var2, var3);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {
+        std::cout << "Error getting the bios attribute"
+                  << "ERROR=" << e.what() << "ATTRIBUTE=" << dbusAttrName
+                  << std::endl;
+        return {};
+    }
+
+    return std::get<std::string>(var2);
+}
+
 } // namespace utils
 } // namespace pldm
