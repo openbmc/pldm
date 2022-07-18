@@ -70,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aafe434_16ea51f6",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-18T03:29:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "556314db_ff4bf774",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1392c10_4f43cb9c",
@@ -100,6 +118,24 @@
       "writtenOn": "2022-07-13T09:46:35Z",
       "side": 1,
       "message": "When the signal is removedInterface(), mctpInfos.size() is 0. But the termini of the removed eid have to be removed. So handleMCTPEndpoints have to be called.",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bded060_fd195668",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-18T03:29:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1b9c234e_4d59ccbb",
       "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
