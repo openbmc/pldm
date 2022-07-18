@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b49a642_70156e76",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "one line commit message does not help. Improve the commit message.\n\nImprove commit message based on https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#formatting-commit-messages",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84567a6_71b07253",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "change not needed.",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "384e3b57_dee37fa3",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "why a c style parameter passing ? why not const string reference ?",
+      "range": {
+        "startLine": 583,
+        "startChar": 25,
+        "endLine": 583,
+        "endChar": 44
+      },
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c81d2104_5d23dc10",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "please dont mask all the errors and do nothing about it ? \n\ndo you want to continue in case of any exceptions ? that does not sound correct.",
+      "range": {
+        "startLine": 595,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 6
+      },
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c37d9ddd_a2f4378d",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "unneeded change.",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83b57b82_048d44ef",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "Functions should all be lowerCamelCase.",
+      "range": {
+        "startLine": 417,
+        "startChar": 5,
+        "endLine": 417,
+        "endChar": 24
+      },
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68f21d0c_7a3e58aa",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "change not needed., same below",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88e9f065_4c6baa87",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "can you add a comment here , explaining what does continue mean here ?",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0bce797_376c499f",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-18T10:22:33Z",
+      "side": 1,
+      "message": "change not needed.",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
