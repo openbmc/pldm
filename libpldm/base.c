@@ -447,6 +447,51 @@ int decode_multipart_receive_req(
 	return PLDM_SUCCESS;
 }
 
+int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
+				  uint8_t pldm_type, uint8_t transfer_opflag,
+				  uint32_t next_transfer_handle,
+				  uint32_t data_length, const uint8_t *data,
+				  uint32_t data_crc32, struct pldm_msg *msg)
+{
+	if (msg == NULL || data == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (pldm_type != PLDM_BASE) {
+		return PLDM_ERROR_INVALID_PLDM_TYPE;
+	}
+
+	// Any enum value above PLDM_ACKNOWLEDGE_COMPLETION is invalid.
+	if (transfer_opflag > PLDM_ACKNOWLEDGE_COMPLETION) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.pldm_type = pldm_type;
+	header.msg_type = PLDM_RESPONSE;
+	header.command = PLDM_MULTIPART_RECEIVE;
+
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_multipart_receive_resp *response =
+	    (struct pldm_multipart_receive_resp *)msg->payload;
+	response->completion_code = completion_code;
+	response->transfer_opflag = transfer_opflag;
+	response->next_transfer_handle = htole32(next_transfer_handle);
+	response->data_length = htole32(data_length);
+	memcpy(response->data, data, data_length);
+	// The data field in the response struct is variable length, so we have
+	// to append the crc32 to the end of it.
+	data_crc32 = htole32(data_crc32);
+	memcpy(&response->data[data_length], &data_crc32, sizeof(data_crc32));
+
+	return PLDM_SUCCESS;
+}
+
 int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 			uint8_t cc, struct pldm_msg *msg)
 {
