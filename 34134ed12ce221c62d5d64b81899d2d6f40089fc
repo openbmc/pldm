@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1df6a4e5_33ab4a03",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-20T13:25:54Z",
+      "side": 1,
+      "message": "Thanks for the comment. My idea is keeping the patch set as small as possible for current patch set and I think it will be good to refine the classes when implementing other types of PLDM sensor/effecter.",
+      "parentUuid": "05924e10_c4aa119a",
+      "revId": "34134ed12ce221c62d5d64b81899d2d6f40089fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d6d0103_45c9e91f",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 11
@@ -89,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3cd523e0_fb7651a4",
+        "filename": "platform-mc/sensor_manager.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-20T13:25:54Z",
+      "side": 1,
+      "message": "The function name is named for matching the name used in DSP0248 18.2 GetSensorReading Command.\nFor state sensor, the corresponding function name will be sendGetStateSensorReadings() for matching the name, GetStateSensorReadings, which is defined in the DSP0248 20.2",
+      "parentUuid": "6e294c5d_f78afcfb",
+      "revId": "34134ed12ce221c62d5d64b81899d2d6f40089fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "917ac5d2_49047456",
         "filename": "platform-mc/sensor_manager.hpp",
         "patchSetId": 11
@@ -100,6 +136,24 @@
       "writtenOn": "2022-07-14T05:10:28Z",
       "side": 1,
       "message": "The function name should be updated also.",
+      "revId": "34134ed12ce221c62d5d64b81899d2d6f40089fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35927f00_732df01d",
+        "filename": "platform-mc/sensor_manager.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-20T13:25:54Z",
+      "side": 1,
+      "message": "It is for matching the name defined in DSP0248 18.2",
+      "parentUuid": "917ac5d2_49047456",
       "revId": "34134ed12ce221c62d5d64b81899d2d6f40089fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
