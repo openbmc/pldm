@@ -882,6 +882,59 @@ TEST(NegotiateTransferParameters, testDecodeRequestFailBadXferLen)
               PLDM_ERROR_UNSUPPORTED_PLDM_CMD);
 }
 
+TEST(NegotiateTransferParameters, testEncodeResponsePass)
+{
+    constexpr uint8_t instance_id = 0x01;
+    constexpr uint8_t completion_code = PLDM_SUCCESS;
+    constexpr uint16_t requester_part_size = 0x1000;
+    constexpr bitfield8_t requester_protocol_support[8] = {
+        {.byte = 0x0c},
+    };
+
+    std::vector<uint8_t> msg(sizeof(pldm_msg_hdr) +
+                             PLDM_NEGOTIATE_TRANSFER_PARAMETERS_RESP_BYTES);
+    pldm_msg* resp_msg = reinterpret_cast<pldm_msg*>(msg.data());
+    int rc = encode_negotiate_transfer_parameters_resp(
+        instance_id, completion_code, requester_part_size,
+        requester_protocol_support, resp_msg);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    pldm_negotiate_transfer_parameters_resp* resp_pkt =
+        reinterpret_cast<pldm_negotiate_transfer_parameters_resp*>(
+            resp_msg->payload);
+    EXPECT_EQ(resp_pkt->completion_code, completion_code);
+    EXPECT_EQ(resp_pkt->part_size, requester_part_size);
+    EXPECT_EQ(std::memcmp(resp_pkt->protocol_support,
+                          requester_protocol_support,
+                          sizeof(requester_protocol_support)),
+              0);
+}
+
+TEST(NegotiateTransferParameters, testEncodeResponseFailBadParams)
+{
+    EXPECT_EQ(encode_negotiate_transfer_parameters_resp(0, 0, 0, NULL, NULL),
+              PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(NegotiateTransferParameters, testEncodeResponseFailBadXferLen)
+{
+    constexpr uint8_t instance_id = 0x01;
+    constexpr uint8_t completion_code = PLDM_SUCCESS;
+    constexpr uint16_t requester_part_size =
+        PLDM_MULTIPART_TRANSFER_MIN_SIZE - 1;
+    constexpr bitfield8_t requester_protocol_support[8] = {
+        {.byte = 0x0c},
+    };
+
+    std::vector<uint8_t> msg(sizeof(pldm_msg_hdr) +
+                             PLDM_NEGOTIATE_TRANSFER_PARAMETERS_RESP_BYTES);
+    pldm_msg* resp_msg = reinterpret_cast<pldm_msg*>(msg.data());
+    EXPECT_EQ(encode_negotiate_transfer_parameters_resp(
+                  instance_id, completion_code, requester_part_size,
+                  requester_protocol_support, resp_msg),
+              PLDM_ERROR_UNSUPPORTED_PLDM_CMD);
+}
+
 TEST(CcOnlyResponse, testEncode)
 {
     struct pldm_msg responseMsg;
