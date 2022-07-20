@@ -398,6 +398,33 @@ int decode_get_tid_resp(const struct pldm_msg *msg, size_t payload_length,
 	return PLDM_SUCCESS;
 }
 
+int decode_multipart_receive_req(
+    const struct pldm_msg *msg, size_t payload_length, uint8_t *pldm_type,
+    uint8_t *transfer_opflag, uint32_t *transfer_ctx, uint32_t *transfer_handle,
+    uint32_t *section_offset, uint32_t *section_length)
+{
+	if (msg == NULL || pldm_type == NULL || transfer_opflag == NULL ||
+	    transfer_ctx == NULL || transfer_handle == NULL ||
+	    section_offset == NULL || section_length == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_MULTIPART_RECEIVE_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_multipart_receive_req *request =
+	    (struct pldm_multipart_receive_req *)msg->payload;
+	*pldm_type = request->pldm_type;
+	*transfer_opflag = request->transfer_opflag;
+	*transfer_ctx = request->transfer_ctx;
+	*transfer_handle = le32toh(request->transfer_handle);
+	*section_offset = le32toh(request->section_offset);
+	*section_length = le32toh(request->section_length);
+
+	return PLDM_SUCCESS;
+}
+
 int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 			uint8_t cc, struct pldm_msg *msg)
 {

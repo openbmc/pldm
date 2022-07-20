@@ -524,6 +524,51 @@ TEST(GetTID, testDecodeResponse)
     EXPECT_EQ(tid, 1);
 }
 
+TEST(MultipartReceive, testDecodeRequest)
+{
+    constexpr uint8_t kPldmType = 0x0;
+    constexpr uint8_t kFlag = PLDM_GET_FIRSTPART;
+    constexpr uint32_t kTransferCtx = 0x01;
+    constexpr uint32_t kTransferHandle = 0x10;
+    constexpr uint32_t kSectionOffset = 0x0;
+    constexpr uint32_t kSectionLength = 0x10;
+    uint8_t pldm_type = 0x0;
+    uint8_t flag = PLDM_GET_FIRSTPART;
+    uint32_t transfer_ctx;
+    uint32_t transfer_handle;
+    uint32_t section_offset;
+    uint32_t section_length;
+
+    // Header values don't matter for this test.
+    pldm_msg_hdr hdr{};
+    // Assign values to the packet struct and memcpy to ensure correct byte
+    // ordering.
+    pldm_multipart_receive_req req_pkt = {
+        .pldm_type = kPldmType,
+        .transfer_opflag = kFlag,
+        .transfer_ctx = kTransferCtx,
+        .transfer_handle = kTransferHandle,
+        .section_offset = kSectionOffset,
+        .section_length = kSectionLength,
+    };
+    std::vector<uint8_t> req(sizeof(hdr) + PLDM_MULTIPART_RECEIVE_REQ_BYTES);
+    std::memcpy(req.data(), &hdr, sizeof(hdr));
+    std::memcpy(req.data() + sizeof(hdr), &req_pkt, sizeof(req_pkt));
+
+    pldm_msg* pldm_request = reinterpret_cast<pldm_msg*>(req.data());
+    int rc = decode_multipart_receive_req(
+        pldm_request, req.size() - hdrSize, &pldm_type, &flag, &transfer_ctx,
+        &transfer_handle, &section_offset, &section_length);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(pldm_type, kPldmType);
+    EXPECT_EQ(flag, kFlag);
+    EXPECT_EQ(transfer_ctx, kTransferCtx);
+    EXPECT_EQ(transfer_handle, kTransferHandle);
+    EXPECT_EQ(section_offset, kSectionOffset);
+    EXPECT_EQ(section_length, kSectionLength);
+}
+
 TEST(CcOnlyResponse, testEncode)
 {
     struct pldm_msg responseMsg;
