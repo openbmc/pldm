@@ -636,6 +636,34 @@ TEST(NegotiateTransferParameters, testDecodeRequest)
               0);
 }
 
+TEST(NegotiateTransferParameters, testEncodeResponse)
+{
+    constexpr uint8_t instance_id = 0x01;
+    constexpr uint8_t completion_code = PLDM_SUCCESS;
+    constexpr uint16_t requester_part_size = 0x1000;
+    constexpr bitfield8_t requester_protocol_support[8] = {
+        {.byte = 0x0c},
+    };
+
+    std::vector<uint8_t> msg(sizeof(pldm_msg_hdr) +
+                             PLDM_NEGOTIATE_TRANSFER_PARAMETERS_RESP_BYTES);
+    pldm_msg* resp_msg = reinterpret_cast<pldm_msg*>(msg.data());
+    int rc = encode_negotiate_transfer_parameters_resp(
+        instance_id, completion_code, requester_part_size,
+        requester_protocol_support, resp_msg);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    pldm_negotiate_transfer_parameters_resp* resp_pkt =
+        reinterpret_cast<pldm_negotiate_transfer_parameters_resp*>(
+            resp_msg->payload);
+    EXPECT_EQ(resp_pkt->completion_code, completion_code);
+    EXPECT_EQ(resp_pkt->part_size, requester_part_size);
+    EXPECT_EQ(std::memcmp(resp_pkt->protocol_support,
+                          requester_protocol_support,
+                          sizeof(requester_protocol_support)),
+              0);
+}
+
 TEST(CcOnlyResponse, testEncode)
 {
     struct pldm_msg responseMsg;
