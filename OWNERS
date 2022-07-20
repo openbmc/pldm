@@ -20,7 +20,7 @@
 #   * reviewers: A list of individuals who have requested review notification
 #     on the repository.
 #
-#   * matches: A list of specific file/path matches for granular 'owners' and
+#   * matchers: A list of specific file/path matches for granular 'owners' and
 #     'reviewers'.  See 'owners' plugin documentation.
 #
 #   * openbmc: A list of openbmc-specific meta-data about owners and reviewers.
@@ -40,11 +40,11 @@ reviewers:
 - liuxiwei@inspur.com
 - manojkiran.eda@gmail.com
 
-matches:
+matchers:
 - partial_regex: ibm
   owners:
   - sampmisr@in.ibm.com
-- exact: tools/visualize-pdr
+- partial_regex: tools/visualize-pdr
   owners:
   - manojkiran.eda@gmail.com
 
