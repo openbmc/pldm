@@ -601,6 +601,40 @@ TEST(MultipartReceive, testEncodeResponse)
     EXPECT_EQ(std::memcmp(&resp_pkt->data[data_length], &crc, sizeof(crc)), 0);
 }
 
+TEST(NegotiateTransferParameters, testDecodeRequest)
+{
+    constexpr uint16_t kRequesterPartSize = 0x1000;
+    constexpr bitfield8_t kRequesterProtocolSupport[8] = {
+        {.byte = 0x0c},
+    };
+    uint16_t requester_part_size;
+    bitfield8_t requester_protocol_support[8];
+
+    // Header values don't matter for this test.
+    pldm_msg_hdr hdr{};
+    // Assign values to the packet struct and memcpy to ensure correct byte
+    // ordering.
+    pldm_negotiate_transfer_parameters_req req_pkt{};
+    req_pkt.part_size = kRequesterPartSize;
+    std::memcpy(req_pkt.protocol_support, kRequesterProtocolSupport,
+                sizeof(req_pkt.protocol_support));
+    std::vector<uint8_t> req(sizeof(hdr) +
+                             PLDM_NEGOTIATE_TRANSFER_PARAMETERS_REQ_BYTES);
+    std::memcpy(req.data(), &hdr, sizeof(hdr));
+    std::memcpy(req.data() + sizeof(hdr), &req_pkt, sizeof(req_pkt));
+
+    pldm_msg* pldm_request = reinterpret_cast<pldm_msg*>(req.data());
+    int rc = decode_negotiate_transfer_parameters_req(
+        pldm_request, req.size() - hdrSize, &requester_part_size,
+        requester_protocol_support);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(requester_part_size, kRequesterPartSize);
+    EXPECT_EQ(std::memcmp(requester_protocol_support, kRequesterProtocolSupport,
+                          sizeof(requester_protocol_support)),
+              0);
+}
+
 TEST(CcOnlyResponse, testEncode)
 {
     struct pldm_msg responseMsg;
