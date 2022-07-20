@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "libpldm/base.h"
+#include "libpldm/utils.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -567,6 +568,37 @@ TEST(MultipartReceive, testDecodeRequest)
     EXPECT_EQ(transfer_handle, kTransferHandle);
     EXPECT_EQ(section_offset, kSectionOffset);
     EXPECT_EQ(section_length, kSectionLength);
+}
+
+TEST(MultipartReceive, testEncodeResponse)
+{
+    constexpr size_t max_msg_len = 256;
+    constexpr uint8_t instance_id = 0x01;
+    constexpr uint8_t completion_code = PLDM_SUCCESS;
+    constexpr uint8_t type = 0x0;
+    constexpr uint8_t flag = PLDM_GET_FIRSTPART;
+    constexpr uint32_t next_transfer_handle = 0x0;
+    constexpr uint8_t data[] = {0x01, 0x02, 0x03, 0x04, 0x05,
+                                0x06, 0x07, 0x08, 0x09};
+    constexpr uint32_t data_length = sizeof(data);
+    uint32_t crc = crc32(data, data_length);
+
+    std::vector<uint8_t> msg(max_msg_len);
+    pldm_msg* resp_msg = reinterpret_cast<pldm_msg*>(msg.data());
+    int rc = encode_multipart_receive_resp(instance_id, completion_code, type,
+                                           flag, next_transfer_handle,
+                                           data_length, data, crc, resp_msg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    pldm_multipart_receive_resp* resp_pkt =
+        reinterpret_cast<pldm_multipart_receive_resp*>(resp_msg->payload);
+
+    EXPECT_EQ(resp_pkt->completion_code, completion_code);
+    EXPECT_EQ(resp_pkt->transfer_opflag, flag);
+    EXPECT_EQ(resp_pkt->next_transfer_handle, next_transfer_handle);
+    EXPECT_EQ(resp_pkt->data_length, data_length);
+    EXPECT_EQ(std::memcmp(resp_pkt->data, data, data_length), 0);
+    // CRC32 is part of the last 4 bytes.
+    EXPECT_EQ(std::memcmp(&resp_pkt->data[data_length], &crc, sizeof(crc)), 0);
 }
 
 TEST(CcOnlyResponse, testEncode)
