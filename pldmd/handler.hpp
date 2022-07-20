@@ -23,6 +23,8 @@ using HandlerFunc =
 class CmdHandler
 {
   public:
+    virtual ~CmdHandler() = default;
+
     /** @brief Invoke a PLDM command handler
      *
      *  @param[in] pldmCommand - PLDM command code
