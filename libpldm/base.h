@@ -29,6 +29,7 @@ enum pldm_supported_commands {
 	PLDM_GET_PLDM_VERSION = 0x3,
 	PLDM_GET_PLDM_TYPES = 0x4,
 	PLDM_GET_PLDM_COMMANDS = 0x5,
+	PLDM_NEGOTIATE_TRANSFER_PARAMETERS = 0x7,
 	PLDM_MULTIPART_RECEIVE = 0x9,
 };
 
@@ -92,6 +93,7 @@ typedef enum {
 #define PLDM_MULTIPART_RECEIVE_REQ_BYTES 18
 /* Does not include data size due to it being variable */
 #define PLDM_MULTIPART_RECEIVE_RESP_BYTES 15
+#define PLDM_NEGOTIATE_TRANSFER_PARAMETERS_REQ_BYTES 10
 
 #define PLDM_VERSION_0 0
 #define PLDM_CURRENT_VERSION PLDM_VERSION_0
@@ -249,6 +251,19 @@ struct pldm_multipart_receive_resp {
 	uint32_t data_length;	       //!< Length of data being sent
 				       //!< (in bytes).
 	uint8_t data[1];	       //!< Current section data, plus crc32.
+} __attribute__((packed));
+
+/** @struct pldm_negotiate_transfer_parameters_req
+ *
+ *  Structure representing PLDM negotiate transfer parameters request.
+ */
+struct pldm_negotiate_transfer_parameters_req {
+	uint16_t part_size; //!< Requester's maximum transfer part size for a
+			    //!< single multipart transfer.
+	bitfield8_t protocol_support[8]; //!< Each bit represents whether
+					 //!< multipart transfer with a given
+					 //!< PLDM type is supported by the
+					 //!< requester.
 } __attribute__((packed));
 
 /**
@@ -548,6 +563,23 @@ int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
 				  uint32_t next_transfer_handle,
 				  uint32_t data_length, const uint8_t *data,
 				  uint32_t data_crc32, struct pldm_msg *msg);
+
+/* Responder */
+
+/* NegotiateTransferParameters */
+
+/** @brief Decode a PLDM Negotiate Transfer Parameters request message
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - length of request message payload
+ *  @param[out] part_size - The max size transfer the requester can handle
+ *  @param[out] protocol_support - The PLDM protocols the requester supports
+ *  @return pldm_completion_codes
+ */
+int decode_negotiate_transfer_parameters_req(const struct pldm_msg *msg,
+					     size_t payload_length,
+					     uint16_t *part_size,
+					     bitfield8_t *protocol_support);
 
 /** @brief Create a PLDM response message containing only cc
  *

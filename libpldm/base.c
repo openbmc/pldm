@@ -461,6 +461,28 @@ int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
+int decode_negotiate_transfer_parameters_req(const struct pldm_msg *msg,
+					     size_t payload_length,
+					     uint16_t *part_size,
+					     bitfield8_t *protocol_support)
+{
+	if (msg == NULL || part_size == NULL || protocol_support == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (payload_length != PLDM_NEGOTIATE_TRANSFER_PARAMETERS_REQ_BYTES) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	struct pldm_negotiate_transfer_parameters_req *request =
+	    (struct pldm_negotiate_transfer_parameters_req *)msg->payload;
+	*part_size = le16toh(request->part_size);
+	memcpy(protocol_support, request->protocol_support,
+	       sizeof(request->protocol_support));
+
+	return PLDM_SUCCESS;
+}
+
 int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 			uint8_t cc, struct pldm_msg *msg)
 {
