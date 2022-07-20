@@ -483,6 +483,34 @@ int decode_negotiate_transfer_parameters_req(const struct pldm_msg *msg,
 	return PLDM_SUCCESS;
 }
 
+int encode_negotiate_transfer_parameters_resp(
+    uint8_t instance_id, uint8_t completion_code, uint16_t part_size,
+    const bitfield8_t *protocol_support, struct pldm_msg *msg)
+{
+	if (msg == NULL || protocol_support == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_RESPONSE;
+	header.command = PLDM_NEGOTIATE_TRANSFER_PARAMETERS;
+
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_negotiate_transfer_parameters_resp *response =
+	    (struct pldm_negotiate_transfer_parameters_resp *)msg->payload;
+	response->completion_code = completion_code;
+	response->part_size = htole16(part_size);
+	memcpy(response->protocol_support, protocol_support,
+	       sizeof(response->protocol_support));
+
+	return PLDM_SUCCESS;
+}
+
 int encode_cc_only_resp(uint8_t instance_id, uint8_t type, uint8_t command,
 			uint8_t cc, struct pldm_msg *msg)
 {

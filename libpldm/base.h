@@ -94,6 +94,7 @@ typedef enum {
 /* Does not include data size due to it being variable */
 #define PLDM_MULTIPART_RECEIVE_RESP_BYTES 15
 #define PLDM_NEGOTIATE_TRANSFER_PARAMETERS_REQ_BYTES 10
+#define PLDM_NEGOTIATE_TRANSFER_PARAMETERS_RESP_BYTES 11
 
 #define PLDM_VERSION_0 0
 #define PLDM_CURRENT_VERSION PLDM_VERSION_0
@@ -264,6 +265,20 @@ struct pldm_negotiate_transfer_parameters_req {
 					 //!< multipart transfer with a given
 					 //!< PLDM type is supported by the
 					 //!< requester.
+} __attribute__((packed));
+
+/** @struct pldm_negotiate_transfer_parameters_resp
+ *
+ *  Structure representing PLDM negotiate transfer parameters response.
+ */
+struct pldm_negotiate_transfer_parameters_resp {
+	uint8_t completion_code; //!< completion code
+	uint16_t part_size; //!< Responder's maximum transfer part size for a
+			    //!< single multipart transfer.
+	bitfield8_t protocol_support[8]; //!< Each bit represents whether
+					 //!< multipart transfer with a given
+					 //!< PLDM type is supported by the
+					 //!< responder.
 } __attribute__((packed));
 
 /**
@@ -580,6 +595,19 @@ int decode_negotiate_transfer_parameters_req(const struct pldm_msg *msg,
 					     size_t payload_length,
 					     uint16_t *part_size,
 					     bitfield8_t *protocol_support);
+
+/** @brief Encode a PLDM Negotiate Transfer Parameters response message
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] completion_code - PLDM completion code
+ *  @param[out] part_size - The max size transfer the responder can handle
+ *  @param[out] protocol_support - The PLDM protocols the responder supports
+ *  @param[out] msg - Response message
+ *  @return pldm_completion_codes
+ */
+int encode_negotiate_transfer_parameters_resp(
+    uint8_t instance_id, uint8_t completion_code, uint16_t part_size,
+    const bitfield8_t *protocol_support, struct pldm_msg *msg);
 
 /** @brief Create a PLDM response message containing only cc
  *
