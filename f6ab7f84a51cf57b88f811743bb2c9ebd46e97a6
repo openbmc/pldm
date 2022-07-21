@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a9c80f1_a7e68063",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001521
+      },
+      "writtenOn": "2022-07-21T08:50:53Z",
+      "side": 1,
+      "message": "This will cause the BMC sends a lot of GetSensorReading commands in parallel.\nIt is a violation of 6.3.2 of DSP0240",
+      "revId": "f6ab7f84a51cf57b88f811743bb2c9ebd46e97a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
