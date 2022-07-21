@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a68dae40_87595de7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-21T10:41:10Z",
+      "side": 1,
+      "message": "Need a better commit message than a one liner.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 36
+      },
+      "revId": "817c7156cc520f1196f61222ea2824dc43bc9fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9774cf8a_88bf154d",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-21T10:41:10Z",
+      "side": 1,
+      "message": "better names needed than just var1,2,3",
+      "range": {
+        "startLine": 588,
+        "startChar": 4,
+        "endLine": 590,
+        "endChar": 35
+      },
+      "revId": "817c7156cc520f1196f61222ea2824dc43bc9fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a455f523_94dd5e39",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 602,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-21T10:41:10Z",
+      "side": 1,
+      "message": "this would probably crash - for integer attributes.",
+      "range": {
+        "startLine": 602,
+        "startChar": 0,
+        "endLine": 602,
+        "endChar": 37
+      },
+      "revId": "817c7156cc520f1196f61222ea2824dc43bc9fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ca9ba6_de765072",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-21T10:41:10Z",
+      "side": 1,
+      "message": "return type does not seem correct for a utility function.\n\nif the intention is to propose a common utility function - then it should probably work for all types of bios attributes [integer, enum, string ] - as this returns string - this does not work for integer attributes ? \n\nA plain unit test of this function would have caught this .",
+      "revId": "817c7156cc520f1196f61222ea2824dc43bc9fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "781d9a10_81b40937",
+        "filename": "oem/ibm/libpldm/file_io.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-07-21T10:41:10Z",
+      "side": 1,
+      "message": "what is the purpose of this ? what is the need for this ? what does this file type indicate ?",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 35
+      },
+      "revId": "817c7156cc520f1196f61222ea2824dc43bc9fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
