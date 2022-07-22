@@ -16,6 +16,24 @@
       "message": "Hi Joe, welcome to pldm.\n\nAre you added to the openbmc CLA ? if not can you get our name added so that you will be added to the Gerrit CI group (to automatically trigger CI).",
       "revId": "3e14423464abb23d50f2f72f401ae8a10c9fd133",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91077604_373237b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-07-22T04:52:41Z",
+      "side": 1,
+      "message": "Oops sorry about that, I should be added to the group now.",
+      "parentUuid": "eb56b261_fbe5b39a",
+      "revId": "3e14423464abb23d50f2f72f401ae8a10c9fd133",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
