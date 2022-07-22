@@ -544,6 +544,42 @@ int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
+int decode_multipart_receive_resp(const struct pldm_msg *msg,
+				  size_t payload_length,
+				  uint8_t *completion_code,
+				  uint8_t *transfer_opflag,
+				  uint32_t *next_transfer_handle, uint8_t *data,
+				  uint32_t *data_length, uint32_t *data_crc32)
+{
+	if (msg == NULL || completion_code == NULL || transfer_opflag == NULL ||
+	    next_transfer_handle == NULL || data == NULL ||
+	    data_length == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	const struct pldm_multipart_receive_resp *resp =
+	    (const struct pldm_multipart_receive_resp *)msg->payload;
+	if (payload_length !=
+	    PLDM_MULTIPART_RECEIVE_RESP_BYTES + resp->data_length) {
+		return PLDM_ERROR_INVALID_LENGTH;
+	}
+
+	// Any enum value above PLDM_ACKNOWLEDGE_COMPLETION is invalid.
+	if (resp->transfer_opflag > PLDM_ACKNOWLEDGE_COMPLETION) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+
+	*completion_code = resp->completion_code;
+	*transfer_opflag = resp->transfer_opflag;
+	*next_transfer_handle = le32toh(resp->next_transfer_handle);
+	*data_length = le32toh(resp->data_length);
+	memcpy(data, resp->data, resp->data_length);
+	uint32_t *p_crc32 = (uint32_t *)&resp->data[resp->data_length];
+	*data_crc32 = le32toh(*p_crc32);
+
+	return PLDM_SUCCESS;
+}
+
 int encode_negotiate_transfer_parameters_req(
     uint8_t instance_id, uint16_t part_size,
     const bitfield8_t *protocol_support, struct pldm_msg *msg)
