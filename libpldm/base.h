@@ -579,6 +579,28 @@ int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
 				  uint32_t data_length, const uint8_t *data,
 				  uint32_t data_crc32, struct pldm_msg *msg);
 
+/* Requester */
+
+/* MultipartReceive */
+
+/** @brief Encode a PLDM MultipartReceive request message
+ *
+ *  @param[in] instance_id - Message's instance id
+ *  @param[in] pldm_type - PLDM type for multipart transfer.
+ *  @param[in] transfer_opflag - Transfer Flag
+ *  @param[in] transfer_ctx - The context of the packet
+ *  @param[in] transfer_handle - The handle of data
+ *  @param[in] section_offset - The start of the requested section
+ *  @param[in] section_length - The length of the requested section
+ *  @param[out] msg - Response message
+ *  @return pldm_completion_codes
+ */
+int encode_multipart_receive_req(uint8_t instance_id, uint8_t pldm_type,
+				 uint8_t transfer_opflag, uint32_t transfer_ctx,
+				 uint32_t transfer_handle,
+				 uint32_t section_offset,
+				 uint32_t section_length, struct pldm_msg *msg);
+
 /* Responder */
 
 /* NegotiateTransferParameters */
