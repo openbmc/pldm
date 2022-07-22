@@ -1,0 +1,9 @@
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: Name of user not set #1001256
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Sampa Misra <sampmisr@in.ibm.com>
+Submitted-at: Fri, 22 Jul 2022 03:20:33 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/55514
+Project: openbmc/pldm
+Branch: refs/heads/master
