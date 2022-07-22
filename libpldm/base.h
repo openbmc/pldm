@@ -620,6 +620,25 @@ int encode_negotiate_transfer_parameters_resp(
     uint8_t instance_id, uint8_t completion_code, uint16_t part_size,
     const bitfield8_t *protocol_support, struct pldm_msg *msg);
 
+/* Requester */
+
+/* NegotiateTransferParameters */
+
+/** @brief Encode a PLDM Negotiate Transfer Parameters response message
+ *
+ *  @param[in] msg - Response message
+ *  @param[in] payload_length - Length of response message payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] part_size - The max size transfer the responder can handle
+ *  @param[out] protocol_support - The PLDM protocols the responder supports
+ *  @return pldm_completion_codes
+ */
+int decode_negotiate_transfer_parameters_resp(const struct pldm_msg *msg,
+					      size_t payload_length,
+					      uint8_t *completion_code,
+					      uint16_t *part_size,
+					      bitfield8_t *protocol_support);
+
 /** @brief Create a PLDM response message containing only cc
  *
  *  @param[in] instance_id - Message's instance id
