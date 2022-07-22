@@ -525,6 +525,34 @@ TEST(GetTID, testDecodeResponse)
     EXPECT_EQ(tid, 1);
 }
 
+TEST(MultipartReceive, testEncodeRequest)
+{
+    constexpr size_t max_msg_len = 256;
+    constexpr uint8_t instance_id = 0x01;
+    constexpr uint8_t pldm_type = 0x0;
+    constexpr uint8_t opflag = PLDM_GET_FIRSTPART;
+    constexpr uint32_t next_transfer_handle = 0x0;
+    constexpr uint32_t section_offset = 0x0;
+    constexpr uint32_t section_length = 0x10;
+    constexpr uint32_t transfer_ctx = 0x01;
+    std::vector<uint8_t> msg(max_msg_len);
+    pldm_msg* req_msg = reinterpret_cast<pldm_msg*>(msg.data());
+
+    int rc = encode_multipart_receive_req(
+        instance_id, pldm_type, opflag, transfer_ctx, next_transfer_handle,
+        section_offset, section_length, req_msg);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    pldm_multipart_receive_req* req_pkt =
+        reinterpret_cast<pldm_multipart_receive_req*>(req_msg->payload);
+
+    EXPECT_EQ(req_pkt->pldm_type, pldm_type);
+    EXPECT_EQ(req_pkt->transfer_opflag, opflag);
+    EXPECT_EQ(req_pkt->transfer_handle, next_transfer_handle);
+    EXPECT_EQ(req_pkt->transfer_ctx, transfer_ctx);
+    EXPECT_EQ(req_pkt->section_offset, section_offset);
+    EXPECT_EQ(req_pkt->section_length, section_length);
+}
+
 TEST(MultipartReceive, testDecodeRequest)
 {
     constexpr uint8_t kPldmType = 0x0;
