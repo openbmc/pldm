@@ -583,6 +583,25 @@ int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
 
 /* MultipartReceive */
 
+/** @brief Decode a PLDM MultipartReceive response message
+ *
+ *  @param[in] msg - Request message
+ *  @param[in] payload_length - length of request message payload
+ *  @param[out] completion_code - PLDM completion code
+ *  @param[out] transfer_opflag - Transfer Flag
+ *  @param[out] next_transfer_handle - The handle of data
+ *  @param[out] data - The data
+ *  @param[out] data_length - The length of the response data
+ *  @param[out] data_crc32 - The cumulative crc32 of all data requested
+ *  @return pldm_completion_codes
+ */
+int decode_multipart_receive_resp(const struct pldm_msg *msg,
+				  size_t payload_length,
+				  uint8_t *completion_code,
+				  uint8_t *transfer_opflag,
+				  uint32_t *next_transfer_handle, uint8_t *data,
+				  uint32_t *data_length, uint32_t *data_crc32);
+
 /** @brief Encode a PLDM MultipartReceive request message
  *
  *  @param[in] instance_id - Message's instance id

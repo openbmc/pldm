@@ -689,6 +689,62 @@ TEST(NegotiateTransferParameters, testDecodeRequest)
               0);
 }
 
+TEST(MultipartReceive, testDecodeResponse)
+{
+    constexpr size_t max_msg_len = 256;
+    constexpr uint8_t kCompletionCode = PLDM_SUCCESS;
+    constexpr uint8_t kOpFlag = PLDM_GET_FIRSTPART;
+    constexpr uint32_t kNextTransferHandle = 0x0;
+    constexpr uint8_t kData[] = {0x01, 0x02, 0x03, 0x04, 0x05,
+                                 0x06, 0x07, 0x08, 0x09};
+    // Arbitrary, doesn't matter for this test.
+    constexpr uint32_t kDataCrc32 = 0xfeedf00d;
+    constexpr uint32_t kDataLength = sizeof(kData);
+    uint8_t completion_code = PLDM_SUCCESS;
+    uint8_t opflag = PLDM_GET_FIRSTPART;
+    uint32_t next_transfer_handle = 0x0;
+    uint8_t data[max_msg_len];
+    uint32_t data_length;
+    uint32_t data_crc32;
+
+    // Header values don't matter for this test.
+    pldm_msg_hdr hdr{};
+    // Assign values to the packet struct and memcpy to ensure correct byte
+    // ordering.
+    pldm_multipart_receive_resp resp_pkt{
+        .completion_code = kCompletionCode,
+        .transfer_opflag = kOpFlag,
+        .next_transfer_handle = kNextTransferHandle,
+        .data_length = kDataLength,
+        .data = {0},
+    };
+    std::vector<uint8_t> resp(sizeof(hdr) + PLDM_MULTIPART_RECEIVE_RESP_BYTES +
+                              sizeof(kData));
+    std::memcpy(resp.data(), &hdr, sizeof(hdr));
+    // -1 because we don't want to copy the packet data byte, there's nothing
+    // there.
+    std::memcpy(resp.data() + sizeof(hdr), &resp_pkt, sizeof(resp_pkt) - 1);
+    std::memcpy(resp.data() + sizeof(hdr) + sizeof(resp_pkt) - 1, kData,
+                sizeof(kData));
+    std::memcpy(resp.data() + sizeof(hdr) + sizeof(resp_pkt) - 1 +
+                    sizeof(kData),
+                &kDataCrc32, sizeof(kDataCrc32));
+
+    pldm_msg* pldm_response = reinterpret_cast<pldm_msg*>(resp.data());
+    int rc = decode_multipart_receive_resp(
+        pldm_response, PLDM_MULTIPART_RECEIVE_RESP_BYTES + kDataLength,
+        &completion_code, &opflag, &next_transfer_handle, data, &data_length,
+        &data_crc32);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completion_code, kCompletionCode);
+    EXPECT_EQ(opflag, kOpFlag);
+    EXPECT_EQ(next_transfer_handle, kNextTransferHandle);
+    EXPECT_EQ(data_length, kDataLength);
+    EXPECT_EQ(data_crc32, kDataCrc32);
+    EXPECT_EQ(std::memcmp(kData, data, kDataLength), 0);
+}
+
 TEST(NegotiateTransferParameters, testEncodeResponse)
 {
     constexpr uint8_t instance_id = 0x01;
