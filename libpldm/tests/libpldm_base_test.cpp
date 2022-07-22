@@ -935,6 +935,83 @@ TEST(NegotiateTransferParameters, testEncodeResponseFailBadXferLen)
               PLDM_ERROR_UNSUPPORTED_PLDM_CMD);
 }
 
+TEST(NegotiateTransferParameters, testDecodeResponsePass)
+{
+    constexpr uint8_t kCompletionCode = PLDM_SUCCESS;
+    constexpr uint16_t kResponderPartSize = 0x1000;
+    constexpr bitfield8_t kResponderProtocolSupport[8] = {
+        {.byte = 0x0c},
+    };
+    uint16_t responder_part_size;
+    uint8_t completion_code;
+    bitfield8_t responder_protocol_support[8];
+
+    // Header values don't matter for this test.
+    pldm_msg_hdr hdr{};
+    // Assign values to the packet struct and memcpy to ensure correct byte
+    // ordering.
+    pldm_negotiate_transfer_parameters_resp resp_pkt{};
+    resp_pkt.part_size = kResponderPartSize;
+    resp_pkt.completion_code = kCompletionCode;
+    std::memcpy(resp_pkt.protocol_support, kResponderProtocolSupport,
+                sizeof(resp_pkt.protocol_support));
+    std::vector<uint8_t> resp(sizeof(hdr) +
+                              PLDM_NEGOTIATE_TRANSFER_PARAMETERS_RESP_BYTES);
+    std::memcpy(resp.data(), &hdr, sizeof(hdr));
+    std::memcpy(resp.data() + sizeof(hdr), &resp_pkt, sizeof(resp_pkt));
+
+    pldm_msg* pldm_response = reinterpret_cast<pldm_msg*>(resp.data());
+    int rc = decode_negotiate_transfer_parameters_resp(
+        pldm_response, resp.size() - hdrSize, &completion_code,
+        &responder_part_size, responder_protocol_support);
+
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completion_code, kCompletionCode);
+    EXPECT_EQ(responder_part_size, kResponderPartSize);
+    EXPECT_EQ(std::memcmp(responder_protocol_support, kResponderProtocolSupport,
+                          sizeof(responder_protocol_support)),
+              0);
+}
+
+TEST(NegotiateTransferParameters, testDecodeResponseFailBadParams)
+{
+    EXPECT_EQ(decode_negotiate_transfer_parameters_resp(NULL, 0, 0, 0, NULL),
+              PLDM_ERROR_INVALID_DATA);
+}
+
+TEST(NegotiateTransferParameters, testDecodeResponseFailBadXferLen)
+{
+    constexpr uint8_t kCompletionCode = PLDM_SUCCESS;
+    constexpr uint16_t kResponderPartSize =
+        PLDM_MULTIPART_TRANSFER_MIN_SIZE - 1;
+    constexpr bitfield8_t kResponderProtocolSupport[8] = {
+        {.byte = 0x0c},
+    };
+    uint16_t responder_part_size;
+    uint8_t completion_code;
+    bitfield8_t responder_protocol_support[8];
+
+    // Header values don't matter for this test.
+    pldm_msg_hdr hdr{};
+    // Assign values to the packet struct and memcpy to ensure correct byte
+    // ordering.
+    pldm_negotiate_transfer_parameters_resp resp_pkt{};
+    resp_pkt.part_size = kResponderPartSize;
+    resp_pkt.completion_code = kCompletionCode;
+    std::memcpy(resp_pkt.protocol_support, kResponderProtocolSupport,
+                sizeof(resp_pkt.protocol_support));
+    std::vector<uint8_t> resp(sizeof(hdr) +
+                              PLDM_NEGOTIATE_TRANSFER_PARAMETERS_RESP_BYTES);
+    std::memcpy(resp.data(), &hdr, sizeof(hdr));
+    std::memcpy(resp.data() + sizeof(hdr), &resp_pkt, sizeof(resp_pkt));
+
+    pldm_msg* pldm_response = reinterpret_cast<pldm_msg*>(resp.data());
+    EXPECT_EQ(decode_negotiate_transfer_parameters_resp(
+                  pldm_response, resp.size() - hdrSize, &completion_code,
+                  &responder_part_size, responder_protocol_support),
+              PLDM_ERROR_UNSUPPORTED_PLDM_CMD);
+}
+
 TEST(CcOnlyResponse, testEncode)
 {
     struct pldm_msg responseMsg;
