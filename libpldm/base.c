@@ -493,6 +493,37 @@ int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
 	return PLDM_SUCCESS;
 }
 
+int encode_negotiate_transfer_parameters_req(
+    uint8_t instance_id, uint16_t part_size,
+    const bitfield8_t *protocol_support, struct pldm_msg *msg)
+{
+	if (protocol_support == NULL || msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+	// If a requester supports less than the minimum transfer size, it's
+	// interpreted as a lack of support for multipart transfers.
+	if (part_size < PLDM_MULTIPART_TRANSFER_MIN_SIZE) {
+		return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.command = PLDM_NEGOTIATE_TRANSFER_PARAMETERS;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_negotiate_transfer_parameters_req *req =
+	    (struct pldm_negotiate_transfer_parameters_req *)msg->payload;
+	req->part_size = htole16(part_size);
+	memcpy(req->protocol_support, protocol_support,
+	       sizeof(req->protocol_support));
+
+	return PLDM_SUCCESS;
+}
+
 int decode_negotiate_transfer_parameters_req(const struct pldm_msg *msg,
 					     size_t payload_length,
 					     uint16_t *part_size,
