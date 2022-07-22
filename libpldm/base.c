@@ -447,6 +447,56 @@ int decode_multipart_receive_req(
 	return PLDM_SUCCESS;
 }
 
+int encode_multipart_receive_req(uint8_t instance_id, uint8_t pldm_type,
+				 uint8_t transfer_opflag, uint32_t transfer_ctx,
+				 uint32_t transfer_handle,
+				 uint32_t section_offset,
+				 uint32_t section_length, struct pldm_msg *msg)
+{
+	if (msg == NULL) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (pldm_type != PLDM_BASE) {
+		return PLDM_ERROR_INVALID_PLDM_TYPE;
+	}
+
+	// Any enum value above PLDM_XFER_CURRENT_PART is invalid.
+	if (transfer_opflag > PLDM_XFER_CURRENT_PART) {
+		return PLDM_INVALID_TRANSFER_OPERATION_FLAG;
+	}
+
+	if (section_offset == 0 && (transfer_opflag != PLDM_XFER_FIRST_PART &&
+				    transfer_opflag != PLDM_XFER_COMPLETE)) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	if (transfer_handle == 0 && transfer_opflag == PLDM_XFER_NEXT_PART) {
+		return PLDM_ERROR_INVALID_DATA;
+	}
+
+	struct pldm_header_info header = {0};
+	header.instance = instance_id;
+	header.msg_type = PLDM_REQUEST;
+	header.pldm_type = pldm_type;
+	header.command = PLDM_MULTIPART_RECEIVE;
+	uint8_t rc = pack_pldm_header(&header, &(msg->hdr));
+	if (rc != PLDM_SUCCESS) {
+		return rc;
+	}
+
+	struct pldm_multipart_receive_req *req =
+	    (struct pldm_multipart_receive_req *)msg->payload;
+	req->pldm_type = pldm_type;
+	req->transfer_opflag = transfer_opflag;
+	req->transfer_ctx = htole32(transfer_ctx);
+	req->transfer_handle = htole32(transfer_handle);
+	req->section_offset = htole32(section_offset);
+	req->section_length = htole32(section_length);
+
+	return PLDM_SUCCESS;
+}
+
 int encode_multipart_receive_resp(uint8_t instance_id, uint8_t completion_code,
 				  uint8_t pldm_type, uint8_t transfer_opflag,
 				  uint32_t next_transfer_handle,
