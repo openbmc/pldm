@@ -175,7 +175,7 @@ void HostEffecterParser::processHostEffecterChangeNotification(
             return;
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::cerr << "Error in getting current host state. Will still "
                      "continue to set the host effecter \n";
@@ -316,18 +316,17 @@ void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
                                                  uint16_t effecterId)
 {
     using namespace sdbusplus::bus::match::rules;
-    effecterInfoMatch.emplace_back(
-        std::make_unique<sdbusplus::bus::match::match>(
-            pldm::utils::DBusHandler::getBus(),
-            propertiesChanged(objectPath, interface),
-            [this, effecterInfoIndex, dbusInfoIndex,
-             effecterId](sdbusplus::message::message& msg) {
-                DbusChgHostEffecterProps props;
-                std::string iface;
-                msg.read(iface, props);
-                processHostEffecterChangeNotification(
-                    props, effecterInfoIndex, dbusInfoIndex, effecterId);
-            }));
+    effecterInfoMatch.emplace_back(std::make_unique<sdbusplus::bus::match_t>(
+        pldm::utils::DBusHandler::getBus(),
+        propertiesChanged(objectPath, interface),
+        [this, effecterInfoIndex, dbusInfoIndex,
+         effecterId](sdbusplus::message_t& msg) {
+            DbusChgHostEffecterProps props;
+            std::string iface;
+            msg.read(iface, props);
+            processHostEffecterChangeNotification(props, effecterInfoIndex,
+                                                  dbusInfoIndex, effecterId);
+        }));
 }
 
 } // namespace host_effecters

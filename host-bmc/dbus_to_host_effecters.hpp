@@ -173,7 +173,7 @@ class HostEffecterParser
     int sockFd;              //!< Socket fd to send message to host
     const pldm_pdr* pdrRepo; //!< Reference to PDR repo
     std::vector<EffecterInfo> hostEffecterInfo; //!< Parsed effecter information
-    std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
+    std::vector<std::unique_ptr<sdbusplus::bus::match_t>>
         effecterInfoMatch; //!< vector to catch the D-Bus property change
                            //!< signals for the effecters
     const pldm::utils::DBusHandler* dbusHandler; //!< D-bus Handler

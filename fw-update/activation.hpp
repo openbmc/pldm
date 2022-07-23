@@ -15,11 +15,11 @@ namespace pldm
 namespace fw_update
 {
 
-using ActivationIntf = sdbusplus::server::object::object<
+using ActivationIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Software::server::Activation>;
-using ActivationProgressIntf = sdbusplus::server::object::object<
+using ActivationProgressIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Software::server::ActivationProgress>;
-using DeleteIntf = sdbusplus::server::object::object<
+using DeleteIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Object::server::Delete>;
 
 /** @class ActivationProgress
@@ -35,7 +35,7 @@ class ActivationProgress : public ActivationProgressIntf
      * @param[in] bus - Bus to attach to
      * @param[in] objPath - D-Bus object path
      */
-    ActivationProgress(sdbusplus::bus::bus& bus, const std::string& objPath) :
+    ActivationProgress(sdbusplus::bus_t& bus, const std::string& objPath) :
         ActivationProgressIntf(bus, objPath.c_str(),
                                action::emit_interface_added)
     {
@@ -56,7 +56,7 @@ class Delete : public DeleteIntf
      *  @param[in] objPath - D-Bus object path
      *  @param[in] updateManager - Reference to FW update manager
      */
-    Delete(sdbusplus::bus::bus& bus, const std::string& objPath,
+    Delete(sdbusplus::bus_t& bus, const std::string& objPath,
            UpdateManager* updateManager) :
         DeleteIntf(bus, objPath.c_str(), action::emit_interface_added),
         updateManager(updateManager)
@@ -86,7 +86,7 @@ class Activation : public ActivationIntf
      *  @param[in] objPath - D-Bus object path
      *  @param[in] updateManager - Reference to FW update manager
      */
-    Activation(sdbusplus::bus::bus& bus, std::string objPath,
+    Activation(sdbusplus::bus_t& bus, std::string objPath,
                Activations activationStatus, UpdateManager* updateManager) :
         ActivationIntf(bus, objPath.c_str(),
                        ActivationIntf::action::defer_emit),
@@ -140,7 +140,7 @@ class Activation : public ActivationIntf
     }
 
   private:
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
     const std::string objPath;
     UpdateManager* updateManager;
     std::unique_ptr<Delete> deleteImpl;

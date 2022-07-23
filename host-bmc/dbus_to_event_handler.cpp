@@ -108,7 +108,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
 
         const auto& dbusMapping = dbusMappings[offset];
         const auto& dbusValueMapping = dbusValMaps[offset];
-        auto stateSensorMatch = std::make_unique<sdbusplus::bus::match::match>(
+        auto stateSensorMatch = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(dbusMapping.objectPath.c_str(),
                               dbusMapping.interface.c_str()),

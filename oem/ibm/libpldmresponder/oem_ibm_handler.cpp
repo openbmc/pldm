@@ -439,11 +439,11 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
     }
 
     using namespace sdbusplus::bus::match::rules;
-    chassisOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+    chassisOffMatch = std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/chassis0",
                           "xyz.openbmc_project.State.Chassis"),
-        [this](sdbusplus::message::message& msg) {
+        [this](sdbusplus::message_t& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);

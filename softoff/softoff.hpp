@@ -24,7 +24,7 @@ class SoftPowerOff
      *  @param[in] bus       - system D-Bus handler
      *  @param[in] event     - sd_event handler
      */
-    SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event);
+    SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event);
 
     /** @brief Is the pldm-softpoweroff has error.
      * if hasError is true, that means the pldm-softpoweroff failed to
@@ -82,7 +82,7 @@ class SoftPowerOff
      *
      *  @param[in] msg - Data associated with subscribed signal
      */
-    void hostSoftOffComplete(sdbusplus::message::message& msg);
+    void hostSoftOffComplete(sdbusplus::message_t& msg);
 
     /** @brief Start the timer.
      *
@@ -133,7 +133,7 @@ class SoftPowerOff
     bool VMMPdrExist = true;
 
     /* @brief sdbusplus handle */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     /** @brief Reference to Timer object */
     phosphor::Timer timer;

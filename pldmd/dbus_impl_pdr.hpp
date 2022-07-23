@@ -15,7 +15,7 @@ namespace pldm
 namespace dbus_api
 {
 
-using PdrIntf = sdbusplus::server::object::object<
+using PdrIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::PLDM::server::PDR>;
 
 /** @class Pdr
@@ -38,10 +38,8 @@ class Pdr : public PdrIntf
      *  @param[in] path - Path to attach at.
      *  @param[in] repo - pointer to BMC's primary PDR repo
      */
-    Pdr(sdbusplus::bus::bus& bus, const std::string& path,
-        const pldm_pdr* repo) :
-        PdrIntf(bus, path.c_str()),
-        pdrRepo(repo){};
+    Pdr(sdbusplus::bus_t& bus, const std::string& path, const pldm_pdr* repo) :
+        PdrIntf(bus, path.c_str()), pdrRepo(repo){};
 
     /** @brief Implementation for PdrIntf.FindStateEffecterPDR
      *  @param[in] tid - PLDM terminus ID.

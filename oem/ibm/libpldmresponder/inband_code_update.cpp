@@ -190,20 +190,20 @@ void CodeUpdate::setVersions()
 
     using namespace sdbusplus::bus::match::rules;
     captureNextBootSideChange.push_back(
-        std::make_unique<sdbusplus::bus::match::match>(
+        std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(runningVersion, redundancyIntf),
-            [this](sdbusplus::message::message& msg) {
+            [this](sdbusplus::message_t& msg) {
                 DbusChangedProps props;
                 std::string iface;
                 msg.read(iface, props);
                 processPriorityChangeNotification(props);
             }));
-    fwUpdateMatcher.push_back(std::make_unique<sdbusplus::bus::match::match>(
+    fwUpdateMatcher.push_back(std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
         "interface='org.freedesktop.DBus.ObjectManager',type='signal',"
         "member='InterfacesAdded',path='/xyz/openbmc_project/software'",
-        [this](sdbusplus::message::message& msg) {
+        [this](sdbusplus::message_t& msg) {
             DBusInterfaceAdded interfaces;
             sdbusplus::message::object_path path;
             msg.read(path, interfaces);
@@ -230,12 +230,12 @@ void CodeUpdate::setVersions()
                             if (!imageActivationMatch)
                             {
                                 imageActivationMatch = std::make_unique<
-                                    sdbusplus::bus::match::match>(
+                                    sdbusplus::bus::match_t>(
                                     pldm::utils::DBusHandler::getBus(),
                                     propertiesChanged(newImageId,
                                                       "xyz.openbmc_project."
                                                       "Software.Activation"),
-                                    [this](sdbusplus::message::message& msg) {
+                                    [this](sdbusplus::message_t& msg) {
                                         DbusChangedProps props;
                                         std::string iface;
                                         msg.read(iface, props);
@@ -306,7 +306,7 @@ void CodeUpdate::setVersions()
                             break;
                         }
                     }
-                    catch (const sdbusplus::exception::exception& e)
+                    catch (const sdbusplus::exception_t& e)
                     {
                         std::cerr << "Error in getting Activation status \n";
                     }
