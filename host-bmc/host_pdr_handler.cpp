@@ -90,12 +90,11 @@ HostPDRHandler::HostPDRHandler(
         }
     }
 
-    hostOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+    hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
                           "xyz.openbmc_project.State.Host"),
-        [this, repo, entityTree,
-         bmcEntityTree](sdbusplus::message::message& msg) {
+        [this, repo, entityTree, bmcEntityTree](sdbusplus::message_t& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);

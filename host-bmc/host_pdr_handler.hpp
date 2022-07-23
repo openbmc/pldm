@@ -246,7 +246,7 @@ class HostPDRHandler
      */
     std::map<EntityType, pldm_entity> parents;
     /** @brief D-Bus property changed signal match */
-    std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+    std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
 
     /** @brief sensorMap is a lookup data structure that is build from the
      *         hostPDR that speeds up the lookup of <TerminusID, SensorID> in

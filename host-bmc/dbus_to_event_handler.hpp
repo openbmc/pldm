@@ -77,8 +77,7 @@ class DbusToPLDMEvent
     pldm::dbus_api::Requester& requester;
 
     /** @brief D-Bus property changed signal match */
-    std::vector<std::unique_ptr<sdbusplus::bus::match::match>>
-        stateSensorMatchs;
+    std::vector<std::unique_ptr<sdbusplus::bus::match_t>> stateSensorMatchs;
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;

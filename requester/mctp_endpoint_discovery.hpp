@@ -23,19 +23,19 @@ class MctpDiscovery
      *  @param[in] bus - reference to systemd bus
      *  @param[in] fwManager - pointer to the firmware manager
      */
-    explicit MctpDiscovery(sdbusplus::bus::bus& bus,
+    explicit MctpDiscovery(sdbusplus::bus_t& bus,
                            fw_update::Manager* fwManager);
 
   private:
     /** @brief reference to the systemd bus */
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
 
     fw_update::Manager* fwManager;
 
     /** @brief Used to watch for new MCTP endpoints */
     sdbusplus::bus::match_t mctpEndpointSignal;
 
-    void dicoverEndpoints(sdbusplus::message::message& msg);
+    void dicoverEndpoints(sdbusplus::message_t& msg);
 
     static constexpr uint8_t mctpTypePLDM = 1;
 

@@ -41,11 +41,11 @@ class Handler : public oem_platform::Handler
         setEventReceiverCnt = 0;
 
         using namespace sdbusplus::bus::match::rules;
-        hostOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+        hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/host0",
                               "xyz.openbmc_project.State.Host"),
-            [this](sdbusplus::message::message& msg) {
+            [this](sdbusplus::message_t& msg) {
                 pldm::utils::DbusChangedProps props{};
                 std::string intf;
                 msg.read(intf, props);
@@ -208,13 +208,13 @@ class Handler : public oem_platform::Handler
 
   private:
     /** @brief D-Bus property changed signal match for CurrentPowerState*/
-    std::unique_ptr<sdbusplus::bus::match::match> chassisOffMatch;
+    std::unique_ptr<sdbusplus::bus::match_t> chassisOffMatch;
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
     /** @brief D-Bus property changed signal match */
-    std::unique_ptr<sdbusplus::bus::match::match> hostOffMatch;
+    std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
 
     bool hostOff = true;
 

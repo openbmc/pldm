@@ -11,7 +11,7 @@ namespace pldm
 namespace dbus_api
 {
 
-using HostIntf = sdbusplus::server::object::object<
+using HostIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Condition::server::HostFirmware>;
 
 class Host : public HostIntf
@@ -24,7 +24,7 @@ class Host : public HostIntf
     Host& operator=(Host&&) = delete;
     virtual ~Host() = default;
 
-    Host(sdbusplus::bus::bus& bus, const std::string& path) :
+    Host(sdbusplus::bus_t& bus, const std::string& path) :
         HostIntf(bus, path.c_str()){};
 
     /** @brief Override reads to CurrentFirmwareCondition */

@@ -958,10 +958,10 @@ void BIOSConfig::listenPendingAttributes()
     constexpr auto objInterface = "xyz.openbmc_project.BIOSConfig.Manager";
 
     using namespace sdbusplus::bus::match::rules;
-    auto updateBIOSMatch = std::make_unique<sdbusplus::bus::match::match>(
+    auto updateBIOSMatch = std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged(objPath, objInterface),
-        [this](sdbusplus::message::message& msg) {
+        [this](sdbusplus::message_t& msg) {
             constexpr auto propertyName = "PendingAttributes";
 
             using Value =

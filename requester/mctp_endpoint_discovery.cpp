@@ -14,7 +14,7 @@
 namespace pldm
 {
 
-MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
+MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
                              fw_update::Manager* fwManager) :
     bus(bus),
     fwManager(fwManager),
@@ -68,7 +68,7 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus::bus& bus,
     }
 }
 
-void MctpDiscovery::dicoverEndpoints(sdbusplus::message::message& msg)
+void MctpDiscovery::dicoverEndpoints(sdbusplus::message_t& msg)
 {
     constexpr std::string_view mctpEndpointIntfName{
         "xyz.openbmc_project.MCTP.Endpoint"};

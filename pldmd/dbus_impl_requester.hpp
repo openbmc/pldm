@@ -13,7 +13,7 @@ namespace pldm
 namespace dbus_api
 {
 
-using RequesterIntf = sdbusplus::server::object::object<
+using RequesterIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::PLDM::server::Requester>;
 
 /** @class Requester
@@ -35,7 +35,7 @@ class Requester : public RequesterIntf
      *  @param[in] bus - Bus to attach to.
      *  @param[in] path - Path to attach at.
      */
-    Requester(sdbusplus::bus::bus& bus, const std::string& path) :
+    Requester(sdbusplus::bus_t& bus, const std::string& path) :
         RequesterIntf(bus, path.c_str()){};
 
     /** @brief Implementation for RequesterIntf.GetInstanceId */

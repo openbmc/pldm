@@ -30,7 +30,7 @@ using Timer = Time<clockId>;
 constexpr pldm::pdr::TerminusID TID = 0; // TID will be implemented later.
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
-SoftPowerOff::SoftPowerOff(sdbusplus::bus::bus& bus, sd_event* event) :
+SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event) :
     bus(bus), timer(event)
 {
     getHostState();
@@ -100,7 +100,7 @@ int SoftPowerOff::getHostState()
     return PLDM_SUCCESS;
 }
 
-void SoftPowerOff::hostSoftOffComplete(sdbusplus::message::message& msg)
+void SoftPowerOff::hostSoftOffComplete(sdbusplus::message_t& msg)
 {
     pldm::pdr::TerminusID msgTID;
     pldm::pdr::SensorID msgSensorID;
@@ -161,7 +161,7 @@ int SoftPowerOff::getEffecterID()
             VMMPdrExist = false;
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::cerr << "PLDM soft off: Error get VMM PDR,ERROR=" << e.what()
                   << "\n";
@@ -205,7 +205,7 @@ int SoftPowerOff::getEffecterID()
             effecterID = sysFwPdr->effecter_id;
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::cerr << "PLDM soft off: Error get system firmware PDR,ERROR="
                   << e.what() << "\n";
@@ -282,7 +282,7 @@ int SoftPowerOff::getSensorInfo()
                 possibleStateSize + sizeof(setId) + sizeof(possibleStateSize);
         }
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::cerr << "PLDM soft off: Error get State Sensor PDR,ERROR="
                   << e.what() << "\n";
@@ -313,7 +313,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 
         ResponseMsg.read(instanceID);
     }
-    catch (const sdbusplus::exception::exception& e)
+    catch (const sdbusplus::exception_t& e)
     {
         std::cerr << "PLDM soft off: Error get instanceID,ERROR=" << e.what()
                   << "\n";

@@ -53,7 +53,7 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
     uint16_t effecterId = 0xA;
-    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    sdbusplus::bus_t bus(sdbusplus::bus::new_default());
     Requester requester(bus, "/abc/def");
     auto event = sdeventplus::Event::get_default();
     std::vector<get_sensor_state_field> stateField;
@@ -186,7 +186,7 @@ TEST(clearDirPath, testClearDirPath)
 TEST(generateStateEffecterOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
-    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    sdbusplus::bus_t bus(sdbusplus::bus::new_default());
     Requester requester(bus, "/abc/def");
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
     auto event = sdeventplus::Event::get_default();
@@ -291,7 +291,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
 TEST(generateStateSensorOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
-    sdbusplus::bus::bus bus(sdbusplus::bus::new_default());
+    sdbusplus::bus_t bus(sdbusplus::bus::new_default());
     Requester requester(bus, "/abc/def");
 
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
