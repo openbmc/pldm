@@ -1,0 +1,10 @@
+Code-Review+2: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: <rveloz@us.ibm.com>
+Code-Review+1: <isaac.salem@ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: Andrew Geissler <andrew@geissonator.com>
+Submitted-by: <mderkse1@us.ibm.com>
+Submitted-at: Mon, 25 Jul 2022 19:32:15 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/55494
+Project: openbmc/pldm
+Branch: refs/heads/master
