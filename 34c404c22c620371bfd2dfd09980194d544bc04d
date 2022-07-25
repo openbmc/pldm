@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd12e706_92d217fd",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-07-25T09:28:37Z",
+      "side": 1,
+      "message": "typo.",
+      "range": {
+        "startLine": 448,
+        "startChar": 59,
+        "endLine": 448,
+        "endChar": 69
+      },
+      "revId": "34c404c22c620371bfd2dfd09980194d544bc04d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

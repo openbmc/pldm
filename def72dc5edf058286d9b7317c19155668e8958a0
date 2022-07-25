@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "879db831_af06a944",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-07-25T09:28:37Z",
+      "side": 1,
+      "message": "Please add the testing details to commit message for later reference.\nhttps://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#formatting-commit-messages\n\nAlso, this change might need more stress testing by sending multiple commands to same or different device using co_await.\nOne use case can be, say PLDM firmware update tries to send a command(Using co_await or callback) to same/different device when co_await for getPDR is in progress.",
+      "parentUuid": "831d096b_b932122a",
+      "revId": "def72dc5edf058286d9b7317c19155668e8958a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7e6dfc5_0b3144f2",
         "filename": "requester/handler.hpp",
         "patchSetId": 2
