@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3b8a67d_accfb4fb",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-26T03:07:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a80d1b86_48f6bdeb",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "78914f09c188d0ee4e1edbc7890e91a17346fc17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a14b1aab_bf38d43e",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6fe3604_229b91e8",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-26T03:07:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a14b1aab_bf38d43e",
+      "range": {
+        "startLine": 35,
+        "startChar": 43,
+        "endLine": 35,
+        "endChar": 52
+      },
+      "revId": "78914f09c188d0ee4e1edbc7890e91a17346fc17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb95e8f2_f538be41",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-07-22T11:04:29Z",
       "side": 1,
       "message": "Pls use type alias for this, for example like SensorId \u003d uint16_t",
+      "range": {
+        "startLine": 21,
+        "startChar": 15,
+        "endLine": 21,
+        "endChar": 62
+      },
+      "revId": "78914f09c188d0ee4e1edbc7890e91a17346fc17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40417fb1_0e14342b",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-26T03:07:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fb95e8f2_f538be41",
       "range": {
         "startLine": 21,
         "startChar": 15,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5b905d5_a1693696",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-26T03:07:19Z",
+      "side": 1,
+      "message": "Returning shared_ptr is needed because the getSensorAuxiliaryNames() might be called by other class.",
+      "parentUuid": "8338a88c_feb7dc30",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 19
+      },
+      "revId": "78914f09c188d0ee4e1edbc7890e91a17346fc17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94768c9c_55ac46df",
         "filename": "platform-mc/terminus.hpp",
         "patchSetId": 15
@@ -106,6 +202,30 @@
       "writtenOn": "2022-07-22T11:04:29Z",
       "side": 1,
       "message": "const",
+      "range": {
+        "startLine": 71,
+        "startChar": 30,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "78914f09c188d0ee4e1edbc7890e91a17346fc17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "957d2c59_7a73643d",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-26T03:07:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "94768c9c_55ac46df",
       "range": {
         "startLine": 71,
         "startChar": 30,
