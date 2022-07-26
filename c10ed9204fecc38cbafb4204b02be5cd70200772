@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa30cb24_1a2081b2",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-26T09:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e84567a6_71b07253",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "384e3b57_dee37fa3",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-07-18T10:22:33Z",
       "side": 1,
       "message": "why a c style parameter passing ? why not const string reference ?",
+      "range": {
+        "startLine": 583,
+        "startChar": 25,
+        "endLine": 583,
+        "endChar": 44
+      },
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fdb8d6a_3d529b72",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-26T09:56:41Z",
+      "side": 1,
+      "message": "getDbusPropertyVariant(const char* objPath, const char* dbusProp,\n                               const char* dbusInterface) const \u003d 0;\n\n\nso we are taking \u0027const char* objPath\u0027 as the input",
+      "parentUuid": "384e3b57_dee37fa3",
       "range": {
         "startLine": 583,
         "startChar": 25,
@@ -83,6 +125,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5882e92b_883bea3c",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-26T09:56:41Z",
+      "side": 1,
+      "message": "will throw std::cerr incase of exception.",
+      "parentUuid": "c81d2104_5d23dc10",
+      "range": {
+        "startLine": 595,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 6
+      },
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c37d9ddd_a2f4378d",
         "filename": "common/utils.hpp",
         "patchSetId": 4
@@ -94,6 +160,24 @@
       "writtenOn": "2022-07-18T10:22:33Z",
       "side": 1,
       "message": "unneeded change.",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b9ba28_b7306647",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-26T09:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c37d9ddd_a2f4378d",
       "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -121,6 +205,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad4c101_10236fe8",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-26T09:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83b57b82_048d44ef",
+      "range": {
+        "startLine": 417,
+        "startChar": 5,
+        "endLine": 417,
+        "endChar": 24
+      },
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68f21d0c_7a3e58aa",
@@ -134,6 +242,24 @@
       "writtenOn": "2022-07-18T10:22:33Z",
       "side": 1,
       "message": "change not needed., same below",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c2d216c_db097f4a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-07-26T09:56:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68f21d0c_7a3e58aa",
       "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
