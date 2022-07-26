@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "490451ba_6b3881a7",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-26T03:44:54Z",
+      "side": 1,
+      "message": "\u003e This will cause the BMC sends a lot of GetSensorReading commands in parallel.\n\u003e It is a violation of 6.3.2 of DSP0240\nIs it a typo? Do you mean 7.3.2 of DSP0240, Requirements for requesters. Yes, it is a issue if there are more than one sensor in the same terminus. Please review the code change in patchset15. The command is sent by Coroutine to avoid send multiple command in parallel.",
+      "parentUuid": "1a9c80f1_a7e68063",
+      "revId": "f6ab7f84a51cf57b88f811743bb2c9ebd46e97a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8515b675_36941790",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 13
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-22T03:13:41Z",
       "side": 1,
       "message": "If somehow we have the same sensorName from different PDRs, it generates an exception when creating the NumericSensor: sd_bus_add_object_vtable: org.freedesktop.DBus.Error.FileExists: File exists\nwe have to handle the situation.",
+      "revId": "f6ab7f84a51cf57b88f811743bb2c9ebd46e97a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11df7859_662d78c1",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-26T03:44:54Z",
+      "side": 1,
+      "message": "I thought that the all sensor names in the same terminus should be different. So the sensor Id still should be part of D-Bus object path to handle this situation. Please find the code change in patchset15.",
+      "parentUuid": "8515b675_36941790",
       "revId": "f6ab7f84a51cf57b88f811743bb2c9ebd46e97a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
