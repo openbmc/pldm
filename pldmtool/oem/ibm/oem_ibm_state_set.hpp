@@ -1,4 +1,5 @@
-#include "oem/ibm/libpldm/state_set_oem_ibm.h"
+#pragma once
+#include "libpldm/oem/ibm/state_set_oem_ibm.h"
 
 #include <libpldm/entity.h>
 #include <libpldm/entity_oem_ibm.h>

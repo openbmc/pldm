@@ -7,7 +7,7 @@
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 
-#include <libpldm/entity_oem_ibm.h>
+#include <libpldm/oem/ibm/entity_oem_ibm.h>
 
 using namespace pldm::pdr;
 using namespace pldm::utils;
