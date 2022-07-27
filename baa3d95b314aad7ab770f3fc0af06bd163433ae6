@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65c2a49c_df0baee5",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001521
+      },
+      "writtenOn": "2022-07-27T08:24:57Z",
+      "side": 1,
+      "message": "Where is the startSensorPolling() called in normal initialization?",
+      "revId": "baa3d95b314aad7ab770f3fc0af06bd163433ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b48d215a_8c0794d5",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 16
