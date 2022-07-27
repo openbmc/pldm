@@ -56,6 +56,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "007d4e41_087b5356",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001521
+      },
+      "writtenOn": "2022-07-27T08:13:35Z",
+      "side": 1,
+      "message": "The decode_get_sensor_reading_resp() will return PLDM_ERROR_INVALID_LENGTH if the sensorDataSize is smaller than response\u0027s. sensorDataSize should be initialized as the expected size.",
+      "revId": "f6ab7f84a51cf57b88f811743bb2c9ebd46e97a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8515b675_36941790",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 13
