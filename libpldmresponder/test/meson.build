@@ -39,7 +39,7 @@ foreach t : tests
                      dependencies: [
                          dep_src,
                          libpldm_dep,
-                         libpldmresponder,
+                         libpldmresponder_dep,
                          libpldmutils,
                          gtest,
                          gmock,

@@ -28,18 +28,18 @@ libpldm_headers = ['.', '..']
 
 if get_option('oem-ibm').enabled()
   headers += [
-    '../oem/ibm/libpldm/entity_oem_ibm.h',
-    '../oem/ibm/libpldm/file_io.h',
-    '../oem/ibm/libpldm/host.h',
-    '../oem/ibm/libpldm/platform_oem_ibm.h',
-    '../oem/ibm/libpldm/state_set_oem_ibm.h'
+    'oem/ibm/libpldm/entity_oem_ibm.h',
+    'oem/ibm/libpldm/file_io.h',
+    'oem/ibm/libpldm/host.h',
+    'oem/ibm/libpldm/platform_oem_ibm.h',
+    'oem/ibm/libpldm/state_set_oem_ibm.h'
   ]
   sources += [
-    '../oem/ibm/libpldm/file_io.c',
-    '../oem/ibm/libpldm/host.c',
-    '../oem/ibm/libpldm/platform_oem_ibm.c'
+    'oem/ibm/libpldm/file_io.c',
+    'oem/ibm/libpldm/host.c',
+    'oem/ibm/libpldm/platform_oem_ibm.c'
   ]
-  libpldm_headers += ['../oem/ibm']
+  libpldm_headers += ['oem/ibm/libpldm']
 endif
 
 if get_option('requester-api').enabled()
