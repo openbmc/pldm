@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b48d215a_8c0794d5",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1001521
+      },
+      "writtenOn": "2022-07-27T08:19:05Z",
+      "side": 1,
+      "message": "The completionCode should be checked before using any other data. If the CC is not success, other data might be invalid.",
+      "revId": "baa3d95b314aad7ab770f3fc0af06bd163433ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
