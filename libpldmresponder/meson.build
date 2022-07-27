@@ -29,6 +29,9 @@ sources = [
 ]
 
 if get_option('oem-ibm').enabled()
+  responder_headers = [
+    '../oem/ibm/',
+   ]
   sources += [
     '../oem/ibm/libpldmresponder/utils.cpp',
     '../oem/ibm/libpldmresponder/file_io.cpp',
@@ -50,9 +53,11 @@ libpldmresponder = library(
   sources,
   version: meson.project_version(),
   dependencies: libpldmresponder_deps,
+  include_directories:include_directories(responder_headers),
   install: true)
 
-libpldmresponder = declare_dependency(
+libpldmresponder_dep = declare_dependency(
+  include_directories:include_directories(responder_headers),
   link_with: libpldmresponder)
 
 if get_option('tests').enabled()

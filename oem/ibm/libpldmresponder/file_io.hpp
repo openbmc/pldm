@@ -3,8 +3,8 @@
 #include "config.h"
 
 #include "libpldm/base.h"
-#include "oem/ibm/libpldm/file_io.h"
-#include "oem/ibm/libpldm/host.h"
+#include "file_io.h"
+#include "host.h"
 
 #include "common/utils.hpp"
 #include "oem/ibm/requester/dbus_to_file_handler.hpp"
