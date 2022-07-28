@@ -25,7 +25,8 @@ sources = [
   '../host-bmc/dbus_to_event_handler.cpp',
   '../host-bmc/dbus_to_host_effecters.cpp',
   '../host-bmc/host_condition.cpp',
-  'event_parser.cpp'
+  'event_parser.cpp',
+  'system_config.hpp'
 ]
 
 responder_headers = ['.']
