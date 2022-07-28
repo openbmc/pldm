@@ -2,17 +2,15 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/handler.hpp"
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace oem_platform
 {
-
 class Handler : public CmdHandler
 {
   public:
@@ -35,7 +33,8 @@ class Handler : public CmdHandler
      *            fails
      */
     virtual int getOemStateSensorReadingsHandler(
-        EntityType entityType, pldm::pdr::EntityInstance entityInstance,
+        pldm::pdr::EntityType entityType,
+        pldm::pdr::EntityInstance entityInstance,
         pldm::pdr::StateSetId stateSetId,
         pldm::pdr::CompositeCount compSensorCnt,
         std::vector<get_sensor_state_field>& stateField) = 0;
@@ -66,7 +65,7 @@ class Handler : public CmdHandler
      *
      * @param[in] repo - instance of concrete implementation of Repo
      */
-    virtual void buildOEMPDR(pdr_utils::Repo& repo) = 0;
+    virtual void buildOEMPDR(pldm::responder::pdr_utils::Repo& repo) = 0;
 
     /** @brief Interface to check if setEventReceiver is sent to host already.
      *         If sent then then disableWatchDogTimer() would be called to
@@ -99,6 +98,28 @@ class Handler : public CmdHandler
 };
 
 } // namespace oem_platform
+
+namespace oem_bios
+{
+class Handler : public CmdHandler
+{
+  public:
+    Handler(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf)
+    {}
+
+    /** @brief Interface to get the system type information
+     *
+     *  @return[std::filesystem::path] - the system type information
+     */
+    virtual std::filesystem::path getPlatformName() = 0;
+
+    virtual ~Handler() = default;
+
+  protected:
+    const pldm::utils::DBusHandler* dBusIntf;
+};
+
+} // namespace oem_bios
 
 } // namespace responder
 
