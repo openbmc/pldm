@@ -7,6 +7,10 @@
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
 
+#ifdef OEM_IBM
+#include "libpldmresponder/system_config.hpp"
+#endif
+
 #include <nlohmann/json.hpp>
 
 #include <functional>
@@ -23,7 +27,6 @@ namespace responder
 {
 namespace bios
 {
-
 enum class BoundType
 {
     LowerBound,
@@ -74,12 +77,14 @@ class BIOSConfig
      *  @param[in] eid - MCTP EID of host firmware
      *  @param[in] requester - pointer to Requester object
      *  @param[in] handler - PLDM request handler
+     *  @param[in] systemConfig - pointer to SystemConfig object
      */
     explicit BIOSConfig(
         const char* jsonDir, const char* tableDir,
         pldm::utils::DBusHandler* const dbusHandler, int fd, uint8_t eid,
         dbus_api::Requester* requester,
-        pldm::requester::Handler<pldm::requester::Request>* handler);
+        pldm::requester::Handler<pldm::requester::Request>* handler,
+        pldm::responder::oem_ibm_system_config::Handler* systemConfig);
 
     /** @brief Set attribute value on dbus and attribute value table
      *  @param[in] entry - attribute value entry
@@ -151,6 +156,9 @@ class BIOSConfig
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
+    /** @brief Object of the SystemConfig class*/
+    pldm::responder::oem_ibm_system_config::Handler* systemConfig;
+
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
     BIOSAttributes biosAttributes;
@@ -160,6 +168,9 @@ class BIOSConfig
 
     // vector to catch the D-Bus property change signals for BIOS attributes
     std::vector<std::unique_ptr<sdbusplus::bus::match_t>> biosAttrMatch;
+
+    /**@ brief system type/model */
+    std::string sysType;
 
     /** @brief Method to update a BIOS attribute when the corresponding Dbus
      *  property is changed
