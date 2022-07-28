@@ -17,13 +17,10 @@ using namespace pldm::utils;
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace utils
 {
-
 void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
                     uint8_t& hours, uint8_t& day, uint8_t& month,
                     uint16_t& year)
@@ -64,15 +61,15 @@ std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
 
 namespace bios
 {
-
 using EpochTimeUS = uint64_t;
 
 DBusHandler dbusHandler;
 
 Handler::Handler(int fd, uint8_t eid, dbus_api::Requester* requester,
-                 pldm::requester::Handler<pldm::requester::Request>* handler) :
+                 pldm::requester::Handler<pldm::requester::Request>* handler,
+                 pldm::responder::SystemConfig* systemConfig) :
     biosConfig(BIOS_JSONS_DIR, BIOS_TABLES_DIR, &dbusHandler, fd, eid,
-               requester, handler)
+               requester, handler, systemConfig)
 {
     biosConfig.removeTables();
     biosConfig.buildTables();
