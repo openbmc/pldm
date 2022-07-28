@@ -28,7 +28,12 @@ sources = [
   'event_parser.cpp'
 ]
 
+responder_headers = ['.']
+
 if get_option('oem-ibm').enabled()
+   responder_headers += [
+    '../oem/ibm/',
+   ]
   sources += [
     '../oem/ibm/libpldmresponder/utils.cpp',
     '../oem/ibm/libpldmresponder/file_io.cpp',
@@ -49,10 +54,12 @@ libpldmresponder = library(
   'pldmresponder',
   sources,
   version: meson.project_version(),
+  include_directories:include_directories(responder_headers),
   dependencies: libpldmresponder_deps,
   install: true)
 
-libpldmresponder = declare_dependency(
+libpldmresponder_dep = declare_dependency(
+  include_directories:include_directories(responder_headers),
   link_with: libpldmresponder)
 
 if get_option('tests').enabled()
