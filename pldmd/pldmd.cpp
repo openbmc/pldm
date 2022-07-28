@@ -56,6 +56,7 @@
 #ifdef OEM_IBM
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/oem_ibm_handler.hpp"
+// #include "libpldmresponder/system_config.hpp"
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
@@ -261,10 +262,15 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(), sockfd,
                                           hostEID, &dbusImplReq, &reqHandler));
+    std::unique_ptr<pldm::responder::oem_ibm_system_config::Handler>
+        oemIbmSystemConfig =
+            std::make_unique<pldm::responder::oem_ibm_system_config::Handler>(
+                &dbusHandler);
 #endif
     invoker.registerHandler(
-        PLDM_BIOS, std::make_unique<bios::Handler>(sockfd, hostEID,
-                                                   &dbusImplReq, &reqHandler));
+        PLDM_BIOS,
+        std::make_unique<bios::Handler>(sockfd, hostEID, &dbusImplReq,
+                                        &reqHandler, oemIbmSystemConfig.get()));
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
         bmcEntityTree.get());
@@ -280,6 +286,7 @@ int main(int argc, char** argv)
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
             oemPlatformHandler.get());
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
+
 #endif
 
     invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
