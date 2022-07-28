@@ -57,6 +57,7 @@ PHOSPHOR_LOG2_USING;
 #endif
 
 #ifdef OEM_IBM
+#include "libpldmresponder/bios_oem_ibm.hpp"
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/oem_ibm_handler.hpp"
 #endif
@@ -256,6 +257,7 @@ int main(int argc, char** argv)
             sockfd, hostEID, instanceIdDb, &reqHandler);
     }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+    std::unique_ptr<oem_bios::Handler> oemBiosHandler{};
 
 #ifdef OEM_IBM
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
@@ -268,10 +270,11 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(), sockfd,
                                           hostEID, &instanceIdDb, &reqHandler));
+    oemBiosHandler = std::make_unique<oem::ibm::bios::Handler>(&dbusHandler);
 #endif
-    invoker.registerHandler(
-        PLDM_BIOS, std::make_unique<bios::Handler>(sockfd, hostEID,
-                                                   &instanceIdDb, &reqHandler));
+
+    auto biosHandler = std::make_unique<bios::Handler>(
+        sockfd, hostEID, &instanceIdDb, &reqHandler, oemBiosHandler.get());
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
         bmcEntityTree.get());
@@ -287,8 +290,10 @@ int main(int argc, char** argv)
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
             oemPlatformHandler.get());
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
+
 #endif
 
+    invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));
     invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
     invoker.registerHandler(
         PLDM_BASE,
