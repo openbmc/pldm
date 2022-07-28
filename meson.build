@@ -171,7 +171,7 @@ deps = [
 if get_option('libpldmresponder').enabled()
 subdir('libpldmresponder')
 deps += [
-  libpldmresponder
+  libpldmresponder_dep
 ]
 endif
 
