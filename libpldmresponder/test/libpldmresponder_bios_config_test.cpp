@@ -18,6 +18,8 @@ using namespace pldm::utils;
 
 using ::testing::_;
 using ::testing::ElementsAreArray;
+using ::testing::Return;
+using ::testing::StrEq;
 using ::testing::Throw;
 
 class TestBIOSConfig : public ::testing::Test
@@ -74,15 +76,32 @@ class TestBIOSConfig : public ::testing::Test
 fs::path TestBIOSConfig::tableDir;
 std::vector<Json> TestBIOSConfig::jsons;
 
+class MockSystemConfig : public pldm::responder::SystemConfig
+{
+  public:
+    MockSystemConfig(const pldm::utils::DBusHandler* dBusIntf) :
+        SystemConfig(dBusIntf)
+    {}
+    MOCK_METHOD(void, ibmCompatibleAddedCallback,
+                (sdbusplus::message::message&), ());
+    MOCK_METHOD(std::filesystem::path, getConfigDir, ());
+};
+
 TEST_F(TestBIOSConfig, buildTablesTest)
 {
     MockdBusHandler dbusHandler;
+
+    std::unique_ptr<pldm::responder::SystemConfig> mockSystemConfig =
+        std::make_unique<MockSystemConfig>(&dbusHandler);
+
+    EXPECT_CALL(dbusHandler, getSubtree("/xyz/openbmc_project/", 0, _))
+        .WillOnce(Throw(std::exception()));
 
     ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
         .WillByDefault(Throw(std::exception()));
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr);
+                          nullptr, nullptr, mockSystemConfig.get());
     biosConfig.buildTables();
 
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
@@ -251,7 +270,7 @@ TEST_F(TestBIOSConfig, setAttrValue)
     MockdBusHandler dbusHandler;
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr);
+                          nullptr, nullptr, nullptr);
     biosConfig.removeTables();
     biosConfig.buildTables();
 
