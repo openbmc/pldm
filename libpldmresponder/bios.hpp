@@ -20,13 +20,10 @@
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace bios
 {
-
 class Handler : public CmdHandler
 {
   public:
@@ -38,7 +35,8 @@ class Handler : public CmdHandler
      *  @param[in] handler - PLDM request handler
      */
     Handler(int fd, uint8_t eid, dbus_api::Requester* requester,
-            pldm::requester::Handler<pldm::requester::Request>* handler);
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            pldm::responder::SystemConfig* systemConfig);
 
     /** @brief Handler for GetDateTime
      *
@@ -97,7 +95,6 @@ class Handler : public CmdHandler
 
 namespace utils
 {
-
 /** @brief Convert epoch time to BCD time
  *
  *  @param[in] timeSec - Time got from epoch time in seconds
