@@ -136,7 +136,7 @@ struct DBusMapping
 
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string>;
+                 uint64_t, double, std::string, std::vector<std::string>>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -146,6 +146,7 @@ using DBusInterfaceAdded = std::vector<
 using ObjectPath = std::string;
 using ServiceName = std::string;
 using Interfaces = std::vector<std::string>;
+using InterfacesMap = std::map<std::string, DbusChangedProps>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using PropertyMap = std::map<std::string, PropertyValue>;

@@ -66,9 +66,10 @@ using EpochTimeUS = uint64_t;
 DBusHandler dbusHandler;
 
 Handler::Handler(int fd, uint8_t eid, dbus_api::Requester* requester,
-                 pldm::requester::Handler<pldm::requester::Request>* handler) :
+                 pldm::requester::Handler<pldm::requester::Request>* handler,
+                 pldm::responder::oem_bios::Handler* oemBiosHandler) :
     biosConfig(BIOS_JSONS_DIR, BIOS_TABLES_DIR, &dbusHandler, fd, eid,
-               requester, handler)
+               requester, handler, oemBiosHandler)
 {
     biosConfig.removeTables();
     biosConfig.buildTables();
