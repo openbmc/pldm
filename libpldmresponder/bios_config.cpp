@@ -26,7 +26,6 @@ namespace bios
 {
 namespace
 {
-
 using BIOSConfigManager =
     sdbusplus::xyz::openbmc_project::BIOSConfig::server::Manager;
 
@@ -43,10 +42,11 @@ constexpr auto attrValueTableFile = "attributeValueTable";
 BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, dbus_api::Requester* requester,
-    pldm::requester::Handler<pldm::requester::Request>* handler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler,
+    pldm::responder::SystemConfig* systemConfig) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
-    requester(requester), handler(handler)
+    requester(requester), handler(handler), systemConfig(systemConfig)
 
 {
     fs::create_directories(tableDir);
@@ -458,16 +458,42 @@ void BIOSConfig::updateBaseBIOSTableProperty()
     }
 }
 
+bool BIOSConfig::checkIfCompatible(const Json& entry)
+{
+    std::string attr = entry.at("attribute_name");
+    std::string platform{};
+    if (entry.contains("platform"))
+    {
+        platform = entry.at("platform");
+    }
+    if (!(entry.contains("platform")) ||
+        (sysType.find(platform) != std::string::npos))
+    {
+        return true;
+    }
+    return false;
+}
+
 void BIOSConfig::constructAttributes()
 {
+    sysType = systemConfig->getConfigDir();
     load(jsonDir / stringJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSStringAttribute>(entry);
+        if (checkIfCompatible(entry))
+        {
+            constructAttribute<BIOSStringAttribute>(entry);
+        }
     });
     load(jsonDir / integerJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSIntegerAttribute>(entry);
+        if (checkIfCompatible(entry))
+        {
+            constructAttribute<BIOSIntegerAttribute>(entry);
+        }
     });
     load(jsonDir / enumJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSEnumAttribute>(entry);
+        if (checkIfCompatible(entry))
+        {
+            constructAttribute<BIOSEnumAttribute>(entry);
+        }
     });
 }
 

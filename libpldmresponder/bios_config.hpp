@@ -6,6 +6,7 @@
 #include "bios_table.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
+#include "system_config.hpp"
 
 #include <nlohmann/json.hpp>
 
@@ -23,7 +24,6 @@ namespace responder
 {
 namespace bios
 {
-
 enum class BoundType
 {
     LowerBound,
@@ -79,7 +79,8 @@ class BIOSConfig
         const char* jsonDir, const char* tableDir,
         pldm::utils::DBusHandler* const dbusHandler, int fd, uint8_t eid,
         dbus_api::Requester* requester,
-        pldm::requester::Handler<pldm::requester::Request>* handler);
+        pldm::requester::Handler<pldm::requester::Request>* handler,
+        pldm::responder::SystemConfig* systemConfig);
 
     /** @brief Set attribute value on dbus and attribute value table
      *  @param[in] entry - attribute value entry
@@ -151,6 +152,9 @@ class BIOSConfig
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
+    /** @brief Object of the SystemConfig class*/
+    pldm::responder::SystemConfig* systemConfig;
+
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
     BIOSAttributes biosAttributes;
@@ -160,6 +164,9 @@ class BIOSConfig
 
     // vector to catch the D-Bus property change signals for BIOS attributes
     std::vector<std::unique_ptr<sdbusplus::bus::match_t>> biosAttrMatch;
+
+    /**@ brief system type/model */
+    std::string sysType;
 
     /** @brief Method to update a BIOS attribute when the corresponding Dbus
      *  property is changed
@@ -286,6 +293,13 @@ class BIOSConfig
      *  @param[in] msg - Data associated with subscribed signal
      */
     void constructPendingAttribute(const PendingAttributes& pendingAttributes);
+
+    /** @brief Method to check if the BIOS attribute Json entry is platform
+     *   specific
+     *
+     *  @param[in] entry - BIOS attribute Json entry
+     */
+    bool checkIfCompatible(const Json& entry);
 };
 
 } // namespace bios
