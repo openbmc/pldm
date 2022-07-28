@@ -22,7 +22,6 @@ namespace pldm
 {
 namespace utils
 {
-
 constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
@@ -236,12 +235,20 @@ GetSubTreeResponse
                             const std::vector<std::string>& ifaceList) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-    auto method = bus.new_method_call(mapperBusName, mapperPath,
-                                      mapperInterface, "GetSubTree");
-    method.append(searchPath, depth, ifaceList);
-    auto reply = bus.call(method);
-    GetSubTreeResponse response;
-    reply.read(response);
+    GetSubTreeResponse response{};
+    try
+    {
+        auto method = bus.new_method_call(mapperBusName, mapperPath,
+                                          mapperInterface, "GetSubTree");
+        method.append(searchPath, depth, ifaceList);
+        auto reply = bus.call(method);
+        reply.read(response);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "failed to make a call to object mapper, ERROR="
+                  << e.what() << "\n";
+    }
     return response;
 }
 
