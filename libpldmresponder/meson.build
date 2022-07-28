@@ -49,6 +49,7 @@ if get_option('oem-ibm').enabled()
     '../oem/ibm/requester/dbus_to_file_handler.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_progress_src.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_vpd.cpp',
+    '../oem/ibm/libpldmresponder/bios_oem_ibm.cpp',
   ]
 endif
 
@@ -67,3 +68,4 @@ libpldmresponder_dep = declare_dependency(
 if get_option('tests').enabled()
   subdir('test')
 endif
+

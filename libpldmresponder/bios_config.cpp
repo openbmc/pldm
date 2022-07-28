@@ -44,12 +44,17 @@ constexpr auto attrValueTableFile = "attributeValueTable";
 BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
-    pldm::requester::Handler<pldm::requester::Request>* handler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler,
+    pldm::responder::oem_bios::Handler* oemBiosHandler) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
-    instanceIdDb(instanceIdDb), handler(handler)
+    instanceIdDb(instanceIdDb), handler(handler), oemBiosHandler(oemBiosHandler)
 
 {
+    if (oemBiosHandler)
+    {
+        sysType = oemBiosHandler->getPlatformName();
+    }
     fs::create_directories(tableDir);
     constructAttributes();
     listenPendingAttributes();
@@ -473,13 +478,13 @@ void BIOSConfig::updateBaseBIOSTableProperty()
 
 void BIOSConfig::constructAttributes()
 {
-    load(jsonDir / stringJsonFile, [this](const Json& entry) {
+    load(jsonDir / sysType / stringJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSStringAttribute>(entry);
     });
-    load(jsonDir / integerJsonFile, [this](const Json& entry) {
+    load(jsonDir / sysType / integerJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSIntegerAttribute>(entry);
     });
-    load(jsonDir / enumJsonFile, [this](const Json& entry) {
+    load(jsonDir / sysType / enumJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSEnumAttribute>(entry);
     });
 }
@@ -561,9 +566,9 @@ std::optional<Table> BIOSConfig::buildAndStoreStringTable()
         strings.emplace(entry.at("attribute_name"));
     };
 
-    load(jsonDir / stringJsonFile, handler);
-    load(jsonDir / integerJsonFile, handler);
-    load(jsonDir / enumJsonFile, [&strings](const Json& entry) {
+    load(jsonDir / sysType / stringJsonFile, handler);
+    load(jsonDir / sysType / integerJsonFile, handler);
+    load(jsonDir / sysType / enumJsonFile, [&strings](const Json& entry) {
         strings.emplace(entry.at("attribute_name"));
         auto possibleValues = entry.at("possible_values");
         for (auto& pv : possibleValues)
