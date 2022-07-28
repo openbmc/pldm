@@ -26,7 +26,6 @@ namespace bios
 {
 namespace
 {
-
 using BIOSConfigManager =
     sdbusplus::xyz::openbmc_project::BIOSConfig::server::Manager;
 
@@ -43,12 +42,14 @@ constexpr auto attrValueTableFile = "attributeValueTable";
 BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, dbus_api::Requester* requester,
-    pldm::requester::Handler<pldm::requester::Request>* handler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler,
+    pldm::responder::SystemConfig* systemConfig) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
-    requester(requester), handler(handler)
+    requester(requester), handler(handler), systemConfig(systemConfig)
 
 {
+    sysType = systemConfig->getConfigDir();
     fs::create_directories(tableDir);
     constructAttributes();
     listenPendingAttributes();
@@ -458,6 +459,27 @@ void BIOSConfig::updateBaseBIOSTableProperty()
     }
 }
 
+bool BIOSConfig::checkIfPlatformSpecific(const Json& entry)
+{
+    std::string attr = entry.at("attribute_name");
+    std::string platform{};
+    if (!(entry.contains("platform")))
+    {
+        return true;
+    }
+    else
+    {
+        platform = entry.at("platform");
+    }
+
+    if ((sysType.find(platform) != std::string::npos) ||
+        (sysType.empty() && platform == "any"))
+    {
+        return true;
+    }
+    return false;
+}
+
 void BIOSConfig::constructAttributes()
 {
     load(jsonDir / stringJsonFile, [this](const Json& entry) {
@@ -607,7 +629,10 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
             {
                 try
                 {
-                    handler(entry);
+                    if (checkIfPlatformSpecific(entry))
+                    {
+                        handler(entry);
+                    }
                 }
                 catch (const std::exception& e)
                 {
