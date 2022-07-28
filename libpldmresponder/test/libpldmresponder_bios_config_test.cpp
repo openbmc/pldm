@@ -82,7 +82,7 @@ TEST_F(TestBIOSConfig, buildTablesTest)
         .WillByDefault(Throw(std::exception()));
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr);
+                          nullptr, nullptr, nullptr);
     biosConfig.buildTables();
 
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
@@ -251,7 +251,7 @@ TEST_F(TestBIOSConfig, setAttrValue)
     MockdBusHandler dbusHandler;
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr);
+                          nullptr, nullptr, nullptr);
     biosConfig.removeTables();
     biosConfig.buildTables();
 
