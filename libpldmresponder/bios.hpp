@@ -20,13 +20,10 @@
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace bios
 {
-
 class Handler : public CmdHandler
 {
   public:
@@ -36,9 +33,11 @@ class Handler : public CmdHandler
      *  @param[in] eid - MCTP EID of host firmware
      *  @param[in] requester - pointer to Requester object
      *  @param[in] handler - PLDM request handler
+     *  @param[in] systemConfig - pointer to SystemConfig object
      */
     Handler(int fd, uint8_t eid, dbus_api::Requester* requester,
-            pldm::requester::Handler<pldm::requester::Request>* handler);
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            pldm::responder::oem_ibm_system_config::Handler* systemConfig);
 
     /** @brief Handler for GetDateTime
      *
@@ -97,7 +96,6 @@ class Handler : public CmdHandler
 
 namespace utils
 {
-
 /** @brief Convert epoch time to BCD time
  *
  *  @param[in] timeSec - Time got from epoch time in seconds
