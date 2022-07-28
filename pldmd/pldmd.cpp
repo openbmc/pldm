@@ -232,6 +232,8 @@ int main(int argc, char** argv)
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     DBusHandler dbusHandler;
     auto hostEID = pldm::utils::readHostEID();
+    std::unique_ptr<pldm::responder::SystemConfig> systemConfig =
+        std::make_unique<pldm::responder::SystemConfig>(&dbusHandler);
     if (hostEID)
     {
         hostPDRHandler = std::make_shared<HostPDRHandler>(
@@ -262,9 +264,9 @@ int main(int argc, char** argv)
                                           oemPlatformHandler.get(), sockfd,
                                           hostEID, &dbusImplReq, &reqHandler));
 #endif
-    invoker.registerHandler(
-        PLDM_BIOS, std::make_unique<bios::Handler>(sockfd, hostEID,
-                                                   &dbusImplReq, &reqHandler));
+    invoker.registerHandler(PLDM_BIOS, std::make_unique<bios::Handler>(
+                                           sockfd, hostEID, &dbusImplReq,
+                                           &reqHandler, systemConfig.get()));
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
         bmcEntityTree.get());
