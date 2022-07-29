@@ -16,6 +16,24 @@
       "message": "Can we add another change to get rid of the redundant nesting (`git mv libpldm/oem/ibm/libpldm/* libpldm/oem/ibm` and deal with the fallout)?",
       "revId": "cc77f12667451556c2f3d3c01084dfad7adca280",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b792b9d8_7490db5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-07-29T04:45:05Z",
+      "side": 1,
+      "message": "As in, do the move in a follow-up commit",
+      "parentUuid": "020de58c_1a9d47cb",
+      "revId": "cc77f12667451556c2f3d3c01084dfad7adca280",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
