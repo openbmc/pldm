@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "629cee19_d7dede63",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-31T13:55:50Z",
+      "side": 1,
+      "message": "It should be called by terminusManager in discoverTermunsTask(). This part of code somehow missed during rebasing. Thanks for the catch and sorry for the mistake.",
+      "parentUuid": "65c2a49c_df0baee5",
+      "revId": "baa3d95b314aad7ab770f3fc0af06bd163433ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b48d215a_8c0794d5",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 16
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-27T08:19:05Z",
       "side": 1,
       "message": "The completionCode should be checked before using any other data. If the CC is not success, other data might be invalid.",
+      "revId": "baa3d95b314aad7ab770f3fc0af06bd163433ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "271ca0e8_60473b1e",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-31T13:55:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b48d215a_8c0794d5",
       "revId": "baa3d95b314aad7ab770f3fc0af06bd163433ae6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2022-07-27T09:01:17Z",
       "side": 1,
       "message": "warnings: variable ‘co’ set but not used\nWhat\u0027s the purpose of this variable?",
+      "revId": "baa3d95b314aad7ab770f3fc0af06bd163433ae6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9f9d065_ebd9f31c",
+        "filename": "platform-mc/sensor_manager.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-07-31T13:55:50Z",
+      "side": 1,
+      "message": "The purpose was for destroying the coroutine when it is done. But it is unnecessary and doesn\u0027t work as expected because coroutine destroys itself when coroutine reaches the co_return statement.\nAdded inSensorPolling flag checking for avoiding to start multiple doSensorPollingTask() Coroutine in new patch set.",
+      "parentUuid": "cc3b5721_4c413945",
       "revId": "baa3d95b314aad7ab770f3fc0af06bd163433ae6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
