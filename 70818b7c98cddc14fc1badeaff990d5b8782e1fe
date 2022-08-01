@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60e28bd5_01d07d75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-01T11:59:05Z",
+      "side": 1,
+      "message": "one line commit messages does not really help capture the intent and information regarding the commit, please make sure you add details like the spec number, command numbers \u0026 section where the command is defined e.t.c, so that it would be easy for any one without much of pldm knowledge can understand what this commit is really about.",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a73e62_524b7fa4",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-01T11:59:05Z",
+      "side": 1,
+      "message": "we could also error out if the value obtained for the decode request is not a valid pldm_type ?",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04ad367d_2b754b28",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-01T11:59:05Z",
+      "side": 1,
+      "message": "we could have checks for transfer_opflag {0,1,2,3,4} \u0026 return appropriate error ?",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49b4c7ec_d709e9d2",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-01T11:59:05Z",
+      "side": 1,
+      "message": "check request for null, before dereference ?",
+      "range": {
+        "startLine": 418,
+        "startChar": 1,
+        "endLine": 418,
+        "endChar": 32
+      },
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9077beb_5ee3bf39",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-01T11:59:05Z",
+      "side": 1,
+      "message": "I think, these 3 can also have additional checks (0x00000000) and compare the transferoperation flag in addition and error code if they are not per spec ?",
+      "range": {
+        "startLine": 421,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 52
+      },
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8dcde1f_f5273c08",
+        "filename": "libpldm/tests/libpldm_base_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-01T11:59:05Z",
+      "side": 1,
+      "message": "Please add the bad test cases as well , where we hit all bad paths and make sure we return appropriate return codes.",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
