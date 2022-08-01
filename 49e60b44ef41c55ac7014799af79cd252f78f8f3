@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22d182c8_e8c13591",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-01T08:39:53Z",
+      "side": 1,
+      "message": "I am not sure why this is in the dependency chain , but this can be merged as this is independent of other commits in the chain.",
+      "revId": "49e60b44ef41c55ac7014799af79cd252f78f8f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
