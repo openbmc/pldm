@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2f8ed72_7d497c04",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-08-01T11:58:19Z",
+      "side": 1,
+      "message": "yes, metaDataValue1 can be used directly",
+      "parentUuid": "8b3dd14b_52b24048",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 56
+      },
+      "revId": "6bf7d0cf3bded24cf5ca3b6c5faaad3cf02f465d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59694927_fbfcd081",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 2
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c561a68_01c2cef5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-08-01T11:58:19Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "59694927_fbfcd081",
+      "range": {
+        "startLine": 327,
+        "startChar": 12,
+        "endLine": 327,
+        "endChar": 30
+      },
+      "revId": "6bf7d0cf3bded24cf5ca3b6c5faaad3cf02f465d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d77a8aa_6c583533",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 2
@@ -60,6 +108,30 @@
       "writtenOn": "2022-07-26T05:41:51Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 330,
+        "startChar": 8,
+        "endLine": 335,
+        "endChar": 9
+      },
+      "revId": "6bf7d0cf3bded24cf5ca3b6c5faaad3cf02f465d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21fb8515_fd312071",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-08-01T11:58:19Z",
+      "side": 1,
+      "message": "this can be removed, but it was done to explicitly map PLDM_ERROR_NOT_READY status to xyz.openbmc_project.Certs.Entry.State.Pending",
+      "parentUuid": "0d77a8aa_6c583533",
       "range": {
         "startLine": 330,
         "startChar": 8,
