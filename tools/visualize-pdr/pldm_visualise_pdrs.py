@@ -187,9 +187,9 @@ def draw_entity_associations(pdr, counter):
             dot.node(hashlib.md5((childnode + cid)
                                  .encode()).hexdigest(), childnode)
 
-            if[hashlib.md5((parentnode +
+            if [hashlib.md5((parentnode +
                             str(value["containerEntityContainerID"]))
-                           .encode()).hexdigest(),
+                            .encode()).hexdigest(),
                hashlib.md5((childnode + cid)
                            .encode()).hexdigest()] not in edge_list:
                 edge_list.append([hashlib.md5((parentnode +
