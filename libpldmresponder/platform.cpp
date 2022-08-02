@@ -27,7 +27,6 @@ namespace responder
 {
 namespace platform
 {
-
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
@@ -552,13 +551,18 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
             // We cannot get the Repo change event from the Terminus
             // that is not already added to the BMC repository
 
-            for (const auto& [terminusHandle, terminusInfo] :
-                 hostPDRHandler->tlPDRInfo)
+            for (auto it = hostPDRHandler->tlPDRInfo.cbegin();
+                 it != hostPDRHandler->tlPDRInfo.cend();)
             {
-                if (std::get<0>(terminusInfo) == tid)
+                if (std::get<0>(it->second) == tid)
                 {
                     pldm_pdr_remove_pdrs_by_terminus_handle(pdrRepo.getPdr(),
-                                                            terminusHandle);
+                                                            it->first);
+                    hostPDRHandler->tlPDRInfo.erase(it++);
+                }
+                else
+                {
+                    ++it;
                 }
             }
         }
