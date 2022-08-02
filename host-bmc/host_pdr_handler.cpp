@@ -16,7 +16,6 @@
 
 namespace pldm
 {
-
 using namespace pldm::dbus_api;
 using namespace pldm::responder::events;
 using namespace pldm::utils;
@@ -478,6 +477,17 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                     if (tlpdr->validity == 0)
                     {
                         tlValid = false;
+                    }
+                    for (const auto& map : tlPDRInfo)
+                    {
+                        if (terminusHandle == (map.first) &&
+                            get<1>(map.second) == tlEid &&
+                            get<2>(map.second) == tlpdr->validity)
+                        {
+                            // TL PDR already present with same valididty don't
+                            // add the PDR to the repo just return
+                            return;
+                        }
                     }
                     tlPDRInfo.insert_or_assign(
                         tlpdr->terminus_handle,
