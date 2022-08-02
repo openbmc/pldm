@@ -27,7 +27,6 @@ namespace responder
 {
 namespace platform
 {
-
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
@@ -559,6 +558,7 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                 {
                     pldm_pdr_remove_pdrs_by_terminus_handle(pdrRepo.getPdr(),
                                                             terminusHandle);
+                    hostPDRHandler->tlPDRInfo.erase(terminusHandle);
                 }
             }
         }
