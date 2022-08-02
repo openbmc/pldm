@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39afcd6f_158c0e79",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-02T12:22:25Z",
+      "side": 0,
+      "message": "change not needed.",
+      "revId": "cb454677a027da46506a16e32bb9e39dfb9992a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e114e9b_3fdd558c",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-02T12:22:25Z",
+      "side": 0,
+      "message": "change not needed.",
+      "revId": "cb454677a027da46506a16e32bb9e39dfb9992a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

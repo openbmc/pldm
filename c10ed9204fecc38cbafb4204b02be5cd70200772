@@ -197,6 +197,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f789b71_5d8dad84",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-02T12:22:25Z",
+      "side": 1,
+      "message": "When i meant by any exception is - \u003e the exceptions can be Internal Error or Time out e.t.c \n\nwe should have a clear understanding on how pldm would work in all those specific exceptions. (if not we should at least have a rationale as to why we are catching all the exceptions generically rather than a specific one )\n\nrefer : https://github.com/openbmc/docs/blob/master/anti-patterns.md#handling-unexpected-error-codes-and-exceptions",
+      "parentUuid": "638c11d1_18a6de26",
+      "range": {
+        "startLine": 595,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 6
+      },
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c37d9ddd_a2f4378d",
         "filename": "common/utils.hpp",
         "patchSetId": 4
