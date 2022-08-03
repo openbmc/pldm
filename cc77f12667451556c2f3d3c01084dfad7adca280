@@ -34,6 +34,24 @@
       "parentUuid": "020de58c_1a9d47cb",
       "revId": "cc77f12667451556c2f3d3c01084dfad7adca280",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f17ef78_00f0f06e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-03T05:39:57Z",
+      "side": 1,
+      "message": "This can potentially break other apps if they are using libpldm/\u003c\u003e.h, I had purposefully made the libpldm redundant in the path. I plan to fix this once we split the repository in a followup commit.",
+      "parentUuid": "b792b9d8_7490db5d",
+      "revId": "cc77f12667451556c2f3d3c01084dfad7adca280",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
