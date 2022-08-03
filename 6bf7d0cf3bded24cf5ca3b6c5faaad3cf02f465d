@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c28aa7b_fc23aa37",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-08-03T04:54:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2f8ed72_7d497c04",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 56
+      },
+      "revId": "6bf7d0cf3bded24cf5ca3b6c5faaad3cf02f465d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59694927_fbfcd081",
@@ -95,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9ca457f_0e95e943",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-08-03T04:54:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c561a68_01c2cef5",
+      "range": {
+        "startLine": 327,
+        "startChar": 12,
+        "endLine": 327,
+        "endChar": 30
+      },
+      "revId": "6bf7d0cf3bded24cf5ca3b6c5faaad3cf02f465d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d77a8aa_6c583533",
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "this can be removed, but it was done to explicitly map PLDM_ERROR_NOT_READY status to xyz.openbmc_project.Certs.Entry.State.Pending",
       "parentUuid": "0d77a8aa_6c583533",
+      "range": {
+        "startLine": 330,
+        "startChar": 8,
+        "endLine": 335,
+        "endChar": 9
+      },
+      "revId": "6bf7d0cf3bded24cf5ca3b6c5faaad3cf02f465d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf448bc_6cf66aed",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-08-03T04:54:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "21fb8515_fd312071",
       "range": {
         "startLine": 330,
         "startChar": 8,
