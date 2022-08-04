@@ -1,0 +1,9 @@
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Code-Review+1: Andrew Jeffery <andrew@aj.id.au>
+Code-Review+1: George Liu <liuxiwei@inspur.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Thu, 04 Aug 2022 05:55:38 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/56001
+Project: openbmc/pldm
+Branch: refs/heads/master
