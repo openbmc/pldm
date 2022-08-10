@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libpldm/base.h"
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "common/flight_recorder.hpp"
 #include "common/types.hpp"

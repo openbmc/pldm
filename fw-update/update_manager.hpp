@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libpldm/base.h"
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "common/types.hpp"
 #include "device_updater.hpp"

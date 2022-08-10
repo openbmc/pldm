@@ -3,7 +3,7 @@
 #include "file_io_by_type.hpp"
 
 #include "libpldm/base.h"
-#include "oem/ibm/libpldm/file_io.h"
+#include "libpldm/file_io.h"
 
 #include "common/utils.hpp"
 #include "file_io_type_cert.hpp"

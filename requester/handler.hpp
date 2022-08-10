@@ -3,7 +3,7 @@
 #include "config.h"
 
 #include "libpldm/base.h"
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "common/types.hpp"
 #include "pldmd/dbus_impl_requester.hpp"

@@ -1,6 +1,6 @@
 #include "pldm_cmd_helper.hpp"
 
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "xyz/openbmc_project/Common/error.hpp"
 

@@ -1,6 +1,6 @@
 #include "mctp_endpoint_discovery.hpp"
 
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "common/types.hpp"
 #include "common/utils.hpp"

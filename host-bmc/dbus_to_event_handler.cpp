@@ -1,6 +1,6 @@
 #include "dbus_to_event_handler.hpp"
 
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "libpldmresponder/pdr.hpp"
 
