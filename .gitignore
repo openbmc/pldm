@@ -1,4 +1,5 @@
 subprojects/*
+!subprojects/libpldm*
 !subprojects/*.wrap
 
 # Template from

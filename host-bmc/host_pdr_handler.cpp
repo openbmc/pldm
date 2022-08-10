@@ -2,7 +2,7 @@
 
 #include "host_pdr_handler.hpp"
 
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include <assert.h>
 

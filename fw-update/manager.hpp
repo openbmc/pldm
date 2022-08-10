@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "activation.hpp"
 #include "common/types.hpp"
