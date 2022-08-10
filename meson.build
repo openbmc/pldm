@@ -134,7 +134,7 @@ if get_option('tests').enabled()
     endif
 endif
 
-subdir('libpldm')
+libpldm_dep = subproject('libpldm')
 
 if get_option('libpldm-only').disabled()
 
