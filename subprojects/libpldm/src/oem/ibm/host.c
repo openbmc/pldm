@@ -1,7 +1,7 @@
 #include <endian.h>
 #include <string.h>
 
-#include "host.h"
+#include "libpldm/host.h"
 
 int encode_get_alert_status_req(uint8_t instance_id, uint8_t version_id,
 				struct pldm_msg *msg, size_t payload_length)
