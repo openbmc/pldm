@@ -1,7 +1,7 @@
 #include "platform_oem_ibm.hpp"
 
 #include "libpldm/platform_oem_ibm.h"
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"

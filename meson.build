@@ -133,7 +133,7 @@ if get_option('tests').enabled()
     endif
 endif
 
-subdir('libpldm')
+libpldm_dep = dependency('libpldm', fallback:['libpldm','libpldm_dep'])
 
 if get_option('libpldm-only').disabled()
 
