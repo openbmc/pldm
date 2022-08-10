@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4f55b053_a4c012c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-10T07:21:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60e28bd5_01d07d75",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f8679585_8144fb6a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2022-08-01T12:02:13Z",
       "side": 1,
       "message": "Joe - i see a similar pattern in all the commits in this chain , can you fix the comments in all the commits ? ",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4eeb596_8e052d19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-10T07:21:48Z",
+      "side": 1,
+      "message": "Yep, applied the fixes to all commits.",
+      "parentUuid": "f8679585_8144fb6a",
       "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d18c1e04_ae78363a",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-10T07:21:48Z",
+      "side": 1,
+      "message": "Added the check, it looks like only PLDM_BASE implements multipart receive at the moment.",
+      "parentUuid": "c0a73e62_524b7fa4",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04ad367d_2b754b28",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7538930_d0be1879",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-10T07:21:48Z",
+      "side": 1,
+      "message": "Yep, done.",
+      "parentUuid": "04ad367d_2b754b28",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49b4c7ec_d709e9d2",
@@ -82,6 +154,30 @@
       "writtenOn": "2022-08-01T11:59:05Z",
       "side": 1,
       "message": "check request for null, before dereference ?",
+      "range": {
+        "startLine": 418,
+        "startChar": 1,
+        "endLine": 418,
+        "endChar": 32
+      },
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbcbf273_0248c040",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-10T07:21:48Z",
+      "side": 1,
+      "message": "request would always be non-null wouldn\u0027t it? If msg is not null, then payload would either be a valid payload, or garbage data.",
+      "parentUuid": "49b4c7ec_d709e9d2",
       "range": {
         "startLine": 418,
         "startChar": 1,
@@ -115,6 +211,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "330609da_ef300b90",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-10T07:21:48Z",
+      "side": 1,
+      "message": "Added the check for if the section offset is 0.\nFor the transfer handle, can 0 be a valid value if it\u0027s an initial handle? I added a check, but only for if the handle is 0 and if the opflag is XFER_NEXT_PART.\nThe spec says that section_length can be 0 \"if data size is unavailable\", so I didn\u0027t add a check for it, but I have no problems adding one if you think we should.",
+      "parentUuid": "d9077beb_5ee3bf39",
+      "range": {
+        "startLine": 421,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 52
+      },
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8dcde1f_f5273c08",
@@ -128,6 +248,24 @@
       "writtenOn": "2022-08-01T11:59:05Z",
       "side": 1,
       "message": "Please add the bad test cases as well , where we hit all bad paths and make sure we return appropriate return codes.",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b267682_f64c3654",
+        "filename": "libpldm/tests/libpldm_base_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-10T07:21:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8dcde1f_f5273c08",
       "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
