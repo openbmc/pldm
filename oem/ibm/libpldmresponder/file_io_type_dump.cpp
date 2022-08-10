@@ -1,7 +1,7 @@
 #include "file_io_type_dump.hpp"
 
 #include "libpldm/base.h"
-#include "oem/ibm/libpldm/file_io.h"
+#include "libpldm/file_io.h"
 
 #include "common/utils.hpp"
 #include "utils.hpp"

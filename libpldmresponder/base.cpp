@@ -5,7 +5,7 @@
 #include "libpldm/bios.h"
 #include "libpldm/fru.h"
 #include "libpldm/platform.h"
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include "base.hpp"
 #include "common/utils.hpp"

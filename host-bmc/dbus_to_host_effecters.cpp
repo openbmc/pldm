@@ -2,7 +2,7 @@
 
 #include "libpldm/pdr.h"
 #include "libpldm/platform.h"
-#include "libpldm/requester/pldm.h"
+#include "libpldm/pldm.h"
 
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
