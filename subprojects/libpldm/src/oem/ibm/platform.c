@@ -1,5 +1,5 @@
-#include "platform_oem_ibm.h"
-#include "platform.h"
+#include "libpldm/platform_oem_ibm.h"
+#include "libpldm/platform.h"
 #include <string.h>
 
 int encode_bios_attribute_update_event_req(uint8_t instance_id,

@@ -1,4 +1,4 @@
-#include "oem/ibm/libpldm/state_set_oem_ibm.h"
+#include "libpldm/state_set_oem_ibm.h"
 
 #include <libpldm/entity.h>
 #include <libpldm/entity_oem_ibm.h>
