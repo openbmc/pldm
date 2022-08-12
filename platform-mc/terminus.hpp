@@ -3,6 +3,7 @@
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
+#include "compact_numeric_sensor.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 #include "sensor_intf.hpp"
@@ -84,11 +85,20 @@ class Terminus
     void addNumericSensor(
         const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr);
 
+    void addCompactNumericSensor(
+        const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr);
+
     std::shared_ptr<pldm_numeric_sensor_value_pdr>
         parseNumericSensorPDR(const std::vector<uint8_t>& pdrData);
 
+    std::shared_ptr<pldm_compact_numeric_sensor_pdr>
+        parseCompactNumericSensorPDR(const std::vector<uint8_t>& pdrData);
+
     std::shared_ptr<SensorAuxiliaryNames>
         parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
+
+    std::shared_ptr<SensorAuxiliaryNames>
+        parseCompactNumericSensorNames(const std::vector<uint8_t>& pdrData);
 
     tid_t tid;
     std::bitset<64> supportedTypes;
