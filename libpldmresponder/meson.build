@@ -28,7 +28,7 @@ sources = [
   'event_parser.cpp'
 ]
 
-responder_headers = ['.']
+responder_headers = ['.', '../']
 
 if get_option('oem-ibm').enabled()
    responder_headers += [
