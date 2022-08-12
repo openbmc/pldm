@@ -63,6 +63,17 @@ requester::Coroutine SensorManager::doSensorPollingTask()
                 sensor->elapsedTime = 0;
             }
         }
+        for (auto sensor : terminus.second->compactNumericSensors)
+        {
+            sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
+            elapsed = t1 - t0;
+            sensor->elapsedTime += (pollingTimeInUsec + elapsed);
+            if (sensor->elapsedTime >= sensor->updateTime)
+            {
+                co_await getCompactNumericSensorReading(sensor);
+                sensor->elapsedTime = 0;
+            }
+        }
     }
 }
 
@@ -166,5 +177,108 @@ requester::Coroutine
     sensor->updateReading(true, true, value);
     co_return completionCode;
 }
+
+requester::Coroutine SensorManager::getCompactNumericSensorReading(
+    std::shared_ptr<CompactNumericSensor> sensor)
+{
+    auto tid = sensor->tid;
+    auto sensorId = sensor->sensorId;
+    Request request(sizeof(pldm_msg_hdr) + PLDM_GET_SENSOR_READING_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_get_sensor_reading_req(0, sensorId, false, requestMsg);
+    if (rc)
+    {
+        std::cerr << "encode_get_sensor_reading_req failed, TID="
+                  << unsigned(tid) << ", RC=" << rc << std::endl;
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.SendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    if (sensorPollTimer && !sensorPollTimer->isRunning())
+    {
+        co_return PLDM_ERROR;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint8_t sensorDataSize = PLDM_SENSOR_DATA_SIZE_SINT32;
+    uint8_t sensorOperationalState = 0;
+    uint8_t sensorEventMessageEnable = 0;
+    uint8_t presentState = 0;
+    uint8_t previousState = 0;
+    uint8_t eventState = 0;
+    union_sensor_data_size presentReading;
+    rc = decode_get_sensor_reading_resp(
+        responseMsg, responseLen, &completionCode, &sensorDataSize,
+        &sensorOperationalState, &sensorEventMessageEnable, &presentState,
+        &previousState, &eventState,
+        reinterpret_cast<uint8_t*>(&presentReading));
+    if (rc)
+    {
+        std::cerr << "Failed to decode response of GetSensorReading, TID="
+                  << unsigned(tid) << ", RC=" << rc << "\n";
+        sensor->handleErrGetSensorReading();
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode response of GetSensorReading, TID="
+                  << unsigned(tid) << ", CC=" << unsigned(completionCode)
+                  << "\n";
+        co_return completionCode;
+    }
+
+    switch (sensorOperationalState)
+    {
+        case PLDM_SENSOR_ENABLED:
+            break;
+        case PLDM_SENSOR_DISABLED:
+            sensor->updateReading(true, false);
+            co_return completionCode;
+        case PLDM_SENSOR_UNAVAILABLE:
+        default:
+            sensor->updateReading(false, false);
+            co_return completionCode;
+    }
+
+    double value = std::numeric_limits<double>::quiet_NaN();
+    switch (sensorDataSize)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            value = static_cast<double>(presentReading.value_u8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            value = static_cast<double>(presentReading.value_s8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            value = static_cast<double>(presentReading.value_u16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            value = static_cast<double>(presentReading.value_s16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            value = static_cast<double>(presentReading.value_u32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            value = static_cast<double>(presentReading.value_s32);
+            break;
+        default:
+            value = std::numeric_limits<double>::quiet_NaN();
+            break;
+    }
+
+    sensor->updateReading(true, true, value);
+    co_return completionCode;
+}
+
 } // namespace platform_mc
 } // namespace pldm

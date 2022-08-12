@@ -43,6 +43,14 @@ bool Terminus::parsePDRs()
                 numericSensorPdrs.emplace_back(std::move(parsedPdr));
             }
         }
+        else if (pdrHdr->type == PLDM_COMPACT_NUMERIC_SENSOR_PDR)
+        {
+            auto sensorAuxiliaryNames = parseCompactNumericSensorNames(pdr);
+            sensorAuxiliaryNamesTbl.emplace_back(
+                std::move(sensorAuxiliaryNames));
+            auto parsedPdr = parseCompactNumericSensorPDR(pdr);
+            compactNumericSensorPdrs.emplace_back(std::move(parsedPdr));
+        }
         else
         {
             std::cerr << "parsePDRs() Unsupported PDR, type="
@@ -54,6 +62,11 @@ bool Terminus::parsePDRs()
     for (auto pdr : numericSensorPdrs)
     {
         addNumericSensor(pdr);
+    }
+
+    for (auto pdr : compactNumericSensorPdrs)
+    {
+        addCompactNumericSensor(pdr);
     }
 
     return rc;
@@ -110,6 +123,69 @@ std::shared_ptr<SensorAuxiliaryNames>
     }
     return std::make_shared<SensorAuxiliaryNames>(
         pdr->sensor_id, pdr->sensor_count, sensorAuxNames);
+}
+
+std::shared_ptr<SensorAuxiliaryNames>
+    Terminus::parseCompactNumericSensorNames(const std::vector<uint8_t>& sPdr)
+{
+    std::string nameString;
+    std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>
+        sensorAuxNames{};
+    std::vector<std::pair<NameLanguageTag, SensorName>> nameStrings{};
+    auto pdr =
+        reinterpret_cast<const pldm_compact_numeric_sensor_pdr*>(sPdr.data());
+
+    if (pdr->sensor_name_length == 0)
+    {
+        nameString = "SensorId" + std::to_string(unsigned(pdr->sensor_id));
+    }
+    else
+    {
+        std::string sTemp(reinterpret_cast<char const*>(pdr->sensor_name),
+                          pdr->sensor_name_length);
+        size_t pos = 0;
+        while ((pos = sTemp.find(" ")) != std::string::npos)
+        {
+            sTemp.replace(pos, 1, "_");
+        }
+        nameString = sTemp;
+    }
+
+    nameString.erase(nameString.find('\0'));
+    nameStrings.emplace_back(std::make_pair("en", nameString));
+    sensorAuxNames.emplace_back(nameStrings);
+
+    return std::make_shared<SensorAuxiliaryNames>(pdr->sensor_id, 1,
+                                                  sensorAuxNames);
+}
+
+std::shared_ptr<pldm_compact_numeric_sensor_pdr>
+    Terminus::parseCompactNumericSensorPDR(const std::vector<uint8_t>& sPdr)
+{
+    std::string nameString;
+    std::vector<std::pair<NameLanguageTag, SensorName>> nameStrings{};
+    auto pdr =
+        reinterpret_cast<const pldm_compact_numeric_sensor_pdr*>(sPdr.data());
+    auto parsedPdr = std::make_shared<pldm_compact_numeric_sensor_pdr>();
+
+    parsedPdr->hdr = pdr->hdr;
+    parsedPdr->terminus_handle = pdr->terminus_handle;
+    parsedPdr->sensor_id = pdr->sensor_id;
+    parsedPdr->entity_type = pdr->entity_type;
+    parsedPdr->entity_instance = pdr->entity_instance;
+    parsedPdr->container_id = pdr->container_id;
+    parsedPdr->sensor_name_length = pdr->sensor_name_length;
+    parsedPdr->base_unit = pdr->base_unit;
+    parsedPdr->unit_modifier = pdr->unit_modifier;
+    parsedPdr->occurrence_rate = pdr->occurrence_rate;
+    parsedPdr->range_field_support = pdr->range_field_support;
+    parsedPdr->warning_high = pdr->warning_high;
+    parsedPdr->warning_low = pdr->warning_low;
+    parsedPdr->critical_high = pdr->critical_high;
+    parsedPdr->critical_low = pdr->critical_low;
+    parsedPdr->fatal_high = pdr->fatal_high;
+    parsedPdr->fatal_low = pdr->fatal_low;
+    return parsedPdr;
 }
 
 std::shared_ptr<pldm_numeric_sensor_value_pdr>
@@ -366,6 +442,60 @@ void Terminus::addNumericSensor(
     catch (const std::exception& e)
     {
         std::cerr << "Failed to create NumericSensor. ERROR=" << e.what()
+                  << "sensorName=" << sensorName << "\n";
+    }
+}
+
+void Terminus::addCompactNumericSensor(
+    const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr)
+{
+    std::string sensorName;
+    if (mctpMedium != "")
+    {
+        sensorName =
+            mctpMedium + "_" + "PLDM_Device_" + std::to_string(pdr->sensor_id);
+    }
+    else
+    {
+        sensorName = "PLDM_Device_" + std::to_string(pdr->sensor_id) + "_" +
+                     std::to_string(tid);
+    }
+
+    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(pdr->sensor_id);
+    if (sensorAuxiliaryNames)
+    {
+        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
+        if (sensorCnt == 1)
+        {
+            for (const auto& [languageTag, name] : sensorNames[0])
+            {
+                if (languageTag == "en")
+                {
+                    if (mctpMedium != "")
+                    {
+                        sensorName = mctpMedium + "_" + name;
+                    }
+                    else
+                    {
+                        sensorName = name + "_" +
+                                     std::to_string(pdr->sensor_id) + "_" +
+                                     std::to_string(tid);
+                    }
+                }
+            }
+        }
+    }
+
+    std::cerr << " Add sensorName " << sensorName << std::endl;
+    try
+    {
+        auto sensor = std::make_shared<CompactNumericSensor>(
+            tid, true, pdr, sensorName, inventoryPath);
+        compactNumericSensors.emplace_back(sensor);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to create CompactNumericSensor. ERROR=" << e.what()
                   << "sensorName=" << sensorName << "\n";
     }
 }

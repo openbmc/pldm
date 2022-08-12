@@ -3,6 +3,7 @@
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
+#include "compact_numeric_sensor.hpp"
 #include "numeric_sensor.hpp"
 
 #include <sdbusplus/server/object.hpp>
@@ -65,14 +66,21 @@ class Terminus
     std::vector<std::vector<uint8_t>> pdrs{};
 
     /** @brief A flag to indicate if terminus has been initialzed */
-    bool initalized;
+    bool initalized = false;
 
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 
+    /** @brief A list of compactNumericSensors */
+    std::vector<std::shared_ptr<CompactNumericSensor>> compactNumericSensors{};
+
     /** @brief A list of parsed numeric sensor PDRs */
     std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
         numericSensorPdrs{};
+
+    /** @brief A list of parsed compact numeric sensor PDRs */
+    std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
+        compactNumericSensorPdrs{};
 
     /** @brief Get Sensor Auxiliary Names by sensorID
      *
@@ -88,9 +96,15 @@ class Terminus
     void addNumericSensor(
         const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr);
 
+    void addCompactNumericSensor(
+        const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr);
+
   private:
     std::shared_ptr<pldm_numeric_sensor_value_pdr>
         parseNumericSensorPDR(const std::vector<uint8_t>& pdrData);
+
+    std::shared_ptr<pldm_compact_numeric_sensor_pdr>
+        parseCompactNumericSensorPDR(const std::vector<uint8_t>& pdrData);
 
     std::shared_ptr<SensorAuxiliaryNames>
         parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
@@ -104,6 +118,10 @@ class Terminus
     std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
     std::string inventoryPath;
     MctpMedium mctpMedium;
+
+    std::shared_ptr<SensorAuxiliaryNames>
+        parseCompactNumericSensorNames(const std::vector<uint8_t>& pdrData);
+    mctp_eid_t eid;
 };
 } // namespace platform_mc
 } // namespace pldm
