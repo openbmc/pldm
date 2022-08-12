@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7a548e5_29a87f58",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-08-12T08:49:36Z",
+      "side": 1,
+      "message": "We don\u0027t update pdr in side NumericSensor. I don\u0027t think we need share pointer.",
+      "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d321813_957c0794",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-08-12T08:49:36Z",
+      "side": 1,
+      "message": "How above init minValue, maxValue to std::numeric_limits\u003cdouble\u003e::quiet_NaN() as you do for threshold?",
+      "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "768ae37e_2a78ec5e",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-08-12T08:49:36Z",
+      "side": 1,
+      "message": "The default value should be NAN I think.",
+      "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
