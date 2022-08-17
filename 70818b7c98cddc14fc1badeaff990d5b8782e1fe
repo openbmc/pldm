@@ -106,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2e1c2c2_c7056bd8",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-17T09:18:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d18c1e04_ae78363a",
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04ad367d_2b754b28",
@@ -188,6 +206,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbba2217_8c924447",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-17T09:18:51Z",
+      "side": 1,
+      "message": "yeap you are right.",
+      "parentUuid": "dbcbf273_0248c040",
+      "range": {
+        "startLine": 418,
+        "startChar": 1,
+        "endLine": 418,
+        "endChar": 32
+      },
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9077beb_5ee3bf39",
@@ -225,6 +267,30 @@
       "side": 1,
       "message": "Added the check for if the section offset is 0.\nFor the transfer handle, can 0 be a valid value if it\u0027s an initial handle? I added a check, but only for if the handle is 0 and if the opflag is XFER_NEXT_PART.\nThe spec says that section_length can be 0 \"if data size is unavailable\", so I didn\u0027t add a check for it, but I have no problems adding one if you think we should.",
       "parentUuid": "d9077beb_5ee3bf39",
+      "range": {
+        "startLine": 421,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 52
+      },
+      "revId": "70818b7c98cddc14fc1badeaff990d5b8782e1fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3d937a6_29241fcd",
+        "filename": "libpldm/base.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-17T09:18:51Z",
+      "side": 1,
+      "message": "\u003e Added the check for if the section offset is 0.\n\u003e For the transfer handle, can 0 be a valid value if it\u0027s an initial handle? I added a check, but only for if the handle is 0 and if the opflag is XFER_NEXT_PART.\n\nI think this is good enough , and yes 0 would be a valid value only if the I-flag is XFER_NEXT_PART.\n\n\u003e The spec says that section_length can be 0 \"if data size is unavailable\", so I didn\u0027t add a check for it, but I have no problems adding one if you think we should.\n\nYes, I think its better to add the check for it as well.The decode API\u0027s should cover as much cases as possible , and this would actually reduce out effort in the responder to check for all these cases.\n\nBut with that I said I am okay otherwise as well.This code seems to cover most of the cases.",
+      "parentUuid": "330609da_ef300b90",
       "range": {
         "startLine": 421,
         "startChar": 0,
