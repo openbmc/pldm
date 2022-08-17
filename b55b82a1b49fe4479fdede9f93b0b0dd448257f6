@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4a57d04_f7539694",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-17T02:30:58Z",
+      "side": 1,
+      "message": "numericSensor class doesn\u0027t keep the pdr as member variable now. The pdr is just for initializing member variables in constructor.",
+      "parentUuid": "d7a548e5_29a87f58",
+      "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d321813_957c0794",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 24
@@ -31,6 +49,24 @@
       "writtenOn": "2022-08-12T08:49:36Z",
       "side": 1,
       "message": "How above init minValue, maxValue to std::numeric_limits\u003cdouble\u003e::quiet_NaN() as you do for threshold?",
+      "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54df6b51_6d582e5c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-17T02:30:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4d321813_957c0794",
       "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82c144c6_557678cb",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-17T02:30:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "768ae37e_2a78ec5e",
+      "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcaa790d_d2c27bc1",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-08-14T15:05:11Z",
       "side": 1,
       "message": "Pldm-stack details that sensor_name \u003d sensorAuxName + TID# I think.",
+      "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca3d48b7_9e31d5d9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-17T02:30:58Z",
+      "side": 1,
+      "message": "The change was for avoiding duplicated sensor name if there are the same string to multiple aux sensor name PDRs. It is reverted to sensorAuxName + TID# now because the case is handled by the try and catch block now.",
+      "parentUuid": "dcaa790d_d2c27bc1",
       "revId": "b55b82a1b49fe4479fdede9f93b0b0dd448257f6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
