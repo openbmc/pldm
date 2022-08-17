@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e96f298b_8afba904",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-17T05:49:51Z",
+      "side": 1,
+      "message": "Add blank line",
+      "revId": "d29010fa032a6258ad908782b338b04c31a1d1d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf9536e2_e9b66f7f",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-17T05:49:51Z",
+      "side": 1,
+      "message": "Add blank line",
+      "revId": "d29010fa032a6258ad908782b338b04c31a1d1d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a72b5f04_a6d491d3",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-17T05:49:51Z",
+      "side": 1,
+      "message": "I think you should first check if the sensorId is in sensorCache?",
+      "range": {
+        "startLine": 140,
+        "startChar": 36,
+        "endLine": 140,
+        "endChar": 47
+      },
+      "revId": "d29010fa032a6258ad908782b338b04c31a1d1d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bebf13b_7e8d1d84",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-08-17T05:49:51Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 12
+      },
+      "revId": "d29010fa032a6258ad908782b338b04c31a1d1d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
