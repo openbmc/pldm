@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a93f7426_cacef149",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-17T11:26:52Z",
+      "side": 1,
+      "message": "LGTM. Added some queries for my understanding.\nTesting part in commit message needs to be updated as per my last comment.",
+      "revId": "6fd4d1c2e1371b427e30311720081bd45ade5491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6901271_a5637493",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-17T11:26:52Z",
+      "side": 1,
+      "message": "For my understanding. Could you give me an example which has a parent coroutine.",
+      "range": {
+        "startLine": 444,
+        "startChar": 42,
+        "endLine": 444,
+        "endChar": 68
+      },
+      "revId": "6fd4d1c2e1371b427e30311720081bd45ade5491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0706ed73_d84046e1",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-17T11:26:52Z",
+      "side": 1,
+      "message": "I am pretty new to c++20 coroutine. From https://en.cppreference.com/w/cpp/language/coroutines i don\u0027t see why awaitable APIs are required as part of the task which contains promise_type. Could you help me understand when exactly these APIs will get called.",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 5
+      },
+      "revId": "6fd4d1c2e1371b427e30311720081bd45ade5491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
