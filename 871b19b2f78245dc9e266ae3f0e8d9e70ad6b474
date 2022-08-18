@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d442c2ad_51611afb",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-18T08:08:45Z",
+      "side": 1,
+      "message": "+1. May not be as part of this change but it might help in easy transition to kernel MCTP.",
+      "parentUuid": "c2ab980a_55b475b4",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "556314db_ff4bf774",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 20
@@ -119,6 +137,24 @@
       "writtenOn": "2022-06-30T08:58:08Z",
       "side": 1,
       "message": "Is there a possibility that the EiD list would have duplicates when discovered and static EiDs are merged ?",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8434d98a_f4c2458d",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-18T08:08:45Z",
+      "side": 1,
+      "message": "As i mentioned above, it is valid and possible if we are supporting multiple MCTP networks. I don\u0027t think current stack support multiple MCTP networks or mctp daemons.\n\nIn case of single mctp network, it can happen only due to some invalid configuration and it will be a good addition to check for duplicates while emplacing elements to mctpInfos.",
+      "parentUuid": "f1392c10_4f43cb9c",
       "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

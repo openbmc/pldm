@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdde2349_1463c88f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-18T08:08:45Z",
+      "side": 1,
+      "message": "nit: Nothing to do as part of this change but adding here as a future note.\n\nIf we are supporting multiple mctp networks(or supporting multiple MCTP daemons which expose above interface) there is a possibility of duplicate EIDs. In that case we might need to distinguish them with network ID or UUID(which should not be empty).",
+      "range": {
+        "startLine": 74,
+        "startChar": 61,
+        "endLine": 74,
+        "endChar": 70
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b320c972_a31bd703",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-18T08:08:45Z",
+      "side": 1,
+      "message": "I see we are explicitly checking if PLDM is a supported MCTP type.\nAre we planning to have common platform level staticEIDTable for all PMCI protocols which run over MCTP?",
+      "range": {
+        "startLine": 149,
+        "startChar": 50,
+        "endLine": 149,
+        "endChar": 62
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7769c32_e3e11c04",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-18T08:08:45Z",
+      "side": 1,
+      "message": "nit: Let\u0027s be consistent about using keyword \u0027MCTP\u0027 or Mctp. As per our openbmc coding guideline acronyms should be of same case throughout https://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md#naming-conventions.\n\nI see that existing code is not following it. But atleast let\u0027s try to stick with one format for function names, class names etc.. throughout.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 69
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f2dda4_8eb466ed",
+        "filename": "requester/test/mctp_endpoint_discovery_test.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-18T08:08:45Z",
+      "side": 1,
+      "message": "nit: `SingleHandleMCTPEndpoint`",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 11,
+        "endChar": 56
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6008524_dbf13591",
+        "filename": "requester/test/static_eid_table.json",
+        "patchSetId": 23
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-18T08:08:45Z",
+      "side": 1,
+      "message": "Does multiple MCTP network support in scope for this review?",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 29
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
