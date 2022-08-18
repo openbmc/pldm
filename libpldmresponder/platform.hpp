@@ -2,9 +2,9 @@
 
 #include "config.h"
 
+#include "libpldm/pdr.h"
 #include "libpldm/platform.h"
 #include "libpldm/states.h"
-#include "pdr.h"
 
 #include "common/utils.hpp"
 #include "event_parser.hpp"
