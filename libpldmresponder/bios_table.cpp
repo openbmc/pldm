@@ -1,6 +1,6 @@
 #include "bios_table.hpp"
 
-#include "bios_table.h"
+#include "libpldm/bios_table.h"
 
 #include <fstream>
 

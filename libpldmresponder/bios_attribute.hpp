@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bios_table.h"
+#include "libpldm/bios_table.h"
 
 #include "bios_table.hpp"
 #include "common/utils.hpp"
