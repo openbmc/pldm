@@ -24,6 +24,7 @@ foreach t : tests
                          gmock,
                          gtest,
                          libpldm_dep,
+                         libpldmutils,
                          nlohmann_json,
                          phosphor_dbus_interfaces,
                          sdbusplus,
