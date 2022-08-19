@@ -134,7 +134,11 @@ if get_option('tests').enabled()
     endif
 endif
 
-libpldm_dep = subproject('libpldm')
+libpldm_dep = dependency('libpldm', required:false)
+if not libpldm_dep.found()
+   libpldm_proj = subproject('libpldm', required:true)
+   libpldm_dep = libpldm_proj.get_variable('libpldm_dep')
+endif
 
 if get_option('libpldm-only').disabled()
 
