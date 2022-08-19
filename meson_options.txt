@@ -2,7 +2,6 @@ option('tests', type: 'feature', description: 'Build tests', value: 'enabled')
 option('verbosity',type:'integer',min:0, max:1, description: 'Enables/Disables pldm verbosity',value: 0)
 option('oe-sdk', type: 'feature', description: 'Enable OE SDK')
 option('oem-ibm', type: 'feature', description: 'Enable IBM OEM PLDM')
-option('requester-api', type: 'feature', description: 'Enable libpldm requester API', value: 'enabled')
 option('utilities', type: 'feature', description: 'Enable debug utilities', value: 'enabled')
 option('libpldmresponder', type: 'feature', description: 'Enable libpldmresponder', value: 'enabled')
 
