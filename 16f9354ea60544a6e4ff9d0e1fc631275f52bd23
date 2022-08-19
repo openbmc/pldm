@@ -1,0 +1,348 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1678375_8afa8721",
+        "filename": "common/types.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Just \u0027tid\u0027 should suffice. It is known that TID is a PLDM identifier, so PLDM prefix will not give any additional info. https://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md#types",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 14
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f38ec24_832ee8c3",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "MCTP_EID_NULL ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 22
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "037dbde3_a8844ce6",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Does this mean that when PLDM supports other transport layer, it should have an equivalent class preforming these functions?",
+      "range": {
+        "startLine": 24,
+        "startChar": 25,
+        "endLine": 24,
+        "endChar": 37
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e48ec3c7_55b4ee30",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "How are we planning to handle when we support multiple MCTP networks? Duplicate EIDs are possible in that case. It will be better if we can have some directions to avoid future redesigns.\n\nAs per specification TIDs should be unique but not EID. So we can have a map with terminus as key \n```\nstd::map\u003cstd::shared_ptr\u003cTerminus\u003e, \n     mctp_eid_t /* or MctpInfo or TransportIdentifier */\u003e termini{};\n```\n\nOR\nwe can have something like\n```\nstd::map \u003cMctpInfo, std::shared_ptr\u003cTerminus\u003e\u003e termini{}\n```\nWhere MctpInfo can have EID, UUID/NetworkID",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36cc330c_439e1c21",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Are we not planning to use libpldm provided pdr?\nhttps://github.com/openbmc/pldm/blob/master/libpldm/pdr.c#L16\n\nI know current libpldm implementation of PDR primarily concentrate on responder usecase. But two major things which i was able to leverage from it in Intel implementation was PDR repository storage mechanism and APIs for managing/creating entity association tree from PDR data.",
+      "range": {
+        "startLine": 48,
+        "startChar": 1,
+        "endLine": 48,
+        "endChar": 45
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3c99d6d_a5e2674f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Note:- This logic will not work in multi-network MCTP. We always need to work with MctpInfo not just EID.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 0
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f6328c3_9175f23d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "In case setTID is not supported(device having some static TID), we should atleast reserve the TID reported in getTID in our TID pool so that we will not use it for another device.",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 55
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6b60676_f13cb52b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Any plan to suport GetPDRRepositoryInfo command? It is a mandatory command in M\u0026C to verify repositoryState and other details before issuing getPDR command.",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a466cb_106fc477",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Do we need a null check here before accessing value?",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b2cff11_8ab79564",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "In this case let\u0027s clear terminus-\u003epdrs to make sure we are starting fresh. It helps in case we want to fetch the PDR again using this function.",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "055ee094_4de58c0c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "We might need a le16toh() conversation here.",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 62
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecf333e1_bc98a8b0",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "We can\u0027t neglect the possibility of faulty PLDM devices(add in cards) which never returns nextDataTransferHndl as 0. If that happens we will end up in an infinite while loop. \n\nI would suggest to have a limit on multipart transfer as a fail safe.\nOr you can support getPDRRepositoryInfo command and use largestRecordSize value to cross verify that you are not fetching any record whose size exceeds that value.",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 48
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f81594_0814d20c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Similar possibility of infinite while loop here as well.\n\nHere you can use recordCount from GetPDRRepositoryInfo command as the fail safe.",
+      "range": {
+        "startLine": 337,
+        "startChar": 0,
+        "endLine": 337,
+        "endChar": 34
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7267f0d_7263dbf6",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "From what i see, this class manages TID assignment flow. Which is common for all PLDM types. I would recommend to keep it generic so that other PLDM types also can make use of it and work with TID.\n\nIf we can exclude PDR related APIs out of this class, it should suffice.\n\nAlso, in future when we like to support other transport layers like NCSI, we can extend the same class for TID assignment.",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 23,
+        "endChar": 78
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27fa3c02_3d94a520",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "data?",
+      "range": {
+        "startLine": 80,
+        "startChar": 19,
+        "endLine": 80,
+        "endChar": 24
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "537697db_ac53fda3",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-08-19T12:40:00Z",
+      "side": 1,
+      "message": "Lets not use mctp_eid_t type TID. Let\u0027s have a tid type.",
+      "range": {
+        "startLine": 169,
+        "startChar": 16,
+        "endLine": 169,
+        "endChar": 26
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
