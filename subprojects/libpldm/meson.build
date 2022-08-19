@@ -1,71 +1,40 @@
-headers = [
-  'base.h',
-  'pldm_types.h',
-  'platform.h',
-  'bios.h',
-  'bios_table.h',
-  'entity.h',
-  'states.h',
-  'state_set.h',
-  'fru.h',
-  'utils.h',
-  'pdr.h',
-  'firmware_update.h'
-]
+project('libpldm', ['c','cpp'],
+    default_options: [
+      'buildtype=debugoptimized',
+      'warning_level=3',
+      'werror=true',
+      'cpp_std=c++20',
+      'tests=' + (meson.is_subproject() ? 'disabled' : 'enabled'),
+    ],
+    version: '1.0.0',
+    meson_version: '>=0.63.0',
+)
 
-sources = [
-  'base.c',
-  'platform.c',
-  'bios.c',
-  'bios_table.c',
-  'fru.c',
-  'utils.c',
-  'pdr.c',
-  'firmware_update.c'
-]
+libpldm_sources = files()
+subdir('src')
 
-libpldm_headers = ['.', '..']
+libpldm_include_dir = ['include']
+libpldm_headers = files()
 
-if get_option('oem-ibm').enabled()
-  headers += [
-    'oem/ibm/libpldm/entity_oem_ibm.h',
-    'oem/ibm/libpldm/file_io.h',
-    'oem/ibm/libpldm/host.h',
-    'oem/ibm/libpldm/platform_oem_ibm.h',
-    'oem/ibm/libpldm/state_set_oem_ibm.h'
-  ]
-  sources += [
-    'oem/ibm/libpldm/file_io.c',
-    'oem/ibm/libpldm/host.c',
-    'oem/ibm/libpldm/platform_oem_ibm.c'
-  ]
-  libpldm_headers += ['oem/ibm']
-endif
-
-if get_option('requester-api').enabled()
-  headers += [
-    'requester/pldm.h'
-  ]
-  sources += [
-    'requester/pldm.c'
-  ]
-  libpldm_headers += ['requester']
-endif
-
-install_headers(
-  headers,
-  subdir: 'libpldm')
+subdir('include/libpldm')
 
 libpldm = library(
   'pldm',
-  sources,
-  implicit_include_directories: false,
-  include_directories: include_directories(libpldm_headers),
-  version: meson.project_version(),
-  install: true)
+   libpldm_sources,
+   implicit_include_directories: false,
+   include_directories: libpldm_include_dir,
+   version: meson.project_version(),
+   install: true
+   )
+
+install_headers(
+  libpldm_headers,
+  preserve_path: true,
+  subdir:'libpldm'
+  )
 
 libpldm_dep = declare_dependency(
-  include_directories: include_directories(libpldm_headers),
+  include_directories: libpldm_include_dir,
   link_with: libpldm)
 
 import('pkgconfig').generate(

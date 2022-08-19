@@ -1,8 +1,8 @@
 #include "pldm_oem_ibm.hpp"
 
-#include "oem/ibm/libpldm/file_io.h"
-#include "oem/ibm/libpldm/host.h"
-#include "pldm_types.h"
+#include "libpldm/file_io.h"
+#include "libpldm/host.h"
+#include "libpldm/pldm_types.h"
 
 #include "../../pldm_cmd_helper.hpp"
 
