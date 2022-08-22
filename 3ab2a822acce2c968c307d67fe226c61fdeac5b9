@@ -16,6 +16,24 @@
       "message": "Can you add an example for getStateSensorReadings command output before and after this change.",
       "revId": "3ab2a822acce2c968c307d67fe226c61fdeac5b9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04fc67ac_7a264540",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-22T04:49:40Z",
+      "side": 1,
+      "message": "I don\u0027t have my testing info handy , but I did fix the unit test that would test the get state sensor reading change.",
+      "parentUuid": "61a6c635_9d0e02dc",
+      "revId": "3ab2a822acce2c968c307d67fe226c61fdeac5b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
