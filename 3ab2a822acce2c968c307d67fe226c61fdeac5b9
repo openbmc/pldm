@@ -34,6 +34,63 @@
       "parentUuid": "61a6c635_9d0e02dc",
       "revId": "3ab2a822acce2c968c307d67fe226c61fdeac5b9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55fd5b94_c8c2919e",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-08-22T07:34:09Z",
+      "side": 1,
+      "message": "Instead of defaulting to PLDM_SENSOR_UNKNOWN, should pldmd read the D-Bus property (if available) and start as the previous and current state?\n\nThis will be probably handle the case pldmd goes for a restart and start with a known PLDM state instead of PLDM_SENSOR_UNKNOWN?",
+      "revId": "3ab2a822acce2c968c307d67fe226c61fdeac5b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac10dc2d_eacfba2d",
+        "filename": "host-bmc/dbus_to_event_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-08-22T07:34:09Z",
+      "side": 1,
+      "message": "nit:UpperCamelCase",
+      "range": {
+        "startLine": 19,
+        "startChar": 6,
+        "endLine": 19,
+        "endChar": 26
+      },
+      "revId": "3ab2a822acce2c968c307d67fe226c61fdeac5b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ffe161d_f85af029",
+        "filename": "host-bmc/dbus_to_event_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-08-22T07:34:09Z",
+      "side": 1,
+      "message": "Is there a need to be sorted, if not std::unordered_map will be preferred.",
+      "revId": "3ab2a822acce2c968c307d67fe226c61fdeac5b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
