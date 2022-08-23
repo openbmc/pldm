@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "559f2934_4ec86e99",
+        "filename": "libpldm/base.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-23T05:43:34Z",
+      "side": 1,
+      "message": "\u0026\u0026, it is kind of a weird conditional though so I added a comment to make it clearer.",
+      "parentUuid": "e98f63ab_0e921e3d",
+      "range": {
+        "startLine": 430,
+        "startChar": 55,
+        "endLine": 430,
+        "endChar": 57
+      },
+      "revId": "1305d6ee7a7897b2247d612dfa811a5b3249af23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e97e5ea9_04887db8",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd4d605f_e0773b2d",
+        "filename": "libpldm/base.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-23T05:43:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e97e5ea9_04887db8",
+      "range": {
+        "startLine": 436,
+        "startChar": 5,
+        "endLine": 436,
+        "endChar": 67
+      },
+      "revId": "1305d6ee7a7897b2247d612dfa811a5b3249af23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f4c2b78_50830cd0",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-17T09:43:34Z",
       "side": 1,
       "message": "Why is section_length not checked?\n\n```\nSpecial value: Zero (0x00000000) if data size is unavailable or if TransferOperation is not one\nof XFER_FIRST_PART or XFER_COMPLETE. It may also be zero if TransferOperation is\nXFER_COMPLETE, the last part was successfully received, and no further sections are to be\ntransferred,\n```",
+      "range": {
+        "startLine": 445,
+        "startChar": 27,
+        "endLine": 445,
+        "endChar": 50
+      },
+      "revId": "1305d6ee7a7897b2247d612dfa811a5b3249af23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "954e7721_63d4a4fc",
+        "filename": "libpldm/base.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1001560
+      },
+      "writtenOn": "2022-08-23T05:43:34Z",
+      "side": 1,
+      "message": "I left it unchecked because the spec says it\u0027s okay to be 0 if data size is unavailable.\nI can add a check for it if you want though. I\u0027m fine either way.",
+      "parentUuid": "6f4c2b78_50830cd0",
       "range": {
         "startLine": 445,
         "startChar": 27,
