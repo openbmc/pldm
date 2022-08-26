@@ -112,6 +112,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fcd68005_291b0eb8",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-08-26T12:46:40Z",
+      "side": 1,
+      "message": "The terminus manager is directly coupled with mctp EID since Terminus manager is mainly for handling PLDM endpoints, shall we refer all the places by TID alone and remove EID references. we may need to get the EID only at the time of sending the PLDM request. at this point we can use the TIDPool( which keeps the \nTID-to-EID map) to get the EID .\ngetting the EID from TID could be part of the request/handler class rather than inside terminus manager.\nThe same TIDPool map can be used to keep the TID to transport endpoint ID( for example, transport endpoint id can be eid for MCTP and EBT UUID for NCSI over RBT ) \nIf we are looking forward supporting other transport this changes will make it easy to adapt other transport layers w.r.t the following design.\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/47519",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3c99d6d_a5e2674f",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 30
@@ -128,6 +151,52 @@
         "startChar": 0,
         "endLine": 28,
         "endChar": 0
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10f39af5_f6c3d42b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-08-26T12:46:40Z",
+      "side": 1,
+      "message": "This is the map which creates TID to transport specific endpoint ID(mctp eid or RBT UUID) map.\ncan we make it to accept generic type name like size_t so that it look common for any transport layer Endpoint.",
+      "range": {
+        "startLine": 31,
+        "startChar": 40,
+        "endLine": 31,
+        "endChar": 48
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bc16c07_bdbd0841",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-08-26T12:46:40Z",
+      "side": 1,
+      "message": "should this be named as discover MCTP based terminus discoverMctpTerminusTask() so that other transport layer(ncsi) based Terminus discovery  can be added separately.\nThese methods can be used part of the pldm endpoint discovery process using method\ndiscoverMctpTerminusTask() similarly discoverNCSIRBTTerminusTask() can be added.\nboth methods discovers PLDM endpoints available over these transport layers\nand final TID list is added part of the same TIDPool map.(TID to EID or TID to RBT UUID)\nAfter this point terminus manager can only refer TIDs and at the time of\nsending the PLDM request (SendRecvPldmMsg) using the TIDPoolMap we can get the respective transport layer endpoint IDs.",
+      "range": {
+        "startLine": 61,
+        "startChar": 38,
+        "endLine": 61,
+        "endChar": 58
       },
       "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -169,6 +238,52 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "Any plan to suport GetPDRRepositoryInfo command? It is a mandatory command in M\u0026C to verify repositoryState and other details before issuing getPDR command.",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c081d705_5dfb28c4",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-08-26T12:46:40Z",
+      "side": 1,
+      "message": "The getTID and setTID are used part of PLDM terminus discovery part.at this point we might not have created the TIDPool map which we have discussed in the other comment.should we rename these methods to setTIDOverMCTP() and getTIDOverMCTP() as it only sets/gets TID for mctp based pldm endpoint.",
+      "range": {
+        "startLine": 175,
+        "startChar": 38,
+        "endLine": 175,
+        "endChar": 44
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d965131_9526c4a3",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-08-26T12:46:40Z",
+      "side": 1,
+      "message": "The terminus manager being a PLDM terminus manager,I think  MCTP EID association is not needed until this point which is SendRecvPldmMsg function.\nso up to this point we can refer the PLDM endpoints solely based on TID reference itself. the requester/handler part of PLDM service can use the TID_to_EID map (tidPool)to get the EID from the TID right before sending the PLDM message.",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 265,
+        "endChar": 4
+      },
       "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -335,6 +450,30 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "Lets not use mctp_eid_t type TID. Let\u0027s have a tid type.",
+      "range": {
+        "startLine": 169,
+        "startChar": 16,
+        "endLine": 169,
+        "endChar": 26
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a05d6f7e_4a46589a",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-08-26T12:46:40Z",
+      "side": 1,
+      "message": "+1\nI think terminus manager can also be only associated PLDM TID alone in case we are looking forward to support other transport layers.we could decouple the use of mctp eids from this class and move the translation of the EID from TID to a separate code.",
+      "parentUuid": "537697db_ac53fda3",
       "range": {
         "startLine": 169,
         "startChar": 16,
