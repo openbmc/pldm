@@ -70,6 +70,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d547f150_75dce44b",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-28T07:37:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a7769c32_e3e11c04",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 69
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70f2dda4_8eb466ed",
@@ -93,6 +117,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be0c40aa_2c4c73df",
+        "filename": "requester/test/mctp_endpoint_discovery_test.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-28T07:37:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "70f2dda4_8eb466ed",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 11,
+        "endChar": 56
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6008524_dbf13591",
@@ -106,6 +154,30 @@
       "writtenOn": "2022-08-18T08:08:45Z",
       "side": 1,
       "message": "Does multiple MCTP network support in scope for this review?",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 29
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0b00d0e_bb2cc3d4",
+        "filename": "requester/test/static_eid_table.json",
+        "patchSetId": 23
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-28T07:37:11Z",
+      "side": 1,
+      "message": "The multiple MCTP network support  is not in scope when the patch set was submitted.\nCan it be addressed by another patch set? Since networkd ID is an optional property in the description of https://github.com/openbmc/phosphor-dbus-interfaces/tree/master/yaml/xyz/openbmc_project/MCTP",
+      "parentUuid": "a6008524_dbf13591",
       "range": {
         "startLine": 4,
         "startChar": 0,
