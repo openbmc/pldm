@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0dfb25cd_b82a627f",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-28T15:40:46Z",
+      "side": 1,
+      "message": "The name of definition is referred to the table 2 of DSP0236 v1.3.1. It defines that EID\u003d0 is a Null destination/Source EID.",
+      "parentUuid": "3f38ec24_832ee8c3",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 22
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "037dbde3_a8844ce6",
         "filename": "platform-mc/manager.hpp",
         "patchSetId": 30
@@ -278,6 +302,30 @@
       "writtenOn": "2022-08-26T12:46:40Z",
       "side": 1,
       "message": "The terminus manager being a PLDM terminus manager,I think  MCTP EID association is not needed until this point which is SendRecvPldmMsg function.\nso up to this point we can refer the PLDM endpoints solely based on TID reference itself. the requester/handler part of PLDM service can use the TID_to_EID map (tidPool)to get the EID from the TID right before sending the PLDM message.",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 265,
+        "endChar": 4
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6b61718_8cdb5d67",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-28T15:40:46Z",
+      "side": 1,
+      "message": "MCTP EID association is needed for PLDM encode request message API() too.\nSince instanceId is part of PLDM message header and generating instanceId is managed by https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/PLDM/Requester.interface.yaml.\nAccording to the description of Requester.interface, EID is used for input argument to generate instanceId.",
+      "parentUuid": "1d965131_9526c4a3",
       "range": {
         "startLine": 265,
         "startChar": 0,
