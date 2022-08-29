@@ -29,7 +29,7 @@
          "dbus":
             {
                "interface" : "com.ibm.ipzvpd.VCEN",
-               "property_name" : "TM",
+               "property_name" : "FC",
                "property_type" : "bytearray"
             }
       },
