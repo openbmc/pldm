@@ -6,6 +6,8 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <iostream>
 
 namespace pldm
@@ -14,7 +16,6 @@ namespace responder
 {
 namespace platform
 {
-
 int sendBiosAttributeUpdateEvent(
     uint8_t eid, dbus_api::Requester* requester,
     const std::vector<uint16_t>& handles,
@@ -42,9 +43,20 @@ int sendBiosAttributeUpdateEvent(
             return PLDM_SUCCESS;
         }
     }
+    catch (
+        const sdbusplus::xyz::openbmc_project::Common::Error::ResourceNotFound&
+            e)
+    {
+        /* Exception is expected to happen in the case when state manager is
+         * started after pldm, this is expected to happen in reboot case
+         * where host is considered to be up. As host is up pldm is expected
+         * to send attribute update event to host so this is not an error
+         * case */
+    }
     catch (const sdbusplus::exception_t& e)
     {
-        std::cerr << "Error in getting current host state, continue ... \n";
+        std::cerr << "Error in getting current host state, " << e.name()
+                  << " Continue ... \n";
     }
 
     auto instanceId = requester->getInstanceId(eid);
