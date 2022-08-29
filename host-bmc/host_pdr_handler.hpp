@@ -20,7 +20,6 @@
 
 namespace pldm
 {
-
 using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent event data
@@ -159,6 +158,11 @@ class HostPDRHandler
      */
     void setHostSensorState(const PDRList& stateSensorPDRs);
 
+    /** @brief whether we received PLDM_RECORDS_MODIFIED event data operation
+     *  from host
+     */
+    bool isHostPdrModified = false;
+
     /** @brief check whether Host is running when pldmd starts
      */
     bool isHostUp();
@@ -244,6 +248,10 @@ class HostPDRHandler
     /** @brief maps an entity type to parent pldm_entity from the BMC's entity
      *  association tree
      */
+
+    /** @brief list of PDR record handles modified pointing to host PDRs */
+    PDRRecordHandles modifiedPDRRecordHandles;
+
     std::map<EntityType, pldm_entity> parents;
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
