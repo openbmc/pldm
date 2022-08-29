@@ -14,7 +14,6 @@ namespace responder
 {
 namespace platform
 {
-
 int sendBiosAttributeUpdateEvent(
     uint8_t eid, dbus_api::Requester* requester,
     const std::vector<uint16_t>& handles,
@@ -42,9 +41,22 @@ int sendBiosAttributeUpdateEvent(
             return PLDM_SUCCESS;
         }
     }
-    catch (const sdbusplus::exception_t& e)
+    catch (const sdbusplus::exception::SdBusError& e)
     {
-        std::cerr << "Error in getting current host state, continue ... \n";
+        if (std::string(e.name()) ==
+            std::string("xyz.openbmc_project.Common.Error.ResourceNotFound"))
+        {
+            /* Exception is expected to happen in the case when state manager is
+             * started after pldm, this is expected to happen in reboot case
+             * where host is considered to be up. As host is up pldm is expected
+             * to send attribute update event to host so this is not an error
+             * case */
+        }
+        else
+        {
+            std::cerr << "Error in getting current host state, continue ... "
+                      << e.name() << "\n";
+        }
     }
 
     auto instanceId = requester->getInstanceId(eid);
