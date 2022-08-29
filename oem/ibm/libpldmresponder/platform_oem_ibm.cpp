@@ -44,7 +44,10 @@ int sendBiosAttributeUpdateEvent(
     }
     catch (const sdbusplus::exception_t& e)
     {
-        std::cerr << "Error in getting current host state, continue ... \n";
+        /* Execption is expected to happen in the case when state manager is
+         * started after pldm, this is expected to happen in reboot case where
+         * host is considred to be up. As host is up pldm is expected to send
+         * attribute update event to host so this is not and error case */
     }
 
     auto instanceId = requester->getInstanceId(eid);
