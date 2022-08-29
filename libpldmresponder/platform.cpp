@@ -515,8 +515,14 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                 return rc;
             }
 
-            if (eventDataOperation == PLDM_RECORDS_ADDED)
+            if (eventDataOperation == PLDM_RECORDS_ADDED ||
+                eventDataOperation == PLDM_RECORDS_MODIFIED)
             {
+                if (eventDataOperation == PLDM_RECORDS_MODIFIED)
+                {
+                    hostPDRHandler->isHostPdrModified = true;
+                }
+
                 rc = getPDRRecordHandles(
                     reinterpret_cast<const ChangeEntry*>(changeRecordData +
                                                          dataOffset),
@@ -528,11 +534,6 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                 {
                     return rc;
                 }
-            }
-
-            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
-            {
-                return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
             }
 
             changeRecordData +=
