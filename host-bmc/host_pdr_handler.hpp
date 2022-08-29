@@ -20,7 +20,6 @@
 
 namespace pldm
 {
-
 using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent event data
@@ -244,6 +243,10 @@ class HostPDRHandler
     /** @brief maps an entity type to parent pldm_entity from the BMC's entity
      *  association tree
      */
+
+    /** @brief list of PDR record handles modified pointing to host's PDRs */
+    PDRRecordHandles modifiedPDRRecordHandles;
+
     std::map<EntityType, pldm_entity> parents;
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
@@ -256,6 +259,11 @@ class HostPDRHandler
 
     /** @brief whether response received from Host */
     bool responseReceived;
+
+    /** @brief whether we received PLDM_RECORDS_MODIFIED event data operation
+     *  from host
+     */
+    bool isHostPdrModified = false;
 };
 
 } // namespace pldm
