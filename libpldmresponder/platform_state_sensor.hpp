@@ -52,7 +52,9 @@ uint8_t getStateSensorEventState(
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << "Get StateSensor EventState from dbus Error, interface : "
+                  << dbusMapping.objectPath.c_str()
+                  << " ,exception : " << e.what() << '\n';
     }
 
     return PLDM_SENSOR_UNKNOWN;
