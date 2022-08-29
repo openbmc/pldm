@@ -27,7 +27,6 @@ namespace responder
 {
 namespace platform
 {
-
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
@@ -531,9 +530,19 @@ int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                 }
             }
 
-            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
+            else if (eventDataOperation == PLDM_RECORDS_MODIFIED)
             {
-                return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+                hostPDRHandler->isHostPdrModified = true;
+                rc = getPDRRecordHandles(
+                    reinterpret_cast<const ChangeEntry*>(changeRecordData +
+                                                         dataOffset),
+                    changeRecordDataSize - dataOffset,
+                    static_cast<size_t>(numberOfChangeEntries),
+                    pdrRecordHandles);
+                if (rc != PLDM_SUCCESS)
+                {
+                    return rc;
+                }
             }
 
             changeRecordData +=
