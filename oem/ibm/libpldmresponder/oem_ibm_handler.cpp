@@ -18,7 +18,6 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
-
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
         EntityType entityType, EntityInstance entityInstance,
