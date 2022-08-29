@@ -22,7 +22,6 @@ namespace pldm
 {
 namespace utils
 {
-
 constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
 constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
 constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
@@ -280,11 +279,35 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
         auto& bus = getBus();
         auto service =
             getService(dBusMap.objectPath.c_str(), dBusMap.interface.c_str());
-        auto method = bus.new_method_call(
-            service.c_str(), dBusMap.objectPath.c_str(), dbusProperties, "Set");
-        method.append(dBusMap.interface.c_str(), dBusMap.propertyName.c_str(),
-                      variant);
-        bus.call_noreply(method);
+        if (service == "xyz.openbmc_project.Inventory.Manager")
+        {
+            pldm::dbus::ObjectValueTree objectValueTree;
+            pldm::dbus::InterfaceMap interfaceMap;
+            pldm::dbus::PropertyMap propertyMap;
+            propertyMap.emplace(dBusMap.propertyName.c_str(),
+                                std::get<0>(variant));
+            std::string objPath = dBusMap.objectPath.c_str();
+            std::string toReplace("/xyz/openbmc_project/inventory/system");
+            size_t pos = objPath.find(toReplace);
+            objPath.replace(pos, toReplace.length(), "/system");
+            interfaceMap.emplace(dBusMap.interface.c_str(), propertyMap);
+            objectValueTree.emplace(std::move(objPath),
+                                    std::move(interfaceMap));
+            auto method = bus.new_method_call(
+                service.c_str(), "/xyz/openbmc_project/inventory",
+                "xyz.openbmc_project.Inventory.Manager", "Notify");
+            method.append(std::move(objectValueTree));
+            bus.call_noreply(method);
+        }
+        else
+        {
+            auto method =
+                bus.new_method_call(service.c_str(), dBusMap.objectPath.c_str(),
+                                    dbusProperties, "Set");
+            method.append(dBusMap.interface.c_str(),
+                          dBusMap.propertyName.c_str(), variant);
+            bus.call_noreply(method);
+        }
     };
 
     if (dBusMap.propertyType == "uint8_t")
