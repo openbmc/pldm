@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16e10fef_b20641de",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T03:58:51Z",
+      "side": 1,
+      "message": "instead of generically catching all the exceptions..can you just look for Not found ? and error out on other cases ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 3,
+        "endLine": 45,
+        "endChar": 43
+      },
+      "revId": "472b70f8eb5c9a884182421f7f2ae5e0475c14b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
