@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0192b80d_28d1f27a",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:30:47Z",
+      "side": 1,
+      "message": "can we move this to a new function ?",
+      "range": {
+        "startLine": 160,
+        "startChar": 3,
+        "endLine": 172,
+        "endChar": 5
+      },
+      "revId": "5b0cd31c52b7f7782a4cb777d5e12c9c885effd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
