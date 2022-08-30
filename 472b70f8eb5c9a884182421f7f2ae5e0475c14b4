@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7124a1fb_a9b0845d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-08-30T07:23:51Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 29
+      },
+      "revId": "472b70f8eb5c9a884182421f7f2ae5e0475c14b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16e10fef_b20641de",
         "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
         "patchSetId": 1
