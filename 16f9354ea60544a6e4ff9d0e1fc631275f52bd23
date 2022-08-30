@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f50f34_81ec76a6",
+        "filename": "common/types.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-30T05:07:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e1678375_8afa8721",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 14
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f38ec24_832ee8c3",
@@ -96,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52ffa01e_0e98e25f",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-30T05:07:27Z",
+      "side": 1,
+      "message": "The new patch set reserved the flexibility to support other transport layer.\nThe idea is to define new XXXDiscoveryHandlerIntf(e.g XXX\u003dNCSI) and then implemented the interface APIs.",
+      "parentUuid": "037dbde3_a8844ce6",
+      "range": {
+        "startLine": 24,
+        "startChar": 25,
+        "endLine": 24,
+        "endChar": 37
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e48ec3c7_55b4ee30",
         "filename": "platform-mc/manager.hpp",
         "patchSetId": 30
@@ -107,6 +155,24 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "How are we planning to handle when we support multiple MCTP networks? Duplicate EIDs are possible in that case. It will be better if we can have some directions to avoid future redesigns.\n\nAs per specification TIDs should be unique but not EID. So we can have a map with terminus as key \n```\nstd::map\u003cstd::shared_ptr\u003cTerminus\u003e, \n     mctp_eid_t /* or MctpInfo or TransportIdentifier */\u003e termini{};\n```\n\nOR\nwe can have something like\n```\nstd::map \u003cMctpInfo, std::shared_ptr\u003cTerminus\u003e\u003e termini{}\n```\nWhere MctpInfo can have EID, UUID/NetworkID",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a719e589_c76f2646",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-30T05:07:27Z",
+      "side": 1,
+      "message": "For supporting other transport layer, the map key is changed to use tid.\nThe NetworkID is included in MctpInfo.\nThe toMctpInfo() can lookup terminus\u0027s MctpInfo by tid.",
+      "parentUuid": "e48ec3c7_55b4ee30",
       "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -170,6 +236,30 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "Note:- This logic will not work in multi-network MCTP. We always need to work with MctpInfo not just EID.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 0
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b83fcea7_fce94bff",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-30T05:07:27Z",
+      "side": 1,
+      "message": "The argument is changed to MctpInfo and the function checkes networkId in new patch set.",
+      "parentUuid": "f3c99d6d_a5e2674f",
       "range": {
         "startLine": 21,
         "startChar": 0,
@@ -249,6 +339,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "623b0f89_d7eb70d1",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-30T05:07:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8f6328c3_9175f23d",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 55
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6b60676_f13cb52b",
@@ -262,6 +376,24 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "Any plan to suport GetPDRRepositoryInfo command? It is a mandatory command in M\u0026C to verify repositoryState and other details before issuing getPDR command.",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b546d47_5bd2f403",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-30T05:07:27Z",
+      "side": 1,
+      "message": "Working on it. will be implemented in next version of patch set.",
+      "parentUuid": "e6b60676_f13cb52b",
       "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -522,6 +654,30 @@
       "side": 1,
       "message": "+1\nI think terminus manager can also be only associated PLDM TID alone in case we are looking forward to support other transport layers.we could decouple the use of mctp eids from this class and move the translation of the EID from TID to a separate code.",
       "parentUuid": "537697db_ac53fda3",
+      "range": {
+        "startLine": 169,
+        "startChar": 16,
+        "endLine": 169,
+        "endChar": 26
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb21689a_2cab7629",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-30T05:07:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a05d6f7e_4a46589a",
       "range": {
         "startLine": 169,
         "startChar": 16,
