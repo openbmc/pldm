@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05b4b1f6_1a66eb94",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "can you also update the test results on the machine that does not have compatible system interface implemented or entity manager not running ?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fde8d9b1_e3f1392e",
+        "filename": "common/utils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "this is not correct, the getSubtree call should be made from a try catch block , it should not be inside the util function.\n\nWe should give the ability to handle exceptions from the clients that use this API (we cannot decide the clients exception behaviour).",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 5
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "865d6f5d_c8699d94",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "redundant check ? this check is done at line number 465",
+      "range": {
+        "startLine": 469,
+        "startChar": 9,
+        "endLine": 469,
+        "endChar": 37
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60423034_365d328c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "why is this needed ? we are not using it anywhere right ?",
+      "range": {
+        "startLine": 479,
+        "startChar": 3,
+        "endLine": 479,
+        "endChar": 43
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a5955c3_f90d087f",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "can we add this in the load() , rather than repeating the same logic in other places ?",
+      "range": {
+        "startLine": 481,
+        "startChar": 7,
+        "endLine": 484,
+        "endChar": 9
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2382fa76_af4a420c",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "bind_front instead ?",
+      "range": {
+        "startLine": 29,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 48
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ffbc42b_988ed4a9",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "why do you need this to be public ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 29
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a110cd4_b1f856eb",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 64,
+        "startChar": 26,
+        "endLine": 64,
+        "endChar": 29
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85ce1b52_94fffe72",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:22:10Z",
+      "side": 1,
+      "message": "this should have been in the try - catch block.",
+      "range": {
+        "startLine": 90,
+        "startChar": 7,
+        "endLine": 92,
+        "endChar": 65
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
