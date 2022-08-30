@@ -118,6 +118,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89725abe_87aa7bef",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-08-30T11:35:54Z",
+      "side": 1,
+      "message": "can we have func name as \u0027checkIfPlatformSpecific\u0027  ?",
+      "range": {
+        "startLine": 302,
+        "startChar": 9,
+        "endLine": 302,
+        "endChar": 26
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2382fa76_af4a420c",
         "filename": "libpldmresponder/system_config.hpp",
         "patchSetId": 8
@@ -134,6 +157,29 @@
         "startChar": 16,
         "endLine": 30,
         "endChar": 48
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0c5a10a_96be8f8e",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-08-30T11:35:54Z",
+      "side": 1,
+      "message": "can we give any other func name?\n\nif this is ibm specific should this is be under oem/ibm ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 35
       },
       "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -203,6 +249,29 @@
         "startChar": 7,
         "endLine": 92,
         "endChar": 65
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b57bbdcb_10357065",
+        "filename": "libpldmresponder/test/libpldmresponder_bios_config_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-08-30T11:35:54Z",
+      "side": 1,
+      "message": "this is specific to bios right.. so should we say as MockBiosSystemConfig ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 6,
+        "endLine": 79,
+        "endChar": 22
       },
       "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
