@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98880dba_797a577f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:29:13Z",
+      "side": 1,
+      "message": "better naming ?",
+      "range": {
+        "startLine": 481,
+        "startChar": 37,
+        "endLine": 481,
+        "endChar": 40
+      },
+      "revId": "88b3e48d08a574c193d235537885df51f796ceba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "540dc5ae_6cfa1923",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-08-30T07:29:13Z",
+      "side": 1,
+      "message": "can you use type based get ? and avoid magic numbers as much as possible.",
+      "range": {
+        "startLine": 484,
+        "startChar": 31,
+        "endLine": 484,
+        "endChar": 35
+      },
+      "revId": "88b3e48d08a574c193d235537885df51f796ceba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
