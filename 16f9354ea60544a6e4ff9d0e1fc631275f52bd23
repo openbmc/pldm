@@ -223,6 +223,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc4ddbf5_61a23d1d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fcd68005_291b0eb8",
+      "range": {
+        "startLine": 7,
+        "startChar": 10,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3c99d6d_a5e2674f",
@@ -295,6 +319,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac2fe99a_6e46c648",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "mapToTid() is updated to take MctpInfo tuple to support multiple MCTP network.\nTo support other transport layer can overload mapToTid() to take transport specific parameter.",
+      "parentUuid": "10f39af5_f6c3d42b",
+      "range": {
+        "startLine": 31,
+        "startChar": 40,
+        "endLine": 31,
+        "endChar": 48
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bc16c07_bdbd0841",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 30
@@ -306,6 +354,30 @@
       "writtenOn": "2022-08-26T12:46:40Z",
       "side": 1,
       "message": "should this be named as discover MCTP based terminus discoverMctpTerminusTask() so that other transport layer(ncsi) based Terminus discovery  can be added separately.\nThese methods can be used part of the pldm endpoint discovery process using method\ndiscoverMctpTerminusTask() similarly discoverNCSIRBTTerminusTask() can be added.\nboth methods discovers PLDM endpoints available over these transport layers\nand final TID list is added part of the same TIDPool map.(TID to EID or TID to RBT UUID)\nAfter this point terminus manager can only refer TIDs and at the time of\nsending the PLDM request (SendRecvPldmMsg) using the TIDPoolMap we can get the respective transport layer endpoint IDs.",
+      "range": {
+        "startLine": 61,
+        "startChar": 38,
+        "endLine": 61,
+        "endChar": 58
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0e416f8_d3de6088",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4bc16c07_bdbd0841",
       "range": {
         "startLine": 61,
         "startChar": 38,
@@ -398,6 +470,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0861d7ab_cf592fb3",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "It is implemented in new patch set.",
+      "parentUuid": "2b546d47_5bd2f403",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c081d705_5dfb28c4",
@@ -411,6 +501,30 @@
       "writtenOn": "2022-08-26T12:46:40Z",
       "side": 1,
       "message": "The getTID and setTID are used part of PLDM terminus discovery part.at this point we might not have created the TIDPool map which we have discussed in the other comment.should we rename these methods to setTIDOverMCTP() and getTIDOverMCTP() as it only sets/gets TID for mctp based pldm endpoint.",
+      "range": {
+        "startLine": 175,
+        "startChar": 38,
+        "endLine": 175,
+        "endChar": 44
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf93ced4_79525cdb",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c081d705_5dfb28c4",
       "range": {
         "startLine": 175,
         "startChar": 38,
@@ -468,6 +582,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87b51be3_592bd077",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "The terminusManager implemented its SendRecvPldmMsg() which takes TID now.",
+      "parentUuid": "b6b61718_8cdb5d67",
+      "range": {
+        "startLine": 265,
+        "startChar": 0,
+        "endLine": 265,
+        "endChar": 4
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6a466cb_106fc477",
@@ -481,6 +619,24 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "Do we need a null check here before accessing value?",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "592440a0_5bad0105",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b6a466cb_106fc477",
       "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -502,6 +658,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26c0c810_449b0979",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8b2cff11_8ab79564",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "055ee094_4de58c0c",
@@ -515,6 +689,30 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "We might need a le16toh() conversation here.",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 62
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e8a4140_97e8a404",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "055ee094_4de58c0c",
       "range": {
         "startLine": 312,
         "startChar": 0,
@@ -548,6 +746,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18d2010d_ac5a2528",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ecf333e1_bc98a8b0",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 48
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71f81594_0814d20c",
@@ -561,6 +783,30 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "Similar possibility of infinite while loop here as well.\n\nHere you can use recordCount from GetPDRRepositoryInfo command as the fail safe.",
+      "range": {
+        "startLine": 337,
+        "startChar": 0,
+        "endLine": 337,
+        "endChar": 34
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f50582e_5eac3057",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "71f81594_0814d20c",
       "range": {
         "startLine": 337,
         "startChar": 0,
@@ -594,6 +840,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28dc3f2c_cb82207e",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "The PDR related APIs are move to platform_manager.hpp/cpp",
+      "parentUuid": "a7267f0d_7263dbf6",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 23,
+        "endChar": 78
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27fa3c02_3d94a520",
@@ -607,6 +877,30 @@
       "writtenOn": "2022-08-19T12:40:00Z",
       "side": 1,
       "message": "data?",
+      "range": {
+        "startLine": 80,
+        "startChar": 19,
+        "endLine": 80,
+        "endChar": 24
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37cd3332_940d9d59",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-08-31T15:11:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "27fa3c02_3d94a520",
       "range": {
         "startLine": 80,
         "startChar": 19,
