@@ -210,6 +210,30 @@
       },
       "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d9c061c_a07327f2",
+        "filename": "requester/test/static_eid_table.json",
+        "patchSetId": 23
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-02T08:38:44Z",
+      "side": 1,
+      "message": "The three properties(networkdId, eid, supportedMessageTypes) in json are referred to /xyz/openbmc_project/MCTP/Endpoint.interface.yaml.\nhttps://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/MCTP/Endpoint.interface.yaml\n\nTo support mapping TID across multiple MCTP networks is suggested and fixed in patch set 51442(https://gerrit.openbmc.org/c/openbmc/pldm/+/51443/35), so the code changes of parsing \"NetworkId\" properties are added in that patch set.",
+      "parentUuid": "07f77226_863d78cb",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 29
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
