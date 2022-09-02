@@ -186,6 +186,30 @@
       },
       "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07f77226_863d78cb",
+        "filename": "requester/test/static_eid_table.json",
+        "patchSetId": 23
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-02T06:15:29Z",
+      "side": 1,
+      "message": "1. Yes, If multiple MCTP network is not in scope, i would suggest not to include \"NetworkId\" key in the json as part of this change. It can be added later along with code support.\n2. @Jermy/@Tom, Can we make the NetworkId exposed from kernel a mandatory field? I think it might make things easier for upper layer protocols. \nWe can mandate the int based network id or the MCTP spec provided network id(The UUID format one).",
+      "parentUuid": "b0b00d0e_bb2cc3d4",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 29
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
