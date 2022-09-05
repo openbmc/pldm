@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea7ff50c_20b53e20",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-05T05:49:22Z",
+      "side": 0,
+      "message": "I prefer to do like this:\n\n```\nif (!fs::is_directory(dirPath))\n{\n    std::cerr \u003c\u003c \"The directory does not exist, dirPath \u003d \" \u003c\u003c dirPath \u003c\u003c std::endl;\n    return;\n}\n```",
+      "revId": "06fca44170bfd511d519f64fe75da770e0bfd5d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
