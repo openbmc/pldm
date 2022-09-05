@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6930a93a_21b95ecb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-05T06:04:19Z",
+      "side": 1,
+      "message": "Please add the version number of the PLDM platform spec.\nBecause for the DSP0248_1.1.0, it is Table 14, and for the DSP0248_1.2.0, it is Table 15 😊",
+      "range": {
+        "startLine": 10,
+        "startChar": 14,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "2762604771da9ac9b20b9efbcd8273237f382220",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
