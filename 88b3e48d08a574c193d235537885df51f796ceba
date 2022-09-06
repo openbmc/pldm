@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2994514b_2cca4451",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-06T09:13:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4362f68_5da265dd",
+      "revId": "88b3e48d08a574c193d235537885df51f796ceba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98880dba_797a577f",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-08-30T07:29:13Z",
       "side": 1,
       "message": "better naming ?",
+      "range": {
+        "startLine": 481,
+        "startChar": 37,
+        "endLine": 481,
+        "endChar": 40
+      },
+      "revId": "88b3e48d08a574c193d235537885df51f796ceba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "910b8c94_26d39697",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-06T09:13:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98880dba_797a577f",
       "range": {
         "startLine": 481,
         "startChar": 37,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a9c7c4b_2437dbd4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-06T09:13:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b014bed7_8decf217",
+      "range": {
+        "startLine": 483,
+        "startChar": 28,
+        "endLine": 483,
+        "endChar": 42
+      },
+      "revId": "88b3e48d08a574c193d235537885df51f796ceba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "540dc5ae_6cfa1923",
@@ -87,6 +153,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2da09383_303675c5",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-06T09:13:15Z",
+      "side": 1,
+      "message": "We cannot use type based get as all the elements in the tuple are uint8.",
+      "parentUuid": "540dc5ae_6cfa1923",
+      "range": {
+        "startLine": 484,
+        "startChar": 31,
+        "endLine": 484,
+        "endChar": 35
+      },
+      "revId": "88b3e48d08a574c193d235537885df51f796ceba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8992e078_b2120504",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-08-30T09:28:46Z",
       "side": 1,
       "message": "Validity",
+      "range": {
+        "startLine": 487,
+        "startChar": 64,
+        "endLine": 487,
+        "endChar": 73
+      },
+      "revId": "88b3e48d08a574c193d235537885df51f796ceba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22761002_607eeb3f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-06T09:13:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8992e078_b2120504",
       "range": {
         "startLine": 487,
         "startChar": 64,
