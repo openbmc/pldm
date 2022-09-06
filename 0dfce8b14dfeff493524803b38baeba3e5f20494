@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "433db86c_7992884f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-09-06T01:19:03Z",
+      "side": 1,
+      "message": "This particular fix was added to make the dump manager hang visible. Without this issue was wrongly getting pointed to as a pldm issue.",
+      "parentUuid": "f06fe670_0bb2cd39",
+      "range": {
+        "startLine": 128,
+        "startChar": 1,
+        "endLine": 128,
+        "endChar": 25
+      },
+      "revId": "0dfce8b14dfeff493524803b38baeba3e5f20494",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "caae7bcf_602db930",
         "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
         "patchSetId": 1
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "184a0783_94c84ece",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-09-06T01:19:03Z",
+      "side": 1,
+      "message": "Will change once the dependent changes are in.",
+      "parentUuid": "caae7bcf_602db930",
+      "range": {
+        "startLine": 266,
+        "startChar": 80,
+        "endLine": 266,
+        "endChar": 82
+      },
+      "revId": "0dfce8b14dfeff493524803b38baeba3e5f20494",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da7f388b_1983de3d",
         "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
         "patchSetId": 1
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-21T06:15:03Z",
       "side": 1,
       "message": "So, that u can add pldm::PelSeverity::ERROR here also",
+      "range": {
+        "startLine": 284,
+        "startChar": 78,
+        "endLine": 284,
+        "endChar": 79
+      },
+      "revId": "0dfce8b14dfeff493524803b38baeba3e5f20494",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d463e5e_2a04fc91",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-09-06T01:19:03Z",
+      "side": 1,
+      "message": "Will change once the dependent changes are in.",
+      "parentUuid": "da7f388b_1983de3d",
       "range": {
         "startLine": 284,
         "startChar": 78,
