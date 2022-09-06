@@ -6,6 +6,7 @@ namespace pldm
 {
 namespace responder
 {
+using DumpEntryInterface = std::string;
 
 /** @class DumpHandler
  *
