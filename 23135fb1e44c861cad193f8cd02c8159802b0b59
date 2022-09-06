@@ -188,6 +188,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69e7ba85_ccfcbe83",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-09-06T10:04:01Z",
+      "side": 1,
+      "message": "We need to monitor interface added signal only if Entity Manager has not populated the interface when we checked. First we should check if xyz.openbmc_project.Configuration.IBMCompatibleSystem interface is populated by EM if not then only monitor for interface added signal.\nThis way you can avoid calling getConfigDir from bios_config.cpp file.",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 30,
+        "endChar": 50
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f0c5a10a_96be8f8e",
         "filename": "libpldmresponder/system_config.hpp",
         "patchSetId": 8
@@ -250,6 +273,29 @@
         "startChar": 26,
         "endLine": 64,
         "endChar": 29
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d08c2ade_ff9e3427",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-09-06T10:04:01Z",
+      "side": 1,
+      "message": "These variables can be declared as static variables under namespace pldm::responder and can be used in both functions getConfigDir and ibmCompatibleAddedCallback",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 54
       },
       "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
