@@ -16,6 +16,24 @@
       "message": "Is a Tested sections required for this?",
       "revId": "7771a692f2deaf0f7636116bf9ebb427a74e8ba0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1779e636_ee195490",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-06T03:45:01Z",
+      "side": 1,
+      "message": "well, yes it is always beneficial to add the testing related documentation to help reviewer get a good idea \u0026 confidence.\n\nI did not add one in this commit , because this is just a JSON change \u0026 this json is part of standard infrastructure present in the repo since beginning. The JSON validation happens as part of CI, so I did not think it would add any great value.",
+      "parentUuid": "4e3e86a9_b8ad322e",
+      "revId": "7771a692f2deaf0f7636116bf9ebb427a74e8ba0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
