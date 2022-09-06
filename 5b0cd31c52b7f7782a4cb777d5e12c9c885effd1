@@ -46,6 +46,30 @@
       },
       "revId": "5b0cd31c52b7f7782a4cb777d5e12c9c885effd1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abcd2775_538f8e4a",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-06T09:25:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91ab495e_15837c8e",
+      "range": {
+        "startLine": 160,
+        "startChar": 3,
+        "endLine": 172,
+        "endChar": 5
+      },
+      "revId": "5b0cd31c52b7f7782a4cb777d5e12c9c885effd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
