@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67b160c8_bee3c4eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-09-06T10:04:21Z",
+      "side": 1,
+      "message": "Any item which is a FRU should by default implement the Inventory.Item Interface and host the present property. So if present property is not hosted means FRU is absent.",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "fab7e66709fa0bbd71c36658e4470dcc5227a0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fd51c902_5fcc87dd",
         "filename": "common/utils.cpp",
         "patchSetId": 5
