@@ -43,65 +43,78 @@ namespace fs = std::filesystem;
 
 std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
 {
-    static constexpr auto MAPPER_BUSNAME = "xyz.openbmc_project.ObjectMapper";
-    static constexpr auto MAPPER_PATH = "/xyz/openbmc_project/object_mapper";
-    static constexpr auto MAPPER_INTERFACE = "xyz.openbmc_project.ObjectMapper";
+    static constexpr auto DUMP_MANAGER_BUSNAME =
+        "xyz.openbmc_project.Dump.Manager";
+    static constexpr auto DUMP_MANAGER_PATH = "/xyz/openbmc_project/dump";
+    static constexpr auto OBJECT_MANAGER_INTERFACE =
+        "org.freedesktop.DBus.ObjectManager";
     auto& bus = pldm::utils::DBusHandler::getBus();
 
     // Stores the current resource dump entry path
     std::string curResDumpEntryPath{};
 
+    dbus::ObjectValueTree objects;
+    auto method =
+        bus.new_method_call(DUMP_MANAGER_BUSNAME, DUMP_MANAGER_PATH,
+                            OBJECT_MANAGER_INTERFACE, "GetManagedObjects");
+
+    // Select the dump entry interface for system dump or resource dump
+    auto dumpEntryIntf = systemDumpEntry;
+    if ((dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP) ||
+        (dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS))
+    {
+        dumpEntryIntf = resDumpEntry;
+    }
+
     try
     {
-        std::vector<std::string> paths;
-        auto method = bus.new_method_call(MAPPER_BUSNAME, MAPPER_PATH,
-                                          MAPPER_INTERFACE, "GetSubTreePaths");
-        if (dumpType == PLDM_FILE_TYPE_DUMP)
-        {
-            method.append(dumpObjPath);
-            method.append(0);
-            method.append(std::vector<std::string>({systemDumpEntry}));
-        }
-        else if ((dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP) ||
-                 (dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS))
-        {
-            method.append(resDumpObjPath);
-            method.append(0);
-            method.append(std::vector<std::string>({resDumpEntry}));
-        }
-
         auto reply = bus.call(method);
-        reply.read(paths);
-
-        for (const auto& path : paths)
-        {
-            uint32_t dumpId = 0;
-            curResDumpEntryPath = path;
-            if (dumpType == PLDM_FILE_TYPE_DUMP)
-            {
-                dumpId = pldm::utils::DBusHandler().getDbusProperty<uint32_t>(
-                    path.c_str(), "SourceDumpId", systemDumpEntry);
-            }
-            else if (dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP ||
-                     dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS)
-            {
-                dumpId = pldm::utils::DBusHandler().getDbusProperty<uint32_t>(
-                    path.c_str(), "SourceDumpId", resDumpEntry);
-            }
-
-            if (dumpId == fileHandle)
-            {
-                curResDumpEntryPath = path;
-                break;
-            }
-        }
+        reply.read(objects);
     }
+
     catch (const std::exception& e)
     {
-        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
-                  << e.what() << "\n";
+        std::cerr
+            << "Failure with GetManagedObjects in findDumpObjPath call, ERROR="
+            << e.what() << "\n";
+        return curResDumpEntryPath;
     }
 
+    for (const auto& object : objects)
+    {
+        for (const auto& interface : object.second)
+        {
+            if (interface.first != dumpEntryIntf)
+            {
+                continue;
+            }
+
+            for (auto& propertyMap : interface.second)
+            {
+                if (propertyMap.first == "SourceDumpId")
+                {
+                    auto dumpIdPtr = std::get_if<uint32_t>(&propertyMap.second);
+                    if (dumpIdPtr != nullptr)
+                    {
+                        auto dumpId = *dumpIdPtr;
+                        if (fileHandle == dumpId)
+                        {
+                            curResDumpEntryPath = object.first.str;
+                            return curResDumpEntryPath;
+                        }
+                    }
+                    else
+                    {
+                        std::cerr
+                            << "Invalid SourceDumpId in curResDumpEntryPath "
+                            << curResDumpEntryPath
+                            << " but continuing with next entry for a match..."
+                            << "\n";
+                    }
+                }
+            }
+        }
+    }
     return curResDumpEntryPath;
 }
 
