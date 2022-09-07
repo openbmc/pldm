@@ -130,6 +130,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b705cba_222a138f",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-09-07T08:26:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "65abe596_7002f2fe",
+      "range": {
+        "startLine": 1,
+        "startChar": 24,
+        "endLine": 1,
+        "endChar": 29
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef79a0f9_c754a49c",
@@ -161,6 +185,24 @@
       "side": 1,
       "message": "Added c17, this actually led me to add D_DEFAULT_SOURCE as my project argument - as without that we get complaints about functions from endian.h as implicitly declared.",
       "parentUuid": "ef79a0f9_c754a49c",
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9add1e8_452cd12b",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-09-07T08:26:25Z",
+      "side": 1,
+      "message": "Can you explain where D_DEFAULT_SOURCE comes from?",
+      "parentUuid": "2f6e4a3a_c01ca742",
       "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -255,6 +297,30 @@
       "side": 1,
       "message": "yes we want both \n\nsubdirectories -\u003e would install all the header files in /usr/include/libpldm folder\npreverse_path -\u003e would install all the header files preserving the path for example\noem/ibm/fru_oem_ibm.h will be now installed at /usr/include/libpldm/oem/ibm/ folder.",
       "parentUuid": "c251eaa1_39bc20ab",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 18
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2237e1a4_f10609c8",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-09-07T08:26:25Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6b2d3b8f_179a580d",
       "range": {
         "startLine": 32,
         "startChar": 0,
