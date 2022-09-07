@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "122038d5_213635a8",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-09-07T05:23:30Z",
+      "side": 1,
+      "message": "This is one more MCTP association ,the MCTP socket that needs to be decoupled from this PLDM request/handler class.\nI think the right place for mentioning the mctp socket is : as part of the MCTP based PLDM TID discovery,(https://gerrit.openbmc.org/c/openbmc/pldm/+/51443/30..35/platform-mc/terminus_manager.cpp#b61) we create the map TID_to_EID map (tidPool).\nso along with the EID the associated MCTP socket FD can also be part of the TID pool map. so from the TID map we can take the respective EID and mctp sock fd and we call the mctp specific pldm request api which is inturn called from the generic pldm send request api SendRecvPldmMsg",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 56
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f581b601_dda2a10e",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-09-07T05:23:30Z",
+      "side": 1,
+      "message": "```\nMCTP EID association is needed for PLDM encode request message API() too.\nSince instanceId is part of PLDM message header and generating instanceId is managed by https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/PLDM/Requester.interface.yaml.\n```\nThis should not be the case as the instance id is unique identifier for a pldm transaction. so i think TID should be associated with the instance id rather than EID. if needed since we have introduced tid in the terminus manager i think we should update the requester interface as well.(i.e replace EID in requester class with TID and derive the EID from TID using the TIDpool map",
+      "range": {
+        "startLine": 128,
+        "startChar": 48,
+        "endLine": 128,
+        "endChar": 58
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17579f13_4ad00b8d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-09-07T05:23:30Z",
+      "side": 1,
+      "message": "I think the change you have made in the review regarding the comment\n(https://gerrit.openbmc.org/c/openbmc/pldm/+/51443/30..35/platform-mc/terminus_manager.cpp#b265) should be added directly here in this handler class.\nsince only terminus manager will be able to use the common api which is added in the terminus_manager.cpp.\nIf the common sendRecvPldmMsg method is implemented in the handler.hpp file,\nthen any other process such as pldm sensor app, pldm fw update should be able to use the  tid based common sendRecvPldmMsg api. to achieve this we might need to access the TIDpool MAP to be part of PLDM requester/handler class",
+      "range": {
+        "startLine": 299,
+        "startChar": 7,
+        "endLine": 299,
+        "endChar": 22
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
