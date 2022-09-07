@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fcbcbf9_c8b028fd",
+        "filename": "meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24766eb0_7d72f6c1",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 5
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3656a45_94fd49aa",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-08-30T01:52:22Z",
       "side": 1,
       "message": "shouldn\u0027t this one be called \u0027fru_oem_ibm.h\u0027 consistent with the other OEM headers?",
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "734b2cf3_71d47436",
+        "filename": "subprojects/libpldm/include/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3656a45_94fd49aa",
       "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65abe596_7002f2fe",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Yeah this is another item that\u0027s in my list since a long time, I did try to change the tests to c, but it s bit of work[we use things like std::array, vectors e.t.c in the test - just need to convert them into c type arrays and make sure we fix all the warnings]. I can pick it up once this is migrated.",
+      "parentUuid": "2dad22b1_979581c6",
+      "range": {
+        "startLine": 1,
+        "startChar": 24,
+        "endLine": 1,
+        "endChar": 29
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef79a0f9_c754a49c",
         "filename": "subprojects/libpldm/meson.build",
         "patchSetId": 5
@@ -83,6 +149,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f6e4a3a_c01ca742",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Added c17, this actually led me to add D_DEFAULT_SOURCE as my project argument - as without that we get complaints about functions from endian.h as implicitly declared.",
+      "parentUuid": "ef79a0f9_c754a49c",
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13d2f7c2_bb6f7135",
         "filename": "subprojects/libpldm/meson.build",
         "patchSetId": 5
@@ -94,6 +178,24 @@
       "writtenOn": "2022-08-30T01:52:22Z",
       "side": 1,
       "message": "Can we please make this a 0 major version? That indicates the library API isn\u0027t yet stable, which is probably what we want.\n\nSee https://semver.org/#spec-item-4",
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5770223_e688e0cb",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Should I change it to 0.0.1 ?",
+      "parentUuid": "13d2f7c2_bb6f7135",
       "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -123,6 +225,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b2d3b8f_179a580d",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "yes we want both \n\nsubdirectories -\u003e would install all the header files in /usr/include/libpldm folder\npreverse_path -\u003e would install all the header files preserving the path for example\noem/ibm/fru_oem_ibm.h will be now installed at /usr/include/libpldm/oem/ibm/ folder.",
+      "parentUuid": "c251eaa1_39bc20ab",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 18
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "104829d7_a7205cde",
         "filename": "subprojects/libpldm/meson_options.txt",
         "patchSetId": 5
@@ -134,6 +260,24 @@
       "writtenOn": "2022-08-30T01:52:22Z",
       "side": 1,
       "message": "Unnecessary whitespace at the bottom",
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "225b7f65_a1026af1",
+        "filename": "subprojects/libpldm/meson_options.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "104829d7_a7205cde",
       "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -161,6 +305,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4f821a8_137b6e90",
+        "filename": "subprojects/libpldm/src/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90c4dbfc_d6fe48e4",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 22
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c3d9ff3_a8caa457",
@@ -174,6 +342,30 @@
       "writtenOn": "2022-08-30T01:52:22Z",
       "side": 1,
       "message": "If we set \u0027required: true\u0027 here we get rid of the conditional below, which cleans up the code a bit.",
+      "range": {
+        "startLine": 4,
+        "startChar": 58,
+        "endLine": 4,
+        "endChar": 73
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2b49dcd_8988e15d",
+        "filename": "subprojects/libpldm/tests/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-07T07:04:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c3d9ff3_a8caa457",
       "range": {
         "startLine": 4,
         "startChar": 58,
