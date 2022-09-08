@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26b2bc31_47cf8a77",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-09-08T16:19:30Z",
+      "side": 1,
+      "message": "When does this condition gets satisfied?",
+      "range": {
+        "startLine": 555,
+        "startChar": 7,
+        "endLine": 555,
+        "endChar": 65
+      },
+      "revId": "e4cca99997e12882432f2ac6c5a22871e33b091e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a99047e_7211fec8",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2022-09-08T16:19:30Z",
+      "side": 1,
+      "message": "When are we setting isHostPdrModified to true? Don\u0027t see it in the changes",
+      "range": {
+        "startLine": 266,
+        "startChar": 3,
+        "endLine": 266,
+        "endChar": 35
+      },
+      "revId": "e4cca99997e12882432f2ac6c5a22871e33b091e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
