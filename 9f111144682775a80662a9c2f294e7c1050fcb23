@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e6db28_a98e734a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-08T17:21:13Z",
+      "side": 1,
+      "message": "when is this statement reached?",
+      "range": {
+        "startLine": 118,
+        "startChar": 4,
+        "endLine": 118,
+        "endChar": 31
+      },
+      "revId": "9f111144682775a80662a9c2f294e7c1050fcb23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
