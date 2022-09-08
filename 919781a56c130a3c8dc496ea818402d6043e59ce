@@ -209,6 +209,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ef6e373_2f3a69e1",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-08T06:18:26Z",
+      "side": 1,
+      "message": "Per my understanding, functions like htobe16, htole16, be16toh, le16toh, htobe32, htole32, be32toh, le32toh, htobe64, htole64, be64toh are defined in endian.h header file and are enable through feature test macros.\n\nFor example, from man page of htole32 , defines _BSD_SOURCE , to enable these functions the BSD_SOURCE macro needs to be defined.\n\nhttps://linux.die.net/man/3/htole32\n\nAnd I came to know that BSD_SOURCE has been deprecated since glib version 2.18, and the later versions would need DEFAULT_SOURCE macro instead.",
+      "parentUuid": "f9add1e8_452cd12b",
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13d2f7c2_bb6f7135",
         "filename": "subprojects/libpldm/meson.build",
         "patchSetId": 5
