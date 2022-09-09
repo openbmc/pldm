@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23a5d314_a99ed5da",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-09T03:28:20Z",
+      "side": 1,
+      "message": "when all the modified record handles are fetched from host.",
+      "parentUuid": "26b2bc31_47cf8a77",
+      "range": {
+        "startLine": 555,
+        "startChar": 7,
+        "endLine": 555,
+        "endChar": 65
+      },
+      "revId": "e4cca99997e12882432f2ac6c5a22871e33b091e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a99047e_7211fec8",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-08T16:19:30Z",
       "side": 1,
       "message": "When are we setting isHostPdrModified to true? Don\u0027t see it in the changes",
+      "range": {
+        "startLine": 266,
+        "startChar": 3,
+        "endLine": 266,
+        "endChar": 35
+      },
+      "revId": "e4cca99997e12882432f2ac6c5a22871e33b091e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4008ba45_98c68b12",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-09T03:28:20Z",
+      "side": 1,
+      "message": "This is set to true when we get a repo change event from host with the event data operation as PLDM_RECORDS_MODIFIED.\nThat changes are done in other commit where there is a request coming from host.",
+      "parentUuid": "1a99047e_7211fec8",
       "range": {
         "startLine": 266,
         "startChar": 3,
