@@ -7,8 +7,8 @@ After=xyz.openbmc_project.biosconfig_manager.service
 Restart=always
 Type=dbus
 BusName=xyz.openbmc_project.PLDM
-EnvironmentFile=/etc/default/pldm_verbosity
-ExecStart=/usr/bin/pldmd --verbose $VERBOSE
+EnvironmentFile=/etc/default/pldmd
+ExecStart=/usr/bin/pldmd $PLDM_ARGS
 
 [Install]
 WantedBy=multi-user.target
