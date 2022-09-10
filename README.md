@@ -8,6 +8,19 @@ The simplest way of running the tests is as described by the meson man page:
 ```
 meson builddir && meson test -C builddir
 ```
+## To enable pldm verbosity
+pldm daemon accepts a command line argument `--verbose` or `--v` to enable the
+daemon to run in verbose mode. It can be done via adding this option to the environment
+file that pldm service consumes.
+```
+echo 'PLDMD_ARGS="--verbose"' > /etc/default/pldmd
+systemctl restart pldmd
+```
+## To disable pldm verbosity
+```
+rm /etc/default/pldmd
+systemctl restart pldmd
+```
 
 Alternatively, tests can be run in the OpenBMC CI docker container, or with an
 OpenBMC x86 sdk(see below for x86 steps).

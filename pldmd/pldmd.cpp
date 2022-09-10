@@ -147,37 +147,25 @@ void optionUsage(void)
 {
     std::cerr << "Usage: pldmd [options]\n";
     std::cerr << "Options:\n";
-    std::cerr
-        << "  --verbose=<0/1>  0 - Disable verbosity, 1 - Enable verbosity\n";
-    std::cerr << "Defaulted settings:  --verbose=0 \n";
+    std::cerr << "  [--verbose] - would enable verbosity\n";
 }
 
 int main(int argc, char** argv)
 {
     bool verbose = false;
-    static struct option long_options[] = {
-        {"verbose", required_argument, 0, 'v'}, {0, 0, 0, 0}};
+    static struct option long_options[] = {{"verbose", no_argument, 0, 'v'},
+                                           {0, 0, 0, 0}};
 
     auto argflag = getopt_long(argc, argv, "v:", long_options, nullptr);
     switch (argflag)
     {
         case 'v':
-            switch (std::stoi(optarg))
-            {
-                case 0:
-                    verbose = false;
-                    break;
-                case 1:
-                    verbose = true;
-                    break;
-                default:
-                    optionUsage();
-                    exit(EXIT_FAILURE);
-            }
+            verbose = true;
             break;
         case -1:
             break;
         default:
+            optionUsage();
             exit(EXIT_FAILURE);
     }
 

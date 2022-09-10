@@ -52,7 +52,6 @@ if get_option('oem-ibm').enabled()
   add_project_arguments('-DOEM_IBM', language : 'c')
   add_project_arguments('-DOEM_IBM', language : 'cpp')
 endif
-conf_data.set('PLDM_VERBOSITY',get_option('verbosity'))
 conf_data.set('NUMBER_OF_REQUEST_RETRIES', get_option('number-of-request-retries'))
 conf_data.set('INSTANCE_ID_EXPIRATION_INTERVAL',get_option('instance-id-expiration-interval'))
 conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
@@ -203,13 +202,6 @@ if get_option('systemd').enabled()
     install_dir: systemd_system_unit_dir,
     output: 'pldmd.service',
   )
-
-  configure_file(
-    input: 'pldmd/verbosity/verbosity',
-    output: 'pldm_verbosity',
-    configuration: conf_data,
-    install: true,
-    install_dir: join_paths(get_option('sysconfdir'), 'default'))
 
   if get_option('oem-ibm').enabled()
     subdir('oem/ibm/service_files')
