@@ -1,10 +1,10 @@
 [
    {
-      "path":"/var/lib/pldm/PHYP-NVRAM",
+      "path":"/var/lib/phosphor-software-manager/hostfw/nvram/PHYP-NVRAM",
       "file_traits":1
    },
    {
-      "path":"/var/lib/pldm/PHYP-NVRAM-CKSUM",
+      "path":"/var/lib/phosphor-software-manager/hostfw/nvram/PHYP-NVRAM-CKSUM",
       "file_traits":4
    },
    {
