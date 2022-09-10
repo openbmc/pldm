@@ -28,7 +28,6 @@ namespace pldm
 {
 namespace responder
 {
-
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 int FileHandler::transferFileData(int32_t fd, bool upstream, uint32_t offset,
@@ -160,6 +159,11 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         case PLDM_FILE_TYPE_PROGRESS_SRC:
         {
             return std::make_unique<ProgressCodeHandler>(fileHandle);
+        }
+        case PLDM_FILE_TYPE_LID_RUNNING:
+        {
+            return std::make_unique<LidHandler>(fileHandle, false,
+                                                PLDM_FILE_TYPE_LID_RUNNING);
         }
         default:
         {
