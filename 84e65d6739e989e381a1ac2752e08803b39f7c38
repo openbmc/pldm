@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "9911908c_653fecbc",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,34 @@
         "endChar": 17
       },
       "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38ca47b9_11b60e2c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T02:42:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9911908c_653fecbc",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "a1ac64ea_cac37dca",
         "filename": "/COMMIT_MSG",
@@ -43,10 +68,34 @@
         "endChar": 47
       },
       "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f77b656_645595eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T02:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1ac64ea_cac37dca",
+      "range": {
+        "startLine": 10,
+        "startChar": 39,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "d5e3a625_ccb0bdec",
         "filename": "libpldmresponder/fru.cpp",
@@ -66,10 +115,34 @@
         "endChar": 79
       },
       "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4918ba7_4e3447b0",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T02:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5e3a625_ccb0bdec",
+      "range": {
+        "startLine": 21,
+        "startChar": 72,
+        "endLine": 21,
+        "endChar": 79
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "ea63179a_ea4bcf16",
         "filename": "libpldmresponder/fru.cpp",
@@ -89,10 +162,34 @@
         "endChar": 28
       },
       "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9a3970a_1b18e2fb",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T02:42:24Z",
+      "side": 1,
+      "message": "\u003e guess instead of vector , using stack would be better right ?\n\u003e \n\u003e then you dont need a reverse iterator, as it honors last in first out\n\nYeah, I used std::stack",
+      "parentUuid": "ea63179a_ea4bcf16",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "4727938b_f529e67a",
         "filename": "libpldmresponder/fru.cpp",
@@ -112,10 +209,34 @@
         "endChar": 5
       },
       "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88156501_6ac848bb",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T02:42:24Z",
+      "side": 1,
+      "message": "\u003e this can be ?\n\u003e \n\u003e obj \u003d path;\n\u003e while(obj!\u003droot)\n\u003e {\n\u003e   tmpObjPaths.push_back(obj);\n\u003e   obj \u003d pldm::utils::findParent(obj);\n\u003e }\n\nUpdated",
+      "parentUuid": "4727938b_f529e67a",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 5
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "a221637e_5f5c364b",
         "filename": "libpldmresponder/fru.cpp",
@@ -135,10 +256,34 @@
         "endChar": 23
       },
       "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b2283b9_5da46264",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T02:42:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a221637e_5f5c364b",
+      "range": {
+        "startLine": 76,
+        "startChar": 3,
+        "endLine": 77,
+        "endChar": 23
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "68414f93_4066417a",
         "filename": "libpldmresponder/fru.cpp",
@@ -158,8 +303,31 @@
         "endChar": 22
       },
       "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7344562_96f2e3b8",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T02:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68414f93_4066417a",
+      "range": {
+        "startLine": 97,
+        "startChar": 17,
+        "endLine": 97,
+        "endChar": 22
+      },
+      "revId": "84e65d6739e989e381a1ac2752e08803b39f7c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
