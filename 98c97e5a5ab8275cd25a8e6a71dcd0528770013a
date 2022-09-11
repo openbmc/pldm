@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bf34cc6_a2c071a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T05:57:09Z",
+      "side": 1,
+      "message": "please format it",
+      "range": {
+        "startLine": 13,
+        "startChar": 72,
+        "endLine": 14,
+        "endChar": 5
+      },
+      "revId": "98c97e5a5ab8275cd25a8e6a71dcd0528770013a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7dbc8a3_dba52115",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T05:57:09Z",
+      "side": 1,
+      "message": "as above",
+      "revId": "98c97e5a5ab8275cd25a8e6a71dcd0528770013a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1f3bdfd_6a4c949e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T05:57:09Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 73
+      },
+      "revId": "98c97e5a5ab8275cd25a8e6a71dcd0528770013a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2798fc29_98de7d17",
+        "filename": "oem/ibm/service_files/pldm-create-phyp-nvram-cksum.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T05:57:09Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 10,
+        "startChar": 21,
+        "endLine": 10,
+        "endChar": 276
+      },
+      "revId": "98c97e5a5ab8275cd25a8e6a71dcd0528770013a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c7f65c9_987b6973",
+        "filename": "oem/ibm/service_files/pldm-create-phyp-nvram.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-11T05:57:09Z",
+      "side": 1,
+      "message": "Better to move it to a script file?",
+      "range": {
+        "startLine": 10,
+        "startChar": 21,
+        "endLine": 10,
+        "endChar": 259
+      },
+      "revId": "98c97e5a5ab8275cd25a8e6a71dcd0528770013a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
