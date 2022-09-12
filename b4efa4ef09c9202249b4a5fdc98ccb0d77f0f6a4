@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7625fb0_48d9e3a2",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-12T07:13:10Z",
+      "side": 1,
+      "message": "what is this string ?",
+      "range": {
+        "startLine": 120,
+        "startChar": 48,
+        "endLine": 120,
+        "endChar": 59
+      },
+      "revId": "b4efa4ef09c9202249b4a5fdc98ccb0d77f0f6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ae3308c_87d8c76c",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-12T07:13:10Z",
+      "side": 1,
+      "message": "not a const expression ?",
+      "range": {
+        "startLine": 123,
+        "startChar": 13,
+        "endLine": 123,
+        "endChar": 76
+      },
+      "revId": "b4efa4ef09c9202249b4a5fdc98ccb0d77f0f6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "279d0fab_c0b3dd2b",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-12T07:13:10Z",
+      "side": 1,
+      "message": "please add a comment as to what should be the behaviour in other cases where the status is not in progress ?",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 126,
+        "endChar": 9
+      },
+      "revId": "b4efa4ef09c9202249b4a5fdc98ccb0d77f0f6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6cdbdf1_d6f67762",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 10
@@ -19,6 +88,53 @@
         "startChar": 22,
         "endLine": 130,
         "endChar": 67
+      },
+      "revId": "b4efa4ef09c9202249b4a5fdc98ccb0d77f0f6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "752d9ec8_c3da82bc",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-12T07:13:10Z",
+      "side": 1,
+      "message": "+1, please add details like what is the obj path \u0026 what is the interface e.t.c",
+      "parentUuid": "b6cdbdf1_d6f67762",
+      "range": {
+        "startLine": 130,
+        "startChar": 22,
+        "endLine": 130,
+        "endChar": 67
+      },
+      "revId": "b4efa4ef09c9202249b4a5fdc98ccb0d77f0f6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "691b8418_c3b09c41",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-12T07:13:10Z",
+      "side": 1,
+      "message": "this is redundant as it is anyways the end of the function.",
+      "range": {
+        "startLine": 133,
+        "startChar": 8,
+        "endLine": 133,
+        "endChar": 15
       },
       "revId": "b4efa4ef09c9202249b4a5fdc98ccb0d77f0f6a4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
