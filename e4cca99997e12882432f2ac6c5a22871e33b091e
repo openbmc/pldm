@@ -93,6 +93,30 @@
       },
       "revId": "e4cca99997e12882432f2ac6c5a22871e33b091e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e971f675_1b50bae8",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-12T04:00:13Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "4008ba45_98c68b12",
+      "range": {
+        "startLine": 266,
+        "startChar": 3,
+        "endLine": 266,
+        "endChar": 35
+      },
+      "revId": "e4cca99997e12882432f2ac6c5a22871e33b091e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
