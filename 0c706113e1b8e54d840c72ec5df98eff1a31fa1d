@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f1f3720_4ae28752",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-12T10:10:29Z",
+      "side": 1,
+      "message": "except setting the hostpdrmodified , everything else is the same as records added right ? can we re-use the code ?",
+      "range": {
+        "startLine": 533,
+        "startChar": 12,
+        "endLine": 546,
+        "endChar": 13
+      },
+      "revId": "0c706113e1b8e54d840c72ec5df98eff1a31fa1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
