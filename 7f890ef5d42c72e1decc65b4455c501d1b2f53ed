@@ -51,6 +51,24 @@
       "message": "Should the file be renamed now?",
       "revId": "7f890ef5d42c72e1decc65b4455c501d1b2f53ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b82f3610_8b427bcf",
+        "filename": "pldmd/verbosity/verbosity",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-12T05:49:40Z",
+      "side": 1,
+      "message": "Yes , Ideally I guess this should have been just pldmd as this is an environment file for pldmd - not anything specific to verbosity alone.\n\nLet me try to modify this.",
+      "parentUuid": "34de3cf3_cb6afbf0",
+      "revId": "7f890ef5d42c72e1decc65b4455c501d1b2f53ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
