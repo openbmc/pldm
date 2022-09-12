@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e29f1c0_1a6a5625",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05b4b1f6_1a66eb94",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fde8d9b1_e3f1392e",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-30T07:22:10Z",
       "side": 1,
       "message": "this is not correct, the getSubtree call should be made from a try catch block , it should not be inside the util function.\n\nWe should give the ability to handle exceptions from the clients that use this API (we cannot decide the clients exception behaviour).",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 5
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a454440_2b7d3d6c",
+        "filename": "common/utils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fde8d9b1_e3f1392e",
       "range": {
         "startLine": 239,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cf6609a_b1c2d890",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "865d6f5d_c8699d94",
+      "range": {
+        "startLine": 469,
+        "startChar": 9,
+        "endLine": 469,
+        "endChar": 37
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60423034_365d328c",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dbb7000_33da02c1",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60423034_365d328c",
+      "range": {
+        "startLine": 479,
+        "startChar": 3,
+        "endLine": 479,
+        "endChar": 43
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a5955c3_f90d087f",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-08-30T07:22:10Z",
       "side": 1,
       "message": "can we add this in the load() , rather than repeating the same logic in other places ?",
+      "range": {
+        "startLine": 481,
+        "startChar": 7,
+        "endLine": 484,
+        "endChar": 9
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c993f9c2_25052626",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a5955c3_f90d087f",
       "range": {
         "startLine": 481,
         "startChar": 7,
@@ -163,6 +283,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1085f14f_8e18c433",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ec5eb1e_c899882c",
+      "range": {
+        "startLine": 302,
+        "startChar": 9,
+        "endLine": 302,
+        "endChar": 26
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2382fa76_af4a420c",
@@ -209,6 +353,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d651763_acf77118",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2382fa76_af4a420c",
+      "range": {
+        "startLine": 29,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 48
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0c5a10a_96be8f8e",
@@ -245,6 +413,30 @@
       "writtenOn": "2022-08-30T07:22:10Z",
       "side": 1,
       "message": "why do you need this to be public ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 29
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e019e913_80124aa5",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ffbc42b_988ed4a9",
       "range": {
         "startLine": 38,
         "startChar": 4,
@@ -324,6 +516,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76069187_8727374b",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85ce1b52_94fffe72",
+      "range": {
+        "startLine": 90,
+        "startChar": 7,
+        "endLine": 92,
+        "endChar": 65
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b57bbdcb_10357065",
@@ -337,6 +553,30 @@
       "writtenOn": "2022-08-30T11:35:54Z",
       "side": 1,
       "message": "this is specific to bios right.. so should we say as MockBiosSystemConfig ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 6,
+        "endLine": 79,
+        "endChar": 22
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad4c37db_8c141f99",
+        "filename": "libpldmresponder/test/libpldmresponder_bios_config_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-12T12:37:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b57bbdcb_10357065",
       "range": {
         "startLine": 79,
         "startChar": 6,
