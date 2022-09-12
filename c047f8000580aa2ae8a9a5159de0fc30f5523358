@@ -46,6 +46,30 @@
       },
       "revId": "c047f8000580aa2ae8a9a5159de0fc30f5523358",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ca05685_76f27051",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-09-12T06:57:15Z",
+      "side": 1,
+      "message": "Yes PLDM should be a pass through here. Whatever may be the comment we can pass to PHYP and they can reject/approve according to the requirements.",
+      "parentUuid": "b9be82b8_cdd0a20e",
+      "range": {
+        "startLine": 176,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 5
+      },
+      "revId": "c047f8000580aa2ae8a9a5159de0fc30f5523358",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
