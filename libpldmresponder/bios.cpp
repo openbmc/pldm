@@ -17,13 +17,10 @@ using namespace pldm::utils;
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace utils
 {
-
 void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
                     uint8_t& hours, uint8_t& day, uint8_t& month,
                     uint16_t& year)
@@ -64,7 +61,6 @@ std::time_t timeToEpoch(uint8_t seconds, uint8_t minutes, uint8_t hours,
 
 namespace bios
 {
-
 using EpochTimeUS = uint64_t;
 
 DBusHandler dbusHandler;
@@ -160,6 +156,32 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     uint8_t month = 0;
     uint16_t year = 0;
     std::time_t timeSec;
+
+    constexpr auto timeSyncPath = "/xyz/openbmc_project/time/sync_method";
+    constexpr auto timeSyncInterface =
+        "xyz.openbmc_project.Time.Synchronization";
+    constexpr auto timeSyncProperty = "TimeSyncMethod";
+
+    // The time is correct on BMC when in NTP mode, so we do not want to
+    // try and set the time again and cause potential time drifts.
+    try
+    {
+        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            timeSyncPath, timeSyncProperty, timeSyncInterface);
+        const auto& mode = std::get<std::string>(propVal);
+
+        if (mode == "xyz.openbmc_project.Time.Synchronization.Method.NTP")
+        {
+            return ccOnlyResponse(request, PLDM_SUCCESS);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error getting the time sync property, PATH="
+                  << timeSyncPath << "INTERFACE=" << timeSyncInterface
+                  << "PROPERTY=" << timeSyncProperty << "ERROR=" << e.what()
+                  << "\n";
+    }
 
     constexpr auto setTimeInterface = "xyz.openbmc_project.Time.EpochTime";
     constexpr auto setTimePath = "/xyz/openbmc_project/time/bmc";
