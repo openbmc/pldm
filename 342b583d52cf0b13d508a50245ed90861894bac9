@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09a9c78c_dc7ad4c4",
+        "filename": "README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-14T21:12:14Z",
+      "side": 1,
+      "message": "You might want this to be \u0027PLDMD_ARGS\u003d\"--verbose\"\u0027.",
+      "range": {
+        "startLine": 16,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 27
+      },
+      "revId": "342b583d52cf0b13d508a50245ed90861894bac9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
