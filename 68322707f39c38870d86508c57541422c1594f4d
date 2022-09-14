@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "142f9e3b_88827237",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-14T15:32:28Z",
+      "side": 1,
+      "message": "My idea when working on new patch set 51443 is that the generic TerminusManager::SendRecvPldmMsg() API to support different transport layer requester implementation instead of having generic requester class.\n\nIn this generic TerminusManager::SendRecvPldmMsg() API can be extended to support different transport layer by checking transportLayerTable[tid] for new SupportedTransportLayer enum and than invoke corresponding transport layer requester.\n\nFor new supportedTransportLayer(e.g. NCSI_RBT), TerminusManager class should implement necessary struct and overloaded APIs.\ne.g.\nMctpInfo vs NcsiRbtInfo\nmapTid(const MctpInfo\u0026) vs MapTid(const NcsiRbtInfo\u0026)\ntoTid(const MctpInfo\u0026) vs toTid(const NcsiRbtInfo\u0026)",
+      "parentUuid": "122038d5_213635a8",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 56
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f581b601_dda2a10e",
         "filename": "requester/handler.hpp",
         "patchSetId": 20
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5decfde4_b6fff0b6",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-14T15:32:28Z",
+      "side": 1,
+      "message": "The instanceId argument here helps MCTP requester class to distinguish which registered callback should be invoked for received PLDM response message.",
+      "parentUuid": "f581b601_dda2a10e",
+      "range": {
+        "startLine": 128,
+        "startChar": 48,
+        "endLine": 128,
+        "endChar": 58
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17579f13_4ad00b8d",
         "filename": "requester/handler.hpp",
         "patchSetId": 20
@@ -60,6 +108,30 @@
       "writtenOn": "2022-09-07T05:23:30Z",
       "side": 1,
       "message": "I think the change you have made in the review regarding the comment\n(https://gerrit.openbmc.org/c/openbmc/pldm/+/51443/30..35/platform-mc/terminus_manager.cpp#b265) should be added directly here in this handler class.\nsince only terminus manager will be able to use the common api which is added in the terminus_manager.cpp.\nIf the common sendRecvPldmMsg method is implemented in the handler.hpp file,\nthen any other process such as pldm sensor app, pldm fw update should be able to use the  tid based common sendRecvPldmMsg api. to achieve this we might need to access the TIDpool MAP to be part of PLDM requester/handler class",
+      "range": {
+        "startLine": 299,
+        "startChar": 7,
+        "endLine": 299,
+        "endChar": 22
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f39229_fc6e595d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-14T15:32:28Z",
+      "side": 1,
+      "message": "I would prefer to have different requester for different transport layer.\nThe pldm sensor app, pldm fw update should use TerminusManager::SendRecvPldmMsg() if the PLDM message needs to be addressed by tid.",
+      "parentUuid": "17579f13_4ad00b8d",
       "range": {
         "startLine": 299,
         "startChar": 7,

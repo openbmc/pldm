@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "693d2be6_b10bea27",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-14T15:32:28Z",
+      "side": 1,
+      "message": "For example, the coroutine initTerminus() in patch set 51443.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/51443/30/platform-mc/terminus_manager.cpp#101\n\nThe getPLDMTypes() is called by co_await operator in initTerminus(). In the example, The initTerminus() is getPLDMTypes()\u0027s parent coroutine.",
+      "parentUuid": "c6901271_a5637493",
+      "range": {
+        "startLine": 444,
+        "startChar": 42,
+        "endLine": 444,
+        "endChar": 68
+      },
+      "revId": "6fd4d1c2e1371b427e30311720081bd45ade5491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0706ed73_d84046e1",
         "filename": "requester/handler.hpp",
         "patchSetId": 17
@@ -54,6 +78,30 @@
       "writtenOn": "2022-08-17T11:26:52Z",
       "side": 1,
       "message": "I am pretty new to c++20 coroutine. From https://en.cppreference.com/w/cpp/language/coroutines i don\u0027t see why awaitable APIs are required as part of the task which contains promise_type. Could you help me understand when exactly these APIs will get called.",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 5
+      },
+      "revId": "6fd4d1c2e1371b427e30311720081bd45ade5491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96e838af_47eaef08",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-14T15:32:28Z",
+      "side": 1,
+      "message": "The awaitable APIs will be used when function is called by co_await OP.\nPlease find the section of \"co_await\" in the link, https://en.cppreference.com/w/cpp/language/coroutines",
+      "parentUuid": "0706ed73_d84046e1",
       "range": {
         "startLine": 494,
         "startChar": 0,
