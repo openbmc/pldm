@@ -16,6 +16,24 @@
       "message": "recipe support for this is at https://gerrit.openbmc.org/c/openbmc/openbmc/+/57124",
       "revId": "33ebbaeeba8d87978ad8ee88ef16a2e3ea22ed72",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c93b5f5_0830621b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-14T14:55:16Z",
+      "side": 1,
+      "message": "\u003e recipe support for this is at https://gerrit.openbmc.org/c/openbmc/openbmc/+/57124\n\nBased on the review comments in the recipe change, that change is no-longer needed.",
+      "parentUuid": "fbc14062_0b53ed1b",
+      "revId": "33ebbaeeba8d87978ad8ee88ef16a2e3ea22ed72",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
