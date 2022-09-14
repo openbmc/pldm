@@ -377,6 +377,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a46589fc_2d188e8a",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-14T16:41:05Z",
+      "side": 1,
+      "message": "That will lead to a race condition, because if we try to get the xyz.openbmc_project.Configuration.IBMCompatibleSystem interface and entity manager would have already started and populated the interface and sent an interface added signal, and if we have not subscribed for the signal by then we would loose the signal. Hence it is always better to subscribe to the interface added signal in the constructors so that PLDM is always waiting on the notification and as soon as the interface is added we get that.",
+      "parentUuid": "69e7ba85_ccfcbe83",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 30,
+        "endChar": 50
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0c5a10a_96be8f8e",
@@ -390,6 +414,30 @@
       "writtenOn": "2022-08-30T11:35:54Z",
       "side": 1,
       "message": "can we give any other func name?\n\nif this is ibm specific should this is be under oem/ibm ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 35
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c2b67b7_e9a80c96",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-14T16:41:05Z",
+      "side": 1,
+      "message": "Even though this is used only by IBM, this is a generic upstream solution to fetch the platform type.",
+      "parentUuid": "f0c5a10a_96be8f8e",
       "range": {
         "startLine": 38,
         "startChar": 8,
@@ -470,6 +518,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cca06ddb_92ef8094",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-14T16:41:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a110cd4_b1f856eb",
+      "range": {
+        "startLine": 64,
+        "startChar": 26,
+        "endLine": 64,
+        "endChar": 29
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d08c2ade_ff9e3427",
@@ -483,6 +555,30 @@
       "writtenOn": "2022-09-06T10:04:01Z",
       "side": 1,
       "message": "These variables can be declared as static variables under namespace pldm::responder and can be used in both functions getConfigDir and ibmCompatibleAddedCallback",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 54
+      },
+      "revId": "23135fb1e44c861cad193f8cd02c8159802b0b59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33e13e6b_be2b3540",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-14T16:41:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d08c2ade_ff9e3427",
       "range": {
         "startLine": 80,
         "startChar": 8,
