@@ -39,6 +39,53 @@
       },
       "revId": "7342b21c4ef3f5cd6e7f3b8334ab5047ca4373eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88d9b073_82a05d25",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T13:50:18Z",
+      "side": 1,
+      "message": "+1, looks like an informational trace. please make it a cout.",
+      "parentUuid": "724aff10_2a177f2f",
+      "range": {
+        "startLine": 175,
+        "startChar": 2,
+        "endLine": 175,
+        "endChar": 78
+      },
+      "revId": "7342b21c4ef3f5cd6e7f3b8334ab5047ca4373eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79302c29_8f616aeb",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T13:50:18Z",
+      "side": 1,
+      "message": "would be good to add additional details like the property name/ interface/object path here.",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 182,
+        "endChar": 26
+      },
+      "revId": "7342b21c4ef3f5cd6e7f3b8334ab5047ca4373eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
