@@ -110,6 +110,30 @@
       },
       "revId": "6fd4d1c2e1371b427e30311720081bd45ade5491",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db3f1745_48e92866",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-15T01:39:13Z",
+      "side": 1,
+      "message": "Sorry for late response. I thought I have replied your comments two weeks ago but they were just in draft till now.",
+      "parentUuid": "96e838af_47eaef08",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 5
+      },
+      "revId": "6fd4d1c2e1371b427e30311720081bd45ade5491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
