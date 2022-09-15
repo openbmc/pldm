@@ -140,6 +140,30 @@
       },
       "revId": "68322707f39c38870d86508c57541422c1594f4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5515ea5a_679e3484",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-15T01:34:29Z",
+      "side": 1,
+      "message": "Another reason make me to handle multiple transport layer at terminusManager class  is that pldmd already has some feature\u0027s implementations which is coupled to EID and relies on current requester class API(e.g. HostPDRHandler, DbusToPLDMEvent, bios::Handler and fw-update).\n\nIt would be too many code changes needed at once if modify requester class directly. So keeping requester class untouched and adding new API to send PLDM msg by TID would be easier to migrate these existing implementations gradually.",
+      "parentUuid": "f6f39229_fc6e595d",
+      "range": {
+        "startLine": 299,
+        "startChar": 7,
+        "endLine": 299,
+        "endChar": 22
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
