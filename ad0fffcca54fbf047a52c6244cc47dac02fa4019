@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "203623ad_7c6fb519",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "is this required ? we are not using it anywhere ? \u0026 we would have already parsed this to see if it attribute_name key is present prior in this code itself right ?",
+      "range": {
+        "startLine": 464,
+        "startChar": 3,
+        "endLine": 464,
+        "endChar": 50
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a977b4_05661475",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "also this \"any\" check seems redundant. if the key is not present..then anyways it is created for all platforms by default.",
+      "range": {
+        "startLine": 476,
+        "startChar": 28,
+        "endLine": 476,
+        "endChar": 45
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2d8d936_db9ea602",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "this logic should be inside the above above else condition ? you need to check the system type only when you have the platform key in the json.",
+      "range": {
+        "startLine": 475,
+        "startChar": 3,
+        "endLine": 479,
+        "endChar": 5
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b9d0909_97032cb4",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "should this not be getPlatformName() or some thing ?",
+      "range": {
+        "startLine": 40,
+        "startChar": 26,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b10fcb3c_0c063b58",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "which mapper call ? \u0026 what object path ? and what interface ?",
+      "range": {
+        "startLine": 62,
+        "startChar": 12,
+        "endLine": 63,
+        "endChar": 42
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4097326_ff169221",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "please use an existing type definition for this.",
+      "range": {
+        "startLine": 111,
+        "startChar": 8,
+        "endLine": 113,
+        "endChar": 23
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fefcc3fa_e20329cb",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "type definition ?",
+      "range": {
+        "startLine": 130,
+        "startChar": 12,
+        "endLine": 130,
+        "endChar": 47
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ab99093_4691c1fa",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-15T08:48:13Z",
+      "side": 1,
+      "message": "make sure systemType is not empty before you reset the pointer ?",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 41
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
