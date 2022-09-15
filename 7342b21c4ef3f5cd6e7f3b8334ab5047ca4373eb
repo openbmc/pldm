@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4a051a0_3f950073",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-09-15T13:32:04Z",
+      "side": 1,
+      "message": "Looks good to me. Lei Yu any comments?",
+      "revId": "7342b21c4ef3f5cd6e7f3b8334ab5047ca4373eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724aff10_2a177f2f",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-09-15T13:32:04Z",
+      "side": 1,
+      "message": "Do we want to log this informational trace?",
+      "range": {
+        "startLine": 175,
+        "startChar": 2,
+        "endLine": 175,
+        "endChar": 78
+      },
+      "revId": "7342b21c4ef3f5cd6e7f3b8334ab5047ca4373eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
