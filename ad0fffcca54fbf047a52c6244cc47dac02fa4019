@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d88deb68_27df788d",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-15T11:06:11Z",
+      "side": 1,
+      "message": "The any check was added because if the on a system there is no entity manager running, then the SystemType won\u0027t be populated, in that case it should pick the entry with *platform : \"any\"*.\n\nSo in the JSON there will be:\n1. Platform: \"any\"- which indicates the default value for the Bios attribute \n2. Platform: \"\u003cPlatform Name/Names\u003e\" - One or more entries with platform tag having the specific platform names. \n\nThis function should return true(entry is compatible) if:\n1. Platfrom tag does not exist - in this case it will pick the entry as is\n2. Platform tag exists and it matches with the system type\n3. Platform tag exists but EM is not running, in this case the entry with Platform: \"any\" should be picked.",
+      "parentUuid": "88a977b4_05661475",
+      "range": {
+        "startLine": 476,
+        "startChar": 28,
+        "endLine": 476,
+        "endChar": 45
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2d8d936_db9ea602",
         "filename": "libpldmresponder/bios_config.cpp",
         "patchSetId": 11
