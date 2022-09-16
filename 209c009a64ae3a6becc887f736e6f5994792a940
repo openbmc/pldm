@@ -22,6 +22,30 @@
       },
       "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17559ce3_2c2f7ee1",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-16T08:53:26Z",
+      "side": 1,
+      "message": "\u003e This doesn\u0027t completely solve your problem:\n\u003e Because, if you change from NTP mode to Manual mode, the NTP service will take a period of time to stop. During this period, the Manual default is seen on DBus, but it is still NTP, so we still have this problem when calling the setTime method.\n\u003e \n\u003e @Lei, What do you think?\n\n@George - not sure I am getting how this is related to a problem in PLDM.\nWhen host sets time \n```\nif(ntp mode) -\u003e don\u0027t set the time again\nif not -\u003e set th time\n```\n\nI think the problem that you are mentioning should be fixed in the time manager or systems-timesyncd to make sure you still return the result as NTP until we completely move to manual mode.",
+      "parentUuid": "e0ad16e3_0b35df2f",
+      "range": {
+        "startLine": 173,
+        "startChar": 21,
+        "endLine": 173,
+        "endChar": 72
+      },
+      "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
