@@ -46,6 +46,30 @@
       },
       "revId": "be7493ccce62c185a41697281e31b6f0798f13d4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc6dfebd_719cc02e",
+        "filename": "libpldmresponder/pdr_numeric_effecter.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-16T09:14:22Z",
+      "side": 1,
+      "message": "But it should come for only json entries that does not have entries in the entity association PDR\u0027s. Which should be less in number which might not be the case [may be for ibm] - but in general this is worth an error trace - as we will be deviating the spec[we cannot have sensors/effector PDR\u0027s but don\u0027t have its entry in the entity association PDR\u0027s].",
+      "parentUuid": "61913923_6464ea62",
+      "range": {
+        "startLine": 77,
+        "startChar": 16,
+        "endLine": 77,
+        "endChar": 29
+      },
+      "revId": "be7493ccce62c185a41697281e31b6f0798f13d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
