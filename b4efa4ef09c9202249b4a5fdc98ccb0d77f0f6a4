@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84f93f21_838578cb",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-16T09:05:07Z",
+      "side": 1,
+      "message": "can you add this as a type definition ? so that it will be intuitive to understand ?",
+      "parentUuid": "97307032_ea42b94a",
+      "range": {
+        "startLine": 120,
+        "startChar": 48,
+        "endLine": 120,
+        "endChar": 59
+      },
+      "revId": "b4efa4ef09c9202249b4a5fdc98ccb0d77f0f6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ae3308c_87d8c76c",
         "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
         "patchSetId": 10
