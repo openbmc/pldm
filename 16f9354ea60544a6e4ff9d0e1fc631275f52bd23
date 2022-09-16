@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebdcaf0f_01c6a8a0",
+        "filename": "libpldm/platform.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-16T07:56:24Z",
+      "side": 1,
+      "message": "Yes, NULL EID is MCTP specific not PLDM. so, adding PLDM prefix is kind of confusing. But I suppose the PLDM prefix is added since it is part of libpldm.",
+      "parentUuid": "0dfb25cd_b82a627f",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 22
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "037dbde3_a8844ce6",
         "filename": "platform-mc/manager.hpp",
         "patchSetId": 30
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "The new patch set reserved the flexibility to support other transport layer.\nThe idea is to define new XXXDiscoveryHandlerIntf(e.g XXX\u003dNCSI) and then implemented the interface APIs.",
       "parentUuid": "037dbde3_a8844ce6",
+      "range": {
+        "startLine": 24,
+        "startChar": 25,
+        "endLine": 24,
+        "endChar": 37
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b424af29_d555a07e",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-16T07:56:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "52ffa01e_0e98e25f",
       "range": {
         "startLine": 24,
         "startChar": 25,
