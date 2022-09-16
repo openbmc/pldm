@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f56119bc_554ace9f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-16T11:38:14Z",
+      "side": 1,
+      "message": "Why are we returning false? There can be devices which supports additional PDRs but BMC doesn\u0027t support those yet. Still we can continue with what ever we support.\n\nBut an INFO log here might be helpful.",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 23
+      },
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75dba120_26e73102",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-16T11:38:14Z",
+      "side": 1,
+      "message": "Any plan to move this API to libpldm? @Tom do you think it will be useful for libpldm consumers.",
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b4e5ab8_661a90bd",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-16T11:38:14Z",
+      "side": 1,
+      "message": "There are chances of having currupted PDRs. So we need to make sure an incorrect PDR is not causing invalid pointer access. Basically we need to check pdr size is valid based on sensor_data_size and range_field_format before we start memcpy.",
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a705c9_ac298416",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-16T11:38:14Z",
+      "side": 1,
+      "message": "why not real32_t ?",
+      "range": {
+        "startLine": 354,
+        "startChar": 36,
+        "endLine": 354,
+        "endChar": 41
+      },
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
