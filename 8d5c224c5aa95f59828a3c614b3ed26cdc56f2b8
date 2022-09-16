@@ -22,6 +22,30 @@
       },
       "revId": "8d5c224c5aa95f59828a3c614b3ed26cdc56f2b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7408ec_8a358315",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-16T06:04:25Z",
+      "side": 1,
+      "message": "\u003e it\u0027s just -v right?\n\nBoth --v \u0026 -v \u0026 --verbose should work the same per the man page. Although when I retested this to check - I found a bug in this patch where I mentioned there would not be any argument for verbose by telling no_argument but while parsing short arguement i said \"v:\" which indicates that -v would require an argument which is not true. It should be \"v\" instead.\n\nI fixed it , and retested the logic \u0026 it works good.",
+      "parentUuid": "ab5ec07a_398fd231",
+      "range": {
+        "startLine": 12,
+        "startChar": 61,
+        "endLine": 12,
+        "endChar": 62
+      },
+      "revId": "8d5c224c5aa95f59828a3c614b3ed26cdc56f2b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
