@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66346157_6823f092",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "203623ad_7c6fb519",
+      "range": {
+        "startLine": 464,
+        "startChar": 3,
+        "endLine": 464,
+        "endChar": 50
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88a977b4_05661475",
@@ -95,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fefff63c_313ae8a1",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bba14805_5b0bd205",
+      "range": {
+        "startLine": 476,
+        "startChar": 28,
+        "endLine": 476,
+        "endChar": 45
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2d8d936_db9ea602",
@@ -108,6 +156,30 @@
       "writtenOn": "2022-09-15T08:48:13Z",
       "side": 1,
       "message": "this logic should be inside the above above else condition ? you need to check the system type only when you have the platform key in the json.",
+      "range": {
+        "startLine": 475,
+        "startChar": 3,
+        "endLine": 479,
+        "endChar": 5
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a464957_72a6f890",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2d8d936_db9ea602",
       "range": {
         "startLine": 475,
         "startChar": 3,
@@ -141,6 +213,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1fc991b_8888f716",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b9d0909_97032cb4",
+      "range": {
+        "startLine": 40,
+        "startChar": 26,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b10fcb3c_0c063b58",
@@ -154,6 +250,30 @@
       "writtenOn": "2022-09-15T08:48:13Z",
       "side": 1,
       "message": "which mapper call ? \u0026 what object path ? and what interface ?",
+      "range": {
+        "startLine": 62,
+        "startChar": 12,
+        "endLine": 63,
+        "endChar": 42
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc71fc6c_f0f2c270",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b10fcb3c_0c063b58",
       "range": {
         "startLine": 62,
         "startChar": 12,
@@ -187,6 +307,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f20048_3c5ca4b8",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4097326_ff169221",
+      "range": {
+        "startLine": 111,
+        "startChar": 8,
+        "endLine": 113,
+        "endChar": 23
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fefcc3fa_e20329cb",
@@ -210,6 +354,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec1cf0e0_ecb22b0a",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fefcc3fa_e20329cb",
+      "range": {
+        "startLine": 130,
+        "startChar": 12,
+        "endLine": 130,
+        "endChar": 47
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ab99093_4691c1fa",
@@ -223,6 +391,30 @@
       "writtenOn": "2022-09-15T08:48:13Z",
       "side": 1,
       "message": "make sure systemType is not empty before you reset the pointer ?",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 41
+      },
+      "revId": "ad0fffcca54fbf047a52c6244cc47dac02fa4019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae9f6509_c077fd56",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-18T13:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ab99093_4691c1fa",
       "range": {
         "startLine": 138,
         "startChar": 8,
