@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24b08bfe_4d0fa8f6",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-19T09:13:13Z",
+      "side": 1,
+      "message": "\u003e @Lei Yu, are you suggesting we don\u0027t need this check, if your patches are accepted?\n\n@Tom, I sent an email, welcome to leave your suggestion \nhttps://lore.kernel.org/openbmc/CANFuQ7DkAwQqLZoOMPmTURUWDdk\u003dKfx1xTFN2jE9VQQH-wmhSA@mail.gmail.com/T/#u",
+      "parentUuid": "14ac787a_49afed00",
+      "range": {
+        "startLine": 173,
+        "startChar": 21,
+        "endLine": 173,
+        "endChar": 72
+      },
+      "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f815816_14fb7cce",
         "filename": "libpldmresponder/bios.cpp",
         "patchSetId": 3
