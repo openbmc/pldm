@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78472bff_5935da89",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-19T06:19:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fb2369f5_54cb33f0",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73c1c2e8_99cd9144",
@@ -141,6 +159,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66a58f2c_00afab5c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-19T06:19:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d43c0e5e_2da2e54a",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0acf1bf4_7bcf3cbe",
@@ -172,6 +208,24 @@
       "side": 1,
       "message": "For the case of DSP0248 section 8.3.1, terminusManager does nothing if terminus doesn\u0027t use PDRs.",
       "parentUuid": "0acf1bf4_7bcf3cbe",
+      "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca5c5059_c46a7169",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-19T06:19:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "18095567_8b4ef9c8",
       "revId": "771f77e2ff096c4a86224bc26ce0728a38ccb440",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
