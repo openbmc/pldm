@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be5bfef_baaec991",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-19T04:52:26Z",
+      "side": 1,
+      "message": "I prefer to separate this file into hpp and cpp",
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee05d487_7bff13b1",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-19T04:52:26Z",
+      "side": 1,
+      "message": "Please use the variables defined in utils.hpp",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 56
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ca0a35_010ac558",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-19T04:52:26Z",
+      "side": 1,
+      "message": "sdbusplus::exception_t",
+      "range": {
+        "startLine": 64,
+        "startChar": 21,
+        "endLine": 64,
+        "endChar": 35
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "240f70d7_1ba19d1c",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-19T04:52:26Z",
+      "side": 1,
+      "message": "Why not use the getDbusProperty method in the utils.hpp?",
+      "range": {
+        "startLine": 79,
+        "startChar": 15,
+        "endLine": 84,
+        "endChar": 34
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "879f4ca1_3368101e",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-19T04:52:26Z",
+      "side": 1,
+      "message": "sdbusplus::exception_t",
+      "range": {
+        "startLine": 87,
+        "startChar": 25,
+        "endLine": 87,
+        "endChar": 39
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b460f2c_c5370265",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-09-19T04:52:26Z",
+      "side": 1,
+      "message": "Please add e.what()",
+      "range": {
+        "startLine": 89,
+        "startChar": 16,
+        "endLine": 89,
+        "endChar": 25
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
