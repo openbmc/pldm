@@ -46,6 +46,30 @@
       },
       "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a223ce45_9b1da408",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-09-19T05:24:45Z",
+      "side": 1,
+      "message": "This really depends on the requirement about if you allow setting time when NTP is enabled or not.\n\nThe issue mentioned by George is the use case that user sets BMC time when the sync method is changed from NTP to Manual.\n\nWe have a downstream patch in time-manager that allows setting time in NTP, and it resolves such issues.\n\n@George @ManojKiran I think it could be discussed in the mailing list and see the community feedback.\nIf it\u0027s accepted that settings time in NTP mode is allowed (and the time set will be \"reverted\" if NTP is synced again), then I could send the downstream patch to upstream.",
+      "parentUuid": "17559ce3_2c2f7ee1",
+      "range": {
+        "startLine": 173,
+        "startChar": 21,
+        "endLine": 173,
+        "endChar": 72
+      },
+      "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
