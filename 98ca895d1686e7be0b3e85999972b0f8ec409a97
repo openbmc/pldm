@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba6cc183_27db1f02",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-19T06:17:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f56119bc_554ace9f",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 23
+      },
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75dba120_26e73102",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-09-16T11:38:14Z",
       "side": 1,
       "message": "Any plan to move this API to libpldm? @Tom do you think it will be useful for libpldm consumers.",
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c231e84_d8332cd8",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-19T06:17:46Z",
+      "side": 1,
+      "message": "I don\u0027t have plan to move it to libpldm for now.\nPlease let me know if it is suggested to be part of libpldm. I will convert its implementation from C++ to C.",
+      "parentUuid": "75dba120_26e73102",
       "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4ea87cd_2aed84c2",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-19T06:17:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0b4e5ab8_661a90bd",
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3a705c9_ac298416",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-09-16T11:38:14Z",
       "side": 1,
       "message": "why not real32_t ?",
+      "range": {
+        "startLine": 354,
+        "startChar": 36,
+        "endLine": 354,
+        "endChar": 41
+      },
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5acba221_f50438d3",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-19T06:17:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b3a705c9_ac298416",
       "range": {
         "startLine": 354,
         "startChar": 36,
