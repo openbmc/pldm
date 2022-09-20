@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87fd379b_fa83bf49",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-09-20T18:42:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f95d6e47_539e4bb2",
+      "range": {
+        "startLine": 62,
+        "startChar": 3,
+        "endLine": 62,
+        "endChar": 41
+      },
+      "revId": "9f111144682775a80662a9c2f294e7c1050fcb23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5a47c6d_fbd07434",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-09-08T17:21:13Z",
       "side": 1,
       "message": "when is this statement reached?",
+      "range": {
+        "startLine": 118,
+        "startChar": 4,
+        "endLine": 118,
+        "endChar": 31
+      },
+      "revId": "9f111144682775a80662a9c2f294e7c1050fcb23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7509611_17b1b296",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-09-20T18:42:47Z",
+      "side": 1,
+      "message": "This can hit if SourceDumpId does not match or invalid SourceDumpId is provided",
+      "parentUuid": "c8e6db28_a98e734a",
       "range": {
         "startLine": 118,
         "startChar": 4,
