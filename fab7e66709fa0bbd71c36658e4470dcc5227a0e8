@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63bfe11e_1249b09b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67b160c8_bee3c4eb",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "fab7e66709fa0bbd71c36658e4470dcc5227a0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd51c902_5fcc87dd",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff7070d_883b1bdd",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd51c902_5fcc87dd",
+      "revId": "fab7e66709fa0bbd71c36658e4470dcc5227a0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7e3d157_4e1a976a",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-08-02T12:22:25Z",
       "side": 1,
       "message": "if this trace is printed , then i dont think it will be any useful , because you would not know which FRU is it ?",
+      "revId": "fab7e66709fa0bbd71c36658e4470dcc5227a0e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1d99ce2_19698bf9",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7e3d157_4e1a976a",
       "revId": "fab7e66709fa0bbd71c36658e4470dcc5227a0e8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

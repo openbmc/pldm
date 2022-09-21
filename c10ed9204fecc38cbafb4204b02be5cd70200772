@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f90afb4f_ed2de10e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b49a642_70156e76",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e84567a6_71b07253",
@@ -353,6 +371,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48f97313_865db2fb",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88e9f065_4c6baa87",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0bce797_376c499f",
@@ -366,6 +402,24 @@
       "writtenOn": "2022-07-18T10:22:33Z",
       "side": 1,
       "message": "change not needed.",
+      "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbebd599_bca2b2a1",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0bce797_376c499f",
       "revId": "c10ed9204fecc38cbafb4204b02be5cd70200772",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

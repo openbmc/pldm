@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b675deff_1e89a2b7",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "39afcd6f_158c0e79",
+      "revId": "cb454677a027da46506a16e32bb9e39dfb9992a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e114e9b_3fdd558c",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-08-02T12:22:25Z",
       "side": 0,
       "message": "change not needed.",
+      "revId": "cb454677a027da46506a16e32bb9e39dfb9992a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c9caf84_3643daa6",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-21T14:51:18Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "8e114e9b_3fdd558c",
       "revId": "cb454677a027da46506a16e32bb9e39dfb9992a4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
