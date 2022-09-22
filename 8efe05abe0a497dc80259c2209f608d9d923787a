@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3193f9b_6cb6085e",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-22T18:28:37Z",
+      "side": 1,
+      "message": "There only a couple of functions which is hosted by this file, so I assumed a single file would suffice.",
+      "parentUuid": "7be5bfef_baaec991",
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee05d487_7bff13b1",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-19T04:52:26Z",
       "side": 1,
       "message": "Please use the variables defined in utils.hpp",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 56
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3cebc7_1513fb80",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-22T18:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee05d487_7bff13b1",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fc9aa52_7e01be34",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-22T18:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73ca0a35_010ac558",
+      "range": {
+        "startLine": 64,
+        "startChar": 21,
+        "endLine": 64,
+        "endChar": 35
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "240f70d7_1ba19d1c",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-09-19T04:52:26Z",
       "side": 1,
       "message": "Why not use the getDbusProperty method in the utils.hpp?",
+      "range": {
+        "startLine": 79,
+        "startChar": 15,
+        "endLine": 84,
+        "endChar": 34
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "156ea3d9_8a4951b0",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-22T18:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "240f70d7_1ba19d1c",
       "range": {
         "startLine": 79,
         "startChar": 15,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12509035_49bfd6ff",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-22T18:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "879f4ca1_3368101e",
+      "range": {
+        "startLine": 87,
+        "startChar": 25,
+        "endLine": 87,
+        "endChar": 39
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b460f2c_c5370265",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-09-19T04:52:26Z",
       "side": 1,
       "message": "Please add e.what()",
+      "range": {
+        "startLine": 89,
+        "startChar": 16,
+        "endLine": 89,
+        "endChar": 25
+      },
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a5e3a2_e77a80e3",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-22T18:28:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b460f2c_c5370265",
       "range": {
         "startLine": 89,
         "startChar": 16,
