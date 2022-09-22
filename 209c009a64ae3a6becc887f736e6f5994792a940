@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7f34ba0_cb98cb50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-09-22T05:25:25Z",
+      "side": 1,
+      "message": "As long as https://github.com/openbmc/openbmc/issues/3459 or https://github.com/systemd/systemd/issues/11420 is \"really\" fixed, this change will not be needed.\n\nFor now I have no strong opinion of this change and I\u0027m OK with it.",
+      "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0ad16e3_0b35df2f",
