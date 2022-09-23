@@ -164,6 +164,30 @@
       },
       "revId": "68322707f39c38870d86508c57541422c1594f4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b8a62b_f902d406",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1001093
+      },
+      "writtenOn": "2022-09-23T08:35:32Z",
+      "side": 1,
+      "message": "yes it is true. Since we are refactoring and introducing terminus manager and dynamic discovery of the PLDM endpoints do we need to consider removing direct EID binding and move the identification logic from PLDM TID to EID and mctp sockets to relevant code?",
+      "parentUuid": "5515ea5a_679e3484",
+      "range": {
+        "startLine": 299,
+        "startChar": 7,
+        "endLine": 299,
+        "endChar": 22
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
