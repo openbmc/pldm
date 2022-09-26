@@ -188,6 +188,30 @@
       },
       "revId": "68322707f39c38870d86508c57541422c1594f4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d500db57_c1f2e4c8",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-09-26T05:03:29Z",
+      "side": 1,
+      "message": "As my previous response, I would prefer to have two requester classes instead of refactor existing requester to support new transport layer so my opinions for refactoring would be to rename existing requester folder to /requester-mctp and create new requester folder for new transport layer(e.g. requester-ncsi). and then TerminusManager can discovery PLDM terminus by registering callback to each requester.\n\nBecause TID assignment should be done by TerminusManager, it would be easier to do the identification logic from PLDM TID to EID or PLMD TID to EBT UUID for NCSI over RBT at TerminusManager class than requester class.",
+      "parentUuid": "d7b8a62b_f902d406",
+      "range": {
+        "startLine": 299,
+        "startChar": 7,
+        "endLine": 299,
+        "endChar": 22
+      },
+      "revId": "68322707f39c38870d86508c57541422c1594f4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
