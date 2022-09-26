@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "710500e9_b32eb5fc",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-26T09:03:08Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t have a strong opinion.\n\u003e @Manoj and @Tom, What do you think?\n\nYes I don\u0027t have a strong preference either but, having code written in cpp would help in aiding better compilation times for incremental builds.\n\nAnd I see that it has already been worked out \u0026 separated to cpp \u0026 hpp files.",
+      "parentUuid": "35f85ce8_ff571a02",
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee05d487_7bff13b1",
