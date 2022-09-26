@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "065bef01_09ead1bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-26T11:19:51Z",
+      "side": 1,
+      "message": "\u003e this change will not be needed.\n\nI am not sure how the issues mentioned above are related\n\n#11420 - talks about two issues:\n1. Not being able to set the manual time for sometime after disabling the NTP mode\n2. Being able to set the manual time for some time after enabling the NTP mode\n\nThe current commit :\nchecks if we are in NTP mode - and \n- returns to host without actually setting the time (if in NTP mode).\n- it sets the time and returns to host (if it in Manual mode).\n\nDespite above issues being fixed, this commit is needed in order to prevent host and BMC(in NTP) to set the time and mess up generating a time drift. Which is what we are trying to avoid by this commit.",
+      "parentUuid": "a7f34ba0_cb98cb50",
+      "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0ad16e3_0b35df2f",
