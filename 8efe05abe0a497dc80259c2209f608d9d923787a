@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35f85ce8_ff571a02",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-26T07:34:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49e9dfd3_0eaca543",
+      "revId": "8efe05abe0a497dc80259c2209f608d9d923787a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee05d487_7bff13b1",
