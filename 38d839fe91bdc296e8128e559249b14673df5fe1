@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fe19cd2_9a4bdf58",
+        "filename": "libpldmresponder/pdr_numeric_effecter.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-26T12:02:24Z",
+      "side": 1,
+      "message": "could you possibly print the entity_path to this trace? would that help us debug?",
+      "range": {
+        "startLine": 77,
+        "startChar": 20,
+        "endLine": 77,
+        "endChar": 29
+      },
+      "revId": "38d839fe91bdc296e8128e559249b14673df5fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb0b2c1e_7bba6566",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-26T12:02:24Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 97,
+        "startChar": 20,
+        "endLine": 97,
+        "endChar": 29
+      },
+      "revId": "38d839fe91bdc296e8128e559249b14673df5fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97b89ea7_e0fb3a6c",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-26T12:02:24Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 98,
+        "startChar": 20,
+        "endLine": 98,
+        "endChar": 29
+      },
+      "revId": "38d839fe91bdc296e8128e559249b14673df5fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
