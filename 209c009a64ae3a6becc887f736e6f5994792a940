@@ -179,6 +179,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9af62b27_0830ff5f",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2022-09-27T07:59:13Z",
+      "side": 1,
+      "message": "This discussion might be going on in that mail chain and is related to time-manager repo but this commit is needed in order to prevent host and BMC(in NTP) to set the time and mess up generating a time drift.",
+      "parentUuid": "24b08bfe_4d0fa8f6",
+      "range": {
+        "startLine": 173,
+        "startChar": 21,
+        "endLine": 173,
+        "endChar": 72
+      },
+      "revId": "209c009a64ae3a6becc887f736e6f5994792a940",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f815816_14fb7cce",
