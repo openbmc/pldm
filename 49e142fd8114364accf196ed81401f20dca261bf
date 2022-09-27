@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5df1db6_052a823a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-27T12:47:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "135023c9_46e01bea",
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56bdce35_55bf738b",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-09-27T03:52:28Z",
       "side": 1,
       "message": "may be instead of Attribute, how about \n\n BIOS: \u003cattribute\u003e changed to \u003cnew value\u003e by \u003cHost/BMC\u003e.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 9
+      },
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0beb20e_89c76368",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-27T12:47:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56bdce35_55bf738b",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b65327f7_1e71d547",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-27T12:47:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1018124b_25c5f1f1",
+      "range": {
+        "startLine": 669,
+        "startChar": 1,
+        "endLine": 671,
+        "endChar": 72
+      },
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e46c0dd_eb2c9f1d",
@@ -77,6 +143,24 @@
       "writtenOn": "2022-09-27T03:52:28Z",
       "side": 1,
       "message": "please update the doxygen as well.",
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69cb4397_c9189c15",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-09-27T12:47:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e46c0dd_eb2c9f1d",
       "revId": "49e142fd8114364accf196ed81401f20dca261bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
