@@ -56,9 +56,7 @@ conf_data.set('NUMBER_OF_REQUEST_RETRIES', get_option('number-of-request-retries
 conf_data.set('INSTANCE_ID_EXPIRATION_INTERVAL',get_option('instance-id-expiration-interval'))
 conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
 conf_data.set('FLIGHT_RECORDER_MAX_ENTRIES',get_option('flightrecorder-max-entries'))
-if get_option('libpldm-only').disabled()
-  conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
-endif
+conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
 conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
 configure_file(output: 'config.h',
   configuration: conf_data
@@ -66,34 +64,32 @@ configure_file(output: 'config.h',
 
 cpp = meson.get_compiler('cpp')
 
-if get_option('libpldm-only').disabled()
-  phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
-  sdbusplus = dependency('sdbusplus')
-  sdeventplus = dependency('sdeventplus')
-  stdplus = dependency('stdplus')
+phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
+sdbusplus = dependency('sdbusplus')
+sdeventplus = dependency('sdeventplus')
+stdplus = dependency('stdplus')
 
-  if cpp.has_header('nlohmann/json.hpp')
-    nlohmann_json = declare_dependency()
-  else
-    nlohmann_json = dependency('nlohmann_json')
-  endif
+if cpp.has_header('nlohmann/json.hpp')
+  nlohmann_json = declare_dependency()
+else
+  nlohmann_json = dependency('nlohmann_json')
+endif
 
-  if cpp.has_header('CLI/CLI.hpp')
-    CLI11_dep = declare_dependency()
-  else
-    CLI11_dep = dependency('CLI11')
-  endif
+if cpp.has_header('CLI/CLI.hpp')
+  CLI11_dep = declare_dependency()
+else
+  CLI11_dep = dependency('CLI11')
+endif
 
-  if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
-    function2_dep = declare_dependency()
-  else
-    subproject('function2')
-    function2_dep = declare_dependency(
-      include_directories: [
-        'subprojects/function2/include/function2'
-      ]
-    )
-  endif
+if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
+  function2_dep = declare_dependency()
+else
+  subproject('function2')
+  function2_dep = declare_dependency(
+    include_directories: [
+      'subprojects/function2/include/function2'
+    ]
+  )
 endif
 
 if get_option('oe-sdk').enabled()
@@ -135,7 +131,6 @@ endif
 
 libpldm_dep = dependency('libpldm', fallback:['libpldm','libpldm_dep'])
 
-if get_option('libpldm-only').disabled()
 
 libpldmutils_headers = ['.']
 libpldmutils = library(
@@ -227,5 +222,3 @@ if get_option('tests').enabled()
   subdir('requester/test')
   subdir('test')
 endif
-
-endif # pldm-only
