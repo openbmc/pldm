@@ -733,10 +733,11 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 
                     uint8_t eventState;
                     uint8_t previousEventState;
-                    uint8_t sensorOffset = comp_sensor_count - 1;
+                    uint8_t sensorOffset;
 
                     for (size_t i = 0; i < comp_sensor_count; i++)
                     {
+                        sensorOffset = i;
                         eventState = stateField[i].present_state;
                         previousEventState = stateField[i].previous_state;
 
