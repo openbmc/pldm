@@ -733,14 +733,15 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 
                     uint8_t eventState;
                     uint8_t previousEventState;
-                    uint8_t sensorOffset = comp_sensor_count - 1;
 
-                    for (size_t i = 0; i < comp_sensor_count; i++)
+                    for (uint8_t curSensor = 0; curSensor < comp_sensor_count;
+                         curSensor++)
                     {
-                        eventState = stateField[i].present_state;
-                        previousEventState = stateField[i].previous_state;
+                        eventState = stateField[curSensor].present_state;
+                        previousEventState =
+                            stateField[curSensor].previous_state;
 
-                        emitStateSensorEventSignal(tid, sensorId, sensorOffset,
+                        emitStateSensorEventSignal(tid, sensorId, curSensor,
                                                    eventState,
                                                    previousEventState);
 
@@ -770,7 +771,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             }
                         }
 
-                        if (sensorOffset > compositeSensorStates.size())
+                        if (curSensor > compositeSensorStates.size())
                         {
                             std::cerr
                                 << " Error Invalid data, Invalid sensor offset"
@@ -779,7 +780,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                         }
 
                         const auto& possibleStates =
-                            compositeSensorStates[sensorOffset];
+                            compositeSensorStates[curSensor];
                         if (possibleStates.find(eventState) ==
                             possibleStates.end())
                         {
@@ -792,7 +793,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             entityInfo;
                         pldm::responder::events::StateSensorEntry
                             stateSensorEntry{containerId, entityType,
-                                             entityInstance, sensorOffset};
+                                             entityInstance, curSensor};
                         handleStateSensorEvent(stateSensorEntry, eventState);
                     }
                 };
