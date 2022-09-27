@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "135023c9_46e01bea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-27T03:52:28Z",
+      "side": 1,
+      "message": "might wanna change the title here ? as now it does much more than just removing the trace ?",
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56bdce35_55bf738b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-27T03:52:28Z",
+      "side": 1,
+      "message": "may be instead of Attribute, how about \n\n BIOS: \u003cattribute\u003e changed to \u003cnew value\u003e by \u003cHost/BMC\u003e.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 9
+      },
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1018124b_25c5f1f1",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-27T03:52:28Z",
+      "side": 1,
+      "message": "can\u0027t we move all this logic into a new function traceBIOSUpdate() and move all the out statements there ? and just do the function call from here ?",
+      "range": {
+        "startLine": 669,
+        "startChar": 1,
+        "endLine": 671,
+        "endChar": 72
+      },
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e46c0dd_eb2c9f1d",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-09-27T03:52:28Z",
+      "side": 1,
+      "message": "please update the doxygen as well.",
+      "revId": "49e142fd8114364accf196ed81401f20dca261bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
