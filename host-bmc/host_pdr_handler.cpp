@@ -733,15 +733,13 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 
                     uint8_t eventState;
                     uint8_t previousEventState;
-                    uint8_t sensorOffset = comp_sensor_count - 1;
 
-                    for (size_t i = 0; i < comp_sensor_count; i++)
+                    for (uint8_t i = 0; i < comp_sensor_count; i++)
                     {
                         eventState = stateField[i].present_state;
                         previousEventState = stateField[i].previous_state;
 
-                        emitStateSensorEventSignal(tid, sensorId, sensorOffset,
-                                                   eventState,
+                        emitStateSensorEventSignal(tid, sensorId, i, eventState,
                                                    previousEventState);
 
                         SensorEntry sensorEntry{tid, sensorId};
@@ -770,7 +768,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             }
                         }
 
-                        if (sensorOffset > compositeSensorStates.size())
+                        if (i > compositeSensorStates.size())
                         {
                             std::cerr
                                 << " Error Invalid data, Invalid sensor offset"
@@ -778,8 +776,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             return;
                         }
 
-                        const auto& possibleStates =
-                            compositeSensorStates[sensorOffset];
+                        const auto& possibleStates = compositeSensorStates[i];
                         if (possibleStates.find(eventState) ==
                             possibleStates.end())
                         {
@@ -792,7 +789,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             entityInfo;
                         pldm::responder::events::StateSensorEntry
                             stateSensorEntry{containerId, entityType,
-                                             entityInstance, sensorOffset};
+                                             entityInstance, i};
                         handleStateSensorEvent(stateSensorEntry, eventState);
                     }
                 };
