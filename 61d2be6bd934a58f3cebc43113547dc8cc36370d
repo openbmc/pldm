@@ -144,6 +144,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3eef590d_d3f2a6ef",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-09-29T09:05:08Z",
+      "side": 1,
+      "message": "The device can have IPMI FRU or PLDM FRU(PLDM type 4). Based on which inventory needs to be created and associated.\nSo the actual queries are\n1. How inventory objects are getting created?\n2. How PLDM will get to know the inventory object path to which association needs to be created?\n3. Let\u0027s take the usecase of an add in card. How it will be represented in redfish(as a seperate chassis?) and list the sensors?",
+      "parentUuid": "cafd05a2_bcc10ab2",
+      "revId": "61d2be6bd934a58f3cebc43113547dc8cc36370d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6178924_0d6e658a",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
