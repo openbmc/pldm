@@ -27,12 +27,10 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 namespace responder
 {
-
 namespace fs = std::filesystem;
 
 namespace dma
 {
-
 /** @struct AspeedXdmaOp
  *
  * Structure representing XDMA operation
@@ -70,7 +68,9 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
     if (dmaFd < 0)
     {
         rc = -errno;
-        std::cerr << "Failed to open the XDMA device, RC=" << rc << "\n";
+        std::cerr << "transferHostDataToSocket: Failed to open the XDMA device,"
+                     " RC="
+                  << rc << "\n";
         return rc;
     }
 
@@ -82,7 +82,9 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
     if (MAP_FAILED == vgaMem)
     {
         rc = -errno;
-        std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
+        std::cerr << "transferHostDataToSocket: Failed to mmap the XDMA device,"
+                     " RC="
+                  << rc << "\n";
         return rc;
     }
 
@@ -97,8 +99,10 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
     if (rc < 0)
     {
         rc = -errno;
-        std::cerr << "Failed to execute the DMA operation, RC=" << rc
-                  << " ADDRESS=" << address << " LENGTH=" << length << "\n";
+        std::cerr << "transferHostDataToSocket: Failed to execute the DMA "
+                     "operation, RC="
+                  << rc << " ADDRESS=" << address << " LENGTH=" << length
+                  << "\n";
         return rc;
     }
 
@@ -108,7 +112,9 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
     {
         rc = -errno;
         close(fd);
-        std::cerr << "closing socket" << std::endl;
+        std::cerr << "transferHostDataToSocket: Closing socket as "
+                     "writeToUnixSocket faile with RC="
+                  << rc << std::endl;
         return rc;
     }
     return 0;
@@ -135,7 +141,8 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         else
         {
             std::cerr
-                << "Received interrupt during DMA transfer. Skipping Unmap"
+                << "transferDataHost: Received interrupt during DMA transfer."
+                   " Skipping Unmap."
                 << std::endl;
         }
     };
@@ -145,7 +152,8 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     if (dmaFd < 0)
     {
         rc = -errno;
-        std::cerr << "Failed to open the XDMA device, RC=" << rc << "\n";
+        std::cerr << "transferDataHost: Failed to open the XDMA device, RC="
+                  << rc << "\n";
         return rc;
     }
 
@@ -157,7 +165,8 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     if (MAP_FAILED == vgaMem)
     {
         rc = -errno;
-        std::cerr << "Failed to mmap the XDMA device, RC=" << rc << "\n";
+        std::cerr << "transferDataHost: Failed to mmap the XDMA device, RC="
+                  << rc << "\n";
         return rc;
     }
 
@@ -168,9 +177,9 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         rc = lseek(fd, offset, SEEK_SET);
         if (rc == -1)
         {
-            std::cerr << "lseek failed, ERROR=" << errno
-                      << ", UPSTREAM=" << upstream << ", OFFSET=" << offset
-                      << "\n";
+            std::cerr << "transferDataHost upstream: lseek failed, ERROR="
+                      << errno << ", UPSTREAM=" << upstream
+                      << ", OFFSET=" << offset << "\n";
             return rc;
         }
 
@@ -182,16 +191,16 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         rc = read(fd, buffer.data(), length);
         if (rc == -1)
         {
-            std::cerr << "file read failed, ERROR=" << errno
-                      << ", UPSTREAM=" << upstream << ", LENGTH=" << length
-                      << ", OFFSET=" << offset << "\n";
+            std::cerr << "transferDataHost upstream: file read failed, ERROR="
+                      << errno << ", UPSTREAM=" << upstream
+                      << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
             return rc;
         }
         if (rc != static_cast<int>(length))
         {
-            std::cerr << "mismatch between number of characters to read and "
-                      << "the length read, LENGTH=" << length << " COUNT=" << rc
-                      << "\n";
+            std::cerr << "transferDataHost upstream: mismatch between number of"
+                      << "characters to read and the length read, LENGTH="
+                      << length << " COUNT=" << rc << "\n";
             return -1;
         }
         memcpy(static_cast<char*>(vgaMemPtr.get()), buffer.data(),
@@ -207,8 +216,9 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     if (rc < 0)
     {
         rc = -errno;
-        std::cerr << "Failed to execute the DMA operation, RC=" << rc
-                  << " UPSTREAM=" << upstream << " ADDRESS=" << address
+        std::cerr << "transferDataHost: Failed to execute the DMA operation,"
+                     " RC="
+                  << rc << " UPSTREAM=" << upstream << " ADDRESS=" << address
                   << " LENGTH=" << length << "\n";
         return rc;
     }
@@ -218,17 +228,18 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         rc = lseek(fd, offset, SEEK_SET);
         if (rc == -1)
         {
-            std::cerr << "lseek failed, ERROR=" << errno
-                      << ", UPSTREAM=" << upstream << ", OFFSET=" << offset
-                      << "\n";
+            std::cerr << "transferDataHost downstream: lseek failed, ERROR="
+                      << errno << ", UPSTREAM=" << upstream
+                      << ", OFFSET=" << offset << "\n";
             return rc;
         }
         rc = write(fd, static_cast<const char*>(vgaMemPtr.get()), length);
         if (rc == -1)
         {
-            std::cerr << "file write failed, ERROR=" << errno
-                      << ", UPSTREAM=" << upstream << ", LENGTH=" << length
-                      << ", OFFSET=" << offset << "\n";
+            std::cerr << "transferDataHost downstream: file write failed,"
+                         " ERROR="
+                      << errno << ", UPSTREAM=" << upstream
+                      << ", LENGTH=" << length << ", OFFSET=" << offset << "\n";
             return rc;
         }
     }
@@ -240,7 +251,6 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
 
 namespace oem_ibm
 {
-
 Response Handler::readFileIntoMemory(const pldm_msg* request,
                                      size_t payloadLength)
 {

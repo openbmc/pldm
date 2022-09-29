@@ -15,7 +15,6 @@ namespace responder
 {
 namespace utils
 {
-
 int setupUnixSocket(const std::string& socketInterface)
 {
     int sock;
@@ -39,7 +38,8 @@ int setupUnixSocket(const std::string& socketInterface)
 
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1)
     {
-        std::cerr << "setupUnixSocket: bind() call failed" << std::endl;
+        std::cerr << "setupUnixSocket: bind() call failed with errno " << errno
+                  << std::endl;
         close(sock);
         return -1;
     }

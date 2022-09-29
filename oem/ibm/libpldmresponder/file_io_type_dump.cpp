@@ -73,7 +73,7 @@ std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
 
     catch (const std::exception& e)
     {
-        std::cerr << "Error " << e.what()
+        std::cerr << "findDumpObjPath: Error " << e.what()
                   << "found with GetManagedObjects call in findDumpObjPath "
                   << "with objPath=" << DUMP_MANAGER_PATH
                   << " and intf=" << dumpEntryIntf << "\n";
@@ -142,8 +142,10 @@ int DumpHandler::newFileAvailable(uint64_t length)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
-                  << e.what() << "\n";
+        std::cerr << "newFileAvailable: Error " << e.what()
+                  << "found while notifying new dump to dump manager "
+                  << "with objPath=" << notifyObjPath
+                  << " and intf=" << dumpInterface << "\n";
         return PLDM_ERROR;
     }
 
@@ -168,8 +170,10 @@ std::string DumpHandler::getOffloadUri(uint32_t fileHandle)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "failed to make a d-bus call to DUMP manager, ERROR="
-                  << e.what() << "\n";
+        std::cerr << "getOffloadUri: Error " << e.what()
+                  << "found while fetching the dump offload URI "
+                  << "with objPath=" << path.c_str()
+                  << " and intf=" << socketInterface << "\n";
     }
 
     return socketInterface;
@@ -237,9 +241,11 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             }
             catch (const std::exception& e)
             {
-                std::cerr << "failed to make a d-bus call to DUMP "
-                             "manager, ERROR="
-                          << e.what() << "\n";
+                std::cerr << "fileAck: Error " << e.what()
+                          << "found while setting the dump progress status as "
+                          << "Failed with objPath=" << path.c_str()
+                          << " and intf=Common.Progress"
+                          << "\n";
             }
         }
 
@@ -271,7 +277,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             }
             catch (const std::exception& e)
             {
-                std::cerr << "Failed to make a d-bus call to DUMP "
+                std::cerr << "fileAck: Failed to make a d-bus call to DUMP "
                              "manager to reset source dump id of "
                           << path.c_str() << ", with ERROR=" << e.what()
                           << "\n";
@@ -291,7 +297,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             catch (const std::exception& e)
             {
                 std::cerr
-                    << "Failed to make a d-bus method to delete the dump entry "
+                    << "fileAck: Failed to make a d-bus method to delete the dump entry "
                     << path.c_str() << ", with ERROR=" << e.what() << "\n";
                 pldm::utils::reportError(
                     "xyz.openbmc_project.bmc.PLDM.fileAck.DumpEntryDeleteFail");
@@ -312,8 +318,9 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             catch (const std::exception& e)
             {
                 std::cerr
-                    << "failed to make a d-bus call to DUMP manager, ERROR="
-                    << e.what() << "\n";
+                    << "fileAck: Failed to make a d-bus method to set the dump "
+                    << "offloaded property to true with path=" << path.c_str()
+                    << "and with ERROR=" << e.what() << "\n";
             }
 
             auto socketInterface = getOffloadUri(fileHandle);
