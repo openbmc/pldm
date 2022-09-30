@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a891811_3caf913b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-30T07:35:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afa2f6ab_a2265341",
+      "range": {
+        "startLine": 597,
+        "startChar": 8,
+        "endLine": 597,
+        "endChar": 17
+      },
+      "revId": "3562d66238310ab8fb191a340dbbfa49b769d2d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcb2d611_73f7f789",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "fcb2d611_73f7f789",
+      "range": {
+        "startLine": 417,
+        "startChar": 31,
+        "endLine": 417,
+        "endChar": 37
+      },
+      "revId": "3562d66238310ab8fb191a340dbbfa49b769d2d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7fbd823_d530f698",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2022-09-30T07:35:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec664274_d8501161",
       "range": {
         "startLine": 417,
         "startChar": 31,
