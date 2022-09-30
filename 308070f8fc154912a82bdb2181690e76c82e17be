@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "145cbf1d_cc4c5e2c",
+        "filename": "libpldm/tests/libpldm_base_test.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2022-09-30T17:39:47Z",
+      "side": 1,
+      "message": "As downstream review pointed out, please follow the OpenBMC naming convention, at least in these C++ tests.",
+      "range": {
+        "startLine": 782,
+        "startChar": 21,
+        "endLine": 782,
+        "endChar": 32
+      },
+      "revId": "308070f8fc154912a82bdb2181690e76c82e17be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
