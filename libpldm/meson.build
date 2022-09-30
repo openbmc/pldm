@@ -10,7 +10,8 @@ headers = [
   'fru.h',
   'utils.h',
   'pdr.h',
-  'firmware_update.h'
+  'firmware_update.h',
+  'pldm_alloc.h'
 ]
 
 sources = [
@@ -21,8 +22,11 @@ sources = [
   'fru.c',
   'utils.c',
   'pdr.c',
-  'firmware_update.c'
+  'firmware_update.c',
+  'pldm_alloc.c'
 ]
+
+add_project_arguments('-DPLDM_DEFAULT_ALLOC',language:'c')
 
 libpldm_headers = ['.', '..']
 
@@ -52,6 +56,16 @@ if get_option('requester-api').enabled()
   libpldm_headers += ['requester']
 endif
 
+if get_option('responder-api').enabled()
+  headers += [
+    'responder/pldm_base_responder.h'
+  ]
+  sources += [
+    'responder/pldm_base_responder.c'
+  ]
+  libpldm_headers += ['responder']
+endif
+
 install_headers(
   headers,
   subdir: 'libpldm')
@@ -76,4 +90,7 @@ import('pkgconfig').generate(
 
 if get_option('tests').enabled()
   subdir('tests')
+  if get_option('responder-api').enabled()  
+    subdir('responder/tests')
+  endif
 endif
