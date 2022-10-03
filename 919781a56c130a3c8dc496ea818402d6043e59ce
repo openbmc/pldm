@@ -367,6 +367,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b319e8b_e285555b",
+        "filename": "subprojects/libpldm/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-03T05:03:03Z",
+      "side": 1,
+      "message": "@Andrew - I had reverted this change in the latest patch , we are now not preserving the path anymore. while testing the changes I found that most of the apps are using libpldm/\u003c.h\u003e -\u003e even for the .h files from the oem directory.if we want to make that work with preserving path\u0027s the only way to make it work is by symlinking all the oem header files into root libpldm directory as well \u0026 that made things cumbersome. So I decided to NOT preserve path.\n\nSo with the new change, both the libpldm generic \u0026 oem headers will be installed in \nlibpldm directory itself. But this would add the restriction on not having same file name for both the generic \u0026 oem headers - as we are already using _oem as a suffix for the oem headers ,I suppose this would not be a problem ?",
+      "parentUuid": "2237e1a4_f10609c8",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 18
+      },
+      "revId": "919781a56c130a3c8dc496ea818402d6043e59ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "104829d7_a7205cde",
