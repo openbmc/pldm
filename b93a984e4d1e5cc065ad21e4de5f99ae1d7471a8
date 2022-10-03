@@ -22,6 +22,52 @@
       },
       "revId": "b93a984e4d1e5cc065ad21e4de5f99ae1d7471a8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e13344c_cbcaaf42",
+        "filename": "libpldm/base.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1001138
+      },
+      "writtenOn": "2022-10-03T21:57:21Z",
+      "side": 1,
+      "message": "Shall we also verify that the part size values are power of two?",
+      "range": {
+        "startLine": 515,
+        "startChar": 5,
+        "endLine": 515,
+        "endChar": 53
+      },
+      "revId": "b93a984e4d1e5cc065ad21e4de5f99ae1d7471a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "764f6aff_aa30a781",
+        "filename": "libpldm/base.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1001138
+      },
+      "writtenOn": "2022-10-03T21:57:21Z",
+      "side": 1,
+      "message": "I think this should be PLDM_ERROR_INVALID_DATA.\n\nAccording to DSP0240 v1.1.0 section 8.6.3,\n\n\"ERROR_INVALID_DATA: RequestorPartSize in the request message was less than 256\nbytes or not a power of two.\"",
+      "range": {
+        "startLine": 516,
+        "startChar": 9,
+        "endLine": 516,
+        "endChar": 40
+      },
+      "revId": "b93a984e4d1e5cc065ad21e4de5f99ae1d7471a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
