@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6b7852c_fc4cab58",
+        "filename": "libpldm/base.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 1001138
+      },
+      "writtenOn": "2022-10-03T21:17:34Z",
+      "side": 1,
+      "message": "Since the packet size is fixed, should we use sizeof(pldm_negotiate_transfer_parameters_req)?",
+      "range": {
+        "startLine": 505,
+        "startChar": 23,
+        "endLine": 505,
+        "endChar": 67
+      },
+      "revId": "b93a984e4d1e5cc065ad21e4de5f99ae1d7471a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
