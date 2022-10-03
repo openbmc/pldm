@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe1aeda_c7affb04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 32
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-10-03T14:15:57Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f9d0ed7d_344796c8",
+      "range": {
+        "startLine": 10,
+        "startChar": 48,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "0e384710de7fecf5d7fea401558915725cce9143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b09c4572_92bd5044",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-09-29T09:05:08Z",
       "side": 1,
       "message": "Please add a safety check here. After the regex the result should not be just underscores. It is possible if some one connects a PLDM device whose name language tag is not English.",
+      "revId": "0e384710de7fecf5d7fea401558915725cce9143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa142b26_31acab54",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-10-03T14:15:57Z",
+      "side": 1,
+      "message": "Fixed by using default sensor name if aux sensor name language tag is not \"en\" \nin Terminus::addNumericSensor() at line 487 of terminus.cpp",
+      "parentUuid": "b09c4572_92bd5044",
       "revId": "0e384710de7fecf5d7fea401558915725cce9143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

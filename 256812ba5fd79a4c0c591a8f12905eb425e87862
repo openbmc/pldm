@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f18eafa_4fed93eb",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-10-03T14:15:57Z",
+      "side": 1,
+      "message": "The multiplication is fixed by patchset 35 to 10000000 to convert second to microsecond.\n\nDoes \"unknown\" in the description of DSP0248 means NaN? How do we ensure the value of NaN in between two PLDM terminus are equal since the float NaN and infinity are implementation defined.",
+      "parentUuid": "258576dc_e6e79038",
+      "range": {
+        "startLine": 201,
+        "startChar": 40,
+        "endLine": 201,
+        "endChar": 48
+      },
+      "revId": "256812ba5fd79a4c0c591a8f12905eb425e87862",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1363b1d_4a38a583",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 33
@@ -37,6 +61,30 @@
       "writtenOn": "2022-09-29T09:05:08Z",
       "side": 1,
       "message": "Note:- Resolution can have NaN value.",
+      "range": {
+        "startLine": 232,
+        "startChar": 22,
+        "endLine": 232,
+        "endChar": 32
+      },
+      "revId": "256812ba5fd79a4c0c591a8f12905eb425e87862",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12781a88_bbec4eb9",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-10-03T14:15:57Z",
+      "side": 1,
+      "message": "Added std::isnan() checking. If resolution is NaN then use 1.0 instead.\n\nBut I have question here since the value of resolution is from PDR and the NaN of float and double are implementation-defined. How does PLDM terminus side know what value is interpreted by BMC as NaN?",
+      "parentUuid": "c1363b1d_4a38a583",
       "range": {
         "startLine": 232,
         "startChar": 22,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49c85333_8fac1876",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-10-03T14:15:57Z",
+      "side": 1,
+      "message": "I didn\u0027t add NaN check for thresholdWarningIntf because of description of rangeFieldSupport in Table 102 of DSP0248 v1.2.1. It says that warningHigh and warningLow fields are always supported.\n\nI think the definitions of supportedThresholds and rangeFieldSupport are not aligned. The supportedThsholds field says that warning thresholds can be optional but rangeFieldSupport doesn\u0027t.",
+      "parentUuid": "c5844301_3b0242ec",
+      "range": {
+        "startLine": 327,
+        "startChar": 33,
+        "endLine": 328,
+        "endChar": 77
+      },
+      "revId": "256812ba5fd79a4c0c591a8f12905eb425e87862",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cf8a0e8a_169d31f5",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 33
@@ -83,6 +155,30 @@
       "writtenOn": "2022-09-29T09:05:08Z",
       "side": 1,
       "message": "nit: please avoid magic numbers for easy understanding.",
+      "range": {
+        "startLine": 71,
+        "startChar": 57,
+        "endLine": 71,
+        "endChar": 60
+      },
+      "revId": "256812ba5fd79a4c0c591a8f12905eb425e87862",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b8beef8_f73ecdea",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-10-03T14:15:57Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cf8a0e8a_169d31f5",
       "range": {
         "startLine": 71,
         "startChar": 57,
