@@ -1452,9 +1452,6 @@ int decode_get_sensor_reading_resp(
 	if (response->sensor_data_size > PLDM_SENSOR_DATA_SIZE_SINT32) {
 		return PLDM_ERROR_INVALID_DATA;
 	}
-	if (response->sensor_data_size > *sensor_data_size) {
-		return PLDM_ERROR_INVALID_LENGTH;
-	}
 
 	*sensor_data_size = response->sensor_data_size;
 	*sensor_operational_state = response->sensor_operational_state;
