@@ -218,7 +218,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->container_id, 1);
     ASSERT_EQ(pdr->effecter_semantic_id, 0);
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
@@ -245,7 +245,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 1);
-    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->container_id, 1);
     ASSERT_EQ(pdr->effecter_semantic_id, 0);
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
@@ -272,7 +272,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->container_id, 1);
     ASSERT_EQ(pdr->effecter_semantic_id, 0);
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
@@ -323,7 +323,7 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->container_id, 1);
     ASSERT_EQ(pdr->sensor_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->sensor_auxiliary_names_pdr, false);
     ASSERT_EQ(pdr->composite_sensor_count, 1);
@@ -349,7 +349,7 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 1);
-    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->container_id, 1);
     ASSERT_EQ(pdr->sensor_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->sensor_auxiliary_names_pdr, false);
     ASSERT_EQ(pdr->composite_sensor_count, 1);
@@ -375,7 +375,7 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
+    ASSERT_EQ(pdr->container_id, 1);
     ASSERT_EQ(pdr->sensor_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->sensor_auxiliary_names_pdr, false);
     ASSERT_EQ(pdr->composite_sensor_count, 1);
