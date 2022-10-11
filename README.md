@@ -3,11 +3,19 @@ Need `meson` and `ninja`. Alternatively, source an OpenBMC ARM/x86 SDK.
 ```
 meson build && ninja -C build
 ```
+
 ## To run unit tests
 The simplest way of running the tests is as described by the meson man page:
 ```
 meson builddir && meson test -C builddir
 ```
+Alternatively, tests can be run in the OpenBMC CI docker container, or with an
+OpenBMC x86 sdk(see below for x86 steps).
+```
+meson -Doe-sdk=enabled build
+ninja -C build test
+```
+
 ## To enable pldm verbosity
 pldm daemon accepts a command line argument `--verbose` or `--v` or `-v` to enable the
 daemon to run in verbose mode. It can be done via adding this option to the environment
@@ -22,42 +30,9 @@ rm /etc/default/pldmd
 systemctl restart pldmd
 ```
 
-Alternatively, tests can be run in the OpenBMC CI docker container, or with an
-OpenBMC x86 sdk(see below for x86 steps).
-```
-meson -Doe-sdk=enabled build
-ninja -C build test
-```
-
 # Code Organization
 At a high-level, code in this repository belongs to one of the following three
 components.
-
-## libpldm
-This is a library which deals with the encoding and decoding of PLDM messages.
-It should be possible to use this library by projects other than OpenBMC, and
-hence certain constraints apply to it:
-- keeping it light weight
-- implementation in C
-- minimal dynamic memory allocations
-- endian-safe
-- no OpenBMC specific dependencies
-
-Source files are named according to the PLDM Type, for eg base.[h/c], fru.[h/c],
-etc.
-
-Given a PLDM command "foo", the library will provide the following API:
-For the Requester function:
-```
-encode_foo_req() - encode a foo request
-decode_foo_resp() - decode a response to foo
-```
-For the Responder function:
-```
-decode_foo_req() - decode a foo request
-encode_foo_resp() - encode a response to foo
-```
-The library also provides API to pack and unpack PLDM headers.
 
 ## libpldmresponder
 This library provides handlers for incoming PLDM request messages. It provides
@@ -80,8 +55,6 @@ Following directory structure has to be used:
     pldm repo
      |---- oem
             |----<oem_name>
-                      |----libpldm
-                            |----<oem based encoding and decoding files>
                       |----libpldmresponder
                             |---<oem based handler files>
 
@@ -89,10 +62,6 @@ Following directory structure has to be used:
 <oem_name> - This folder must be created with the name of the OEM/vendor
 in lower case. Folders named libpldm and libpldmresponder must be created under
 the folder <oem_name>
-
-Files having the oem functionality for the libpldm library should be placed
-under the folder oem/<oem_name>/libpldm. They must be adhering to the rules
-mentioned under the libpldm section above.
 
 Files having the oem functionality for the libpldmresponder library should be
 placed under the folder oem/<oem_name>/libpldmresponder. They must be adhering
@@ -108,12 +77,12 @@ The `pldm/meson.build` and the corresponding source file(s) will need to
 incorporate the logic of adding its mapped compiler flag to allow conditional
 compilation of the code.
 
+## libpldm
+pldm daemon links against the libpldm library during compilation, For more
+information on libpldm please refer to [libpldm](https://github.com/openbmc/libpldm)
+
 ## pldmtool
 For more information on pldmtool please refer to plmdtool/README.md.
-
-## TODO
-Consider hosting libpldm above in a repo of its own, probably even outside the
-OpenBMC project? A separate repo would enable something like git submodule.
 
 # Flows
 This section documents important code flow paths.
