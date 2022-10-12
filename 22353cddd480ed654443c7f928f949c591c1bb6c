@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6cab3ef_40a3eafa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:59:00Z",
+      "side": 1,
+      "message": "this is not needed as you included the link below.",
+      "range": {
+        "startLine": 7,
+        "startChar": 39,
+        "endLine": 7,
+        "endChar": 44
+      },
+      "revId": "22353cddd480ed654443c7f928f949c591c1bb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4844ca2c_c017b69b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:59:00Z",
+      "side": 1,
+      "message": "you pushed code into this file which is seen when we open the Gerri link, this is not really needed. we use oem-\u003c\u003e : \u003cheadline\u003e -\u003e to let other know that its an oem commit.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 14
+      },
+      "revId": "22353cddd480ed654443c7f928f949c591c1bb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad0f174_9a337705",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:59:00Z",
+      "side": 1,
+      "message": "composite state sensors with composite sensor count more than 1.",
+      "range": {
+        "startLine": 9,
+        "startChar": 56,
+        "endLine": 10,
+        "endChar": 3
+      },
+      "revId": "22353cddd480ed654443c7f928f949c591c1bb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def83d86_2fb8fb35",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:59:00Z",
+      "side": 1,
+      "message": "which fixes what issue ? please reword it. if we don\u0027t fix it what is the behaviour ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "22353cddd480ed654443c7f928f949c591c1bb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b24750e_add2ccee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:59:00Z",
+      "side": 1,
+      "message": "power on does not mean anything to the external community. As pldm is not always used as a communication mechanism to talk to host firmware.\n\nThe natural way to test an API is by writing a google unit test framework and writing a unit test that would test your changed function.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 31
+      },
+      "revId": "22353cddd480ed654443c7f928f949c591c1bb6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
