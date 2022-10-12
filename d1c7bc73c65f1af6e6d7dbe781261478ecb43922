@@ -16,6 +16,24 @@
       "message": "Does OpenBMC x86 SDK work anymore? We can drop it from the documentation as a follow-up patch if not.",
       "revId": "d1c7bc73c65f1af6e6d7dbe781261478ecb43922",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac4519cd_eeed3d8f",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T13:10:16Z",
+      "side": 1,
+      "message": "I dont know if it works anymore, community is going towards docker or using meson wraps for unit testing.\n\nI don\u0027t know if any one are using the x86 sdk anymore. IBM is definitely not using x86 sdks anymore.Last time when i tried to remove it i got a push back from you :) .if you are okay , i can put another patch to remove this.",
+      "parentUuid": "e375d7fe_628b40db",
+      "revId": "d1c7bc73c65f1af6e6d7dbe781261478ecb43922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
