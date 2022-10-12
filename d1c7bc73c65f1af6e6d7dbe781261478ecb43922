@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e375d7fe_628b40db",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-10-12T06:48:34Z",
+      "side": 1,
+      "message": "Does OpenBMC x86 SDK work anymore? We can drop it from the documentation as a follow-up patch if not.",
+      "revId": "d1c7bc73c65f1af6e6d7dbe781261478ecb43922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
