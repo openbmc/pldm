@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "023d5bb6_9cf61198",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:26:08Z",
+      "side": 1,
+      "message": "what is the purpose of appending ( \u0026 ) here ?",
+      "range": {
+        "startLine": 655,
+        "startChar": 26,
+        "endLine": 655,
+        "endChar": 31
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2843ced9_37601840",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:26:08Z",
+      "side": 1,
+      "message": "i am not really sure if using words like HOST \u0026 BMC works in other company stacks where , pldm is just used as a communication mechanism between two pldm entities (that does not involve BMC or host firmware).",
+      "range": {
+        "startLine": 662,
+        "startChar": 35,
+        "endLine": 662,
+        "endChar": 49
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77329d83_fbe9bc99",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:26:08Z",
+      "side": 1,
+      "message": "are we masking the outer attrHandle with the inner one ? is that an intentional one ?",
+      "range": {
+        "startLine": 678,
+        "startChar": 12,
+        "endLine": 678,
+        "endChar": 27
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69a504a_f2cf063b",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:26:08Z",
+      "side": 1,
+      "message": "range based for loop ?",
+      "range": {
+        "startLine": 687,
+        "startChar": 12,
+        "endLine": 688,
+        "endChar": 13
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "729dde48_fd013be0",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:26:08Z",
+      "side": 1,
+      "message": "host is not probably the right word ? because pldm code does not always run with host firmware like ibm system do ?",
+      "range": {
+        "startLine": 86,
+        "startChar": 19,
+        "endLine": 86,
+        "endChar": 69
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
