@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8f4d54e_39f70d88",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:34:22Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 379,
+        "startChar": 11,
+        "endLine": 381,
+        "endChar": 46
+      },
+      "revId": "f317e2c9849bf7fe524e5586b842e9dc77e6b47e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96ef858f_e70e6e89",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:34:22Z",
+      "side": 1,
+      "message": "add more details here.",
+      "range": {
+        "startLine": 403,
+        "startChar": 14,
+        "endLine": 404,
+        "endChar": 46
+      },
+      "revId": "f317e2c9849bf7fe524e5586b842e9dc77e6b47e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4435bc03_ee4a30ca",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-12T15:34:22Z",
+      "side": 1,
+      "message": "add more details on what failed.",
+      "range": {
+        "startLine": 429,
+        "startChar": 16,
+        "endLine": 431,
+        "endChar": 40
+      },
+      "revId": "f317e2c9849bf7fe524e5586b842e9dc77e6b47e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
