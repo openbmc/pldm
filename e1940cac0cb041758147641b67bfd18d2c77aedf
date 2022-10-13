@@ -114,6 +114,53 @@
       },
       "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a964932f_ea83729d",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-10-13T05:51:51Z",
+      "side": 1,
+      "message": "\u003e host is not probably the right word ? because pldm code does not always run with host firmware like ibm system do ?\n\n+1",
+      "parentUuid": "729dde48_fd013be0",
+      "range": {
+        "startLine": 86,
+        "startChar": 19,
+        "endLine": 86,
+        "endChar": 69
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b08186a1_d2019a68",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2022-10-13T05:51:51Z",
+      "side": 1,
+      "message": "I prefer to use enum, or string representation here, instead of bool",
+      "range": {
+        "startLine": 93,
+        "startChar": 53,
+        "endLine": 93,
+        "endChar": 57
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
