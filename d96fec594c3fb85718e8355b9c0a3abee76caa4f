@@ -16,6 +16,24 @@
       "message": "The requester-api is openbmc specific and this can be separated from the libpldm repo and make it as separate library(which will eventually make way for MCTP kernel sockets)\n\n1. Separate the generic part of libpldm(which can be used on any platform) with the openbmc specific. There has been confusions around this and this would bring clarity.\n2. In case we make proposals to contribute libpldm to DMTF, it will be ideal to not have any openbmc references in libpldm.",
       "revId": "d96fec594c3fb85718e8355b9c0a3abee76caa4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b67bada_f3ce8fd3",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-13T05:52:48Z",
+      "side": 0,
+      "message": "we could improve the requester API to make it work for all types of backends, and that way it could still be inside the libpldm share library. The moment we move to MCTP kernel sockets, its not openbmc specific anymore.",
+      "parentUuid": "3bde2f32_a3d79e6d",
+      "revId": "d96fec594c3fb85718e8355b9c0a3abee76caa4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

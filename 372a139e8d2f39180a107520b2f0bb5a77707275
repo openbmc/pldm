@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae3c1f0f_f360b300",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-13T05:52:48Z",
+      "side": 1,
+      "message": "as per our discord discussion , we have plans to fix this API and make it a generic one.",
+      "revId": "372a139e8d2f39180a107520b2f0bb5a77707275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
