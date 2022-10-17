@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ec91af_033e51bd",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-10-17T14:09:45Z",
+      "side": 1,
+      "message": "Change done as shown in the commit message, the parenthesis are added to display the displayString inside it.",
+      "parentUuid": "023d5bb6_9cf61198",
+      "range": {
+        "startLine": 655,
+        "startChar": 26,
+        "endLine": 655,
+        "endChar": 31
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2843ced9_37601840",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-10-12T15:26:08Z",
       "side": 1,
       "message": "i am not really sure if using words like HOST \u0026 BMC works in other company stacks where , pldm is just used as a communication mechanism between two pldm entities (that does not involve BMC or host firmware).",
+      "range": {
+        "startLine": 662,
+        "startChar": 35,
+        "endLine": 662,
+        "endChar": 49
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c62f234e_4570ba4c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-10-17T14:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2843ced9_37601840",
       "range": {
         "startLine": 662,
         "startChar": 35,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de5678b6_f9ca9234",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-10-17T14:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77329d83_fbe9bc99",
+      "range": {
+        "startLine": 678,
+        "startChar": 12,
+        "endLine": 678,
+        "endChar": 27
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d69a504a_f2cf063b",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-10-12T15:26:08Z",
       "side": 1,
       "message": "range based for loop ?",
+      "range": {
+        "startLine": 687,
+        "startChar": 12,
+        "endLine": 688,
+        "endChar": 13
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d8238f_a6c8220c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-10-17T14:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d69a504a_f2cf063b",
       "range": {
         "startLine": 687,
         "startChar": 12,
@@ -140,6 +236,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78aeb7b8_cd3118c4",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-10-17T14:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a964932f_ea83729d",
+      "range": {
+        "startLine": 86,
+        "startChar": 19,
+        "endLine": 86,
+        "endChar": 69
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b08186a1_d2019a68",
@@ -153,6 +273,30 @@
       "writtenOn": "2022-10-13T05:51:51Z",
       "side": 1,
       "message": "I prefer to use enum, or string representation here, instead of bool",
+      "range": {
+        "startLine": 93,
+        "startChar": 53,
+        "endLine": 93,
+        "endChar": 57
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b4f95e8_e8e92229",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-10-17T14:09:45Z",
+      "side": 1,
+      "message": "This parameter is changed to isBMC to indicate if the Attribute is set by the BMC.",
+      "parentUuid": "b08186a1_d2019a68",
       "range": {
         "startLine": 93,
         "startChar": 53,
