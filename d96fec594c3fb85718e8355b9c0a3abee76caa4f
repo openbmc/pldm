@@ -34,6 +34,24 @@
       "parentUuid": "3bde2f32_a3d79e6d",
       "revId": "d96fec594c3fb85718e8355b9c0a3abee76caa4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c0eaa7_7e60ac92",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-17T05:35:17Z",
+      "side": 0,
+      "message": "Hey tom , can we get this merged ? as per our discord conversation in #mctp-and-pldm channel - the requester api , will need to be fixed to make it work with all the backend transport mechanisms.\n\n\u0026 if we are moving to MCTP kernel sockets - this is will not be openbmc specific anymore, rather it becomes Linux specific - API - \u0026 that can be controlled via meson options.",
+      "parentUuid": "9b67bada_f3ce8fd3",
+      "revId": "d96fec594c3fb85718e8355b9c0a3abee76caa4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
