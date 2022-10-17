@@ -698,6 +698,32 @@
          "helpText" : "Specifies if the boot type is an IPL or a ReIPL. Set pvm_boot_type instead",
          "displayName" : "Boot Type Indicator (current)",
          "readOnly":true
+      },
+      {
+         "attribute_name":"pvm_rpd_guard_policy",
+         "possible_values":[
+            "Enabled",
+            "Disabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText":"Controls whether or not a processor core will be de-configured on error.",
+         "displayName" : "GARD on error"
+      },
+      {
+         "attribute_name":"pvm_rpd_policy",
+         "possible_values":[
+            "Enabled",
+            "Run Now",
+            "Scheduled",
+            "Disabled"
+         ],
+         "default_values":[
+            "Enabled"
+         ],
+         "helpText" : "Enabled (Run on each core once daily, at an equally spaced interval, to test each core every 24 hours. For example, on a 48-core system, the RPD would test one core every 30 minutes), Run Now (Run sequentially on each core starting immediately), Scheduled (Run sequentially on each core at the scheduled time each day), Disabled (No diagnostics or exercisers will be run).",
+         "displayName" : "Runtime Processor Diagnostics Policy"
       }
    ]
 }
