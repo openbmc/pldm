@@ -1,0 +1,7 @@
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 17 Oct 2022 08:41:09 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/56668
+Project: openbmc/pldm
+Branch: refs/heads/master
