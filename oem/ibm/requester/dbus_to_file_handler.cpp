@@ -1,7 +1,7 @@
 #include "dbus_to_file_handler.hpp"
 
-#include "libpldm/file_io.h"
-#include "libpldm/pldm.h"
+#include "libpldm/requester/pldm.h"
+#include "oem/ibm/libpldm/file_io.h"
 
 #include "common/utils.hpp"
 
@@ -21,7 +21,13 @@ static constexpr auto resDumpProgressIntf =
     "xyz.openbmc_project.Common.Progress";
 static constexpr auto resDumpStatus =
     "xyz.openbmc_project.Common.Progress.OperationStatus.Failed";
-
+static constexpr auto certFilePath = "/var/lib/ibm/bmcweb/";
+constexpr auto certObjPath = "/xyz/openbmc_project/certs/ca/entry/";
+constexpr auto certEntryIntf = "xyz.openbmc_project.Certs.Entry";
+static constexpr auto vpdFilePath = "/var/lib/ibm/bmcweb/";
+constexpr auto vpdObjPath =
+    "/xyz/openbmc_project/inventory/system/chassis/motherboard/vdd_vrm0";
+constexpr auto keywrdEntryIntf = "xyz.openbmc_project.Inventory.Manager";
 DbusToFileHandler::DbusToFileHandler(
     int mctp_fd, uint8_t mctp_eid, dbus_api::Requester* requester,
     sdbusplus::message::object_path resDumpCurrentObjPath,
@@ -38,15 +44,16 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
         std::cerr << "Failed to send resource dump parameters as requester is "
                      "not set";
         pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            "xyz.openbmc_project.PLDM.Error.sendNewFileAvailableCmd.SendDumpParametersFail",
+            pldm::PelSeverity::ERROR);
         return;
     }
     auto instanceId = requester->getInstanceId(mctp_eid);
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                     PLDM_NEW_FILE_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
-    // Need to revisit this logic at the time of multiple resource dump support
-    uint32_t fileHandle = 1;
+    uint32_t fileHandle =
+        atoi(fs::path((std::string)resDumpCurrentObjPath).filename().c_str());
 
     auto rc =
         encode_new_file_req(instanceId, PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS,
@@ -76,7 +83,7 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
                       << " rc=" << rc
                       << ", cc=" << static_cast<unsigned>(completionCode)
                       << "\n";
-            reportResourceDumpFailure();
+            reportResourceDumpFailure("decodeNewFileResp");
         }
     };
     rc = handler->registerRequest(
@@ -85,13 +92,16 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
     if (rc)
     {
         std::cerr << "Failed to send NewFileAvailable Request to Host \n";
-        reportResourceDumpFailure();
+        reportResourceDumpFailure("newFileAvailableRequest");
     }
 }
 
-void DbusToFileHandler::reportResourceDumpFailure()
+void DbusToFileHandler::reportResourceDumpFailure(std::string str)
 {
-    pldm::utils::reportError("xyz.openbmc_project.bmc.pldm.InternalFailure");
+    std::string s =
+        "xyz.openbmc_project.PLDM.Error.ReportResourceDumpFail." + str;
+
+    pldm::utils::reportError(s.c_str(), pldm::PelSeverity::WARNING);
 
     PropertyValue value{resDumpStatus};
     DBusMapping dbusMapping{resDumpCurrentObjPath, resDumpProgressIntf,
@@ -116,7 +126,7 @@ void DbusToFileHandler::processNewResourceDump(
         std::string objPath = resDumpCurrentObjPath;
         auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
             objPath.c_str(), "Status", resDumpProgressIntf);
-        const auto& curResDumpStatus = std::get<ResDumpStatus>(propVal);
+        const auto& curResDumpStatus = std::get<std::string>(propVal);
 
         if (curResDumpStatus !=
             "xyz.openbmc_project.Common.Progress.OperationStatus.InProgress")
@@ -124,13 +134,10 @@ void DbusToFileHandler::processNewResourceDump(
             return;
         }
     }
-    catch (const sdbusplus::exception_t& e)
+    catch (const sdbusplus::exception::exception& e)
     {
-        std::cerr << "Error " << e.what()
-                  << " found in getting current resource dump status while "
-                     "initiating a new resource dump with objPath="
-                  << resDumpCurrentObjPath.str.c_str()
-                  << " and intf=" << resDumpProgressIntf << "\n";
+        std::cerr << "Error in getting current resource dump status \n";
+        return;
     }
 
     namespace fs = std::filesystem;
@@ -141,14 +148,14 @@ void DbusToFileHandler::processNewResourceDump(
         fs::create_directories(resDumpDirPath);
     }
 
-    // Need to reconsider this logic to set the value as "1" when we have the
-    // support to handle multiple resource dumps
-    fs::path resDumpFilePath = resDumpDirPath / "1";
+    uint32_t fileHandle =
+        atoi(fs::path((std::string)resDumpCurrentObjPath).filename().c_str());
+    fs::path resDumpFilePath = resDumpDirPath / std::to_string(fileHandle);
 
-    std::ofstream fileHandle;
-    fileHandle.open(resDumpFilePath, std::ios::out | std::ofstream::binary);
+    std::ofstream fileHandleFd;
+    fileHandleFd.open(resDumpFilePath, std::ios::out | std::ofstream::binary);
 
-    if (!fileHandle)
+    if (!fileHandleFd)
     {
         std::cerr << "resource dump file open error: " << resDumpFilePath
                   << "\n";
@@ -169,10 +176,10 @@ void DbusToFileHandler::processNewResourceDump(
     }
 
     // Fill up the file with resource dump parameters and respective sizes
-    auto fileFunc = [&fileHandle](auto& paramBuf) {
+    auto fileFunc = [&fileHandleFd](auto& paramBuf) {
         uint32_t paramSize = paramBuf.size();
-        fileHandle.write((char*)&paramSize, sizeof(paramSize));
-        fileHandle << paramBuf;
+        fileHandleFd.write((char*)&paramSize, sizeof(paramSize));
+        fileHandleFd << paramBuf;
     };
     fileFunc(vspString);
     fileFunc(resDumpReqPass);
@@ -180,31 +187,23 @@ void DbusToFileHandler::processNewResourceDump(
     std::string str;
     if (!resDumpReqPass.empty())
     {
-        str = getAcfFileContent();
+        static constexpr auto acfDirPath = "/etc/acf/service.acf";
+        if (fs::exists(acfDirPath))
+        {
+            std::ifstream file;
+            file.open(acfDirPath);
+            std::stringstream acfBuf;
+            acfBuf << file.rdbuf();
+            str = acfBuf.str();
+            file.close();
+        }
     }
-
     fileFunc(str);
 
-    fileHandle.close();
+    fileHandleFd.close();
     size_t fileSize = fs::file_size(resDumpFilePath);
 
     sendNewFileAvailableCmd(fileSize);
-}
-
-std::string DbusToFileHandler::getAcfFileContent()
-{
-    std::string str;
-    static constexpr auto acfDirPath = "/etc/acf/service.acf";
-    if (fs::exists(acfDirPath))
-    {
-        std::ifstream file;
-        file.open(acfDirPath);
-        std::stringstream acfBuf;
-        acfBuf << file.rdbuf();
-        str = acfBuf.str();
-        file.close();
-    }
-    return str;
 }
 
 void DbusToFileHandler::newCsrFileAvailable(const std::string& csr,
@@ -242,15 +241,49 @@ void DbusToFileHandler::newCsrFileAvailable(const std::string& csr,
                                PLDM_FILE_TYPE_CERT_SIGNING_REQUEST);
 }
 
+void DbusToFileHandler::newLicFileAvailable(const std::string& licenseStr)
+{
+    namespace fs = std::filesystem;
+    std::string dirPath = "/var/lib/ibm/cod";
+    const fs::path licDirPath = dirPath;
+
+    if (!fs::exists(licDirPath))
+    {
+        fs::create_directories(licDirPath);
+        fs::permissions(licDirPath,
+                        fs::perms::others_read | fs::perms::owner_write);
+    }
+
+    fs::path licFilePath = licDirPath / "licFile";
+    std::ofstream licFile;
+
+    licFile.open(licFilePath, std::ios::out | std::ofstream::binary);
+
+    if (!licFile)
+    {
+        std::cerr << "License file open error: " << licFilePath << "\n";
+        return;
+    }
+
+    // Add csr to file
+    licFile << licenseStr << std::endl;
+
+    licFile.close();
+    uint32_t fileSize = fs::file_size(licFilePath);
+
+    newFileAvailableSendToHost(fileSize, 1, PLDM_FILE_TYPE_COD_LICENSE_KEY);
+}
+
 void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
                                                    const uint32_t fileHandle,
                                                    const uint16_t type)
 {
     if (requester == NULL)
     {
-        std::cerr << "Failed to send csr to host.";
+        std::cerr << "newFileAvailableSendToHost:Failed to send file to host.";
         pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            "xyz.openbmc_project.PLDM.Error.SendFileToHostFail",
+            pldm::PelSeverity::ERROR);
         return;
     }
     auto instanceId = requester->getInstanceId(mctp_eid);
@@ -263,29 +296,67 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
     if (rc != PLDM_SUCCESS)
     {
         requester->markFree(mctp_eid, instanceId);
-        std::cerr << "Failed to encode_new_file_req, rc = " << rc << std::endl;
+        std::cerr
+            << "newFileAvailableSendToHost:Failed to encode_new_file_req, rc = "
+            << rc << std::endl;
         return;
     }
-    auto newFileAvailableRespHandler = [](mctp_eid_t /*eid*/,
-                                          const pldm_msg* response,
-                                          size_t respMsgLen) {
+    std::cout
+        << "newFileAvailableSendToHost:Sending Sign CSR request to Host for fileHandle: "
+        << fileHandle << std::endl;
+    auto newFileAvailableRespHandler = [fileHandle,
+                                        type](mctp_eid_t /*eid*/,
+                                              const pldm_msg* response,
+                                              size_t respMsgLen) {
         if (response == nullptr || !respMsgLen)
         {
             std::cerr << "Failed to receive response for NewFileAvailable "
-                         "command for vmi \n";
+                         "command\n";
+            if (type == PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
+            {
+                std::string filePath = certFilePath;
+                filePath += "CSR_" + std::to_string(fileHandle);
+                fs::remove(filePath);
+
+                DBusMapping dbusMapping{certObjPath +
+                                            std::to_string(fileHandle),
+                                        certEntryIntf, "Status", "string"};
+                PropertyValue value =
+                    "xyz.openbmc_project.Certs.Entry.State.Pending";
+                try
+                {
+                    pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                               value);
+                }
+                catch (const std::exception& e)
+                {
+                    std::cerr
+                        << "newFileAvailableSendToHost:Failed to set status property of certicate entry, "
+                           "ERROR="
+                        << e.what() << "\n";
+                }
+
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.SendFileToHostFail",
+                    pldm::PelSeverity::INFORMATIONAL);
+            }
             return;
         }
         uint8_t completionCode{};
         auto rc = decode_new_file_resp(response, respMsgLen, &completionCode);
         if (rc || completionCode)
         {
-            std::cerr << "Failed to decode_new_file_resp for vmi, or"
+            std::cerr << "Failed to decode_new_file_resp for file, or"
                       << " Host returned error for new_file_available"
                       << " rc=" << rc
                       << ", cc=" << static_cast<unsigned>(completionCode)
                       << "\n";
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            if (rc)
+            {
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.DecodeNewFileResponseFail",
+                    pldm::PelSeverity::ERROR);
+            }
         }
     };
     rc = handler->registerRequest(
@@ -294,9 +365,79 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
     if (rc)
     {
         std::cerr
-            << "Failed to send NewFileAvailable Request to Host for vmi \n";
+            << "newFileAvailableSendToHost:Failed to send NewFileAvailable Request to Host\n";
         pldm::utils::reportError(
-            "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            "xyz.openbmc_project.PLDM.Error.NewFileAvailableRequestFail",
+            pldm::PelSeverity::ERROR);
+    }
+}
+
+void DbusToFileHandler::newFileAvailableSendToHb(const uint32_t fileSize,
+                                                 const uint32_t fileHandle,
+                                                 const uint16_t type)
+{
+    if (requester == NULL)
+    {
+        std::cerr << "newFileAvailableSendToHb:Failed to send file to host.";
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.SendFileToHbFail",
+            pldm::PelSeverity::ERROR);
+        return;
+    }
+    auto instanceId = requester->getInstanceId(mctp_eid);
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_NEW_FILE_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+    auto rc =
+        encode_new_file_req(instanceId, type, fileHandle, fileSize, request);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester->markFree(mctp_eid, instanceId);
+        std::cerr
+            << "newFileAvailableSendToHb:Failed to encode_new_file_req, rc = "
+            << rc << std::endl;
+        return;
+    }
+    std::cout << "newFileAvailableSendToHb:Sending keyword file to hostboot: "
+              << fileHandle << std::endl;
+    auto newFileAvailableRespHandler = [fileHandle,
+                                        type](mctp_eid_t /*eid*/,
+                                              const pldm_msg* response,
+                                              size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            std::cerr
+                << "Failed to receive response for NewFileAvailable command\n";
+            // add set property here
+        }
+        uint8_t completionCode{};
+        auto rc = decode_new_file_resp(response, respMsgLen, &completionCode);
+        if (rc || completionCode)
+        {
+            std::cerr << "Failed to decode_new_file_resp for file, or"
+                      << " Host returned error for new_file_available"
+                      << " rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << "\n";
+            if (rc)
+            {
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.DecodeNewFileResponseFail",
+                    pldm::PelSeverity::ERROR);
+            }
+        }
+    };
+    rc = handler->registerRequest(
+        mctp_eid, instanceId, PLDM_OEM, PLDM_NEW_FILE_AVAILABLE,
+        std::move(requestMsg), std::move(newFileAvailableRespHandler));
+    if (rc)
+    {
+        std::cerr
+            << "newFileAvailableSendToHb:Failed to send NewFileAvailable Request to Host\n";
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.NewFileAvailableRequestFail",
+            pldm::PelSeverity::ERROR);
     }
 }
 
