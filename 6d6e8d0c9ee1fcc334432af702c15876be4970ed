@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03c0b323_76058e44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-19T02:26:21Z",
+      "side": 1,
+      "message": "attributes -\u003e as you are adding multiple attributes not a single attribute.",
+      "range": {
+        "startLine": 7,
+        "startChar": 22,
+        "endLine": 7,
+        "endChar": 31
+      },
+      "revId": "6d6e8d0c9ee1fcc334432af702c15876be4970ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "259b8777_1326c293",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-19T02:26:21Z",
+      "side": 1,
+      "message": "there is no significance of this word, as you are pushing code to pldm respository.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "6d6e8d0c9ee1fcc334432af702c15876be4970ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68f92362_fd7c2dc9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-19T02:26:21Z",
+      "side": 1,
+      "message": "what is RPD ?\n\nExplain a little more on what this commit is about \u0026 avoid `-` , as it is just only one point and not multiple points.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 21
+      },
+      "revId": "6d6e8d0c9ee1fcc334432af702c15876be4970ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8659537_41edfcad",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-19T02:26:21Z",
+      "side": 1,
+      "message": "this does not looks good, can we make this Enable(\u003cwhat enabled does\u003e), Run Now(\u003cwhat run now does\u003e), ...",
+      "range": {
+        "startLine": 725,
+        "startChar": 23,
+        "endLine": 725,
+        "endChar": 388
+      },
+      "revId": "6d6e8d0c9ee1fcc334432af702c15876be4970ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b80855c2_1a78f19c",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-10-19T02:26:21Z",
+      "side": 1,
+      "message": "needs space.",
+      "range": {
+        "startLine": 191,
+        "startChar": 62,
+        "endLine": 191,
+        "endChar": 78
+      },
+      "revId": "6d6e8d0c9ee1fcc334432af702c15876be4970ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
