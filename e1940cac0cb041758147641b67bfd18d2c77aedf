@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e043248d_132f1d6e",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-02T04:46:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a0ec91af_033e51bd",
+      "range": {
+        "startLine": 655,
+        "startChar": 26,
+        "endLine": 655,
+        "endChar": 31
+      },
+      "revId": "e1940cac0cb041758147641b67bfd18d2c77aedf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2843ced9_37601840",
