@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5182cb8b_511dfb47",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-02T05:57:48Z",
+      "side": 1,
+      "message": "does this work when sysType is empty ? is that tested ?",
+      "range": {
+        "startLine": 464,
+        "startChar": 2,
+        "endLine": 471,
+        "endChar": 53
+      },
+      "revId": "430d44041e16db9e3cef28c43eab79d2213b2e07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2ee65bd_79abed10",
+        "filename": "libpldmresponder/test/libpldmresponder_bios_config_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-02T05:57:48Z",
+      "side": 1,
+      "message": "well, this seems like the mock returns empty , so the sysType empty case seems to be tested.\n\nBut what about the non-empty case ?",
+      "revId": "430d44041e16db9e3cef28c43eab79d2213b2e07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
