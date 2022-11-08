@@ -463,7 +463,9 @@ class GetPDR : public CommandInterface
         {PLDM_STATE_SET_BOOT_PROG_STATE_BASE_BOARD_INITIALIZATION,
          "Baseboard Initialization"},
         {PLDM_STATE_SET_BOOT_PROG_STATE_PRIMARY_PROC_INITIALIZATION,
-         "Primary Processor Initialization"}};
+         "Primary Processor Initialization"},
+        {PLDM_STATE_SET_BOOT_PROG_STATE_OSSTART,
+         "OSStart"}};
 
     static inline const std::map<uint8_t, std::string> setOpFaultStatus{
         {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_NORMAL, "Normal"},
