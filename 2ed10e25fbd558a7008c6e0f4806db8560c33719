@@ -3,6 +3,190 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "169cca96_172723dd",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "please use c++ style vector\u003cuint8_t\u003e",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa92f46e_2d00dbe9",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "if the asked length is less than the size of the file, we need to return an ERROR back.",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 18,
+        "endChar": 63
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64b5bd31_ddca5483",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "traces need to be removed.",
+      "range": {
+        "startLine": 32,
+        "startChar": 3,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "723d863c_6855ee4b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "traces can be removed.",
+      "range": {
+        "startLine": 47,
+        "startChar": 3,
+        "endLine": 47,
+        "endChar": 64
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4623d64_cad298fc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "why do we need 4 different variables for just the path ? just make it one constexpr.\n\nand this should be under /tmp/pldm/\u003c\u003e .",
+      "range": {
+        "startLine": 50,
+        "startChar": 3,
+        "endLine": 53,
+        "endChar": 62
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b685484c_9c8da181",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "if the file already exists ? what happens to the subsequent read command? does the file gets appended ? or replaced ? was this tested ?",
+      "range": {
+        "startLine": 63,
+        "startChar": 3,
+        "endLine": 63,
+        "endChar": 75
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d230f62_e2f47380",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "please print errno, traces like this will not help us debug problems.",
+      "range": {
+        "startLine": 66,
+        "startChar": 7,
+        "endLine": 66,
+        "endChar": 79
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b888a33_429978b8",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 69,
+        "startChar": 71,
+        "endLine": 69,
+        "endChar": 74
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "248f08c7_dd8ccfb3",
         "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
         "patchSetId": 4
@@ -14,6 +198,52 @@
       "writtenOn": "2022-11-09T06:45:26Z",
       "side": 1,
       "message": "The read in the line 73 is to check if the file was written with required size as expected ? Should we add a error trace at line 75 ?",
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66655673_901348cd",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "please give enough spaces.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "283b48b5_efef0f99",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-09T07:49:26Z",
+      "side": 1,
+      "message": "please mantain the doxygen formatting correct.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
       "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
