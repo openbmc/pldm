@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "248f08c7_dd8ccfb3",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000092
+      },
+      "writtenOn": "2022-11-09T06:45:26Z",
+      "side": 1,
+      "message": "The read in the line 73 is to check if the file was written with required size as expected ? Should we add a error trace at line 75 ?",
+      "revId": "2ed10e25fbd558a7008c6e0f4806db8560c33719",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
