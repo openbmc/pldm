@@ -22,6 +22,30 @@
       },
       "revId": "c4b92feb183de5adec45c8e2fba7dab8e9cfb41c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb9f8f1_32a25a96",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2022-11-10T09:44:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7db033f_f3354b4b",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 5
+      },
+      "revId": "c4b92feb183de5adec45c8e2fba7dab8e9cfb41c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
