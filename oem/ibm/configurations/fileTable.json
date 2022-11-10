@@ -170,5 +170,9 @@
    {
       "path":"/usr/local/share/hostfw/running/81e00684.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00684.lid",
       "file_traits":2
+   },
+   {
+      "path":"/usr/local/share/hostfw/running/81e0069d.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0069d.lid",
+      "file_traits":1
    }
 ]
