@@ -180,6 +180,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3009d05_278c5dec",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-11-14T09:04:23Z",
+      "side": 1,
+      "message": "I like understand more on how the data from smbios-mdr will be used to create inventory. May be i will wait for the patch or a small write up could help.\n\nAlso, in this case do you have an onboard PLDM device or is it behind a PCIe slot?",
+      "parentUuid": "2881e48c_f0bd251e",
+      "revId": "61d2be6bd934a58f3cebc43113547dc8cc36370d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6178924_0d6e658a",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
