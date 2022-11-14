@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0047fdec_a342a4a5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-14T14:53:53Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "1cc99b3f_e608e966",
+      "revId": "e65b9bae99d6e35b5ce76fb7f50775f167c02fa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "044407e4_bded241f",
         "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
         "patchSetId": 5
@@ -54,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b344eb65_373923e0",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-14T14:53:53Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "044407e4_bded241f",
+      "revId": "e65b9bae99d6e35b5ce76fb7f50775f167c02fa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12eb2609_252c4279",
         "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
         "patchSetId": 5
@@ -65,6 +101,24 @@
       "writtenOn": "2022-11-11T05:01:33Z",
       "side": 1,
       "message": "Please set the error log severity using pldm::utils::reportError",
+      "revId": "e65b9bae99d6e35b5ce76fb7f50775f167c02fa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfc3e2b9_f21bb8c1",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-14T14:53:53Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "12eb2609_252c4279",
       "revId": "e65b9bae99d6e35b5ce76fb7f50775f167c02fa1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
