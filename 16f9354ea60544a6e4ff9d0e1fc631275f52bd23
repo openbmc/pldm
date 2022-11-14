@@ -249,6 +249,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff284099_922c4f24",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-11-14T04:50:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a719e589_c76f2646",
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36cc330c_439e1c21",
@@ -356,6 +374,30 @@
       "side": 1,
       "message": "The argument is changed to MctpInfo and the function checkes networkId in new patch set.",
       "parentUuid": "f3c99d6d_a5e2674f",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 0
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "937a4b47_d9f36a1b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2022-11-14T04:50:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b83fcea7_fce94bff",
       "range": {
         "startLine": 21,
         "startChar": 0,
