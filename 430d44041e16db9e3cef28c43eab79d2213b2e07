@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0bcd74a_19222145",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-11-17T13:31:08Z",
+      "side": 1,
+      "message": "Yes, this is tested, if sysType is empty then it will pick from default Json folder.",
+      "parentUuid": "5182cb8b_511dfb47",
+      "range": {
+        "startLine": 464,
+        "startChar": 2,
+        "endLine": 471,
+        "endChar": 53
+      },
+      "revId": "430d44041e16db9e3cef28c43eab79d2213b2e07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2ee65bd_79abed10",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-11-02T05:57:48Z",
       "side": 1,
       "message": "well, this seems like the mock returns empty , so the sysType empty case seems to be tested.\n\nBut what about the non-empty case ?",
+      "revId": "430d44041e16db9e3cef28c43eab79d2213b2e07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c6af717_bc063bb7",
+        "filename": "libpldmresponder/test/libpldmresponder_bios_config_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-11-17T13:31:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2ee65bd_79abed10",
       "revId": "430d44041e16db9e3cef28c43eab79d2213b2e07",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
