@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44ea2b48_2b049bd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-28T05:45:46Z",
+      "side": 1,
+      "message": "These need to be migrated to openbmc/libpldm repository.",
+      "revId": "156c7e03d2fd9648629a3d062d7f4f5eb34f4fcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
