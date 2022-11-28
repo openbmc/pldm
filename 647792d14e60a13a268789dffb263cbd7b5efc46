@@ -34,6 +34,23 @@
       "parentUuid": "8308f6f6_30472d39",
       "revId": "647792d14e60a13a268789dffb263cbd7b5efc46",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75bfce5f_70997fac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-11-28T05:46:47Z",
+      "side": 1,
+      "message": "@gilbert - can you abandon this change ? as it is merged to openbmc/libpldm",
+      "revId": "647792d14e60a13a268789dffb263cbd7b5efc46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
