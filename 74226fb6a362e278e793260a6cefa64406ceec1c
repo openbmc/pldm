@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eceb09d7_e5775940",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2022-11-28T06:55:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93f0b93f_6f5471e9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 63
+      },
+      "revId": "74226fb6a362e278e793260a6cefa64406ceec1c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24e1aebd_1966a520",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3a3ca9c_1f68ed9a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2022-11-28T06:55:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24e1aebd_1966a520",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 50
+      },
+      "revId": "74226fb6a362e278e793260a6cefa64406ceec1c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "126a17ab_f088989c",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-11-28T05:36:18Z",
       "side": 1,
       "message": "the write into file can fail as well, please check for the status and throw an error, reference : https://en.cppreference.com/w/cpp/io/basic_ios/bad",
+      "range": {
+        "startLine": 75,
+        "startChar": 2,
+        "endLine": 76,
+        "endChar": 33
+      },
+      "revId": "74226fb6a362e278e793260a6cefa64406ceec1c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ece99b1_e6e08868",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2022-11-28T06:55:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "126a17ab_f088989c",
       "range": {
         "startLine": 75,
         "startChar": 2,
