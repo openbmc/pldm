@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f781a7e_5325980b",
+        "filename": "libpldmresponder/bios.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-11-29T06:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66891179_1217b9cc",
+      "revId": "9247fa0c9d8317e0a219325c35dedba536304860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e372c267_087c22a9",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-29T04:04:00Z",
       "side": 1,
       "message": "Please add description of systemConfig",
+      "revId": "9247fa0c9d8317e0a219325c35dedba536304860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ead12f39_d08c7910",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2022-11-29T06:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e372c267_087c22a9",
       "revId": "9247fa0c9d8317e0a219325c35dedba536304860",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
