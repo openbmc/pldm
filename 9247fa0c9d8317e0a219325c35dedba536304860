@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66891179_1217b9cc",
+        "filename": "libpldmresponder/bios.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-11-29T04:04:00Z",
+      "side": 1,
+      "message": "Please add description of systemConfig here",
+      "revId": "9247fa0c9d8317e0a219325c35dedba536304860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e372c267_087c22a9",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2022-11-29T04:04:00Z",
+      "side": 1,
+      "message": "Please add description of systemConfig",
+      "revId": "9247fa0c9d8317e0a219325c35dedba536304860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
