@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a940295_c691a8c1",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-11-30T08:25:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b87ab576_9e64ddc6",
+      "range": {
+        "startLine": 67,
+        "startChar": 22,
+        "endLine": 67,
+        "endChar": 37
+      },
+      "revId": "879b3a0bb2ea5915ee39dde9990d3cb5cc58c7bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd95bcee_380b2526",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-14T06:13:58Z",
       "side": 1,
       "message": "nit: could you add a comment which value is incorrect?",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 22
+      },
+      "revId": "879b3a0bb2ea5915ee39dde9990d3cb5cc58c7bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "195f5fba_7b67ecd3",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-11-30T08:25:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cd95bcee_380b2526",
       "range": {
         "startLine": 166,
         "startChar": 0,
