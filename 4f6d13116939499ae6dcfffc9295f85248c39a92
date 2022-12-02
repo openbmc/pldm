@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "514561ca_e7adb988",
+        "filename": "libpldmresponder/system_config.hpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2022-12-02T10:00:39Z",
+      "side": 1,
+      "message": "Is this interface up streamed? This is IBM specific and doesn\u0027t look apt for common code.",
+      "revId": "4f6d13116939499ae6dcfffc9295f85248c39a92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
