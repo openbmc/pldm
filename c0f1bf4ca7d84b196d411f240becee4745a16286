@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27bd4c6d_903529ea",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-12-04T13:35:09Z",
+      "side": 1,
+      "message": "The variable should be initialized.\nWithout initialization, the patch set is failed to start discovery the termini in Ampere system.",
+      "revId": "c0f1bf4ca7d84b196d411f240becee4745a16286",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b45b6cf_39b73bfe",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 43
