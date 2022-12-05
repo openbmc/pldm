@@ -35,7 +35,7 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
     auto rc = encode_platform_event_message_req(
-        instanceId, 1 /*formatVersion*/, 0 /*tId*/, eventType,
+        instanceId, 1 /*formatVersion*/, TERMINUS_ID /*tId*/, eventType,
         eventDataVec.data(), eventDataVec.size(), request,
         eventDataVec.size() + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES);
     if (rc != PLDM_SUCCESS)
