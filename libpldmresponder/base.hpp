@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "libpldm/base.h"
 
 #include "libpldmresponder/platform.hpp"
