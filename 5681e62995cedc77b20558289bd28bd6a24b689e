@@ -16,6 +16,23 @@
       "message": "Mark WIP due to the cross-repo dependency https://gerrit.openbmc.org/c/openbmc/libpldm/+/59033",
       "revId": "5681e62995cedc77b20558289bd28bd6a24b689e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d42bb50_657b2c33",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2022-12-05T06:51:53Z",
+      "side": 1,
+      "message": "Should we use supportedThresholds value to identify the existing of warningLow/WarningHigh threshold?",
+      "revId": "5681e62995cedc77b20558289bd28bd6a24b689e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
