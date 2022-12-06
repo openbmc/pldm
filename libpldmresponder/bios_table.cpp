@@ -1,18 +1,17 @@
 #include "bios_table.hpp"
 
+#include "libpldm/base.h"
 #include "libpldm/bios_table.h"
+#include "libpldm/utils.h"
 
 #include <fstream>
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace bios
 {
-
 BIOSTable::BIOSTable(const char* filePath) : filePath(filePath)
 {}
 
@@ -79,7 +78,6 @@ uint16_t BIOSStringTable::findHandle(const std::string& name) const
 
 namespace table
 {
-
 void appendPadAndChecksum(Table& table)
 {
     auto sizeWithoutPad = table.size();
@@ -92,7 +90,6 @@ void appendPadAndChecksum(Table& table)
 
 namespace string
 {
-
 uint16_t decodeHandle(const pldm_bios_string_table_entry* entry)
 {
     return pldm_bios_table_string_entry_decode_handle(entry);
@@ -122,7 +119,6 @@ const pldm_bios_string_table_entry* constructEntry(Table& table,
 
 namespace attribute
 {
-
 TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry)
 {
     auto attrHandle = pldm_bios_table_attr_entry_decode_attribute_handle(entry);
@@ -229,7 +225,6 @@ EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
 
 namespace attribute_value
 {
-
 TableHeader decodeHeader(const pldm_bios_attr_val_table_entry* entry)
 {
     auto handle =
