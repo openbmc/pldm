@@ -15,13 +15,10 @@ using namespace pldm::utils;
 
 namespace pldmtool
 {
-
 namespace platform
 {
-
 namespace
 {
-
 using namespace pldmtool::helper;
 
 static const std::map<uint8_t, std::string> sensorPresState{
@@ -639,9 +636,17 @@ class GetPDR : public CommandInterface
         }
     }
 
+    std::string getDecimalToHexString(uint32_t number)
+    {
+        std::ostringstream hexString;
+        hexString << number << " (0x" << std::hex << number << ")";
+        std::string strValue = hexString.str();
+        return strValue;
+    }
+
     void printCommonPDRHeader(const pldm_pdr_hdr* hdr, ordered_json& output)
     {
-        output["recordHandle"] = hdr->record_handle;
+        output["recordHandle"] = getDecimalToHexString(hdr->record_handle);
         output["PDRHeaderVersion"] = unsigned(hdr->version);
         output["PDRType"] = getPDRType(hdr->type);
         output["recordChangeNumber"] = hdr->record_change_num;
