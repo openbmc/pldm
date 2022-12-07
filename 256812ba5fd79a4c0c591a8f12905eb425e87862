@@ -96,6 +96,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2687a9fc_7b07c167",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2022-12-07T08:48:06Z",
+      "side": 1,
+      "message": "Fixed again.\nIf update_interval is NaN, UpdateTime is assigned to std::numeric_limits\u003cunit64_t\u003e::max().\nThe polling loop skips sensor when its updateTime is max.",
+      "parentUuid": "131ededb_54114321",
+      "range": {
+        "startLine": 201,
+        "startChar": 40,
+        "endLine": 201,
+        "endChar": 48
+      },
+      "revId": "256812ba5fd79a4c0c591a8f12905eb425e87862",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1363b1d_4a38a583",
