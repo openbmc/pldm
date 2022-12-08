@@ -3,17 +3,18 @@
 """Tool to visualize PLDM PDR's"""
 
 import argparse
-import json
 import hashlib
-import sys
-from datetime import datetime
-import paramiko
-from graphviz import Digraph
-from tabulate import tabulate
+import json
 import os
 import shlex
 import shutil
 import subprocess
+import sys
+from datetime import datetime
+
+import paramiko
+from graphviz import Digraph
+from tabulate import tabulate
 
 
 class Process:

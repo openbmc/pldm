@@ -4,13 +4,13 @@
 
 import argparse
 import binascii
-from datetime import datetime
 import json
+import math
 import os
 import struct
 import sys
+from datetime import datetime
 
-import math
 from bitarray import bitarray
 from bitarray.util import ba2int
 
