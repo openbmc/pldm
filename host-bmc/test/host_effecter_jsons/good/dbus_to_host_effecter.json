@@ -20,18 +20,12 @@
                             "xyz.openbmc_project.Control.Boot.Mode.Modes.Regular"
                         ]
                     },
-                    "state" : {
-                        "id" : 196,
-                        "state_values": [
-                            2
-                            ]
+                    "state": {
+                        "id": 196,
+                        "state_values": [2]
                     }
                 }
-
             ]
-
         }
-
     ]
-
 }

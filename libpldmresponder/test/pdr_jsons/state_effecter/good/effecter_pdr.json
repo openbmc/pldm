@@ -13,9 +13,7 @@
                             "set": {
                                 "id": 196,
                                 "size": 1,
-                                "states": [
-                                    1
-                                ]
+                                "states": [1]
                             },
                             "dbus": {
                                 "path": "/foo/bar",
@@ -31,10 +29,7 @@
                             "set": {
                                 "id": 196,
                                 "size": 1,
-                                "states": [
-                                    1,
-                                    2
-                                ]
+                                "states": [1, 2]
                             },
                             "dbus": {
                                 "path": "/foo/bar",
@@ -59,9 +54,7 @@
                             "set": {
                                 "id": 197,
                                 "size": 1,
-                                "states": [
-                                    1
-                                ]
+                                "states": [1]
                             },
                             "dbus": {
                                 "path": "/foo/bar",
@@ -77,12 +70,7 @@
                             "set": {
                                 "id": 198,
                                 "size": 2,
-                                "states": [
-                                    1,
-                                    2,
-                                    5,
-                                    15
-                                ]
+                                "states": [1, 2, 5, 15]
                             },
                             "dbus": {
                                 "path": "/foo/bar",

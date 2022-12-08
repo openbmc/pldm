@@ -1,7 +1,7 @@
 ## Overview
 
-PLDM requester infrastructure enables the requester code in PLDM daemon to
-meet the requirements of PLDM requesters. It provides the following features:
+PLDM requester infrastructure enables the requester code in PLDM daemon to meet
+the requirements of PLDM requesters. It provides the following features:
 
 - Register a PLDM request and the response handler to be invoked on receiving
   the response.
@@ -29,6 +29,7 @@ passed as parameters to the registerRequest API.
 ```
 
 The signature of the response function handler:
+
 ```
 void handler(mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 ```

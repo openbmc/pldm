@@ -17,11 +17,11 @@
             },
             "effecters": [
                 {
-                // Following are the D-Bus information under each effecter
-                // which are monitored for a property change signal
+                    // Following are the D-Bus information under each effecter
+                    // which are monitored for a property change signal
 
-                // if there is a property change, the corresponding
-                // state value is picked up to set the host effecter
+                    // if there is a property change, the corresponding
+                    // state value is picked up to set the host effecter
 
                     "dbus_info": {
                         "object_path": "/xyz/abc/def",
@@ -33,14 +33,11 @@
                             "xyz.openbmc_project.State.Off"
                         ]
                     },
-                    "state" : {
-                        "id" : 197,
+                    "state": {
+                        "id": 197,
                         // This should be of same size and order as
                         // property_values
-                        "state_values": [
-                            0,
-                            1
-                        ]
+                        "state_values": [0, 1]
                     }
                 },
                 {
@@ -49,17 +46,11 @@
                         "interface": "xyz.openbmc_project.example1.value",
                         "property_name": "value2",
                         "property_type": "uint8_t",
-                        "property_values": [
-                            9,
-                            10
-                        ]
+                        "property_values": [9, 10]
                     },
-                    "state" : {
-                        "id" : 12,
-                        "state_values": [
-                            2,
-                            3
-                        ]
+                    "state": {
+                        "id": 12,
+                        "state_values": [2, 3]
                     }
                 },
                 {
@@ -68,17 +59,11 @@
                         "interface": "xyz.openbmc_project.example3.value",
                         "property_name": "value3",
                         "property_type": "bool",
-                        "property_values": [
-                            false,
-                            true
-                        ]
+                        "property_values": [false, true]
                     },
-                    "state" : {
-                        "id" : 12,
-                        "state_values": [
-                            0,
-                            1
-                        ]
+                    "state": {
+                        "id": 12,
+                        "state_values": [0, 1]
                     }
                 }
             ]
@@ -104,12 +89,9 @@
                             "xyz.openbmc_project.State.Disabled"
                         ]
                     },
-                    "state" : {
-                        "id" : 15,
-                        "state_values": [
-                            3,
-                            4
-                        ]
+                    "state": {
+                        "id": 15,
+                        "state_values": [3, 4]
                     }
                 }
             ]
