@@ -12,16 +12,16 @@
 // the OEM record (VINI is a record in IBM IPZ VPD format) for FRU of type Board.
 // For all instances of the same FRU, the same config JSON will apply.
 {
-    "service":"xyz.openbmc_project.Inventory.Manager",
-    "root_path":"/xyz/openbmc_project/inventory",
-    "entities":[
+    "service": "xyz.openbmc_project.Inventory.Manager",
+    "root_path": "/xyz/openbmc_project/inventory",
+    "entities": [
         {
-            "interface" : "xyz.openbmc_project.Inventory.Item.Board",
-            "entity_type" : 64
+            "interface": "xyz.openbmc_project.Inventory.Item.Board",
+            "entity_type": 64
         },
         {
-            "interface" : "xyz.openbmc_project.Inventory.Item.Cpu",
-            "entity_type" : 135
+            "interface": "xyz.openbmc_project.Inventory.Item.Cpu",
+            "entity_type": 135
         }
     ]
 }
