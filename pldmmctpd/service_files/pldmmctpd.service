@@ -1,0 +1,10 @@
+[Unit]
+Description=Phosphor PLDM MCTP Discovery Daemon
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/pldmmctpd
+
+[Install]
+WantedBy=multi-user.target

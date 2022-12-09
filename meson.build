@@ -204,6 +204,7 @@ if get_option('systemd').enabled()
 endif
 
 subdir('pldmtool')
+subdir('pldmmctpd')
 
 subdir('configurations')
 
