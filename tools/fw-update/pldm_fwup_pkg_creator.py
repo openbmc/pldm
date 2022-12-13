@@ -13,6 +13,7 @@ import sys
 import math
 from bitarray import bitarray
 from bitarray.util import ba2int
+import enum
 
 string_types = dict([
     ("Unknown", 0),
@@ -42,6 +43,12 @@ descriptor_type_name_length = {
     0x0104: ["PnP Product Identifier", 4],
     0x0105: ["ACPI Product Identifier", 4]}
 
+class ComponentOptions(enum.IntEnum):
+    '''
+    Enum to represent ComponentOptions
+    '''
+    ForceUpdate = 0
+    UseComponentCompStamp = 1
 
 def check_string_length(string):
     """Check if the length of the string is not greater than 255."""
@@ -359,6 +366,39 @@ def write_fw_device_identification_area(pldm_fw_up_pkg, metadata,
                 component_image_set_version_string.encode('ascii')))
         pldm_fw_up_pkg.write(record_descriptors)
 
+def get_component_comparison_stamp(component):
+    '''
+    Get component comparison stamp from metadata file.
+
+    This function checks if ComponentOptions field is having value 1. For
+    ComponentOptions 1, ComponentComparisonStamp value from metadata file
+    is used and Default value 0xFFFFFFFF is used for other Component Options.
+
+    Parameters:
+        component: Component image info
+    Returns:
+        component_comparison_stamp: Component Comparison stamp
+    '''
+    component_comparison_stamp = 0xFFFFFFFF
+    if int(ComponentOptions.UseComponentCompStamp) in component["ComponentOptions"]:
+        #Use FD vendor selected value from metadata file
+        if "ComponentComparisonStamp" not in component.keys():
+            sys.exit("ERROR: ComponentComparisonStamp is required"\
+                " when value '1' is specified in ComponentOptions field")
+        else:
+            try:
+                tmp_component_cmp_stmp = \
+                    int(component["ComponentComparisonStamp"], 16)
+                if 0 < tmp_component_cmp_stmp < 0xFFFFFFFF:
+                    component_comparison_stamp = tmp_component_cmp_stmp
+                else:
+                    sys.exit("ERROR: Value for ComponentComparisonStamp "\
+                        " should be  [0x01 - 0xFFFFFFFE] when " \
+                        "ComponentOptions bit is set to"\
+                        "'1'(UseComponentComparisonStamp)")
+            except ValueError: #invalid hext format
+                sys.exit("ERROR: Invalid hex for ComponentComparisonStamp")
+    return component_comparison_stamp
 
 def write_component_image_info_area(pldm_fw_up_pkg, metadata, image_files):
     '''
@@ -366,9 +406,7 @@ def write_component_image_info_area(pldm_fw_up_pkg, metadata, image_files):
 
     This function writes the ComponentImageCount and the
     ComponentImageInformation into the firmware update package by processing
-    the metadata JSON. Currently there is no support for
-    ComponentComparisonStamp field and the component option use component
-    comparison stamp.
+    the metadata JSON.
 
     Parameters:
         pldm_fw_up_pkg: PLDM FW update package
@@ -401,8 +439,8 @@ def write_component_image_info_area(pldm_fw_up_pkg, metadata, image_files):
             sys.exit(
                 "ERROR: ComponentIdentifier should be [0x0000 - 0xFFFF]")
 
-        # ComponentComparisonStamp not supported
-        component_comparison_stamp = 0xFFFFFFFF
+        # ComponentComparisonStamp
+        component_comparison_stamp = get_component_comparison_stamp(component)
 
         # ComponentOptions
         component_options = bitarray(16, endian='little')

@@ -67,7 +67,9 @@
             "ComponentClassification": 10,
             "ComponentIdentifier": 100,
             "ComponentOptions": [
+                1
             ],
+            "ComponentComparisonStamp" : "0xFFFFFFFE",
             "RequestedComponentActivationMethod": [
             ],
             "ComponentVersionString": "VersionString5"

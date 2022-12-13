@@ -123,10 +123,13 @@ Information. See below for details on properties:
 Information records. Each such record can have the following properties:
     - ComponentClassification: Supported, must be specified in metadata file
     - ComponentIdentifier: Supported, must be specified in metadata file
-    - ComponentComparisonStamp: Not supported. Set to 0xFFFFFFFF by the script
+    - ComponentComparisonStamp: Supported. Must be specified as hexadecimal
+    string value in metadata file if ComponentOptions bit 1 is selected.
+    If the ComponentOptions bit 1 is not set, the ComponentComparisonStamp
+    will be set to the default value of 0xFFFFFFFF.
     - ComponentOptions: Supported, must be specified in metadata file
         - add each bit that is to be set to 1 to the list "ComponentOptions"
-        - only supported option at the moment is Force Update (0x0)
+        - supported options are Force Update and Use Component Comparison Stamp.
     - RequestedComponentActivationMethod: Supported, must be specified in
     metadata file
         - add each bit that is to be set to 1 to the list
