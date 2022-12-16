@@ -16,6 +16,24 @@
       "message": "You might want to just add these to a global .linter-ignore.",
       "revId": "ea34f959263032fcc57dcba7e867cb85c7ae9e73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b6bc880_2dbeb88e",
+        "filename": ".prettierignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001516
+      },
+      "writtenOn": "2022-12-16T11:47:09Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3a02de83_c365000c",
+      "revId": "ea34f959263032fcc57dcba7e867cb85c7ae9e73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
