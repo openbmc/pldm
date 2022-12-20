@@ -9,7 +9,7 @@
         {
             "DeviceUpdateOptionFlags": [0],
             "ComponentImageSetVersionString": "VersionString2",
-            "ApplicableComponents": [100, 200],
+            "ApplicableComponents": [0, 1],
             "Descriptors": [
                 {
                     "DescriptorType": 2,
@@ -29,7 +29,7 @@
         {
             "DeviceUpdateOptionFlags": [],
             "ComponentImageSetVersionString": "VersionString3",
-            "ApplicableComponents": [100, 200, 300],
+            "ApplicableComponents": [0, 1, 2],
             "Descriptors": [
                 {
                     "DescriptorType": 2,
@@ -40,7 +40,7 @@
         {
             "DeviceUpdateOptionFlags": [],
             "ComponentImageSetVersionString": "VersionString4",
-            "ApplicableComponents": [100],
+            "ApplicableComponents": [0],
             "Descriptors": [
                 {
                     "DescriptorType": 2,
