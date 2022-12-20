@@ -215,9 +215,11 @@ def get_applicable_components(device, components, component_bitmap_bit_length):
         component_bitmap_bit_length, endian="little"
     )
     applicable_components.setall(0)
-    for component in components:
-        if component["ComponentIdentifier"] in applicable_components_list:
-            applicable_components[components.index(component)] = 1
+    for component_index in applicable_components_list:
+        if 0 <= component_index < len(components):
+            applicable_components[component_index] = 1
+        else:
+            sys.exit("ERROR: Applicable Component index not found.")
     return applicable_components
 
 
