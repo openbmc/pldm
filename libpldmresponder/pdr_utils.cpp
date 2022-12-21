@@ -1,8 +1,7 @@
-#include "libpldm/platform.h"
-
 #include "pdr.hpp"
 
 #include <config.h>
+#include <libpldm/platform.h>
 
 #include <climits>
 

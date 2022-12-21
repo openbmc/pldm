@@ -1,7 +1,5 @@
 #pragma once
 
-#include "libpldm/pldm.h"
-
 #include "activation.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
@@ -9,6 +7,8 @@
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
 #include "update_manager.hpp"
+
+#include <libpldm/pldm.h>
 
 #include <unordered_map>
 #include <vector>

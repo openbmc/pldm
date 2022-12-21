@@ -1,8 +1,8 @@
 #pragma once
 
-#include "libpldm/firmware_update.h"
-
 #include "common/types.hpp"
+
+#include <libpldm/firmware_update.h>
 
 #include <array>
 #include <cstdint>

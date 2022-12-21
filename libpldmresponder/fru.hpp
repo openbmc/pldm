@@ -2,11 +2,11 @@
 
 #include "config.h"
 
-#include "libpldm/fru.h"
-#include "libpldm/pdr.h"
-
 #include "fru_parser.hpp"
 #include "pldmd/handler.hpp"
+
+#include <libpldm/fru.h>
+#include <libpldm/pdr.h>
 
 #include <sdbusplus/message.hpp>
 
