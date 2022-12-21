@@ -1,9 +1,9 @@
 #include "pldm_fw_update_cmd.hpp"
 
-#include "libpldm/firmware_update.h"
-
 #include "common/utils.hpp"
 #include "pldm_cmd_helper.hpp"
+
+#include <libpldm/firmware_update.h>
 
 namespace pldmtool
 {

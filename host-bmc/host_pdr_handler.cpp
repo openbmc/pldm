@@ -2,9 +2,8 @@
 
 #include "host_pdr_handler.hpp"
 
-#include "libpldm/pldm.h"
-
 #include <assert.h>
+#include <libpldm/pldm.h>
 
 #include <nlohmann/json.hpp>
 #include <sdeventplus/clock.hpp>

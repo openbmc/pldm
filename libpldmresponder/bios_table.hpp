@@ -1,8 +1,7 @@
 #pragma once
 
-#include "libpldm/bios.h"
-#include "libpldm/bios_table.h"
-
+#include <libpldm/bios.h>
+#include <libpldm/bios_table.h>
 #include <stdint.h>
 
 #include <filesystem>

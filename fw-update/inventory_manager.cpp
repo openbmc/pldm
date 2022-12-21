@@ -1,9 +1,9 @@
 #include "inventory_manager.hpp"
 
-#include "libpldm/firmware_update.h"
-
 #include "common/utils.hpp"
 #include "xyz/openbmc_project/Software/Version/server.hpp"
+
+#include <libpldm/firmware_update.h>
 
 #include <functional>
 

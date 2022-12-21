@@ -1,11 +1,10 @@
 #pragma once
 
-#include "libpldm/platform.h"
-
 #include "pdr.hpp"
 #include "pdr_utils.hpp"
 
 #include <config.h>
+#include <libpldm/platform.h>
 
 namespace pldm
 {

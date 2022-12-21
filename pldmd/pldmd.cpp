@@ -1,8 +1,3 @@
-#include "libpldm/base.h"
-#include "libpldm/bios.h"
-#include "libpldm/pdr.h"
-#include "libpldm/platform.h"
-
 #include "common/flight_recorder.hpp"
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
@@ -14,6 +9,10 @@
 
 #include <err.h>
 #include <getopt.h>
+#include <libpldm/base.h>
+#include <libpldm/bios.h>
+#include <libpldm/pdr.h>
+#include <libpldm/platform.h>
 #include <poll.h>
 #include <stdlib.h>
 #include <sys/socket.h>

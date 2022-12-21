@@ -1,9 +1,9 @@
 #pragma once
 
-#include "libpldm/pdr.h"
-#include "libpldm/platform.h"
-
 #include "xyz/openbmc_project/PLDM/PDR/server.hpp"
+
+#include <libpldm/pdr.h>
+#include <libpldm/platform.h>
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
