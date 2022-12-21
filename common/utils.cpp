@@ -2,8 +2,8 @@
 
 #include "utils.hpp"
 
-#include "libpldm/pdr.h"
-#include "libpldm/pldm_types.h"
+#include <libpldm/pdr.h>
+#include <libpldm/pldm_types.h>
 
 #include <xyz/openbmc_project/Common/error.hpp>
 

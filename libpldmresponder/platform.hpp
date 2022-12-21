@@ -2,10 +2,6 @@
 
 #include "config.h"
 
-#include "libpldm/pdr.h"
-#include "libpldm/platform.h"
-#include "libpldm/states.h"
-
 #include "common/utils.hpp"
 #include "event_parser.hpp"
 #include "fru.hpp"
@@ -16,6 +12,9 @@
 #include "oem_handler.hpp"
 #include "pldmd/handler.hpp"
 
+#include <libpldm/pdr.h>
+#include <libpldm/platform.h>
+#include <libpldm/states.h>
 #include <stdint.h>
 
 #include <map>

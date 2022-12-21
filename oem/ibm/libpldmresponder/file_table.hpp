@@ -1,7 +1,6 @@
 #pragma once
 
-#include "libpldm/pldm_types.h"
-
+#include <libpldm/pldm_types.h>
 #include <stdint.h>
 
 #include <nlohmann/json.hpp>

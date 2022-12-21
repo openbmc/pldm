@@ -1,13 +1,12 @@
 #pragma once
 
-#include "libpldm/base.h"
-#include "libpldm/bios.h"
-#include "libpldm/fru.h"
-#include "libpldm/platform.h"
-
 #include "common/utils.hpp"
 
 #include <err.h>
+#include <libpldm/base.h>
+#include <libpldm/bios.h>
+#include <libpldm/fru.h>
+#include <libpldm/platform.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>

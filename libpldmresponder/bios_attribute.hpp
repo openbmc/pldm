@@ -1,9 +1,9 @@
 #pragma once
 
-#include "libpldm/bios_table.h"
-
 #include "bios_table.hpp"
 #include "common/utils.hpp"
+
+#include <libpldm/bios_table.h>
 
 #include <nlohmann/json.hpp>
 

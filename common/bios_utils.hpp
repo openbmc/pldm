@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libpldm/bios_table.h"
+#include <libpldm/bios_table.h>
 
 #include <cstring>
 #include <memory>

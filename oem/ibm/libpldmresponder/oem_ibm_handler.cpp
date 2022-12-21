@@ -1,13 +1,12 @@
 #include "oem_ibm_handler.hpp"
 
-#include "libpldm/entity.h"
-#include "libpldm/pldm.h"
-
 #include "file_io_type_lid.hpp"
 #include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 
-#include <libpldm/entity_oem_ibm.h>
+#include <libpldm/entity.h>
+#include <libpldm//entity_oem_ibm.h>
+#include <libpldm/pldm.h>
 
 using namespace pldm::pdr;
 using namespace pldm::utils;

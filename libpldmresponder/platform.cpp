@@ -1,8 +1,5 @@
 #include "platform.hpp"
 
-#include "libpldm/entity.h"
-#include "libpldm/state_set.h"
-
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "event_parser.hpp"
@@ -16,6 +13,8 @@
 #include "platform_state_sensor.hpp"
 
 #include <config.h>
+#include <libpldm/entity.h>
+#include <libpldm/state_set.h>
 
 using namespace pldm::utils;
 using namespace pldm::responder::pdr;

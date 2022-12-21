@@ -1,8 +1,8 @@
-#include "libpldm/firmware_update.h"
-
 #include "common/utils.hpp"
 #include "fw-update/inventory_manager.hpp"
 #include "requester/test/mock_request.hpp"
+
+#include <libpldm/firmware_update.h>
 
 #include <gtest/gtest.h>
 
