@@ -99,6 +99,16 @@ class CommandInterface
     int pldmSendRecv(std::vector<uint8_t>& requestMsg,
                      std::vector<uint8_t>& responseMsg);
 
+    /**
+     * @brief get MCTP endpoint ID
+     *
+     * @return uint8_t - MCTP endpoint ID
+     */
+    inline uint8_t getMCTPEID()
+    {
+        return mctp_eid;
+    }
+
   private:
     const std::string pldmType;
     const std::string commandName;

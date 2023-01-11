@@ -15,6 +15,7 @@ namespace
 {
 
 using namespace pldmtool::helper;
+using namespace pldm::fw_update;
 
 std::vector<std::unique_ptr<CommandInterface>> commands;
 
@@ -52,6 +53,24 @@ const std::map<uint8_t, const char*> fdReasonCode{
     {PLDM_FD_TIMEOUT_DOWNLOAD, "Timeout occurred when in DOWNLOAD state"},
     {PLDM_FD_TIMEOUT_VERIFY, "Timeout occurred when in VERIFY state"},
     {PLDM_FD_TIMEOUT_APPLY, "Timeout occurred when in APPLY state"}};
+
+/**
+ * @brief descriptor type to name mapping
+ *
+ */
+const std::map<DescriptorType, const char*> descriptorName{
+    {PLDM_FWUP_PCI_VENDOR_ID, "PCI Vendor ID"},
+    {PLDM_FWUP_IANA_ENTERPRISE_ID, "IANA Enterprise ID"},
+    {PLDM_FWUP_UUID, "UUID"},
+    {PLDM_FWUP_PNP_VENDOR_ID, "PnP Vendor ID"},
+    {PLDM_FWUP_ACPI_VENDOR_ID, "ACPI Vendor ID"},
+    {PLDM_FWUP_PCI_DEVICE_ID, "PCI Device ID"},
+    {PLDM_FWUP_PCI_SUBSYSTEM_VENDOR_ID, "PCI Subsystem Vendor ID"},
+    {PLDM_FWUP_PCI_SUBSYSTEM_ID, "PCI Subsystem ID"},
+    {PLDM_FWUP_PCI_REVISION_ID, "PCI Revision ID"},
+    {PLDM_FWUP_PNP_PRODUCT_IDENTIFIER, "PnP Product Identifier"},
+    {PLDM_FWUP_ACPI_PRODUCT_IDENTIFIER, "ACPI Product Identifier"},
+    {PLDM_FWUP_VENDOR_DEFINED, "Vendor Defined"}};
 
 class GetStatus : public CommandInterface
 {
@@ -389,6 +408,209 @@ class GetFwParams : public CommandInterface
     }
 };
 
+class QueryDeviceIdentifiers : public CommandInterface
+{
+  public:
+    ~QueryDeviceIdentifiers() = default;
+    QueryDeviceIdentifiers() = delete;
+    QueryDeviceIdentifiers(const QueryDeviceIdentifiers&) = delete;
+    QueryDeviceIdentifiers(QueryDeviceIdentifiers&&) = default;
+    QueryDeviceIdentifiers& operator=(const QueryDeviceIdentifiers&) = delete;
+    QueryDeviceIdentifiers& operator=(QueryDeviceIdentifiers&&) = default;
+
+    /**
+     * @brief Implementation of createRequestMsg for QueryDeviceIdentifiers
+     *
+     * @return std::pair<int, std::vector<uint8_t>>
+     */
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override;
+
+    /**
+     * @brief Implementation of parseResponseMsg for QueryDeviceIdentifiers
+     *
+     * @param[in] responsePtr
+     * @param[in] payloadLength
+     */
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override;
+    using CommandInterface::CommandInterface;
+
+  private:
+    /**
+     * @brief Method to update QueryDeviceIdentifiers json response in a user
+     * friendly format
+     *
+     * @param[in] descriptors - descriptor json response
+     * @param[in] descriptorType - descriptor type
+     * @param[in] descriptorVal - descriptor value
+     */
+    void updateDescriptor(
+        ordered_json& descriptors, const DescriptorType& descriptorType,
+        const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
+            descriptorVal);
+};
+
+void QueryDeviceIdentifiers::updateDescriptor(
+    ordered_json& descriptors, const DescriptorType& descriptorType,
+    const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
+        descriptorVal)
+{
+    std::ostringstream descDataStream;
+    DescriptorData descData;
+    if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
+    {
+        descData = std::get<DescriptorData>(descriptorVal);
+    }
+    else
+    {
+        descData = std::get<VendorDefinedDescriptorData>(
+            std::get<VendorDefinedDescriptorInfo>(descriptorVal));
+    }
+    for (int byte : descData)
+    {
+        descDataStream << std::setfill('0') << std::setw(2) << std::hex << byte;
+    }
+
+    if (descriptorName.contains(descriptorType))
+    {
+        // Update the existing json response if entry is already present
+        for (auto& descriptor : descriptors)
+        {
+            if (descriptor["Type"] == descriptorName.at(descriptorType))
+            {
+                if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
+                {
+                    descriptor["Value"].emplace_back(descDataStream.str());
+                }
+                else
+                {
+                    ordered_json vendorDefinedVal;
+                    vendorDefinedVal[std::get<VendorDefinedDescriptorTitle>(
+                        std::get<VendorDefinedDescriptorInfo>(descriptorVal))] =
+                        descDataStream.str();
+                    descriptor["Value"].emplace_back(vendorDefinedVal);
+                }
+                return;
+            }
+        }
+        // Entry is not present, add type and value to json response
+        ordered_json descriptor =
+            ordered_json::object({{"Type", descriptorName.at(descriptorType)},
+                                  {"Value", ordered_json::array()}});
+        if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
+        {
+            descriptor["Value"].emplace_back(descDataStream.str());
+        }
+        else
+        {
+            ordered_json vendorDefinedVal;
+            vendorDefinedVal[std::get<VendorDefinedDescriptorTitle>(
+                std::get<VendorDefinedDescriptorInfo>(descriptorVal))] =
+                descDataStream.str();
+            descriptor["Value"].emplace_back(vendorDefinedVal);
+        }
+        descriptors.emplace_back(descriptor);
+    }
+    else
+    {
+        std::cerr << "Unknown descriptor type, type=" << descriptorType << "\n";
+    }
+}
+std::pair<int, std::vector<uint8_t>> QueryDeviceIdentifiers::createRequestMsg()
+{
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_query_device_identifiers_req(
+        instanceId, PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES, request);
+    return {rc, requestMsg};
+}
+
+void QueryDeviceIdentifiers::parseResponseMsg(pldm_msg* responsePtr,
+                                              size_t payloadLength)
+{
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint32_t deviceIdentifiersLen = 0;
+    uint8_t descriptorCount = 0;
+    uint8_t* descriptorPtr = nullptr;
+    uint8_t eid = getMCTPEID();
+    auto rc = decode_query_device_identifiers_resp(
+        responsePtr, payloadLength, &completionCode, &deviceIdentifiersLen,
+        &descriptorCount, &descriptorPtr);
+    if (rc)
+    {
+        std::cerr << "Decoding QueryDeviceIdentifiers response failed,EID="
+                  << unsigned(eid) << ", RC=" << rc << "\n";
+        return;
+    }
+    if (completionCode)
+    {
+        std::cerr << "QueryDeviceIdentifiers response failed with error "
+                     "completion code, EID="
+                  << unsigned(eid) << ", CC=" << unsigned(completionCode)
+                  << "\n";
+        return;
+    }
+    ordered_json data;
+    data["EID"] = eid;
+    ordered_json descriptors;
+    while (descriptorCount-- && (deviceIdentifiersLen > 0))
+    {
+        DescriptorType descriptorType = 0;
+        variable_field descriptorData{};
+
+        rc = decode_descriptor_type_length_value(
+            descriptorPtr, deviceIdentifiersLen, &descriptorType,
+            &descriptorData);
+        if (rc)
+        {
+            std::cerr << "Decoding descriptor type, length and value failed,"
+                      << "EID=" << unsigned(eid) << ",RC=" << rc << "\n ";
+            return;
+        }
+
+        if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
+        {
+            std::vector<uint8_t> descData(
+                descriptorData.ptr, descriptorData.ptr + descriptorData.length);
+            updateDescriptor(descriptors, descriptorType, descData);
+        }
+        else
+        {
+            uint8_t descriptorTitleStrType = 0;
+            variable_field descriptorTitleStr{};
+            variable_field vendorDefinedDescriptorData{};
+
+            rc = decode_vendor_defined_descriptor_value(
+                descriptorData.ptr, descriptorData.length,
+                &descriptorTitleStrType, &descriptorTitleStr,
+                &vendorDefinedDescriptorData);
+            if (rc)
+            {
+                std::cerr << "Decoding Vendor-defined descriptor value"
+                          << "failed EID=" << unsigned(eid) << ", RC=" << rc
+                          << "\n ";
+                return;
+            }
+
+            auto vendorDescTitle = pldm::utils::toString(descriptorTitleStr);
+            std::vector<uint8_t> vendorDescData(
+                vendorDefinedDescriptorData.ptr,
+                vendorDefinedDescriptorData.ptr +
+                    vendorDefinedDescriptorData.length);
+            updateDescriptor(descriptors, descriptorType,
+                             std::make_tuple(vendorDescTitle, vendorDescData));
+        }
+        auto nextDescriptorOffset =
+            sizeof(pldm_descriptor_tlv().descriptor_type) +
+            sizeof(pldm_descriptor_tlv().descriptor_length) +
+            descriptorData.length;
+        descriptorPtr += nextDescriptorOffset;
+        deviceIdentifiersLen -= nextDescriptorOffset;
+    }
+    data["Descriptors"] = descriptors;
+    pldmtool::helper::DisplayInJson(data);
+}
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -403,6 +625,11 @@ void registerCommand(CLI::App& app)
         "GetFwParams", "To get the component details of the FD");
     commands.push_back(
         std::make_unique<GetFwParams>("fw_update", "GetFwParams", getFwParams));
+
+    auto queryDeviceIdentifiers = fwUpdate->add_subcommand(
+        "QueryDeviceIdentifiers", "To query device identifiers of the FD");
+    commands.push_back(std::make_unique<QueryDeviceIdentifiers>(
+        "fw_update", "QueryDeviceIdentifiers", queryDeviceIdentifiers));
 }
 
 } // namespace fw_update
