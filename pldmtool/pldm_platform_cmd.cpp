@@ -1,6 +1,7 @@
 #include "common/types.hpp"
 #include "pldm_cmd_helper.hpp"
 
+#include <fmt/core.h>
 #include <libpldm/entity.h>
 #include <libpldm/state_set.h>
 
@@ -15,13 +16,10 @@ using namespace pldm::utils;
 
 namespace pldmtool
 {
-
 namespace platform
 {
-
 namespace
 {
-
 using namespace pldmtool::helper;
 
 static const std::map<uint8_t, std::string> sensorPresState{
@@ -641,7 +639,7 @@ class GetPDR : public CommandInterface
 
     void printCommonPDRHeader(const pldm_pdr_hdr* hdr, ordered_json& output)
     {
-        output["recordHandle"] = hdr->record_handle;
+        output["recordHandle"] = fmt::format("0x{:x}", hdr->record_handle);
         output["PDRHeaderVersion"] = unsigned(hdr->version);
         output["PDRType"] = getPDRType(hdr->type);
         output["recordChangeNumber"] = hdr->record_change_num;
