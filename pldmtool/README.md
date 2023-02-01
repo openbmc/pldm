@@ -16,12 +16,12 @@ fru, and oem-ibm.
 please refer the DMTF PLDM specifications with respect to the pldm types.
 https://www.dmtf.org/
 
-
 ## Code organization
 
 Source files in pldmtool repository are named with respect to the PLDM type.
 
 Example:
+
 ```
 pldm_base_cmd.[hpp/cpp], pldm_fru_cmd.[hpp/cpp]
 ```
@@ -40,8 +40,8 @@ following API from the libpldm.
 ```
 
 If PLDM commands are not yet supported in the pldmtool repository user can
-directly send the request message with the help of **pldmtool raw -d <data>** option.
-
+directly send the request message with the help of **pldmtool raw -d <data>**
+option.
 
 ## Usage
 
@@ -65,12 +65,14 @@ Subcommands:
   oem-ibm                     oem type command
 
 ```
+
 pldmtool command prompt expects a PLDM type to display the list of supported
 commands that are already implemented for that particular PLDM type.
 
 ```
 Command format: pldmtool <pldmType> -h
 ```
+
 Example:
 
 ```
@@ -89,6 +91,7 @@ Subcommands:
   GetPLDMCommands             get supported commands of pldm type
 
 ```
+
 More help on the command usage can be found by specifying the PLDM type and the
 command name with **-h** argument as shown below.
 
@@ -97,6 +100,7 @@ Command format: pldmtool <pldmType> <commandName> -h
 ```
 
 Example:
+
 ```
 $ pldmtool base GetPLDMTypes -h
 
@@ -109,11 +113,10 @@ Options:
   -v,--verbose
 ```
 
-
 ## pldmtool raw command usage
 
-pldmtool raw command option accepts request message in the hexadecimal
-bytes and send the response message in hexadecimal bytes.
+pldmtool raw command option accepts request message in the hexadecimal bytes and
+send the response message in hexadecimal bytes.
 
 ```
 $ pldmtool raw -h
@@ -144,6 +147,7 @@ payloadReq - stream of bytes constructed based on the request message format
 payloadResp - stream of bytes displayed based on the response message format
               defined for the command type as per the spec.
 ```
+
 Example:
 
 ```
@@ -155,12 +159,14 @@ Response Message:
 08 01 00 00 04 00 1d 00 00 00 00 00 00 80
 
 ```
+
 ## pldmtool output format
 
 In the current pldmtool implementation response message from pldmtool is parsed
 and displayed in the JSON format.
 
 Example:
+
 ```
 $ pldmtool base GetPLDMTypes
 [
@@ -186,6 +192,7 @@ $ pldmtool base GetPLDMTypes
     }
 ]
 ```
+
 ## pldmtool with mctp_eid option
 
 Use **-m** or **--mctp_eid** option to send pldm request message to remote mctp
@@ -199,6 +206,7 @@ pldmtool raw -d 0x80 <pldmType> <cmdType> <payloadReq> -m <mctpId>
 ```
 
 Example:
+
 ```
 $ pldmtool base GetPLDMTypes -m 8
 
