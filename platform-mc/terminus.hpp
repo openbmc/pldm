@@ -4,6 +4,7 @@
 
 #include "common/types.hpp"
 #include "compact_numeric_sensor.hpp"
+#include "numeric_effecter_dbus.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 #include "sensor_intf.hpp"
@@ -88,11 +89,17 @@ class Terminus
     void addCompactNumericSensor(
         const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr);
 
+    void addNumericEffecterDbus(
+        const std::shared_ptr<pldm_numeric_effecter_value_pdr> pdr);
+
     std::shared_ptr<pldm_numeric_sensor_value_pdr>
         parseNumericSensorPDR(const std::vector<uint8_t>& pdrData);
 
     std::shared_ptr<pldm_compact_numeric_sensor_pdr>
         parseCompactNumericSensorPDR(const std::vector<uint8_t>& pdrData);
+
+    std::shared_ptr<pldm_numeric_effecter_value_pdr>
+        parseNumericEffecterPDR(const std::vector<uint8_t>& pdrData);
 
     std::shared_ptr<SensorAuxiliaryNames>
         parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
