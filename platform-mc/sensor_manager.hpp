@@ -94,6 +94,13 @@ class SensorManager
     requester::Coroutine getCompactNumericSensorReading(
         std::shared_ptr<CompactNumericSensor> sensor);
 
+    /** @brief Sending getNumericEffecterReading command for the effecter value
+     *
+     *  @param[in] sensor - the numeric effecter to be updated
+     */
+    requester::Coroutine
+        getNumericEffecterReading(std::shared_ptr<NumericEffecterDbus> sensor);
+
     sdeventplus::Event& event;
 
     /** @brief reference of terminusManager */
