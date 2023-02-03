@@ -74,6 +74,17 @@ requester::Coroutine SensorManager::doSensorPollingTask()
                 sensor->elapsedTime = 0;
             }
         }
+        for (auto sensor : terminus.second->numericEffecterDbus)
+        {
+            sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
+            elapsed = t1 - t0;
+            sensor->elapsedTime += (pollingTimeInUsec + elapsed);
+            if (sensor->elapsedTime >= sensor->updateTime)
+            {
+                co_await getNumericEffecterReading(sensor);
+                sensor->elapsedTime = 0;
+            }
+        }
     }
 }
 
@@ -245,6 +256,106 @@ requester::Coroutine SensorManager::getCompactNumericSensorReading(
             sensor->updateReading(true, false);
             co_return completionCode;
         case PLDM_SENSOR_UNAVAILABLE:
+        default:
+            sensor->updateReading(false, false);
+            co_return completionCode;
+    }
+
+    double value = std::numeric_limits<double>::quiet_NaN();
+    switch (sensorDataSize)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            value = static_cast<double>(presentReading.value_u8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            value = static_cast<double>(presentReading.value_s8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            value = static_cast<double>(presentReading.value_u16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            value = static_cast<double>(presentReading.value_s16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            value = static_cast<double>(presentReading.value_u32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            value = static_cast<double>(presentReading.value_s32);
+            break;
+        default:
+            value = std::numeric_limits<double>::quiet_NaN();
+            break;
+    }
+
+    sensor->updateReading(true, true, value);
+    co_return completionCode;
+}
+
+requester::Coroutine SensorManager::getNumericEffecterReading(
+    std::shared_ptr<NumericEffecterDbus> sensor)
+{
+    auto tid = sensor->tid;
+    auto sensorId = sensor->sensorId;
+    Request request(sizeof(pldm_msg_hdr) +
+                    PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_get_numeric_effecter_value_req(0, sensorId, requestMsg);
+    if (rc)
+    {
+        std::cerr << "encode_get_sensor_reading_req failed, TID="
+                  << unsigned(tid) << ", RC=" << rc << std::endl;
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.SendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    if (sensorPollTimer && !sensorPollTimer->isRunning())
+    {
+        co_return PLDM_ERROR;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint8_t sensorDataSize = PLDM_SENSOR_DATA_SIZE_SINT32;
+    uint8_t sensorOperationalState = 0;
+    union_range_field_format presentReading;
+    union_range_field_format pendingValue;
+    rc = decode_get_numeric_effecter_value_resp(
+        responseMsg, responseLen, &completionCode, &sensorDataSize,
+        &sensorOperationalState, reinterpret_cast<uint8_t*>(&pendingValue),
+        reinterpret_cast<uint8_t*>(&presentReading));
+    if (rc)
+    {
+        std::cerr << "Failed to decode response of GetSensorReading, TID="
+                  << unsigned(tid) << ", RC=" << rc << "\n";
+        sensor->handleErrGetSensorReading();
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to decode response of GetSensorReading, TID="
+                  << unsigned(tid) << ", CC=" << unsigned(completionCode)
+                  << "\n";
+        co_return completionCode;
+    }
+
+    switch (sensorOperationalState)
+    {
+        case EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING:
+        case EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING:
+            break;
+        case EFFECTER_OPER_STATE_DISABLED:
+            sensor->updateReading(true, false);
+            co_return completionCode;
+        case EFFECTER_OPER_STATE_UNAVAILABLE:
         default:
             sensor->updateReading(false, false);
             co_return completionCode;

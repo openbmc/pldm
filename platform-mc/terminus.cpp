@@ -29,7 +29,8 @@ bool Terminus::parsePDRs()
     for (auto& pdr : pdrs)
     {
         auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
-        if (pdrHdr->type == PLDM_SENSOR_AUXILIARY_NAMES_PDR)
+        if (pdrHdr->type == PLDM_SENSOR_AUXILIARY_NAMES_PDR ||
+            pdrHdr->type == PLDM_EFFECTER_AUXILIARY_NAMES_PDR)
         {
             auto sensorAuxiliaryNames = parseSensorAuxiliaryNamesPDR(pdr);
             sensorAuxiliaryNamesTbl.emplace_back(
@@ -51,6 +52,11 @@ bool Terminus::parsePDRs()
             auto parsedPdr = parseCompactNumericSensorPDR(pdr);
             compactNumericSensorPdrs.emplace_back(std::move(parsedPdr));
         }
+        else if (pdrHdr->type == PLDM_NUMERIC_EFFECTER_PDR)
+        {
+            auto parsedPdr = parseNumericEffecterPDR(pdr);
+            numericEffecterPdrs.emplace_back(std::move(parsedPdr));
+        }
         else
         {
             std::cerr << "parsePDRs() Unsupported PDR, type="
@@ -67,6 +73,11 @@ bool Terminus::parsePDRs()
     for (auto pdr : compactNumericSensorPdrs)
     {
         addCompactNumericSensor(pdr);
+    }
+
+    for (auto pdr : numericEffecterPdrs)
+    {
+        addNumericEffecterDbus(pdr);
     }
 
     return rc;
@@ -185,6 +196,51 @@ std::shared_ptr<pldm_compact_numeric_sensor_pdr>
     parsedPdr->critical_low = pdr->critical_low;
     parsedPdr->fatal_high = pdr->fatal_high;
     parsedPdr->fatal_low = pdr->fatal_low;
+    return parsedPdr;
+}
+
+std::shared_ptr<pldm_numeric_effecter_value_pdr>
+    Terminus::parseNumericEffecterPDR(const std::vector<uint8_t>& sPdr)
+{
+    auto pdr =
+        reinterpret_cast<const pldm_numeric_effecter_value_pdr*>(sPdr.data());
+    auto parsedPdr = std::make_shared<pldm_numeric_effecter_value_pdr>();
+
+    parsedPdr->terminus_handle = pdr->terminus_handle;
+    parsedPdr->effecter_id = pdr->effecter_id;
+    parsedPdr->entity_type = pdr->entity_type;
+    parsedPdr->entity_instance = pdr->entity_instance;
+    parsedPdr->container_id = pdr->container_id;
+    parsedPdr->effecter_semantic_id = pdr->effecter_semantic_id;
+    parsedPdr->effecter_init = pdr->effecter_init;
+    parsedPdr->effecter_auxiliary_names = pdr->effecter_auxiliary_names;
+    parsedPdr->base_unit = pdr->base_unit;
+    parsedPdr->unit_modifier = pdr->unit_modifier;
+    parsedPdr->rate_unit = pdr->rate_unit;
+    parsedPdr->base_oem_unit_handle = pdr->base_oem_unit_handle;
+    parsedPdr->aux_unit = pdr->aux_unit;
+    parsedPdr->aux_unit_modifier = pdr->aux_unit_modifier;
+    parsedPdr->aux_rate_unit = pdr->aux_rate_unit;
+    parsedPdr->aux_oem_unit_handle = pdr->aux_oem_unit_handle;
+    parsedPdr->is_linear = pdr->is_linear;
+    parsedPdr->effecter_data_size = pdr->effecter_data_size;
+    parsedPdr->resolution = pdr->resolution;
+    parsedPdr->offset = pdr->offset;
+    parsedPdr->accuracy = pdr->accuracy;
+    parsedPdr->plus_tolerance = pdr->plus_tolerance;
+    parsedPdr->minus_tolerance = pdr->minus_tolerance;
+    parsedPdr->state_transition_interval = pdr->state_transition_interval;
+    parsedPdr->transition_interval = pdr->transition_interval;
+    parsedPdr->max_settable = pdr->max_settable;
+    parsedPdr->min_settable = pdr->min_settable;
+    parsedPdr->range_field_format = pdr->range_field_format;
+    parsedPdr->range_field_support = pdr->range_field_support;
+    parsedPdr->nominal_value = pdr->nominal_value;
+    parsedPdr->normal_max = pdr->normal_max;
+    parsedPdr->normal_min = pdr->normal_min;
+    parsedPdr->rated_max = pdr->rated_max;
+    parsedPdr->rated_min = pdr->rated_min;
+
     return parsedPdr;
 }
 
@@ -497,6 +553,60 @@ void Terminus::addCompactNumericSensor(
     {
         std::cerr << "Failed to create CompactNumericSensor. ERROR=" << e.what()
                   << "sensorName=" << sensorName << "\n";
+    }
+}
+
+void Terminus::addNumericEffecterDbus(
+    const std::shared_ptr<pldm_numeric_effecter_value_pdr> pdr)
+{
+    std::string sensorName;
+    if (mctpMedium != "")
+    {
+        sensorName = mctpMedium + "_" + "PLDM_Effecter_" +
+                     std::to_string(pdr->effecter_id);
+    }
+    else
+    {
+        sensorName = "PLDM_Effecter_" + std::to_string(pdr->effecter_id) + "_" +
+                     std::to_string(tid);
+    }
+
+    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(pdr->effecter_id);
+    if (sensorAuxiliaryNames)
+    {
+        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
+        if (sensorCnt == 1)
+        {
+            for (const auto& [languageTag, name] : sensorNames[0])
+            {
+                if (languageTag == "en")
+                {
+                    if (mctpMedium != "")
+                    {
+                        sensorName = mctpMedium + "_" + name;
+                    }
+                    else
+                    {
+                        sensorName = name + "_" +
+                                     std::to_string(pdr->effecter_id) + "_" +
+                                     std::to_string(tid);
+                    }
+                }
+            }
+        }
+    }
+
+    std::cerr << " Add effecter Name " << sensorName << std::endl;
+    try
+    {
+        auto sensor = std::make_shared<NumericEffecterDbus>(
+            tid, true, pdr, sensorName, inventoryPath);
+        numericEffecterDbus.emplace_back(sensor);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to create NumericEffecterDbus. ERROR=" << e.what()
+                  << "effecter Name =" << sensorName << "\n";
     }
 }
 

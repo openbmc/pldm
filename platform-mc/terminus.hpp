@@ -4,6 +4,7 @@
 
 #include "common/types.hpp"
 #include "compact_numeric_sensor.hpp"
+#include "numeric_effecter_dbus.hpp"
 #include "numeric_sensor.hpp"
 
 #include <sdbusplus/server/object.hpp>
@@ -74,6 +75,9 @@ class Terminus
     /** @brief A list of compactNumericSensors */
     std::vector<std::shared_ptr<CompactNumericSensor>> compactNumericSensors{};
 
+    /** @brief A list of numericEffecterDbus */
+    std::vector<std::shared_ptr<NumericEffecterDbus>> numericEffecterDbus{};
+
     /** @brief A list of parsed numeric sensor PDRs */
     std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
         numericSensorPdrs{};
@@ -81,6 +85,10 @@ class Terminus
     /** @brief A list of parsed compact numeric sensor PDRs */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief A list of parsed numeric effecter PDRs */
+    std::vector<std::shared_ptr<pldm_numeric_effecter_value_pdr>>
+        numericEffecterPdrs{};
 
     /** @brief Get Sensor Auxiliary Names by sensorID
      *
@@ -99,12 +107,18 @@ class Terminus
     void addCompactNumericSensor(
         const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr);
 
+    void addNumericEffecterDbus(
+        const std::shared_ptr<pldm_numeric_effecter_value_pdr> pdr);
+
   private:
     std::shared_ptr<pldm_numeric_sensor_value_pdr>
         parseNumericSensorPDR(const std::vector<uint8_t>& pdrData);
 
     std::shared_ptr<pldm_compact_numeric_sensor_pdr>
         parseCompactNumericSensorPDR(const std::vector<uint8_t>& pdrData);
+
+    std::shared_ptr<pldm_numeric_effecter_value_pdr>
+        parseNumericEffecterPDR(const std::vector<uint8_t>& pdrData);
 
     std::shared_ptr<SensorAuxiliaryNames>
         parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
