@@ -65,6 +65,11 @@ class MctpDiscovery
     /** @brief Path of static EID table config file */
     std::filesystem::path staticEidTablePath;
 
+    /*
+     * Mapping from MCTP EID to MCTP Medium
+     */
+    std::map<tid_t, MctpMedium> eidToMctpMediums;
+
     /** @brief Callback function when new MCTP endpoints or removed endpoints
      * D-Bus signal raised.
      *
@@ -77,6 +82,11 @@ class MctpDiscovery
      *  @param[in] mctpInfos - information of discovered MCTP endpoints
      */
     void handleMctpEndpoints(const MctpInfos& mctpInfos);
+
+    /** @brief Loading the static Eid to MCTP Medium string.
+     *
+     */
+    void loadEidToMCTPMediumConfigs();
 
     /** @brief Loading the static MCTP endpoints to mctpInfos.
      *

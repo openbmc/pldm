@@ -10,12 +10,16 @@
 #include <nlohmann/json.hpp>
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <string>
 #include <string_view>
 #include <vector>
+
+namespace fs = std::filesystem;
+using Json = nlohmann::json;
 
 namespace pldm
 {
@@ -39,6 +43,7 @@ MctpDiscovery::MctpDiscovery(
     handlers(list), staticEidTablePath(staticEidTablePath)
 {
     MctpInfos mctpInfos;
+    loadEidToMCTPMediumConfigs();
     getMctpInfos(mctpInfos);
     loadStaticEndpoints(mctpInfos);
     handleMctpEndpoints(mctpInfos);
@@ -76,11 +81,16 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                     auto eid = std::get<size_t>(properties.at("EID"));
                     auto types = std::get<std::vector<uint8_t>>(
                         properties.at("SupportedMessageTypes"));
+                    MctpMedium mctpMediumStr = "";
+                    if (eidToMctpMediums.find(eid) != eidToMctpMediums.end())
+                    {
+                        mctpMediumStr = eidToMctpMediums[eid];
+                    }
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                         types.end())
                     {
                         mctpInfos.emplace_back(
-                            MctpInfo(eid, emptyUUID, "", networkId));
+                            MctpInfo(eid, emptyUUID, mctpMediumStr, networkId));
                     }
                 }
             }
@@ -92,9 +102,58 @@ void MctpDiscovery::discoverEndpoints(
     [[maybe_unused]] sdbusplus::message_t& msg)
 {
     MctpInfos mctpInfos;
+    loadEidToMCTPMediumConfigs();
     getMctpInfos(mctpInfos);
     loadStaticEndpoints(mctpInfos);
     handleMctpEndpoints(mctpInfos);
+}
+
+void MctpDiscovery::loadEidToMCTPMediumConfigs()
+{
+    if (!fs::exists(EID_TO_MCTP_MEDIUM))
+    {
+        std::cerr << EID_TO_MCTP_MEDIUM << "is not existing." << std::endl;
+        return;
+    }
+
+    const Json emptyJson{};
+    std::ifstream jsonFile(EID_TO_MCTP_MEDIUM);
+    auto datas = nlohmann::json::parse(jsonFile, nullptr, false);
+    if (datas.is_discarded())
+    {
+        std::cerr << "Parsing json file failed, FILE=" << EID_TO_MCTP_MEDIUM
+                  << "\n";
+        return;
+    }
+
+    auto entries = datas.value("eids", emptyJson);
+    for (const auto& entry : entries)
+    {
+        try
+        {
+            auto eid = entry.value("eid", -1);
+            if (eid == -1)
+            {
+                std::cerr << "Invalid \"eid\" configuration" << std::endl;
+                continue;
+            }
+            auto mapString = entry.value("string", "");
+            if (mapString == "")
+            {
+                std::cerr << "Invalid configuration of \"string\" of eid "
+                          << unsigned(eid) << std::endl;
+                continue;
+            }
+            eidToMctpMediums[eid] = mapString;
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Terminus eid to MCTP Medium format error\n";
+            continue;
+        }
+    }
+
+    return;
 }
 
 void MctpDiscovery::loadStaticEndpoints(MctpInfos& mctpInfos)
