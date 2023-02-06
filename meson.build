@@ -60,6 +60,7 @@ conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
 conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
 conf_data.set_quoted('STATIC_EID_TABLE_PATH', join_paths(package_datadir, 'static_eid_table.json'))
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
+conf_data.set_quoted('EID_TO_MCTP_MEDIUM', join_paths(package_datadir, 'eid_to_mctp_medium.json'))
 configure_file(output: 'config.h',
   configuration: conf_data
 )
