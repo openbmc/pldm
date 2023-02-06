@@ -54,6 +54,13 @@ class Terminus
         return tid;
     }
 
+    /** @brief The setter to set terminus's mctp medium */
+    void setMedium(std::string medium)
+    {
+        mctpMedium = medium;
+        return;
+    }
+
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
 
@@ -96,6 +103,7 @@ class Terminus
 
     std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
     std::string inventoryPath;
+    MctpMedium mctpMedium;
 };
 } // namespace platform_mc
 } // namespace pldm
