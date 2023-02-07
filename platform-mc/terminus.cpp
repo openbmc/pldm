@@ -316,8 +316,17 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr>
 void Terminus::addNumericSensor(
     const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
 {
-    std::string sensorName = "PLDM_Device_" + std::to_string(pdr->sensor_id) +
-                             "_" + std::to_string(tid);
+    std::string sensorName;
+    if (mctpMedium != "")
+    {
+        sensorName =
+            mctpMedium + "_" + "PLDM_Device_" + std::to_string(pdr->sensor_id);
+    }
+    else
+    {
+        sensorName = "PLDM_Device_" + std::to_string(pdr->sensor_id) + "_" +
+                     std::to_string(tid);
+    }
 
     if (pdr->sensor_auxiliary_names_pdr)
     {
@@ -332,9 +341,16 @@ void Terminus::addNumericSensor(
                 {
                     if (languageTag == "en")
                     {
-                        sensorName = name + "_" +
-                                     std::to_string(pdr->sensor_id) + "_" +
-                                     std::to_string(tid);
+                        if (mctpMedium != "")
+                        {
+                            sensorName = mctpMedium + "_" + name;
+                        }
+                        else
+                        {
+                            sensorName = name + "_" +
+                                         std::to_string(pdr->sensor_id) + "_" +
+                                         std::to_string(tid);
+                        }
                     }
                 }
             }
