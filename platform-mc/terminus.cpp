@@ -12,8 +12,18 @@ namespace platform_mc
 Terminus::Terminus(tid_t tid, uint64_t supportedTypes) :
     initalized(false), tid(tid), supportedTypes(supportedTypes)
 {
-    inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
-                    std::to_string(tid);
+    if (mctpMedium != "")
+    {
+        inventoryPath =
+            "/xyz/openbmc_project/inventory/Item/Board/" + mctpMedium;
+    }
+    else
+    {
+        inventoryPath =
+            "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
+            std::to_string(tid);
+    }
+
     inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
         utils::DBusHandler::getBus(), inventoryPath.c_str());
 }
@@ -321,8 +331,17 @@ void Terminus::addNumericSensor(
     const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
 {
     uint16_t sensorId = pdr->sensor_id;
-    std::string sensorName =
-        "PLDM_Device_" + std::to_string(sensorId) + "_" + std::to_string(tid);
+    std::string sensorName;
+    if (mctpMedium != "")
+    {
+        sensorName = "PLDM_Device_" + mctpMedium + "_" + "Sensor_" +
+                     std::to_string(pdr->sensor_id);
+    }
+    else
+    {
+        sensorName = "PLDM_Device_Sensor_" + std::to_string(pdr->sensor_id) +
+                     "_" + std::to_string(tid);
+    }
 
     if (pdr->sensor_auxiliary_names_pdr)
     {
@@ -337,8 +356,14 @@ void Terminus::addNumericSensor(
                 {
                     if (languageTag == "en")
                     {
-                        sensorName = name + "_" + std::to_string(sensorId) +
-                                     "_" + std::to_string(tid);
+                        if (mctpMedium != "")
+                        {
+                            sensorName = mctpMedium + "_" + name;
+                        }
+                        else
+                        {
+                            sensorName = name + "_" + std::to_string(tid);
+                        }
                     }
                 }
             }
