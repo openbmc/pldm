@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62ab3480_6722c375",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-13T05:59:28Z",
+      "side": 1,
+      "message": "I don\u0027t think tom asked you to bring in the fmt library asa  dependency as per https://gerrit.openbmc.org/c/openbmc/pldm/+/59250, he said we have already the format support in the c++20 , so why bring in another dependency ?\n\nWhy not use https://en.cppreference.com/w/cpp/utility/format/format",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd219a11_d2a67dba",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-13T05:59:28Z",
+      "side": 1,
+      "message": "space instead of tab.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 10
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
