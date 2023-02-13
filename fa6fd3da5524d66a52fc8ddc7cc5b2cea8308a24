@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b5dcc3c_90141e1d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-13T06:00:23Z",
+      "side": 1,
+      "message": "also @tom ? do you think we still need the integer number to be displayed ? we have only display the hex number right ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 54,
+        "endLine": 11,
+        "endChar": 56
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62ab3480_6722c375",
         "filename": "meson.build",
         "patchSetId": 1
