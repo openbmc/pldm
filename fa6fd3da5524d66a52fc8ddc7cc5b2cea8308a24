@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe1c0d06_0bd50dd7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-02-13T11:25:08Z",
+      "side": 1,
+      "message": "Yeah, the integer along with hex looks odd. The record id is referred as hex throughout the spec.",
+      "parentUuid": "0b5dcc3c_90141e1d",
+      "range": {
+        "startLine": 11,
+        "startChar": 54,
+        "endLine": 11,
+        "endChar": 56
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62ab3480_6722c375",
         "filename": "meson.build",
         "patchSetId": 1
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c187b83c_8c8589c3",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-02-13T11:25:08Z",
+      "side": 1,
+      "message": "Need to check the compiler support though even though it is part of C++20. If compiler support is there, we should use https://en.cppreference.com/w/cpp/utility/format/format",
+      "parentUuid": "62ab3480_6722c375",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fd219a11_d2a67dba",
         "filename": "meson.build",
         "patchSetId": 1
@@ -60,6 +108,30 @@
       "writtenOn": "2023-02-13T05:59:28Z",
       "side": 1,
       "message": "space instead of tab.",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 10
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beec5949_e1e5e216",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-02-13T11:25:08Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "fd219a11_d2a67dba",
       "range": {
         "startLine": 112,
         "startChar": 0,
