@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "91809a93_9425b906",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-13T12:33:12Z",
+      "side": 1,
+      "message": "Please change \"design spec.\" --\u003e \"design spec\"",
+      "revId": "f5195810fcb536dffae4d36979af3177da5f7edc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6c87e18_6a878598",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-13T12:33:12Z",
+      "side": 1,
+      "message": "Can you please remove this line ?",
+      "revId": "f5195810fcb536dffae4d36979af3177da5f7edc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "14d2cd3b_8e8e5cd3",
