@@ -21,10 +21,8 @@
 
 namespace pldmtool
 {
-
 namespace helper
 {
-
 constexpr uint8_t PLDM_ENTITY_ID = 8;
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 using ordered_json = nlohmann::ordered_json;
@@ -107,6 +105,26 @@ class CommandInterface
     inline uint8_t getMCTPEID()
     {
         return mctp_eid;
+    }
+
+    /**
+     * @brief get PLDM type
+     *
+     * @return pldm type
+     */
+    std::string getPLDMType()
+    {
+        return pldmType;
+    }
+
+    /**
+     * @brief get command name
+     *
+     * @return  the command name
+     */
+    std::string getCommandName()
+    {
+        return commandName;
     }
 
   private:
