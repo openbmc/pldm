@@ -80,5 +80,6 @@ int main(int argc, char** argv)
 #endif
 
     CLI11_PARSE(app, argc, argv);
+    pldmtool::platform::parseGetPDROption();
     return 0;
 }
