@@ -2,6 +2,7 @@
 #include "pldm_cmd_helper.hpp"
 
 #include <libpldm/entity.h>
+#include <libpldm/platform.h>
 #include <libpldm/state_set.h>
 
 #include <cstddef>
@@ -15,13 +16,10 @@ using namespace pldm::utils;
 
 namespace pldmtool
 {
-
 namespace platform
 {
-
 namespace
 {
-
 using namespace pldmtool::helper;
 
 static const std::map<uint8_t, std::string> sensorPresState{
@@ -86,12 +84,19 @@ class GetPDR : public CommandInterface
         allPDRs = false;
         pdrOptionGroup->add_flag("-a, --all", allPDRs,
                                  "retrieve all PDRs from a PDR repository");
+
+        pdrTerminus = "";
+        pdrOptionGroup->add_option(
+            "-n, --terminus", pdrTerminus,
+            "retrieve all PDRs of the requested terminusHandle\n"
+            "supported Terminus Handles:\n [bmc, hb, phyp...]");
+
         pdrOptionGroup->require_option(1);
     }
 
     void exec() override
     {
-        if (allPDRs || !pdrRecType.empty())
+        if (allPDRs || !pdrRecType.empty() || !pdrTerminus.empty())
         {
             if (!pdrRecType.empty())
             {
@@ -99,6 +104,11 @@ class GetPDR : public CommandInterface
                                pdrRecType.begin(), tolower);
             }
 
+            if (!pdrTerminus.empty())
+            {
+                std::transform(pdrTerminus.begin(), pdrTerminus.end(),
+                               pdrTerminus.begin(), tolower);
+            }
             // start the array
             std::cout << "[\n";
 
@@ -526,6 +536,13 @@ class GetPDR : public CommandInterface
         // Add other types
     };
 
+    const std::map<std::string, uint16_t> terminusHandle = {
+        {"bmc", BMC_TERMINUS_HANDLE},
+        {"hb", HB_TERMINUS_HANDLE},
+        {"phyp", PHYP_TERMINUS_HANDLE},
+        // add other terminus
+    };
+
     bool isLogicalBitSet(const uint16_t entity_type)
     {
         return entity_type & 0x8000;
@@ -674,6 +691,15 @@ class GetPDR : public CommandInterface
     void printStateSensorPDR(const uint8_t* data, ordered_json& output)
     {
         auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
+
+        if (!pdrTerminus.empty())
+        {
+            if (pdr->terminus_handle != terminusHandle.at(pdrTerminus))
+            {
+                return;
+            }
+        }
+
         output["PLDMTerminusHandle"] = pdr->terminus_handle;
         output["sensorID"] = pdr->sensor_id;
         output["entityType"] = getEntityName(pdr->entity_type);
@@ -962,8 +988,75 @@ class GetPDR : public CommandInterface
         }
     }
 
+    bool checkHandle(const uint8_t* data)
+    {
+        struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
+
+        if (pdr->type == PLDM_TERMINUS_LOCATOR_PDR)
+        {
+            std::cerr << "Terminus locator PDR" << std::endl;
+            auto tlpdr =
+                reinterpret_cast<const pldm_terminus_locator_pdr*>(data);
+
+            if (tlpdr->terminus_handle != terminusHandle.at(pdrTerminus))
+            {
+                std::cerr << "return if its not of the same terminus"
+                          << std::endl;
+                return true;
+            }
+        }
+        else if (pdr->type == PLDM_STATE_SENSOR_PDR)
+        {
+            auto sensor = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
+
+            if (sensor->terminus_handle != terminusHandle.at(pdrTerminus))
+            {
+                return true;
+            }
+        }
+        else if (pdr->type == PLDM_NUMERIC_EFFECTER_PDR)
+        {
+            auto numericEffecter =
+                reinterpret_cast<const pldm_numeric_effecter_value_pdr*>(data);
+
+            if (numericEffecter->terminus_handle !=
+                terminusHandle.at(pdrTerminus))
+            {
+                return true;
+            }
+        }
+        else if (pdr->type == PLDM_STATE_EFFECTER_PDR)
+        {
+            auto stateEffecter =
+                reinterpret_cast<const pldm_state_effecter_pdr*>(data);
+            if (stateEffecter->terminus_handle !=
+                terminusHandle.at(pdrTerminus))
+            {
+                return true;
+            }
+        }
+        else if (pdr->type == PLDM_PDR_FRU_RECORD_SET)
+        {
+            data += sizeof(pldm_pdr_hdr);
+            auto fru = reinterpret_cast<const pldm_pdr_fru_record_set*>(data);
+            if (fru->terminus_handle != terminusHandle.at(pdrTerminus))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            // Entity association PDRs does not have terminus handle
+            return true;
+        }
+
+        return false;
+    }
+
     void printTerminusLocatorPDR(const uint8_t* data, ordered_json& output)
     {
+        std::cerr << "Inside print terminus locator PDR" << std::endl;
+
         const std::array<std::string_view, 4> terminusLocatorType = {
             "UID", "MCTP_EID", "SMBusRelative", "systemSoftware"};
 
@@ -1028,6 +1121,21 @@ class GetPDR : public CommandInterface
             }
         }
 
+        if (!pdrTerminus.empty())
+        {
+            if (!terminusHandle.contains(pdrTerminus))
+            {
+                std::cerr << "Terminus : " << pdrTerminus
+                          << " is not supported or invalid\n";
+                nextRecordHndl = 0;
+                return;
+            }
+            if (checkHandle(data))
+            {
+                return;
+            }
+        }
+
         printCommonPDRHeader(pdr, output);
 
         switch (pdr->type)
@@ -1060,6 +1168,7 @@ class GetPDR : public CommandInterface
     uint32_t recordHandle;
     bool allPDRs;
     std::string pdrRecType;
+    std::string pdrTerminus;
 };
 
 class SetStateEffecter : public CommandInterface
