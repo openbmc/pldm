@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dee6538_ff9b7c8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-14T09:37:14Z",
+      "side": 1,
+      "message": "@kamal - we would also need a recipe update that adds this dependency to the pldm recipe. otherwise the moment this goes in the image build will break.",
+      "revId": "6adce01f316beec509053af489d5f43d43ec8ca1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d2f3cad_b0eb6d81",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-14T09:37:14Z",
+      "side": 1,
+      "message": "we would also need a meson.wrap file support for this new dependency.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "6adce01f316beec509053af489d5f43d43ec8ca1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

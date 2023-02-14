@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c88ac0_158e7bbf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-14T09:37:14Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "df532c18_e1454992",
+      "range": {
+        "startLine": 11,
+        "startChar": 54,
+        "endLine": 11,
+        "endChar": 56
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62ab3480_6722c375",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "GCC 13 has std::format support and it\u0027s not released yet.",
       "parentUuid": "62ab3480_6722c375",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "fa6fd3da5524d66a52fc8ddc7cc5b2cea8308a24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1522849_461aa626",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-14T09:37:14Z",
+      "side": 1,
+      "message": "as per https://gcc.gnu.org/gcc-13/changes.html, i see the format header file support is coming in 13.\n\nI am good with this for now.",
+      "parentUuid": "d317aaa8_1ec16a6e",
       "range": {
         "startLine": 109,
         "startChar": 0,
