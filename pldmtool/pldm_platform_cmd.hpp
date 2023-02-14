@@ -10,6 +10,10 @@ namespace platform
 
 void registerCommand(CLI::App& app);
 
+void parseGetPDROption();
+
+void getPDRs();
+
 } // namespace platform
 
 } // namespace pldmtool
