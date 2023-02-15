@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e666db8_9b21d596",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-02-15T05:58:46Z",
+      "side": 1,
+      "message": "nit : please try to avoid words like PHYP , they does not mean anything to the community. you can use words like hypervisor instead.",
+      "range": {
+        "startLine": 10,
+        "startChar": 20,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "6c2c75df5058ffb460feaac4167a827c2b9a51fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
