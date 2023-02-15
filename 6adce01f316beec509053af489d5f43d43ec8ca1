@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa325f75_d6aebb38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-02-15T08:48:08Z",
+      "side": 1,
+      "message": "I am okie, if we want to defer till gcc supports this.\n\nhttps://grok.openbmc.org/search?full\u003dfmt_dep\u0026project\u003dopenbmc There are a handful of repos doing this. Just FYI..",
+      "parentUuid": "8caeff5e_673ca33d",
+      "revId": "6adce01f316beec509053af489d5f43d43ec8ca1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d2f3cad_b0eb6d81",
