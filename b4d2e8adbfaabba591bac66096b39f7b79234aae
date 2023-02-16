@@ -16,6 +16,24 @@
       "message": "On a quick search, i don\u0027t find code that parses this field..? Did i miss?",
       "revId": "b4d2e8adbfaabba591bac66096b39f7b79234aae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8001b4d9_24430397",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 4324,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-02-16T11:51:12Z",
+      "side": 1,
+      "message": "here - https://github.com/ibm-openbmc/pldm/blob/1020/libpldmresponder/pdr_numeric_effecter.hpp#L114",
+      "parentUuid": "65a5f03d_7541887f",
+      "revId": "b4d2e8adbfaabba591bac66096b39f7b79234aae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
