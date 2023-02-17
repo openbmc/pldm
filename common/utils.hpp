@@ -368,6 +368,24 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
                                uint8_t sensorOffset, uint8_t eventState,
                                uint8_t previousEventState);
 
+/** @brief Emit the numeric sensor event signal
+ *
+ *  @param[in] tid - the terminus id
+ *  @param[in] sensorId - sensorID value of the sensor
+ *  @param[in] eventState - The event state value from the state change that
+ * triggered the event message
+ *  @param[in] previousEventState - The event state value for the state from
+ * which the present event state was entered.
+ *  @param[in] sensorDataSize - The bit width and format of reading and
+ * threshold values that the sensor returns.
+ *  @param[in] presentReading - The present value indicated by the sensor.
+ *  @return PLDM completion code
+ */
+int emitNumericSensorEventSignal(uint8_t tid, uint16_t sensorId,
+                                 uint8_t eventState, uint8_t previousEventState,
+                                 uint8_t sensorDataSize,
+                                 uint32_t presentReading);
+
 /** @brief Print the buffer
  *
  *  @param[in]  isTx - True if the buffer is an outgoing PLDM message, false if
