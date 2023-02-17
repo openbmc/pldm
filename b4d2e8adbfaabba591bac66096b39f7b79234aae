@@ -70,6 +70,24 @@
       "parentUuid": "02373188_b91a9bb2",
       "revId": "b4d2e8adbfaabba591bac66096b39f7b79234aae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cac423_cdd357e5",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 4324,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-02-17T10:15:26Z",
+      "side": 1,
+      "message": "max_settable vs max_set_table?\n\nWill this JSON work?",
+      "parentUuid": "f615d51b_5855e019",
+      "revId": "b4d2e8adbfaabba591bac66096b39f7b79234aae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
