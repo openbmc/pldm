@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "pldm_cmd_helper.hpp"
 
 #include "xyz/openbmc_project/Common/error.hpp"
@@ -14,7 +16,6 @@ using namespace pldm::utils;
 
 namespace pldmtool
 {
-
 namespace helper
 {
 /*
@@ -144,7 +145,7 @@ void CommandInterface::exec()
         auto method = bus.new_method_call(service.c_str(), pldmObjPath,
                                           pldmRequester, "GetInstanceId");
         method.append(mctp_eid);
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, DBUS_TIMEOUT);
         reply.read(instanceId);
     }
     catch (const std::exception& e)

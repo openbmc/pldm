@@ -34,7 +34,7 @@ void FruImpl::buildFRUTable()
         auto method = bus.new_method_call(
             std::get<0>(dbusInfo).c_str(), std::get<1>(dbusInfo).c_str(),
             "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, DBUS_TIMEOUT);
         reply.read(objects);
     }
     catch (const std::exception& e)
@@ -133,6 +133,7 @@ std::string FruImpl::populatefwVersion()
         "/xyz/openbmc_project/software/functional";
     auto& bus = pldm::utils::DBusHandler::getBus();
     std::string currentBmcVersion;
+
     try
     {
         auto method =
@@ -140,7 +141,7 @@ std::string FruImpl::populatefwVersion()
                                 pldm::utils::dbusProperties, "Get");
         method.append("xyz.openbmc_project.Association", "endpoints");
         std::variant<std::vector<std::string>> paths;
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, DBUS_TIMEOUT);
         reply.read(paths);
         auto fwRunningVersion = std::get<std::vector<std::string>>(paths)[0];
         constexpr auto versionIntf = "xyz.openbmc_project.Software.Version";
