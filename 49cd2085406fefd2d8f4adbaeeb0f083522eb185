@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbee4aa0_cde4d0ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-20T14:42:40Z",
+      "side": 1,
+      "message": "Please change [PLDM] to PLDM:",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d4e58de_6204540a",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-20T14:42:40Z",
+      "side": 1,
+      "message": "Please use sdbusplus::exception_t",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "633d80da_c27ee26f",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-20T14:42:40Z",
+      "side": 1,
+      "message": "Is it possible to print the BIOS attribute and value here ?",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee0ada48_052152e2",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-20T14:42:40Z",
+      "side": 1,
+      "message": "Please use sdbusplus::exception_t",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
