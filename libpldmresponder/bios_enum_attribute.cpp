@@ -14,7 +14,6 @@ namespace responder
 {
 namespace bios
 {
-
 BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
                                      DBusHandler* const dbusHandler) :
     BIOSAttribute(entry, dbusHandler)
@@ -185,7 +184,16 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
         return;
     }
 
-    dbusHandler->setDbusProperty(*dBusMap, it->first);
+    try
+    {
+        dbusHandler->setDbusProperty(*dBusMap, it->first);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        std::cerr << "Set attribute ( " << (*dBusMap).propertyName << " : ";
+        std::visit([](auto val) { std::cerr << val; }, it->first);
+        std::cerr << ") value error: " << e.what() << std::endl;
+    }
 }
 
 void BIOSEnumAttribute::constructEntry(
