@@ -483,13 +483,16 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
 
     try
     {
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
+
         auto& bus = dbusHandler->getBus();
         auto service = dbusHandler->getService(biosObjPath, biosInterface);
         auto method =
             bus.new_method_call(service.c_str(), biosObjPath,
                                 "org.freedesktop.DBus.Properties", "Get");
         method.append(biosInterface, "BaseBIOSTable");
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, timeout.count());
         std::variant<BaseBIOSTable> varBiosTable{};
         reply.read(varBiosTable);
         biosTable = std::get<BaseBIOSTable>(varBiosTable);
