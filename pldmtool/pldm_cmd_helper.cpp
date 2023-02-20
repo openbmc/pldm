@@ -14,7 +14,6 @@ using namespace pldm::utils;
 
 namespace pldmtool
 {
-
 namespace helper
 {
 /*
@@ -139,12 +138,14 @@ void CommandInterface::exec()
     auto& bus = pldm::utils::DBusHandler::getBus();
     try
     {
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
         auto service =
             pldm::utils::DBusHandler().getService(pldmObjPath, pldmRequester);
         auto method = bus.new_method_call(service.c_str(), pldmObjPath,
                                           pldmRequester, "GetInstanceId");
         method.append(mctp_eid);
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, timeout.count());
         reply.read(instanceId);
     }
     catch (const std::exception& e)

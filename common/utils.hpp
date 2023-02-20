@@ -159,18 +159,23 @@ class DBusHandlerInterface
   public:
     virtual ~DBusHandlerInterface() = default;
 
-    virtual std::string getService(const char* path,
-                                   const char* interface) const = 0;
+    virtual std::string
+        getService(const char* path, const char* interface,
+                   std::chrono::microseconds timeout =
+                       std::chrono::microseconds(DBUS_TIMEOUT)) const = 0;
     virtual GetSubTreeResponse
         getSubtree(const std::string& path, int depth,
-                   const std::vector<std::string>& ifaceList) const = 0;
+                   const std::vector<std::string>& ifaceList,
+                   std::chrono::microseconds timeout =
+                       std::chrono::microseconds(DBUS_TIMEOUT)) const = 0;
 
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
 
-    virtual PropertyValue
-        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                               const char* dbusInterface) const = 0;
+    virtual PropertyValue getDbusPropertyVariant(
+        const char* objPath, const char* dbusProp, const char* dbusInterface,
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT)) const = 0;
 };
 
 /**
@@ -202,8 +207,10 @@ class DBusHandler : public DBusHandlerInterface
      *
      *  @throw sdbusplus::exception_t when it fails
      */
-    std::string getService(const char* path,
-                           const char* interface) const override;
+    std::string
+        getService(const char* path, const char* interface,
+                   std::chrono::microseconds timeout =
+                       std::chrono::microseconds(DBUS_TIMEOUT)) const override;
 
     /**
      *  @brief Get the Subtree response from the mapper
@@ -219,7 +226,9 @@ class DBusHandler : public DBusHandlerInterface
      */
     GetSubTreeResponse
         getSubtree(const std::string& path, int depth,
-                   const std::vector<std::string>& ifaceList) const override;
+                   const std::vector<std::string>& ifaceList,
+                   std::chrono::microseconds timeout =
+                       std::chrono::microseconds(DBUS_TIMEOUT)) const override;
 
     /** @brief Get property(type: variant) from the requested dbus
      *
@@ -231,9 +240,10 @@ class DBusHandler : public DBusHandlerInterface
      *
      *  @throw sdbusplus::exception_t when it fails
      */
-    PropertyValue
-        getDbusPropertyVariant(const char* objPath, const char* dbusProp,
-                               const char* dbusInterface) const override;
+    PropertyValue getDbusPropertyVariant(
+        const char* objPath, const char* dbusProp, const char* dbusInterface,
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT)) const override;
 
     /** @brief The template function to get property from the requested dbus
      *         path
