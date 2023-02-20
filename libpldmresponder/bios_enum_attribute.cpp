@@ -185,7 +185,14 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
         return;
     }
 
-    dbusHandler->setDbusProperty(*dBusMap, it->first);
+    try
+    {
+        dbusHandler->setDbusProperty(*dBusMap, it->first);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Set attribute value error: " << e.what() << std::endl;
+    }
 }
 
 void BIOSEnumAttribute::constructEntry(

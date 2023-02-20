@@ -52,10 +52,6 @@ std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
     std::string curResDumpEntryPath{};
 
     dbus::ObjectValueTree objects;
-    auto method =
-        bus.new_method_call(DUMP_MANAGER_BUSNAME, DUMP_MANAGER_PATH,
-                            OBJECT_MANAGER_INTERFACE, "GetManagedObjects");
-
     // Select the dump entry interface for system dump or resource dump
     DumpEntryInterface dumpEntryIntf = systemDumpEntry;
     if ((dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP) ||
@@ -66,10 +62,13 @@ std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
 
     try
     {
+        auto method =
+            bus.new_method_call(DUMP_MANAGER_BUSNAME, DUMP_MANAGER_PATH,
+                                OBJECT_MANAGER_INTERFACE, "GetManagedObjects");
+
         auto reply = bus.call(method);
         reply.read(objects);
     }
-
     catch (const std::exception& e)
     {
         std::cerr << "findDumpObjPath: Error " << e.what()
