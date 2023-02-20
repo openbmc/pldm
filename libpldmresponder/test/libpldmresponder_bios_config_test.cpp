@@ -78,7 +78,7 @@ TEST_F(TestBIOSConfig, buildTablesTest)
 {
     MockdBusHandler dbusHandler;
 
-    ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
+    ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _, _))
         .WillByDefault(Throw(std::exception()));
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,

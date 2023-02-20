@@ -144,7 +144,7 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
     EXPECT_CALL(dbusHandler,
                 getDbusPropertyVariant(StrEq("/xyz/openbmc_project/avsbus"),
                                        StrEq("Rail"),
-                                       StrEq("xyz.openbmc.AvsBus.Manager")))
+                                       StrEq("xyz.openbmc.AvsBus.Manager"), _))
         .WillOnce(Throw(std::exception()));
 
     /* Set expected attr type to read-write */
@@ -157,7 +157,7 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
     EXPECT_CALL(dbusHandler,
                 getDbusPropertyVariant(StrEq("/xyz/openbmc_project/avsbus"),
                                        StrEq("Rail"),
-                                       StrEq("xyz.openbmc.AvsBus.Manager")))
+                                       StrEq("xyz.openbmc.AvsBus.Manager"), _))
         .WillOnce(Return(PropertyValue(uint8_t(7))));
 
     expectedAttrValueEntry = {

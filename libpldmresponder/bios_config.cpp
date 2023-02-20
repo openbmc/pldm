@@ -481,6 +481,8 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
     constexpr auto biosObjPath = "/xyz/openbmc_project/bios_config/manager";
     constexpr auto biosInterface = "xyz.openbmc_project.BIOSConfig.Manager";
 
+    std::chrono::microseconds timeout = std::chrono::microseconds(DBUS_TIMEOUT);
+
     try
     {
         auto& bus = dbusHandler->getBus();
@@ -489,7 +491,7 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
             bus.new_method_call(service.c_str(), biosObjPath,
                                 "org.freedesktop.DBus.Properties", "Get");
         method.append(biosInterface, "BaseBIOSTable");
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, timeout.count());
         std::variant<BaseBIOSTable> varBiosTable{};
         reply.read(varBiosTable);
         biosTable = std::get<BaseBIOSTable>(varBiosTable);

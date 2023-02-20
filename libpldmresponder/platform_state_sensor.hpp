@@ -19,7 +19,6 @@ namespace responder
 {
 namespace platform_state_sensor
 {
-
 /** @brief Function to get the sensor state
  *
  *  @tparam[in] DBusInterface - DBus interface type
@@ -40,7 +39,8 @@ uint8_t getStateSensorEventState(
     {
         auto propertyValue = dBusIntf.getDbusPropertyVariant(
             dbusMapping.objectPath.c_str(), dbusMapping.propertyName.c_str(),
-            dbusMapping.interface.c_str());
+            dbusMapping.interface.c_str(),
+            std::chrono::microseconds(DBUS_TIMEOUT));
 
         for (const auto& stateValue : stateToDbusValue)
         {
