@@ -214,8 +214,8 @@ std::optional<std::vector<set_effecter_state_field>>
     return std::make_optional(std::move(stateField));
 }
 
-std::string DBusHandler::getService(const char* path,
-                                    const char* interface) const
+std::string DBusHandler::getService(const char* path, const char* interface,
+                                    std::chrono::microseconds timeout) const
 {
     using DbusInterfaceList = std::vector<std::string>;
     std::map<std::string, std::vector<std::string>> mapperResponse;
@@ -225,20 +225,21 @@ std::string DBusHandler::getService(const char* path,
                                       mapperInterface, "GetObject");
     mapper.append(path, DbusInterfaceList({interface}));
 
-    auto mapperResponseMsg = bus.call(mapper);
+    auto mapperResponseMsg = bus.call(mapper, timeout.count());
     mapperResponseMsg.read(mapperResponse);
     return mapperResponse.begin()->first;
 }
 
 GetSubTreeResponse
     DBusHandler::getSubtree(const std::string& searchPath, int depth,
-                            const std::vector<std::string>& ifaceList) const
+                            const std::vector<std::string>& ifaceList,
+                            std::chrono::microseconds timeout) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     auto method = bus.new_method_call(mapperBusName, mapperPath,
                                       mapperInterface, "GetSubTree");
     method.append(searchPath, depth, ifaceList);
-    auto reply = bus.call(method);
+    auto reply = bus.call(method, timeout.count());
     GetSubTreeResponse response;
     reply.read(response);
     return response;
@@ -351,7 +352,7 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
         bus.new_method_call(service.c_str(), objPath, dbusProperties, "Get");
     method.append(dbusInterface, dbusProp);
     PropertyValue value{};
-    auto reply = bus.call(method);
+    auto reply = bus.call(method, timeout.count());
     reply.read(value);
     return value;
 }
