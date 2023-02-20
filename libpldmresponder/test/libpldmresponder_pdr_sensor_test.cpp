@@ -26,7 +26,7 @@ TEST(GeneratePDRByStateSensor, testGoodJson)
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(1)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -77,7 +77,7 @@ TEST(GeneratePDR, testMalformedJson)
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(1)
         .WillRepeatedly(Return("foo.bar"));
 

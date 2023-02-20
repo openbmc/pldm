@@ -36,7 +36,7 @@ TEST(getPDR, testGoodPath)
     request->request_count = 100;
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -74,7 +74,7 @@ TEST(getPDR, testShortRead)
     request->request_count = 1;
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -106,7 +106,7 @@ TEST(getPDR, testBadRecordHandle)
     request->request_count = 1;
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -136,7 +136,7 @@ TEST(getPDR, testNoNextRecord)
     request->record_handle = 1;
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -168,7 +168,7 @@ TEST(getPDR, testFindPDR)
     request->request_count = 100;
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -229,7 +229,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -276,7 +276,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -322,7 +322,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
 TEST(setNumericEffecterValueHandler, testGoodRequest)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -365,7 +365,7 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
 TEST(setNumericEffecterValueHandler, testBadRequest)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -584,7 +584,7 @@ TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
 TEST(getStateSensorReadingsHandler, testGoodRequest)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(1)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -610,7 +610,7 @@ TEST(getStateSensorReadingsHandler, testGoodRequest)
     MockdBusHandler handlerObj;
     EXPECT_CALL(handlerObj,
                 getDbusPropertyVariant(StrEq("/foo/bar"), StrEq("propertyName"),
-                                       StrEq("xyz.openbmc_project.Foo.Bar")))
+                                       StrEq("xyz.openbmc_project.Foo.Bar"), _))
         .WillOnce(Return(
             PropertyValue(std::string("xyz.openbmc_project.Foo.Bar.V0"))));
 
@@ -631,7 +631,7 @@ TEST(getStateSensorReadingsHandler, testGoodRequest)
 TEST(getStateSensorReadingsHandler, testBadRequest)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(1)
         .WillRepeatedly(Return("foo.bar"));
 

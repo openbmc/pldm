@@ -7,7 +7,6 @@ namespace pldm
 {
 namespace utils
 {
-
 /** @brief helper function for parameter matching
  *  @param[in] lhs - left-hand side value
  *  @param[in] rhs - right-hand side value
@@ -26,7 +25,8 @@ inline bool operator==(const DBusMapping& lhs, const DBusMapping& rhs)
 class MockdBusHandler : public pldm::utils::DBusHandler
 {
   public:
-    MOCK_METHOD(std::string, getService, (const char*, const char*),
+    MOCK_METHOD(std::string, getService,
+                (const char*, const char*, std::chrono::microseconds),
                 (const override));
 
     MOCK_METHOD(void, setDbusProperty,
@@ -35,5 +35,7 @@ class MockdBusHandler : public pldm::utils::DBusHandler
                 (const override));
 
     MOCK_METHOD(pldm::utils::PropertyValue, getDbusPropertyVariant,
-                (const char*, const char*, const char*), (const override));
+                (const char*, const char*, const char*,
+                 std::chrono::microseconds),
+                (const override));
 };

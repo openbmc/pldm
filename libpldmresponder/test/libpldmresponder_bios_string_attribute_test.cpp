@@ -152,19 +152,19 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
     expectedAttrEntry[2] = PLDM_BIOS_STRING;
     expectedAttrValueEntry[2] = PLDM_BIOS_STRING;
 
-    EXPECT_CALL(
-        dbusHandler,
-        getDbusPropertyVariant(StrEq("/xyz/abc/def"), StrEq("Str_example1"),
-                               StrEq("xyz.openbmc_project.str_example1.value")))
+    EXPECT_CALL(dbusHandler,
+                getDbusPropertyVariant(
+                    StrEq("/xyz/abc/def"), StrEq("Str_example1"),
+                    StrEq("xyz.openbmc_project.str_example1.value"), _))
         .WillOnce(Throw(std::exception()));
 
     checkConstructEntry(stringReadWrite, biosStringTable, expectedAttrEntry,
                         expectedAttrValueEntry);
 
-    EXPECT_CALL(
-        dbusHandler,
-        getDbusPropertyVariant(StrEq("/xyz/abc/def"), StrEq("Str_example1"),
-                               StrEq("xyz.openbmc_project.str_example1.value")))
+    EXPECT_CALL(dbusHandler,
+                getDbusPropertyVariant(
+                    StrEq("/xyz/abc/def"), StrEq("Str_example1"),
+                    StrEq("xyz.openbmc_project.str_example1.value"), _))
         .WillOnce(Return(PropertyValue(std::string("abcd"))));
 
     expectedAttrValueEntry = {
