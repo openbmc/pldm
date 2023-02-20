@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "common/flight_recorder.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
@@ -17,10 +19,8 @@
 
 namespace pldm
 {
-
 namespace requester
 {
-
 /** @class RequestRetryTimer
  *
  *  The abstract base class for implementing the PLDM request retry logic. This
@@ -45,7 +45,8 @@ class RequestRetryTimer
      *  @param[in] timeout - time to wait between each retry in milliseconds
      */
     explicit RequestRetryTimer(sdeventplus::Event& event, uint8_t numRetries,
-                               std::chrono::milliseconds timeout) :
+                               std::chrono::milliseconds timeout =
+                                   std::chrono::milliseconds(DBUS_TIMEOUT)) :
 
         event(event),
         numRetries(numRetries), timeout(timeout),
@@ -96,8 +97,8 @@ class RequestRetryTimer
   protected:
     sdeventplus::Event& event; //!< reference to PLDM daemon's main event loop
     uint8_t numRetries;        //!< number of request retries
-    std::chrono::milliseconds
-        timeout;           //!< time to wait between each retry in milliseconds
+    std::chrono::milliseconds timeout = std::chrono::milliseconds(
+        DBUS_TIMEOUT);     //!< time to wait between each retry in milliseconds
     phosphor::Timer timer; //!< manages starting timers and handling timeouts
 
     /** @brief Sends the PLDM request message
