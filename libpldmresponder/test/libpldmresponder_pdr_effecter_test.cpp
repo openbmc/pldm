@@ -22,7 +22,7 @@ using ::testing::StrEq;
 TEST(GeneratePDRByStateEffecter, testGoodJson)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -122,7 +122,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
 TEST(GeneratePDRByNumericEffecter, testGoodJson)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -169,7 +169,7 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
 TEST(GeneratePDR, testMalformedJson)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 
@@ -193,7 +193,7 @@ TEST(GeneratePDR, testMalformedJson)
 TEST(findStateEffecterId, goodJson)
 {
     MockdBusHandler mockedUtils;
-    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _, _))
         .Times(5)
         .WillRepeatedly(Return("foo.bar"));
 

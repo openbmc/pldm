@@ -148,7 +148,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
 
     EXPECT_CALL(dbusHandler,
                 getDbusPropertyVariant(StrEq("/xyz/abc/def"), StrEq("Policy"),
-                                       StrEq("xyz.openbmc.abc.def")))
+                                       StrEq("xyz.openbmc.abc.def"), _))
         .WillOnce(Throw(std::exception()));
 
     /* Set expected attr type to read-write */
@@ -160,7 +160,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
 
     EXPECT_CALL(dbusHandler,
                 getDbusPropertyVariant(StrEq("/xyz/abc/def"), StrEq("Policy"),
-                                       StrEq("xyz.openbmc.abc.def")))
+                                       StrEq("xyz.openbmc.abc.def"), _))
         .WillOnce(Return(PropertyValue(true)));
 
     expectedAttrValueEntry = {
