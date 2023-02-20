@@ -24,12 +24,10 @@ namespace pldm
 {
 namespace responder
 {
-
 using namespace sdbusplus::xyz::openbmc_project::Logging::server;
 
 namespace detail
 {
-
 /**
  * @brief Finds the Entry::Level value for the severity of the PEL
  *        passed in.
@@ -101,12 +99,14 @@ int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
 
     try
     {
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
         auto service =
             pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "GetPEL");
         method.append(fileHandle);
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, timeout.count());
         sdbusplus::message::unix_fd fd{};
         reply.read(fd);
         auto rc = transferFileData(fd, true, offset, length, address);
@@ -131,12 +131,14 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
 
     try
     {
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
         auto service =
             pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "GetPEL");
         method.append(fileHandle);
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, timeout.count());
         sdbusplus::message::unix_fd fd{};
         reply.read(fd);
 
