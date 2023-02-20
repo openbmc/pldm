@@ -489,7 +489,7 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
             bus.new_method_call(service.c_str(), biosObjPath,
                                 "org.freedesktop.DBus.Properties", "Get");
         method.append(biosInterface, "BaseBIOSTable");
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, DBUS_TIMEOUT);
         std::variant<BaseBIOSTable> varBiosTable{};
         reply.read(varBiosTable);
         biosTable = std::get<BaseBIOSTable>(varBiosTable);
