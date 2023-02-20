@@ -20,7 +20,6 @@
 
 namespace pldm
 {
-
 using namespace sdeventplus;
 using namespace sdeventplus::source;
 constexpr auto clockId = sdeventplus::ClockId::RealTime;
@@ -144,7 +143,7 @@ int SoftPowerOff::getEffecterID()
         VMMMethod.append(TID, entityType,
                          (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
 
-        auto VMMResponseMsg = bus.call(VMMMethod);
+        auto VMMResponseMsg = bus.call(VMMMethod, DBUS_TIMEOUT);
 
         VMMResponseMsg.read(VMMResponse);
         if (VMMResponse.size() != 0)
@@ -186,7 +185,7 @@ int SoftPowerOff::getEffecterID()
         sysFwMethod.append(TID, entityType,
                            (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
 
-        auto sysFwResponseMsg = bus.call(sysFwMethod);
+        auto sysFwResponseMsg = bus.call(sysFwMethod, DBUS_TIMEOUT);
 
         sysFwResponseMsg.read(sysFwResponse);
 
@@ -237,7 +236,7 @@ int SoftPowerOff::getSensorInfo()
         method.append(TID, entityType,
                       (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
 
-        auto ResponseMsg = bus.call(method);
+        auto ResponseMsg = bus.call(method, DBUS_TIMEOUT);
 
         ResponseMsg.read(Response);
 
@@ -309,7 +308,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
             "xyz.openbmc_project.PLDM.Requester", "GetInstanceId");
         method.append(mctpEID);
 
-        auto ResponseMsg = bus.call(method);
+        auto ResponseMsg = bus.call(method, DBUS_TIMEOUT);
 
         ResponseMsg.read(instanceID);
     }
