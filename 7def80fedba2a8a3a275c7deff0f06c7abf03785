@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bec60d3_477db210",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-22T03:39:47Z",
+      "side": 1,
+      "message": "Please be specific to the planned change",
+      "revId": "7def80fedba2a8a3a275c7deff0f06c7abf03785",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde7c898_a7fcc419",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-22T03:39:47Z",
+      "side": 1,
+      "message": "This description looks incorrect",
+      "revId": "7def80fedba2a8a3a275c7deff0f06c7abf03785",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd52966f_b61f4b9f",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-22T03:39:47Z",
+      "side": 1,
+      "message": "Description looks wrong and dbus time out has no connection to PLDM retry.",
+      "revId": "7def80fedba2a8a3a275c7deff0f06c7abf03785",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8965a78_41842a0c",
+        "filename": "meson_options.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-22T03:39:47Z",
+      "side": 1,
+      "message": "Plese put in seconds",
+      "revId": "7def80fedba2a8a3a275c7deff0f06c7abf03785",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24981f58_ffde5179",
+        "filename": "requester/request.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-02-22T03:39:47Z",
+      "side": 1,
+      "message": "We do not need any change here",
+      "revId": "7def80fedba2a8a3a275c7deff0f06c7abf03785",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
