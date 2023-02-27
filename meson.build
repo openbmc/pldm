@@ -62,6 +62,8 @@ conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
 conf_data.set_quoted('STATIC_EID_TABLE_PATH', join_paths(package_datadir, 'static_eid_table.json'))
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 conf_data.set_quoted('EID_TO_MCTP_MEDIUM', join_paths(package_datadir, 'eid_to_mctp_medium.json'))
+conf_data.set('PLATFORM_EVENT_MSG_POLLING_TIME', get_option('platform-event-msg-polling-time'))
+conf_data.set('PLATFORM_EVENT_MSG_POLLING_CRITICAL_EVENT_TIME', get_option('platform-event-msg-polling-critical-event-time'))
 configure_file(output: 'config.h',
   configuration: conf_data
 )
@@ -192,6 +194,7 @@ executable(
   'platform-mc/numeric_sensor.cpp',
   'platform-mc/compact_numeric_sensor.cpp',
   'platform-mc/numeric_effecter_dbus.cpp',
+  'platform-mc/event_manager.cpp',
   'requester/mctp_endpoint_discovery.cpp',
   implicit_include_directories: false,
   dependencies: deps,

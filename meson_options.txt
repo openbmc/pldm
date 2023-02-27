@@ -30,3 +30,5 @@ option('flightrecorder-max-entries', type:'integer',min:0, max:30, description: 
 
 # Platform-mc configuration parameters
 option('sensor-polling-time', type: 'integer', min: 1, max: 4294967295, description: 'The interval time of sensor polling in seconds', value: 1)
+option('platform-event-msg-polling-time', type: 'integer', min: 1, max: 4294967295, description: 'The interval time of event data polling in milliseconds', value: 10)
+option('platform-event-msg-polling-critical-event-time', type: 'integer', min: 40, max: 4294967295, description: 'The interval time of critical event polling in milliseconds', value: 40)

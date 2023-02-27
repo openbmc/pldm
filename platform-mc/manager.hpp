@@ -3,6 +3,7 @@
 #include "libpldm/pldm.h"
 
 #include "common/types.hpp"
+#include "event_manager.hpp"
 #include "platform_manager.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
@@ -38,7 +39,8 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      Requester& requester) :
         terminusManager(event, handler, requester, termini, this),
         platformManager(terminusManager, termini),
-        sensorManager(event, terminusManager, termini)
+        sensorManager(event, terminusManager, termini),
+        eventManager(event, terminusManager, termini)
     {}
 
     requester::Coroutine beforeDiscoverTerminus()
@@ -60,11 +62,13 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     void startSensorPolling()
     {
         sensorManager.startPolling();
+        eventManager.startPolling();
     }
 
     void stopSensorPolling()
     {
         sensorManager.stopPolling();
+        eventManager.stopPolling();
     }
 
   private:
@@ -74,6 +78,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     TerminusManager terminusManager;
     PlatformManager platformManager;
     SensorManager sensorManager;
+    EventManager eventManager;
 };
 } // namespace platform_mc
 } // namespace pldm
