@@ -16,6 +16,24 @@
       "message": "The patch is failed because the failure in the previous patch in the list https://gerrit.openbmc.org/c/openbmc/pldm/+/53961.",
       "revId": "d71f789f4e93347087125c422fcb1982762420c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90a16138_d45052b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-02-28T06:54:01Z",
+      "side": 1,
+      "message": "It will be fixed when patch https://gerrit.openbmc.org/c/openbmc/libpldm/+/59033 is merged.",
+      "parentUuid": "9227a40f_6999bb44",
+      "revId": "d71f789f4e93347087125c422fcb1982762420c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
