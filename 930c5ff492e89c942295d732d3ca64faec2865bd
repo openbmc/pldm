@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7245fd19_1d490782",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-02-28T06:51:13Z",
+      "side": 1,
+      "message": "The patch is failed because the failure in the previous patch in the list https://gerrit.openbmc.org/c/openbmc/pldm/+/53961.",
+      "revId": "930c5ff492e89c942295d732d3ca64faec2865bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
