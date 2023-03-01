@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e165a7a_483d55b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-03-01T12:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbee4aa0_cde4d0ed",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d4e58de_6204540a",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-20T14:42:40Z",
       "side": 1,
       "message": "Please use sdbusplus::exception_t",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d453ef7_c6d45b30",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-03-01T12:23:25Z",
+      "side": 1,
+      "message": "These changes are not required as the functions called setAttrValueOnDbus are taking care of catching the exception.",
+      "parentUuid": "3d4e58de_6204540a",
       "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e59a14be_7bd84da5",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-03-01T12:23:25Z",
+      "side": 1,
+      "message": "These changes are not required as the functions called setAttrValueOnDbus are taking care of catching the exception.",
+      "parentUuid": "633d80da_c27ee26f",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee0ada48_052152e2",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-02-20T14:42:40Z",
       "side": 1,
       "message": "Please use sdbusplus::exception_t",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "256b319b_373b0e00",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-03-01T12:23:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee0ada48_052152e2",
       "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
