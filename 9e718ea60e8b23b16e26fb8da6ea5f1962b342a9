@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "817345e6_5f71fe13",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-01T13:59:03Z",
+      "side": 1,
+      "message": "could you also make this change to other catch blocks in the file as well?",
+      "revId": "9e718ea60e8b23b16e26fb8da6ea5f1962b342a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "475e3efa_4e5fb80a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-01T13:59:03Z",
+      "side": 1,
+      "message": "could you also make this change to other catch blocks in the file as well?",
+      "revId": "9e718ea60e8b23b16e26fb8da6ea5f1962b342a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
