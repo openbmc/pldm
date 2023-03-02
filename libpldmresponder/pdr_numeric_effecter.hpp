@@ -4,6 +4,10 @@
 
 #include <libpldm/platform.h>
 
+#include <phosphor-logging/lg2.hpp>
+
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 
@@ -40,7 +44,7 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             reinterpret_cast<pldm_numeric_effecter_value_pdr*>(entry.data());
         if (!pdr)
         {
-            std::cerr << "Failed to get numeric effecter PDR.\n";
+            error("Failed to get numeric effecter PDR.");
             continue;
         }
         pdr->hdr.record_handle = 0;
@@ -210,8 +214,9 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         }
         catch (const std::exception& e)
         {
-            std::cerr << "D-Bus object path does not exist, effecter ID: "
-                      << pdr->effecter_id << "\n";
+            error(
+                "D-Bus object path does not exist, effecter ID: {EFFECTER_ID}",
+                "EFFECTER_ID", (uint16_t)pdr->effecter_id);
         }
         dbusMappings.emplace_back(std::move(dbusMapping));
 
