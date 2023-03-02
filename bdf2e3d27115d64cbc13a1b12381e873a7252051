@@ -16,6 +16,193 @@
       "message": "LGTM",
       "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54fe785a_9daa703d",
+        "filename": "common/utils.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "Isn\u0027t it the same as InterfaceMap in line no 153",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc469c14_0696144c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "All platforms are expected to organize based on system type? one more reason to upstream the platformType interface.",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93cd236d_8c869149",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "nit: @brief",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c5fd32_84a3854d",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "Can multiple platform names be present?",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5740b0d0_520c5ca1",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "Why iostream here?, pls include in cpp.",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a20533_b7f9d427",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "namespace oem::ibm::bios",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637f7c48_5a5b97b3",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "I don\u0027t see the interface upstreamed yet. (https://github.com/openbmc/phosphor-dbus-interfaces/tree/master/yaml/xyz/openbmc_project). Even though the code is in oem/ibm, please discuss with community if this is an acceptable pratice. Are there any challenges upstreaming?",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "339be4a4_039e1d10",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "sdbusplus::bus::match::match -\u003e sdbusplus::bus::match_t",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6091e797_a191c728",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "The return type of getPlatformName() don\u0027t match with the function name, a std::string would have made sense.",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb419bbb_2e74e328",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "nit: interfaced -\u003e interface",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fc8421c_d0591c62",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 1,
+      "message": "Where is this consumed in the code?",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

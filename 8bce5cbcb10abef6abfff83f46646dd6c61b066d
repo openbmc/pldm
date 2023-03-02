@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbbaad34_f52eb2b5",
+        "filename": "libpldmresponder/bios.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-03-02T11:27:32Z",
+      "side": 0,
+      "message": "pls avoid blank line changes",
+      "revId": "8bce5cbcb10abef6abfff83f46646dd6c61b066d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
