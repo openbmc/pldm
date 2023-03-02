@@ -12,6 +12,9 @@
 
 #include <exception>
 #include <fstream>
+
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 using namespace utils;
@@ -75,7 +78,7 @@ int CodeUpdate::setNextBootSide(const std::string& nextSide)
     }
     if (objPath.empty())
     {
-        std::cerr << "no nonRunningVersion present \n";
+        error("no nonRunningVersion present");
         return PLDM_PLATFORM_INVALID_STATE_VALUE;
     }
 
@@ -89,8 +92,9 @@ int CodeUpdate::setNextBootSide(const std::string& nextSide)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "failed to set the next boot side to " << objPath.c_str()
-                  << " ERROR=" << e.what() << "\n";
+        error(
+            "failed to set the next boot side to {OBJ_PATH} ERROR={ERR_EXCEP}",
+            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e.what());
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
@@ -112,8 +116,8 @@ int CodeUpdate::setRequestedApplyTime()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed To set RequestedApplyTime property "
-                  << "ERROR=" << e.what() << std::endl;
+        error("Failed To set RequestedApplyTime property ERROR={ERR_EXCEP}",
+              "ERR_EXCEP", e.what());
         rc = PLDM_ERROR;
     }
     return rc;
@@ -135,8 +139,8 @@ int CodeUpdate::setRequestedActivation()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed To set RequestedActivation property"
-                  << "ERROR=" << e.what() << std::endl;
+        error("Failed To set RequestedActivation property ERROR={ERR_EXCEP}",
+              "ERR_EXCEP", e.what());
         rc = PLDM_ERROR;
     }
     return rc;
@@ -181,9 +185,9 @@ void CodeUpdate::setVersions()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "failed to make a d-bus call to Object Mapper "
-                     "Association, ERROR="
-                  << e.what() << "\n";
+        error(
+            "failed to make a d-bus call to Object Mapper Association, ERROR={ERR_EXCEP}",
+            "ERR_EXCEP", e.what());
         return;
     }
 
@@ -299,15 +303,17 @@ void CodeUpdate::setVersions()
                                     sensorId, PLDM_STATE_SENSOR_STATE, 0,
                                     uint8_t(state),
                                     uint8_t(CodeUpdateState::START));
-                                std::cerr
-                                    << "could not set RequestedActivation \n";
+                                error("could not set RequestedActivation");
                             }
                             break;
                         }
                     }
                     catch (const sdbusplus::exception_t& e)
                     {
-                        std::cerr << "Error in getting Activation status \n";
+                        error(
+                            "Error in getting Activation status,ERROR= {ERR_EXCEP}, INTERFACE={IMG_INTERFACE}, OBJECT PATH={OBJ_PATH}",
+                            "ERR_EXCEP", e.what(), "IMG_INTERFACE",
+                            imageInterface, "OBJ_PATH", imageObjPath);
                     }
                 }
             }
@@ -338,8 +344,8 @@ void CodeUpdate::clearDirPath(const std::string& dirPath)
 {
     if (!fs::is_directory(dirPath))
     {
-        std::cerr << "The directory does not exist, dirPath = " << dirPath
-                  << std::endl;
+        error("The directory does not exist, dirPath = {DIR_PATH}", "DIR_PATH",
+              dirPath.c_str());
         return;
     }
     for (const auto& iter : fs::directory_iterator(dirPath))
@@ -376,7 +382,8 @@ void CodeUpdate::deleteImage()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed to delete image, ERROR=" << e.what() << "\n";
+        error("Failed to delete image, ERROR={ERR_EXCEP}", "ERR_EXCEP",
+              e.what());
         return;
     }
 }
@@ -471,7 +478,7 @@ int processCodeUpdateLid(const std::string& filePath)
     std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
     if (!ifs)
     {
-        std::cerr << "ifstream open error: " << filePath << "\n";
+        error("ifstream open error: {DIR_PATH}", "DIR_PATH", filePath.c_str());
         return PLDM_ERROR;
     }
     ifs.seekg(0);
@@ -490,7 +497,7 @@ int processCodeUpdateLid(const std::string& filePath)
     constexpr auto magicNumber = 0x0222;
     if (htons(header.magicNumber) != magicNumber)
     {
-        std::cerr << "Invalid magic number: " << filePath << "\n";
+        error("Invalid magic number: {DIR_PATH}", "DIR_PATH", filePath.c_str());
         ifs.close();
         return PLDM_ERROR;
     }
@@ -543,8 +550,7 @@ int CodeUpdate::assembleCodeUpdateImage()
                                  "-no-recovery");
             if (rc < 0)
             {
-                std::cerr << "Error occurred during the mksqusquashfs call"
-                          << std::endl;
+                error("Error occurred during the mksqusquashfs call");
                 setCodeUpdateProgress(false);
                 auto sensorId = getFirmwareUpdateSensor();
                 sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0,
@@ -581,9 +587,7 @@ int CodeUpdate::assembleCodeUpdateImage()
                             updateDirPath);
             if (rc < 0)
             {
-                std::cerr
-                    << "Error occurred during the generation of the tarball"
-                    << std::endl;
+                error("Error occurred during the generation of the tarball");
                 setCodeUpdateProgress(false);
                 auto sensorId = getFirmwareUpdateSensor();
                 sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0,
@@ -606,8 +610,7 @@ int CodeUpdate::assembleCodeUpdateImage()
         }
         else if (nextPid < 0)
         {
-            std::cerr << "Error occurred during fork. ERROR=" << errno
-                      << std::endl;
+            error("Error occurred during fork. ERROR={ERR}", "ERR", errno);
             exit(EXIT_FAILURE);
         }
 
@@ -620,21 +623,21 @@ int CodeUpdate::assembleCodeUpdateImage()
         int status;
         if (waitpid(pid, &status, 0) < 0)
         {
-            std::cerr << "Error occurred during waitpid. ERROR=" << errno
-                      << std::endl;
+            error("Error occurred during waitpid. ERROR={ERR}", "ERR", errno);
+
             return PLDM_ERROR;
         }
         else if (WEXITSTATUS(status) != 0)
         {
-            std::cerr
-                << "Failed to execute the assembling of the image. STATUS="
-                << status << std::endl;
+            error(
+                "Failed to execute the assembling of the image. STATUS={IMG_STATUS}",
+                "IMG_STATUS", status);
             return PLDM_ERROR;
         }
     }
     else
     {
-        std::cerr << "Error occurred during fork. ERROR=" << errno << std::endl;
+        error("Error occurred during fork. ERROR={ERR}", "ERR", errno);
         return PLDM_ERROR;
     }
 

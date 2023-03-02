@@ -21,6 +21,8 @@
 #include <tuple>
 #include <unordered_map>
 
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 
@@ -132,21 +134,20 @@ class Handler
         auto instanceIdExpiryCallBack = [key, this](void) {
             if (this->handlers.contains(key))
             {
-                std::cerr << "Response not received for the request, instance "
-                             "ID expired."
-                          << " EID = " << (unsigned)key.eid
-                          << " INSTANCE_ID = " << (unsigned)key.instanceId
-                          << " TYPE = " << (unsigned)key.type
-                          << " COMMAND = " << (unsigned)key.command << "\n";
+                error(
+                    "Response not received for the request, instance ID expired. EID = {EID} INSTANCE_ID = {INST_ID} TYPE = {REQ_KEY_TYPE} COMMAND = {REQ_KEY_CMD}",
+                    "EID", (unsigned)key.eid, "INST_ID",
+                    (unsigned)key.instanceId, "REQ_KEY_TYPE",
+                    (unsigned)key.type, "REQ_KEY_CMD", (unsigned)key.command);
                 auto& [request, responseHandler, timerInstance] =
                     this->handlers[key];
                 request->stop();
                 auto rc = timerInstance->stop();
                 if (rc)
                 {
-                    std::cerr
-                        << "Failed to stop the instance ID expiry timer. RC = "
-                        << rc << "\n";
+                    error(
+                        "Failed to stop the instance ID expiry timer. RC = {RC}",
+                        "RC", (int)rc);
                 }
                 // Call response handler with an empty response to indicate no
                 // response
@@ -175,8 +176,7 @@ class Handler
         if (rc)
         {
             requester.markFree(eid, instanceId);
-            std::cerr << "Failure to send the PLDM request message"
-                      << "\n";
+            error("Failure to send the PLDM request message");
             return rc;
         }
 
@@ -188,8 +188,9 @@ class Handler
         catch (const std::runtime_error& e)
         {
             requester.markFree(eid, instanceId);
-            std::cerr << "Failed to start the instance ID expiry timer. RC = "
-                      << e.what() << "\n";
+            error(
+                "Failed to start the instance ID expiry timer. RC = {ERR_EXCEP}",
+                "ERR_EXCEP", e.what());
             return PLDM_ERROR;
         }
 
@@ -220,9 +221,8 @@ class Handler
             auto rc = timerInstance->stop();
             if (rc)
             {
-                std::cerr
-                    << "Failed to stop the instance ID expiry timer. RC = "
-                    << rc << "\n";
+                error("Failed to stop the instance ID expiry timer. RC = {RC}",
+                      "RC", (int)rc);
             }
             responseHandler(eid, response, respMsgLen);
             requester.markFree(key.eid, key.instanceId);

@@ -9,6 +9,8 @@
 #include <utility>
 #include <vector>
 
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 
@@ -91,8 +93,9 @@ class HostEffecterParser
         }
         catch (const std::exception& e)
         {
-            std::cerr << "The json file does not exist or malformed, ERROR="
-                      << e.what() << "\n";
+            error(
+                "The json file does not exist or malformed, ERROR={ERR_EXCEP}",
+                "ERR_EXCEP", e.what());
         }
     }
 

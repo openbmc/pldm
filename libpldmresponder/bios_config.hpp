@@ -17,6 +17,8 @@
 #include <string>
 #include <vector>
 
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 namespace responder
@@ -203,8 +205,8 @@ class BIOSConfig
         }
         catch (const std::exception& e)
         {
-            std::cerr << "Constructs Attribute Error, " << e.what()
-                      << std::endl;
+            error("Constructs Attribute Error, {ERR_EXCEP}", "ERR_EXCEP",
+                  e.what());
         }
     }
 
