@@ -1,0 +1,388 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1880babd_b47eb0ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "any failures/bad path tested?",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c8a4257_15671911",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "remove this change",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfd1fe3d_e49b2402",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "you have missed a change here",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d6a5f1_a5e26807",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "missed changes here",
+      "range": {
+        "startLine": 453,
+        "startChar": 8,
+        "endLine": 455,
+        "endChar": 26
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb728be0_6c70c499",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "Don\u0027t these come under info?",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 51
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18ee9692_eb91926a",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "error not info",
+      "range": {
+        "startLine": 370,
+        "startChar": 16,
+        "endLine": 370,
+        "endChar": 20
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d55901c9_312f0436",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "error",
+      "range": {
+        "startLine": 445,
+        "startChar": 16,
+        "endLine": 445,
+        "endChar": 20
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd24dcee_24eba093",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "This would be an error, not an info log",
+      "range": {
+        "startLine": 696,
+        "startChar": 12,
+        "endLine": 696,
+        "endChar": 16
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "170b6a82_ff669e92",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "error",
+      "range": {
+        "startLine": 792,
+        "startChar": 12,
+        "endLine": 792,
+        "endChar": 16
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d97b6f4_554f1c78",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "error",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33265cab_c654aae3",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "missed changes here",
+      "range": {
+        "startLine": 200,
+        "startChar": 8,
+        "endLine": 200,
+        "endChar": 17
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f6f82e8_507434d4",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "here as well",
+      "range": {
+        "startLine": 225,
+        "startChar": 11,
+        "endLine": 225,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d98abf19_b5efbd5f",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "here as well",
+      "range": {
+        "startLine": 234,
+        "startChar": 12,
+        "endLine": 234,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3e8ec9c_13244f18",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "remove change",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9b06f6c_bcec39e7",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "missed changes here?",
+      "range": {
+        "startLine": 104,
+        "startChar": 12,
+        "endLine": 104,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1aa9c27c_c7be6b2d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "here as well?",
+      "range": {
+        "startLine": 137,
+        "startChar": 20,
+        "endLine": 137,
+        "endChar": 29
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d456251e_5de822e4",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "here as well?",
+      "range": {
+        "startLine": 142,
+        "startChar": 12,
+        "endLine": 142,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2ae1686_c0fbc032",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-02T11:48:47Z",
+      "side": 1,
+      "message": "this would be an error",
+      "range": {
+        "startLine": 767,
+        "startChar": 12,
+        "endLine": 767,
+        "endChar": 17
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
