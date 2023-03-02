@@ -4,10 +4,14 @@
 
 #include <libpldm/utils.h>
 
+#include <phosphor-logging/lg2.hpp>
+
 #ifdef OEM_IBM
 #include <libpldm/file_io.h>
 #include <libpldm/host.h>
 #endif
+
+PHOSPHOR_LOG2_USING;
 
 #include <string>
 
@@ -109,8 +113,8 @@ class GetPLDMTypes : public CommandInterface
                                         types.data());
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            error("Response Message Error: rc = {RC}, cc={CC}", "RC", rc, "CC",
+                  (int)cc);
             return;
         }
 
@@ -180,8 +184,8 @@ class GetPLDMVersion : public CommandInterface
                                     &transferHandle, &transferFlag, &version);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            error("Response Message Error: rc = {RC}, cc={CC}", "RC", rc, "CC",
+                  (int)cc);
             return;
         }
         char buffer[16] = {0};
@@ -230,8 +234,8 @@ class GetTID : public CommandInterface
         auto rc = decode_get_tid_resp(responsePtr, payloadLength, &cc, &tid);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            error("Response Message Error:rc = {RC}, cc={CC}", "RC", rc, "CC",
+                  (int)cc);
             return;
         }
         ordered_json data;
@@ -278,8 +282,8 @@ class GetPLDMCommands : public CommandInterface
                                            cmdTypes.data());
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            error("Response Message Error: rc = {RC}, cc={CC}", "RC", rc, "CC",
+                  (int)cc);
             return;
         }
         printPldmCommands(cmdTypes, pldmType);
