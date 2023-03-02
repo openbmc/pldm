@@ -8,8 +8,28 @@
         "file_traits": 4
     },
     {
+        "path": "/usr/local/share/hostfw/running/81e00300.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00300.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00430.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00430.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00440.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00440.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00602.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00602.lid",
+        "file_traits": 1
+    },
+    {
         "path": "/usr/local/share/hostfw/running/81e00620.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00620.lid",
         "file_traits": 2
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00630.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00630.lid",
+        "file_traits": 1
     },
     {
         "path": "/usr/local/share/hostfw/running/81e00658.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00658.lid",
@@ -84,6 +104,10 @@
         "file_traits": 2
     },
     {
+        "path": "/usr/local/share/hostfw/running/81e00671.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00671.lid",
+        "file_traits": 1
+    },
+    {
         "path": "/usr/local/share/hostfw/running/81e00672.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00672.lid",
         "file_traits": 2
     },
@@ -92,12 +116,20 @@
         "file_traits": 2
     },
     {
+        "path": "/usr/local/share/hostfw/running/81e00674.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00674.lid",
+        "file_traits": 1
+    },
+    {
         "path": "/usr/local/share/hostfw/running/81e00675.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00675.lid",
         "file_traits": 1
     },
     {
         "path": "/usr/local/share/hostfw/running/81e00676.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00676.lid",
         "file_traits": 4
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00677.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00677.lid",
+        "file_traits": 1
     },
     {
         "path": "/usr/local/share/hostfw/running/81e00678.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00678.lid",
@@ -116,6 +148,14 @@
         "file_traits": 1
     },
     {
+        "path": "/usr/local/share/hostfw/running/81e0067c.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0067c.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e0067d.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0067d.lid",
+        "file_traits": 1
+    },
+    {
         "path": "/usr/local/share/hostfw/running/81e0067e.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0067e.lid",
         "file_traits": 1
     },
@@ -124,8 +164,36 @@
         "file_traits": 2
     },
     {
+        "path": "/usr/local/share/hostfw/running/81e00685.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00685.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00686.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00686.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00687.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00687.lid",
+        "file_traits": 1
+    },
+    {
         "path": "/usr/local/share/hostfw/running/81e00688.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00688.lid",
         "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00689.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00689.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e0068a.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0068a.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e0068b.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0068b.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e0068c.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0068c.lid",
+        "file_traits": 2
     },
     {
         "path": "/usr/local/share/hostfw/running/81e0068d.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0068d.lid",
@@ -160,6 +228,26 @@
         "file_traits": 1
     },
     {
+        "path": "/usr/local/share/hostfw/running/81e00698.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00698.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e00699.lid,/var/lib/phosphor-software-manager/hostfw/running/81e00699.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e0069a.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0069a.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e0069b.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0069b.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e0069c.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0069c.lid",
+        "file_traits": 1
+    },
+    {
         "path": "/usr/local/share/hostfw/running/81e0069d.lid,/var/lib/phosphor-software-manager/hostfw/running/81e0069d.lid",
         "file_traits": 1
     },
@@ -173,6 +261,22 @@
     },
     {
         "path": "/usr/local/share/hostfw/running/81e006a0.lid,/var/lib/phosphor-software-manager/hostfw/running/81e006a0.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e006a1.lid,/var/lib/phosphor-software-manager/hostfw/running/81e006a1.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e006a2.lid,/var/lib/phosphor-software-manager/hostfw/running/81e006a2.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e006a3.lid,/var/lib/phosphor-software-manager/hostfw/running/81e006a3.lid",
+        "file_traits": 1
+    },
+    {
+        "path": "/usr/local/share/hostfw/running/81e006a4.lid,/var/lib/phosphor-software-manager/hostfw/running/81e006a4.lid",
         "file_traits": 1
     }
 ]
