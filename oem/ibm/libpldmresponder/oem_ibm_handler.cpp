@@ -8,6 +8,8 @@
 #include <libpldm/entity_oem_ibm.h>
 #include <libpldm/pldm.h>
 
+PHOSPHOR_LOG2_USING;
+
 using namespace pldm::pdr;
 using namespace pldm::utils;
 
@@ -164,8 +166,10 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
         reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
     if (!pdr)
     {
-        std::cerr << "Failed to get record by PDR type, ERROR:"
-                  << PLDM_PLATFORM_INVALID_EFFECTER_ID << std::endl;
+        auto errCode = PLDM_PLATFORM_INVALID_EFFECTER_ID;
+        error("Failed to get record by PDR type, ERROR:{ERR_CODE}", "ERR_CODE",
+              lg2::hex, (int)errCode);
+
         return;
     }
     pdr->hdr.record_handle = 0;
@@ -215,8 +219,10 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
         reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
     if (!pdr)
     {
-        std::cerr << "Failed to get record by PDR type, ERROR:"
-                  << PLDM_PLATFORM_INVALID_SENSOR_ID << std::endl;
+        auto errCode = PLDM_PLATFORM_INVALID_SENSOR_ID;
+        error("Failed to get record by PDR type, ERROR:{ERR_CODE}", "ERR_CODE",
+              lg2::hex, (int)errCode);
+
         return;
     }
     pdr->hdr.record_handle = 0;
@@ -316,10 +322,9 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
                 response, respMsgLen, &completionCode, &status);
             if (rc || completionCode)
             {
-                std::cerr << "Failed to decode_platform_event_message_resp: "
-                          << " for code update event rc=" << rc
-                          << ", cc=" << static_cast<unsigned>(completionCode)
-                          << std::endl;
+               error(
+                "Failed to decode_platform_event_message_resp: for code update event rc={RC}, cc={CC}",
+                "RC", rc, "CC", unsigned(completionCode));
             }
         };
     auto rc = handler->registerRequest(
@@ -328,7 +333,7 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         std::move(oemPlatformEventMessageResponseHandler));
     if (rc)
     {
-        std::cerr << "Failed to send BIOS attribute change event message \n";
+        error("Failed to send BIOS attribute change event message ");
     }
 
     return rc;
@@ -373,16 +378,14 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
                              instanceId);
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Failed to encode state sensor event, rc = " << rc
-                  << std::endl;
+        error("Failed to encode state sensor event, rc = {RC}", "RC", rc);
         requester.markFree(mctp_eid, instanceId);
         return;
     }
     rc = sendEventToHost(requestMsg, instanceId);
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "Failed to send event to host: "
-                  << "rc=" << rc << std::endl;
+        error("Failed to send event to host: rc={RC}", "RC", rc);
     }
     return;
 }
@@ -410,7 +413,7 @@ void pldm::responder::oem_ibm_platform::Handler::_processStartUpdate(
     auto rc = codeUpdate->setRequestedApplyTime();
     if (rc != PLDM_SUCCESS)
     {
-        std::cerr << "setRequestedApplyTime failed \n";
+        error("setRequestedApplyTime failed");
         state = CodeUpdateState::FAIL;
     }
     auto sensorId = codeUpdate->getFirmwareUpdateSensor();
@@ -432,9 +435,9 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Chassis State transition to Off failed,"
-                  << "unable to set property RequestedPowerTransition"
-                  << "ERROR=" << e.what() << "\n";
+        error(
+            "Chassis State transition to Off failed, unable to set property RequestedPowerTransition ERROR={ERR_EXCEP}",
+            "ERR_EXCEP", e.what());
     }
 
     using namespace sdbusplus::bus::match::rules;
@@ -467,9 +470,9 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                     }
                     catch (const std::exception& e)
                     {
-                        std::cerr << "Setting one-time restore policy failed,"
-                                  << "unable to set property PowerRestorePolicy"
-                                  << "ERROR=" << e.what() << "\n";
+                        error(
+                            "Setting one-time restore policy failed, unable to set property PowerRestorePolicy ERROR={ERR_EXCEP}",
+                            "ERR_EXCEP", e.what());
                     }
                     dbusMapping = pldm::utils::DBusMapping{
                         "/xyz/openbmc_project/state/bmc0",
@@ -482,10 +485,9 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                     }
                     catch (const std::exception& e)
                     {
-                        std::cerr << "BMC state transition to reboot failed,"
-                                  << "unable to set property "
-                                     "RequestedBMCTransition"
-                                  << "ERROR=" << e.what() << "\n";
+                        error(
+                            "BMC state transition to reboot failed, unable to set property RequestedBMCTransition ERROR={ERR_EXCEP}",
+                            "ERR_EXCEP", e.what());
                     }
                 }
             }
@@ -547,8 +549,9 @@ void pldm::responder::oem_ibm_platform::Handler::resetWatchDogTimer()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed To reset watchdog timer"
-                  << "ERROR=" << e.what() << std::endl;
+        error("Failed To reset watchdog timer ERROR={ERR_EXCEP}", "ERR_EXCEP",
+              e.what());
+
         return;
     }
 }
@@ -571,8 +574,8 @@ void pldm::responder::oem_ibm_platform::Handler::disableWatchDogTimer()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed To disable watchdog timer"
-                  << "ERROR=" << e.what() << "\n";
+        error("Failed To disable watchdog timer ERROR={ERR_EXCEP}", "ERR_EXCEP",
+              e.what());
     }
 }
 int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
@@ -587,14 +590,14 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
         if (std::get<std::string>(propertyValue) ==
             "xyz.openbmc_project.State.BMC.BMCState.NotReady")
         {
-            std::cerr << "GetPDR : PLDM stack is not ready for PDR exchange"
-                      << std::endl;
+            error("GetPDR : PLDM stack is not ready for PDR exchange");
+
             return PLDM_ERROR_NOT_READY;
         }
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Error getting the current BMC state" << std::endl;
+        error("Error getting the current BMC state");
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;

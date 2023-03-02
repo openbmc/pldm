@@ -2,6 +2,8 @@
 
 #include "pldm_cmd_helper.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #ifdef OEM_IBM
 #include <libpldm/fru_oem_ibm.h>
 #endif
@@ -10,6 +12,8 @@
 
 #include <functional>
 #include <tuple>
+
+PHOSPHOR_LOG2_USING;
 
 namespace pldmtool
 {
@@ -63,8 +67,9 @@ class GetFruRecordTableMetadata : public CommandInterface
             &total_record_set_identifiers, &total_table_records, &checksum);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            error("Response Message Error: rc = {RC}, cc={CC}", "RC", rc, "CC",
+                  (int)cc);
+
             return;
         }
         ordered_json output;
@@ -382,8 +387,8 @@ class GetFRURecordByOption : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            error("Response Message Error: rc = {RC}, cc={CC}", "RC", rc, "CC",
+                  (int)cc);
             return;
         }
 
@@ -434,8 +439,9 @@ class GetFruRecordTable : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            error("Response Message Error: rc = {RC}, cc={CC}", "RC", rc, "CC",
+                  (int)cc);
+
             return;
         }
 

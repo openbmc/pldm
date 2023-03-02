@@ -21,6 +21,8 @@
 #include <iostream>
 #include <vector>
 
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 namespace responder
@@ -116,7 +118,8 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
     int file = open(path.string().c_str(), flags);
     if (file == -1)
     {
-        std::cerr << "File does not exist, path = " << path.string() << "\n";
+        error("File does not exist, path = {FILE_PATH}", "FILE_PATH",
+              path.string());
         encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
                                    responsePtr);
         return response;
