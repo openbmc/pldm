@@ -12,11 +12,12 @@ foreach t : tests
                      link_args: dynamic_linker,
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
                      dependencies: [
-                         common_test_src,
+		         common_test_src,
                          gtest,
                          libpldm_dep,
-                         nlohmann_json,
+			 nlohmann_json,
                          phosphor_dbus_interfaces,
+                         phosphor_logging_dep,
                          libpldmutils,
                          sdbusplus]),
        workdir: meson.current_source_dir())
