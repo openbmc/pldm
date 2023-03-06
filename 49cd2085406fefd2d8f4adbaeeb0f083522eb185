@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa403b5e_2ca3a3ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-06T10:14:22Z",
+      "side": 1,
+      "message": "nit : Having PLDM here does not add more value. The commit is being pushed into openbmc/pldm.\n\nThe idea behind using keywords is to easily differentiate and help reviewers and maintainers to know if its an ibm oem fix vs a general fix.",
+      "parentUuid": "fbee4aa0_cde4d0ed",
+      "revId": "49cd2085406fefd2d8f4adbaeeb0f083522eb185",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d4e58de_6204540a",
         "filename": "libpldmresponder/bios_enum_attribute.cpp",
         "patchSetId": 1
