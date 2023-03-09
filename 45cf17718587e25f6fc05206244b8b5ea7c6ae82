@@ -100,6 +100,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e4b14e4_ed44fa81",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "I am also confused if these are mixed up in this file. Please check",
+      "parentUuid": "eb728be0_6c70c499",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 51
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18ee9692_eb91926a",
         "filename": "pldmtool/pldm_bios_cmd.cpp",
         "patchSetId": 1
@@ -111,6 +135,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "error not info",
+      "range": {
+        "startLine": 370,
+        "startChar": 16,
+        "endLine": 370,
+        "endChar": 20
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "187a8ddd_af867f62",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "+1 . This should have been std::cerr in the original file also",
+      "parentUuid": "18ee9692_eb91926a",
       "range": {
         "startLine": 370,
         "startChar": 16,
@@ -146,6 +194,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3145677_f3082b8a",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "+1. s original file should have been std::cerr",
+      "parentUuid": "d55901c9_312f0436",
+      "range": {
+        "startLine": 445,
+        "startChar": 16,
+        "endLine": 445,
+        "endChar": 20
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd24dcee_24eba093",
         "filename": "pldmtool/pldm_bios_cmd.cpp",
         "patchSetId": 1
@@ -157,6 +229,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "This would be an error, not an info log",
+      "range": {
+        "startLine": 696,
+        "startChar": 12,
+        "endLine": 696,
+        "endChar": 16
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4794caff_66665c19",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "+1 . u can make lines similar to this alert also",
+      "parentUuid": "bd24dcee_24eba093",
       "range": {
         "startLine": 696,
         "startChar": 12,
@@ -192,6 +288,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3967c0e7_43004349",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "+1 or alert",
+      "parentUuid": "170b6a82_ff669e92",
+      "range": {
+        "startLine": 792,
+        "startChar": 12,
+        "endLine": 792,
+        "endChar": 16
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d97b6f4_554f1c78",
         "filename": "pldmtool/pldm_bios_cmd.cpp",
         "patchSetId": 1
@@ -203,6 +323,24 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "error",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aa670d6_1169570d",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "+1 or alert",
+      "parentUuid": "7d97b6f4_554f1c78",
       "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -375,6 +513,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "this would be an error",
+      "range": {
+        "startLine": 767,
+        "startChar": 12,
+        "endLine": 767,
+        "endChar": 17
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61966d79_aa4d2b60",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "+1 or alert",
+      "parentUuid": "a2ae1686_c0fbc032",
       "range": {
         "startLine": 767,
         "startChar": 12,

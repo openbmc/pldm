@@ -1,0 +1,633 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "453e6334_809d2034",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove this empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17578296_4101a13b",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c20631b_e3fe7d01",
+        "filename": "fw-update/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove tabs here . run clang on this file",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb39048_c319936e",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2b99354_f9ee05a8",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81581d5d_959568aa",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a11ca30b_cc08e36f",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cd80f7_c66f276d",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line not required here",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cb37e02_75b71061",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7f4265f_dc59c9de",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3593abb_b01d3910",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb0d719d_fa88671d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9352e1c3_849ff9dd",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90a801d5_50f2ded1",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f364959_8be11bac",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7592d3a0_2c9aaa0b",
+        "filename": "host-bmc/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove tabs",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2185d60_4e60e2e1",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a75dd417_ff0479e5",
+        "filename": "libpldmresponder/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove tabs",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1deaf3a_ae2925ff",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbadc6fa_e319f2a3",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "this should be info . See base file this line is std::cout NOT std::cerr",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277e84a7_c8d2ff3c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22209735_5c9f6052",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "050e884b_da6ba8f2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "this should be error ? original file has std::cerr",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1498d264_25d85631",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "why is this info?",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6465476e_4ee62285",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f051ddb_f1d4296e",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove this empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59280b86_98392e0c",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove this empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb49d278_832abe9c",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d11a25b_dc73fc35",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d116d18_d7ba78cb",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd8616f6_c9581741",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1734f058_ddab3b44",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "658cc416_678b5d7c",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e618d5e4_874b6612",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b49a614a_3cd7e6cf",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1150,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b00203f5_35a09e9e",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fcbcacd_2591ad5a",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-03-09T08:21:01Z",
+      "side": 1,
+      "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
