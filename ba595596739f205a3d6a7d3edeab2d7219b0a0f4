@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6a5ff58_0e640f51",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "can you add one example for how previously traces looks and after migrating to LG2 how traces looks?",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 12
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "453e6334_809d2034",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 5
@@ -122,6 +145,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c543cd0a_625c9ee9",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "this is error trace inside exception block",
+      "range": {
+        "startLine": 198,
+        "startChar": 24,
+        "endLine": 198,
+        "endChar": 27
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6cd80f7_c66f276d",
         "filename": "host-bmc/dbus_to_host_effecters.cpp",
         "patchSetId": 5
@@ -224,6 +270,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d64ddb75_a1bfad33",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "this is info trace but logging as error trace.",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 8
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "90a801d5_50f2ded1",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
@@ -275,6 +344,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dca5f11b_b4b2fafc",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af96b5d3_5def08bc",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2185d60_4e60e2e1",
         "filename": "libpldmresponder/event_parser.cpp",
         "patchSetId": 5
@@ -286,6 +401,74 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "660761a7_99df1e57",
+        "filename": "libpldmresponder/pdr_numeric_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abcb30f6_bf0ee388",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d28b4a6d_f1f84d60",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "080e3364_4d18ae76",
+        "filename": "libpldmresponder/platform_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-03-10T06:02:51Z",
+      "side": 1,
+      "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
