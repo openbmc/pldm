@@ -58,6 +58,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72e83358_d61ee505",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "In general please re-check on the inclusions of \"\"#include \u003cphosphor-logging/lg2.hpp\u003e\"\" as it is not required to be added in all places (Through chain inclusions it will get included automatically).",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "453e6334_809d2034",
@@ -327,6 +344,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89da0d86_2cd5d8f0",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "d64ddb75_a1bfad33",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 8
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "90a801d5_50f2ded1",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
@@ -401,6 +442,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a32c9af_ec0ecd83",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "No need to add it here as that might have included already with existing includes",
+      "parentUuid": "dca5f11b_b4b2fafc",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af96b5d3_5def08bc",
         "filename": "libpldmresponder/bios_config.hpp",
         "patchSetId": 5
@@ -418,6 +483,47 @@
         "endLine": 16,
         "endChar": 14
       },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4eabc67_037c8d29",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "That header file is already being included with \"requester/handler.hpp\" so no need to add it in this file",
+      "parentUuid": "af96b5d3_5def08bc",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f89f60_1e1d4bae",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "If you could have included this file at \"commom/utils/hpp\" we could have avoided unwanted inclusions in other files including this line.\n\nIts always a best practice to limit the unwanted header file inclusions by adding in common places.",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -458,6 +564,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d14a6995_0efefa47",
+        "filename": "libpldmresponder/pdr_numeric_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "Not needed to have circular inclusions of header file",
+      "parentUuid": "660761a7_99df1e57",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "abcb30f6_bf0ee388",
         "filename": "libpldmresponder/pdr_state_effecter.hpp",
         "patchSetId": 5
@@ -469,6 +593,24 @@
       "writtenOn": "2023-03-10T06:02:51Z",
       "side": 1,
       "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d7c0e35_d34feb69",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "Not needed here",
+      "parentUuid": "abcb30f6_bf0ee388",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -492,6 +634,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5848ce2c_cad3d484",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "Not needed here",
+      "parentUuid": "d28b4a6d_f1f84d60",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "080e3364_4d18ae76",
         "filename": "libpldmresponder/platform_state_effecter.hpp",
         "patchSetId": 5
@@ -503,6 +663,24 @@
       "writtenOn": "2023-03-10T06:02:51Z",
       "side": 1,
       "message": "#include \u003cphosphor-logging/lg2.hpp\u003e\nfile is not included, is it fine?",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b8e8694_22ca7d73",
+        "filename": "libpldmresponder/platform_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-03-13T04:28:13Z",
+      "side": 1,
+      "message": "Not needed here",
+      "parentUuid": "080e3364_4d18ae76",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
