@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60a14ff4_8c8a2e0d",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 13
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-03-13T17:07:08Z",
+      "side": 1,
+      "message": "i\u0027m going to have to change this dbus object to ps0_input_voltage_rating",
+      "range": {
+        "startLine": 208,
+        "startChar": 69,
+        "endLine": 208,
+        "endChar": 95
+      },
+      "revId": "b3a93128ed4a01aeb641773dea3d3ee789c5a599",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
