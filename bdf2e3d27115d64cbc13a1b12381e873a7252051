@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e81640b2_29520be8",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-13T11:23:52Z",
+      "side": 1,
+      "message": "For those platforms which are not dependent, the sysType variable will not be populated and will work as is today.",
+      "parentUuid": "dc469c14_0696144c",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93cd236d_8c869149",
         "filename": "libpldmresponder/bios_config.hpp",
         "patchSetId": 41
@@ -82,6 +100,24 @@
       "writtenOn": "2023-03-02T11:27:32Z",
       "side": 1,
       "message": "Can multiple platform names be present?",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c7c6a99_b8e55f7c",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-13T11:23:52Z",
+      "side": 1,
+      "message": "No, multiple names cannot be present, there can be other/additional information which aren\u0027t required",
+      "parentUuid": "10c5fd32_84a3854d",
       "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -133,6 +169,24 @@
       "writtenOn": "2023-03-02T11:27:32Z",
       "side": 1,
       "message": "I don\u0027t see the interface upstreamed yet. (https://github.com/openbmc/phosphor-dbus-interfaces/tree/master/yaml/xyz/openbmc_project). Even though the code is in oem/ibm, please discuss with community if this is an acceptable pratice. Are there any challenges upstreaming?",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e9c86a4_a733a66a",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-03-13T11:23:52Z",
+      "side": 1,
+      "message": "@tom yes upstreaming this interface is the ideal way of doing this.\nHowever, I did bring this up with the community https://discord.com/channels/775381525260664832/775381525260664836/991309799100776460. \n\nSo, xyz.openbmc_project.Configuration.IBMCompatibleSystem is already used in quite a few apps in openbmc like phosphor-led-manager, phosphor-power, phosphor-fan-presence, phosphor-logging  etc. so it would be a bigger effort to change those apps as well, which we are not yet ready to take up.",
+      "parentUuid": "637f7c48_5a5b97b3",
       "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
