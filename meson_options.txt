@@ -1,6 +1,7 @@
 option('tests', type: 'feature', description: 'Build tests', value: 'enabled')
 option('oe-sdk', type: 'feature', description: 'Enable OE SDK')
 option('oem-ibm', type: 'feature', description: 'Enable IBM OEM PLDM')
+option('oem-ampere', type: 'feature', description: 'Enable AMPERE OEM PLDM')
 option('utilities', type: 'feature', description: 'Enable debug utilities', value: 'enabled')
 option('libpldmresponder', type: 'feature', description: 'Enable libpldmresponder', value: 'enabled')
 
@@ -32,3 +33,7 @@ option('flightrecorder-max-entries', type:'integer',min:0, max:30, description: 
 option('sensor-polling-time', type: 'integer', min: 1, max: 4294967295, description: 'The interval time of sensor polling in seconds', value: 1)
 option('platform-event-msg-polling-time', type: 'integer', min: 1, max: 4294967295, description: 'The interval time of event data polling in milliseconds', value: 10)
 option('platform-event-msg-polling-critical-event-time', type: 'integer', min: 40, max: 4294967295, description: 'The interval time of critical event polling in milliseconds', value: 40)
+
+# oem-ampere configuration parameters
+option('cper-log-path', type : 'string', value : '/var/lib/faultlogs/cper/', description : 'File system path containing CPER logs')
+option('crashdump-log-path', type : 'string', value : '/var/lib/faultlogs/crashdump/', description : 'File system path containing CrashDump logs')

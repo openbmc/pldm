@@ -11,6 +11,12 @@
 #include "sensor_manager.hpp"
 #include "terminus_manager.hpp"
 
+#ifdef OEM_AMPERE
+#include "oem/ampere/platform-mc/ampere_event_manager.hpp"
+#else
+#include "event_manager.hpp"
+#endif
+
 namespace pldm
 {
 namespace platform_mc
@@ -78,7 +84,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     TerminusManager terminusManager;
     PlatformManager platformManager;
     SensorManager sensorManager;
+#ifdef OEM_AMPERE
+    OemEventManager eventManager;
+#else
     EventManager eventManager;
+#endif
 };
 } // namespace platform_mc
 } // namespace pldm

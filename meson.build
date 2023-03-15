@@ -53,6 +53,12 @@ if get_option('oem-ibm').enabled()
   add_project_arguments('-DOEM_IBM', language : 'c')
   add_project_arguments('-DOEM_IBM', language : 'cpp')
 endif
+if get_option('oem-ampere').enabled()
+  add_project_arguments('-DOEM_AMPERE', language : 'c')
+  add_project_arguments('-DOEM_AMPERE', language : 'cpp')
+  conf_data.set_quoted('CPER_LOG_PATH', get_option('cper-log-path'))
+  conf_data.set_quoted('CRASHDUMP_LOG_PATH', get_option('crashdump-log-path'))
+endif
 conf_data.set('NUMBER_OF_REQUEST_RETRIES', get_option('number-of-request-retries'))
 conf_data.set('INSTANCE_ID_EXPIRATION_INTERVAL',get_option('instance-id-expiration-interval'))
 conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
@@ -175,8 +181,9 @@ deps += [
 ]
 endif
 
-executable(
-  'pldmd',
+libpldm_headers = ['.', './oem/ibm', './oem/ampere',]
+
+sources = [
   'pldmd/pldmd.cpp',
   'pldmd/dbus_impl_requester.cpp',
   'pldmd/instance_id.cpp',
@@ -196,7 +203,26 @@ executable(
   'platform-mc/numeric_effecter_dbus.cpp',
   'platform-mc/event_manager.cpp',
   'requester/mctp_endpoint_discovery.cpp',
+]
+
+if get_option('oem-ibm').enabled()
+sources += [
+    'oem/ibm/pldm_oem_ibm.cpp',
+  ]
+endif
+
+if get_option('oem-ampere').enabled()
+  sources += [
+    'oem/ampere/platform-mc/cper.cpp',
+    'oem/ampere/platform-mc/ampere_event_manager.cpp',
+  ]
+endif
+
+executable(
+  'pldmd',
+  sources,
   implicit_include_directories: false,
+  include_directories: include_directories(libpldm_headers),
   dependencies: deps,
   install: true,
   install_dir: get_option('bindir'))
