@@ -75,6 +75,46 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78189c47_468daa74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "There are lot of places where , we have additional new lines added, where the logging header is not included e.t.c please fix them in all of the places.",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b7f4670_19110921",
+        "filename": "common/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "why do you need phosphor-logging dependency for tests ? I dont think tests use any sort of logging ? its just PASS or FAIL.",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "453e6334_809d2034",
@@ -88,6 +128,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove this empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e53f4835_b29cd225",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "453e6334_809d2034",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -122,6 +180,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove tabs here . run clang on this file",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1021a82_a2b24e56",
+        "filename": "fw-update/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "we dont need phosphor-logging-dep for tests, please remove this change.",
+      "parentUuid": "6c20631b_e3fe7d01",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -196,6 +272,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8a352d4_6ef0e7ce",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a11ca30b_cc08e36f",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c543cd0a_625c9ee9",
         "filename": "host-bmc/dbus_to_host_effecters.cpp",
         "patchSetId": 5
@@ -207,6 +301,30 @@
       "writtenOn": "2023-03-10T06:02:51Z",
       "side": 1,
       "message": "this is error trace inside exception block",
+      "range": {
+        "startLine": 198,
+        "startChar": 24,
+        "endLine": 198,
+        "endChar": 27
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a852b87_70330fe3",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "this is an error too.",
+      "parentUuid": "c543cd0a_625c9ee9",
       "range": {
         "startLine": 198,
         "startChar": 24,
@@ -281,6 +399,47 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf58805b_5728ce4e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "+1, please remove all empty lines in all the files.",
+      "parentUuid": "c3593abb_b01d3910",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d92f46de_c45602fb",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "This does not seem to be an exact migration ? why did we add nextRecordHandle ?",
+      "range": {
+        "startLine": 437,
+        "startChar": 7,
+        "endLine": 440,
+        "endChar": 42
+      },
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -385,6 +544,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77ef1d8c_3853ccf6",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "why sensor id is added ?",
+      "range": {
+        "startLine": 773,
+        "startChar": 0,
+        "endLine": 773,
+        "endChar": 28
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa1a7050_4e7e7ae8",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "here as well",
+      "range": {
+        "startLine": 783,
+        "startChar": 25,
+        "endLine": 786,
+        "endChar": 55
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76567e54_8b525696",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "here as well",
+      "range": {
+        "startLine": 805,
+        "startChar": 0,
+        "endLine": 807,
+        "endChar": 47
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f364959_8be11bac",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 5
@@ -413,6 +641,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove tabs",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea3245ee_ae04efd0",
+        "filename": "host-bmc/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "same comment here too..logging not needed for test.",
+      "parentUuid": "7592d3a0_2c9aaa0b",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -466,6 +712,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2cf9ae66_6c89cf08",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "same comment here too. include what you use, dont rely on other headers.",
+      "parentUuid": "2a32c9af_ec0ecd83",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af96b5d3_5def08bc",
         "filename": "libpldmresponder/bios_config.hpp",
         "patchSetId": 5
@@ -501,6 +771,30 @@
       "side": 1,
       "message": "That header file is already being included with \"requester/handler.hpp\" so no need to add it in this file",
       "parentUuid": "af96b5d3_5def08bc",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82295e1b_504ce0e7",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "NO, this is not the right way @jay.\n\nalways include what you use. Dont rely on this to be provided by a different header file. If that header file is removed, then this will break.",
+      "parentUuid": "b4eabc67_037c8d29",
       "range": {
         "startLine": 16,
         "startChar": 0,
@@ -611,6 +905,29 @@
       "side": 1,
       "message": "Not needed here",
       "parentUuid": "abcb30f6_bf0ee388",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d16e3250_1b8a533b",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:47:31Z",
+      "side": 1,
+      "message": "do we need a type cast here ?",
+      "range": {
+        "startLine": 158,
+        "startChar": 35,
+        "endLine": 158,
+        "endChar": 46
+      },
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
