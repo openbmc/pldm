@@ -42,9 +42,23 @@ class OemEventManager : public pldm::platform_mc::EventManager
         sdeventplus::Event& event, TerminusManager& terminusManager,
         std::map<tid_t, std::shared_ptr<Terminus>>& termini);
 
+    /** @brief Adds eventID to overflow event polling queue
+     *  @param[in] tid: Terminus tid
+     *  @param[in] eventId: Event id
+     *  @return None
+     */
+    int enqueueOverflowEvent(uint8_t tid, uint16_t eventId);
+
+    /** @brief polling all events in each terminus
+     */
+    int feedCriticalEventCb();
+
   private:
     int pldmPollForEventMessage(uint8_t TID, uint8_t eventClass,
                                 uint16_t eventID, std::vector<uint8_t> data);
+    void handleNumericSensorEventSignal();
+    /** @brief critical eventID queue */
+    std::deque<std::pair<uint8_t, uint16_t>> overflowEventQueue;
 };
 
 } // namespace platform_mc
