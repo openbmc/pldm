@@ -232,6 +232,10 @@ void OemEventManager::handleNumericSensorEventSignal()
                 uint8_t preEventState{};
                 uint8_t sensorDataSize{};
                 uint32_t presentReading{};
+                uint8_t byte3, byte2, byte1, byte0;
+                std::string description;
+                bool failFlg = false;
+                std::stringstream strStream;
                 /*
                  * Read the information of event
                  */
@@ -243,6 +247,123 @@ void OemEventManager::handleNumericSensorEventSignal()
                     // add the priority
                     std::cerr << "Overflow: " << sensorId << "\n";
                     this->enqueueOverflowEvent(tid, sensorId);
+                }
+                /*
+                 * Handle Overall sensor
+                 */
+                else if (sensorId == 175)
+                {
+                    byte3 = (presentReading & 0x000000ff);
+                    byte2 = (presentReading & 0x0000ff00) >> 8;
+                    byte1 = (presentReading & 0x00ff0000) >> 16;
+                    byte0 = (presentReading & 0xff000000) >> 24;
+
+                    /*
+                     * Handle SECpro, Mpro, ATF BL1, ATF BL2, ATF BL31,
+                     * ATF BL32 and DDR initialization
+                     */
+                    if (numericNormalSensorDesTbl.find(byte3) !=
+                        numericNormalSensorDesTbl.end())
+                    {
+                        // Sensor report action is fail
+                        if (0x81 == byte2)
+                        {
+                            description +=
+                                numericNormalSensorDesTbl[byte3].failStt;
+                            failFlg = true;
+                        }
+                        else
+                        {
+                            // Sensor report action is complete
+                            if (0x01 == byte0)
+                            {
+                                description += numericNormalSensorDesTbl[byte3]
+                                                   .completedStt;
+                            }
+                            else // Action is running
+                            {
+                                description +=
+                                    numericNormalSensorDesTbl[byte3].firstStt;
+                            }
+                        }
+                    }
+
+                    // DDR trainning progress
+                    if (0x95 == byte3)
+                    {
+                        // Report Started DDR training
+                        if (0x00 == byte0)
+                        {
+                            description += "DDR training progress started";
+                        }
+                        // Report Completed DDR training
+                        else if (0x02 == byte0)
+                        {
+                            description += "DDR training progress completed";
+                        }
+                        // Report DDR training is progress
+                        else if (0x01 == byte0)
+                        {
+                            description += "DDR training in-progress " +
+                                           std::to_string(byte1) + "%";
+                        }
+                    }
+
+                    // Handle DDR training fail
+                    if ((0x96 == byte3) || (0x99 == byte3))
+                    {
+                        // The index of failed DIMMs are 0xbyte2.byte1.byte0
+                        uint32_t failDimmIdx = (uint32_t)byte0 |
+                                               ((uint32_t)byte1 << 8) |
+                                               ((uint32_t)byte2 << 16);
+                        failFlg = true;
+
+                        description +=
+                            (0x96 == byte3) ? "Socket 0:" : "Socket 1:";
+
+                        description += " Training progress failed at DIMMs:";
+
+                        for (uint32_t idx = 0; idx < 24; idx++)
+                        {
+                            if (failDimmIdx & ((uint32_t)1 << idx))
+                            {
+                                description += " #" + std::to_string(idx);
+                            }
+                        }
+                    }
+
+                    // Handle UEFI state reports
+                    if (byte3 <= 0x7f)
+                    {
+                        description = "ATF BL33 (UEFI) booting status = 0x";
+
+                        strStream
+                            << std::setfill('0') << std::hex
+                            << std::setw(sizeof(uint32_t) * 2) << presentReading
+                            << ", Status Class (0x"
+                            << std::setw(sizeof(uint8_t) * 2) << (uint32_t)byte3
+                            << "), Status SubClass (0x" << (uint32_t)byte2
+                            << "), Operation Code (0x"
+                            << std::setw(sizeof(uint16_t) * 2)
+                            << (uint32_t)((presentReading & 0xffff0000) >> 16)
+                            << ")" << std::dec;
+
+                        description += strStream.str();
+                    }
+                    // Log to Redfish event
+                    if (!description.empty())
+                    {
+                        std::string REDFISH_MESSAGE_ID =
+                            (true == failFlg)
+                                ? "OpenBMC.0.1.BIOSFirmwarePanicReason.Warning"
+                                : "OpenBMC.0.1.AmpereEvent.OK";
+
+                        sd_journal_send("MESSAGE=%s", description.c_str(),
+                                        "REDFISH_MESSAGE_ID=%s",
+                                        REDFISH_MESSAGE_ID.c_str(),
+                                        "REDFISH_MESSAGE_ARGS=%s",
+                                        description.c_str(), NULL);
+                    }
                 }
             }
             catch (const std::exception& e)

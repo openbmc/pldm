@@ -30,6 +30,26 @@ namespace platform_mc
 
 class OemEventManager : public pldm::platform_mc::EventManager
 {
+    typedef struct
+    {
+        std::string firstStt;
+        std::string completedStt;
+        std::string failStt;
+    } sensorDescription;
+
+    std::unordered_map<uint8_t, sensorDescription> numericNormalSensorDesTbl = {
+        {0x90, {"SECpro booting", "SECpro completed", "SECpro boot failed"}},
+        {0x91, {"Mpro booting", "Mpro completed", "Mpro boot failed"}},
+        {0x92, {"ATF BL1 booting", "ATF BL1 completed", "ATF BL1 boot failed"}},
+        {0x93, {"ATF BL2 booting", "ATF BL2 completed", "ATF BL2 boot failed"}},
+        {0x94,
+         {"DDR initialization started", "DDR initialization completed",
+          "DDR initialization failed"}},
+        {0x97,
+         {"ATF BL31 booting", "ATF BL31 completed", "ATF BL31 boot failed"}},
+        {0x98,
+         {"ATF BL32 booting", "ATF BL32 completed", "ATF BL32 boot failed"}}};
+
   public:
     OemEventManager() = delete;
     OemEventManager(const OemEventManager&) = delete;
