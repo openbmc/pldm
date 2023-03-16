@@ -92,6 +92,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5be1f80_5e043ac4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-16T09:49:23Z",
+      "side": 1,
+      "message": "This commit also need another change that would add phosphor-logging as dependency for pldm package to be build in the pldm recipe file https://github.com/openbmc/openbmc/blob/master/meta-phosphor/recipes-phosphor/pldm/pldm_git.bb#L3\n\nWithout that change, merging this change would break the full image builds.",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b7f4670_19110921",
