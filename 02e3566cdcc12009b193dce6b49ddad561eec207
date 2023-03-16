@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f5bdc05_ab33f9e8",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 17
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-03-16T22:04:43Z",
+      "side": 1,
+      "message": "is it too late to update attribute_name?\n\nIt would be good to update helpText and displayName to mention Present at least.",
+      "revId": "02e3566cdcc12009b193dce6b49ddad561eec207",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
