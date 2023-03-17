@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9a16ab4_c9259544",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 17
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1001035
+      },
+      "writtenOn": "2023-03-17T13:47:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f5bdc05_ab33f9e8",
+      "revId": "02e3566cdcc12009b193dce6b49ddad561eec207",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5c8c2a0_c00b04ae",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-03-16T22:21:29Z",
       "side": 1,
       "message": "nit: input power voltage are 2 different things in this context (input power, input voltage).  I\u0027d recommend just saying \"Specifies power supply 0 input voltage (volts)\" if you\u0027re making other changes.",
+      "revId": "02e3566cdcc12009b193dce6b49ddad561eec207",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d596bfbf_955da164",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 17
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1001035
+      },
+      "writtenOn": "2023-03-17T13:47:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5c8c2a0_c00b04ae",
       "revId": "02e3566cdcc12009b193dce6b49ddad561eec207",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
