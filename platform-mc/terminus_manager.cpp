@@ -177,6 +177,51 @@ requester::Coroutine TerminusManager::discoverMctpTerminusTask()
     co_return PLDM_SUCCESS;
 }
 
+requester::Coroutine TerminusManager::setEventReceiver(uint8_t eid)
+{
+    std::cerr << "Discovery Terminus: " << unsigned(eid)
+              << " get set Event Receiver." << std::endl;
+    uint8_t eventMessageGlobalEnable =
+        PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
+    uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
+    uint8_t eventReceiverAddressInfo = BMC_EVENT_RECEIVER_ID;
+    uint16_t heartbeatTimer = 0x78;
+
+    auto instanceId = requester.getInstanceId(eid);
+    Request request(sizeof(pldm_msg_hdr) + PLDM_SET_EVENT_RECEIVER_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    auto rc = encode_set_event_receiver_req(
+        instanceId, eventMessageGlobalEnable, transportProtocolType,
+        eventReceiverAddressInfo, heartbeatTimer, requestMsg);
+    if (rc != PLDM_SUCCESS)
+    {
+        requester.markFree(eid, instanceId);
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+    rc = co_await SendRecvPldmMsgOverMctp(eid, request, &responseMsg,
+                                          &responseLen);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    uint8_t completionCode = 0;
+
+    rc = decode_set_event_receiver_resp(responseMsg, responseLen,
+                                        &completionCode);
+
+    if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+    {
+        co_return rc;
+    }
+
+    co_return completionCode;
+}
+
 requester::Coroutine TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
 {
     mctp_eid_t eid = std::get<0>(mctpInfo);
@@ -216,6 +261,13 @@ requester::Coroutine TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     {
         std::cerr << "failed to get PLDM Types\n";
         co_return PLDM_ERROR;
+    }
+
+    rc = co_await setEventReceiver(eid);
+    if (rc != PLDM_SUCCESS && rc != PLDM_ERROR_UNSUPPORTED_PLDM_CMD)
+    {
+        std::cerr << "Failed to setEventReceiver, rc=" << unsigned(rc)
+                  << std::endl;
     }
 
     termini[tid] = std::make_shared<Terminus>(tid, supportedTypes);

@@ -135,6 +135,8 @@ class TerminusManager
      */
     requester::Coroutine getPLDMTypes(tid_t tid, uint64_t& supportedTypes);
 
+    requester::Coroutine setEventReceiver(uint8_t eid);
+
     sdeventplus::Event& event;
     RequesterHandler& handler;
     dbus_api::Requester& requester;
