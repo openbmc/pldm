@@ -226,6 +226,15 @@ class TerminusManager
                                     ver32_t version,
                                     bitfield8_t* supportedCmds);
 
+    /** @brief Send SetDateTime command to destination TID to set the current
+     *         date time for terminus.
+     *
+     *  @param[in] tid - Destination TID
+     *
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> setDateTime(pldm_tid_t tid);
+
     /** @brief Reference to a Handler object that manages the request/response
      *         logic.
      */

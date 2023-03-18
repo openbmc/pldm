@@ -1,5 +1,6 @@
 #include "terminus_manager.hpp"
 
+#include "common/utils.hpp"
 #include "manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -387,6 +388,17 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     }
     termini[tid]->setSupportedCommands(pldmCmds);
 
+    if (termini[tid]->doesSupportCommand(PLDM_PLATFORM, PLDM_SET_DATE_TIME))
+    {
+        rc = co_await setDateTime(tid);
+        if (rc != PLDM_SUCCESS)
+        {
+            lg2::error(
+                "Failed to set Date Time for terminus {TID}, error {ERROR}",
+                "TID", tid, "ERROR", rc);
+        }
+    }
+
     co_return PLDM_SUCCESS;
 }
 
@@ -594,6 +606,97 @@ exec::task<int> TerminusManager::getPLDMCommands(
             "TID", tid, "CC", completionCode);
         co_return rc;
     }
+
+    co_return completionCode;
+}
+
+exec::task<int> TerminusManager::setDateTime(pldm_tid_t tid)
+{
+    uint8_t seconds = 0;
+    uint8_t minutes = 0;
+    uint8_t hours = 0;
+    uint8_t day = 0;
+    uint8_t month = 0;
+    uint16_t year = 0;
+    constexpr auto timeInterface = "xyz.openbmc_project.Time.EpochTime";
+    constexpr auto bmcTimePath = "/xyz/openbmc_project/time/bmc";
+    uint64_t timeUsec;
+
+    try
+    {
+        timeUsec = pldm::utils::DBusHandler().getDbusProperty<uint64_t>(
+            bmcTimePath, "Elapsed", timeInterface);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Error getting time from Elapsed property at '{PATH}' on '{INTERFACE}': {ERROR}",
+            "PATH", bmcTimePath, "INTERFACE", timeInterface, "ERROR", e);
+        co_return PLDM_ERROR;
+    }
+
+    uint64_t timeSec = std::chrono::duration_cast<std::chrono::seconds>(
+                           std::chrono::microseconds(timeUsec))
+                           .count();
+
+    pldm::utils::epochToBCDTime(timeSec, seconds, minutes, hours, day, month,
+                                year);
+
+    Request request(
+        sizeof(pldm_msg_hdr) + sizeof(struct pldm_set_date_time_req));
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+
+    lg2::info("SetDateTime {YEAR} {MONTH}/{DATE} {HOUR}:{MIN}:{SEC}", "TIME",
+              timeSec, "YEAR", std::format("{:04x}", year), "MONTH",
+              std::format("{:02x}", month), "DATE", std::format("{:02x}", day),
+              "HOUR", std::format("{:02x}", hours), "MIN",
+              std::format("{:02x}", minutes), "SEC",
+              std::format("{:02x}", seconds));
+
+    /* instanceId will be include in sendRecvPldmMsg */
+    auto rc = encode_set_date_time_req(
+        0, bcd2dec8(seconds), bcd2dec8(minutes), bcd2dec8(hours), bcd2dec8(day),
+        bcd2dec8(month), bcd2dec16(year), requestMsg,
+        sizeof(struct pldm_set_date_time_req));
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request SetDateTime for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await sendRecvPldmMsg(tid, request, &responseMsg, &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send SetDateTime message for terminus {TID}, error {RC}",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    uint8_t completionCode = 0;
+    rc = decode_set_date_time_resp(responseMsg, responseLen, &completionCode);
+
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response SetDateTime for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : SetDateTime for terminus ID {TID}, complete code {CC}.",
+            "TID", tid, "CC", completionCode);
+        co_return rc;
+    }
+
+    lg2::info("Success SetDateTime to terminus {TID}", "TID", tid);
 
     co_return completionCode;
 }
