@@ -1156,3 +1156,24 @@ TEST(dbusPropValuesToDouble, badTest)
                                  nullptr);
     EXPECT_EQ(false, ret);
 }
+
+TEST(epochToBCDTime, goodTest)
+{
+    uint8_t seconds = 0;
+    uint8_t minutes = 0;
+    uint8_t hours = 0;
+    uint8_t day = 0;
+    uint8_t month = 0;
+    uint16_t year = 0;
+    uint64_t timeUsec = 1724287070;
+
+    pldm::utils::epochToBCDTime(timeUsec, seconds, minutes, hours, day, month,
+                                year);
+
+    EXPECT_EQ(year, 0x2024);
+    EXPECT_EQ(month, 0x8);
+    EXPECT_EQ(day, 0x22);
+    EXPECT_EQ(hours, 0x0);
+    EXPECT_EQ(minutes, 0x37);
+    EXPECT_EQ(seconds, 0x50);
+}
