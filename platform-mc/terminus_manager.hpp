@@ -137,6 +137,8 @@ class TerminusManager
 
     requester::Coroutine setEventReceiver(uint8_t eid);
 
+    requester::Coroutine setDateTime(uint8_t eid);
+
     sdeventplus::Event& event;
     RequesterHandler& handler;
     dbus_api::Requester& requester;
