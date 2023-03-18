@@ -677,5 +677,24 @@ std::string_view trimNameForDbus(std::string& name)
     }
     return name;
 }
+
+void epochToBCDTime(uint64_t timeSec, uint8_t& seconds, uint8_t& minutes,
+                    uint8_t& hours, uint8_t& day, uint8_t& month,
+                    uint16_t& year)
+{
+    auto t = time_t(timeSec);
+    auto time = localtime(&t);
+
+    seconds = pldm::utils::decimalToBcd(time->tm_sec);
+    minutes = pldm::utils::decimalToBcd(time->tm_min);
+    hours = pldm::utils::decimalToBcd(time->tm_hour);
+    day = pldm::utils::decimalToBcd(time->tm_mday);
+    month = pldm::utils::decimalToBcd(
+        time->tm_mon + 1);     // The number of months in the range
+                               // 0 to 11.PLDM expects range 1 to 12
+    year = pldm::utils::decimalToBcd(
+        time->tm_year + 1900); // The number of years since 1900
+}
+
 } // namespace utils
 } // namespace pldm
