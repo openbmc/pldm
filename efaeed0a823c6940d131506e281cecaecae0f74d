@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d89c597b_bdca38fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 52
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-03-20T15:08:38Z",
+      "side": 1,
+      "message": "Using only one timer to poll all sensors of all terminus can cause the delay in updating value of one sensor. In some systems, the temperature sensors can be used for thermal control and they should be updated per second or event less.\nMoreover, stop polling all sensors of all terminus when one terminus is added/removed is not reasonable. Changing on one terminus should only affect on its\u0027 side.\nI suggest to move polling timer to terminus class, so each terminus will manage its\u0027 sensors/effecter independently.",
+      "revId": "efaeed0a823c6940d131506e281cecaecae0f74d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
