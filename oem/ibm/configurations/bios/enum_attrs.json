@@ -37,14 +37,14 @@
         },
         {
             "attribute_name": "vmi_if0_ipv6_method",
-            "possible_values": ["IPv6Static", "IPv6DHCP", "SLAAC"],
+            "possible_values": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "default_values": ["IPv6Static"],
             "helpText": "vmi_if0_ipv6_method",
             "displayName": "vmi_if0_ipv6_method"
         },
         {
             "attribute_name": "vmi_if1_ipv6_method",
-            "possible_values": ["IPv6Static", "IPv6DHCP", "SLAAC"],
+            "possible_values": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "default_values": ["IPv6Static"],
             "helpText": "vmi_if1_ipv6_method",
             "displayName": "vmi_if1_ipv6_method"
