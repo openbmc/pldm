@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f90e791a_cf65ccc5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "I did basic sanity testing checking for logs appearing in the way they should ideally appear",
+      "parentUuid": "1880babd_b47eb0ac",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c8a4257_15671911",
@@ -53,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a05e4c1_fb77033f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91ed55d4_59054684",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfd1fe3d_e49b2402",
@@ -70,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4123e05c_446201de",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfd1fe3d_e49b2402",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38d6a5f1_a5e26807",
@@ -83,6 +137,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "missed changes here",
+      "range": {
+        "startLine": 453,
+        "startChar": 8,
+        "endLine": 455,
+        "endChar": 26
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cb93d60_a5d2d059",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "LG2 doesn\u0027t support template as of now as it works during compile time only",
+      "parentUuid": "38d6a5f1_a5e26807",
       "range": {
         "startLine": 453,
         "startChar": 8,
@@ -140,6 +218,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "502a1190_9415583b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This commit is only migration to lg2, improvision of logs will be  addressed in different commit",
+      "parentUuid": "3e4b14e4_ed44fa81",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 151,
+        "endChar": 51
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18ee9692_eb91926a",
@@ -177,6 +279,30 @@
       "side": 1,
       "message": "+1 . This should have been std::cerr in the original file also",
       "parentUuid": "18ee9692_eb91926a",
+      "range": {
+        "startLine": 370,
+        "startChar": 16,
+        "endLine": 370,
+        "endChar": 20
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdcf9b46_5c04d1ec",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "187a8ddd_af867f62",
       "range": {
         "startLine": 370,
         "startChar": 16,
@@ -234,6 +360,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c110073_634a979f",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3145677_f3082b8a",
+      "range": {
+        "startLine": 445,
+        "startChar": 16,
+        "endLine": 445,
+        "endChar": 20
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd24dcee_24eba093",
@@ -271,6 +421,30 @@
       "side": 1,
       "message": "+1 . u can make lines similar to this alert also",
       "parentUuid": "bd24dcee_24eba093",
+      "range": {
+        "startLine": 696,
+        "startChar": 12,
+        "endLine": 696,
+        "endChar": 16
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1534eb5f_230550de",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4794caff_66665c19",
       "range": {
         "startLine": 696,
         "startChar": 12,
@@ -328,6 +502,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "988f6323_db355ab4",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3967c0e7_43004349",
+      "range": {
+        "startLine": 792,
+        "startChar": 12,
+        "endLine": 792,
+        "endChar": 16
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d97b6f4_554f1c78",
@@ -363,6 +561,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1bdd5cf_14ff2dde",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aa670d6_1169570d",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33265cab_c654aae3",
@@ -376,6 +592,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "missed changes here",
+      "range": {
+        "startLine": 200,
+        "startChar": 8,
+        "endLine": 200,
+        "endChar": 17
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "135a126a_a824b8f0",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33265cab_c654aae3",
       "range": {
         "startLine": 200,
         "startChar": 8,
@@ -409,6 +649,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55c821d1_c0cf4b09",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f6f82e8_507434d4",
+      "range": {
+        "startLine": 225,
+        "startChar": 11,
+        "endLine": 225,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d98abf19_b5efbd5f",
@@ -422,6 +686,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "here as well",
+      "range": {
+        "startLine": 234,
+        "startChar": 12,
+        "endLine": 234,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7178c80_25cf5f16",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d98abf19_b5efbd5f",
       "range": {
         "startLine": 234,
         "startChar": 12,
@@ -449,6 +737,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d0880a7_c9024007",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3e8ec9c_13244f18",
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9b06f6c_bcec39e7",
@@ -462,6 +768,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "missed changes here?",
+      "range": {
+        "startLine": 104,
+        "startChar": 12,
+        "endLine": 104,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3121771_fc467f6b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9b06f6c_bcec39e7",
       "range": {
         "startLine": 104,
         "startChar": 12,
@@ -495,6 +825,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "087f92b7_f7fe956b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1aa9c27c_c7be6b2d",
+      "range": {
+        "startLine": 137,
+        "startChar": 20,
+        "endLine": 137,
+        "endChar": 29
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d456251e_5de822e4",
@@ -508,6 +862,30 @@
       "writtenOn": "2023-03-02T11:48:47Z",
       "side": 1,
       "message": "here as well?",
+      "range": {
+        "startLine": 142,
+        "startChar": 12,
+        "endLine": 142,
+        "endChar": 21
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d411fd8_d8d346c5",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d456251e_5de822e4",
       "range": {
         "startLine": 142,
         "startChar": 12,
@@ -555,6 +933,30 @@
       "side": 1,
       "message": "+1 or alert",
       "parentUuid": "a2ae1686_c0fbc032",
+      "range": {
+        "startLine": 767,
+        "startChar": 12,
+        "endLine": 767,
+        "endChar": 17
+      },
+      "revId": "45cf17718587e25f6fc05206244b8b5ea7c6ae82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fee7e282_234ad2ce",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61966d79_aa4d2b60",
       "range": {
         "startLine": 767,
         "startChar": 12,

@@ -41,6 +41,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a98504_aa89e73a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f289c811_fb86f5c4",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a4c8c16_b6d66bac",
@@ -132,6 +150,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f4128f8_ebbf11ce",
+        "filename": "common/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "It doesn\u0027t automatically picks up the dependency and few cpp and header files that are being included in the test files need lg2 that should be explicit be stated in the dependency section",
+      "parentUuid": "1b7f4670_19110921",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "453e6334_809d2034",
@@ -167,6 +209,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79a7d2d7_3b4a2e8c",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e53f4835_b29cd225",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17578296_4101a13b",
@@ -180,6 +240,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a00406d_8b23b5f5",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17578296_4101a13b",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -219,6 +297,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2838f789_c3806df9",
+        "filename": "fw-update/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "It doesn\u0027t automatically picks up the dependency and few cpp and header files that are being included in the test files need lg2 that should be explicit be stated in the dependency section",
+      "parentUuid": "f1021a82_a2b24e56",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdb39048_c319936e",
@@ -232,6 +328,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "489cc871_5d262906",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdb39048_c319936e",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -253,6 +367,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc7a4a1_762c5d7c",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2b99354_f9ee05a8",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81581d5d_959568aa",
@@ -266,6 +398,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "314f9cf3_b50ac2b4",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81581d5d_959568aa",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -301,6 +451,24 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "a11ca30b_cc08e36f",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9183f59f_a61f4763",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8a352d4_6ef0e7ce",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -352,6 +520,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff9b4c6_c100de4d",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This commit is only migration to lg2, improvision of logs will be  addressed in different commit",
+      "parentUuid": "1a852b87_70330fe3",
+      "range": {
+        "startLine": 198,
+        "startChar": 24,
+        "endLine": 198,
+        "endChar": 27
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6cd80f7_c66f276d",
@@ -365,6 +557,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line not required here",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88c01c7c_fe1a9e91",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6cd80f7_c66f276d",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -386,6 +596,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff2522e0_085f151f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9cb37e02_75b71061",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7f4265f_dc59c9de",
@@ -399,6 +627,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d763763d_7c917349",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7f4265f_dc59c9de",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -438,6 +684,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd319c93_a29b9158",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf58805b_5728ce4e",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d92f46de_c45602fb",
@@ -451,6 +715,30 @@
       "writtenOn": "2023-03-16T09:47:31Z",
       "side": 1,
       "message": "This does not seem to be an exact migration ? why did we add nextRecordHandle ?",
+      "range": {
+        "startLine": 437,
+        "startChar": 7,
+        "endLine": 440,
+        "endChar": 42
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f465da03_ae933b69",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d92f46de_c45602fb",
       "range": {
         "startLine": 437,
         "startChar": 7,
@@ -478,6 +766,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f687bd2_a2fa2a22",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb0d719d_fa88671d",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9352e1c3_849ff9dd",
@@ -491,6 +797,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f2ecb9c_7191c3b6",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9352e1c3_849ff9dd",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -542,6 +866,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f249408_2541ff95",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This commit is only migration to lg2, improvision of logs will be  addressed in different commit",
+      "parentUuid": "89da0d86_2cd5d8f0",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 8
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90a801d5_50f2ded1",
@@ -559,6 +907,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05b3ad3f_4b69d294",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90a801d5_50f2ded1",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77ef1d8c_3853ccf6",
@@ -572,6 +938,30 @@
       "writtenOn": "2023-03-16T09:47:31Z",
       "side": 1,
       "message": "why sensor id is added ?",
+      "range": {
+        "startLine": 773,
+        "startChar": 0,
+        "endLine": 773,
+        "endChar": 28
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb7d67c9_6d430f2e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77ef1d8c_3853ccf6",
       "range": {
         "startLine": 773,
         "startChar": 0,
@@ -605,6 +995,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79937894_b7e7b85b",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa1a7050_4e7e7ae8",
+      "range": {
+        "startLine": 783,
+        "startChar": 25,
+        "endLine": 786,
+        "endChar": 55
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76567e54_8b525696",
@@ -628,6 +1042,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "804ab24d_2b2ac4ef",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76567e54_8b525696",
+      "range": {
+        "startLine": 805,
+        "startChar": 0,
+        "endLine": 807,
+        "endChar": 47
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f364959_8be11bac",
@@ -641,6 +1079,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ac71ceb_4de95bac",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f364959_8be11bac",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -676,6 +1132,24 @@
       "side": 1,
       "message": "same comment here too..logging not needed for test.",
       "parentUuid": "7592d3a0_2c9aaa0b",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e083be8d_ef08d72e",
+        "filename": "host-bmc/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "It doesn\u0027t automatically picks up the dependency and few cpp and header files that are being included in the test files need lg2 that should be explicit be stated in the dependency section",
+      "parentUuid": "ea3245ee_ae04efd0",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -741,6 +1215,30 @@
       "side": 1,
       "message": "same comment here too. include what you use, dont rely on other headers.",
       "parentUuid": "2a32c9af_ec0ecd83",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "816c1840_6ad7bf42",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cf9ae66_6c89cf08",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -822,6 +1320,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cab6d0e4_0ffe363a",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82295e1b_504ce0e7",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40f89f60_1e1d4bae",
@@ -839,6 +1361,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4a1382b_79665fc6",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This document https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/WhyIWYU.mdb says other way. Following which I have implemented the changes in all files by adding include for logging api, irrespective of the dependencies in hpp files",
+      "parentUuid": "40f89f60_1e1d4bae",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2185d60_4e60e2e1",
@@ -852,6 +1392,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0331dc7d_ce4b8815",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2185d60_4e60e2e1",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -891,6 +1449,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcc2f5b5_6197a6c6",
+        "filename": "libpldmresponder/pdr_numeric_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This document https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/WhyIWYU.mdb says other way. Following which I have implemented the changes in all files by adding include for logging api, irrespective of the dependencies in hpp files",
+      "parentUuid": "d14a6995_0efefa47",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abcb30f6_bf0ee388",
@@ -926,6 +1502,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfdfa7bd_99107be1",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This document https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/WhyIWYU.mdb says other way. Following which I have implemented the changes in all files by adding include for logging api, irrespective of the dependencies in hpp files",
+      "parentUuid": "7d7c0e35_d34feb69",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d16e3250_1b8a533b",
@@ -939,6 +1533,30 @@
       "writtenOn": "2023-03-16T09:47:31Z",
       "side": 1,
       "message": "do we need a type cast here ?",
+      "range": {
+        "startLine": 158,
+        "startChar": 35,
+        "endLine": 158,
+        "endChar": 46
+      },
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e582523_4926f9bd",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "the structure where effecter_id is declared is a __attribute__((packed)) due to which lg2 throws an error - cannot bind packed field ‘pdr-\u003epldm_state_effecter_pdr::effecter_id’",
+      "parentUuid": "d16e3250_1b8a533b",
       "range": {
         "startLine": 158,
         "startChar": 35,
@@ -984,6 +1602,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb601c2_b49729df",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This document https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/WhyIWYU.mdb says other way. Following which I have implemented the changes in all files by adding include for logging api, irrespective of the dependencies in hpp files",
+      "parentUuid": "5848ce2c_cad3d484",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "080e3364_4d18ae76",
@@ -1019,6 +1655,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "871fa7ae_15b60d42",
+        "filename": "libpldmresponder/platform_state_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "This document https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/WhyIWYU.mdb says other way. Following which I have implemented the changes in all files by adding include for logging api, irrespective of the dependencies in hpp files",
+      "parentUuid": "7b8e8694_22ca7d73",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a75dd417_ff0479e5",
@@ -1032,6 +1686,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove tabs",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "302f9701_4b42aa3a",
+        "filename": "libpldmresponder/test/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a75dd417_ff0479e5",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1053,6 +1725,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "beb28a81_ee182b31",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1deaf3a_ae2925ff",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbadc6fa_e319f2a3",
@@ -1066,6 +1756,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "this should be info . See base file this line is std::cout NOT std::cerr",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8fd2f3b_fe33d9d5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbadc6fa_e319f2a3",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1087,6 +1795,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0b5efab_95cf14a2",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "277e84a7_c8d2ff3c",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22209735_5c9f6052",
@@ -1100,6 +1826,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1c8717b_c1515879",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22209735_5c9f6052",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1121,6 +1865,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e518b9c0_64c99224",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "050e884b_da6ba8f2",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1498d264_25d85631",
@@ -1134,6 +1896,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "why is this info?",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a067cb6_48dc0ee1",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1498d264_25d85631",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1155,6 +1935,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddaf99bd_b8a273bd",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6465476e_4ee62285",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f051ddb_f1d4296e",
@@ -1168,6 +1966,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove this empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af256c7f_a6e3bd4b",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f051ddb_f1d4296e",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1189,6 +2005,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46065b38_9887750c",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59280b86_98392e0c",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb49d278_832abe9c",
@@ -1202,6 +2036,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e21e778_14451f82",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb49d278_832abe9c",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1223,6 +2075,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58757a44_9f922011",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d11a25b_dc73fc35",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d116d18_d7ba78cb",
@@ -1236,6 +2106,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b5ed436_1d7cc7c4",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d116d18_d7ba78cb",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1257,6 +2145,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c383935c_cb9e781f",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd8616f6_c9581741",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1734f058_ddab3b44",
@@ -1270,6 +2176,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fdf963b_e7386e5e",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1734f058_ddab3b44",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1291,6 +2215,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a0ea29_cfbea061",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "658cc416_678b5d7c",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e618d5e4_874b6612",
@@ -1304,6 +2246,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a68d05d_68932dfc",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e618d5e4_874b6612",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1325,6 +2285,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "511ce67c_c1509ebf",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1150,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b49a614a_3cd7e6cf",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b00203f5_35a09e9e",
@@ -1342,6 +2320,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5bc4bce_09fcb383",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1232,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b00203f5_35a09e9e",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fcbcacd_2591ad5a",
@@ -1355,6 +2351,24 @@
       "writtenOn": "2023-03-09T08:21:01Z",
       "side": 1,
       "message": "remove empty line",
+      "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c876245d_1e20452b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-03-24T14:52:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fcbcacd_2591ad5a",
       "revId": "ba595596739f205a3d6a7d3edeab2d7219b0a0f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
