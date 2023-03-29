@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79e524c6_953903c1",
+        "filename": "common/test/meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-29T04:35:31Z",
+      "side": 1,
+      "message": "why are other dependencies being touched ? please revert back them to how they were earlier. and just add logging.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "e19a02c8cc45fb58f3e74f51bc35c4c8740932ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b11cbde_d00c0391",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-29T04:35:31Z",
+      "side": 1,
+      "message": "unnecessary change being added ?",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 19
+      },
+      "revId": "e19a02c8cc45fb58f3e74f51bc35c4c8740932ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac5bfe82_81b056a0",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-29T04:35:31Z",
+      "side": 1,
+      "message": "ideally the traces only should have been modified ? why is it the entire lambda is being modified? is it some sort of clang-format thing ?",
+      "range": {
+        "startLine": 275,
+        "startChar": 2,
+        "endLine": 301,
+        "endChar": 6
+      },
+      "revId": "e19a02c8cc45fb58f3e74f51bc35c4c8740932ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73c99cf9_efe06911",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-29T04:35:31Z",
+      "side": 1,
+      "message": "why is the new line being removed, please add it back",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 267,
+        "endChar": 19
+      },
+      "revId": "e19a02c8cc45fb58f3e74f51bc35c4c8740932ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6be7c6d_78d0248a",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-03-29T04:35:31Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "e19a02c8cc45fb58f3e74f51bc35c4c8740932ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
