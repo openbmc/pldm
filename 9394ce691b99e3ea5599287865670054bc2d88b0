@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d21b5131_abc63ada",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-03-30T15:17:22Z",
+      "side": 1,
+      "message": "Below errors \n../platform-mc/event_manager.cpp: In member function ‘pldm::requester::Coroutine pldm::platform_mc::EventManager::doPollingTask()’:\n../platform-mc/event_manager.cpp:129:21: error: ‘PLDM_POLL_FOR_PLATFORM_EVENT_MESSAGE_REQ_BYTES’ was not declared in this scope; did you mean ‘PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES’?\n  129 |                     PLDM_POLL_FOR_PLATFORM_EVENT_MESSAGE_REQ_BYTES);\n      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n      |                     PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES\n../platform-mc/event_manager.cpp:147:15: error: ‘encode_poll_for_platform_event_message_req’ was not declared in this scope; did you mean ‘encode_platform_event_message_req’?\n  147 |     auto rc \u003d encode_poll_for_platform_event_message_req(\n      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n      |               encode_platform_event_message_req\n../platform-mc/event_manager.cpp: In member function ‘void pldm::platform_mc::EventManager::processResponseMsg(mctp_eid_t, const pldm_msg*, size_t)’:\n../platform-mc/event_manager.cpp:201:15: error: ‘decode_poll_for_platform_event_message_resp’ was not declared in this scope; did you mean ‘decode_platform_event_message_resp’?\n  201 |     auto rc \u003d decode_poll_for_platform_event_message_resp(\n      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n      |               decode_platform_event_message_resp\n../platform-mc/event_manager.cpp:306:33: error: ‘PLDM_ACKNOWLEDGEMENT_ONLY’ was not declared in this scope\n  306 |         reqData.operationFlag \u003d PLDM_ACKNOWLEDGEMENT_ONLY;\n      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~\n will be fix when https://gerrit.openbmc.org/c/openbmc/libpldm/+/59295 is merged.",
+      "revId": "9394ce691b99e3ea5599287865670054bc2d88b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
