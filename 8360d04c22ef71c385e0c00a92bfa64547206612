@@ -16,6 +16,24 @@
       "message": "Tested section?",
       "revId": "8360d04c22ef71c385e0c00a92bfa64547206612",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34bb0b06_b4a733cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-04-01T03:57:25Z",
+      "side": 1,
+      "message": "Because there is new proposal to manage instanceID so I will close this patch set.",
+      "parentUuid": "6369e398_75f412a0",
+      "revId": "8360d04c22ef71c385e0c00a92bfa64547206612",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
