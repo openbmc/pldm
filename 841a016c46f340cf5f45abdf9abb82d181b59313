@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83412ccc_0b6cf1a2",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2023-04-02T17:14:08Z",
+      "side": 1,
+      "message": "The numeric_sensor class support both numeric sensor PDR and compact numeric sensor PDR now.\nWill consider if the code needs refinement when supporting numeric effecter PDR and compact numeric effecter PDR.",
+      "parentUuid": "c544d6be_a6ebdc31",
+      "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6c1e1d9_e04e77fe",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 49
@@ -48,6 +66,24 @@
       "writtenOn": "2023-02-23T07:39:10Z",
       "side": 1,
       "message": "BMC can manage sensor threshold and check for threshold violation. It can also support threshold via sensor events. Should we have option for users to disable threshold check when they want to have threshold events from sensor events?",
+      "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9157322a_c36bc563",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2023-04-02T17:14:08Z",
+      "side": 1,
+      "message": "Will be addressed by the patch-set to add event handling support.",
+      "parentUuid": "a2500d15_4ad3a702",
       "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
