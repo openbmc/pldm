@@ -63,8 +63,8 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
                         fs::perms::others_read | fs::perms::owner_write);
     }
 
-    std::ofstream keywrdFile("vpdKeywrd.bin");
-    keywrdFile.open(keywrdFilePath, std::ios::out | std::ofstream::binary);
+    std::ofstream keywrdFile(keywrdFilePath);
+    auto fd = open(keywrdFilePath, std::ios::out | std::ofstream::binary);
     if (!keywrdFile)
     {
         std::cerr << "VPD keyword file open error: " << keywrdFilePath
@@ -74,6 +74,26 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
             pldm::PelSeverity::ERROR);
         return PLDM_ERROR;
     }
+
+    if (offset > keywrdSize)
+    {
+        std::cerr << "Offset exceeds file size, OFFSET=" << offset
+                  << " FILE_SIZE=" << keywrdSize << std::endl;
+        return PLDM_DATA_OUT_OF_RANGE;
+    }
+
+    // length of keyword data should be same as keyword data size in dbus object
+    length = static_cast<uint32_t>(keywrdSize) - offset;
+
+    auto returnCode = lseek(fd, offset, SEEK_SET);
+    if (returnCode == -1)
+    {
+        std::cerr
+            << "Could not find keyword data at given offset. File Seek failed"
+            << std::endl;
+        return PLDM_ERROR;
+    }
+
     keywrdFile.write((const char*)std::get<std::vector<byte>>(keywrd).data(),
                      keywrdSize);
     if (keywrdFile.bad())
@@ -82,9 +102,6 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
                   << std::endl;
     }
     keywrdFile.close();
-
-    // length of keyword data should be same as keyword data size in dbus object
-    length = (uint32_t)keywrdSize;
 
     auto rc = readFile(keywrdFilePath, offset, keywrdSize, response);
     fs::remove(keywrdFilePath);
