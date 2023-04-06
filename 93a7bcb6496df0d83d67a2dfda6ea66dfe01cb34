@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c58171fe_18e4763d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-04-06T04:05:40Z",
+      "side": 1,
+      "message": "Changes look good other than those No new line comments in a few files.",
+      "revId": "93a7bcb6496df0d83d67a2dfda6ea66dfe01cb34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
