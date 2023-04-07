@@ -1,0 +1,10 @@
+Code-Review+1: Sampa Misra <sampmisr@in.ibm.com>
+Code-Review+1: Andrew Jeffery <andrew@aj.id.au>
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Code-Review+1: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Fri, 07 Apr 2023 05:08:14 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/62216
+Project: openbmc/pldm
+Branch: refs/heads/master
