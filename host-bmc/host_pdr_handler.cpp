@@ -1,10 +1,10 @@
 #include "host_pdr_handler.hpp"
 
 #include "libpldm/fru.h"
+#include "libpldm/state_set.h"
 #ifdef OEM_IBM
 #include "libpldm/fru_oem_ibm.h"
 #endif
-
 #include "custom_dbus.hpp"
 
 #include <assert.h>
@@ -89,11 +89,13 @@ HostPDRHandler::HostPDRHandler(
     const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
     pldm_entity_association_tree* bmcEntityTree,
     pldm::InstanceIdDb& instanceIdDb,
-    pldm::requester::Handler<pldm::requester::Request>* handler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler) :
     mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler)
+    bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler),
+    oemPlatformHandler(oemPlatformHandler)
 {
     mergedHostParents = false;
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
@@ -246,13 +248,25 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
     return PLDM_SUCCESS;
 }
 
-void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
+void HostPDRHandler::mergeEntityAssociations(
+    const std::vector<uint8_t>& pdr, [[maybe_unused]] const uint32_t& size,
+    [[maybe_unused]] const uint32_t& record_handle)
 {
     size_t numEntities{};
     pldm_entity* entities = nullptr;
     bool merged = false;
     auto entityPdr = reinterpret_cast<pldm_pdr_entity_association*>(
         const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
+
+#ifdef OEM_IBM
+    if (oemPlatformHandler &&
+        pldm_record_handle_in_range(record_handle, 0x01000000, 0x01FFFFFF))
+    {
+        // Adding the HostBoot range PDRs to the repo before merging it
+        uint32_t handle = record_handle;
+        pldm_pdr_add_check(repo, pdr.data(), size, true, 0xFFFF, &handle);
+    }
+#endif
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
                                         &entities);
@@ -280,7 +294,12 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         {
             auto node = pldm_entity_association_tree_add_entity(
                 entityTree, &entities[i], entities[i].entity_instance_num,
-                pNode, entityPdr->association_type, true, true, 0xFFFF);
+                pNode, entityPdr->association_type, true,
+                !(entities[i].entity_container_id & 0x8000), 0xFFFF);
+            if (!node)
+            {
+                continue;
+            }
             merged = true;
             entityAssoc.push_back(node);
         }
@@ -304,7 +323,8 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         else
         {
             int rc = pldm_entity_association_pdr_add_from_node_check(
-                node, repo, &entities, numEntities, true, TERMINUS_HANDLE);
+                node, repo, &entities, numEntities, true, TERMINUS_HANDLE,
+                0xFFFFFFFF);
             if (rc)
             {
                 error(
@@ -509,7 +529,7 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
 
             if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
             {
-                this->mergeEntityAssociations(pdr);
+                this->mergeEntityAssociations(pdr, respCount, rh);
                 merged = true;
             }
             else
@@ -536,17 +556,6 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                     if (tlpdr->validity == 0)
                     {
                         tlValid = false;
-                    }
-                    for (const auto& terminusMap : tlPDRInfo)
-                    {
-                        if ((terminusHandle == (terminusMap.first)) &&
-                            (get<1>(terminusMap.second) == tlEid) &&
-                            (get<2>(terminusMap.second) == tlpdr->validity))
-                        {
-                            // TL PDR already present with same validity don't
-                            // add the PDR to the repo just return
-                            return;
-                        }
                     }
                     tlPDRInfo.insert_or_assign(
                         tlpdr->terminus_handle,
@@ -585,6 +594,14 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 {
                     pldm_pdr_update_TL_pdr(repo, terminusHandle, tid, tlEid,
                                            tlValid);
+
+                    if (!isHostUp())
+                    {
+                        // since HB is sending down the TL PDR in the beginning
+                        // of the PDR exchange, do not continue PDR exchange
+                        // when the TL PDR is invalid.
+                        nextRecordHandle = 0;
+                    }
                 }
                 else
                 {
@@ -613,6 +630,7 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
         stateSensorPDRs.clear();
         fruRecordSetPDRs.clear();
         entityAssociations.clear();
+        mergedHostParents = false;
 
         if (merged)
         {
@@ -1070,6 +1088,7 @@ void HostPDRHandler::setFRUDataOnDBus(
     }
 #endif
 }
+
 void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
     // TODO: Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs

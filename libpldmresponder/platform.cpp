@@ -147,6 +147,7 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
+    info("Inside getPDR");
     if (hostPDRHandler)
     {
         if (hostPDRHandler->isHostUp() && oemPlatformHandler != nullptr)

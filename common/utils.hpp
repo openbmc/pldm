@@ -52,7 +52,7 @@ const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_SYS_BOARD, "motherboard"},
     {PLDM_ENTITY_POWER_SUPPLY, "powersupply"},
     {PLDM_ENTITY_PROC, "cpu"},
-    {PLDM_ENTITY_SYSTEM_CHASSIS | 0x8000, "system"},
+    {11521, "system"},
     {PLDM_ENTITY_PROC_MODULE, "dcm"},
     {PLDM_ENTITY_PROC | 0x8000, "core"},
     {PLDM_ENTITY_IO_MODULE, "io_module"},

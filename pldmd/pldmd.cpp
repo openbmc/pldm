@@ -225,23 +225,6 @@ int main(int argc, char** argv)
         hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     DBusHandler dbusHandler;
-    if (hostEID)
-    {
-        hostPDRHandler = std::make_shared<HostPDRHandler>(
-            pldmTransport.getEventSource(), hostEID, event, pdrRepo.get(),
-            EVENTS_JSONS_DIR, entityTree.get(), bmcEntityTree.get(),
-            instanceIdDb, &reqHandler);
-        // HostFirmware interface needs access to hostPDR to know if host
-        // is running
-        dbusImplHost.setHostPdrObj(hostPDRHandler);
-
-        hostEffecterParser =
-            std::make_unique<pldm::host_effecters::HostEffecterParser>(
-                &instanceIdDb, pldmTransport.getEventSource(), pdrRepo.get(),
-                &dbusHandler, HOST_JSONS_DIR, &reqHandler);
-        dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
-            pldmTransport.getEventSource(), hostEID, instanceIdDb, &reqHandler);
-    }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
     std::unique_ptr<oem_bios::Handler> oemBiosHandler{};
 
@@ -259,7 +242,23 @@ int main(int argc, char** argv)
                                           hostEID, &instanceIdDb, &reqHandler));
     oemBiosHandler = std::make_unique<oem::ibm::bios::Handler>(&dbusHandler);
 #endif
+    if (hostEID)
+    {
+        hostPDRHandler = std::make_shared<HostPDRHandler>(
+            pldmTransport.getEventSource(), hostEID, event, pdrRepo.get(),
+            EVENTS_JSONS_DIR, entityTree.get(), bmcEntityTree.get(), 
+            instanceIdDb, &reqHandler, oemPlatformHandler.get());
+        // HostFirmware interface needs access to hostPDR to know if host
+        // is running
+        dbusImplHost.setHostPdrObj(hostPDRHandler);
 
+        hostEffecterParser =
+            std::make_unique<pldm::host_effecters::HostEffecterParser>(
+                &instanceIdDb, pldmTransport.getEventSource(), pdrRepo.get(), 
+                &dbusHandler, HOST_JSONS_DIR, &reqHandler);
+        dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
+            pldmTransport.getEventSource(), hostEID, instanceIdDb, &reqHandler);
+    }
     auto biosHandler = std::make_unique<bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
         oemBiosHandler.get());
