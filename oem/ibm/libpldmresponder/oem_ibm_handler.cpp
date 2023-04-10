@@ -17,7 +17,6 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
-
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
         EntityType entityType, EntityInstance entityInstance,
@@ -615,6 +614,16 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     }
     return PLDM_SUCCESS;
 }
+
+/*bool pldm::responder::oem_ibm_platform::Handler::isHBRange(
+     const uint32_t& record_handle)
+ {
+     if (record_handle >= 0x01000000 && record_handle < 0x01FFFFFF)
+     {
+         return true;
+     }
+     return false;
+ }*/
 
 } // namespace oem_ibm_platform
 } // namespace responder

@@ -18,18 +18,24 @@ namespace pldm
 {
 namespace responder
 {
-
-std::optional<pldm_entity>
-    FruImpl::getEntityByObjectPath(const dbus::InterfaceMap& intfMaps)
+pldm_entity FruImpl::getEntityByObjectPath(const dbus::ObjectValueTree& objects,
+                                           const std::string& path)
 {
-    for (const auto& intfMap : intfMaps)
+    pldm_entity entity{};
+
+    auto iter = objects.find(path);
+    if (iter == objects.end())
+    {
+        return entity;
+    }
+
+    for (const auto& intfMap : iter->second)
     {
         try
         {
-            pldm_entity entity{};
             entity.entity_type = parser.getEntityType(intfMap.first);
             entity.entity_instance_num = 1;
-            return entity;
+            break;
         }
         catch (const std::exception& e)
         {
@@ -37,7 +43,7 @@ std::optional<pldm_entity>
         }
     }
 
-    return std::nullopt;
+    return entity;
 }
 
 void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
@@ -56,16 +62,17 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
         return;
     }
 
-    std::stack<std::string> tmpObjPaths{};
-    tmpObjPaths.emplace(path);
+    std::vector<std::string> tmpObjPaths{};
+    tmpObjPaths.push_back(path);
 
     auto obj = pldm::utils::findParent(path);
     while (obj != root)
     {
-        tmpObjPaths.emplace(obj);
+        tmpObjPaths.push_back(obj);
         obj = pldm::utils::findParent(obj);
     }
 
+    int i = (int)tmpObjPaths.size() - 1;
     for (; i >= 0; i--)
     {
         if (objToEntityNode.contains(tmpObjPaths[i]))
@@ -177,8 +184,10 @@ void FruImpl::buildFRUTable()
                     pldm_entity entity{};
                     if (objToEntityNode.contains(object.first.str))
                     {
-                        pldm_entity_node* node =
-                            objToEntityNode.at(object.first.str);
+                        pldm_entity_node* node = nullptr;
+                        pldm_find_entity_ref_in_tree(
+                            entityTree, objToEntityNode.at(object.first.str),
+                            &node);
 
                         entity = pldm_entity_extract(node);
                     }
