@@ -186,8 +186,13 @@ class HostPDRHandler
      *  @details A merge operation involves adding a pldm_entity under the
      *  appropriate parent, and updating container ids.
      *  @param[in] pdr - entity association pdr
+     *  @param[in] size - size of input PDR record in bytes
+     *  @param[in] record_handle - record handle of the PDR
      */
-    void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
+    void
+        mergeEntityAssociations(const std::vector<uint8_t>& pdr,
+                                [[maybe_unused]] const uint32_t& size,
+                                [[maybe_unused]] const uint32_t& record_handle);
 
     /** @brief process the Host's PDR and add to BMC's PDR repo
      *  @param[in] eid - MCTP id of Host

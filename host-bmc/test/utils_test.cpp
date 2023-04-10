@@ -12,7 +12,6 @@ using namespace pldm::hostbmc::utils;
 
 TEST(EntityAssociation, addObjectPathEntityAssociations1)
 {
-
     pldm_entity entities[8]{};
 
     entities[0].entity_type = 45;
