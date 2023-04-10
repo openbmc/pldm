@@ -86,7 +86,7 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     auto responsePtr = reinterpret_cast<const pldm_msg*>(response.data());
     reqHandler.handleResponse(eid, instanceId, 0, 0, responsePtr,
-                              sizeof(response));
+                              response.size());
 
     // handleResponse() will free the instance ID after calling the response
     // handler, so the same instance ID is granted next as well
@@ -135,7 +135,7 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     auto responsePtr = reinterpret_cast<const pldm_msg*>(response.data());
     reqHandler.handleResponse(eid, instanceIdNxt, 0, 0, responsePtr,
-                              sizeof(response));
+                              response.size());
     EXPECT_EQ(validResponse, true);
     EXPECT_EQ(callbackCount, 1);
     validResponse = false;
@@ -145,7 +145,7 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     waitEventExpiry(milliseconds(500));
 
     reqHandler.handleResponse(eid, instanceId, 0, 0, responsePtr,
-                              sizeof(response));
+                              response.size());
 
     EXPECT_EQ(validResponse, true);
     EXPECT_EQ(callbackCount, 2);

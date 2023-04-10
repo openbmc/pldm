@@ -232,7 +232,7 @@ class Handler : public CmdHandler
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
                 sdbusplus::bus::match::rules::argNpath(0, dumpObjPath),
-            [this, hostSockFd, hostEid, dbusImplReqester,
+            [this, hostEid, dbusImplReqester,
              handler](sdbusplus::message_t& msg) {
                 std::map<
                     std::string,
@@ -264,7 +264,7 @@ class Handler : public CmdHandler
                             .emplace_back(
                                 std::make_unique<pldm::requester::oem_ibm::
                                                      DbusToFileHandler>(
-                                    hostSockFd, hostEid, dbusImplReqester, path,
+                                    hostEid, dbusImplReqester, path,
                                     handler))
                             ->processNewResourceDump(vspstring, password);
                         break;
@@ -275,7 +275,7 @@ class Handler : public CmdHandler
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
                 sdbusplus::bus::match::rules::argNpath(0, certObjPath),
-            [this, hostSockFd, hostEid, dbusImplReqester,
+            [this, hostEid, dbusImplReqester,
              handler](sdbusplus::message_t& msg) {
                 std::map<
                     std::string,
@@ -302,7 +302,7 @@ class Handler : public CmdHandler
                                     .emplace_back(std::make_unique<
                                                   pldm::requester::oem_ibm::
                                                       DbusToFileHandler>(
-                                        hostSockFd, hostEid, dbusImplReqester,
+                                        hostEid, dbusImplReqester,
                                         path, handler))
                                     ->newCsrFileAvailable(csr, fileHandle);
                                 break;

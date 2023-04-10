@@ -23,10 +23,9 @@ static constexpr auto resDumpStatus =
     "xyz.openbmc_project.Common.Progress.OperationStatus.Failed";
 
 DbusToFileHandler::DbusToFileHandler(
-    int mctp_fd, uint8_t mctp_eid, dbus_api::Requester* requester,
+    uint8_t mctp_eid, dbus_api::Requester* requester,
     sdbusplus::message::object_path resDumpCurrentObjPath,
     pldm::requester::Handler<pldm::requester::Request>* handler) :
-    mctp_fd(mctp_fd),
     mctp_eid(mctp_eid), requester(requester),
     resDumpCurrentObjPath(resDumpCurrentObjPath), handler(handler)
 {}

@@ -2,7 +2,9 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
 #include "pldmd/handler.hpp"
+
 
 namespace pldm
 {

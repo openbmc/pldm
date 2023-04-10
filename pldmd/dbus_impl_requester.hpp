@@ -39,7 +39,7 @@ class Requester : public RequesterIntf
         RequesterIntf(bus, path.c_str()){};
 
     /** @brief Implementation for RequesterIntf.GetInstanceId */
-    uint8_t getInstanceId(uint8_t eid) override;
+     virtual uint8_t getInstanceId(uint8_t eid) override;
 
     /** @brief Mark an instance id as unused
      *  @param[in] eid - MCTP eid to which this instance id belongs

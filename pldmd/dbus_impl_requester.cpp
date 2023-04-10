@@ -15,7 +15,6 @@ uint8_t Requester::getInstanceId(uint8_t eid)
 {
     if (ids.find(eid) == ids.end())
     {
-        InstanceId id;
         ids.emplace(eid, InstanceId());
     }
 

@@ -33,9 +33,9 @@ class RequestRetryTimer
   public:
     RequestRetryTimer() = delete;
     RequestRetryTimer(const RequestRetryTimer&) = delete;
-    RequestRetryTimer(RequestRetryTimer&&) = default;
+    RequestRetryTimer(RequestRetryTimer&&) = delete;
     RequestRetryTimer& operator=(const RequestRetryTimer&) = delete;
-    RequestRetryTimer& operator=(RequestRetryTimer&&) = default;
+    RequestRetryTimer& operator=(RequestRetryTimer&&) = delete;
     virtual ~RequestRetryTimer() = default;
 
     /** @brief Constructor
@@ -134,9 +134,9 @@ class Request final : public RequestRetryTimer
   public:
     Request() = delete;
     Request(const Request&) = delete;
-    Request(Request&&) = default;
+    Request(Request&&) = delete;
     Request& operator=(const Request&) = delete;
-    Request& operator=(Request&&) = default;
+    Request& operator=(Request&&) = delete;
     ~Request() = default;
 
     /** @brief Constructor
@@ -180,7 +180,7 @@ class Request final : public RequestRetryTimer
             (size_t)currentSendbuffSize < requestMsg.size())
         {
             int oldSendbuffSize = currentSendbuffSize;
-            currentSendbuffSize = requestMsg.size();
+            currentSendbuffSize = static_cast<int>(requestMsg.size());
             int res =
                 setsockopt(fd, SOL_SOCKET, SO_SNDBUF, &currentSendbuffSize,
                            sizeof(currentSendbuffSize));

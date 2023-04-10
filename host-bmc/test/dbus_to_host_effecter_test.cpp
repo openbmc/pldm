@@ -21,14 +21,14 @@ class MockHostEffecterParser : public HostEffecterParser
         HostEffecterParser(nullptr, fd, repo, dbusHandler, jsonPath, nullptr)
     {}
 
-    MOCK_METHOD(void, setHostStateEffecter,
+    MOCK_METHOD(int, setHostStateEffecter,
                 (size_t, std::vector<set_effecter_state_field>&, uint16_t),
-                (const override));
+                (override));
 
     MOCK_METHOD(void, createHostEffecterMatch,
                 (const std::string&, const std::string&, size_t, size_t,
                  uint16_t),
-                (const override));
+                (override));
 
     const std::vector<EffecterInfo>& gethostEffecterInfo()
     {
