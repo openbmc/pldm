@@ -597,6 +597,19 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     return PLDM_SUCCESS;
 }
 
+const pldm_pdr_record* pldm::responder::oem_ibm_platform::Handler::fetchLastBMCRecord(const pldm_pdr* repo)
+{
+    pldm_pdr_record* record{};
+    record = pldm_pdr_find_last_in_range(repo, 0x00000000, 0x00FFFFFF);
+    return record;
+}
+
+bool pldm::responder::oem_ibm_platform::Handler::checkRecordHandleInRange(uint32_t record_handle)
+{
+    return record_handle >= 0x01000000 &&
+	       record_handle <= 0x01FFFFFF;
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

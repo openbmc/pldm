@@ -181,6 +181,10 @@ class Handler : public oem_platform::Handler
     /** @brief to check the BMC state*/
     int checkBMCState();
 
+    const pldm_pdr_record* fetchLastBMCRecord(const pldm_pdr* repo);
+
+    bool checkRecordHandleInRange(uint32_t record_handle);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
