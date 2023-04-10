@@ -1,5 +1,6 @@
 #include "custom_dbus.hpp"
 
+#include "libpldm/platform.h"
 namespace pldm
 {
 namespace dbus
