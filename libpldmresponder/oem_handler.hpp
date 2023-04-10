@@ -90,6 +90,23 @@ class Handler : public CmdHandler
     /** @brief Interface to check the BMC state */
     virtual int checkBMCState() = 0;
 
+    /** @brief Interface to fetch the last BMC record from the PDR repo
+     *
+     *  @param[in] repo - pointer to BMC's primary PDR repo
+     *
+     *  @return the last BMC record from the repo
+     */
+    virtual const pldm_pdr_record* fetchLastBMCRecord(const pldm_pdr* repo) = 0;
+
+    /** @brief Interface to check if the record handle passed is in host PDR 
+     *  record handle range
+     *
+     *  @param[in] record_handle - record handle of the PDR
+     *
+     *  @return true if record handle passed is in host PDR record handle range
+     */
+    virtual bool checkRecordHandleInRange(uint32_t record_handle) = 0;
+
     virtual ~Handler() = default;
 
   protected:
