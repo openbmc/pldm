@@ -4,6 +4,7 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
+#include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "requester/handler.hpp"
 
@@ -93,7 +94,8 @@ class HostPDRHandler
         pldm_entity_association_tree* entityTree,
         pldm_entity_association_tree* bmcEntityTree,
         pldm::InstanceIdDb& instanceIdDb,
-        pldm::requester::Handler<pldm::requester::Request>* handler);
+        pldm::requester::Handler<pldm::requester::Request>* handler,
+        pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -182,8 +184,13 @@ class HostPDRHandler
      *  @details A merge operation involves adding a pldm_entity under the
      *  appropriate parent, and updating container ids.
      *  @param[in] pdr - entity association pdr
+     *  @param[in] size - size of input PDR record in bytes
+     *  @param[in] record_handle - record handle of the PDR
      */
-    void mergeEntityAssociations(const std::vector<uint8_t>& pdr);
+    void
+        mergeEntityAssociations(const std::vector<uint8_t>& pdr,
+                                [[maybe_unused]] const uint32_t& size,
+                                [[maybe_unused]] const uint32_t& record_handle);
 
     /** @brief process the Host's PDR and add to BMC's PDR repo
      *  @param[in] eid - MCTP id of Host
@@ -323,6 +330,9 @@ class HostPDRHandler
     /** @brief the vector of FRU Record Data Format
      */
     std::vector<responder::pdr_utils::FruRecordDataFormat> fruRecordData;
+
+    /** @OEM platform handler */
+    pldm::responder::oem_platform::Handler* oemPlatformHandler;
 
     /** @brief Object path and entity association and is only loaded once
      */
