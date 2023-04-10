@@ -35,13 +35,12 @@ class DbusToPLDMEvent
     ~DbusToPLDMEvent() = default;
 
     /** @brief Constructor
-     *  @param[in] mctp_fd - fd of MCTP communications socket
      *  @param[in] mctp_eid - MCTP EID of host firmware
      *  @param[in] requester - reference to Requester object
      *  @param[in] handler - PLDM request handler
      */
     explicit DbusToPLDMEvent(
-        int mctp_fd, uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
+        uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
         pldm::requester::Handler<pldm::requester::Request>* handler);
 
   public:
@@ -64,9 +63,6 @@ class DbusToPLDMEvent
      */
     void sendEventMsg(uint8_t eventType,
                       const std::vector<uint8_t>& eventDataVec);
-
-    /** @brief fd of MCTP communications socket */
-    int mctp_fd;
 
     /** @brief MCTP EID of host firmware */
     uint8_t mctp_eid;

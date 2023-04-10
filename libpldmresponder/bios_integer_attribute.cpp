@@ -128,12 +128,12 @@ void BIOSIntegerAttribute::constructEntry(
         }
         else
         {
-            currentValue = getAttrValue();
+            currentValue = static_cast<int64_t>(getAttrValue());
         }
     }
     else
     {
-        currentValue = getAttrValue();
+        currentValue = static_cast<int64_t>(getAttrValue());
     }
 
     table::attribute_value::constructIntegerEntry(attrValueTable, attrHandle,

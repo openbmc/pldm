@@ -95,24 +95,27 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         pdr->effecter_init = e.value("effecter_init", PLDM_NO_INIT);
         pdr->effecter_auxiliary_names = e.value("effecter_init", false);
         pdr->base_unit = e.value("base_unit", 0);
-        pdr->unit_modifier = e.value("unit_modifier", 0);
+        pdr->unit_modifier = static_cast<int8_t>(e.value("unit_modifier", 0));
         pdr->rate_unit = e.value("rate_unit", 0);
         pdr->base_oem_unit_handle = e.value("base_oem_unit_handle", 0);
         pdr->aux_unit = e.value("aux_unit", 0);
-        pdr->aux_unit_modifier = e.value("aux_unit_modifier", 0);
+        pdr->aux_unit_modifier =
+            static_cast<int8_t>(e.value("aux_unit_modifier", 0));
         pdr->aux_oem_unit_handle = e.value("aux_oem_unit_handle", 0);
         pdr->aux_rate_unit = e.value("aux_rate_unit", 0);
         pdr->is_linear = e.value("is_linear", true);
         pdr->effecter_data_size = e.value("effecter_data_size",
                                           PLDM_EFFECTER_DATA_SIZE_UINT8);
-        pdr->resolution = e.value("effecter_resolution_init", 1.00);
-        pdr->offset = e.value("offset", 0.00);
+        pdr->resolution =
+            static_cast<real32_t>(e.value("effecter_resolution_init", 1.00));
+        pdr->offset = static_cast<real32_t>(e.value("offset", 0.00));
         pdr->accuracy = e.value("accuracy", 0);
         pdr->plus_tolerance = e.value("plus_tolerance", 0);
         pdr->minus_tolerance = e.value("minus_tolerance", 0);
-        pdr->state_transition_interval = e.value("state_transition_interval",
-                                                 0.00);
-        pdr->transition_interval = e.value("transition_interval", 0.00);
+        pdr->state_transition_interval =
+            static_cast<real32_t>(e.value("state_transition_interval", 0.00));
+        pdr->transition_interval =
+            static_cast<real32_t>(e.value("transition_interval", 0.00));
         switch (pdr->effecter_data_size)
         {
             case PLDM_EFFECTER_DATA_SIZE_UINT8:
@@ -120,24 +123,30 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 pdr->min_settable.value_u8 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT8:
-                pdr->max_settable.value_s8 = e.value("max_settable", 0);
-                pdr->min_settable.value_s8 = e.value("min_settable", 0);
+                pdr->max_settable.value_s8 =
+                    static_cast<int8_t>(e.value("max_settable", 0));
+                pdr->min_settable.value_s8 =
+                    static_cast<int8_t>(e.value("min_settable", 0));
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT16:
                 pdr->max_settable.value_u16 = e.value("max_settable", 0);
                 pdr->min_settable.value_u16 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT16:
-                pdr->max_settable.value_s16 = e.value("max_settable", 0);
-                pdr->min_settable.value_s16 = e.value("min_settable", 0);
+                pdr->max_settable.value_s16 =
+                    static_cast<int16_t>(e.value("max_settable", 0));
+                pdr->min_settable.value_s16 =
+                    static_cast<int16_t>(e.value("min_settable", 0));
                 break;
             case PLDM_EFFECTER_DATA_SIZE_UINT32:
                 pdr->max_settable.value_u32 = e.value("max_settable", 0);
                 pdr->min_settable.value_u32 = e.value("min_settable", 0);
                 break;
             case PLDM_EFFECTER_DATA_SIZE_SINT32:
-                pdr->max_settable.value_s32 = e.value("max_settable", 0);
-                pdr->min_settable.value_s32 = e.value("min_settable", 0);
+                pdr->max_settable.value_s32 =
+                    static_cast<int32_t>(e.value("max_settable", 0));
+                pdr->min_settable.value_s32 =
+                    static_cast<int32_t>(e.value("min_settable", 0));
                 break;
             default:
                 break;
@@ -156,11 +165,16 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 pdr->rated_min.value_u8 = e.value("rated_min", 0);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                pdr->nominal_value.value_s8 = e.value("nominal_value", 0);
-                pdr->normal_max.value_s8 = e.value("normal_max", 0);
-                pdr->normal_min.value_s8 = e.value("normal_min", 0);
-                pdr->rated_max.value_s8 = e.value("rated_max", 0);
-                pdr->rated_min.value_s8 = e.value("rated_min", 0);
+                pdr->nominal_value.value_s8 =
+                    static_cast<int8_t>(e.value("nominal_value", 0));
+                pdr->normal_max.value_s8 =
+                    static_cast<int8_t>(e.value("normal_max", 0));
+                pdr->normal_min.value_s8 =
+                    static_cast<int8_t>(e.value("normal_min", 0));
+                pdr->rated_max.value_s8 =
+                    static_cast<int8_t>(e.value("rated_max", 0));
+                pdr->rated_min.value_s8 =
+                    static_cast<int8_t>(e.value("rated_min", 0));
                 break;
             case PLDM_RANGE_FIELD_FORMAT_UINT16:
                 pdr->nominal_value.value_u16 = e.value("nominal_value", 0);
@@ -170,11 +184,16 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 pdr->rated_min.value_u16 = e.value("rated_min", 0);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                pdr->nominal_value.value_s16 = e.value("nominal_value", 0);
-                pdr->normal_max.value_s16 = e.value("normal_max", 0);
-                pdr->normal_min.value_s16 = e.value("normal_min", 0);
-                pdr->rated_max.value_s16 = e.value("rated_max", 0);
-                pdr->rated_min.value_s16 = e.value("rated_min", 0);
+                pdr->nominal_value.value_s16 =
+                    static_cast<int16_t>(e.value("nominal_value", 0));
+                pdr->normal_max.value_s16 =
+                    static_cast<int16_t>(e.value("normal_max", 0));
+                pdr->normal_min.value_s16 =
+                    static_cast<int16_t>(e.value("normal_min", 0));
+                pdr->rated_max.value_s16 =
+                    static_cast<int16_t>(e.value("rated_max", 0));
+                pdr->rated_min.value_s16 =
+                    static_cast<int16_t>(e.value("rated_min", 0));
                 break;
             case PLDM_RANGE_FIELD_FORMAT_UINT32:
                 pdr->nominal_value.value_u32 = e.value("nominal_value", 0);
@@ -184,18 +203,28 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 pdr->rated_min.value_u32 = e.value("rated_min", 0);
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                pdr->nominal_value.value_s32 = e.value("nominal_value", 0);
-                pdr->normal_max.value_s32 = e.value("normal_max", 0);
-                pdr->normal_min.value_s32 = e.value("normal_min", 0);
-                pdr->rated_max.value_s32 = e.value("rated_max", 0);
-                pdr->rated_min.value_s32 = e.value("rated_min", 0);
+                pdr->nominal_value.value_s32 =
+                    static_cast<int32_t>(e.value("nominal_value", 0));
+                pdr->normal_max.value_s32 =
+                    static_cast<int32_t>(e.value("normal_max", 0));
+                pdr->normal_min.value_s32 =
+                    static_cast<int32_t>(e.value("normal_min", 0));
+                pdr->rated_max.value_s32 =
+                    static_cast<int32_t>(e.value("rated_max", 0));
+                pdr->rated_min.value_s32 =
+                    static_cast<int32_t>(e.value("rated_min", 0));
                 break;
             case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                pdr->nominal_value.value_f32 = e.value("nominal_value", 0);
-                pdr->normal_max.value_f32 = e.value("normal_max", 0);
-                pdr->normal_min.value_f32 = e.value("normal_min", 0);
-                pdr->rated_max.value_f32 = e.value("rated_max", 0);
-                pdr->rated_min.value_f32 = e.value("rated_min", 0);
+                pdr->nominal_value.value_f32 =
+                    static_cast<real32_t>(e.value("nominal_value", 0));
+                pdr->normal_max.value_f32 =
+                    static_cast<real32_t>(e.value("normal_max", 0));
+                pdr->normal_min.value_f32 =
+                    static_cast<real32_t>(e.value("normal_min", 0));
+                pdr->rated_max.value_f32 =
+                    static_cast<real32_t>(e.value("rated_max", 0));
+                pdr->rated_min.value_f32 =
+                    static_cast<real32_t>(e.value("rated_min", 0));
                 break;
             default:
                 break;

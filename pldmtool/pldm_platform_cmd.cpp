@@ -58,7 +58,7 @@ class GetPDR : public CommandInterface
     GetPDR(const GetPDR&) = delete;
     GetPDR(GetPDR&&) = default;
     GetPDR& operator=(const GetPDR&) = delete;
-    GetPDR& operator=(GetPDR&&) = default;
+    GetPDR& operator=(GetPDR&&) = delete;
 
     using CommandInterface::CommandInterface;
 
@@ -1068,7 +1068,7 @@ class SetStateEffecter : public CommandInterface
     SetStateEffecter(const SetStateEffecter&) = delete;
     SetStateEffecter(SetStateEffecter&&) = default;
     SetStateEffecter& operator=(const SetStateEffecter&) = delete;
-    SetStateEffecter& operator=(SetStateEffecter&&) = default;
+    SetStateEffecter& operator=(SetStateEffecter&&) = delete;
 
     // compositeEffecterCount(value: 0x01 to 0x08) * stateField(2)
     static constexpr auto maxEffecterDataSize = 16;
@@ -1163,7 +1163,7 @@ class SetNumericEffecterValue : public CommandInterface
     SetNumericEffecterValue(const SetNumericEffecterValue&) = delete;
     SetNumericEffecterValue(SetNumericEffecterValue&&) = default;
     SetNumericEffecterValue& operator=(const SetNumericEffecterValue&) = delete;
-    SetNumericEffecterValue& operator=(SetNumericEffecterValue&&) = default;
+    SetNumericEffecterValue& operator=(SetNumericEffecterValue&&) = delete;
 
     explicit SetNumericEffecterValue(const char* type, const char* name,
                                      CLI::App* app) :
@@ -1245,7 +1245,7 @@ class GetStateSensorReadings : public CommandInterface
     GetStateSensorReadings(const GetStateSensorReadings&) = delete;
     GetStateSensorReadings(GetStateSensorReadings&&) = default;
     GetStateSensorReadings& operator=(const GetStateSensorReadings&) = delete;
-    GetStateSensorReadings& operator=(GetStateSensorReadings&&) = default;
+    GetStateSensorReadings& operator=(GetStateSensorReadings&&) = delete;
 
     explicit GetStateSensorReadings(const char* type, const char* name,
                                     CLI::App* app) :
