@@ -141,7 +141,7 @@ class BIOSConfig
     BaseBIOSTable baseBIOSTableMaps;
 
     /** @brief socket descriptor to communicate to host */
-    int fd;
+    [[maybe_unused]] int fd;
 
     /** @brief MCTP EID of host firmware */
     uint8_t eid;
