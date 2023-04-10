@@ -35,6 +35,8 @@ int setupUnixSocket(const std::string& socketInterface);
  */
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
+
+bool checkIfUpdateContainerId(const uint16_t& containerId);
 } // namespace utils
 } // namespace responder
 } // namespace pldm
