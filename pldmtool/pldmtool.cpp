@@ -29,7 +29,7 @@ class RawOp : public CommandInterface
     RawOp(const RawOp&) = delete;
     RawOp(RawOp&&) = default;
     RawOp& operator=(const RawOp&) = delete;
-    RawOp& operator=(RawOp&&) = default;
+    RawOp& operator=(RawOp&&) = delete;
 
     explicit RawOp(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)

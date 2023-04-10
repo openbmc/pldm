@@ -59,7 +59,7 @@ TEST_F(DeviceUpdaterTest, validatePackage)
     packageHeader.resize(pkgHeaderInfoSize);
     package.seekg(0);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 pkgHeaderInfoSize);
+                 static_cast<int64_t>(pkgHeaderInfoSize));
 
     auto parser = parsePkgHeader(packageHeader);
     EXPECT_NE(parser, nullptr);
@@ -67,7 +67,7 @@ TEST_F(DeviceUpdaterTest, validatePackage)
     package.seekg(0);
     packageHeader.resize(parser->pkgHeaderSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 parser->pkgHeaderSize);
+                 static_cast<int64_t>(parser->pkgHeaderSize));
 
     parser->parse(packageHeader, packageSize);
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
