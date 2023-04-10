@@ -21,6 +21,11 @@ namespace oem_ibm_platform
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
+constexpr uint32_t BMC_PDR_START_RANGE = 0x00000000;
+constexpr uint32_t BMC_PDR_END_RANGE = 0x00FFFFFF;
+constexpr uint32_t HOST_PDR_START_RANGE = 0x01000000;
+constexpr uint32_t HOST_PDR_END_RANGE = 0x01FFFFFF;
+
 enum SetEventReceiverCount
 {
     SET_EVENT_RECEIVER_SENT = 0x2,
@@ -180,6 +185,23 @@ class Handler : public oem_platform::Handler
 
     /** @brief to check the BMC state*/
     int checkBMCState();
+
+    /** @brief Method to fetch the last BMC record from the PDR repo
+     *
+     * @param[in] repo - pointer to BMC's primary PDR repo
+     *
+     * @return the last BMC record from the repo
+     */
+    const pldm_pdr_record* fetchLastBMCRecord(const pldm_pdr* repo);
+
+    /** @brief Method to check if the record handle passed is in remote PDR 
+     *  record handle range
+     *
+     *  @param[in] record_handle - record handle of the PDR
+     *
+     *  @return true if record handle passed is in host PDR record handle range
+     */
+    bool checkRecordHandleInRange(uint32_t record_handle);
 
     ~Handler() = default;
 
