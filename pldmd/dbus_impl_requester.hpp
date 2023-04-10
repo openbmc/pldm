@@ -32,28 +32,28 @@ class Requester : public RequesterIntf
     Requester& operator=(Requester&&) = delete;
     virtual ~Requester() = default;
 
-    /** @brief Constructor to put object onto bus at a dbus path.
-     *  @param[in] bus - Bus to attach to.
-     *  @param[in] path - Path to attach at.
-     *  @param[in] db - The database to use for allocating instance IDs
-     *  @note will throw TooManyResources() if there were no free instance IDs
-     *  Throws std::system_category().default_error_condition if there is
-     *  something wrong with the instance ID database.
-     */
-    Requester(sdbusplus::bus_t& bus, const std::string& path,
+/** @brief Constructor to put object onto bus at a dbus path.
+ *  @param[in] bus - Bus to attach to.
+ *  @param[in] path - Path to attach at.
+ *  @param[in] db - The database to use for allocating instance IDs
+ *  @note will throw TooManyResources() if there were no free instance IDs
+ *  Throws std::system_category().default_error_condition if there is
+ *  something wrong with the instance ID database.
+ */
+Requester(sdbusplus::bus_t& bus, const std::string& path,
               InstanceIdDb& db) :
         RequesterIntf(bus, path.c_str()),
         pldmInstanceIdDb(db){};
 
-    /** @brief Implementation for RequesterIntf.GetInstanceId */
-    uint8_t getInstanceId(uint8_t eid) override
+/** @brief Implementation for RequesterIntf.GetInstanceId */
+uint8_t getInstanceId(uint8_t eid) override
     {
         int id;
 
         // Ideally we would be able to look up the TID for a given EID. We don't
-        // have that infrastructure in place yet. So use the EID value for the
-        // TID. This is an interim step towards the PLDM requester logic moving
-        // into libpldm, and eventually this won't be needed.
+        //  have that infrastructure in place yet. So use the EID value for the
+        //  TID. This is an interim step towards the PLDM requester logic moving
+        //  into libpldm, and eventually this won't be needed.
         try
         {
             id = pldmInstanceIdDb.next(eid);
@@ -67,15 +67,15 @@ class Requester : public RequesterIntf
         return id;
     }
 
-    /** @brief Mark an instance id as unused
-     *  @param[in] eid - MCTP eid to which this instance id belongs
-     *  @param[in] instanceId - PLDM instance id to be freed
-     *  @note will throw std::runtime_error if the instance ID was not
-     *  previously allocated.
-     *  Throws std::system_category().default_error_condition if there is
-     *  something wrong with the instance ID database.
-     */
-    void markFree(uint8_t eid, uint8_t instanceId)
+/** @brief Mark an instance id as unused
+ *  @param[in] eid - MCTP eid to which this instance id belongs
+ *  @param[in] instanceId - PLDM instance id to be freed
+ *  @note will throw std::runtime_error if the instance ID was not
+ *  previously allocated.
+ *  Throws std::system_category().default_error_condition if there is
+ *  something wrong with the instance ID database.
+ */
+void markFree(uint8_t eid, uint8_t instanceId)
     {
         pldmInstanceIdDb.free(eid, instanceId);
     }

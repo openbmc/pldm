@@ -239,7 +239,7 @@ int main(int argc, char** argv)
                 &dbusImplReq, sockfd, pdrRepo.get(), &dbusHandler,
                 HOST_JSONS_DIR, &reqHandler);
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
-            sockfd, hostEID, dbusImplReq, &reqHandler);
+            hostEID, dbusImplReq, &reqHandler);
     }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 

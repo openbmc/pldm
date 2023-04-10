@@ -1,6 +1,9 @@
 #include <libpldm/entity.h>
 #include <libpldm/entity_oem_ibm.h>
 #include <libpldm/state_set_oem_ibm.h>
+#include <stdint.h>
+#include <string>
+#include <map>
 
 /** @brief PLDM OEM IBM Code Update possible state set values
  */
@@ -85,7 +88,7 @@ extern const std::map<uint8_t, std::string> SetOemIBMBootStateValues{
 
 /** @brief Map for populating PLDM OEM IBM state sets with possible state values
  */
-extern const std::map<uint16_t, const std::map<uint8_t, std::string>>
+extern const std::map<uint16_t, const std::map<uint8_t, std::string> >
     populateOemIBMStateMaps{
         {PLDM_OEM_IBM_VERIFICATION_STATE, SetOemIBMVerStateValues},
         {PLDM_OEM_IBM_SYSTEM_POWER_STATE, SetOemIBMSysPowerStatesValues},

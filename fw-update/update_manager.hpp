@@ -6,6 +6,8 @@
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
 #include "watch.hpp"
+#include "activation.hpp"
+
 
 #include <libpldm/base.h>
 #include <libpldm/pldm.h>
