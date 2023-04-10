@@ -18,21 +18,18 @@ namespace oem_ibm
 using namespace pldm::utils;
 using namespace sdbusplus::bus::match::rules;
 
-static constexpr auto resDumpObjPath =
-    "/xyz/openbmc_project/dump/resource/entry";
-static constexpr auto resDumpEntry = "com.ibm.Dump.Entry.Resource";
 static constexpr auto resDumpProgressIntf =
     "xyz.openbmc_project.Common.Progress";
 static constexpr auto resDumpStatus =
     "xyz.openbmc_project.Common.Progress.OperationStatus.Failed";
 
 DbusToFileHandler::DbusToFileHandler(
-    int mctp_fd, uint8_t mctp_eid, pldm::InstanceIdDb* instanceIdDb,
+    uint8_t mctp_eid, pldm::InstanceIdDb* instanceIdDb,
     sdbusplus::message::object_path resDumpCurrentObjPath,
     pldm::requester::Handler<pldm::requester::Request>* handler) :
-    mctp_fd(mctp_fd),
-    mctp_eid(mctp_eid), instanceIdDb(instanceIdDb),
-    resDumpCurrentObjPath(resDumpCurrentObjPath), handler(handler)
+    mctp_eid(mctp_eid),
+    instanceIdDb(instanceIdDb), resDumpCurrentObjPath(resDumpCurrentObjPath),
+    handler(handler)
 {}
 
 void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
