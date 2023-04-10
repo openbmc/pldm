@@ -15,13 +15,10 @@
 
 namespace pldm
 {
-
 namespace responder
 {
-
 namespace dbus
 {
-
 using Value =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
                  uint64_t, double, std::string, std::vector<uint8_t>>;
@@ -143,13 +140,16 @@ class FruImpl
 
     /** @brief Get pldm entity by the object path
      *
-     *  @param[in] intfMaps - D-Bus interfaces and the associated property
-     *                        values for the FRU
+     *
+     *  @param[in] objects - std::map The object value tree
+     *  @param[in] path - Object path
+     *
      *
      *  @return pldm_entity
      */
-    std::optional<pldm_entity>
-        getEntityByObjectPath(const dbus::InterfaceMap& intfMaps);
+
+    pldm_entity getEntityByObjectPath(const dbus::ObjectValueTree& objects,
+                                      const std::string& path);
 
     /** @brief Update pldm entity to association tree
      *
@@ -201,7 +201,7 @@ class FruImpl
     pldm_entity_association_tree* entityTree;
     pldm_entity_association_tree* bmcEntityTree;
 
-    std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
+    std::map<dbus::ObjectPath, pldm_entity> objToEntityNode{};
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
      *         updates the FRU table with the FRU records.
@@ -222,7 +222,6 @@ class FruImpl
 
 namespace fru
 {
-
 class Handler : public CmdHandler
 {
   public:

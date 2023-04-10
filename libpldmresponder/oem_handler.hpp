@@ -90,6 +90,10 @@ class Handler : public CmdHandler
     /** @brief Interface to check the BMC state */
     virtual int checkBMCState() = 0;
 
+    virtual const pldm_pdr_record* fetchLastBMCRecord(const pldm_pdr* repo) = 0;
+
+    virtual bool checkRecordHandleInRange(uint32_t record_handle) = 0;
+
     virtual ~Handler() = default;
 
   protected:
