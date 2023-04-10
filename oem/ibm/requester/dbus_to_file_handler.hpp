@@ -32,14 +32,13 @@ class DbusToFileHandler
     ~DbusToFileHandler() = default;
 
     /** @brief Constructor
-     *  @param[in] mctp_fd - fd of MCTP communications socket
      *  @param[in] mctp_eid - MCTP EID of host firmware
      *  @param[in] instanceIdDb - pointer to a InstanceIdDb object
      *  @param[in] resDumpCurrentObjPath - resource dump current object path
      *  @param[in] handler - PLDM request handler
      */
     DbusToFileHandler(
-        int mctp_fd, uint8_t mctp_eid, pldm::InstanceIdDb* instanceIdDb,
+        uint8_t mctp_eid, pldm::InstanceIdDb* instanceIdDb,
         sdbusplus::message::object_path resDumpCurrentObjPath,
         pldm::requester::Handler<pldm::requester::Request>* handler);
 
@@ -78,9 +77,6 @@ class DbusToFileHandler
 
     /** @brief method to get the acf file contents */
     std::string getAcfFileContent();
-
-    /** @brief fd of MCTP communications socket */
-    int mctp_fd;
 
     /** @brief MCTP EID of host firmware */
     uint8_t mctp_eid;

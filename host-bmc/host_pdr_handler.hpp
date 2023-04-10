@@ -213,7 +213,7 @@ class HostPDRHandler
                                sdeventplus::source::EventBase& source);
 
     /** @brief fd of MCTP communications socket */
-    int mctp_fd;
+    [[maybe_unused]] int mctp_fd;
     /** @brief MCTP EID of host firmware */
     uint8_t mctp_eid;
     /** @brief reference of main event loop of pldmd, primarily used to schedule
@@ -228,7 +228,7 @@ class HostPDRHandler
     pldm_entity_association_tree* entityTree;
 
     /** @brief Pointer to BMC's entity association tree */
-    pldm_entity_association_tree* bmcEntityTree;
+    [[maybe_unused]] pldm_entity_association_tree* bmcEntityTree;
 
     /** @brief reference to Instance ID database object, used to obtain PLDM
      * instance IDs
