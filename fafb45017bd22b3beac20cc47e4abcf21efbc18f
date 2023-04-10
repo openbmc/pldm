@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc354d00_e4f2ef3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-04-10T10:18:40Z",
+      "side": 1,
+      "message": "Changes looks good to me , just a small change needed in the option readme.",
+      "revId": "fafb45017bd22b3beac20cc47e4abcf21efbc18f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0633e039_3cd74ab4",
+        "filename": "meson_options.txt",
+        "patchSetId": 18
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-04-10T10:18:40Z",
+      "side": 1,
+      "message": "There is no retry on dbus.\n\nyou can rephrase this as :\n\nThe amount of time pldm waits to get a response for a dbus message before timing out.",
+      "range": {
+        "startLine": 19,
+        "startChar": 77,
+        "endLine": 19,
+        "endChar": 157
+      },
+      "revId": "fafb45017bd22b3beac20cc47e4abcf21efbc18f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
