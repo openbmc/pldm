@@ -1,8 +1,7 @@
 requester_inc = include_directories('../../')
 test_src = declare_dependency(
           sources: [
-            '../../pldmd/dbus_impl_requester.cpp',
-            '../../pldmd/instance_id.cpp'],
+            '../../pldmd/dbus_impl_requester.cpp'],
           include_directories:requester_inc)
 
 tests = [
