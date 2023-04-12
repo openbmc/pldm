@@ -1,0 +1,9 @@
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: Shawn McCarney <shawnmm@us.ibm.com>
+Code-Review+1: Jayashankar Padath <jayashankarpadath@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Wed, 12 Apr 2023 06:52:16 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/61916
+Project: openbmc/pldm
+Branch: refs/heads/master
