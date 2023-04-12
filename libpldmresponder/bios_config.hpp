@@ -204,11 +204,11 @@ class BIOSConfig
                         }));
 
                 biosAttrMatch.push_back(
-                    std::make_unique<sdbusplus::bus::match::match>(
+                    std::make_unique<sdbusplus::bus::match_t>(
                         pldm::utils::DBusHandler::getBus(),
                         interfacesAdded() + argNpath(0, dBusMap->objectPath),
                         [this, biosAttrIndex, interface = dBusMap->interface](
-                            sdbusplus::message::message& msg) {
+                            sdbusplus::message_t& msg) {
                             sdbusplus::message::object_path path;
                             DbusIfacesAdded interfaces;
 
