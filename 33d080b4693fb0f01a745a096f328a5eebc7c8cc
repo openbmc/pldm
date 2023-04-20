@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da5bb1f3_c325c971",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-04-20T00:39:04Z",
+      "side": 1,
+      "message": "This will fail to build until https://gerrit.openbmc.org/c/openbmc/libpldm/+/62456 is merged into libpldm.",
+      "revId": "33d080b4693fb0f01a745a096f328a5eebc7c8cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
