@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9227d7e_954d352f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-24T14:56:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure what to do here.  Neither xyz.openbmc_project.MCTP nor xyz.openbmc_project.MCTP.Control exist in our organization.\n\n@arj - is this all moving to the CodeConstruct daemon anyhow?",
+      "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
