@@ -1,0 +1,7 @@
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Pavithra Barithaya <pavithra.b@ibm.com>
+Submitted-at: Tue, 25 Apr 2023 10:20:04 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/62560
+Project: openbmc/pldm
+Branch: refs/heads/master
