@@ -1,5 +1,6 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/base.hpp"
+#include "pldmd/instance_id.hpp"
 #include "test/test-instance-id.hpp"
 
 #include <libpldm/base.h>
@@ -17,11 +18,13 @@ class TestBaseCommands : public testing::Test
 {
   protected:
     TestBaseCommands() :
-        requester(pldm::utils::DBusHandler::getBus(), "/abc/def"),
+        instanceIdDb(),
+        requester(pldm::utils::DBusHandler::getBus(), "/abc/def", this->instanceIdDb),
         event(sdeventplus::Event::get_default())
     {}
 
     uint8_t mctpEid = 0;
+    TestInstanceIdDb instanceIdDb;
     Requester requester;
     sdeventplus::Event event;
 };
