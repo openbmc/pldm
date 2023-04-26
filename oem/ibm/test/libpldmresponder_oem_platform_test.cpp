@@ -45,6 +45,30 @@ class MockOemPlatformHandler : public oem_ibm_platform::Handler
     MOCK_METHOD(uint16_t, getNextSensorId, ());
 };
 
+static constexpr auto pldmMaxInstanceIds = 32;
+void setupInstanceDbPath(std::filesystem::path& dbPath, int& fd)
+{
+    static const char dbTmpl[] = "/tmp/db.XXXXXX";
+    char dbName[sizeof(dbTmpl)] = {};
+
+    ::strncpy(dbName, dbTmpl, sizeof(dbName));
+    fd = ::mkstemp(dbName);
+    if (fd == -1)
+    {
+        throw std::exception();
+    }
+
+    dbPath = std::filesystem::path(dbName);
+    std::filesystem::resize_file(dbPath,
+                                 (uintmax_t)(PLDM_MAX_TIDS)*pldmMaxInstanceIds);
+}
+
+void tearDownInstanceDbPath(std::filesystem::path& dbPath, int& fd)
+{
+    std::filesystem::remove(dbPath);
+    ::close(fd);
+}
+
 TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
 {
     uint16_t entityID_ = PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE;
@@ -52,8 +76,12 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
     uint16_t effecterId = 0xA;
+    std::filesystem::path dbPath;
+    int fd = -1;
+    setupInstanceDbPath(dbPath, fd);
+
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    Requester requester(bus, "/abc/def");
+    Requester requester(bus, "/abc/def", dbPath);
     auto event = sdeventplus::Event::get_default();
     std::vector<get_sensor_state_field> stateField;
 
@@ -122,6 +150,7 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
         entityID_, entityInstance_, stateSetId_, compSensorCnt_,
         setEffecterStateField, effecterId);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
+    tearDownInstanceDbPath(dbPath, fd);
 }
 
 TEST(EncodeCodeUpdateEvent, testGoodRequest)
@@ -186,7 +215,10 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    Requester requester(bus, "/abc/def");
+    std::filesystem::path dbPath;
+    int fd = -1;
+    setupInstanceDbPath(dbPath, fd);
+    Requester requester(bus, "/abc/def", dbPath);
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
     auto event = sdeventplus::Event::get_default();
     std::unique_ptr<CodeUpdate> mockCodeUpdate =
@@ -285,13 +317,17 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(states->states[0].byte, bf3.byte);
 
     pldm_pdr_destroy(inPDRRepo);
+    tearDownInstanceDbPath(dbPath, fd);
 }
 
 TEST(generateStateSensorOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    Requester requester(bus, "/abc/def");
+    std::filesystem::path dbPath;
+    int fd = -1;
+    setupInstanceDbPath(dbPath, fd);
+    Requester requester(bus, "/abc/def", dbPath);
 
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
     auto event = sdeventplus::Event::get_default();
@@ -387,4 +423,5 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(states->states[0].byte, bf3.byte);
 
     pldm_pdr_destroy(inPDRRepo);
+    tearDownInstanceDbPath(dbPath, fd);
 }

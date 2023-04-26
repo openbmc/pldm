@@ -196,6 +196,7 @@ int main(int argc, char** argv)
     auto& bus = pldm::utils::DBusHandler::getBus();
     sdbusplus::server::manager_t objManager(bus,
                                             "/xyz/openbmc_project/software");
+
     dbus_api::Requester dbusImplReq(bus, "/xyz/openbmc_project/pldm");
 
     Invoker invoker{};

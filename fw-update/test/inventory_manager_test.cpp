@@ -4,19 +4,21 @@
 
 #include <libpldm/firmware_update.h>
 
+#include <test/test-instance-id.hpp>
+
 #include <gtest/gtest.h>
 
 using namespace pldm;
 using namespace std::chrono;
 using namespace pldm::fw_update;
 
-class InventoryManagerTest : public testing::Test
+class InventoryManagerTest : public testing::Test, public TestWrapper
 {
   protected:
     InventoryManagerTest() :
         event(sdeventplus::Event::get_default()),
         dbusImplRequester(pldm::utils::DBusHandler::getBus(),
-                          "/xyz/openbmc_project/pldm"),
+                          "/xyz/openbmc_project/pldm", dbPath),
         reqHandler(fd, event, dbusImplRequester, false, 90000, seconds(1), 2,
                    milliseconds(100)),
         inventoryManager(reqHandler, dbusImplRequester, outDescriptorMap,

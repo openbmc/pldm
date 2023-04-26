@@ -1,10 +1,12 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/base.hpp"
+#include "pldmd/instance_id.hpp"
 
 #include <libpldm/base.h>
 #include <string.h>
 
 #include <sdeventplus/event.hpp>
+#include <test/test-instance-id.hpp>
 
 #include <array>
 
@@ -12,11 +14,11 @@
 
 using namespace pldm::responder;
 
-class TestBaseCommands : public testing::Test
+class TestBaseCommands : public testing::Test, public TestWrapper
 {
   protected:
     TestBaseCommands() :
-        requester(pldm::utils::DBusHandler::getBus(), "/abc/def"),
+        requester(pldm::utils::DBusHandler::getBus(), "/abc/def", dbPath),
         event(sdeventplus::Event::get_default())
     {}
 
