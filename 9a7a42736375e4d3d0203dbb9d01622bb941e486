@@ -34,6 +34,24 @@
       "parentUuid": "f9227d7e_954d352f",
       "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e9150a2_661251d5",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-04-27T03:33:05Z",
+      "side": 1,
+      "message": "CodeConstruct\u0027s mctpd.service indeed is the interface I adapted. For now, it seems like it\u0027s the only one application to setup the mctp network (AF_MCTP) in openBMC.",
+      "parentUuid": "126e99c2_24ba8378",
+      "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
