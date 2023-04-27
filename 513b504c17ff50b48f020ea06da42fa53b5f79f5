@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09d21077_4658a160",
+        "filename": "meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "Probably worth a comment that this is to enable the poll APIs in libpldm?",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75029fe4_f65e97e6",
+        "filename": "oem/ibm/test/libpldmresponder_oem_platform_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "Would it not be more maintainable to make these `TEST_F()` instead of just `TEST()`? Leaving them as `TEST()` forces the manual setup and cleanup as you have below. `TEST_F()` would automate it.",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ef4d60c_11a29634",
+        "filename": "pldmd/dbus_impl_requester.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "I think we just inline this in the header now? Not sure why we should keep the `.cpp` lying around.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 1
+      },
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e74460_f50fab87",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "Is there any benefit to passing a `InstanceIdDb` instance instead? That way you could have a single constructor for `Requester` and the caller makes the decision about how the `InstanceIdDb` is configured.",
+      "range": {
+        "startLine": 41,
+        "startChar": 14,
+        "endLine": 41,
+        "endChar": 45
+      },
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "701e8310_32352bb0",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "This feels like there are too many layers of indirection...",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 5
+      },
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f61f2ca_4004e3d7",
+        "filename": "pldmd/instance_id.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "We need to do something more informative than just kill pldmd with no explanation.",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16438a25_d26b00ec",
+        "filename": "pldmd/instance_id.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e59bf40_e345aba7",
+        "filename": "pldmd/instance_id.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "This is better, though it would be a further improvement to log a message before throwing the exception.",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebfd4d71_ec95c56a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-27T06:00:18Z",
+      "side": 1,
+      "message": "Unnecessary change?",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
