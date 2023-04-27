@@ -70,6 +70,24 @@
       "parentUuid": "9e9150a2_661251d5",
       "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8057f74a_382d1d52",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-27T16:29:01Z",
+      "side": 1,
+      "message": "They should have been using an au.CodeConstruct name then, in my opinion.\n\nI\u0027ll let the maintainers on this repo review this further.  Seems like others have a handle on what\u0027s going on.",
+      "parentUuid": "066af142_32aa0e4d",
+      "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
