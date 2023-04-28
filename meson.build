@@ -58,11 +58,15 @@ conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
 conf_data.set('FLIGHT_RECORDER_MAX_ENTRIES',get_option('flightrecorder-max-entries'))
 conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
 conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
+
+# Enable the poll APIs in libpldm
+cpp = meson.get_compiler('cpp')
+if cpp.has_header('poll.h')
+    conf_data.set('HAS_POLL', 1)
+endif
 configure_file(output: 'config.h',
   configuration: conf_data
 )
-
-cpp = meson.get_compiler('cpp')
 
 phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
 sdbusplus = dependency('sdbusplus')
@@ -175,8 +179,6 @@ endif
 executable(
   'pldmd',
   'pldmd/pldmd.cpp',
-  'pldmd/dbus_impl_requester.cpp',
-  'pldmd/instance_id.cpp',
   'pldmd/dbus_impl_pdr.cpp',
   'fw-update/inventory_manager.cpp',
   'fw-update/package_parser.cpp',
