@@ -3,6 +3,7 @@
 #include "mock_request.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
+#include "test/test-instance-id.hpp"
 
 #include <libpldm/base.h>
 

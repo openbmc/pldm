@@ -1,5 +1,6 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/base.hpp"
+#include "test/test-instance-id.hpp"
 
 #include <libpldm/base.h>
 #include <string.h>
