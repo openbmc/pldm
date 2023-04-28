@@ -6,6 +6,7 @@
 #include "libpldmresponder/platform.hpp"
 #include "oem/ibm/libpldmresponder/inband_code_update.hpp"
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <libpldm/entity.h>
 #include <libpldm/entity_oem_ibm.h>
@@ -52,8 +53,10 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     uint16_t entityInstance_ = 0;
     uint8_t compSensorCnt_ = 1;
     uint16_t effecterId = 0xA;
+    TestInstanceIdDb instanceIdDb;
+
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    Requester requester(bus, "/abc/def");
+    Requester requester(bus, "/abc/def", instanceIdDb);
     auto event = sdeventplus::Event::get_default();
     std::vector<get_sensor_state_field> stateField;
 
@@ -186,7 +189,9 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    Requester requester(bus, "/abc/def");
+    std::filesystem::path dbPath;
+    TestInstanceIdDb instanceIdDb;
+    Requester requester(bus, "/abc/def", instanceIdDb);
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
     auto event = sdeventplus::Event::get_default();
     std::unique_ptr<CodeUpdate> mockCodeUpdate =
@@ -291,7 +296,9 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    Requester requester(bus, "/abc/def");
+    std::filesystem::path dbPath;
+    TestInstanceIdDb instanceIdDb;
+    Requester requester(bus, "/abc/def", instanceIdDb);
 
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
     auto event = sdeventplus::Event::get_default();
