@@ -62,6 +62,18 @@ class Terminus
     /** @brief A flag to indicate if terminus has been initialzed */
     bool initalized;
 
+    /** @brief maximum message buffer size the terminus can send and receive */
+    uint16_t maxBufferSize;
+
+    /** @brief This value indicates the event messaging styles supported by the
+     * terminus */
+    bitfield8_t synchronyConfigurationSupported;
+
+    /** @brief The flag indicates that the terminus FIFO contains a large
+     * message that will require a multipart transfer via the
+     * PollForPlatformEvent command */
+    bool pollEvent;
+
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 
