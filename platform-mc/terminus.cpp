@@ -8,9 +8,13 @@ namespace pldm
 {
 namespace platform_mc
 {
+/* default the max message buffer size BMC supported to 4K bytes */
+#define MAX_MESSAGE_BUFFER_SIZE 4096
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
-    initalized(false), tid(tid), supportedTypes(supportedTypes)
+    initalized(false), maxBufferSize(MAX_MESSAGE_BUFFER_SIZE),
+    synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
+    supportedTypes(supportedTypes)
 {
     inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
                     std::to_string(tid);
