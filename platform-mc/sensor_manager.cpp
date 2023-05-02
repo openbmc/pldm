@@ -1,5 +1,6 @@
 #include "sensor_manager.hpp"
 
+#include "manager.hpp"
 #include "terminus_manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -13,11 +14,12 @@ namespace platform_mc
 
 SensorManager::SensorManager(sdeventplus::Event& event,
                              TerminusManager& terminusManager,
-                             TerminiMapper& termini, bool verbose,
+                             TerminiMapper& termini, Manager* manager,
+                             bool verbose,
                              const std::filesystem::path& configJson) :
     event(event),
     terminusManager(terminusManager), termini(termini),
-    pollingTime(SENSOR_POLLING_TIME), verbose(verbose)
+    pollingTime(SENSOR_POLLING_TIME), verbose(verbose), manager(manager)
 {
     // default priority sensor name spaces
     prioritySensorNameSpaces.emplace_back(
