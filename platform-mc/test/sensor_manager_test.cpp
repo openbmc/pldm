@@ -20,8 +20,9 @@ class SensorManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()),
         dbusImplRequester(bus, "/xyz/openbmc_project/pldm"),
         reqHandler(fd, event, dbusImplRequester, 1000, false),
-        terminusManager(event, reqHandler, dbusImplRequester, termini, nullptr),
-        sensorManager(event, terminusManager, termini)
+        terminusManager(event, reqHandler, dbusImplRequester, termini, 0x0,
+                        nullptr),
+        sensorManager(event, terminusManager, termini, nullptr)
     {}
 
     void runEventLoopForSeconds(uint64_t sec)

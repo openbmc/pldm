@@ -44,7 +44,8 @@ class TerminusManager
         sdeventplus::Event& event,
         requester::Handler<requester::Request>& handler,
         dbus_api::Requester& requester,
-        std::map<tid_t, std::shared_ptr<Terminus>>& termini, Manager* manager);
+        std::map<tid_t, std::shared_ptr<Terminus>>& termini,
+        mctp_eid_t localEid, Manager* manager);
 
     /** @brief start a coroutine to discover terminus
      *
@@ -86,6 +87,15 @@ class TerminusManager
     std::optional<tid_t> mapTid(const MctpInfo& mctpInfo);
     std::optional<tid_t> mapTid(const MctpInfo& mctpInfo, tid_t tid);
     bool unmapTid(const tid_t& tid);
+
+    /** @brief getter of local EID
+     *
+     *  @return uint8_t - local EID
+     */
+    mctp_eid_t getLocalEid()
+    {
+        return localEid;
+    }
 
   private:
     /** @brief The coroutine task execute by discoverMctpTerminus()
@@ -133,6 +143,9 @@ class TerminusManager
 
     /** @brief Managed termini list */
     std::map<tid_t, std::shared_ptr<Terminus>>& termini;
+
+    /** @brief local EID */
+    mctp_eid_t localEid;
 
     /** @brief tables for maintaining assigned TID */
     std::vector<bool> tidPool;
