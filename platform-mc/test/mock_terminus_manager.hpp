@@ -19,7 +19,8 @@ class MockTerminusManager : public TerminusManager
                         pldm::InstanceIdDb& instanceIdDb,
                         std::map<tid_t, std::shared_ptr<Terminus>>& termini,
                         Manager* manager) :
-        TerminusManager(event, handler, instanceIdDb, termini, manager)
+        TerminusManager(event, handler, instanceIdDb, termini, LOCAL_EID,
+                        manager)
     {}
 
     requester::Coroutine SendRecvPldmMsgOverMctp(mctp_eid_t /*eid*/,
