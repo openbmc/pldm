@@ -41,6 +41,25 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         std::make_shared<Terminus>(tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
     auto terminus = termini[tid];
 
+    // queue dummy eventMessageBufferSize response
+    const size_t eventMessageBufferSizeRespLen = 1;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + eventMessageBufferSizeRespLen>
+        eventMessageBufferSizeResp{0x0, 0x02, 0x0d, PLDM_ERROR};
+    auto rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)eventMessageBufferSizeResp.data(),
+        sizeof(eventMessageBufferSizeResp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    // queue dummy eventMessageSupported response
+    const size_t eventMessageSupportedLen = 1;
+    PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + eventMessageSupportedLen>
+        eventMessageSupportedResp{0x0, 0x02, 0x0c, PLDM_ERROR};
+    rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)eventMessageSupportedResp.data(),
+        sizeof(eventMessageSupportedResp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
     // queue getPDRRepositoryInfo response
     const size_t getPDRRepositoryInfoLen =
         PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES;
@@ -57,7 +76,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
             59,  0x0,  0x0,  0x0,                    // largestRecordSize
             0x0 // dataTransferHandleTimeout
         };
-    auto rc = mockTerminusManager.enqueueResponse(
+    rc = mockTerminusManager.enqueueResponse(
         (pldm_msg*)getPDRRepositoryInfoResp.data(),
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
