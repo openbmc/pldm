@@ -45,10 +45,10 @@ class TerminusManager
         requester::Handler<requester::Request>& handler,
         pldm::InstanceIdDb& instanceIdDb,
         std::map<pldm_tid_t, std::shared_ptr<Terminus>>& termini,
-        Manager* manager) :
+        mctp_eid_t localEid, Manager* manager) :
         event(event),
         handler(handler), instanceIdDb(instanceIdDb), termini(termini),
-        tidPool(tidPoolSize, false), manager(manager)
+        localEid(localEid), tidPool(tidPoolSize, false), manager(manager)
     {
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
         tidPool[0] = true;
@@ -101,6 +101,15 @@ class TerminusManager
     std::optional<pldm_tid_t> mapTid(const MctpInfo& mctpInfo);
     std::optional<pldm_tid_t> mapTid(const MctpInfo& mctpInfo, pldm_tid_t tid);
     bool unmapTid(const pldm_tid_t& tid);
+
+    /** @brief getter of local EID
+     *
+     *  @return uint8_t - local EID
+     */
+    mctp_eid_t getLocalEid()
+    {
+        return localEid;
+    }
 
   private:
     /** @brief The coroutine task execute by discoverMctpTerminus()
@@ -155,6 +164,9 @@ class TerminusManager
 
     /** @brief Managed termini list */
     std::map<pldm_tid_t, std::shared_ptr<Terminus>>& termini;
+
+    /** @brief local EID */
+    mctp_eid_t localEid;
 
     /** @brief tables for maintaining assigned TID */
     std::vector<bool> tidPool;
