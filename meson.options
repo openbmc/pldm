@@ -198,3 +198,12 @@ option(
 
     value: 999
 )
+
+## BMC endpoint Options
+option(
+    'local-eid',
+    type: 'integer',
+    min: 1,
+    max: 255,
+    description: 'The local MCTP EID',
+    value: 8)

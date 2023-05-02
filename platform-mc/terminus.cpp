@@ -10,9 +10,12 @@ namespace pldm
 {
 namespace platform_mc
 {
+/* default the max message buffer size BMC supported to 4K bytes */
+#define MAX_MESSAGE_BUFFER_SIZE 4096
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
-    initialized(false), tid(tid), supportedTypes(supportedTypes)
+    initialized(false), maxBufferSize(MAX_MESSAGE_BUFFER_SIZE),
+    synchronyConfigurationSupported(0), tid(tid), supportedTypes(supportedTypes)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)
