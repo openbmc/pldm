@@ -31,7 +31,7 @@ class TerminusManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(fd, event, instanceIdDb, false, 90000, seconds(1), 2,
                    milliseconds(100)),
-        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
+        terminusManager(event, reqHandler, instanceIdDb, termini, 0x0, nullptr),
         mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr)
     {}
 
