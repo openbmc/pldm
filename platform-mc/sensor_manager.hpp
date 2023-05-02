@@ -38,7 +38,7 @@ class SensorManager
 
     explicit SensorManager(
         sdeventplus::Event& event, TerminusManager& terminusManager,
-        TerminiMapper& termini, bool verbose = false,
+        TerminiMapper& termini, Manager* manager, bool verbose = false,
         const std::filesystem::path& configJson = PRIORITY_SENSOR_TYPE_JSON);
 
     /** @brief starting sensor polling task
@@ -136,6 +136,9 @@ class SensorManager
     /** @brief round robin sensor list */
     std::map<pldm_tid_t, std::queue<std::shared_ptr<NumericSensor>>>
         roundRobinSensors;
+
+    /** @brief pointer to Manager */
+    Manager* manager;
 };
 } // namespace platform_mc
 } // namespace pldm
