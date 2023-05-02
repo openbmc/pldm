@@ -1,11 +1,7 @@
+#include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "mock_sensor_manager.hpp"
 #include "platform-mc/terminus_manager.hpp"
-<<<<<<< HEAD
-#include "pldmd/instance_id.hpp"
-=======
-#include "common/instance_id.hpp"
->>>>>>> cdba056... platform-mc: Sensor handling
 #include "test/test_instance_id.hpp"
 
 #include <sdeventplus/event.hpp>
@@ -25,8 +21,8 @@ class SensorManagerTest : public testing::Test
         bus(pldm::utils::DBusHandler::getBus()),
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(fd, event, instanceIdDb, 1000, false),
-        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
-        sensorManager(event, terminusManager, termini)
+        terminusManager(event, reqHandler, instanceIdDb, termini, 0x0, nullptr),
+        sensorManager(event, terminusManager, termini, nullptr)
     {}
 
     void runEventLoopForSeconds(uint64_t sec)
