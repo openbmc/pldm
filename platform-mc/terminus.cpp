@@ -10,9 +10,13 @@ namespace pldm
 {
 namespace platform_mc
 {
+/* default the max message buffer size BMC supported to 4K bytes */
+#define MAX_MESSAGE_BUFFER_SIZE 4096
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
-    initialized(false), tid(tid), supportedTypes(supportedTypes)
+    initialized(false), maxBufferSize(MAX_MESSAGE_BUFFER_SIZE),
+    synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
+    supportedTypes(supportedTypes)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)
@@ -94,7 +98,7 @@ bool Terminus::createInventoryPath(std::string tName)
     return false;
 }
 
-bool Terminus::parseTerminusPDRs()
+void Terminus::parseTerminusPDRs()
 {
     std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
         numericSensorPdrs{};
