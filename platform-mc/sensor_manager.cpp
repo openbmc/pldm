@@ -1,5 +1,6 @@
 #include "sensor_manager.hpp"
 
+#include "manager.hpp"
 #include "terminus_manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -13,11 +14,11 @@ using namespace std::chrono;
 
 SensorManager::SensorManager(
     sdeventplus::Event& event, TerminusManager& terminusManager,
-    std::map<tid_t, std::shared_ptr<Terminus>>& termini, bool verbose,
-    const std::filesystem::path& configJson) :
+    std::map<tid_t, std::shared_ptr<Terminus>>& termini, Manager* manager,
+    bool verbose, const std::filesystem::path& configJson) :
     event(event),
     terminusManager(terminusManager), termini(termini),
-    pollingTime(SENSOR_POLLING_TIME), verbose(verbose)
+    pollingTime(SENSOR_POLLING_TIME), verbose(verbose), manager(manager)
 {
     // default priority sensor name spaces
     prioritySensorNameSpaces.emplace_back(
@@ -180,6 +181,13 @@ requester::Coroutine SensorManager::doSensorPollingTask(tid_t tid)
         if (termini.find(tid) == termini.end())
         {
             co_return PLDM_SUCCESS;
+        }
+
+        auto& terminus = termini[tid];
+
+        if (manager && terminus->pollEvent)
+        {
+            co_await manager->pollForPlatformEvent(tid);
         }
 
         // poll priority Sensors
