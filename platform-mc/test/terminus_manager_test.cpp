@@ -31,7 +31,8 @@ class TerminusManagerTest : public testing::Test
         dbusImplRequester(bus, "/xyz/openbmc_project/pldm"),
         reqHandler(fd, event, dbusImplRequester, false, 90000, seconds(1), 2,
                    milliseconds(100)),
-        terminusManager(event, reqHandler, dbusImplRequester, termini, nullptr),
+        terminusManager(event, reqHandler, dbusImplRequester, termini, 0x0,
+                        nullptr),
         mockTerminusManager(event, reqHandler, dbusImplRequester, termini,
                             nullptr)
     {}
