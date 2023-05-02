@@ -13,9 +13,9 @@ class MockSensorManager : public SensorManager
 {
   public:
     MockSensorManager(sdeventplus::Event& event,
-                      TerminusManager& terminusManager,
-                      TerminiMapper& termini) :
-        SensorManager(event, terminusManager, termini){};
+                      TerminusManager& terminusManager, TerminiMapper& termini,
+                      Manager* manager) :
+        SensorManager(event, terminusManager, termini, manager){};
 
     MOCK_METHOD(void, doSensorPolling, (pldm_tid_t tid), (override));
 };
