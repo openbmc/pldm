@@ -12,10 +12,11 @@ namespace platform_mc
 class MockSensorManager : public SensorManager
 {
   public:
-    MockSensorManager(
-        sdeventplus::Event& event, TerminusManager& terminusManager,
-        std::map<pldm_tid_t, std::shared_ptr<Terminus>>& termini) :
-        SensorManager(event, terminusManager, termini){};
+    MockSensorManager(sdeventplus::Event& event,
+                      TerminusManager& terminusManager,
+                      std::map<pldm_tid_t, std::shared_ptr<Terminus>>& termini,
+                      Manager* manager) :
+        SensorManager(event, terminusManager, termini, manager){};
 
     MOCK_METHOD(void, doSensorPolling, (pldm_tid_t tid), (override));
 };
