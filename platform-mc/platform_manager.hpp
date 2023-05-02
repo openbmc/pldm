@@ -88,7 +88,52 @@ class PlatformManager
                                          uint32_t& repositorySize,
                                          uint32_t& largestRecordSize);
 
-    /** @brief reference of terminusManager */
+    /** @brief Send setEventReceiver command to destination EID.
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] eventMessageGlobalEnable - Enable/disable event message
+     * generation from the terminus
+     *  @param[in] eventReceiverEid - The EID of eventReceiver that terminus
+     * should send event message to
+     *  @param[in] protocalType - Provided in the request to help the responder
+     * verify that the content of the eventReceiverAddressInfo field
+     *  @param[in] heartbeatTimer - Amount of time in seconds after each
+     * elapsing of which the terminus shall emit a heartbeat event.
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> setEventReceiver(
+        pldm_tid_t tid,
+        pldm_event_message_global_enable eventMessageGlobalEnable,
+        pldm_transport_protocol_type protocalType, uint16_t heartbeatTimer);
+
+    /** @brief  send eventMessageBufferSize
+     *  @param[in] tid - Destination TID
+     *  @param[in] receiverMaxBufferSize
+     *  @param[out] terminusBufferSize
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> eventMessageBufferSize(pldm_tid_t tid,
+                                           uint16_t receiverMaxBufferSize,
+                                           uint16_t& terminusBufferSize);
+
+    /** @brief  send eventMessageSupprted
+     *  @param[in] tid - Destination TID
+     *  @param[in] formatVersion - version of the event format
+     *  @param[out] synchronyConfiguration - messaging style most recently
+     * configured via the setEventReceiver command
+     *  @param[out] synchronyConfigurationSupported - event messaging styles
+     * supported by the terminus
+     *  @param[out] numerEventClassReturned - number of eventClass enumerated
+     * bytes
+     *  @param[out] eventClass - vector of eventClass the device can generate
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> eventMessageSupported(
+        pldm_tid_t tid, uint8_t formatVersion, uint8_t& synchronyConfiguration,
+        bitfield8_t& synchronyConfigurationSupported,
+        uint8_t& numerEventClassReturned, std::vector<uint8_t>& eventClass);
+
+    /** reference of TerminusManager for sending PLDM request to terminus*/
     TerminusManager& terminusManager;
 
     /** @brief Managed termini list */

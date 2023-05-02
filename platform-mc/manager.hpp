@@ -4,6 +4,7 @@
 
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
+#include "event_manager.hpp"
 #include "platform_manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
@@ -35,9 +36,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     explicit Manager(sdeventplus::Event& event,
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
-        terminusManager(event, handler, instanceIdDb, termini, this),
+        terminusManager(event, handler, instanceIdDb, termini, LOCAL_EID, this),
         platformManager(terminusManager, termini),
-        sensorManager(event, terminusManager, termini)
+        sensorManager(event, terminusManager, termini, this),
+        eventManager(terminusManager, termini)
     {}
 
     exec::task<int> beforeDiscoverTerminus();
@@ -64,6 +66,45 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         sensorManager.stopPolling(tid);
     }
 
+    int handleCperEvent(const pldm_msg* request, size_t payloadLength,
+                        uint8_t /* formatVersion */, uint8_t tid,
+                        size_t eventDataOffset)
+    {
+        auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
+                         eventDataOffset;
+        auto eventDataSize = payloadLength - eventDataOffset;
+        eventManager.handlePlatformEvent(tid, PLDM_OEM_EVENT_CLASS_0xFA,
+                                         eventData, eventDataSize);
+        return PLDM_SUCCESS;
+    }
+
+    int handlePldmMessagePollEvent(const pldm_msg* request,
+                                   size_t payloadLength,
+                                   uint8_t /* formatVersion */, uint8_t tid,
+                                   size_t eventDataOffset)
+    {
+        auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
+                         eventDataOffset;
+        auto eventDataSize = payloadLength - eventDataOffset;
+        eventManager.handlePlatformEvent(tid, PLDM_MESSAGE_POLL_EVENT,
+                                         eventData, eventDataSize);
+        return PLDM_SUCCESS;
+    }
+
+    int handleSensorEvent(const pldm_msg* request, size_t payloadLength,
+                          uint8_t /* formatVersion */, uint8_t tid,
+                          size_t eventDataOffset)
+    {
+        auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
+                         eventDataOffset;
+        auto eventDataSize = payloadLength - eventDataOffset;
+        eventManager.handlePlatformEvent(tid, PLDM_SENSOR_EVENT, eventData,
+                                         eventDataSize);
+        return PLDM_SUCCESS;
+    }
+
+    exec::task<int> pollForPlatformEvent(pldm_tid_t tid);
+
   private:
     /** @brief List of discovered termini */
     std::map<pldm_tid_t, std::shared_ptr<Terminus>> termini{};
@@ -71,6 +112,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     TerminusManager terminusManager;
     PlatformManager platformManager;
     SensorManager sensorManager;
+    EventManager eventManager;
 };
 } // namespace platform_mc
 } // namespace pldm
