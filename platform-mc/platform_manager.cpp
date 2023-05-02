@@ -9,6 +9,10 @@ namespace platform_mc
 
 requester::Coroutine PlatformManager::initTerminus()
 {
+/* DSP0248 section16.9 EventMessageBufferSize Command, the default message
+ * buffer size is 256 bytes*/
+#define DEFAULT_MESSAGE_BUFFER_SIZE 256
+
     for (auto& [tid, terminus] : termini)
     {
         if (terminus->initalized)
@@ -18,10 +22,45 @@ requester::Coroutine PlatformManager::initTerminus()
 
         if (terminus->doesSupport(PLDM_PLATFORM))
         {
-            auto rc = co_await getPDRs(terminus);
+            uint16_t terminusMaxBufferSize = terminus->maxBufferSize;
+            auto rc = co_await eventMessageBufferSize(
+                tid, terminus->maxBufferSize, terminusMaxBufferSize);
+            if (rc)
+            {
+                terminusMaxBufferSize = DEFAULT_MESSAGE_BUFFER_SIZE;
+            }
+
+            terminus->maxBufferSize = std::min(terminus->maxBufferSize,
+                                               terminusMaxBufferSize);
+
+            uint8_t synchronyConfiguration = 0;
+            uint8_t numberEventClassReturned = 0;
+            std::vector<uint8_t> eventClass{};
+            rc = co_await eventMessageSupported(
+                tid, 1, synchronyConfiguration,
+                terminus->synchronyConfigurationSupported,
+                numberEventClassReturned, eventClass);
+            if (rc)
+            {
+                terminus->synchronyConfigurationSupported.byte = 0;
+            }
+
+            rc = co_await getPDRs(terminus);
             if (!rc)
             {
                 terminus->parsePDRs();
+            }
+
+            if (terminus->synchronyConfigurationSupported.byte &
+                (1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC))
+            {
+                rc = co_await setEventReceiver(
+                    tid, PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC);
+                if (rc)
+                {
+                    std::cerr << "setEventReceiver failed, rc="
+                              << static_cast<unsigned>(rc) << "\n";
+                }
             }
         }
         terminus->initalized = true;
@@ -220,5 +259,109 @@ requester::Coroutine PlatformManager::getPDRRepositoryInfo(
     co_return completionCode;
 }
 
+requester::Coroutine PlatformManager::eventMessageBufferSize(
+    tid_t tid, uint16_t receiverMaxBufferSize, uint16_t& terminusBufferSize)
+{
+    Request request(sizeof(pldm_msg_hdr) +
+                    PLDM_EVENT_MESSAGE_BUFFER_SIZE_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_event_message_buffer_size_req(0, receiverMaxBufferSize,
+                                                   requestMsg);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.SendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    uint8_t completionCode;
+    rc = decode_event_message_buffer_size_resp(
+        responseMsg, responseLen, &completionCode, &terminusBufferSize);
+    if (rc)
+    {
+        co_return rc;
+    }
+    co_return completionCode;
+}
+
+requester::Coroutine PlatformManager::setEventReceiver(
+    tid_t tid, pldm_event_message_global_enable eventMessageGlobalEnable)
+{
+    Request request(sizeof(pldm_msg_hdr) + PLDM_SET_EVENT_RECEIVER_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_set_event_receiver_req(0, eventMessageGlobalEnable, 0x0,
+                                            terminusManager.getLocalEid(), 0x0,
+                                            requestMsg);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.SendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    uint8_t completionCode;
+    rc = decode_set_event_receiver_resp(responseMsg, responseLen,
+                                        &completionCode);
+    if (rc)
+    {
+        co_return rc;
+    }
+    co_return completionCode;
+}
+
+requester::Coroutine PlatformManager::eventMessageSupported(
+    tid_t tid, uint8_t formatVersion, uint8_t& synchronyConfiguration,
+    bitfield8_t& synchronyConfigurationSupported,
+    uint8_t& numberEventClassReturned, std::vector<uint8_t>& eventClass)
+{
+    Request request(sizeof(pldm_msg_hdr) +
+                    PLDM_EVENT_MESSAGE_SUPPORTED_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_event_message_supported_req(0, formatVersion, requestMsg);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.SendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    uint8_t completionCode = 0;
+    uint8_t eventClassReturned[std::numeric_limits<uint8_t>::max()];
+    uint8_t eventClassCount = std::numeric_limits<uint8_t>::max();
+
+    rc = decode_event_message_supported_resp(
+        responseMsg, responseLen, &completionCode, &synchronyConfiguration,
+        &synchronyConfigurationSupported, &numberEventClassReturned,
+        eventClassReturned, eventClassCount);
+    if (rc)
+    {
+        co_return rc;
+    }
+
+    eventClass.insert(eventClass.end(), eventClassReturned,
+                      eventClassReturned + numberEventClassReturned);
+    co_return completionCode;
+}
 } // namespace platform_mc
 } // namespace pldm
