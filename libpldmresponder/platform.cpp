@@ -316,6 +316,7 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     uint8_t tid{};
     uint8_t eventClass{};
     size_t offset{};
+    uint8_t platformEventStatus = PLDM_EVENT_NO_LOGGING;
 
     auto rc = decode_platform_event_message_req(
         request, payloadLength, &formatVersion, &tid, &eventClass, &offset);
@@ -339,8 +340,8 @@ Response Handler::platformEventMessage(const pldm_msg* request,
             const auto& handlers = eventHandlers.at(eventClass);
             for (const auto& handler : handlers)
             {
-                auto rc =
-                    handler(request, payloadLength, formatVersion, tid, offset);
+                auto rc = handler(request, payloadLength, formatVersion, tid,
+                                  offset, platformEventStatus);
                 if (rc != PLDM_SUCCESS)
                 {
                     return CmdHandler::ccOnlyResponse(request, rc);
@@ -357,7 +358,7 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     rc = encode_platform_event_message_resp(request->hdr.instance_id, rc,
-                                            PLDM_EVENT_NO_LOGGING, responsePtr);
+                                            platformEventStatus, responsePtr);
     if (rc != PLDM_SUCCESS)
     {
         return ccOnlyResponse(request, rc);
@@ -368,7 +369,8 @@ Response Handler::platformEventMessage(const pldm_msg* request,
 
 int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
                          uint8_t /*formatVersion*/, uint8_t tid,
-                         size_t eventDataOffset)
+                         size_t eventDataOffset,
+                         uint8_t& /*platformEventStatus*/)
 {
     uint16_t sensorId{};
     uint8_t eventClass{};
@@ -470,7 +472,8 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
 int Handler::pldmPDRRepositoryChgEvent(const pldm_msg* request,
                                        size_t payloadLength,
                                        uint8_t /*formatVersion*/, uint8_t tid,
-                                       size_t eventDataOffset)
+                                       size_t eventDataOffset,
+                                       uint8_t& /*platformEventStatus*/)
 {
     uint8_t eventDataFormat{};
     uint8_t numberOfChangeRecords{};

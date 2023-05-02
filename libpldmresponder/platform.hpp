@@ -39,7 +39,7 @@ using EffecterObjs = std::vector<DbusPath>;
 using EventType = uint8_t;
 using EventHandler = std::function<int(
     const pldm_msg* request, size_t payloadLength, uint8_t formatVersion,
-    uint8_t tid, size_t eventDataOffset)>;
+    uint8_t tid, size_t eventDataOffset, uint8_t& platformEventStatus)>;
 using EventHandlers = std::vector<EventHandler>;
 using EventMap = std::map<EventType, EventHandlers>;
 using AssociatedEntityMap = std::map<DbusPath, pldm_entity>;
@@ -96,19 +96,22 @@ class Handler : public CmdHandler
         // Default handler for PLDM Events
         eventHandlers[PLDM_SENSOR_EVENT].emplace_back(
             [this](const pldm_msg* request, size_t payloadLength,
-                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset) {
+                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset,
+                   uint8_t& platformEventStatus) {
                 return this->sensorEvent(request, payloadLength, formatVersion,
-                                         tid, eventDataOffset);
+                                         tid, eventDataOffset,
+                                         platformEventStatus);
             });
         eventHandlers[PLDM_PDR_REPOSITORY_CHG_EVENT].emplace_back(
             [this](const pldm_msg* request, size_t payloadLength,
-                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset) {
-                return this->pldmPDRRepositoryChgEvent(request, payloadLength,
-                                                       formatVersion, tid,
-                                                       eventDataOffset);
+                   uint8_t formatVersion, uint8_t tid, size_t eventDataOffset,
+                   uint8_t& platformEventStatus) {
+                return this->pldmPDRRepositoryChgEvent(
+                    request, payloadLength, formatVersion, tid, eventDataOffset,
+                    platformEventStatus);
             });
 
-        // Additional OEM event handlers for PLDM events, append it to the
+        // Additional OEM event handlers for PLDM events, replace it to the
         // standard handlers
         if (addOnHandlersMap)
         {
@@ -116,17 +119,7 @@ class Handler : public CmdHandler
             for (EventMap::iterator iter = addOnHandlers.begin();
                  iter != addOnHandlers.end(); ++iter)
             {
-                auto search = eventHandlers.find(iter->first);
-                if (search != eventHandlers.end())
-                {
-                    search->second.insert(std::end(search->second),
-                                          std::begin(iter->second),
-                                          std::end(iter->second));
-                }
-                else
-                {
-                    eventHandlers.emplace(iter->first, iter->second);
-                }
+                eventHandlers[iter->first] = iter->second;
             }
         }
     }
@@ -251,10 +244,13 @@ class Handler : public CmdHandler
      *  @param[in] tid - Terminus ID of the event's originator
      *  @param[in] eventDataOffset - Offset of the event data in the request
      *                               message
+     *  @param[out] platformEventStatus - Response status of the event message
+     * command
      *  @return PLDM completion code
      */
     int sensorEvent(const pldm_msg* request, size_t payloadLength,
-                    uint8_t formatVersion, uint8_t tid, size_t eventDataOffset);
+                    uint8_t formatVersion, uint8_t tid, size_t eventDataOffset,
+                    uint8_t& platformEventStatus);
 
     /** @brief Handler for pldmPDRRepositoryChgEvent
      *
@@ -264,11 +260,14 @@ class Handler : public CmdHandler
      *  @param[in] tid - Terminus ID of the event's originator
      *  @param[in] eventDataOffset - Offset of the event data in the request
      *                               message
+     *  @param[out] platformEventStatus - Response status of the event message
+     * command
      *  @return PLDM completion code
      */
     int pldmPDRRepositoryChgEvent(const pldm_msg* request, size_t payloadLength,
                                   uint8_t formatVersion, uint8_t tid,
-                                  size_t eventDataOffset);
+                                  size_t eventDataOffset,
+                                  uint8_t& platformEventStatus);
 
     /** @brief Handler for extracting the PDR handles from changeEntries
      *
@@ -444,6 +443,8 @@ class Handler : public CmdHandler
      *  @param[in] source - sdeventplus event source
      */
     void _processPostGetPDRActions(sdeventplus::source::EventBase& source);
+
+    void _processPostPldmMessagePollEvent(uint8_t tid);
 
   private:
     pdr_utils::Repo pdrRepo;
