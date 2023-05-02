@@ -41,13 +41,32 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         std::make_shared<Terminus>(tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
     auto terminus = termini[tid];
 
+    // queue dummy eventMessageBufferSize response
+    const size_t eventMessageBufferSizeRespLen = 1;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + eventMessageBufferSizeRespLen>
+        eventMessageBufferSizeResp{0x0, 0x02, 0x0d, PLDM_ERROR};
+    auto rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)eventMessageBufferSizeResp.data(),
+        sizeof(eventMessageBufferSizeResp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    // queue dummy eventMessageSupported response
+    const size_t eventMessageSupportedLen = 1;
+    PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + eventMessageSupportedLen>
+        eventMessageSupportedResp{0x0, 0x02, 0x0c, PLDM_ERROR};
+    rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)eventMessageSupportedResp.data(),
+        sizeof(eventMessageSupportedResp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
     // queue getPDRRepositoryInfo response
     const size_t getPDRRepositoryInfoLen =
         PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES;
     std::array<uint8_t, sizeof(pldm_msg_hdr) + getPDRRepositoryInfoLen>
         getPDRRepositoryInfoResp{
             0x0, 0x02, 0x50, PLDM_SUCCESS,
-            0x0, // repositoryState
+            0x0,                                     // repositoryState
             0x0, 0x0,  0x0,  0x0,          0x0, 0x0, 0x0,
             0x0, 0x0,  0x0,  0x0,          0x0, 0x0, // updateTime
             0x0, 0x0,  0x0,  0x0,          0x0, 0x0, 0x0,
@@ -57,7 +76,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
             59,  0x0,  0x0,  0x0,                    // largestRecordSize
             0x0 // dataTransferHandleTimeout
         };
-    auto rc = mockTerminusManager.enqueueResponse(
+    rc = mockTerminusManager.enqueueResponse(
         (pldm_msg*)getPDRRepositoryInfoResp.data(),
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
@@ -75,47 +94,47 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         0x1,                     // PDRHeaderVersion
         PLDM_NUMERIC_SENSOR_PDR, // PDRType
         0x0,
-        0x0, // recordChangeNumber
+        0x0,                     // recordChangeNumber
         PLDM_PDR_NUMERIC_SENSOR_PDR_FIXED_LENGTH +
             PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_SENSOR_DATA_SIZE_MIN_LENGTH +
             PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_RANGE_FIELD_MIN_LENGTH,
-        0, // dataLength
+        0,                             // dataLength
         0,
-        0, // PLDMTerminusHandle
+        0,                             // PLDMTerminusHandle
         0x1,
-        0x0, // sensorID=1
+        0x0,                           // sensorID=1
         120,
-        0, // entityType=Power Supply(120)
+        0,                             // entityType=Power Supply(120)
         1,
-        0, // entityInstanceNumber
+        0,                             // entityInstanceNumber
         0x1,
-        0x0,                         // containerID=1
-        PLDM_NO_INIT,                // sensorInit
-        false,                       // sensorAuxiliaryNamesPDR
-        PLDM_SENSOR_UNIT_DEGRESS_C,  // baseUint(2)=degrees C
-        1,                           // unitModifier = 1
-        0,                           // rateUnit
-        0,                           // baseOEMUnitHandle
-        0,                           // auxUnit
-        0,                           // auxUnitModifier
-        0,                           // auxRateUnit
-        0,                           // rel
-        0,                           // auxOEMUnitHandle
-        true,                        // isLinear
-        PLDM_SENSOR_DATA_SIZE_UINT8, // sensorDataSize
+        0x0,                           // containerID=1
+        PLDM_NO_INIT,                  // sensorInit
+        false,                         // sensorAuxiliaryNamesPDR
+        PLDM_SENSOR_UNIT_DEGRESS_C,    // baseUint(2)=degrees C
+        1,                             // unitModifier = 1
+        0,                             // rateUnit
+        0,                             // baseOEMUnitHandle
+        0,                             // auxUnit
+        0,                             // auxUnitModifier
+        0,                             // auxRateUnit
+        0,                             // rel
+        0,                             // auxOEMUnitHandle
+        true,                          // isLinear
+        PLDM_SENSOR_DATA_SIZE_UINT8,   // sensorDataSize
         0, 0, 0xc0,
-        0x3f, // resolution=1.5
+        0x3f,                          // resolution=1.5
         0, 0, 0x80,
-        0x3f, // offset=1.0
+        0x3f,                          // offset=1.0
         0,
-        0, // accuracy
-        0, // plusTolerance
-        0, // minusTolerance
-        2, // hysteresis
-        0, // supportedThresholds
-        0, // thresholdAndHysteresisVolatility
+        0,                             // accuracy
+        0,                             // plusTolerance
+        0,                             // minusTolerance
+        2,                             // hysteresis
+        0,                             // supportedThresholds
+        0,                             // thresholdAndHysteresisVolatility
         0, 0, 0x80,
-        0x3f, // stateTransistionInterval=1.0
+        0x3f,                          // stateTransistionInterval=1.0
         0, 0, 0x80,
         0x3f,                          // updateInverval=1.0
         255,                           // maxReadable
