@@ -31,3 +31,4 @@ option('flightrecorder-max-entries', type:'integer',min:0, max:30, description: 
 
 # Platform-mc configuration parameters
 option('sensor-polling-time', type: 'integer', min: 1, max: 4294967295, description: 'The interval time of sensor polling in milliseconds', value: 249)
+option('local-eid', type: 'integer', min: 1, max: 255, description: 'The local MCTP EID', value: 8)
