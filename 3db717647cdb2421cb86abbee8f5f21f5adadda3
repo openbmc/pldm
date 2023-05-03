@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "679cd129_a7d9b20b",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-03T04:30:10Z",
+      "side": 1,
+      "message": "Append the OEM event handler to standard handler is better solution I think. For one event type, OEM event will only handle the event for some specific sensors. The others one still can be handle by the standard handle.",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589200f0_17a9a398",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-03T04:30:10Z",
+      "side": 1,
+      "message": "No code use this method.",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d994dc7b_94742583",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-03T04:30:10Z",
+      "side": 1,
+      "message": "The properties/signals in xyz.openbmc_project.Sensor.Threshold.threshold.Warning/Critical interface should be updated also.",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "effd16ca_41f4c7b4",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-03T04:30:10Z",
+      "side": 1,
+      "message": "When method create threshold signal, the sensor sel/redfish event log will auto create.",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
