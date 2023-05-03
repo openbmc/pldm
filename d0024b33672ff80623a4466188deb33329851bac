@@ -16,6 +16,24 @@
       "message": "Section 14.1 in DSP0248 V1.2.2, \"The Initialization Agent function is responsible for initializing PLDM sensors and effecters and\n1427 setting Event Receiver location information into the termini.\"\nThe setEventReceiver should be set after GetPDRs.",
       "revId": "d0024b33672ff80623a4466188deb33329851bac",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "799a2777_c4be4413",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-03T07:42:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "381ab321_d6f2b9a1",
+      "revId": "d0024b33672ff80623a4466188deb33329851bac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
