@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de934535_f6c707e5",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2023-05-03T08:34:33Z",
+      "side": 1,
+      "message": "Fixed. revert the code change here and modify the for loop to continue invoke appended handlers even the handler return ERROR.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/63028/13/libpldmresponder/platform.cpp#347",
+      "parentUuid": "679cd129_a7d9b20b",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "589200f0_17a9a398",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-03T04:30:10Z",
       "side": 1,
       "message": "No code use this method.",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80b8f3ae_ab94014e",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2023-05-03T08:34:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "589200f0_17a9a398",
       "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "596962c3_e8aaa9a7",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2023-05-03T08:34:33Z",
+      "side": 1,
+      "message": "These property or signals of threshold/value dbus interface for numeric sensor are updated by sensor polling task because numeric sensor value changes quicker than threshold event. So it should unnecessary to update sensor value and threshold at here.",
+      "parentUuid": "d994dc7b_94742583",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "effd16ca_41f4c7b4",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 5
@@ -65,6 +119,24 @@
       "writtenOn": "2023-05-03T04:30:10Z",
       "side": 1,
       "message": "When method create threshold signal, the sensor sel/redfish event log will auto create.",
+      "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e09bc17_b7560221",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1000957
+      },
+      "writtenOn": "2023-05-03T08:34:33Z",
+      "side": 1,
+      "message": "As far as I know, it is done by phosphor-sel-logging service.\nThe function here would be useful if the BMC FW has no IPMI support. Should we make the handler of sensor event to be optional?",
+      "parentUuid": "effd16ca_41f4c7b4",
       "revId": "3db717647cdb2421cb86abbee8f5f21f5adadda3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
