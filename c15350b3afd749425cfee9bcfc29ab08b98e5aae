@@ -16,6 +16,24 @@
       "message": "How exactly are you building this in order to test it?\n\nBecause on Fedora 38, after merging my [series to fix the build on Fedora 38](https://gerrit.openbmc.org/q/topic:f38-gcc13) I\u0027m still seeing build errors with the following:\n\n```\n$ meson setup -Doem-ibm\u003denabled build\n$ meson subprojects update\n$ meson compile -C build\n```\n\nCurrently it ends in the following error:\n\n```\n../oem/ibm/libpldmresponder/file_io_type_vpd.cpp: In member function ‘virtual int pldm::responder::keywordHandler::read(uint32_t, uint32_t\u0026, pldm::responder::Response\u0026, pldm::responder::oem_platform::Handler*)’:\n../oem/ibm/libpldmresponder/file_io_type_vpd.cpp:105:48: error: cannot bind non-const lvalue reference of type ‘uint32_t\u0026’ {aka ‘unsigned int\u0026’} to a value of type ‘long unsigned int’\n  105 |     auto rc \u003d readFile(keywrdFilePath, offset, keywrdSize, response);\n      |                                                ^~~~~~~~~~\nIn file included from ../oem/ibm/libpldmresponder/file_io_type_vpd.hpp:3,\n                 from ../oem/ibm/libpldmresponder/file_io_type_vpd.cpp:1:\n../oem/ibm/libpldmresponder/file_io_by_type.hpp:90:36: note:   initializing argument 3 of ‘virtual int pldm::responder::FileHandler::readFile(const std::string\u0026, uint32_t, uint32_t\u0026, pldm::responder::Response\u0026)’\n   90 |                          uint32_t\u0026 length, Response\u0026 response);\n      |                          ~~~~~~~~~~^~~~~~\n[65/155] Compiling C++ object libpldmresponder/test/______oem_ibm_test_libpldmresponder_fileio_test.p/.._.._oem_ibm_test_libpldmresponder_fileio_test.cpp.o\n```",
       "revId": "c15350b3afd749425cfee9bcfc29ab08b98e5aae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f239f43f_f875ffb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-03T13:00:06Z",
+      "side": 1,
+      "message": "Marking this comment us unresolved.",
+      "parentUuid": "f39cb3e7_c4892b45",
+      "revId": "c15350b3afd749425cfee9bcfc29ab08b98e5aae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
