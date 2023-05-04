@@ -16,6 +16,23 @@
       "message": "@tom - do you have any comments ?",
       "revId": "acb4054e5d7e7f16e16afecbcd026dcafde70536",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11d59d0_d5e40510",
+        "filename": "meson_options.txt",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-05-04T07:15:09Z",
+      "side": 1,
+      "message": "We should default to systemd timeout of 25 seconds and allow platforms to choose the preferred timeout.\n\nHow is the min value of 3 decided?\n\n@Manoj as a side topic, we should consider introducing async D-Bus client calls for cases, where we don\u0027t want PLDM daemon to be help up for long running operations.",
+      "revId": "acb4054e5d7e7f16e16afecbcd026dcafde70536",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
