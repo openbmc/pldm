@@ -170,11 +170,11 @@ class Handler : public CmdHandler
 {
   public:
     Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
-            uint8_t hostEid, dbus_api::Requester* dbusImplReqester,
+            uint8_t hostEid, pldm::InstanceIdDb* instanceIdDb,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oemPlatformHandler(oemPlatformHandler),
-        hostSockFd(hostSockFd), hostEid(hostEid),
-        dbusImplReqester(dbusImplReqester), handler(handler)
+        hostSockFd(hostSockFd), hostEid(hostEid), instanceIdDb(instanceIdDb),
+        handler(handler)
     {
         handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -236,7 +236,7 @@ class Handler : public CmdHandler
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
                 sdbusplus::bus::match::rules::argNpath(0, dumpObjPath),
-            [this, hostSockFd, hostEid, dbusImplReqester,
+            [this, hostSockFd, hostEid, instanceIdDb,
              handler](sdbusplus::message_t& msg) {
                 std::map<
                     std::string,
@@ -268,7 +268,7 @@ class Handler : public CmdHandler
                             .emplace_back(
                                 std::make_unique<pldm::requester::oem_ibm::
                                                      DbusToFileHandler>(
-                                    hostSockFd, hostEid, dbusImplReqester, path,
+                                    hostSockFd, hostEid, instanceIdDb, path,
                                     handler))
                             ->processNewResourceDump(vspstring, password);
                         break;
@@ -279,7 +279,7 @@ class Handler : public CmdHandler
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
                 sdbusplus::bus::match::rules::argNpath(0, certObjPath),
-            [this, hostSockFd, hostEid, dbusImplReqester,
+            [this, hostSockFd, hostEid, instanceIdDb,
              handler](sdbusplus::message_t& msg) {
                 std::map<
                     std::string,
@@ -306,8 +306,8 @@ class Handler : public CmdHandler
                                     .emplace_back(std::make_unique<
                                                   pldm::requester::oem_ibm::
                                                       DbusToFileHandler>(
-                                        hostSockFd, hostEid, dbusImplReqester,
-                                        path, handler))
+                                        hostSockFd, hostEid, instanceIdDb, path,
+                                        handler))
                                     ->newCsrFileAvailable(csr, fileHandle);
                                 break;
                             }
@@ -419,7 +419,7 @@ class Handler : public CmdHandler
     oem_platform::Handler* oemPlatformHandler;
     int hostSockFd;
     uint8_t hostEid;
-    dbus_api::Requester* dbusImplReqester;
+    pldm::InstanceIdDb* instanceIdDb;
     using DBusInterfaceAdded = std::vector<std::pair<
         std::string,
         std::vector<std::pair<std::string, std::variant<std::string>>>>>;
