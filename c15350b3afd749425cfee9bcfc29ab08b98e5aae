@@ -69,6 +69,24 @@
       "message": "+1 as I\u0027ve built it without failure as noted below.",
       "revId": "c15350b3afd749425cfee9bcfc29ab08b98e5aae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d11974d2_12f5f411",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-05-04T05:27:43Z",
+      "side": 1,
+      "message": "Hi andrew , Thank you , I hit only 3 of those 5 compile errors when I compiled the code with the latest master sdk",
+      "parentUuid": "6738f884_287618da",
+      "revId": "c15350b3afd749425cfee9bcfc29ab08b98e5aae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
