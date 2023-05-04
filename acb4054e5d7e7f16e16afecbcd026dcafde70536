@@ -33,6 +33,24 @@
       "message": "We should default to systemd timeout of 25 seconds and allow platforms to choose the preferred timeout.\n\nHow is the min value of 3 decided?\n\n@Manoj as a side topic, we should consider introducing async D-Bus client calls for cases, where we don\u0027t want PLDM daemon to be help up for long running operations.",
       "revId": "acb4054e5d7e7f16e16afecbcd026dcafde70536",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6af7dfab_5dcc3aef",
+        "filename": "meson_options.txt",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-04T07:39:03Z",
+      "side": 1,
+      "message": "yes - we could make the default as systemd\u0027s default.\n\nAs a standard pldm instance id expiration time is max 5 seconds, if we have the timeout of dbus as 25seconds, we are always bound to respond after 25seconds and that will not be useful as the remote terminus requests and retries would be completed in the first 5 seconds of the 25seconds.\n\nAgree that this would not fix the entire issue, but this would make this worse in bad situations.\n\nNot sure if there is a timing spec for dbus, but we felt 3 seconds would be a reasonable time for a daemon to respond for a dbus message[provided the daemon is running on a bmc that has very less computation resources and is busy].\n\nIf needed we could default this to systemd default ,and over ride that via meta-ibm layer if needed. What do you think is the best way forward ?\n\n\u003e @Manoj as a side topic, we should consider introducing async D-Bus client calls for cases, where we don\u0027t want PLDM daemon to be help up for long running operations.\n\nYes, we started to work on some prototypes to make things async, but it seems like a pretty big infrastructure change and its gonna take time. We can have this meson option removed once we have the async infrastructure change in.",
+      "parentUuid": "e11d59d0_d5e40510",
+      "revId": "acb4054e5d7e7f16e16afecbcd026dcafde70536",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
