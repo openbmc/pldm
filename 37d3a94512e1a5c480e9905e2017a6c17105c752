@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2479dbba_d61b703a",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-04T11:00:58Z",
+      "side": 1,
+      "message": "Hypervisor sounds better ? rather than calling PHYP ?",
+      "range": {
+        "startLine": 136,
+        "startChar": 86,
+        "endLine": 136,
+        "endChar": 90
+      },
+      "revId": "37d3a94512e1a5c480e9905e2017a6c17105c752",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
