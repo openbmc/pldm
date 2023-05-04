@@ -34,6 +34,41 @@
       "parentUuid": "f39cb3e7_c4892b45",
       "revId": "c15350b3afd749425cfee9bcfc29ab08b98e5aae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "236f28c5_e4769923",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-04T00:49:18Z",
+      "side": 1,
+      "message": "Okay, I\u0027ve instead done the following, and it built without failure:\n\n```\n$ cd openbmc/openbmc\n$ git pull gerrit master\n$ . setup p10bmc\n$ devtool modify pldm\n$ cd workspace/sources/pldm\n$ git fetch ssh://amboar@gerrit.openbmc.org:29418/openbmc/pldm refs/changes/31/63031/3 \u0026\u0026 git checkout FETCH_HEAD\n$ cd -\n$ devtool build pldm\n```\n\nLikely the code hazard hit by the direct meson approach is a result of me running GCC 13 on Fedora 38.\n\nI think the failure identified by GCC 13 is still a problem to be solved (you will need to solve it when the distro moves to GCC 13). However, at least the devtool process above demonstrates that the change no longer fails to build under a common build environment.",
+      "parentUuid": "f239f43f_f875ffb6",
+      "revId": "c15350b3afd749425cfee9bcfc29ab08b98e5aae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6738f884_287618da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-04T00:49:18Z",
+      "side": 1,
+      "message": "+1 as I\u0027ve built it without failure as noted below.",
+      "revId": "c15350b3afd749425cfee9bcfc29ab08b98e5aae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
