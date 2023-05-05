@@ -124,7 +124,7 @@ if get_option('tests').enabled()
 endif
 
 libpldm_dep = dependency('libpldm', fallback:['libpldm','libpldm_dep'])
-
+libbej_dep = dependency('libbej', fallback:['libbej'])
 
 libpldmutils_headers = ['.']
 libpldmutils = library(
@@ -195,7 +195,7 @@ if get_option('systemd').enabled()
 endif
 
 subdir('pldmtool')
-
+subdir('rded')
 subdir('configurations')
 
 if get_option('utilities').enabled()
