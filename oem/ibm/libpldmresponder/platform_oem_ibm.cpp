@@ -39,8 +39,6 @@ int sendBiosAttributeUpdateEvent(
             (currHostState != "xyz.openbmc_project.State.Boot.Progress."
                               "ProgressStages.OSRunning") &&
             (currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.OSStart") &&
-            (currHostState != "xyz.openbmc_project.State.Boot.Progress."
                               "ProgressStages.SystemSetup"))
         {
             return PLDM_SUCCESS;
