@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8053115_fc399d95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-05-05T15:52:39Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me if other companies are utilizing this boot progress as it was initially intended. If so, we would need to carry this change as a patch downstream. I\u0027m hoping others will weigh in here but if we know of other companies utilizing pldm, we should be sure to add them to this review.",
+      "revId": "92a87aa9e89ff8f79a5a35461ac7523e56ba4b0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
