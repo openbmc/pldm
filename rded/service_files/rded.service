@@ -1,0 +1,10 @@
+[Unit]
+Description=Phosphor RDE Daemon
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/rded
+
+[Install]
+WantedBy=multi-user.target
