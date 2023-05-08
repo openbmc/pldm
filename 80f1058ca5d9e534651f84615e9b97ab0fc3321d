@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0027ec74_b31c1cea",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-05-08T20:21:04Z",
+      "side": 1,
+      "message": "here also do we have catch the exceptions?",
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
