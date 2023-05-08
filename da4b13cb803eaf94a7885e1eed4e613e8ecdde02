@@ -16,6 +16,24 @@
       "message": "Unnescessary changing.",
       "revId": "da4b13cb803eaf94a7885e1eed4e613e8ecdde02",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6305cdf1_cc88eded",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-08T02:11:04Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "b74acded_1fc3be27",
+      "revId": "da4b13cb803eaf94a7885e1eed4e613e8ecdde02",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
