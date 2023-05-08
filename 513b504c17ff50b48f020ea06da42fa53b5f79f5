@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91121675_0f84853a",
+        "filename": "oem/ibm/test/libpldmresponder_oem_platform_test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "I\u0027ve cleaned this up a bit so we at least take advantage of RAII for cleanup",
+      "parentUuid": "75029fe4_f65e97e6",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ef4d60c_11a29634",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-04-27T06:00:18Z",
       "side": 1,
       "message": "I think we just inline this in the header now? Not sure why we should keep the `.cpp` lying around.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 1
+      },
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "658a247e_54f0826c",
+        "filename": "pldmd/dbus_impl_requester.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ef4d60c_11a29634",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -81,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20ffb7fb_544736ea",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93e74460_f50fab87",
+      "range": {
+        "startLine": 41,
+        "startChar": 14,
+        "endLine": 41,
+        "endChar": 45
+      },
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "701e8310_32352bb0",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-04-27T06:00:18Z",
       "side": 1,
       "message": "This feels like there are too many layers of indirection...",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 5
+      },
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "301cfa1c_7dc33e4f",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "Ignore this, InstanceIdDb is useful as it wraps the libpldm APIs without the user requiring knowledge of DBus embedded in `pldm::dbus_api::Requester`.",
+      "parentUuid": "701e8310_32352bb0",
       "range": {
         "startLine": 57,
         "startChar": 0,
@@ -121,6 +211,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2c37081_4aa5fc45",
+        "filename": "pldmd/instance_id.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f61f2ca_4004e3d7",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16438a25_d26b00ec",
@@ -134,6 +242,24 @@
       "writtenOn": "2023-04-27T06:00:18Z",
       "side": 1,
       "message": "Same here.",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "069c9350_41499840",
+        "filename": "pldmd/instance_id.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16438a25_d26b00ec",
       "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -155,6 +281,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c81156f0_4bab5b73",
+        "filename": "pldmd/instance_id.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e59bf40_e345aba7",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebfd4d71_ec95c56a",
@@ -168,6 +312,24 @@
       "writtenOn": "2023-04-27T06:00:18Z",
       "side": 1,
       "message": "Unnecessary change?",
+      "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68de265_cc62f2bc",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-08T01:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebfd4d71_ec95c56a",
       "revId": "513b504c17ff50b48f020ea06da42fa53b5f79f5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
