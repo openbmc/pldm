@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad76a876_a005cedd",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T05:58:09Z",
+      "side": 1,
+      "message": "See the other replies.",
+      "parentUuid": "0027ec74_b31c1cea",
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2fe5b77a_895093e1",
         "filename": "fw-update/inventory_manager.hpp",
         "patchSetId": 4
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-09T02:10:59Z",
       "side": 1,
       "message": "change to \"Instance ID database object for managing instance IDs\"?",
+      "range": {
+        "startLine": 96,
+        "startChar": 15,
+        "endLine": 96,
+        "endChar": 24
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbff0930_2662507e",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T05:58:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fe5b77a_895093e1",
       "range": {
         "startLine": 96,
         "startChar": 15,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31f44520_0bb332d3",
+        "filename": "host-bmc/dbus_to_event_handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T05:58:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67919e97_6241fdd3",
+      "range": {
+        "startLine": 74,
+        "startChar": 15,
+        "endLine": 75,
+        "endChar": 32
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "154b909c_f71f4ee2",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-05-09T02:10:59Z",
       "side": 1,
       "message": "change to \"reference to Instance ID database object, used to obtain PLDM instance ids\"?",
+      "range": {
+        "startLine": 233,
+        "startChar": 15,
+        "endLine": 234,
+        "endChar": 31
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "450e0b21_0eac0240",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T05:58:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "154b909c_f71f4ee2",
       "range": {
         "startLine": 233,
         "startChar": 15,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8911b706_489d8dbd",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T05:58:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1752b3c2_5ed829cc",
+      "range": {
+        "startLine": 149,
+        "startChar": 15,
+        "endLine": 150,
+        "endChar": 32
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1cb81f8_a1fe6d5f",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-05-09T02:10:59Z",
       "side": 1,
       "message": "We can get rid of this now.",
+      "range": {
+        "startLine": 202,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 50
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb4c2a3b_e034cbfc",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T05:58:09Z",
+      "side": 1,
+      "message": "Not quite, because other applications still need access to the requester DBus API for instance ID allocation. Only once we\u0027ve converted over all the users of libpldm to the new libpldm instance ID API can we can delete this.",
+      "parentUuid": "e1cb81f8_a1fe6d5f",
       "range": {
         "startLine": 202,
         "startChar": 4,

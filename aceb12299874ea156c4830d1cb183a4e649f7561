@@ -16,6 +16,24 @@
       "message": "is it required to catch the exception thrown by next()?",
       "revId": "aceb12299874ea156c4830d1cb183a4e649f7561",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c383b5c_f382dbae",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T05:58:09Z",
+      "side": 1,
+      "message": "Not according to the code that was already there 😊 The behaviour implemented by this change matches the behaviour that already existed, which is the thrown exception isn\u0027t caught. If you want to change that policy we can do that in another patch.\n\nI need us to work with \"not worse\" as a philosophy and not \"strictly better\", otherwise you\u0027re asking me to put in a lot of effort to change something that\u0027s tangential to the goal of the patch.",
+      "parentUuid": "a6bcea40_a827396c",
+      "revId": "aceb12299874ea156c4830d1cb183a4e649f7561",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
