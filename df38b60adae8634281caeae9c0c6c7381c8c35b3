@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9b0e269_ee0c46ec",
+        "filename": "meson.build",
+        "patchSetId": 13
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T23:57:26Z",
+      "side": 1,
+      "message": "Some APIs in `libpldm` depend on `poll.h` which is specified by POSIX and not the the C standard. When `libpldm` is used in freestanding environments (hostboot, skiboot, host firmware in general) POSIX is irrelevant. We guard the declaration of functions requiring `struct poll` with `#if HAVE_POLL` in the libpldm headers to make life easy for those integrating libpldm into freestanding environments.\n\nAs C and C++ just copy/paste libpldm headers into the the pldmd translation units via the preprocessor, pldmd also needs to define `HAVE_POLL` in order to gain access to the `struct poll`-based APIs in libpldm.",
+      "parentUuid": "934f6b57_6acaf1d1",
+      "revId": "df38b60adae8634281caeae9c0c6c7381c8c35b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "202d11e7_7811f7a9",
         "filename": "pldmd/instance_id.hpp",
         "patchSetId": 13
@@ -128,6 +146,24 @@
       "writtenOn": "2023-05-09T09:07:37Z",
       "side": 1,
       "message": "`static_cast\u003cuintmax_t\u003e(PLDM_MAX_TIDS * pldmMaxInstanceIds)`",
+      "revId": "df38b60adae8634281caeae9c0c6c7381c8c35b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4499e8e1_465fd24c",
+        "filename": "test/test-instance-id.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T23:57:26Z",
+      "side": 1,
+      "message": "`static_cast\u003cuintmax_t\u003e(PLDM_MAX_TIDS) * pldmMaxInstanceIds` is I think what was intended, but maybe not what was written. We should probably fix the declaration of `pldmMaxInstanceIds` also. Rather than use `auto` use `uintmax_t`.",
+      "parentUuid": "dda22b1b_478298c2",
       "revId": "df38b60adae8634281caeae9c0c6c7381c8c35b3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
