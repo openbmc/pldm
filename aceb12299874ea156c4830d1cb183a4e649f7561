@@ -34,6 +34,24 @@
       "parentUuid": "a6bcea40_a827396c",
       "revId": "aceb12299874ea156c4830d1cb183a4e649f7561",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aed27a3_5900ba08",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-05-09T10:39:09Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7c383b5c_f382dbae",
+      "revId": "aceb12299874ea156c4830d1cb183a4e649f7561",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
