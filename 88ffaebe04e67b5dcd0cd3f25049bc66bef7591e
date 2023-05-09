@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44c1a68f_1b26a3ed",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-09T00:02:59Z",
+      "side": 1,
+      "message": "I\u0027ve changed it so we throw TooManyResources if there are no instance ids available (like before this change). I think throwing std::system_category().default_error_condition if there is something wrong with the instance ID database is reasonable. If there is something wrong with that, there is nothing we can do here to fix it. \n\nDo you agree?",
+      "parentUuid": "0559537a_0b8e5db1",
+      "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5aab128_cb1072cd",
         "filename": "pldmd/dbus_impl_requester.hpp",
         "patchSetId": 12
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-08T20:16:16Z",
       "side": 1,
       "message": "We will never enter this path where rc is set to -EAGAIN. This condition should be covered under catch.",
+      "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea2a95d1_699d8692",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-09T00:02:59Z",
+      "side": 1,
+      "message": "Good spot. Fixed.",
+      "parentUuid": "a5aab128_cb1072cd",
       "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
