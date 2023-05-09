@@ -16,6 +16,121 @@
       "message": "here also do we have catch the exceptions?",
       "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fe5b77a_895093e1",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-09T02:10:59Z",
+      "side": 1,
+      "message": "change to \"Instance ID database object for managing instance IDs\"?",
+      "range": {
+        "startLine": 96,
+        "startChar": 15,
+        "endLine": 96,
+        "endChar": 24
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67919e97_6241fdd3",
+        "filename": "host-bmc/dbus_to_event_handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-09T02:10:59Z",
+      "side": 1,
+      "message": "change to \"reference to Instance ID database object, used to obtain PLDM instance ids\"?",
+      "range": {
+        "startLine": 74,
+        "startChar": 15,
+        "endLine": 75,
+        "endChar": 32
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "154b909c_f71f4ee2",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-09T02:10:59Z",
+      "side": 1,
+      "message": "change to \"reference to Instance ID database object, used to obtain PLDM instance ids\"?",
+      "range": {
+        "startLine": 233,
+        "startChar": 15,
+        "endLine": 234,
+        "endChar": 31
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1752b3c2_5ed829cc",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-09T02:10:59Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 149,
+        "startChar": 15,
+        "endLine": 150,
+        "endChar": 32
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1cb81f8_a1fe6d5f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-09T02:10:59Z",
+      "side": 1,
+      "message": "We can get rid of this now.",
+      "range": {
+        "startLine": 202,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 50
+      },
+      "revId": "80f1058ca5d9e534651f84615e9b97ab0fc3321d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
