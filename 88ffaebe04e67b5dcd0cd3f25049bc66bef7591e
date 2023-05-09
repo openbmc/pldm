@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8a5bf32_8970f952",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T00:10:34Z",
+      "side": 1,
+      "message": "\u003e next function throws two different types of exceptions\n\u003e std::runtime_error (https://gerrit.openbmc.org/c/openbmc/pldm/+/62580/12/pldmd/instance_id.hpp#54)\n\nYep, the `std::runtime_error` should be handled as outlined in the comment below.\n\n\u003e std::system_category().default_error_condition (https://gerrit.openbmc.org/c/openbmc/pldm/+/62580/12/pldmd/instance_id.hpp#59)\n\u003e \n\u003e Need to catch those exceptions use catch{} and handle properly.\n\u003e \n\u003e Or do you expect the caller of getInstanceIs to catch the exceptions?\n\nThere\u0027s nothing sensible we can do for exceptions other than the `std::runtime_error` when the instance IDs are exhausted. We can\u0027t reliably send PLDM messages if we can\u0027t reliably allocate instance IDs. Thus not attempting to handle the exception is the right course of action.",
+      "parentUuid": "0559537a_0b8e5db1",
+      "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a5aab128_cb1072cd",
         "filename": "pldmd/dbus_impl_requester.hpp",
         "patchSetId": 12
@@ -66,6 +84,24 @@
       "writtenOn": "2023-05-09T00:02:59Z",
       "side": 1,
       "message": "Good spot. Fixed.",
+      "parentUuid": "a5aab128_cb1072cd",
+      "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98463f8c_e8681173",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-09T00:10:34Z",
+      "side": 1,
+      "message": "Ah, yes, I refactored the `InstanceIdDb.next()` implementation so it threw the `std::runtime_error` instead of returning `-EAGAIN`. This new behaviour aligns it with the existing behaviour in the code. However, the check you highlighted should be replaced with\n\n```\ntry {\n    rc \u003d pldmInstanceIdDb.next(eid);\n} catch (const\u0026 std::runtime_error e) {\n    throw sdbusplus::xyz::openbmc_project::Common::Error::TooManyResources();\n}\n```",
       "parentUuid": "a5aab128_cb1072cd",
       "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
