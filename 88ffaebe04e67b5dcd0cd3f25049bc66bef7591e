@@ -105,6 +105,24 @@
       "parentUuid": "a5aab128_cb1072cd",
       "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5845efd7_6e63e52c",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-05-09T05:46:58Z",
+      "side": 1,
+      "message": "Shall we add one more catch to catch std::system_category().default_error_condition exception?\ntry {\n    rc \u003d pldmInstanceIdDb.next(eid);\n} catch (const\u0026 std::runtime_error e) {\n    throw sdbusplus::xyz::openbmc_project::Common::Error::TooManyResources();\n} catch (int error)\n{\n}",
+      "parentUuid": "98463f8c_e8681173",
+      "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
