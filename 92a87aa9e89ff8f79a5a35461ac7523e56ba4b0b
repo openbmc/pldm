@@ -16,6 +16,24 @@
       "message": "It\u0027s not clear to me if other companies are utilizing this boot progress as it was initially intended. If so, we would need to carry this change as a patch downstream. I\u0027m hoping others will weigh in here but if we know of other companies utilizing pldm, we should be sure to add them to this review.",
       "revId": "92a87aa9e89ff8f79a5a35461ac7523e56ba4b0b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbd4dfd9_3739f0b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-10T00:47:28Z",
+      "side": 1,
+      "message": "Afaik, no other company uses the host-bmc folder in pldm.\n\nAlthough this code seems like , it is trying to translate a dbus signal to a pldm set effecter state command - but the effecter is actually from a remote pldm terminus.\n\nFor example, if we want to move hypervisor from one state to another, host would have an effecter from their end and then we would drive that from dbus.",
+      "parentUuid": "d8053115_fc399d95",
+      "revId": "92a87aa9e89ff8f79a5a35461ac7523e56ba4b0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
