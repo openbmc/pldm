@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ccd13b5_32279f07",
+        "filename": "meson.build",
+        "patchSetId": 13
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-05-10T04:07:40Z",
+      "side": 1,
+      "message": "We don\u0027t actually need this just yet (plus I got it wrong, it\u0027s `PLDM_HAS_POLL`). So deleting for now and will add it when it\u0027s actually needed.",
+      "parentUuid": "f9b0e269_ee0c46ec",
+      "revId": "df38b60adae8634281caeae9c0c6c7381c8c35b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "202d11e7_7811f7a9",
