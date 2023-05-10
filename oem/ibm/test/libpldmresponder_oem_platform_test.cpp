@@ -145,8 +145,8 @@ TEST(EncodeCodeUpdateEvent, testGoodRequest)
                                     PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
                                     sensorEventDataVec.size());
 
-    auto rc =
-        encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg, 0x1);
+    auto rc = encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg,
+                             0x1);
 
     EXPECT_EQ(rc, PLDM_SUCCESS);
 }
@@ -156,8 +156,8 @@ TEST(EncodeCodeUpdate, testBadRequest)
     std::vector<uint8_t> requestMsg;
     std::vector<uint8_t> sensorEventDataVec{};
 
-    auto rc =
-        encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg, 0x1);
+    auto rc = encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg,
+                             0x1);
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
