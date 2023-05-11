@@ -1,4 +1,6 @@
 #include "common/utils.hpp"
+#include "helper/common.hpp"
+#include "helper/discovery/base_discovery.hpp"
 
 #include <locale.h>
 #include <signal.h>
@@ -24,6 +26,9 @@
 
 using namespace sdeventplus;
 using namespace pldm::utils;
+constexpr uint8_t DEST_EID = 9;
+// TODO(@harshtya): Change instance id to be dynamic
+constexpr uint8_t INSTANCE_ID = 1;
 
 using DbusVariant = std::variant<std::string, uint64_t, uint32_t, uint16_t,
                                  uint8_t, sdbusplus::message::object_path>;
@@ -36,6 +41,27 @@ int fd; // MCTP Socket for RDE communication
 std::map<std::string, int> device_net_id_map;
 std::map<std::string, std::shared_ptr<sdbusplus::asio::dbus_interface>>
     dbus_intf_map;
+
+
+int initiate_discovery(int fd, std::string udev_id,
+                       int net_id, uint8_t dest_eid, uint8_t instance_id)
+{
+    int rc;
+
+    // Begin Base Discovery
+    std::cerr << "Initiating PLDM Discovery...\n";
+    rc = perform_base_discovery(udev_id, fd, net_id, dest_eid, instance_id);
+    if (rc)
+    {
+        std::cerr << "Failure in Base Discovery with error code: " << rc
+                  << "\n";
+        return rc;
+    }
+
+    // TODO(@harshtya): Add RDE Negotiate Params discovery
+    // TODO(@harshtya): Add get dictionaries for resource ids
+    return 0;
+}
 
 int trigger_rde_reactor(int fd)
 {
@@ -110,7 +136,16 @@ int trigger_rde_reactor(int fd)
                 int net_id = setup_one_port(port, udevid); // MCTP Setup
                 device_net_id_map.insert({udevid, net_id});
 
-                // TODO(@harshtya): Initiate PLDM and discovery
+                int rc = initiate_discovery(fd, udevid, net_id, DEST_EID,
+                                        INSTANCE_ID);
+                if (rc)
+                {
+                    std::cerr
+                        << "PLDM/RDE Discovery failed for device: " << port
+                        << ", udev: " << udevid << "\n";
+                    return;
+                }
+                // TODO(@harshtya): Initiate RDE discovery
 
                 std::string objectPath = prefix_path + udevid;
                 if (DEBUG_ENABLED)
