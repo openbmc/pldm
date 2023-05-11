@@ -1,4 +1,6 @@
 #include "common/utils.hpp"
+#include "helper/common.hpp"
+#include "helper/discovery/base_discovery.hpp"
 
 #include <locale.h>
 #include <signal.h>
@@ -30,12 +32,35 @@ using DbusVariant = std::variant<std::string, uint64_t, uint32_t, uint16_t,
 using ChangedPropertiesType = std::vector<std::pair<std::string, DbusVariant>>;
 
 constexpr bool DEBUG_ENABLED = false;
+constexpr uint8_t DEST_EID = 9;
+// TODO(@harshtya): Change instance id to be dynamic
+constexpr uint8_t INSTANCE_ID = 1;
 
 int fd; // MCTP Socket for RDE communication
 
 std::map<std::string, int> deviceNetIdMap;
 std::map<std::string, std::shared_ptr<sdbusplus::asio::dbus_interface>>
     dbusIntfMap;
+
+int initiateDiscovery(int fd, std::string udevId, int netId,
+                       uint8_t destEid, uint8_t instanceId)
+{
+    int rc;
+
+    // Begin Base Discovery
+    std::cerr << "Initiating PLDM Discovery...\n";
+    rc = performBaseDiscovery(udevId, fd, netId, destEid, instanceId);
+    if (rc)
+    {
+        std::cerr << "Failure in Base Discovery with error code: " << rc
+                  << "\n";
+        return rc;
+    }
+
+    // TODO(@harshtya): Add RDE Negotiate Params discovery
+    // TODO(@harshtya): Add get dictionaries for resource ids
+    return 0;
+}
 
 int triggerRdeReactor(int fd)
 {
@@ -110,7 +135,15 @@ int triggerRdeReactor(int fd)
                 int netId = setupOnePort(port, udevid); // MCTP Setup
                 deviceNetIdMap.insert({udevid, netId});
 
-                // TODO(@harshtya): Initiate PLDM and discovery
+                int rc = initiateDiscovery(fd, udevid, netId, DEST_EID,
+                                            INSTANCE_ID);
+                if (rc)
+                {
+                    std::cerr
+                        << "PLDM/RDE Discovery failed for device: " << port
+                        << ", udev: " << udevid << "\n";
+                    return;
+                }
 
                 std::string objectPath = prefixPath + udevid;
                 if (DEBUG_ENABLED)
