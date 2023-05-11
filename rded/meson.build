@@ -1,5 +1,6 @@
 sources = [
   'rded.cpp',
+  'helper/discovery/base_discovery.cpp'
 ]
 
 args = [
