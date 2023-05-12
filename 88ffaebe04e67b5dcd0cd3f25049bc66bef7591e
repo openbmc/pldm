@@ -159,6 +159,24 @@
       "parentUuid": "b6786c02_9f7ec7ff",
       "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bf4cbb3_6498dd2e",
+        "filename": "pldmd/dbus_impl_requester.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-05-12T11:29:05Z",
+      "side": 1,
+      "message": "As no specific action to be taken after instance id failure and PLDM abort will give us accurate information about what the problem was and where it occurred. I accept to not handle the exception std::system_category().default_error_condition.",
+      "parentUuid": "c75d6960_77676c6b",
+      "revId": "88ffaebe04e67b5dcd0cd3f25049bc66bef7591e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
