@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "common/utils.hpp"
 
 #include <err.h>
@@ -116,7 +118,9 @@ class CommandInterface
     bool pldmVerbose;
 
   protected:
+    uint8_t numRetries = static_cast<uint8_t>(NUMBER_OF_REQUEST_RETRIES);
     uint8_t instanceId;
+    int fd;
 };
 
 } // namespace helper
