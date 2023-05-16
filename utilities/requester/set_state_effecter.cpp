@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     size_t responseMsgSize{};
     // Send PLDM request msg and wait for response
     rc = pldm_send_recv(mctpEid, fd, requestMsg.data(), requestMsg.size(),
-                        &responseMsg, &responseMsgSize);
+                        -1, -1, &responseMsg, &responseMsgSize);
     if (0 > rc)
     {
         error(

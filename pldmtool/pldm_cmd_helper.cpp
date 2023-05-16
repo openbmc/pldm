@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "pldm_cmd_helper.hpp"
 
 #include "xyz/openbmc_project/Common/error.hpp"
@@ -207,9 +209,11 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         }
         uint8_t* responseMessage = nullptr;
         size_t responseMessageSize{};
+        int numRetries = static_cast<int>(NUMBER_OF_REQUEST_RETRIES);
+        int resTimeOut = static_cast<int>(RESPONSE_TIME_OUT);
         pldm_send_recv(mctp_eid, fd, requestMsg.data() + 2,
-                       requestMsg.size() - 2, &responseMessage,
-                       &responseMessageSize);
+                       requestMsg.size() - 2, numRetries, resTimeOut,
+                       &responseMessage, &responseMessageSize);
 
         responseMsg.resize(responseMessageSize);
         memcpy(responseMsg.data(), responseMessage, responseMsg.size());
