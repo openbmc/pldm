@@ -48,8 +48,8 @@ int main(int argc, char** argv)
     uint8_t* responseMsg = nullptr;
     size_t responseMsgSize{};
     // Send PLDM request msg and wait for response
-    rc = pldm_send_recv(mctpEid, fd, requestMsg.data(), requestMsg.size(),
-                        &responseMsg, &responseMsgSize);
+    rc = pldm_send_recv(mctpEid, fd, requestMsg.data(), requestMsg.size(), -1,
+                        -1, &responseMsg, &responseMsgSize);
     if (0 > rc)
     {
         error(
