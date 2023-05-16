@@ -161,28 +161,10 @@ void CommandInterface::exec()
         return;
     }
 
-    std::vector<uint8_t> responseMsg;
-    rc = pldmSendRecv(requestMsg, responseMsg);
-
-    if (rc != PLDM_SUCCESS)
-    {
-        std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
-        return;
-    }
-
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
-    parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
-}
-
-int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
-                                   std::vector<uint8_t>& responseMsg)
-{
     // Insert the PLDM message type and EID at the beginning of the
     // msg.
     requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
     requestMsg.insert(requestMsg.begin(), mctp_eid);
-
-    bool mctpVerbose = pldmVerbose;
 
     // By default enable request/response msgs for pldmtool raw commands.
     if (CommandInterface::pldmType == "raw")
@@ -196,43 +178,92 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         printBuffer(Tx, requestMsg);
     }
 
-    if (mctp_eid != PLDM_ENTITY_ID)
+    /* Open the socket once for each PLDM command */
+    fd = pldm_open();
+    if (-1 == fd)
     {
-        int fd = pldm_open();
-        if (-1 == fd)
+        std::cerr << "failed to init mctp "
+                  << "\n";
+        return;
+    }
+
+    std::vector<uint8_t> responseMsg;
+    rc = pldmSendRecv(requestMsg, responseMsg);
+
+    /* Close socket */
+    shutdown(fd, SHUT_RDWR);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << " Command " << commandName
+                  << ": Failed to receive RC = " << rc << "\n";
+        return;
+    }
+
+    if (pldmVerbose)
+    {
+        std::cout << "pldmtool: ";
+        printBuffer(Rx, responseMsg);
+    }
+
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
+}
+
+int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
+                                   std::vector<uint8_t>& responseMsg)
+{
+    uint8_t retry = 0;
+    int rc = PLDM_ERROR;
+    bool mctpVerbose = pldmVerbose;
+
+    /* Retry numRetries times until get the corrected response data */
+    while (PLDM_SUCCESS != rc && retry <= numRetries)
+    {
+        if (mctp_eid != PLDM_ENTITY_ID)
         {
-            std::cerr << "failed to init mctp "
-                      << "\n";
-            return -1;
+            uint8_t* responseMessage = nullptr;
+            size_t responseMessageSize{};
+
+            rc = pldm_send_recv(mctp_eid, fd, requestMsg.data() + 2,
+                                requestMsg.size() - 2, &responseMessage,
+                                &responseMessageSize);
+            if (PLDM_SUCCESS != rc)
+            {
+                std::cerr << "[" << unsigned(retry)
+                          << "] pldm_send_recv error rc" << rc << std::endl;
+                free(responseMessage);
+                retry++;
+                continue;
+            }
+
+            /*
+             * The commit "requester: Add new APIs for instance ID allocation
+             * and freeing" in libpldm removes the code checking the match of
+             * instance ID between the request and response message.
+             * The requester of pldm_send_recv have to handle that.
+             */
+            responseMsg.resize(responseMessageSize);
+            memcpy(responseMsg.data(), responseMessage, responseMsg.size());
+            free(responseMessage);
         }
-        uint8_t* responseMessage = nullptr;
-        size_t responseMessageSize{};
-        pldm_send_recv(mctp_eid, fd, requestMsg.data() + 2,
-                       requestMsg.size() - 2, &responseMessage,
-                       &responseMessageSize);
-
-        responseMsg.resize(responseMessageSize);
-        memcpy(responseMsg.data(), responseMessage, responseMsg.size());
-
-        free(responseMessage);
-        if (pldmVerbose)
+        else
         {
-            std::cout << "pldmtool: ";
-            printBuffer(Rx, responseMsg);
+            rc = mctpSockSendRecv(requestMsg, responseMsg, mctpVerbose);
+            retry++;
+
+            if (PLDM_SUCCESS != rc)
+            {
+                continue;
+            }
+
+            responseMsg.erase(responseMsg.begin(),
+                              responseMsg.begin() +
+                                  2 /* skip the mctp header */);
         }
     }
-    else
-    {
-        mctpSockSendRecv(requestMsg, responseMsg, mctpVerbose);
-        if (pldmVerbose)
-        {
-            std::cout << "pldmtool: ";
-            printBuffer(Rx, responseMsg);
-        }
-        responseMsg.erase(responseMsg.begin(),
-                          responseMsg.begin() + 2 /* skip the mctp header */);
-    }
-    return PLDM_SUCCESS;
+
+    return rc;
 }
 } // namespace helper
 } // namespace pldmtool
