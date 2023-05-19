@@ -108,7 +108,9 @@ int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "GetPEL");
         method.append(fileHandle);
-        auto reply = bus.call(method);
+        auto reply = bus.call(
+            method,
+            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
         sdbusplus::message::unix_fd fd{};
         reply.read(fd);
         auto rc = transferFileData(fd, true, offset, length, address);
@@ -139,7 +141,9 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "GetPEL");
         method.append(fileHandle);
-        auto reply = bus.call(method);
+        auto reply = bus.call(
+            method,
+            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
         sdbusplus::message::unix_fd fd{};
         reply.read(fd);
 

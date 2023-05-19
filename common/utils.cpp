@@ -228,7 +228,9 @@ std::string DBusHandler::getService(const char* path,
                                       mapperInterface, "GetObject");
     mapper.append(path, DbusInterfaceList({interface}));
 
-    auto mapperResponseMsg = bus.call(mapper);
+    auto mapperResponseMsg = bus.call(
+        mapper,
+        std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
     mapperResponseMsg.read(mapperResponse);
     return mapperResponse.begin()->first;
 }
@@ -241,7 +243,9 @@ GetSubTreeResponse
     auto method = bus.new_method_call(mapperBusName, mapperPath,
                                       mapperInterface, "GetSubTree");
     method.append(searchPath, depth, ifaceList);
-    auto reply = bus.call(method);
+    auto reply = bus.call(
+        method,
+        std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
     GetSubTreeResponse response;
     reply.read(response);
     return response;
@@ -355,7 +359,9 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
                                       "Get");
     method.append(dbusInterface, dbusProp);
     PropertyValue value{};
-    auto reply = bus.call(method);
+    auto reply = bus.call(
+        method,
+        std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
     reply.read(value);
     return value;
 }
