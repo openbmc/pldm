@@ -145,7 +145,9 @@ int SoftPowerOff::getEffecterID()
         VMMMethod.append(TID, entityType,
                          (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
 
-        auto VMMResponseMsg = bus.call(VMMMethod);
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
+        auto VMMResponseMsg = bus.call(VMMMethod, timeout.count());
 
         VMMResponseMsg.read(VMMResponse);
         if (VMMResponse.size() != 0)
@@ -187,7 +189,9 @@ int SoftPowerOff::getEffecterID()
         sysFwMethod.append(TID, entityType,
                            (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
 
-        auto sysFwResponseMsg = bus.call(sysFwMethod);
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
+        auto sysFwResponseMsg = bus.call(sysFwMethod, timeout.count());
 
         sysFwResponseMsg.read(sysFwResponse);
 
@@ -228,6 +232,8 @@ int SoftPowerOff::getSensorInfo()
 
     try
     {
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
         auto& bus = pldm::utils::DBusHandler::getBus();
         std::vector<std::vector<uint8_t>> Response{};
         auto method = bus.new_method_call(
@@ -236,7 +242,7 @@ int SoftPowerOff::getSensorInfo()
         method.append(TID, entityType,
                       (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
 
-        auto ResponseMsg = bus.call(method);
+        auto ResponseMsg = bus.call(method, timeout.count());
 
         ResponseMsg.read(Response);
 
@@ -300,13 +306,15 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     // Get instanceID
     try
     {
+        std::chrono::microseconds timeout =
+            std::chrono::microseconds(DBUS_TIMEOUT);
         auto& bus = pldm::utils::DBusHandler::getBus();
         auto method = bus.new_method_call(
             "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
             "xyz.openbmc_project.PLDM.Requester", "GetInstanceId");
         method.append(mctpEID);
 
-        auto ResponseMsg = bus.call(method);
+        auto ResponseMsg = bus.call(method, timeout.count());
 
         ResponseMsg.read(instanceID);
     }
