@@ -159,12 +159,15 @@ void CodeUpdate::setVersions()
     auto& bus = dBusIntf->getBus();
     try
     {
+        std::chrono::seconds timeout_s(DBUS_TIMEOUT);
+        auto timeout =
+            std::chrono::duration_cast<std::chrono::microseconds>(timeout_s);
         auto method = bus.new_method_call(mapperService, functionalObjPath,
                                           propIntf, "Get");
         method.append("xyz.openbmc_project.Association", "endpoints");
         std::variant<std::vector<std::string>> paths;
 
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, timeout.count());
         reply.read(paths);
 
         runningVersion = std::get<std::vector<std::string>>(paths)[0];
@@ -173,7 +176,7 @@ void CodeUpdate::setVersions()
                                            propIntf, "Get");
         method1.append("xyz.openbmc_project.Association", "endpoints");
 
-        auto reply1 = bus.call(method1);
+        auto reply1 = bus.call(method1, timeout.count());
         reply1.read(paths);
         for (const auto& path : std::get<std::vector<std::string>>(paths))
         {

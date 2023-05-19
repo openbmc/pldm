@@ -65,11 +65,14 @@ std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
 
     try
     {
+        std::chrono::seconds timeout_s(DBUS_TIMEOUT);
+        auto timeout =
+            std::chrono::duration_cast<std::chrono::microseconds>(timeout_s);
         auto method =
             bus.new_method_call(DUMP_MANAGER_BUSNAME, DUMP_MANAGER_PATH,
                                 OBJECT_MANAGER_INTERFACE, "GetManagedObjects");
 
-        auto reply = bus.call(method);
+        auto reply = bus.call(method, timeout.count());
         reply.read(objects);
     }
     catch (const sdbusplus::exception_t& e)
@@ -282,10 +285,14 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             auto& bus = pldm::utils::DBusHandler::getBus();
             try
             {
+                std::chrono::seconds timeout_s(DBUS_TIMEOUT);
+                auto timeout =
+                    std::chrono::duration_cast<std::chrono::microseconds>(
+                        timeout_s);
                 auto method = bus.new_method_call(
                     "xyz.openbmc_project.Dump.Manager", path.c_str(),
                     "xyz.openbmc_project.Object.Delete", "Delete");
-                bus.call(method);
+                bus.call(method, timeout.count());
             }
             catch (const std::exception& e)
             {

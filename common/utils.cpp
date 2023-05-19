@@ -220,6 +220,9 @@ std::optional<std::vector<set_effecter_state_field>>
 std::string DBusHandler::getService(const char* path,
                                     const char* interface) const
 {
+    std::chrono::seconds timeout_s(DBUS_TIMEOUT);
+    auto timeout =
+        std::chrono::duration_cast<std::chrono::microseconds>(timeout_s);
     using DbusInterfaceList = std::vector<std::string>;
     std::map<std::string, std::vector<std::string>> mapperResponse;
     auto& bus = DBusHandler::getBus();
@@ -228,7 +231,7 @@ std::string DBusHandler::getService(const char* path,
                                       mapperInterface, "GetObject");
     mapper.append(path, DbusInterfaceList({interface}));
 
-    auto mapperResponseMsg = bus.call(mapper);
+    auto mapperResponseMsg = bus.call(mapper, timeout.count());
     mapperResponseMsg.read(mapperResponse);
     return mapperResponse.begin()->first;
 }
@@ -237,11 +240,14 @@ GetSubTreeResponse
     DBusHandler::getSubtree(const std::string& searchPath, int depth,
                             const std::vector<std::string>& ifaceList) const
 {
+    std::chrono::seconds timeout_s(DBUS_TIMEOUT);
+    auto timeout =
+        std::chrono::duration_cast<std::chrono::microseconds>(timeout_s);
     auto& bus = pldm::utils::DBusHandler::getBus();
     auto method = bus.new_method_call(mapperBusName, mapperPath,
                                       mapperInterface, "GetSubTree");
     method.append(searchPath, depth, ifaceList);
-    auto reply = bus.call(method);
+    auto reply = bus.call(method, timeout.count());
     GetSubTreeResponse response;
     reply.read(response);
     return response;
@@ -349,13 +355,16 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
 PropertyValue DBusHandler::getDbusPropertyVariant(
     const char* objPath, const char* dbusProp, const char* dbusInterface) const
 {
+    std::chrono::seconds timeout_s(DBUS_TIMEOUT);
+    auto timeout =
+        std::chrono::duration_cast<std::chrono::microseconds>(timeout_s);
     auto& bus = DBusHandler::getBus();
     auto service = getService(objPath, dbusInterface);
     auto method = bus.new_method_call(service.c_str(), objPath, dbusProperties,
                                       "Get");
     method.append(dbusInterface, dbusProp);
     PropertyValue value{};
-    auto reply = bus.call(method);
+    auto reply = bus.call(method, timeout.count());
     reply.read(value);
     return value;
 }
