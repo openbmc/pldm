@@ -36,6 +36,7 @@ conf_data.set_quoted('EVENTS_JSONS_DIR', join_paths(package_datadir, 'events'))
 conf_data.set('HEARTBEAT_TIMEOUT', get_option('heartbeat-timeout-seconds'))
 conf_data.set('TERMINUS_ID', get_option('terminus-id'))
 conf_data.set('TERMINUS_HANDLE',get_option('terminus-handle'))
+conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))
 add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
 endif
 if get_option('softoff').enabled()
