@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5298f96c_4797e76b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-05-19T12:12:27Z",
+      "side": 1,
+      "message": "This was initially tested with normal IPL and re-ipl and the bad path was tested with a getdbus property that timed out in 5 seconds . after some review comments we removed the conversion \nstd::chrono::microseconds timeout \u003d std::chrono::microseconds(DBUS_TIMEOUT); and directly sent DBUS_TIMEOUT value to bus.call . This was not retested with IPLs. Since bus.call considers time in micro seconds and not in seconds we sent timeout as 5usecs. before merge when this was tested we could not IPL because the pldmd timed out too quickly. \n\nI have made corrections and added the coversions back and retested . Test details are added on the commit message",
+      "parentUuid": "2a6c163f_54363f3a",
+      "revId": "acb4054e5d7e7f16e16afecbcd026dcafde70536",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e11d59d0_d5e40510",
