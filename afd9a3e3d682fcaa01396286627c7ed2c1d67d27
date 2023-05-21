@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7264117_5b35aa48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-05-21T12:24:35Z",
+      "side": 1,
+      "message": "Change looks fine now. If you are able to test positive and negative paths we are good.",
+      "revId": "afd9a3e3d682fcaa01396286627c7ed2c1d67d27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
