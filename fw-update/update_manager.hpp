@@ -8,7 +8,6 @@
 #include "watch.hpp"
 
 #include <libpldm/base.h>
-#include <libpldm/pldm.h>
 
 #include <chrono>
 #include <filesystem>

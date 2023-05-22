@@ -1,5 +1,7 @@
+
 #include "common/flight_recorder.hpp"
 #include "common/instance_id.hpp"
+#include "common/transport.hpp"
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
 #include "fw-update/manager.hpp"
@@ -14,6 +16,7 @@
 #include <libpldm/bios.h>
 #include <libpldm/pdr.h>
 #include <libpldm/platform.h>
+#include <libpldm/transport.h>
 #include <poll.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -34,7 +37,7 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
-#include <optional>
+#include <ranges>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -83,13 +86,12 @@ void interruptFlightRecorderCallBack(Signal& /*signal*/,
 static std::optional<Response>
     processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
                  requester::Handler<requester::Request>& handler,
-                 fw_update::Manager* fwManager)
+                 fw_update::Manager* fwManager, pldm_tid_t tid)
 {
-    using type = uint8_t;
-    uint8_t eid = requestMsg[0];
+    uint8_t eid = tid;
+
     pldm_header_info hdrFields{};
-    auto hdr = reinterpret_cast<const pldm_msg_hdr*>(
-        requestMsg.data() + sizeof(eid) + sizeof(type));
+    auto hdr = reinterpret_cast<const pldm_msg_hdr*>(requestMsg.data());
     if (PLDM_SUCCESS != unpack_pldm_header(hdr, &hdrFields))
     {
         error("Empty PLDM request header");
@@ -100,8 +102,7 @@ static std::optional<Response>
     {
         Response response;
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
-        size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
-                            sizeof(eid) - sizeof(type);
+        size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr);
         try
         {
             if (hdrFields.pldm_type != PLDM_FWUP)
@@ -138,8 +139,7 @@ static std::optional<Response>
     else if (PLDM_RESPONSE == hdrFields.msg_type)
     {
         auto response = reinterpret_cast<const pldm_msg*>(hdr);
-        size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
-                             sizeof(eid) - sizeof(type);
+        size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr);
         handler.handleResponse(eid, hdrFields.instance, hdrFields.pldm_type,
                                hdrFields.command, response, responseLen);
     }
@@ -172,28 +172,12 @@ int main(int argc, char** argv)
             exit(EXIT_FAILURE);
     }
 
-    /* Create local socket. */
-    int returnCode = 0;
-    int sockfd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
-    if (-1 == sockfd)
-    {
-        returnCode = -errno;
-        error("Failed to create the socket, RC= {RC}", "RC", returnCode);
-        exit(EXIT_FAILURE);
-    }
-    socklen_t optlen;
-    int currentSendbuffSize;
-
-    // Get Current send buffer size
-    optlen = sizeof(currentSendbuffSize);
-
-    int res = getsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &currentSendbuffSize,
-                         &optlen);
-    if (res == -1)
-    {
-        error("Error in obtaining the default send buffer size, Error : {ERR}",
-              "ERR", strerror(errno));
-    }
+    // Setup PLDM requester transport
+    auto hostEID = pldm::utils::readHostEID();
+    /* To maintain current behaviour until we have the infrastructure to find
+     * and use the correct TIDs */
+    pldm_tid_t TID = hostEID;
+    PldmTransport pldmTransport{};
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
     sdbusplus::server::manager_t objManager(bus,
@@ -206,8 +190,8 @@ int main(int argc, char** argv)
         bus, "/xyz/openbmc_project/inventory");
 
     Invoker invoker{};
-    requester::Handler<requester::Request> reqHandler(
-        sockfd, event, instanceIdDb, currentSendbuffSize, verbose);
+    requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
+                                                      instanceIdDb, verbose);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
@@ -241,22 +225,22 @@ int main(int argc, char** argv)
         hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     DBusHandler dbusHandler;
-    auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
         hostPDRHandler = std::make_shared<HostPDRHandler>(
-            sockfd, hostEID, event, pdrRepo.get(), EVENTS_JSONS_DIR,
-            entityTree.get(), bmcEntityTree.get(), instanceIdDb, &reqHandler);
+            pldmTransport.getEventSource(), hostEID, event, pdrRepo.get(),
+            EVENTS_JSONS_DIR, entityTree.get(), bmcEntityTree.get(),
+            instanceIdDb, &reqHandler);
         // HostFirmware interface needs access to hostPDR to know if host
         // is running
         dbusImplHost.setHostPdrObj(hostPDRHandler);
 
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
-                &instanceIdDb, sockfd, pdrRepo.get(), &dbusHandler,
-                HOST_JSONS_DIR, &reqHandler);
+                &instanceIdDb, pldmTransport.getEventSource(), pdrRepo.get(),
+                &dbusHandler, HOST_JSONS_DIR, &reqHandler);
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
-            sockfd, hostEID, instanceIdDb, &reqHandler);
+            pldmTransport.getEventSource(), hostEID, instanceIdDb, &reqHandler);
     }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
     std::unique_ptr<oem_bios::Handler> oemBiosHandler{};
@@ -266,17 +250,19 @@ int main(int argc, char** argv)
         std::make_unique<pldm::responder::CodeUpdate>(&dbusHandler);
     codeUpdate->clearDirPath(LID_STAGING_DIR);
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-        &dbusHandler, codeUpdate.get(), sockfd, hostEID, instanceIdDb, event,
-        &reqHandler);
+        &dbusHandler, codeUpdate.get(), pldmTransport.getEventSource(), hostEID,
+        instanceIdDb, event, &reqHandler);
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
-                                          oemPlatformHandler.get(), sockfd,
+                                          oemPlatformHandler.get(),
+                                          pldmTransport.getEventSource(),
                                           hostEID, &instanceIdDb, &reqHandler));
     oemBiosHandler = std::make_unique<oem::ibm::bios::Handler>(&dbusHandler);
 #endif
 
     auto biosHandler = std::make_unique<bios::Handler>(
-        sockfd, hostEID, &instanceIdDb, &reqHandler, oemBiosHandler.get());
+        pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
+        oemBiosHandler.get());
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
         bmcEntityTree.get());
@@ -292,7 +278,6 @@ int main(int argc, char** argv)
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
             oemPlatformHandler.get());
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
-
 #endif
 
     invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));
@@ -308,149 +293,77 @@ int main(int argc, char** argv)
 
 #endif
 
-    pldm::utils::CustomFD socketFd(sockfd);
-
-    struct sockaddr_un addr
-    {};
-    addr.sun_family = AF_UNIX;
-    const char path[] = "\0mctp-mux";
-    memcpy(addr.sun_path, path, sizeof(path) - 1);
-    int result = connect(socketFd(), reinterpret_cast<struct sockaddr*>(&addr),
-                         sizeof(path) + sizeof(addr.sun_family) - 1);
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        error("Failed to connect to the socket, RC= {RC}", "RC", returnCode);
-        exit(EXIT_FAILURE);
-    }
-
-    result = write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        error("Failed to send message type as pldm to mctp, RC= {RC}", "RC",
-              returnCode);
-        exit(EXIT_FAILURE);
-    }
-
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(bus, fwManager.get());
-
-    auto callback = [verbose, &invoker, &reqHandler, currentSendbuffSize,
-                     &fwManager](IO& io, int fd, uint32_t revents) mutable {
+    auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
+                     TID](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
         {
             return;
         }
-
-        // Outgoing message.
-        struct iovec iov[2]{};
-
-        // This structure contains the parameter information for the response
-        // message.
-        struct msghdr msg
-        {};
+        if (fd < 0)
+        {
+            return;
+        }
 
         int returnCode = 0;
-        ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);
-        if (0 == peekedLength)
+        void* requestMsg;
+        size_t recvDataLength;
+        returnCode = pldmTransport.recvMsg(TID, requestMsg, recvDataLength);
+
+        if (returnCode == PLDM_REQUESTER_SUCCESS)
+        {
+            std::vector<uint8_t> requestMsgVec(
+                static_cast<uint8_t*>(requestMsg),
+                static_cast<uint8_t*>(requestMsg) + recvDataLength);
+            FlightRecorder::GetInstance().saveRecord(requestMsgVec, false);
+            if (verbose)
+            {
+                printBuffer(Rx, requestMsgVec);
+            }
+            // process message and send response
+            auto response = processRxMsg(requestMsgVec, invoker, reqHandler,
+                                         fwManager.get(), TID);
+            if (response.has_value())
+            {
+                FlightRecorder::GetInstance().saveRecord(*response, true);
+                if (verbose)
+                {
+                    printBuffer(Tx, *response);
+                }
+
+                returnCode = pldmTransport.sendMsg(TID, (*response).data(),
+                                                   (*response).size());
+                if (returnCode != PLDM_REQUESTER_SUCCESS)
+                {
+                    warning("Failed to send PLDM response: {RETURN_CODE}",
+                            "RETURN_CODE", returnCode);
+                }
+            }
+        }
+        // TODO check that we get here if mctp-demux dies?
+        else if (returnCode == PLDM_REQUESTER_RECV_FAIL)
         {
             // MCTP daemon has closed the socket this daemon is connected to.
             // This may or may not be an error scenario, in either case the
             // recovery mechanism for this daemon is to restart, and hence exit
             // the event loop, that will cause this daemon to exit with a
             // failure code.
+            error("io exiting");
             io.get_event().exit(0);
-        }
-        else if (peekedLength <= -1)
-        {
-            returnCode = -errno;
-            error("recv system call failed, RC= {RC}", "RC", returnCode);
         }
         else
         {
-            std::vector<uint8_t> requestMsg(peekedLength);
-            auto recvDataLength = recv(
-                fd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
-            if (recvDataLength == peekedLength)
-            {
-                FlightRecorder::GetInstance().saveRecord(requestMsg, false);
-                if (verbose)
-                {
-                    printBuffer(Rx, requestMsg);
-                }
-
-                if (MCTP_MSG_TYPE_PLDM != requestMsg[1])
-                {
-                    // Skip this message and continue.
-                }
-                else
-                {
-                    // process message and send response
-                    auto response = processRxMsg(requestMsg, invoker,
-                                                 reqHandler, fwManager.get());
-                    if (response.has_value())
-                    {
-                        FlightRecorder::GetInstance().saveRecord(*response,
-                                                                 true);
-                        if (verbose)
-                        {
-                            printBuffer(Tx, *response);
-                        }
-
-                        iov[0].iov_base = &requestMsg[0];
-                        iov[0].iov_len = sizeof(requestMsg[0]) +
-                                         sizeof(requestMsg[1]);
-                        iov[1].iov_base = (*response).data();
-                        iov[1].iov_len = (*response).size();
-
-                        msg.msg_iov = iov;
-                        msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
-                        if (currentSendbuffSize >= 0 &&
-                            (size_t)currentSendbuffSize < (*response).size())
-                        {
-                            int oldBuffSize = currentSendbuffSize;
-                            currentSendbuffSize = (*response).size();
-                            int res = setsockopt(fd, SOL_SOCKET, SO_SNDBUF,
-                                                 &currentSendbuffSize,
-                                                 sizeof(currentSendbuffSize));
-                            if (res == -1)
-                            {
-                                error(
-                                    "Responder : Failed to set the new send buffer size [bytes] : {CURR_SND_BUF_SIZE}",
-                                    "CURR_SND_BUF_SIZE", currentSendbuffSize);
-                                error(
-                                    "from current size [bytes] : {OLD_BUF_SIZE}, Error : {ERR}",
-                                    "OLD_BUF_SIZE", oldBuffSize, "ERR",
-                                    strerror(errno));
-                                return;
-                            }
-                        }
-
-                        int result = sendmsg(fd, &msg, 0);
-                        if (-1 == result)
-                        {
-                            returnCode = -errno;
-                            error("sendto system call failed, RC= {RC}", "RC",
-                                  returnCode);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                error(
-                    "Failure to read peeked length packet. peekedLength = {PEEK_LEN}, recvDataLength= {RECV_LEN}",
-                    "PEEK_LEN", peekedLength, "RECV_LEN", recvDataLength);
-            }
+            warning("Failed to receive PLDM request: {RETURN_CODE}",
+                    "RETURN_CODE", returnCode);
         }
     };
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
     bus.request_name("xyz.openbmc_project.PLDM");
-    IO io(event, socketFd(), EPOLLIN, std::move(callback));
+    IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
     if (hostPDRHandler)
     {
@@ -460,12 +373,7 @@ int main(int argc, char** argv)
     stdplus::signal::block(SIGUSR1);
     sdeventplus::source::Signal sigUsr1(
         event, SIGUSR1, std::bind_front(&interruptFlightRecorderCallBack));
-    returnCode = event.loop();
-
-    if (shutdown(sockfd, SHUT_RDWR))
-    {
-        error("Failed to shutdown the socket");
-    }
+    int returnCode = event.loop();
     if (returnCode)
     {
         exit(EXIT_FAILURE);

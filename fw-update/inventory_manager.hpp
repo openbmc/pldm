@@ -4,8 +4,6 @@
 #include "common/types.hpp"
 #include "requester/handler.hpp"
 
-#include <libpldm/pldm.h>
-
 namespace pldm
 {
 

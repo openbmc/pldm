@@ -8,7 +8,6 @@
 #include "custom_dbus.hpp"
 
 #include <assert.h>
-#include <libpldm/pldm.h>
 
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
