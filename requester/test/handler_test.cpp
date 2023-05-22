@@ -6,6 +6,7 @@
 #include "test/test_instance_id.hpp"
 
 #include <libpldm/base.h>
+#include <libpldm/transport.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -26,6 +27,7 @@ class HandlerTest : public testing::Test
 
     int fd = 0;
     mctp_eid_t eid = 0;
+    pldm_transport pldmTransport;
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
 
@@ -71,9 +73,9 @@ class HandlerTest : public testing::Test
 
 TEST_F(HandlerTest, singleRequestResponseScenario)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(fd, event, instanceIdDb, false,
-                                              90000, seconds(1), 2,
-                                              milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
+                                              instanceIdDb, false, seconds(1),
+                                              2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
@@ -92,9 +94,9 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
 
 TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(fd, event, instanceIdDb, false,
-                                              90000, seconds(1), 2,
-                                              milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
+                                              instanceIdDb, false, seconds(1),
+                                              2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
@@ -111,9 +113,9 @@ TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
 
 TEST_F(HandlerTest, multipleRequestResponseScenario)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(fd, event, instanceIdDb, false,
-                                              90000, seconds(2), 2,
-                                              milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
+                                              instanceIdDb, false, seconds(2),
+                                              2, milliseconds(100));
     pldm::Request request{};
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
