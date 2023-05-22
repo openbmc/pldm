@@ -33,6 +33,13 @@ option(
     description: 'Include systemd support'
 )
 
+option(
+    'transport-implementation',
+    type: 'combo',
+    choices: ['mctp-demux', 'af-mctp'],
+    description: 'transport via af-mctp or mctp-demux'
+)
+
 # As per PLDM spec DSP0240 version 1.1.0, in Timing Specification for PLDM messages (Table 6),
 # the instance ID for a given response will expire and become reusable if a response has not been
 # received within a maximum of 6 seconds after a request is sent. By setting the dbus timeout
