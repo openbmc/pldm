@@ -2,8 +2,6 @@
 
 #include "libpldmresponder/pdr.hpp"
 
-#include <libpldm/pldm.h>
-
 #include <phosphor-logging/lg2.hpp>
 
 PHOSPHOR_LOG2_USING;

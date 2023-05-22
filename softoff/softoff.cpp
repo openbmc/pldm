@@ -1,11 +1,11 @@
 #include "softoff.hpp"
 
 #include "common/instance_id.hpp"
+#include "common/transport.hpp"
 #include "common/utils.hpp"
 
 #include <libpldm/entity.h>
 #include <libpldm/platform.h>
-#include <libpldm/pldm.h>
 #include <libpldm/state_set.h>
 
 #include <phosphor-logging/lg2.hpp>
@@ -291,8 +291,9 @@ int SoftPowerOff::getSensorInfo()
 int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 {
     constexpr uint8_t effecterCount = 1;
-    uint8_t mctpEID;
+    PldmTransport pldmTransport{};
     uint8_t instanceID;
+    uint8_t mctpEID;
 
     mctpEID = pldm::utils::readHostEID();
     // TODO: fix mapping to work around OpenBMC ecosystem deficiencies
@@ -317,14 +318,6 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         return PLDM_ERROR;
     }
 
-    // Open connection to MCTP socket
-    int fd = pldm_open();
-    if (-1 == fd)
-    {
-        error("Failed to connect to mctp demux daemon");
-        return PLDM_ERROR;
-    }
-
     // Add a timer to the event loop, default 30s.
     auto timerCallback =
         [=, this](Timer& /*source*/, Timer::TimePoint /*time*/) mutable {
@@ -341,18 +334,23 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                std::chrono::seconds{1}, std::move(timerCallback));
 
     // Add a callback to handle EPOLLIN on fd
-    auto callback = [=, this](IO& io, int fd, uint32_t revents) mutable {
+    auto callback =
+        [=, &pldmTransport, this](IO& io, int fd, uint32_t revents) mutable {
+        if (fd != pldmTransport.getEventSource())
+        {
+            return;
+        }
+
         if (!(revents & EPOLLIN))
         {
             return;
         }
 
-        uint8_t* responseMsg = nullptr;
+        void* responseMsg = nullptr;
         size_t responseMsgSize{};
         pldm_tid_t srcTID = pldmTID;
 
-        auto rc = pldm_recv(mctpEID, fd, request->hdr.instance_id, &responseMsg,
-                            &responseMsgSize);
+        auto rc = pldmTransport.recvMsg(pldmTID, responseMsg, responseMsgSize);
         if (rc)
         {
             error("Soft off: failed to recv pldm data. PLDM RC = {RC}", "RC",
@@ -360,8 +358,8 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
             return;
         }
 
-        std::unique_ptr<uint8_t, decltype(std::free)*> responseMsgPtr{
-            responseMsg, std::free};
+        std::unique_ptr<void, decltype(std::free)*> responseMsgPtr{responseMsg,
+                                                                   std::free};
 
         // We've got the response meant for the PLDM request msg that was
         // sent out
@@ -409,10 +407,10 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         }
         return;
     };
-    IO io(event, fd, EPOLLIN, std::move(callback));
+    IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 
-    // Send PLDM Request message - pldm_send doesn't wait for response
-    rc = pldm_send(mctpEID, fd, requestMsg.data(), requestMsg.size());
+    // Asynchronously send the PLDM request
+    rc = pldmTransport.sendMsg(pldmTID, requestMsg.data(), requestMsg.size());
     if (0 > rc)
     {
         instanceIdDb.free(pldmTID, instanceID);
