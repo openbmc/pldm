@@ -1,5 +1,6 @@
+#include "common/transport.hpp"
+
 #include <libpldm/platform.h>
-#include <libpldm/pldm.h>
 
 #include <CLI/CLI.hpp>
 #include <phosphor-logging/lg2.hpp>
@@ -37,19 +38,14 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    // Open connection to MCTP socket
-    int fd = pldm_open();
-    if (-1 == fd)
-    {
-        error("Failed to init mctp");
-        return -1;
-    }
+    PldmTransport pldmTransport{};
 
-    uint8_t* responseMsg = nullptr;
+    void* responseMsg = nullptr;
     size_t responseMsgSize{};
     // Send PLDM request msg and wait for response
-    rc = pldm_send_recv(mctpEid, fd, requestMsg.data(), requestMsg.size(),
-                        &responseMsg, &responseMsgSize);
+    rc = pldmTransport.sendRecvMsg(static_cast<pldm_tid_t>(mctpEid),
+                                   requestMsg.data(), requestMsg.size(),
+                                   responseMsg, responseMsgSize);
     if (0 > rc)
     {
         error(

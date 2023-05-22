@@ -1,8 +1,7 @@
 #pragma once
 
+#include "common/transport.hpp"
 #include "common/types.hpp"
-
-#include <libpldm/pldm.h>
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
