@@ -2,6 +2,8 @@
 
 #include "requester/request.hpp"
 
+#include <libpldm/transport.h>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -14,10 +16,10 @@ namespace requester
 class MockRequest : public RequestRetryTimer
 {
   public:
-    MockRequest(int /*fd*/, mctp_eid_t /*eid*/, sdeventplus::Event& event,
-                pldm::Request&& /*requestMsg*/, uint8_t numRetries,
-                std::chrono::milliseconds responseTimeOut,
-                int /*currentSendbuffSize*/, bool /*verbose*/) :
+    MockRequest(pldm_transport* /*pldmTransport*/, mctp_eid_t /*eid*/,
+                sdeventplus::Event& event, pldm::Request&& /*requestMsg*/,
+                uint8_t numRetries, std::chrono::milliseconds responseTimeOut,
+                bool /*verbose*/) :
         RequestRetryTimer(event, numRetries, responseTimeOut)
     {}
 
