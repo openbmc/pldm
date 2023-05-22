@@ -4,8 +4,6 @@
 #include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
 
-#include <libpldm/pldm.h>
-
 namespace pldm
 {
 
