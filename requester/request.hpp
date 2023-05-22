@@ -6,6 +6,7 @@
 
 #include <libpldm/base.h>
 #include <libpldm/pldm.h>
+#include <libpldm/transport.h>
 #include <sys/socket.h>
 
 #include <phosphor-logging/lg2.hpp>
@@ -142,7 +143,8 @@ class Request final : public RequestRetryTimer
 
     /** @brief Constructor
      *
-     *  @param[in] fd - fd of the MCTP communication socket
+     *  @param[in] fd - fd of the PLDM communication socket
+     *  @param[in] pldm_transport - PLDM transport object
      *  @param[in] eid - endpoint ID of the remote MCTP endpoint
      *  @param[in] currrentSendbuffSize - the current send buffer size
      *  @param[in] event - reference to PLDM daemon's main event loop
@@ -151,17 +153,20 @@ class Request final : public RequestRetryTimer
      *  @param[in] timeout - time to wait between each retry in milliseconds
      *  @param[in] verbose - verbose tracing flag
      */
-    explicit Request(int fd, mctp_eid_t eid, sdeventplus::Event& event,
+    explicit Request(int fd, struct pldm_transport& pldmTransport,
+                     mctp_eid_t eid, sdeventplus::Event& event,
                      pldm::Request&& requestMsg, uint8_t numRetries,
                      std::chrono::milliseconds timeout, int currentSendbuffSize,
                      bool verbose) :
         RequestRetryTimer(event, numRetries, timeout),
-        fd(fd), eid(eid), requestMsg(std::move(requestMsg)),
+        fd(fd), pldmTransport(pldmTransport), eid(eid),
+        requestMsg(std::move(requestMsg)),
         currentSendbuffSize(currentSendbuffSize), verbose(verbose)
     {}
 
   private:
-    int fd;                   //!< file descriptor of MCTP communications socket
+    int fd;                   //!< file descriptor of PLDM communications socket
+    pldm_transport& pldmTransport; //!< PLDM transport
     mctp_eid_t eid;           //!< endpoint ID of the remote MCTP endpoint
     pldm::Request requestMsg; //!< PLDM request message
     mutable int currentSendbuffSize; //!< current Send Buffer size

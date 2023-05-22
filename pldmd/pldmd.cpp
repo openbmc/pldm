@@ -14,6 +14,8 @@
 #include <libpldm/bios.h>
 #include <libpldm/pdr.h>
 #include <libpldm/platform.h>
+#include <libpldm/pldm.h>
+#include <libpldm/transport/mctp-demux.h>
 #include <poll.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -171,15 +173,33 @@ int main(int argc, char** argv)
             exit(EXIT_FAILURE);
     }
 
-    /* Create local socket. */
-    int returnCode = 0;
-    int sockfd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
-    if (-1 == sockfd)
+    // Setup PLDM requester transport
+    auto hostEID = pldm::utils::readHostEID();
+    /* To maintain current behaviour until we have the infrastructure to find
+     * and use the correct TIDs */
+    auto TID = hostEID;
+
+    pldm_transport_mctp_demux* mctp_demux = NULL;
+    int returnCode = pldm_transport_mctp_demux_init(&mctp_demux);
+    if (!mctp_demux)
     {
         returnCode = -errno;
-        error("Failed to create the socket, RC= {RC}", "RC", returnCode);
+        std::cerr << "Failed to init pldm transport, RC= " << returnCode
+                  << "\n";
         exit(EXIT_FAILURE);
     }
+    returnCode = pldm_transport_mctp_demux_map_tid(mctp_demux, TID, hostEID);
+    if (returnCode)
+    {
+        returnCode = -errno;
+        std::cerr << "Failed to setup TID mapping, RC= " << returnCode << "\n";
+        exit(EXIT_FAILURE);
+    }
+
+    pollfd pollfd;
+    returnCode = pldm_transport_mctp_demux_init_pollfd(mctp_demux, &pollfd);
+    int sockfd = pollfd.fd;
+
     socklen_t optlen;
     int currentSendbuffSize;
 
@@ -203,8 +223,11 @@ int main(int argc, char** argv)
                                     instanceIdDb);
 
     Invoker invoker{};
+    pldm_transport& pldmTransport =
+        *pldm_transport_mctp_demux_core(mctp_demux);
     requester::Handler<requester::Request> reqHandler(
-        sockfd, event, instanceIdDb, currentSendbuffSize, verbose);
+        sockfd, pldmTransport, event, instanceIdDb, currentSendbuffSize,
+        verbose);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
@@ -224,7 +247,6 @@ int main(int argc, char** argv)
         hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     DBusHandler dbusHandler;
-    auto hostEID = pldm::utils::readHostEID();
     if (hostEID)
     {
         hostPDRHandler = std::make_shared<HostPDRHandler>(
@@ -289,21 +311,8 @@ int main(int argc, char** argv)
 
     pldm::utils::CustomFD socketFd(sockfd);
 
-    struct sockaddr_un addr
-    {};
-    addr.sun_family = AF_UNIX;
-    const char path[] = "\0mctp-mux";
-    memcpy(addr.sun_path, path, sizeof(path) - 1);
-    int result = connect(socketFd(), reinterpret_cast<struct sockaddr*>(&addr),
-                         sizeof(path) + sizeof(addr.sun_family) - 1);
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        error("Failed to connect to the socket, RC= {RC}", "RC", returnCode);
-        exit(EXIT_FAILURE);
-    }
-
-    result = write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
+    int result = 
+        write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
     if (-1 == result)
     {
         returnCode = -errno;
@@ -441,10 +450,7 @@ int main(int argc, char** argv)
         event, SIGUSR1, std::bind_front(&interruptFlightRecorderCallBack));
     returnCode = event.loop();
 
-    if (shutdown(sockfd, SHUT_RDWR))
-    {
-        error("Failed to shutdown the socket");
-    }
+    pldm_transport_mctp_demux_destroy(mctp_demux);
     if (returnCode)
     {
         exit(EXIT_FAILURE);
