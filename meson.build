@@ -25,6 +25,12 @@ package_datadir = join_paths(get_option('prefix'), get_option('datadir'), meson.
 package_localstatedir = join_paths(get_option('prefix'), get_option('localstatedir'), meson.project_name())
 
 conf_data = configuration_data()
+cpp = meson.get_compiler('cpp')
+
+# Enable POSIX poll APIs in libpldm
+if cpp.has_header('poll.h')
+    conf_data.set('PLDM_HAS_POLL', 1)
+endif
 if get_option('libpldmresponder').enabled()
 conf_data.set_quoted('BIOS_JSONS_DIR', join_paths(package_datadir, 'bios'))
 conf_data.set_quoted('BIOS_TABLES_DIR', join_paths(package_localstatedir, 'bios'))
@@ -59,6 +65,11 @@ conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
 conf_data.set('FLIGHT_RECORDER_MAX_ENTRIES',get_option('flightrecorder-max-entries'))
 conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
 conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
+if get_option('transport-implementation') == 'mctp-demux'
+  conf_data.set('PLDM_TRANSPORT_WITH_MCTP_DEMUX', 1)
+elif get_option('transport-implementation') == 'af-mctp'
+  conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
+endif
 config = configure_file(output: 'config.h',
   configuration: conf_data
 )
@@ -129,6 +140,7 @@ libpldm_dep = dependency('libpldm', fallback:['libpldm','libpldm_dep'])
 libpldmutils_headers = ['.']
 libpldmutils = library(
   'pldmutils',
+  'common/transport.cpp',
   'common/utils.cpp',
   version: meson.project_version(),
   dependencies: [

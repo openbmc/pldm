@@ -7,7 +7,6 @@
 #include <libpldm/bios.h>
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
-#include <libpldm/pldm.h>
 
 #include <phosphor-logging/lg2.hpp>
 

@@ -2,7 +2,6 @@
 
 #include <libpldm/pdr.h>
 #include <libpldm/platform.h>
-#include <libpldm/pldm.h>
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>

@@ -6,7 +6,6 @@
 
 #include <libpldm/entity.h>
 #include <libpldm/entity_oem_ibm.h>
-#include <libpldm/pldm.h>
 
 #include <phosphor-logging/lg2.hpp>
 
