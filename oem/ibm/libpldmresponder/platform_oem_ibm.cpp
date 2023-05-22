@@ -4,7 +4,6 @@
 #include "libpldmresponder/pdr.hpp"
 
 #include <libpldm/platform_oem_ibm.h>
-#include <libpldm/pldm.h>
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
