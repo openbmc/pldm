@@ -6,6 +6,7 @@
 
 #include <libpldm/base.h>
 #include <libpldm/pldm.h>
+#include <libpldm/transport.h>
 #include <sys/socket.h>
 
 #include <phosphor-logging/lg2.hpp>
@@ -87,26 +88,24 @@ class Handler
 
     /** @brief Constructor
      *
-     *  @param[in] fd - fd of MCTP communications socket
+     *  @param[in] pldm_transport - PLDM requester
      *  @param[in] event - reference to PLDM daemon's main event loop
      *  @param[in] instanceIdDb - reference to an InstanceIdDb
-     *  @param[in] currentSendbuffSize - current send buffer size
      *  @param[in] verbose - verbose tracing flag
      *  @param[in] instanceIdExpiryInterval - instance ID expiration interval
      *  @param[in] numRetries - number of request retries
      *  @param[in] responseTimeOut - time to wait between each retry
      */
     explicit Handler(
-        int fd, sdeventplus::Event& event, pldm::InstanceIdDb& instanceIdDb,
-        int currentSendbuffSize, bool verbose,
+        pldm_transport& pldmTransport, sdeventplus::Event& event,
+        pldm::InstanceIdDb& instanceIdDb, bool verbose,
         std::chrono::seconds instanceIdExpiryInterval =
             std::chrono::seconds(INSTANCE_ID_EXPIRATION_INTERVAL),
         uint8_t numRetries = static_cast<uint8_t>(NUMBER_OF_REQUEST_RETRIES),
         std::chrono::milliseconds responseTimeOut =
             std::chrono::milliseconds(RESPONSE_TIME_OUT)) :
-        fd(fd),
-        event(event), instanceIdDb(instanceIdDb),
-        currentSendbuffSize(currentSendbuffSize), verbose(verbose),
+        pldmTransport(pldmTransport),
+        event(event), instanceIdDb(instanceIdDb), verbose(verbose),
         instanceIdExpiryInterval(instanceIdExpiryInterval),
         numRetries(numRetries), responseTimeOut(responseTimeOut)
     {}
@@ -171,8 +170,8 @@ class Handler
         }
 
         auto request = std::make_unique<RequestInterface>(
-            fd, eid, event, std::move(requestMsg), numRetries, responseTimeOut,
-            currentSendbuffSize, verbose);
+            pldmTransport, eid, event, std::move(requestMsg), numRetries,
+            responseTimeOut, verbose);
         auto timer = std::make_unique<phosphor::Timer>(
             event.get(), instanceIdExpiryCallBack);
 
@@ -243,10 +242,9 @@ class Handler
     }
 
   private:
-    int fd; //!< file descriptor of MCTP communications socket
+    pldm_transport& pldmTransport; //!< PLDM transport object
     sdeventplus::Event& event; //!< reference to PLDM daemon's main event loop
     pldm::InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
-    int currentSendbuffSize;          //!< current Send Buffer size
     bool verbose;                     //!< verbose tracing flag
     std::chrono::seconds
         instanceIdExpiryInterval;     //!< Instance ID expiration interval
