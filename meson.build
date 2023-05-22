@@ -25,6 +25,12 @@ package_datadir = join_paths(get_option('prefix'), get_option('datadir'), meson.
 package_localstatedir = join_paths(get_option('prefix'), get_option('localstatedir'), meson.project_name())
 
 conf_data = configuration_data()
+cpp = meson.get_compiler('cpp')
+
+# Enable POSIX poll APIs in libpldm
+if cpp.has_header('poll.h')
+    conf_data.set('PLDM_HAS_POLL', 1)
+endif
 if get_option('libpldmresponder').enabled()
 conf_data.set_quoted('BIOS_JSONS_DIR', join_paths(package_datadir, 'bios'))
 conf_data.set_quoted('BIOS_TABLES_DIR', join_paths(package_localstatedir, 'bios'))
