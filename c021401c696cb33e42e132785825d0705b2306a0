@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61e22ecf_3ff2d6d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-22T07:45:26Z",
+      "side": 1,
+      "message": "In the future I\u0027d do these as separate changes, but this is probably fine.",
+      "revId": "c021401c696cb33e42e132785825d0705b2306a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
