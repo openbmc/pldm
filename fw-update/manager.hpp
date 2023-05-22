@@ -8,8 +8,6 @@
 #include "requester/handler.hpp"
 #include "update_manager.hpp"
 
-#include <libpldm/pldm.h>
-
 #include <unordered_map>
 #include <vector>
 

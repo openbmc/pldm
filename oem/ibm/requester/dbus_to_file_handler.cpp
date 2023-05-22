@@ -3,7 +3,6 @@
 #include "common/utils.hpp"
 
 #include <libpldm/file_io.h>
-#include <libpldm/pldm.h>
 
 #include <phosphor-logging/lg2.hpp>
 
