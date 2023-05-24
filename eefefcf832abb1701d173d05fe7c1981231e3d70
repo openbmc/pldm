@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45e47208_8973ce9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "Woohoo!",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b7c9b08_eadac634",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "Hmmm. I didn\u0027t even think of this. We should put this in libpldm in `pldm_transport_mctp_demux_init()` before we get any further with exploiting the new transport API.",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d83c7a_5f76afa9",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "I think this should be converted to `pldm_transport_recv_msg()`?",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e204dc8f_40f93e86",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "I do wonder if we can get away without this check. It should never fail.\n\nAlso we\u0027ve never validated if `peekedLength \u003e 1`, only that `peekedLength \u003e 0` 😞",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10cb717d_1e5f1929",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "This should probably go in the specific transport implementations",
+      "range": {
+        "startLine": 390,
+        "startChar": 0,
+        "endLine": 416,
+        "endChar": 29
+      },
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e158efae_95c343c9",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "This should be `pldm_transport_send_msg()`?\n\nBy refactoring the `sendmsg()` and `recv()` (asymmetry?) parts to be in terms of `pldm_transport_*` APIs we shouldn\u0027t need the fd any more either?",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e154bec_57610dc6",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "Why do we still need the fd if we\u0027re passing in a `pldm_transport\u0026`?",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e76dede6_4fc454d8",
+        "filename": "requester/request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-24T06:26:12Z",
+      "side": 1,
+      "message": "Why do we still need the fd if we\u0027re passing in a `pldm_transport\u0026`?",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
