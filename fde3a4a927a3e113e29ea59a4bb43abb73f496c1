@@ -22,6 +22,30 @@
       },
       "revId": "fde3a4a927a3e113e29ea59a4bb43abb73f496c1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b613f37e_d2361fb2",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-05-24T11:07:52Z",
+      "side": 1,
+      "message": "If the case of host not booted, how do you distinguish if the failure was do to that or a failure to set the effecter. \n\nI guess that was the motivation behind the checks.",
+      "parentUuid": "ef6c1e54_68f8fca9",
+      "range": {
+        "startLine": 162,
+        "startChar": 2,
+        "endLine": 184,
+        "endChar": 5
+      },
+      "revId": "fde3a4a927a3e113e29ea59a4bb43abb73f496c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
