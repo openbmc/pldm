@@ -22,6 +22,30 @@
       },
       "revId": "fc5a7cd2316e334bf92657aacd620275cc684fa5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bd1bd0a_1c8662c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-25T05:04:53Z",
+      "side": 1,
+      "message": "It is about 12x for one SoC at this moment.",
+      "parentUuid": "da854f45_7fa4d43e",
+      "range": {
+        "startLine": 10,
+        "startChar": 40,
+        "endLine": 12,
+        "endChar": 35
+      },
+      "revId": "fc5a7cd2316e334bf92657aacd620275cc684fa5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
