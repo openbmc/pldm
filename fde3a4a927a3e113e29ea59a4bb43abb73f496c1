@@ -46,6 +46,30 @@
       },
       "revId": "fde3a4a927a3e113e29ea59a4bb43abb73f496c1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b68c6426_789ccd1e",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-26T05:14:03Z",
+      "side": 1,
+      "message": "\u003e If the case of host not booted, how do you distinguish if the failure was do to that or a failure to set the effecter. \n\u003e \n\u003e I guess that was the motivation behind the checks.\n\nBut that would be visible in the set effecter states command not being responded right ?\n\nWe would see a trace like \"Response not received for COMMAND\u003dxyz INSTANCEID\u003dpqr\" ..e.t.c ..should that be good enough ? why do we need if host is off or not ?",
+      "parentUuid": "b613f37e_d2361fb2",
+      "range": {
+        "startLine": 162,
+        "startChar": 2,
+        "endLine": 184,
+        "endChar": 5
+      },
+      "revId": "fde3a4a927a3e113e29ea59a4bb43abb73f496c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
