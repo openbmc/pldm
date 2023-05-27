@@ -2,6 +2,7 @@
 #include "pldm_cmd_helper.hpp"
 
 #include <libpldm/entity.h>
+#include <libpldm/pldm.h>
 #include <libpldm/state_set.h>
 
 #include <cstddef>
@@ -96,6 +97,15 @@ class GetPDR : public CommandInterface
                                pdrRecType.begin(), tolower);
             }
 
+            /* Open the socket once for each PLDM command */
+            fd = pldm_open();
+            if (-1 == fd)
+            {
+                std::cerr << "failed to init mctp "
+                          << "\n";
+                return;
+            }
+
             // start the array
             std::cout << "[\n";
 
@@ -105,12 +115,61 @@ class GetPDR : public CommandInterface
             std::map<uint32_t, uint32_t> recordsSeen;
             do
             {
-                CommandInterface::exec();
+                if (getInstanceId() != PLDM_SUCCESS)
+                {
+                    return;
+                }
+
+                auto [rc, requestMsg] = createRequestMsg();
+                if (rc != PLDM_SUCCESS)
+                {
+                    std::cerr << "Failed to encode request message for "
+                              << pldmType << ":" << commandName
+                              << " rc = " << rc << "\n";
+                    return;
+                }
+
+                // Insert the PLDM message type and EID at the beginning of the
+                // msg.
+                requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+                requestMsg.insert(requestMsg.begin(), mctp_eid);
+
+                if (pldmVerbose)
+                {
+                    std::cout << "pldmtool: ";
+                    printBuffer(Tx, requestMsg);
+                }
+
+                std::vector<uint8_t> responseMsg;
+                rc = pldmSendRecv(requestMsg, responseMsg);
+
+                if (rc != PLDM_SUCCESS)
+                {
+                    std::cerr << " Command " << commandName
+                              << ": Failed to receive RC = " << rc << "\n";
+                    return;
+                }
+
+                if (pldmVerbose)
+                {
+                    std::cout << "pldmtool: ";
+                    printBuffer(Rx, responseMsg);
+                }
+
+                auto responsePtr =
+                    reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+                parseResponseMsg(responsePtr,
+                                 responseMsg.size() - sizeof(pldm_msg_hdr));
+
                 // recordHandle is updated to nextRecord when
-                // CommandInterface::exec() is successful.
+                // pldmSendRecv is successful.
                 // In case of any error, return.
                 if (recordHandle == prevRecordHandle)
                 {
+                    std::cerr << " Duplicate recordHandle " << recordHandle
+                              << " prevRecordHandle " << prevRecordHandle
+                              << "\n";
+
                     return;
                 }
 
@@ -136,6 +195,9 @@ class GetPDR : public CommandInterface
 
             // close the array
             std::cout << "]\n";
+
+            /* Close socket */
+            shutdown(fd, SHUT_RDWR);
         }
         else
         {

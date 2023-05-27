@@ -134,23 +134,8 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
 
 void CommandInterface::exec()
 {
-    static constexpr auto pldmObjPath = "/xyz/openbmc_project/pldm";
-    static constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    try
+    if (PLDM_SUCCESS != getInstanceId())
     {
-        auto service = pldm::utils::DBusHandler().getService(pldmObjPath,
-                                                             pldmRequester);
-        auto method = bus.new_method_call(service.c_str(), pldmObjPath,
-                                          pldmRequester, "GetInstanceId");
-        method.append(mctp_eid);
-        auto reply = bus.call(method);
-        reply.read(instanceId);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = "
-                  << (unsigned)mctp_eid << ", error = " << e.what() << "\n";
         return;
     }
     auto [rc, requestMsg] = createRequestMsg();
@@ -232,6 +217,31 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         responseMsg.erase(responseMsg.begin(),
                           responseMsg.begin() + 2 /* skip the mctp header */);
     }
+    return PLDM_SUCCESS;
+}
+
+int CommandInterface::getInstanceId()
+{
+    static constexpr auto pldmObjPath = "/xyz/openbmc_project/pldm";
+    static constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(pldmObjPath,
+                                                             pldmRequester);
+        auto method = bus.new_method_call(service.c_str(), pldmObjPath,
+                                          pldmRequester, "GetInstanceId");
+        method.append(mctp_eid);
+        auto reply = bus.call(method);
+        reply.read(instanceId);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = "
+                  << (unsigned)mctp_eid << ", error = " << e.what() << "\n";
+        return PLDM_ERROR;
+    }
+
     return PLDM_SUCCESS;
 }
 } // namespace helper
