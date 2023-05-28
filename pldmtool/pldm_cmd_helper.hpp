@@ -109,6 +109,13 @@ class CommandInterface
         return mctp_eid;
     }
 
+    /**
+     * @brief get PLDM instance ID
+     *
+     * @return int - PLDM_SUCCESS in success. PLDM_ERROR in faulure.
+     */
+    int getInstanceId();
+
   private:
     const std::string pldmType;
     const std::string commandName;
