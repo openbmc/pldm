@@ -246,37 +246,40 @@ int SoftPowerOff::getSensorInfo()
             return PLDM_ERROR;
         }
 
-        pldm_state_sensor_pdr* pdr;
+        uint8_t compositeSensorCount = 0;
+        std::vector<uint8_t> possibleStatesStart;
         for (auto& rep : Response)
         {
-            pdr = reinterpret_cast<pldm_state_sensor_pdr*>(rep.data());
-            if (!pdr)
+            auto pdrPtr = reinterpret_cast<pldm_state_sensor_pdr*>(rep.data());
+            if (!pdrPtr)
             {
                 error("Failed to get state sensor PDR.");
                 return PLDM_ERROR;
             }
+
+            sensorID = pdrPtr->sensor_id;
+            compositeSensorCount = pdrPtr->composite_sensor_count;
+            std::copy(pdrPtr->possible_states,
+                      pdrPtr->possible_states + compositeSensorCount,
+                      std::back_inserter(possibleStatesStart));
         }
-
-        sensorID = pdr->sensor_id;
-
-        auto compositeSensorCount = pdr->composite_sensor_count;
-        auto possibleStatesStart = pdr->possible_states;
 
         for (auto offset = 0; offset < compositeSensorCount; offset++)
         {
             auto possibleStates =
                 reinterpret_cast<state_sensor_possible_states*>(
-                    possibleStatesStart);
+                    possibleStatesStart.data());
             auto setId = possibleStates->state_set_id;
-            auto possibleStateSize = possibleStates->possible_states_size;
 
             if (setId == PLDM_STATE_SET_SW_TERMINATION_STATUS)
             {
                 sensorOffset = offset;
                 break;
             }
-            possibleStatesStart += possibleStateSize + sizeof(setId) +
-                                   sizeof(possibleStateSize);
+            possibleStatesStart = {
+                possibleStatesStart.begin() + sizeof(setId) +
+                    sizeof(possibleStates->possible_states_size),
+                possibleStatesStart.end()};
         }
     }
     catch (const sdbusplus::exception_t& e)
