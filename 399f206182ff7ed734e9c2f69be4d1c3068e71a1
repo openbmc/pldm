@@ -16,6 +16,23 @@
       "message": "This patch set fixes the issue which \"pldmtool platform GetPDR -a\" failed with error \",Response Message Error: rc\u003d2,cc\u003d0\" the cause of this is that pldmtool command open the mctp-demux socket many time. One for each pldm message.\nIn the latest code of libpldm, when pldmtool open second socket for second commands, the sendmsg() in pldm_transport_mctp_demux_send() will be failed with error PLDM_REQUESTER_NOT_PLDM_MSG.",
       "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baef49ea_856def09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-29T23:26:52Z",
+      "side": 1,
+      "message": "The request messages from PLDM send to sendmsg() is corrected.\nTest case 1:\n# pldmtool platform GetPDR -m 22 -a\n[First message]pldmtool: Tx: 16 01 89 02 51 00 00 00 00 00 00 00 00 01 ff ff 00 00\npldmtool: Rx: 09 02 51 00 02 00 00 00 00 00 00 00 05 32 00 01 00 00 00 01 0f 00 00 28 00 01 00 00 03 00 01 00 00 00 05 42 00 02 00 02 00 7c 00 03 00 03 00 87 00 04 00 04 00 1f 00 05 00 05 00 1f 00 06 00 06 00\n[Second message]pldmtool: Tx: 16 01 8a 02 51 02 00 00 00 00 00 00 00 01 ff ff 00 00",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
