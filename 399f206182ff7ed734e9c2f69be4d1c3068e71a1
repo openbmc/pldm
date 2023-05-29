@@ -33,6 +33,131 @@
       "message": "The request messages from PLDM send to sendmsg() is corrected.\nTest case 1:\n# pldmtool platform GetPDR -m 22 -a\n[First message]pldmtool: Tx: 16 01 89 02 51 00 00 00 00 00 00 00 00 01 ff ff 00 00\npldmtool: Rx: 09 02 51 00 02 00 00 00 00 00 00 00 05 32 00 01 00 00 00 01 0f 00 00 28 00 01 00 00 03 00 01 00 00 00 05 42 00 02 00 02 00 7c 00 03 00 03 00 87 00 04 00 04 00 1f 00 05 00 05 00 1f 00 06 00 06 00\n[Second message]pldmtool: Tx: 16 01 8a 02 51 02 00 00 00 00 00 00 00 01 ff ff 00 00",
       "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "604d3aba_7db8095a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:44:47Z",
+      "side": 1,
+      "message": "Hi Thu, please avoid use of the deprecated libpldm APIs from `libpldm/pldm.h` and instead use the newer `libpldm/transport.h` and `libpldm/transport/mctp-demux.h` APIs instead.",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb1810e8_2b9b9e44",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:44:47Z",
+      "side": 1,
+      "message": "I think moving the instance ID allocation into its own method is a good refactor, but I think it\u0027s unrelated to the description in the commit message. It should be its own separate patch.",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c6ccb3c_d9c0817f",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:44:47Z",
+      "side": 1,
+      "message": "This should be a `pldm_transport_mctp_demux` struct instead.",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f6739b_e8cf461d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:44:47Z",
+      "side": 1,
+      "message": "This header is deprecated for the purpose of requester implementations. Please use the APIs exposed by `libpldm/transport.h` and `libpldm/transport/mctp-demux.h` instead.",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "263f9c23_6b0a81fa",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:44:47Z",
+      "side": 1,
+      "message": "The APIs in `libpldm/requester/pldm.h` are deprecated. Please use the `libpldm/transport.h` and `libpldm/transport/mctp-demux.h` APIs instead.",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa6f09c7_08880739",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:44:47Z",
+      "side": 1,
+      "message": "This is all handled by the libpldm\u0027s `pldm_transport_send_msg()`.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 64
+      },
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca57a77d_6b916921",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:44:47Z",
+      "side": 1,
+      "message": "Again, please call the appropriate `pldm_transport*_destroy()` functions.",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
