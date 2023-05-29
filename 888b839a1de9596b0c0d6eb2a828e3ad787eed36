@@ -33,6 +33,126 @@
       "message": "The build error come from other code:\n\nFAILED: softoff/pldm-softpoweroff.p/softoff.cpp.o \nc++ -Isoftoff/pldm-softpoweroff.p -I. -I.. -I/usr/local/include -fdiagnostics-color\u003dnever -D_FILE_OFFSET_BITS\u003d64 -Wall -Winvalid-pch -Wextra -Wpedantic -Werror -std\u003dc++20 -Og -g -Wno-psabi -DLIBPLDMRESPONDER -DOEM_IBM -DBOOST_ASIO_DISABLE_THREADS -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_ERROR_CODE_HEADER_ONLY -DBOOST_COROUTINES_NO_DEPRECATION_WARNING -MD -MQ softoff/pldm-softpoweroff.p/softoff.cpp.o -MF softoff/pldm-softpoweroff.p/softoff.cpp.o.d -o softoff/pldm-softpoweroff.p/softoff.cpp.o -c ../softoff/softoff.cpp\n../softoff/softoff.cpp: In member function ‘int pldm::SoftPowerOff::getSensorInfo()’:\n../softoff/softoff.cpp:263:14: error: ‘pdr’ may be used uninitialized [-Werror\u003dmaybe-uninitialized]\n  263 |         auto possibleStatesStart \u003d pdr-\u003epossible_states;\n      |              ^~~~~~~~~~~~~~~~~~~\n../softoff/softoff.cpp:249:32: note: ‘pdr’ was declared here\n  249 |         pldm_state_sensor_pdr* pdr;\n      |                                ^~~\ncc1plus: all warnings being treated as errors",
       "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "888d4771_df572a72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:30:13Z",
+      "side": 1,
+      "message": "Hi Thu, I have several comments.",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1dbbd29_dbe8bf8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:30:13Z",
+      "side": 1,
+      "message": "Please add a patch to fix this.",
+      "parentUuid": "ebff644d_3e8ccd07",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "643ec420_2f94d374",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:30:13Z",
+      "side": 1,
+      "message": "The functions provided by the `libpldm/requester/pldm.h` API are deprecated. Please use the APIs provided by `libpldm/transport.h` and `libpldm/transport/mctp-demux.h` instead.",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8237d2e_39077444",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:30:13Z",
+      "side": 1,
+      "message": "Again, this goes away when you move to the `libpldm/transport.h` APIs. Please use the appropriate `pldm_transport*_destroy()` functions instead.",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "949ea932_b7cfaf93",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:30:13Z",
+      "side": 1,
+      "message": "I realise the existing code had this branch, but why do we need it?",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dc6acb6_77545b5e",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:30:13Z",
+      "side": 1,
+      "message": "Again, replace this with the transport APIs. In this case you will need to construct your own timeout/retry from `pldm_transport_send_msg()`, `pldm_transport_poll()` and `pldm_transport_recv_msg()` (as you don\u0027t want the timeout behaviour of `pldm_transport_send_recv_msg()`).",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49b6d2cf_f9314714",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-29T23:30:13Z",
+      "side": 1,
+      "message": "This code doesn\u0027t appear to handle it?",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
