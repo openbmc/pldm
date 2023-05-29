@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57d2c124_b05430bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-29T20:10:59Z",
+      "side": 1,
+      "message": "Updated code to support retry mechanism for pldmtool commands.\nThis address issue pldmtool will end with no response message after 4800 ms without any retry. There is number-of-request-retries option in pldm repo to configure the number of retry to send one pldm message when it is failed.",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
