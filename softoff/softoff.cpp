@@ -246,7 +246,8 @@ int SoftPowerOff::getSensorInfo()
             return PLDM_ERROR;
         }
 
-        pldm_state_sensor_pdr* pdr;
+        pldm_state_sensor_pdr* pdr =
+            (pldm_state_sensor_pdr*)malloc(sizeof(pldm_state_sensor_pdr));
         for (auto& rep : Response)
         {
             pdr = reinterpret_cast<pldm_state_sensor_pdr*>(rep.data());
@@ -261,6 +262,7 @@ int SoftPowerOff::getSensorInfo()
 
         auto compositeSensorCount = pdr->composite_sensor_count;
         auto possibleStatesStart = pdr->possible_states;
+        free(pdr);
 
         for (auto offset = 0; offset < compositeSensorCount; offset++)
         {
