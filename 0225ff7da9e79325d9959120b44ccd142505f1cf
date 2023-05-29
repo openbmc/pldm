@@ -16,6 +16,24 @@
       "message": "I\u0027m having a bit of a hard time following this explanation. I think we need to workshop it to clarify what the problem is.\n\nLooking at the code it seems that `pldmtool` already uses the DBus `Requester` API. That much hasn\u0027t changed. You have moved that code to a separate method though.\n\nWas it the case that the `raw` command simply forgot to inject the already retrieved instance ID into the message metadata? If that\u0027s the case then we should say so directly. `libpldm` highlighting the issue with warning messages is different from `libpldm` being the root cause of the bug.",
       "revId": "0225ff7da9e79325d9959120b44ccd142505f1cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3078fbba_63b96250",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-29T01:37:18Z",
+      "side": 1,
+      "message": "Sorry, for the confusing. I just re-check the exec() in pldm_cmd_helper, the instanceID is already retrieved as you said.\nThe problem is \"pldmtool raw\" command forgot to inject the instanceID.\nI will update commit message and code.",
+      "parentUuid": "9260cc2f_d3454ccb",
+      "revId": "0225ff7da9e79325d9959120b44ccd142505f1cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
