@@ -16,6 +16,23 @@
       "message": "Updated code to support retry mechanism for pldmtool commands.\nThis address issue pldmtool will end with no response message after 4800 ms without any retry. There is number-of-request-retries option in pldm repo to configure the number of retry to send one pldm message when it is failed.",
       "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebff644d_3e8ccd07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-29T20:12:05Z",
+      "side": 1,
+      "message": "The build error come from other code:\n\nFAILED: softoff/pldm-softpoweroff.p/softoff.cpp.o \nc++ -Isoftoff/pldm-softpoweroff.p -I. -I.. -I/usr/local/include -fdiagnostics-color\u003dnever -D_FILE_OFFSET_BITS\u003d64 -Wall -Winvalid-pch -Wextra -Wpedantic -Werror -std\u003dc++20 -Og -g -Wno-psabi -DLIBPLDMRESPONDER -DOEM_IBM -DBOOST_ASIO_DISABLE_THREADS -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_ERROR_CODE_HEADER_ONLY -DBOOST_COROUTINES_NO_DEPRECATION_WARNING -MD -MQ softoff/pldm-softpoweroff.p/softoff.cpp.o -MF softoff/pldm-softpoweroff.p/softoff.cpp.o.d -o softoff/pldm-softpoweroff.p/softoff.cpp.o -c ../softoff/softoff.cpp\n../softoff/softoff.cpp: In member function ‘int pldm::SoftPowerOff::getSensorInfo()’:\n../softoff/softoff.cpp:263:14: error: ‘pdr’ may be used uninitialized [-Werror\u003dmaybe-uninitialized]\n  263 |         auto possibleStatesStart \u003d pdr-\u003epossible_states;\n      |              ^~~~~~~~~~~~~~~~~~~\n../softoff/softoff.cpp:249:32: note: ‘pdr’ was declared here\n  249 |         pldm_state_sensor_pdr* pdr;\n      |                                ^~~\ncc1plus: all warnings being treated as errors",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
