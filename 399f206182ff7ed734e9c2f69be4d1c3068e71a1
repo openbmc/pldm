@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe3930a7_39c52e45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-29T23:23:50Z",
+      "side": 1,
+      "message": "This patch set fixes the issue which \"pldmtool platform GetPDR -a\" failed with error \",Response Message Error: rc\u003d2,cc\u003d0\" the cause of this is that pldmtool command open the mctp-demux socket many time. One for each pldm message.\nIn the latest code of libpldm, when pldmtool open second socket for second commands, the sendmsg() in pldm_transport_mctp_demux_send() will be failed with error PLDM_REQUESTER_NOT_PLDM_MSG.",
+      "revId": "399f206182ff7ed734e9c2f69be4d1c3068e71a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
