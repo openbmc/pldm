@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c499078_02590cb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-30T01:13:42Z",
+      "side": 1,
+      "message": "The implementation leaks memory under some error conditions. Please just use a stack variable.",
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2dbc1fea_89d8540e",
@@ -44,6 +61,57 @@
         "endLine": 250,
         "endChar": 42
       },
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2792d6b_17211079",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-30T01:13:42Z",
+      "side": 1,
+      "message": "if we have an upper bound on the buffer and we unconditionally free the buffer inside the same function there\u0027s no reason not to use a stack variable. No need to use `malloc()`.",
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a25f17bd_57157780",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-30T01:13:42Z",
+      "side": 1,
+      "message": "This leaks `pdr`.",
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73f04d9a_b8631242",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-30T01:13:42Z",
+      "side": 1,
+      "message": "This is unnecessary if we just use a stack variable.",
       "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
