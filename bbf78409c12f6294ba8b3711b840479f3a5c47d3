@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1659db0a_d4b8483f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-30T03:35:37Z",
+      "side": 1,
+      "message": "I updated the commit message.",
+      "parentUuid": "b1173193_b78a4c47",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ff84de5_b950323c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-30T01:17:42Z",
       "side": 1,
       "message": "Generally I paste the compilation error directly into the commit message as evidence of the problem. This gives us the exact detail needed to understand what\u0027s going on and whether the fix is valid.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c986aefb_d886b179",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-30T03:35:37Z",
+      "side": 1,
+      "message": "I updated the commit message.",
+      "parentUuid": "7ff84de5_b950323c",
       "range": {
         "startLine": 9,
         "startChar": 0,
@@ -130,6 +178,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f2b7b8e_c914e999",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-30T03:35:37Z",
+      "side": 1,
+      "message": "Updated code. Please help checking.",
+      "parentUuid": "f2792d6b_17211079",
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a25f17bd_57157780",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 2
@@ -147,6 +213,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84ad9d2c_07917a6c",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-30T03:35:37Z",
+      "side": 1,
+      "message": "Updated code. Please help checking.",
+      "parentUuid": "a25f17bd_57157780",
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "73f04d9a_b8631242",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 2
@@ -158,6 +242,24 @@
       "writtenOn": "2023-05-30T01:13:42Z",
       "side": 1,
       "message": "This is unnecessary if we just use a stack variable.",
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d262a6d_f4a78a40",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-05-30T03:35:37Z",
+      "side": 1,
+      "message": "Updated code. Please help checking.",
+      "parentUuid": "73f04d9a_b8631242",
       "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
