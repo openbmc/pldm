@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfffce09_3f00f7f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 50
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-05-30T13:14:02Z",
+      "side": 1,
+      "message": "\u003e it should not skip the\n\u003e current entity type and continue to obtain the entity of the next\n\u003e parent, but should create a new entity association without them.\n\nIs this the current behavior or the expected behavior, it is not clear to me.",
+      "range": {
+        "startLine": 10,
+        "startChar": 46,
+        "endLine": 12,
+        "endChar": 64
+      },
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eee6d9a_58f82b58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 50
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-05-30T13:14:02Z",
+      "side": 1,
+      "message": "This needs more details, like comparing to the current implementation what it does differently.",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "532430cd_9f54788d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 50
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-05-30T13:14:02Z",
+      "side": 1,
+      "message": "I couldn\u0027t identify this in the patch.",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c3a943_9d7350b0",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-05-30T13:14:02Z",
+      "side": 1,
+      "message": "Can we add unit test for this? This involves important business logic and unit test will be the ideal way to ensure that the logic is working as expected.",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2e6a2dc_a0959578",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-05-30T13:14:02Z",
+      "side": 1,
+      "message": "Move this to the header file with sample input and output.",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
