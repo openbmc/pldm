@@ -56,7 +56,7 @@ void DeviceUpdater::startFwUpdateFlow()
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_REQUEST_UPDATE, std::move(request),
-        std::move(std::bind_front(&DeviceUpdater::requestUpdate, this)));
+        std::bind_front(&DeviceUpdater::requestUpdate, this));
     if (rc)
     {
         error("Failed to send RequestUpdate request, EID = {EID}, RC = {RC}",
@@ -179,7 +179,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_PASS_COMPONENT_TABLE,
         std::move(request),
-        std::move(std::bind_front(&DeviceUpdater::passCompTable, this)));
+        std::bind_front(&DeviceUpdater::passCompTable, this));
     if (rc)
     {
         error(
@@ -305,7 +305,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_UPDATE_COMPONENT, std::move(request),
-        std::move(std::bind_front(&DeviceUpdater::updateComponent, this)));
+        std::bind_front(&DeviceUpdater::updateComponent, this));
     if (rc)
     {
         error("Failed to send UpdateComponent request, EID={EID}, RC = {RC}",
@@ -424,7 +424,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     package.read(reinterpret_cast<char*>(response.data() +
                                          sizeof(pldm_msg_hdr) +
                                          sizeof(completionCode)),
-                 length - padBytes);
+                 static_cast<std::streamsize>(length - padBytes));
     rc = encode_request_firmware_data_resp(request->hdr.instance_id,
                                            completionCode, responseMsg,
                                            sizeof(completionCode));
@@ -648,7 +648,7 @@ void DeviceUpdater::sendActivateFirmwareRequest()
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_ACTIVATE_FIRMWARE, std::move(request),
-        std::move(std::bind_front(&DeviceUpdater::activateFirmware, this)));
+        std::bind_front(&DeviceUpdater::activateFirmware, this));
     if (rc)
     {
         error("Failed to send ActivateFirmware request, EID={EID}, RC = {RC}",

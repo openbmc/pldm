@@ -1,6 +1,10 @@
 #include <libpldm/entity.h>
 #include <libpldm/entity_oem_ibm.h>
 #include <libpldm/state_set_oem_ibm.h>
+#include <stdint.h>
+
+#include <map>
+#include <string>
 
 /** @brief PLDM OEM IBM Code Update possible state set values
  */

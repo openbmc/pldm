@@ -128,12 +128,12 @@ void BIOSIntegerAttribute::constructEntry(
         }
         else
         {
-            currentValue = getAttrValue();
+            currentValue = static_cast<int64_t>(getAttrValue());
         }
     }
     else
     {
-        currentValue = getAttrValue();
+        currentValue = static_cast<int64_t>(getAttrValue());
     }
 
     table::attribute_value::constructIntegerEntry(attrValueTable, attrHandle,
@@ -173,7 +173,7 @@ uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
     }
     else if (dBusMap->propertyType == "double")
     {
-        value = std::get<double>(propertyValue);
+        value = static_cast<uint64_t>(std::get<double>(propertyValue));
     }
     else
     {

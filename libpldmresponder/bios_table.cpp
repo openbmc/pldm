@@ -31,7 +31,8 @@ bool BIOSTable::isEmpty() const noexcept
 void BIOSTable::store(const Table& table)
 {
     std::ofstream stream(filePath.string(), std::ios::out | std::ios::binary);
-    stream.write(reinterpret_cast<const char*>(table.data()), table.size());
+    stream.write(reinterpret_cast<const char*>(table.data()),
+                 static_cast<std::streamsize>(table.size()));
 }
 
 void BIOSTable::load(Response& response) const
@@ -40,7 +41,8 @@ void BIOSTable::load(Response& response) const
     auto fileSize = fs::file_size(filePath);
     response.resize(currSize + fileSize);
     std::ifstream stream(filePath.string(), std::ios::in | std::ios::binary);
-    stream.read(reinterpret_cast<char*>(response.data() + currSize), fileSize);
+    stream.read(reinterpret_cast<char*>(response.data() + currSize),
+                static_cast<std::streamsize>(fileSize));
 }
 
 BIOSStringTable::BIOSStringTable(const Table& stringTable) :

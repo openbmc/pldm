@@ -250,10 +250,16 @@ void FruImpl::getFRUTable(Response& response)
     auto hdrSize = response.size();
 
     response.resize(hdrSize + table.size() + sizeof(checksum), 0);
-    std::copy(table.begin(), table.end(), response.begin() + hdrSize);
+    std::copy(
+        table.begin(), table.end(),
+        response.begin() +
+            static_cast<std::_Bit_const_iterator::difference_type>(hdrSize));
 
     // Copy the checksum to response data
-    auto iter = response.begin() + hdrSize + table.size();
+    auto iter =
+        response.begin() +
+        static_cast<std::_Bit_const_iterator::difference_type>(hdrSize) +
+        static_cast<std::_Bit_const_iterator::difference_type>(table.size());
     std::copy_n(reinterpret_cast<const uint8_t*>(&checksum), sizeof(checksum),
                 iter);
 }
@@ -288,7 +294,10 @@ int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
     auto pads = pldm::utils::getNumPadBytes(recordTableSize);
     crc32(fruData.data(), recordTableSize + pads);
 
-    auto iter = fruData.begin() + recordTableSize + pads;
+    auto iter = fruData.begin() +
+                static_cast<std::_Bit_const_iterator::difference_type>(
+                    recordTableSize) +
+                pads;
     std::copy_n(reinterpret_cast<const uint8_t*>(&checksum), sizeof(checksum),
                 iter);
     fruData.resize(recordTableSize + pads + sizeof(sum));

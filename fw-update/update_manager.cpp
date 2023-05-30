@@ -88,7 +88,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     packageHeader.resize(pkgHeaderInfoSize);
     package.seekg(0);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 pkgHeaderInfoSize);
+                 static_cast<std::streamsize>(pkgHeaderInfoSize));
 
     parser = parsePkgHeader(packageHeader);
     if (parser == nullptr)
@@ -106,7 +106,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     package.seekg(0);
     packageHeader.resize(parser->pkgHeaderSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 parser->pkgHeaderSize);
+                 static_cast<std::streamsize>(parser->pkgHeaderSize));
     try
     {
         parser->parse(packageHeader, packageSize);

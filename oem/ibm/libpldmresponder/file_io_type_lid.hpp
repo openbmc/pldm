@@ -230,14 +230,14 @@ class LidHandler : public FileHandler
                   lidPath.c_str());
             return PLDM_ERROR;
         }
-        rc = lseek(fd, offset, SEEK_SET);
+        rc = static_cast<int>(lseek(fd, offset, SEEK_SET));
         if (rc == -1)
         {
             error("lseek failed, ERROR={ERR}, OFFSET={OFFSET}", "ERR", errno,
                   "OFFSET", offset);
             return PLDM_ERROR;
         }
-        rc = ::write(fd, buffer, length);
+        rc = static_cast<int>(::write(fd, buffer, length));
         if (rc == -1)
         {
             error(

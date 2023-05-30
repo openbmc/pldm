@@ -55,7 +55,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     Logger(pldmVerbose, "Success in connecting to socket : RC = ", returnCode);
 
     auto pldmType = MCTP_MSG_TYPE_PLDM;
-    result = write(socketFd(), &pldmType, sizeof(pldmType));
+    result = static_cast<int>(write(socketFd(), &pldmType, sizeof(pldmType)));
     if (-1 == result)
     {
         returnCode = -errno;
@@ -67,7 +67,8 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
         pldmVerbose,
         "Success in sending message type as pldm to mctp : RC = ", returnCode);
 
-    result = send(socketFd(), requestMsg.data(), requestMsg.size(), 0);
+    result = static_cast<int>(
+        send(socketFd(), requestMsg.data(), requestMsg.size(), 0));
     if (-1 == result)
     {
         returnCode = -errno;

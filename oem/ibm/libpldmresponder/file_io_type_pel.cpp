@@ -298,7 +298,8 @@ int PelHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
     size_t written = 0;
     do
     {
-        if ((rc = ::write(fd, buffer, length - written)) == -1)
+        if ((rc = static_cast<int>(::write(fd, buffer, length - written))) ==
+            -1)
         {
             break;
         }

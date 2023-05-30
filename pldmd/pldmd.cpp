@@ -239,7 +239,7 @@ int main(int argc, char** argv)
                 &instanceIdDb, sockfd, pdrRepo.get(), &dbusHandler,
                 HOST_JSONS_DIR, &reqHandler);
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
-            sockfd, hostEID, instanceIdDb, &reqHandler);
+            hostEID, instanceIdDb, &reqHandler);
     }
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
 
@@ -303,7 +303,8 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    result = write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
+    result = static_cast<int>(
+        write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM)));
     if (-1 == result)
     {
         returnCode = -errno;
@@ -391,7 +392,8 @@ int main(int argc, char** argv)
                             (size_t)currentSendbuffSize < (*response).size())
                         {
                             int oldBuffSize = currentSendbuffSize;
-                            currentSendbuffSize = (*response).size();
+                            currentSendbuffSize =
+                                static_cast<int>((*response).size());
                             int res = setsockopt(fd, SOL_SOCKET, SO_SNDBUF,
                                                  &currentSendbuffSize,
                                                  sizeof(currentSendbuffSize));
@@ -408,7 +410,7 @@ int main(int argc, char** argv)
                             }
                         }
 
-                        int result = sendmsg(fd, &msg, 0);
+                        int result = static_cast<int>(sendmsg(fd, &msg, 0));
                         if (-1 == result)
                         {
                             returnCode = -errno;

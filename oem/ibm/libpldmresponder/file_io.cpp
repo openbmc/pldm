@@ -98,7 +98,7 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
     xdmaOp.hostAddr = address;
     xdmaOp.len = length;
 
-    rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    rc = static_cast<int>(write(xdmaFd(), &xdmaOp, sizeof(xdmaOp)));
     if (rc < 0)
     {
         rc = -errno;
@@ -174,7 +174,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
 
     if (upstream)
     {
-        rc = lseek(fd, offset, SEEK_SET);
+        rc = static_cast<int>(lseek(fd, offset, SEEK_SET));
         if (rc == -1)
         {
             error(
@@ -188,7 +188,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
         // then write to the VGA memory.
         std::vector<char> buffer{};
         buffer.resize(pageAlignedLength);
-        rc = read(fd, buffer.data(), length);
+        rc = static_cast<int>(read(fd, buffer.data(), length));
         if (rc == -1)
         {
             error(
@@ -213,7 +213,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
     xdmaOp.hostAddr = address;
     xdmaOp.len = length;
 
-    rc = write(xdmaFd(), &xdmaOp, sizeof(xdmaOp));
+    rc = static_cast<int>(write(xdmaFd(), &xdmaOp, sizeof(xdmaOp)));
     if (rc < 0)
     {
         rc = -errno;
@@ -225,7 +225,7 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
 
     if (!upstream)
     {
-        rc = lseek(fd, offset, SEEK_SET);
+        rc = static_cast<int>(lseek(fd, offset, SEEK_SET));
         if (rc == -1)
         {
             error(
@@ -233,7 +233,8 @@ int DMA::transferDataHost(int fd, uint32_t offset, uint32_t length,
                 "ERR", errno, "UPSTREAM", upstream, "OFFSET", offset);
             return rc;
         }
-        rc = write(fd, static_cast<const char*>(vgaMemPtr.get()), length);
+        rc = static_cast<int>(
+            write(fd, static_cast<const char*>(vgaMemPtr.get()), length));
         if (rc == -1)
         {
             error(

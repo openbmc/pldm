@@ -116,7 +116,7 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
         }
         if ((retval > 0) && (FD_ISSET(sock, &wfd)))
         {
-            nwrite = write(sock, buf + i, blockSize - i);
+            nwrite = static_cast<int>(write(sock, buf + i, blockSize - i));
             if (nwrite < 0)
             {
                 if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)

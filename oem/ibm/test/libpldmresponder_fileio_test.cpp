@@ -702,7 +702,8 @@ TEST_F(TestFileTable, ReadFileGoodPath)
 
     stream.seekg(request->offset);
     buffer.resize(fileSize - request->offset);
-    stream.read(buffer.data(), (fileSize - request->offset));
+    stream.read(buffer.data(),
+                (static_cast<std::streamsize>(fileSize) - request->offset));
 
     responseMsg = handler.readFile(requestMsgPtr, payload_length);
     response = reinterpret_cast<pldm_read_file_resp*>(responseMsg.data() +
@@ -979,7 +980,7 @@ TEST(readFileByType, testReadFile)
     char tmplt[] = "/tmp/lid.XXXXXX";
     auto fd = mkstemp(tmplt);
     std::vector<uint8_t> in = {100, 10, 56, 78, 34, 56, 79, 235, 111};
-    rc = write(fd, in.data(), in.size());
+    rc = static_cast<int>(write(fd, in.data(), in.size()));
     close(fd);
     length = in.size() + 1000;
     rc = handler.readFile(tmplt, 0, length, response);

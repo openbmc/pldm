@@ -74,7 +74,9 @@ FileTable::FileTable(const std::string& fileTableConfigPath)
 
         fileTable.resize(tableSize + sizeof(handle) + sizeof(fileNameLength) +
                          fileNameLength + sizeof(fileSize) + sizeof(traits));
-        iter = fileTable.begin() + tableSize;
+        iter =
+            fileTable.begin() +
+            static_cast<std::_Bit_const_iterator::difference_type>(tableSize);
 
         // Populate the file table with the contents of the JSON entry
         std::copy_n(reinterpret_cast<uint8_t*>(&handle), sizeof(handle), iter);
@@ -123,7 +125,9 @@ Table FileTable::operator()() const
 {
     Table table(fileTable);
     table.resize(fileTable.size() + sizeof(checkSum));
-    auto iter = table.begin() + fileTable.size();
+    auto iter = table.begin() +
+                static_cast<std::_Bit_const_iterator::difference_type>(
+                    fileTable.size());
     std::copy_n(reinterpret_cast<const uint8_t*>(&checkSum), sizeof(checkSum),
                 iter);
     return table;
@@ -134,7 +138,7 @@ FileTable& buildFileTable(const std::string& fileTablePath)
     static FileTable table;
     if (table.isEmpty())
     {
-        table = std::move(FileTable(fileTablePath));
+        table = FileTable(fileTablePath);
     }
     return table;
 }
