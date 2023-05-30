@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98b8027d_0c0079c0",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-30T05:07:16Z",
+      "side": 1,
+      "message": "We know `pdr !\u003d nullptr` here because `Response.size()` is not zero as per the test on line 243. As there must be at least one iteration of the loop on 250-258 the `!pdr` test on 253 satisfies the requirement.",
+      "revId": "031a057b272f6da79eacb632ac498be1c740cbf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
