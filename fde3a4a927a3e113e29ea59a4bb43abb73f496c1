@@ -70,6 +70,30 @@
       },
       "revId": "fde3a4a927a3e113e29ea59a4bb43abb73f496c1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60e3bdcb_8bdd1b5f",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-30T11:28:34Z",
+      "side": 1,
+      "message": "we can take this in a different commit if needed. For now, there is no reason to hold this.",
+      "parentUuid": "b68c6426_789ccd1e",
+      "range": {
+        "startLine": 162,
+        "startChar": 2,
+        "endLine": 184,
+        "endChar": 5
+      },
+      "revId": "fde3a4a927a3e113e29ea59a4bb43abb73f496c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
