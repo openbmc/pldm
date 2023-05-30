@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1173193_b78a4c47",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-30T01:17:42Z",
+      "side": 1,
+      "message": "Which unit test? softoff isn\u0027t test code, it is code that is installed by the package. This is a bigger problem than just unit tests.\n\nDid you mean to say \"CI\" instead? Even then this isn\u0027t just a CI problem. The CI failure is a symptom, and it\u0027s doing its job.",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff84de5_b950323c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-05-30T01:17:42Z",
+      "side": 1,
+      "message": "Generally I paste the compilation error directly into the commit message as evidence of the problem. This gives us the exact detail needed to understand what\u0027s going on and whether the fix is valid.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1c499078_02590cb3",
