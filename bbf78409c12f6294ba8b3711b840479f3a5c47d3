@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dbc1fea_89d8540e",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-05-30T00:21:36Z",
+      "side": 1,
+      "message": "It\u0027s not c++ style",
+      "range": {
+        "startLine": 250,
+        "startChar": 36,
+        "endLine": 250,
+        "endChar": 42
+      },
+      "revId": "bbf78409c12f6294ba8b3711b840479f3a5c47d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
