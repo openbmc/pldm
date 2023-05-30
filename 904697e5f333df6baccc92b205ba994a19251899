@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5233d30_c772a67f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-30T05:36:55Z",
+      "side": 1,
+      "message": "typo.\n\nis being consumed ? a better word ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 39,
+        "endLine": 9,
+        "endChar": 47
+      },
+      "revId": "904697e5f333df6baccc92b205ba994a19251899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "457e8911_04811964",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-30T05:36:55Z",
+      "side": 1,
+      "message": "typo ? It is not used ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 17
+      },
+      "revId": "904697e5f333df6baccc92b205ba994a19251899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dcf2f4a_c88f6509",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-30T05:36:55Z",
+      "side": 1,
+      "message": "provided instance id ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 6,
+        "endLine": 12,
+        "endChar": 30
+      },
+      "revId": "904697e5f333df6baccc92b205ba994a19251899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d2a6525_42108b47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-05-30T05:36:55Z",
+      "side": 1,
+      "message": "Code looks good to me.\n\n@Thu Nguygen - Can you please run your commit message through https://www.grammarly.com/ or through a spell checker ?",
+      "revId": "904697e5f333df6baccc92b205ba994a19251899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
