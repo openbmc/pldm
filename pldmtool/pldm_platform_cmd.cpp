@@ -1331,6 +1331,138 @@ class GetStateSensorReadings : public CommandInterface
     uint8_t sensorRearm;
 };
 
+class GetSensorReading : public CommandInterface
+{
+  public:
+    ~GetSensorReading() = default;
+    GetSensorReading() = delete;
+    GetSensorReading(const GetSensorReading&) = delete;
+    GetSensorReading(GetSensorReading&&) = default;
+    GetSensorReading& operator=(const GetSensorReading&) = delete;
+    GetSensorReading& operator=(GetSensorReading&&) = default;
+
+    explicit GetSensorReading(const char* type, const char* name,
+                              CLI::App* app) :
+        CommandInterface(type, name, app),
+        rearm(false)
+    {
+        app->add_option(
+               "-i, --sensor_id", sensorId,
+               "Sensor ID that is used to identify and access the sensor")
+            ->required();
+        app->add_flag("-r, --rearm", rearm,
+                      "Re-arm EventState after responding to this request");
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                        PLDM_GET_SENSOR_READING_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto rc = encode_get_sensor_reading_req(instanceId, sensorId, rearm,
+                                                request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode;
+        uint8_t sensorDataSize;
+        uint8_t sensorOperationalState;
+        uint8_t sensorEventMessageEnable;
+        uint8_t presentState;
+        uint8_t previousState;
+        uint8_t eventState;
+        union_sensor_data_size presentReading;
+        auto rc = decode_get_sensor_reading_resp(
+            responsePtr, payloadLength, &completionCode, &sensorDataSize,
+            &sensorOperationalState, &sensorEventMessageEnable, &presentState,
+            &previousState, &eventState, &(presentReading.value_u8));
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)completionCode
+                      << std::endl;
+            return;
+        }
+        ordered_json output;
+
+        if (sensorDataSz.contains(sensorDataSize))
+        {
+            output["sensorDataSize"] = sensorDataSz.at(sensorDataSize);
+        }
+        if (sensorOpState.contains(sensorOperationalState))
+        {
+            output["sensorOperationalState"] =
+                sensorOpState.at(sensorOperationalState);
+        }
+        if (sensorEventMsgEnable.contains(sensorEventMessageEnable))
+        {
+            output["sensorEventMessageEnable"] =
+                sensorEventMsgEnable.at(sensorEventMessageEnable);
+        }
+        if (sensorPresState.contains(presentState))
+        {
+            output["presentState"] = sensorPresState.at(presentState);
+        }
+        if (sensorPresState.contains(previousState))
+        {
+            output["previousState"] = sensorPresState.at(previousState);
+        }
+        if (sensorPresState.contains(eventState))
+        {
+            output["eventState"] = sensorPresState.at(eventState);
+        }
+
+        switch (sensorDataSize)
+        {
+            case PLDM_SENSOR_DATA_SIZE_UINT8:
+                output["presentReading"] = unsigned(presentReading.value_u8);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT8:
+                output["presentReading"] = unsigned(presentReading.value_s8);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT16:
+                output["presentReading"] = unsigned(presentReading.value_u16);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT16:
+                output["presentReading"] = unsigned(presentReading.value_s16);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT32:
+                output["presentReading"] = unsigned(presentReading.value_u32);
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT32:
+                output["presentReading"] = unsigned(presentReading.value_s32);
+                break;
+            default:
+                break;
+        }
+
+        pldmtool::helper::DisplayInJson(output);
+    }
+
+  private:
+    const std::map<uint8_t, std::string> sensorDataSz = {
+        {PLDM_SENSOR_DATA_SIZE_UINT8, "uint8"},
+        {PLDM_SENSOR_DATA_SIZE_SINT8, "uint8"},
+        {PLDM_SENSOR_DATA_SIZE_UINT16, "uint16"},
+        {PLDM_SENSOR_DATA_SIZE_SINT16, "uint16"},
+        {PLDM_SENSOR_DATA_SIZE_UINT32, "uint32"},
+        {PLDM_SENSOR_DATA_SIZE_SINT32, "uint32"}};
+
+    const std::map<uint8_t, std::string> sensorEventMsgEnable = {
+        {PLDM_NO_EVENT_GENERATION, "noEventGeneration"},
+        {PLDM_EVENTS_DISABLED, "eventsDisabled"},
+        {PLDM_EVENTS_ENABLED, "eventsEnabled"},
+        {PLDM_OP_EVENTS_ONLY_ENABLED, "opEventsOnlyEnabled"},
+        {PLDM_STATE_EVENTS_ONLY_ENABLED, "stateEventsOnlyEnabled"}};
+
+    uint16_t sensorId;
+    bool rearm;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
@@ -1354,6 +1486,11 @@ void registerCommand(CLI::App& app)
         "GetStateSensorReadings", "get the state sensor readings");
     commands.push_back(std::make_unique<GetStateSensorReadings>(
         "platform", "getStateSensorReadings", getStateSensorReadings));
+
+    auto getSensorReading = platform->add_subcommand("GetSensorReading",
+                                                     "get sensor reading");
+    commands.push_back(std::make_unique<GetSensorReading>(
+        "platform", "getSensorReading", getSensorReading));
 }
 
 } // namespace platform
