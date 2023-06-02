@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f435420_ae63bc41",
+        "filename": "common/utils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-06-02T04:48:52Z",
+      "side": 1,
+      "message": "i dont think we need this conversion everywhere. instead we can remove these two lines. and instead of timeout.count() in the bus.call() ..we can replace that with \n```\nbus.call(mapper,std::chrono::duration_cast\u003cstd::chrono::microseconds\u003e(std::chrono::seconds(DBUS_TIMEOUT)).count())\n```\n\nand this can be further reduced, if you include the chrono namespace, it will be as simple as \n\n```\nbus.call(mapper, duration_cast\u003cmicroseconds\u003e(seconds(DBUS_TIMEOUT)).count())\n```",
+      "range": {
+        "startLine": 223,
+        "startChar": 1,
+        "endLine": 225,
+        "endChar": 73
+      },
+      "revId": "fb932a9a200940910701c25680b978c52ed67f09",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
