@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2336eeea_d9752c32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-06-03T11:51:18Z",
+      "side": 1,
+      "message": "To convert pldmd to use transport APIs, we should start with using tid in handler https://github.com/openbmc/pldm/blob/2b85d7844c6a0731a25fa103aebd5f5d53475500/requester/handler.hpp#L39 and requester code https://github.com/openbmc/pldm/blob/2b85d7844c6a0731a25fa103aebd5f5d53475500/requester/request.hpp#L154\nwithout this changing we will be mess-up between TID and EID.\nThe idea is change all of code use EID to TID, in PLDM repo we should only concern about TID.",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b7c9b08_eadac634",
