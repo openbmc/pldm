@@ -111,6 +111,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ffbe58e_c9e01796",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-06-03T01:00:28Z",
+      "side": 1,
+      "message": "It should be the same for this code. https://github.com/openbmc/pldm/blob/master/requester/request.hpp#L199",
+      "parentUuid": "e158efae_95c343c9",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e154bec_57610dc6",
         "filename": "requester/handler.hpp",
         "patchSetId": 5
