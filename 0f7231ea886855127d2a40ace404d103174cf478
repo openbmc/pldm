@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6984978_9b7752a1",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1398,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-06-03T00:51:32Z",
+      "side": 1,
+      "message": "Should we decode value of sensorEventMessageEnable as the spec:\nsensorEventMessageEnable\nvalue: { noEventGeneration, eventsDisabled, eventsEnabled, opEventsOnlyEnabled,\nstateEventsOnlyEnabled }",
+      "revId": "0f7231ea886855127d2a40ace404d103174cf478",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0824ac11_36d568b1",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1469,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-06-03T00:51:32Z",
+      "side": 1,
+      "message": "The compact numeric sensor also uses the same PLDM command. So I suggest removing \"numeric\"",
+      "revId": "0f7231ea886855127d2a40ace404d103174cf478",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
