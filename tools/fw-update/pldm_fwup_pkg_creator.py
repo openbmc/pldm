@@ -186,10 +186,23 @@ def write_pkg_header_info(pldm_fw_up_pkg, metadata):
     )
 
     if release_date_time_str is not None:
-        release_date_time = datetime.strptime(
-            release_date_time_str,
-            "%d/%m/%Y %H:%M:%S"
-        )
+        formats = [
+            "%Y-%m-%dT%H:%M:%S",
+            "%Y-%m-%d %H:%M:%S",
+            "%d/%m/%Y %H:%M:%S",
+        ]
+        release_date_time = None
+        for fmt in formats:
+            try:
+                release_date_time = datetime.strptime(
+                    release_date_time_str,
+                    fmt
+                )
+                break
+            except ValueError:
+                pass
+        if release_date_time is None:
+            sys.exit("Can't parse release date '%s'" % release_date_time_str)
     else:
         release_date_time = datetime.now()
 
