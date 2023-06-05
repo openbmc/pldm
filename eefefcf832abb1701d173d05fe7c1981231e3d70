@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eca94df3_cb265dac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-06-05T06:03:06Z",
+      "side": 1,
+      "message": "Ideally yes we want to be using the TID, but where do we get the TID from to use?\n\nThe `pldm_transport` APIs expect a TID as this is what we should be using as per the spec, however the pldm code is not yet in the right place to use the actual TID. So for the `pldm_transport` APIs we are using the EID as the TID.\n\nI didn\u0027t want to start using the variable `tid` in pldmd (except for setting up the transport) if we don\u0027t actually have a mechanism yet to get the actual TID. This way we are under no illusions that we have the TID and it is clear that we are still using the EID.\n\nIt\u0027s a bit clunky, but we are just moving piece by piece towards fixing up pldm/libpldm to have a logical separation of concepts :)",
+      "parentUuid": "2336eeea_d9752c32",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b7c9b08_eadac634",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb536e96_98a45f7c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-06-05T06:03:06Z",
+      "side": 1,
+      "message": "It\u0027s already in `pldm_transport_mctp_demux_open()` so we can get rid of this.",
+      "parentUuid": "4b7c9b08_eadac634",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9d83c7a_5f76afa9",
@@ -65,6 +101,24 @@
       "writtenOn": "2023-05-24T06:26:12Z",
       "side": 1,
       "message": "I think this should be converted to `pldm_transport_recv_msg()`?",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cb82129_51871eb5",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-06-05T06:03:06Z",
+      "side": 1,
+      "message": "Yeah we can do that if we make the transport APIs not requester specific. https://gerrit.openbmc.org/c/openbmc/libpldm/+/63841",
+      "parentUuid": "d9d83c7a_5f76afa9",
       "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -99,6 +153,30 @@
       "writtenOn": "2023-05-24T06:26:12Z",
       "side": 1,
       "message": "This should probably go in the specific transport implementations",
+      "range": {
+        "startLine": 390,
+        "startChar": 0,
+        "endLine": 416,
+        "endChar": 29
+      },
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bdbabce_62deee93",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-06-05T06:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10cb717d_1e5f1929",
       "range": {
         "startLine": 390,
         "startChar": 0,
@@ -146,6 +224,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb667eb4_b7b6eec2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-06-05T06:03:06Z",
+      "side": 1,
+      "message": "We could do that, or we could use `pldm_transport_send_msg` after https://gerrit.openbmc.org/c/openbmc/libpldm/+/63841 is merged.",
+      "parentUuid": "3ffbe58e_c9e01796",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e154bec_57610dc6",
         "filename": "requester/handler.hpp",
         "patchSetId": 5
@@ -163,6 +259,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79893e41_6ac4b352",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-06-05T06:03:06Z",
+      "side": 1,
+      "message": "Because of below, and the handler makes requests.",
+      "parentUuid": "3e154bec_57610dc6",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e76dede6_4fc454d8",
         "filename": "requester/request.hpp",
         "patchSetId": 5
@@ -174,6 +288,24 @@
       "writtenOn": "2023-05-24T06:26:12Z",
       "side": 1,
       "message": "Why do we still need the fd if we\u0027re passing in a `pldm_transport\u0026`?",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf93c25_37a2fc29",
+        "filename": "requester/request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000224
+      },
+      "writtenOn": "2023-06-05T06:03:06Z",
+      "side": 1,
+      "message": "We need the fd to resize the send buf of the socket if the message is bigger than the send buf. \n\nWe can only get the fd from `struct pldm_transport_mctp_demux` via `pldm_transport_mctp_demux_init_pollfd` but atm we\u0027re passing around the generic  `struct pldm_transport`. We currently don\u0027t have a mechanism to get from the generic to the specific struct.\n\nWhat makes more sense though is for the resizing of the socket sendbuf to be in libpldm, which I\u0027m slowly slowly working on (https://gerrit.openbmc.org/c/openbmc/libpldm/+/63842).",
+      "parentUuid": "e76dede6_4fc454d8",
       "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
