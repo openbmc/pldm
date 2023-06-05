@@ -63,7 +63,9 @@ class GetPDR : public CommandInterface
     using CommandInterface::CommandInterface;
 
     explicit GetPDR(const char* type, const char* name, CLI::App* app) :
-        CommandInterface(type, name, app)
+        CommandInterface(type, name, app), dataTransferHandle(0),
+        operationFlag(PLDM_GET_FIRSTPART), requestCount(UINT16_MAX),
+        recordChangeNumber(0), nextPartRequired(false)
     {
         auto pdrOptionGroup = app->add_option_group(
             "Required Option",
@@ -109,7 +111,7 @@ class GetPDR : public CommandInterface
                 // recordHandle is updated to nextRecord when
                 // CommandInterface::exec() is successful.
                 // In case of any error, return.
-                if (recordHandle == prevRecordHandle)
+                if (recordHandle == prevRecordHandle && !nextPartRequired)
                 {
                     return;
                 }
@@ -117,7 +119,7 @@ class GetPDR : public CommandInterface
                 // check for circular references.
                 auto result = recordsSeen.emplace(recordHandle,
                                                   prevRecordHandle);
-                if (!result.second)
+                if (!result.second && !nextPartRequired)
                 {
                     std::cerr
                         << "Record handle " << recordHandle
@@ -139,7 +141,10 @@ class GetPDR : public CommandInterface
         }
         else
         {
-            CommandInterface::exec();
+            do
+            {
+                CommandInterface::exec();
+            } while (nextPartRequired);
         }
     }
 
@@ -149,16 +154,16 @@ class GetPDR : public CommandInterface
                                         PLDM_GET_PDR_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
-        auto rc = encode_get_pdr_req(instanceId, recordHandle, 0,
-                                     PLDM_GET_FIRSTPART, UINT16_MAX, 0, request,
-                                     PLDM_GET_PDR_REQ_BYTES);
+        auto rc = encode_get_pdr_req(
+            instanceId, recordHandle, dataTransferHandle, operationFlag,
+            requestCount, recordChangeNumber, request, PLDM_GET_PDR_REQ_BYTES);
         return {rc, requestMsg};
     }
 
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
         uint8_t completionCode = 0;
-        uint8_t recordData[UINT16_MAX] = {0};
+        uint8_t respRecordData[UINT16_MAX] = {0};
         uint32_t nextRecordHndl = 0;
         uint32_t nextDataTransferHndl = 0;
         uint8_t transferFlag = 0;
@@ -167,19 +172,45 @@ class GetPDR : public CommandInterface
 
         auto rc = decode_get_pdr_resp(
             responsePtr, payloadLength, &completionCode, &nextRecordHndl,
-            &nextDataTransferHndl, &transferFlag, &respCnt, recordData,
-            sizeof(recordData), &transferCRC);
+            &nextDataTransferHndl, &transferFlag, &respCnt, respRecordData,
+            sizeof(respRecordData), &transferCRC);
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
                       << "rc=" << rc << ",cc=" << (int)completionCode
                       << std::endl;
+            nextPartRequired = false;
             return;
         }
 
-        printPDRMsg(nextRecordHndl, respCnt, recordData);
-        recordHandle = nextRecordHndl;
+        // Start or StartAndEnd
+        if (transferFlag == 0 || transferFlag == 5)
+        {
+            struct pldm_pdr_hdr* pdr_hdr = (struct pldm_pdr_hdr*)respRecordData;
+            recordChangeNumber = pdr_hdr->record_change_num;
+            recordData.clear();
+        }
+
+        recordData.insert(recordData.end(), respRecordData,
+                          respRecordData + respCnt);
+
+        // End or StartAndEnd
+        if (transferFlag == 4 || transferFlag == 5)
+        {
+            printPDRMsg(nextRecordHndl, respCnt, recordData.data());
+            nextPartRequired = false;
+            recordHandle = nextRecordHndl;
+            dataTransferHandle = 0;
+            recordChangeNumber = 0;
+            operationFlag = PLDM_GET_FIRSTPART;
+        }
+        else
+        {
+            nextPartRequired = true;
+            dataTransferHandle = nextDataTransferHndl;
+            operationFlag = PLDM_GET_NEXTPART;
+        }
     }
 
   private:
@@ -1058,6 +1089,12 @@ class GetPDR : public CommandInterface
     uint32_t recordHandle;
     bool allPDRs;
     std::string pdrRecType;
+    uint32_t dataTransferHandle;
+    uint8_t operationFlag;
+    uint16_t requestCount;
+    uint16_t recordChangeNumber;
+    std::vector<uint8_t> recordData;
+    bool nextPartRequired;
 };
 
 class SetStateEffecter : public CommandInterface
