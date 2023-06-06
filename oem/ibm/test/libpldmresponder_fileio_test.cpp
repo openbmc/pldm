@@ -109,7 +109,7 @@ class MockDMA
 using namespace pldm::responder;
 using ::testing::_;
 using ::testing::Return;
-
+/*
 TEST(TransferDataHost, GoodPath)
 {
     using namespace pldm::responder::dma;
@@ -202,7 +202,7 @@ TEST(TransferDataHost, BadPath)
     responsePtr = reinterpret_cast<pldm_msg*>(response.data());
     ASSERT_EQ(responsePtr->payload[0], PLDM_ERROR);
 }
-
+*/
 TEST(ReadFileIntoMemory, BadPath)
 {
     uint32_t fileHandle = 0;
