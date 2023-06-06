@@ -30,6 +30,9 @@ constexpr uint64_t dbusTimeout =
         std::chrono::seconds(DBUS_TIMEOUT))
         .count();
 
+using microsec = std::chrono::microseconds;
+using sec = std::chrono::seconds;
+
 namespace pldm
 {
 namespace utils
