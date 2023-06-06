@@ -20,20 +20,30 @@ class ProgressCodeHandler : public FileHandler
      */
     ProgressCodeHandler(uint32_t fileHandle) : FileHandler(fileHandle) {}
 
-    int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
+    int writeFromMemory(uint32_t /*offset*/, uint32_t length,
                         uint64_t /*address*/,
-                        oem_platform::Handler* /*oemPlatformHandler*/) override
+                        oem_platform::Handler* /*oemPlatformHandler*/,
+                        ResponseHdr& responseHdr,
+                        sdeventplus::Event& /*event*/) override
     {
+        FileHandler::dmaResponseToHost(responseHdr,
+                                       PLDM_ERROR_UNSUPPORTED_PLDM_CMD, length);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
     int write(const char* buffer, uint32_t offset, uint32_t& length,
               oem_platform::Handler* oemPlatformHandler) override;
 
-    int readIntoMemory(uint32_t /*offset*/, uint32_t& /*length*/,
+    int readIntoMemory(uint32_t /*offset*/, uint32_t& length,
                        uint64_t /*address*/,
-                       oem_platform::Handler* /*oemPlatformHandler*/) override
+                       oem_platform::Handler* /*oemPlatformHandler*/,
+                       ResponseHdr& responseHdr,
+                       sdeventplus::Event& /*event*/) override
     {
+        FileHandler::dmaResponseToHost(responseHdr,
+                                       PLDM_ERROR_UNSUPPORTED_PLDM_CMD, length);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
@@ -49,6 +59,11 @@ class ProgressCodeHandler : public FileHandler
     }
 
     int newFileAvailable(uint64_t /*length*/) override
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
+    virtual int postDataTransferCallBack(bool /*IsWriteToMemOp*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
