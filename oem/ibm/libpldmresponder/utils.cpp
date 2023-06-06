@@ -9,6 +9,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <iostream>
+#include <mutex>
 
 PHOSPHOR_LOG2_USING;
 
@@ -18,6 +19,7 @@ namespace responder
 {
 namespace utils
 {
+std::mutex lockMutex;
 int setupUnixSocket(const std::string& socketInterface)
 {
     int sock;
@@ -88,6 +90,7 @@ int setupUnixSocket(const std::string& socketInterface)
 
 int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
 {
+    const std::lock_guard<std::mutex> lock(lockMutex);
     uint64_t i;
     int nwrite = 0;
 
