@@ -46,9 +46,9 @@ class Transport
      */
     int sendPLDMRespMsg(auto response, int index)
     {
-        struct iovec iov[2]{};
-        struct msghdr msg
-        {};
+        // struct iovec iov[2]{};
+        // struct msghdr msg
+        // {};
 
         FlightRecorder::GetInstance().saveRecord(response, true);
         if (verbose)
@@ -65,8 +65,7 @@ class Transport
         // msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
 
         // int rc = sendmsg(sockFd, &msg, 0);
-        int rc = pldmTransport.sendMsg(TID, (*response).data(),
-                                       (*response).size());
+        int rc = pldmTransport.sendMsg(TID, response.data(), response.size());
         removeHeader(index);
         if (rc < 0)
         {
