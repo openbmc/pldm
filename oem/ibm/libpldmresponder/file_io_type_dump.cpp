@@ -178,8 +178,10 @@ std::string DumpHandler::getOffloadUri(uint32_t fileHandle)
     return socketInterface;
 }
 
-int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address,
-                                 oem_platform::Handler* /*oemPlatformHandler*/)
+void DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address,
+                                  oem_platform::Handler* /*oemPlatformHandler*/,
+                                  ResponseHdr& responseHdr,
+                                  sdeventplus::Event& event)
 {
     if (DumpHandler::fd == -1)
     {
@@ -187,16 +189,23 @@ int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address,
         int sock = setupUnixSocket(socketInterface);
         if (sock < 0)
         {
-            sock = -errno;
             close(DumpHandler::fd);
-            error("DumpHandler::writeFromMemory: setupUnixSocket() failed");
+            error(
+                "DumpHandler::writeFromMemory: setupUnixSocket() failed errno:{ERR}",
+                "ERR", errno);
             std::remove(socketInterface.c_str());
-            return PLDM_ERROR;
+
+            FileHandler::dmaResponseToHost(responseHdr, PLDM_ERROR, 0);
+            FileHandler::deleteAIOobjects(nullptr, responseHdr);
+
+            return;
         }
 
         DumpHandler::fd = sock;
     }
-    return transferFileDataToSocket(DumpHandler::fd, length, address);
+
+    transferFileDataToSocket(DumpHandler::fd, length, address, responseHdr,
+                             event);
 }
 
 int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length,
@@ -205,14 +214,12 @@ int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length,
     int rc = writeToUnixSocket(DumpHandler::fd, buffer, length);
     if (rc < 0)
     {
-        rc = -errno;
         close(DumpHandler::fd);
         auto socketInterface = getOffloadUri(fileHandle);
         std::remove(socketInterface.c_str());
-        error("DumpHandler::write: writeToUnixSocket() failed");
+        error("DumpHandler::write: Error while writing to Unix socket.\n");
         return PLDM_ERROR;
     }
-
     return PLDM_SUCCESS;
 }
 
@@ -329,15 +336,22 @@ int DumpHandler::fileAck(uint8_t fileStatus)
     return PLDM_ERROR;
 }
 
-int DumpHandler::readIntoMemory(uint32_t offset, uint32_t& length,
-                                uint64_t address,
-                                oem_platform::Handler* /*oemPlatformHandler*/)
+void DumpHandler::readIntoMemory(uint32_t offset, uint32_t& length,
+                                 uint64_t address,
+                                 oem_platform::Handler* /*oemPlatformHandler*/,
+                                 ResponseHdr& responseHdr,
+                                 sdeventplus::Event& event)
 {
     if (dumpType != PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS)
     {
-        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+        FileHandler::dmaResponseToHost(responseHdr,
+                                       PLDM_ERROR_UNSUPPORTED_PLDM_CMD, length);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
+        return;
     }
-    return transferFileData(resDumpDirPath, true, offset, length, address);
+    transferFileData(resDumpDirPath, true, offset, length, address, responseHdr,
+                     event);
+    return;
 }
 
 int DumpHandler::read(uint32_t offset, uint32_t& length, Response& response,
