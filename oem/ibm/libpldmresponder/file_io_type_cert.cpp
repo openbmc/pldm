@@ -26,7 +26,9 @@ CertMap CertHandler::certMap;
 
 int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                  uint64_t address,
-                                 oem_platform::Handler* /*oemPlatformHandler*/)
+                                 oem_platform::Handler* /*oemPlatformHandler*/,
+                                 ResponseHdr& responseHdr,
+                                 sdeventplus::Event& event)
 {
     auto it = certMap.find(certType);
     if (it == certMap.end())
@@ -34,41 +36,62 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
         error(
             "CertHandler::writeFromMemory:file for type {CERT_TYPE} doesn't exist",
             "CERT_TYPE", certType);
+        FileHandler::dmaResponseToHost(responseHdr, PLDM_ERROR, 0);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
         return PLDM_ERROR;
     }
-
+    m_length = length;
     auto fd = std::get<0>(it->second);
-    auto& remSize = std::get<1>(it->second);
-    auto rc = transferFileData(fd, false, offset, length, address);
-    if (rc == PLDM_SUCCESS)
+    transferFileData(fd, false, offset, length, address, responseHdr, event);
+
+    return -1;
+}
+
+int CertHandler::postDataTransferCallBack(bool IsWriteToMemOp)
+{
+    if (IsWriteToMemOp)
     {
-        remSize -= length;
+        auto it = certMap.find(certType);
+        if (it == certMap.end())
+        {
+            std::cerr << "CertHandler::writeFromMemory:file for type "
+                      << certType << " doesn't exist\n";
+            return PLDM_ERROR;
+        }
+        // auto fd = std::get<0>(it->second);
+        auto& remSize = std::get<1>(it->second);
+        remSize -= m_length;
         if (!remSize)
         {
-            close(fd);
+            // close(fd);
             certMap.erase(it);
         }
     }
-    return rc;
+    else
+    {
+        fs::remove(certFilePath);
+    }
+    return PLDM_SUCCESS;
 }
 
 int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
                                 uint64_t address,
-                                oem_platform::Handler* /*oemPlatformHandler*/)
+                                oem_platform::Handler* /*oemPlatformHandler*/,
+                                ResponseHdr& responseHdr,
+                                sdeventplus::Event& event)
 {
     std::string filePath = certFilePath;
     filePath += "CSR_" + std::to_string(fileHandle);
     if (certType != PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {
+        FileHandler::dmaResponseToHost(responseHdr, PLDM_ERROR_INVALID_DATA,
+                                       length);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
         return PLDM_ERROR_INVALID_DATA;
     }
-    auto rc = transferFileData(filePath.c_str(), true, offset, length, address);
-    fs::remove(filePath);
-    if (rc)
-    {
-        return PLDM_ERROR;
-    }
-    return PLDM_SUCCESS;
+    transferFileData(filePath.c_str(), true, offset, length, address,
+                     responseHdr, event);
+    return -1;
 }
 
 int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
