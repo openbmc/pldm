@@ -31,7 +31,7 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
 
     try
     {
-        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto& bus = DBusHandler::getBus();
         auto service = pldm::utils::DBusHandler().getService(keywrdObjPath,
                                                              keywrdInterface);
         auto method = bus.new_method_call(service.c_str(), keywrdObjPath,
@@ -89,7 +89,6 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
     // length of keyword data should be same as keyword data size in dbus
     // object
     length = static_cast<uint32_t>(keywrdSize) - offset;
-
     auto returnCode = lseek(fd, offset, SEEK_SET);
     if (returnCode == -1)
     {
