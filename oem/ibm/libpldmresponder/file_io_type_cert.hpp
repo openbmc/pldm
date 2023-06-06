@@ -3,7 +3,6 @@
 #include "file_io.hpp"
 
 #include <tuple>
-
 namespace pldm
 {
 namespace responder
@@ -28,12 +27,16 @@ class CertHandler : public FileHandler
         FileHandler(fileHandle), certType(fileType)
     {}
 
-    virtual int writeFromMemory(uint32_t offset, uint32_t length,
+    virtual void writeFromMemory(uint32_t offset, uint32_t length,
+                                 uint64_t address,
+                                 oem_platform::Handler* /*oemPlatformHandler*/,
+                                 ResponseHdr& responseHdr,
+                                 sdeventplus::Event& event);
+    virtual void readIntoMemory(uint32_t offset, uint32_t& length,
                                 uint64_t address,
-                                oem_platform::Handler* /*oemPlatformHandler*/);
-    virtual int readIntoMemory(uint32_t offset, uint32_t& length,
-                               uint64_t address,
-                               oem_platform::Handler* /*oemPlatformHandler*/);
+                                oem_platform::Handler* /*oemPlatformHandler*/,
+                                ResponseHdr& responseHdr,
+                                sdeventplus::Event& event);
     virtual int read(uint32_t offset, uint32_t& length, Response& response,
                      oem_platform::Handler* /*oemPlatformHandler*/);
 
@@ -59,6 +62,8 @@ class CertHandler : public FileHandler
                                              uint32_t /*metaDataValue3*/,
                                              uint32_t /*metaDataValue4*/);
 
+    virtual void postDataTransferCallBack(bool IsWriteToMemOp);
+
     /** @brief CertHandler destructor
      */
     ~CertHandler() {}
@@ -67,6 +72,7 @@ class CertHandler : public FileHandler
     uint16_t certType;      //!< type of the certificate
     static CertMap certMap; //!< holds the fd and remaining read/write size for
                             //!< each certificate
+    uint32_t m_length;
     enum SignedCertStatus
     {
         PLDM_INVALID_CERT_DATA = 0X03
