@@ -1,8 +1,10 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "file_io_by_type.hpp"
 #include "oem/ibm/requester/dbus_to_file_handler.hpp"
 #include "oem_ibm_handler.hpp"
+#include "pldmd/PldmRespInterface.hpp"
 #include "pldmd/handler.hpp"
 #include "requester/handler.hpp"
 
@@ -11,6 +13,7 @@
 #include <libpldm/file_io.h>
 #include <libpldm/host.h>
 #include <stdint.h>
+#include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -18,10 +21,15 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <filesystem>
+#include <functional>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
+
+using namespace sdeventplus;
+using namespace sdeventplus::source;
 
 namespace pldm
 {
@@ -29,6 +37,16 @@ namespace responder
 {
 namespace dma
 {
+
+constexpr auto xdmaDev = "/dev/aspeed-xdma";
+
+struct IOPart
+{
+    uint32_t length;
+    uint32_t offset;
+    uint64_t address;
+};
+
 // The minimum data size of dma transfer in bytes
 constexpr uint32_t minSize = 16;
 
@@ -42,35 +60,257 @@ namespace fs = std::filesystem;
  * Expose API to initiate transfer of data by DMA
  *
  * This class only exposes the public API transferDataHost to transfer data
- * between BMC and host using DMA. This allows for mocking the transferDataHost
- * for unit testing purposes.
+ * between BMC and host using DMA. This allows for mocking the
+ * transferDataHost for unit testing purposes.
  */
+
 class DMA
 {
+    /** @brief DMA constructor is private to avoid object creation
+     * without lengh.
+     */
+    DMA() {}
+
   public:
+    /** @brief DMA constructor
+     * @param length - using length allocating shared memory to transfer data.
+     */
+    DMA(uint32_t length)
+    {
+        responseReceived = false;
+        memAddr = nullptr;
+        xdmaFd = -1;
+        SourceFd = -1;
+        rc = 0;
+        iotPtr = nullptr;
+        iotPtrbc = nullptr;
+        timer = nullptr;
+        m_length = length;
+        static const size_t pageSize = getpagesize();
+        uint32_t numPages = m_length / pageSize;
+        pageAlignedLength = numPages * pageSize;
+        if (m_length > pageAlignedLength)
+        {
+            pageAlignedLength += pageSize;
+        }
+    }
+
+    /** @brief DMA destructor
+     */
+    ~DMA()
+    {
+        if (iotPtr != nullptr)
+        {
+            iotPtrbc = iotPtr.release();
+        }
+
+        if (iotPtrbc != nullptr)
+        {
+            delete iotPtrbc;
+            iotPtrbc = nullptr;
+        }
+
+        if (timer != nullptr)
+        {
+            auto time = timer.release();
+            delete time;
+        }
+
+        if (xdmaFd > 0)
+        {
+            close(xdmaFd);
+            xdmaFd = -1;
+        }
+        if (SourceFd > 0)
+        {
+            close(SourceFd);
+            SourceFd = -1;
+        }
+    }
+
+    /** @brief Method to fetch the shared memory file descriptor for data
+     * transfer
+     * @param[in] nonBlokingMode - flag to open socket as non blocking mode
+     * @param[in] Reopensocket - flag to reopen socket socket
+     * @return returns shared memory file descriptor
+     *
+     */
+    int getDMAFd(bool nonBlokingMode, bool Reopensocket)
+    {
+        if (Reopensocket && xdmaFd > 0)
+        {
+            close(xdmaFd);
+            xdmaFd = -1;
+        }
+        if (xdmaFd > 0)
+        {
+            return xdmaFd;
+        }
+        if (nonBlokingMode)
+        {
+            xdmaFd = open(xdmaDev, O_RDWR | O_NONBLOCK);
+        }
+        else
+        {
+            xdmaFd = open(xdmaDev, O_RDWR);
+        }
+        if (xdmaFd < 0)
+        {
+            rc = -errno;
+        }
+        return xdmaFd;
+    }
+
+    /// @brief function will keep one copy of fd for exception case so it can
+    /// close it.
+    /// @param[in] fd- source path file descriptor
+    void setDMASourceFd(int32_t fd)
+    {
+        SourceFd = fd;
+    }
+
+    /// @brief function will keep one copy of shared memory fd for exception
+    /// case so it can close it.
+    /// @param[in] fd - xdma shared memory path file descriptor
+    void setXDMASourceFd(int fd)
+    {
+        xdmaFd = fd;
+    }
+
+    /// @brief function will return pagealignedlength to allocate memory for
+    /// data transfer.
+    int32_t getpageAlignedLength()
+    {
+        return pageAlignedLength;
+    }
+
+    ///
+    /// @brief function will return shared memory address
+    /// from XDMA drive path
+    void* getXDMAsharedlocation()
+    {
+        memAddr = mmap(nullptr, pageAlignedLength, PROT_WRITE | PROT_READ,
+                       MAP_SHARED, xdmaFd, 0);
+        if (MAP_FAILED == memAddr)
+        {
+            rc = -errno;
+            return MAP_FAILED;
+        }
+
+        return memAddr;
+    }
+
+    /** @brief Method to initialize IO instance for event loop
+     * @param[in] ioptr -  pointer to manage eventloop
+     */
+    void insertIOInstance(std::unique_ptr<IO>&& ioptr)
+    {
+        iotPtr = std::move(ioptr);
+    }
+
+    /** @brief Method to initialize timer for each tranfer
+     * @param[in] event -
+     * @param[in] callback -
+     * @return returns true if timer creation success else false
+     *
+     */
+    bool initTimer(
+        sdeventplus::Event& event,
+        fu2::unique_function<void(Timer&, Timer::TimePoint)>&& callback)
+    {
+        try
+        {
+            timer = std::make_unique<Timer>(
+                event, (Clock(event).now() + std::chrono::seconds{20}),
+                std::chrono::seconds{1}, std::move(callback));
+        }
+        catch (const std::runtime_error& e)
+        {
+            std::cerr << "Failed to start the timer for event loop. error = "
+                      << e.what() << "\n";
+            return false;
+        }
+        return true;
+    }
+
+    /** @brief Method to delete cyclic dependecy while deleting object
+     *  DMA interface and IO event loop has cyclic dependecy
+     *
+     * @return void
+     */
+    void deleteIOInstance()
+    {
+        if (timer != nullptr)
+        {
+            auto time = timer.release();
+            delete time;
+        }
+        if (iotPtr != nullptr)
+        {
+            iotPtrbc = iotPtr.release();
+        }
+    }
+
+    /** @brief Method to set value for response received
+     *
+     *
+     * @return returns void
+     *
+     */
+    void setResponseReceived(bool bresponse)
+    {
+        responseReceived = bresponse;
+    }
+
+    /** @brief Method to get value of responseReceived to know tranfer
+     * success/fail.
+     *
+     *
+     * @return returns true if transfer success else false.
+     *
+     */
+    bool getResponseReceived()
+    {
+        return responseReceived;
+    }
+
     /** @brief API to transfer data between BMC and host using DMA
      *
-     * @param[in] path     - pathname of the file to transfer data from or to
+     * @param[in] path     - pathname of the file to transfer data from or
+     * to
      * @param[in] offset   - offset in the file
      * @param[in] length   - length of the data to transfer
      * @param[in] address  - DMA address on the host
-     * @param[in] upstream - indicates direction of the transfer; true indicates
-     *                       transfer to the host
+     * @param[in] upstream - indicates direction of the transfer; true
+     * indicates transfer to the host
      *
      * @return returns 0 on success, negative errno on failure
      */
-    int transferDataHost(int fd, uint32_t offset, uint32_t length,
-                         uint64_t address, bool upstream);
+    int32_t transferDataHost(int fd, uint32_t offset, uint32_t length,
+                             uint64_t address, bool upstream);
 
     /** @brief API to transfer data on to unix socket from host using DMA
      *
-     * @param[in] path     - pathname of the file to transfer data from or to
+     * @param[in] path     - pathname of the file to transfer data from or
+     * to
      * @param[in] length   - length of the data to transfer
      * @param[in] address  - DMA address on the host
      *
      * @return returns 0 on success, negative errno on failure
      */
     int transferHostDataToSocket(int fd, uint32_t length, uint64_t address);
+
+  private:
+    bool responseReceived;
+    void* memAddr;
+    int xdmaFd;
+    int32_t SourceFd;
+    uint32_t pageAlignedLength;
+    int rc;
+    std::unique_ptr<IO> iotPtr;
+    IO* iotPtrbc;
+    std::unique_ptr<Timer> timer;
+    uint32_t m_length;
 };
 
 /** @brief Transfer the data between BMC and host using DMA.
@@ -89,69 +329,159 @@ class DMA
  * @param[in] upstream - indicates direction of the transfer; true indicates
  *                       transfer to the host
  * @param[in] instanceId - Message's instance id
+ * @param[in] responseHdr- contain response interface related data
  * @return PLDM response message
  */
 
 template <class DMAInterface>
-Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
+Response transferAll(std::shared_ptr<DMAInterface> intf, int32_t file,
                      uint32_t offset, uint32_t length, uint64_t address,
-                     bool upstream, uint8_t instanceId)
+                     bool upstream, ResponseHdr& responseHdr,
+                     sdeventplus::Event& event)
 {
-    uint32_t origLength = length;
-    Response response(sizeof(pldm_msg_hdr) + PLDM_RW_FILE_MEM_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-
-    int flags{};
-    if (upstream)
+    uint key = responseHdr.key;
+    uint8_t instance_id = responseHdr.instance_id;
+    uint8_t command = responseHdr.command;
+    if (nullptr == intf)
     {
-        flags = O_RDONLY;
-    }
-    else if (fs::exists(path))
-    {
-        flags = O_RDWR;
-    }
-    else
-    {
-        flags = O_WRONLY;
-    }
-    int file = open(path.string().c_str(), flags);
-    if (file == -1)
-    {
-        error("File does not exist, path = {FILE_PATH}", "FILE_PATH",
-              path.string());
-        encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
+        Response response(sizeof(pldm_msg_hdr) + command, 0);
+        auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+        encode_rw_file_memory_resp(instance_id, command, PLDM_ERROR, 0,
                                    responsePtr);
-        return response;
+        if (responseHdr.respInterface != nullptr)
+        {
+            responseHdr.respInterface->sendPLDMRespMsg(response, key);
+        }
+        close(file);
+        return {};
     }
-    pldm::utils::CustomFD fd(file);
+    intf->setDMASourceFd(file);
+    uint32_t origLength = length;
+    static auto& bus = pldm::utils::DBusHandler::getBus();
+    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+    std::weak_ptr<dma::DMA> wInterface = intf;
 
-    while (length > dma::maxSize)
-    {
-        auto rc = intf->transferDataHost(fd(), offset, dma::maxSize, address,
-                                         upstream);
+    static IOPart part;
+    part.length = length;
+    part.offset = offset;
+    part.address = address;
+
+    auto timerCb = [=](Timer& /*source*/, Timer::TimePoint /*time*/) {
+        if (!intf->getResponseReceived())
+        {
+            error(
+                "EventLoop Timeout..!! Terminating data tranfer operation.\n");
+            Response response(sizeof(pldm_msg_hdr) + command, 0);
+            auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+            encode_rw_file_memory_resp(instance_id, command, PLDM_ERROR, 0,
+                                       responsePtr);
+            if (responseHdr.respInterface != nullptr)
+            {
+                responseHdr.respInterface->sendPLDMRespMsg(response, key);
+            }
+            intf->deleteIOInstance();
+            (static_cast<std::shared_ptr<dma::DMA>>(intf)).reset();
+        }
+        return;
+    };
+
+    int xdmaFd = intf->getDMAFd(true, true);
+    auto callback = [=](IO&, int, uint32_t revents) {
+        if (!(revents & (EPOLLIN | EPOLLOUT)))
+        {
+            return;
+        }
+        auto weakPtr = wInterface.lock();
+        Response response(sizeof(pldm_msg_hdr) + command, 0);
+        auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+        int rc = 0;
+
+        while (part.length > dma::maxSize)
+        {
+            rc = weakPtr->transferDataHost(file, part.offset, dma::maxSize,
+                                           part.address, upstream);
+
+            part.length -= dma::maxSize;
+            part.offset += dma::maxSize;
+            part.address += dma::maxSize;
+            if (rc < 0)
+            {
+                encode_rw_file_memory_resp(instance_id, command, PLDM_ERROR, 0,
+                                           responsePtr);
+                if (responseHdr.respInterface != nullptr)
+                {
+                    responseHdr.respInterface->sendPLDMRespMsg(response, key);
+                }
+                weakPtr->deleteIOInstance();
+                (static_cast<std::shared_ptr<dma::DMA>>(wInterface)).reset();
+                return;
+            }
+        }
+        rc = weakPtr->transferDataHost(file, part.offset, part.length,
+                                       part.address, upstream);
         if (rc < 0)
         {
-            encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
+            encode_rw_file_memory_resp(instance_id, command, PLDM_ERROR, 0,
                                        responsePtr);
-            return response;
+            if (responseHdr.respInterface != nullptr)
+            {
+                responseHdr.respInterface->sendPLDMRespMsg(response, key);
+            }
+            weakPtr->deleteIOInstance();
+            (static_cast<std::shared_ptr<dma::DMA>>(wInterface)).reset();
+            return;
         }
+        if (static_cast<int>(part.length) == rc)
+        {
+            weakPtr->setResponseReceived(true);
+            encode_rw_file_memory_resp(instance_id, command, PLDM_SUCCESS,
+                                       origLength, responsePtr);
+            if (responseHdr.respInterface != nullptr)
+            {
+                responseHdr.respInterface->sendPLDMRespMsg(response, key);
+            }
+            weakPtr->deleteIOInstance();
+            (static_cast<std::shared_ptr<dma::DMA>>(wInterface)).reset();
+            return;
+        }
+    };
 
-        offset += dma::maxSize;
-        length -= dma::maxSize;
-        address += dma::maxSize;
-    }
-
-    auto rc = intf->transferDataHost(fd(), offset, length, address, upstream);
-    if (rc < 0)
+    try
     {
-        encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
-                                   responsePtr);
-        return response;
+        if (intf->initTimer(event, std::move(timerCb)) == false)
+        {
+            Response response(sizeof(pldm_msg_hdr) + command, 0);
+            auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+            error("Failed to start the event timer.\n");
+            encode_rw_file_memory_resp(instance_id, command, PLDM_ERROR, 0,
+                                       responsePtr);
+            if (responseHdr.respInterface != nullptr)
+            {
+                responseHdr.respInterface->sendPLDMRespMsg(response, key);
+            }
+            intf->deleteIOInstance();
+            (static_cast<std::shared_ptr<dma::DMA>>(intf)).reset();
+            return {};
+        }
+        intf->insertIOInstance(std::move(std::make_unique<IO>(
+            event, xdmaFd, EPOLLIN | EPOLLOUT, std::move(callback))));
     }
-
-    encode_rw_file_memory_resp(instanceId, command, PLDM_SUCCESS, origLength,
-                               responsePtr);
-    return response;
+    catch (const std::runtime_error& e)
+    {
+        Response response(sizeof(pldm_msg_hdr) + command, 0);
+        auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+        error("Failed to start the event loop. error ={ERR_EXCEP} ",
+              "ERR_EXCEP", e.what());
+        encode_rw_file_memory_resp(instance_id, command, PLDM_ERROR, 0,
+                                   responsePtr);
+        if (responseHdr.respInterface != nullptr)
+        {
+            responseHdr.respInterface->sendPLDMRespMsg(response, key);
+        }
+        intf->deleteIOInstance();
+        (static_cast<std::shared_ptr<dma::DMA>>(intf)).reset();
+    }
+    return {};
 }
 
 } // namespace dma
@@ -169,10 +499,11 @@ class Handler : public CmdHandler
   public:
     Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
             uint8_t hostEid, pldm::InstanceIdDb* instanceIdDb,
-            pldm::requester::Handler<pldm::requester::Request>* handler) :
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            pldm::response_api::Transport* respInterface) :
         oemPlatformHandler(oemPlatformHandler),
         hostSockFd(hostSockFd), hostEid(hostEid), instanceIdDb(instanceIdDb),
-        handler(handler)
+        handler(handler), responseHdr({0, 0, respInterface, 0, -1})
     {
         handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -422,6 +753,7 @@ class Handler : public CmdHandler
     pldm::requester::Handler<pldm::requester::Request>* handler;
     std::vector<std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>>
         dbusToFileHandlers;
+    ResponseHdr responseHdr;
 };
 
 } // namespace oem_ibm

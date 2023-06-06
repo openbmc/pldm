@@ -92,7 +92,9 @@ Entry::Level getEntryLevelFromPEL(const std::string& pelFileName)
 
 int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
                                uint64_t address,
-                               oem_platform::Handler* /*oemPlatformHandler*/)
+                               oem_platform::Handler* /*oemPlatformHandler*/,
+                               ResponseHdr& responseHdr,
+                               sdeventplus::Event& event)
 {
     static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
     static constexpr auto logInterface = "org.open_power.Logging.PEL";
@@ -109,20 +111,29 @@ int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
         auto reply = bus.call(
             method,
             std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
-        sdbusplus::message::unix_fd fd{};
-        reply.read(fd);
-        auto rc = transferFileData(fd, true, offset, length, address);
-        return rc;
+        sdbusplus::message::unix_fd unixfd;
+        reply.read(unixfd);
+        fd = dup(unixfd);
+        if (fd == -1)
+        {
+            error("Error: Cloning pel file descriptor failed...ERROR ={ERR}",
+                  "ERR", errno);
+            FileHandler::dmaResponseToHost(responseHdr, PLDM_ERROR, 0);
+            FileHandler::deleteAIOobjects(nullptr, responseHdr);
+            return -1;
+        }
+        transferFileData(fd, true, offset, length, address, responseHdr, event);
     }
     catch (const std::exception& e)
     {
         error(
             "GetPEL D-Bus call failed, PEL id = 0x{FILE_HANDLE}, error ={ERR_EXCEP}",
             "FILE_HANDLE", lg2::hex, fileHandle, "ERR_EXCEP", e.what());
-        return PLDM_ERROR;
+        FileHandler::dmaResponseToHost(responseHdr, PLDM_ERROR, 0);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
     }
 
-    return PLDM_SUCCESS;
+    return -1;
 }
 
 int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
@@ -198,24 +209,43 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
 
 int PelHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address,
-                                oem_platform::Handler* /*oemPlatformHandler*/)
+                                oem_platform::Handler* /*oemPlatformHandler*/,
+                                ResponseHdr& responseHdr,
+                                sdeventplus::Event& event)
 {
     char tmpFile[] = "/tmp/pel.XXXXXX";
     int fd = mkstemp(tmpFile);
     if (fd == -1)
     {
         error("failed to create a temporary pel, ERROR={ERR}", "ERR", errno);
+        FileHandler::dmaResponseToHost(responseHdr, PLDM_ERROR, 0);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
         return PLDM_ERROR;
     }
     close(fd);
     fs::path path(tmpFile);
+    Pelpath = path;
+    transferFileData(path, false, offset, length, address, responseHdr, event);
+    return -1;
+}
 
-    auto rc = transferFileData(path, false, offset, length, address);
-    if (rc == PLDM_SUCCESS)
+int PelHandler::postDataTransferCallBack(bool IsWriteToMemOp)
+{
+    if (IsWriteToMemOp)
     {
-        rc = storePel(path.string());
+        auto rc = storePel(Pelpath.string());
+        if (rc != PLDM_SUCCESS)
+        {
+            error(
+                "failed to storing a pel's Post DMA operation,Pelpath:{PATH} ERROR={ERR}",
+                "ERR", errno, "PATH", Pelpath.string());
+        }
     }
-    return rc;
+    else
+    {
+        return -1;
+    }
+    return PLDM_SUCCESS;
 }
 
 int PelHandler::fileAck(uint8_t /*fileStatus*/)
