@@ -3,11 +3,32 @@
 #include "oem_ibm_handler.hpp"
 #include "pldmd/pldm_resp_interface.hpp"
 
+#include <libpldm/file_io.h>
+
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/server.hpp>
+#include <sdbusplus/server/object.hpp>
+#include <sdbusplus/timer.hpp>
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/exception.hpp>
+#include <sdeventplus/source/io.hpp>
+#include <sdeventplus/source/signal.hpp>
+#include <sdeventplus/source/time.hpp>
+#include <stdplus/signal.hpp>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+
+#include <vector>
 namespace pldm
 {
 
 namespace responder
 {
+using namespace sdeventplus;
+using namespace sdeventplus::source;
+constexpr auto clockId = sdeventplus::ClockId::RealTime;
+using Timer = Time<clockId>;
+using Clock = Clock<clockId>;
 
 class FileHandler;
 namespace dma
@@ -33,6 +54,34 @@ namespace fs = std::filesystem;
  */
 class FileHandler
 {
+  protected:
+    /** @brief method to send response to host after completion of DMA operation
+     * @param[in] responseHdr - contain response related data
+     * @param[in] rStatus - operation status either success/fail/not suppoted.
+     * @param[in] length - length to be read/write mentioned by Host
+     */
+    virtual void dmaResponseToHost(const ResponseHdr& responseHdr,
+                                   const pldm_completion_codes rStatus,
+                                   uint32_t length);
+
+    /** @brief method to send response to host after completion of DMA operation
+     * @param[in] responseHdr - contain response related data
+     * @param[in] rStatus - operation status either success/fail/not suppoted.
+     * @param[in] length - length to be read/write mentioned by Host
+     */
+    virtual void dmaResponseToHost(const ResponseHdr& responseHdr,
+                                   const pldm_fileio_completion_codes rStatus,
+                                   uint32_t length);
+
+    /** @brief method to delete all shared pointer object
+     * @param[in] responseHdr - contain response related data
+     * @param[in] xdmaInterface - interface to transfer data between BMc and
+     * Host
+     */
+    virtual void
+        deleteAIOobjects(const std::shared_ptr<dma::DMA>& xdmaInterface,
+                         const ResponseHdr& responseHdr);
+
   public:
     /** @brief Method to write an oem file type from host memory. Individual
      *  file types need to override this method to do the file specific
@@ -44,9 +93,11 @@ class FileHandler
      *                                  tasks
      *  @return PLDM status code
      */
-    virtual int writeFromMemory(uint32_t offset, uint32_t length,
-                                uint64_t address,
-                                oem_platform::Handler* oemPlatformHandler) = 0;
+    virtual void writeFromMemory(uint32_t offset, uint32_t length,
+                                 uint64_t address,
+                                 oem_platform::Handler* oemPlatformHandler,
+                                 ResponseHdr& responseHdr,
+                                 sdeventplus::Event& event) = 0;
 
     /** @brief Method to read an oem file type into host memory. Individual
      *  file types need to override this method to do the file specific
@@ -58,9 +109,11 @@ class FileHandler
      *                                  tasks
      *  @return PLDM status code
      */
-    virtual int readIntoMemory(uint32_t offset, uint32_t& length,
-                               uint64_t address,
-                               oem_platform::Handler* oemPlatformHandler) = 0;
+    virtual void readIntoMemory(uint32_t offset, uint32_t& length,
+                                uint64_t address,
+                                oem_platform::Handler* oemPlatformHandler,
+                                ResponseHdr& responseHdr,
+                                sdeventplus::Event& event) = 0;
 
     /** @brief Method to read an oem file type's content into the PLDM response.
      *  @param[in] offset - offset to read
@@ -118,15 +171,28 @@ class FileHandler
      *
      *  @return PLDM status code
      */
-    virtual int transferFileData(const fs::path& path, bool upstream,
-                                 uint32_t offset, uint32_t& length,
-                                 uint64_t address);
+    virtual void transferFileData(const fs::path& path, bool upstream,
+                                  uint32_t offset, uint32_t& length,
+                                  uint64_t address, ResponseHdr& responseHdr,
+                                  sdeventplus::Event& event);
 
-    virtual int transferFileData(int fd, bool upstream, uint32_t offset,
-                                 uint32_t& length, uint64_t address);
+    virtual void transferFileData(int fd, bool upstream, uint32_t offset,
+                                  uint32_t& length, uint64_t address,
+                                  ResponseHdr& responseHdr,
+                                  sdeventplus::Event& event);
 
-    virtual int transferFileDataToSocket(int fd, uint32_t& length,
-                                         uint64_t address);
+    virtual void transferFileDataToSocket(int fd, uint32_t& length,
+                                          uint64_t address,
+                                          ResponseHdr& responseHdr,
+                                          sdeventplus::Event& event);
+
+    /** @brief method to do necessary operation according different
+     *  file type and being call when data transfer completed.
+     *
+     *  @param[in] IsWriteToMemOp - type of operation to decide what operation
+     * needs to be done after data transfer.
+     */
+    virtual void postDataTransferCallBack(bool IsWriteToMemOp) = 0;
 
     /** @brief Constructor to create a FileHandler object
      */
@@ -148,5 +214,13 @@ class FileHandler
 
 std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
                                               uint32_t fileHandle);
+
+/** @brief Method to create shared file handler objects based on file type
+ *
+ *  @param[in] fileType - type of file
+ *  @param[in] fileHandle - file handle
+ */
+std::shared_ptr<FileHandler> getSharedHandlerByType(uint16_t fileType,
+                                                    uint32_t fileHandle);
 } // namespace responder
 } // namespace pldm
