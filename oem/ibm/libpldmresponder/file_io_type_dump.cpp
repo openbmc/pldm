@@ -179,7 +179,9 @@ std::string DumpHandler::getOffloadUri(uint32_t fileHandle)
 }
 
 int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address,
-                                 oem_platform::Handler* /*oemPlatformHandler*/)
+                                 oem_platform::Handler* /*oemPlatformHandler*/,
+                                 ResponseHdr& responseHdr,
+                                 sdeventplus::Event& event)
 {
     if (DumpHandler::fd == -1)
     {
@@ -191,12 +193,39 @@ int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address,
             close(DumpHandler::fd);
             error("DumpHandler::writeFromMemory: setupUnixSocket() failed");
             std::remove(socketInterface.c_str());
-            return PLDM_ERROR;
-        }
 
+            FileHandler::dmaResponseToHost(responseHdr, PLDM_ERROR, 0);
+            FileHandler::deleteAIOobjects(nullptr, responseHdr);
+
+            return -1;
+        }
         DumpHandler::fd = sock;
     }
-    return transferFileDataToSocket(DumpHandler::fd, length, address);
+
+    transferFileDataToSocket(DumpHandler::fd, length, address, responseHdr,
+                             event);
+    return -1;
+}
+
+int DumpHandler::postDataTransferCallBack(bool IsWriteToMemOp)
+{
+    if (IsWriteToMemOp)
+    {
+        error("DumpHandler::writeFromMemory: transferFileDataToSocket failed");
+        if (DumpHandler::fd >= 0)
+        {
+            close(DumpHandler::fd);
+            DumpHandler::fd = -1;
+        }
+        auto socketInterface = getOffloadUri(fileHandle);
+        std::remove(socketInterface.c_str());
+        return PLDM_ERROR;
+    }
+    else
+    {
+        return -1;
+    }
+    return PLDM_SUCCESS;
 }
 
 int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length,
@@ -331,13 +360,20 @@ int DumpHandler::fileAck(uint8_t fileStatus)
 
 int DumpHandler::readIntoMemory(uint32_t offset, uint32_t& length,
                                 uint64_t address,
-                                oem_platform::Handler* /*oemPlatformHandler*/)
+                                oem_platform::Handler* /*oemPlatformHandler*/,
+                                ResponseHdr& responseHdr,
+                                sdeventplus::Event& event)
 {
     if (dumpType != PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS)
     {
+        FileHandler::dmaResponseToHost(responseHdr,
+                                       PLDM_ERROR_UNSUPPORTED_PLDM_CMD, length);
+        FileHandler::deleteAIOobjects(nullptr, responseHdr);
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    return transferFileData(resDumpDirPath, true, offset, length, address);
+    transferFileData(resDumpDirPath, true, offset, length, address, responseHdr,
+                     event);
+    return -1;
 }
 
 int DumpHandler::read(uint32_t offset, uint32_t& length, Response& response,
