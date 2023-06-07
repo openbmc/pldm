@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9e22a88_e9ebe1d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 50
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-07T06:00:09Z",
+      "side": 1,
+      "message": "Re-wrote the commit message.",
+      "parentUuid": "cfffce09_3f00f7f6",
+      "range": {
+        "startLine": 10,
+        "startChar": 46,
+        "endLine": 12,
+        "endChar": 64
+      },
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5eee6d9a_58f82b58",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-05-30T13:14:02Z",
       "side": 1,
       "message": "This needs more details, like comparing to the current implementation what it does differently.",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83a54430_7b2af348",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 50
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-07T06:00:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5eee6d9a_58f82b58",
       "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5055774f_81fa98a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 50
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-07T06:00:09Z",
+      "side": 1,
+      "message": "Removing this line as this was already done part of another commit.",
+      "parentUuid": "532430cd_9f54788d",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92c3a943_9d7350b0",
@@ -75,6 +135,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fdb029f_f56d0c4f",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-07T06:00:09Z",
+      "side": 1,
+      "message": "It is actually the same code, just that the way of obtaining the object paths are different in the new change, it does not involve any specific changes in the business logic and rather it is just a refactor of the existing code.",
+      "parentUuid": "92c3a943_9d7350b0",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2e6a2dc_a0959578",
@@ -88,6 +166,24 @@
       "writtenOn": "2023-05-30T13:14:02Z",
       "side": 1,
       "message": "Move this to the header file with sample input and output.",
+      "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59565b00_a04152b6",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-07T06:00:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2e6a2dc_a0959578",
       "revId": "bec6e796df1fc1d92e15f772e00f0450c5dc3fb4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
