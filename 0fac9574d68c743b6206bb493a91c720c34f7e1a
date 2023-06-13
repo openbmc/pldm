@@ -36,6 +36,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96ceb9f8_f4aba380",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-13T21:53:57Z",
+      "side": 1,
+      "message": "I would suggest fixing the issues in commits separately from the add of the .clang-tidy.",
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d39a4cf6_644ac95c",
