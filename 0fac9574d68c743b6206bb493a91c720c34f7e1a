@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b057d86_a59baa42",
+        "filename": ".clang-tidy",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-13T21:55:40Z",
+      "side": 1,
+      "message": "```\nHeaderFilterRegex: \u0027(?!^subprojects).*\u0027\n```\n\nWe need to add this so that files from subprojects do not get included in clang-tidy when ran outside of the CI scripts.",
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0bbce973_7f83e862",
