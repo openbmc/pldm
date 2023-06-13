@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f85da415_5e2a158f",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-06-13T06:36:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8091d338_d4519940",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 5
+      },
+      "revId": "fd9d7d466e101ac87941367fa11bf2e7ae2f4f72",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a8a5218_215e86e0",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-13T04:36:18Z",
       "side": 1,
       "message": "-tid sounds better ?",
+      "range": {
+        "startLine": 85,
+        "startChar": 13,
+        "endLine": 85,
+        "endChar": 15
+      },
+      "revId": "fd9d7d466e101ac87941367fa11bf2e7ae2f4f72",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c075cf3_66f505ff",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-06-13T06:36:31Z",
+      "side": 1,
+      "message": "Done, single dash is always associated with a single letter and a double dash is with the name associated with the option, So I changed it to `-i, --terminusID.`",
+      "parentUuid": "3a8a5218_215e86e0",
       "range": {
         "startLine": 85,
         "startChar": 13,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41f8544d_b7dc2acf",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-06-13T06:36:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0da638d6_ff343bc8",
+      "range": {
+        "startLine": 103,
+        "startChar": 6,
+        "endLine": 106,
+        "endChar": 9
+      },
+      "revId": "fd9d7d466e101ac87941367fa11bf2e7ae2f4f72",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2ffad4d_c4d6d6e0",
@@ -83,6 +155,24 @@
       "writtenOn": "2023-06-13T04:36:18Z",
       "side": 1,
       "message": "add some documentation ?",
+      "revId": "fd9d7d466e101ac87941367fa11bf2e7ae2f4f72",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "657c2799_6acdead8",
+        "filename": "pldmtool/pldm_platform_cmd.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-06-13T06:36:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2ffad4d_c4d6d6e0",
       "revId": "fd9d7d466e101ac87941367fa11bf2e7ae2f4f72",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
