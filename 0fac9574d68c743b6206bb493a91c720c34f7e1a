@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8280cf64_01696107",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-06-13T10:38:39Z",
+      "side": 1,
+      "message": "Sure I can update the commit message. All these errors were clang-diagnostics errors and were not related to any clang-tidy checks.\nShould I paste all those errors I got ?",
+      "parentUuid": "0bbce973_7f83e862",
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d39a4cf6_644ac95c",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51fddd73_61af81fa",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-06-13T10:38:39Z",
+      "side": 1,
+      "message": "`std::move` was just an extra thing of copying we were doing here.\nThe error was - `moving a temporary object prevents copy elision [clang-diagnostic-pessimizing-move]`",
+      "parentUuid": "d39a4cf6_644ac95c",
+      "range": {
+        "startLine": 651,
+        "startChar": 6,
+        "endLine": 651,
+        "endChar": 65
+      },
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "263a0c6c_96c58fef",
         "filename": "host-bmc/dbus_to_event_handler.cpp",
         "patchSetId": 10
@@ -54,6 +96,30 @@
       "writtenOn": "2023-06-13T04:45:05Z",
       "side": 1,
       "message": "eid \u0026 fd are being sent earlier ? what clang error are you getting here ?",
+      "range": {
+        "startLine": 24,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 48
+      },
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7589fb4a_27150a38",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-06-13T10:38:39Z",
+      "side": 1,
+      "message": "yes, mctp_eid is still used, but mctp_fd is not used here anywhere in the code. it\u0027s just initialized.\nClang-error was - mctp_fd not used [unused parameter]",
+      "parentUuid": "263a0c6c_96c58fef",
       "range": {
         "startLine": 24,
         "startChar": 3,
