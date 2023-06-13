@@ -58,9 +58,11 @@ conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
 conf_data.set('FLIGHT_RECORDER_MAX_ENTRIES',get_option('flightrecorder-max-entries'))
 conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
 conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
-configure_file(output: 'config.h',
+config = configure_file(output: 'config.h',
   configuration: conf_data
 )
+
+add_project_arguments('-include', '@0@'.format(config), language: 'cpp')
 
 cpp = meson.get_compiler('cpp')
 

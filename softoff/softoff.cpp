@@ -1,5 +1,3 @@
-#include "config.h"
-
 #include "softoff.hpp"
 
 #include "common/utils.hpp"
