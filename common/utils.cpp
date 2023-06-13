@@ -1,5 +1,3 @@
-#include "config.h"
-
 #include "utils.hpp"
 
 #include <libpldm/pdr.h>

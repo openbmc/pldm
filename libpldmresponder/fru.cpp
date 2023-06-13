@@ -2,7 +2,6 @@
 
 #include "common/utils.hpp"
 
-#include <config.h>
 #include <libpldm/entity.h>
 #include <libpldm/utils.h>
 #include <systemd/sd-journal.h>
