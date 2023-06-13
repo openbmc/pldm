@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bbce973_7f83e862",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-06-13T04:45:05Z",
+      "side": 1,
+      "message": "@Pavithra - I think this needs a bit more documentation on what sort of errors were being fixed, its not completely implicit from the code that the changes you made are just for fixing clang errors.",
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d39a4cf6_644ac95c",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-06-13T04:45:05Z",
+      "side": 1,
+      "message": "why it it unmoved ?",
+      "range": {
+        "startLine": 651,
+        "startChar": 6,
+        "endLine": 651,
+        "endChar": 65
+      },
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "263a0c6c_96c58fef",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-06-13T04:45:05Z",
+      "side": 1,
+      "message": "eid \u0026 fd are being sent earlier ? what clang error are you getting here ?",
+      "range": {
+        "startLine": 24,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 48
+      },
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
