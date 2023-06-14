@@ -39,6 +39,30 @@
       },
       "revId": "afd9a3e3d682fcaa01396286627c7ed2c1d67d27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd44892a_9175f094",
+        "filename": "meson_options.txt",
+        "patchSetId": 20
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-06-14T02:02:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e70934e8_0ea9baac",
+      "range": {
+        "startLine": 19,
+        "startChar": 46,
+        "endLine": 19,
+        "endChar": 74
+      },
+      "revId": "afd9a3e3d682fcaa01396286627c7ed2c1d67d27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
