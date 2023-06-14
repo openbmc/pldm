@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "230c58db_5188bec5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-14T11:13:53Z",
+      "side": 1,
+      "message": "IPMI? we are not adding the attributes to IPMI here. Please change that. And the header is supposed to give a meaning gist of what the change is for. It is unclear why you are adding the bios attributes for.",
+      "range": {
+        "startLine": 7,
+        "startChar": 26,
+        "endLine": 7,
+        "endChar": 30
+      },
+      "revId": "1a16e806e26f8842d567ef8d1f479a74460e0ddd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a240ac5_f23ea1f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-14T11:13:53Z",
+      "side": 1,
+      "message": "what is HMC? It does not hold any significance in the community context. Please avoid using company specific terms in the commit message. \n\nThe commit message should really tell us why we are making a particular change and what are the changes which will be merged as part of the current commit.",
+      "range": {
+        "startLine": 9,
+        "startChar": 26,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "1a16e806e26f8842d567ef8d1f479a74460e0ddd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbd35993_1be3c8c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-06-14T11:13:53Z",
+      "side": 1,
+      "message": "Can you give a brief of what attributes we are trying to add and for what purpose the user should change the attributes? what was the behaviour before? and how adding these attributes will overcome that behaviour?",
+      "range": {
+        "startLine": 10,
+        "startChar": 38,
+        "endLine": 10,
+        "endChar": 46
+      },
+      "revId": "1a16e806e26f8842d567ef8d1f479a74460e0ddd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
