@@ -518,7 +518,13 @@ int main()
     }
 
     // TODO: Use PDR P&M PLDM Type to create Resource id mapping
-
+    rc = createResourceIdMapping();
+    if (rc)
+    {
+        std::cerr << "Resource map creation failed\n";
+        return rc;
+    }
+    
     rc = triggerRdeReactor(fd);
     if (rc)
     {
