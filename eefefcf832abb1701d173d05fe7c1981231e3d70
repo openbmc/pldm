@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b222f8a3_ed96e4d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-06-15T04:40:24Z",
+      "side": 1,
+      "message": "There are two options for TID:\n\n1. You can include static TID equivalent with the configured EID in the configuration file.\nhttps://github.com/openbmc/pldm/blob/2b85d7844c6a0731a25fa103aebd5f5d53475500/pldmd/pldmd.cpp#L227\n\n2. Get the TID from the terminus in discovery phase.\n\n3. Use static TID.",
+      "parentUuid": "eca94df3_cb265dac",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b7c9b08_eadac634",
