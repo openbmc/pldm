@@ -152,7 +152,7 @@ uint8_t readHostEID()
         eidFile >> eidStr;
         if (!eidStr.empty())
         {
-            eid = atoi(eidStr.c_str());
+            eid = strtol(eidStr.c_str(), NULL, 16);
         }
         else
         {
