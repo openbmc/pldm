@@ -1,0 +1,8 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: sagar srinivas <sagar.srinivas@ibm.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Fri, 16 Jun 2023 03:23:43 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/64180
+Project: openbmc/pldm
+Branch: refs/heads/master
