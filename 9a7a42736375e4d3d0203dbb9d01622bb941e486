@@ -106,6 +106,24 @@
       "parentUuid": "8057f74a_382d1d52",
       "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a298fab_b7f19cfa",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2023-06-20T07:14:14Z",
+      "side": 1,
+      "message": "So we\u0027d chosen the bus name (in mctpd) to somewhat-correspond to  `xyz.openbmc_project.MCTP` interface definition, at https://github.com/openbmc/phosphor-dbus-interfaces/tree/master/yaml/xyz/openbmc_project/MCTP )\n\n\\- but I\u0027m happy to move that out to the `au.com.codeconstruct` namespace if that\u0027s preferable.",
+      "parentUuid": "57bfdf4a_0e8ba89c",
+      "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
