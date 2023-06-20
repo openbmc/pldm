@@ -124,6 +124,24 @@
       "parentUuid": "57bfdf4a_0e8ba89c",
       "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7252ef4_413521ae",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-20T11:43:14Z",
+      "side": 1,
+      "message": "Oh, this is the service name and not an interface name. This is fine. \n\nI think I was missing the interfaces that would be implemented there. I see the EID, etc in the linked-to interface though. No issues.",
+      "parentUuid": "0a298fab_b7f19cfa",
+      "revId": "9a7a42736375e4d3d0203dbb9d01622bb941e486",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
