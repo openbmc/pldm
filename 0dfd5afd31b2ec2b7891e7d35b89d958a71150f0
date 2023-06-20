@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdde613c_0d9cbe12",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-06-20T05:09:29Z",
+      "side": 1,
+      "message": "Why is this hardcoded to `1`? This will be inaccurate if multiple instances of the entity are there?",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13d2af38_7f44c3be",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-06-20T05:09:29Z",
+      "side": 1,
+      "message": "Please add unit tests for this, if it is applicable.",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aded1af_18638ef9",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-06-20T05:09:29Z",
+      "side": 1,
+      "message": "const/constexpr",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e715c0bf_39ecad96",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-06-20T05:09:29Z",
+      "side": 1,
+      "message": "Where is the output updated? Both the params are input parameters and the response is `void`. If the member variables are modifed, the side effects needs to be highlighted. The preference though is for response of the function to take as a function parameter or return code, so that unit testing can be added.\n\nnit: std::map not needed",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
