@@ -16,6 +16,24 @@
       "message": "Response code handling based on documentation looks flaky. We need a better API design to suit both the scenarios. This discussion is probably beyond this patch.",
       "revId": "488f19d00acb640abf8cba774f0b6f6730c179de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0441e3e7_30283e40",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-06-22T22:05:02Z",
+      "side": 1,
+      "message": "I\u0027ll merge this now, but can you unpack what you mean by this comment? What are \"both scenarios\"? What APIs need to change? Those in libpldm? Or are you trying to say the pldmd code needs to be refactored?",
+      "parentUuid": "07cf740b_4b87315e",
+      "revId": "488f19d00acb640abf8cba774f0b6f6730c179de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
