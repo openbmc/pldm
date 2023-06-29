@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ecfaefc_79322ed3",
+        "filename": "rded/rded.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-06-29T23:58:43Z",
+      "side": 1,
+      "message": "OpenBMC should do Upper / lowerCamelCase https://gbmc-review.git.corp.google.com/q/bmcweb+mergedafter:2023-05-31+branch:master",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 23
+      },
+      "revId": "723afd1b0956b20fdeecfd1daeaf5df9e6bdda8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
