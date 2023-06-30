@@ -219,10 +219,18 @@ int main(int argc, char** argv)
                     decltype(&pldm_entity_association_tree_destroy)>
         entityTree(pldm_entity_association_tree_init(),
                    pldm_entity_association_tree_destroy);
+    if (!entityTree)
+    {
+        throw std::runtime_error("Failed to instantiate general PDR entity association tree");
+    }
     std::unique_ptr<pldm_entity_association_tree,
                     decltype(&pldm_entity_association_tree_destroy)>
         bmcEntityTree(pldm_entity_association_tree_init(),
                       pldm_entity_association_tree_destroy);
+    if (!bmcEntityTree)
+    {
+        throw std::runtime_error("Failed to instantiate BMC PDR entity association tree");
+    }
     std::shared_ptr<HostPDRHandler> hostPDRHandler;
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser;
