@@ -81,12 +81,11 @@ namespace table
 {
 void appendPadAndChecksum(Table& table)
 {
-    auto sizeWithoutPad = table.size();
-    auto padAndChecksumSize = pldm_bios_table_pad_checksum_size(sizeWithoutPad);
-    table.resize(table.size() + padAndChecksumSize);
-
-    pldm_bios_table_append_pad_checksum(table.data(), table.size(),
-                                        sizeWithoutPad);
+    size_t payloadSize = table.size();
+    table.resize(payloadSize + pldm_bios_table_pad_checksum_size(payloadSize));
+    // No validation of return value as preconditions are satisfied
+    pldm_bios_table_append_pad_checksum_check(table.data(), table.size(),
+                                              &payloadSize);
 }
 
 namespace string
