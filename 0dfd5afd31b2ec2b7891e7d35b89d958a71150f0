@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02432c11_6a1471a7",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-03T17:30:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdde613c_0d9cbe12",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13d2af38_7f44c3be",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-20T05:09:29Z",
       "side": 1,
       "message": "Please add unit tests for this, if it is applicable.",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f05cd3a1_0240ee1b",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-03T17:30:04Z",
+      "side": 1,
+      "message": "addressed this comment in the app file.",
+      "parentUuid": "13d2af38_7f44c3be",
       "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbbf2933_006a5d38",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-03T17:30:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4aded1af_18638ef9",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e715c0bf_39ecad96",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-06-20T05:09:29Z",
       "side": 1,
       "message": "Where is the output updated? Both the params are input parameters and the response is `void`. If the member variables are modifed, the side effects needs to be highlighted. The preference though is for response of the function to take as a function parameter or return code, so that unit testing can be added.\n\nnit: std::map not needed",
+      "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb8e418e_47919e7e",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-03T17:30:04Z",
+      "side": 1,
+      "message": "So, the refactor essentially involved making changes to fix a root object path at, ie - \"/xyz/openbmc_project/inventory/\". So that we do not traverse till the root object \"/\". And if an path of a FRU say \"/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0\", then we add into the entity association tree the following object paths till system- \n\"/xyz/openbmc_project/inventory/system\",\n\"/xyz/openbmc_project/inventory/system/chassis/\",\n\"/xyz/openbmc_project/inventory/system/chassis/motherboard\",\n\"/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0. \n\nSo this is more of an optimisation.\n\nExample output on a hardware - \npldmd[6221]: Inside updateAssociationTree: path\u003d/xyz/openbmc_project/inventory/system/chassis/motherboard/connector1\npldmd[6221]: tmpObjPaths[]\u003d/xyz/openbmc_project/inventory/system\npldmd[6221]: tmpObjPaths[]\u003d/xyz/openbmc_project/inventory/system/chassis\npldmd[6221]: tmpObjPaths[]\u003d/inventory/system/chassis/motherboard\npldmd[6221]: tmpObjPaths[]\u003d/xyz/openbmc_project/inventory/system/chassis/motherboard/connector1\n\nAnd, both the params are input params and the return is void, as all the processing is happening within this function and the entity association tree is updated in this method. Agreed it has to have a return a response to aid unit tests. Will work on adding the unit test as part of a separate commit.",
+      "parentUuid": "e715c0bf_39ecad96",
       "revId": "0dfd5afd31b2ec2b7891e7d35b89d958a71150f0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
