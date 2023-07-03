@@ -530,8 +530,13 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else
                 {
-                    pldm_pdr_add(repo, pdr.data(), respCount, rh, true,
-                                 pdrTerminusHandle);
+                    rc = pldm_pdr_add_check(repo, pdr.data(), respCount, true,
+                                 pdrTerminusHandle, &rh);
+                    if (rc)
+                    {
+                        // pldm_pdr_add() assert()ed on failure to add a PDR.
+                        throw std::runtime_error("Failed to add PDR");
+                    }
                 }
             }
         }
