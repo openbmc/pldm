@@ -253,8 +253,13 @@ void HostPDRHandler::mergeEntityAssociations(const std::vector<uint8_t>& pdr)
         }
         else
         {
-            pldm_entity_association_pdr_add_from_node(
+            int rc = pldm_entity_association_pdr_add_from_node_check(
                 node, repo, &entities, numEntities, true, TERMINUS_HANDLE);
+            if (rc)
+            {
+                error("Failed to add entity association PDR from node: {LIBPLDM_ERROR}",
+                      "LIBPLDM_ERROR", rc);
+            }
         }
     }
     free(entities);
