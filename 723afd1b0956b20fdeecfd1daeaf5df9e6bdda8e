@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "adfcbe8f_b2c2de37",
+        "filename": "rded/helper/mctpsetup.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2023-07-04T14:09:23Z",
+      "side": 1,
+      "message": "To expand on the note for entity manager: Do we care if we get the same network id?   Or just that we get assigned the same prefix in the redfish service aggregation since the redfish tree is supposed to be stable across device resets or power cycles (DSP0266 12.3 Resource tree stability).",
+      "parentUuid": "667dc083_fdec5c9e",
+      "revId": "723afd1b0956b20fdeecfd1daeaf5df9e6bdda8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b95bbcd4_0a2b0b45",
         "filename": "rded/helper/mctpsetup.hpp",
         "patchSetId": 1
