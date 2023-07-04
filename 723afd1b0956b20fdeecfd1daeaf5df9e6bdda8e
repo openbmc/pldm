@@ -3,6 +3,74 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fdd9d3e6_2d5e3200",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2023-07-04T13:28:23Z",
+      "side": 1,
+      "message": "missing the h in this url scheme",
+      "revId": "723afd1b0956b20fdeecfd1daeaf5df9e6bdda8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fee9839_ffaf5f85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2023-07-04T13:28:23Z",
+      "side": 1,
+      "message": "While I haven\u0027t had more than a cursory look at the PLDM specification, I have read RDE and have been interested in it.  I first noticed the URL in the commit message when edge and/or Gerrit protected me from the wild scheme, then proceeded to look closer at the commit.",
+      "revId": "723afd1b0956b20fdeecfd1daeaf5df9e6bdda8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "667dc083_fdec5c9e",
+        "filename": "rded/helper/mctpsetup.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2023-07-04T13:28:23Z",
+      "side": 1,
+      "message": "If this is supposed to be a unique id for a given USB path serial adaptor it is not.\n\neg root hub has two usb ports each having a 4-port usb hub : port 2 on hub 1 will match port 1 on hub 2.\n\nThis seems like something entity manager may need to supply if we need a consistent mapping.",
+      "revId": "723afd1b0956b20fdeecfd1daeaf5df9e6bdda8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b95bbcd4_0a2b0b45",
+        "filename": "rded/helper/mctpsetup.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2023-07-04T13:28:23Z",
+      "side": 1,
+      "message": "This seems to be a shell script with each command wrapped in C++.\n\nHaving multi-second sleeps is not going make for a happy D-Bus.\n\nConsider moving all to an external script or command using the appropriate libraries of some kind.  Also consider using boost to look for responses.",
+      "revId": "723afd1b0956b20fdeecfd1daeaf5df9e6bdda8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ecfaefc_79322ed3",
         "filename": "rded/rded.cpp",
         "patchSetId": 1
