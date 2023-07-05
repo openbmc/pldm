@@ -8,5 +8,5 @@
 
 extern std::map<uint8_t, int> baseCommandRequestSize;
 
-int performBaseDiscovery(std::string rdeDevice, int fd, int netId, int eid,
+int performBaseDiscovery(std::string_view rdeDevice, int fd, int netId, int eid,
                            int instanceId);
