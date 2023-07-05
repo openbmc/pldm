@@ -7,6 +7,7 @@
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
+#include "mctp.h"
 
 #include <err.h>
 #include <getopt.h>
@@ -80,15 +81,13 @@ void interruptFlightRecorderCallBack(Signal& /*signal*/,
 }
 
 static std::optional<Response>
-    processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
+    processRxMsg(uint8_t eid, const std::vector<uint8_t>& requestMsg,
+                 Invoker& invoker,
                  requester::Handler<requester::Request>& handler,
                  fw_update::Manager* fwManager)
 {
-    using type = uint8_t;
-    uint8_t eid = requestMsg[0];
     pldm_header_info hdrFields{};
-    auto hdr = reinterpret_cast<const pldm_msg_hdr*>(
-        requestMsg.data() + sizeof(eid) + sizeof(type));
+    auto hdr = reinterpret_cast<const pldm_msg_hdr*>(requestMsg.data());
     if (PLDM_SUCCESS != unpack_pldm_header(hdr, &hdrFields))
     {
         error("Empty PLDM request header");
@@ -99,8 +98,7 @@ static std::optional<Response>
     {
         Response response;
         auto request = reinterpret_cast<const pldm_msg*>(hdr);
-        size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
-                            sizeof(eid) - sizeof(type);
+        size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr);
         try
         {
             if (hdrFields.pldm_type != PLDM_FWUP)
@@ -137,8 +135,7 @@ static std::optional<Response>
     else if (PLDM_RESPONSE == hdrFields.msg_type)
     {
         auto response = reinterpret_cast<const pldm_msg*>(hdr);
-        size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr) -
-                             sizeof(eid) - sizeof(type);
+        size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr);
         handler.handleResponse(eid, hdrFields.instance, hdrFields.pldm_type,
                                hdrFields.command, response, responseLen);
     }
@@ -173,7 +170,7 @@ int main(int argc, char** argv)
 
     /* Create local socket. */
     int returnCode = 0;
-    int sockfd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    int sockfd = socket(AF_MCTP, SOCK_DGRAM, 0);
     if (-1 == sockfd)
     {
         returnCode = -errno;
@@ -289,26 +286,19 @@ int main(int argc, char** argv)
 
     pldm::utils::CustomFD socketFd(sockfd);
 
-    struct sockaddr_un addr
-    {};
-    addr.sun_family = AF_UNIX;
-    const char path[] = "\0mctp-mux";
-    memcpy(addr.sun_path, path, sizeof(path) - 1);
-    int result = connect(socketFd(), reinterpret_cast<struct sockaddr*>(&addr),
-                         sizeof(path) + sizeof(addr.sun_family) - 1);
-    if (-1 == result)
-    {
-        returnCode = -errno;
-        error("Failed to connect to the socket, RC= {RC}", "RC", returnCode);
-        exit(EXIT_FAILURE);
-    }
+    struct sockaddr_mctp addr = {0, 0, 0, 0, 0, 0, 0};
+    addr.smctp_family = AF_MCTP;
+    addr.smctp_addr.s_addr = MCTP_ADDR_ANY;
+    addr.smctp_type = MCTP_MSG_TYPE_PLDM;
+    addr.smctp_tag = MCTP_TAG_OWNER;
+    addr.smctp_network = MCTP_NET_ANY;
 
-    result = write(socketFd(), &MCTP_MSG_TYPE_PLDM, sizeof(MCTP_MSG_TYPE_PLDM));
+    int result = bind(socketFd(), reinterpret_cast<struct sockaddr*>(&addr),
+                      sizeof(addr));
     if (-1 == result)
     {
         returnCode = -errno;
-        error("Failed to send message type as pldm to mctp, RC= {RC}", "RC",
-              returnCode);
+        std::cerr << "Failed to bind to the socket, RC= " << returnCode << "\n";
         exit(EXIT_FAILURE);
     }
 
@@ -324,15 +314,11 @@ int main(int argc, char** argv)
             return;
         }
 
-        // Outgoing message.
-        struct iovec iov[2]{};
-
-        // This structure contains the parameter information for the response
-        // message.
-        struct msghdr msg
-        {};
-
         int returnCode = 0;
+        struct sockaddr_mctp recvaddr = {0, 0, 0, 0, 0, 0, 0};
+
+        socklen_t addrlen = sizeof(struct sockaddr_mctp);
+
         ssize_t peekedLength = recv(fd, nullptr, 0, MSG_PEEK | MSG_TRUNC);
         if (0 == peekedLength)
         {
@@ -351,70 +337,62 @@ int main(int argc, char** argv)
         else
         {
             std::vector<uint8_t> requestMsg(peekedLength);
-            auto recvDataLength = recv(
-                fd, static_cast<void*>(requestMsg.data()), peekedLength, 0);
+            auto recvDataLength =
+                recvfrom(fd, requestMsg.data(), requestMsg.size(), MSG_TRUNC,
+                         reinterpret_cast<struct sockaddr*>(&recvaddr),
+                         static_cast<socklen_t*>(&addrlen));
             if (recvDataLength == peekedLength)
             {
+                uint8_t eid = recvaddr.smctp_addr.s_addr;
                 FlightRecorder::GetInstance().saveRecord(requestMsg, false);
                 if (verbose)
                 {
                     printBuffer(Rx, requestMsg);
                 }
 
-                if (MCTP_MSG_TYPE_PLDM != requestMsg[1])
+                // process message and send response
+                auto response = processRxMsg(eid, requestMsg, invoker,
+                                             reqHandler, fwManager.get());
+                if (response.has_value())
                 {
-                    // Skip this message and continue.
-                }
-                else
-                {
-                    // process message and send response
-                    auto response = processRxMsg(requestMsg, invoker,
-                                                 reqHandler, fwManager.get());
-                    if (response.has_value())
+                    FlightRecorder::GetInstance().saveRecord(*response, true);
+                    if (verbose)
                     {
-                        FlightRecorder::GetInstance().saveRecord(*response,
-                                                                 true);
-                        if (verbose)
-                        {
-                            printBuffer(Tx, *response);
-                        }
+                        printBuffer(Tx, *response);
+                    }
 
-                        iov[0].iov_base = &requestMsg[0];
-                        iov[0].iov_len = sizeof(requestMsg[0]) +
-                                         sizeof(requestMsg[1]);
-                        iov[1].iov_base = (*response).data();
-                        iov[1].iov_len = (*response).size();
-
-                        msg.msg_iov = iov;
-                        msg.msg_iovlen = sizeof(iov) / sizeof(iov[0]);
-                        if (currentSendbuffSize >= 0 &&
-                            (size_t)currentSendbuffSize < (*response).size())
+                    if (currentSendbuffSize >= 0 &&
+                        (size_t)currentSendbuffSize < (*response).size())
+                    {
+                        int oldBuffSize = currentSendbuffSize;
+                        currentSendbuffSize = (*response).size();
+                        int res = setsockopt(fd, SOL_SOCKET, SO_SNDBUF,
+                                             &currentSendbuffSize,
+                                             sizeof(currentSendbuffSize));
+                        if (res == -1)
                         {
-                            int oldBuffSize = currentSendbuffSize;
-                            currentSendbuffSize = (*response).size();
-                            int res = setsockopt(fd, SOL_SOCKET, SO_SNDBUF,
-                                                 &currentSendbuffSize,
-                                                 sizeof(currentSendbuffSize));
-                            if (res == -1)
-                            {
-                                error(
-                                    "Responder : Failed to set the new send buffer size [bytes] : {CURR_SND_BUF_SIZE}",
-                                    "CURR_SND_BUF_SIZE", currentSendbuffSize);
-                                error(
-                                    "from current size [bytes] : {OLD_BUF_SIZE}, Error : {ERR}",
-                                    "OLD_BUF_SIZE", oldBuffSize, "ERR",
-                                    strerror(errno));
-                                return;
-                            }
+                            std::cerr
+                                << "Responder : Failed to set the new send buffer size [bytes] : "
+                                << currentSendbuffSize
+                                << " from current size [bytes] : "
+                                << oldBuffSize
+                                << ", Error : " << strerror(errno) << std::endl;
+                            return;
                         }
+                    }
 
-                        int result = sendmsg(fd, &msg, 0);
-                        if (-1 == result)
-                        {
-                            returnCode = -errno;
-                            error("sendto system call failed, RC= {RC}", "RC",
-                                  returnCode);
-                        }
+                    recvaddr.smctp_tag &= ~MCTP_TAG_OWNER;
+                    int result =
+                        sendto(fd, static_cast<void*>((*response).data()),
+                               (*response).size(), 0,
+                               reinterpret_cast<struct sockaddr*>(&recvaddr),
+                               sizeof(recvaddr));
+                    if (-1 == result)
+                    {
+                        returnCode = -errno;
+                        std::cerr
+                            << "sendto system call failed, RC= " << returnCode
+                            << "\n";
                     }
                 }
             }
