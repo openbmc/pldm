@@ -11,7 +11,6 @@
 
 // TODO(@harshtya): Write test case for the functions once docker image is
 // created with the latest code dependenncies
-// TODO(@harshtya): Remove when all the base commands are supported
 #define PLDM_NEXT_CMD_NOT_SUPPORTED 2
 
 const bool DEBUG = false;
@@ -52,6 +51,94 @@ int processGetTidRequest(int fd, uint8_t eid, int instanceId,
     return PLDM_BASE_REQUESTER_SUCCESS;
 }
 
+int processGetPldmTypesRequest(int fd, uint8_t eid, int instanceId,
+                               struct requester_base_context* ctx,
+                               std::vector<uint8_t> requestMsg)
+{
+    int rc;
+    rc = pldm_send_at_network(eid, ctx->net_id, fd, requestMsg.data(),
+                              requestMsg.size());
+    if (rc)
+    {
+        ctx->requester_status = PLDM_BASE_REQUESTER_REQUEST_FAILED;
+        return PLDM_BASE_REQUESTER_SEND_FAIL;
+    }
+    std::vector<uint8_t> response(
+        sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_RESP_BYTES, 0);
+    uint8_t* responseMsg = response.data();
+    size_t responseMsgSize = sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_RESP_BYTES;
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg);
+    rc = pldm_recv_at_network(eid, fd, instanceId, &responseMsg,
+                              &responseMsgSize, ctx->net_id);
+    if (rc)
+    {
+        ctx->requester_status = PLDM_BASE_REQUESTER_REQUEST_FAILED;
+        return PLDM_BASE_REQUESTER_RECV_FAIL;
+    }
+    std::cerr << "Pushing Response for GET_PLDM_TYPES...\n";
+    pldm_base_push_response(ctx, responsePtr, responseMsgSize);
+    return PLDM_BASE_REQUESTER_SUCCESS;
+}
+
+int processGetPldmVersionRequest(int fd, uint8_t eid, int instanceId,
+                                 struct requester_base_context* ctx,
+                                 std::vector<uint8_t> requestMsg)
+{
+    int rc;
+    rc = pldm_send_at_network(eid, ctx->net_id, fd, requestMsg.data(),
+                              requestMsg.size());
+    if (rc)
+    {
+        ctx->requester_status = PLDM_BASE_REQUESTER_REQUEST_FAILED;
+        return PLDM_BASE_REQUESTER_SEND_FAIL;
+    }
+    std::vector<uint8_t> response(
+        sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_RESP_BYTES, 0);
+    uint8_t* responseMsg = response.data();
+    size_t responseMsgSize = sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_RESP_BYTES;
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg);
+    rc = pldm_recv_at_network(eid, fd, instanceId, &responseMsg,
+                              &responseMsgSize, ctx->net_id);
+    if (rc)
+    {
+        ctx->requester_status = PLDM_BASE_REQUESTER_REQUEST_FAILED;
+        return PLDM_BASE_REQUESTER_RECV_FAIL;
+    }
+    std::cerr << "Pushing Response for GET_PLDM_VERSION...\n";
+    pldm_base_push_response(ctx, responsePtr, responseMsgSize);
+    return PLDM_BASE_REQUESTER_SUCCESS;
+}
+
+int processGetPldmCommandsRequest(int fd, uint8_t eid, int instanceId,
+                                  struct requester_base_context* ctx,
+                                  std::vector<uint8_t> requestMsg)
+{
+    int rc;
+    rc = pldm_send_at_network(eid, ctx->net_id, fd, requestMsg.data(),
+                              requestMsg.size());
+    if (rc)
+    {
+        ctx->requester_status = PLDM_BASE_REQUESTER_REQUEST_FAILED;
+        return PLDM_BASE_REQUESTER_SEND_FAIL;
+    }
+    std::vector<uint8_t> response(
+        sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_RESP_BYTES, 0);
+    uint8_t* responseMsg = response.data();
+    size_t responseMsgSize =
+        sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_RESP_BYTES;
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg);
+    rc = pldm_recv_at_network(eid, fd, instanceId, &responseMsg,
+                              &responseMsgSize, ctx->net_id);
+    if (rc)
+    {
+        ctx->requester_status = PLDM_BASE_REQUESTER_REQUEST_FAILED;
+        return PLDM_BASE_REQUESTER_RECV_FAIL;
+    }
+    std::cerr << "Pushing Response for GET_PLDM_COMMANDS...\n";
+    pldm_base_push_response(ctx, responsePtr, responseMsgSize);
+    return PLDM_BASE_REQUESTER_SUCCESS;
+}
+
 int processNextRequest(int fd, uint8_t eid, int instanceId,
                        struct requester_base_context* ctx,
                        std::vector<uint8_t> requestMsg)
@@ -61,15 +148,58 @@ int processNextRequest(int fd, uint8_t eid, int instanceId,
         case PLDM_GET_TID:
             return processGetTidRequest(fd, eid, instanceId, ctx, requestMsg);
         case PLDM_GET_PLDM_TYPES:
-            return PLDM_NEXT_CMD_NOT_SUPPORTED;
+            return processGetPldmTypesRequest(fd, eid, instanceId, ctx,
+                                              requestMsg);
         case PLDM_GET_PLDM_VERSION:
-            return PLDM_NEXT_CMD_NOT_SUPPORTED;
+            return processGetPldmVersionRequest(fd, eid, instanceId, ctx,
+                                                requestMsg);
         case PLDM_GET_PLDM_COMMANDS:
-            return PLDM_NEXT_CMD_NOT_SUPPORTED;
+            return processGetPldmCommandsRequest(fd, eid, instanceId, ctx,
+                                                 requestMsg);
         default:
             return PLDM_BASE_REQUESTER_NOT_PLDM_BASE_MSG;
     }
     return PLDM_BASE_REQUESTER_SUCCESS;
+}
+
+// This function is called only if DEBUG flag is on
+int printContext(struct requester_base_context* ctx)
+{
+    std::cerr << "====================================================\n";
+    std::cerr << "***PLDM Context Begins***\n";
+    std::cerr << "====================================================\n";
+    std::cerr << "PLDM TID: " << (unsigned)ctx->tid << "\n";
+    std::string types, commands_base, commands_rde, version_base, version_rde;
+    version_base += "Major: " + std::to_string(ctx->pldm_versions[0].major) +
+                    ", Minor: " + std::to_string(ctx->pldm_versions[0].minor) +
+                    ", Alpha: " + std::to_string(ctx->pldm_versions[0].alpha) +
+                    ", Update: " + std::to_string(ctx->pldm_versions[0].update);
+    version_rde += "Major: " + std::to_string(ctx->pldm_versions[6].major) +
+                   ", Minor: " + std::to_string(ctx->pldm_versions[6].minor) +
+                   ", Alpha: " + std::to_string(ctx->pldm_versions[6].alpha) +
+                   ", Update: " + std::to_string(ctx->pldm_versions[6].update);
+    for (auto bit : ctx->pldm_types)
+    {
+        types += std::to_string(bit.byte) + ' ';
+    }
+    for (int i = 0; i < 32; i++)
+    {
+        commands_base += std::to_string(ctx->pldm_commands[PLDM_BASE][i]) + ' ';
+        commands_rde += std::to_string(ctx->pldm_commands[6][i]) + ' ';
+    }
+    std::cerr << "Supported PLDM Types: " << types << "\n";
+    std::cerr << "PLDM Version For PLDM_BASE: " << version_base << "\n";
+    std::cerr << "PLDM Version For PLDM_RDE: " << version_rde << "\n";
+    std::cerr << "PLDM Commands for PLDM Base: "
+              << commands_base.substr(0, 20) + "..."
+              << "\n";
+    std::cerr << "PLDM Commands for PLDM RDE: "
+              << commands_rde.substr(0, 20) + "..."
+              << "\n";
+    std::cerr << "====================================================\n";
+    std::cerr << "***PLDM Context Ends***\n";
+    std::cerr << "====================================================\n";
+    return 0;
 }
 
 int performBaseDiscovery(std::string rdeDevice, int fd, int netId, int eid,
@@ -124,13 +254,6 @@ int performBaseDiscovery(std::string rdeDevice, int fd, int netId, int eid,
         rc = processNextRequest(fd, eid, instanceId, ctx, requestMsg);
         if (rc)
         {
-            // TODO(@harshtya): Remove when all PLDM Base commands supported
-            if (rc == PLDM_NEXT_CMD_NOT_SUPPORTED)
-            {
-                std::cerr << "Supported PLDM Base discovery commands completed!"
-                          << "Gracefully exiting..\n";
-                break;
-            }
             std::cerr << "Failure in processing request with error code:"
                       << std::to_string(rc) << "\n";
             break;
@@ -143,5 +266,13 @@ int performBaseDiscovery(std::string rdeDevice, int fd, int netId, int eid,
         }
         processCounter++;
     }
+
+    if (DEBUG)
+    {
+        printContext(ctx);
+    }
+    std::cerr << "PLDM Base Discovery and context completed for " << rdeDevice
+              << "\n";
+
     return rc;
 }
