@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df8161f0_571e5336",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2023-07-05T04:09:28Z",
+      "side": 1,
+      "message": "Even though this doesn\u0027t handle the error case safely without exiting the service, it looks better than having assert().",
+      "revId": "784ff5663bd267d89af3b26d3dc8339a73d54886",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
