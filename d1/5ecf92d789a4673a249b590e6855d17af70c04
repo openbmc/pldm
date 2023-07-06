@@ -1,0 +1,7 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Submitted-by: Andrew Jeffery <andrew@aj.id.au>
+Submitted-at: Thu, 06 Jul 2023 11:13:12 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/64445
+Project: openbmc/pldm
+Branch: refs/heads/master
