@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7755d711_abcf3754",
+        "filename": "rded/helper/common.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-07-06T16:08:55Z",
+      "side": 1,
+      "message": "minor nit: add new lines at the end of each files",
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
