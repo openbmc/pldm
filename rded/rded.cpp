@@ -1,6 +1,7 @@
 #include "common/utils.hpp"
 #include "helper/common.hpp"
 #include "helper/discovery/base_discovery.hpp"
+#include "helper/discovery/rde_discovery.hpp"
 
 #include <locale.h>
 #include <signal.h>
@@ -57,8 +58,25 @@ int initiateDiscovery(int fd, std::string udevId, int netId,
         return rc;
     }
 
-    // TODO(@harshtya): Add RDE Negotiate Params discovery
-    // TODO(@harshtya): Add get dictionaries for resource ids
+    std::cerr << "Initializing RDE Discovery...\n";
+    rc = performRdeDiscovery(udevId, fd, netId, destEid, instanceId);
+
+    if (rc)
+    {
+        std::cerr << "Failure in Base Discovery with error code: " << rc
+                  << "\n";
+        return rc;
+    }
+
+    rc = performDictionaryDiscoveryForDevice(udevId, fd, destEid,
+                                                 instanceId);
+
+    if (rc)
+    {
+        std::cerr << "Failure in getting dictionaries with error code: " << rc
+                  << "\n";
+        return rc;
+    }
     return 0;
 }
 
