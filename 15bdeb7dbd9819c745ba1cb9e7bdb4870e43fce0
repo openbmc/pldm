@@ -16,6 +16,98 @@
       "message": "minor nit: add new lines at the end of each files",
       "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85008574_eaa4fc5d",
+        "filename": "rded/helper/discovery/base_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-07-06T16:18:33Z",
+      "side": 1,
+      "message": "minor nit: all the base commands are supported",
+      "range": {
+        "startLine": 12,
+        "startChar": 32,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e50d40cc_c94689ab",
+        "filename": "rded/helper/discovery/base_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-07-06T16:18:33Z",
+      "side": 1,
+      "message": "Should we be adding unit test cases for thes?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 11
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de29079f_45001772",
+        "filename": "rded/helper/discovery/base_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-07-06T16:18:33Z",
+      "side": 1,
+      "message": "commented out lines should be avoided (here and below)",
+      "range": {
+        "startLine": 29,
+        "startChar": 37,
+        "endLine": 30,
+        "endChar": 39
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bb1644b_79933c11",
+        "filename": "rded/rded.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-07-06T16:18:33Z",
+      "side": 1,
+      "message": "minor nit: should this go with the global definition below",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 34
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
