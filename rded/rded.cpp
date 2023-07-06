@@ -2,6 +2,14 @@
 #include "helper/common.hpp"
 #include "helper/discovery/base_discovery.hpp"
 #include "helper/discovery/rde_discovery.hpp"
+#include "helper/rde_operation/rde_operation.hpp"
+#include "helper/resource_id_mapper.hpp"
+
+//libbej
+#include "libbej/bej_common.h"
+#include "libbej/bej_encoder_core.h"
+#include "libbej/bej_encoder_json.hpp"
+#include <libbej/bej_decoder_json.hpp>
 
 #include <locale.h>
 #include <signal.h>
@@ -39,9 +47,12 @@ constexpr uint8_t INSTANCE_ID = 1;
 
 int fd; // MCTP Socket for RDE communication
 
+boost::asio::io_context io;
 std::map<std::string, int> deviceNetIdMap;
 std::map<std::string, std::shared_ptr<sdbusplus::asio::dbus_interface>>
     dbusIntfMap;
+std::map<int, int> retryCounterMap;
+bool ready = true;
 
 int initiateDiscovery(int fd, std::string udevId, int netId,
                        uint8_t destEid, uint8_t instanceId)
@@ -79,6 +90,260 @@ int initiateDiscovery(int fd, std::string udevId, int netId,
     }
     return 0;
 }
+
+/**
+ * @brief generate operation id
+*/
+uint16_t generateOperationId()
+{
+    // TODO(@harshtya): Create an operation id generator (Following the spec)
+    return 32770;
+}
+/**
+ * @brief Retry counter tracker
+*/
+int getCurrentRetryCount(int requestId)
+{
+    auto it = retryCounterMap.find(requestId);
+    if (it == retryCounterMap.end())
+    {
+        retryCounterMap.insert({requestId, 1});
+        return 1;
+    }
+
+    int retryCount = it->second;
+    retryCounterMap.insert({requestId, retryCount + 1});
+    return retryCount + 1;
+}
+/**
+ * @brief Removes the query parameters as we do not support expand yet
+*/
+int removeQueryParams(std::string* uri, std::string_view delimeter)
+{
+    std::string::size_type start = (*uri).find(delimeter);
+    int end = (*uri).length();
+    std::cout << end << "\n";
+    if (start == std::string::npos)
+    {
+        std::cerr << "No query parameters found\n";
+        return 1;
+    }
+    (*uri).erase(start, end - start + 1);
+    return 0;
+}
+/**
+ * @brief Checks whether the POST request is an UPDATE request or ACTION
+*/
+bool isActionOperation(std::string uri, std::string* resourceUri)
+{
+    std::string actionString = "/Actions";
+    size_t index;
+    if ((index = uri.find(actionString)) != std::string::npos)
+    {
+        *resourceUri = uri.substr(0, index);
+        // std::cerr << "Resource uri: " << *resource_uri << "\n";
+        return true;
+    }
+    std::cerr << "Not found\n";
+    return false;
+}
+/**
+ * Translate BEJ to string
+*/
+int translateBejToString(uint32_t resourceId, std::string deviceId,
+                            std::string* json, uint8_t** payload,
+                            uint32_t payloadLength)
+{
+    int rc;
+    uint32_t annotationDictLen;
+    uint8_t* annotationDict;
+
+    // get_dictioanry_for_rid from particular resource id
+    rc = getDictionaryForRidDev(deviceId, 0xffffffff, &annotationDict,
+                                    &annotationDictLen);
+    if (rc)
+    {
+        std::cerr << "Unable to fetch annotation dictionary\n";
+        return rc;
+    }
+    uint32_t ridSchema = resourceId >> 16 << 16;
+    uint32_t schemaDictLen;
+    uint8_t* schemaDict;
+    rc = getDictionaryForRidDev(deviceId, ridSchema, &schemaDict,
+                                    &schemaDictLen);
+    if (rc)
+    {
+        std::cerr << "Unable to fetch schema dictionary\n";
+        return rc;
+    }
+
+    std::span<uint8_t> bejson = std::span{*payload, payloadLength};
+    BejDictionaries bejDictionaries;
+    bejDictionaries.schemaDictionary = schemaDict;
+    bejDictionaries.annotationDictionary = annotationDict;
+    bejDictionaries.errorDictionary = NULL;
+
+    if (payloadLength > 0) {
+        libbej::BejDecoderJson decoder;
+        decoder.decode(bejDictionaries, bejson);
+        *json = decoder.getOutput();
+    } else {
+        *json = "{\"Status\": \"Completed\"}";
+    }
+    return 0;
+}
+/**
+ * RDE Operation DBus method handler
+*/
+std::string
+    rdeOperation(boost::asio::yield_context yield, int requestId,
+                  uint8_t operationType /* Change to std::string req_type */,
+                  std::string uri, std::string udevid,
+                  std::string reqPayloadJson)
+{
+    std::cerr << "Entering DBUS Call handler with ready: " << ready << "\n";
+    int rc;
+    // Just using one context for now
+    struct pldm_rde_requester_context baseContext;
+    rc = getRdeFreeContextForRdeDevice(udevid, &baseContext);
+    if (rc == RDE_NO_CONTEXT_FOUND)
+    {
+        std::cerr << "Unable to provide base context- Error in RDE discovery\n";
+        ready = true;
+        return "Unsuccessful RDE operation with error code: " +
+               std::to_string(rc);
+    }
+
+    // if base context is free to execute
+    if (baseContext.context_status == CONTEXT_BUSY ||
+        baseContext.context_status == CONTEXT_CONTINUE)
+    {
+        auto timer = std::make_shared<boost::asio::steady_timer>(io);
+        timer->expires_from_now(std::chrono::milliseconds(1000));
+        timer->async_wait(yield);
+        std::cerr << "Timer expired\n";
+
+        int currentRetry = getCurrentRetryCount(requestId);
+        if (currentRetry > MAX_RETRIES_FOR_REQUEST)
+        {
+            retryCounterMap.erase(requestId);
+            return "Max retries exceeded for request. Abandoning...\n";
+        }
+        rdeOperation(yield, requestId, operationType, uri, udevid,
+                      reqPayloadJson);
+    }
+
+    // get manager
+    struct pldm_rde_requester_manager* manager;
+    rc = getManagerForRdeDevice(udevid, &manager);
+    if (rc)
+    {
+        std::cerr
+            << "Failed to get manager to perform read request for request id: "
+            << std::to_string(requestId) << ", request uri: " << uri
+            << ", UDEVID: " << udevid << "\n";
+        ready = true;
+        return "Unsuccessful RDE operation with error code: " +
+               std::to_string(rc);
+    }
+    uint32_t resourceId = 0;
+
+    // strip query params - until expand is supported
+    rc = removeQueryParams(&uri, "?");
+    if (rc)
+    {
+        std::cerr << "No query params found. Using URI as is: " << uri << "\n";
+    }
+    else
+    {
+        std::cerr << "URI after removing query params: " << uri << "\n";
+    }
+    rc = getResourceIdForUri(uri, &resourceId);
+    if (rc)
+    {
+        std::cerr
+            << "Resource id not found, cant proceed with read operation\n";
+        std::cerr << "Operation type: " << std::to_string(operationType)
+                  << "\n";
+        // TODO(@harshtya) - Define operation Types to be GET or POST
+        if (int(operationType) !=
+            8) /* check the req_type (8 is a random num denoting POST op)*/
+        {
+            return "Unsuccessful RDE operation with error code: " +
+                   std::to_string(rc);
+        }
+
+        std::string resource_uri;
+        std::string resource_name;
+        std::string action;
+
+        if (isActionOperation(uri, &resource_uri))
+        {
+            rc = getResourceIdForUri(resource_uri, &resourceId);
+            if (rc)
+            {
+                std::cerr
+                    << "Unable to resolve collection for RDE Action request\n";
+                return "Unable to resolve collection for RDE Action request\n";
+            }
+            // TODO(@harshtya): Define 6 in PLDM_RDE_OPERATION_TYPES in libpldm
+            operationType = 6; // This is the operation type for ACTION request
+        }
+        else
+        {
+            // Create a resource request
+            std::cerr << "Operation create not supported\n";
+            return "Create RDE operation not yet supported\n";
+        }
+    }
+
+    uint16_t operation_id = generateOperationId();
+
+    rc = executeRdeOperation(
+        fd, DEST_EID, INSTANCE_ID, uri, udevid, operation_id, operationType,
+        requestId, manager, &baseContext, resourceId, reqPayloadJson);
+    if (rc)
+    {
+        std::cerr << "Request execution failed: ReqID: "
+                  << std::to_string(requestId) << ", URI: " << uri << ", "
+                  << "operation type: " << std::to_string(operationType);
+        // TODO: Remove request_id from response map
+        // ready = true;
+        retryCounterMap.erase(requestId);
+        cleanupRequestId(requestId);
+        return "Unsuccessful RDE operation with error code: " +
+               std::to_string(rc);
+    }
+
+    uint8_t* payload;
+    uint32_t payloadLength;
+    rc = getResponseForRequestId(requestId, &payload, &payloadLength);
+    if (rc)
+    {
+        std::cerr << "Unable to fetch response from response map with rc: "
+                  << rc;
+        // ready = true;
+        retryCounterMap.erase(requestId);
+        cleanupRequestId(requestId);
+        return "Unsuccessful RDE operation with error code: " +
+               std::to_string(rc);
+    }
+
+    std::string jsonResp;
+    rc = translateBejToString(resourceId, udevid, &jsonResp, &payload,
+                                 payloadLength);
+    if (rc)
+    {
+        std::cerr << "Unable to translate BEJ\n";
+        jsonResp = "Unsuccessful RDE operation- failed to translate bej";
+        cleanupRequestId(requestId);
+        retryCounterMap.erase(requestId);
+    }
+    cleanupRequestId(requestId);
+    retryCounterMap.erase(requestId);
+    return jsonResp;
+}
+ 
 
 int triggerRdeReactor(int fd)
 {
@@ -183,7 +448,7 @@ int triggerRdeReactor(int fd)
                     "UDEVID", udevid,
                     sdbusplus::asio::PropertyPermission::readOnly);
 
-                // TODO(@harshtya): Add method to handle RDE operation requests
+                iface->register_method("execute_rde", std::move(rdeOperation));
 
                 iface->initialize();
                 dbusIntfMap.insert({std::string(changedObject), iface});
