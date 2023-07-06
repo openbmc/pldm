@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09639c82_3c664402",
+        "filename": "rded/helper/common.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001582
+      },
+      "writtenOn": "2023-07-06T16:40:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7755d711_abcf3754",
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85008574_eaa4fc5d",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-07-06T16:18:33Z",
       "side": 1,
       "message": "minor nit: all the base commands are supported",
+      "range": {
+        "startLine": 12,
+        "startChar": 32,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd3ddd2d_d0d23dc6",
+        "filename": "rded/helper/discovery/base_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001582
+      },
+      "writtenOn": "2023-07-06T16:40:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "85008574_eaa4fc5d",
       "range": {
         "startLine": 12,
         "startChar": 32,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c166f06_3badf0c6",
+        "filename": "rded/helper/discovery/base_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001582
+      },
+      "writtenOn": "2023-07-06T16:40:51Z",
+      "side": 1,
+      "message": "The primary lines in these functions are `pldm_send` and `pldm_recv`, which are actually making calls to send data over the MCTP (\u0026receive a response). not sure if these qualify for Unit tests? I left them because I thought these run out of scope of unit testing and should be covered in some sort of mTest that is being written for end to end communication for RDE(via bmcweb)\n\nLet me know what you think?",
+      "parentUuid": "e50d40cc_c94689ab",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 11
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de29079f_45001772",
         "filename": "rded/helper/discovery/base_discovery.cpp",
         "patchSetId": 1
@@ -77,6 +143,30 @@
       "writtenOn": "2023-07-06T16:18:33Z",
       "side": 1,
       "message": "commented out lines should be avoided (here and below)",
+      "range": {
+        "startLine": 29,
+        "startChar": 37,
+        "endLine": 30,
+        "endChar": 39
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a58d82a_94fe9ac9",
+        "filename": "rded/helper/discovery/base_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001582
+      },
+      "writtenOn": "2023-07-06T16:40:51Z",
+      "side": 1,
+      "message": "Oh this is fixed, forgot to refresh the changes in upstream",
+      "parentUuid": "de29079f_45001772",
       "range": {
         "startLine": 29,
         "startChar": 37,
@@ -100,6 +190,30 @@
       "writtenOn": "2023-07-06T16:18:33Z",
       "side": 1,
       "message": "minor nit: should this go with the global definition below",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 34
+      },
+      "revId": "15bdeb7dbd9819c745ba1cb9e7bdb4870e43fce0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f6a946_75a613e8",
+        "filename": "rded/rded.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001582
+      },
+      "writtenOn": "2023-07-06T16:40:51Z",
+      "side": 1,
+      "message": "I did not understand. Do you mean using the \"using\" keyword to define these?",
+      "parentUuid": "8bb1644b_79933c11",
       "range": {
         "startLine": 29,
         "startChar": 0,
