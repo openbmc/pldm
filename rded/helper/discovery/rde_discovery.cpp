@@ -630,6 +630,46 @@ int performDictionaryDiscoveryForDevice(std::string rdeDeviceId, int fd,
     return 0;
 }
 
+int getRdeFreeContextForRdeDevice(
+    std::string rdeDevice, struct pldm_rde_requester_context* baseContext)
+{
+    auto it = managerCtxCounter.find(rdeDevice);
+    if (it != managerCtxCounter.end())
+    {
+        *baseContext = rdeContexts[it->second];
+        if (baseContext->context_status != CONTEXT_FREE)
+        {
+            return RDE_CONTEXT_NOT_FREE;
+        }
+        return RDE_CONTEXT_FREE;
+    }
+    return RDE_NO_CONTEXT_FOUND;
+}
+
+int getDictionaryForRidDev(std::string rdeDeviceId, uint32_t resourceId,
+                               uint8_t** dictElem, uint32_t* dictLength) {
+    std::map<uint32_t, std::vector<uint8_t>*>* dictionaryRidMap;
+    int rc = getDictionaryMap(rdeDeviceId, &dictionaryRidMap);
+    if (rc)
+    {
+        std::cerr << "Unable to fetch dictionary from map while storing\n";
+        return -1;
+    }
+
+    auto it = (*dictionaryRidMap).find(resourceId);
+    std::vector<uint8_t>* dictionary;
+    if (it != (*dictionaryRidMap).end())
+    {
+        // std::cerr << "Got dictionary \n";
+        dictionary = it->second;
+        // std::cerr << "Dictionary Length: " << (*dictionary).size() << "\n";
+        *dictElem = &(*dictionary).front();
+        *dictLength = (*dictionary).size();
+        return PLDM_RDE_REQUESTER_SUCCESS;
+    }
+    return PLDM_RDE_NO_PDR_RESOURCES_FOUND;
+}
+
 int printRDENegotiateContext(struct pldm_rde_requester_manager* mgr)
 {
     std::cerr << "====================================================\n";
