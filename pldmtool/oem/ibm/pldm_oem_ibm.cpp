@@ -37,7 +37,7 @@ class GetAlertStatus : public CommandInterface
     GetAlertStatus(const GetAlertStatus&) = delete;
     GetAlertStatus(GetAlertStatus&&) = default;
     GetAlertStatus& operator=(const GetAlertStatus&) = delete;
-    GetAlertStatus& operator=(GetAlertStatus&&) = default;
+    GetAlertStatus& operator=(GetAlertStatus&&) = delete;
 
     explicit GetAlertStatus(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
@@ -99,7 +99,7 @@ class GetFileTable : public CommandInterface
     GetFileTable(const GetFileTable&) = delete;
     GetFileTable(GetFileTable&&) = default;
     GetFileTable& operator=(const GetFileTable&) = delete;
-    GetFileTable& operator=(GetFileTable&&) = default;
+    GetFileTable& operator=(GetFileTable&&) = delete;
 
     using CommandInterface::CommandInterface;
 

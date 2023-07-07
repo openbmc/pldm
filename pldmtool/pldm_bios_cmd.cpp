@@ -41,7 +41,7 @@ class GetDateTime : public CommandInterface
     GetDateTime(const GetDateTime&) = delete;
     GetDateTime(GetDateTime&&) = default;
     GetDateTime& operator=(const GetDateTime&) = delete;
-    GetDateTime& operator=(GetDateTime&&) = default;
+    GetDateTime& operator=(GetDateTime&&) = delete;
 
     using CommandInterface::CommandInterface;
 
@@ -97,7 +97,7 @@ class SetDateTime : public CommandInterface
     SetDateTime(const SetDateTime&) = delete;
     SetDateTime(SetDateTime&&) = default;
     SetDateTime& operator=(const SetDateTime&) = delete;
-    SetDateTime& operator=(SetDateTime&&) = default;
+    SetDateTime& operator=(SetDateTime&&) = delete;
 
     explicit SetDateTime(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
@@ -456,9 +456,9 @@ class GetBIOSTable : public GetBIOSTableHandler
     ~GetBIOSTable() = default;
     GetBIOSTable() = delete;
     GetBIOSTable(const GetBIOSTable&) = delete;
-    GetBIOSTable(GetBIOSTable&&) = default;
+    GetBIOSTable(GetBIOSTable&&) = delete;
     GetBIOSTable& operator=(const GetBIOSTable&) = delete;
-    GetBIOSTable& operator=(GetBIOSTable&&) = default;
+    GetBIOSTable& operator=(GetBIOSTable&&) = delete;
 
     using Table = std::vector<uint8_t>;
 
@@ -774,11 +774,11 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
     ~SetBIOSAttributeCurrentValue() = default;
     SetBIOSAttributeCurrentValue() = delete;
     SetBIOSAttributeCurrentValue(const SetBIOSAttributeCurrentValue&) = delete;
-    SetBIOSAttributeCurrentValue(SetBIOSAttributeCurrentValue&&) = default;
+    SetBIOSAttributeCurrentValue(SetBIOSAttributeCurrentValue&&) = delete;
     SetBIOSAttributeCurrentValue&
         operator=(const SetBIOSAttributeCurrentValue&) = delete;
     SetBIOSAttributeCurrentValue&
-        operator=(SetBIOSAttributeCurrentValue&&) = default;
+        operator=(SetBIOSAttributeCurrentValue&&) = delete;
 
     explicit SetBIOSAttributeCurrentValue(const char* type, const char* name,
                                           CLI::App* app) :
