@@ -1,12 +1,14 @@
 pldmd_inc = include_directories('../')
 test_src = declare_dependency(
           sources: [
-            '../pldmd/instance_id.cpp'],
+            '../pldmd/instance_id.cpp',
+            '../rde_fan_sensor/RdeUtils.cpp'],
           include_directories:pldmd_inc)
 
 tests = [
   'pldmd_instanceid_test',
   'pldmd_registration_test',
+  'rde_utils_test'
 ]
 
 foreach t : tests
@@ -17,7 +19,10 @@ foreach t : tests
                      dependencies: [
                          libpldm_dep,
                          nlohmann_json,
+                         sdbusplus,
+                         boost,
                          gtest,
+                         gmock,
                          test_src]),
        workdir: meson.current_source_dir())
 endforeach
