@@ -196,6 +196,7 @@ endif
 
 subdir('pldmtool')
 subdir('rded')
+subdir('rde_fan_sensor')
 subdir('configurations')
 
 if get_option('utilities').enabled()

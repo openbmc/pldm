@@ -4,6 +4,7 @@ test_src = declare_dependency(
 
 tests = [
   'pldmd_registration_test',
+  'rde_utils_test'
 ]
 
 foreach t : tests
@@ -13,8 +14,12 @@ foreach t : tests
                      build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
                      dependencies: [
                          libpldm_dep,
+
                          nlohmann_json,
+                         sdbusplus,
+                         boost,
                          gtest,
+                         gmock,
                          test_src]),
        workdir: meson.current_source_dir())
 endforeach
