@@ -1,0 +1,16 @@
+[Unit]
+Description=Phosphor RDE Fan Discovery Daemon
+Before=phosphor-pid-control.service
+After=rded.service
+Requires=rded.service
+After=xyz.openbmc_project.EntityManager.service
+Requires=xyz.openbmc_project.EntityManager.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=/usr/bin/rde_fan_sensor
+
+[Install]
+WantedBy=multi-user.target
