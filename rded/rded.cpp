@@ -343,7 +343,43 @@ std::string
     retryCounterMap.erase(requestId);
     return jsonResp;
 }
- 
+
+void pldmSetup(int& fd, sdbusplus::asio::object_server& objectServer,
+               std::string changedObject, std::string& port,
+               std::string& udevid, std::string& vendorId,
+               std::string& prefixPath)
+{
+    int netId = setupOnePort(port, udevid); // MCTP Setup
+    deviceNetIdMap.insert({udevid, netId});
+
+    int rc = initiateDiscovery(fd, udevid, netId, DEST_EID, INSTANCE_ID);
+    if (rc)
+    {
+        std::cerr << "PLDM/RDE Discovery failed for device: " << port
+                  << ", udev: " << udevid << "\n";
+        return;
+    }
+
+    std::string objectPath = prefixPath + udevid;
+    if (DEBUG_ENABLED)
+    {
+        std::cerr << "New object path created: " << objectPath << "\n";
+    }
+
+    std::shared_ptr<sdbusplus::asio::dbus_interface> iface =
+        objectServer.add_interface(objectPath, "xyz.openbmc_project.RdeDevice");
+    iface->register_property("VID", vendorId,
+                             sdbusplus::asio::PropertyPermission::readOnly);
+    iface->register_property("USBPORT", port,
+                             sdbusplus::asio::PropertyPermission::readOnly);
+    iface->register_property("UDEVID", udevid,
+                             sdbusplus::asio::PropertyPermission::readOnly);
+
+    iface->register_method("execute_rde", std::move(rdeOperation));
+
+    iface->initialize();
+    dbusIntfMap.insert({std::string(changedObject), iface});
+}
 
 int triggerRdeReactor(int fd)
 {
@@ -363,8 +399,89 @@ int triggerRdeReactor(int fd)
 
     std::cerr << "Beginning RDE reactor...\n";
 
-    // TODO(@kkachana,@harshtya): Add the enumeration code for already existing
-    // RDE devices in the Entity Manager service tree
+    // Find the all the object paths that implement interface
+    // xyz.openbmc_project.Configuration.RdeSatelliteController
+    // Then, create rde_device dbus object
+    using propertyMap =
+        std::vector<std::pair<std::string, std::vector<std::string>>>;
+    constexpr std::array<std::string_view, 1> interfaces = {
+        "xyz.openbmc_project.Configuration.RdeSatelliteController"};
+    using DBusProperties = std::vector<std::pair<std::string, DbusVariant>>;
+
+    systemBus->async_method_call_timed(
+        [&fd, &systemBus, &objectServer, &prefixPath](
+            const boost::system::error_code& ec,
+            const std::vector<std::pair<std::string, propertyMap>>& subtree) {
+            if (ec)
+            {
+                std::cerr << "D-Bus error: " << ec << ", " << ec.message()
+                          << " \n";
+                return;
+            }
+            if (subtree.empty())
+            {
+                std::cerr << "No instances found \n";
+                return;
+            }
+            for (const auto& [objPath, services] : subtree)
+            {
+                for (const auto& service : services)
+                {
+                    systemBus->async_method_call_timed(
+                        [&fd, &objectServer, &prefixPath,
+                         objPath](const boost::system::error_code& ec2,
+                                  const DBusProperties& properties) {
+                            if (ec2)
+                            {
+                                std::cerr << "DBUS response error on GetAll: "
+                                          << ec2.message() << " \n";
+                                return;
+                            }
+                            std::string vendorId;
+                            std::string udevid;
+                            std::string port;
+                            const bool success =
+                                sdbusplus::unpackPropertiesNoThrow(
+                                    [](const sdbusplus::UnpackErrorReason
+                                           reason,
+                                       const std::string& property) {
+                                        std::cerr
+                                            << " Error unpacking the property "
+                                            << property << " reason "
+                                            << static_cast<int>(reason)
+                                            << " \n";
+                                    },
+                                    properties, "VID", vendorId, "USBPORT",
+                                    port, "UDEVID", udevid);
+                            if (success)
+                            {
+                                if (vendorId.empty() || port.empty() ||
+                                    udevid.empty())
+                                {
+                                    std::cerr
+                                        << "Matcher does not have required properties\n";
+                                    return;
+                                }
+                                // Do PLDM Setup
+                                pldmSetup(fd, objectServer,
+                                          std::string(objPath), port, udevid,
+                                          vendorId, prefixPath);
+                            }
+                            else
+                            {
+                                std::cerr << "error in parsing properties \n";
+                            }
+                        },
+                        service.first, objPath,
+                        "org.freedesktop.DBus.Properties", "GetAll", 90000000,
+                        "xyz.openbmc_project.Configuration.RdeSatelliteController");
+                }
+            }
+        },
+        "xyz.openbmc_project.ObjectMapper",
+        "/xyz/openbmc_project/object_mapper",
+        "xyz.openbmc_project.ObjectMapper", "GetSubTree", 90000000,
+        "/xyz/openbmc_project/inventory", 0, interfaces);
 
     auto matchAdd = std::make_unique<sdbusplus::bus::match_t>(
         *systemBus, sdbusplus::bus::match::rules::interfacesAdded(),
@@ -415,43 +532,8 @@ int triggerRdeReactor(int fd)
                     return;
                 }
 
-                int netId = setupOnePort(port, udevid); // MCTP Setup
-                deviceNetIdMap.insert({udevid, netId});
-
-                int rc = initiateDiscovery(fd, udevid, netId, DEST_EID,
-                                            INSTANCE_ID);
-                if (rc)
-                {
-                    std::cerr
-                        << "PLDM/RDE Discovery failed for device: " << port
-                        << ", udev: " << udevid << "\n";
-                    return;
-                }
-
-                std::string objectPath = prefixPath + udevid;
-                if (DEBUG_ENABLED)
-                {
-                    std::cerr << "New object path created: " << objectPath
-                              << "\n";
-                }
-
-                std::shared_ptr<sdbusplus::asio::dbus_interface> iface =
-                    objectServer.add_interface(objectPath,
-                                               "xyz.openbmc_project.RdeDevice");
-                iface->register_property(
-                    "VID", vendorId,
-                    sdbusplus::asio::PropertyPermission::readOnly);
-                iface->register_property(
-                    "USBPORT", port,
-                    sdbusplus::asio::PropertyPermission::readOnly);
-                iface->register_property(
-                    "UDEVID", udevid,
-                    sdbusplus::asio::PropertyPermission::readOnly);
-
-                iface->register_method("execute_rde", std::move(rdeOperation));
-
-                iface->initialize();
-                dbusIntfMap.insert({std::string(changedObject), iface});
+                pldmSetup(fd, objectServer, std::string(changedObject), port,
+                          udevid, vendorId, prefixPath);
             }
         });
 
