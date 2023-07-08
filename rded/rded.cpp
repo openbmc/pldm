@@ -366,7 +366,7 @@ int triggerRdeReactor(int fd)
     // TODO(@kkachana,@harshtya): Add the enumeration code for already existing
     // RDE devices in the Entity Manager service tree
 
-    std::make_unique<sdbusplus::bus::match_t>(
+    auto matchAdd = std::make_unique<sdbusplus::bus::match_t>(
         *systemBus, sdbusplus::bus::match::rules::interfacesAdded(),
         [&objectServer, &prefixPath, &systemBus,
          &fd](sdbusplus::message_t& reply) {
@@ -456,7 +456,7 @@ int triggerRdeReactor(int fd)
         });
 
     // Remove object path if the device is removed
-    std::make_unique<sdbusplus::bus::match_t>(
+    auto matchRemove = std::make_unique<sdbusplus::bus::match_t>(
         *systemBus, sdbusplus::bus::match::rules::interfacesRemoved(),
         [&objectServer](sdbusplus::message_t& reply) {
             sdbusplus::message::object_path changedObject;
