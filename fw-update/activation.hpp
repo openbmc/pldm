@@ -87,12 +87,11 @@ class Activation : public ActivationIntf
      *  @param[in] updateManager - Reference to FW update manager
      */
     Activation(sdbusplus::bus_t& bus, std::string objPath,
-               Activations activationStatus, UpdateManager* updateManager) :
+               UpdateManager* updateManager) :
         ActivationIntf(bus, objPath.c_str(),
                        ActivationIntf::action::defer_emit),
         bus(bus), objPath(objPath), updateManager(updateManager)
     {
-        activation(activationStatus);
         deleteImpl = std::make_unique<Delete>(bus, objPath, updateManager);
         emit_object_added();
     }
