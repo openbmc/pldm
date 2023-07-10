@@ -80,12 +80,14 @@ TEST(OemSetStateEffecterStatesHandler, testGoodRequest)
     std::vector<get_sensor_state_field> stateField1;
     rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField1);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(stateField1.size(), 1);
     ASSERT_EQ(stateField1[0].event_state, tSideNum);
 
     entityInstance_ = 2;
     rc = oemPlatformHandler->getOemStateSensorReadingsHandler(
         entityID_, entityInstance_, stateSetId_, compSensorCnt_, stateField1);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(stateField1[0].event_state, PLDM_SENSOR_UNKNOWN);
 
     entityID_ = 40;

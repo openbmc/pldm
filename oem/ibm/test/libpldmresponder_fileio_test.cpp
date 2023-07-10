@@ -980,6 +980,7 @@ TEST(readFileByType, testReadFile)
     auto fd = mkstemp(tmplt);
     std::vector<uint8_t> in = {100, 10, 56, 78, 34, 56, 79, 235, 111};
     rc = write(fd, in.data(), in.size());
+    ASSERT_NE(rc, PLDM_ERROR);
     close(fd);
     length = in.size() + 1000;
     rc = handler.readFile(tmplt, 0, length, response);
