@@ -115,8 +115,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     {
         error("Invalid PLDM package header");
         activation = new Activation(pldm::utils::DBusHandler::getBus(), objPath,
-                                    software::Activation::Activations::Invalid,
                                     this);
+        activation->activation(software::Activation::Activations::Invalid);
         package.close();
         parser.reset();
         return -1;
@@ -130,8 +130,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         error(
             "No matching devices found with the PLDM firmware update package");
         activation = new Activation(pldm::utils::DBusHandler::getBus(), objPath,
-                                    software::Activation::Activations::Invalid,
                                     this);
+        activation->activation(software::Activation::Activations::Invalid);
         package.close();
         parser.reset();
         return 0;
@@ -154,9 +154,10 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 
     fwPackageFilePath = packageFilePath;
     activation = new Activation(pldm::utils::DBusHandler::getBus(), objPath,
-                                software::Activation::Activations::Ready, this);
+                                this);
     activationProgress =
         new ActivationProgress(pldm::utils::DBusHandler::getBus(), objPath);
+    activation->activation(software::Activation::Activations::Ready);
 
     return 0;
 }
