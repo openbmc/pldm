@@ -331,6 +331,11 @@ int main(int argc, char** argv)
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(bus, fwManager.get());
 
+    if (!mctpDiscoveryHandler)
+    {
+        throw std::runtime_error(" failed to discover MCTP endpoint");
+    }
+
     auto callback = [verbose, &invoker, &reqHandler, currentSendbuffSize,
                      &fwManager](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
