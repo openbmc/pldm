@@ -109,7 +109,7 @@ class GetFileTable : public CommandInterface
     }
 
     void parseResponseMsg(pldm_msg*, size_t) override {}
-    void exec()
+    void exec() override
     {
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
                                         PLDM_GET_FILE_TABLE_REQ_BYTES);
