@@ -207,8 +207,8 @@ class LidHandler : public FileHandler
             if (offset > fileSize)
             {
                 error(
-                    "Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE}",
-                    "OFFSET", offset, "FILE_SIZE", fileSize);
+                    "LidHandler::write:Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE} FILE_HANDLE{FILE_HANDLE}",
+                    "OFFSET", offset, "FILE_SIZE", fileSize, "FILE_HANDLE", fileHandle);
                 return PLDM_DATA_OUT_OF_RANGE;
             }
         }
