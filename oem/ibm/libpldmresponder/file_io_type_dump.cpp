@@ -189,7 +189,6 @@ int DumpHandler::writeFromMemory(uint32_t, uint32_t length, uint64_t address,
         int sock = setupUnixSocket(socketInterface);
         if (sock < 0)
         {
-            sock = -errno;
             close(DumpHandler::fd);
             error("DumpHandler::writeFromMemory: setupUnixSocket() failed");
             std::remove(socketInterface.c_str());
@@ -207,7 +206,6 @@ int DumpHandler::write(const char* buffer, uint32_t, uint32_t& length,
     int rc = writeToUnixSocket(DumpHandler::fd, buffer, length);
     if (rc < 0)
     {
-        rc = -errno;
         close(DumpHandler::fd);
         auto socketInterface = getOffloadUri(fileHandle);
         std::remove(socketInterface.c_str());
