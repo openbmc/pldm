@@ -89,8 +89,9 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
         if (offset >= fileSize)
         {
             error(
-                "Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE}",
-                "OFFSET", offset, "FILE_SIZE", fileSize);
+                "FileHandler::transferFileData:Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE}, FILE_HANDLE={FILE_HANDLE}",
+                "OFFSET", offset, "FILE_SIZE", fileSize, "FILE_HANDLE",
+                fileHandle);
             return PLDM_DATA_OUT_OF_RANGE;
         }
         if (offset + length > fileSize)
@@ -189,8 +190,9 @@ int FileHandler::readFile(const std::string& filePath, uint32_t offset,
     size_t fileSize = fs::file_size(filePath);
     if (offset >= fileSize)
     {
-        error("Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE}",
-              "OFFSET", offset, "FILE_SIZE", fileSize);
+        error(
+            "FileHandler::readFile:Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE} File_Handle={File_Handle}",
+            "OFFSET", offset, "FILE_SIZE", fileSize, "File_Handle", fileHandle);
         return PLDM_DATA_OUT_OF_RANGE;
     }
 
