@@ -2,6 +2,10 @@
 
 #include "common/instance_id.hpp"
 
+#include <string.h>
+#include <unistd.h>
+>>>>>>> e19dba6... clang-error: fix clang-diagnostic-error errors
+
 static constexpr uintmax_t pldmMaxInstanceIds = 32;
 
 class TestInstanceIdDb : public pldm::InstanceIdDb

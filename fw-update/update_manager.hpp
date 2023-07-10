@@ -103,8 +103,9 @@ class UpdateManager
     const ComponentInfoMap& componentInfoMap;
     Watch watch;
 
-    std::unique_ptr<Activation> activation;
-    std::unique_ptr<ActivationProgress> activationProgress;
+    Activation* activation;
+    ActivationProgress* activationProgress;
+
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
