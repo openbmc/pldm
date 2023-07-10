@@ -1,5 +1,0 @@
-Checks: ' bugprone-argument-comment '
-
-WarningsAsErrors: '*'
-HeaderFilterRegex: '.*'
-HeaderFilterRegex: '(?!^subprojects).*'
