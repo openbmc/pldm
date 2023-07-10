@@ -114,9 +114,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     catch (const std::exception& e)
     {
         error("Invalid PLDM package header");
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
+        activation = new Activation(pldm::utils::DBusHandler::getBus(), objPath,
+                                    software::Activation::Activations::Invalid,
+                                    this);
         package.close();
         parser.reset();
         return -1;
@@ -129,9 +129,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     {
         error(
             "No matching devices found with the PLDM firmware update package");
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
+        activation = new Activation(pldm::utils::DBusHandler::getBus(), objPath,
+                                    software::Activation::Activations::Invalid,
+                                    this);
         package.close();
         parser.reset();
         return 0;
@@ -153,11 +153,10 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
 
     fwPackageFilePath = packageFilePath;
-    activation = std::make_unique<Activation>(
-        pldm::utils::DBusHandler::getBus(), objPath,
-        software::Activation::Activations::Ready, this);
-    activationProgress = std::make_unique<ActivationProgress>(
-        pldm::utils::DBusHandler::getBus(), objPath);
+    activation = new Activation(pldm::utils::DBusHandler::getBus(), objPath,
+                                software::Activation::Activations::Ready, this);
+    activationProgress =
+        new ActivationProgress(pldm::utils::DBusHandler::getBus(), objPath);
 
     return 0;
 }
@@ -268,8 +267,11 @@ void UpdateManager::activatePackage()
 
 void UpdateManager::clearActivationInfo()
 {
-    activation.reset();
-    activationProgress.reset();
+    delete activation;
+    delete activationProgress;
+
+    // activation.reset();
+    // activationProgress.reset();
     objPath.clear();
 
     deviceUpdaterMap.clear();

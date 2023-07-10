@@ -62,6 +62,8 @@ class Delete : public DeleteIntf
         updateManager(updateManager)
     {}
 
+    // void delete_(); override
+
     /** @brief Delete the Activation D-Bus object for the FW update package */
     void delete_() override
     {
