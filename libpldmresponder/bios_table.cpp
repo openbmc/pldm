@@ -329,8 +329,16 @@ const pldm_bios_attr_val_table_entry* constructIntegerEntry(Table& table,
 
     auto tableSize = table.size();
     table.resize(tableSize + entryLength);
-    pldm_bios_table_attr_value_entry_encode_integer(
+    int rc = pldm_bios_table_attr_value_entry_encode_integer_check(
         table.data() + tableSize, entryLength, attrHandle, attrType, value);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to encode BIOS attribute table integer entry: {LIBPLDM_ERROR}",
+            "LIBPLDM_ERROR", rc);
+        throw std::runtime_error(
+            "Failed to encode BIOS attribute table integery entry");
+    }
     return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
                                                              tableSize);
 }
