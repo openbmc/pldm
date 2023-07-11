@@ -404,9 +404,9 @@ class Handler : public CmdHandler
 
   private:
     oem_platform::Handler* oemPlatformHandler;
-    int hostSockFd;
-    uint8_t hostEid;
-    pldm::InstanceIdDb* instanceIdDb;
+    [[maybe_unused]] int hostSockFd;
+    [[maybe_unused]] uint8_t hostEid;
+    [[maybe_unused]] pldm::InstanceIdDb* instanceIdDb;
     using DBusInterfaceAdded = std::vector<std::pair<
         std::string,
         std::vector<std::pair<std::string, std::variant<std::string>>>>>;
@@ -419,7 +419,8 @@ class Handler : public CmdHandler
         vmiCertMatcher;    //!< Pointer to capture the interface added signal
                            //!< for new csr string
     /** @brief PLDM request handler */
-    pldm::requester::Handler<pldm::requester::Request>* handler;
+    [[maybe_unused]] pldm::requester::Handler<pldm::requester::Request>*
+        handler;
     std::vector<std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>>
         dbusToFileHandlers;
 };
