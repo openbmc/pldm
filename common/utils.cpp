@@ -198,14 +198,15 @@ std::optional<std::vector<set_effecter_state_field>>
 {
     std::vector<set_effecter_state_field> stateField;
 
-    if (effecterData.size() != effecterCount * 2)
+    if (effecterData.size() != static_cast<unsigned long>(effecterCount * 2))
     {
         return std::nullopt;
     }
 
     for (uint8_t i = 0; i < effecterCount; ++i)
     {
-        uint8_t set_request = effecterData[i * 2] == PLDM_REQUEST_SET
+        uint8_t set_request = effecterData[static_cast<long>(i) * 2] ==
+                                      PLDM_REQUEST_SET
                                   ? PLDM_REQUEST_SET
                                   : PLDM_NO_CHANGE;
         set_effecter_state_field filed{set_request, effecterData[i * 2 + 1]};
