@@ -39,13 +39,11 @@ class Handler : public oem_bios::Handler
     /** @brief system type/model */
     std::string systemType;
 
-    pldm::responder::bios::Handler* biosHandler;
-
     /** @brief D-Bus Interface added signal match for Entity Manager */
     std::unique_ptr<sdbusplus::bus::match_t> ibmCompatibleMatchConfig;
 
     /** @brief D-Bus Interface object*/
-    const pldm::utils::DBusHandler* dBusIntf;
+    [[maybe_unused]] const pldm::utils::DBusHandler* dBusIntf;
 
     /** @brief callback function invoked when interfaces get added from
      *     Entity manager

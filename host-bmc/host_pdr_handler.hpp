@@ -248,7 +248,7 @@ class HostPDRHandler
                                    const pldm_entity& entity);
 
     /** @brief fd of MCTP communications socket */
-    int mctp_fd;
+    [[maybe_unused]] int mctp_fd;
     /** @brief MCTP EID of host firmware */
     uint8_t mctp_eid;
     /** @brief reference of main event loop of pldmd, primarily used to schedule
@@ -263,7 +263,7 @@ class HostPDRHandler
     pldm_entity_association_tree* entityTree;
 
     /** @brief Pointer to BMC's entity association tree */
-    pldm_entity_association_tree* bmcEntityTree;
+    [[maybe_unused]] pldm_entity_association_tree* bmcEntityTree;
 
     /** @brief reference to Instance ID database object, used to obtain PLDM
      * instance IDs
@@ -305,12 +305,6 @@ class HostPDRHandler
      */
     bool mergedHostParents;
 
-    /** @brief whether timed out waiting for a response from Host */
-    bool timeOut;
-
-    /** @brief request message instance id */
-    uint8_t insId;
-
     /** @brief maps an object path to pldm_entity from the BMC's entity
      *         association tree
      */
@@ -324,9 +318,6 @@ class HostPDRHandler
      */
     std::vector<responder::pdr_utils::FruRecordDataFormat> fruRecordData;
 
-    /** @brief Object path and entity association and is only loaded once
-     */
-    bool objPathEntityAssociation;
 };
 
 } // namespace pldm
