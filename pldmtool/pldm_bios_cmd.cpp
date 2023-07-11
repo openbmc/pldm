@@ -408,14 +408,7 @@ class GetBIOSTableHandler : public CommandInterface
             {
                 auto cv = pldm_bios_table_attr_value_entry_integer_decode_cv(
                     tableEntry);
-                if (verbose)
-                {
-                    output["CurrentValue"] = cv;
-                }
-                else
-                {
-                    output["CurrentValue"] = cv;
-                }
+                output["CurrentValue"] = cv;
                 break;
             }
             case PLDM_BIOS_STRING:
