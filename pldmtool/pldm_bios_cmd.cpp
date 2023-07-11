@@ -902,9 +902,13 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                 entryLength =
                     pldm_bios_table_attr_value_entry_encode_integer_length();
                 attrValueEntry.resize(entryLength);
-                pldm_bios_table_attr_value_entry_encode_integer(
+                int rc = pldm_bios_table_attr_value_entry_encode_integer_check(
                     attrValueEntry.data(), entryLength, attrEntry->attr_handle,
                     attrType, value);
+                if (rc != PLDM_SUCCESS) {
+                    std::cout << "Failed to encode BIOS table attribute integer: " << rc << std::endl;
+                    return;
+                }
                 break;
             }
         }
