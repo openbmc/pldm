@@ -93,7 +93,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
 
     size_t sensorEventSize = PLDM_SENSOR_EVENT_DATA_MIN_LENGTH + 1;
     const auto& [dbusMappings, dbusValMaps] = dbusMaps.at(sensorId);
-    for (uint8_t offset = 0; offset < dbusMappings.size(); ++offset)
+    for (size_t offset = 0; offset < dbusMappings.size(); ++offset)
     {
         std::vector<uint8_t> sensorEventDataVec{};
         sensorEventDataVec.resize(sensorEventSize);
@@ -101,7 +101,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
             sensorEventDataVec.data());
         eventData->sensor_id = sensorId;
         eventData->sensor_event_class_type = PLDM_STATE_SENSOR_STATE;
-        eventData->event_class[0] = offset;
+        eventData->event_class[0] = static_cast<uint8_t>(offset);
         eventData->event_class[1] = PLDM_SENSOR_UNKNOWN;
         eventData->event_class[2] = PLDM_SENSOR_UNKNOWN;
 
