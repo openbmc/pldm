@@ -144,7 +144,7 @@ class BIOSConfig
     BaseBIOSTable baseBIOSTableMaps;
 
     /** @brief socket descriptor to communicate to host */
-    int fd;
+    [[maybe_unused]] int fd;
 
     /** @brief MCTP EID of host firmware */
     uint8_t eid;
@@ -158,7 +158,7 @@ class BIOSConfig
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
     /** @brief oem Bios Handler*/
-    pldm::responder::oem_bios::Handler* oemBiosHandler;
+    [[maybe_unused]] pldm::responder::oem_bios::Handler* oemBiosHandler;
 
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
