@@ -28,7 +28,7 @@ class MctpDiscovery
 
   private:
     /** @brief reference to the systemd bus */
-    sdbusplus::bus_t& bus;
+    [[maybe_unused]] sdbusplus::bus_t& bus;
 
     fw_update::Manager* fwManager;
 
