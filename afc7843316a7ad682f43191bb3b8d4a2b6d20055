@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "840531fd_c19aaa06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-12T05:35:36Z",
+      "side": 1,
+      "message": "The new commit chain is - https://gerrit.openbmc.org/c/openbmc/pldm/+/64789/3",
+      "revId": "afc7843316a7ad682f43191bb3b8d4a2b6d20055",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

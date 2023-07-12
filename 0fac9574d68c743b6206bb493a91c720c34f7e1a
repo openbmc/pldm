@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9c24ca31_5b073a52",
+        "filename": ".clang-tidy",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-12T05:35:36Z",
+      "side": 1,
+      "message": "Thank You, Patrick. Included in this chain-  https://gerrit.openbmc.org/c/openbmc/pldm/+/64785.",
+      "parentUuid": "0b057d86_a59baa42",
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0bbce973_7f83e862",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
@@ -66,6 +84,24 @@
       "writtenOn": "2023-06-13T21:53:57Z",
       "side": 1,
       "message": "I would suggest fixing the issues in commits separately from the add of the .clang-tidy.",
+      "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "031c18d8_1cfe5d37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-12T05:35:36Z",
+      "side": 1,
+      "message": "Sure Patrick, created seperate commits for the issues.\nCommit chain - https://gerrit.openbmc.org/c/openbmc/pldm/+/64789/3",
+      "parentUuid": "96ceb9f8_f4aba380",
       "revId": "0fac9574d68c743b6206bb493a91c720c34f7e1a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
