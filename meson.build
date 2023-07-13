@@ -85,17 +85,6 @@ else
   CLI11_dep = dependency('CLI11')
 endif
 
-if cpp.has_header_symbol('function2/function2.hpp', 'fu2::unique_function')
-  function2_dep = declare_dependency()
-else
-  subproject('function2')
-  function2_dep = declare_dependency(
-    include_directories: [
-      'subprojects/function2/include/function2'
-    ]
-  )
-endif
-
 if get_option('oe-sdk').enabled()
   # Setup OE SYSROOT
   OECORE_TARGET_SYSROOT = run_command('sh', '-c', 'echo $OECORE_TARGET_SYSROOT').stdout().strip()
@@ -157,7 +146,6 @@ libpldmutils = declare_dependency(
   link_with: libpldmutils)
 
 deps = [
-  function2_dep,
   libpldm_dep,
   libpldmutils,
   nlohmann_json,
