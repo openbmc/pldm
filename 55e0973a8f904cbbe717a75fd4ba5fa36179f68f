@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5234b841_ff369988",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-14T16:11:25Z",
+      "side": 0,
+      "message": "I think rather than removing these, its better to use them in the error trace below..so that it would help in debugging ?",
+      "range": {
+        "startLine": 192,
+        "startChar": 11,
+        "endLine": 192,
+        "endChar": 26
+      },
+      "revId": "55e0973a8f904cbbe717a75fd4ba5fa36179f68f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "924b994f_efa37178",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-14T16:11:25Z",
+      "side": 0,
+      "message": "same here too..I think this could help in debugging.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 20
+      },
+      "revId": "55e0973a8f904cbbe717a75fd4ba5fa36179f68f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a25e153a_da3530df",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-14T16:11:25Z",
+      "side": 0,
+      "message": "why is the object creation being removed here ? this makes the entire MctpDiscovery  class code dead ? is it not ?",
+      "range": {
+        "startLine": 331,
+        "startChar": 3,
+        "endLine": 332,
+        "endChar": 62
+      },
+      "revId": "55e0973a8f904cbbe717a75fd4ba5fa36179f68f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
