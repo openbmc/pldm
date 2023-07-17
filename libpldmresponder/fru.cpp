@@ -116,8 +116,14 @@ void FruImpl::buildFRUTable()
         }
     }
 
-    pldm_entity_association_pdr_add(entityTree, pdrRepo, false,
+    int rc = pldm_entity_association_pdr_add_check(entityTree, pdrRepo, false,
                                     TERMINUS_HANDLE);
+    if (rc < 0) {
+        // pldm_entity_assocation_pdr_add() assert()ed on failure
+        error("Failed to add PLDM entity association PDR: {LIBPLDM_ERROR}", "LIBPLDM_ERROR", rc);
+        throw std::runtime_error("Failed to add PLDM entity association PDR");
+    }
+
     // save a copy of bmc's entity association tree
     pldm_entity_association_tree_copy_root(entityTree, bmcEntityTree);
 
