@@ -33,8 +33,11 @@ option(
     description: 'Include systemd support'
 )
 
-# Time taken to wait for the reply for any PLDM dbus call is set to 5 seconds.
-# After 5 seconds the dbus method will exit.
+# As per PLDM spec DSP0240 version 1.1.0, in Timing Specification for PLDM messages (Table 6),
+# the instance ID for a given response will expire and become reusable if a response has not been
+# received within a maximum of 6 seconds after a request is sent. By setting the dbus timeout
+# value to 5 seconds we ensure that PLDM does not wait for a response from a dbus call even after
+# the instance ID has expired. After 5 seconds the dbus method will exit.
 option(
     'dbus-timeout-value',
     type: 'integer',
