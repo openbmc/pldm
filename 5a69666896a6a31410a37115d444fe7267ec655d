@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d10a88_b9d4c063",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-20T08:42:40Z",
+      "side": 1,
+      "message": "Please also mention the reference in the spec of where this number came from ? so that people know how that number came from ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 71,
+        "endLine": 36,
+        "endChar": 94
+      },
+      "revId": "5a69666896a6a31410a37115d444fe7267ec655d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f2193a4_84d7c126",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-20T08:42:40Z",
+      "side": 1,
+      "message": "which PLDM spec ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 9,
+        "endLine": 36,
+        "endChar": 18
+      },
+      "revId": "5a69666896a6a31410a37115d444fe7267ec655d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fbae619_53d4f61d",
+        "filename": "meson_options.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-20T08:42:40Z",
+      "side": 1,
+      "message": "to be responded back",
+      "range": {
+        "startLine": 36,
+        "startChar": 49,
+        "endLine": 36,
+        "endChar": 61
+      },
+      "revId": "5a69666896a6a31410a37115d444fe7267ec655d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
