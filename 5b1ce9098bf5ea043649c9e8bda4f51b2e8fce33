@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9117c351_8bd9121e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-21T00:31:53Z",
+      "side": 1,
+      "message": "exceeded 50 characters.\n\nPlease refer to https://cbea.ms/git-commit/ for writing a good commit message.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 67
+      },
+      "revId": "5b1ce9098bf5ea043649c9e8bda4f51b2e8fce33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f0f9f1b2_613fa106",
         "filename": "meson_options.txt",
         "patchSetId": 3
