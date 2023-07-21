@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b363594b_ffa9d6e0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-07-21T06:17:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9117c351_8bd9121e",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 67
+      },
+      "revId": "5b1ce9098bf5ea043649c9e8bda4f51b2e8fce33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0f9f1b2_613fa106",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-21T00:29:27Z",
       "side": 1,
       "message": "dbus method - gives a wrong impression that we are talking about dbus method call.\n\nLets rephrase it to \n\n```If the option is set to 5 seconds, any dbus call originated from pldm daemon will timeout after 5 seconds.```",
+      "range": {
+        "startLine": 40,
+        "startChar": 31,
+        "endLine": 40,
+        "endChar": 73
+      },
+      "revId": "5b1ce9098bf5ea043649c9e8bda4f51b2e8fce33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "879b307a_a8250f2c",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-07-21T06:17:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0f9f1b2_613fa106",
       "range": {
         "startLine": 40,
         "startChar": 31,
