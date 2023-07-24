@@ -148,7 +148,7 @@ class FruImpl
      *
      *  @return pldm_entity
      */
-    std::optional<pldm_entity>
+    virtual std::optional<pldm_entity>
         getEntityByObjectPath(const dbus::InterfaceMap& intfMaps);
 
     /** @brief Update pldm entity to association tree
