@@ -55,7 +55,7 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
     tmpObjPaths.emplace(path);
 
     auto obj = pldm::utils::findParent(path);
-    while (obj != root)
+    while ((obj+'/') != root)
     {
         tmpObjPaths.emplace(obj);
         obj = pldm::utils::findParent(obj);
