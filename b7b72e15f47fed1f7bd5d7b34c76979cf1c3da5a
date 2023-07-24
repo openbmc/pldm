@@ -22,6 +22,30 @@
       },
       "revId": "b7b72e15f47fed1f7bd5d7b34c76979cf1c3da5a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cffe3d20_d8b16604",
+        "filename": "oem/ibm/test/libpldmresponder_fileio_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 983,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-24T09:53:06Z",
+      "side": 1,
+      "message": "The `write` method returns the number of bytes written and PLDM_SUCCESS is always 1 but the write can be any number. So rather than checking PLDM_SUCCESS, we could verify if it\u0027s not equal to PLDM_ERROR?",
+      "parentUuid": "06529acc_99f85743",
+      "range": {
+        "startLine": 983,
+        "startChar": 3,
+        "endLine": 983,
+        "endChar": 30
+      },
+      "revId": "b7b72e15f47fed1f7bd5d7b34c76979cf1c3da5a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
