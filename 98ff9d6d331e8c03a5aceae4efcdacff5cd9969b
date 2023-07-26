@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c17c5a44_37e9c4c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "Done the moderated code review with team and updating the second set of review comments.",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "260bf2e0_8c76a360",
@@ -31,6 +48,74 @@
       "writtenOn": "2023-07-18T10:27:19Z",
       "side": 1,
       "message": "Add a try catch for getDMAFd",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e40a62be_239cf934",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "Change it to std::optional and return null. Change all places where we return null.",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddd723b4_6b751094",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "Move this to Line no 735. Define where you use",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85f3ee65_b39188a8",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "move this also to 735",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aec47da_40353dc2",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "Change these three initialisations to brace type. Make it as one line instead of 3.",
       "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -167,6 +252,57 @@
       "writtenOn": "2023-07-18T10:27:19Z",
       "side": 1,
       "message": "Change the data type",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4608200_3f06adeb",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "Make it void return type",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73703085_433155d4",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "Remove this",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277136d7_bd18cb0a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-07-26T06:32:45Z",
+      "side": 1,
+      "message": "Remove it",
       "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
