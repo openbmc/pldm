@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b92512f_5b17151c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-27T04:45:02Z",
+      "side": 1,
+      "message": "I have made some changes to the pointer used because of the below error\n`error: invalid application of \u0027sizeof\u0027 to an incomplete type \u0027pldm::fw_update::Activation\u0027 [clang-diagnostic-error]`\nI took a look at the code and realised there is a circular dependency in the `fw-update` code.\nAs far as I understood - the unique_ptr object destruction is creating problems because of the cyclic dependency that we have in the code.\nthe unique_ptr is also not getting deleted automatically and we are explicitly deleting the unique_ptr by calling the clearActivationInfo() which is violating the rule for unique_ptrs right? \nupdate_manager has a unique_ptr created for activation and activationProgress, that code also has forward declaration to activation and activationProgress class which has a call to update manager to clearActivationInfo. So who owns the deletion of this unique_ptr?\n\nSo I have made a change to use a normal pointer, but yes I am open to suggestions and I can make the changes accordingly.",
+      "revId": "6cde1bbc56348444b964a23b81278702e5d696a5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
