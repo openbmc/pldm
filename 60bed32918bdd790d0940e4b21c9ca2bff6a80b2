@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75858caa_03aad9b7",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "why is the source code being changed ? while the commit message says only the test was being added ? does this change go into the base commit ? \n\n\nCan we squash both the commits together ..so that together we have one fully functional tested commit ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 2,
+        "endLine": 58,
+        "endChar": 31
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8904d3c3_4ff912fb",
+        "filename": "libpldmresponder/test/libpldmresponder_fru_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "sort these header files ? in way that we include the standard ones first , then followed by the in repo ones.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 24
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c08a6fb1_3b56bd8c",
+        "filename": "libpldmresponder/test/libpldmresponder_fru_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "please remove ?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 55
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "937f37d8_8383ff4b",
+        "filename": "libpldmresponder/test/libpldmresponder_fru_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 115,
+        "startChar": 3,
+        "endLine": 115,
+        "endChar": 63
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e16d401_1e3400e8",
+        "filename": "libpldmresponder/test/libpldmresponder_fru_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "this function should have its own unit test, please create another unit test testing the getEntityByObjectPath function.",
+      "range": {
+        "startLine": 124,
+        "startChar": 34,
+        "endLine": 124,
+        "endChar": 56
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01eeaf3d_cb30509d",
+        "filename": "libpldmresponder/test/libpldmresponder_fru_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "nullptr",
+      "range": {
+        "startLine": 136,
+        "startChar": 27,
+        "endLine": 136,
+        "endChar": 34
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "807c0314_e2c01877",
+        "filename": "libpldmresponder/test/libpldmresponder_fru_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "we need to write tests that checks if the tree is updated with the right parents and children, we need to properly check if the children are under the right parents.",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 30
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58942e0a_11d72444",
+        "filename": "libpldmresponder/test/libpldmresponder_fru_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-07-27T09:21:56Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 159,
+        "startChar": 3,
+        "endLine": 160,
+        "endChar": 63
+      },
+      "revId": "60bed32918bdd790d0940e4b21c9ca2bff6a80b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
