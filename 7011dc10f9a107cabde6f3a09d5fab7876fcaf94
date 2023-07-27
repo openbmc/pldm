@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8ef5e116_13dffd20",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-27T04:45:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "432674a8_ba58f9ed",
+      "revId": "7011dc10f9a107cabde6f3a09d5fab7876fcaf94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "71807a10_5038a0ea",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2023-07-14T14:20:52Z",
       "side": 1,
       "message": "Can you explain a bit more about the changes in the commit message \u0026 what\u0027s the underlying issue that is being fixed in this commit ?",
+      "revId": "7011dc10f9a107cabde6f3a09d5fab7876fcaf94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc87ecd2_4454fc5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-27T04:45:27Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "71807a10_5038a0ea",
       "revId": "7011dc10f9a107cabde6f3a09d5fab7876fcaf94",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2023-07-18T10:45:30Z",
       "side": 1,
       "message": "why are we making this change?",
+      "revId": "7011dc10f9a107cabde6f3a09d5fab7876fcaf94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6543c276_085074f0",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-07-27T04:45:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc3c85d8_759209e6",
       "revId": "7011dc10f9a107cabde6f3a09d5fab7876fcaf94",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
