@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d96e5fe0_a6af710a",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2023-07-31T05:53:28Z",
+      "side": 1,
+      "message": "`size_t` instead of `unsigned long`?",
+      "revId": "2c628bdb98b7749afdf053bd09ba6a0657e76da6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
