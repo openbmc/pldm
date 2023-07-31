@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "074e8d0a_f9e8a829",
+        "filename": "common/utils.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54fe785a_9daa703d",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc469c14_0696144c",
@@ -83,6 +101,24 @@
       "writtenOn": "2023-03-02T11:27:32Z",
       "side": 1,
       "message": "nit: @brief",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e73468df_ba53bb7f",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93cd236d_8c869149",
       "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -139,6 +175,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca1d0186_a6a22d1e",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5740b0d0_520c5ca1",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99a20533_b7f9d427",
@@ -152,6 +206,24 @@
       "writtenOn": "2023-03-02T11:27:32Z",
       "side": 1,
       "message": "namespace oem::ibm::bios",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e562cab_02075f2d",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99a20533_b7f9d427",
       "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -208,6 +280,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "508a51ca_2ad09c5f",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "339be4a4_039e1d10",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6091e797_a191c728",
@@ -221,6 +311,24 @@
       "writtenOn": "2023-03-02T11:27:32Z",
       "side": 1,
       "message": "The return type of getPlatformName() don\u0027t match with the function name, a std::string would have made sense.",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "502f188c_24d48a65",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6091e797_a191c728",
       "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -242,6 +350,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb87c5e7_09307584",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.hpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb419bbb_2e74e328",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fc8421c_d0591c62",
@@ -255,6 +381,24 @@
       "writtenOn": "2023-03-02T11:27:32Z",
       "side": 1,
       "message": "Where is this consumed in the code?",
+      "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8268e3_45f98705",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-07-31T19:06:34Z",
+      "side": 1,
+      "message": "Removed this piece of code.",
+      "parentUuid": "1fc8421c_d0591c62",
       "revId": "bdf2e3d27115d64cbc13a1b12381e873a7252051",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
