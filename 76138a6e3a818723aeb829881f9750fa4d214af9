@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a696544_4ea81f25",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-01T06:41:08Z",
+      "side": 1,
+      "message": "why iostream ?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 19
+      },
+      "revId": "76138a6e3a818723aeb829881f9750fa4d214af9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5919d64f_3b973d78",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-01T06:41:08Z",
+      "side": 1,
+      "message": "we can make this an std::optional\u003cstd::string\u003e here.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 11
+      },
+      "revId": "76138a6e3a818723aeb829881f9750fa4d214af9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6563e9a_43cc56b0",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-01T06:41:08Z",
+      "side": 1,
+      "message": "migrate this to LG2",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 64
+      },
+      "revId": "76138a6e3a818723aeb829881f9750fa4d214af9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fea59cf2_a64381a9",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-01T06:41:08Z",
+      "side": 1,
+      "message": "and return std::nullopt here.",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 18
+      },
+      "revId": "76138a6e3a818723aeb829881f9750fa4d214af9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "534beef1_fd1abe14",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-01T06:41:08Z",
+      "side": 1,
+      "message": "migrate this to LG2",
+      "range": {
+        "startLine": 51,
+        "startChar": 12,
+        "endLine": 53,
+        "endChar": 69
+      },
+      "revId": "76138a6e3a818723aeb829881f9750fa4d214af9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "700f7b3d_1bfd6ee9",
+        "filename": "oem/ibm/libpldmresponder/bios_oem_ibm.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-01T06:41:08Z",
+      "side": 1,
+      "message": "return std::nullopt here ?",
+      "range": {
+        "startLine": 56,
+        "startChar": 3,
+        "endLine": 56,
+        "endChar": 14
+      },
+      "revId": "76138a6e3a818723aeb829881f9750fa4d214af9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
