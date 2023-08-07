@@ -16,6 +16,24 @@
       "message": "`uint64_t` -\u003e `size_t`?",
       "revId": "2e9b915aa954e121a607e6253c23cd6273329159",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4100aeb4_08538c27",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-08-07T04:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb136221_7052ddbd",
+      "revId": "2e9b915aa954e121a607e6253c23cd6273329159",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
