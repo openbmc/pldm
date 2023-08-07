@@ -33,6 +33,23 @@
       "message": "Other errors will be fixed when patch set https://gerrit.openbmc.org/c/openbmc/libpldm/+/59033 as merged.",
       "revId": "9394ce691b99e3ea5599287865670054bc2d88b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d414a43e_60ca2f80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-07T05:34:23Z",
+      "side": 1,
+      "message": "Thu , I see that the libpldm patch is merged. Can we rebase this ?",
+      "revId": "9394ce691b99e3ea5599287865670054bc2d88b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
