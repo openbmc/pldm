@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6618da56_26b3f63d",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-08T23:02:53Z",
+      "side": 1,
+      "message": "The objectManager path should be changed to /xyz/openbmc_project/sensors per this line in phosphor-dbug-interface. https://github.com/openbmc/phosphor-dbus-interfaces/blob/991b2b8bdbc950f2a85aebfc29d1b34ea3264686/yaml/xyz/openbmc_project/Sensor/Value.interface.yaml#L18",
+      "revId": "14fe960a99bf6b5a5524884fe113e0ebd11698d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
