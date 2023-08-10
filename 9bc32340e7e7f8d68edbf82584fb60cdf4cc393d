@@ -16,6 +16,24 @@
       "message": "Why do we need a mutex to protect the queue? Are we operating on more than one thread?\n\nCan you please outline more of the specifics of the problem in your commit message? What\u0027s the big picture that compels this approach?",
       "revId": "9bc32340e7e7f8d68edbf82584fb60cdf4cc393d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c22261f1_9abdb9c3",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-10T14:00:34Z",
+      "side": 1,
+      "message": "\u003e Why do we need a mutex to protect the queue? Are we operating on more than one thread?\nI think, the pldmd will be the requester and responser at the same time. So it is possible that the `registerRequest()` and `handleResponse()` can be called at the same time. That why I add the mutex to protect the queue.\n\n\u003e \n\u003e Can you please outline more of the specifics of the problem in your commit message?\nI updated the commit message.\n\n\u003e What\u0027s the big picture that compels this approach?\nWhen a sensor manager is added to pldmd daemon to manage the sensors\nof one terminus, the sensor manager will support the sensor polling\ntimers. The timers will polling the PLDM sensors with different\nintervals so there can be many `getSensorReading` requests to one\nendpoint to get the sensor values. Moreover, BMC also sends\n`PollForPlatformEventMessage` requests to get the event data when it\nreceives the `pldmMessagePollEvent` event from terminus. So those TX\nrequest messages have to be queued.",
+      "parentUuid": "cd54fca1_72b8e131",
+      "revId": "9bc32340e7e7f8d68edbf82584fb60cdf4cc393d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
