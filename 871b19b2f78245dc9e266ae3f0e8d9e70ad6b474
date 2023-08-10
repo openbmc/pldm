@@ -89,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c10abf0a_648d6f25",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-10T01:56:52Z",
+      "side": 1,
+      "message": "Supported multiple MCTP daemons.",
+      "parentUuid": "d442c2ad_51611afb",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "556314db_ff4bf774",
@@ -155,6 +173,24 @@
       "side": 1,
       "message": "As i mentioned above, it is valid and possible if we are supporting multiple MCTP networks. I don\u0027t think current stack support multiple MCTP networks or mctp daemons.\n\nIn case of single mctp network, it can happen only due to some invalid configuration and it will be a good addition to check for duplicates while emplacing elements to mctpInfos.",
       "parentUuid": "f1392c10_4f43cb9c",
+      "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5879c04_d3c34e58",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-10T01:56:52Z",
+      "side": 1,
+      "message": "The code is updated and supported.",
+      "parentUuid": "8434d98a_f4c2458d",
       "revId": "871b19b2f78245dc9e266ae3f0e8d9e70ad6b474",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

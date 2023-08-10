@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "caf06711_bbefcc7d",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-10T01:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdde2349_1463c88f",
+      "range": {
+        "startLine": 74,
+        "startChar": 61,
+        "endLine": 74,
+        "endChar": 70
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b320c972_a31bd703",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-18T08:08:45Z",
       "side": 1,
       "message": "I see we are explicitly checking if PLDM is a supported MCTP type.\nAre we planning to have common platform level staticEIDTable for all PMCI protocols which run over MCTP?",
+      "range": {
+        "startLine": 149,
+        "startChar": 50,
+        "endLine": 149,
+        "endChar": 62
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b46f0aa8_832b6e79",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-10T01:56:52Z",
+      "side": 1,
+      "message": "I suggest to add other patch sets to support different message types, because the current file name is `mctp-endpoint-discovery.*` which already assume that the code is for mctp endpoint type.",
+      "parentUuid": "b320c972_a31bd703",
       "range": {
         "startLine": 149,
         "startChar": 50,
