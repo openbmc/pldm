@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd54fca1_72b8e131",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-10T01:43:45Z",
+      "side": 1,
+      "message": "Why do we need a mutex to protect the queue? Are we operating on more than one thread?\n\nCan you please outline more of the specifics of the problem in your commit message? What\u0027s the big picture that compels this approach?",
+      "revId": "9bc32340e7e7f8d68edbf82584fb60cdf4cc393d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
