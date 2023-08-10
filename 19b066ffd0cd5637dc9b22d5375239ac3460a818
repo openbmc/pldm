@@ -67,6 +67,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fc87db18_18158001",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-10T02:08:04Z",
+      "side": 1,
+      "message": "This patch is belong to a series of patch sets to create the PLDM sensors from the PLDM sensor PDRs. This patch will handle added/removeedInterface in MCTP Endpoint D-Bus signal to detect the appearing/deleting of MCTP endpoint. So for this patch we can only testing by add the debug message in code, make sure the handle methods is called correctly base on added/removeedInterface signal.\n\nThe test APIs is also added to verify the correction of the code.",
+      "parentUuid": "f35b5c23_0ddcf9a5",
+      "revId": "19b066ffd0cd5637dc9b22d5375239ac3460a818",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8f236ce3_721f0b99",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 19
