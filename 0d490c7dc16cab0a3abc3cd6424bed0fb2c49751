@@ -95,6 +95,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0528bb9e_ae69c15c",
+        "filename": "subprojects/libpldm/tests/libpldm_platform_test.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-11T06:34:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98294bb5_b5382131",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 504,
+        "endChar": 43
+      },
+      "revId": "0d490c7dc16cab0a3abc3cd6424bed0fb2c49751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57c76151_248c4ffa",
@@ -108,6 +132,30 @@
       "writtenOn": "2022-11-14T04:50:36Z",
       "side": 1,
       "message": "Same here.",
+      "range": {
+        "startLine": 511,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 43
+      },
+      "revId": "0d490c7dc16cab0a3abc3cd6424bed0fb2c49751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fc6bb10_39add03c",
+        "filename": "subprojects/libpldm/tests/libpldm_platform_test.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-11T06:34:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57c76151_248c4ffa",
       "range": {
         "startLine": 511,
         "startChar": 0,
