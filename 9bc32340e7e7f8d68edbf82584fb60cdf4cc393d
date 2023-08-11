@@ -34,6 +34,24 @@
       "parentUuid": "cd54fca1_72b8e131",
       "revId": "9bc32340e7e7f8d68edbf82584fb60cdf4cc393d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31e1cb3_2d432367",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-11T03:25:11Z",
+      "side": 1,
+      "message": "\u003e I think, the pldmd will be the requester and responser at the same time. So it is possible that the registerRequest() and handleResponse() can be called at the same time. That why I add the mutex to protect the queue.\n\nA mutex relates to managing parallel threads of execution though, and that\u0027s not implied by multiple roles (requester and receiver - those roles can be implemented with single-threaded async IO, for instance). If mutexes must be used then the patch also needs to articulate the threads involved and their responsibilities. If that can\u0027t be articulated then my confidence in the locking isn\u0027t high 😞",
+      "parentUuid": "c22261f1_9abdb9c3",
+      "revId": "9bc32340e7e7f8d68edbf82584fb60cdf4cc393d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
