@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "795236f6_15729bd1",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T09:20:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83412ccc_0b6cf1a2",
+      "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6c1e1d9_e04e77fe",
@@ -49,6 +67,24 @@
       "writtenOn": "2023-02-23T07:39:10Z",
       "side": 1,
       "message": "same as above",
+      "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1358492_7d9594ef",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T09:20:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6c1e1d9_e04e77fe",
       "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -88,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fac77a92_03d167c6",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T09:20:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9157322a_c36bc563",
+      "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5548a1ab_f6e3c381",
@@ -101,6 +155,24 @@
       "writtenOn": "2023-02-17T06:51:12Z",
       "side": 1,
       "message": "Beside polling sensors, manager should also polling events, errors so the \"error\" string should be removed from the function name. The same comments for startSensorPolling function.",
+      "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92c2e18b_1429f80b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T09:20:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5548a1ab_f6e3c381",
       "revId": "841a016c46f340cf5f45abdf9abb82d181b59313",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

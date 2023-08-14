@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f26dd1_e45db224",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T09:20:32Z",
+      "side": 1,
+      "message": "When the occurrence_rate is PLDM_RATE_UNIT_NONE, we don\u0027t want to poll the sensors so setting updateTime \u003d std::numeric_limits\u003cuint64_t\u003e::max(); seems correct.",
+      "parentUuid": "76ea4c74_49e939a6",
+      "revId": "20538f432ee636e4dabf3d9bae7c591d8a11a478",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0f80a19_0b67c696",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da42363a_0f17571c",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T09:20:32Z",
+      "side": 1,
+      "message": "Updated code to only stop the removed terminus in patch set #65.",
+      "parentUuid": "a0f80a19_0b67c696",
+      "revId": "20538f432ee636e4dabf3d9bae7c591d8a11a478",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d181eef_490aabbd",
@@ -65,6 +101,24 @@
       "writtenOn": "2023-04-15T09:38:08Z",
       "side": 1,
       "message": "The value of sensor should be NAN when it is disabled or Unavailable.",
+      "revId": "20538f432ee636e4dabf3d9bae7c591d8a11a478",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3397f349_1431a31d",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T09:20:32Z",
+      "side": 1,
+      "message": "Updated in patch set #66.",
+      "parentUuid": "6d181eef_490aabbd",
       "revId": "20538f432ee636e4dabf3d9bae7c591d8a11a478",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
