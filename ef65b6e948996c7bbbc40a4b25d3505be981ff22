@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a666516b_a88df864",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-14T02:08:52Z",
+      "side": 1,
+      "message": "Those compact numeric sensor PDRs should move to https://gerrit.openbmc.org/c/openbmc/pldm/+/53961/48\nI will handle that job.",
+      "revId": "ef65b6e948996c7bbbc40a4b25d3505be981ff22",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
