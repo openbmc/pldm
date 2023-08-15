@@ -63,7 +63,7 @@ std::optional<std::string>
  *  @param[in] msg - Data associated with subscribed signal
  */
 void pldm::responder::oem::ibm::bios::Handler::ibmCompatibleAddedCallback(
-    sdbusplus::message::message& msg)
+    sdbusplus::message_t& msg)
 {
     sdbusplus::message::object_path path;
 

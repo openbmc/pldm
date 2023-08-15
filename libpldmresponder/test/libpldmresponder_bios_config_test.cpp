@@ -83,8 +83,7 @@ class MockBiosSystemConfig : public pldm::responder::oem_bios::Handler
     MockBiosSystemConfig(const pldm::utils::DBusHandler* dBusIntf) :
         pldm::responder::oem_bios::Handler(dBusIntf)
     {}
-    MOCK_METHOD(void, ibmCompatibleAddedCallback,
-                (sdbusplus::message::message&), ());
+    MOCK_METHOD(void, ibmCompatibleAddedCallback, (sdbusplus::message_t&), ());
     MOCK_METHOD(std::optional<std::string>, getPlatformName, ());
 };
 

@@ -42,7 +42,7 @@ class Handler : public oem_bios::Handler
     pldm::responder::bios::Handler* biosHandler;
 
     /** @brief D-Bus Interface added signal match for Entity Manager */
-    std::unique_ptr<sdbusplus::bus::match::match> ibmCompatibleMatchConfig;
+    std::unique_ptr<sdbusplus::bus::match_t> ibmCompatibleMatchConfig;
 
     /** @brief D-Bus Interface object*/
     const pldm::utils::DBusHandler* dBusIntf;
@@ -52,7 +52,7 @@ class Handler : public oem_bios::Handler
      *
      *  @param[in] msg - Data associated with subscribed signal
      */
-    void ibmCompatibleAddedCallback(sdbusplus::message::message& msg);
+    void ibmCompatibleAddedCallback(sdbusplus::message_t& msg);
 };
 
 } // namespace oem::ibm::bios
