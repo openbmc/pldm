@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "accbaa92_a163a872",
+        "filename": "rde_fan_sensor/RdeFanSensorMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-08-15T22:15:45Z",
+      "side": 1,
+      "message": "isn\u0027t count that\u0027s being added according to the logging and the actual count different? should this be \n\n```\n\n            count \u003d trayCountMap[trayType] + 1;\n            trayCountMap[trayType] \u003d count;\n```\nor\n\n```\n            trayCountMap[trayType]++;\n            count \u003d trayCountMap[trayType];\n```",
+      "range": {
+        "startLine": 72,
+        "startChar": 37,
+        "endLine": 77,
+        "endChar": 50
+      },
+      "revId": "6f014b7df30b04099e8b3984297745c71b9a62fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8860add8_809a2035",
+        "filename": "rde_fan_sensor/RdeFanSensorMain.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-08-15T22:15:45Z",
+      "side": 1,
+      "message": "seems like it didn\u0027t run clang-tidy?",
+      "range": {
+        "startLine": 194,
+        "startChar": 23,
+        "endLine": 200,
+        "endChar": 13
+      },
+      "revId": "6f014b7df30b04099e8b3984297745c71b9a62fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97b47d68_3e8903c3",
+        "filename": "rde_fan_sensor/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-08-15T22:15:45Z",
+      "side": 1,
+      "message": "nit: unnecessary new lines here",
+      "revId": "6f014b7df30b04099e8b3984297745c71b9a62fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9e357dd_47cb7220",
+        "filename": "rde_fan_sensor/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-08-15T22:15:45Z",
+      "side": 1,
+      "message": "no need to make this a static_library so that it can be added to the test subdirectory / meson build?",
+      "range": {
+        "startLine": 35,
+        "startChar": 2,
+        "endLine": 35,
+        "endChar": 9
+      },
+      "revId": "6f014b7df30b04099e8b3984297745c71b9a62fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e922bd02_5ebc7542",
+        "filename": "rde_fan_sensor/service_files/rde_fan_sensor.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-08-15T22:15:45Z",
+      "side": 1,
+      "message": "nit: add new line at the end",
+      "revId": "6f014b7df30b04099e8b3984297745c71b9a62fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
