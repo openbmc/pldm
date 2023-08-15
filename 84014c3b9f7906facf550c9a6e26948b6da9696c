@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be17a213_a58b6754",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 105
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T03:04:10Z",
+      "side": 1,
+      "message": "Can we apply the host-bmc/utils.* for others MCTP endpoint?\nIf Yes, should we move those code out of host-bmc?",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
