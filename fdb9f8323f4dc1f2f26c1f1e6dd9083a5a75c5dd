@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b23d0d_cfc06ea2",
+        "filename": "common/types.hpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T00:31:39Z",
+      "side": 1,
+      "message": "updated to tid_t.",
+      "parentUuid": "992066a5_e8c17551",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 16
+      },
+      "revId": "fdb9f8323f4dc1f2f26c1f1e6dd9083a5a75c5dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "581f2cf8_fc7ca716",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "Terminus will be accessed by TerminusManager and SensorManager in following patch set",
       "parentUuid": "581f2cf8_fc7ca716",
+      "range": {
+        "startLine": 55,
+        "startChar": 25,
+        "endLine": 55,
+        "endChar": 50
+      },
+      "revId": "fdb9f8323f4dc1f2f26c1f1e6dd9083a5a75c5dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7a48e6b_b696eebb",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T00:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b25cb52_5abe68dd",
       "range": {
         "startLine": 55,
         "startChar": 25,
@@ -178,6 +226,24 @@
       "writtenOn": "2022-07-08T10:05:21Z",
       "side": 1,
       "message": "Based on GetPLDMTypes we should invoking platform and firmware update discovery.",
+      "revId": "fdb9f8323f4dc1f2f26c1f1e6dd9083a5a75c5dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d3c2192_ac7fb90e",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T00:31:39Z",
+      "side": 1,
+      "message": "The code will be handled by platform_manager.cpp in patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/53961/49/platform-mc/platform_manager.cpp#19.\nAbout \"firmware update discovery\", it is not supported in this series of patch sets.\nWe can add that later.",
+      "parentUuid": "675711bc_bc5d9468",
       "revId": "fdb9f8323f4dc1f2f26c1f1e6dd9083a5a75c5dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "62a7e082_a5c12365",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T00:31:39Z",
+      "side": 1,
+      "message": "I will support TL PDR and Entity AUX Name PDRs in next patch set after this series is merged. The code is too big ATM.",
+      "parentUuid": "efc7eb08_04e37855",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "194140fe_e6889097",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 19
@@ -105,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51754d38_a58ea3c0",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T00:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18a54f10_02092882",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d35e6c1a_4fa80ecc",
@@ -175,6 +211,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45420437_c07b4f21",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T00:31:39Z",
+      "side": 1,
+      "message": "As section \"26.1 GetPDRRepositoryInfo command\", the `repositorySize` field \n```\nSize of the PDR Repository in bytes. This value provides information that can be used for\nhelping estimate buffer size requirements when accessing PDRs.\nThis size covers only the cumulative sizes of the PDR record fields. This size does not\ninclude the size for any internal header structures that are used for maintaining the PDRs.\nThis number does not report and may not directly correlate to the amount of internal storage\nused for PDRs because, for example, an implementation may elect to internally compress or\nuse other encodings of the PDR data.\nAn implementation is allowed to round this number up to the nearest kilobyte (1024 bytes).\n```\nUse requestCnt \u003d 1024 is reasonable.",
+      "parentUuid": "11511521_a70848ac",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4beee10_3d3ee976",
@@ -224,6 +278,24 @@
       "side": 1,
       "message": "We need to see the tradeoff to see if two separate object managers or a single object manager.",
       "parentUuid": "3ecdc88c_902a62fd",
+      "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c759adb_545bc51a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T00:31:39Z",
+      "side": 1,
+      "message": "Removed the change in this patch set.\n\nIn patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/51489. The objectManager path should be changed to /xyz/openbmc_project/sensors per this line in phosphor-dbug-interface. https://github.com/openbmc/phosphor-dbus-interfaces/blob/991b2b8bdbc950f2a85aebfc29d1b34ea3264686/yaml/xyz/openbmc_project/Sensor/Value.interface.yaml#L18",
+      "parentUuid": "bf2b148a_429633b6",
       "revId": "b41147e503d447fafb2fb59b5b1dd2b6c88c7820",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
