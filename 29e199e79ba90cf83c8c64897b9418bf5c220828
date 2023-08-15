@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92ec3e7c_8a8a6216",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 90
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-15T03:00:39Z",
+      "side": 1,
+      "message": "Can you show the FRU D-Bus object interfaces which created by this patch set?",
+      "revId": "29e199e79ba90cf83c8c64897b9418bf5c220828",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
