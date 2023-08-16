@@ -27,6 +27,11 @@ package_localstatedir = join_paths(get_option('prefix'), get_option('localstated
 conf_data = configuration_data()
 cpp = meson.get_compiler('cpp')
 
+cpp_args = []
+if get_option('af-mctp')
+  cpp_args += '-DTRANSPORT_WITH_AF_MCTP'
+endif
+
 # Enable POSIX poll APIs in libpldm
 if cpp.has_header('poll.h')
     conf_data.set('PLDM_HAS_POLL', 1)
@@ -180,6 +185,7 @@ executable(
   'fw-update/update_manager.cpp',
   'requester/mctp_endpoint_discovery.cpp',
   implicit_include_directories: false,
+  cpp_args: cpp_args,
   dependencies: deps,
   install: true,
   install_dir: get_option('bindir'))
