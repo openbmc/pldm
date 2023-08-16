@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8392d2f5_59a9945a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-16T02:18:10Z",
+      "side": 1,
+      "message": "The commit message talks about something else and the code does something else, please fix it.",
+      "revId": "5a713040e6120df4cb328f6ffff71d2a1e89b5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
