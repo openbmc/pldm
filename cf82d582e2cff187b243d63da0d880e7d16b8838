@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "7695371b_fa4bcb22",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -20,8 +21,31 @@
         "endChar": 23
       },
       "revId": "cf82d582e2cff187b243d63da0d880e7d16b8838",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ac06714_c078a304",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-08-16T14:12:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7695371b_fa4bcb22",
+      "range": {
+        "startLine": 265,
+        "startChar": 15,
+        "endLine": 265,
+        "endChar": 23
+      },
+      "revId": "cf82d582e2cff187b243d63da0d880e7d16b8838",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
