@@ -20,6 +20,7 @@ executable(
   'pldmtool',
   sources,
   implicit_include_directories: false,
+  cpp_args: cpp_args,
   include_directories: include_directories(libpldm_headers),
   dependencies: [
     CLI11_dep,
