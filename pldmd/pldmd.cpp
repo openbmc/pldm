@@ -21,7 +21,11 @@
 #include <libpldm/platform.h>
 #include <libpldm/pldm.h>
 #include <libpldm/transport.h>
+#ifndef TRANSPORT_WITH_AF_MCTP
 #include <libpldm/transport/mctp-demux.h>
+#else
+#include <libpldm/transport/af-mctp.h>
+#endif
 #include <poll.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -181,9 +185,13 @@ int main(int argc, char** argv)
     /* To maintain current behaviour until we have the infrastructure to find
      * and use the correct TIDs */
     pldm_tid_t TID = hostEID;
-
+#ifndef TRANSPORT_WITH_AF_MCTP
     pldm_transport_mctp_demux* mctp_demux = NULL;
     int returnCode = pldm_transport_mctp_demux_init(&mctp_demux);
+#else
+    pldm_transport_af_mctp* af_mctp = NULL;
+    int returnCode = pldm_transport_af_mctp_init(&af_mctp);
+#endif
     if (returnCode)
     {
         returnCode = -errno;
@@ -191,7 +199,11 @@ int main(int argc, char** argv)
                   << "\n";
         exit(EXIT_FAILURE);
     }
+#ifndef TRANSPORT_WITH_AF_MCTP
     returnCode = pldm_transport_mctp_demux_map_tid(mctp_demux, TID, hostEID);
+#else
+    returnCode = pldm_transport_af_mctp_map_tid(af_mctp, TID, hostEID);
+#endif
     if (returnCode)
     {
         returnCode = -errno;
@@ -199,8 +211,18 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
+#ifndef TRANSPORT_WITH_AF_MCTP
+    pldm_transport* pldmTransport = pldm_transport_mctp_demux_core(mctp_demux);
+#else
+    pldm_transport* pldmTransport = pldm_transport_af_mctp_core(af_mctp);
+#endif
+
     pollfd pollfd;
-    returnCode = pldm_transport_mctp_demux_init_pollfd(mctp_demux, &pollfd);
+#ifndef TRANSPORT_WITH_AF_MCTP
+    returnCode = pldm_transport_mctp_demux_init_pollfd(pldmTransport, &pollfd);
+#else
+    returnCode = pldm_transport_af_mctp_init_pollfd(pldmTransport, &pollfd);
+#endif
     int sockfd = pollfd.fd;
 
     socklen_t optlen;
@@ -226,7 +248,6 @@ int main(int argc, char** argv)
                                     instanceIdDb);
 
     Invoker invoker{};
-    pldm_transport* pldmTransport = pldm_transport_mctp_demux_core(mctp_demux);
     requester::Handler<requester::Request> reqHandler(*pldmTransport, event,
                                                       instanceIdDb, verbose);
 
@@ -411,8 +432,11 @@ int main(int argc, char** argv)
     sdeventplus::source::Signal sigUsr1(
         event, SIGUSR1, std::bind_front(&interruptFlightRecorderCallBack));
     returnCode = event.loop();
-
+#ifndef TRANSPORT_WITH_AF_MCTP
     pldm_transport_mctp_demux_destroy(mctp_demux);
+#else
+    pldm_transport_af_mctp_destroy(af_mctp);
+#endif
     if (returnCode)
     {
         exit(EXIT_FAILURE);
