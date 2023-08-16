@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c399aadb_329a2897",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-16T07:56:25Z",
+      "side": 1,
+      "message": "can you add a bit more documentation regarding what this function does ?",
+      "range": {
+        "startLine": 863,
+        "startChar": 3,
+        "endLine": 863,
+        "endChar": 61
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36a01a9b_7c3180e7",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-16T07:56:25Z",
+      "side": 1,
+      "message": "aren\u0027t these coming from the libpldm code ? these defines look a bit odd in place ?",
+      "range": {
+        "startLine": 865,
+        "startChar": 0,
+        "endLine": 867,
+        "endChar": 35
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a4a45be_ec3013bd",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-16T07:56:25Z",
+      "side": 1,
+      "message": "can we use range based forloops ?",
+      "range": {
+        "startLine": 888,
+        "startChar": 7,
+        "endLine": 889,
+        "endChar": 9
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2555192_b27f9b73",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-16T07:56:25Z",
+      "side": 1,
+      "message": "here as well ?",
+      "range": {
+        "startLine": 892,
+        "startChar": 11,
+        "endLine": 892,
+        "endChar": 53
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
