@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed261af7_6d2d2d95",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-16T16:38:17Z",
+      "side": 1,
+      "message": "Added.",
+      "parentUuid": "c399aadb_329a2897",
+      "range": {
+        "startLine": 863,
+        "startChar": 3,
+        "endLine": 863,
+        "endChar": 61
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36a01a9b_7c3180e7",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42cd9b81_9de750b9",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-16T16:38:17Z",
+      "side": 1,
+      "message": "I removed those `#define` and use the definitions in libpldm.",
+      "parentUuid": "36a01a9b_7c3180e7",
+      "range": {
+        "startLine": 865,
+        "startChar": 0,
+        "endLine": 867,
+        "endChar": 35
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a4a45be_ec3013bd",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-08-16T07:56:25Z",
       "side": 1,
       "message": "can we use range based forloops ?",
+      "range": {
+        "startLine": 888,
+        "startChar": 7,
+        "endLine": 889,
+        "endChar": 9
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d895107e_678adc51",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-16T16:38:17Z",
+      "side": 1,
+      "message": "Do we have any reason to change range based for loops?\nI don\u0027t see the different between this type and range base type.",
+      "parentUuid": "6a4a45be_ec3013bd",
       "range": {
         "startLine": 888,
         "startChar": 7,
