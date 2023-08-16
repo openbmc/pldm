@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "libpldm/base.h"
 #include "libpldm/bios.h"
 #include "libpldm/pdr.h"
@@ -21,6 +23,7 @@
 #include <libpldm/platform.h>
 #include <libpldm/pldm.h>
 #include <libpldm/transport.h>
+#include <libpldm/transport/af-mctp.h>
 #include <libpldm/transport/mctp-demux.h>
 #include <poll.h>
 #include <stdlib.h>
@@ -79,6 +82,76 @@ using namespace pldm::responder;
 using namespace pldm::utils;
 using sdeventplus::source::Signal;
 using namespace pldm::flightrecorder;
+
+union TransportImpl
+{
+    struct pldm_transport_mctp_demux* mctp_demux;
+    struct pldm_transport_af_mctp* af_mctp;
+};
+
+[[maybe_unused]] static struct pldm_transport*
+    pldm_transport_impl_mctp_demux_init(TransportImpl& impl, pldm_tid_t& tid,
+                                        mctp_eid_t eid, pollfd& pollfd)
+{
+    impl.mctp_demux = NULL;
+    pldm_transport_mctp_demux_init(&impl.mctp_demux);
+    if (!impl.mctp_demux)
+    {
+        return nullptr;
+    }
+
+    pldm_transport_mctp_demux_map_tid(impl.mctp_demux, tid, eid);
+
+    pldm_transport* pldmTransport =
+        pldm_transport_mctp_demux_core(impl.mctp_demux);
+
+    pldm_transport_mctp_demux_init_pollfd(pldmTransport, &pollfd);
+
+    return pldmTransport;
+}
+
+[[maybe_unused]] static struct pldm_transport*
+    pldm_transport_impl_af_mctp_init(TransportImpl& impl, pldm_tid_t& tid,
+                                     mctp_eid_t eid, pollfd& pollfd)
+{
+    impl.af_mctp = NULL;
+    pldm_transport_af_mctp_init(&impl.af_mctp);
+    if (!impl.af_mctp)
+    {
+        return nullptr;
+    }
+
+    pldm_transport_af_mctp_map_tid(impl.af_mctp, tid, eid);
+
+    pldm_transport* pldmTransport = pldm_transport_af_mctp_core(impl.af_mctp);
+
+    pldm_transport_af_mctp_init_pollfd(pldmTransport, &pollfd);
+
+    return pldmTransport;
+}
+
+static struct pldm_transport* transport_impl_init(TransportImpl& impl,
+                                                  pldm_tid_t& tid,
+                                                  mctp_eid_t eid,
+                                                  pollfd& pollfd)
+{
+#if defined(PLDM_TRANSPORT_WITH_MCTP_DEMUX)
+    return pldm_transport_impl_mctp_demux_init(impl, tid, eid, pollfd);
+#elif defined(PLDM_TRANSPORT_WITH_AF_MCTP)
+    return pldm_transport_impl_af_mctp_init(impl, tid, eid, pollfd);
+#else
+    return nullptr;
+#endif
+}
+
+static void transport_impl_destroy(TransportImpl& impl)
+{
+#if defined(PLDM_TRANSPORT_WITH_MCTP_DEMUX)
+    pldm_transport_mctp_demux_destroy(impl.mctp_demux);
+#elif defined(PLDM_TRANSPORT_WITH_AF_MCTP)
+    pldm_transport_af_mctp_destroy(impl.af_mctp);
+#endif
+}
 
 void interruptFlightRecorderCallBack(Signal& /*signal*/,
                                      const struct signalfd_siginfo*)
@@ -182,27 +255,16 @@ int main(int argc, char** argv)
     /* To maintain current behaviour until we have the infrastructure to find
      * and use the correct TIDs */
     pldm_tid_t TID = hostEID;
-
-    pldm_transport_mctp_demux* mctp_demux = NULL;
-    int returnCode = pldm_transport_mctp_demux_init(&mctp_demux);
-    if (returnCode)
-    {
-        returnCode = -errno;
-        std::cerr << "Failed to init pldm transport, RC= " << returnCode
-                  << "\n";
-        exit(EXIT_FAILURE);
-    }
-    returnCode = pldm_transport_mctp_demux_map_tid(mctp_demux, TID, hostEID);
-    if (returnCode)
-    {
-        returnCode = -errno;
-        std::cerr << "Failed to setup TID mapping, RC= " << returnCode << "\n";
-        exit(EXIT_FAILURE);
-    }
-
     pollfd pollfd;
-    pldm_transport* pldmTransport = pldm_transport_mctp_demux_core(mctp_demux);
-    returnCode = pldm_transport_mctp_demux_init_pollfd(pldmTransport, &pollfd);
+    TransportImpl transportImpl;
+    pldm_transport* pldmTransport = transport_impl_init(transportImpl, TID,
+                                                        hostEID, pollfd);
+    if (pldmTransport == nullptr)
+    {
+        error("Failed to init transport impl");
+        exit(EXIT_FAILURE);
+    }
+
     int sockfd = pollfd.fd;
 
     socklen_t optlen;
@@ -313,7 +375,6 @@ int main(int argc, char** argv)
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
             oemPlatformHandler.get());
     oemIbmPlatformHandler->setPlatformHandler(platformHandler.get());
-
 #endif
 
     invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));
@@ -413,9 +474,8 @@ int main(int argc, char** argv)
     stdplus::signal::block(SIGUSR1);
     sdeventplus::source::Signal sigUsr1(
         event, SIGUSR1, std::bind_front(&interruptFlightRecorderCallBack));
-    returnCode = event.loop();
-
-    pldm_transport_mctp_demux_destroy(mctp_demux);
+    int returnCode = event.loop();
+    transport_impl_destroy(transportImpl);
     if (returnCode)
     {
         exit(EXIT_FAILURE);
