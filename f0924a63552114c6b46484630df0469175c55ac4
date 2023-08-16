@@ -16,6 +16,24 @@
       "message": "Could you add reference to the Platform spec location for the compact numeric sensor? it would be handy while reviewing.",
       "revId": "f0924a63552114c6b46484630df0469175c55ac4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd9d47f8_cc48baa1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-16T16:57:39Z",
+      "side": 1,
+      "message": "Added.",
+      "parentUuid": "b536b888_74895803",
+      "revId": "f0924a63552114c6b46484630df0469175c55ac4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
