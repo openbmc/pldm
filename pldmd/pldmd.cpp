@@ -21,6 +21,7 @@
 #include <libpldm/platform.h>
 #include <libpldm/pldm.h>
 #include <libpldm/transport.h>
+#include <libpldm/transport/af-mctp.h>
 #include <libpldm/transport/mctp-demux.h>
 #include <poll.h>
 #include <stdlib.h>
@@ -79,6 +80,71 @@ using namespace pldm::responder;
 using namespace pldm::utils;
 using sdeventplus::source::Signal;
 using namespace pldm::flightrecorder;
+
+union transportAPIs
+{
+    struct pldm_transport_mctp_demux* mctp_demux;
+    struct pldm_transport_af_mctp* af_mctp;
+};
+
+#ifdef PLDM_TRANSPORT_WITH_MCTP_DEMUX
+int pldm_transport_with_mctp_demux_init(
+    struct pldm_transport_mctp_demux* mctp_demux, pldm_transport* pldmTransport,
+    pldm_tid_t& tid, mctp_eid_t eid, pollfd& pollfd)
+{
+    int returnCode = pldm_transport_mctp_demux_init(&mctp_demux);
+    if (returnCode)
+    {
+        returnCode = -errno;
+        std::cerr << "Failed to init mctp-demux, RC= " << returnCode << "\n";
+        exit(EXIT_FAILURE);
+    }
+
+    returnCode = pldm_transport_mctp_demux_map_tid(mctp_demux, tid, eid);
+    if (returnCode)
+    {
+        returnCode = -errno;
+        std::cerr << "Failed to setup TID mapping, RC= " << returnCode << "\n";
+        exit(EXIT_FAILURE);
+    }
+
+    pldmTransport = pldm_transport_mctp_demux_core(mctp_demux);
+
+    returnCode = pldm_transport_mctp_demux_init_pollfd(pldmTransport, &pollfd);
+
+    return returnCode;
+}
+#endif
+
+#ifdef PLDM_TRANSPORT_WITH_AF_MCTP
+int pldm_transport_with_af_mctp_init(struct pldm_transport_af_mctp* af_mctp,
+                                     pldm_transport* pldmTransport,
+                                     pldm_tid_t& tid, mctp_eid_t eid,
+                                     pollfd& pollfd)
+{
+    int returnCode = pldm_transport_af_mctp_init(&af_mctp);
+    if (returnCode)
+    {
+        returnCode = -errno;
+        std::cerr << "Failed to init af-mctp, RC= " << returnCode << "\n";
+        exit(EXIT_FAILURE);
+    }
+
+    returnCode = pldm_transport_af_mctp_map_tid(af_mctp, tid, eid);
+    if (returnCode)
+    {
+        returnCode = -errno;
+        std::cerr << "Failed to setup TID mapping, RC= " << returnCode << "\n";
+        exit(EXIT_FAILURE);
+    }
+
+    pldmTransport = pldm_transport_af_mctp_core(af_mctp);
+
+    returnCode = pldm_transport_af_mctp_init_pollfd(pldmTransport, &pollfd);
+
+    return returnCode;
+}
+#endif
 
 void interruptFlightRecorderCallBack(Signal& /*signal*/,
                                      const struct signalfd_siginfo*)
@@ -182,9 +248,14 @@ int main(int argc, char** argv)
     /* To maintain current behaviour until we have the infrastructure to find
      * and use the correct TIDs */
     pldm_tid_t TID = hostEID;
+    transportAPIs transportAPI;
+    pollfd pollfd;
+    pldm_transport* pldmTransport = NULL;
 
-    pldm_transport_mctp_demux* mctp_demux = NULL;
-    int returnCode = pldm_transport_mctp_demux_init(&mctp_demux);
+#ifdef PLDM_TRANSPORT_WITH_MCTP_DEMUX
+    transportAPI.mctp_demux = NULL;
+    int returnCode = pldm_transport_with_mctp_demux_init(
+        transportAPI.mctp_demux, pldmTransport, TID, hostEID, pollfd);
     if (returnCode)
     {
         returnCode = -errno;
@@ -192,17 +263,19 @@ int main(int argc, char** argv)
                   << "\n";
         exit(EXIT_FAILURE);
     }
-    returnCode = pldm_transport_mctp_demux_map_tid(mctp_demux, TID, hostEID);
+#elif PLDM_TRANSPORT_WITH_AF_MCTP
+    transportAPI.af_mctp = NULL;
+    int returnCode = pldm_transport_with_af_mctp_init(
+        transportAPI.af_mctp, pldmTransport, TID, hostEID, pollfd);
     if (returnCode)
     {
         returnCode = -errno;
-        std::cerr << "Failed to setup TID mapping, RC= " << returnCode << "\n";
+        std::cerr << "Failed to init pldm transport, RC= " << returnCode
+                  << "\n";
         exit(EXIT_FAILURE);
     }
+#endif
 
-    pollfd pollfd;
-    pldm_transport* pldmTransport = pldm_transport_mctp_demux_core(mctp_demux);
-    returnCode = pldm_transport_mctp_demux_init_pollfd(pldmTransport, &pollfd);
     int sockfd = pollfd.fd;
 
     socklen_t optlen;
@@ -414,8 +487,11 @@ int main(int argc, char** argv)
     sdeventplus::source::Signal sigUsr1(
         event, SIGUSR1, std::bind_front(&interruptFlightRecorderCallBack));
     returnCode = event.loop();
-
-    pldm_transport_mctp_demux_destroy(mctp_demux);
+#ifdef PLDM_TRANSPORT_WITH_MCTP_DEMUX
+    pldm_transport_mctp_demux_destroy(transportAPI.mctp_demux);
+#elif PLDM_TRANSPORT_WITH_AF_MCTP
+    pldm_transport_af_mctp_destroy(transportAPI.af_mctp);
+#endif
     if (returnCode)
     {
         exit(EXIT_FAILURE);

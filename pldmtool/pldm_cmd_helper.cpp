@@ -5,6 +5,9 @@
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/pldm.h>
+#include <libpldm/transport.h>
+#include <libpldm/transport/af-mctp.h>
+#include <poll.h>
 #include <systemd/sd-bus.h>
 
 #include <sdbusplus/server.hpp>
@@ -18,6 +21,7 @@ namespace pldmtool
 {
 namespace helper
 {
+#ifdef PLDM_TRANSPORT_WITH_MCTP_DEMUX
 /*
  * Initialize the socket, send pldm command & recieve response from socket
  *
@@ -132,6 +136,7 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
     Logger(pldmVerbose, "Shutdown Socket successful :  RC = ", returnCode);
     return PLDM_SUCCESS;
 }
+#endif
 
 void CommandInterface::exec()
 {
@@ -177,6 +182,7 @@ void CommandInterface::exec()
     parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
 }
 
+#ifdef PLDM_TRANSPORT_WITH_MCTP_DEMUX
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
@@ -239,5 +245,75 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
     }
     return PLDM_SUCCESS;
 }
+#endif
+
+#ifdef PLDM_TRANSPORT_WITH_AF_MCTP
+int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
+                                   std::vector<uint8_t>& responseMsg)
+{
+    // By default enable request/response msgs for pldmtool raw commands.
+    if (CommandInterface::pldmType == "raw")
+    {
+        pldmVerbose = true;
+    }
+
+    if (pldmVerbose)
+    {
+        std::cout << "pldmtool: ";
+        printBuffer(Tx, requestMsg);
+    }
+
+    pldm_transport_af_mctp* af_mctp = NULL;
+    int rc = pldm_transport_af_mctp_init(&af_mctp);
+    if (rc)
+    {
+        std::cerr << "failed to init af_mctp\n";
+        return rc;
+    }
+
+    void* responseMessage = nullptr;
+    size_t responseMessageSize{};
+    auto TID = mctp_eid;
+
+    rc = pldm_transport_af_mctp_map_tid(af_mctp, TID, mctp_eid);
+    if (rc)
+    {
+        std::cerr << "failed to map tid\n";
+        return rc;
+    }
+
+    pldm_transport* pldmTransport = pldm_transport_af_mctp_core(af_mctp);
+
+    pollfd poll_fd;
+    rc = pldm_transport_af_mctp_init_pollfd(pldmTransport, &poll_fd);
+    if (rc)
+    {
+        std::cerr << "failed to init pollfd\n";
+        return rc;
+    }
+
+    rc = pldm_transport_send_recv_msg(pldmTransport, TID, requestMsg.data(),
+                                      requestMsg.size(), &responseMessage,
+                                      &responseMessageSize);
+    if (rc)
+    {
+        std::cerr << "failed to send recv\n";
+        return rc;
+    }
+
+    responseMsg.resize(responseMessageSize);
+    memcpy(responseMsg.data(), responseMessage, responseMsg.size());
+
+    free(responseMessage);
+    pldm_transport_af_mctp_destroy(af_mctp);
+
+    if (pldmVerbose)
+    {
+        std::cout << "pldmtool: ";
+        printBuffer(Rx, responseMsg);
+    }
+    return PLDM_SUCCESS;
+}
+#endif
 } // namespace helper
 } // namespace pldmtool
