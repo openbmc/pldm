@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e634abc_02cb5da0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-17T11:19:01Z",
+      "side": 1,
+      "message": "Creating threshold SEL log in Numeric sensor class and Event class can cause the duplication in the SEL log. The build option should be add to only enable one of two code.",
+      "revId": "c5a5b0873bcb3558c7c993fdac43da0aafae6bff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d263ba_ca25811d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-17T11:19:01Z",
+      "side": 1,
+      "message": "Why don\u0027t we check the triggered threshold type, then somehow use updateThresholds() in the sensor object to update threshold state and create the sensor threshold sel log instead of manually create the sel log use createSensorThresholdLogEntry()?\nBeside creating the SEL log when receives the event, the event manager should also update AlarmHigh, AlarmLow properties.",
+      "revId": "c5a5b0873bcb3558c7c993fdac43da0aafae6bff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
