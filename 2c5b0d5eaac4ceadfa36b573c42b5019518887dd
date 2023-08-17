@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30c110d_e5a19bc2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-17T03:23:23Z",
+      "side": 1,
+      "message": "Hi Delphine, thanks for working on the conversion. However, I have a few concerns with the current approaches. I\u0027ve left comments inline.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43e495fe_83dc41cc",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-17T03:23:23Z",
+      "side": 1,
+      "message": "This is an entirely separate fix. Please make it a separate commit.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48d5edc_3d8af168",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-17T03:23:23Z",
+      "side": 1,
+      "message": "Please integrate this via the `conf_data` mechanism below.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8ebbbd9_bd85dd21",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-17T03:23:23Z",
+      "side": 1,
+      "message": "I think this would be better represented as a combo option as it will allow for other transports using the same option. For instance, another might be RBT.\n\nhttps://mesonbuild.com/Build-options.html#combos",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 1
+      },
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6bf4f2f_f40c1fae",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-17T03:23:23Z",
+      "side": 1,
+      "message": "No need for a preprocessor conditional here, you can just include both headers. it\u0027s not going to harm anything.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "310a00d7_2e927126",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-17T03:23:23Z",
+      "side": 1,
+      "message": "Honestly this all looks a bit much. `#ifdef` mazes are not maintainable. Please pull each initialisation path out into separate functions that can be invoked based on `TRANSPORT_WITH_AF_MCTP` and provide a union over the two struct types or something (I also suggest you rename `TRANSPORT_WITH_AF_MCTP` to something like `PLDM_WITH_TRANSPORT_AF_MCTP`)",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad4b8367_e240c56e",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-17T03:23:23Z",
+      "side": 1,
+      "message": "As per the previous comment, don\u0027t do `#ifdef` mazes. Please provide a proper abstraction.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
