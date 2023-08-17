@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d1a9e36_6ff42d6e",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-17T14:02:16Z",
+      "side": 1,
+      "message": "Yes , range based for loops is simple to use and easy to understand/maintain.\n\n\nBenefits of the Range-Based Loop\n - It is easy to use and has a simple syntax.\n - A range-based for loop does not involve calculating the number of variables in a   container.\n - It recognizes the beginning and end elements of the containers.\n - We can easily change the size and elements of the container.\n - The elements are not duplicated.\n - It is way faster than the traditional for loop.\n - The auto keyword is typically used to determine the data type of container elements.\n \nAnd this has sort of become the defacto method to write forloops in c++ code in openbmc.",
+      "parentUuid": "d895107e_678adc51",
+      "range": {
+        "startLine": 888,
+        "startChar": 7,
+        "endLine": 889,
+        "endChar": 9
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e2555192_b27f9b73",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 4
