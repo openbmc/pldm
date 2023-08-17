@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ea39e46_260deaac",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-17T08:47:58Z",
+      "side": 1,
+      "message": "No code calls this method.",
+      "revId": "9e569c3d18ce91d429c5f2bee223a2dc7af04a0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
