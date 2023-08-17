@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b7469f0a_b05c4baa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-17T11:20:51Z",
+      "side": 1,
+      "message": "Should we separate the code handle sensorEvent to different commit. This helps the reviewer in review the code.",
+      "revId": "c5a5b0873bcb3558c7c993fdac43da0aafae6bff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b0d263ba_ca25811d",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 22
