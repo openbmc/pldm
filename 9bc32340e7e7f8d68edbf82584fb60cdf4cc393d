@@ -88,6 +88,24 @@
       "parentUuid": "d03912ce_dd0ac425",
       "revId": "9bc32340e7e7f8d68edbf82584fb60cdf4cc393d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "349ab479_b0f1cb2a",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-17T04:31:31Z",
+      "side": 1,
+      "message": "Adding `mutexes` is just addition protection for `endpointMessageQueues`. Because having mutexes does not effect in the performance that why I added it. It is not wrong but just does not require so I\u0027m ok with removing `mutexes`",
+      "parentUuid": "9208925d_bc6ce303",
+      "revId": "9bc32340e7e7f8d68edbf82584fb60cdf4cc393d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
