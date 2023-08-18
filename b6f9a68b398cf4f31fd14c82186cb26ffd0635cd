@@ -16,6 +16,24 @@
       "message": "Can we resize the string , so that we dont print anything after null ?\n\nsomething like this, before we assign it to the string ?  \n\n```\nstr.erase(std::find(str.begin(), str.end(), \u0027\\0\u0027), str.end());\n```",
       "revId": "b6f9a68b398cf4f31fd14c82186cb26ffd0635cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4430ba8_6319305d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-18T09:39:02Z",
+      "side": 1,
+      "message": "If we remove `null` string the value of `sensorNameStringByteLength` will be different with the length of `name` field.",
+      "parentUuid": "22f8019a_6783e10e",
+      "revId": "b6f9a68b398cf4f31fd14c82186cb26ffd0635cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
