@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f56daec2_d3b0cd53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-18T07:51:03Z",
+      "side": 1,
+      "message": "Okay, CI has now hit this:\n\n```\n/usr/bin/ld: libpldmresponder/libpldmresponder.so.0.1.p/base.cpp.o: in function `pldm::requester::Request::send() const\u0027:\n/data0/jenkins/workspace/ci-repository/openbmc/pldm/build/../requester/request.hpp:189:(.text._ZNK4pldm9requester7Request4sendEv[_ZNK4pldm9requester7Request4sendEv]+0x5b): undefined reference to `pldm_transport_send_msg\u0027\n```\n\nwhich means so long as the code works, the next step is to stabilise the `pldm_transport_*()` APIs in libpldm.",
+      "revId": "db71d9c70dc3663ceec4d1d7c016983258211a74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
