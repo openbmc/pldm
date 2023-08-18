@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7198067f_3d63009a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-18T08:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43e495fe_83dc41cc",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a48d5edc_3d8af168",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-08-17T03:23:23Z",
       "side": 1,
       "message": "Please integrate this via the `conf_data` mechanism below.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "560af06a_f8f48f3b",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-18T08:58:22Z",
+      "side": 1,
+      "message": "We made it add project arguments like OEM_IBM does.",
+      "parentUuid": "a48d5edc_3d8af168",
       "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -75,6 +111,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7b6c5af_a9fc07ee",
+        "filename": "meson_options.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-18T08:58:22Z",
+      "side": 1,
+      "message": "We changed it to meson combo and made the default value as `mctp-demux`.",
+      "parentUuid": "c8ebbbd9_bd85dd21",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 1
+      },
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6bf4f2f_f40c1fae",
@@ -88,6 +148,24 @@
       "writtenOn": "2023-08-17T03:23:23Z",
       "side": 1,
       "message": "No need for a preprocessor conditional here, you can just include both headers. it\u0027s not going to harm anything.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8b1cf02_4f4d2b80",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-18T08:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6bf4f2f_f40c1fae",
       "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -111,6 +189,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40352a16_fd1b7ee2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-18T08:58:22Z",
+      "side": 1,
+      "message": "We tried to make it cleaner to read. Would need your feedback on this change.",
+      "parentUuid": "310a00d7_2e927126",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ad4b8367_e240c56e",
         "filename": "pldmtool/pldm_cmd_helper.cpp",
         "patchSetId": 3
@@ -122,6 +218,24 @@
       "writtenOn": "2023-08-17T03:23:23Z",
       "side": 1,
       "message": "As per the previous comment, don\u0027t do `#ifdef` mazes. Please provide a proper abstraction.",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb33abf_f4285d30",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-18T08:58:22Z",
+      "side": 1,
+      "message": "We tried to make it cleaner to read. Would need your feedback on this change.",
+      "parentUuid": "ad4b8367_e240c56e",
       "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
