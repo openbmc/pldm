@@ -192,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0157b903_5373e373",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-18T05:09:26Z",
+      "side": 1,
+      "message": "yeah something like that ..for example \n\n```\n\n#include \u003ciostream\u003e\n#include \u003cranges\u003e\n\nint main(void)\n{\n    for (auto i : std::views::iota(1, 10)) {\n        std::cout \u003c\u003c i \u003c\u003c \u0027 \u0027;\n    }\n    return 0;\n}\n    \n    \n```",
+      "parentUuid": "7f94d53d_de584869",
+      "range": {
+        "startLine": 888,
+        "startChar": 7,
+        "endLine": 889,
+        "endChar": 9
+      },
+      "revId": "1c8e88b6f6436b95d5423a3e12b1cd129afd39bd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e2555192_b27f9b73",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 4
