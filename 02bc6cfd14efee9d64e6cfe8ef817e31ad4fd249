@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fd3ac4d_211072e6",
+        "filename": "meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-18T09:10:33Z",
+      "side": 1,
+      "message": "This isn\u0027t integrating it with the `conf_data` mechanism at all. It\u0027s mixing the specification.\n\nPlease define these macros _in_ `conf_data`, using `conf_data.set*()`.",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "830b38ea_744774e3",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-18T09:10:33Z",
+      "side": 1,
+      "message": "maybe `union TransportImpl` ?",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6267656d_dd58d016",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-18T09:10:33Z",
+      "side": 1,
+      "message": "These functions should be static, and there\u0027s no need to conditionally define them. Just conditionally call them?",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16d0c846_5b793980",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-18T09:10:33Z",
+      "side": 1,
+      "message": "because you\u0027re conditionally calling them here anyway.",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ab6d187_1e968b14",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-18T09:10:33Z",
+      "side": 1,
+      "message": "The idea behind the union was so you could pass a reference into the function setting up the transport. Here\u0027s a sketch:\n\n```\nunion TransportImpl {\n    struct pldm_transport_mctp_demux* mctp_demux;\n    struct pldm_transport_af_mctp* af_mctp;\n};\n\nstatic struct pldm_transport *transport_impl_mctp_demux_init(TransportImpl\u0026 impl, ...)\n{\n    impl.mctp_demux \u003d pldm_transport_mctp_demux_init(...);\n    if (!impl.mctp_demux)\n    {\n        return nullptr;\n    }\n    ...\n    \n    return pldm_transport_mctp_demux_core(impl.mctp_demux);\n}\n\nstatic struct pldm_transport *transport_impl_with_af_mctp_init(TransportImpl\u0026 impl, ...)\n{\n    impl.mctp_demux \u003d pldm_transport_af_mctp_init(...);\n    if (!impl.af_mctp)\n    {\n        return nullptr;\n    }\n    ...\n    \n    return pldm_transport_af_mctp_core(impl.af_mctp);\n}\n\nstatic struct pldm_transport *transport_impl_init(TransportImpl\u0026 impl, ...)\n{\n#if defined(PLDM_TRANSPORT_WITH_MCTP_DEMUX)\n    return transport_impl_mctp_demux_init(impl, ...);\n#elif defined(PLDM_TRANSPORT_WITH_AF_MCTP)\n    return transport_impl_af_mctp_init(impl, ...);\n#else\n    return nullptr;\n#endif\n}\n\nstatic void transport_impl_destroy(TransportImpl\u0026 impl)\n{\n#if defined(PLDM_TRANSPORT_WITH_MCTP_DEMUX)\n    pldm_transport_mctp_demux_destroy(\u0026impl.mctp_demux);\n#elif defined(PLDM_TRANSPORT_WITH_AF_MCTP)\n    pldm_transport_af_mctp_destroy(\u0026impl.af_mctp);\n#endif\n}\n```\n\nThis way in `main()` here you have no `#ifdef`-ery.\n\nInstead, we have this:\n\n```\nint main(...)\n{\n    ...\n    \n    pollfd pollfd;\n    TransportImpl transportImpl;\n    pldm_transport *pldmTransport \u003d\n        transport_impl_init(transportImpl, pldmTransport, TID, hostEID, pollfd);\n    if (pldmTransport \u003d\u003d nullptr)\n    {\n        ...\n        exit(EXIT_FAILURE);\n    }\n    \n    ...\n    \n    requester::Handler\u003crequester::Request\u003e reqHandler(*pldmTransport, event,\n                                                      instanceIdDb, verbose);\n                                                      \n    ...\n    \n    transport_impl_destroy(transportImpl);\n    \n    ...\n    \n    exit(EXIT_SUCCESS);\n}\n```\n\nThis way all the `#ifdef` noise is hidden in `transport_impl_init()` and `transport_impl_destroy()`, even then it is significantly minimised, and we\u0027ve minimised the impact on the test matrix as the implementation of both paths through `transport_impl_init()` (`transport_impl_mctp_demux_init()` and `transport_impl_af_mctp_init()`) are always compiled (but only one will be called).",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29a30556_0f272d4b",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-18T09:10:33Z",
+      "side": 1,
+      "message": "Consider the strategy I outlined for `pldmd/pldmd.cpp` here too.",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
