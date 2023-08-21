@@ -52,6 +52,24 @@
       "parentUuid": "f4430ba8_6319305d",
       "revId": "b6f9a68b398cf4f31fd14c82186cb26ffd0635cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0708ae80_cb15aff6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-21T06:44:45Z",
+      "side": 1,
+      "message": "Because the pldmtool is debug tool and developer\u0027s tool. So I think it should we show exactly the data from the terminus. Remove `null` will cause the confusing when the data from terminus PDR and the displayed value is difference. So I suggest keep the name as it as.",
+      "parentUuid": "38a6dba4_19860996",
+      "revId": "b6f9a68b398cf4f31fd14c82186cb26ffd0635cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
