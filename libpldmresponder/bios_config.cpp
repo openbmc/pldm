@@ -471,7 +471,7 @@ void BIOSConfig::updateBaseBIOSTableProperty()
                                           dbusProperties, "Set");
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
         method.append(biosConfigInterface, biosConfigPropertyName, value);
-        bus.call_noreply(method);
+        bus.call_noreply(method, dbusTimeout);
     }
     catch (const std::exception& e)
     {

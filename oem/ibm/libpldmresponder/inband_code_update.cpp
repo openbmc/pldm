@@ -379,7 +379,7 @@ void CodeUpdate::deleteImage()
     {
         auto method = bus.new_method_call(UPDATER_SERVICE, SW_OBJ_PATH,
                                           DELETE_INTF, "DeleteAll");
-        bus.call_noreply(method);
+        bus.call_noreply(method, dbusTimeout);
     }
     catch (const std::exception& e)
     {
