@@ -271,8 +271,9 @@ int PelHandler::storePel(std::string&& pelFileName)
     }
     catch (const std::exception& e)
     {
-        error("failed to make a d-bus call to PEL daemon, ERROR={ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
+
+        error("failed to make a d-bus call to PEL daemon, PEL_FILE_NAME={PEL_FILE_NAME), ERROR={ERR_EXCEP}",
+              "PEL_FILE_NAME", pelFileName , "ERR_EXCEP", e.what());
         return PLDM_ERROR;
     }
 
