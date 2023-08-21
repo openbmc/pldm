@@ -267,6 +267,24 @@
                 "property_type": "double",
                 "property_name": "Value"
             }
+        },
+        {
+            "attribute_name": "pvm_ibmi_vlan_tag_id",
+            "lower_bound": 0,
+            "upper_bound": 4094,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the VLAN ID that is used when performing a network installation of an IBM i logical partition. Ethernet packets are tagged with the specified VLAN ID. If this option is not specified, Ethernet packets are untagged.",
+            "displayName": "VLAN Tag Identifier"
+        },
+        {
+            "attribute_name": "pvm_ibmi_iscsi_target_port",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the port that is used for the iSCSI connection.",
+            "displayName": "Target Port"
         }
     ]
 }
