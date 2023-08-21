@@ -117,8 +117,11 @@ int CodeUpdate::setRequestedApplyTime()
     }
     catch (const std::exception& e)
     {
-        error("Failed To set RequestedApplyTime property ERROR={ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
+        error(
+            "Failed To set RequestedApplyTime property, OBJ_PATH={OBJ_PATH}, INTERFACE={INTERFACE}, PROP_NAME={PROP_NAME}, ERROR={ERR_EXCEP}",
+            "OBJ_PATH", dbusMapping.objectPath, "INTERFACE",
+            dbusMapping.interface, "PROP_NAME", dbusMapping.propertyName,
+            "ERR_EXCEP", e.what());
         rc = PLDM_ERROR;
     }
     return rc;
@@ -140,8 +143,11 @@ int CodeUpdate::setRequestedActivation()
     }
     catch (const std::exception& e)
     {
-        error("Failed To set RequestedActivation property ERROR={ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
+        error(
+            "Failed To set RequestedActivation property, OBJ_PATH={OBJ_PATH}, INTERFACE={INTERFACE}, PROP_NAME={PROP_NAME}, ERROR={ERR_EXCEP}",
+            "OBJ_PATH", dbusMapping.objectPath, "INTERFACE",
+            dbusMapping.interface, "PROP_NAME", dbusMapping.propertyName,
+            "ERR_EXCEP", e.what());
         rc = PLDM_ERROR;
     }
     return rc;
@@ -377,8 +383,10 @@ void CodeUpdate::deleteImage()
     }
     catch (const std::exception& e)
     {
-        error("Failed to delete image, ERROR={ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error(
+            "Failed to delete image, OBJ_PATH={OBJ_PATH}, INTERFACE={INTERFACE}, ERROR={ERR_EXCEP}",
+            "OBJ_PATH", SW_OBJ_PATH, "INTERFACE", DELETE_INTF, "ERR_EXCEP",
+            e.what());
         return;
     }
 }
