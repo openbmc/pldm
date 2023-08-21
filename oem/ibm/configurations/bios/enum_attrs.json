@@ -551,6 +551,20 @@
                 "property_type": "bool",
                 "property_values": [true, false]
             }
+        },
+        {
+            "attribute_name": "pvm_ibmi_network_install_type",
+            "possible_values": ["Disabled", "NFS", "iSCSI"],
+            "default_values": ["Disabled"],
+            "helpText": "Specifies whether the IBMi network install type is NFS Optical or iSCSI Tape. Disabled: indicates the IBMi Network Install BIOS attributes should not be used.",
+            "displayName": "IBMi Network Install Type"
+        },
+        {
+            "attribute_name": "pvm_ibmi_ipaddress_protocol",
+            "possible_values": ["IPv4", "IPv6"],
+            "default_values": ["IPv4"],
+            "helpText": "Specifies whether the IP address protocol for IBMi network install is IPv4 or IPv6.",
+            "displayName": "IBMi IP Address Protocol"
         }
     ]
 }
