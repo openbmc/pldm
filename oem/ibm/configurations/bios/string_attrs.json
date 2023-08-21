@@ -230,6 +230,76 @@
             "default_string": "",
             "helpText": "Specifies the first workstation that the system will activate in the logical partition.",
             "displayName": "Tagged IBMi Console"
+        },
+        {
+            "attribute_name": "pvm_ibmi_server_ipaddress",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 15,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the IP address of the boot server or the iSCSI target that contains the network installation image for the IBMi partition.",
+            "displayName": "Server IP Address"
+        },
+        {
+            "attribute_name": "pvm_ibmi_local_ipaddress",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 15,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the local IP address for an IBMi network install in the protocol specified by IBMi IP Address Protocol.",
+            "displayName": "Local IP Address"
+        },
+        {
+            "attribute_name": "pvm_ibmi_subnet_mask",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 15,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the subnet mask for an IBMi network install when the IBMi IP Address Protocol is IPv4.",
+            "displayName": "Subnet Mask"
+        },
+        {
+            "attribute_name": "pvm_ibmi_gateway_ipaddress",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 15,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the Gateway IP address for an IBMi network install in the protocol specified by IBMi IP Address Protocol.",
+            "displayName": "Gateway IP Address"
+        },
+        {
+            "attribute_name": "pvm_ibmi_nfs_image_directory",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 127,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the directory path on the boot server that contains the network installation image for the IBMi partition.",
+            "displayName": "Image Directory Path"
+        },
+        {
+            "attribute_name": "pvm_ibmi_iscsi_target_name",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 223,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the name of the iSCSI target that contains the network installation image for the IBMi partition.",
+            "displayName": "Target Name"
+        },
+        {
+            "attribute_name": "pvm_ibmi_iscsi_initiator_name",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 223,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the name of the iSCSI initiator associated with the iSCSI target. PHYP will generate an initial initiator name which the user can change. PHYP will restore the initial value if the value is changed.",
+            "displayName": "Initiator Name"
         }
     ]
 }
