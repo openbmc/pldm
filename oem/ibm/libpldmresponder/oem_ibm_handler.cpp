@@ -542,7 +542,7 @@ void pldm::responder::oem_ibm_platform::Handler::resetWatchDogTimer()
             bus.new_method_call(watchDogService, watchDogObjectPath,
                                 watchDogInterface, watchDogResetPropName);
         resetMethod.append(true);
-        bus.call_noreply(resetMethod);
+        bus.call_noreply(resetMethod, dbusTimeout);
     }
     catch (const std::exception& e)
     {

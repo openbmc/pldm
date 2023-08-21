@@ -268,7 +268,7 @@ void reportError(const char* errorMsg)
                                           logInterface, "Create");
         std::map<std::string, std::string> addlData{};
         method.append(errorMsg, severity, addlData);
-        bus.call_noreply(method);
+        bus.call_noreply(method, dbusTimeout);
     }
     catch (const std::exception& e)
     {
@@ -289,7 +289,7 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
             service.c_str(), dBusMap.objectPath.c_str(), dbusProperties, "Set");
         method.append(dBusMap.interface.c_str(), dBusMap.propertyName.c_str(),
                       variant);
-        bus.call_noreply(method);
+        bus.call_noreply(method, dbusTimeout);
     };
 
     if (dBusMap.propertyType == "uint8_t")
