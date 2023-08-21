@@ -232,7 +232,9 @@ int PelHandler::fileAck(uint8_t /*fileStatus*/)
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "HostAck");
         method.append(fileHandle);
-        bus.call_noreply(method);
+        bus.call_noreply(
+            method,
+            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
     }
     catch (const std::exception& e)
     {
@@ -267,7 +269,9 @@ int PelHandler::storePel(std::string&& pelFileName)
                                           logInterface, "Create");
         method.append("xyz.openbmc_project.Host.Error.Event", severity,
                       addlData);
-        bus.call_noreply(method);
+        bus.call_noreply(
+            method,
+            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
     }
     catch (const std::exception& e)
     {

@@ -139,7 +139,9 @@ int DumpHandler::newFileAvailable(uint64_t length)
         auto method = bus.new_method_call(service.c_str(), notifyObjPath,
                                           dumpInterface, "Notify");
         method.append(fileHandle, length);
-        bus.call_noreply(method);
+        bus.call_noreply(
+            method,
+            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
     }
     catch (const std::exception& e)
     {
