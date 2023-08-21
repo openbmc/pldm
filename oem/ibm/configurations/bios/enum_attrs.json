@@ -197,15 +197,15 @@
             "attribute_name": "pvm_os_boot_type",
             "possible_values": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "default_values": ["A_Mode"],
-            "helpText": "Select the IBMi partition boot mode for next system boot. A_Mode: Boot from disk using copy A, B_Mode: Boot from disk using copy B, C_Mode: Reserved for IBM lab use only, D_Mode: Boot from media/drives.",
-            "displayName": "IBMi Partition Boot Mode"
+            "helpText": "Select the IBM i partition boot mode for next system boot. A_Mode: Boot from disk using copy A, B_Mode: Boot from disk using copy B, C_Mode: Reserved for IBM lab use only, D_Mode: Boot from media/drives.",
+            "displayName": "IBM i Partition Boot Mode"
         },
         {
             "attribute_name": "pvm_os_boot_type_current",
             "possible_values": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "default_values": ["A_Mode"],
-            "helpText": "Specifies the current IBMi partition boot mode for next system boot. Do not set this attribute directly; set pvm_os_boot_type instead.",
-            "displayName": "IBMi Partition Boot Mode (current)",
+            "helpText": "Specifies the current IBM i partition boot mode for next system boot. Do not set this attribute directly; set pvm_os_boot_type instead.",
+            "displayName": "IBM i Partition Boot Mode (current)",
             "readOnly": true
         },
         {
@@ -551,6 +551,27 @@
                 "property_type": "bool",
                 "property_values": [true, false]
             }
+        },
+        {
+            "attribute_name": "pvm_ibmi_network_install_type",
+            "possible_values": ["Disabled", "NFS", "iSCSI"],
+            "default_values": ["Disabled"],
+            "helpText": "Specifies whether the IBM i network install type is NFS Optical or iSCSI Tape. Disabled: indicates the IBM i Network Install BIOS attributes should not be used.",
+            "displayName": "IBM i Network Install Type"
+        },
+        {
+            "attribute_name": "pvm_ibmi_ipaddress_protocol",
+            "possible_values": ["IPv4", "IPv6"],
+            "default_values": ["IPv4"],
+            "helpText": "Specifies whether the IP address protocol for IBM i network install is IPv4 or IPv6.",
+            "displayName": "IBM i IP Address Protocol"
+        },
+        {
+            "attribute_name": "pvm_ibmi_max_frame_size",
+            "possible_values": ["MTU1500", "MTU9000"],
+            "default_values": ["MTU1500"],
+            "helpText": "Specifies the maximum frame size (maximum transmission unit, MTU). The value is in terms of bytes per packet size.",
+            "displayName": "Maximum Frame Size"
         }
     ]
 }
