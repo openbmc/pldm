@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9ff3f76_67b1fff3",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-22T01:38:21Z",
+      "side": 1,
+      "message": "s/contanied/contained/ is correct\nDone",
+      "parentUuid": "c31e056f_1e22a4e4",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37da5685_ddecdfc2",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-08-16T06:43:40Z",
       "side": 1,
       "message": "As above.",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7253d69a_d0bf94d3",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-22T01:38:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37da5685_ddecdfc2",
       "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32b16c39_21974e62",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-22T01:38:21Z",
+      "side": 1,
+      "message": "\u003e You can embed this `break` in the loop condition, right? That feels like an improvement to readability (fewer loop exit points).\n\u003e \n\u003e ```\n\u003e for (size_t i \u003d 1; i \u003c evs.size() \u0026\u0026 !find; i++) {\n\u003e     ...\n\u003e }\n\u003e ```\n\u003e \n\u003e Also I think it would be an improvement to `s/find/found/`, but also, perhaps don\u0027t open-code the loop and instead extract it into a separate function.\n\u003e \n\nThanks arj\nDone.\n\n\u003e Further, is there a better datastructure for all this? A three-dimensional search space feels like it could lead to performance issues.\n\nYes, I agree to do some refactoring here if there is a better way.",
+      "parentUuid": "e3026c7f_d1a17df8",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2753f42f_134b478d",
@@ -82,6 +136,24 @@
       "writtenOn": "2023-08-16T06:43:40Z",
       "side": 1,
       "message": "Why not move this to below line 42? Or, perhaps you could do it in the loop header?\n\n```\nfor (auto it \u003d parents.begin();\n     it !\u003d parents.end();\n     it \u003d find ? parents.erase(it) : std::next(it)) {\n    ...\n}\n```",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a102d8_85b3d2d1",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-22T01:38:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2753f42f_134b478d",
       "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -103,6 +175,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fb1b444_ee8f744d",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-22T01:38:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d67b3d50_371bee42",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aec2dcc5_5e9da60a",
@@ -120,6 +210,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32bdced7_e080da74",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-22T01:38:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aec2dcc5_5e9da60a",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67b67a44_085fca75",
@@ -133,6 +241,24 @@
       "writtenOn": "2023-08-16T06:43:40Z",
       "side": 1,
       "message": "What are we trying to do here? Why are assigning the entity into the map if the call fails?",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd0264f_e2cb4aa8",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-22T01:38:21Z",
+      "side": 1,
+      "message": "My understanding is that if the current path exists on the DBus, it doesn\u0027t need to be added to the map, but I don\u0027t know what the purpose of this is, I remember here is the change made by @Manoj, could you please explain?\nThere will be problems here in our system, and we have removed this judgment logic.",
+      "parentUuid": "67b67a44_085fca75",
       "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
