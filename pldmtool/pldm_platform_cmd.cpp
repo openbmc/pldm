@@ -529,8 +529,10 @@ class GetPDR : public CommandInterface
         {PLDM_STATE_SET_BOOT_PROG_STATE_OSSTART, "OSStart"}};
 
     static inline const std::map<uint8_t, std::string> setOpFaultStatus{
-        {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS_NORMAL, "Normal"},
-        {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS_STRESSED, "Stressed"}};
+        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_NORMAL, "Normal"},
+        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_ERROR, "Error"},
+        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_NON_RECOVERABLE_ERROR,
+         "Non Recoverable Error"}};
 
     static inline const std::map<uint8_t, std::string> setSysPowerState{
         {PLDM_STATE_SET_SYS_POWER_STATE_OFF_SOFT_GRACEFUL,
@@ -1156,8 +1158,8 @@ class GetPDR : public CommandInterface
             {
                 std::cerr << "PDR type '" << pdrRecType
                           << "' is not supported or invalid\n";
-                // PDR type not supported, setting next record handle to 0
-                // to avoid looping through all PDR records
+                // PDR type not supported, setting next record handle to
+                // 0 to avoid looping through all PDR records
                 nextRecordHndl = 0;
                 return;
             }
