@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4032a124_2ed46e2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-22T21:58:51Z",
+      "side": 1,
+      "message": "About handling the respond to a PLDM request message, we still keep asynchronous approach. The caller of `registerRequest` still registers the request and when the response message comes the callback functions `responseHandler` will be called. No need to wait for the response.\n\nBut for sending/receiving the PLDM Messages we have to move back to \"synchronous approach\" to meet \"Requirements for requesters\" as DSP0240 spec.",
+      "parentUuid": "4d387317_c848ceca",
+      "revId": "3efeb368590bc989f8871a06eaf8b134bfb67cba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dde65b6e_028d77b0",
         "filename": "requester/handler.hpp",
         "patchSetId": 4
@@ -31,6 +49,42 @@
       "writtenOn": "2023-08-22T10:22:37Z",
       "side": 1,
       "message": "Can we have both these above `if` checks in a single `if` condition?",
+      "revId": "3efeb368590bc989f8871a06eaf8b134bfb67cba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ebd3493_e3c3d447",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-22T21:58:51Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "dde65b6e_028d77b0",
+      "revId": "3efeb368590bc989f8871a06eaf8b134bfb67cba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f82a7c15_d86275fe",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-22T21:58:51Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "dde65b6e_028d77b0",
       "revId": "3efeb368590bc989f8871a06eaf8b134bfb67cba",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
