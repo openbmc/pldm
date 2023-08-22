@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6e4cb9c_edfb8e4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-22T23:33:54Z",
+      "side": 1,
+      "message": "\u003e But for sending/receiving the PLDM Messages we have to move back to \"synchronous approach\" to meet \"Requirements for requesters\" as DSP0240 spec.\nActually, we still keep the asynchronous approach in sending/receiving the PLDM Messages. Handler sends the message and handles response when it is available. It does not wait for the response.",
+      "parentUuid": "4032a124_2ed46e2c",
+      "revId": "3efeb368590bc989f8871a06eaf8b134bfb67cba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dde65b6e_028d77b0",
         "filename": "requester/handler.hpp",
         "patchSetId": 4
