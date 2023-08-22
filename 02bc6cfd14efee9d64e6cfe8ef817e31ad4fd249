@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96de79f4_82811dcb",
+        "filename": "meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-22T08:05:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fd3ac4d_211072e6",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "830b38ea_744774e3",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-08-18T09:10:33Z",
       "side": 1,
       "message": "maybe `union TransportImpl` ?",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9675076b_64a5ea8e",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-22T08:05:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "830b38ea_744774e3",
       "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9514880b_5aa389d2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-22T08:05:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6267656d_dd58d016",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16d0c846_5b793980",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-08-18T09:10:33Z",
       "side": 1,
       "message": "because you\u0027re conditionally calling them here anyway.",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a25e259_18cbac0b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-22T08:05:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16d0c846_5b793980",
       "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1f93931_95c96832",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-22T08:05:52Z",
+      "side": 1,
+      "message": "Thank you for suggestion. We revised the code following the sketch.",
+      "parentUuid": "2ab6d187_1e968b14",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29a30556_0f272d4b",
@@ -99,6 +189,24 @@
       "writtenOn": "2023-08-18T09:10:33Z",
       "side": 1,
       "message": "Consider the strategy I outlined for `pldmd/pldmd.cpp` here too.",
+      "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5d40d9b_1c3972d7",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-22T08:05:52Z",
+      "side": 1,
+      "message": "We revised the code using the transport APIs. We tested and verified the function of af-mctp APIs. However, we are not sure the functionality of mctp-demux APIs.",
+      "parentUuid": "29a30556_0f272d4b",
       "revId": "02bc6cfd14efee9d64e6cfe8ef817e31ad4fd249",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
