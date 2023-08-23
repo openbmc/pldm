@@ -99,8 +99,7 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                 // present
                 if (!pdr->entity_type)
                 {
-                    std::cerr << "The entity path for the FRU is not present."
-                              << std::endl;
+                    error("The entity path for the FRU is not present.");
                     continue;
                 }
             }

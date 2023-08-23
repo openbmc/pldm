@@ -148,9 +148,9 @@ static std::optional<Response>
 
 void optionUsage(void)
 {
-    error("Usage: pldmd [options]");
-    error("Options:");
-    error(" [--verbose] - would enable verbosity");
+    info("Usage: pldmd [options]");
+    info("Options:");
+    info(" [--verbose] - would enable verbosity");
 }
 
 int main(int argc, char** argv)
