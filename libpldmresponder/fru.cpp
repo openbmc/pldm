@@ -65,7 +65,7 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
     while (!tmpObj.empty())
     {
         std::string s = tmpObj.top();
-        std::cout << s << std::endl;
+        info("{TMP_OBJ_STR}", "TMP_OBJ_PATH", s);
         tmpObj.pop();
     }
     // Update pldm entity to assocition tree
@@ -208,7 +208,7 @@ void FruImpl::buildFRUTable()
                 }
                 catch (const std::exception& e)
                 {
-                    info(
+                    error(
                         "Config JSONs missing for the item interface type, interface = {INTF}",
                         "INTF", interface.first);
                     break;
