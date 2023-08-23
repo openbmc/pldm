@@ -39,80 +39,85 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Get keyword error from dbus interface : "
-                  << keywrdInterface << " ERROR= " << e.what() << std::endl;
+        error(
+            "Get keyword error from dbus interface :{KEYWORD_INTF} ERROR={ERR_EXCEP}",
+            "KEYWORD_INTF", keywrdInterface, "ERR_EXCEP", e.what());
     }
 
     uint32_t keywrdSize = std::get<std::vector<byte>>(keywrd).size();
-
-    if (length < keywrdSize)
     {
-        std::cerr << "length requested is less the keyword size, length: "
-                  << length << " keyword size: " << keywrdSize << std::endl;
-        return PLDM_ERROR_INVALID_DATA;
+        if (length < keywrdSize)
+        {
+            error(
+                "length requested is less the keyword size, length:{LEN} keyword size:{KEYWORD_SIZE}",
+                "LEN", length, "KEYWORD_SIZE", keywrdSize);
+            return PLDM_ERROR_INVALID_DATA;
+        }
+
+        namespace fs = std::filesystem;
+        constexpr auto keywrdDirPath = "/tmp/pldm/";
+        constexpr auto keywrdFilePath = "/tmp/pldm/vpdKeywrd.bin";
+
+        if (!fs::exists(keywrdDirPath))
+        {
+            fs::create_directories(keywrdDirPath);
+            fs::permissions(keywrdDirPath,
+                            fs::perms::others_read | fs::perms::owner_write);
+        }
+
+        std::ofstream keywrdFile(keywrdFilePath);
+        auto fd = open(keywrdFilePath, std::ios::out | std::ofstream::binary);
+        if (!keywrdFile)
+        {
+            error(
+                "VPD keyword file open error: {KEYWORD_FILE_PATH} errno: {ERR}",
+                "KEYWORD_FILE_PATH", keywrdFilePath, "ERR", errno);
+            pldm::utils::reportError(
+                "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileOpenError");
+            return PLDM_ERROR;
+        }
+
+        if (offset > keywrdSize)
+        {
+            error(
+                "Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE}",
+                "OFFSET", offset, "FILE_SIZE", keywrdSize);
+            return PLDM_DATA_OUT_OF_RANGE;
+        }
+
+        // length of keyword data should be same as keyword data size in dbus
+        // object
+        length = static_cast<uint32_t>(keywrdSize) - offset;
+
+        auto returnCode = lseek(fd, offset, SEEK_SET);
+        if (returnCode == -1)
+        {
+            error(
+                "Could not find keyword data at given offset. File Seek failed");
+            return PLDM_ERROR;
+        }
+
+        keywrdFile.write(
+            (const char*)std::get<std::vector<byte>>(keywrd).data(),
+            keywrdSize);
+        if (keywrdFile.bad())
+        {
+            error("Error while writing to file: {KEYWORD_FILE_PATH}",
+                  "KEYWORD_FILE_PATH", keywrdFilePath);
+        }
+        keywrdFile.close();
+
+        auto rc = readFile(keywrdFilePath, offset, keywrdSize, response);
+        fs::remove(keywrdFilePath);
+        if (rc)
+        {
+            error("Read error for keyword file with size: {KEYWORD_SIZE}",
+                  "KEYWORD_SIZE", keywrdSize);
+            pldm::utils::reportError(
+                "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileReadError");
+            return PLDM_ERROR;
+        }
+        return PLDM_SUCCESS;
     }
-
-    namespace fs = std::filesystem;
-    constexpr auto keywrdDirPath = "/tmp/pldm/";
-    constexpr auto keywrdFilePath = "/tmp/pldm/vpdKeywrd.bin";
-
-    if (!fs::exists(keywrdDirPath))
-    {
-        fs::create_directories(keywrdDirPath);
-        fs::permissions(keywrdDirPath,
-                        fs::perms::others_read | fs::perms::owner_write);
-    }
-
-    std::ofstream keywrdFile(keywrdFilePath);
-    auto fd = open(keywrdFilePath, std::ios::out | std::ofstream::binary);
-    if (!keywrdFile)
-    {
-        std::cerr << "VPD keyword file open error: " << keywrdFilePath
-                  << " errno: " << errno << std::endl;
-        pldm::utils::reportError(
-            "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileOpenError");
-        return PLDM_ERROR;
-    }
-
-    if (offset > keywrdSize)
-    {
-        std::cerr << "Offset exceeds file size, OFFSET=" << offset
-                  << " FILE_SIZE=" << keywrdSize << std::endl;
-        return PLDM_DATA_OUT_OF_RANGE;
-    }
-
-    // length of keyword data should be same as keyword data size in dbus object
-    length = static_cast<uint32_t>(keywrdSize) - offset;
-
-    auto returnCode = lseek(fd, offset, SEEK_SET);
-    if (returnCode == -1)
-    {
-        std::cerr
-            << "Could not find keyword data at given offset. File Seek failed"
-            << std::endl;
-        return PLDM_ERROR;
-    }
-
-    keywrdFile.write((const char*)std::get<std::vector<byte>>(keywrd).data(),
-                     keywrdSize);
-    if (keywrdFile.bad())
-    {
-        std::cerr << "Error while writing to file: " << keywrdFilePath
-                  << std::endl;
-    }
-    keywrdFile.close();
-
-    auto rc = readFile(keywrdFilePath, offset, keywrdSize, response);
-    fs::remove(keywrdFilePath);
-    if (rc)
-    {
-        std::cerr << "Read error for keyword file with size: " << keywrdSize
-                  << std::endl;
-        pldm::utils::reportError(
-            "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileReadError");
-        return PLDM_ERROR;
-    }
-    return PLDM_SUCCESS;
-}
 } // namespace responder
 } // namespace pldm
