@@ -37,7 +37,7 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     if (rc != PLDM_SUCCESS)
     {
         error(
-            "Wrong filed for integer attribute, ATTRIBUTE_NAME={ATTR_NAME} ERRMSG= {ERR_MSG} LOWER_BOUND={LOW_BOUND} UPPER_BOUND={UPPER_BOUND} DEFAULT_VALUE={DEF_VAL} SCALAR_INCREMENT={SCALAR_INCREMENT}",
+            "Wrong field for integer attribute, ATTRIBUTE_NAME={ATTR_NAME} ERRMSG= {ERR_MSG} LOWER_BOUND={LOW_BOUND} UPPER_BOUND={UPPER_BOUND} DEFAULT_VALUE={DEF_VAL} SCALAR_INCREMENT={SCALAR_INCREMENT}",
             "ATTR_NAME", attr.c_str(), "ERR_MSG", errmsg, "LOW_BOUND",
             integerInfo.lowerBound, "UPPER_BOUND", integerInfo.upperBound,
             "DEF_VAL", integerInfo.defaultValue, "SCALAR_INCREMENT",
