@@ -197,13 +197,11 @@ TEST(getPDR, testFindPDR)
                                            // current is not what we want
 
         pldm_pdr_hdr* hdr = reinterpret_cast<pldm_pdr_hdr*>(resp->record_data);
-        std::cerr << "PDR next record handle " << handle << "\n";
-        std::cerr << "PDR type " << hdr->type << "\n";
         if (hdr->type == PLDM_STATE_EFFECTER_PDR)
         {
             pldm_state_effecter_pdr* pdr =
                 reinterpret_cast<pldm_state_effecter_pdr*>(resp->record_data);
-            std::cerr << "PDR entity type " << pdr->entity_type << "\n";
+                  pdr->entity_type);
             if (pdr->entity_type == 100)
             {
                 found = true;
