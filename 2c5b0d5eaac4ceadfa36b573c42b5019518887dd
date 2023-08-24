@@ -205,6 +205,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "867eefe7_e5dc6a3d",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-24T01:12:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40352a16_fd1b7ee2",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad4b8367_e240c56e",
@@ -236,6 +254,24 @@
       "side": 1,
       "message": "We tried to make it cleaner to read. Would need your feedback on this change.",
       "parentUuid": "ad4b8367_e240c56e",
+      "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14888e70_64284401",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-24T01:12:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edb33abf_f4285d30",
       "revId": "2c5b0d5eaac4ceadfa36b573c42b5019518887dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
