@@ -158,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78c286e2_627e550e",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-24T05:24:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cb82129_51871eb5",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e204dc8f_40f93e86",
@@ -275,6 +293,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "540092a4_15590beb",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-24T05:24:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb667eb4_b7b6eec2",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e154bec_57610dc6",
@@ -310,6 +346,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c0730e3_e46603c9",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-24T05:24:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79893e41_6ac4b352",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e76dede6_4fc454d8",
@@ -341,6 +395,24 @@
       "side": 1,
       "message": "We need the fd to resize the send buf of the socket if the message is bigger than the send buf. \n\nWe can only get the fd from `struct pldm_transport_mctp_demux` via `pldm_transport_mctp_demux_init_pollfd` but atm we\u0027re passing around the generic  `struct pldm_transport`. We currently don\u0027t have a mechanism to get from the generic to the specific struct.\n\nWhat makes more sense though is for the resizing of the socket sendbuf to be in libpldm, which I\u0027m slowly slowly working on (https://gerrit.openbmc.org/c/openbmc/libpldm/+/63842).",
       "parentUuid": "e76dede6_4fc454d8",
+      "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cfa5ad6_31f7d8f9",
+        "filename": "requester/request.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-24T05:24:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bf93c25_37a2fc29",
       "revId": "eefefcf832abb1701d173d05fe7c1981231e3d70",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
