@@ -139,13 +139,13 @@ TEST(FruImpl, updateAssociationTreeTest)
     EXPECT_TRUE(node != NULL);
 
     node = pldm_entity_association_tree_find(entityTree.get(), &chassisEntity);
-    EXPECT_TRUE(node != NULL);
+    ASSERT_TRUE(node != NULL);
     test_pldm_entity_node* test_node = (test_pldm_entity_node*)node;
     EXPECT_TRUE((test_node->parent).entity_type == systemEntity.entity_type);
 
     node = pldm_entity_association_tree_find(entityTree.get(),
                                              &motherboardEntity);
-    EXPECT_TRUE(node != NULL);
+    ASSERT_TRUE(node != NULL);
     test_node = (test_pldm_entity_node*)node;
     EXPECT_TRUE((test_node->parent).entity_type == chassisEntity.entity_type);
 
