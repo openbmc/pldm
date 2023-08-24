@@ -16,6 +16,24 @@
       "message": "This code is handling the PLDM message to BMC right? Do we have any reason to remove it?",
       "revId": "5403ed02fa93eb5a63efdcd41a14d070999b0eb9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77096bf2_fd440b53",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-24T11:57:09Z",
+      "side": 0,
+      "message": "it\u0027s using the TransportImpl type below. Delphine/Bonnie\u0027s patch just copy/pasted the implementation in pldmd/pldmd.cpp. I\u0027ve instead put that in common/transport.[ch]pp and referenced it here and in pldmd/pldmd.cpp",
+      "parentUuid": "8db74216_bcf4932d",
+      "revId": "5403ed02fa93eb5a63efdcd41a14d070999b0eb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
