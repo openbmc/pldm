@@ -52,6 +52,24 @@
       "parentUuid": "77096bf2_fd440b53",
       "revId": "5403ed02fa93eb5a63efdcd41a14d070999b0eb9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c96c571_c3584ffc",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-08-25T23:17:17Z",
+      "side": 0,
+      "message": "\u003e Hi Thu Nguyen,\n\u003e Did you got any error message? We would need that for further investigation.\n\nThe error messages:\n```\n# pldmtool base GetPLDMVersion -m 8 -t 0 -v\npldmtool: Tx: 85 00 03 00 00 00 00 01 00\npldmtool: Rx: 85 00 03 00 00 00 00 01 00\nResponse Message Error: rc\u003d3,cc\u003d0\n# pldmtool base GetPLDMTypes -m 8 -v\npldmtool: Tx: 86 00 04\npldmtool: Rx: 86 00 04\nResponse Message Error: rc\u003d0,cc\u003d2\n# pldmtool base GetPLDMTypes -m 8 -v\npldmtool: Tx: 8b 00 04\npldmtool: Rx: 8b 00 04\nResponse Message Error: rc\u003d3,cc\u003d0\n```\nBut as my investigate, it seem the issue come from libpldmresponder but not from the patch set.\nMoreover, the error only happens when we access the BMC EID which does not usually use by end user. Let continue with this patch set and back to issue with libpldmresponder later.",
+      "parentUuid": "1a3babad_98e4b921",
+      "revId": "5403ed02fa93eb5a63efdcd41a14d070999b0eb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
