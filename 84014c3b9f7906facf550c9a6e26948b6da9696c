@@ -261,6 +261,24 @@
       "parentUuid": "67b67a44_085fca75",
       "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e410816_7aa62a1e",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-28T11:07:18Z",
+      "side": 1,
+      "message": "I think the reason was , that we dont want redundant objects to be created.\n\nFor example, the logic here would create things like \n\n\u003e inventory/system/chassis (or) inventory/system/chassis/motherboard -\u003e based on the PDR\u0027s obtained from the remote PLDM terminus, but that is redundant as the chassis object is hosted by other daemons like entity manager or Inventory manager.\n\n\nThe idea here is , check if there is an object with the same object path by other daemons before hosting them.",
+      "parentUuid": "9cd0264f_e2cb4aa8",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

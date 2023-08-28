@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "a574180b_854ff418",
         "filename": "/COMMIT_MSG",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "Can you please add the test cases on how did you test this commit ?",
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "79baef97_7dfb3564",
         "filename": "/COMMIT_MSG",
@@ -32,10 +33,10 @@
       "message": "Sorry, Since we do not have test environment(all data is sent from the host), Could you help us to test it? Thanks",
       "parentUuid": "a574180b_854ff418",
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "1771a947_1a580782",
         "filename": "/COMMIT_MSG",
@@ -50,10 +51,10 @@
       "message": "Sure i can help you with that.",
       "parentUuid": "79baef97_7dfb3564",
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "f535c3a4_515ba020",
         "filename": "/COMMIT_MSG",
@@ -68,10 +69,10 @@
       "message": "Sure, Thanks",
       "parentUuid": "1771a947_1a580782",
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d690e255_cecc12a6",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -91,10 +92,10 @@
         "endChar": 61
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "5d0043e2_e1b01da4",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -115,10 +116,10 @@
         "endChar": 61
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "db8bf423_d49b90ff",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -139,10 +140,10 @@
         "endChar": 61
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "f27481eb_eec03e2f",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -162,10 +163,10 @@
         "endChar": 27
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "b5bbe373_b27b8f67",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -186,10 +187,10 @@
         "endChar": 27
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "8ed26b67_b5d5191a",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -209,10 +210,10 @@
         "endChar": 13
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "25dcc24c_a3c77404",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -233,10 +234,10 @@
         "endChar": 13
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "dfbf994d_f1221d73",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -257,10 +258,10 @@
         "endChar": 13
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "68510cdd_523885e2",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -281,10 +282,10 @@
         "endChar": 13
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d20b5b5b_2adfd8a4",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -304,10 +305,10 @@
         "endChar": 44
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "90eecb7d_ec852699",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -328,10 +329,10 @@
         "endChar": 44
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "f2f02461_269f792a",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -351,10 +352,10 @@
         "endChar": 12
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "f4d5839f_d98aa3f0",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -375,10 +376,10 @@
         "endChar": 44
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a2d7e2d5_a18e3400",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -399,10 +400,34 @@
         "endChar": 12
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3f015f_33f945f7",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-28T11:07:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a2d7e2d5_a18e3400",
+      "range": {
+        "startLine": 222,
+        "startChar": 3,
+        "endLine": 222,
+        "endChar": 12
+      },
+      "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "c81642de_e7a0a739",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -422,10 +447,10 @@
         "endChar": 34
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "ecc670bf_86696d2b",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -446,10 +471,10 @@
         "endChar": 34
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "00ebefb9_421ebf4c",
         "filename": "host-bmc/host_pdr_handler.hpp",
@@ -470,8 +495,7 @@
         "endChar": 34
       },
       "revId": "c9bb1c7b85a05a8ab915856265074776e400de51",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

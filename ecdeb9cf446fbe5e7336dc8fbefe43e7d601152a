@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c4c726e_07ae83a2",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-28T11:07:18Z",
+      "side": 1,
+      "message": "i think its better to add a trace here, to indicate if the entity obtained from remote PLDM terminus - does not have a string entry in the MAP ? or does not have the aux names PDR ?",
+      "range": {
+        "startLine": 69,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "ecdeb9cf446fbe5e7336dc8fbefe43e7d601152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18161ba_a86567eb",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-28T11:07:18Z",
+      "side": 1,
+      "message": "const auto\u0026 ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 15
+      },
+      "revId": "ecdeb9cf446fbe5e7336dc8fbefe43e7d601152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d54b32_3a7a0bfc",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-28T11:07:18Z",
+      "side": 1,
+      "message": "const auto \u0026",
+      "range": {
+        "startLine": 138,
+        "startChar": 9,
+        "endLine": 138,
+        "endChar": 14
+      },
+      "revId": "ecdeb9cf446fbe5e7336dc8fbefe43e7d601152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56ed9367_3bdc9ed1",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-28T11:07:18Z",
+      "side": 1,
+      "message": "PLDM moved to LG2 based logging, please migrate all the tracing to LG2 here as well all the places in the commit.",
+      "range": {
+        "startLine": 166,
+        "startChar": 16,
+        "endLine": 170,
+        "endChar": 57
+      },
+      "revId": "ecdeb9cf446fbe5e7336dc8fbefe43e7d601152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6aaeac23_4cbea022",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-28T11:07:18Z",
+      "side": 1,
+      "message": "I think ideally , we would want this map to be moved into a JSON file \u0026 we need to update the name from the entity aux names PDR -  and if the aux names PDR is not found , then look into the JSON and get the string.\n\n@George / @sagar - is this something that you have in plan ? because we dont want to have assumptions on how the objects are named.\n\nFor example - company x might want an object of type entity_connector - as usb-c connector , while  company y might want to name is as just VGA connector.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 42
+      },
+      "revId": "ecdeb9cf446fbe5e7336dc8fbefe43e7d601152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
