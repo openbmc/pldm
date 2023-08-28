@@ -70,6 +70,24 @@
       "parentUuid": "1a3babad_98e4b921",
       "revId": "5403ed02fa93eb5a63efdcd41a14d070999b0eb9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e42a073_0531ff16",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-08-28T11:07:34Z",
+      "side": 0,
+      "message": "@Thu: Can you reproduce the problem if you revert this patch?",
+      "parentUuid": "2c96c571_c3584ffc",
+      "revId": "5403ed02fa93eb5a63efdcd41a14d070999b0eb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
