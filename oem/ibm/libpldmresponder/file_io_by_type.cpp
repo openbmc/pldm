@@ -1,6 +1,7 @@
-#include "file_io_by_type.hpp"
+#include "config.h"
 
 #include "common/utils.hpp"
+#include "file_io.hpp"
 #include "file_io_type_cert.hpp"
 #include "file_io_type_dump.hpp"
 #include "file_io_type_lid.hpp"
