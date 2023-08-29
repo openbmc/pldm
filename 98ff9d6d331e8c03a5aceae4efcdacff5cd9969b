@@ -511,6 +511,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64e043fd_85d50762",
+        "filename": "pldmd/PldmRespInterface.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-08-29T05:53:46Z",
+      "side": 1,
+      "message": "since we are checking key inside map to generate unique key and map.find function check key is present or not and it\u0027s return key, but range based for loop returns single element of map so can\u0027t possible to check every key so as per old logic is easy to identify unique key.",
+      "parentUuid": "41cca687_d583e9cb",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77ee1ad1_385f9dec",
@@ -528,6 +546,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdce8202_9e2ce096",
+        "filename": "pldmd/PldmRespInterface.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-08-29T05:53:46Z",
+      "side": 1,
+      "message": "map doesn\u0027t have contain member function.",
+      "parentUuid": "77ee1ad1_385f9dec",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fbb453c_becd4bd2",
@@ -541,6 +577,24 @@
       "writtenOn": "2023-07-18T10:27:19Z",
       "side": 1,
       "message": "Use the unordered map",
+      "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4d0c6fc_f2bf24cf",
+        "filename": "pldmd/PldmRespInterface.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-08-29T05:53:46Z",
+      "side": 1,
+      "message": "unique key generation is more faster if map data is sorted so don\u0027t want to use unordered map.",
+      "parentUuid": "7fbb453c_becd4bd2",
       "revId": "98ff9d6d331e8c03a5aceae4efcdacff5cd9969b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
