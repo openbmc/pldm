@@ -279,6 +279,24 @@
       "parentUuid": "9cd0264f_e2cb4aa8",
       "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b893c27e_5964fe8e",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-08-30T07:51:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7e410816_7aa62a1e",
+      "revId": "84014c3b9f7906facf550c9a6e26948b6da9696c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
