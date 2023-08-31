@@ -258,6 +258,30 @@
       },
       "revId": "ecdeb9cf446fbe5e7336dc8fbefe43e7d601152a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45fd500e_20318466",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-08-31T03:56:12Z",
+      "side": 1,
+      "message": "sure, i am okay if we want to take this in a different commit.",
+      "parentUuid": "999de832_3578698a",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 42
+      },
+      "revId": "ecdeb9cf446fbe5e7336dc8fbefe43e7d601152a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
