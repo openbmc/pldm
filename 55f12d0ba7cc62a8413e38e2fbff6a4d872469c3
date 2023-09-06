@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7ba5797_bb3afaf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 115
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-06T13:12:08Z",
+      "side": 1,
+      "message": "@Thu - wanna check this commit again and provide feedback ?",
+      "revId": "55f12d0ba7cc62a8413e38e2fbff6a4d872469c3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
