@@ -22,6 +22,30 @@
       },
       "revId": "20a70c1b1c86b4f2cac53f5e7b007f360d545a21",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95f4c2d5_2ee0f04b",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-09-06T01:59:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ca6d22e0_747d93f5",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 53
+      },
+      "revId": "20a70c1b1c86b4f2cac53f5e7b007f360d545a21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
