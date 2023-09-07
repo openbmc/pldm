@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "pldmd/instance_id.hpp"
 
 #include <err.h>
 #include <libpldm/base.h>
@@ -137,6 +138,7 @@ class CommandInterface
 
   protected:
     uint8_t instanceId;
+    pldm::InstanceIdDb instanceIdDb;
 };
 
 } // namespace helper
