@@ -1,6 +1,7 @@
 #include "softoff.hpp"
 
 #include "common/utils.hpp"
+#include "pldmd/instance_id.hpp"
 
 #include <libpldm/entity.h>
 #include <libpldm/platform.h>
@@ -294,27 +295,10 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     uint8_t instanceID;
 
     mctpEID = pldm::utils::readHostEID();
+    // TODO: fix mapping to work around OpenBMC ecosystem deficiencies
+    pldm_tid_t pldmTID = static_cast<pldm_tid_t>(mctpEID);
 
     // Get instanceID
-    try
-    {
-        auto& bus = pldm::utils::DBusHandler::getBus();
-        auto method = bus.new_method_call(
-            "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
-            "xyz.openbmc_project.PLDM.Requester", "GetInstanceId");
-        method.append(mctpEID);
-
-        auto ResponseMsg = bus.call(method, dbusTimeout);
-
-        ResponseMsg.read(instanceID);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("PLDM soft off: Error get instanceID,ERROR={ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
-        return PLDM_ERROR;
-    }
-
     std::array<uint8_t, sizeof(pldm_msg_hdr) + sizeof(effecterID) +
                             sizeof(effecterCount) +
                             sizeof(set_effecter_state_field)>
@@ -322,10 +306,13 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     set_effecter_state_field stateField{
         PLDM_REQUEST_SET, PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED};
+    pldm::InstanceIdDb instanceIdDb;
+    instanceID = instanceIdDb.next(pldmTID);
     auto rc = encode_set_state_effecter_states_req(
         instanceID, effecterID, effecterCount, &stateField, request);
     if (rc != PLDM_SUCCESS)
     {
+        instanceIdDb.free(pldmTID, instanceID);
         error("Message encode failure. PLDM error code = {RC}", "RC", lg2::hex,
               static_cast<int>(rc));
         return PLDM_ERROR;
@@ -341,9 +328,10 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 
     // Add a timer to the event loop, default 30s.
     auto timerCallback =
-        [=, this](Timer& /*source*/, Timer::TimePoint /*time*/) {
+        [=, this](Timer& /*source*/, Timer::TimePoint /*time*/) mutable {
         if (!responseReceived)
         {
+            instanceIdDb.free(pldmTID, instanceID);
             error(
                 "PLDM soft off: ERROR! Can't get the response for the PLDM request msg. Time out! Exit the pldm-softpoweroff");
             exit(-1);
@@ -354,7 +342,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                std::chrono::seconds{1}, std::move(timerCallback));
 
     // Add a callback to handle EPOLLIN on fd
-    auto callback = [=, this](IO& io, int fd, uint32_t revents) {
+    auto callback = [=, this](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
         {
             return;
@@ -362,6 +350,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 
         uint8_t* responseMsg = nullptr;
         size_t responseMsgSize{};
+        pldm_tid_t srcTID = pldmTID;
 
         auto rc = pldm_recv(mctpEID, fd, request->hdr.instance_id, &responseMsg,
                             &responseMsgSize);
@@ -379,6 +368,18 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         // sent out
         io.set_enabled(Enabled::Off);
         auto response = reinterpret_cast<pldm_msg*>(responseMsgPtr.get());
+
+        if (srcTID != pldmTID ||
+            !pldm_msg_hdr_correlate_response(&request->hdr, &response->hdr))
+        {
+            /* This isn't the response we were looking for */
+            return;
+        }
+
+        /* We have the right response, release the instance ID and process */
+        io.set_enabled(Enabled::Off);
+        instanceIdDb.free(pldmTID, instanceID);
+
         if (response->payload[0] != PLDM_SUCCESS)
         {
             error("Getting the wrong response. PLDM RC = {RC}", "RC",
@@ -415,6 +416,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     rc = pldm_send(mctpEID, fd, requestMsg.data(), requestMsg.size());
     if (0 > rc)
     {
+        instanceIdDb.free(pldmTID, instanceID);
         error(
             "Failed to send message/receive response. RC = {RC}, errno = {ERR}",
             "RC", static_cast<int>(rc), "ERR", errno);
@@ -430,6 +432,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         }
         catch (const sdeventplus::SdEventError& e)
         {
+            instanceIdDb.free(pldmTID, instanceID);
             error(
                 "PLDM host soft off: Failure in processing request.ERROR= {ERR_EXCEP}",
                 "ERR_EXCEP", e.what());
