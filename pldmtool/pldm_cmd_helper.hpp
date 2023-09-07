@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "pldmd/instance_id.hpp"
 
 #include <err.h>
 #include <libpldm/base.h>

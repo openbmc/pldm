@@ -28,6 +28,7 @@ executable(
     nlohmann_json,
     phosphor_dbus_interfaces,
     sdbusplus,
+    phosphor_logging_dep,
   ],
   install: true,
   install_dir: get_option('bindir'))
