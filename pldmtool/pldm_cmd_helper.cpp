@@ -135,30 +135,12 @@ int mctpSockSendRecv(const std::vector<uint8_t>& requestMsg,
 
 void CommandInterface::exec()
 {
-    static constexpr auto pldmObjPath = "/xyz/openbmc_project/pldm";
-    static constexpr auto pldmRequester = "xyz.openbmc_project.PLDM.Requester";
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    try
-    {
-        auto service = pldm::utils::DBusHandler().getService(pldmObjPath,
-                                                             pldmRequester);
-        auto method = bus.new_method_call(service.c_str(), pldmObjPath,
-                                          pldmRequester, "GetInstanceId");
-        method.append(mctp_eid);
-        auto reply = bus.call(
-            method,
-            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
-        reply.read(instanceId);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "GetInstanceId D-Bus call failed, MCTP id = "
-                  << (unsigned)mctp_eid << ", error = " << e.what() << "\n";
-        return;
-    }
+    pldm::InstanceIdDb instanceIdDb;
+    instanceId = instanceIdDb.next(mctp_eid);
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {
+        instanceIdDb.free(mctp_eid, instanceId);
         std::cerr << "Failed to encode request message for " << pldmType << ":"
                   << commandName << " rc = " << rc << "\n";
         return;
@@ -169,12 +151,14 @@ void CommandInterface::exec()
 
     if (rc != PLDM_SUCCESS)
     {
+        instanceIdDb.free(mctp_eid, instanceId);
         std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
         return;
     }
 
     auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
     parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
+    instanceIdDb.free(mctp_eid, instanceId);
 }
 
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
