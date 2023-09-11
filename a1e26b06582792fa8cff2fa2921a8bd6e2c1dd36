@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4ee33fc_e6bc1f30",
+        "filename": "common/utils.cpp",
+        "patchSetId": 120
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-09-11T07:29:01Z",
+      "side": 1,
+      "message": "Please remove the `host` string in variable.\nThis code is not only used for host association PDR.\nApply the same for other methods.",
+      "revId": "a1e26b06582792fa8cff2fa2921a8bd6e2c1dd36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
