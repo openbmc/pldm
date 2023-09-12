@@ -22,6 +22,30 @@
       },
       "revId": "8715087ca860061dc550d78108664036e5b4fab0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03a63e8e_acd43e50",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2023-09-12T09:09:31Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "1276a697_bb4222db",
+      "range": {
+        "startLine": 277,
+        "startChar": 109,
+        "endLine": 277,
+        "endChar": 110
+      },
+      "revId": "8715087ca860061dc550d78108664036e5b4fab0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
