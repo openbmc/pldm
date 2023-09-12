@@ -9,6 +9,7 @@
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
+#include <org/open_power/Logging/PEL/server.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
@@ -26,6 +27,7 @@ namespace pldm
 namespace responder
 {
 using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+using namespace sdbusplus::org::open_power::Logging::server;
 
 namespace detail
 {
@@ -219,27 +221,81 @@ int PelHandler::writeFromMemory(uint32_t offset, uint32_t length,
     return rc;
 }
 
-int PelHandler::fileAck(uint8_t /*fileStatus*/)
+int PelHandler::fileAck(uint8_t fileStatus)
 {
     static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
     static constexpr auto logInterface = "org.open_power.Logging.PEL";
+    static std::string service;
     auto& bus = pldm::utils::DBusHandler::getBus();
 
-    try
+    if (service.empty())
     {
-        auto service = pldm::utils::DBusHandler().getService(logObjPath,
-                                                             logInterface);
-        auto method = bus.new_method_call(service.c_str(), logObjPath,
-                                          logInterface, "HostAck");
-        method.append(fileHandle);
-        bus.call_noreply(method);
+        try
+        {
+            service = pldm::utils::DBusHandler().getService(logObjPath,
+                                                            logInterface);
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            error("Mapper call failed when trying to find logging service "
+                  "to ack PEL ID {FILE_HANDLE} error = {ERR_EXCEP}",
+                  "FILE_HANDLE", lg2::hex, fileHandle, "ERR_EXCEP", e);
+            return PLDM_ERROR;
+        }
     }
-    catch (const std::exception& e)
+
+    if (fileStatus == PLDM_SUCCESS)
     {
-        error(
-            "HostAck D-Bus call failed on PEL ID 0x{FILE_HANDLE}, error ={ERR_EXCEP}",
-            "FILE_HANDLE", lg2::hex, fileHandle, "ERR_EXCEP", e.what());
-        return PLDM_ERROR;
+        try
+        {
+            auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                              logInterface, "HostAck");
+            method.append(fileHandle);
+            bus.call_noreply(method);
+        }
+        catch (const std::exception& e)
+        {
+            error(
+                "HostAck D-Bus call failed on PEL ID {FILE_HANDLE}, error = {ERR_EXCEP}",
+                "FILE_HANDLE", lg2::hex, fileHandle, "ERR_EXCEP", e);
+            return PLDM_ERROR;
+        }
+    }
+    else
+    {
+        PEL::RejectionReason reason{};
+        if (fileStatus == PLDM_FULL_FILE_DISCARDED)
+        {
+            reason = PEL::RejectionReason::HostFull;
+        }
+        else if (fileStatus == PLDM_ERROR_FILE_DISCARDED)
+        {
+            reason = PEL::RejectionReason::BadPEL;
+        }
+        else
+        {
+            error(
+                "Invalid file status {STATUS} in PEL file ack response for PEL {FILE_HANDLE}",
+                "STATUS", lg2::hex, fileStatus, "FILE_HANDLE", lg2::hex,
+                fileHandle);
+            return PLDM_ERROR;
+        }
+
+        try
+        {
+            auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                              logInterface, "HostReject");
+            method.append(fileHandle, reason);
+            bus.call_noreply(method);
+        }
+        catch (const std::exception& e)
+        {
+            error("HostReject D-Bus call failed on PEL ID {FILE_HANDLE}, "
+                  "error = {ERR_EXCEP}, status = {STATUS}",
+                  "FILE_HANDLE", lg2::hex, fileHandle, "ERR_EXCEP", e, "STATUS",
+                  lg2::hex, fileStatus);
+            return PLDM_ERROR;
+        }
     }
 
     return PLDM_SUCCESS;
