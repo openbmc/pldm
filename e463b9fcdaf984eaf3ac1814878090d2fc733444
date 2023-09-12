@@ -16,6 +16,24 @@
       "message": "can this be done once? \n\n\n\nnit: or even a have a single try-catch block, as we almost have the same steps repeated with minor change of parameters.",
       "revId": "e463b9fcdaf984eaf3ac1814878090d2fc733444",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bce51e6e_f08a5761",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2023-09-12T18:54:47Z",
+      "side": 1,
+      "message": "I made service be static so it will truly be done once.\n\nI opted to keep all the try/catch blocks (and added one unfortunately) so that it gives better FFDC when it fails.  It\u0027s in line with what was done in file_io_type_dump.cpp.",
+      "parentUuid": "a7e622cb_c8b30332",
+      "revId": "e463b9fcdaf984eaf3ac1814878090d2fc733444",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
