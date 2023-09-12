@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7e622cb_c8b30332",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-09-12T17:13:30Z",
+      "side": 1,
+      "message": "can this be done once? \n\n\n\nnit: or even a have a single try-catch block, as we almost have the same steps repeated with minor change of parameters.",
+      "revId": "e463b9fcdaf984eaf3ac1814878090d2fc733444",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
