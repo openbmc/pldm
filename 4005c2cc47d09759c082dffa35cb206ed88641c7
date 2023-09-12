@@ -16,6 +16,24 @@
       "message": "Rather than casting DBUS_TIMEOUT every time, can we set it to one common variable and use it everywhere?",
       "revId": "4005c2cc47d09759c082dffa35cb206ed88641c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a782034b_1c4dacb4",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-09-12T09:25:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1c424d3_b0be45ef",
+      "revId": "4005c2cc47d09759c082dffa35cb206ed88641c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
