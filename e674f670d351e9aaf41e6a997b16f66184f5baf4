@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24982795_9a3dbb3b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 121
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-09-12T08:34:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e0cbfbb_140723c1",
+      "revId": "e674f670d351e9aaf41e6a997b16f66184f5baf4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce735270_a5d58ae1",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-09-12T07:45:55Z",
       "side": 1,
       "message": "The same here.",
+      "revId": "e674f670d351e9aaf41e6a997b16f66184f5baf4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4800bc3_d31b6269",
+        "filename": "common/utils.cpp",
+        "patchSetId": 121
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-09-12T08:34:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce735270_a5d58ae1",
       "revId": "e674f670d351e9aaf41e6a997b16f66184f5baf4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
