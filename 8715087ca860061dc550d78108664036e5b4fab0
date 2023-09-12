@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4de6f5aa_86c58891",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-12T09:12:07Z",
+      "side": 1,
+      "message": "Seems good to me, would need @sagar to +1.",
+      "revId": "8715087ca860061dc550d78108664036e5b4fab0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1276a697_bb4222db",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "1276a697_bb4222db",
+      "range": {
+        "startLine": 277,
+        "startChar": 109,
+        "endLine": 277,
+        "endChar": 110
+      },
+      "revId": "8715087ca860061dc550d78108664036e5b4fab0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8eb96f_63273a88",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-12T09:12:07Z",
+      "side": 1,
+      "message": "As per the product documentation, its not IBMi - its IBM i.\n\nreference : https://www.ibm.com/products/ibm-i",
+      "parentUuid": "03a63e8e_acd43e50",
       "range": {
         "startLine": 277,
         "startChar": 109,
