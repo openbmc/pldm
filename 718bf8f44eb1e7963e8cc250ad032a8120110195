@@ -206,6 +206,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "584fd1c8_03a91835",
+        "filename": "host-bmc/custom_dbus.hpp",
+        "patchSetId": 93
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-15T05:34:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "82c2a79d_293d802d",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "718bf8f44eb1e7963e8cc250ad032a8120110195",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3509807_f4841aae",
