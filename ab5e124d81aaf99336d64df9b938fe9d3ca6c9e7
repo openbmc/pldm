@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96be73ac_32d04e87",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 104
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-09-18T00:06:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e298f48f_d6248f7e",
+      "range": {
+        "startLine": 229,
+        "startChar": 35,
+        "endLine": 229,
+        "endChar": 44
+      },
+      "revId": "ab5e124d81aaf99336d64df9b938fe9d3ca6c9e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23cdd4b4_6eac080e",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-09-15T05:34:12Z",
       "side": 1,
       "message": "magic number ?",
+      "range": {
+        "startLine": 208,
+        "startChar": 17,
+        "endLine": 208,
+        "endChar": 18
+      },
+      "revId": "ab5e124d81aaf99336d64df9b938fe9d3ca6c9e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e51fff34_9b37a6e7",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 104
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-09-18T00:06:19Z",
+      "side": 1,
+      "message": "\u003e magic number ?\n\nYes, But I have commented in L: 205",
+      "parentUuid": "23cdd4b4_6eac080e",
       "range": {
         "startLine": 208,
         "startChar": 17,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "080d3b77_266e503d",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 104
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-09-18T00:06:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16066034_d6b83c5a",
+      "range": {
+        "startLine": 238,
+        "startChar": 17,
+        "endLine": 238,
+        "endChar": 24
+      },
+      "revId": "ab5e124d81aaf99336d64df9b938fe9d3ca6c9e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a8bc672_839f179e",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-09-15T05:34:12Z",
       "side": 1,
       "message": "magic number",
+      "range": {
+        "startLine": 245,
+        "startChar": 21,
+        "endLine": 245,
+        "endChar": 22
+      },
+      "revId": "ab5e124d81aaf99336d64df9b938fe9d3ca6c9e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be584e1b_c3328830",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 104
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-09-18T00:06:19Z",
+      "side": 1,
+      "message": "I have commented in L: 244",
+      "parentUuid": "1a8bc672_839f179e",
       "range": {
         "startLine": 245,
         "startChar": 21,
