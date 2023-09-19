@@ -25,9 +25,6 @@
 #include <variant>
 #include <vector>
 
-using microsec = std::chrono::microseconds;
-using sec = std::chrono::seconds;
-
 constexpr uint64_t dbusTimeout =
     std::chrono::duration_cast<std::chrono::microseconds>(
         std::chrono::seconds(DBUS_TIMEOUT))
