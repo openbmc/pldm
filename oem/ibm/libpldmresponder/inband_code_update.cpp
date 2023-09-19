@@ -170,9 +170,7 @@ void CodeUpdate::setVersions()
         method.append("xyz.openbmc_project.Association", "endpoints");
         std::variant<std::vector<std::string>> paths;
 
-        auto reply = bus.call(
-            method,
-            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
+        auto reply = bus.call(method, dbusTimeout);
         reply.read(paths);
 
         runningVersion = std::get<std::vector<std::string>>(paths)[0];
@@ -181,9 +179,7 @@ void CodeUpdate::setVersions()
                                            propIntf, "Get");
         method1.append("xyz.openbmc_project.Association", "endpoints");
 
-        auto reply1 = bus.call(
-            method1,
-            std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT)).count());
+        auto reply1 = bus.call(method1, dbusTimeout);
         reply1.read(paths);
         for (const auto& path : std::get<std::vector<std::string>>(paths))
         {
