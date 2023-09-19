@@ -1,6 +1,69 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bc4af3f_1ed7dd4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T09:05:27Z",
+      "side": 1,
+      "message": "@Thu - have couple of questions on the testing : \n\n\n1) I have seen cases in the past where , we could not write code like this :\n\n```\nfor(sensor : sensorslist)\n{\n  pldm_send(get_state_sensorreading_command, sensor.sensorId);\n}\n\n```\n\nbecause if the sensors list is more than 32, then we would run out of free instance ids.\n\nNow with your code , does this pattern work ? without we running into the instance id problem ? at a glace on the code - it does not look like it ? \n\n2) There is code in the pldm repo, that would key off of the dbus properties to drive sensor events, for example : a physical led state change would result in a sensor event being generated (if we model led as a PLDM sensor). With this code in place, do we think that the sensor event could be delayed based on the running transactions ?",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6779bae_88375705",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T09:05:27Z",
+      "side": 1,
+      "message": "could we add little more documentation about this struct like above ?",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 24
+      },
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71add0c3_553e37b7",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T09:05:27Z",
+      "side": 1,
+      "message": "little more documentation on what this struct is about is needed.",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 27
+      },
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba4b2f63_2b6cc8a9",
@@ -48,6 +111,29 @@
       "writtenOn": "2023-09-19T01:37:27Z",
       "side": 1,
       "message": "Instead of the `waitForRespMsg` boolean maybe we could use `std::optional\u003cstd::shared_ptr\u003cRegisteredRequest\u003e\u003e`? If it\u0027s empty there\u0027s no active request, and if it\u0027s populated then there is an active request.",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14b93607_ec600e75",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T09:05:27Z",
+      "side": 1,
+      "message": "use map.contains() instead and make it more readable ?",
+      "range": {
+        "startLine": 253,
+        "startChar": 12,
+        "endLine": 253,
+        "endChar": 75
+      },
       "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
