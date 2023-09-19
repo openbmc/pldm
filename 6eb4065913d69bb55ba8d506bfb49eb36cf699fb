@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af206c1_d5b44ad7",
+        "filename": "common/types.hpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T08:21:39Z",
+      "side": 1,
+      "message": "this can be separated out into another patch.",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 75
+      },
+      "revId": "6eb4065913d69bb55ba8d506bfb49eb36cf699fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "defcb611_f9d51c58",
+        "filename": "host-bmc/custom_dbus.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T08:21:39Z",
+      "side": 1,
+      "message": "map.contains() ?",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 33,
+        "endChar": 64
+      },
+      "revId": "6eb4065913d69bb55ba8d506bfb49eb36cf699fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a259f5b_f3c39b7b",
+        "filename": "host-bmc/custom_dbus.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T08:21:39Z",
+      "side": 1,
+      "message": "map.contains()",
+      "range": {
+        "startLine": 52,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 63
+      },
+      "revId": "6eb4065913d69bb55ba8d506bfb49eb36cf699fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f563fd39_66da1c57",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T08:21:39Z",
+      "side": 1,
+      "message": "we are already using PHOSPHOR_LOG2_USING; why do we need lg2:: ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 16,
+        "endLine": 79,
+        "endChar": 21
+      },
+      "revId": "6eb4065913d69bb55ba8d506bfb49eb36cf699fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38d50ffa_71472b07",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T08:21:39Z",
+      "side": 1,
+      "message": "this sort of pattern seems like bug prone, we should be ideally using some thing like a queue rather than using complex recursion to achieve the queuing.\n\n@thu - has already tried to upstream the queuing in the requester logic at https://gerrit.openbmc.org/c/openbmc/pldm/+/65701, if that code goes in - there is no read of this complex recursion and this could be just a for-loop.",
+      "range": {
+        "startLine": 1087,
+        "startChar": 0,
+        "endLine": 1094,
+        "endChar": 29
+      },
+      "revId": "6eb4065913d69bb55ba8d506bfb49eb36cf699fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89418d18_b528e95a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T08:21:39Z",
+      "side": 1,
+      "message": "again complicated recursion here as well .",
+      "range": {
+        "startLine": 1206,
+        "startChar": 6,
+        "endLine": 1225,
+        "endChar": 33
+      },
+      "revId": "6eb4065913d69bb55ba8d506bfb49eb36cf699fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "494d3385_8227ed9e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 1244,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-09-19T08:21:39Z",
+      "side": 1,
+      "message": "i think this can be made as a util function, which gives the validity of a terminus.",
+      "range": {
+        "startLine": 1230,
+        "startChar": 0,
+        "endLine": 1244,
+        "endChar": 1
+      },
+      "revId": "6eb4065913d69bb55ba8d506bfb49eb36cf699fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
