@@ -16,9 +16,9 @@ namespace dbus
 {
 using ObjectPath = std::string;
 
-using LocationIntf = sdbusplus::server::object::object<
-    sdbusplus::xyz::openbmc_project::Inventory::Decorator::server::
-        LocationCode>;
+using LocationIntf =
+    sdbusplus::server::object_t<sdbusplus::xyz::openbmc_project::Inventory::
+                                    Decorator::server::LocationCode>;
 
 /** @class CustomDBus
  *  @brief This is a custom D-Bus object, used to add D-Bus interface and update
