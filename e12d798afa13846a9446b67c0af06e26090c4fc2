@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ee1dbe5_6e669fa6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-09-26T05:13:06Z",
+      "side": 1,
+      "message": "Also I would suggest you to create a separate commit for the FRU record set `entity_instance` change",
+      "revId": "e12d798afa13846a9446b67c0af06e26090c4fc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d5cc25c7_962619bf",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 35
