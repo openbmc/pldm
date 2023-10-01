@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "662307be_f929ee22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 35
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-01T17:27:45Z",
+      "side": 1,
+      "message": "Can we replace every occurrence of Host to remote PLDM terminus?",
+      "revId": "e12d798afa13846a9446b67c0af06e26090c4fc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "784e1a1e_db64a905",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 35
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-01T17:27:45Z",
+      "side": 1,
+      "message": "For this to work, is it mandatory to receive entity association PDRs before sensor/effecter or fru recordset pdrs?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 3
+      },
+      "revId": "e12d798afa13846a9446b67c0af06e26090c4fc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "deda3972_f03b4ba6",
