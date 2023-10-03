@@ -1,7 +1,6 @@
 #include "oem_ibm_handler.hpp"
 
 #include "file_io_type_lid.hpp"
-#include "libpldmresponder/file_io.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 
 #include <libpldm/entity.h>

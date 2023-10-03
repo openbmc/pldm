@@ -1,9 +1,11 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "file_io_by_type.hpp"
 #include "oem/ibm/requester/dbus_to_file_handler.hpp"
 #include "oem_ibm_handler.hpp"
 #include "pldmd/handler.hpp"
+#include "pldmd/pldm_resp_interface.hpp"
 #include "requester/handler.hpp"
 
 #include <fcntl.h>
@@ -11,6 +13,7 @@
 #include <libpldm/file_io.h>
 #include <libpldm/host.h>
 #include <stdint.h>
+#include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -18,6 +21,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <filesystem>
+#include <functional>
 #include <iostream>
 #include <vector>
 
@@ -29,6 +33,14 @@ namespace responder
 {
 namespace dma
 {
+
+struct IOPart
+{
+    uint32_t length;
+    uint32_t offset;
+    uint64_t address;
+};
+
 // The minimum data size of dma transfer in bytes
 constexpr uint32_t minSize = 16;
 
@@ -169,10 +181,11 @@ class Handler : public CmdHandler
   public:
     Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
             uint8_t hostEid, pldm::InstanceIdDb* instanceIdDb,
-            pldm::requester::Handler<pldm::requester::Request>* handler) :
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            pldm::response_api::Response* respInterface) :
         oemPlatformHandler(oemPlatformHandler),
         hostSockFd(hostSockFd), hostEid(hostEid), instanceIdDb(instanceIdDb),
-        handler(handler)
+        handler(handler), responseHdr({0, 0, respInterface, 0, -1})
     {
         handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -422,6 +435,7 @@ class Handler : public CmdHandler
     pldm::requester::Handler<pldm::requester::Request>* handler;
     std::vector<std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>>
         dbusToFileHandlers;
+    ResponseHdr responseHdr;
 };
 
 } // namespace oem_ibm
