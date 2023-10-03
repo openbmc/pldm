@@ -6,6 +6,7 @@
 #include "dbus_impl_requester.hpp"
 #include "fw-update/manager.hpp"
 #include "invoker.hpp"
+#include "pldm_resp_interface.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
@@ -192,7 +193,7 @@ int main(int argc, char** argv)
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
                                                       instanceIdDb, verbose);
-
+    pldm::response_api::ResponseIntface respInterface;
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
     dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
@@ -246,6 +247,8 @@ int main(int argc, char** argv)
     std::unique_ptr<oem_bios::Handler> oemBiosHandler{};
 
 #ifdef OEM_IBM
+    respInterface.responseIntf =
+        std::make_unique<pldm::response_api::Response>(TID, verbose);
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
         std::make_unique<pldm::responder::CodeUpdate>(&dbusHandler);
     codeUpdate->clearDirPath(LID_STAGING_DIR);
@@ -256,7 +259,8 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(),
                                           pldmTransport.getEventSource(),
-                                          hostEID, &instanceIdDb, &reqHandler));
+                                          hostEID, &instanceIdDb, &reqHandler,
+                                          respInterface.responseIntf.get()));
     oemBiosHandler = std::make_unique<oem::ibm::bios::Handler>(&dbusHandler);
 #endif
 
@@ -323,6 +327,7 @@ int main(int argc, char** argv)
             {
                 printBuffer(Rx, requestMsgVec);
             }
+
             // process message and send response
             auto response = processRxMsg(requestMsgVec, invoker, reqHandler,
                                          fwManager.get(), TID);
