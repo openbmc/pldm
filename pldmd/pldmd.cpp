@@ -4,6 +4,7 @@
 #include "fw-update/manager.hpp"
 #include "instance_id.hpp"
 #include "invoker.hpp"
+#include "pldm_resp_interface.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
@@ -208,7 +209,7 @@ int main(int argc, char** argv)
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(
         sockfd, event, instanceIdDb, currentSendbuffSize, verbose);
-
+    pldm::response_api::Interfaces respInterface;
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
     dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
@@ -262,6 +263,8 @@ int main(int argc, char** argv)
     std::unique_ptr<oem_bios::Handler> oemBiosHandler{};
 
 #ifdef OEM_IBM
+    respInterface.transport =
+        std::make_unique<pldm::response_api::Transport>(sockfd, verbose);
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate =
         std::make_unique<pldm::responder::CodeUpdate>(&dbusHandler);
     codeUpdate->clearDirPath(LID_STAGING_DIR);
@@ -271,7 +274,8 @@ int main(int argc, char** argv)
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
                                           oemPlatformHandler.get(), sockfd,
-                                          hostEID, &instanceIdDb, &reqHandler));
+                                          hostEID, &instanceIdDb, &reqHandler,
+                                          respInterface.transport.get()));
     oemBiosHandler = std::make_unique<oem::ibm::bios::Handler>(&dbusHandler);
 #endif
 
@@ -339,7 +343,8 @@ int main(int argc, char** argv)
         std::make_unique<MctpDiscovery>(bus, fwManager.get());
 
     auto callback = [verbose, &invoker, &reqHandler, currentSendbuffSize,
-                     &fwManager](IO& io, int fd, uint32_t revents) mutable {
+                     &fwManager,
+                     &respInterface](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
         {
             return;
@@ -388,6 +393,10 @@ int main(int argc, char** argv)
                 }
                 else
                 {
+                    if (respInterface.transport)
+                    {
+                        respInterface.transport->setRequestMsgRef(requestMsg);
+                    }
                     // process message and send response
                     auto response = processRxMsg(requestMsg, invoker,
                                                  reqHandler, fwManager.get());

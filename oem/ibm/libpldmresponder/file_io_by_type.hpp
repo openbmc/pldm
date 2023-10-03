@@ -1,12 +1,28 @@
 #pragma once
 
-#include "file_io.hpp"
+#include "oem_ibm_handler.hpp"
+#include "pldmd/pldm_resp_interface.hpp"
 
 namespace pldm
 {
 
 namespace responder
 {
+
+class FileHandler;
+namespace dma
+{
+class DMA;
+} // namespace dma
+
+struct ResponseHdr
+{
+    uint8_t instance_id;
+    uint8_t command;
+    pldm::response_api::Transport* respInterface;
+    std::shared_ptr<FileHandler> functionPtr = nullptr;
+    int key;
+};
 
 namespace fs = std::filesystem;
 
