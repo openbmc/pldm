@@ -1,6 +1,6 @@
 #pragma once
 
-#include "file_io_by_type.hpp"
+#include "file_io.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 
