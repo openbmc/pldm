@@ -14,6 +14,8 @@
 
 #include <exception>
 
+PHOSPHOR_LOG2_USING;
+
 using namespace pldm::utils;
 
 namespace pldmtool
@@ -39,7 +41,7 @@ void CommandInterface::exec()
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
+        error("pldmSendRecv: Failed to receive RC = {KEY0}", "KEY0", rc);
         return;
     }
 
