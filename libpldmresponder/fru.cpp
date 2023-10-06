@@ -34,7 +34,7 @@ std::optional<pldm_entity>
             entity.entity_type = parser.getEntityType(intfMap.first);
             return entity;
         }
-        catch (const std::exception& e)
+        catch (const std::exception&)
         {
             continue;
         }
@@ -161,8 +161,8 @@ void FruImpl::buildFRUTable()
     }
     catch (const std::exception& e)
     {
-        error(
-            "Look up of inventory objects failed and PLDM FRU table creation failed");
+        error("Failed building FRU table due to inventory lookup: {ERROR}",
+              "ERROR", e);
         return;
     }
 
@@ -325,7 +325,7 @@ void FruImpl::populateRecords(
                               std::back_inserter(tlvs));
                 }
             }
-            catch (const std::out_of_range& e)
+            catch (const std::out_of_range&)
             {
                 continue;
             }

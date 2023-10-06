@@ -129,8 +129,8 @@ int StateSensorHandler::eventAction(const StateSensorEntry& entry,
         }
         catch (const std::out_of_range& e)
         {
-            error("Invalid event state {EVENT_STATE}", "EVENT_STATE",
-                  static_cast<unsigned>(state));
+            error("Invalid event state {EVENT_STATE}: {ERROR}", "EVENT_STATE",
+                  state, "ERROR", e);
             return PLDM_ERROR_INVALID_DATA;
         }
 
@@ -141,14 +141,14 @@ int StateSensorHandler::eventAction(const StateSensorEntry& entry,
         catch (const std::exception& e)
         {
             error(
-                "Error setting property, ERROR={ERR_EXCEP} PROPERTY={DBUS_PROP} INTERFACE={DBUS_INTF} PATH = {DBUS_OBJ_PATH}",
-                "ERR_EXCEP", e.what(), "DBUS_PROP", dbusMapping.propertyName,
-                "DBUS_INTF", dbusMapping.interface, "DBUS_OBJ_PATH",
-                dbusMapping.objectPath.c_str());
+                "Error setting {PROPERTY} property value on interface {INTERFACE} at {PATH}: {ERROR}",
+                "PROPERTY", dbusMapping.propertyName, "INTERFACE",
+                dbusMapping.interface, "PATH", dbusMapping.objectPath, "ERROR",
+                e);
             return PLDM_ERROR;
         }
     }
-    catch (const std::out_of_range& e)
+    catch (const std::out_of_range&)
     {
         // There is no BMC action for this PLDM event
         return PLDM_SUCCESS;
