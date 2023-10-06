@@ -89,8 +89,9 @@ std::string BIOSStringAttribute::getAttrValue()
     }
     catch (const std::exception& e)
     {
-        error("Get String Attribute Value Error: AttributeName = {ATTR_NAME}",
-              "ATTR_NAME", name);
+        error("Error getting string {ATTR} Attribute from {INTERFACE}: {ERROR}",
+              "ATTR", name, "INTERFACE", dBusMap->interface.c_str(), "ERROR",
+              e);
         return stringInfo.defString;
     }
 }

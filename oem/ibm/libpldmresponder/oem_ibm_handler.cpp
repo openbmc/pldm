@@ -513,7 +513,7 @@ bool pldm::responder::oem_ibm_platform::Handler::watchDogRunning()
         isWatchDogRunning = pldm::utils::DBusHandler().getDbusProperty<bool>(
             watchDogObjectPath, watchDogEnablePropName, watchDogInterface);
     }
-    catch (const std::exception& e)
+    catch (const std::exception&)
     {
         return false;
     }
@@ -591,7 +591,7 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     }
     catch (const std::exception& e)
     {
-        error("Error getting the current BMC state");
+        error("Error getting the current BMC state {ERROR}", "ERROR", e);
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
