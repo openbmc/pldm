@@ -8,8 +8,12 @@
 
 #include <endian.h>
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <functional>
 #include <tuple>
+
+PHOSPHOR_LOG2_USING;
 
 namespace pldmtool
 {
@@ -63,8 +67,9 @@ class GetFruRecordTableMetadata : public CommandInterface
             &total_record_set_identifiers, &total_table_records, &checksum);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", (int)cc);
+
             return;
         }
         ordered_json output;
@@ -277,7 +282,7 @@ class FRUTablePrint
         {
             return std::string(typeMap.at(type)) + "(" + typeString + ")";
         }
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range& /*e*/)
         {
             return typeString;
         }
@@ -385,8 +390,8 @@ class GetFRURecordByOption : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", (int)cc);
             return;
         }
 
@@ -437,8 +442,9 @@ class GetFruRecordTable : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", (int)cc);
+
             return;
         }
 
