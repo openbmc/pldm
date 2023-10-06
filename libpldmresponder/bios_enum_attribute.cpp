@@ -150,7 +150,7 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
         auto currentValue = iter->second;
         return getValueIndex(currentValue, possibleValues);
     }
-    catch (const std::exception& e)
+    catch (const std::exception&)
     {
         return defaultValueIndex;
     }
@@ -162,7 +162,7 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex(const PropertyValue& propValue)
     {
         return getValueIndex(std::get<std::string>(propValue), possibleValues);
     }
-    catch (const std::exception& e)
+    catch (const std::exception&)
     {
         return getValueIndex(defaultValue, possibleValues);
     }

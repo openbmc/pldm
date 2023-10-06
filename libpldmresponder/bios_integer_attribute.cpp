@@ -201,8 +201,9 @@ uint64_t BIOSIntegerAttribute::getAttrValue()
     }
     catch (const std::exception& e)
     {
-        error("Get Integer Attribute Value Error: AttributeName = {ATTR_NAME}",
-              "ATTR_NAME", name);
+        error(
+            "Error getting integer attribute '{ATTR}' from '{INTERFACE}': {ERROR}",
+            "ATTR", name, "INTERFACE", dBusMap->interface, "ERROR", e);
         return integerInfo.defaultValue;
     }
 }

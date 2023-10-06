@@ -83,7 +83,7 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 }
             }
         }
-        catch (const std::exception& ex)
+        catch (const std::exception&)
         {
             pdr->entity_type = e.value("type", 0);
             pdr->entity_instance = e.value("instance", 0);
