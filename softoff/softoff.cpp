@@ -92,7 +92,9 @@ int SoftPowerOff::getHostState()
     }
     catch (const std::exception& e)
     {
-        error("PLDM host soft off: Can't get current host state.");
+        error(
+            "PLDM host soft off: Can't get current host state. ERROR={ERR_EXCEP}",
+            "ERR_EXCEP", e);
         hasError = true;
         return PLDM_ERROR;
     }

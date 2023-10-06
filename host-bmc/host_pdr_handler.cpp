@@ -469,7 +469,7 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs)
         }
         // If there is no mapping for terminusHandle assign the reserved TID
         // value of 0xFF to indicate that.
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range&)
         {
             sensorEntry.terminusID = PLDM_TID_RESERVED;
         }
@@ -863,7 +863,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             std::tie(entityInfo, compositeSensorStates) =
                                 lookupSensorInfo(sensorEntry);
                         }
-                        catch (const std::out_of_range& e)
+                        catch (const std::out_of_range&)
                         {
                             try
                             {
@@ -871,7 +871,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                                 std::tie(entityInfo, compositeSensorStates) =
                                     lookupSensorInfo(sensorEntry);
                             }
-                            catch (const std::out_of_range& e)
+                            catch (const std::out_of_range&)
                             {
                                 error("No mapping for the events");
                             }
