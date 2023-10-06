@@ -134,9 +134,9 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     catch (const sdbusplus::exception_t& e)
     {
         error(
-            "Error getting time, PATH={BMC_TIME_PATH} TIME INTERACE={TIME_INTERFACE}",
-            "BMC_TIME_PATH", bmcTimePath, "TIME_INTERFACE", timeInterface);
-
+            "Error getting time {ERR_EXCEP}, PATH={BMC_TIME_PATH} TIME INTERFACE={TIME_INTF}",
+            "BMC_TIME_PATH", bmcTimePath, "TIME_INTF", timeInterface,
+            "ERR_EXCEP", e);
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
 
