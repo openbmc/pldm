@@ -5,6 +5,8 @@
 
 #include <libpldm/firmware_update.h>
 
+PHOSPHOR_LOG2_USING;
+
 namespace pldmtool
 {
 
@@ -111,8 +113,8 @@ class GetStatus : public CommandInterface
             &reasonCode, &updateOptionFlagsEnabled);
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode << "\n";
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", (int)completionCode);
             return;
         }
 
@@ -196,9 +198,9 @@ class GetFwParams : public CommandInterface
             &pendingCompImageSetVersion, &compParameterTable);
         if (rc != PLDM_SUCCESS || fwParams.completion_code != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)fwParams.completion_code
-                      << "\n";
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", (int)fwParams.completion_code);
+
             return;
         }
 
@@ -286,9 +288,9 @@ class GetFwParams : public CommandInterface
                 &pendingCompVerStr);
             if (rc)
             {
-                std::cerr
-                    << "Decoding component parameter table entry failed, RC="
-                    << rc << "\n";
+                error(
+                    "Decoding component parameter table entry failed, RC={KEY0}",
+                    "KEY0", rc);
                 return;
             }
 
