@@ -1024,7 +1024,7 @@ std::optional<uint16_t> HostPDRHandler::getRSI(const PDRList& fruRecordSetPDRs,
             const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
 
         if (fruPdr->entity_type == entity.entity_type &&
-            fruPdr->entity_instance_num == entity.entity_instance_num &&
+            fruPdr->entity_instance == entity.entity_instance_num &&
             fruPdr->container_id == entity.entity_container_id)
         {
             return fruPdr->fru_rsi;
