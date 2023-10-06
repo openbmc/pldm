@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb7bb9a1_4d6cea6f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 35
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-06T06:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "662307be_f929ee22",
+      "revId": "e12d798afa13846a9446b67c0af06e26090c4fc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "784e1a1e_db64a905",
@@ -75,6 +93,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34e2a3a2_a745f1a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-06T06:27:25Z",
+      "side": 1,
+      "message": "@pavithra I have created a new patchiest for this at https://gerrit.openbmc.org/c/openbmc/pldm/+/66939/1. could you please take a look?",
+      "parentUuid": "3ee1dbe5_6e669fa6",
+      "revId": "e12d798afa13846a9446b67c0af06e26090c4fc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5cc25c7_962619bf",
@@ -88,6 +124,30 @@
       "writtenOn": "2023-09-26T05:11:54Z",
       "side": 1,
       "message": "Can we rename it properly? `updateContainerId`",
+      "range": {
+        "startLine": 58,
+        "startChar": 5,
+        "endLine": 58,
+        "endChar": 22
+      },
+      "revId": "e12d798afa13846a9446b67c0af06e26090c4fc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc9374bb_5f659cfa",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-06T06:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5cc25c7_962619bf",
       "range": {
         "startLine": 58,
         "startChar": 5,
