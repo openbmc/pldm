@@ -43,9 +43,8 @@ int sendBiosAttributeUpdateEvent(
             return PLDM_SUCCESS;
         }
     }
-    catch (
-        const sdbusplus::xyz::openbmc_project::Common::Error::ResourceNotFound&
-            e)
+    catch (const sdbusplus::xyz::openbmc_project::Common::Error::
+               ResourceNotFound& /*e*/)
     {
         /* Exception is expected to happen in the case when state manager is
          * started after pldm, this is expected to happen in reboot case
