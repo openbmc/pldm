@@ -89,8 +89,9 @@ std::string BIOSStringAttribute::getAttrValue()
     }
     catch (const std::exception& e)
     {
-        error("Get String Attribute Value Error: AttributeName = {ATTR_NAME}",
-              "ATTR_NAME", name);
+        error(
+            "Error while Getting String {ATTRIBUTE_NAME} Attribute Value, {ERR_EXCEP}",
+            "ATTRIBUTE_NAME", name, "ERR_EXCEP", e);
         return stringInfo.defString;
     }
 }

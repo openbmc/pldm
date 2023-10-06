@@ -129,7 +129,8 @@ static std::optional<Response>
             header.command = hdrFields.command;
             if (PLDM_SUCCESS != pack_pldm_header(&header, responseHdr))
             {
-                error("Failed adding response header");
+                error("Failed adding response header {ERR_EXCEP}", "ERR_EXCEP",
+                      e);
                 return std::nullopt;
             }
             response.insert(response.end(), completion_code);
