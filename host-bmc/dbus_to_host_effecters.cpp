@@ -189,7 +189,8 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     }
     catch (const std::out_of_range& e)
     {
-        error("New state not found in json");
+        error("new state not found in json  ERROR={ERR_EXCEP}", "ERR_EXCEP",
+              e.what());
         return;
     }
 

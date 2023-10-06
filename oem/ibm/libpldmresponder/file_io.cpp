@@ -282,8 +282,8 @@ Response Handler::readFileIntoMemory(const pldm_msg* request,
     catch (const std::exception& e)
     {
         error(
-            "File handle does not exist in the file table, HANDLE={FILE_HANDLE}",
-            "FILE_HANDLE", fileHandle);
+            "File handle does not exist in the file table, HANDLE={FILE_HNDL}  ERROR={ERR_EXCEP}",
+            "FILE_HNDL", fileHandle, "ERR_EXCEP", e.what());
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_READ_FILE_INTO_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
@@ -377,8 +377,8 @@ Response Handler::writeFileFromMemory(const pldm_msg* request,
     catch (const std::exception& e)
     {
         error(
-            "File handle does not exist in the file table, HANDLE={FILE_HANDLE}",
-            "FILE_HANDLE", fileHandle);
+            "File handle does not exist in the file table, HANDLE={FILE_HNDL} ERROR={ERR_EXCEP}",
+            "FILE_HNDL", fileHandle, "ERR_EXCEP", e.what());
         encode_rw_file_memory_resp(request->hdr.instance_id,
                                    PLDM_WRITE_FILE_FROM_MEMORY,
                                    PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
@@ -505,8 +505,9 @@ Response Handler::readFile(const pldm_msg* request, size_t payloadLength)
     catch (const std::exception& e)
     {
         error(
-            "File handle does not exist in the file table, HANDLE={FILE_HANDLE}",
-            "FILE_HANDLE", fileHandle);
+            "File handle does not exist in the file table, HANDLE={FILE_HNDL} ERROR={ERR_EXCEP}",
+            "FILE_HNDL", fileHandle, "ERR_EXCEP", e.what());
+
         encode_read_file_resp(request->hdr.instance_id,
                               PLDM_INVALID_FILE_HANDLE, length, responsePtr);
         return response;
@@ -588,8 +589,8 @@ Response Handler::writeFile(const pldm_msg* request, size_t payloadLength)
     catch (const std::exception& e)
     {
         error(
-            "File handle does not exist in the file table, HANDLE={FILE_HANDLE}",
-            "FILE_HANDLE", fileHandle);
+            "File handle does not exist in the file table, HANDLE={FILE_HNDL}  ERROR={ERR_EXCEP}",
+            "FILE_HNDL", fileHandle, "ERR_EXCEP", e.what());
         encode_write_file_resp(request->hdr.instance_id,
                                PLDM_INVALID_FILE_HANDLE, 0, responsePtr);
         return response;
@@ -675,7 +676,8 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
     }
     catch (const InternalFailure& e)
     {
-        error("unknown file type, TYPE={FILE_TYPE}", "FILE_TYPE", fileType);
+        error("unknown file type, TYPE={LEN}  ERROR={ERR_EXCEP}", "LEN",
+              fileType, "ERR_EXCEP", e.what());
         encode_rw_file_by_type_memory_resp(request->hdr.instance_id, cmd,
                                            PLDM_INVALID_FILE_TYPE, 0,
                                            responsePtr);
@@ -740,7 +742,8 @@ Response Handler::writeFileByType(const pldm_msg* request, size_t payloadLength)
     }
     catch (const InternalFailure& e)
     {
-        error("unknown file type, TYPE={FILE_TYPE}", "FILE_TYPE", fileType);
+        error("unknown file type, TYPE={FILE_TYP}  ERROR={ERR_EXCEP}",
+              "FILE_TYP", fileType, "ERR_EXCEP", e.what());
         encode_rw_file_by_type_resp(request->hdr.instance_id,
                                     PLDM_WRITE_FILE_BY_TYPE,
                                     PLDM_INVALID_FILE_TYPE, 0, responsePtr);
@@ -789,7 +792,8 @@ Response Handler::readFileByType(const pldm_msg* request, size_t payloadLength)
     }
     catch (const InternalFailure& e)
     {
-        error("unknown file type, TYPE={FILE_TYPE}", "FILE_TYPE", fileType);
+        error("unknown file type, TYPE={FILE_TYP}  ERROR={ERR_EXCEP}",
+              "FILE_TYP", fileType, "ERR_EXCEP", e.what());
         encode_rw_file_by_type_resp(request->hdr.instance_id,
                                     PLDM_READ_FILE_BY_TYPE,
                                     PLDM_INVALID_FILE_TYPE, 0, responsePtr);
@@ -835,6 +839,8 @@ Response Handler::fileAck(const pldm_msg* request, size_t payloadLength)
 
     catch (const InternalFailure& e)
     {
+        error("unknown file type, TYPE={TYPE} ERROR={ERR}", "TYPE", fileType,
+              "ERR", e.what());
         encode_file_ack_resp(request->hdr.instance_id, PLDM_INVALID_FILE_TYPE,
                              responsePtr);
         return response;
@@ -909,7 +915,8 @@ Response Handler::newFileAvailable(const pldm_msg* request,
     }
     catch (const InternalFailure& e)
     {
-        error("unknown file type, TYPE={FILE_TYPE}", "FILE_TYPE", fileType);
+        error("unknown file type, TYPE={FILE_TYP} ERROR={ERR_EXCEP}",
+              "FILE_TYP", fileType, "ERR_EXCEP", e.what());
         return CmdHandler::ccOnlyResponse(request, PLDM_INVALID_FILE_TYPE);
     }
 

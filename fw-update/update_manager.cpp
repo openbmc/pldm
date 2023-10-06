@@ -113,7 +113,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
     catch (const std::exception& e)
     {
-        error("Invalid PLDM package header");
+        error("Invalid PLDM package header ERROR={ERR_EXCEP}", "ERR_EXCEP",
+              e.what());
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
