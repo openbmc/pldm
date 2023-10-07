@@ -16,6 +16,24 @@
       "message": "Should be `return pldm_transport_send_msg(transport, tid, tx, len);`",
       "revId": "cec4cc448b79c021f02a14bb7f15f7ce9fcb7883",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bbff740_4916d947",
+        "filename": "common/transport.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-07T02:46:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "381d619c_90e1a66a",
+      "revId": "cec4cc448b79c021f02a14bb7f15f7ce9fcb7883",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f3f8578_cbde0937",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-07T02:46:43Z",
+      "side": 1,
+      "message": "Verify the patch set v#24 with Ampere system.",
+      "revId": "c523a6d889eb1415c8b4621dc782dec11e94b1fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
