@@ -999,6 +999,7 @@ void HostPDRHandler::setFRUDataOnDBus(
     const PDRList& fruRecordSetPDRs,
     const std::vector<responder::pdr_utils::FruRecordDataFormat>& fruRecordData)
 {
+#ifdef OEM_IBM
     for (const auto& entity : objPathMap)
     {
         pldm_entity node = pldm_entity_extract(entity.second);
@@ -1028,6 +1029,7 @@ void HostPDRHandler::setFRUDataOnDBus(
             }
         }
     }
+#endif
 }
 void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
