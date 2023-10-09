@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac9464c_699c9768",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-09T07:58:01Z",
+      "side": 1,
+      "message": "so , we are picking the changed container id from the entity association tree. does this mean that we are dictating that the order in which we receive PDR\u0027s from the remote PLDM terminus.\n\nIn order words, does this logic work if we dont receive the entity association PDR\u0027s first ? does the Spec indicate any ordering ? If not is this an IBM only thing ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
