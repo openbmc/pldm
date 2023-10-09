@@ -186,6 +186,7 @@ int BIOSConfig::checkAttributeTable(const Table& table)
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
                     entry, pvHandls.data(), pvHandls.size());
+
                 uint8_t defNum;
                 pldm_bios_table_attr_entry_enum_decode_def_num_check(entry,
                                                                      &defNum);
@@ -249,6 +250,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
         MenuPath menuPath{};
         CurrentValue currentValue{};
         DefaultValue defaultValue{};
+        std::vector<ValueDisplayName> valueDisplayNames;
         Option options{};
 
         auto attrValueHandle =
@@ -298,6 +300,17 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
             case PLDM_BIOS_ENUMERATION:
             case PLDM_BIOS_ENUMERATION_READ_ONLY:
             {
+                std::map<uint16_t, std::vector<std::string>>
+                    valueDisplayNamesMap =
+                        biosAttributes[attrHandle % biosAttributes.size()]
+                            ->valueDisplayNamesMap;
+                auto it = valueDisplayNamesMap.find(attrHandle);
+                if (it != valueDisplayNamesMap.end())
+                {
+                    const std::vector<std::string>& sourceVector = it->second;
+                    std::copy(sourceVector.begin(), sourceVector.end(),
+                              std::back_inserter(valueDisplayNames));
+                }
                 auto getValue = [](uint16_t handle,
                                    const Table& table) -> std::string {
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
@@ -334,7 +347,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     options.push_back(
                         std::make_tuple("xyz.openbmc_project.BIOSConfig."
                                         "Manager.BoundType.OneOf",
-                                        getValue(pvHandls[i], *stringTable)));
+                                        getValue(pvHandls[i], *stringTable),
+                                        valueDisplayNames[i]));
                 }
 
                 auto count =
@@ -383,15 +397,15 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.LowerBound",
-                                    static_cast<int64_t>(lower)));
+                                    static_cast<int64_t>(lower), ""));
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.UpperBound",
-                                    static_cast<int64_t>(upper)));
+                                    static_cast<int64_t>(upper), ""));
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.ScalarIncrement",
-                                    static_cast<int64_t>(scalar)));
+                                    static_cast<int64_t>(scalar), ""));
                 defaultValue = static_cast<int64_t>(def);
                 break;
             }
@@ -420,11 +434,11 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.MinStringLength",
-                                    static_cast<int64_t>(min)));
+                                    static_cast<int64_t>(min), ""));
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.MaxStringLength",
-                                    static_cast<int64_t>(max)));
+                                    static_cast<int64_t>(max), ""));
                 defaultValue = defString.data();
                 break;
             }
