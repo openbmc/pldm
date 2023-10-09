@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68c65496_69f75604",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-09T23:28:33Z",
+      "side": 1,
+      "message": "Please rebase this patch on top of the work here:\n\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/63652\n\nI realise that is a WIP patch, but we must not be making the problems solved by it worse (like is being done in your patch here). To get it out of the WIP state can you please help with testing it and providing feedback?",
+      "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
