@@ -22,6 +22,30 @@
       },
       "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a87743_5630962a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-09T12:39:46Z",
+      "side": 1,
+      "message": "According to the the Spec DSP 0248, Section 11, figure 7. Container ID of the contained entity(Child entity) is the same as the container ID of the Parent entity . Hence there is a need for the entity assiciation PDR to be received first before the individual entities are received from the remote terminus, in order to assign the correct container id to the contained entity.",
+      "parentUuid": "0ac9464c_699c9768",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
