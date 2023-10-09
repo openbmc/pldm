@@ -223,7 +223,7 @@ const pldm_bios_attr_table_entry*
     constructEnumEntry(Table& table, pldm_bios_table_attr_entry_enum_info* info)
 {
     auto entryLength = pldm_bios_table_attr_entry_enum_encode_length(
-        info->pv_num, info->def_num);
+        info->pv_num, info->def_num, info->vdn_num);
 
     auto tableSize = table.size();
     table.resize(tableSize + entryLength, 0);

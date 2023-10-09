@@ -186,6 +186,15 @@ int BIOSConfig::checkAttributeTable(const Table& table)
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
                     entry, pvHandls.data(), pvHandls.size());
+
+                uint8_t vdnNum;
+                pldm_bios_table_attr_entry_enum_decode_vdn_num_check(entry,
+                                                                     &vdnNum);
+
+                std::vector<uint16_t> vdnHandls(vdnNum);
+                pldm_bios_table_attr_entry_enum_decode_vdn_hdls_check(
+                    entry, vdnHandls.data(), vdnHandls.size());
+
                 uint8_t defNum;
                 pldm_bios_table_attr_entry_enum_decode_def_num_check(entry,
                                                                      &defNum);
@@ -208,6 +217,16 @@ int BIOSConfig::checkAttributeTable(const Table& table)
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
                         stringTable->data(), stringTable->size(),
                         pvHandls[defIndices[i]]);
+                    if (stringEntry == nullptr)
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
+                }
+
+                for (size_t i = 0; i < vdnHandls.size(); i++)
+                {
+                    auto stringEntry = pldm_bios_table_string_find_by_handle(
+                        stringTable->data(), stringTable->size(), vdnHandls[i]);
                     if (stringEntry == nullptr)
                     {
                         return PLDM_INVALID_BIOS_ATTR_HANDLE;
@@ -249,6 +268,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
         MenuPath menuPath{};
         CurrentValue currentValue{};
         DefaultValue defaultValue{};
+        std::vector<ValueDisplayName> valueDisplayName;
         Option options{};
 
         auto attrValueHandle =
@@ -328,13 +348,27 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
                     attrEntry, pvHandls.data(), pvHandls.size());
 
+                uint8_t vdnNum;
+                pldm_bios_table_attr_entry_enum_decode_vdn_num_check(attrEntry,
+                                                                     &vdnNum);
+
+                std::vector<uint16_t> vdnHandls(vdnNum);
+                pldm_bios_table_attr_entry_enum_decode_vdn_hdls_check(
+                    attrEntry, vdnHandls.data(), vdnHandls.size());
+
+                for (size_t i = 0; i < vdnHandls.size(); i++)
+                {
+                    valueDisplayName.push_back(
+                        getValue(vdnHandls[i], *stringTable));
+                }
                 // get possible_value
                 for (size_t i = 0; i < pvHandls.size(); i++)
                 {
                     options.push_back(
                         std::make_tuple("xyz.openbmc_project.BIOSConfig."
                                         "Manager.BoundType.OneOf",
-                                        getValue(pvHandls[i], *stringTable)));
+                                        getValue(pvHandls[i], *stringTable),
+                                        valueDisplayName[i]));
                 }
 
                 auto count =
@@ -383,15 +417,15 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.LowerBound",
-                                    static_cast<int64_t>(lower)));
+                                    static_cast<int64_t>(lower), ""));
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.UpperBound",
-                                    static_cast<int64_t>(upper)));
+                                    static_cast<int64_t>(upper), ""));
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.ScalarIncrement",
-                                    static_cast<int64_t>(scalar)));
+                                    static_cast<int64_t>(scalar), ""));
                 defaultValue = static_cast<int64_t>(def);
                 break;
             }
@@ -420,11 +454,11 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.MinStringLength",
-                                    static_cast<int64_t>(min)));
+                                    static_cast<int64_t>(min), ""));
                 options.push_back(
                     std::make_tuple("xyz.openbmc_project.BIOSConfig.Manager."
                                     "BoundType.MaxStringLength",
-                                    static_cast<int64_t>(max)));
+                                    static_cast<int64_t>(max), ""));
                 defaultValue = defString.data();
                 break;
             }
@@ -576,6 +610,12 @@ std::optional<Table> BIOSConfig::buildAndStoreStringTable()
         for (auto& pv : possibleValues)
         {
             strings.emplace(pv);
+        }
+
+        auto valueDisplayNames = entry.at("value_names");
+        for (auto& vdn : valueDisplayNames)
+        {
+            strings.emplace(vdn);
         }
     });
 

@@ -33,6 +33,12 @@ BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
     {
         defaultValues.emplace_back(val);
     }
+
+    Json vdn = entry.at("value_names");
+    for (auto& val : vdn)
+    {
+        valueDisplayNames.emplace_back(val);
+    }
     assert(defaultValues.size() == 1);
     defaultValue = defaultValues[0];
     if (dBusMap.has_value())
@@ -189,6 +195,19 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
     dbusHandler->setDbusProperty(*dBusMap, it->first);
 }
 
+std::vector<uint16_t> BIOSEnumAttribute::getValueDisplayNamesHandle(
+    const BIOSStringTable& stringTable, const std::vector<std::string>& vdn)
+{
+    std::vector<uint16_t> valueDisplayNamesHandle;
+    for (const auto& vd : vdn)
+    {
+        auto handle = stringTable.findHandle(vd);
+        valueDisplayNamesHandle.push_back(handle);
+    }
+
+    return valueDisplayNamesHandle;
+}
+
 void BIOSEnumAttribute::constructEntry(
     const BIOSStringTable& stringTable, Table& attrTable, Table& attrValueTable,
     std::optional<std::variant<int64_t, std::string>> optAttributeValue)
@@ -198,10 +217,18 @@ void BIOSEnumAttribute::constructEntry(
     std::vector<uint8_t> defaultIndices(1, 0);
     defaultIndices[0] = getValueIndex(defaultValue, possibleValues);
 
+    auto valueDisplayNamesHandle =
+        getValueDisplayNamesHandle(stringTable, valueDisplayNames);
+
     pldm_bios_table_attr_entry_enum_info info = {
-        stringTable.findHandle(name),         readOnly,
-        (uint8_t)possibleValuesHandle.size(), possibleValuesHandle.data(),
-        (uint8_t)defaultIndices.size(),       defaultIndices.data(),
+        stringTable.findHandle(name),
+        readOnly,
+        (uint8_t)possibleValuesHandle.size(),
+        possibleValuesHandle.data(),
+        (uint8_t)defaultIndices.size(),
+        defaultIndices.data(),
+        (uint8_t)valueDisplayNamesHandle.size(),
+        valueDisplayNamesHandle.data(),
     };
 
     auto attrTableEntry = table::attribute::constructEnumEntry(attrTable,
