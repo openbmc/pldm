@@ -43,6 +43,9 @@ class BIOSEnumAttribute : public BIOSAttribute
                            const pldm_bios_attr_table_entry* attrEntry,
                            const BIOSStringTable& stringTable) override;
 
+    std::vector<uint16_t> getValueDisplayNamesHandle(
+    const BIOSStringTable& stringTable, const std::vector<std::string>& vdn);
+
     /** @brief Construct corresponding entries at the end of the attribute table
      *         and attribute value tables
      *  @param[in] stringTable - The string Table
@@ -69,6 +72,7 @@ class BIOSEnumAttribute : public BIOSAttribute
 
   private:
     std::vector<std::string> possibleValues;
+    std::vector<std::string> valueDisplayNames;
     std::string defaultValue;
 
     /** @brief Get index of the given value in possible values
