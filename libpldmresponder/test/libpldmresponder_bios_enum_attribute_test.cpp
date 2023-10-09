@@ -37,6 +37,7 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
     auto jsonEnumReadOnly = R"({
          "attribute_name" : "CodeUpdatePolicy",
          "possible_values" : [ "Concurrent", "Disruptive" ],
+         "value_names" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Concurrent" ],
          "readOnly" : true,
          "helpText" : "HelpText",
@@ -53,6 +54,7 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
     auto jsonEnumReadOnlyError = R"({
          "attribute_name" : "CodeUpdatePolicy",
          "possible_value" : [ "Concurrent", "Disruptive" ],
+         "value_names" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Concurrent" ],
          "readOnly" : true,
          "helpText" : "HelpText",
@@ -64,6 +66,7 @@ TEST_F(TestBIOSEnumAttribute, CtorTest)
     auto jsonEnumReadWrite = R"({
          "attribute_name" : "FWBootSide",
          "possible_values" : [ "Perm", "Temp" ],
+         "value_names" : [ "Perm", "Temp" ],
          "default_values" : [ "Perm" ],
          "readOnly" : false,
          "helpText" : "HelpText",
@@ -91,6 +94,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
     auto jsonEnumReadOnly = R"({
          "attribute_name" : "CodeUpdatePolicy",
          "possible_values" : [ "Concurrent", "Disruptive" ],
+         "value_names" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Disruptive" ],
          "readOnly" : true,
          "helpText" : "HelpText",
@@ -130,6 +134,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
     auto jsonEnumReadWrite = R"({
          "attribute_name" : "CodeUpdatePolicy",
          "possible_values" : [ "Concurrent", "Disruptive" ],
+         "value_names" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Disruptive" ],
          "readOnly" : false,
          "helpText" : "HelpText",
@@ -182,6 +187,7 @@ TEST_F(TestBIOSEnumAttribute, setAttrValueOnDbus)
     auto jsonEnumReadWrite = R"({
          "attribute_name" : "CodeUpdatePolicy",
          "possible_values" : [ "Concurrent", "Disruptive" ],
+         "value_names" : [ "Concurrent", "Disruptive" ],
          "default_values" : [ "Disruptive" ],
          "readOnly" : false,
          "helpText" : "HelpText",
