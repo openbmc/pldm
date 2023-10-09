@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6540122_87884a2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-09T08:03:29Z",
+      "side": 1,
+      "message": "is there a reason why this cannot be out of the chain ?",
+      "revId": "ff3a36a74aa6d4453a9d3da43b429b51a27467e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
