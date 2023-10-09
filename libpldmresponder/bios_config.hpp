@@ -47,7 +47,7 @@ using CurrentValue = std::variant<int64_t, std::string>;
 using DefaultValue = std::variant<int64_t, std::string>;
 using OptionString = std::string;
 using OptionValue = std::variant<int64_t, std::string>;
-using Option = std::vector<std::tuple<OptionString, OptionValue>>;
+using Option = std::vector<std::tuple<OptionString, OptionValue, std::string>>;
 using BIOSTableObj =
     std::tuple<AttributeType, ReadonlyStatus, DisplayName, Description,
                MenuPath, CurrentValue, DefaultValue, Option>;
