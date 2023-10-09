@@ -1013,8 +1013,9 @@ void HostPDRHandler::setFRUDataOnDBus(
 
             if (data.fruRecType == PLDM_FRU_RECORD_TYPE_OEM)
             {
-                for (const auto& tlv : data.fruTLV)
+                for (const [[maybe_unused]] auto& tlv : data.fruTLV)
                 {
+#ifdef OEM_IBM
                     if (tlv.fruFieldType ==
                         PLDM_OEM_FRU_FIELD_TYPE_LOCATION_CODE)
                     {
@@ -1024,6 +1025,7 @@ void HostPDRHandler::setFRUDataOnDBus(
                                             tlv.fruFieldValue.data()),
                                         tlv.fruFieldLen));
                     }
+#endif
                 }
             }
         }
