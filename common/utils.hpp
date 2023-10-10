@@ -136,6 +136,14 @@ std::optional<std::vector<set_effecter_state_field>>
     parseEffecterData(const std::vector<uint8_t>& effecterData,
                       uint8_t effecterCount);
 
+/** @brief Return the size of data type based on the effecterDataSize enum value
+ *
+ *  @param[in] effecterDataSize - Bitwidth and format of setting effecter value
+ *  @return[out] Map the effecterDataSize enum value to datatype and return the
+ *               size of dataType
+ */
+size_t getEffecterDataSize(uint8_t effecterDataSize);
+
 /**
  *  @brief creates an error log
  *  @param[in] errorMsg - the error message
