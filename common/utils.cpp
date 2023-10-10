@@ -407,6 +407,27 @@ std::optional<std::vector<set_effecter_state_field>>
     return std::make_optional(std::move(stateField));
 }
 
+size_t getEffecterDataSize(uint8_t effecterDataSize)
+{
+    switch (effecterDataSize)
+    {
+        case PLDM_EFFECTER_DATA_SIZE_UINT8:
+            return sizeof(uint8_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT8:
+            return sizeof(int8_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT16:
+            return sizeof(uint16_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT16:
+            return sizeof(int16_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT32:
+            return sizeof(uint32_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT32:
+            return sizeof(int32_t);
+        default:
+            return 0;
+    }
+}
+
 std::string DBusHandler::getService(const char* path,
                                     const char* interface) const
 {
