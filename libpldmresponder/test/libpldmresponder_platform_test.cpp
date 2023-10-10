@@ -395,6 +395,123 @@ TEST(setNumericEffecterValueHandler, testBadRequest)
     pldm_pdr_destroy(numericEffecterPdrRepo);
 }
 
+TEST(getNumericEffecterValueHandler, testGoodRequest)
+{
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillRepeatedly(Return("foo.bar"));
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto numericEffecterPdrRepo = pldm_pdr_init();
+    Repo numericEffecterPDRs(numericEffecterPdrRepo);
+    auto event = sdeventplus::Event::get_default();
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
+                    nullptr, nullptr, nullptr, nullptr, event);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
+
+    pdr_utils::PdrEntry e;
+    auto record4 = pdr::getRecordByHandle(numericEffecterPDRs, 4, e);
+    ASSERT_NE(record4, nullptr);
+
+    pldm_numeric_effecter_value_pdr* pdr =
+        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
+
+    uint16_t effecterId = 3;
+
+    uint8_t effecterDataSize{};
+    pldm::utils::PropertyValue dbusValue;
+    std::string propertyType;
+
+    // effecterValue return the present numeric setting
+    uint32_t effecterValue = 2100000000;
+    using effecterOperationalState = uint8_t;
+    using completionCode = uint8_t;
+
+    EXPECT_CALL(mockedUtils,
+                getDbusPropertyVariant(StrEq("/foo/bar"), StrEq("propertyName"),
+                                       StrEq("xyz.openbmc_project.Foo.Bar")))
+        .WillOnce(Return(PropertyValue(static_cast<uint64_t>(effecterValue))));
+
+    auto rc = platform_numeric_effecter::getNumericEffecterData<MockdBusHandler,
+                                                                Handler>(
+        mockedUtils, handler, effecterId, effecterDataSize, propertyType,
+        dbusValue);
+
+    ASSERT_EQ(rc, 0);
+
+    size_t responsePayloadLength = sizeof(completionCode) +
+                                   sizeof(effecterDataSize) +
+                                   sizeof(effecterOperationalState) +
+                                   getEffecterDataSize(effecterDataSize) +
+                                   getEffecterDataSize(effecterDataSize);
+
+    Response response(responsePayloadLength + sizeof(pldm_msg_hdr));
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = platform_numeric_effecter::getNumericEffecterValueHandler(
+        propertyType, dbusValue, effecterDataSize, responsePtr,
+        responsePayloadLength, 1);
+
+    ASSERT_EQ(rc, 0);
+
+    struct pldm_get_numeric_effecter_value_resp* resp =
+        reinterpret_cast<struct pldm_get_numeric_effecter_value_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
+    uint32_t valPresent;
+    memcpy(&valPresent, &resp->pending_and_present_values[4],
+           sizeof(valPresent));
+
+    ASSERT_EQ(effecterValue, valPresent);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(numericEffecterPdrRepo);
+}
+
+TEST(getNumericEffecterValueHandler, testBadRequest)
+{
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(5)
+        .WillRepeatedly(Return("foo.bar"));
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto numericEffecterPdrRepo = pldm_pdr_init();
+    Repo numericEffecterPDRs(numericEffecterPdrRepo);
+    auto event = sdeventplus::Event::get_default();
+    Handler handler(&mockedUtils, "./pdr_jsons/state_effecter/good", inPDRRepo,
+                    nullptr, nullptr, nullptr, nullptr, event);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
+
+    pdr_utils::PdrEntry e;
+    auto record4 = pdr::getRecordByHandle(numericEffecterPDRs, 4, e);
+    ASSERT_NE(record4, nullptr);
+
+    pldm_numeric_effecter_value_pdr* pdr =
+        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
+    EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
+
+    uint16_t effecterId = 4;
+
+    uint8_t effecterDataSize{};
+    pldm::utils::PropertyValue dbusValue;
+    std::string propertyType;
+
+    auto rc = platform_numeric_effecter::getNumericEffecterData<MockdBusHandler,
+                                                                Handler>(
+        mockedUtils, handler, effecterId, effecterDataSize, propertyType,
+        dbusValue);
+
+    ASSERT_EQ(rc, 128);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(numericEffecterPdrRepo);
+}
+
 TEST(parseStateSensor, allScenarios)
 {
     // Sample state sensor with SensorID - 1, EntityType - Processor Module(67)

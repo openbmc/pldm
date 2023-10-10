@@ -259,6 +259,28 @@ std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
 
     return frus;
 }
+
+size_t getEffecterDataSize(uint8_t effecterDataSize)
+{
+    switch (effecterDataSize)
+    {
+        case PLDM_EFFECTER_DATA_SIZE_UINT8:
+            return sizeof(uint8_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT8:
+            return sizeof(int8_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT16:
+            return sizeof(uint16_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT16:
+            return sizeof(int16_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT32:
+            return sizeof(uint32_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT32:
+            return sizeof(int32_t);
+        default:
+            return 0;
+    }
+}
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
