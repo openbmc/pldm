@@ -242,6 +242,14 @@ std::tuple<pldm::pdr::TerminusHandle, pldm::pdr::SensorID,
 std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
                                                      size_t fruLen);
 
+/** @brief Return the size of data type based on the effecterDataSize enum value
+ *
+ *  @param[in] effecterDataSize - Bitwidth and format of setting effecter value
+ *  @return[out] Map the effecterDataSize enum value to datatype and return the
+ *               size of dataType
+ */
+size_t getEffecterDataSize(uint8_t effecterDataSize);
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm
