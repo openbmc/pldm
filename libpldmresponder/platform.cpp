@@ -593,6 +593,62 @@ int Handler::getPDRRecordHandles(const ChangeEntry* changeEntryData,
     return PLDM_SUCCESS;
 }
 
+Response Handler::getNumericEffecterValue(const pldm_msg* request,
+                                          size_t payloadLength)
+{
+    if (payloadLength != PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES)
+    {
+        return ccOnlyResponse(request, PLDM_ERROR_INVALID_LENGTH);
+    }
+
+    uint16_t effecterId{};
+    auto rc = decode_get_numeric_effecter_value_req(request, payloadLength,
+                                                    &effecterId);
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    const pldm::utils::DBusHandler dBusIntf;
+    uint8_t effecterDataSize{};
+    pldm::utils::PropertyValue dbusValue;
+    uint8_t effecterOperationalState{};
+    std::string propertyType;
+
+    rc = platform_numeric_effecter::getNumericEffecterData<
+        pldm::utils::DBusHandler, Handler>(
+        dBusIntf, *this, effecterId, effecterDataSize, propertyType, dbusValue);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        return ccOnlyResponse(request, rc);
+    }
+
+    // GetNumericEffecterResponse contains below fields
+    // effecter_data_size, effecterOperationalState, pendingValue and
+    // PresentValue 1 is added for completion code
+    size_t responsePayloadLength = 1 + sizeof(effecterDataSize) +
+                                   sizeof(effecterOperationalState) +
+                                   getEffecterDataSize(effecterDataSize) +
+                                   getEffecterDataSize(effecterDataSize);
+
+    Response response(responsePayloadLength + sizeof(pldm_msg_hdr));
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+
+    rc = platform_numeric_effecter::getNumericEffecterValueHandler(
+        propertyType, dbusValue, effecterDataSize, responsePtr,
+        responsePayloadLength, request->hdr.instance_id);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        error(
+            "Reponse to GetNumeric Effecter failed RC={RC} for EffectorId={EFFECTERID} ",
+            "RC", rc, "EFFECTERID", effecterId);
+        return ccOnlyResponse(request, rc);
+    }
+    return response;
+}
+
 Response Handler::setNumericEffecterValue(const pldm_msg* request,
                                           size_t payloadLength)
 {

@@ -338,6 +338,238 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
     return PLDM_SUCCESS;
 }
 
+/** @brief Function to convert the D-Bus value based on effecter data size
+ *         and create the response for getNumericEffecterValue request.
+ *  @param[in] PropertyValue - D-Bus Value
+ *  @param[in] effecterDataSize - effecter value size.
+ *  @param[in,out] responsePtr - Response of getNumericEffecterValue.
+ *  @param[in] responsePayloadLength - reponse length.
+ *  @param[in] instanceId - instance id for response
+ *
+ *  @return PLDM_SUCCESS/PLDM_ERROR
+ */
+template <typename T>
+int getEffecterValue(T propertyValue, uint8_t effecterDataSize,
+                     pldm_msg* responsePtr, size_t responsePayloadLength,
+                     int instanceId)
+{
+    switch (effecterDataSize)
+    {
+        case PLDM_EFFECTER_DATA_SIZE_UINT8:
+        {
+            uint8_t value = static_cast<uint8_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING, &value, &value,
+                responsePtr, responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT8:
+        {
+            int8_t value = static_cast<int8_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_UINT16:
+        {
+            uint16_t value = static_cast<uint16_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT16:
+        {
+            int16_t value = static_cast<int16_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_UINT32:
+        {
+            uint32_t value = static_cast<uint32_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT32:
+        {
+            int32_t value = static_cast<int32_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength));
+        }
+        default:
+        {
+            error("Unknown Effecter Size");
+            return PLDM_ERROR;
+        }
+    }
+}
+
+/** @brief Function to convert the D-Bus value to the effector data size value
+ *  @param[in] PropertyType - String contains the dataType of the Dbus value.
+ *  @param[in] PropertyValue - Variant contains the D-Bus Value
+ *  @param[in] effecterDataSize - effecter value size.
+ *  @param[in,out] responsePtr - Response of getNumericEffecterValue.
+ *  @param[in] responsePayloadLength - reponse length.
+ *  @param[in] instanceId - instance id for response
+ *
+ *  @return PLDM_SUCCESS/PLDM_ERROR
+ */
+int getNumericEffecterValueHandler(const std::string& propertyType,
+                                   pldm::utils::PropertyValue propertyValue,
+                                   uint8_t effecterDataSize,
+                                   pldm_msg* responsePtr,
+                                   size_t responsePayloadLength, int instanceId)
+{
+    if (propertyType == "uint32_t")
+    {
+        uint32_t propVal = std::get<uint32_t>(propertyValue);
+        return getEffecterValue<uint32_t>(propVal, effecterDataSize,
+                                          responsePtr, responsePayloadLength,
+                                          instanceId);
+    }
+    else if (propertyType == "uint64_t")
+    {
+        uint64_t propVal = std::get<uint64_t>(propertyValue);
+        return getEffecterValue<uint64_t>(propVal, effecterDataSize,
+                                          responsePtr, responsePayloadLength,
+                                          instanceId);
+    }
+    else if (propertyType == "uint16_t")
+    {
+        uint16_t propVal = std::get<uint16_t>(propertyValue);
+        return getEffecterValue<uint16_t>(propVal, effecterDataSize,
+                                          responsePtr, responsePayloadLength,
+                                          instanceId);
+    }
+    else if (propertyType == "uint8_t")
+    {
+        uint8_t propVal = std::get<uint8_t>(propertyValue);
+        return getEffecterValue<uint8_t>(propVal, effecterDataSize, responsePtr,
+                                         responsePayloadLength, instanceId);
+    }
+    else
+    {
+        error("Property Type [{PROPERTYTYPE}] not supported", "PROPERTYTYPE",
+              propertyType);
+    }
+    return PLDM_ERROR;
+}
+
+/** @brief Function to get the effecter details as data size, D-Bus property
+ *         type, D-Bus Value
+ *  @tparam[in] DBusInterface - DBus interface type
+ *  @tparam[in] Handler - pldm::responder::platform::Handler
+ *  @param[in] dBusIntf - The interface object of DBusInterface
+ *  @param[in] handler - The interface object of
+ *             pldm::responder::platform::Handler
+ *  @param[in] effecterId - Effecter ID sent by the requester to act on
+ *  @param[in] effecterDataSize - The bit width and format of the setting
+ * 				value for the effecter
+ *  @param[in] propertyType - The data type of the D-Bus value
+ *  @param[in] propertyValue - The value of numeric effecter being
+ * 				requested.
+ *  @return - Success or failure in getting the D-Bus property or the
+ *  effecterId not found in the PDR repo
+ */
+template <class DBusInterface, class Handler>
+int getNumericEffecterData(const DBusInterface& dBusIntf, Handler& handler,
+                           uint16_t effecterId, uint8_t& effecterDataSize,
+                           std::string& propertyType,
+                           pldm::utils::PropertyValue& propertyValue)
+{
+    pldm_numeric_effecter_value_pdr* pdr = nullptr;
+
+    std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
+        numericEffecterPdrRepo(pldm_pdr_init(), pldm_pdr_destroy);
+    pldm::responder::pdr_utils::Repo numericEffecterPDRs(
+        numericEffecterPdrRepo.get());
+    pldm::responder::pdr::getRepoByType(handler.getRepo(), numericEffecterPDRs,
+                                        PLDM_NUMERIC_EFFECTER_PDR);
+    if (numericEffecterPDRs.empty())
+    {
+        error("The Numeric Effecter PDR repo is empty.");
+        return PLDM_ERROR;
+    }
+
+    // Get the pdr structure of pldm_numeric_effecter_value_pdr according
+    // to the effecterId
+    pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+    auto pdrRecord = numericEffecterPDRs.getFirstRecord(pdrEntry);
+
+    while (pdrRecord)
+    {
+        pdr = reinterpret_cast<pldm_numeric_effecter_value_pdr*>(pdrEntry.data);
+        if (pdr->effecter_id != effecterId)
+        {
+            pdr = nullptr;
+            pdrRecord = numericEffecterPDRs.getNextRecord(pdrRecord, pdrEntry);
+            continue;
+        }
+        effecterDataSize = pdr->effecter_data_size;
+        break;
+    }
+
+    if (!pdr)
+    {
+        error("The Numeric Effecter not found EFFECTERID={EFFECTERID}",
+              "EFFECTERID", effecterId);
+        return PLDM_PLATFORM_INVALID_EFFECTER_ID;
+    }
+
+    try
+    {
+        const auto& [dbusMappings,
+                     dbusValMaps] = handler.getDbusObjMaps(effecterId);
+        if (dbusMappings.size() > 0)
+        {
+            pldm::utils::DBusMapping dbusMapping{
+                dbusMappings[0].objectPath, dbusMappings[0].interface,
+                dbusMappings[0].propertyName, dbusMappings[0].propertyType};
+            try
+            {
+                propertyValue = dBusIntf.getDbusPropertyVariant(
+                    dbusMapping.objectPath.c_str(),
+                    dbusMapping.propertyName.c_str(),
+                    dbusMapping.interface.c_str());
+                propertyType = dbusMappings[0].propertyType;
+            }
+            catch (const std::exception& e)
+            {
+                error(
+                    "Get StateNumericEffecter from dbus Error, interface : {INTF} ,exception : {ERR_EXCEP}",
+                    "INTF", dbusMapping.interface.c_str(), "ERR_EXCEP",
+                    e.what());
+                return PLDM_ERROR;
+            }
+        }
+    }
+    catch (const std::out_of_range& e)
+    {
+        error(
+            "the effecterId does not exist. effecter id: {EFFECTER_ID}, {ERR_EXCEP}",
+            "EFFECTER_ID", effecterId, "ERR_EXCEP", e.what());
+        return PLDM_ERROR;
+    }
+    return PLDM_SUCCESS;
+}
+
 } // namespace platform_numeric_effecter
 } // namespace responder
 } // namespace pldm
