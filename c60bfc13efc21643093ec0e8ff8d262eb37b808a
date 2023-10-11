@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4353dc7_3fd889f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "you could add a brief description of the command and add the spec details(section, table etc) to make it easy for reviews.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 59
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2179aa8_2fb6ec2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "could you please add unit test for this?",
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "261568df_a0ee055d",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "declare this variable only if the getNumericEffecterData() returns a success?",
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b465c000_7a3df134",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "you could point to the spec to specify the table of the command format here.",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 629,
+        "endChar": 50
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89f565cf_47c94fd2",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "Magic number?",
+      "range": {
+        "startLine": 630,
+        "startChar": 35,
+        "endLine": 630,
+        "endChar": 36
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fcf147c_7e30922f",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "nit: this is not quite readable. Change if you feel necessary.",
+      "range": {
+        "startLine": 632,
+        "startChar": 35,
+        "endLine": 633,
+        "endChar": 73
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b8e9af3_ca6a8b8f",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "GetNumericEffecterValue",
+      "range": {
+        "startLine": 645,
+        "startChar": 24,
+        "endLine": 645,
+        "endChar": 43
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2f62cdb_901a9abd",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "EFFECTER_ID",
+      "range": {
+        "startLine": 645,
+        "startChar": 75,
+        "endLine": 645,
+        "endChar": 85
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c9343c2_6c094873",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-11T15:42:01Z",
+      "side": 1,
+      "message": "For my understanding: why did you choose to use nested try-catch blocks? \ncan this be moved to as a different function rather than nesting the try block?",
+      "range": {
+        "startLine": 545,
+        "startChar": 12,
+        "endLine": 560,
+        "endChar": 13
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
