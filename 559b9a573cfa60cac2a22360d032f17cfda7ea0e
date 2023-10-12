@@ -34,6 +34,24 @@
       "parentUuid": "68c65496_69f75604",
       "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b8bf191_9647ab23",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-12T16:07:11Z",
+      "side": 1,
+      "message": "@andrew since rashmica\u0027s changes are not in downstream so can\u0027t test her changes on downstream and as per your above comment also i am blocked to test my changes + rashmica\u0027s changes on upstream because upstream code is not stable but i and test team have tested my changes on downstream and it\u0027s working fine so we are thinking if we merge this change before rashmica\u0027s changes because her changes will take time to merge in upstream and there are only pldmd.cpp has minor conflict between two changes.",
+      "parentUuid": "d5c47930_9168b5e4",
+      "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
