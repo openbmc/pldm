@@ -52,6 +52,24 @@
       "parentUuid": "d5c47930_9168b5e4",
       "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28ca2662_709740eb",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-12T22:50:05Z",
+      "side": 1,
+      "message": "No there are not minor conflicts between the two changes. This approach will need to be reworked entirely with the patch I linked. Similarly, the patch I linked has been tested by Ampere, Meta and others and is quite close to being merged.\n\nIf you and your testers have exercised this patch downstream but are not based on upstream (and can\u0027t test it against upstream) why should we be merging it upstream before other patches that have been tested? What\u0027s the rush?",
+      "parentUuid": "9b8bf191_9647ab23",
+      "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
