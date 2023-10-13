@@ -46,6 +46,30 @@
       },
       "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99fa8ccb_46a57b2f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-10-13T06:58:11Z",
+      "side": 1,
+      "message": "@manoj As per the Spec DSP 0248, Section 11.8 - \u003cDesigning Association PDRs for Monitoring and Control\u003e, \n\n1) Identify the physical entities and assign them Entity Identification Information          values:\n    a) Identify the topmost physical container entities and give them the containerID for \"system\".\n    b) Assign each remaining physical entity a different containerID value using whatever approach works best for the implementation. (For example, containerID values could be assigned sequentially starting from 1, or 1000 if it necessary to have a value that is more readily distinguishable as a being a containerID.)\n    \n2) Create Entity Association PDRs for the physical-to-physical containment associations.\n\n3) Create the Sensor PDR, Effecter PDR, or other PDRs that are associated with the physical entities, and set the Entity Identification Information based on the containment PDRs that were created earlier.\n\n4) Create the PDRs for any logical entities and set the containerID value for the containing entity to the containerID for the appropriate physical container entities.\n\n5) Create the Sensor PDR, Effecter PDR, or other PDRs that reference those logical entities. \n\n\nWe are basically following the same.",
+      "parentUuid": "43a87743_5630962a",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
