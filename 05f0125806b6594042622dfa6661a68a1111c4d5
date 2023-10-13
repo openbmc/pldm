@@ -70,6 +70,29 @@
       },
       "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d12a359_1eea14a7",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-13T10:33:34Z",
+      "side": 1,
+      "message": "if the Entity identification information (entity type, instance id, container id) of the PDR matches with the entity in the entity association tree then t-\u003econtainer_id and e.entity_container_id have same container id. Please correct my understanding here.",
+      "range": {
+        "startLine": 78,
+        "startChar": 3,
+        "endLine": 85,
+        "endChar": 5
+      },
+      "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
