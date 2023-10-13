@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e39bb94d_8afab7c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-10-13T06:53:07Z",
+      "side": 1,
+      "message": "+1\n\nCan you also add a negative case example?",
+      "parentUuid": "d4353dc7_3fd889f1",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 59
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d2179aa8_2fb6ec2d",
@@ -54,6 +78,29 @@
       "writtenOn": "2023-10-11T15:42:01Z",
       "side": 1,
       "message": "declare this variable only if the getNumericEffecterData() returns a success?",
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a352c90_d99daacb",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-10-13T06:53:07Z",
+      "side": 1,
+      "message": "effecterDataSize",
+      "range": {
+        "startLine": 628,
+        "startChar": 7,
+        "endLine": 628,
+        "endChar": 25
+      },
       "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -168,6 +215,69 @@
         "startChar": 75,
         "endLine": 645,
         "endChar": 85
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8e829c_83ecc1e8",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-10-13T06:53:07Z",
+      "side": 1,
+      "message": "why int and not uint8?",
+      "range": {
+        "startLine": 354,
+        "startChar": 21,
+        "endLine": 354,
+        "endChar": 24
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b7a644_2985f79d",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-10-13T06:53:07Z",
+      "side": 1,
+      "message": "Can we have the check in uniformity, starting from uint8, uint16, uint32 and uint64?",
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb4d5332_388e36cc",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-10-13T06:53:07Z",
+      "side": 1,
+      "message": "if pdrRecord is NULL how does this behave? do we need a check and return error?",
+      "range": {
+        "startLine": 522,
+        "startChar": 12,
+        "endLine": 522,
+        "endChar": 21
       },
       "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
