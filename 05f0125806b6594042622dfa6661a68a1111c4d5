@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e380e4c_1b8686fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 36
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-16T07:24:30Z",
+      "side": 1,
+      "message": "@sagar - can you add this information(in an abstract way) as part of the commit message itself. Dont want the information buried in gerrit comments.",
+      "parentUuid": "99fa8ccb_46a57b2f",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "05f0125806b6594042622dfa6661a68a1111c4d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2d12a359_1eea14a7",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 36
