@@ -107,6 +107,9 @@ class Handler : public CmdHandler
      */
     virtual bool checkRecordHandleInRange(const uint32_t& record_handle) = 0;
 
+    /** @brief Interface to the process setEventReceiver*/
+    virtual void processSetEventReceiver() = 0;
+
     virtual ~Handler() = default;
 
   protected:
