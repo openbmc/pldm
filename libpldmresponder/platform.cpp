@@ -11,6 +11,9 @@
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
 #include "platform_state_sensor.hpp"
+#include "pldmd/dbus_impl_requester.hpp"
+#include "pldmd/handler.hpp"
+#include "requester/handler.hpp"
 
 #include <libpldm/entity.h>
 #include <libpldm/state_set.h>
@@ -928,6 +931,65 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
         }
     }
     return false;
+}
+
+void Handler::setEventReceiver()
+{
+    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
+                                    PLDM_SET_EVENT_RECEIVER_REQ_BYTES);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto instanceId = instanceIdDb->next(eid);
+    uint8_t eventMessageGlobalEnable =
+        PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
+    uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
+    uint8_t eventReceiverAddressInfo = pldm::responder::pdr::BmcMctpEid;
+    uint16_t heartbeatTimer = HEARTBEAT_TIMEOUT;
+
+    auto rc = encode_set_event_receiver_req(
+        instanceId, eventMessageGlobalEnable, transportProtocolType,
+        eventReceiverAddressInfo, heartbeatTimer, request);
+    if (rc != PLDM_SUCCESS)
+    {
+        instanceIdDb->free(eid, instanceId);
+        error("Failed to encode_set_event_receiver_req, rc = {RC}", "RC",
+              lg2::hex, rc);
+        return;
+    }
+
+    auto processSetEventReceiverResponse =
+        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
+        if (response == nullptr || !respMsgLen)
+        {
+            error("Failed to receive response for setEventReceiver command");
+            return;
+        }
+
+        uint8_t completionCode{};
+        auto rc = decode_set_event_receiver_resp(response, respMsgLen,
+                                                 &completionCode);
+        if (rc || completionCode)
+        {
+            error(
+                "Failed to decode setEventReceiver command response, rc = {RC}, cc = {CC}",
+                "RC", rc, "CC", (unsigned)completionCode);
+            pldm::utils::reportError(
+                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+        }
+    };
+    rc = handler->registerRequest(
+        eid, instanceId, PLDM_PLATFORM, PLDM_SET_EVENT_RECEIVER,
+        std::move(requestMsg), std::move(processSetEventReceiverResponse));
+
+    if (rc != PLDM_SUCCESS)
+    {
+        error("Failed to send the setEventReceiver request");
+    }
+
+    if (oemPlatformHandler)
+    {
+        oemPlatformHandler->countSetEventReceiver();
+        oemPlatformHandler->checkAndDisableWatchDog();
+    }
 }
 
 } // namespace platform

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "libpldmresponder/platform.hpp"
-#include "pldmd/handler.hpp"
-#include "requester/handler.hpp"
 
 #include <libpldm/base.h>
 #include <stdint.h>
@@ -22,13 +20,10 @@ namespace base
 class Handler : public CmdHandler
 {
   public:
-    Handler(uint8_t eid, pldm::InstanceIdDb& instanceIdDb,
-            sdeventplus::Event& event,
-            pldm::responder::oem_platform::Handler* oemPlatformHandler,
-            pldm::requester::Handler<pldm::requester::Request>* handler) :
-        eid(eid),
-        instanceIdDb(instanceIdDb), event(event),
-        oemPlatformHandler(oemPlatformHandler), handler(handler)
+    Handler(sdeventplus::Event& event,
+            pldm::responder::oem_platform::Handler* oemPlatformHandler) :
+        event(event),
+        oemPlatformHandler(oemPlatformHandler)
     {
         handlers.emplace(
             PLDM_GET_PLDM_TYPES,
@@ -82,7 +77,7 @@ class Handler : public CmdHandler
      *
      *  @param[in] source - sdeventplus event source
      */
-    void processSetEventReceiver(sdeventplus::source::EventBase& source);
+    void _processSetEventReceiver(sdeventplus::source::EventBase& source);
 
     /** @brief Handler for getTID
      *
@@ -93,12 +88,6 @@ class Handler : public CmdHandler
     Response getTID(const pldm_msg* request, size_t payloadLength);
 
   private:
-    /** @brief MCTP EID of host firmware */
-    uint8_t eid;
-
-    /** @brief An instance ID database for allocating instance IDs. */
-    InstanceIdDb& instanceIdDb;
-
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
      */
@@ -106,9 +95,6 @@ class Handler : public CmdHandler
 
     /** @brief OEM platform handler */
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
-
-    /** @brief PLDM request handler */
-    pldm::requester::Handler<pldm::requester::Request>* handler;
 
     /** @brief sdeventplus event source */
     std::unique_ptr<sdeventplus::source::Defer> survEvent;
