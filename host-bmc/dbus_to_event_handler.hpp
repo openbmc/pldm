@@ -1,7 +1,7 @@
 #pragma once
 
+#include "common/instance_id.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-#include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/platform.h>
