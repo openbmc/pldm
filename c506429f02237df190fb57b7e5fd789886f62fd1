@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a11e0632_be954572",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-17T22:25:01Z",
+      "side": 1,
+      "message": "Updated to `pldmtool,softoff: Use InstanceId APIs from libpldm`",
+      "parentUuid": "c7da4fa0_ab5ca474",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0aa596c_0a85d5b9",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-17T05:19:15Z",
       "side": 1,
       "message": "Why do we need logging for pldmtool ? I thought we are still using the std::cerr ,  based tracing in pldmtool - as we don\u0027t get much benefit out of lg2 for the pldm tool.\n\nEven if we need this - I believe this could be added in another commit.",
+      "range": {
+        "startLine": 31,
+        "startChar": 3,
+        "endLine": 31,
+        "endChar": 25
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f1fdd1a_661d6556",
+        "filename": "pldmtool/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-17T22:25:01Z",
+      "side": 1,
+      "message": "Pldmtool include instance_id.hpp which is including `#include \u003cphosphor-logging/lg2.hpp\u003e` so adding `phosphor_logging_dep` is required for this patch set, I think.\nhttps://github.com/openbmc/pldm/blob/ebf8bb54afa616ce6caa379fb8be3239d4ad7cd1/pldmd/instance_id.hpp#L5",
+      "parentUuid": "f0aa596c_0a85d5b9",
       "range": {
         "startLine": 31,
         "startChar": 3,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d0701f3_0fa6f5b1",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-17T22:25:01Z",
+      "side": 1,
+      "message": "The instanceID will only used in `CommandInterface::exec()` code, so I think initializing `instanceIdDb` in `CommandInterface\u0027 is enough.",
+      "parentUuid": "6d56031a_9d3b82bb",
+      "range": {
+        "startLine": 138,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 36
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "355a80ec_8547c481",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 4
@@ -83,6 +155,30 @@
       "writtenOn": "2023-10-17T05:19:15Z",
       "side": 1,
       "message": "remove this",
+      "range": {
+        "startLine": 301,
+        "startChar": 4,
+        "endLine": 301,
+        "endChar": 21
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b5766e8_53bb3930",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-17T22:25:01Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "355a80ec_8547c481",
       "range": {
         "startLine": 301,
         "startChar": 4,
