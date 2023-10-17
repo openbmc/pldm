@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "80f53da5_7d27cd4e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e39bb94d_8afab7c1",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 59
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d2179aa8_2fb6ec2d",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -61,6 +85,24 @@
       "writtenOn": "2023-10-11T15:42:01Z",
       "side": 1,
       "message": "could you please add unit test for this?",
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b942b0a_96a6de02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Added unit test for the same",
+      "parentUuid": "d2179aa8_2fb6ec2d",
       "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -82,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f42aa0cf_5ab2d3fb",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "261568df_a0ee055d",
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a352c90_d99daacb",
@@ -95,6 +155,30 @@
       "writtenOn": "2023-10-13T06:53:07Z",
       "side": 1,
       "message": "effecterDataSize",
+      "range": {
+        "startLine": 628,
+        "startChar": 7,
+        "endLine": 628,
+        "endChar": 25
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23c825fa_2aa1e753",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a352c90_d99daacb",
       "range": {
         "startLine": 628,
         "startChar": 7,
@@ -128,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f6b45e8_2eef68f8",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b465c000_7a3df134",
+      "range": {
+        "startLine": 627,
+        "startChar": 4,
+        "endLine": 629,
+        "endChar": 50
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89f565cf_47c94fd2",
@@ -141,6 +249,30 @@
       "writtenOn": "2023-10-11T15:42:01Z",
       "side": 1,
       "message": "Magic number?",
+      "range": {
+        "startLine": 630,
+        "startChar": 35,
+        "endLine": 630,
+        "endChar": 36
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1811fc6a_e6b3577c",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Added the comment for explaining the magic number",
+      "parentUuid": "89f565cf_47c94fd2",
       "range": {
         "startLine": 630,
         "startChar": 35,
@@ -220,6 +352,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94063078_1a8cf369",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2f62cdb_901a9abd",
+      "range": {
+        "startLine": 645,
+        "startChar": 75,
+        "endLine": 645,
+        "endChar": 85
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b1a1683_1f09a0b6",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b8e9af3_ca6a8b8f",
+      "range": {
+        "startLine": 645,
+        "startChar": 24,
+        "endLine": 645,
+        "endChar": 43
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d8e829c_83ecc1e8",
@@ -243,6 +423,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "601950f6_c1dc6073",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d8e829c_83ecc1e8",
+      "range": {
+        "startLine": 354,
+        "startChar": 21,
+        "endLine": 354,
+        "endChar": 24
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51b7a644_2985f79d",
@@ -256,6 +460,24 @@
       "writtenOn": "2023-10-13T06:53:07Z",
       "side": 1,
       "message": "Can we have the check in uniformity, starting from uint8, uint16, uint32 and uint64?",
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca4f1a6a_65bbb719",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51b7a644_2985f79d",
       "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -285,6 +507,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78ba8e25_eb411a88",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "line516 handles NULL pdrRecord check and returning error is taken care at line529",
+      "parentUuid": "eb4d5332_388e36cc",
+      "range": {
+        "startLine": 522,
+        "startChar": 12,
+        "endLine": 522,
+        "endChar": 21
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c9343c2_6c094873",
         "filename": "libpldmresponder/platform_numeric_effecter.hpp",
         "patchSetId": 2
@@ -296,6 +542,30 @@
       "writtenOn": "2023-10-11T15:42:01Z",
       "side": 1,
       "message": "For my understanding: why did you choose to use nested try-catch blocks? \ncan this be moved to as a different function rather than nesting the try block?",
+      "range": {
+        "startLine": 545,
+        "startChar": 12,
+        "endLine": 560,
+        "endChar": 13
+      },
+      "revId": "c60bfc13efc21643093ec0e8ff8d262eb37b808a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0744f6be_6426c8bf",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-17T07:11:09Z",
+      "side": 1,
+      "message": "Added the code in single try catch block",
+      "parentUuid": "4c9343c2_6c094873",
       "range": {
         "startLine": 545,
         "startChar": 12,
