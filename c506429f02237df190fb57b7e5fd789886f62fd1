@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7da4fa0_ab5ca474",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:19:15Z",
+      "side": 1,
+      "message": "this is just the pldmtool \u0026 softoff.\n\npldm daemon has been already migrated to use the new API\u0027s.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0aa596c_0a85d5b9",
+        "filename": "pldmtool/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:19:15Z",
+      "side": 1,
+      "message": "Why do we need logging for pldmtool ? I thought we are still using the std::cerr ,  based tracing in pldmtool - as we don\u0027t get much benefit out of lg2 for the pldm tool.\n\nEven if we need this - I believe this could be added in another commit.",
+      "range": {
+        "startLine": 31,
+        "startChar": 3,
+        "endLine": 31,
+        "endChar": 25
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d56031a_9d3b82bb",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:19:15Z",
+      "side": 1,
+      "message": "do we need this to be executed every time? can\u0027t the instanceIdDb be initialized inside the main and passed from there?",
+      "range": {
+        "startLine": 138,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 36
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "355a80ec_8547c481",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:19:15Z",
+      "side": 1,
+      "message": "remove this",
+      "range": {
+        "startLine": 301,
+        "startChar": 4,
+        "endLine": 301,
+        "endChar": 21
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
