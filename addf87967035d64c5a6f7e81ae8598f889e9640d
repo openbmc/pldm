@@ -16,6 +16,397 @@
       "message": "LGTM.",
       "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5947855e_5c9373db",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "would prefer nullptr rather than NULL - as its cpp code.",
+      "range": {
+        "startLine": 34,
+        "startChar": 21,
+        "endLine": 34,
+        "endChar": 26
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "700e7d2f_3d3011db",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "magic numbers ? please define what these are ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 35,
+        "endLine": 41,
+        "endChar": 42
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "819072fb_bfc1859e",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "const auto ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 9,
+        "endLine": 41,
+        "endChar": 15
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f74fe286_f7894730",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "need better naming",
+      "range": {
+        "startLine": 41,
+        "startChar": 14,
+        "endLine": 41,
+        "endChar": 15
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5fbdacb_5dd689cd",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "do we need null check for this ? before returning ?",
+      "range": {
+        "startLine": 51,
+        "startChar": 20,
+        "endLine": 51,
+        "endChar": 33
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5224b882_5005c745",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "prefer nullptr.",
+      "range": {
+        "startLine": 62,
+        "startChar": 19,
+        "endLine": 62,
+        "endChar": 23
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "711e99fc_d125ee01",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "same as above.",
+      "range": {
+        "startLine": 69,
+        "startChar": 35,
+        "endLine": 69,
+        "endChar": 41
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07a7fb29_53d07cb2",
+        "filename": "common/transport.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "const auto ? and also better naming ?",
+      "range": {
+        "startLine": 69,
+        "startChar": 9,
+        "endLine": 69,
+        "endChar": 15
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4d24877_bb4ea51b",
+        "filename": "common/transport.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "please add a bit of documentation for the API\u0027s",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 0
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8f44f71_de7b9d0c",
+        "filename": "common/transport.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "doxygen for these as well",
+      "range": {
+        "startLine": 35,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 37
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd8724e_eca35407",
+        "filename": "meson.build",
+        "patchSetId": 27
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "this is also present in line nu:79, we need to remove that.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 31
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65270c20_b401c94f",
+        "filename": "meson.build",
+        "patchSetId": 27
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "I dont see this being used anywhere in the code, if we dont need this ,then we dont need to set it in config.h ?",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 37
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0138b58a_355ae5f6",
+        "filename": "meson.build",
+        "patchSetId": 27
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "rather than setting it in config.h , can we add it dynamically ?\n\n```\nif(get_option(\u0027transport-implementation\u0027)) \u003d\u003d \u0027mctp-demux\u0027\n   add_project_arguments(\u0027-DPLDM_TRANSPORT_WITH_MCTP_DEMUX\u0027, language : \u0027cpp\u0027)\nelse\n   add_project_arguments(\u0027-DPLDM_TRANSPORT_WITH_AF_MCTP\u0027, language: \u0027cpp\u0027)\nendif\n```\n\nand in the code we could just check \n\n`#ifdef PLDM_TRANSPORT_WITH_MCTP_DEMUX` \u0026 `#ifdef PLDM_TRANSPORT_WITH_AF_MCTP`",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a3f54ff_7a1dd307",
+        "filename": "meson.options",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "do we wanna enforce a `default value` here itself ? so that subproject based build wouldn\u0027t need additional override while building the daemon ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 1
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "602c4592_2942b277",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "pldm has migrated to lg2 based logging , please modify this to use lg2.",
+      "range": {
+        "startLine": 341,
+        "startChar": 19,
+        "endLine": 343,
+        "endChar": 32
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a45a8a98_b7438e60",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "lg2 based logging.",
+      "range": {
+        "startLine": 355,
+        "startChar": 12,
+        "endLine": 355,
+        "endChar": 41
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63526c3a_f9beb09a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-17T05:53:53Z",
+      "side": 1,
+      "message": "same here as well .",
+      "range": {
+        "startLine": 360,
+        "startChar": 11,
+        "endLine": 361,
+        "endChar": 70
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
