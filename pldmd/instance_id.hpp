@@ -2,15 +2,11 @@
 
 #include "libpldm/instance-id.h"
 
-#include <phosphor-logging/lg2.hpp>
-
 #include <cerrno>
 #include <cstdint>
 #include <exception>
 #include <string>
 #include <system_error>
-
-PHOSPHOR_LOG2_USING;
 
 namespace pldm
 {
@@ -45,11 +41,14 @@ class InstanceIdDb
 
     ~InstanceIdDb()
     {
-        int rc = pldm_instance_db_destroy(pldmInstanceIdDb);
-        if (rc)
-        {
-            error("pldm_instance_db_destroy failed, rc= {RC}", "RC", rc);
-        }
+        /*
+         * Abandon error-reporting. We shouldn't throw an exception from the
+         * destructor, and the class has multiple consumers using incompatible
+         * logging strategies.
+         *
+         * Broadly, it should be possible to use strace to investigate.
+         */
+        pldm_instance_db_destroy(pldmInstanceIdDb);
     }
 
     /** @brief Allocate an instance ID for the given terminus
