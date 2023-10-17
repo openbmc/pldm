@@ -610,6 +610,10 @@ bool pldm::responder::oem_ibm_platform::Handler::checkRecordHandleInRange(
 {
     return record_handle >= HOST_PDR_START_RANGE &&
            record_handle <= HOST_PDR_END_RANGE;
+
+void Handler::processSetEventReceiver()
+{
+    this->setEventReceiver();
 }
 
 } // namespace oem_ibm_platform

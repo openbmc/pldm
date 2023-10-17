@@ -48,19 +48,22 @@ using AssociatedEntityMap = std::map<DbusPath, pldm_entity>;
 class Handler : public CmdHandler
 {
   public:
-    Handler(const pldm::utils::DBusHandler* dBusIntf,
-            const std::string& pdrJsonsDir, pldm_pdr* repo,
-            HostPDRHandler* hostPDRHandler,
+    Handler(const pldm::utils::DBusHandler* dBusIntf, uint8_t eid,
+            pldm::InstanceIdDb* instanceIdDb, const std::string& pdrJsonsDir,
+            pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
             pldm::responder::oem_platform::Handler* oemPlatformHandler,
+            pldm::requester::Handler<pldm::requester::Request>* handler,
             sdeventplus::Event& event, bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
-        pdrRepo(repo),
+        eid(eid),
+        instanceIdDb(instanceIdDb), pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        event(event), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
+        handler(handler), event(event), pdrJsonsDir(pdrJsonsDir),
+        pdrCreated(false)
     {
         if (!buildPDRLazily)
         {
@@ -464,7 +467,12 @@ class Handler : public CmdHandler
      */
     void _processPostGetPDRActions(sdeventplus::source::EventBase& source);
 
+    /** @brief Method for setEventreceiver */
+    void setEventReceiver();
+
   private:
+    uint8_t eid;
+    InstanceIdDb* instanceIdDb;
     pdr_utils::Repo pdrRepo;
     uint16_t nextEffecterId{};
     uint16_t nextSensorId{};
@@ -475,6 +483,7 @@ class Handler : public CmdHandler
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+    pldm::requester::Handler<pldm::requester::Request>* handler;
     sdeventplus::Event& event;
     std::string pdrJsonsDir;
     bool pdrCreated;

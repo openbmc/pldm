@@ -203,6 +203,17 @@ class Handler : public oem_platform::Handler
      */
     bool checkRecordHandleInRange(const uint32_t& record_handle);
 
+    /** *brief Method to call the setEventReceiver command*/
+    void processSetEventReceiver();
+
+    /** @brief Method to call the setEventReceiver through the platform
+     *   handler
+     */
+    virtual void setEventReceiver()
+    {
+        platformHandler->setEventReceiver();
+    }
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
