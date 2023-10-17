@@ -269,9 +269,9 @@ int main(int argc, char** argv)
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
     auto platformHandler = std::make_unique<platform::Handler>(
-        &dbusHandler, PDR_JSONS_DIR, pdrRepo.get(), hostPDRHandler.get(),
-        dbusToPLDMEventHandler.get(), fruHandler.get(),
-        oemPlatformHandler.get(), event, true);
+        &dbusHandler, hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),
+        hostPDRHandler.get(), dbusToPLDMEventHandler.get(), fruHandler.get(),
+        oemPlatformHandler.get(), &reqHandler, event, true);
 #ifdef OEM_IBM
     pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
@@ -281,10 +281,8 @@ int main(int argc, char** argv)
 
     invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));
     invoker.registerHandler(PLDM_PLATFORM, std::move(platformHandler));
-    invoker.registerHandler(
-        PLDM_BASE,
-        std::make_unique<base::Handler>(hostEID, instanceIdDb, event,
-                                        oemPlatformHandler.get(), &reqHandler));
+    invoker.registerHandler(PLDM_BASE, std::make_unique<base::Handler>(
+                                           event, oemPlatformHandler.get()));
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
