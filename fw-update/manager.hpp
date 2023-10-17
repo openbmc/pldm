@@ -1,10 +1,10 @@
 #pragma once
 
 #include "activation.hpp"
+#include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "inventory_manager.hpp"
-#include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
 #include "update_manager.hpp"
 

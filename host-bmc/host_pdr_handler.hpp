@@ -1,10 +1,10 @@
 #pragma once
 
+#include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-#include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/base.h>

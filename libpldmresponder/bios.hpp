@@ -2,8 +2,8 @@
 
 #include "bios_config.hpp"
 #include "bios_table.hpp"
+#include "common/instance_id.hpp"
 #include "pldmd/handler.hpp"
-#include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/bios.h>

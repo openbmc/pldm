@@ -1,6 +1,6 @@
 #pragma once
 
-#include "instance_id.hpp"
+#include "common/instance_id.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 #include "xyz/openbmc_project/PLDM/Requester/server.hpp"
 

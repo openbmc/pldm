@@ -1,7 +1,7 @@
+#include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "mock_request.hpp"
-#include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
 #include "test/test_instance_id.hpp"
 

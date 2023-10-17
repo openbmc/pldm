@@ -1,9 +1,9 @@
 #pragma once
 
+#include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "package_parser.hpp"
-#include "pldmd/instance_id.hpp"
 #include "requester/handler.hpp"
 #include "watch.hpp"
 
