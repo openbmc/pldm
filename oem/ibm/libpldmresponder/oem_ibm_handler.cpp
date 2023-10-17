@@ -598,6 +598,11 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     return PLDM_SUCCESS;
 }
 
+void Handler::processSetEventReceiver()
+{
+    this->setEventReceiver();
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

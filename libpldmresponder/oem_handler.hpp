@@ -90,6 +90,9 @@ class Handler : public CmdHandler
     /** @brief Interface to check the BMC state */
     virtual int checkBMCState() = 0;
 
+    /** @brief Interface to the process setEventReceiver*/
+    virtual void processSetEventReceiver() = 0;
+
     virtual ~Handler() = default;
 
   protected:

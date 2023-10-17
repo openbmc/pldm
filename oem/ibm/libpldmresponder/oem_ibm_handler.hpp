@@ -181,6 +181,17 @@ class Handler : public oem_platform::Handler
     /** @brief to check the BMC state*/
     int checkBMCState();
 
+    /** *brief Method to call the setEventReceiver command*/
+    void processSetEventReceiver();
+
+    /** @brief Method to call the setEventReceiver through the platform
+     *   handler
+     */
+    virtual void setEventReceiver()
+    {
+        platformHandler->setEventReceiver();
+    }
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
