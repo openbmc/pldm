@@ -1633,6 +1633,159 @@ class GetStateSensorReadings : public CommandInterface
     uint8_t sensorRearm;
 };
 
+class GetNumericEffecterValue : public CommandInterface
+{
+  public:
+    ~GetNumericEffecterValue() = default;
+    GetNumericEffecterValue() = delete;
+    GetNumericEffecterValue(const GetNumericEffecterValue&) = delete;
+    GetNumericEffecterValue(GetNumericEffecterValue&&) = default;
+    GetNumericEffecterValue& operator=(const GetNumericEffecterValue&) = delete;
+    GetNumericEffecterValue& operator=(GetNumericEffecterValue&&) = default;
+
+    explicit GetNumericEffecterValue(const char* type, const char* name,
+                                     CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-i, --effecter_id", effecterId,
+               "A handle that is used to identify and access the effecter")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        auto rc = encode_get_numeric_effecter_value_req(instanceId, effecterId,
+                                                        request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = 0;
+        uint8_t effecterDataSize = 0;
+        uint8_t effecterOperationalState = 0;
+        std::array<uint8_t, sizeof(uint32_t)>
+            pendingValue{}; // maximum size for the pending Value is uint32
+                            // according to spec DSP0248
+        std::array<uint8_t, sizeof(uint32_t)>
+            presentValue{}; // maximum size for the present Value is uint32
+                            // according to spec DSP0248
+
+        auto rc = decode_get_numeric_effecter_value_resp(
+            responsePtr, payloadLength, &completionCode, &effecterDataSize,
+            &effecterOperationalState, pendingValue.data(),
+            presentValue.data());
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)completionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json output;
+        output["effecterDataSize"] = (int)effecterDataSize;
+        output["effecterOperationalState"] =
+            getOpState(effecterOperationalState);
+
+        switch (effecterDataSize)
+        {
+            case PLDM_EFFECTER_DATA_SIZE_UINT8:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<uint8_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<uint8_t*>(presentValue.data()));
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_SINT8:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<int8_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<int8_t*>(presentValue.data()));
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_UINT16:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<uint16_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<uint16_t*>(presentValue.data()));
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_SINT16:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<int16_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<int16_t*>(presentValue.data()));
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_UINT32:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<uint32_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<uint32_t*>(presentValue.data()));
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_SINT32:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<int32_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<int32_t*>(presentValue.data()));
+                break;
+            }
+            default:
+            {
+                std::cerr << "Unknown Effecter Data Size : "
+                          << (int)effecterDataSize << std::endl;
+                break;
+            }
+        }
+
+        pldmtool::helper::DisplayInJson(output);
+    }
+
+  private:
+    uint16_t effecterId;
+
+    static inline const std::map<uint8_t, std::string> numericEffecterOpState{
+        {EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING,
+         "Effecter Enabled Update Pending"},
+        {EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+         "Effecter Enabled No Update Pending"},
+        {EFFECTER_OPER_STATE_DISABLED, "Effecter Disabled"},
+        {EFFECTER_OPER_STATE_UNAVAILABLE, "Effecter Unavailable"},
+        {EFFECTER_OPER_STATE_STATUSUNKNOWN, "Effecter Status Unknown"},
+        {EFFECTER_OPER_STATE_FAILED, "Effecter Failed"},
+        {EFFECTER_OPER_STATE_INITIALIZING, "Effecter Initializing"},
+        {EFFECTER_OPER_STATE_SHUTTINGDOWN, "Effecter Shutting Down"},
+        {EFFECTER_OPER_STATE_INTEST, "Effecter In Test"}};
+
+    std::string getOpState(uint8_t state)
+    {
+        auto typeString = std::to_string(state);
+        try
+        {
+            return numericEffecterOpState.at(state);
+        }
+        catch (const std::out_of_range& e)
+        {
+            return typeString;
+        }
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
@@ -1656,6 +1809,11 @@ void registerCommand(CLI::App& app)
         "GetStateSensorReadings", "get the state sensor readings");
     commands.push_back(std::make_unique<GetStateSensorReadings>(
         "platform", "getStateSensorReadings", getStateSensorReadings));
+
+    auto getNumericEffecterValue = platform->add_subcommand(
+        "GetNumericEffecterValue", "get the numeric effecter value");
+    commands.push_back(std::make_unique<GetNumericEffecterValue>(
+        "platform", "getNumericEffecterValue", getNumericEffecterValue));
 }
 
 void parseGetPDROption()
