@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e15b7e4a_f5f6f94d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T02:41:27Z",
+      "side": 1,
+      "message": "Added.",
+      "parentUuid": "e6779bae_88375705",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 24
+      },
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71add0c3_553e37b7",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-09-19T09:05:27Z",
       "side": 1,
       "message": "little more documentation on what this struct is about is needed.",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 27
+      },
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52740da1_3df76b92",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T02:41:27Z",
+      "side": 1,
+      "message": "Added.",
+      "parentUuid": "71add0c3_553e37b7",
       "range": {
         "startLine": 76,
         "startChar": 0,
@@ -81,6 +129,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "383bf298_53b7824d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T02:41:27Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "ba4b2f63_2b6cc8a9",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "341da624_0e8dc2d0",
@@ -94,6 +160,24 @@
       "writtenOn": "2023-09-19T01:37:27Z",
       "side": 1,
       "message": "The request isn\u0027t started if one is already active though? What properties is this method trying to uphold with respect to the queue?\n\nPerhaps this method is better named `pollEndpointQueue()`?",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92803aae_9e23bc48",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T02:41:27Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "341da624_0e8dc2d0",
       "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -138,6 +222,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9fa40b_bc6de03d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T02:41:27Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "14b93607_ec600e75",
+      "range": {
+        "startLine": 253,
+        "startChar": 12,
+        "endLine": 253,
+        "endChar": 75
+      },
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b27cef2_f2fba532",
@@ -151,6 +259,24 @@
       "writtenOn": "2023-09-19T01:37:27Z",
       "side": 1,
       "message": "Would we have fewer headaches if this were an array of std::deque instead? What\u0027s the cost of that vs having to dynamically manage the map? Feels like there are more runtime penalties and more scope for UAF of the deque instance.",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b6f0962_30f7ec7e",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T02:41:27Z",
+      "side": 1,
+      "message": "Because each endpoint with eid needs one messageQueues and also activeRequest state so I don\u0027t think using `an array of std::deque` is possible.",
+      "parentUuid": "6b27cef2_f2fba532",
       "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
