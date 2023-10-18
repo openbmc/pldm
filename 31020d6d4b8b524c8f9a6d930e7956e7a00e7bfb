@@ -235,6 +235,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ff5ffe1_be4f9985",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-18T03:54:04Z",
+      "side": 1,
+      "message": "I gave this a try and it\u0027s not worth the change. Don\u0027t worry about it for now, but it would be nice if the code were refactored down the track so we\u0027re not splitting up ownership of the fields of `RegisteredRequest`",
+      "parentUuid": "d4da23ea_e89cb10f",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14b93607_ec600e75",
