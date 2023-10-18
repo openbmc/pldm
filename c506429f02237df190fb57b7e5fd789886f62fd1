@@ -119,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f6c74ca_40e45eed",
+        "filename": "pldmtool/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-18T23:47:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a2b1d1a9_6e8aa7da",
+      "range": {
+        "startLine": 31,
+        "startChar": 3,
+        "endLine": 31,
+        "endChar": 25
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d56031a_9d3b82bb",
@@ -180,6 +204,30 @@
       "side": 1,
       "message": "passing the desired instance through the constructor is generally more helpful as it makes the code easier to test (we might pass a dummy object through instead). however that\u0027s an easy change to make later if we need",
       "parentUuid": "6d0701f3_0fa6f5b1",
+      "range": {
+        "startLine": 138,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 36
+      },
+      "revId": "c506429f02237df190fb57b7e5fd789886f62fd1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99d214d0_7665d406",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-18T23:47:40Z",
+      "side": 1,
+      "message": "@Thu - At some point in time - i forsee pldmtool to do much more complicated things like PDR exchange(uses a series of pldm commands) rather than just providing an interface to do just one pldm command. So, having the instanceIdDb common across multiple messages would be ideal. But that said, i think we can also make that change once we have that functionality in place.\n\nI dont have any problem merging this as-is for now.\n\n@arj - Ack.",
+      "parentUuid": "146ab31d_700ccabe",
       "range": {
         "startLine": 138,
         "startChar": 4,
