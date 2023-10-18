@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd25ce14_01798a8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T03:18:07Z",
+      "side": 1,
+      "message": "About 1 points.\n\nWe can\u0027t write the code like that.\nThe above code should be\n```\nfor(sensor : sensorslist)\n{\n  if (eid\u003dgetInstanceID())\n  {\n      pldm_send(get_state_sensorreading_command, sensor.sensorId);\n  }\n}\n```\nWith the current PLDM code, after sending 32 PLDM the registered request messages to one points without the response from endpoints the next `pldm_send` will be failed because there is no free InstanceID.\n\nAfter my patch set, after there are 32 registered request messages to endpoints, the registered messages will be queued and send one by one. The 33th message will be failed when there are no response message for the sent message to one endpoint because no free InstanceID.\n\nSo the pattern still is failed.\n\nAbout point 2th,\nWhich is the source of the event? If the source of the event is BMC, I think it should be one effecter setting from BMC right?\n\nIf the source is from BMC then the answer is yes. But I don\u0027t think the delay is too long. One PLDM transaction takes only 1-2ms to be done. The response time of host can be different but I don\u0027t think it more than 10ms for sensor reading.",
+      "parentUuid": "4bc4af3f_1ed7dd4a",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6779bae_88375705",
         "filename": "requester/handler.hpp",
         "patchSetId": 6
