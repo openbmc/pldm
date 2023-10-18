@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dcda2b10_fea6750a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-18T03:22:44Z",
+      "side": 1,
+      "message": "@ManojKiran Eda, does your MCU support multi threads in handling the pldm request? And support multi threads collecting the data to response for the pldm request?",
+      "parentUuid": "dd25ce14_01798a8c",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6779bae_88375705",
         "filename": "requester/handler.hpp",
         "patchSetId": 6
