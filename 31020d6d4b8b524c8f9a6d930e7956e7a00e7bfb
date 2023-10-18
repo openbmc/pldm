@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1492128d_eb998a9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-18T12:35:32Z",
+      "side": 1,
+      "message": "\u003e @ManojKiran Eda, does your MCU support multiple threads in handling the pldm request? And support multiple threads collecting the data to respond for the pldm request?\n\nWhat\u0027s MCU ? All the apps written under openbmc(including pldmd) work only in single thread mode, but they use the concept of event loops to emulate the parallelism in handling the pldm messages. If you are asking about the remote endpoint that talks to bmc, our remote endpoint supports multi threading.\n\n\u003e After my patch set, after there are 32 registered request messages to endpoints, the registered messages will be queued and send one by one. The 33th message will be failed when there are no response message for the sent message to one endpoint because no free InstanceID.\n\n\u003e So the pattern still is failed.\n\nI was expecting your patch to also solve this problem, because as long as the message is sitting in queue - the instance id which is grabbed in the messages is of no use right ?\n\nI feel the correct design is that the queue that we are forming should not have an instance id in them , rather that instance id should be added just before we send the message to the remote endpoint - that way ..we can write patterns like what i have mentioned without running out of instance id\u0027s \u0026 the instance id expiration time also gets counted after the message is being sent rather than the message being added to the message queue.",
+      "parentUuid": "dcda2b10_fea6750a",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6779bae_88375705",
         "filename": "requester/handler.hpp",
         "patchSetId": 6
