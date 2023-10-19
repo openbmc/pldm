@@ -128,6 +128,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e55471b_fd034dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T00:55:03Z",
+      "side": 1,
+      "message": "Sure, Changes looks good to me.",
+      "parentUuid": "a84ca4b2_7d0bb523",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6779bae_88375705",
         "filename": "requester/handler.hpp",
         "patchSetId": 6
