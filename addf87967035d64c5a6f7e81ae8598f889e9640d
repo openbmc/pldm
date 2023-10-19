@@ -631,6 +631,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5de952b4_2538d94f",
+        "filename": "meson.build",
+        "patchSetId": 27
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T00:03:35Z",
+      "side": 1,
+      "message": "Although this has the same effect,I think i have some residual memories from working on bmcweb days... where we felt going away from config.h is better(where ever we can) , as that would help us to have changes that does not touch multiple files(inclusion of config.h). Having this dynamically added via compiler arguments gives that flexibility right ? happy to be corrected if you think otherwise ?\n\nBut as-is i at the moment - we dont have much effect as we are already including config.h at multiple places for other stuff.",
+      "parentUuid": "d74b450e_15386481",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a3f54ff_7a1dd307",
         "filename": "meson.options",
         "patchSetId": 27
@@ -666,6 +690,30 @@
       "side": 1,
       "message": "the default is the first choice:\n\n\u003e A combo allows any one of the values in the choices parameter to be selected. If no default value is set then the first value will be the default.\n\nhttps://mesonbuild.com/Build-options.html#combos",
       "parentUuid": "1a3f54ff_7a1dd307",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 1
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ba7e8bf_a88e6480",
+        "filename": "meson.options",
+        "patchSetId": 27
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T00:03:35Z",
+      "side": 1,
+      "message": "Ack, thanks for the info. Was not aware of this.",
+      "parentUuid": "65675e43_d7b03a3c",
       "range": {
         "startLine": 36,
         "startChar": 0,
