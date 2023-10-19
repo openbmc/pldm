@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd201468_e56d77af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "libpldmresponder: Add support for GetNumericEffecterValue",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d574bd3_c3458fb6",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "This does not go really well with rest of the functions in this file. I believe libpldmresponder/pdr_utils is probably the right place for this \u0026 not common/utils. As this is PDR(effecter) related.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 53
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb9f48f_81dcacfd",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "seems like these variables are initialised to defaults consuming memory. But they are just being used for calculating the size ?\n\nWhy can\u0027t we use scoped type alias - https://en.cppreference.com/w/cpp/language/type_alias ? and eliminate the memory allocation ?\n\nsomething like :\n\n```\nusing completionCode \u003d uint8_t;\nusing effecterOpState \u003d uint8_t;\n\nresponsePayloadlength \u003d sizeof(completionCode) + sizeof(effecterOpState)\n```",
+      "range": {
+        "startLine": 626,
+        "startChar": 3,
+        "endLine": 627,
+        "endChar": 27
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90fc68e8_1d4054be",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "tabs",
+      "range": {
+        "startLine": 485,
+        "startChar": 2,
+        "endLine": 485,
+        "endChar": 7
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93b8dc47_c800a267",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "tabs",
+      "range": {
+        "startLine": 488,
+        "startChar": 0,
+        "endLine": 488,
+        "endChar": 7
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99ba7791_1e0824fc",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "please have this consistent across the business logic and the test code.",
+      "range": {
+        "startLine": 446,
+        "startChar": 35,
+        "endLine": 448,
+        "endChar": 71
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9cd8287_ddb0da29",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "check also if the effecterValue returned is expected one.",
+      "range": {
+        "startLine": 457,
+        "startChar": 3,
+        "endLine": 457,
+        "endChar": 21
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9734563_06afa874",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T01:28:14Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 498,
+        "startChar": 3,
+        "endLine": 498,
+        "endChar": 23
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
