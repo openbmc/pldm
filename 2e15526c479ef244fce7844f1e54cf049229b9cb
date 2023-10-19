@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95ff452_5b893d03",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1673,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T18:18:33Z",
+      "side": 1,
+      "message": "Magic number",
+      "range": {
+        "startLine": 1673,
+        "startChar": 8,
+        "endLine": 1673,
+        "endChar": 46
+      },
+      "revId": "2e15526c479ef244fce7844f1e54cf049229b9cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b68ec1d_13738ff2",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1694,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T18:18:33Z",
+      "side": 1,
+      "message": "Present Value should be fetched from presentValue.\n*(pendingValue.data()) copies only one byte of data to the Json output. Value should be copied based on the effecterDataSize.\n\nFor effecter data size uint32_t\noutput[\"presentValue\"] \u003d (reinterpret_cast\u003cuint32_t\u003e(presentValue.data()))",
+      "range": {
+        "startLine": 1693,
+        "startChar": 6,
+        "endLine": 1694,
+        "endChar": 56
+      },
+      "revId": "2e15526c479ef244fce7844f1e54cf049229b9cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
