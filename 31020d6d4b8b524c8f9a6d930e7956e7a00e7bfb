@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7036161_a44e3941",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T00:20:03Z",
+      "side": 1,
+      "message": "Ack.\n\n@arj \u0026 @thu - I am happy to merge this as-is for the moment (as this does not make things any worse than what we already have) \u0026 we can change this logic once we have the libpldm api\u0027s fixed. What do you suggest?",
+      "parentUuid": "e52e7567_a51352ab",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6779bae_88375705",
         "filename": "requester/handler.hpp",
         "patchSetId": 6
