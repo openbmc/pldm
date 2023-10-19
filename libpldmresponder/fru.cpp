@@ -65,7 +65,6 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
     while (!tmpObj.empty())
     {
         std::string s = tmpObj.top();
-        info("{TMP_OBJ_STR}", "TMP_OBJ_PATH", s);
         tmpObj.pop();
     }
     // Update pldm entity to assocition tree
