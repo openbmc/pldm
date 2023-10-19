@@ -1,5 +1,3 @@
-#include "config.h"
-
 #include "pldm_cmd_helper.hpp"
 
 #include "xyz/openbmc_project/Common/error.hpp"
