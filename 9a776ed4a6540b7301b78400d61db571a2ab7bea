@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa2559b1_820d2361",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd201468_e56d77af",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d574bd3_c3458fb6",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-19T01:28:14Z",
       "side": 1,
       "message": "This does not go really well with rest of the functions in this file. I believe libpldmresponder/pdr_utils is probably the right place for this \u0026 not common/utils. As this is PDR(effecter) related.",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 53
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3f22669_333d4324",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d574bd3_c3458fb6",
       "range": {
         "startLine": 145,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a800d439_105cb317",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbb9f48f_81dcacfd",
+      "range": {
+        "startLine": 626,
+        "startChar": 3,
+        "endLine": 627,
+        "endChar": 27
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90fc68e8_1d4054be",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-10-19T01:28:14Z",
       "side": 1,
       "message": "tabs",
+      "range": {
+        "startLine": 485,
+        "startChar": 2,
+        "endLine": 485,
+        "endChar": 7
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c01d1f5_092e13e9",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90fc68e8_1d4054be",
       "range": {
         "startLine": 485,
         "startChar": 2,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c5eefde_28ec08e1",
+        "filename": "libpldmresponder/platform_numeric_effecter.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93b8dc47_c800a267",
+      "range": {
+        "startLine": 488,
+        "startChar": 0,
+        "endLine": 488,
+        "endChar": 7
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99ba7791_1e0824fc",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-10-19T01:28:14Z",
       "side": 1,
       "message": "please have this consistent across the business logic and the test code.",
+      "range": {
+        "startLine": 446,
+        "startChar": 35,
+        "endLine": 448,
+        "endChar": 71
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c6769c2_05b1d72e",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99ba7791_1e0824fc",
       "range": {
         "startLine": 446,
         "startChar": 35,
@@ -162,6 +306,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54536db7_c77f1ef1",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9cd8287_ddb0da29",
+      "range": {
+        "startLine": 457,
+        "startChar": 3,
+        "endLine": 457,
+        "endChar": 21
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9734563_06afa874",
@@ -175,6 +343,30 @@
       "writtenOn": "2023-10-19T01:28:14Z",
       "side": 1,
       "message": "same here",
+      "range": {
+        "startLine": 498,
+        "startChar": 3,
+        "endLine": 498,
+        "endChar": 23
+      },
+      "revId": "9a776ed4a6540b7301b78400d61db571a2ab7bea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69846867_f4dfb193",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-19T07:16:57Z",
+      "side": 1,
+      "message": "This is the bad path usecase where EffecterID was not found inside the PDR repository. So will not get the effecter value.",
+      "parentUuid": "c9734563_06afa874",
       "range": {
         "startLine": 498,
         "startChar": 3,
