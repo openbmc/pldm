@@ -653,6 +653,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4432b7b3_dd12cee1",
+        "filename": "meson.build",
+        "patchSetId": 27
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-19T00:43:03Z",
+      "side": 1,
+      "message": "Realised from https://gerrit.openbmc.org/c/openbmc/pldm/+/67155, that we have a better way to include config.h, so this concern has been resolved.",
+      "parentUuid": "5de952b4_2538d94f",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "addf87967035d64c5a6f7e81ae8598f889e9640d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a3f54ff_7a1dd307",
