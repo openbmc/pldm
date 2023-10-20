@@ -487,7 +487,7 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                 }
             }
         }
-        });
+    });
 }
 
 void pldm::responder::oem_ibm_platform::Handler::checkAndDisableWatchDog()

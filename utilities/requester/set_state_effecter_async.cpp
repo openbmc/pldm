@@ -49,8 +49,8 @@ int main(int argc, char** argv)
 
     // Create event loop and add a callback to handle EPOLLIN on fd
     auto event = Event::get_default();
-    auto callback =
-        [=, &pldmTransport](IO& io, int fd, uint32_t revents) mutable {
+    auto callback = [=, &pldmTransport](IO& io, int fd,
+                                        uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
         {
             return;

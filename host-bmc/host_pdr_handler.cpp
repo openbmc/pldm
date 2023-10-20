@@ -159,7 +159,7 @@ HostPDRHandler::HostPDRHandler(
                 this->mergedHostParents = false;
             }
         }
-        });
+    });
 }
 
 void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)

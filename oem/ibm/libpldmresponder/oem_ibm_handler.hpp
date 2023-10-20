@@ -68,7 +68,7 @@ class Handler : public oem_platform::Handler
                     hostOff = false;
                 }
             }
-            });
+        });
     }
 
     int getOemStateSensorReadingsHandler(

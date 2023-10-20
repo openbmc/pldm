@@ -75,26 +75,26 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
     // generate the PDR structures. This function iterates through the map to
     // invoke all lambdas, so that all PDR types can be created.
 
-    const std::map<Type, generatePDR>
-        generateHandlers = {{PLDM_STATE_EFFECTER_PDR,
-                             [this](const DBusHandler& dBusIntf,
-                                    const auto& json, RepoInterface& repo) {
+    const std::map<Type, generatePDR> generateHandlers = {
+        {PLDM_STATE_EFFECTER_PDR,
+         [this](const DBusHandler& dBusIntf, const auto& json,
+                RepoInterface& repo) {
         pdr_state_effecter::generateStateEffecterPDR<pldm::utils::DBusHandler,
                                                      Handler>(dBusIntf, json,
                                                               *this, repo);
-                             }},
-                            {PLDM_NUMERIC_EFFECTER_PDR,
-                             [this](const DBusHandler& dBusIntf,
-                                    const auto& json, RepoInterface& repo) {
+    }},
+        {PLDM_NUMERIC_EFFECTER_PDR,
+         [this](const DBusHandler& dBusIntf, const auto& json,
+                RepoInterface& repo) {
         pdr_numeric_effecter::generateNumericEffecterPDR<
             pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this, repo);
-                             }},
+    }},
         {PLDM_STATE_SENSOR_PDR, [this](const DBusHandler& dBusIntf,
                                        const auto& json, RepoInterface& repo) {
-             pdr_state_sensor::generateStateSensorPDR<pldm::utils::DBusHandler,
-                                                      Handler>(dBusIntf, json,
-                                                               *this, repo);
-         }}};
+        pdr_state_sensor::generateStateSensorPDR<pldm::utils::DBusHandler,
+                                                 Handler>(dBusIntf, json, *this,
+                                                          repo);
+    }}};
 
     Type pdrType{};
     for (const auto& dirEntry : fs::directory_iterator(dir))

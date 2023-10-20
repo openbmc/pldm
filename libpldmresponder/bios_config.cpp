@@ -867,10 +867,9 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool isBMC,
 
         BIOSStringTable biosStringTable(*stringTable);
         auto attrName = biosStringTable.findString(attrHeader.stringHandle);
-        auto iter = std::find_if(biosAttributes.begin(), biosAttributes.end(),
-                                 [&attrName](const auto& attr) {
-            return attr->name == attrName;
-        });
+        auto iter = std::find_if(
+            biosAttributes.begin(), biosAttributes.end(),
+            [&attrName](const auto& attr) { return attr->name == attrName; });
 
         if (iter == biosAttributes.end())
         {
@@ -1115,7 +1114,7 @@ void BIOSConfig::listenPendingAttributes()
         PendingAttributes pendingAttributes =
             std::get<PendingAttributes>(valPropMap->second);
         this->constructPendingAttribute(pendingAttributes);
-        });
+    });
 
     biosAttrMatch.emplace_back(std::move(updateBIOSMatch));
 }

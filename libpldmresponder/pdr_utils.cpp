@@ -174,8 +174,8 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
             reinterpret_cast<const state_sensor_possible_states*>(statesPtr);
         PossibleStates possibleStates{};
         uint8_t possibleStatesPos{};
-        auto updateStates =
-            [&possibleStates, &possibleStatesPos](const bitfield8_t& val) {
+        auto updateStates = [&possibleStates,
+                             &possibleStatesPos](const bitfield8_t& val) {
             for (int i = 0; i < CHAR_BIT; i++)
             {
                 if (val.byte & (1 << i))

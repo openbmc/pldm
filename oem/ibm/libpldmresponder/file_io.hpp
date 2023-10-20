@@ -262,7 +262,7 @@ class Handler : public CmdHandler
                     break;
                 }
             }
-            });
+        });
         vmiCertMatcher = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
@@ -302,7 +302,7 @@ class Handler : public CmdHandler
                     break;
                 }
             }
-            });
+        });
     }
 
     /** @brief Handler for readFileIntoMemory command

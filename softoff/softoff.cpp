@@ -319,8 +319,8 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     }
 
     // Add a timer to the event loop, default 30s.
-    auto timerCallback =
-        [=, this](Timer& /*source*/, Timer::TimePoint /*time*/) mutable {
+    auto timerCallback = [=, this](Timer& /*source*/,
+                                   Timer::TimePoint /*time*/) mutable {
         if (!responseReceived)
         {
             instanceIdDb.free(pldmTID, instanceID);
@@ -334,8 +334,8 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                std::chrono::seconds{1}, std::move(timerCallback));
 
     // Add a callback to handle EPOLLIN on fd
-    auto callback =
-        [=, &pldmTransport, this](IO& io, int fd, uint32_t revents) mutable {
+    auto callback = [=, &pldmTransport, this](IO& io, int fd,
+                                              uint32_t revents) mutable {
         if (fd != pldmTransport.getEventSource())
         {
             return;

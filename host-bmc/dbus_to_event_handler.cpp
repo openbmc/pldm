@@ -155,7 +155,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                     break;
                 }
             }
-            });
+        });
         stateSensorMatchs.emplace_back(std::move(stateSensorMatch));
     }
 }
@@ -167,7 +167,7 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
         {PLDM_STATE_SENSOR_PDR,
          [this](SensorId sensorId, const DbusObjMaps& dbusMaps) {
         this->sendStateSensorEvent(sensorId, dbusMaps);
-         }}};
+    }}};
 
     pldm_state_sensor_pdr* pdr = nullptr;
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> sensorPdrRepo(
