@@ -1,0 +1,66 @@
+#pragma once
+
+#include "common/utils.hpp"
+#include "file_io_by_type.hpp"
+#include "pldmd/handler.hpp"
+
+#include <libpldm/oem/meta/file_io.h>
+
+#include <phosphor-logging/lg2.hpp>
+
+PHOSPHOR_LOG2_USING;
+
+namespace pldm
+{
+namespace responder
+{
+namespace oem_meta
+{
+
+static std::map<uint8_t, int> tidToSlotMap;
+
+constexpr auto decodeDataMaxLength = 32;
+
+enum pldm_oem_meta_file_io_type : uint8_t
+{
+    POST_CODE = 0x00,
+};
+
+int setupTidToSlotMappingTable();
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler()
+    {
+        handlers.emplace(PLDM_OEM_META_FILEIO_CMD_WRITE_FILE,
+                         [this](pldm_tid_t tid, const pldm_msg* request,
+                                size_t payloadLength) {
+            return this->writeFileIO(tid, request, payloadLength);
+        });
+
+        if (setupTidToSlotMappingTable() != PLDM_SUCCESS)
+        {
+            error("Fail to setup tid to slot mapping table");
+        }
+    }
+
+  private:
+    /** @brief Handler for writeFileIO command
+     *
+     *  @param[in] tid - the device tid
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message
+     *
+     *  @return PLDM response message
+     */
+    Response writeFileIO(uint8_t tid, const pldm_msg* request,
+                         size_t payloadLength);
+
+    std::unique_ptr<FileHandler> getHandlerByType(uint8_t tid,
+                                                  uint8_t fileIOType);
+};
+
+} // namespace oem_meta
+} // namespace responder
+} // namespace pldm

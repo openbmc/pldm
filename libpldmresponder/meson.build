@@ -54,6 +54,16 @@ if get_option('oem-ibm').allowed()
   ]
 endif
 
+if get_option('oem-meta').allowed()
+   responder_headers += [
+    '../oem/meta/',
+   ]
+  sources += [
+    '../oem/meta/libpldmresponder/file_io.cpp',
+    '../oem/meta/libpldmresponder/file_io_type_post_code.cpp',
+  ]
+endif
+
 libpldmresponder = library(
   'pldmresponder',
   sources,
