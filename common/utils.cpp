@@ -2,9 +2,12 @@
 
 #include <libpldm/pdr.h>
 #include <libpldm/pldm_types.h>
+#include <linux/mctp.h>
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
 #include <algorithm>
 #include <array>
@@ -23,206 +26,10 @@ namespace pldm
 {
 namespace utils
 {
-constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
-constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
-constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
 
-Entities getParentEntites(const EntityAssociations& entityAssoc)
-{
-    Entities parents{};
-    for (const auto& et : entityAssoc)
-    {
-        parents.push_back(et[0]);
-    }
-
-    bool found = false;
-    for (auto it = parents.begin(); it != parents.end();
-         it = found ? parents.erase(it) : std::next(it))
-    {
-        uint16_t parent_contained_id =
-            pldm_entity_node_get_remote_container_id(*it);
-        found = false;
-        for (const auto& evs : entityAssoc)
-        {
-            for (size_t i = 1; i < evs.size() && !found; i++)
-            {
-                uint16_t node_contained_id =
-                    pldm_entity_node_get_remote_container_id(evs[i]);
-
-                pldm_entity parent_entity = pldm_entity_extract(*it);
-                pldm_entity node_entity = pldm_entity_extract(evs[i]);
-
-                if (node_entity.entity_type == parent_entity.entity_type &&
-                    node_entity.entity_instance_num ==
-                        parent_entity.entity_instance_num &&
-                    node_contained_id == parent_contained_id)
-                {
-                    found = true;
-                }
-            }
-            if (found)
-            {
-                break;
-            }
-        }
-    }
-
-    return parents;
-}
-
-void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
-                                     pldm_entity_node* entity,
-                                     const fs::path& path,
-                                     ObjectPathMaps& objPathMap)
-{
-    if (entity == nullptr)
-    {
-        return;
-    }
-
-    bool found = false;
-    pldm_entity node_entity = pldm_entity_extract(entity);
-    if (!entityMaps.contains(node_entity.entity_type))
-    {
-        lg2::info(
-            "{ENTITY_TYPE} Entity fetched from remote PLDM terminal does not exist.",
-            "ENTITY_TYPE", (int)node_entity.entity_type);
-        return;
-    }
-
-    std::string entityName = entityMaps.at(node_entity.entity_type);
-    for (const auto& ev : entityAssoc)
-    {
-        pldm_entity ev_entity = pldm_entity_extract(ev[0]);
-        if (ev_entity.entity_instance_num == node_entity.entity_instance_num &&
-            ev_entity.entity_type == node_entity.entity_type)
-        {
-            uint16_t node_contained_id =
-                pldm_entity_node_get_remote_container_id(ev[0]);
-            uint16_t entity_contained_id =
-                pldm_entity_node_get_remote_container_id(entity);
-
-            if (node_contained_id != entity_contained_id)
-            {
-                continue;
-            }
-
-            fs::path p = path / fs::path{entityName +
-                                         std::to_string(
-                                             node_entity.entity_instance_num)};
-            std::string entity_path = p.string();
-            // If the entity obtained from the remote PLDM terminal is not in
-            // the MAP, or there is no auxiliary name PDR, add it directly.
-            // Otherwise, check whether the DBus service of entity_path exists,
-            // and overwrite the entity if it does not exist.
-            if (!objPathMap.contains(entity_path))
-            {
-                objPathMap[entity_path] = entity;
-            }
-            else
-            {
-                try
-                {
-                    pldm::utils::DBusHandler().getService(entity_path.c_str(),
-                                                          nullptr);
-                }
-                catch (const std::exception& e)
-                {
-                    objPathMap[entity_path] = entity;
-                }
-            }
-
-            for (size_t i = 1; i < ev.size(); i++)
-            {
-                addObjectPathEntityAssociations(entityAssoc, ev[i], p,
-                                                objPathMap);
-            }
-            found = true;
-        }
-    }
-
-    if (!found)
-    {
-        std::string dbusPath =
-            path / fs::path{entityName +
-                            std::to_string(node_entity.entity_instance_num)};
-
-        try
-        {
-            pldm::utils::DBusHandler().getService(dbusPath.c_str(), nullptr);
-        }
-        catch (const std::exception& e)
-        {
-            objPathMap[dbusPath] = entity;
-        }
-    }
-}
-
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap)
-{
-    std::vector<pldm_entity_node*> parentsEntity =
-        getParentEntites(entityAssoc);
-    for (const auto& entity : parentsEntity)
-    {
-        fs::path path{"/xyz/openbmc_project/inventory"};
-        std::deque<std::string> paths{};
-        pldm_entity node_entity = pldm_entity_extract(entity);
-        auto node = pldm_entity_association_tree_find_with_locality(
-            entityTree, &node_entity, false);
-        if (!node)
-        {
-            continue;
-        }
-
-        bool found = true;
-        while (node)
-        {
-            if (!pldm_entity_is_exist_parent(node))
-            {
-                break;
-            }
-
-            pldm_entity parent = pldm_entity_get_parent(node);
-            try
-            {
-                paths.push_back(entityMaps.at(parent.entity_type) +
-                                std::to_string(parent.entity_instance_num));
-            }
-            catch (const std::exception& e)
-            {
-                lg2::error(
-                    "Parent entity not found in the entityMaps, type: {ENTITY_TYPE}, num: {NUM}, e: {ERROR}",
-                    "ENTITY_TYPE", (int)parent.entity_type, "NUM",
-                    (int)parent.entity_instance_num, "ERROR", e);
-                found = false;
-                break;
-            }
-
-            node = pldm_entity_association_tree_find_with_locality(
-                entityTree, &parent, false);
-        }
-
-        if (!found)
-        {
-            continue;
-        }
-
-        while (!paths.empty())
-        {
-            path = path / fs::path{paths.back()};
-            paths.pop_back();
-        }
-
-        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap);
-    }
-}
-
-std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
-                                                       uint16_t entityID,
-                                                       uint16_t stateSetId,
-                                                       const pldm_pdr* repo)
+std::vector<std::vector<uint8_t>>
+    findStateEffecterPDR(uint8_t /*tid*/, uint16_t entityID,
+                         uint16_t stateSetId, const pldm_pdr* repo)
 {
     uint8_t* outData = nullptr;
     uint32_t size{};
@@ -266,17 +73,15 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
     }
     catch (const std::exception& e)
     {
-        error(" Failed to obtain a record. ERROR = {ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to obtain a record, error - {ERROR}", "ERROR", e);
     }
 
     return pdrs;
 }
 
-std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t /*tid*/,
-                                                     uint16_t entityID,
-                                                     uint16_t stateSetId,
-                                                     const pldm_pdr* repo)
+std::vector<std::vector<uint8_t>>
+    findStateSensorPDR(uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
+                       const pldm_pdr* repo)
 {
     uint8_t* outData = nullptr;
     uint32_t size{};
@@ -320,8 +125,9 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t /*tid*/,
     }
     catch (const std::exception& e)
     {
-        error(" Failed to obtain a record. ERROR = {ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error(
+            "Failed to obtain a record with entity ID '{ENTITYID}', error - {ERROR}",
+            "ENTITYID", entityID, "ERROR", e);
     }
 
     return pdrs;
@@ -333,8 +139,8 @@ uint8_t readHostEID()
     std::ifstream eidFile{HOST_EID_PATH};
     if (!eidFile.good())
     {
-        error("Could not open host EID file: {HOST_PATH}", "HOST_PATH",
-              static_cast<std::string>(HOST_EID_PATH));
+        error("Failed to open remote terminus EID file at path '{PATH}'",
+              "PATH", static_cast<std::string>(HOST_EID_PATH));
     }
     else
     {
@@ -346,11 +152,22 @@ uint8_t readHostEID()
         }
         else
         {
-            error("Host EID file was empty");
+            error("Remote terminus EID file was empty");
         }
     }
 
     return eid;
+}
+
+bool isValidEID(eid mctpEid)
+{
+    if (mctpEid == MCTP_ADDR_NULL || mctpEid < MCTP_START_VALID_EID ||
+        mctpEid == MCTP_ADDR_ANY)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 uint8_t getNumPadBytes(uint32_t data)
@@ -384,9 +201,8 @@ bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
     return true;
 }
 
-std::optional<std::vector<set_effecter_state_field>>
-    parseEffecterData(const std::vector<uint8_t>& effecterData,
-                      uint8_t effecterCount)
+std::optional<std::vector<set_effecter_state_field>> parseEffecterData(
+    const std::vector<uint8_t>& effecterData, uint8_t effecterCount)
 {
     std::vector<set_effecter_state_field> stateField;
 
@@ -414,8 +230,9 @@ std::string DBusHandler::getService(const char* path,
     std::map<std::string, std::vector<std::string>> mapperResponse;
     auto& bus = DBusHandler::getBus();
 
-    auto mapper = bus.new_method_call(mapperBusName, mapperPath,
-                                      mapperInterface, "GetObject");
+    auto mapper = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetObject");
 
     if (interface)
     {
@@ -436,8 +253,9 @@ GetSubTreeResponse
                             const std::vector<std::string>& ifaceList) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-    auto method = bus.new_method_call(mapperBusName, mapperPath,
-                                      mapperInterface, "GetSubTree");
+    auto method = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetSubTree");
     method.append(searchPath, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
     GetSubTreeResponse response;
@@ -445,23 +263,53 @@ GetSubTreeResponse
     return response;
 }
 
+GetAncestorsResponse
+    DBusHandler::getAncestors(const std::string& searchPath,
+                              const std::vector<std::string>& ifaceList) const
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetAncestors");
+    method.append(searchPath, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+    GetAncestorsResponse response;
+    reply.read(response);
+    return response;
+}
+
+GetSubTreePathsResponse DBusHandler::getSubTreePaths(
+    const std::string& objectPath, int depth,
+    const std::vector<std::string>& ifaceList) const
+{
+    std::vector<std::string> paths;
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, "GetSubTreePaths");
+    method.append(objectPath, depth, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+
+    reply.read(paths);
+    return paths;
+}
+
 void reportError(const char* errorMsg)
 {
-    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
-    static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
-
     auto& bus = pldm::utils::DBusHandler::getBus();
-
+    using LoggingCreate =
+        sdbusplus::client::xyz::openbmc_project::logging::Create<>;
     try
     {
-        auto service = DBusHandler().getService(logObjPath, logInterface);
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
                 sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
                     Error);
-        auto method = bus.new_method_call(service.c_str(), logObjPath,
-                                          logInterface, "Create");
+        auto method = bus.new_method_call(LoggingCreate::default_service,
+                                          LoggingCreate::instance_path,
+                                          LoggingCreate::interface, "Create");
+
         std::map<std::string, std::string> addlData{};
         method.append(errorMsg, severity, addlData);
         bus.call_noreply(method, dbusTimeout);
@@ -469,8 +317,9 @@ void reportError(const char* errorMsg)
     catch (const std::exception& e)
     {
         error(
-            "failed to make a d-bus call to create error log, ERROR={ERR_EXCEP}",
-            "ERR_EXCEP", e.what());
+            "Failed to do dbus call for creating error log for '{ERRMSG}' at path '{PATH}' and interface '{INTERFACE}', error - {ERROR}",
+            "ERRMSG", errorMsg, "PATH", LoggingCreate::instance_path,
+            "INTERFACE", LoggingCreate::interface, "ERROR", e);
     }
 }
 
@@ -479,8 +328,8 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
 {
     auto setDbusValue = [&dBusMap, this](const auto& variant) {
         auto& bus = getBus();
-        auto service = getService(dBusMap.objectPath.c_str(),
-                                  dBusMap.interface.c_str());
+        auto service =
+            getService(dBusMap.objectPath.c_str(), dBusMap.interface.c_str());
         auto method = bus.new_method_call(
             service.c_str(), dBusMap.objectPath.c_str(), dbusProperties, "Set");
         method.append(dBusMap.interface.c_str(), dBusMap.propertyName.c_str(),
@@ -540,7 +389,9 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
     }
     else
     {
-        throw std::invalid_argument("UnSpported Dbus Type");
+        error("Unsupported property type '{TYPE}'", "TYPE",
+              dBusMap.propertyType);
+        throw std::invalid_argument("UnSupported Dbus Type");
     }
 }
 
@@ -549,13 +400,31 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
 {
     auto& bus = DBusHandler::getBus();
     auto service = getService(objPath, dbusInterface);
-    auto method = bus.new_method_call(service.c_str(), objPath, dbusProperties,
-                                      "Get");
+    auto method =
+        bus.new_method_call(service.c_str(), objPath, dbusProperties, "Get");
     method.append(dbusInterface, dbusProp);
-    PropertyValue value{};
-    auto reply = bus.call(method, dbusTimeout);
-    reply.read(value);
-    return value;
+    return bus.call(method, dbusTimeout).unpack<PropertyValue>();
+}
+
+ObjectValueTree DBusHandler::getManagedObj(const char* service,
+                                           const char* rootPath)
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(service, rootPath,
+                                      "org.freedesktop.DBus.ObjectManager",
+                                      "GetManagedObjects");
+    return bus.call(method).unpack<ObjectValueTree>();
+}
+
+PropertyMap DBusHandler::getDbusPropertiesVariant(
+    const char* serviceName, const char* objPath,
+    const char* dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method =
+        bus.new_method_call(serviceName, objPath, dbusProperties, "GetAll");
+    method.append(dbusInterface);
+    return bus.call(method, dbusTimeout).unpack<PropertyMap>();
 }
 
 PropertyMap DBusHandler::getAll(const std::string& service,
@@ -563,9 +432,9 @@ PropertyMap DBusHandler::getAll(const std::string& service,
                                 const std::string& dbusInterface) const
 {
     auto& bus = DBusHandler::getBus();
-    auto method = bus.new_method_call(service.c_str(), objPath.c_str(),
-                                      "org.freedesktop.DBus.Properties",
-                                      "GetAll");
+    auto method =
+        bus.new_method_call(service.c_str(), objPath.c_str(),
+                            "org.freedesktop.DBus.Properties", "GetAll");
     method.append(dbusInterface);
 
     auto response = bus.call(method);
@@ -621,8 +490,7 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
     }
     else
     {
-        error("Unknown D-Bus property type, TYPE={OTHER_TYPE}", "OTHER_TYPE",
-              type);
+        error("Unknown D-Bus property type '{TYPE}'", "TYPE", type);
     }
 
     return propValue;
@@ -685,8 +553,7 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
     }
     catch (const std::exception& e)
     {
-        error("Error emitting pldm event signal:ERROR={ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to emit pldm event signal, error - {ERROR}", "ERROR", e);
         return PLDM_ERROR;
     }
 
@@ -717,8 +584,8 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
             {
                 return sensorPdr->sensor_id;
             }
-            possible_states_start += possibleStateSize + sizeof(setId) +
-                                     sizeof(possibleStateSize);
+            possible_states_start +=
+                possibleStateSize + sizeof(setId) + sizeof(possibleStateSize);
         }
     }
     return PLDM_INVALID_EFFECTER_ID;
@@ -726,24 +593,18 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
 
 void printBuffer(bool isTx, const std::vector<uint8_t>& buffer)
 {
-    if (!buffer.empty())
+    if (buffer.empty())
     {
-        if (isTx)
-        {
-            std::cout << "Tx: ";
-        }
-        else
-        {
-            std::cout << "Rx: ";
-        }
-        std::ostringstream tempStream;
-        for (int byte : buffer)
-        {
-            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
-                       << " ";
-        }
-        std::cout << tempStream.str() << std::endl;
+        return;
     }
+
+    std::cout << (isTx ? "Tx: " : "Rx: ");
+
+    std::ranges::for_each(buffer, [](uint8_t byte) {
+        std::cout << std::format("{:02x} ", byte);
+    });
+
+    std::cout << std::endl;
 }
 
 std::string toString(const struct variable_field& var)
@@ -773,8 +634,8 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
         if (!trimStr.empty())
         {
             dstStr.remove_prefix(dstStr.find_first_not_of(trimStr));
-            dstStr.remove_suffix(dstStr.size() - 1 -
-                                 dstStr.find_last_not_of(trimStr));
+            dstStr.remove_suffix(
+                dstStr.size() - 1 - dstStr.find_last_not_of(trimStr));
         }
 
         if (!dstStr.empty())
@@ -788,16 +649,9 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
 
 std::string getCurrentSystemTime()
 {
-    using namespace std::chrono;
-    const time_point<system_clock> tp = system_clock::now();
-    std::time_t tt = system_clock::to_time_t(tp);
-    auto ms = duration_cast<microseconds>(tp.time_since_epoch()) -
-              duration_cast<seconds>(tp.time_since_epoch());
-
-    std::stringstream ss;
-    ss << std::put_time(std::localtime(&tt), "%F %Z %T.")
-       << std::to_string(ms.count());
-    return ss.str();
+    const auto zonedTime{std::chrono::zoned_time{
+        std::chrono::current_zone(), std::chrono::system_clock::now()}};
+    return std::format("{:%F %Z %T}", zonedTime);
 }
 
 bool checkForFruPresence(const std::string& objPath)
@@ -814,9 +668,8 @@ bool checkForFruPresence(const std::string& objPath)
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
-        error(
-            "Failed to check for FRU presence for {OBJ_PATH} ERROR = {ERR_EXCEP}",
-            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e.what());
+        error("Failed to check for FRU presence at {PATH}, error - {ERROR}",
+              "PATH", objPath, "ERROR", e);
     }
     return isPresent;
 }
@@ -826,5 +679,96 @@ bool checkIfLogicalBitSet(const uint16_t& containerId)
     return !(containerId & 0x8000);
 }
 
+void setFruPresence(const std::string& fruObjPath, bool present)
+{
+    pldm::utils::PropertyValue value{present};
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = fruObjPath;
+    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
+    dbusMapping.propertyName = "Present";
+    dbusMapping.propertyType = "bool";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to set the present property on path '{PATH}', error - {ERROR}.",
+            "PATH", fruObjPath, "ERROR", e);
+    }
+}
+
+std::string_view trimNameForDbus(std::string& name)
+{
+    std::replace(name.begin(), name.end(), ' ', '_');
+    auto nullTerminatorPos = name.find('\0');
+    if (nullTerminatorPos != std::string::npos)
+    {
+        name.erase(nullTerminatorPos);
+    }
+    return name;
+}
+
+bool dbusPropValuesToDouble(const std::string_view& type,
+                            const pldm::utils::PropertyValue& value,
+                            double* doubleValue)
+{
+    if (!dbusValueNumericTypeNames.contains(type))
+    {
+        return false;
+    }
+
+    if (!doubleValue)
+    {
+        return false;
+    }
+
+    try
+    {
+        if (type == "uint8_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint8_t>(value));
+        }
+        else if (type == "int16_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int16_t>(value));
+        }
+        else if (type == "uint16_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint16_t>(value));
+        }
+        else if (type == "int32_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int32_t>(value));
+        }
+        else if (type == "uint32_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint32_t>(value));
+        }
+        else if (type == "int64_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int64_t>(value));
+        }
+        else if (type == "uint64_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint64_t>(value));
+        }
+        else if (type == "double")
+        {
+            *doubleValue = static_cast<double>(std::get<double>(value));
+        }
+        else
+        {
+            return false;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
+
+    return true;
+}
 } // namespace utils
 } // namespace pldm

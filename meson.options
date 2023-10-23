@@ -7,13 +7,6 @@ option(
 )
 
 option(
-    'oe-sdk',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable OE SDK'
-)
-
-option(
     'utilities',
     type: 'feature',
     value: 'enabled',
@@ -140,6 +133,14 @@ option(
                     requested by the FD, via RequestFirmwareData command'''
 )
 
+# Bios Attributes option
+option(
+    'system-specific-bios-json',
+    type : 'feature',
+    value: 'disabled',
+    description : 'Support for different set of bios attributes for different types of systems'
+)
+
 # PLDM Soft Power off options
 option(
     'softoff',
@@ -165,6 +166,14 @@ option(
     description: 'Enable IBM OEM PLDM'
 )
 
+# OEM Meta Options
+option(
+    'oem-meta',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable Meta OEM PLDM'
+)
+
 option(
     'oem-ibm-dma-maxsize',
     type: 'integer',
@@ -172,4 +181,47 @@ option(
     max: 16773120,
     value: 8384512,
     description: 'OEM-IBM: max DMA size'
+)
+
+
+## OEM AMPERE Options
+option(
+    'oem-ampere',
+    type: 'feature',
+    description: 'Enable AMPERE OEM PLDM',
+    value: 'enabled',
+)
+
+## Default Sensor Update Interval Options
+option(
+    'default-sensor-update-interval',
+    type: 'integer',
+    min: 1,
+    max: 4294967295,
+    description: '''The default sensor polling interval in milliseconds.
+                    The value will be used when the internal is not configured
+                    in the PLDM sensor PDRs use `updateInterval` field. `pldmd`
+                    will send `GetSensorReading` to get the PLDM sensor values
+                    of the monitoring terminus after each configured
+                    interval.''',
+    value: 999
+)
+
+# Platform-mc configuration parameters
+
+## Sensor Polling Options
+option(
+    'sensor-polling-time',
+    type: 'integer',
+    min: 1,
+    max: 10000,
+    description: '''The configured timeout in milliseconds of the common sensor
+                    polling timer of each terminus which will trigger the
+                    terminus sensor reading task. The task will check
+                    whether the sensor in the terminus sensors list need to
+                    be updated by comparing the sensor `updateInterval` with the
+                    interval between current timestamp and latest updated
+                    timestamp of the sensor. The task will send
+                    `GetSensorReading` if the sensor need to be updated.''',
+    value: 249
 )
