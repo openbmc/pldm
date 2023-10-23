@@ -34,6 +34,7 @@ sources = [
     '../host-bmc/utils.cpp',
     '../host-bmc/dbus/pcie_device.cpp',
     '../host-bmc/dbus/pcie_slot.cpp',
+    '../requester/configuration_discovery_handler.cpp',
     'event_parser.cpp',
 ]
 
@@ -59,6 +60,14 @@ if get_option('oem-ibm').allowed()
         '../oem/ibm/libpldmresponder/file_io_type_vpd.cpp',
         '../oem/ibm/libpldmresponder/file_io_type_pcie.cpp',
         '../oem/ibm/host-bmc/host_lamp_test.cpp',
+    ]
+endif
+
+if get_option('oem-meta').allowed()
+    responder_headers += ['../oem/meta/']
+    sources += [
+        '../oem/meta/libpldmresponder/oem_meta_file_io.cpp',
+        '../oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp',
     ]
 endif
 
