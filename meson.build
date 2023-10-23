@@ -140,6 +140,10 @@ conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 
 configure_file(output: 'config.h', configuration: conf_data)
 
+if get_option('oem-meta').allowed()
+    add_project_arguments('-DOEM_META', language: ['c', 'cpp'])
+endif
+
 add_project_arguments(
     '-include',
     '@0@'.format(meson.current_build_dir() / 'config.h'),
