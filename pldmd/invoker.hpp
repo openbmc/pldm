@@ -30,6 +30,7 @@ class Invoker
 
     /** @brief Invoke a PLDM command handler
      *
+     *  @param[in] tid - PLDM request TID
      *  @param[in] pldmType - PLDM type code
      *  @param[in] pldmCommand - PLDM command code
      *  @param[in] request - PLDM request message
