@@ -55,11 +55,22 @@ class CmdHandler
         return response;
     }
 
+    void setTID(uint8_t tid)
+    {
+        this->tid = tid;
+    }
+
+    uint8_t getTID()
+    {
+        return this->tid;
+    }
+
   protected:
     /** @brief map of PLDM command code to handler - to be populated by derived
      *         classes.
      */
     std::map<Command, HandlerFunc> handlers;
+    uint8_t tid;
 };
 
 } // namespace responder
