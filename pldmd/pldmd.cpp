@@ -68,6 +68,9 @@ PHOSPHOR_LOG2_USING;
 #ifdef OEM_AMPERE
 #include "oem/ampere/oem_ampere.hpp"
 #endif
+#ifdef OEM_META
+#include "libpldmresponder/oem_meta_file_io.hpp"
+#endif
 
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
@@ -271,6 +274,12 @@ int main(int argc, char** argv)
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             pldmTransport.getEventSource(), hostEID, instanceIdDb, &reqHandler);
     }
+
+#ifdef OEM_META
+    invoker.registerHandler(
+        PLDM_OEM, std::make_unique<pldm::responder::oem_meta::FileIOHandler>(
+                      configurationDiscovery.get()));
+#endif
 
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
