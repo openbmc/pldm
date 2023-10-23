@@ -27,6 +27,7 @@ sources = [
   '../host-bmc/dbus_to_host_effecters.cpp',
   '../host-bmc/host_condition.cpp',
   '../host-bmc/custom_dbus.cpp',
+  '../requester/configuration_discovery_handler.cpp',
   'event_parser.cpp'
 ]
 
@@ -51,6 +52,16 @@ if get_option('oem-ibm').allowed()
     '../oem/ibm/libpldmresponder/file_io_type_progress_src.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_vpd.cpp',
     '../oem/ibm/libpldmresponder/bios_oem_ibm.cpp',
+  ]
+endif
+
+if get_option('oem-meta').allowed()
+   responder_headers += [
+    '../oem/meta/',
+   ]
+  sources += [
+    '../oem/meta/libpldmresponder/oem_meta_file_io.cpp',
+    '../oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp',
   ]
 endif
 

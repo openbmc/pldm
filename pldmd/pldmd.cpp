@@ -66,6 +66,10 @@ PHOSPHOR_LOG2_USING;
 #include "libpldmresponder/oem_ibm_handler.hpp"
 #endif
 
+#ifdef OEM_META
+#include "libpldmresponder/oem_meta_file_io.hpp"
+#endif
+
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 
 using namespace pldm;
@@ -263,6 +267,13 @@ int main(int argc, char** argv)
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             pldmTransport.getEventSource(), hostEID, instanceIdDb, &reqHandler);
     }
+
+#ifdef OEM_META
+    invoker.registerHandler(
+        PLDM_OEM, std::make_unique<pldm::responder::oem_meta::FileIOHandler>(
+                      configurationDiscovery.get()));
+#endif
+
     auto biosHandler = std::make_unique<bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
         oemBiosHandler.get());

@@ -59,6 +59,9 @@ if get_option('oem-ibm').allowed()
   add_project_arguments('-DOEM_IBM', language : 'c')
   add_project_arguments('-DOEM_IBM', language : 'cpp')
 endif
+if get_option('oem-meta').allowed()
+  add_project_arguments('-DOEM_META', language : ['c','cpp'])
+endif
 conf_data.set('NUMBER_OF_REQUEST_RETRIES', get_option('number-of-request-retries'))
 conf_data.set('INSTANCE_ID_EXPIRATION_INTERVAL',get_option('instance-id-expiration-interval'))
 conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))

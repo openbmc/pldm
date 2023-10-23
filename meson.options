@@ -165,6 +165,14 @@ option(
     description: 'Enable IBM OEM PLDM'
 )
 
+# OEM Meta Options
+option(
+    'oem-meta',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable Meta OEM PLDM'
+)
+
 option(
     'oem-ibm-dma-maxsize',
     type: 'integer',
