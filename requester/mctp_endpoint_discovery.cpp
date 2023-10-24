@@ -99,8 +99,8 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                     properties.contains("SupportedMessageTypes"))
                 {
                     auto networkId =
-                        std::get<size_t>(properties.at("NetworkId"));
-                    auto eid = std::get<size_t>(properties.at("EID"));
+                        std::get<uint32_t>(properties.at("NetworkId"));
+                    auto eid = std::get<uint8_t>(properties.at("EID"));
                     auto types = std::get<std::vector<uint8_t>>(
                         properties.at("SupportedMessageTypes"));
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
@@ -151,8 +151,8 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                 properties.contains("EID") &&
                 properties.contains("SupportedMessageTypes"))
             {
-                auto networkId = std::get<size_t>(properties.at("NetworkId"));
-                auto eid = std::get<size_t>(properties.at("EID"));
+                auto networkId = std::get<uint32_t>(properties.at("NetworkId"));
+                auto eid = std::get<uint8_t>(properties.at("EID"));
                 auto types = std::get<std::vector<uint8_t>>(
                     properties.at("SupportedMessageTypes"));
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
