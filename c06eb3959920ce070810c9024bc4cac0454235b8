@@ -1,0 +1,186 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8682053_27ee3571",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "Hi Kamalkumar, I think some changes are still required to clarify the responsibilities. Also I think we can better exploit the specified mechanism for request/response correlation.",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26096ab3_139ada0c",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "Why is this called \"Transport\" when its purpose seems to be to correlate a response with a request? I think we could find a better name.",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66875b83_514102d1",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "These are unused.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 11
+      },
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa28855a_dfcb5a89",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "Please delete this commented out code.",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a607abd1_bff6eb7a",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "Please delete this commented out code.",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92f6489d_a6d42e47",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "If this is a request message can we please use a proper type representing a message, not a `std::vector`?",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 54
+      },
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7a7fa5e_fee3f827",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "I think this is related to the comment below about TIDs and instance IDs.",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c6da61f_63178ba7",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "Can you explain this a little more? The specified way to correlate a request/response is with the pairing of requester TID with request\u0027s instance ID",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b8db709_1bbaa35a",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "Why use a separate instance here and not the one that was instantiated in `main()`? Why can\u0027t this be a reference or a shared_ptr/weak_ptr?",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff8dea4e_4f3725bf",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-24T00:55:00Z",
+      "side": 1,
+      "message": "Commented out code is a maintenance headache. Please delete it.",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
