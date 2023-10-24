@@ -51,6 +51,24 @@
       "parentUuid": "94152c8f_9ca533a9",
       "revId": "53b7e23ab3662050478f3a7b21731565c76dc7a3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408e4823_6e584ccc",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-10-24T07:37:15Z",
+      "side": 1,
+      "message": "I add a commit to modified the type of NetworkId and EID\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/67052",
+      "parentUuid": "9a538754_915c1e5d",
+      "revId": "53b7e23ab3662050478f3a7b21731565c76dc7a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
