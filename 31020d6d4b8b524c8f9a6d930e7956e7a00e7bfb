@@ -144,6 +144,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07d697c6_1b2cc951",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-25T08:22:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e55471b_fd034dae",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6779bae_88375705",
@@ -421,6 +439,24 @@
       "side": 1,
       "message": "Because each endpoint with eid needs one messageQueues and also activeRequest state so I don\u0027t think using `an array of std::deque` is possible.",
       "parentUuid": "6b27cef2_f2fba532",
+      "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afaa247a_23743e92",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-25T08:22:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b6f0962_30f7ec7e",
       "revId": "31020d6d4b8b524c8f9a6d930e7956e7a00e7bfb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
