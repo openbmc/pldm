@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include "common/instance_id.hpp"
 #include "common/utils.hpp"
 
@@ -139,6 +141,7 @@ class CommandInterface
   protected:
     uint8_t instanceId;
     pldm::InstanceIdDb instanceIdDb;
+    uint8_t numRetries = static_cast<uint8_t>(NUMBER_OF_REQUEST_RETRIES);
 };
 
 } // namespace helper
