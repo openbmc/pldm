@@ -63,30 +63,45 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         printBuffer(Tx, requestMsg);
     }
 
-    void* responseMessage = nullptr;
-    size_t responseMessageSize{};
     auto tid = mctp_eid;
     PldmTransport pldmTransport{};
+    uint8_t retry = 0;
+    int rc = PLDM_ERROR;
 
-    int rc = pldmTransport.sendRecvMsg(tid, requestMsg.data(),
+    while (PLDM_SUCCESS != rc && retry < numRetries)
+    {
+        void* responseMessage = nullptr;
+        size_t responseMessageSize{};
+
+        rc = pldmTransport.sendRecvMsg(tid, requestMsg.data(),
                                        requestMsg.size(), responseMessage,
                                        responseMessageSize);
+        if (rc)
+        {
+            std::cerr << "[" << unsigned(retry)
+                        << "] pldm_send_recv error rc " << rc << std::endl;
+            retry ++;
+            continue;
+        }
+
+        responseMsg.resize(responseMessageSize);
+        memcpy(responseMsg.data(), responseMessage, responseMsg.size());
+
+        free(responseMessage);
+
+        if (pldmVerbose)
+        {
+            std::cout << "pldmtool: ";
+            printBuffer(Rx, responseMsg);
+        }
+    }
+
     if (rc)
     {
         std::cerr << "failed to pldm send recv\n";
         return rc;
     }
 
-    responseMsg.resize(responseMessageSize);
-    memcpy(responseMsg.data(), responseMessage, responseMsg.size());
-
-    free(responseMessage);
-
-    if (pldmVerbose)
-    {
-        std::cout << "pldmtool: ";
-        printBuffer(Rx, responseMsg);
-    }
     return PLDM_SUCCESS;
 }
 } // namespace helper
