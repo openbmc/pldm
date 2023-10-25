@@ -85,6 +85,8 @@ class CommandInterface
     {
         app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");
         app->add_flag("-v, --verbose", pldmVerbose);
+        app->add_option("-n, --retry-count", numRetries,
+                        "Number of retry when PLDM request message is failed");
         app->callback([&]() { exec(); });
     }
 
@@ -139,6 +141,7 @@ class CommandInterface
   protected:
     uint8_t instanceId;
     pldm::InstanceIdDb instanceIdDb;
+    uint8_t numRetries = 0;
 };
 
 } // namespace helper
