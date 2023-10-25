@@ -82,7 +82,7 @@ void MctpDiscovery::dicoverEndpoints(sdbusplus::message_t& msg)
             if (properties.contains("EID") &&
                 properties.contains("SupportedMessageTypes"))
             {
-                auto eid = std::get<size_t>(properties.at("EID"));
+                auto eid = std::get<mctp_eid_t>(properties.at("EID"));
                 auto types = std::get<std::vector<uint8_t>>(
                     properties.at("SupportedMessageTypes"));
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
