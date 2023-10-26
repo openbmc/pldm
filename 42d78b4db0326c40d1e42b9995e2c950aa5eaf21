@@ -34,6 +34,24 @@
       "parentUuid": "693f85fd_6cdc9a41",
       "revId": "42d78b4db0326c40d1e42b9995e2c950aa5eaf21",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7675f4c5_fe33af29",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-26T10:56:26Z",
+      "side": 1,
+      "message": "Updated code.\nThe \"-n\" option is added.\nThe pldmtool functional will not be changed when the option is not included.",
+      "parentUuid": "48f3dfb9_17d5fa01",
+      "revId": "42d78b4db0326c40d1e42b9995e2c950aa5eaf21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
