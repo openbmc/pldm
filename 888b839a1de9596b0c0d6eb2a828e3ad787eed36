@@ -70,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "641b0775_85eb032a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-26T01:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1dbbd29_dbe8bf8a",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "643ec420_2f94d374",
@@ -83,6 +101,24 @@
       "writtenOn": "2023-05-29T23:30:13Z",
       "side": 1,
       "message": "The functions provided by the `libpldm/requester/pldm.h` API are deprecated. Please use the APIs provided by `libpldm/transport.h` and `libpldm/transport/mctp-demux.h` instead.",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89368254_247d3435",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-26T01:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "643ec420_2f94d374",
       "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -104,6 +140,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4433a4ff_7e3463f6",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-26T01:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8237d2e_39077444",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "949ea932_b7cfaf93",
@@ -117,6 +171,24 @@
       "writtenOn": "2023-05-29T23:30:13Z",
       "side": 1,
       "message": "I realise the existing code had this branch, but why do we need it?",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "143c8352_4a14d28c",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-26T01:12:02Z",
+      "side": 1,
+      "message": "The code is removed when change to use transport APIs in libpldm.",
+      "parentUuid": "949ea932_b7cfaf93",
       "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -138,6 +210,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d4399af_ce4efdc7",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-26T01:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dc6acb6_77545b5e",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49b6d2cf_f9314714",
@@ -151,6 +241,24 @@
       "writtenOn": "2023-05-29T23:30:13Z",
       "side": 1,
       "message": "This code doesn\u0027t appear to handle it?",
+      "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e5d30a2_f26ffa33",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-26T01:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49b6d2cf_f9314714",
       "revId": "888b839a1de9596b0c0d6eb2a828e3ad787eed36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
