@@ -70,6 +70,24 @@
       "parentUuid": "9b8bf191_9647ab23",
       "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9508ba4_9ec7d007",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "hi @andrew,\ni have merged both commit but could not get chance to test in upstream changes because of unstable upstream build, once i test in upstream and downstream then will inform you.",
+      "parentUuid": "28ca2662_709740eb",
+      "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

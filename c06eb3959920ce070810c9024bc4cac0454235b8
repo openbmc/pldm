@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e81e51d5_508fd855",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26096ab3_139ada0c",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66875b83_514102d1",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-10-24T00:55:00Z",
       "side": 1,
       "message": "These are unused.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 11
+      },
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c9a2b98_6196958a",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66875b83_514102d1",
       "range": {
         "startLine": 49,
         "startChar": 0,
@@ -75,6 +117,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed19d29_4702e370",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa28855a_dfcb5a89",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a607abd1_bff6eb7a",
@@ -92,6 +152,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d6cec25_5581bb40",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a607abd1_bff6eb7a",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92f6489d_a6d42e47",
@@ -105,6 +183,30 @@
       "writtenOn": "2023-10-24T00:55:00Z",
       "side": 1,
       "message": "If this is a request message can we please use a proper type representing a message, not a `std::vector`?",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 54
+      },
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9b38a1_0eec5278",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92f6489d_a6d42e47",
       "range": {
         "startLine": 83,
         "startChar": 26,
@@ -134,6 +236,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53744d4a_bd4f0b05",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "this was index which was mapped to request header then later used for replying host based on which header mapped with which index number, but now with new approach it\u0027s not required.",
+      "parentUuid": "f7a7fa5e_fee3f827",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6c6da61f_63178ba7",
         "filename": "pldmd/pldm_resp_interface.hpp",
         "patchSetId": 4
@@ -145,6 +265,24 @@
       "writtenOn": "2023-10-24T00:55:00Z",
       "side": 1,
       "message": "Can you explain this a little more? The specified way to correlate a request/response is with the pairing of requester TID with request\u0027s instance ID",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8bc148d_f95e64f5",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "removed unnecessary function with upgraded code.",
+      "parentUuid": "6c6da61f_63178ba7",
       "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -168,6 +306,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "466a4f63_460423bd",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "done as per comment",
+      "parentUuid": "4b8db709_1bbaa35a",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff8dea4e_4f3725bf",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 4
@@ -179,6 +335,24 @@
       "writtenOn": "2023-10-24T00:55:00Z",
       "side": 1,
       "message": "Commented out code is a maintenance headache. Please delete it.",
+      "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6174f169_e16b198c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2023-10-26T16:14:01Z",
+      "side": 1,
+      "message": "done as per comment",
+      "parentUuid": "ff8dea4e_4f3725bf",
       "revId": "c06eb3959920ce070810c9024bc4cac0454235b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
