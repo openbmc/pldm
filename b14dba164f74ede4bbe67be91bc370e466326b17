@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c9fb856_1f5f98b2",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-27T07:01:28Z",
+      "side": 1,
+      "message": "I added return code in the output message.",
+      "parentUuid": "d1c17190_687c2234",
+      "revId": "b14dba164f74ede4bbe67be91bc370e466326b17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "311b651f_74250266",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-10-27T05:43:59Z",
       "side": 1,
       "message": "We can drop the `return rc;` here ...",
+      "revId": "b14dba164f74ede4bbe67be91bc370e466326b17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58a34739_9759fb35",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-27T07:01:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "311b651f_74250266",
       "revId": "b14dba164f74ede4bbe67be91bc370e466326b17",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd94d381_3cf9a937",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-27T07:01:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "434beed8_9c233c11",
+      "revId": "b14dba164f74ede4bbe67be91bc370e466326b17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "265659df_641224b6",
@@ -82,6 +136,30 @@
       "writtenOn": "2023-10-27T05:43:59Z",
       "side": 1,
       "message": "A bit of a nitpick, but maybe `--retry-count`?",
+      "range": {
+        "startLine": 88,
+        "startChar": 37,
+        "endLine": 88,
+        "endChar": 43
+      },
+      "revId": "b14dba164f74ede4bbe67be91bc370e466326b17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75c1c66b_050d2d9e",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-10-27T07:01:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "265659df_641224b6",
       "range": {
         "startLine": 88,
         "startChar": 37,
