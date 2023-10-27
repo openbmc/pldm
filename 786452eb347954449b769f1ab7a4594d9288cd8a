@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d202e231_2ebb81d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-27T05:03:06Z",
+      "side": 1,
+      "message": "Hello Kamalkumar, a few things are unclear to me and so I have some comments requesting documentation. Hopefully with that it helps the reader understand the intent, or we can trim some things out.",
+      "revId": "786452eb347954449b769f1ab7a4594d9288cd8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0196e325_1ddf3d3b",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-27T05:03:06Z",
+      "side": 1,
+      "message": "If we don\u0027t want it closed when it goes out of scope, why not just pass around the raw `int` value? It feels like this change defeats the purpose of the class.",
+      "revId": "786452eb347954449b769f1ab7a4594d9288cd8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4903c2d5_6fce69d9",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-27T05:03:06Z",
+      "side": 1,
+      "message": "Can you add some documentation here? Why is key necessary when we have the instance ID?",
+      "revId": "786452eb347954449b769f1ab7a4594d9288cd8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd1a41b4_bcd39007",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-27T05:03:06Z",
+      "side": 1,
+      "message": "Can you add a comment justifying why this is necessary? It\u0027s not clear to me why we need it.",
+      "revId": "786452eb347954449b769f1ab7a4594d9288cd8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e8d9146_31e72a0d",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-27T05:03:06Z",
+      "side": 1,
+      "message": "I don\u0027t think there\u0027s a lot of value in holding a unique_ptr here when the only thing we do is fetch the raw pointer out and pass it around.",
+      "revId": "786452eb347954449b769f1ab7a4594d9288cd8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
