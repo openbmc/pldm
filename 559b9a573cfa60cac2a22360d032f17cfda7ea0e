@@ -88,6 +88,24 @@
       "parentUuid": "28ca2662_709740eb",
       "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32b4938b_78d3a392",
+        "filename": "pldmd/pldm_resp_interface.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-27T04:55:46Z",
+      "side": 1,
+      "message": "Okay, thanks. I\u0027ll keep an eye out 😊",
+      "parentUuid": "a9508ba4_9ec7d007",
+      "revId": "559b9a573cfa60cac2a22360d032f17cfda7ea0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
