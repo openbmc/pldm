@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "075f663c_f3bb7bbd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-29T23:44:17Z",
+      "side": 1,
+      "message": "This isn\u0027t the symbol that\u0027s used in the code. Can we make the commit message use terminology consistent with the code change?",
+      "range": {
+        "startLine": 9,
+        "startChar": 9,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "5bab0adbb30a9c4164702ef9ad7765a1acde3ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f20c702_ffcf5323",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-29T23:44:17Z",
+      "side": 1,
+      "message": "This isn\u0027t true any more?",
+      "range": {
+        "startLine": 11,
+        "startChar": 32,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "5bab0adbb30a9c4164702ef9ad7765a1acde3ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4e28ceb_94a44ef8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-29T23:44:17Z",
+      "side": 1,
+      "message": "Same consistency request as above.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 7
+      },
+      "revId": "5bab0adbb30a9c4164702ef9ad7765a1acde3ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "346ca64d_e152c276",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-10-29T23:44:17Z",
+      "side": 1,
+      "message": "Hi Thu, I didn\u0027t consider the commit message when I gave the +1. I have some minor comments there.",
+      "revId": "5bab0adbb30a9c4164702ef9ad7765a1acde3ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
