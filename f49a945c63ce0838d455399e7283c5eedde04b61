@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a39bd188_ecff200d",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-30T05:28:03Z",
+      "side": 1,
+      "message": "mctp_eid_t is typedef of uint8_t (https://github.com/openbmc/libpldm/blob/main/include/libpldm/requester/pldm.h#L12). So i dont think this will need any change. Please revert this back to how it is already.",
+      "range": {
+        "startLine": 49,
+        "startChar": 40,
+        "endLine": 49,
+        "endChar": 47
+      },
+      "revId": "f49a945c63ce0838d455399e7283c5eedde04b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b944e9a9_9327c510",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-10-30T05:28:03Z",
+      "side": 1,
+      "message": "change this to mctp_eid_t ?",
+      "range": {
+        "startLine": 85,
+        "startChar": 36,
+        "endLine": 85,
+        "endChar": 43
+      },
+      "revId": "f49a945c63ce0838d455399e7283c5eedde04b61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
