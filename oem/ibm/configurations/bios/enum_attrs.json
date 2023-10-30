@@ -144,17 +144,29 @@
             "helpText": "This option enables or disables the Remote Trusted Attestation Daemon for host firmware.",
             "displayName": "Remote Trusted Attestation Daemon State"
         },
-        {
+	{
             "attribute_name": "pvm_default_os_type",
-            "possible_values": ["AIX", "Linux", "IBM I", "Default"],
-            "default_values": ["Default"],
+            "possible_values": [
+                "AIX",
+                "Linux",
+                "IBM I",
+                "Linux KVM",
+                "Default"
+            ],
+            "default_values": ["AIX"],
             "helpText": "CEC Primary OS",
             "displayName": "CEC Primary OS"
         },
         {
             "attribute_name": "pvm_default_os_type_current",
-            "possible_values": ["AIX", "Linux", "IBM I", "Default"],
-            "default_values": ["Default"],
+            "possible_values": [
+                "AIX",
+                "Linux",
+                "IBM I",
+                "Linux KVM",
+                "Default"
+            ],
+            "default_values": ["AIX"],
             "helpText": "Specifies the current CEC Primary OS type. Do not set this attribute directly; set pvm_default_os_type instead.",
             "displayName": "CEC Primary OS (current)",
             "readOnly": true
@@ -572,6 +584,21 @@
             "default_values": ["MTU1500"],
             "helpText": "Specifies the maximum frame size (maximum transmission unit, MTU). The value is in terms of bytes per packet size.",
             "displayName": "Maximum Frame Size"
+        },
+        {
+            "attribute_name": "pvm_linux_kvm_memory",
+            "possible_values": ["Automatic", "Custom"],
+            "default_values": ["Automatic"],
+            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests.",
+            "displayName": "Memory setting for KVM Guest Management"
+        },
+        {
+            "attribute_name": "pvm_linux_kvm_memory_current",
+            "possible_values": ["Automatic", "Custom"],
+            "default_values": ["Automatic"],
+            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. This attribute is set by the BMC. Set pvm_linux_kvm_memory instead.",
+            "displayName": "Memory setting for KVM Guest Management (current)",
+            "readOnly": true
         }
     ]
 }
