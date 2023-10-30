@@ -285,6 +285,25 @@
             "default_value": 0,
             "helpText": "Specifies the port that is used for the iSCSI connection.",
             "displayName": "Target Port"
+        },
+        {
+            "attribute_name": "pvm_linux_kvm_percentage",
+            "lower_bound": 0,
+            "upper_bound": 1000,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. The percentage is specified to the 10th of a percent.",
+            "displayName": "System Memory Reserved for KVM Guest Management"
+        },
+        {
+            "attribute_name": "pvm_linux_kvm_percentage_current",
+            "lower_bound": 0,
+            "upper_bound": 1000,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. Do not set this attribute directly; set pvm_linux_kvm_percentage instead.",
+            "displayName": "System Memory Reserved for KVM Guest Management (current)"
         }
     ]
 }
