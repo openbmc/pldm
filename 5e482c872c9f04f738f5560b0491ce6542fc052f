@@ -16,6 +16,23 @@
       "message": "Tested:\nGetTID command on non-IBM machine now work correctly",
       "revId": "5e482c872c9f04f738f5560b0491ce6542fc052f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ccfb7c6_7793c227",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 927,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2023-10-30T06:25:52Z",
+      "side": 1,
+      "message": "Does this mandate every oem provider to support SetEventreceiver?",
+      "revId": "5e482c872c9f04f738f5560b0491ce6542fc052f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
