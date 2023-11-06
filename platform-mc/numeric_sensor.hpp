@@ -7,6 +7,7 @@
 
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Inventory/Source/PLDM/Entity/server.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Critical/server.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Warning/server.hpp>
 #include <xyz/openbmc_project/Sensor/Value/server.hpp>
@@ -34,6 +35,8 @@ using AvailabilityIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::State::Decorator::server::Availability>;
 using AssociationDefinitionsInft = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
+using EntityIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Inventory::Source::PLDM::server::Entity>;
 
 /**
  * @brief NumericSensor
@@ -187,6 +190,7 @@ class NumericSensor
     std::unique_ptr<OperationalStatusIntf> operationalStatusIntf = nullptr;
     std::unique_ptr<AssociationDefinitionsInft> associationDefinitionsIntf =
         nullptr;
+    std::unique_ptr<EntityIntf> entityIntf = nullptr;
 
     /** @brief Amount of hysteresis associated with the sensor thresholds */
     double hysteresis;
