@@ -8,6 +8,7 @@
 
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Inventory/Source/PLDM/Entity/server.hpp>
 #include <xyz/openbmc_project/Metric/Value/server.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Critical/server.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Warning/server.hpp>
@@ -42,6 +43,8 @@ using AvailabilityIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::State::Decorator::server::Availability>;
 using AssociationDefinitionsInft = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
+using EntityIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Inventory::Source::PLDM::server::Entity>;
 
 /**
  * @brief NumericSensor
@@ -213,6 +216,20 @@ class NumericSensor
      */
     void updateThresholds();
 
+    /** @brief Create the sensor inventory path.
+     *
+     *  @param[in] associationPath - sensor association path
+     *  @param[in] sensorName - sensor name
+     *  @param[in] entityType - sensor PDR entity type
+     *  @param[in] entityInstanceNum - sensor PDR entity instance number
+     *  @param[in] containerId - sensor PDR entity container ID
+     *
+     *  @return True when success otherwise return False
+     */
+    bool createInventoryPath(const std::string& associationPath,
+                             const std::string& sensorName, uint16_t entityType,
+                             uint16_t entityInstanceNum, uint16_t containerId);
+
     std::unique_ptr<MetricIntf> metricIntf = nullptr;
     std::unique_ptr<ValueIntf> valueIntf = nullptr;
     std::unique_ptr<ThresholdWarningIntf> thresholdWarningIntf = nullptr;
@@ -221,6 +238,7 @@ class NumericSensor
     std::unique_ptr<OperationalStatusIntf> operationalStatusIntf = nullptr;
     std::unique_ptr<AssociationDefinitionsInft> associationDefinitionsIntf =
         nullptr;
+    std::unique_ptr<EntityIntf> entityIntf = nullptr;
 
     /** @brief Amount of hysteresis associated with the sensor thresholds */
     double hysteresis;
