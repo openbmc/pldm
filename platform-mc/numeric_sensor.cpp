@@ -23,6 +23,7 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
     sensorId(pdr->sensor_id), sensorName(sensorName), isPriority(false)
 {
     std::string path;
+    std::string invPath;
     SensorUnit sensorUnit = SensorUnit::DegreesC;
 
     switch (pdr->base_unit)
@@ -65,6 +66,8 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
 
     path = sensorNameSpace + sensorName;
     path = std::regex_replace(path, std::regex("[^a-zA-Z0-9_/]+"), "_");
+    invPath = associationPath + "/" + sensorName;
+    invPath = std::regex_replace(invPath, std::regex("[^a-zA-Z0-9_/]+"), "_");
 
     auto& bus = pldm::utils::DBusHandler::getBus();
     try
@@ -83,12 +86,22 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
     associationDefinitionsIntf->associations(
         {{"chassis", "all_sensors", associationPath}});
 
+    uint16_t entityType = std::numeric_limits<uint16_t>::quiet_NaN();
+    uint16_t entityInstanceNum = std::numeric_limits<uint16_t>::quiet_NaN();
+    uint16_t containerID = std::numeric_limits<uint16_t>::quiet_NaN();
+
     double maxValue = std::numeric_limits<double>::quiet_NaN();
     double minValue = std::numeric_limits<double>::quiet_NaN();
+
+    // filter out the physical/logical entity type encoded in the first bit
+    entityType = pdr->entity_type & ~(0x8000);
+    entityInstanceNum = pdr->entity_instance_num;
+    containerID = pdr->container_id;
 
     switch (pdr->sensor_data_size)
     {
         case PLDM_SENSOR_DATA_SIZE_UINT8:
+
             maxValue = pdr->max_readable.value_u8;
             minValue = pdr->min_readable.value_u8;
             hysteresis = pdr->hysteresis.value_u8;
@@ -276,6 +289,21 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
 
     try
     {
+        entityIntf = std::make_unique<EntityIntf>(bus, invPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Entity interface for numeric sensor {PATH}",
+            "PATH", path);
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+    entityIntf->entityType(entityType);
+    entityIntf->entityInstanceNumber(entityInstanceNum);
+    entityIntf->containerID(containerID);
+
+    try
+    {
         availabilityIntf = std::make_unique<AvailabilityIntf>(bus,
                                                               path.c_str());
     }
@@ -349,6 +377,7 @@ NumericSensor::NumericSensor(
     sensorId(pdr->sensor_id), sensorName(sensorName), isPriority(false)
 {
     std::string path;
+    std::string invPath;
     SensorUnit sensorUnit = SensorUnit::DegreesC;
 
     switch (pdr->base_unit)
@@ -391,6 +420,8 @@ NumericSensor::NumericSensor(
 
     path = sensorNameSpace + sensorName;
     path = std::regex_replace(path, std::regex("[^a-zA-Z0-9_/]+"), "_");
+    invPath = associationPath + "/" + sensorName;
+    invPath = std::regex_replace(invPath, std::regex("[^a-zA-Z0-9_/]+"), "_");
 
     auto& bus = pldm::utils::DBusHandler::getBus();
     try
@@ -408,6 +439,9 @@ NumericSensor::NumericSensor(
     associationDefinitionsIntf->associations(
         {{"chassis", "all_sensors", associationPath.c_str()}});
 
+    uint16_t entityType = std::numeric_limits<uint16_t>::quiet_NaN();
+    uint16_t entityInstanceNum = std::numeric_limits<uint16_t>::quiet_NaN();
+    uint16_t containerID = std::numeric_limits<uint16_t>::quiet_NaN();
     double maxValue = std::numeric_limits<double>::quiet_NaN();
     double minValue = std::numeric_limits<double>::quiet_NaN();
     bool hasWarningThresholds = false;
@@ -416,6 +450,11 @@ NumericSensor::NumericSensor(
     double criticalLow = std::numeric_limits<double>::quiet_NaN();
     double warningHigh = std::numeric_limits<double>::quiet_NaN();
     double warningLow = std::numeric_limits<double>::quiet_NaN();
+
+    // filter out the physical/logical entity type encoded in the first bit
+    entityType = pdr->entity_type & ~(0x8000);
+    entityInstanceNum = pdr->entity_instance;
+    containerID = pdr->container_id;
 
     if (pdr->range_field_support.bits.bit0)
     {
@@ -465,6 +504,21 @@ NumericSensor::NumericSensor(
     valueIntf->minValue(unitModifier(conversionFormula(minValue)));
     hysteresis = unitModifier(conversionFormula(hysteresis));
     valueIntf->unit(sensorUnit);
+
+    try
+    {
+        entityIntf = std::make_unique<EntityIntf>(bus, invPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Entity interface for compact numeric sensor {PATH}",
+            "PATH", path);
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+    entityIntf->entityType(entityType);
+    entityIntf->entityInstanceNumber(entityInstanceNum);
+    entityIntf->containerID(containerID);
 
     try
     {
