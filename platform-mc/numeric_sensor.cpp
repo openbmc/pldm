@@ -27,6 +27,7 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
+    std::string invPath;
     SensorUnit sensorUnit = SensorUnit::DegreesC;
     MetricUnit metricUnit = MetricUnit::Count;
     useMetricInterface = false;
@@ -333,6 +334,22 @@ NumericSensor::NumericSensor(
 
     hysteresis = unitModifier(conversionFormula(hysteresis));
 
+    invPath = associationPath + "/" + sensorName;
+    try
+    {
+        entityIntf = std::make_unique<EntityIntf>(bus, invPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Entity interface for numeric sensor {PATH}",
+            "PATH", path);
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+    entityIntf->entityType(pdr->entity_type);
+    entityIntf->entityInstanceNumber(pdr->entity_instance_num);
+    entityIntf->containerID(pdr->container_id);
+
     try
     {
         availabilityIntf =
@@ -413,6 +430,7 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
+    std::string invPath;
     SensorUnit sensorUnit = SensorUnit::DegreesC;
     MetricUnit metricUnit = MetricUnit::Count;
     useMetricInterface = false;
@@ -586,6 +604,22 @@ NumericSensor::NumericSensor(
     }
 
     hysteresis = unitModifier(conversionFormula(hysteresis));
+
+    invPath = associationPath + "/" + sensorName;
+    try
+    {
+        entityIntf = std::make_unique<EntityIntf>(bus, invPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Entity interface for compact numeric sensor {PATH}",
+            "PATH", path);
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+    entityIntf->entityType(pdr->entity_type);
+    entityIntf->entityInstanceNumber(pdr->entity_instance);
+    entityIntf->containerID(pdr->container_id);
 
     try
     {
