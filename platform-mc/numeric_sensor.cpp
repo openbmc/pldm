@@ -27,6 +27,7 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
+    std::string invPath;
     SensorUnit sensorUnit = SensorUnit::DegreesC;
 
     switch (pdr->base_unit)
@@ -106,6 +107,7 @@ NumericSensor::NumericSensor(
     switch (pdr->sensor_data_size)
     {
         case PLDM_SENSOR_DATA_SIZE_UINT8:
+
             maxValue = pdr->max_readable.value_u8;
             minValue = pdr->min_readable.value_u8;
             hysteresis = pdr->hysteresis.value_u8;
@@ -291,6 +293,26 @@ NumericSensor::NumericSensor(
     hysteresis = unitModifier(conversionFormula(hysteresis));
     valueIntf->unit(sensorUnit);
 
+    // filter out the physical/logical entity type encoded in the first bit
+    uint16_t entityType = pdr->entity_type & ~(0x8000);
+    uint16_t entityInstanceNum = pdr->entity_instance_num;
+    uint16_t containerID = pdr->container_id;
+    invPath = associationPath + "/" + sensorName;
+    try
+    {
+        entityIntf = std::make_unique<EntityIntf>(bus, invPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Entity interface for numeric sensor {PATH}",
+            "PATH", path);
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+    entityIntf->entityType(entityType);
+    entityIntf->entityInstanceNumber(entityInstanceNum);
+    entityIntf->containerID(containerID);
+
     try
     {
         availabilityIntf =
@@ -371,6 +393,7 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
+    std::string invPath;
     SensorUnit sensorUnit = SensorUnit::DegreesC;
 
     switch (pdr->base_unit)
@@ -500,6 +523,26 @@ NumericSensor::NumericSensor(
     valueIntf->minValue(unitModifier(conversionFormula(minValue)));
     hysteresis = unitModifier(conversionFormula(hysteresis));
     valueIntf->unit(sensorUnit);
+
+    // filter out the physical/logical entity type encoded in the first bit
+    uint16_t entityType = pdr->entity_type & ~(0x8000);
+    uint16_t entityInstanceNum = pdr->entity_instance;
+    uint16_t containerID = pdr->container_id;
+    invPath = associationPath + "/" + sensorName;
+    try
+    {
+        entityIntf = std::make_unique<EntityIntf>(bus, invPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Entity interface for compact numeric sensor {PATH}",
+            "PATH", path);
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+    entityIntf->entityType(entityType);
+    entityIntf->entityInstanceNumber(entityInstanceNum);
+    entityIntf->containerID(containerID);
 
     try
     {
