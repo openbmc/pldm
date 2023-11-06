@@ -15,6 +15,31 @@ namespace pldm
 namespace platform_mc
 {
 
+inline bool NumericSensor::createInventoryPath(
+    const std::string& associationPath, const std::string& sensorName,
+    const uint16_t entityType, const uint16_t entityInstanceNum,
+    const uint16_t containerId)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    std::string invPath = associationPath + "/" + sensorName;
+    try
+    {
+        entityIntf = std::make_unique<EntityIntf>(bus, invPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Entity interface for compact numeric sensor {PATH} error - {ERROR}",
+            "PATH", invPath, "ERROR", e);
+        return false;
+    }
+    entityIntf->entityType(entityType);
+    entityIntf->entityInstanceNumber(entityInstanceNum);
+    entityIntf->containerID(containerId);
+
+    return true;
+}
+
 NumericSensor::NumericSensor(
     const pldm_tid_t tid, const bool sensorDisabled,
     std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr, std::string& sensorName,
@@ -333,6 +358,12 @@ NumericSensor::NumericSensor(
 
     hysteresis = unitModifier(conversionFormula(hysteresis));
 
+    if (!createInventoryPath(associationPath, sensorName, pdr->entity_type,
+                             pdr->entity_instance_num, pdr->container_id))
+    {
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+
     try
     {
         availabilityIntf =
@@ -586,6 +617,12 @@ NumericSensor::NumericSensor(
     }
 
     hysteresis = unitModifier(conversionFormula(hysteresis));
+
+    if (!createInventoryPath(associationPath, sensorName, pdr->entity_type,
+                             pdr->entity_instance, pdr->container_id))
+    {
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
 
     try
     {
