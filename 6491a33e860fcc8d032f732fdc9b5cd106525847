@@ -46,6 +46,30 @@
       },
       "revId": "6491a33e860fcc8d032f732fdc9b5cd106525847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22734036_ec301719",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-11-07T03:58:39Z",
+      "side": 1,
+      "message": "The time out is already implemented in libpldm  `pldm_transport_send_recv_msg()` https://github.com/openbmc/libpldm/blob/main/src/transport/transport.c#L207\nSo retry when there is no responses (time out happens) is reasonable as my opinion.\nThis patch set provides the option to improve the functional of pldmtool and does not break any functional of pldmtool.",
+      "parentUuid": "aae6c937_1e2da502",
+      "range": {
+        "startLine": 71,
+        "startChar": 11,
+        "endLine": 71,
+        "endChar": 29
+      },
+      "revId": "6491a33e860fcc8d032f732fdc9b5cd106525847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
