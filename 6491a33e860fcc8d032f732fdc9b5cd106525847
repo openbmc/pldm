@@ -94,6 +94,30 @@
       },
       "revId": "6491a33e860fcc8d032f732fdc9b5cd106525847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d206724_d1e08bc0",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-11-07T05:05:22Z",
+      "side": 1,
+      "message": "Mark the patch set as \"Work In progress\" for more discussion about the complete solution.",
+      "parentUuid": "7130c950_3f8f988f",
+      "range": {
+        "startLine": 71,
+        "startChar": 11,
+        "endLine": 71,
+        "endChar": 29
+      },
+      "revId": "6491a33e860fcc8d032f732fdc9b5cd106525847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
