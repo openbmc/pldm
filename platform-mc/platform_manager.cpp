@@ -83,7 +83,8 @@ exec::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
     if (!terminus->doesSupportCommand(PLDM_PLATFORM,
                                       PLDM_EVENT_MESSAGE_SUPPORTED))
     {
-        terminus->synchronyConfigurationSupported.byte = 0;
+        terminus->synchronyConfigurationSupported.byte =
+            1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
     }
     else
     {
