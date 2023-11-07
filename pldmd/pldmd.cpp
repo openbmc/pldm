@@ -265,7 +265,8 @@ int main(int argc, char** argv)
 #endif
 
 #ifdef OEM_META
-    invoker.registerHandler(PLDM_OEM, std::make_unique<oem_meta::Handler>());
+    invoker.registerHandler(PLDM_OEM,
+                            std::make_unique<oem_meta::Handler>(&dbusHandler));
 #endif
 
     auto biosHandler = std::make_unique<bios::Handler>(

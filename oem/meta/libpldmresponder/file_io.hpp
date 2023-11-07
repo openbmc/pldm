@@ -22,7 +22,7 @@ int setupTidToSlotMappingTable();
 class Handler : public CmdHandler
 {
   public:
-    Handler()
+    Handler(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf)
     {
         handlers.emplace(PLDM_WRITE_FILE,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -43,6 +43,12 @@ class Handler : public CmdHandler
      *  @return PLDM response message
      */
     Response writeFileIO(const pldm_msg* request, size_t payloadLength);
+
+  private:
+    int handlePowerStatusChanged(char slot, uint8_t ACPIPowerStatus);
+
+    /** @brief D-Bus Interface object*/
+    const pldm::utils::DBusHandler* dBusIntf;
 };
 
 } // namespace oem_meta

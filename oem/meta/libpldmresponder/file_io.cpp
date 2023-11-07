@@ -15,7 +15,7 @@ namespace responder
 namespace oem_meta
 {
 
-static std::map<uint8_t, char> tidToSlopMap;
+static std::map<uint8_t, char> tidToSlotMap;
 
 int setupTidToSlotMappingTable()
 {
@@ -52,7 +52,7 @@ int setupTidToSlotMappingTable()
                                  mctpInterface[0].c_str());
 
             std::for_each(value.cbegin(), value.cend(), [&](auto& v) {
-                tidToSlopMap.insert({v, slotNum});
+                tidToSlotMap.insert({v, slotNum});
             });
         }
         catch (const sdbusplus::exception_t& e)
@@ -108,6 +108,59 @@ int postCodeHandler(char slot, std::vector<uint8_t>& postCodeList)
     return PLDM_SUCCESS;
 }
 
+pldm::utils::PropertyValue obtainACPIDbusValue(uint8_t rawValue)
+{
+    std::string value = "xyz.openbmc_project.Control.Power.ACPIPowerState.ACPI";
+
+    switch (rawValue)
+    {
+        case 0:
+            value += ".S0_G0_D0";
+            break;
+        case 1:
+            value += ".S1_D1";
+            break;
+        case 2:
+            value += ".S2_D2";
+            break;
+        case 3:
+            value += ".S3_D3";
+            break;
+        case 4:
+            value += ".S4";
+            break;
+        case 5:
+            value += ".S5_G2";
+            break;
+        default:
+            error("Unsupport ACPI status value={VALUE}", "VALUE", rawValue);
+            throw std::invalid_argument("Unsupport status value");
+    }
+
+    return pldm::utils::PropertyValue{value};
+}
+
+int Handler::handlePowerStatusChanged(char slot, uint8_t ACPIPowerStatus)
+{
+    pldm::utils::DBusMapping dbusMapping{
+        std::string("/xyz/openbmc_project/state/host") + slot,
+        "xyz.openbmc_project.Control.Power.ACPIPowerState", "SysACPIStatus",
+        "string"};
+
+    try
+    {
+        auto value = obtainACPIDbusValue(ACPIPowerStatus);
+        dBusIntf->setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to set SysACPIStatus. ERROR={ERROR}", "ERROR", e.what());
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
 Response Handler::writeFileIO(const pldm_msg* request, size_t payloadLength)
 {
     uint8_t fileIOType;
@@ -119,6 +172,7 @@ Response Handler::writeFileIO(const pldm_msg* request, size_t payloadLength)
 
     if (rc != PLDM_SUCCESS)
     {
+        error("Failed to decode request, ERROR={ERROR}", "ERROR", rc);
         return ccOnlyResponse(request, rc);
     }
 
@@ -126,17 +180,29 @@ Response Handler::writeFileIO(const pldm_msg* request, size_t payloadLength)
     {
         std::vector<uint8_t> postCodeList(data.ptr, data.ptr + data.length);
 
-        rc = postCodeHandler(tidToSlopMap[this->getTID()], postCodeList);
+        rc = postCodeHandler(tidToSlotMap[this->getTID()], postCodeList);
 
         if (rc != PLDM_SUCCESS)
         {
             return ccOnlyResponse(request, rc);
         }
     }
+    else if (fileIOType == POWER_STATUS)
+    {
+        uint8_t ACPIPowerStatus = *(data.ptr);
+        rc = handlePowerStatusChanged(tidToSlotMap[this->getTID()],
+                                      ACPIPowerStatus);
+    }
+    else
+    {
+        error("Unsupported fileIOType={FILE_IO_TYPE}", "FILE_IO_TYPE",
+              fileIOType);
+        return ccOnlyResponse(request, PLDM_ERROR_UNSUPPORTED_PLDM_CMD);
+    }
 
     return ccOnlyResponse(request, rc);
 }
-} // namespace oem_meta
 
+} // namespace oem_meta
 } // namespace responder
 } // namespace pldm
