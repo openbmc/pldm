@@ -33,6 +33,310 @@
       "message": "It seems the latest libpldm will cause the header \"#include \u003clibpldm/pldm.h\u003e\" not found.",
       "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7022400e_68e0f4f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "This still needs to be fixed, even if you\u0027re the one to discover it...",
+      "parentUuid": "f0d2fa6a_bf9590f0",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "161d518c_d3a7e958",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "Do not use static globals.  Put this into the OEM handler.\n\n\"slop\"? 😄",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b060d37d_0078854d",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "Please remove these excess spaces (same comment on all of your lg2 calls).",
+      "range": {
+        "startLine": 37,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 14
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e36f82f_5c09cd55",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "You don\u0027t need `.what()` on any lg2 calls.  lg2 handles that for you.",
+      "range": {
+        "startLine": 38,
+        "startChar": 21,
+        "endLine": 38,
+        "endChar": 29
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad0bf602_e009966f",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "I\u0027d prefer a static constexpr for the string constant so that you don\u0027t have to use `[0]` everywhere.  Everytime I see that I have to think \"why is it the zero-th entry?\"",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f83df18_dce879ad",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "Can we change the EM config to put the slot identifier at the end?\n\nI\u0027d really prefer we are not trying to parse any dbus object_path like this.  Ideally we\u0027d have a proper position identifier put into the dbus interface created by EM.\n\nThere is Inventory/Decorator/Slot and Inventory/Decorator/LocationCode.  LocationCode isn\u0027t intended to be parsed by computers, but it is at least better (I\u0027d expect the LocationCode on the Sentinel Dome to be something like \"slotN\").  Ideally the baseboard would create a Slot for the Sentinel Dome to be populated in.",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 31
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f373f8cc_a5bc15bf",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we do something to ensure the part we picked out is actually an integer?",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c79db351_66e6249b",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "constexpr",
+      "range": {
+        "startLine": 85,
+        "startChar": 11,
+        "endLine": 85,
+        "endChar": 16
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3231b9fe_c4c51995",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "auto?",
+      "range": {
+        "startLine": 85,
+        "startChar": 17,
+        "endLine": 85,
+        "endChar": 28
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbab9af7_8fbc71c7",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "I am surprised this type isn\u0027t in a header file somewhere.",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15c12860_c6c813af",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "How do you know this is 4 (or less) bytes?",
+      "range": {
+        "startLine": 95,
+        "startChar": 18,
+        "endLine": 95,
+        "endChar": 58
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dac8af0_27cabe62",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "This assumes little endian order?  Why is that?",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43177830_e3089780",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "You shouldn\u0027t use quote-include for a header you\u0027re planning to install.  These paths will be wrong after the install.\n\nAlso, it seems like you\u0027re adding headers into a header file without using all of the content.  It isn\u0027t obvious, for example, why `requester/handler.hpp` is here.  Make sure you only include-what-you-use.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 32
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c3e6b18_ce1fd6d6",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "This implies we could never multi-thread and/or async the handling of PLDM messages, which doesn\u0027t seem like a good direction.  Shouldn\u0027t we add this to the request pldm_msg structure?",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 5
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e43f928_20a835f8",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-08T15:56:58Z",
+      "side": 1,
+      "message": "`\u003d 0`",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
