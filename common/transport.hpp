@@ -1,7 +1,7 @@
 #pragma once
 
 #include <libpldm/base.h>
-#include <libpldm/pldm.h>
+#include <libpldm/requester/pldm.h>
 #include <poll.h>
 #include <stddef.h>
 
