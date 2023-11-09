@@ -1641,7 +1641,7 @@ class GetNumericEffecterValue : public CommandInterface
     GetNumericEffecterValue(const GetNumericEffecterValue&) = delete;
     GetNumericEffecterValue(GetNumericEffecterValue&&) = default;
     GetNumericEffecterValue& operator=(const GetNumericEffecterValue&) = delete;
-    GetNumericEffecterValue& operator=(GetNumericEffecterValue&&) = default;
+    GetNumericEffecterValue& operator=(GetNumericEffecterValue&&) = delete;
 
     explicit GetNumericEffecterValue(const char* type, const char* name,
                                      CLI::App* app) :
