@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27cbf759_ab0de8b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-11-14T05:03:46Z",
+      "side": 1,
+      "message": "can you explain about this a bit more ?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 71
+      },
+      "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "010bb936_af223f30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-11-14T05:03:46Z",
+      "side": 1,
+      "message": "This patch seems to look okay at the outset - but still there are some questions that needs better explanation.\n\n1. How is the circular dependency created in the first place ?\n2. How is changing the unique ptr to normal pointer solving the circular dependency ?\n3. Did we make sure we freed the resources in all the possible good/bad paths ? how did we make sure of it ?",
+      "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ba3497e_7332e4f7",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-11-14T05:03:46Z",
+      "side": 1,
+      "message": "making this a normal pointer rather than unique - would need a manual freeing of the resources - which could be error prone.\n\nCan you brief how - changing the unique pointer to normal pointer - fixed the circular dependency as stated in the commit message ?",
+      "range": {
+        "startLine": 106,
+        "startChar": 3,
+        "endLine": 107,
+        "endChar": 43
+      },
+      "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
