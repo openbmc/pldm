@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3276c853_b1b83faa",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-14T05:22:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98122fe7_65e5a5b5",
+      "range": {
+        "startLine": 99,
+        "startChar": 41,
+        "endLine": 99,
+        "endChar": 42
+      },
+      "revId": "62d2634844d87fc80665128d0a580794677fcc05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b11dd1aa_29b6a5bf",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-10-30T01:38:15Z",
       "side": 1,
       "message": "Please also help to change the type of EID and NetworkId here.",
+      "revId": "62d2634844d87fc80665128d0a580794677fcc05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "370eb04a_2b35e85f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 49
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-14T05:22:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b11dd1aa_29b6a5bf",
       "revId": "62d2634844d87fc80665128d0a580794677fcc05",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
