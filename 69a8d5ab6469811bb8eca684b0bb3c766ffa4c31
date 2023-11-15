@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd39d99a_c35dd188",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "The current libpldm fixed.",
+      "parentUuid": "7022400e_68e0f4f2",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "161d518c_d3a7e958",
@@ -70,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92a3b2b8_e48e52e7",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "161d518c_d3a7e958",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b060d37d_0078854d",
@@ -83,6 +119,30 @@
       "writtenOn": "2023-11-08T15:56:58Z",
       "side": 1,
       "message": "Please remove these excess spaces (same comment on all of your lg2 calls).",
+      "range": {
+        "startLine": 37,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 14
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad029b53_f26daa81",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b060d37d_0078854d",
       "range": {
         "startLine": 37,
         "startChar": 12,
@@ -116,6 +176,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd932cfd_4eabd10f",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9e36f82f_5c09cd55",
+      "range": {
+        "startLine": 38,
+        "startChar": 21,
+        "endLine": 38,
+        "endChar": 29
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad0bf602_e009966f",
@@ -129,6 +213,24 @@
       "writtenOn": "2023-11-08T15:56:58Z",
       "side": 1,
       "message": "I\u0027d prefer a static constexpr for the string constant so that you don\u0027t have to use `[0]` everywhere.  Everytime I see that I have to think \"why is it the zero-th entry?\"",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a711949_b85e4288",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ad0bf602_e009966f",
       "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -156,6 +258,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57d2254e_974834c7",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Done. Base on https://gerrit.openbmc.org/c/openbmc/entity-manager/+/66750 design",
+      "parentUuid": "0f83df18_dce879ad",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 31
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f373f8cc_a5bc15bf",
@@ -169,6 +295,24 @@
       "writtenOn": "2023-11-08T15:56:58Z",
       "side": 1,
       "message": "Shouldn\u0027t we do something to ensure the part we picked out is actually an integer?",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b497b30_3220fd11",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f373f8cc_a5bc15bf",
       "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -219,6 +363,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1bc5a99_c9c7d6d2",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Use auto dbusObjStr will be empty.",
+      "parentUuid": "3231b9fe_c4c51995",
+      "range": {
+        "startLine": 85,
+        "startChar": 17,
+        "endLine": 85,
+        "endChar": 28
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e049de_2e9c3c6b",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Use constexpr dbusObjStr cannot connect with char.",
+      "parentUuid": "c79db351_66e6249b",
+      "range": {
+        "startLine": 85,
+        "startChar": 11,
+        "endLine": 85,
+        "endChar": 16
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbab9af7_8fbc71c7",
@@ -232,6 +424,24 @@
       "writtenOn": "2023-11-08T15:56:58Z",
       "side": 1,
       "message": "I am surprised this type isn\u0027t in a header file somewhere.",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87216793_2e753652",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bbab9af7_8fbc71c7",
       "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -259,6 +469,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c22945_863ee418",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "AMD platform send four bytes as a post code unit",
+      "parentUuid": "15c12860_c6c813af",
+      "range": {
+        "startLine": 95,
+        "startChar": 18,
+        "endLine": 95,
+        "endChar": 58
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dac8af0_27cabe62",
@@ -272,6 +506,24 @@
       "writtenOn": "2023-11-08T15:56:58Z",
       "side": 1,
       "message": "This assumes little endian order?  Why is that?",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "848d32da_faa0dd1c",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "The postcode sent from bic is Little-Endian and here turns to Big-Endian",
+      "parentUuid": "4dac8af0_27cabe62",
       "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -323,6 +575,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d4f0715_13c97d81",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc3ef7d6_aa88ec77",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 32
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c3e6b18_ce1fd6d6",
@@ -348,6 +624,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96463fba_6706efdc",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "After reading DSP0240, the tid doesn\u0027t exist in PLDM message header fields. We are thinking about adding tid as a parameter in each handler. Or any suggestion for it ?",
+      "parentUuid": "1c3e6b18_ce1fd6d6",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 5
+      },
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e43f928_20a835f8",
         "filename": "pldmd/handler.hpp",
         "patchSetId": 4
@@ -359,6 +659,24 @@
       "writtenOn": "2023-11-08T15:56:58Z",
       "side": 1,
       "message": "`\u003d 0`",
+      "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2069adcb_d4fef185",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T10:03:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e43f928_20a835f8",
       "revId": "69a8d5ab6469811bb8eca684b0bb3c766ffa4c31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
