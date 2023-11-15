@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c484607_96e2ed99",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-15T08:49:16Z",
+      "side": 1,
+      "message": "The mapperResponse should be the response of \"GetSubTree\", instead of \"GetManagedObjects\".",
+      "range": {
+        "startLine": 66,
+        "startChar": 19,
+        "endLine": 66,
+        "endChar": 33
+      },
+      "revId": "be26f36a5b4cbed4e5cf64cc45203616fc2b405a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
