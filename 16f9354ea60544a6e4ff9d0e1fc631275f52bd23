@@ -503,6 +503,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8df172f_fe2875b5",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-11-15T11:19:19Z",
+      "side": 1,
+      "message": "Mark as resolve because no new feedback from @Naveen Moses",
+      "parentUuid": "74dd197c_b4893e84",
+      "range": {
+        "startLine": 31,
+        "startChar": 40,
+        "endLine": 31,
+        "endChar": 48
+      },
+      "revId": "16f9354ea60544a6e4ff9d0e1fc631275f52bd23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bc16c07_bdbd0841",
