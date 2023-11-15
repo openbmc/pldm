@@ -216,6 +216,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6e9e327_c9df791c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-11-15T11:31:02Z",
+      "side": 1,
+      "message": "@Arun P M, I verify the patch set with Ampere system.\nIf the PCIe device is one terminus and support Terminus Aux Name PDR we can use that name to replace `PLDM_Device_\u003cTID\u003e`. In that case, you can we will have inventory object path as `/xyz/openbmc_project/inventory/Item/Board/Terminus-Aux-Name`.But we will need support Terminus Aux Name PDR. And it is not supported by this patch set. I suggest to add new patch set later to support that.\n\nAbout `Board` in the object path, we can use the terminus type to correct that.",
+      "parentUuid": "5800532a_78f3b193",
+      "revId": "61d2be6bd934a58f3cebc43113547dc8cc36370d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6178924_0d6e658a",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
