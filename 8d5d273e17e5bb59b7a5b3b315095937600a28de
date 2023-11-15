@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d74712f_48a539b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-11-15T11:14:38Z",
+      "side": 1,
+      "message": "Support setting SetEventReceiver base on synchronyConfigurationSupported.byte",
+      "revId": "8d5d273e17e5bb59b7a5b3b315095937600a28de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
