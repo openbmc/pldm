@@ -83,6 +83,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd57259c_cd9e7ae6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2023-11-15T11:21:30Z",
+      "side": 1,
+      "message": "I think we can move this libpldm later. When we have enough time to verify the function with multiple system with multiple PDR configuration types.",
+      "parentUuid": "9c231e84_d8332cd8",
+      "revId": "98ca895d1686e7be0b3e85999972b0f8ec409a97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b4e5ab8_661a90bd",
