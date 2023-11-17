@@ -62,6 +62,81 @@
       },
       "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8166abf0_b1b26c0f",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-17T09:46:34Z",
+      "side": 1,
+      "message": "The error that was thrown is\n\n`/../lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/unique_ptr.h:97:16: error: invalid application of \u0027sizeof\u0027 to an incomplete type \u0027pldm::fw_update::Activation\u0027 [clang-diagnostic-error]\n        static_assert(sizeof(_Tp)\u003e0,\n                      ^~~\n/../lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/unique_ptr.h:404:4: note: in instantiation of member function \u0027std::default_delete\u003cpldm::fw_update::Activation\u003e::operator()\u0027 requested here\n          get_deleter()(std::move(__ptr));\n          ^\n/esw/san5/pavithb7/ci_test_area/pldm/fw-update/update_manager.hpp:47:14: note: in instantiation of member function \u0027std::unique_ptr\u003cpldm::fw_update::Activation\u003e::~unique_ptr\u0027 requested here\n    explicit UpdateManager(\n             ^\n/esw/san5/pavithb7/ci_test_area/pldm/fw-update/update_manager.hpp:34:7: note: forward declaration of \u0027pldm::fw_update::Activation\u0027\nclass Activation;\n      ^",
+      "parentUuid": "9ba3497e_7332e4f7",
+      "range": {
+        "startLine": 106,
+        "startChar": 3,
+        "endLine": 107,
+        "endChar": 43
+      },
+      "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cf41678_7732ca0f",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-17T09:46:34Z",
+      "side": 1,
+      "message": "As far as I understood, the unique_ptr object destruction is creating problems because of the cyclic dependency that we have in the code\nthe unique_ptr is also not getting deleted automatically and we are explicitly deleting the unique_ptr by calling the clearActivationInfo() which is violating the rule for unique_ptrs.\nupdate_manager has a unique_ptr created for activation and activationProgress, that code also has forward declaration to activation and activationProgress class which has call to update manager to clearActivationInfo. So who owns the deletion of this unique_ptr?",
+      "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdbe3dc8_e1354e6a",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-17T09:46:34Z",
+      "side": 1,
+      "message": "I may be wrong, but I needed some input here to solve the clang errors I get.",
+      "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "872c9970_bb384da2",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-17T09:46:34Z",
+      "side": 1,
+      "message": "there is a cyclic dependency between activation.hpp and update_manager.hpp, so creating a unique_ptr for activation and activationProgress is causing problem with respect who will own it.",
+      "revId": "ab3751d3edaacf6cdfdf36892256a677bd0218ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
