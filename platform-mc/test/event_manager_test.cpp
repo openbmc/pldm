@@ -388,3 +388,106 @@ TEST_F(EventManagerTest, updateAvailableState)
     eventManager.updateAvailableState(2, false);
     EXPECT_EQ(false, eventManager.getAvailableState(tid));
 }
+
+TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
+{
+    // Add terminus
+    auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
+    auto tid = mappedTid.value();
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto terminus = termini[tid];
+
+    // queue pollForPlatformEventMessage first part response
+    const size_t pollForPlatformEventMessage1Len = 22;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + pollForPlatformEventMessage1Len>
+        pollForPlatformEventMessage1Resp{
+            0x0,
+            0x02,
+            0x0d,
+            PLDM_SUCCESS,
+            tid, // TID
+            0x1,
+            0x0, // eventID
+            0x1,
+            0x0,
+            0x0,
+            0x0,                          // nextDataTransferHandle
+            PLDM_PLATFORM_TRANSFER_START, // transferFlag = start
+            PLDM_CPER_EVENT,              // eventClass
+            8,
+            0,
+            0,
+            0,    // eventDataSize
+            0x01, // CPER event formatVersion= 0x01
+            1,    // formatType = single CPER section(0x01)
+            10,
+            0,    // eventDataLength = 10
+            1,
+            2,
+            3,
+            4 // eventData first part
+        };
+    auto rc = terminusManager.enqueueResponse(
+        reinterpret_cast<pldm_msg*>(pollForPlatformEventMessage1Resp.data()),
+        sizeof(pollForPlatformEventMessage1Resp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    // queue pollForPlatformEventMessage last part response
+    const size_t pollForPlatformEventMessage2Len = 24;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + pollForPlatformEventMessage2Len>
+        pollForPlatformEventMessage2Resp{
+            0x0,
+            0x02,
+            0x0d,
+            PLDM_SUCCESS,
+            tid, // TID
+            0x1,
+            0x0, // eventID
+            0x2,
+            0x0,
+            0x0,
+            0x0,                        // nextDataTransferHandle
+            PLDM_PLATFORM_TRANSFER_END, // transferFlag = end
+            PLDM_CPER_EVENT,            // eventClass
+            6,
+            0,
+            0,
+            0, // eventDataSize
+            5,
+            6,
+            7,
+            8,
+            9,
+            0, // eventData last part
+            0x46,
+            0x7f,
+            0x6a,
+            0x5d // crc32
+        };
+    rc = terminusManager.enqueueResponse(
+        reinterpret_cast<pldm_msg*>(pollForPlatformEventMessage2Resp.data()),
+        sizeof(pollForPlatformEventMessage2Resp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    // queue pollForPlatformEventMessage Ack response
+    const size_t pollForPlatformEventMessage3Len = 4;
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + pollForPlatformEventMessage3Len>
+        pollForPlatformEventMessage3Resp{
+            0x0, 0x02, 0x0d, PLDM_SUCCESS,
+            tid,     // TID
+            0x0, 0x0 // eventID
+        };
+    rc = terminusManager.enqueueResponse(
+        reinterpret_cast<pldm_msg*>(pollForPlatformEventMessage3Resp.data()),
+        sizeof(pollForPlatformEventMessage3Resp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    EXPECT_CALL(eventManager, processCperEvent(_, _, _, _))
+        .Times(1)
+        .WillRepeatedly(Return(1));
+
+    // start task to poll event from terminus
+    // should finish immediately
+    stdexec::sync_wait(eventManager.pollForPlatformEventTask(tid, 0x0000));
+}
