@@ -253,6 +253,13 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_return PLDM_SUCCESS;
         }
 
+        auto& terminus = termini[tid];
+
+        if (manager && terminus->pollEvent)
+        {
+            co_await manager->pollForPlatformEvent(tid, terminus->pollEventId);
+        }
+
         // poll priority Sensors
         for (auto& sensor : prioritySensors[tid])
         {

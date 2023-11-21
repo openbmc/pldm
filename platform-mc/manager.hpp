@@ -122,6 +122,29 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return PLDM_SUCCESS;
     }
 
+    /** @brief PLDM POLL event handler funtion
+     *
+     *  @param[in] request - Event message
+     *  @param[in] payloadLength - Event message payload size
+     *  @param[in] tid - Terminus ID
+     *  @param[in] eventDataOffset - Event data offset
+     *
+     *  @return PLDM error code: PLDM_SUCCESS when there is no error in handling
+     *          the event
+     */
+    int handlePldmMessagePollEvent(const pldm_msg* request,
+                                   size_t payloadLength,
+                                   uint8_t /* formatVersion */, uint8_t tid,
+                                   size_t eventDataOffset)
+    {
+        auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
+                         eventDataOffset;
+        auto eventDataSize = payloadLength - eventDataOffset;
+        eventManager.handlePlatformEvent(tid, PLDM_MESSAGE_POLL_EVENT,
+                                         eventData, eventDataSize);
+        return PLDM_SUCCESS;
+    }
+
     /** @brief Sensor event handler funtion
      *
      *  @param[in] request - Event message
@@ -142,6 +165,21 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         eventManager.handlePlatformEvent(tid, PLDM_SENSOR_EVENT, eventData,
                                          eventDataSize);
         return PLDM_SUCCESS;
+    }
+
+    /** @brief The function to trigger the event polling
+     *
+     *  @param[in] tid - Terminus ID
+     *  @param[in] eventDataOffset - Event data offset
+     *  @param[in] eventId - Event Id
+     *
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> pollForPlatformEvent(pldm_tid_t tid, uint16_t eventId);
+
+    void registerOEMHandler(uint8_t eventClass, HandlerFunc handlerFunc)
+    {
+        eventManager.registerHandler(eventClass, handlerFunc);
     }
 
   private:
