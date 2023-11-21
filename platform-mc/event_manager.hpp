@@ -15,6 +15,12 @@ namespace pldm
 namespace platform_mc
 {
 
+using EventType = uint8_t;
+using HandlerFunc =
+    std::function<int(pldm_tid_t tid, uint16_t eventId,
+                      const uint8_t* eventData, size_t eventDataSize)>;
+using EventMap = std::map<EventType, HandlerFunc>;
+
 /**
  * In `Table 16 - PollForPlatformEventMessage command format` of DSP0248 V1.3.0.
  * The event receiver shall use the null value 0x0000 when requesting the first
@@ -42,7 +48,25 @@ class EventManager
 
     explicit EventManager(TerminusManager& terminusManager,
                           TerminiMapper& termini) :
-        terminusManager(terminusManager), termini(termini) {};
+        terminusManager(terminusManager), termini(termini)
+    {
+        // Default response handler for PollForPlatFormEventMessage
+        registerPolledEventHandler(
+            PLDM_MESSAGE_POLL_EVENT,
+            [this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                   size_t eventDataSize) {
+                return this->handlePlatformEvent(tid, eventId,
+                                                 PLDM_MESSAGE_POLL_EVENT,
+                                                 eventData, eventDataSize);
+            });
+        registerPolledEventHandler(
+            PLDM_CPER_EVENT,
+            [this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                   size_t eventDataSize) {
+                return this->handlePlatformEvent(tid, eventId, PLDM_CPER_EVENT,
+                                                 eventData, eventDataSize);
+            });
+    };
 
     /** @brief Handle platform event
      *
@@ -80,6 +104,30 @@ class EventManager
         return availableState[tid];
     };
 
+    /** @brief A Coroutine to poll all events from terminus
+     *
+     *  @param[in] tid - the destination TID
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> pollForPlatformEventTask(pldm_tid_t tid,
+                                             uint16_t pollEventId);
+
+    /** @brief Register response handler for the polled events from
+     *         PollForPlatFormEventMessage
+     */
+    void registerPolledEventHandler(uint8_t eventClass, HandlerFunc function)
+    {
+        auto it = eventHandlers.find(eventClass);
+        if (it != eventHandlers.end())
+        {
+            it->second = function;
+        }
+        else
+        {
+            eventHandlers.emplace(eventClass, function);
+        }
+    }
+
   protected:
     /** @brief Helper method to process the PLDM Numeric sensor event class
      *
@@ -103,8 +151,9 @@ class EventManager
      *
      *  @return PLDM completion code
      */
-    int processCperEvent(pldm_tid_t tid, uint16_t eventId,
-                         const uint8_t* eventData, const size_t eventDataSize);
+    virtual int processCperEvent(pldm_tid_t tid, uint16_t eventId,
+                                 const uint8_t* eventData,
+                                 const size_t eventDataSize);
 
     /** @brief Helper method to create CPER dump log
      *
@@ -118,6 +167,32 @@ class EventManager
                             const std::string& dataPath,
                             const std::string& typeName);
 
+    /** @brief Send pollForPlatformEventMessage and return response
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] transferOpFlag - Transfer Operation Flag
+     *  @param[in] dataTransferHandle - Data transfer handle
+     *  @param[in] eventIdToAcknowledge - Event ID
+     *  @param[out] completionCode - the complete code of response message
+     *  @param[out] eventTid - Event terminus ID
+     *  @param[out] eventId - Event ID
+     *  @param[out] nextDataTransferHandle - Next handle to get next data part
+     *  @param[out] transferFlag - transfer Flag of response data
+     *  @param[out] eventClass - event class
+     *  @param[out] eventDataSize - data size of event response message
+     *  @param[out] eventData - event data of response message
+     *  @param[out] eventDataIntegrityChecksum - check sum of final event
+     *
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> pollForPlatformEventMessage(
+        pldm_tid_t tid, uint8_t transferOperationFlag,
+        uint32_t dataTransferHandle, uint16_t eventIdToAcknowledge,
+        uint8_t& completionCode, uint8_t& eventTid, uint16_t& eventId,
+        uint32_t& nextDataTransferHandle, uint8_t& transferFlag,
+        uint8_t& eventClass, uint32_t& eventDataSize, uint8_t*& eventData,
+        uint32_t& eventDataIntegrityChecksum);
+
     /** @brief Reference of terminusManager */
     TerminusManager& terminusManager;
 
@@ -126,6 +201,9 @@ class EventManager
 
     /** @brief Available state for pldm request of terminus */
     std::unordered_map<pldm_tid_t, Availability> availableState;
+
+    /** @brief map of PLDM event type of polled event to EventHandlers */
+    pldm::platform_mc::EventMap eventHandlers;
 };
 } // namespace platform_mc
 } // namespace pldm

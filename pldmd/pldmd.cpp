@@ -282,6 +282,13 @@ int main(int argc, char** argv)
              return platformManager->handleCperEvent(
                  request, payloadLength, formatVersion, tid, eventDataOffset);
          }}},
+        {PLDM_MESSAGE_POLL_EVENT,
+         {[&platformManager](const pldm_msg* request, size_t payloadLength,
+                             uint8_t formatVersion, uint8_t tid,
+                             size_t eventDataOffset) {
+             return platformManager->handlePldmMessagePollEvent(
+                 request, payloadLength, formatVersion, tid, eventDataOffset);
+         }}},
         {PLDM_SENSOR_EVENT,
          {[&platformManager](const pldm_msg* request, size_t payloadLength,
                              uint8_t formatVersion, uint8_t tid,
