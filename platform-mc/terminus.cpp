@@ -15,7 +15,8 @@ namespace platform_mc
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
     initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
-    synchronyConfigurationSupported(0), tid(tid), supportedTypes(supportedTypes)
+    synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
+    supportedTypes(supportedTypes)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)

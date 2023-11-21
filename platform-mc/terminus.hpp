@@ -151,6 +151,14 @@ class Terminus
      */
     std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorId id);
 
+    /** @brief The flag indicates that the terminus FIFO contains a large
+     *         message that will require a multipart transfer via the
+     *         PollForPlatformEvent command */
+    bool pollEvent;
+
+    /** @brief The sensor id is used to poll for pollForPlatformMessage */
+    uint16_t pollEventId;
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
