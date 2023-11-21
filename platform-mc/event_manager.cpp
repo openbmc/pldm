@@ -1,5 +1,6 @@
 #include "event_manager.hpp"
 
+#include "libpldm/platform.h"
 #include "libpldm/utils.h"
 
 #include "terminus_manager.hpp"
@@ -62,6 +63,34 @@ int EventManager::handlePlatformEvent(
     if (eventClass == PLDM_CPER_EVENT)
     {
         return processCperEvent(tid, eventId, eventData, eventDataSize);
+    }
+
+    /* EventClass pldmMessagePollEvent `Table 11 - PLDM Event Types` DSP0248 */
+    if (eventClass == PLDM_MESSAGE_POLL_EVENT)
+    {
+        lg2::info("Received pldmMessagePollEvent for terminus {TID}", "TID",
+                  tid);
+        pldm_message_poll_event poll_event{};
+        auto rc = decode_pldm_message_poll_event_data(eventData, eventDataSize,
+                                                      &poll_event);
+        if (rc)
+        {
+            lg2::error(
+                "Failed to decode PldmMessagePollEvent event, error {RC} ",
+                "RC", rc);
+            return rc;
+        }
+
+        auto it = termini.find(tid);
+        if (it != termini.end())
+        {
+            auto& terminus = it->second; // Reference for clarity
+            terminus->pollEvent = true;
+            terminus->pollEventId = poll_event.event_id;
+            terminus->pollDataTransferHandle = poll_event.data_transfer_handle;
+        }
+
+        return PLDM_SUCCESS;
     }
 
     lg2::info("Unsupported class type {CLASSTYPE}", "CLASSTYPE", eventClass);
@@ -440,6 +469,195 @@ int EventManager::createCperDumpEntry(const std::string& dataType,
     addData["AdditionalTypeName"] = typeName;
     createDump(addData);
     return PLDM_SUCCESS;
+}
+
+exec::task<int> EventManager::pollForPlatformEventTask(
+    pldm_tid_t tid, uint32_t pollDataTransferHandle)
+{
+    uint8_t rc = 0;
+    uint8_t transferOperationFlag = PLDM_GET_FIRSTPART;
+    uint32_t dataTransferHandle = pollDataTransferHandle;
+    uint32_t eventIdToAcknowledge = PLDM_PLATFORM_EVENT_ID_NULL;
+
+    uint8_t completionCode = 0x0;
+    uint8_t eventTid = 0x0;
+    uint16_t eventId = PLDM_PLATFORM_EVENT_ID_ACK;
+    uint8_t formatVersion = 0x1;
+    uint32_t nextDataTransferHandle = 0;
+    uint8_t transferFlag = 0;
+    uint8_t eventClass = 0;
+    uint32_t eventDataSize = 0;
+    uint8_t* eventData = nullptr;
+    uint32_t eventDataIntegrityChecksum = 0;
+
+    std::vector<uint8_t> eventMessage{};
+    /* reset force stop */
+    updateAvailableState(tid, true);
+
+    while (eventId != PLDM_PLATFORM_EVENT_ID_NONE)
+    {
+        completionCode = 0;
+        eventTid = 0;
+        eventId = PLDM_PLATFORM_EVENT_ID_NONE;
+        nextDataTransferHandle = 0;
+        transferFlag = 0;
+        eventClass = 0;
+        eventDataSize = 0;
+        eventData = nullptr;
+        eventDataIntegrityChecksum = 0;
+
+        /* Stop event polling */
+        if (!getAvailableState(tid))
+        {
+            lg2::info(
+                "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+                "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+            co_await stdexec::just_stopped();
+        }
+
+        rc = co_await pollForPlatformEventMessage(
+            tid, formatVersion, transferOperationFlag, dataTransferHandle,
+            eventIdToAcknowledge, completionCode, eventTid, eventId,
+            nextDataTransferHandle, transferFlag, eventClass, eventDataSize,
+            eventData, eventDataIntegrityChecksum);
+        if (rc || completionCode != PLDM_SUCCESS)
+        {
+            lg2::error(
+                "Failed to pollForPlatformEventMessage for terminus {TID}, event {EVENTID}, error {RC}, complete code {CC}",
+                "TID", tid, "EVENTID", eventId, "RC", rc, "CC", completionCode);
+            co_return rc;
+        }
+
+        if (eventDataSize > 0)
+        {
+            eventMessage.insert(eventMessage.end(), eventData,
+                                eventData + eventDataSize);
+        }
+
+        if (transferOperationFlag == PLDM_ACKNOWLEDGEMENT_ONLY)
+        {
+            if (eventId == PLDM_PLATFORM_EVENT_ID_ACK)
+            {
+                transferOperationFlag = PLDM_GET_FIRSTPART;
+                dataTransferHandle = 0;
+                eventIdToAcknowledge = PLDM_PLATFORM_EVENT_ID_NULL;
+                eventMessage.clear();
+            }
+        }
+        else
+        {
+            if (transferFlag != PLDM_PLATFORM_TRANSFER_START_AND_END &&
+                transferFlag != PLDM_PLATFORM_TRANSFER_END)
+            {
+                transferOperationFlag = PLDM_GET_NEXTPART;
+                dataTransferHandle = nextDataTransferHandle;
+                eventIdToAcknowledge = PLDM_PLATFORM_EVENT_ID_FRAGMENT;
+            }
+            else
+            {
+                if (transferFlag == PLDM_PLATFORM_TRANSFER_START_AND_END)
+                {
+                    if (eventHandlers.contains(eventClass))
+                    {
+                        eventHandlers.at(
+                            eventClass)(eventTid, eventId, eventMessage.data(),
+                                        eventMessage.size());
+                    }
+                }
+                else if (transferFlag == PLDM_PLATFORM_TRANSFER_END)
+                {
+                    if (eventDataIntegrityChecksum ==
+                        crc32(eventMessage.data(), eventMessage.size()))
+                    {
+                        if (eventHandlers.contains(eventClass))
+                        {
+                            eventHandlers.at(eventClass)(eventTid, eventId,
+                                                         eventMessage.data(),
+                                                         eventMessage.size());
+                        }
+                    }
+                    else
+                    {
+                        lg2::error(
+                            "pollForPlatformEventMessage for terminus {TID} with event {EVENTID} checksum error.",
+                            "TID", tid, "EVENTID", eventId);
+                        co_return PLDM_ERROR_INVALID_DATA;
+                    }
+                }
+
+                transferOperationFlag = PLDM_ACKNOWLEDGEMENT_ONLY;
+                dataTransferHandle = 0;
+                eventIdToAcknowledge = eventId;
+            }
+        }
+    }
+
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> EventManager::pollForPlatformEventMessage(
+    pldm_tid_t tid, uint8_t formatVersion, uint8_t transferOperationFlag,
+    uint32_t dataTransferHandle, uint16_t eventIdToAcknowledge,
+    uint8_t& completionCode, uint8_t& eventTid, uint16_t& eventId,
+    uint32_t& nextDataTransferHandle, uint8_t& transferFlag,
+    uint8_t& eventClass, uint32_t& eventDataSize, uint8_t*& eventData,
+    uint32_t& eventDataIntegrityChecksum)
+{
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_POLL_FOR_PLATFORM_EVENT_MESSAGE_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    auto rc = encode_poll_for_platform_event_message_req(
+        0, formatVersion, transferOperationFlag, dataTransferHandle,
+        eventIdToAcknowledge, requestMsg, request.size());
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request PollForPlatformEventMessage for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    /* Stop event polling */
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send PollForPlatformEventMessage message for terminus {TID}, error {RC}",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    rc = decode_poll_for_platform_event_message_resp(
+        responseMsg, responseLen, &completionCode, &eventTid, &eventId,
+        &nextDataTransferHandle, &transferFlag, &eventClass, &eventDataSize,
+        (void**)&eventData, &eventDataIntegrityChecksum);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response PollForPlatformEventMessage for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : PollForPlatformEventMessage for terminus ID {TID}, complete code {CC}.",
+            "TID", tid, "CC", completionCode);
+        co_return rc;
+    }
+
+    co_return completionCode;
 }
 
 } // namespace platform_mc
