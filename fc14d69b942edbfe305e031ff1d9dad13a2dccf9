@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42cf96ec_48ef701a",
+        "filename": "meson.options",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "840657d6_cba34f98",
+      "range": {
+        "startLine": 48,
+        "startChar": 25,
+        "endLine": 48,
+        "endChar": 29
+      },
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52a63d60_c978474f",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-11-16T02:00:39Z",
       "side": 1,
       "message": "I\u0027m a little concern that this file is going to become unwieldy since you\u0027re trying to do a number of independent things in a single PLDM command.  I\u0027d suggest one file for the general \"I have a file_io\" command and separate files for each distinct piece of functionality.",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63e1c553_7982329f",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Ongoing moving to another file.",
+      "parentUuid": "52a63d60_c978474f",
       "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -83,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2592856_8f277dfb",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Currently we can only get bic location via object path. Or we need to add a location property in EM so that we can get bic location directly?",
+      "parentUuid": "c58cbc49_1d69e660",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "049c432f_d9e7d24d",
         "filename": "oem/meta/libpldmresponder/file_io.cpp",
         "patchSetId": 6
@@ -94,6 +154,30 @@
       "writtenOn": "2023-11-16T02:00:39Z",
       "side": 1,
       "message": "char??  Maybe this should be an integer and use `to_string`?  Please don\u0027t pass a real ASCII character around as a string-portion like this.",
+      "range": {
+        "startLine": 80,
+        "startChar": 20,
+        "endLine": 80,
+        "endChar": 24
+      },
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bc70c21_3255b7f5",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Modified to using integer.",
+      "parentUuid": "049c432f_d9e7d24d",
       "range": {
         "startLine": 80,
         "startChar": 20,
@@ -144,6 +228,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dcb998e_a6ceca61",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "move from libpldm to pldm",
+      "parentUuid": "3c391277_dfbc870a",
+      "range": {
+        "startLine": 136,
+        "startChar": 22,
+        "endLine": 136,
+        "endChar": 31
+      },
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "426e97c7_2e83e333",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b9c1f26_b93d9fce",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db07a546_bb64e51a",
@@ -157,6 +283,30 @@
       "writtenOn": "2023-11-16T02:00:39Z",
       "side": 1,
       "message": "We probably should move the parsing of the message contents to the postCodeHandler function (based on my suggestion that we move all the post code handling out into a separate file anyhow).",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 73
+      },
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf6a771e_413cfa92",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Ongoing moving to another file.",
+      "parentUuid": "db07a546_bb64e51a",
       "range": {
         "startLine": 138,
         "startChar": 0,
@@ -190,6 +340,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2538ef1d_bb60cc39",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a842da4a_fc12e268",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 9
+      },
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fcf6011_fbaf0620",
@@ -203,6 +377,24 @@
       "writtenOn": "2023-11-16T02:00:39Z",
       "side": 1,
       "message": "Aren\u0027t we returning a successful response in this case, but we actually had an error?  For example if the `fileIOType !\u003d POST_CODE` we end up here.",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3642c1f_b229659b",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Modified to return PLDM_ERROR_UNSUPPORTED_PLDM_CMD",
+      "parentUuid": "3fcf6011_fbaf0620",
       "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -237,6 +429,24 @@
       "writtenOn": "2023-11-16T02:00:39Z",
       "side": 1,
       "message": "Should this be private?",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "688f6f91_31813f6b",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-21T07:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "925c1f6e_2643cd7f",
       "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
