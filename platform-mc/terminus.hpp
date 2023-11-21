@@ -144,6 +144,14 @@ class Terminus
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 
+    /** @brief The flag indicates that the terminus FIFO contains a large
+     *         message that will require a multipart transfer via the
+     *         PollForPlatformEvent command */
+    bool pollEvent;
+
+    /** @brief The sensor id is used to poll for pollForPlatformMessage */
+    uint16_t pollEventId;
+
     /** @brief Get Sensor Auxiliary Names by sensorID
      *
      *  @param[in] id - sensor ID
