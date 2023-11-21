@@ -31,5 +31,17 @@ exec::task<int> Manager::afterDiscoverTerminus()
     co_return rc;
 }
 
+exec::task<int> Manager::pollForPlatformEvent(pldm_tid_t tid, uint16_t eventId)
+{
+    auto it = termini.find(tid);
+    if (it != termini.end())
+    {
+        auto& terminus = it->second;
+        co_await eventManager.pollForPlatformEventTask(tid, eventId);
+        terminus->pollEvent = false;
+    }
+    co_return PLDM_SUCCESS;
+}
+
 } // namespace platform_mc
 } // namespace pldm
