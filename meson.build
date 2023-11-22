@@ -76,6 +76,11 @@ conf_data.set('DEFAULT_SENSOR_UPDATER_INTERVAL', get_option('default-sensor-upda
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 conf_data.set('LOCAL_EID', get_option('local-eid'))
 
+if get_option('ampere').enabled()
+  add_project_arguments('-DAMPERE', language : 'c')
+  add_project_arguments('-DAMPERE', language : 'cpp')
+endif
+
 configure_file(output: 'config.h',
   configuration: conf_data
 )
@@ -163,6 +168,15 @@ deps += [
 ]
 endif
 
+oem_files = []
+if get_option('ampere').enabled()
+  oem_files += [
+  'oem/ampere/event/oem_event_manager.cpp',
+  'oem/ampere/event/cper.cpp',
+  'oem/ampere/event/utils.cpp',
+]
+endif
+
 executable(
   'pldmd',
   'pldmd/pldmd.cpp',
@@ -181,6 +195,7 @@ executable(
   'platform-mc/numeric_sensor.cpp',
   'platform-mc/event_manager.cpp',
   'requester/mctp_endpoint_discovery.cpp',
+   oem_files,
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
