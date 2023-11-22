@@ -253,6 +253,18 @@ class OemEventManager
                           uint8_t /* formatVersion */, pldm_tid_t tid,
                           size_t eventDataOffset);
 
+    /** @brief Handle the polled CPER (0x07, 0xFA) event class.
+     *
+     *  @param[in] tid - terminus ID
+     *  @param[out] eventId - Event ID
+     *  @param[in] eventData - event data
+     *  @param[in] eventDataSize - size of event data
+     *
+     *  @return int - PLDM completion code
+     */
+    int processOemMsgPollEvent(pldm_tid_t tid, uint16_t eventId,
+                               const uint8_t* eventData, size_t eventDataSize);
+
   protected:
     /** @brief Create prefix string for logging message.
      *
