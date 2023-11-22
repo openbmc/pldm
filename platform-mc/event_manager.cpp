@@ -568,9 +568,29 @@ exec::task<int> EventManager::pollForPlatformEventTask(
             /* Handle the polled event after finish ACK it */
             if (eventHandlers.contains(polledEventClass))
             {
-                eventHandlers.at(
-                    polledEventClass)(polledEventTid, polledEventId,
-                                      eventMessage.data(), eventMessage.size());
+                try
+                {
+                    const auto& handlers = eventHandlers.at(polledEventClass);
+                    for (const auto& handler : handlers)
+                    {
+                        auto rc =
+                            handler(polledEventTid, polledEventId,
+                                    eventMessage.data(), eventMessage.size());
+                        if (rc != PLDM_SUCCESS)
+                        {
+                            lg2::error(
+                                "Failed to handle platform event msg for terminus {TID}, event {EVENTID} return {RET}",
+                                "TID", polledEventTid, "EVENTID", polledEventId,
+                                "RET", rc);
+                        }
+                    }
+                }
+                catch (const std::out_of_range& e)
+                {
+                    lg2::error(
+                        "Failed to handle platform event msg for terminus {TID}, event {EVENTID}",
+                        "TID", polledEventTid, "EVENTID", polledEventId);
+                }
             }
             eventMessage.clear();
 

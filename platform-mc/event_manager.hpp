@@ -19,7 +19,8 @@ using EventType = uint8_t;
 using HandlerFunc =
     std::function<int(pldm_tid_t tid, uint16_t eventId,
                       const uint8_t* eventData, size_t eventDataSize)>;
-using EventMap = std::map<EventType, HandlerFunc>;
+using HandlerFuncs = std::vector<HandlerFunc>;
+using EventMap = std::map<EventType, HandlerFuncs>;
 
 /**
  * @brief EventManager
@@ -112,7 +113,14 @@ class EventManager
      */
     void registerPolledEventHandler(uint8_t eventClass, HandlerFunc function)
     {
-        eventHandlers.insert_or_assign(eventClass, std::move(function));
+        if (!eventHandlers.contains(eventClass))
+        {
+            eventHandlers[eventClass] = {std::move(function)};
+        }
+        else
+        {
+            eventHandlers[eventClass].emplace_back(std::move(function));
+        }
     }
 
   protected:

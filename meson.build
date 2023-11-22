@@ -136,6 +136,11 @@ conf_data.set(
     'DEFAULT_SENSOR_UPDATER_INTERVAL',
     get_option('default-sensor-update-interval'),
 )
+
+if get_option('ampere').enabled()
+    add_project_arguments('-DAMPERE', language : 'cpp')
+endif
+
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 
 configure_file(output: 'config.h', configuration: conf_data)
@@ -155,6 +160,7 @@ stdplus = dependency('stdplus')
 phosphor_logging_dep = dependency('phosphor-logging')
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
+libcper_dep = dependency('libcper', include_type: 'system')
 
 if cpp.has_header('CLI/CLI.hpp')
     CLI11_dep = declare_dependency()
@@ -199,6 +205,7 @@ libpldmutils = library(
     'common/utils.cpp',
     version: meson.project_version(),
     dependencies: [
+        libcper_dep,
         libpldm_dep,
         phosphor_dbus_interfaces,
         phosphor_logging_dep,
@@ -215,6 +222,7 @@ libpldmutils = declare_dependency(
 )
 
 deps = [
+    libcper_dep,
     libpldm_dep,
     libpldmutils,
     nlohmann_json_dep,
@@ -228,6 +236,14 @@ deps = [
 if get_option('libpldmresponder').allowed()
     subdir('libpldmresponder')
     deps += [libpldmresponder_dep]
+endif
+
+oem_files = []
+if get_option('ampere').enabled()
+  oem_files += [
+  'oem/ampere/event/cper.cpp',
+  'oem/ampere/event/oem_event_manager.cpp',
+]
 endif
 
 executable(
@@ -248,6 +264,7 @@ executable(
     'platform-mc/numeric_sensor.cpp',
     'platform-mc/event_manager.cpp',
     'requester/mctp_endpoint_discovery.cpp',
+    oem_files,
     implicit_include_directories: false,
     dependencies: deps,
     install: true,
