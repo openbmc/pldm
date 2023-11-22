@@ -207,3 +207,10 @@ option(
     max: 255,
     description: 'The local MCTP EID',
     value: 8)
+
+## Ampere PLDM code build Options
+option(
+    'ampere',
+    type: 'feature',
+    description: 'Enable AMPERE PLDM'
+)
