@@ -161,6 +161,7 @@ stdplus = dependency('stdplus')
 phosphor_logging_dep = dependency('phosphor-logging')
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
+libcper_dep = dependency('libcper', include_type: 'system')
 
 if cpp.has_header('CLI/CLI.hpp')
     CLI11_dep = declare_dependency()
@@ -205,6 +206,7 @@ libpldmutils = library(
     'common/utils.cpp',
     version: meson.project_version(),
     dependencies: [
+        libcper_dep,
         libpldm_dep,
         phosphor_dbus_interfaces,
         phosphor_logging_dep,
@@ -221,6 +223,7 @@ libpldmutils = declare_dependency(
 )
 
 deps = [
+    libcper_dep,
     libpldm_dep,
     libpldmutils,
     nlohmann_json_dep,

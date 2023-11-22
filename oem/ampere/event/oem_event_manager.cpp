@@ -1,5 +1,6 @@
 #include "oem_event_manager.hpp"
 
+#include "cper.hpp"
 #include "requester/handler.hpp"
 #include "requester/request.hpp"
 
@@ -21,6 +22,9 @@ namespace pldm
 {
 namespace oem_ampere
 {
+namespace fs = std::filesystem;
+using namespace std::chrono;
+
 namespace boot_stage = boot::stage;
 
 constexpr const char* BIOSFWPanicRegistry =
@@ -421,6 +425,41 @@ int OemEventManager::handleSensorEvent(
     lg2::info("Unsupported class type {CLASSTYPE}", "CLASSTYPE",
               sensorEventClassType);
     return PLDM_ERROR;
+}
+
+int OemEventManager::processOemMsgPollEvent(pldm_tid_t tid, uint16_t eventId,
+                                            const uint8_t* eventData,
+                                            size_t eventDataSize)
+{
+    EFI_AMPERE_ERROR_DATA ampHdr;
+
+    decodeCperRecord(eventData, eventDataSize, &ampHdr);
+
+    addCperSELLog(tid, eventId, &ampHdr);
+
+    if (ampHdr.typeId.member.isBert)
+    {
+        constexpr auto rasSrv = "com.ampere.CrashCapture.Trigger";
+        constexpr auto rasPath = "/com/ampere/crashcapture/trigger";
+        constexpr auto rasIntf = "com.ampere.CrashCapture.Trigger";
+        using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+        std::variant<std::string> value(
+            "com.ampere.CrashCapture.Trigger.TriggerAction.Bert");
+        try
+        {
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            auto method = bus.new_method_call(
+                rasSrv, rasPath, pldm::utils::dbusProperties, "Set");
+            method.append(rasIntf, "TriggerActions", value);
+            bus.call_noreply(method);
+        }
+        catch (const std::exception& e)
+        {
+            error("call BERT trigger error - {ERROR}", "ERROR", e);
+        }
+    }
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace oem_ampere
