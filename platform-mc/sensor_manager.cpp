@@ -270,6 +270,11 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_await manager->pollForPlatformEvent(tid, terminus->pollEventId);
         }
 
+        if (manager && (!terminus->pollEvent))
+        {
+            co_await manager->oemPollForPlatformEvent(tid);
+        }
+
         // poll priority Sensors
         for (auto& sensor : prioritySensors[tid])
         {
