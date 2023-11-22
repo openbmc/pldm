@@ -138,12 +138,6 @@ conf_data.set(
 )
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 
-oem_files = []
-if get_option('oem-ampere').enabled()
-    add_project_arguments('-DOEM_AMPERE', language : 'cpp')
-    subdir('oem/ampere')
-endif
-
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(
@@ -197,6 +191,9 @@ libpldm_dep = dependency(
     include_type: 'system',
 )
 
+if get_option('oem-ampere').enabled()
+    add_project_arguments('-DOEM_AMPERE', language : 'cpp')
+endif
 
 libpldmutils_headers = ['.']
 libpldmutils = library(
@@ -230,6 +227,11 @@ deps = [
     sdeventplus,
     stdplus,
 ]
+
+oem_files = []
+if get_option('oem-ampere').enabled()
+    subdir('oem/ampere')
+endif
 
 if get_option('libpldmresponder').allowed()
     subdir('libpldmresponder')
