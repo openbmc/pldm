@@ -45,5 +45,16 @@ exec::task<int> Manager::pollForPlatformEvent(
     co_return PLDM_SUCCESS;
 }
 
+exec::task<int> Manager::oemPollForPlatformEvent(pldm_tid_t tid)
+{
+    for (auto& handler : pollHandlers)
+    {
+        if (handler)
+        {
+            co_await handler(tid);
+        }
+    }
+    co_return PLDM_SUCCESS;
+}
 } // namespace platform_mc
 } // namespace pldm

@@ -189,6 +189,11 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
                 tid, terminus->pollEventId, terminus->pollDataTransferHandle);
         }
 
+        if (manager && (!terminus->pollEvent))
+        {
+            co_await manager->oemPollForPlatformEvent(tid);
+        }
+
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
         auto toBeUpdated = roundRobinSensors[tid].size();
         while (((t1 - t0) < pollingTimeInUsec) && (toBeUpdated > 0))
