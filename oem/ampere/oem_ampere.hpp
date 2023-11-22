@@ -63,7 +63,7 @@ class OemAMPERE
     {
         oemEventManager = std::make_shared<oem_ampere::OemEventManager>(
             this->event, this->reqHandler, this->instanceIdDb);
-        createOemEventHandler(oemEventManager, this->platformManager);
+        createOemEventHandler(oemEventManager.get(), this->platformManager);
     }
 
   private:
@@ -72,19 +72,35 @@ class OemAMPERE
      *  This method also assigns the OemEventManager to the below
      *  different handlers.
      */
-    void createOemEventHandler(
-        std::shared_ptr<oem_ampere::OemEventManager> oemEventManager,
-        platform_mc::Manager* platformManager)
+    void createOemEventHandler(oem_ampere::OemEventManager* oemEventManager,
+                               platform_mc::Manager* platformManager)
     {
         platformHandler->registerEventHandlers(
             PLDM_SENSOR_EVENT,
-            {[&oemEventManager](const pldm_msg* request, size_t payloadLength,
-                                uint8_t formatVersion, uint8_t tid,
-                                size_t eventDataOffset) {
+            {[oemEventManager](const pldm_msg* request, size_t payloadLength,
+                               uint8_t formatVersion, uint8_t tid,
+                               size_t eventDataOffset) {
                 return oemEventManager->handleSensorEvent(
                     request, payloadLength, formatVersion, tid,
                     eventDataOffset);
             }});
+
+        /* Register Ampere OEM handler to the PLDM CPER events */
+        platformManager->registerPolledEventHandler(
+            0xFA,
+            {[oemEventManager](pldm_tid_t tid, uint16_t eventId,
+                               const uint8_t* eventData, size_t eventDataSize) {
+                return oemEventManager->processOemMsgPollEvent(
+                    tid, eventId, eventData, eventDataSize);
+            }});
+        platformManager->registerPolledEventHandler(
+            PLDM_CPER_EVENT,
+            {[oemEventManager](pldm_tid_t tid, uint16_t eventId,
+                               const uint8_t* eventData, size_t eventDataSize) {
+                return oemEventManager->processOemMsgPollEvent(
+                    tid, eventId, eventData, eventDataSize);
+            }});
+
         /** CPEREvent class (0x07) is only available in DSP0248 V1.3.0.
          *  Before DSP0248 V1.3.0 spec, Ampere uses OEM event class 0xFA to
          *  report the CPER event

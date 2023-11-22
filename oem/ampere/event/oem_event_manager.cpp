@@ -1,5 +1,8 @@
 #include "oem_event_manager.hpp"
 
+#include "libcper/Cper.h"
+
+#include "cper.hpp"
 #include "requester/handler.hpp"
 #include "requester/request.hpp"
 
@@ -903,6 +906,19 @@ void OemEventManager::handleNumericWatchdogEvent(
 
     // Log to Redfish event
     sendJournalRedfish(description, logLevel);
+}
+
+int OemEventManager::processOemMsgPollEvent(pldm_tid_t tid, uint16_t eventId,
+                                            const uint8_t* eventData,
+                                            size_t eventDataSize)
+{
+    EFI_AMPERE_ERROR_DATA ampHdr;
+
+    decodeCperRecord(eventData, eventDataSize, &ampHdr);
+
+    addCperSELLog(tid, eventId, &ampHdr);
+
+    return PLDM_SUCCESS;
 }
 
 } // namespace oem_ampere
