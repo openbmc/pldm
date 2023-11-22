@@ -64,6 +64,10 @@ PHOSPHOR_LOG2_USING;
 #include "oem_ibm.hpp"
 #endif
 
+#ifdef AMPERE
+#include "oem/ampere/event/oem_event_manager.hpp"
+#endif
+
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
 using namespace pldm;
@@ -296,6 +300,29 @@ int main(int argc, char** argv)
              return platformManager->handleSensorEvent(
                  request, payloadLength, formatVersion, tid, eventDataOffset);
          }}}};
+
+#ifdef AMPERE
+    // Expose API startEventPolling and registerOEMHandler
+    std::unique_ptr<oem::OemEventManager> OemEvent =
+        std::make_unique<oem::OemEventManager>(event, reqHandler, instanceIdDb,
+                                               platformManager.get());
+
+    platformManager->registerOEMHandler(
+        PLDM_AMPERE_CPER_EVENT_CLASS,
+        [&OemEvent](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                    size_t eventDataSize) {
+            return OemEvent->processOemMsgPollEvent(tid, eventId, eventData,
+                                                    eventDataSize);
+        });
+    platformManager->registerOEMHandler(
+        PLDM_CPER_EVENT,
+        [&OemEvent](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                    size_t eventDataSize) {
+            return OemEvent->processOemMsgPollEvent(tid, eventId, eventData,
+                                                    eventDataSize);
+        });
+
+#endif
 
     auto platformHandler = std::make_unique<platform::Handler>(
         &dbusHandler, hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),
