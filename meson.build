@@ -132,10 +132,16 @@ if get_option('transport-implementation') == 'mctp-demux'
 elif get_option('transport-implementation') == 'af-mctp'
     conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
+
 conf_data.set(
     'DEFAULT_SENSOR_UPDATER_INTERVAL',
     get_option('default-sensor-update-interval'),
 )
+
+if get_option('ampere').enabled()
+    add_project_arguments('-DAMPERE', language : 'cpp')
+endif
+
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 
 configure_file(output: 'config.h', configuration: conf_data)
@@ -230,6 +236,15 @@ if get_option('libpldmresponder').allowed()
     deps += [libpldmresponder_dep]
 endif
 
+oem_files = []
+if get_option('ampere').enabled()
+  oem_files += [
+  'oem/ampere/event/oem_event_manager.cpp',
+  'oem/ampere/event/cper.cpp',
+  'oem/ampere/event/utils.cpp',
+]
+endif
+
 executable(
     'pldmd',
     'pldmd/pldmd.cpp',
@@ -248,6 +263,7 @@ executable(
     'platform-mc/numeric_sensor.cpp',
     'platform-mc/event_manager.cpp',
     'requester/mctp_endpoint_discovery.cpp',
+    oem_files,
     implicit_include_directories: false,
     dependencies: deps,
     install: true,
