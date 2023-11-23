@@ -83,6 +83,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6016e11f_3e1ab692",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-23T02:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63e1c553_7982329f",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5551ec26_e49089a4",
@@ -307,6 +325,30 @@
       "side": 1,
       "message": "Ongoing moving to another file.",
       "parentUuid": "db07a546_bb64e51a",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 73
+      },
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "164ef28b_875cd278",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-11-23T02:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf6a771e_413cfa92",
       "range": {
         "startLine": 138,
         "startChar": 0,
