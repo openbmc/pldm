@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e483ca44_19d5a66a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-27T10:08:21Z",
+      "side": 1,
+      "message": "The terminus PDR becomes invalid when the terminus itself is down. We don\u0027t need to do PDR exchange in that case, so setting the next record handle to 0.",
+      "range": {
+        "startLine": 615,
+        "startChar": 23,
+        "endLine": 617,
+        "endChar": 54
+      },
+      "revId": "f6ada7aa0751c436a936f4014f99f8ef32bf18d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
