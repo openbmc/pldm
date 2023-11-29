@@ -9,6 +9,7 @@ option(
 option(
     'oe-sdk',
     type: 'feature',
+    value: 'disabled',
     description: 'Enable OE SDK'
 )
 
