@@ -16,6 +16,24 @@
       "message": "Proposed https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/67923 as a fix for the CI issue.",
       "revId": "c6e74343a12ccf0609ce63a740c29fcbeb47981e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea644861_64b6030d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-11-29T20:48:04Z",
+      "side": 1,
+      "message": "This is expected behavior. You\u0027re trying to use an API before it is exposed by the library. The way to get this to pass is to submit a patch marking the API as stable.\n\nI wrote about how to do it here if you want to deal with the ABI dumps yourself:\n\nhttps://amboar.github.io/notes/2023/06/26/managing-the-libpldm-abi-reference-dumps.html\n\nThings have changed a little bit (no more aarch64 dump, current.dump is now in build/src/current.dump, just use the docker image to generate the dump).\n\nI\u0027m also happy to deal with the ABI dumps myself if you submit a patch changing the annotation from `LIBPLDM_ABI_TESTING` to LIBPLDM_ABI_STABLE`. I\u0027ll push it back with the dump update included",
+      "parentUuid": "240e70cb_c998ec2c",
+      "revId": "c6e74343a12ccf0609ce63a740c29fcbeb47981e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
