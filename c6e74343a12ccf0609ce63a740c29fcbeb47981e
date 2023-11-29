@@ -34,6 +34,24 @@
       "parentUuid": "240e70cb_c998ec2c",
       "revId": "c6e74343a12ccf0609ce63a740c29fcbeb47981e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef729c17_207a2738",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-11-29T21:04:57Z",
+      "side": 1,
+      "message": "Here\u0027s an example stabilisation commit for reference:\n\nhttps://github.com/openbmc/libpldm/commit/4a307bca7a6a06b76b6c628807dcbe3965ebdccd",
+      "parentUuid": "ea644861_64b6030d",
+      "revId": "c6e74343a12ccf0609ce63a740c29fcbeb47981e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
