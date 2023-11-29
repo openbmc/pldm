@@ -32,7 +32,7 @@ sources = [
 
 responder_headers = ['.']
 
-if get_option('oem-ibm').enabled()
+if get_option('oem-ibm').allowed()
    responder_headers += [
     '../oem/ibm/',
    ]
@@ -66,7 +66,7 @@ libpldmresponder_dep = declare_dependency(
   include_directories:include_directories(responder_headers),
   link_with: libpldmresponder)
 
-if get_option('tests').enabled()
+if get_option('tests').allowed()
   subdir('test')
 endif
 
