@@ -18,7 +18,7 @@ foreach t : tests
                      test_sources,
                      implicit_include_directories: false,
                      link_args: dynamic_linker,
-                     build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
+                     build_rpath: get_option('oe-sdk').allowed() ? rpath : '',
                      dependencies: [
                          gtest,
                          gmock,

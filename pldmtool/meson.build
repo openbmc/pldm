@@ -10,7 +10,7 @@ sources = [
   'pldmtool.cpp',
 ]
 
-if get_option('oem-ibm').enabled()
+if get_option('oem-ibm').allowed()
 sources += [
     'oem/ibm/pldm_oem_ibm.cpp',
   ]
