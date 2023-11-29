@@ -8,7 +8,7 @@ if get_option('oem-ibm').disabled()
 install_data('fru_master.json', install_dir: package_datadir)
 endif
 
-if get_option('oem-ibm').enabled()
+if get_option('oem-ibm').allowed()
     install_subdir('../oem/ibm/configurations/fru', install_dir: package_datadir)
     install_subdir('../oem/ibm/configurations/events', install_dir: package_datadir)
     install_subdir('../oem/ibm/configurations/bios', install_dir: package_datadir)

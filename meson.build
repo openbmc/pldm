@@ -31,7 +31,7 @@ cpp = meson.get_compiler('cpp')
 if cpp.has_header('poll.h')
     conf_data.set('PLDM_HAS_POLL', 1)
 endif
-if get_option('libpldmresponder').enabled()
+if get_option('libpldmresponder').allowed()
 conf_data.set_quoted('BIOS_JSONS_DIR', join_paths(package_datadir, 'bios'))
 conf_data.set_quoted('BIOS_TABLES_DIR', join_paths(package_localstatedir, 'bios'))
 conf_data.set_quoted('PDR_JSONS_DIR', join_paths(package_datadir, 'pdr'))
@@ -45,10 +45,10 @@ conf_data.set('TERMINUS_HANDLE',get_option('terminus-handle'))
 conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))
 add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
 endif
-if get_option('softoff').enabled()
+if get_option('softoff').allowed()
   conf_data.set('SOFTOFF_TIMEOUT_SECONDS', get_option('softoff-timeout-seconds'))
 endif
-if get_option('oem-ibm').enabled()
+if get_option('oem-ibm').allowed()
   conf_data.set_quoted('FILE_TABLE_JSON', join_paths(package_datadir, 'fileTable.json'))
   conf_data.set_quoted('LID_RUNNING_DIR', '/var/lib/phosphor-software-manager/hostfw/running')
   conf_data.set_quoted('LID_ALTERNATE_DIR', '/var/lib/phosphor-software-manager/hostfw/alternate')
@@ -96,7 +96,7 @@ else
   CLI11_dep = dependency('CLI11')
 endif
 
-if get_option('oe-sdk').enabled()
+if get_option('oe-sdk').allowed()
   # Setup OE SYSROOT
   OECORE_TARGET_SYSROOT = run_command('sh', '-c', 'echo $OECORE_TARGET_SYSROOT').stdout().strip()
   if OECORE_TARGET_SYSROOT == ''
@@ -110,7 +110,7 @@ else
   dynamic_linker = []
 endif
 
-if get_option('tests').enabled()
+if get_option('tests').allowed()
     gtest = dependency('gtest', main: true, disabler: true, required: false)
     gmock = dependency('gmock', disabler: true, required: false)
     if not gtest.found() or not gmock.found()
@@ -126,7 +126,7 @@ if get_option('tests').enabled()
             gmock = gtest_proj.dependency('gmock')
         else
             assert(
-                not get_option('tests').enabled(),
+                not get_option('tests').allowed(),
                 'Googletest is required if tests are enabled'
             )
         endif
@@ -168,7 +168,7 @@ deps = [
   stdplus,
 ]
 
-if get_option('libpldmresponder').enabled()
+if get_option('libpldmresponder').allowed()
 subdir('libpldmresponder')
 deps += [
   libpldmresponder_dep
@@ -190,7 +190,7 @@ executable(
   install: true,
   install_dir: get_option('bindir'))
 
-if get_option('systemd').enabled()
+if get_option('systemd').allowed()
   systemd_system_unit_dir = dependency('systemd').get_variable(
           'systemdsystemunitdir')
   filesystem.copyfile(
@@ -200,7 +200,7 @@ if get_option('systemd').enabled()
     install_dir: systemd_system_unit_dir
   )
 
-  if get_option('oem-ibm').enabled()
+  if get_option('oem-ibm').allowed()
     subdir('oem/ibm/service_files')
   endif
 endif
@@ -209,15 +209,15 @@ subdir('pldmtool')
 
 subdir('configurations')
 
-if get_option('utilities').enabled()
+if get_option('utilities').allowed()
   subdir('utilities')
 endif
 
-if get_option('softoff').enabled()
+if get_option('softoff').allowed()
   subdir('softoff')
 endif
 
-if get_option('tests').enabled()
+if get_option('tests').allowed()
   subdir('common/test')
   subdir('fw-update/test')
   subdir('host-bmc/test')

@@ -16,7 +16,7 @@ executable('pldm-softpoweroff',source,
            install: true,
            install_dir: get_option('bindir'))
 
-if get_option('systemd').enabled()
+if get_option('systemd').allowed()
   filesystem.copyfile(
     'services/pldmSoftPowerOff.service',
     'pldmSoftPowerOff.service',
