@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a738c25f_d2ee5766",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T13:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a45fd964_51df026d",
+      "range": {
+        "startLine": 11,
+        "startChar": 36,
+        "endLine": 11,
+        "endChar": 39
+      },
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0a42ba8_b1d1b11e",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-11-30T13:16:48Z",
       "side": 1,
       "message": "Can we write a tested section?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3faf0cad_9f74cfa4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T13:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0a42ba8_b1d1b11e",
       "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -89,6 +131,24 @@
       "writtenOn": "2023-11-30T13:16:48Z",
       "side": 1,
       "message": "nit",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5bc7bc4_fb68c4af",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T13:42:34Z",
+      "side": 1,
+      "message": "line added by the linter",
+      "parentUuid": "0bdd4efb_66f70901",
       "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -186,6 +246,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0baf85b4_79fffa8b",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T13:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ef172a3_5ba3bdfa",
+      "range": {
+        "startLine": 108,
+        "startChar": 42,
+        "endLine": 108,
+        "endChar": 50
+      },
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60062860_f1478cdc",
@@ -199,6 +283,24 @@
       "writtenOn": "2023-11-30T13:16:48Z",
       "side": 1,
       "message": "can this be a const?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24bcd4ee_f5663599",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T13:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60062860_f1478cdc",
       "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -251,6 +353,24 @@
       "writtenOn": "2023-11-30T13:16:48Z",
       "side": 1,
       "message": "doxygen",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da6edb7_f54171a3",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T13:42:34Z",
+      "side": 1,
+      "message": "It was added in the next patchiest, please check",
+      "parentUuid": "2de65c08_de6b9980",
       "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
