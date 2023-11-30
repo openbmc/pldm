@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19191a7f_5b4c10a8",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T10:32:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bb278a7f_9430e408",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2ee48ba_d24d9435",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-11-30T09:56:19Z",
       "side": 1,
       "message": "where are we setting it to false?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c50d3215_75faec43",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T10:32:20Z",
+      "side": 1,
+      "message": "In the generic case it is always true, in the oem case we are checking the container ID bit to see if the container ID update is required.",
+      "parentUuid": "c2ee48ba_d24d9435",
       "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "694df352_12ffe474",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T10:32:20Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d7443364_b74c9440",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c28f3e6_20cb3dc6",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-11-30T09:56:19Z",
       "side": 1,
       "message": "Can we rename this function? `checkIfLogicalBitSet` or something else?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd26ab40_998007ea",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T10:32:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c28f3e6_20cb3dc6",
       "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
