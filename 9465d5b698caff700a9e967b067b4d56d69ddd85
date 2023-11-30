@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb278a7f_9430e408",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-30T09:56:19Z",
+      "side": 1,
+      "message": "why do we need this?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ee48ba_d24d9435",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-30T09:56:19Z",
+      "side": 1,
+      "message": "where are we setting it to false?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7443364_b74c9440",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-30T09:56:19Z",
+      "side": 1,
+      "message": "why did we remove this piece of code?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c28f3e6_20cb3dc6",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2023-11-30T09:56:19Z",
+      "side": 1,
+      "message": "Can we rename this function? `checkIfLogicalBitSet` or something else?",
+      "revId": "9465d5b698caff700a9e967b067b4d56d69ddd85",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
