@@ -22,6 +22,30 @@
       },
       "revId": "6abae9d553683d1bf7d1b3bf11753f4b63a895bc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a0371c_18843c2c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2023-11-30T06:03:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77a1e0d3_3eafcbb6",
+      "range": {
+        "startLine": 604,
+        "startChar": 2,
+        "endLine": 607,
+        "endChar": 18
+      },
+      "revId": "6abae9d553683d1bf7d1b3bf11753f4b63a895bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
