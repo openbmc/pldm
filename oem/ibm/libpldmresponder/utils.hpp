@@ -36,13 +36,6 @@ int setupUnixSocket(const std::string& socketInterface);
 int writeToUnixSocket(const int sock, const char* buf,
                       const uint64_t blockSize);
 
-/** @brief Method to check if the logical bit is set
- *
- *  @param[containerId] - container id of the entity
- *
- *  @return true or false based on the logic bit set
- * */
-bool checkIfLogicalBitSet(const uint16_t& containerId);
 } // namespace utils
 } // namespace responder
 } // namespace pldm
