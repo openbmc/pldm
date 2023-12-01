@@ -42,7 +42,7 @@ int writeToUnixSocket(const int sock, const char* buf,
  *
  *  @return true or false based on the logic bit set
  * */
-bool checkIfLogicalBitSet(const uint16_t& containerId);
+// bool checkIfLogicalBitSet(const uint16_t& containerId);
 } // namespace utils
 } // namespace responder
 } // namespace pldm
