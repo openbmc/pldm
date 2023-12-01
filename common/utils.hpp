@@ -457,5 +457,12 @@ std::string getCurrentSystemTime();
  */
 bool checkForFruPresence(const std::string& objPath);
 
+/** @brief Method to check if the logical bit is set
+ *
+ *  @param[containerId] - container id of the entity
+ *
+ *  @return true or false based on the logic bit set
+ */
+bool checkIfLogicalBitSet(const uint16_t& containerId);
 } // namespace utils
 } // namespace pldm

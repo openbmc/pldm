@@ -139,11 +139,6 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
     return 0;
 }
 
-bool checkIfLogicalBitSet(const uint16_t& containerId)
-{
-    return !(containerId & 0x8000);
-}
-
 } // namespace utils
 } // namespace responder
 } // namespace pldm

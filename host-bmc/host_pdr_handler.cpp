@@ -3,8 +3,6 @@
 #include "libpldm/fru.h"
 #ifdef OEM_IBM
 #include "libpldm/fru_oem_ibm.h"
-
-#include "oem/ibm/libpldmresponder/utils.hpp"
 #endif
 #include "custom_dbus.hpp"
 
@@ -295,8 +293,7 @@ void HostPDRHandler::mergeEntityAssociations(
             bool isUpdateContainerId = true;
             if (oemPlatformHandler)
             {
-                isUpdateContainerId =
-                    pldm::responder::utils::checkIfLogicalBitSet(
+                isUpdateContainerId = checkIfLogicalBitSet(
                         entities[i].entity_container_id);
             }
             auto node = pldm_entity_association_tree_add_entity(
