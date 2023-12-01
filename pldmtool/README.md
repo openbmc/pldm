@@ -193,6 +193,24 @@ $ pldmtool base GetPLDMTypes
 ]
 ```
 
+## Understanding pldmtool output error scenario
+
+When the pldmtool receives the wrong response for the request sent it errors out
+with a response code and completion code. The completion code represents the
+type of error and is defined in every pldm type `pldm_<type>_completion_codes`
+enum values.
+
+Example:
+
+This is a platform command and the completion code can be understood from
+[`libpldm/platform.h`](https://github.com/openbmc/libpldm/blob/a98814fc37a5d59207163cb2fa81f4162eaf69cd/include/libpldm/platform.h#L204)
+file.
+
+```
+$ pldmtool platform getpdr -d 17
+Response Message Error: rc=0 , cc=130
+```
+
 ## pldmtool with mctp_eid option
 
 Use **-m** or **--mctp_eid** option to send pldm request message to remote mctp
