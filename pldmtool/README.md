@@ -193,6 +193,20 @@ $ pldmtool base GetPLDMTypes
 ]
 ```
 
+## pldmtool output error scenario
+
+When the pldmtool is unable to receive the response for the request sent it
+errors out with a completion code. The completion code represents the
+type of error and is defined in every pldm type `pldm_<type>_completion_codes`
+enum values.
+
+Example:
+
+```
+$ pldmtool platform getpdr  -d 17
+Response Message Error: rc=0 , cc=136
+```
+
 ## pldmtool with mctp_eid option
 
 Use **-m** or **--mctp_eid** option to send pldm request message to remote mctp
