@@ -233,16 +233,19 @@ class Handler : public CmdHandler
         impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+                         [this](uint8_t /*tid*/, const pldm_msg* request,
+                                size_t payloadLength) {
             return this->getFRURecordTableMetadata(request, payloadLength);
         });
 
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+                         [this](uint8_t /*tid*/, const pldm_msg* request,
+                                size_t payloadLength) {
             return this->getFRURecordTable(request, payloadLength);
         });
         handlers.emplace(PLDM_GET_FRU_RECORD_BY_OPTION,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+                         [this](uint8_t /*tid*/, const pldm_msg* request,
+                                size_t payloadLength) {
             return this->getFRURecordByOption(request, payloadLength);
         });
     }

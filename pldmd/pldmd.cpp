@@ -107,7 +107,7 @@ static std::optional<Response>
         {
             if (hdrFields.pldm_type != PLDM_FWUP)
             {
-                response = invoker.handle(hdrFields.pldm_type,
+                response = invoker.handle(tid, hdrFields.pldm_type,
                                           hdrFields.command, request,
                                           requestLen);
             }
