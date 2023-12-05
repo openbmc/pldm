@@ -98,8 +98,8 @@ class RequestRetryTimer
     sdeventplus::Event& event; //!< reference to PLDM daemon's main event loop
     uint8_t numRetries;        //!< number of request retries
     std::chrono::milliseconds
-        timeout;           //!< time to wait between each retry in milliseconds
-    phosphor::Timer timer; //!< manages starting timers and handling timeouts
+        timeout;            //!< time to wait between each retry in milliseconds
+    sdbusplus::Timer timer; //!< manages starting timers and handling timeouts
 
     /** @brief Sends the PLDM request message
      *

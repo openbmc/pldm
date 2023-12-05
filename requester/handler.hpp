@@ -197,7 +197,7 @@ class Handler
             pldmTransport, requestMsg->key.eid, event,
             std::move(requestMsg->reqMsg), numRetries, responseTimeOut,
             verbose);
-        auto timer = std::make_unique<phosphor::Timer>(
+        auto timer = std::make_unique<sdbusplus::Timer>(
             event.get(), std::bind(&Handler::instanceIdExpiryCallBack, this,
                                    requestMsg->key));
 
@@ -335,7 +335,7 @@ class Handler
      */
     using RequestValue =
         std::tuple<std::unique_ptr<RequestInterface>, ResponseHandler,
-                   std::unique_ptr<phosphor::Timer>>;
+                   std::unique_ptr<sdbusplus::Timer>>;
 
     // Manage the requests of responders base on MCTP EID
     std::map<mctp_eid_t, std::shared_ptr<EndpointMessageQueue>>
