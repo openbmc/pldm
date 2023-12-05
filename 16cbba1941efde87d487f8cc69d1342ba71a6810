@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f3be301_7ab00ef7",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-05T05:04:27Z",
+      "side": 1,
+      "message": "this makes me think if it is a timeout scenario.\n\nBut we are talking about a case where there is response , but it is an error response.",
+      "range": {
+        "startLine": 198,
+        "startChar": 21,
+        "endLine": 199,
+        "endChar": 15
+      },
+      "revId": "16cbba1941efde87d487f8cc69d1342ba71a6810",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
