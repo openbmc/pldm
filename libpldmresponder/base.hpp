@@ -31,19 +31,23 @@ class Handler : public CmdHandler
         oemPlatformHandler(oemPlatformHandler), handler(handler)
     {
         handlers.emplace(PLDM_GET_PLDM_TYPES,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+                         [this](uint8_t /*tid*/, const pldm_msg* request,
+                                size_t payloadLength) {
             return this->getPLDMTypes(request, payloadLength);
         });
         handlers.emplace(PLDM_GET_PLDM_COMMANDS,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+                         [this](uint8_t /*tid*/, const pldm_msg* request,
+                                size_t payloadLength) {
             return this->getPLDMCommands(request, payloadLength);
         });
         handlers.emplace(PLDM_GET_PLDM_VERSION,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+                         [this](uint8_t /*tid*/, const pldm_msg* request,
+                                size_t payloadLength) {
             return this->getPLDMVersion(request, payloadLength);
         });
         handlers.emplace(PLDM_GET_TID,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+                         [this](uint8_t /*tid*/, const pldm_msg* request,
+                                size_t payloadLength) {
             return this->getTID(request, payloadLength);
         });
     }

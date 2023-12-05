@@ -78,31 +78,37 @@ Handler::Handler(int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     biosConfig.removeTables();
     biosConfig.buildTables();
 
-    handlers.emplace(PLDM_SET_DATE_TIME,
-                     [this](const pldm_msg* request, size_t payloadLength) {
+    handlers.emplace(
+        PLDM_SET_DATE_TIME,
+        [this](uint8_t /*tid*/, const pldm_msg* request, size_t payloadLength) {
         return this->setDateTime(request, payloadLength);
-    });
-    handlers.emplace(PLDM_GET_DATE_TIME,
-                     [this](const pldm_msg* request, size_t payloadLength) {
+        });
+    handlers.emplace(
+        PLDM_GET_DATE_TIME,
+        [this](uint8_t /*tid*/, const pldm_msg* request, size_t payloadLength) {
         return this->getDateTime(request, payloadLength);
-    });
-    handlers.emplace(PLDM_GET_BIOS_TABLE,
-                     [this](const pldm_msg* request, size_t payloadLength) {
+        });
+    handlers.emplace(
+        PLDM_GET_BIOS_TABLE,
+        [this](uint8_t /*tid*/, const pldm_msg* request, size_t payloadLength) {
         return this->getBIOSTable(request, payloadLength);
-    });
-    handlers.emplace(PLDM_SET_BIOS_TABLE,
-                     [this](const pldm_msg* request, size_t payloadLength) {
+        });
+    handlers.emplace(
+        PLDM_SET_BIOS_TABLE,
+        [this](uint8_t /*tid*/, const pldm_msg* request, size_t payloadLength) {
         return this->setBIOSTable(request, payloadLength);
-    });
-    handlers.emplace(PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE,
-                     [this](const pldm_msg* request, size_t payloadLength) {
+        });
+    handlers.emplace(
+        PLDM_GET_BIOS_ATTRIBUTE_CURRENT_VALUE_BY_HANDLE,
+        [this](uint8_t /*tid*/, const pldm_msg* request, size_t payloadLength) {
         return this->getBIOSAttributeCurrentValueByHandle(request,
                                                           payloadLength);
-    });
-    handlers.emplace(PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE,
-                     [this](const pldm_msg* request, size_t payloadLength) {
+        });
+    handlers.emplace(
+        PLDM_SET_BIOS_ATTRIBUTE_CURRENT_VALUE,
+        [this](uint8_t /*tid*/, const pldm_msg* request, size_t payloadLength) {
         return this->setBIOSAttributeCurrentValue(request, payloadLength);
-    });
+        });
 }
 
 Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
