@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4c606a4_cb8e3e45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-05T13:59:45Z",
+      "side": 1,
+      "message": "A couple of minor suggestions.",
+      "revId": "e9faa59a582d7a8f6913816a32d08f98ea2f03d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6c62f3e_53c316ca",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-05T13:59:45Z",
+      "side": 1,
+      "message": "Suggest adding a using alias for tid.  `using tid_t \u003d uint8_t;`?  Then you can simplify all of these to just `tid_t` instead of `uint8_t /*tid*/`.  Plus, if we ever need to change the tid_t it is way easier.",
+      "range": {
+        "startLine": 34,
+        "startChar": 32,
+        "endLine": 34,
+        "endChar": 39
+      },
+      "revId": "e9faa59a582d7a8f6913816a32d08f98ea2f03d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cb06056_4efc0e94",
+        "filename": "test/pldmd_registration_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-05T13:59:45Z",
+      "side": 1,
+      "message": "constexpr?  Otherwise you\u0027re defining a global variable, which could be changed.",
+      "revId": "e9faa59a582d7a8f6913816a32d08f98ea2f03d2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
