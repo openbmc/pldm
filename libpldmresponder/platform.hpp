@@ -27,9 +27,10 @@ namespace responder
 {
 namespace platform
 {
-using generatePDR = std::function<void(const pldm::utils::DBusHandler& dBusIntf,
-                                       const pldm::utils::Json& json,
-                                       pdr_utils::RepoInterface& repo)>;
+using generatePDR = std::function<void(
+    const pldm::utils::DBusHandler& dBusIntf, const pldm::utils::Json& json,
+    pdr_utils::RepoInterface& repo,
+    pldm_entity_association_tree* bmcEntityTree)>;
 
 using EffecterId = uint16_t;
 using DbusObjMaps =
@@ -49,23 +50,25 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf,
-            const std::string& pdrJsonsDir, pldm_pdr* repo,
+            const fs::path& pdrJsonDir, pldm_pdr* repo,
             HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
+            pldm_entity_association_tree* bmcEntityTree,
             pldm::responder::oem_platform::Handler* oemPlatformHandler,
             sdeventplus::Event& event, bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
         pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
-        dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        event(event), pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
+        bmcEntityTree(bmcEntityTree), dBusIntf(dBusIntf),
+        oemPlatformHandler(oemPlatformHandler), event(event),
+        pdrJsonDir(pdrJsonDir), pdrCreated(false), pdrJsonsDir({pdrJsonDir})
     {
         if (!buildPDRLazily)
         {
             generateTerminusLocatorPDR(pdrRepo);
-            generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+            generate(*dBusIntf, pdrJsonsDir, pdrRepo, bmcEntityTree);
             pdrCreated = true;
         }
 
@@ -183,8 +186,9 @@ class Handler : public CmdHandler
      *  @param[in] repo - instance of concrete implementation of Repo
      */
     void generate(const pldm::utils::DBusHandler& dBusIntf,
-                  const std::string& dir,
-                  pldm::responder::pdr_utils::Repo& repo);
+                  const std::vector<fs::path>& dir,
+                  pldm::responder::pdr_utils::Repo& repo,
+                  pldm_entity_association_tree* bmcEntityTree);
 
     /** @brief Parse PDR JSONs and build state effecter PDR repository
      *
@@ -467,11 +471,13 @@ class Handler : public CmdHandler
     HostPDRHandler* hostPDRHandler;
     pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler;
     fru::Handler* fruHandler;
+    pldm_entity_association_tree* bmcEntityTree;
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
     sdeventplus::Event& event;
-    std::string pdrJsonsDir;
+    fs::path pdrJsonDir;
     bool pdrCreated;
+    std::vector<fs::path> pdrJsonsDir;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
 };
 

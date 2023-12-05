@@ -76,9 +76,11 @@ using PossibleValues = std::vector<uint8_t>;
 
 /** @brief Map of DBus property State to attribute value
  */
+using EffecterId = uint16_t;
 using StatestoDbusVal = std::map<State, pldm::utils::PropertyValue>;
 using DbusMappings = std::vector<pldm::utils::DBusMapping>;
 using DbusValMaps = std::vector<StatestoDbusVal>;
+using DbusObjMaps = std::map<EffecterId, std::tuple<DbusMappings, DbusValMaps>>;
 
 /** @brief Parse PDR JSON file and output Json object
  *

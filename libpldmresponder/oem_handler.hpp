@@ -66,6 +66,8 @@ class Handler : public CmdHandler
      */
     virtual void buildOEMPDR(pldm::responder::pdr_utils::Repo& repo) = 0;
 
+    virtual std::filesystem::path getConfigDir() = 0;
+
     /** @brief Interface to check if setEventReceiver is sent to host already.
      *         If sent then then disableWatchDogTimer() would be called to
      *         disable the watchdog timer */
@@ -136,6 +138,28 @@ class Handler : public CmdHandler
 };
 
 } // namespace oem_bios
+
+namespace oem_fru
+{
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf) {}
+
+    /** @brief Process OEM FRU record
+     *
+     * @param[in] fruData - the data of the fru
+     */
+    // virtual int processOEMfruRecord(const std::vector<uint8_t>& fruData) = 0;
+
+    virtual ~Handler() = default;
+
+  protected:
+    const pldm::utils::DBusHandler* dBusIntf;
+};
+
+} // namespace oem_fru
 
 } // namespace responder
 

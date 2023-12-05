@@ -63,11 +63,16 @@ const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
 }
 
 void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
-                       const std::string& dir, Repo& repo)
+                       const std::vector<fs::path>& dir, Repo& repo,
+                       pldm_entity_association_tree* bmcEntityTree)
 {
-    if (!fs::exists(dir))
+    for (const auto& directory : dir)
     {
-        return;
+        info("checking if : {DIR} exists", "DIR", directory.c_str());
+        if (!fs::exists(directory))
+        {
+            return;
+        }
     }
 
     // A map of PDR type to a lambda that handles creation of that PDR type.
@@ -78,70 +83,91 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
     const std::map<Type, generatePDR> generateHandlers = {
         {PLDM_STATE_EFFECTER_PDR,
          [this](const DBusHandler& dBusIntf, const auto& json,
-                RepoInterface& repo) {
+                RepoInterface& repo,
+                pldm_entity_association_tree* bmcEntityTree) {
         pdr_state_effecter::generateStateEffecterPDR<pldm::utils::DBusHandler,
-                                                     Handler>(dBusIntf, json,
-                                                              *this, repo);
+                                                     Handler>(
+            dBusIntf, json, *this, repo, bmcEntityTree);
     }},
         {PLDM_NUMERIC_EFFECTER_PDR,
          [this](const DBusHandler& dBusIntf, const auto& json,
-                RepoInterface& repo) {
+                RepoInterface& repo,
+                pldm_entity_association_tree* bmcEntityTree) {
         pdr_numeric_effecter::generateNumericEffecterPDR<
-            pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this, repo);
+            pldm::utils::DBusHandler, Handler>(dBusIntf, json, *this, repo,
+                                               bmcEntityTree);
     }},
-        {PLDM_STATE_SENSOR_PDR, [this](const DBusHandler& dBusIntf,
-                                       const auto& json, RepoInterface& repo) {
+        {PLDM_STATE_SENSOR_PDR,
+         [this](const DBusHandler& dBusIntf, const auto& json,
+                RepoInterface& repo,
+                pldm_entity_association_tree* bmcEntityTree) {
         pdr_state_sensor::generateStateSensorPDR<pldm::utils::DBusHandler,
                                                  Handler>(dBusIntf, json, *this,
-                                                          repo);
+                                                          repo, bmcEntityTree);
     }}};
 
     Type pdrType{};
-    for (const auto& dirEntry : fs::directory_iterator(dir))
+    for (const auto& directory : dir)
     {
-        try
+        for (const auto& dirEntry : fs::directory_iterator(directory))
         {
-            auto json = readJson(dirEntry.path().string());
-            if (!json.empty())
+            try
             {
-                auto effecterPDRs = json.value("effecterPDRs", empty);
-                for (const auto& effecter : effecterPDRs)
+                if (fs::is_regular_file(dirEntry.path().string()))
                 {
-                    pdrType = effecter.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, effecter, repo);
-                }
+                    auto json = readJson(dirEntry.path().string());
+                    if (!json.empty())
+                    {
+                        auto effecterPDRs = json.value("effecterPDRs", empty);
+                        for (const auto& effecter : effecterPDRs)
+                        {
+                            pdrType = effecter.value("pdrType", 0);
+                            generateHandlers.at(pdrType)(dBusIntf, effecter,
+                                                         repo, bmcEntityTree);
+                        }
 
-                auto sensorPDRs = json.value("sensorPDRs", empty);
-                for (const auto& sensor : sensorPDRs)
-                {
-                    pdrType = sensor.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, sensor, repo);
+                        auto sensorPDRs = json.value("sensorPDRs", empty);
+                        for (const auto& sensor : sensorPDRs)
+                        {
+                            pdrType = sensor.value("pdrType", 0);
+                            generateHandlers.at(pdrType)(dBusIntf, sensor, repo,
+                                                         bmcEntityTree);
+                        }
+                    }
                 }
             }
+            catch (const InternalFailure& e)
+            {
+                error(
+                    "PDR config directory does not exist or empty, TYPE= {PDR_TYP} PATH= {DIR_PATH} ERROR={ERR_EXCEP}",
+                    "PDR_TYP", pdrType, "DIR_PATH", dirEntry.path().string(),
+                    "ERR_EXCEP", e.what());
+            }
+            catch (const Json::exception& e)
+            {
+                error(
+                    "Failed parsing PDR JSON file, TYPE= {PDR_TYP} ERROR={ERR_EXCEP}",
+                    "PDR_TYP", pdrType, "ERR_EXCEP", e.what());
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail",
+                    pldm::PelSeverity::ERROR);
+            }
+            catch (const std::exception& e)
+            {
+                error(
+                    "Failed parsing PDR JSON file, TYPE= {PDR_TYP} ERROR={ERR_EXCEP}",
+                    "PDR_TYP", pdrType, "ERR_EXCEP", e.what());
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail",
+                    pldm::PelSeverity::ERROR);
+            }
         }
-        catch (const InternalFailure& e)
-        {
-            error(
-                "PDR config directory does not exist or empty, TYPE= {PDR_TYPE} PATH={DIR_PATH} ERROR={ERR_EXCEP}",
-                "PDR_TYPE", pdrType, "DIR_PATH", dirEntry.path().string(),
-                "ERR_EXCEP", e.what());
-        }
-        catch (const Json::exception& e)
-        {
-            error(
-                "Failed parsing PDR JSON file, TYPE={PDR_TYPE} ERROR={ERR_EXCEP}",
-                "PDR_TYPE", pdrType, "ERR_EXCEP", e.what());
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
-        }
-        catch (const std::exception& e)
-        {
-            error(
-                "Failed parsing PDR JSON file, TYPE= {PDR_TYPE} ERROR={ERR_EXCEP}",
-                "PDR_TYPE", pdrType, "ERR_EXCEP", e.what());
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
-        }
+    }
+    if (fruHandler)
+    {
+        fruHandler->setStatePDRParams(pdrJsonsDir, getNextSensorId(),
+                                      getNextEffecterId(), sensorDbusObjMaps,
+                                      effecterDbusObjMaps, false);
     }
 }
 
@@ -169,12 +195,23 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     if (!pdrCreated)
     {
         generateTerminusLocatorPDR(pdrRepo);
-        generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+
         if (oemPlatformHandler != nullptr)
         {
+            auto systemType = oemPlatformHandler->getConfigDir();
+            if (!systemType.empty())
+            {
+                // In case of normal poweron , the system type would have been
+                // already filled by entity manager when ever BMC reaches Ready
+                // state. If this is not filled by time we get a getpdr request
+                // we can assume that the entity manager service is not present
+                // on this system & continue to build the common PDR's.
+                pdrJsonsDir.push_back(pdrJsonDir /
+                                      oemPlatformHandler->getConfigDir());
+            }
             oemPlatformHandler->buildOEMPDR(pdrRepo);
         }
-
+        generate(*dBusIntf, pdrJsonsDir, pdrRepo, bmcEntityTree);
         pdrCreated = true;
 
         if (dbusToPLDMEventHandler)

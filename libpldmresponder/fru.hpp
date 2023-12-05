@@ -1,7 +1,13 @@
 #pragma once
 
+#include "common/utils.hpp"
 #include "fru_parser.hpp"
+#include "host-bmc/dbus_to_event_handler.hpp"
+#include "libpldmresponder/pdr_utils.hpp"
+#include "oem_handler.hpp"
+#include "pldmd/dbus_impl_requester.hpp"
 #include "pldmd/handler.hpp"
+#include "requester/handler.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/pdr.h>
@@ -13,6 +19,8 @@
 #include <variant>
 #include <vector>
 
+using namespace pldm::utils;
+using namespace pldm::dbus_api;
 namespace pldm
 {
 
@@ -63,10 +71,21 @@ class FruImpl
     FruImpl(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree) :
+            pldm_entity_association_tree* bmcEntityTree,
+            pldm::responder::oem_fru::Handler* oemFruHandler,
+            Requester& requester,
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            uint8_t mctp_eid, sdeventplus::Event& event,
+            pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler) :
         parser(configPath, fruMasterJsonPath),
-        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree)
-    {}
+        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree),
+        oemFruHandler(oemFruHandler), requester(requester), handler(handler),
+        mctp_eid(mctp_eid), event(event),
+        dbusToPLDMEventHandler(dbusToPLDMEventHandler)
+    {
+        startStateSensorId = 0;
+        startStateEffecterId = 0;
+    }
 
     /** @brief Total length of the FRU table in bytes, this excludes the pad
      *         bytes and the checksum.
@@ -171,6 +190,14 @@ class FruImpl
     void updateAssociationTree(const dbus::ObjectValueTree& objects,
                                const std::string& path);
 
+    std::vector<uint32_t> setStatePDRParams(
+        const std::vector<fs::path> pdrJsonsDir, uint16_t nextSensorId,
+        uint16_t nextEffecterId,
+        pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+        pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps,
+        bool hotPlug, const Json& json, const std::string& fruObjectPath = "",
+        pldm::responder::pdr_utils::Type pdrType = 0);
+
     /* @brief Method to populate the firmware version ID
      *
      * @return firmware version ID
@@ -200,6 +227,12 @@ class FruImpl
     pldm_pdr* pdrRepo;
     pldm_entity_association_tree* entityTree;
     pldm_entity_association_tree* bmcEntityTree;
+    pldm::responder::oem_fru::Handler* oemFruHandler;
+    Requester& requester;
+    pldm::requester::Handler<pldm::requester::Request>* handler;
+    uint8_t mctp_eid;
+    sdeventplus::Event& event;
+    pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
@@ -215,9 +248,17 @@ class FruImpl
                          const fru_parser::FruRecordInfos& recordInfos,
                          const pldm_entity& entity);
 
+    void reGenerateStatePDR(const std::string& fruObjectPath,
+                            std::vector<uint32_t>& recordHdlList);
+
+    uint32_t addHotPlugRecord(pldm::responder::pdr_utils::PdrEntry pdrEntry);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
+    std::vector<fs::path> statePDRJsonsDir;
+    uint16_t startStateSensorId;
+    uint16_t startStateEffecterId;
 };
 
 namespace fru
@@ -229,8 +270,15 @@ class Handler : public CmdHandler
     Handler(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree) :
-        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree)
+            pldm_entity_association_tree* bmcEntityTree,
+            pldm::responder::oem_fru::Handler* oemFruHandler,
+            Requester& requester,
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            uint8_t mctp_eid, sdeventplus::Event& event,
+            pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler) :
+        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree,
+             oemFruHandler, requester, handler, mctp_eid, event,
+             dbusToPLDMEventHandler)
     {
         handlers.emplace(PLDM_GET_FRU_RECORD_TABLE_METADATA,
                          [this](const pldm_msg* request, size_t payloadLength) {
@@ -295,6 +343,21 @@ class Handler : public CmdHandler
      */
     Response getFRURecordByOption(const pldm_msg* request,
                                   size_t payloadLength);
+
+    // std::vector<uint32_t> setStatePDRParams(
+    //     const std::vector<fs::path> pdrJsonsDir, uint16_t nextSensorId,
+    //     uint16_t nextEffecterId,
+    //     pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+    //     pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps,
+    //     bool hotPlug, const Json& json, const std::string& fruObjectPath =
+    //     "", pldm::responder::pdr_utils::Type pdrType = 0);
+
+    void setStatePDRParams(
+        const std::vector<fs::path> pdrJsonsDir, uint16_t nextSensorId,
+        uint16_t nextEffecterId,
+        pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+        pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps,
+        bool hotPlug);
 
   private:
     FruImpl impl;

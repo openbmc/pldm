@@ -445,11 +445,11 @@ GetSubTreeResponse
     return response;
 }
 
-void reportError(const char* errorMsg)
+void reportError(const char* errorMsg, const PelSeverity& sev)
 {
     static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
     static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
-
+    std::string severity = "xyz.openbmc_project.Logging.Entry.Level.Error";
     auto& bus = pldm::utils::DBusHandler::getBus();
 
     try
@@ -462,6 +462,11 @@ void reportError(const char* errorMsg)
                     Error);
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "Create");
+        auto itr = sevMap.find(sev);
+        if (itr != sevMap.end())
+        {
+            severity = itr->second;
+        }
         std::map<std::string, std::string> addlData{};
         method.append(errorMsg, severity, addlData);
         bus.call_noreply(method, dbusTimeout);

@@ -216,7 +216,8 @@ void Handler::processSetEventReceiver(
                 "Failed to decode setEventReceiver command response, rc = {RC}, cc = {CC}",
                 "RC", rc, "CC", (unsigned)completionCode);
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.bmc.pldm.InternalFailure",
+                pldm::PelSeverity::ERROR);
         }
     };
     rc = handler->registerRequest(

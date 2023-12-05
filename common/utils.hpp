@@ -29,9 +29,25 @@ constexpr uint64_t dbusTimeout =
     std::chrono::duration_cast<std::chrono::microseconds>(
         std::chrono::seconds(DBUS_TIMEOUT))
         .count();
+using microsec = std::chrono::microseconds;
+using sec = std::chrono::seconds;
 
 namespace pldm
 {
+
+using Severity = pldm::PelSeverity;
+
+// mapping of severity enum to severity interface
+static std::unordered_map<Severity, std::string> sevMap = {
+    {Severity::INFORMATIONAL,
+     "xyz.openbmc_project.Logging.Entry.Level.Informational"},
+    {Severity::DEBUG, "xyz.openbmc_project.Logging.Entry.Level.Debug"},
+    {Severity::NOTICE, "xyz.openbmc_project.Logging.Entry.Level.Notice"},
+    {Severity::WARNING, "xyz.openbmc_project.Logging.Entry.Level.Warning"},
+    {Severity::CRITICAL, "xyz.openbmc_project.Logging.Entry.Level.Critical"},
+    {Severity::EMERGENCY, "xyz.openbmc_project.Logging.Entry.Level.Emergency"},
+    {Severity::ERROR, "xyz.openbmc_project.Logging.Entry.Level.Error"},
+    {Severity::ALERT, "xyz.openbmc_project.Logging.Entry.Level.Alert"}};
 namespace utils
 {
 namespace fs = std::filesystem;
@@ -139,8 +155,9 @@ std::optional<std::vector<set_effecter_state_field>>
 /**
  *  @brief creates an error log
  *  @param[in] errorMsg - the error message
+ *  @param[in] sev - severity of the log
  */
-void reportError(const char* errorMsg);
+void reportError(const char* errorMsg, const PelSeverity& sev);
 
 /** @brief Convert any Decimal number to BCD
  *

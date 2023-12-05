@@ -153,6 +153,54 @@ int pldm::responder::oem_ibm_platform::Handler::
     return rc;
 }
 
+std::filesystem::path pldm::responder::oem_ibm_platform::Handler::getConfigDir()
+{
+    if (!systemType.empty())
+    {
+        return fs::path{systemType};
+    }
+
+    namespace fs = std::filesystem;
+    static constexpr auto compatibleInterface =
+        "xyz.openbmc_project.Configuration.IBMCompatibleSystem";
+    static constexpr auto namesProperty = "Names";
+    static constexpr auto orgFreeDesktopInterface =
+        "org.freedesktop.DBus.Properties";
+    static constexpr auto getMethod = "Get";
+
+    static constexpr auto searchpath = "/xyz/openbmc_project/";
+    int depth = 0;
+    std::vector<std::string> ibmCompatible = {compatibleInterface};
+    pldm::utils::GetSubTreeResponse response =
+        pldm::utils::DBusHandler().getSubtree(searchpath, depth, ibmCompatible);
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    std::variant<std::vector<std::string>> value;
+
+    for (const auto& [objectPath, serviceMap] : response)
+    {
+        try
+        {
+            auto method = bus.new_method_call(
+                serviceMap[0].first.c_str(), objectPath.c_str(),
+                orgFreeDesktopInterface, getMethod);
+            method.append(ibmCompatible[0].c_str(), namesProperty);
+            auto reply = bus.call(
+                method, std::chrono::duration_cast<microsec>(sec(DBUS_TIMEOUT))
+                            .count());
+            reply.read(value);
+            return fs::path{std::get<std::vector<std::string>>(value)[0]};
+        }
+        catch (const std::exception& e)
+        {
+            error(
+                "Error getting Names property , PATH={OBJ_PATH} Compatible interface = {INTF}",
+                "OBJ_PATH", objectPath.c_str(), "INTF",
+                ibmCompatible[0].c_str());
+        }
+    }
+    return fs::path();
+}
+
 void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
                                    uint16_t entityType, uint16_t entityInstance,
                                    uint16_t stateSetID, pdr_utils::Repo& repo)
