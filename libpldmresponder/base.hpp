@@ -30,20 +30,24 @@ class Handler : public CmdHandler
         instanceIdDb(instanceIdDb), event(event),
         oemPlatformHandler(oemPlatformHandler), handler(handler)
     {
-        handlers.emplace(PLDM_GET_PLDM_TYPES,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_GET_PLDM_TYPES,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->getPLDMTypes(request, payloadLength);
         });
-        handlers.emplace(PLDM_GET_PLDM_COMMANDS,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_GET_PLDM_COMMANDS,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->getPLDMCommands(request, payloadLength);
         });
-        handlers.emplace(PLDM_GET_PLDM_VERSION,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_GET_PLDM_VERSION,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->getPLDMVersion(request, payloadLength);
         });
-        handlers.emplace(PLDM_GET_TID,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_GET_TID,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->getTID(request, payloadLength);
         });
     }
