@@ -174,52 +174,64 @@ class Handler : public CmdHandler
         hostSockFd(hostSockFd), hostEid(hostEid), instanceIdDb(instanceIdDb),
         handler(handler)
     {
-        handlers.emplace(PLDM_READ_FILE_INTO_MEMORY,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_READ_FILE_INTO_MEMORY,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->readFileIntoMemory(request, payloadLength);
         });
-        handlers.emplace(PLDM_WRITE_FILE_FROM_MEMORY,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_WRITE_FILE_FROM_MEMORY,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->writeFileFromMemory(request, payloadLength);
         });
-        handlers.emplace(PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->writeFileByTypeFromMemory(request, payloadLength);
         });
-        handlers.emplace(PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->readFileByTypeIntoMemory(request, payloadLength);
         });
-        handlers.emplace(PLDM_READ_FILE_BY_TYPE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_READ_FILE_BY_TYPE,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->readFileByType(request, payloadLength);
         });
-        handlers.emplace(PLDM_WRITE_FILE_BY_TYPE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_WRITE_FILE_BY_TYPE,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->writeFileByType(request, payloadLength);
         });
-        handlers.emplace(PLDM_GET_FILE_TABLE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_GET_FILE_TABLE,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->getFileTable(request, payloadLength);
         });
-        handlers.emplace(PLDM_READ_FILE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_READ_FILE,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->readFile(request, payloadLength);
         });
-        handlers.emplace(PLDM_WRITE_FILE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_WRITE_FILE,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->writeFile(request, payloadLength);
         });
-        handlers.emplace(PLDM_FILE_ACK,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_FILE_ACK,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->fileAck(request, payloadLength);
         });
-        handlers.emplace(PLDM_HOST_GET_ALERT_STATUS,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_HOST_GET_ALERT_STATUS,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->getAlertStatus(request, payloadLength);
         });
-        handlers.emplace(PLDM_NEW_FILE_AVAILABLE,
-                         [this](const pldm_msg* request, size_t payloadLength) {
+        handlers.emplace(
+            PLDM_NEW_FILE_AVAILABLE,
+            [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
             return this->newFileAvailable(request, payloadLength);
         });
 
