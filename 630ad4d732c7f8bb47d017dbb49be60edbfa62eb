@@ -1,0 +1,393 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bab308c1_eeb2ade7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "There are a lot of unresolved comments that weren\u0027t responded to or marked resolved.  Please resolve all outstanding comments.",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "464247bb_c4c3b650",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Do we need to do anything to skip running this function if we\u0027ve already ran it?\n\nHow do we handle hot-plug of a compute card since it appears we only run this when `Handler` is constructed.",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64aa17ff_23c8766e",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "auto handler \u003d getHandlerByType(tid, fileIOType);",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 48
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00506ab6_2ae51b75",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Prefer to use the boolean operator rather than comparison with nullptr.\n\n`if (!handler)`",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44abd11a_aa640567",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Suggest to use span instead of vector to avoid data copies.\n\n```\nauto data \u003d std::span(std::begin(retDataField), length);\n```",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 65
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96b71cdc_a0392493",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Use modern nested namespaces: `namespace pldm::responder::oem_meta`",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 1
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c844aa1a_bdf89331",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Should this and setupTidToSlotMappingTable be moved as static members of Handler?",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e07cca_b330c901",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Do we need a longer name or namespace here to differentaite this as the \"file_io handler\"?",
+      "range": {
+        "startLine": 31,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 13
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f65de9c7_af9f0fe9",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "pldm_tid_t?",
+      "range": {
+        "startLine": 57,
+        "startChar": 25,
+        "endLine": 57,
+        "endChar": 32
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76bfcdce_5eb1e9b4",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "pldm_tid_t?",
+      "range": {
+        "startLine": 60,
+        "startChar": 50,
+        "endLine": 60,
+        "endChar": 57
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30062af9_6d9cd0e7",
+        "filename": "oem/meta/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Suggest switching both of these vectors to a span.  Add a `using` alias somewhere for them.  Maybe in `Handler`.",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8402db19_f1408ad2",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Need to catch this potential exception?",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36b29a18_b8bcead5",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Do we need a catch that ensures `distance(std::begin(postCodeList), std::end(postCodeList)) \u003c\u003d sizeof(primaryPostCode)`?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d403ddbc_3b93a58b",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "prefer auto",
+      "range": {
+        "startLine": 29,
+        "startChar": 45,
+        "endLine": 29,
+        "endChar": 52
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b7e9334_2173671f",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "What is the purpose in the reply?  Is there anything we need to do with this?",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3763f61c_3300c6ac",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "tid_t?",
+      "range": {
+        "startLine": 20,
+        "startChar": 48,
+        "endLine": 20,
+        "endChar": 55
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e0cf75e_56132992",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Just drop `data` instead of the `maybe_unused` (reduce the noise).",
+      "range": {
+        "startLine": 30,
+        "startChar": 58,
+        "endLine": 30,
+        "endChar": 62
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd1ef474_02b344da",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Should this be a reference or a new copy?",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dcea24e_60baa5b1",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-06T16:21:11Z",
+      "side": 1,
+      "message": "Make a `using` alias for this type.",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
