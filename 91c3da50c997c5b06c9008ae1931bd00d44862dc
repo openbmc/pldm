@@ -166,6 +166,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c089f1c9_91f99756",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-12-07T06:08:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6cf1311_e4e4e17b",
+      "range": {
+        "startLine": 592,
+        "startChar": 25,
+        "endLine": 592,
+        "endChar": 159
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3252fa83_21d2eea3",
@@ -227,6 +251,30 @@
       "side": 1,
       "message": "Manoj, since this is a display name and can be shown through BMC GUI, we do not want to be that much of larger string. Thats why the reduction.",
       "parentUuid": "9618ee3b_1de4cc6b",
+      "range": {
+        "startLine": 296,
+        "startChar": 28,
+        "endLine": 296,
+        "endChar": 75
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110628bb_10e8ca6d",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-12-07T06:08:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0728840a_d2e79fcf",
       "range": {
         "startLine": 296,
         "startChar": 28,
