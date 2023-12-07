@@ -15,7 +15,7 @@ foreach t : tests
                          common_test_src,
                          gtest,
                          libpldm_dep,
-                         nlohmann_json,
+                         nlohmann_json_dep,
                          phosphor_dbus_interfaces,
                          phosphor_logging_dep,
                          libpldmutils,

@@ -84,11 +84,7 @@ sdeventplus = dependency('sdeventplus')
 stdplus = dependency('stdplus')
 phosphor_logging_dep = dependency('phosphor-logging')
 
-if cpp.has_header('nlohmann/json.hpp')
-  nlohmann_json = declare_dependency()
-else
-  nlohmann_json = dependency('nlohmann_json')
-endif
+nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 
 if cpp.has_header('CLI/CLI.hpp')
   CLI11_dep = declare_dependency()
@@ -146,7 +142,7 @@ libpldmutils = library(
       libpldm_dep,
       phosphor_dbus_interfaces,
       phosphor_logging_dep,
-      nlohmann_json,
+      nlohmann_json_dep,
       sdbusplus,
   ],
   install: true,
@@ -160,7 +156,7 @@ libpldmutils = declare_dependency(
 deps = [
   libpldm_dep,
   libpldmutils,
-  nlohmann_json,
+  nlohmann_json_dep,
   phosphor_dbus_interfaces,
   phosphor_logging_dep,
   sdbusplus,

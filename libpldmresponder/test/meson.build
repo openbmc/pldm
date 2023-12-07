@@ -33,7 +33,7 @@ foreach t : tests
                          libpldmutils,
                          gtest,
                          gmock,
-                         nlohmann_json,
+                         nlohmann_json_dep,
                          phosphor_dbus_interfaces,
                          phosphor_logging_dep,
                          sdeventplus,

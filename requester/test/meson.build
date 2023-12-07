@@ -13,7 +13,7 @@ foreach t : tests
                          gtest,
                          gmock,
                          libpldm_dep,
-                         nlohmann_json,
+                         nlohmann_json_dep,
                          phosphor_dbus_interfaces,
                          phosphor_logging_dep,
                          sdbusplus,

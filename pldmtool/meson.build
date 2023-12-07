@@ -25,7 +25,7 @@ executable(
     CLI11_dep,
     libpldm_dep,
     libpldmutils,
-    nlohmann_json,
+    nlohmann_json_dep,
     phosphor_dbus_interfaces,
     sdbusplus,
   ],

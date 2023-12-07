@@ -1,7 +1,7 @@
 libpldmresponder_deps = [
   phosphor_dbus_interfaces,
   phosphor_logging_dep,
-  nlohmann_json,
+  nlohmann_json_dep,
   sdbusplus,
   sdeventplus,
   libpldm_dep,

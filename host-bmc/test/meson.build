@@ -25,7 +25,7 @@ foreach t : tests
                          host_bmc_test_src,
                          libpldm_dep,
                          libpldmutils,
-                         nlohmann_json,
+                         nlohmann_json_dep,
                          phosphor_dbus_interfaces,
                          phosphor_logging_dep,
                          sdbusplus,

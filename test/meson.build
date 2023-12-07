@@ -13,7 +13,7 @@ foreach t : tests
                      build_rpath: get_option('oe-sdk').allowed() ? rpath : '',
                      dependencies: [
                          libpldm_dep,
-                         nlohmann_json,
+                         nlohmann_json_dep,
                          gtest,
                          test_src]),
        workdir: meson.current_source_dir())
