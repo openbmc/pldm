@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9618ee3b_1de4cc6b",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-12-07T05:46:17Z",
+      "side": 1,
+      "message": "I think this was discussed in the meeting and decided to add the \"System Memory Reserved for KVM Guest Management\" instead of \"Percentage of Available System Memory Reserved for KVM Guest\nManagement\"",
+      "parentUuid": "3252fa83_21d2eea3",
+      "range": {
+        "startLine": 296,
+        "startChar": 28,
+        "endLine": 296,
+        "endChar": 75
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d14dd752_c598f484",
         "filename": "oem/ibm/configurations/bios/integer_attrs.json",
         "patchSetId": 5
@@ -106,6 +130,30 @@
       "writtenOn": "2023-12-07T05:41:40Z",
       "side": 1,
       "message": "Percentage of Available System Memory Reserved for KVM Guest\nManagement",
+      "range": {
+        "startLine": 306,
+        "startChar": 28,
+        "endLine": 306,
+        "endChar": 75
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bfd94c7_a9b0d95d",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2023-12-07T05:46:17Z",
+      "side": 1,
+      "message": "I think this was discussed in the meeting and decided to add the \"System Memory Reserved for KVM Guest Management\" instead of \"Percentage of Available System Memory Reserved for KVM Guest\nManagement\"",
+      "parentUuid": "d14dd752_c598f484",
       "range": {
         "startLine": 306,
         "startChar": 28,
