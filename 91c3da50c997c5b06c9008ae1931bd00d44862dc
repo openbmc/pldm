@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d1b681e_49c9dd1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-07T05:41:40Z",
+      "side": 1,
+      "message": "oem-ibm",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c103f8b9_bcf98381",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-07T05:41:40Z",
+      "side": 1,
+      "message": "a bit more information about what that support is.. would be helpful if documented.",
+      "range": {
+        "startLine": 9,
+        "startChar": 17,
+        "endLine": 9,
+        "endChar": 57
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6d54e3c_77680ff6",
+        "filename": "oem/ibm/configurations/bios/enum_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-07T05:41:40Z",
+      "side": 1,
+      "message": "In addition, i also see \n\n```\nAutomatic (default) – The system will determine the percentage of available\nsystem memory to be reserved for the management of KVM guests.\nCustom – The user specified percentage of available system memory will be\nreserved for the management of KVM guests.\n```\n\nIn the bios document. Was it intentionally removed ?",
+      "range": {
+        "startLine": 592,
+        "startChar": 25,
+        "endLine": 592,
+        "endChar": 159
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3252fa83_21d2eea3",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-07T05:41:40Z",
+      "side": 1,
+      "message": "Percentage of Available System Memory Reserved for KVM Guest\nManagement",
+      "range": {
+        "startLine": 296,
+        "startChar": 28,
+        "endLine": 296,
+        "endChar": 75
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d14dd752_c598f484",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-07T05:41:40Z",
+      "side": 1,
+      "message": "Percentage of Available System Memory Reserved for KVM Guest\nManagement",
+      "range": {
+        "startLine": 306,
+        "startChar": 28,
+        "endLine": 306,
+        "endChar": 75
+      },
+      "revId": "91c3da50c997c5b06c9008ae1931bd00d44862dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
