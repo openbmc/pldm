@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d13dfdc_e2d2df6e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-08T08:16:08Z",
+      "side": 1,
+      "message": "can you expand what is BIC ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 32,
+        "endLine": 10,
+        "endChar": 36
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc42f33_4467f179",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-08T08:16:08Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 12,
+        "startChar": 12,
+        "endLine": 12,
+        "endChar": 16
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bab308c1_eeb2ade7",
@@ -14,6 +60,75 @@
       "writtenOn": "2023-12-06T16:21:11Z",
       "side": 1,
       "message": "There are a lot of unresolved comments that weren\u0027t responded to or marked resolved.  Please resolve all outstanding comments.",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bd8198b_d8fef909",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-08T08:16:08Z",
+      "side": 1,
+      "message": "you could actually do this in one single line\n\n```\nadd_project_arguments(\u0027-DOEM_META\u0027, language : [\u0027c\u0027,\u0027cpp\u0027])\n```\n\nwe could change the ibm one\u0027s in a later commit",
+      "range": {
+        "startLine": 63,
+        "startChar": 2,
+        "endLine": 64,
+        "endChar": 55
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2c6d0af_6b057f30",
+        "filename": "meson.options",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-08T08:16:08Z",
+      "side": 1,
+      "message": "we could have this enabled by default, so that repo CI could make sure we dont break this while adding code.",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 22
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ca018f1_dad76bc3",
+        "filename": "meson.options",
+        "patchSetId": 15
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-08T08:16:08Z",
+      "side": 1,
+      "message": "move this to line number 166\n\nwhere Vendor Specific Options are defined.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
       "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
