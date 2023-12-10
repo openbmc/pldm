@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0785ffab_9aa33fde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-12-10T06:31:24Z",
+      "side": 1,
+      "message": "Could you please add the Tested field also by mentioning what all testes were carried out ?",
+      "revId": "1e7a13ae2e882840fbeba644257a0d42756064f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
