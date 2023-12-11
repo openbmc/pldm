@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6fc58d1a_d4a703f2",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2023-12-11T05:15:38Z",
+      "side": 1,
+      "message": "@arun - i am good with the changes ..and i agree with Thu\u0027s point here. If you have any feedback please give.",
+      "parentUuid": "b30e04ea_ec2bcdc6",
+      "range": {
+        "startLine": 149,
+        "startChar": 50,
+        "endLine": 149,
+        "endChar": 62
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7769c32_e3e11c04",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 23
