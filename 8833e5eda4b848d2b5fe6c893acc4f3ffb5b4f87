@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e93e255f_1b06c858",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001587
+      },
+      "writtenOn": "2023-12-12T09:05:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bf92585_bacbccb0",
+      "revId": "8833e5eda4b848d2b5fe6c893acc4f3ffb5b4f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03d2d7aa_1cb4bd39",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1045c504_4df3f8a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001587
+      },
+      "writtenOn": "2023-12-12T09:05:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03d2d7aa_1cb4bd39",
+      "revId": "8833e5eda4b848d2b5fe6c893acc4f3ffb5b4f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02ec5be2_eeb54ae4",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-12-12T06:19:45Z",
       "side": 1,
       "message": "I hope this is not a user selectable option and so helpText and displayName format is okay to be followed similar to other vmi BIO attributes",
+      "revId": "8833e5eda4b848d2b5fe6c893acc4f3ffb5b4f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb42be62_4cce7837",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001587
+      },
+      "writtenOn": "2023-12-12T09:05:40Z",
+      "side": 1,
+      "message": "yes this is not user selectable option",
+      "parentUuid": "02ec5be2_eeb54ae4",
       "revId": "8833e5eda4b848d2b5fe6c893acc4f3ffb5b4f87",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
