@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bf92585_bacbccb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-12-12T06:19:45Z",
+      "side": 1,
+      "message": "Please remove hiphen at beginning and align the description",
+      "revId": "8833e5eda4b848d2b5fe6c893acc4f3ffb5b4f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03d2d7aa_1cb4bd39",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-12-12T06:19:45Z",
+      "side": 1,
+      "message": "Please add the Tested field here",
+      "revId": "8833e5eda4b848d2b5fe6c893acc4f3ffb5b4f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ec5be2_eeb54ae4",
+        "filename": "oem/ibm/configurations/bios/integer_attrs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2023-12-12T06:19:45Z",
+      "side": 1,
+      "message": "I hope this is not a user selectable option and so helpText and displayName format is okay to be followed similar to other vmi BIO attributes",
+      "revId": "8833e5eda4b848d2b5fe6c893acc4f3ffb5b4f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
