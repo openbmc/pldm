@@ -38,8 +38,8 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     auto mappedTid =
         mockTerminusManager.mapTid(pldm::MctpInfo(1, "", "", 1, ""));
     auto tid = mappedTid.value();
-    termini[tid] =
-        std::make_shared<Terminus>(tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    termini[tid] = std::make_shared<Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, "");
     auto terminus = termini[tid];
 
     // queue dummy eventMessageBufferSize response
@@ -168,7 +168,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
     auto mappedTid =
         mockTerminusManager.mapTid(pldm::MctpInfo(1, "", "", 1, ""));
     auto tid = mappedTid.value();
-    termini[tid] = std::make_shared<Terminus>(tid, 1 << PLDM_BASE);
+    termini[tid] = std::make_shared<Terminus>(tid, 1 << PLDM_BASE, "");
     auto terminus = termini[tid];
 
     platformManager.initTerminus();
@@ -183,8 +183,8 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     auto mappedTid =
         mockTerminusManager.mapTid(pldm::MctpInfo(1, "", "", 1, ""));
     auto tid = mappedTid.value();
-    termini[tid] =
-        std::make_shared<Terminus>(tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    termini[tid] = std::make_shared<Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, "");
     auto terminus = termini[tid];
 
     // queue getPDRRepositoryInfo response cc=PLDM_ERROR
