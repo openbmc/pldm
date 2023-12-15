@@ -9,13 +9,24 @@ namespace pldm
 namespace platform_mc
 {
 
-Terminus::Terminus(tid_t tid, uint64_t supportedTypes) :
-    initalized(false), tid(tid), supportedTypes(supportedTypes)
+Terminus::Terminus(tid_t tid, uint64_t supportedTypes,
+                   InventoryPath inventoryPath) :
+    initalized(false),
+    maxBufferSize(MAX_MESSAGE_BUFFER_SIZE), synchronyConfigurationSupported(0),
+    pollEvent(false), tid(tid), supportedTypes(supportedTypes)
 {
-    inventoryPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
-                    std::to_string(tid);
+    if (inventoryPath.empty())
+    {
+        invPath = "/xyz/openbmc_project/inventory/Item/Board/PLDM_Device_" +
+                  std::to_string(tid);
+    }
+    else
+    {
+        invPath = inventoryPath;
+    }
+
     inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
-        utils::DBusHandler::getBus(), inventoryPath.c_str());
+        utils::DBusHandler::getBus(), invPath.c_str());
 }
 
 bool Terminus::doesSupport(uint8_t type)
@@ -189,8 +200,8 @@ void Terminus::addNumericSensor(
 
     try
     {
-        auto sensor = std::make_shared<NumericSensor>(
-            tid, true, pdr, sensorName, inventoryPath);
+        auto sensor = std::make_shared<NumericSensor>(tid, true, pdr,
+                                                      sensorName, invPath);
         numericSensors.emplace_back(sensor);
     }
     catch (const std::exception& e)
@@ -301,8 +312,8 @@ void Terminus::addCompactNumericSensor(
 
     try
     {
-        auto sensor = std::make_shared<NumericSensor>(
-            tid, true, pdr, sensorName, inventoryPath);
+        auto sensor = std::make_shared<NumericSensor>(tid, true, pdr,
+                                                      sensorName, invPath);
         numericSensors.emplace_back(sensor);
     }
     catch (const std::exception& e)
