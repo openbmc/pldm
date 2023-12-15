@@ -21,9 +21,11 @@ using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
 
+using Association = std::tuple<std::string, std::string, std::string>;
+using InventoryPath = std::string;
 using MctpMedium = std::string;
 using NetworkId = uint32_t;
-using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
+using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId, InventoryPath>;
 using MctpInfos = std::vector<MctpInfo>;
 using tid_t = uint8_t;
 
@@ -36,9 +38,9 @@ using Interface = std::string;
 using Interfaces = std::vector<std::string>;
 using Property = std::string;
 using PropertyType = std::string;
-using Value =
-    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string, std::vector<uint8_t>>;
+using Value = std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
+                           int64_t, uint64_t, double, std::string,
+                           std::vector<uint8_t>, std::vector<Association>>;
 
 using PropertyMap = std::map<Property, Value>;
 using InterfaceMap = std::map<Interface, PropertyMap>;
