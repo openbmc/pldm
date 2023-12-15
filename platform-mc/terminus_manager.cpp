@@ -209,6 +209,7 @@ requester::Coroutine TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
 {
     mctp_eid_t eid = std::get<0>(mctpInfo);
     tid_t tid = 0;
+    InventoryPath inventoryPath = std::get<4>(mctpInfo);
     bool isMapped = false;
     auto rc = co_await getTidOverMctp(eid, &tid);
     if (rc || tid == PLDM_TID_RESERVED)
@@ -289,7 +290,8 @@ requester::Coroutine TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         co_return PLDM_ERROR;
     }
 
-    termini[tid] = std::make_shared<Terminus>(tid, supportedTypes);
+    termini[tid] = std::make_shared<Terminus>(tid, supportedTypes,
+                                              inventoryPath);
     co_return PLDM_SUCCESS;
 }
 
