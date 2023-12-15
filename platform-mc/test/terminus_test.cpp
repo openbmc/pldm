@@ -8,8 +8,8 @@ using namespace pldm::platform_mc;
 
 TEST(TerminusTest, supportedTypeTest)
 {
-    auto t1 = Terminus(1, 1 << PLDM_BASE);
-    auto t2 = Terminus(2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto t1 = Terminus(1, 1 << PLDM_BASE, "");
+    auto t2 = Terminus(2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, "");
 
     EXPECT_EQ(true, t1.doesSupport(PLDM_BASE));
     EXPECT_EQ(false, t1.doesSupport(PLDM_PLATFORM));
@@ -20,14 +20,14 @@ TEST(TerminusTest, supportedTypeTest)
 TEST(TerminusTest, getTidTest)
 {
     const pldm::tid_t tid = 1;
-    auto t1 = Terminus(tid, 1 << PLDM_BASE);
+    auto t1 = Terminus(tid, 1 << PLDM_BASE, "");
 
     EXPECT_EQ(tid, t1.getTid());
 }
 
 TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
 {
-    auto t1 = Terminus(1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto t1 = Terminus(1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, "");
     std::vector<uint8_t> pdr1{
         0x0,
         0x0,

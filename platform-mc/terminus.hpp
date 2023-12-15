@@ -36,7 +36,8 @@ using InventoryItemBoardIntf = sdbusplus::server::object_t<
 class Terminus
 {
   public:
-    Terminus(tid_t tid, uint64_t supportedPLDMTypes);
+    Terminus(tid_t tid, uint64_t supportedPLDMTypes,
+             InventoryPath inventoryPath);
 
     /** @brief Check if the terminus supports the PLDM type message
      *
@@ -111,7 +112,7 @@ class Terminus
         sensorAuxiliaryNamesTbl{};
 
     std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
-    std::string inventoryPath;
+    std::string invPath;
 };
 } // namespace platform_mc
 } // namespace pldm
