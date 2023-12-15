@@ -26,6 +26,8 @@ constexpr auto PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties";
 
 constexpr auto MCTP_INTERFACE = "xyz.openbmc_project.MCTP.Endpoint";
 constexpr auto MCTP_OBJECT_PATH = "/xyz/openbmc_project/mctp";
+constexpr auto ASSOCIATION_INTERFACE =
+    "xyz.openbmc_project.Association.Definitions";
 
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus::bus& bus,
@@ -74,6 +76,9 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
         for (const auto& serviceIter : services)
         {
             const std::string& service = serviceIter.first;
+            MctpInfo mctpInfo;
+            using Property = std::string;
+            using PropertyMap = std::map<Property, dbus::Value>;
 
             try
             {
@@ -82,8 +87,6 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                 method.append(MCTP_INTERFACE);
 
                 auto response = bus.call(method, dbusTimeout);
-                using Property = std::string;
-                using PropertyMap = std::map<Property, dbus::Value>;
                 PropertyMap properties;
                 response.read(properties);
 
@@ -102,7 +105,11 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                         std::cerr << "Adding Endpoint networkId " << networkId
                                   << " EID " << unsigned(eid) << "\n";
                         mctpInfos.emplace_back(
-                            MctpInfo(eid, emptyUUID, "", networkId));
+                            MctpInfo(eid, emptyUUID, "", networkId, ""));
+                    }
+                    else
+                    {
+                        continue;
                     }
                 }
             }
@@ -112,6 +119,39 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                           << e.what() << " SERVICE: " << service
                           << " PATH: " << path << std::endl;
                 return;
+            }
+
+            const auto interfaces = serviceIter.second;
+            if (std::find(interfaces.begin(), interfaces.end(),
+                          ASSOCIATION_INTERFACE) != interfaces.end())
+            {
+                try
+                {
+                    auto method =
+                        bus.new_method_call(service.c_str(), path.c_str(),
+                                            PROPERTY_INTERFACE, "GetAll");
+                    method.append(ASSOCIATION_INTERFACE);
+
+                    auto response = bus.call(method, dbusTimeout);
+                    PropertyMap properties;
+                    response.read(properties);
+
+                    if (properties.contains("Associations"))
+                    {
+                        auto associations = std::get<std::vector<Association>>(
+                            properties.at("Associations"));
+                        std::get<4>(mctpInfos.back()) =
+                            std::get<2>(associations.front());
+                    }
+                }
+                catch (const sdbusplus::exception_t& e)
+                {
+                    std::cerr
+                        << "Error reading MCTP Endpoint association, error: "
+                        << e.what() << " SERVICE: " << service
+                        << " PATH: " << path << std::endl;
+                    return;
+                }
             }
         }
     }
@@ -138,6 +178,7 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
         return;
     }
 
+    MctpInfo mctpInfo;
     for (const auto& [intfName, properties] : interfaces)
     {
         if (intfName == MCTP_INTERFACE)
@@ -156,11 +197,28 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                 {
                     std::cerr << "Adding Endpoint networkId " << networkId
                               << " EID " << unsigned(eid) << "\n";
-                    mctpInfos.emplace_back(
-                        MctpInfo(eid, emptyUUID, "", networkId));
+                    std::get<0>(mctpInfo) = eid;
+                    std::get<1>(mctpInfo) = emptyUUID;
+                    std::get<2>(mctpInfo) = "";
+                    std::get<3>(mctpInfo) = networkId;
                 }
             }
         }
+
+        if (intfName == ASSOCIATION_INTERFACE)
+        {
+            if (properties.contains("Associations"))
+            {
+                auto associations = std::get<std::vector<Association>>(
+                    properties.at("Associations"));
+                std::get<4>(mctpInfo) = std::get<2>(associations.front());
+            }
+        }
+    }
+    // Make sure we got the eid
+    if (std::get<0>(mctpInfo))
+    {
+        mctpInfos.emplace_back(mctpInfo);
     }
 }
 
@@ -238,9 +296,10 @@ void MctpDiscovery::loadStaticEndpoints(MctpInfos& mctpInfos)
         auto networkId = endpoint.value("NetworkId", 0xFF);
         auto eid = endpoint.value("EID", 0xFF);
         auto types = endpoint.value("SupportedMessageTypes", emptyUnit8Array);
+        auto inventoryPath = endpoint.value("InventoryPath", "");
         if (std::find(types.begin(), types.end(), mctpTypePLDM) != types.end())
         {
-            MctpInfo mctpInfo(eid, emptyUUID, "", networkId);
+            MctpInfo mctpInfo(eid, emptyUUID, "", networkId, inventoryPath);
             if (std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo) ==
                 mctpInfos.end())
             {
