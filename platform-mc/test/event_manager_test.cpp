@@ -46,8 +46,8 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
 #define SENSOR_READING 50
 #define WARNING_HIGH 45
     pldm::tid_t tid = 1;
-    termini[tid] =
-        std::make_shared<Terminus>(tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    termini[tid] = std::make_shared<Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, "");
     std::vector<uint8_t> pdr1{
         0x1,
         0x0,
@@ -207,8 +207,8 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     // Add terminus
     auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(1, "", "", 1, ""));
     auto tid = mappedTid.value();
-    termini[tid] =
-        std::make_shared<Terminus>(tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    termini[tid] = std::make_shared<Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, "");
     auto terminus = termini[tid];
 
     // queue eventMessageBufferSize response(bufferSize=32)
@@ -351,8 +351,8 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
     // Add terminus
     auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(1, "", "", 1, ""));
     auto tid = mappedTid.value();
-    termini[tid] =
-        std::make_shared<Terminus>(tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    termini[tid] = std::make_shared<Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, "");
     auto terminus = termini[tid];
 
     // queue pollForPlatformEventMessage first part response

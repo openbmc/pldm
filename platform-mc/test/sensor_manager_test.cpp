@@ -59,7 +59,7 @@ TEST_F(SensorManagerTest, sensorPollingTest)
     uint64_t expectedTimes = (seconds * 1000) / SENSOR_POLLING_TIME;
 
     pldm::tid_t tid = 1;
-    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(tid, 0);
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(tid, 0, "");
 
     EXPECT_CALL(sensorManager, doSensorPolling(tid))
         .Times(Between(expectedTimes - 3, expectedTimes + 3))
