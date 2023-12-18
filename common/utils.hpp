@@ -174,7 +174,7 @@ struct DBusMapping
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
                  uint64_t, double, std::string, std::vector<uint8_t>,
-                 std::vector<std::string>>;
+                 std::vector<uint64_t>, std::vector<std::string>>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -226,6 +226,10 @@ class DBusHandlerInterface
     virtual PropertyMap
         getDbusPropertiesVariant(const char* serviceName, const char* objPath,
                                  const char* dbusInterface) const = 0;
+
+    virtual PropertyMap getAll(const std::string& service,
+                               const std::string& objPath,
+                               const std::string& dbusInterface) const = 0;
 };
 
 /**
@@ -316,6 +320,9 @@ class DBusHandler : public DBusHandlerInterface
     PropertyMap
         getDbusPropertiesVariant(const char* serviceName, const char* objPath,
                                  const char* dbusInterface) const override;
+
+    PropertyMap getAll(const std::string& service, const std::string& objPath,
+                       const std::string& dbusInterface) const override;
 
     /** @brief The template function to get property from the requested dbus
      *         path
