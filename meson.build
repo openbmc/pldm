@@ -174,6 +174,7 @@ executable(
   'platform-mc/platform_manager.cpp',
   'platform-mc/manager.cpp',
   'requester/mctp_endpoint_discovery.cpp',
+  'requester/configuration_discovery_handler.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
