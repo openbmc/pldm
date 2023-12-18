@@ -213,6 +213,10 @@ class DBusHandlerInterface
     virtual PropertyValue
         getDbusPropertyVariant(const char* objPath, const char* dbusProp,
                                const char* dbusInterface) const = 0;
+
+    virtual PropertyMap getAll(const std::string& service,
+                               const std::string& objPath,
+                               const std::string& dbusInterface) const = 0;
 };
 
 /**
@@ -276,6 +280,9 @@ class DBusHandler : public DBusHandlerInterface
     PropertyValue
         getDbusPropertyVariant(const char* objPath, const char* dbusProp,
                                const char* dbusInterface) const override;
+
+    PropertyMap getAll(const std::string& service, const std::string& objPath,
+                       const std::string& dbusInterface) const override;
 
     /** @brief The template function to get property from the requested dbus
      *         path
