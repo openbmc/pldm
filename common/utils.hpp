@@ -213,6 +213,14 @@ class DBusHandlerInterface
     virtual PropertyValue
         getDbusPropertyVariant(const char* objPath, const char* dbusProp,
                                const char* dbusInterface) const = 0;
+
+    virtual PropertyMap
+        getDbusPropertiesVariant(const char* serviceName, const char* objPath,
+                                 const char* dbusInterface) const = 0;
+
+    virtual PropertyMap getAll(const std::string& service,
+                               const std::string& objPath,
+                               const std::string& dbusInterface) const = 0;
 };
 
 /**
@@ -276,6 +284,23 @@ class DBusHandler : public DBusHandlerInterface
     PropertyValue
         getDbusPropertyVariant(const char* objPath, const char* dbusProp,
                                const char* dbusInterface) const override;
+
+    /** @brief Get All properties(type: variant) from the requested dbus
+     *
+     *  @param[in] serviceName - The Dbus service name
+     *  @param[in] objPath - The Dbus object path
+     *  @param[in] dbusInterface - The Dbus interface
+     *
+     *  @return The values of the properties(type: variant)
+     *
+     *  @throw sdbusplus::exception_t when it fails
+     */
+    PropertyMap
+        getDbusPropertiesVariant(const char* serviceName, const char* objPath,
+                                 const char* dbusInterface) const override;
+
+    PropertyMap getAll(const std::string& service, const std::string& objPath,
+                       const std::string& dbusInterface) const override;
 
     /** @brief The template function to get property from the requested dbus
      *         path
