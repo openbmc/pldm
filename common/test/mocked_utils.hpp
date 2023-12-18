@@ -39,4 +39,8 @@ class MockdBusHandler : public pldm::utils::DBusHandler
     MOCK_METHOD(pldm::utils::GetSubTreeResponse, getSubtree,
                 (const std::string&, int, const std::vector<std::string>&),
                 (const override));
+
+    MOCK_METHOD(pldm::utils::PropertyMap, getAll,
+                (const std::string&, const std::string&, const std::string&),
+                (const override));
 };
