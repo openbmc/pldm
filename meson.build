@@ -190,6 +190,7 @@ executable(
   'platform-mc/numeric_sensor.cpp',
   'platform-mc/event_manager.cpp',
   'requester/mctp_endpoint_discovery.cpp',
+  'requester/configuration_discovery_handler.cpp',
   implicit_include_directories: false,
   dependencies: deps,
   install: true,
