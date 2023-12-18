@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46dabd2f_20e2b6c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Changed to using `multiple hosts` be more specific.",
+      "parentUuid": "6d13dfdc_e2d2df6e",
+      "range": {
+        "startLine": 10,
+        "startChar": 32,
+        "endLine": 10,
+        "endChar": 36
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dc42f33_4467f179",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-08T08:16:08Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 12,
+        "startChar": 12,
+        "endLine": 12,
+        "endChar": 16
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c7f6350_6a282cb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove redundant commit message",
+      "parentUuid": "8dc42f33_4467f179",
       "range": {
         "startLine": 12,
         "startChar": 12,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d24bca9_7d1302df",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bd8198b_d8fef909",
+      "range": {
+        "startLine": 63,
+        "startChar": 2,
+        "endLine": 64,
+        "endChar": 55
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2c6d0af_6b057f30",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-12-08T08:16:08Z",
       "side": 1,
       "message": "we could have this enabled by default, so that repo CI could make sure we dont break this while adding code.",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 22
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a63354a_a66968f8",
+        "filename": "meson.options",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2c6d0af_6b057f30",
       "range": {
         "startLine": 48,
         "startChar": 4,
@@ -133,6 +229,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "793b8785_ed0f689a",
+        "filename": "meson.options",
+        "patchSetId": 15
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ca018f1_dad76bc3",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 1
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "464247bb_c4c3b650",
@@ -146,6 +266,24 @@
       "writtenOn": "2023-12-06T16:21:11Z",
       "side": 1,
       "message": "Do we need to do anything to skip running this function if we\u0027ve already ran it?\n\nHow do we handle hot-plug of a compute card since it appears we only run this when `Handler` is constructed.",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccb0ded1_b5abb3da",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove. Change to way using from https://gerrit.openbmc.org/c/openbmc/pldm/+/51184",
+      "parentUuid": "464247bb_c4c3b650",
       "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -173,6 +311,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77c354a5_477283e6",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64aa17ff_23c8766e",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 48
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00506ab6_2ae51b75",
@@ -190,6 +352,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81188c45_d4386849",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00506ab6_2ae51b75",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44abd11a_aa640567",
@@ -203,6 +383,30 @@
       "writtenOn": "2023-12-06T16:21:11Z",
       "side": 1,
       "message": "Suggest to use span instead of vector to avoid data copies.\n\n```\nauto data \u003d std::span(std::begin(retDataField), length);\n```",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 65
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb3bf38f_9d1ea7d2",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44abd11a_aa640567",
       "range": {
         "startLine": 112,
         "startChar": 0,
@@ -236,6 +440,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d546537_ee961b95",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96b71cdc_a0392493",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 1
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c844aa1a_bdf89331",
@@ -253,6 +481,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31627c53_ae0edcdc",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove. Change to way using from https://gerrit.openbmc.org/c/openbmc/pldm/+/51184",
+      "parentUuid": "c844aa1a_bdf89331",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9e07cca_b330c901",
@@ -266,6 +512,30 @@
       "writtenOn": "2023-12-06T16:21:11Z",
       "side": 1,
       "message": "Do we need a longer name or namespace here to differentaite this as the \"file_io handler\"?",
+      "range": {
+        "startLine": 31,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 13
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "123bba76_36b78d95",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9e07cca_b330c901",
       "range": {
         "startLine": 31,
         "startChar": 6,
@@ -299,6 +569,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62867e53_430c4578",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f65de9c7_af9f0fe9",
+      "range": {
+        "startLine": 57,
+        "startChar": 25,
+        "endLine": 57,
+        "endChar": 32
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76bfcdce_5eb1e9b4",
@@ -322,6 +616,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8921fac5_5654a00e",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76bfcdce_5eb1e9b4",
+      "range": {
+        "startLine": 60,
+        "startChar": 50,
+        "endLine": 60,
+        "endChar": 57
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30062af9_6d9cd0e7",
@@ -335,6 +653,24 @@
       "writtenOn": "2023-12-06T16:21:11Z",
       "side": 1,
       "message": "Suggest switching both of these vectors to a span.  Add a `using` alias somewhere for them.  Maybe in `Handler`.",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dabe5b8_6bf52936",
+        "filename": "oem/meta/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30062af9_6d9cd0e7",
       "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -379,6 +715,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a32945_6d5b8d12",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36b29a18_b8bcead5",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 59
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d403ddbc_3b93a58b",
@@ -392,6 +752,30 @@
       "writtenOn": "2023-12-06T16:21:11Z",
       "side": 1,
       "message": "prefer auto",
+      "range": {
+        "startLine": 29,
+        "startChar": 45,
+        "endLine": 29,
+        "endChar": 52
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "638b11f5_a529f7cb",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d403ddbc_3b93a58b",
       "range": {
         "startLine": 29,
         "startChar": 45,
@@ -419,6 +803,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f828ff_bb1da105",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove",
+      "parentUuid": "1b7e9334_2173671f",
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3763f61c_3300c6ac",
@@ -442,6 +844,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7661c50_8508bb12",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3763f61c_3300c6ac",
+      "range": {
+        "startLine": 20,
+        "startChar": 48,
+        "endLine": 20,
+        "endChar": 55
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e0cf75e_56132992",
@@ -455,6 +881,30 @@
       "writtenOn": "2023-12-06T16:21:11Z",
       "side": 1,
       "message": "Just drop `data` instead of the `maybe_unused` (reduce the noise).",
+      "range": {
+        "startLine": 30,
+        "startChar": 58,
+        "endLine": 30,
+        "endChar": 62
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a951132_a630a735",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e0cf75e_56132992",
       "range": {
         "startLine": 30,
         "startChar": 58,
@@ -501,6 +951,48 @@
         "endLine": 37,
         "endChar": 33
       },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee5a119d_5af873ff",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove. Change to way using from https://gerrit.openbmc.org/c/openbmc/pldm/+/51184",
+      "parentUuid": "7dcea24e_60baa5b1",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b283e300_c581d382",
+        "filename": "oem/meta/libpldmresponder/file_io_type_post_code.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove. Change to way using from https://gerrit.openbmc.org/c/openbmc/pldm/+/51184",
+      "parentUuid": "fd1ef474_02b344da",
       "revId": "630ad4d732c7f8bb47d017dbb49be60edbfa62eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

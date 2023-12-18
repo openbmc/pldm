@@ -124,6 +124,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d566cc8_0b566d48",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove. Change to way using from https://gerrit.openbmc.org/c/openbmc/pldm/+/51184",
+      "parentUuid": "5551ec26_e49089a4",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 3
+      },
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c58cbc49_1d69e660",
@@ -454,6 +478,24 @@
       "writtenOn": "2023-11-16T02:00:39Z",
       "side": 1,
       "message": "Is there anything we can do about it?  Just hope someone sees the message in the journal?",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a7cdca2_71a347f9",
+        "filename": "oem/meta/libpldmresponder/file_io.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-18T10:43:31Z",
+      "side": 1,
+      "message": "Remove. Change to way using from https://gerrit.openbmc.org/c/openbmc/pldm/+/51184",
+      "parentUuid": "25f5814f_9732bc1d",
       "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
