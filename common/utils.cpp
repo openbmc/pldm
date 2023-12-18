@@ -558,6 +558,23 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     return value;
 }
 
+PropertyMap DBusHandler::getAll(const std::string& service,
+                                const std::string& objPath,
+                                const std::string& dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(service.c_str(), objPath.c_str(),
+                                      "org.freedesktop.DBus.Properties",
+                                      "GetAll");
+    method.append(dbusInterface);
+
+    auto response = bus.call(method);
+    PropertyMap result{};
+    response.read(result);
+
+    return result;
+}
+
 PropertyValue jsonEntryToDbusVal(std::string_view type,
                                  const nlohmann::json& value)
 {
