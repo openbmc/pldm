@@ -7,6 +7,7 @@
 #include "fw-update/manager.hpp"
 #include "invoker.hpp"
 #include "platform-mc/manager.hpp"
+#include "requester/configuration_discovery_handler.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
@@ -225,6 +226,9 @@ int main(int argc, char** argv)
         hostEffecterParser;
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     DBusHandler dbusHandler;
+    auto configurationDiscovery =
+        std::make_unique<pldm::ConfigurationDiscoveryHandler>(&dbusHandler);
+
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
     std::unique_ptr<platform_config::Handler> platformConfigHandler{};
     platformConfigHandler = std::make_unique<platform_config::Handler>();
@@ -322,7 +326,9 @@ int main(int argc, char** argv)
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
-                     fwManager.get(), platformManager.get()});
+                     fwManager.get(), platformManager.get(),
+                     configurationDiscovery.get()});
+
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
