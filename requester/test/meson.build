@@ -1,12 +1,15 @@
 test_src = declare_dependency(
           sources: [
             '../mctp_endpoint_discovery.cpp',
+            '../../common/utils.cpp',
+            '../configuration_discovery_handler.cpp'
           ])
 
 tests = [
   'handler_test',
   'request_test',
   'mctp_endpoint_discovery_test',
+  'configuration_discovery_handler_test',
 ]
 
 foreach t : tests
@@ -20,6 +23,7 @@ foreach t : tests
                          gmock,
                          libpldm_dep,
                          nlohmann_json_dep,
+                         libpldmutils,
                          phosphor_dbus_interfaces,
                          phosphor_logging_dep,
                          sdbusplus,
