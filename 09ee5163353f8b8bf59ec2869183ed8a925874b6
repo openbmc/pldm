@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc1da02c_73c70e52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-19T08:56:46Z",
+      "side": 1,
+      "message": "Rename all files in the oem/meta directory to start with oem_meta to avoid file name conflicts.",
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
