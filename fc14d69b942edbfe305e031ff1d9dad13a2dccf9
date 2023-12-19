@@ -183,6 +183,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f6945a0_171e7037",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-12-19T09:03:37Z",
+      "side": 1,
+      "message": "We added Decorator.Slot at Yosemite4\u0027s board layer to get the slot number, a new change will be pushed to EntityManager.",
+      "parentUuid": "f2592856_8f277dfb",
+      "revId": "fc14d69b942edbfe305e031ff1d9dad13a2dccf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "049c432f_d9e7d24d",
