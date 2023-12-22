@@ -1,6 +1,7 @@
 #include "oem_meta_file_io.hpp"
 
 #include "oem_meta_file_io_type_post_code.hpp"
+#include "oem_meta_file_io_type_power_status.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/oem/meta/file_io.h>
@@ -21,7 +22,11 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(uint8_t messageTid,
     {
         case POST_CODE:
             return std::make_unique<PostCodeHandler>(
-                messageTid, configurationDescovery->getConfigurations());
+                messageTid, configurationDiscovery->getConfigurations());
+        case POWER_STATUS:
+            return std::make_unique<PowerStatusHandler>(
+                messageTid, configurationDiscovery->getConfigurations(),
+                dBusIntf);
         default:
             error("Get invalid file io type, FILEIOTYPE={FILEIOTYPE}",
                   "FILEIOTYPE", fileIOType);

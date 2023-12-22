@@ -17,6 +17,7 @@ constexpr auto decodeDataMaxLength = 32;
 enum pldm_oem_meta_file_io_type : uint8_t
 {
     POST_CODE = 0x00,
+    POWER_STATUS = 0x01,
 };
 
 class FileHandler
