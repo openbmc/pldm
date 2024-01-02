@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "833a64a9_51bca17f",
+        "filename": "libpldmresponder/meson.build",
+        "patchSetId": 17
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T22:48:43Z",
+      "side": 1,
+      "message": "@Andrew - Are you suggesting these should be just \u0027file_io\u0027?  I agree these file names are a bit long.\n\nI guess you\u0027re saying that these should be in `libpldmresponder/oem/meta` instead?  That part we should probably handle as a move of everything in `oem/` at once.",
+      "range": {
+        "startLine": 63,
+        "startChar": 34,
+        "endLine": 63,
+        "endChar": 43
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be5e2560_2903d057",
         "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
         "patchSetId": 17
