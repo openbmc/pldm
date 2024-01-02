@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52d57bd9_e1b1c711",
+        "filename": "common/types.hpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:53:54Z",
+      "side": 1,
+      "message": "libpldm now has pldm_tid_t, so I think we should remove this using and be consistent.",
+      "revId": "94df75e2c8cc4f7c7afba5ab4a0e88b5cba5f4e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "202dc8a2_afca6a8e",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:53:54Z",
+      "side": 1,
+      "message": "Since this function does nothing, just leave the parameter unnamed rather than adding these attributes.",
+      "range": {
+        "startLine": 73,
+        "startChar": 36,
+        "endLine": 73,
+        "endChar": 52
+      },
+      "revId": "94df75e2c8cc4f7c7afba5ab4a0e88b5cba5f4e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
