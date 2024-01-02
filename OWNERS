@@ -45,6 +45,9 @@ matchers:
   owners:
   - sampmisr@in.ibm.com
   - manojkiran.eda@gmail.com
+- partial_regex: meta/
+  owners:
+  - patrick@stwcx.xyz
 - partial_regex: tools/visualize-pdr
   owners:
   - manojkiran.eda@gmail.com
@@ -59,6 +62,9 @@ openbmc:
 - name: Manojkiran Eda
   email: manojkiran.eda@gmail.com
   discord: manojkiran
+- name: Patrick Williams
+  email: patrick@stwcx.xyz
+  discord: stwcx
 - name: Sampa Misra
   email: sampmisr@in.ibm.com
   discord: sampmisr
