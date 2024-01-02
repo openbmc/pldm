@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43fd8cff_2d462bfc",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-02T12:02:26Z",
+      "side": 1,
+      "message": "Will wait for another couple of days and planning to merge this - as there is no further feedback from @arun.\n\n@arun feel free to open up a commit or issue , if you have some feedback.",
+      "parentUuid": "6fc58d1a_d4a703f2",
+      "range": {
+        "startLine": 149,
+        "startChar": 50,
+        "endLine": 149,
+        "endChar": 62
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7769c32_e3e11c04",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 23
