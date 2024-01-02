@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e496387b_1c0e5606",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-02T22:40:26Z",
+      "side": 1,
+      "message": "I\u0027m not enamoured with encoding the directory hierarchy in the base file name of the libpldmresponder sources. I\u0027m also not enamoured with the top-level `oem/` directory that encourages that either. It would be nice to see that all refactored so that each top level directory has an `oem/` subdirectory (using the philosophy of keeping-things-that-are-together-together), but I\u0027m not going to _require_ you to do it.",
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be5e2560_2903d057",
