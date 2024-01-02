@@ -16,6 +16,454 @@
       "message": "Rename all files in the oem/meta directory to start with oem_meta to avoid file name conflicts.",
       "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be5e2560_2903d057",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "pldm_tid_t?",
+      "range": {
+        "startLine": 17,
+        "startChar": 61,
+        "endLine": 17,
+        "endChar": 68
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f30419a9_35626ad6",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "spelling: discovery",
+      "range": {
+        "startLine": 24,
+        "startChar": 28,
+        "endLine": 24,
+        "endChar": 50
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fa59a4a_aa891c40",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "nit: suggest initialization (` \u003d 0;`)",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 20
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b0deff4_2e702d9e",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "spelling: discovery.\n\n(fix throughout)",
+      "range": {
+        "startLine": 20,
+        "startChar": 55,
+        "endLine": 20,
+        "endChar": 77
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1343697c_5c71d511",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Why is this a pointer and not a reference?",
+      "range": {
+        "startLine": 20,
+        "startChar": 53,
+        "endLine": 20,
+        "endChar": 54
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39265ad7_8e8fe87e",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_by_type.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Is this const?  I suspect we need to write to it?  Or does it need to return data instead of int?  We don\u0027t really have an example of read from what I can tell yet, so I\u0027m not sure how we define a good API for it.",
+      "range": {
+        "startLine": 26,
+        "startChar": 21,
+        "endLine": 26,
+        "endChar": 26
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a95ff1_a0dbbb71",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Why?  You converted a C++ string into a C string only to have it converted into a _new_ C++ string as part of calling this function.",
+      "range": {
+        "startLine": 30,
+        "startChar": 34,
+        "endLine": 30,
+        "endChar": 42
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2284ae95_1ccd71f4",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "You caught an exception and then just logged a message and continue?  In what conditions is someone ever going to see this log message?\n\nWe\u0027ve now left slotNum uninitialized due to how this API is written and the calling code.\n\nShould we just be crashing here (leave the exception uncaught and/or re-throw it)?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 22
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4acb87e_36627473",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Not necessary.",
+      "range": {
+        "startLine": 36,
+        "startChar": 54,
+        "endLine": 36,
+        "endChar": 62
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24d795a_70511608",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "slotNum is uninitialized.",
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "800808ff_aa60fea1",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Use a type here and not a number.  `ObjectPath`?",
+      "range": {
+        "startLine": 51,
+        "startChar": 29,
+        "endLine": 51,
+        "endChar": 30
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e9ec2b_c53163d0",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Why?  This is kind of strange that the utils.hpp code is using C-strings.  Can we fix all of that?",
+      "range": {
+        "startLine": 51,
+        "startChar": 49,
+        "endLine": 51,
+        "endChar": 57
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40d113d_48ce511c",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Use a type and not a number.",
+      "range": {
+        "startLine": 59,
+        "startChar": 49,
+        "endLine": 59,
+        "endChar": 50
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64196711_35c0a5c8",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Interesting... we have a final throw here but there are many paths through this code where we just log a message and return empty-handed.  Please make this consistent.",
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70e5e9e0_165cf40e",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Why use this?  `\u003e` isn\u0027t good enough?",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 25
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa598a47_29c756d9",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "`postCodeList.size()` ?  Make sure you also change the comparison to `\u003e\u003d` if needed, but I think `\u003e` is right.",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 75
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24fdbba4_3a348ff0",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Isn\u0027t this parameter suppose to be an interface and not a service?",
+      "range": {
+        "startLine": 117,
+        "startChar": 12,
+        "endLine": 117,
+        "endChar": 23
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38a637df_0797679f",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Suggest a using-alias for this type.",
+      "range": {
+        "startLine": 18,
+        "startChar": 20,
+        "endLine": 18,
+        "endChar": 62
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94315dbd_0121e858",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "Should we just return the slot #?  I don\u0027t see the value of passing it as an input-reference.",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 8
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0e02a3f_7f792d01",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io_type_post_code.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T16:52:49Z",
+      "side": 1,
+      "message": "size_t?  I understand that the MCTP configuration might be using a uint64_t, but it seems safe to use a size_t internally here so we don\u0027t let that part of the API leak into the rest of the code.",
+      "range": {
+        "startLine": 44,
+        "startChar": 34,
+        "endLine": 44,
+        "endChar": 42
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
