@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "758f1654_38b02769",
+        "filename": "common/types.hpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-03T07:08:31Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "52d57bd9_e1b1c711",
+      "revId": "94df75e2c8cc4f7c7afba5ab4a0e88b5cba5f4e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "202dc8a2_afca6a8e",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-01-02T16:53:54Z",
       "side": 1,
       "message": "Since this function does nothing, just leave the parameter unnamed rather than adding these attributes.",
+      "range": {
+        "startLine": 73,
+        "startChar": 36,
+        "endLine": 73,
+        "endChar": 52
+      },
+      "revId": "94df75e2c8cc4f7c7afba5ab4a0e88b5cba5f4e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd1a7f69_122018cc",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-03T07:08:31Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "202dc8a2_afca6a8e",
       "range": {
         "startLine": 73,
         "startChar": 36,
