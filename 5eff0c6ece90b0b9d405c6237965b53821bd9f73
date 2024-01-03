@@ -16,6 +16,24 @@
       "message": "Would like to ask how to distinguish the sensor failed using \"Available\" and \"Functional\" objects?\n\nShould we add a SEL to notify the user that the sensor has really failed?",
       "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27e48778_1ba9bfa0",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-03T23:50:07Z",
+      "side": 1,
+      "message": "When the sensor is failed, the `functional` D-Bus property state will `False`. When the sensor is not available, `Available` D-Bus property will be `False`.",
+      "parentUuid": "fbd0a1df_0ba4f1ce",
+      "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
