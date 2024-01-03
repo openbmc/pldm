@@ -113,6 +113,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f17df04_4cafadfc",
+        "filename": "libpldmresponder/meson.build",
+        "patchSetId": 17
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-03T09:52:25Z",
+      "side": 1,
+      "message": "yes and agree",
+      "parentUuid": "833a64a9_51bca17f",
+      "range": {
+        "startLine": 63,
+        "startChar": 34,
+        "endLine": 63,
+        "endChar": 43
+      },
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be5e2560_2903d057",
         "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
         "patchSetId": 17
