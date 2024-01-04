@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f4b50f2c_6a1d38b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-04T13:36:58Z",
+      "side": 1,
+      "message": "You didn\u0027t answer what the code does if that EM commit isn\u0027t there.  If the code crashes the PLDM daemon due to a missing or corrupted EEPROM, we need to fix that.  I don\u0027t expect correct functionality, but I expect reasonable behavior.",
+      "parentUuid": "f401b96e_15e0e5cb",
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "833a64a9_51bca17f",
         "filename": "libpldmresponder/meson.build",
         "patchSetId": 17
