@@ -86,6 +86,24 @@
       "parentUuid": "7ccfb7c6_7793c227",
       "revId": "5e482c872c9f04f738f5560b0491ce6542fc052f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5427798_66258843",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 927,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-04T06:26:14Z",
+      "side": 1,
+      "message": "Merging this since its breaking other companies.",
+      "parentUuid": "23cc2808_64c8e955",
+      "revId": "5e482c872c9f04f738f5560b0491ce6542fc052f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
