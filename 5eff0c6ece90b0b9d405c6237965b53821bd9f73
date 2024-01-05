@@ -34,6 +34,24 @@
       "parentUuid": "fbd0a1df_0ba4f1ce",
       "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acb16396_2b80a63e",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-01-05T08:05:38Z",
+      "side": 1,
+      "message": "Would like to ask if following states are reasonable.\n\n- PLDM_SENSOR_ENABLED      : `Functional True`,  `Available True`\n- PLDM_SENSOR_DISABLED     : `Functional False`, `Available False`\n- PLDM_SENSOR_UNAVAILABLE  : `Functional False`, `Available False`\n- PLDM_SENSOR_FAILED       : `Functional False`, `Available True`\n- PLDM_SENSOR_INITIALIZING : `Functional False`, `Available False`",
+      "parentUuid": "27e48778_1ba9bfa0",
+      "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
