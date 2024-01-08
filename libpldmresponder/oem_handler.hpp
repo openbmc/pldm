@@ -110,6 +110,9 @@ class Handler : public CmdHandler
     /** @brief Interface to the process setEventReceiver*/
     virtual void processSetEventReceiver() = 0;
 
+    /** @brief Interface to get configuration path for perticular system type */
+    virtual std::filesystem::path getConfigDir() = 0;
+
     virtual ~Handler() = default;
 
   protected:
