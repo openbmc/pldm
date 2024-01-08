@@ -52,6 +52,24 @@
       "parentUuid": "27e48778_1ba9bfa0",
       "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "732dd5ab_2d4e0528",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-08T04:18:45Z",
+      "side": 1,
+      "message": "@DelphineCCChiu,\n\nThe states are reasonable, I think.\nI will update code to follow that.",
+      "parentUuid": "acb16396_2b80a63e",
+      "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

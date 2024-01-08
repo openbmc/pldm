@@ -232,6 +232,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0307b575_8e65d358",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-08T04:18:45Z",
+      "side": 1,
+      "message": "The patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/68347/3 is supported configure the Inventory path in Entity-manager, it can be used to setting the inventory path.",
+      "parentUuid": "a6e9e327_c9df791c",
+      "revId": "61d2be6bd934a58f3cebc43113547dc8cc36370d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6178924_0d6e658a",
