@@ -49,7 +49,7 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf, uint8_t eid,
-            pldm::InstanceIdDb* instanceIdDb, const std::string& pdrJsonsDir,
+            pldm::InstanceIdDb* instanceIdDb, const fs::path& pdrJsonDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
@@ -62,8 +62,8 @@ class Handler : public CmdHandler
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        handler(handler), event(event), pdrJsonsDir(pdrJsonsDir),
-        pdrCreated(false)
+        handler(handler), event(event), pdrJsonDir(pdrJsonDir),
+        pdrCreated(false), pdrJsonsDir({pdrJsonDir})
     {
         if (!buildPDRLazily)
         {
@@ -192,7 +192,7 @@ class Handler : public CmdHandler
      *  @param[in] repo - instance of concrete implementation of Repo
      */
     void generate(const pldm::utils::DBusHandler& dBusIntf,
-                  const std::string& dir,
+                  const std::vector<fs::path>& dir,
                   pldm::responder::pdr_utils::Repo& repo);
 
     /** @brief Parse PDR JSONs and build state effecter PDR repository
@@ -485,8 +485,9 @@ class Handler : public CmdHandler
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
     pldm::requester::Handler<pldm::requester::Request>* handler;
     sdeventplus::Event& event;
-    std::string pdrJsonsDir;
+    fs::path pdrJsonDir;
     bool pdrCreated;
+    std::vector<fs::path> pdrJsonsDir;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
 };
 
