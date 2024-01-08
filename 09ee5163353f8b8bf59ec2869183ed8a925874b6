@@ -106,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d0fd8b3_9e904270",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-01-08T03:45:43Z",
+      "side": 1,
+      "message": "It wouldn\u0027t cause pldmd crash but only pop up lots of error messages for property not found when the host power is on.",
+      "parentUuid": "f4b50f2c_6a1d38b2",
+      "revId": "09ee5163353f8b8bf59ec2869183ed8a925874b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "833a64a9_51bca17f",
