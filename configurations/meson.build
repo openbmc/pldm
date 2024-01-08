@@ -12,6 +12,7 @@ if get_option('oem-ibm').allowed()
     install_subdir('../oem/ibm/configurations/fru', install_dir: package_datadir)
     install_subdir('../oem/ibm/configurations/events', install_dir: package_datadir)
     install_subdir('../oem/ibm/configurations/bios', install_dir: package_datadir)
+    install_subdir('../oem/ibm/configurations/pdr', install_dir: join_paths(package_datadir,'pdr'), strip_directory:true)
     install_data('../oem/ibm/configurations/fru_master.json',install_dir: package_datadir)
     install_data('../oem/ibm/configurations/fileTable.json',
         install_dir: package_datadir)

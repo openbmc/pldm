@@ -66,11 +66,15 @@ const std::tuple<pdr_utils::DbusMappings, pdr_utils::DbusValMaps>&
 }
 
 void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
-                       const std::string& dir, Repo& repo)
+                       const std::vector<fs::path>& dir, Repo& repo)
 {
-    if (!fs::exists(dir))
+    for (const auto& directory : dir)
     {
-        return;
+        info("checking if : {DIR} exists", "DIR", directory.c_str());
+        if (!fs::exists(directory))
+        {
+            return;
+        }
     }
 
     // A map of PDR type to a lambda that handles creation of that PDR type.
@@ -100,50 +104,58 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
     }}};
 
     Type pdrType{};
-    for (const auto& dirEntry : fs::directory_iterator(dir))
+    for (const auto& directory : dir)
     {
-        try
+        for (const auto& dirEntry : fs::directory_iterator(directory))
         {
-            auto json = readJson(dirEntry.path().string());
-            if (!json.empty())
+            try
             {
-                auto effecterPDRs = json.value("effecterPDRs", empty);
-                for (const auto& effecter : effecterPDRs)
+                if (fs::is_regular_file(dirEntry.path().string()))
                 {
-                    pdrType = effecter.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, effecter, repo);
-                }
+                    auto json = readJson(dirEntry.path().string());
+                    if (!json.empty())
+                    {
+                        auto effecterPDRs = json.value("effecterPDRs", empty);
+                        for (const auto& effecter : effecterPDRs)
+                        {
+                            pdrType = effecter.value("pdrType", 0);
+                            generateHandlers.at(pdrType)(dBusIntf, effecter,
+                                                         repo);
+                        }
 
-                auto sensorPDRs = json.value("sensorPDRs", empty);
-                for (const auto& sensor : sensorPDRs)
-                {
-                    pdrType = sensor.value("pdrType", 0);
-                    generateHandlers.at(pdrType)(dBusIntf, sensor, repo);
+                        auto sensorPDRs = json.value("sensorPDRs", empty);
+                        for (const auto& sensor : sensorPDRs)
+                        {
+                            pdrType = sensor.value("pdrType", 0);
+                            generateHandlers.at(pdrType)(dBusIntf, sensor,
+                                                         repo);
+                        }
+                    }
                 }
             }
-        }
-        catch (const InternalFailure& e)
-        {
-            error(
-                "PDR config directory does not exist or empty, TYPE= {PDR_TYPE} PATH={DIR_PATH} ERROR={ERR_EXCEP}",
-                "PDR_TYPE", pdrType, "DIR_PATH", dirEntry.path().string(),
-                "ERR_EXCEP", e.what());
-        }
-        catch (const Json::exception& e)
-        {
-            error(
-                "Failed parsing PDR JSON file, TYPE={PDR_TYPE} ERROR={ERR_EXCEP}",
-                "PDR_TYPE", pdrType, "ERR_EXCEP", e.what());
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
-        }
-        catch (const std::exception& e)
-        {
-            error(
-                "Failed parsing PDR JSON file, TYPE= {PDR_TYPE} ERROR={ERR_EXCEP}",
-                "PDR_TYPE", pdrType, "ERR_EXCEP", e.what());
-            pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+            catch (const InternalFailure& e)
+            {
+                error(
+                    "PDR config directory does not exist or empty, TYPE= {PDR_TYP} PATH= {DIR_PATH} ERROR={ERR_EXCEP}",
+                    "PDR_TYP", pdrType, "DIR_PATH", dirEntry.path().string(),
+                    "ERR_EXCEP", e.what());
+            }
+            catch (const Json::exception& e)
+            {
+                error(
+                    "Failed parsing PDR JSON file, TYPE= {PDR_TYP} ERROR={ERR_EXCEP}",
+                    "PDR_TYP", pdrType, "ERR_EXCEP", e.what());
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail");
+            }
+            catch (const std::exception& e)
+            {
+                error(
+                    "Failed parsing PDR JSON file, TYPE= {PDR_TYP} ERROR={ERR_EXCEP}",
+                    "PDR_TYP", pdrType, "ERR_EXCEP", e.what());
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail");
+            }
         }
     }
 }
@@ -161,7 +173,19 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
             }
         }
     }
+    if (oemPlatformHandler)
+    {
+        // Irrespective if whether the host is up, we need to make sure
+        // that we got the system type from the entity manager service
+        // otherwise we would not have platform dependent PDR's, so
+        // sending NOT_READY untill we see a signal from entity manager
 
+        auto systemType = oemPlatformHandler->getConfigDir();
+        if (systemType.empty())
+        {
+            return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
+        }
+    }
     // Build FRU table if not built, since entity association PDR's
     // are built when the FRU table is constructed.
     if (fruHandler)
@@ -172,11 +196,14 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     if (!pdrCreated)
     {
         generateTerminusLocatorPDR(pdrRepo);
-        generate(*dBusIntf, pdrJsonsDir, pdrRepo);
         if (oemPlatformHandler != nullptr)
         {
+            auto systemType = oemPlatformHandler->getConfigDir();
+            pdrJsonsDir.push_back(pdrJsonDir /
+                                  oemPlatformHandler->getConfigDir());
             oemPlatformHandler->buildOEMPDR(pdrRepo);
         }
+        generate(*dBusIntf, pdrJsonsDir, pdrRepo);
 
         pdrCreated = true;
 
