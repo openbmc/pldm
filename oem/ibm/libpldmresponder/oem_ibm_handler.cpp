@@ -153,6 +153,50 @@ int pldm::responder::oem_ibm_platform::Handler::
     return rc;
 }
 
+std::filesystem::path pldm::responder::oem_ibm_platform::Handler::getConfigDir()
+{
+    if (!systemType.empty())
+    {
+        return fs::path{systemType};
+    }
+
+    namespace fs = std::filesystem;
+    static constexpr auto compatibleInterface =
+        "xyz.openbmc_project.Configuration.IBMCompatibleSystem";
+    static constexpr auto namesProperty = "Names";
+    static constexpr auto orgFreeDesktopInterface =
+        "org.freedesktop.DBus.Properties";
+    static constexpr auto getMethod = "Get";
+
+    static constexpr auto searchpath = "/xyz/openbmc_project/";
+    int depth = 0;
+    std::vector<std::string> ibmCompatible = {compatibleInterface};
+    pldm::utils::GetSubTreeResponse response =
+        pldm::utils::DBusHandler().getSubtree(searchpath, depth, ibmCompatible);
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    std::variant<std::vector<std::string>> value;
+
+    for (const auto& [objectPath, serviceMap] : response)
+    {
+        try
+        {
+            auto method = bus.new_method_call(
+                serviceMap[0].first.c_str(), objectPath.c_str(),
+                orgFreeDesktopInterface, getMethod);
+            method.append(ibmCompatible[0].c_str(), namesProperty);
+            auto reply = bus.call(method);
+            reply.read(value);
+            return fs::path{std::get<std::vector<std::string>>(value)[0]};
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Error getting Names property , PATH=" << objectPath
+                      << " Compatible interface =" << ibmCompatible[0] << "\n";
+        }
+    }
+    return fs::path();
+}
+
 void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
                                    uint16_t entityType, uint16_t entityInstance,
                                    uint16_t stateSetID, pdr_utils::Repo& repo)
